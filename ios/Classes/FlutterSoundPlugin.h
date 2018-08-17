@@ -1,4 +1,5 @@
 #import <Flutter/Flutter.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface FlutterSoundPlugin : NSObject<FlutterPlugin, AVAudioPlayerDelegate>
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player

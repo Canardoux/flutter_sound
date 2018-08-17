@@ -1,11 +1,55 @@
 #import "FlutterSoundPlugin.h"
 #import <AVFoundation/AVFoundation.h>
 
-@implementation FlutterSoundPlugin
+@implementation FlutterSoundPlugin{
   NSURL *audioFileURL;
   AVAudioRecorder *audioRecorder;
   AVAudioPlayer *audioPlayer;
   NSTimer *timer;
+}
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
+  NSLog(@"audioPlayerDidFinishPlaying");
+  NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
+    
+  // Send last event then finish it.
+//  [self sendEventWithName:@"rn-playback" body:@{
+//                                  @"duration" : [duration stringValue],
+//                                  @"current_position" : [duration stringValue],
+//                                  @"justFinished" : @"1",
+//                                  }
+//  ];
+  if (timer != nil) {
+    [timer invalidate];
+    timer = nil;
+  }
+}
+
+- (void)updateProgress:(NSTimer*) timer
+{
+  NSLog(@"updateProgress");
+  NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
+  NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
+
+  NSDictionary *status = @{
+                           @"duration" : [duration stringValue],
+                           @"current_position" : [currentTime stringValue],
+                           };
+
+//  [self sendEventWithName:@"rn-playback" body:status];
+}
+
+- (void)startTimer
+{
+//  dispatch_async(dispatch_get_main_queue(), ^{
+//      self->timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+//                                           target:self
+//                                           selector:@selector(updateProgress:)
+//                                           userInfo:nil
+//                                           repeats:YES];
+//  });
+}
+
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
   FlutterMethodChannel* channel = [FlutterMethodChannel
@@ -24,7 +68,8 @@
   } else if ([@"stopRecorder" isEqualToString:call.method]) {
     [self stopRecorder:result];
   } else if ([@"startPlayer" isEqualToString:call.method]) {
-    [self startPlayer:result];
+      NSString* path = (NSString*)call.arguments[@"path"];
+      [self startPlayer:path result:result];
   } else if ([@"stopPlayer" isEqualToString:call.method]) {
     [self stopPlayer:result];
   } else if ([@"pausePlayer" isEqualToString:call.method]) {
@@ -32,7 +77,8 @@
   } else if ([@"resumePlayer" isEqualToString:call.method]) {
     [self resumePlayer:result];
   } else if ([@"seekToPlayer" isEqualToString:call.method]) {
-    [self seekToPlayer:result];
+      NSNumber* sec = (NSNumber*)call.arguments[@"sec"];
+      [self seekToPlayer:sec result:result];
   } else {
     result(FlutterMethodNotImplemented);
   }
@@ -115,7 +161,6 @@
     }
 
     if (!audioPlayer) {
-      RCTLogInfo(@"audio player alloc");
       audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:nil];
       audioPlayer.delegate = self;
     }
@@ -151,7 +196,6 @@
 }
 
 - (void)pausePlayer:(FlutterResult)result {
-  RCTLogInfo(@"pause");
   if (audioPlayer && [audioPlayer isPlaying]) {
     [audioPlayer pause];
     if (timer != nil) {
@@ -196,7 +240,7 @@
 - (void)seekToPlayer:(nonnull NSNumber*) time result: (FlutterResult)result {
   if (audioPlayer) {
     audioPlayer.currentTime = [time doubleValue];
-    result(audioPlayer.currentTime);
+    result(time);
   } else {
     result([FlutterError
         errorWithCode:@"Audio Player"
