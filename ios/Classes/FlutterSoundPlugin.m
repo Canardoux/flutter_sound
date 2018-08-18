@@ -14,10 +14,13 @@ FlutterMethodChannel* _channel;
   NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
 
+  NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
+  /*
   NSDictionary *status = @{
                            @"duration" : [duration stringValue],
                            @"current_position" : [currentTime stringValue],
                            };
+  */
   [_channel invokeMethod:@"audioPlayerDidFinishPlaying" arguments:status];
 
   if (timer != nil) {
@@ -30,9 +33,12 @@ FlutterMethodChannel* _channel;
 {
   NSNumber *currentTime = [NSNumber numberWithDouble:audioRecorder.currentTime * 1000];
 
+  NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}", [currentTime stringValue]];
+  /*
   NSDictionary *status = @{
                            @"current_position" : [currentTime stringValue],
                            };
+  */
 
   [_channel invokeMethod:@"updateRecorderProgress" arguments:status];
 }
@@ -42,10 +48,13 @@ FlutterMethodChannel* _channel;
   NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
 
+  NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
+  /*
   NSDictionary *status = @{
                            @"duration" : [duration stringValue],
                            @"current_position" : [currentTime stringValue],
                            };
+  */
 
   [_channel invokeMethod:@"updateProgress" arguments:status];
 }
@@ -53,7 +62,7 @@ FlutterMethodChannel* _channel;
 - (void)startRecorderTimer
 {
   dispatch_async(dispatch_get_main_queue(), ^{
-      self->timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+      self->timer = [NSTimer scheduledTimerWithTimeInterval:0.01
                                            target:self
                                            selector:@selector(updateRecorderProgress:)
                                            userInfo:nil
@@ -64,7 +73,7 @@ FlutterMethodChannel* _channel;
 - (void)startTimer
 {
   dispatch_async(dispatch_get_main_queue(), ^{
-      self->timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+      self->timer = [NSTimer scheduledTimerWithTimeInterval:0.01
                                            target:self
                                            selector:@selector(updateProgress:)
                                            userInfo:nil

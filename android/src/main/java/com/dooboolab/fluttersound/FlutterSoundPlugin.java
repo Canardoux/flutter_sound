@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Build;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -33,6 +34,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   private static Registrar reg;
   final private AudioModel model = new AudioModel();
   private Timer mTimer = new Timer();
+  final private Handler recordHandler = new Handler();
   private static MethodChannel channel;
 
   /** Plugin registration. */
@@ -89,7 +91,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   }
 
   @Override
-  public void startRecorder(String path, Result result) {
+  public void startRecorder(String path, final Result result) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       if (
           reg.activity().checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
@@ -125,23 +127,34 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       this.model.setRecorderTicker(new Runnable() {
         @Override
         public void run() {
-          long time = SystemClock.elapsedRealtime() - systemTime;
-          Log.d(TAG, "elapsedTime: " + SystemClock.elapsedRealtime());
-          Log.d(TAG, "time: " + time);
 
-          DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
-          String displayTime = format.format(time);
-          model.setRecordTime(time);
+          long time = SystemClock.elapsedRealtime() - systemTime;
+//          Log.d(TAG, "elapsedTime: " + SystemClock.elapsedRealtime());
+//          Log.d(TAG, "time: " + time);
+
+//          DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
+//          String displayTime = format.format(time);
+//          model.setRecordTime(time);
+          try {
+            JSONObject json = new JSONObject();
+            json.put("current_position", String.valueOf(time));
+            channel.invokeMethod("updateRecorderProgress", json.toString());
+            recordHandler.postDelayed(model.getRecorderTicker(), model.RECORD_DELAY_MILLIS);
+          } catch (JSONException je) {
+            Log.d(TAG, "Json Exception: " + je.toString());
+          }
         }
       });
       this.model.getRecorderTicker().run();
+      result.success(path);
     } catch (Exception e) {
       Log.e(TAG, "Exception: ", e);
     }
   }
 
   @Override
-  public void stopRecorder(Result result) {
+  public void stopRecorder(final Result result) {
+    recordHandler.removeCallbacks(this.model.getRecorderTicker());
     if (this.model.getMediaRecorder() == null) {
       Log.d(TAG, "mediaRecorder is null");
       return;
@@ -149,10 +162,11 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     this.model.getMediaRecorder().stop();
     this.model.getMediaRecorder().release();
     this.model.setMediaRecorder(null);
+    result.success("recorder stopped.");
   }
 
   @Override
-  public void startPlayer(final String path, Result result) {
+  public void startPlayer(final String path, final Result result) {
     if (this.model.getMediaPlayer() != null) {
       Boolean isPaused = !this.model.getMediaPlayer().isPlaying()
           && this.model.getMediaPlayer().getCurrentPosition() > 1;
@@ -195,7 +209,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
                 JSONObject json = new JSONObject();
                 json.put("duration", mp.getDuration());
                 json.put("current_position", mp.getCurrentPosition());
-                channel.invokeMethod("updateProgress", json);
+                channel.invokeMethod("updateProgress", json.toString());
               } catch (JSONException je) {
                 Log.d(TAG, "Json Exception: " + je.toString());
               }
@@ -221,7 +235,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
             JSONObject json = new JSONObject();
             json.put("duration", mp.getDuration());
             json.put("current_position", mp.getCurrentPosition());
-            channel.invokeMethod("audioPlayerDidFinishPlaying", json);
+            channel.invokeMethod("audioPlayerDidFinishPlaying", json.toString());
           } catch (JSONException je) {
             Log.d(TAG, "Json Exception: " + je.toString());
           }
@@ -238,7 +252,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   }
 
   @Override
-  public void stopPlayer(Result result) {
+  public void stopPlayer(final Result result) {
     mTimer.cancel();
 
     if (this.model.getMediaPlayer() == null) {
@@ -249,26 +263,28 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       this.model.getMediaPlayer().stop();
       this.model.getMediaPlayer().release();
       this.model.setMediaPlayer(null);
+      result.success("stopped player.");
     } catch (Exception e) {
       Log.e(TAG, "stopPlay exception: " + e.getMessage());
     }
   }
 
   @Override
-  public void pausePlayer(Result result) {
+  public void pausePlayer(final Result result) {
     if (this.model.getMediaPlayer() == null) {
       return;
     }
 
     try {
       this.model.getMediaPlayer().pause();
+      result.success("paused player.");
     } catch (Exception e) {
       Log.e(TAG, "pausePlay exception: " + e.getMessage());
     }
   }
 
   @Override
-  public void resumePlayer(Result result) {
+  public void resumePlayer(final Result result) {
     if (this.model.getMediaPlayer() == null) {
       return;
     }
@@ -280,13 +296,14 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     try {
       this.model.getMediaPlayer().seekTo(this.model.getMediaPlayer().getCurrentPosition());
       this.model.getMediaPlayer().start();
+      result.success("resumed player.");
     } catch (Exception e) {
       Log.e(TAG, "mediaPlayer resume: " + e.getMessage());
     }
   }
 
   @Override
-  public void seekToPlayer(int sec, Result result) {
+  public void seekToPlayer(int sec, final Result result) {
     if (this.model.getMediaPlayer() == null) {
       return;
     }
@@ -297,5 +314,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     Log.d(TAG, "seekTo: " + millis);
 
     this.model.getMediaPlayer().seekTo(millis);
+    result.success(String.valueOf(millis));
   }
 }

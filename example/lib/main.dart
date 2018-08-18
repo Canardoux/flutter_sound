@@ -32,8 +32,7 @@ class _MyAppState extends State<MyApp> {
 
       _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
         print('onRecorderStateChanged');
-        String str = json.encode(e);
-        Map<String, dynamic> result = json.decode(str);
+        Map<String, dynamic> result = json.decode(e);
         print('$result');
       });
 
@@ -70,9 +69,10 @@ class _MyAppState extends State<MyApp> {
     try {
       _playerSubscription = flutterSound.onPlayerStateChanged.listen((e) {
         print('onPlayerStateChanged');
-        String str = json.encode(e);
-        Map<String, dynamic> result = json.decode(str);
-        print('$result');
+        if (e != null) {
+          Map<String, dynamic> result = json.decode(e);
+          print('$result');
+        }
       });
     } catch (err) {
       print('error: $err');
