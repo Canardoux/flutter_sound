@@ -85,7 +85,7 @@
 }
 
 - (void)startRecorder:(NSString*)path result: (FlutterResult)result {
-  if ([path isEqualToString:@"DEFAULT"]) {
+  if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
   } else {
     audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:path]];
@@ -127,6 +127,10 @@
 }
 
 - (void)startPlayer:(NSString*)path result: (FlutterResult)result {
+  if ([path class] == [NSNull class]) {
+    path = @"sound.m4a";
+  }
+
   if ([[path substringToIndex:4] isEqualToString:@"http"]) {
     audioFileURL = [NSURL URLWithString:path];
 
@@ -154,11 +158,7 @@
 
     [downloadTask resume];
   } else {
-    if ([path isEqualToString:@"DEFAULT"]) {
-      audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
-    } else {
-      audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:path]];
-    }
+    audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:path]];
 
     if (!audioPlayer) {
       audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:nil];
