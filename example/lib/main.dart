@@ -30,6 +30,13 @@ class _MyAppState extends State<MyApp> {
       String path = await flutterSound.startRecorder(null);
       print('startRecorder: $path');
 
+      _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
+        print('onRecorderStateChanged');
+        String str = json.encode(e);
+        Map<String, dynamic> result = json.decode(str);
+        print('$result');
+      });
+
       this.setState(() {
         this._isRecording = true;
       });
@@ -42,6 +49,12 @@ class _MyAppState extends State<MyApp> {
     try {
       String result = await flutterSound.stopRecorder();
       print('stopRecorder: $result');
+
+      if (_recorderSubscription != null) {
+        _recorderSubscription.cancel();
+        _recorderSubscription = null;
+      }
+
       this.setState(() {
         this._isRecording = false;
       });

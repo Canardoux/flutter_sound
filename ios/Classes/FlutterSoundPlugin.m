@@ -13,24 +13,28 @@ FlutterMethodChannel* _channel;
   NSLog(@"audioPlayerDidFinishPlaying");
   NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
-    
-  // Send last event then finish it.
-//  [self sendEventWithName:@"rn-playback" body:@{
-//                                  @"duration" : [duration stringValue],
-//                                  @"current_position" : [duration stringValue],
-//                                  @"justFinished" : @"1",
-//                                  }
-//  ];
-  if (timer != nil) {
-    [timer invalidate];
-    timer = nil;
-  }
 
   NSDictionary *status = @{
                            @"duration" : [duration stringValue],
                            @"current_position" : [currentTime stringValue],
                            };
   [_channel invokeMethod:@"audioPlayerDidFinishPlaying" arguments:status];
+
+  if (timer != nil) {
+    [timer invalidate];
+    timer = nil;
+  }
+}
+
+- (void)updateRecorderProgress:(NSTimer*) timer
+{
+  NSNumber *currentTime = [NSNumber numberWithDouble:audioRecorder.currentTime * 1000];
+
+  NSDictionary *status = @{
+                           @"current_position" : [currentTime stringValue],
+                           };
+
+  [_channel invokeMethod:@"updateRecorderProgress" arguments:status];
 }
 
 - (void)updateProgress:(NSTimer*) timer
@@ -44,8 +48,17 @@ FlutterMethodChannel* _channel;
                            };
 
   [_channel invokeMethod:@"updateProgress" arguments:status];
+}
 
-//  [self sendEventWithName:@"rn-playback" body:status];
+- (void)startRecorderTimer
+{
+  dispatch_async(dispatch_get_main_queue(), ^{
+      self->timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                           target:self
+                                           selector:@selector(updateRecorderProgress:)
+                                           userInfo:nil
+                                           repeats:YES];
+  });
 }
 
 - (void)startTimer
@@ -122,6 +135,7 @@ FlutterMethodChannel* _channel;
 
   [audioRecorder setDelegate:self];
   [audioRecorder record];
+  [self startRecorderTimer];
 
   NSString *filePath = self->audioFileURL.absoluteString;
   result(filePath);

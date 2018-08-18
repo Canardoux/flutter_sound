@@ -16,6 +16,9 @@ class FlutterSound {
 
     _channel.setMethodCallHandler((MethodCall call) {
       switch (call.method) {
+        case "updateRecorderProgress":
+          _recorderController.add(call.arguments);
+          break;
         default:
           throw new ArgumentError('Unknown method ${call.method} ');
       }
