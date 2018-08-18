@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -14,15 +15,19 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isRecording = false;
   bool _isPlaying = false;
+  StreamSubscription _recorderSubscription;
+  StreamSubscription _playerSubscription;
+  FlutterSound flutterSound;
 
   @override
   void initState() {
     super.initState();
+    flutterSound = new FlutterSound();
   }
 
   void startRecorder() async{
     try {
-      String path = await FlutterSound.startRecorder(null);
+      String path = await flutterSound.startRecorder(null);
       print('startRecorder: $path');
 
       this.setState(() {
@@ -35,7 +40,7 @@ class _MyAppState extends State<MyApp> {
 
   void stopRecorder() async{
     try {
-      String result = await FlutterSound.stopRecorder();
+      String result = await flutterSound.stopRecorder();
       print('stopRecorder: $result');
       this.setState(() {
         this._isRecording = false;
@@ -46,27 +51,46 @@ class _MyAppState extends State<MyApp> {
   }
 
   void startPlayer() async{
-    String path = await FlutterSound.startPlayer(null);
+    String path = await flutterSound.startPlayer(null);
     print('startPlayer: $path');
+
+    try {
+      _playerSubscription = flutterSound.onPlayerStateChanged.listen((e) {
+        print('onPlayerStateChanged');
+        String str = json.encode(e);
+        Map<String, dynamic> result = json.decode(str);
+        print('$result');
+      });
+    } catch (err) {
+      print('error: $err');
+    }
   }
 
   void stopPlayer() async{
-    String result = await FlutterSound.stopPlayer();
-    print('stopPlayer: $result');
+    try {
+      String result = await flutterSound.stopPlayer();
+      print('stopPlayer: $result');
+      if (_playerSubscription != null) {
+        _playerSubscription.cancel();
+        _playerSubscription = null;
+      }
+    } catch (err) {
+      print('error: $err');
+    }
   }
 
   void pausePlayer() async{
-    String result = await FlutterSound.pausePlayer();
+    String result = await flutterSound.pausePlayer();
     print('pausePlayer: $result');
   }
 
   void resumePlayer() async{
-    String result = await FlutterSound.resumePlayer();
+    String result = await flutterSound.resumePlayer();
     print('resumePlayer: $result');
   }
 
   void seekToPlayer(int sec) async{
-    String result = await FlutterSound.seekToPlayer(sec);
+    String result = await flutterSound.seekToPlayer(sec);
     print('seekToPlayer: $result');
   }
 

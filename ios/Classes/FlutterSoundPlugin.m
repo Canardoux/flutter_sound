@@ -7,10 +7,12 @@
   AVAudioPlayer *audioPlayer;
   NSTimer *timer;
 }
+FlutterMethodChannel* _channel;
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
   NSLog(@"audioPlayerDidFinishPlaying");
   NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
+  NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
     
   // Send last event then finish it.
 //  [self sendEventWithName:@"rn-playback" body:@{
@@ -23,11 +25,16 @@
     [timer invalidate];
     timer = nil;
   }
+
+  NSDictionary *status = @{
+                           @"duration" : [duration stringValue],
+                           @"current_position" : [currentTime stringValue],
+                           };
+  [_channel invokeMethod:@"audioPlayerDidFinishPlaying" arguments:status];
 }
 
 - (void)updateProgress:(NSTimer*) timer
 {
-  NSLog(@"updateProgress");
   NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
 
@@ -36,18 +43,20 @@
                            @"current_position" : [currentTime stringValue],
                            };
 
+  [_channel invokeMethod:@"updateProgress" arguments:status];
+
 //  [self sendEventWithName:@"rn-playback" body:status];
 }
 
 - (void)startTimer
 {
-//  dispatch_async(dispatch_get_main_queue(), ^{
-//      self->timer = [NSTimer scheduledTimerWithTimeInterval:1.0
-//                                           target:self
-//                                           selector:@selector(updateProgress:)
-//                                           userInfo:nil
-//                                           repeats:YES];
-//  });
+  dispatch_async(dispatch_get_main_queue(), ^{
+      self->timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                           target:self
+                                           selector:@selector(updateProgress:)
+                                           userInfo:nil
+                                           repeats:YES];
+  });
 }
 
 
@@ -57,6 +66,7 @@
             binaryMessenger:[registrar messenger]];
   FlutterSoundPlugin* instance = [[FlutterSoundPlugin alloc] init];
   [registrar addMethodCallDelegate:instance channel:channel];
+  _channel = channel;
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {

@@ -8,13 +8,15 @@ import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -30,46 +32,18 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
   private static Registrar reg;
   final private AudioModel model = new AudioModel();
-  final private EventChannel recordChannel = new EventChannel(reg.messenger(), RECORD_STREAM);
-  final private EventChannel playChannel = new EventChannel(reg.messenger(), PLAY_STREAM);
   private Timer mTimer = new Timer();
+  private static MethodChannel channel;
 
   /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_sound");
+    channel = new MethodChannel(registrar.messenger(), "flutter_sound");
     channel.setMethodCallHandler(new FlutterSoundPlugin());
     reg = registrar;
   }
 
   @Override
   public void onMethodCall(MethodCall call, Result result) {
-    recordChannel.setStreamHandler(
-      new EventChannel.StreamHandler() {
-        @Override
-        public void onListen(Object args, final EventChannel.EventSink events) {
-          Log.w(TAG, "adding record listener");
-        }
-        @Override
-        public void onCancel(Object args) {
-          Log.w(TAG, "cancelling record listener");
-        }
-      }
-    );
-
-    playChannel.setStreamHandler(
-        new EventChannel.StreamHandler() {
-          @Override
-          public void onListen(Object o, EventChannel.EventSink eventSink) {
-            Log.w(TAG, "adding play listener");
-          }
-
-          @Override
-          public void onCancel(Object o) {
-            Log.w(TAG, "adding play listener");
-          }
-        }
-    );
-
     String path = call.argument("path");
     switch (call.method) {
       case "getPlatformVersion":
@@ -214,15 +188,23 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
           TimerTask mTask = new TimerTask() {
             @Override
             public void run() {
-            long time = mp.getCurrentPosition();
-            DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
-            final String displayTime = format.format(time);
-            model.setPlayTime(time);
+              // long time = mp.getCurrentPosition();
+              // DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
+              // final String displayTime = format.format(time);
+              try {
+                JSONObject json = new JSONObject();
+                json.put("duration", mp.getDuration());
+                json.put("current_position", mp.getCurrentPosition());
+                channel.invokeMethod("updateProgress", json);
+              } catch (JSONException je) {
+                Log.d(TAG, "Json Exception: " + je.toString());
+              }
             }
           };
 
           mTimer.schedule(mTask, 0, model.PLAY_DELAY_MILLIS);
           String resolvedPath = path == null ? AudioModel.DEFAULT_FILE_LOCATION : path;
+          result.success((resolvedPath));
         }
       });
       /*
@@ -235,6 +217,14 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
            * Reset player.
            */
           Log.d(TAG, "Plays completed.");
+          try {
+            JSONObject json = new JSONObject();
+            json.put("duration", mp.getDuration());
+            json.put("current_position", mp.getCurrentPosition());
+            channel.invokeMethod("audioPlayerDidFinishPlaying", json);
+          } catch (JSONException je) {
+            Log.d(TAG, "Json Exception: " + je.toString());
+          }
           mTimer.cancel();
           mp.stop();
           mp.release();
