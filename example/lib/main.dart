@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -19,6 +21,9 @@ class _MyAppState extends State<MyApp> {
   StreamSubscription _playerSubscription;
   FlutterSound flutterSound;
 
+  String _recorderTxt = '00:00:00';
+  String _playerTxt = '00:00:00';
+
   @override
   void initState() {
     super.initState();
@@ -31,9 +36,12 @@ class _MyAppState extends State<MyApp> {
       print('startRecorder: $path');
 
       _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
-        print('onRecorderStateChanged');
-        Map<String, dynamic> result = json.decode(e);
-        print('$result');
+        DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
+        String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
+
+        this.setState(() {
+          this._recorderTxt = txt.substring(0, 8);
+        });
       });
 
       this.setState(() {
@@ -68,10 +76,13 @@ class _MyAppState extends State<MyApp> {
 
     try {
       _playerSubscription = flutterSound.onPlayerStateChanged.listen((e) {
-        print('onPlayerStateChanged');
         if (e != null) {
-          Map<String, dynamic> result = json.decode(e);
-          print('$result');
+          DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
+          String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
+          this.setState(() {
+            this._isPlaying = true;
+            this._playerTxt = txt.substring(0, 8);
+          });
         }
       });
     } catch (err) {
@@ -87,6 +98,10 @@ class _MyAppState extends State<MyApp> {
         _playerSubscription.cancel();
         _playerSubscription = null;
       }
+
+      this.setState(() {
+        this._isPlaying = false;
+      });
     } catch (err) {
       print('error: $err');
     }
@@ -123,7 +138,7 @@ class _MyAppState extends State<MyApp> {
                 Container(
                   margin: EdgeInsets.only(top: 24.0, bottom:16.0),
                   child: Text(
-                    '00:00',
+                    this._recorderTxt,
                     style: TextStyle(
                       fontSize: 48.0,
                       color: Colors.black,
@@ -163,7 +178,7 @@ class _MyAppState extends State<MyApp> {
                 Container(
                   margin: EdgeInsets.only(top: 60.0, bottom:16.0),
                   child: Text(
-                    '00:00',
+                    this._playerTxt,
                     style: TextStyle(
                       fontSize: 48.0,
                       color: Colors.black,
