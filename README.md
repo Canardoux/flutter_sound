@@ -54,6 +54,13 @@ On *Android* you need to add a permission to `AndroidManifest.xml`:
 | onPlayerStateChanged | `<PlayStatus>` | Able to listen to subscription when player starts. |
 
 
+## Default uri path
+When uri path is not set during the `function call` in `startRecorder` or `startPlayer`, they are saved in below path depending on the platform.
++ Default path for android
+  * `sdcard/sound.mp4`.
++ Default path for ios
+  * `sound.m4a`.
+
 ## Usage
 #### Creating instance.
 ```dart
