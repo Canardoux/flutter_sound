@@ -13,8 +13,9 @@ class FlutterSound {
   bool _isRecording = false;
   bool _isPlaying = false;
 
-  Future<String> setSubscriptionDuration(double sec) async{
-    String result = await _channel.invokeMethod('setSubscriptionDuration', <String, dynamic> {
+  Future<String> setSubscriptionDuration(double sec) async {
+    String result = await _channel
+        .invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'sec': sec,
     });
     return result;
@@ -80,7 +81,8 @@ class FlutterSound {
 
   Future<String> startRecorder(String uri) async {
     try {
-      String result = await _channel.invokeMethod('startRecorder', <String, dynamic> {
+      String result =
+          await _channel.invokeMethod('startRecorder', <String, dynamic>{
         'path': uri,
       });
       _setRecorderCallback();
@@ -109,7 +111,8 @@ class FlutterSound {
 
   Future<String> startPlayer(String uri) async {
     try {
-      String result = await _channel.invokeMethod('startPlayer', <String, dynamic> {
+      String result =
+          await _channel.invokeMethod('startPlayer', <String, dynamic>{
         'path': uri,
       });
       print('result: $result');
@@ -144,12 +147,13 @@ class FlutterSound {
   }
 
   Future<String> resumePlayer() async {
-    String result= await _channel.invokeMethod('resumePlayer');
+    String result = await _channel.invokeMethod('resumePlayer');
     return result;
   }
 
   Future<String> seekToPlayer(int sec) async {
-    String result = await _channel.invokeMethod('startPlayer', <String, dynamic> {
+    String result =
+        await _channel.invokeMethod('startPlayer', <String, dynamic>{
       'sec': sec,
     });
     return result;
@@ -173,8 +177,8 @@ class PlayStatus {
   final double currentPosition;
 
   PlayStatus.fromJSON(Map<String, dynamic> json)
-    : duration = double.parse(json['duration']),
-      currentPosition = double.parse(json['current_position']);
+      : duration = double.parse(json['duration']),
+        currentPosition = double.parse(json['current_position']);
 
   @override
   String toString() {
