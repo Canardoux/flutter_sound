@@ -42,6 +42,7 @@ On *Android* you need to add a permission to `AndroidManifest.xml`:
 
 ## Subscriptions
 | Subscription | Return | Description |
+| :------------ |:---------------:| :---------------:|
 | onRecorderStateChanged | `<RecordStatus>` | Able to listen to subscription when recorder starts. |
 | onPlayerStateChanged | `<PlayStatus>` | Able to listen to subscription when player starts. |
 
