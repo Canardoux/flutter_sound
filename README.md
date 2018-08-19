@@ -1,5 +1,10 @@
 # flutter_sound
-This is not a playlist audio module and this library provides simple recorder and player functionalities for both `android` and `ios` platforms. This only supports default file extension for each platform. This module can also handle file from url.
+<p align="left">
+  <a href="https://pub.dartlang.org/packages/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square"></a>
+</p>
+This plugin provides simple recorder and player functionalities for both `android` and `ios` platforms. This only supports default file extension for each platform.
+This plugin handles file from remote url.
+This plugin can handle playback stream from native (To sync exact time with bridging).
 
 ## Getting Started
 
