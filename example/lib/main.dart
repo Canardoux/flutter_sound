@@ -28,6 +28,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     flutterSound = new FlutterSound();
+    flutterSound.setSubscriptionDuration(0.01);
   }
 
   void startRecorder() async{

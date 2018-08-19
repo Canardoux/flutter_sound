@@ -1,3 +1,2 @@
-## 0.0.1
-
-* TODO: Describe initial release.
+## 1.0.0
+* Released preview version for audio `recorder` and `player`.

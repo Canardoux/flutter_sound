@@ -6,8 +6,7 @@ import android.os.Environment;
 
 public class AudioModel {
   final public static String DEFAULT_FILE_LOCATION = Environment.getExternalStorageDirectory().getPath() + "/default.mp4";
-  final public int RECORD_DELAY_MILLIS = 10;
-  final public int PLAY_DELAY_MILLIS = 10;
+  public int subsDurationMillis = 10;
 
   private MediaRecorder mediaRecorder;
   private Runnable recorderTicker;

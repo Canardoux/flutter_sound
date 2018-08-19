@@ -13,6 +13,13 @@ class FlutterSound {
   bool _isRecording = false;
   bool _isPlaying = false;
 
+  Future<String> setSubscriptionDuration(double sec) async{
+    String result = await _channel.invokeMethod('setSubscriptionDuration', <String, dynamic> {
+      'sec': sec,
+    });
+    return result;
+  }
+
   Future<void> _setRecorderCallback() async {
     if (_recorderController == null) {
       _recorderController = new StreamController.broadcast();
@@ -38,17 +45,17 @@ class FlutterSound {
     _channel.setMethodCallHandler((MethodCall call) {
       switch (call.method) {
         case "updateProgress":
-          Map<String, dynamic> result = json.decode(call.arguments);
+          Map<String, dynamic> result = jsonDecode(call.arguments);
           _playerController.add(new PlayStatus.fromJSON(result));
           break;
         case "audioPlayerDidFinishPlaying":
-          Map<String, dynamic> result = json.decode(call.arguments);
+          Map<String, dynamic> result = jsonDecode(call.arguments);
           _playerController.add(new PlayStatus.fromJSON(result));
           this._isPlaying = false;
           _removePlayerCallback();
           break;
         default:
-          throw new ArgumentError('Unknown method ${call.method} ');
+          throw new ArgumentError('Unknown method ${call.method}');
       }
     });
   }
@@ -72,17 +79,20 @@ class FlutterSound {
   }
 
   Future<String> startRecorder(String uri) async {
-    if (this._isRecording) {
-      throw new Exception('Recorder is already recroding.');
+    try {
+      String result = await _channel.invokeMethod('startRecorder', <String, dynamic> {
+        'path': uri,
+      });
+      _setRecorderCallback();
+
+      if (this._isRecording) {
+        throw new Exception('Recorder is already recroding.');
+      }
+      this._isRecording = true;
+      return result;
+    } catch (err) {
+      throw new Exception(err);
     }
-
-    this._isRecording = true;
-    String result = await _channel.invokeMethod('startRecorder', <String, dynamic> {
-      'path': uri,
-    });
-
-    _setRecorderCallback();
-    return result;
   }
 
   Future<String> stopRecorder() async {
@@ -98,17 +108,23 @@ class FlutterSound {
   }
 
   Future<String> startPlayer(String uri) async {
-    if (this._isPlaying) {
-      throw Exception('Player is already playing.');
+    try {
+      String result = await _channel.invokeMethod('startPlayer', <String, dynamic> {
+        'path': uri,
+      });
+      print('result: $result');
+
+      _setPlayerCallback();
+
+      if (this._isPlaying) {
+        throw Exception('Player is already playing.');
+      }
+      this._isPlaying = true;
+
+      return result;
+    } catch (err) {
+      throw Exception(err);
     }
-    this._isPlaying = true;
-
-    String result = await _channel.invokeMethod('startPlayer', <String, dynamic> {
-      'path': uri,
-    });
-
-    _setPlayerCallback();
-    return result;
   }
 
   Future<String> stopPlayer() async {

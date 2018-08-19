@@ -7,6 +7,7 @@
   AVAudioPlayer *audioPlayer;
   NSTimer *timer;
 }
+double subscriptionDuration = 0.01;
 FlutterMethodChannel* _channel;
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
@@ -62,7 +63,7 @@ FlutterMethodChannel* _channel;
 - (void)startRecorderTimer
 {
   dispatch_async(dispatch_get_main_queue(), ^{
-      self->timer = [NSTimer scheduledTimerWithTimeInterval:0.01
+      self->timer = [NSTimer scheduledTimerWithTimeInterval: subscriptionDuration
                                            target:self
                                            selector:@selector(updateRecorderProgress:)
                                            userInfo:nil
@@ -73,14 +74,13 @@ FlutterMethodChannel* _channel;
 - (void)startTimer
 {
   dispatch_async(dispatch_get_main_queue(), ^{
-      self->timer = [NSTimer scheduledTimerWithTimeInterval:0.01
+      self->timer = [NSTimer scheduledTimerWithTimeInterval:subscriptionDuration
                                            target:self
                                            selector:@selector(updateProgress:)
                                            userInfo:nil
                                            repeats:YES];
   });
 }
-
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
   FlutterMethodChannel* channel = [FlutterMethodChannel
@@ -109,11 +109,19 @@ FlutterMethodChannel* _channel;
   } else if ([@"resumePlayer" isEqualToString:call.method]) {
     [self resumePlayer:result];
   } else if ([@"seekToPlayer" isEqualToString:call.method]) {
-      NSNumber* sec = (NSNumber*)call.arguments[@"sec"];
-      [self seekToPlayer:sec result:result];
+    NSNumber* sec = (NSNumber*)call.arguments[@"sec"];
+    [self seekToPlayer:sec result:result];
+  } else if ([@"setSubscriptionDuration" isEqualToString:call.method]) {
+    NSNumber* sec = (NSNumber*)call.arguments[@"sec"];
+    [self setSubscriptionDuration:[sec doubleValue] result:result];
   } else {
     result(FlutterMethodNotImplemented);
   }
+}
+
+- (void)setSubscriptionDuration:(double)duration result: (FlutterResult)result {
+  subscriptionDuration = duration;
+  result(@"setSubscriptionDuration");
 }
 
 - (void)startRecorder:(NSString*)path result: (FlutterResult)result {

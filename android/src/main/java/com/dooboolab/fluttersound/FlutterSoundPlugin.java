@@ -72,6 +72,9 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       case "seekPlayer":
         int sec = call.argument("sec");
         this.seekToPlayer(sec, result);
+      case "setSubscriptionDuration":
+        double duration = call.argument("sec");
+        this.setSubscriptionDuration(duration, result);
       default:
         result.notImplemented();
         break;
@@ -101,6 +104,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
         }, 0);
+        result.error(TAG, "NO PERMISSION GRANTED", Manifest.permission.RECORD_AUDIO + " or " + Manifest.permission.WRITE_EXTERNAL_STORAGE);
         return;
       }
     }
@@ -139,7 +143,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
             JSONObject json = new JSONObject();
             json.put("current_position", String.valueOf(time));
             channel.invokeMethod("updateRecorderProgress", json.toString());
-            recordHandler.postDelayed(model.getRecorderTicker(), model.RECORD_DELAY_MILLIS);
+            recordHandler.postDelayed(model.getRecorderTicker(), model.subsDurationMillis);
           } catch (JSONException je) {
             Log.d(TAG, "Json Exception: " + je.toString());
           }
@@ -207,8 +211,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
               // final String displayTime = format.format(time);
               try {
                 JSONObject json = new JSONObject();
-                json.put("duration", mp.getDuration());
-                json.put("current_position", mp.getCurrentPosition());
+                json.put("duration", String.valueOf(mp.getDuration()));
+                json.put("current_position", String.valueOf(mp.getCurrentPosition()));
                 channel.invokeMethod("updateProgress", json.toString());
               } catch (JSONException je) {
                 Log.d(TAG, "Json Exception: " + je.toString());
@@ -216,7 +220,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
             }
           };
 
-          mTimer.schedule(mTask, 0, model.PLAY_DELAY_MILLIS);
+          mTimer.schedule(mTask, 0, model.subsDurationMillis);
           String resolvedPath = path == null ? AudioModel.DEFAULT_FILE_LOCATION : path;
           result.success((resolvedPath));
         }
@@ -233,8 +237,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
           Log.d(TAG, "Plays completed.");
           try {
             JSONObject json = new JSONObject();
-            json.put("duration", mp.getDuration());
-            json.put("current_position", mp.getCurrentPosition());
+            json.put("duration", String.valueOf(mp.getDuration()));
+            json.put("current_position", String.valueOf(mp.getCurrentPosition()));
             channel.invokeMethod("audioPlayerDidFinishPlaying", json.toString());
           } catch (JSONException je) {
             Log.d(TAG, "Json Exception: " + je.toString());
@@ -315,5 +319,11 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
     this.model.getMediaPlayer().seekTo(millis);
     result.success(String.valueOf(millis));
+  }
+
+  @Override
+  public void setSubscriptionDuration(double sec, Result result) {
+    this.model.subsDurationMillis = (int) (sec * 1000);
+    result.success("setSubscriptionDuration: " + this.model.subsDurationMillis);
   }
 }
