@@ -126,7 +126,7 @@ if (_playerSubscription != null) {
 String result = await flutterSound.pausePlayer();
 ```
 
-### Resume player
+#### Resume player
 ```dart
 String result = await flutterSound.resumePlayer();
 ```
