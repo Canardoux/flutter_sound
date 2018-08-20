@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 
@@ -118,8 +119,8 @@ class _MyAppState extends State<MyApp> {
     print('resumePlayer: $result');
   }
 
-  void seekToPlayer(int millisecs) async{
-    int secs = Platform.OS === 'ios' ? millisecs / 1000 : millisecs;
+  void seekToPlayer(int milliSecs) async{
+    int secs = Platform.isIOS ? milliSecs / 1000 : milliSecs;
 
     String result = await flutterSound.seekToPlayer(secs);
     print('seekToPlayer: $result');

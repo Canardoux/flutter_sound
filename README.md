@@ -46,7 +46,7 @@ On *Android* you need to add a permission to `AndroidManifest.xml`:
 | stopPlayer | | `String` message | Stop playing. |
 | pausePlayer | | `String` message | Pause playing. |
 | resumePlayer | | `String` message | Resume playing. |
-| seekToPlayer | `int sec` position to goTo | `String` message | Seek audio to selected position in seconds. Parameter should be less than audio duration to correctly placed. |
+| seekToPlayer | `int milliSecs` position to goTo | `String` message | Seek audio to selected position in seconds. Parameter should be less than audio duration to correctly placed. |
 
 ## Subscriptions
 | Subscription | Return | Description |
@@ -134,7 +134,7 @@ String result = await flutterSound.resumePlayer();
 
 #### Seek player
 ```dart
-String result = await flutterSound.seekToPlayer(sec);
+String result = await flutterSound.seekToPlayer(miliSecs);
 ```
 
 #### Setting subscription duration (Optional). 0.01 is default value when not set.
