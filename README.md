@@ -7,9 +7,10 @@ This plugin handles file from remote url.
 This plugin can handle playback stream from native (To sync exact time with bridging).
 <img src="https://firebasestorage.googleapis.com/v0/b/flutterdart-5d354.appspot.com/o/flutter_sound.gif?alt=media&token=f9e01ee6-0dc6-4988-b96a-52cc4f4824c4"/>
 
+## Free Read
+[Medium Blog](https://medium.com/@dooboolab/flutter-sound-plugin-audio-recorder-player-e5a455a8beaf)
 
 ## Getting Started
-
 For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
 
