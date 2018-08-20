@@ -141,3 +141,9 @@ String result = await flutterSound.seekToPlayer(sec);
 /// 0.01 is default
 flutterSound.setSubscriptionDuration(0.01);
 ```
+
+
+### TODO
+- [ ] Volume Control
+- [ ] Seeking example in `Exmaple` project
+- [x] Sync timing for recorder callback handler 
