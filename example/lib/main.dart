@@ -118,8 +118,10 @@ class _MyAppState extends State<MyApp> {
     print('resumePlayer: $result');
   }
 
-  void seekToPlayer(int sec) async{
-    String result = await flutterSound.seekToPlayer(sec);
+  void seekToPlayer(int millisecs) async{
+    int secs = Platform.OS === 'ios' ? millisecs / 1000 : millisecs;
+
+    String result = await flutterSound.seekToPlayer(secs);
     print('seekToPlayer: $result');
   }
 

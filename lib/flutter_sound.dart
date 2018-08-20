@@ -155,10 +155,10 @@ class FlutterSound {
     return result;
   }
 
-  Future<String> seekToPlayer(int sec) async {
+  Future<String> seekToPlayer(int milisecs) async {
     String result =
-        await _channel.invokeMethod('startPlayer', <String, dynamic>{
-      'sec': sec,
+        await _channel.invokeMethod('seekToPlayer', <String, dynamic>{
+      'sec': milisecs,
     });
     return result;
   }
