@@ -49,6 +49,13 @@ FlutterMethodChannel* _channel;
   NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
 
+  if ([duration intValue] == 0) {
+    [playTimer invalidate];
+    [audioPlayer stop];
+    return;
+  }
+
+
   NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
   /*
   NSDictionary *status = @{

@@ -1,3 +1,5 @@
+## 1.0.7
+* Safer handling of progressUpdate in ios when audio is invalid.
 ## 1.0.6
 * Fixed bug in platform specific code.
 ## 1.0.5
