@@ -1,3 +1,5 @@
+## 1.0.9
+* Reimport `intl` which is needed to format date in Dart.
 ## 1.0.8
 * Implemented `setVolume` method.
 * Specific error messages given in android.
