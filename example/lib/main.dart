@@ -1,3 +1,5 @@
+import 'package:flutter_driver/driver_extension.dart';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
@@ -8,7 +10,10 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  enableFlutterDriverExtension();
+  runApp(new MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
