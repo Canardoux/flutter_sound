@@ -143,6 +143,15 @@ String result = await flutterSound.seekToPlayer(miliSecs);
 flutterSound.setSubscriptionDuration(0.01);
 ```
 
+#### Setting volume.
+```dart
+/// 1.0 is default
+/// Currently, volume can be changed when player is running. Try manage this right after player starts.
+String path = await flutterSound.startPlayer(null);
+await flutterSound.setVolume(0.1);
+```
+
+
 
 ### TODO
 - [ ] Seeking example in `Exmaple` project

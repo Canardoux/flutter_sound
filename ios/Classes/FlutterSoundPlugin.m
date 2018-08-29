@@ -49,9 +49,9 @@ FlutterMethodChannel* _channel;
   NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
 
-  if ([duration intValue] == 0) {
-    [playTimer invalidate];
-    [audioPlayer stop];
+  if ([duration intValue] == 0 && timer != nil) {
+    [timer invalidate];
+    timer = nil;
     return;
   }
 
@@ -121,6 +121,9 @@ FlutterMethodChannel* _channel;
   } else if ([@"setSubscriptionDuration" isEqualToString:call.method]) {
     NSNumber* sec = (NSNumber*)call.arguments[@"sec"];
     [self setSubscriptionDuration:[sec doubleValue] result:result];
+  } else if ([@"setVolume" isEqualToString:call.method]) {
+    NSNumber* volume = (NSNumber*)call.arguments[@"volume"];
+    [self setVolume:[volume doubleValue] result:result];
   } else {
     result(FlutterMethodNotImplemented);
   }
@@ -185,9 +188,9 @@ FlutterMethodChannel* _channel;
     NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
         dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             // NSData *data = [NSData dataWithContentsOfURL:audioFileURL];
-      if (!audioPlayer) {
-        audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
-        audioPlayer.delegate = self;
+      if (!self->audioPlayer) {
+        self->audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
+        self->audioPlayer.delegate = self;
       }
 
         // Able to play in silent mode
@@ -198,9 +201,9 @@ FlutterMethodChannel* _channel;
         [[AVAudioSession sharedInstance] setActive: YES error: nil];
         [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 
-        [audioPlayer play];
+        [self->audioPlayer play];
         [self startTimer];
-        NSString *filePath = audioFileURL.absoluteString;
+        NSString *filePath = self->audioFileURL.absoluteString;
         result(filePath);
     }];
 
@@ -295,6 +298,18 @@ FlutterMethodChannel* _channel;
         message:@"player is not set"
         details:nil]);
   }
+}
+
+- (void)setVolume:(double) volume result: (FlutterResult)result {
+    if (audioPlayer) {
+        [audioPlayer setVolume: volume];
+        result(@"volume set");
+    } else {
+        result([FlutterError
+                errorWithCode:@"Audio Player"
+                message:@"player is not set"
+                details:nil]);
+    }
 }
 
 @end

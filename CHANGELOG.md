@@ -1,3 +1,7 @@
+## 1.0.8
+* Implemented `setVolume` method.
+* Specific error messages given in android.
+* Manage ios player thread when audio is not loaded.
 ## 1.0.7
 * Safer handling of progressUpdate in ios when audio is invalid.
 ## 1.0.6

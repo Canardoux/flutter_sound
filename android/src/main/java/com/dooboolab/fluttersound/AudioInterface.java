@@ -10,5 +10,6 @@ interface AudioInterface {
   void pausePlayer(MethodChannel.Result result);
   void resumePlayer(MethodChannel.Result result);
   void seekToPlayer(int sec, MethodChannel.Result result);
+  void setVolume(double volume, MethodChannel.Result result);
   void setSubscriptionDuration(double sec, MethodChannel.Result result);
 }

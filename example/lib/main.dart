@@ -74,6 +74,7 @@ class _MyAppState extends State<MyApp> {
 
   void startPlayer() async{
     String path = await flutterSound.startPlayer(null);
+    await flutterSound.setVolume(1.0);
     print('startPlayer: $path');
 
     try {

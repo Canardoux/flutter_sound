@@ -155,10 +155,24 @@ class FlutterSound {
     return result;
   }
 
-  Future<String> seekToPlayer(int milisecs) async {
+  Future<String> seekToPlayer(int milliSecs) async {
     String result =
         await _channel.invokeMethod('seekToPlayer', <String, dynamic>{
-      'sec': milisecs,
+      'sec': milliSecs,
+    });
+    return result;
+  }
+
+  Future<String> setVolume(double volume) async {
+    String result = '';
+    if (volume < 0.0 || volume > 1.0) {
+      result = 'Value of volume should be between 0.0 and 1.0.';
+      return result;
+    }
+
+    result = await _channel
+        .invokeMethod('setVolume', <String, dynamic>{
+      'volume': volume,
     });
     return result;
   }
