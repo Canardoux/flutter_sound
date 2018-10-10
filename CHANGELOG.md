@@ -1,6 +1,7 @@
 ## 1.1.+
 * Released 1.1.0 with beautiful logo from mansa.
 * Improved readme.
+* Resolve #7.
 ## 1.0.9
 * Reimport `intl` which is needed to format date in Dart.
 ## 1.0.8

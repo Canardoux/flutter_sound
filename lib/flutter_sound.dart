@@ -52,7 +52,7 @@ class FlutterSound {
         case "audioPlayerDidFinishPlaying":
           Map<String, dynamic> result = jsonDecode(call.arguments);
           PlayStatus status = new PlayStatus.fromJSON(result);
-          if (status.currentPosition == 0.0) {
+          if (status.currentPosition != status.duration) {
             status.currentPosition = status.duration;
           }
           _playerController.add(status);
