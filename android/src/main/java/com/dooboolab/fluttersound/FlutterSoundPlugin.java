@@ -79,13 +79,16 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       case "seekPlayer":
         int sec = call.argument("sec");
         this.seekToPlayer(sec, result);
+        break;
       case "setVolume":
         double volume = call.argument("volume");
         this.setVolume(volume, result);
+        break;
       case "setSubscriptionDuration":
         if (call.argument("sec") == null) return;
         double duration = call.argument("sec");
         this.setSubscriptionDuration(duration, result);
+        break;
       default:
         result.notImplemented();
         break;
