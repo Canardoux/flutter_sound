@@ -73,17 +73,12 @@ FlutterSound flutterSound = new FlutterSound();
 
 #### Starting recorder with listener.
 ```dart
-String path = await flutterSound.startPlayer(null);
-print('startPlayer: $path');
-_playerSubscription = flutterSound.onPlayerStateChanged.listen((e) {
-	if (e != null) {
-		DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
-		String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
-		this.setState(() {
-			this._isPlaying = true;
-			this._playerTxt = txt.substring(0, 8);
-		});
-	}
+String path = await flutterSound.startRecorder(null);
+print('startRecorder: $path');
+
+_recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
+  DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
+  String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
 });
 ```
 
