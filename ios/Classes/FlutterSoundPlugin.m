@@ -211,10 +211,10 @@ FlutterMethodChannel* _channel;
   } else {
     audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:path]];
 
-    if (!audioPlayer) {
+    // if (!audioPlayer) { // Fix sound distoring when playing recorded audio again.
       audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:nil];
       audioPlayer.delegate = self;
-    }
+    // }
 
     // Able to play in silent mode
     [[AVAudioSession sharedInstance]
