@@ -1,5 +1,6 @@
 ## 1.2.+
 * Fixed sound distorting when playing recorded audio again. Issue [#14](https://github.com/dooboolab/flutter_sound/issues/14).
+* Fixed `seekToPlayer` for android. Issue [#10](https://github.com/dooboolab/flutter_sound/issues/10).
 ## 1.1.+
 * Released 1.1.0 with beautiful logo from mansa.
 * Improved readme.

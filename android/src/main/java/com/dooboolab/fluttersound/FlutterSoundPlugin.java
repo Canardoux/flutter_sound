@@ -76,7 +76,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       case "resumePlayer":
         this.resumePlayer(result);
         break;
-      case "seekPlayer":
+      case "seekToPlayer":
         int sec = call.argument("sec");
         this.seekToPlayer(sec, result);
         break;
@@ -332,14 +332,15 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   }
 
   @Override
-  public void seekToPlayer(int sec, final Result result) {
+  public void seekToPlayer(int millis, final Result result) {
     if (this.model.getMediaPlayer() == null) {
       result.error(ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL);
       return;
     }
 
     int currentMillis = this.model.getMediaPlayer().getCurrentPosition();
-    int millis = sec * 1000 + currentMillis;
+    Log.d(TAG, "currentMillis: " + currentMillis);
+    millis += currentMillis;
 
     Log.d(TAG, "seekTo: " + millis);
 
