@@ -103,8 +103,8 @@ FlutterMethodChannel* _channel;
     result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
   } else if ([@"startRecorder" isEqualToString:call.method]) {
     NSString* path = (NSString*)call.arguments[@"path"];
-    NSNumber* sampleRate = (NSNumber*)call.arguments[@"sampleRate"];
-    NSNumber* numChannels = (NSNumber*)call.arguments[@"numChannels"];
+    int sampleRate = (int)call.arguments[@"sampleRate"];
+    int numChannels = (int)call.arguments[@"numChannels"];
     [self startRecorder:numChannels:sampleRate:path result:result];
   } else if ([@"stopRecorder" isEqualToString:call.method]) {
     [self stopRecorder:result];
