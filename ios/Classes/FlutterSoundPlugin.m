@@ -103,7 +103,9 @@ FlutterMethodChannel* _channel;
     result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
   } else if ([@"startRecorder" isEqualToString:call.method]) {
     NSString* path = (NSString*)call.arguments[@"path"];
-    [self startRecorder:path result:result];
+    NSNumber* sampleRate = (NSNumber*)call.arguments[@"sampleRate"];
+    NSNumber* numChannels = (NSNumber*)call.arguments[@"numChannels"];
+    [self startRecorder:numChannels:sampleRate:path result:result];
   } else if ([@"stopRecorder" isEqualToString:call.method]) {
     [self stopRecorder:result];
   } else if ([@"startPlayer" isEqualToString:call.method]) {
@@ -134,7 +136,7 @@ FlutterMethodChannel* _channel;
   result(@"setSubscriptionDuration");
 }
 
-- (void)startRecorder:(NSString*)path result: (FlutterResult)result {
+- (void)startRecorder:(int)numChannels:(int)sampleRate:(NSString*)path result: (FlutterResult)result {
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
   } else {
@@ -142,10 +144,10 @@ FlutterMethodChannel* _channel;
   }
 
   NSDictionary *audioSettings = [NSDictionary dictionaryWithObjectsAndKeys:
-                                 [NSNumber numberWithFloat:44100],AVSampleRateKey,
+                                 [NSNumber numberWithFloat:sampleRate],AVSampleRateKey,
                                  [NSNumber numberWithInt: kAudioFormatAppleLossless],AVFormatIDKey,
-                                 [NSNumber numberWithInt: 2],AVNumberOfChannelsKey,
-                                 [NSNumber numberWithInt:AVAudioQualityMedium],AVEncoderAudioQualityKey,nil];
+                                 [NSNumber numberWithInt: numChannels],AVNumberOfChannelsKey,
+                                 [NSNumber numberWithInt: AVAudioQualityMax],AVEncoderAudioQualityKey,nil];
 
   // Setup audio session
   AVAudioSession *session = [AVAudioSession sharedInstance];
