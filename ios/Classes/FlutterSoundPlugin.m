@@ -103,9 +103,9 @@ FlutterMethodChannel* _channel;
     result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
   } else if ([@"startRecorder" isEqualToString:call.method]) {
     NSString* path = (NSString*)call.arguments[@"path"];
-    int sampleRate = (int)call.arguments[@"sampleRate"];
-    int numChannels = (int)call.arguments[@"numChannels"];
-    [self startRecorder:numChannels:sampleRate:path result:result];
+    NSNumber* sampleRate = (NSNumber*)call.arguments[@"sampleRate"];
+    NSNumber* numChannels = (NSNumber*)call.arguments[@"numChannels"];
+    [self startRecorder:path:numChannels:sampleRate result:result];
   } else if ([@"stopRecorder" isEqualToString:call.method]) {
     [self stopRecorder:result];
   } else if ([@"startPlayer" isEqualToString:call.method]) {
@@ -136,7 +136,7 @@ FlutterMethodChannel* _channel;
   result(@"setSubscriptionDuration");
 }
 
-- (void)startRecorder:(int)numChannels:(int)sampleRate:(NSString*)path result: (FlutterResult)result {
+- (void)startRecorder :(NSString*)path :(NSNumber*)numChannels :(NSNumber*)sampleRate result: (FlutterResult)result {
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
   } else {
@@ -144,9 +144,9 @@ FlutterMethodChannel* _channel;
   }
 
   NSDictionary *audioSettings = [NSDictionary dictionaryWithObjectsAndKeys:
-                                 [NSNumber numberWithFloat:sampleRate],AVSampleRateKey,
+                                 [NSNumber numberWithFloat:[sampleRate doubleValue]],AVSampleRateKey,
                                  [NSNumber numberWithInt: kAudioFormatAppleLossless],AVFormatIDKey,
-                                 [NSNumber numberWithInt: numChannels],AVNumberOfChannelsKey,
+                                 [NSNumber numberWithInt: [numChannels intValue]],AVNumberOfChannelsKey,
                                  [NSNumber numberWithInt: AVAudioQualityMax],AVEncoderAudioQualityKey,nil];
 
   // Setup audio session
