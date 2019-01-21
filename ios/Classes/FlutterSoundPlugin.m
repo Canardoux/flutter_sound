@@ -145,9 +145,9 @@ FlutterMethodChannel* _channel;
 
   NSDictionary *audioSettings = [NSDictionary dictionaryWithObjectsAndKeys:
                                  [NSNumber numberWithFloat:[sampleRate doubleValue]],AVSampleRateKey,
-                                 [NSNumber numberWithInt: kAudioFormatAppleLossless],AVFormatIDKey,
+                                 [NSNumber numberWithInt: kAudioFormatMPEG4AAC],AVFormatIDKey,
                                  [NSNumber numberWithInt: [numChannels intValue]],AVNumberOfChannelsKey,
-                                 [NSNumber numberWithInt: AVAudioQualityMax],AVEncoderAudioQualityKey,nil];
+                                 [NSNumber numberWithInt: AVAudioQualityMin],AVEncoderAudioQualityKey,nil];
 
   // Setup audio session
   AVAudioSession *session = [AVAudioSession sharedInstance];
