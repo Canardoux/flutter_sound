@@ -83,7 +83,7 @@ class FlutterSound {
     }
   }
 
-  Future<String> startRecorder(String uri, {double sampleRate = 44100.0, int numChannels = 2}) async {
+  Future<String> startRecorder(String uri, {int sampleRate = 44100, int numChannels = 2}) async {
     try {
       String result =
           await _channel.invokeMethod('startRecorder', <String, dynamic>{
