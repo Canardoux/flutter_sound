@@ -154,7 +154,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       this.model.getMediaRecorder().prepare();
       this.model.getMediaRecorder().start();
 
-      // Remove all pending runnables, this isjust for safety (should never happen)
+      // Remove all pending runnables, this is just for safety (should never happen)
       recordHandler.removeCallbacksAndMessages(null);
       final long systemTime = SystemClock.elapsedRealtime();
       this.model.setRecorderTicker(new Runnable() {
@@ -168,8 +168,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 //          DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
 //          String displayTime = format.format(time);
 //          model.setRecordTime(time);
-
-          //float dbLevel = (float) (20.0* Math.log10(ratio));
           try {
             JSONObject json = new JSONObject();
             json.put("current_position", String.valueOf(time));
