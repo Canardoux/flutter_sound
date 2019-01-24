@@ -219,11 +219,10 @@ class FlutterSound {
 }
 
 class RecordStatus {
-   double currentPosition;
+  final double currentPosition;
 
-  RecordStatus.fromJSON(Map<String, dynamic> json){
-    currentPosition = double.parse(json['current_position']);
-  }
+  RecordStatus.fromJSON(Map<String, dynamic> json)
+      : currentPosition = double.parse(json['current_position']);
 
   @override
   String toString() {

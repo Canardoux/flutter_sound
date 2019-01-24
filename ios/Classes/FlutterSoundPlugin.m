@@ -179,7 +179,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     result(@"setDbLevelEnabled");
 }
 
-- (void)startRecorder:(NSString*)path result: (FlutterResult)result {
+- (void)startRecorder :(NSString*)path :(NSNumber*)numChannels :(NSNumber*)sampleRate result: (FlutterResult)result {
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
   } else {
@@ -187,10 +187,10 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   }
 
   NSDictionary *audioSettings = [NSDictionary dictionaryWithObjectsAndKeys:
-                                 [NSNumber numberWithFloat:44100],AVSampleRateKey,
-                                 [NSNumber numberWithInt: kAudioFormatAppleLossless],AVFormatIDKey,
-                                 [NSNumber numberWithInt: 2],AVNumberOfChannelsKey,
-                                 [NSNumber numberWithInt:AVAudioQualityMedium],AVEncoderAudioQualityKey,nil];
+                                 [NSNumber numberWithFloat:[sampleRate doubleValue]],AVSampleRateKey,
+                                 [NSNumber numberWithInt: kAudioFormatMPEG4AAC],AVFormatIDKey,
+                                 [NSNumber numberWithInt: [numChannels intValue]],AVNumberOfChannelsKey,
+                                 [NSNumber numberWithInt: AVAudioQualityMin],AVEncoderAudioQualityKey,nil];
 
   // Setup audio session
   AVAudioSession *session = [AVAudioSession sharedInstance];
@@ -208,11 +208,6 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   [audioRecorder setDelegate:self];
   [audioRecorder record];
   [self startRecorderTimer];
-[audioRecorder setMeteringEnabled:shouldProcessDbLevel];
-  if(shouldProcessDbLevel == true) {
-        [self startDbTimer];
-  }
-
 
   NSString *filePath = self->audioFileURL.absoluteString;
   result(filePath);
