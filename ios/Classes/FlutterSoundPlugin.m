@@ -169,7 +169,6 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   result(@"setSubscriptionDuration");
 }
 
-<<<<<<< HEAD
 - (void)setDbPeakLevelUpdate:(double)intervalInSecs result: (FlutterResult)result {
     dbPeakInterval = intervalInSecs;
     result(@"setDbPeakLevelUpdate");
