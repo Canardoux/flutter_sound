@@ -127,7 +127,9 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
   } else if ([@"startRecorder" isEqualToString:call.method]) {
     NSString* path = (NSString*)call.arguments[@"path"];
-    [self startRecorder:path result:result];
+    NSNumber* sampleRate = (NSNumber*)call.arguments[@"sampleRate"];
+    NSNumber* numChannels = (NSNumber*)call.arguments[@"numChannels"];
+    [self startRecorder:path:numChannels:sampleRate result:result];
   } else if ([@"stopRecorder" isEqualToString:call.method]) {
     [self stopRecorder:result];
   } else if ([@"startPlayer" isEqualToString:call.method]) {
@@ -167,6 +169,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   result(@"setSubscriptionDuration");
 }
 
+<<<<<<< HEAD
 - (void)setDbPeakLevelUpdate:(double)intervalInSecs result: (FlutterResult)result {
     dbPeakInterval = intervalInSecs;
     result(@"setDbPeakLevelUpdate");
