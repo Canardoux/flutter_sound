@@ -209,6 +209,11 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   [audioRecorder record];
   [self startRecorderTimer];
 
+  [audioRecorder setMeteringEnabled:shouldProcessDbLevel];
+  if(shouldProcessDbLevel == true) {
+        [self startDbTimer];
+  }
+
   NSString *filePath = self->audioFileURL.absoluteString;
   result(filePath);
 }
