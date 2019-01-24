@@ -1,6 +1,10 @@
 ## 1.2.+
 * Fixed sound distorting when playing recorded audio again. Issue [#14](https://github.com/dooboolab/flutter_sound/issues/14).
 * Fixed `seekToPlayer` for android. Issue [#10](https://github.com/dooboolab/flutter_sound/issues/10).
++ Expose recorder `sampleRate` and `numChannel`.
++ Do not append `tmp` when filePath provided in `ios`.
++ Resolve `regression` issue in `1.2.3` which caused in `1.2.2`.
++ Reduce the size of audio file in `1.2.4`. Related [#26](https://github.com/dooboolab/flutter_sound/issues/26).
 ## 1.1.+
 * Released 1.1.0 with beautiful logo from mansa.
 * Improved readme.

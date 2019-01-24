@@ -43,7 +43,7 @@ On *Android* you need to add a permission to `AndroidManifest.xml`:
 | Func  | Param  | Return | Description |
 | :------------ |:---------------:| :---------------:| :-----|
 | setSubscriptionDuration | `double sec` | `String` message | Set subscription timer in seconds. Default is `0.01` if not using this method.|
-| startRecorder | `String uri` | `String` uri | Start recording. This will return uri used. |
+| startRecorder | `String uri`, `int sampleRate`, `int numChannels` | `String` uri | Start recording. This will return uri used. |
 | stopRecorder | | `String` message | Stop recording.  |
 | startPlayer | `String uri` | `String` message | Start playing.  |
 | stopPlayer | | `String` message | Stop playing. |
@@ -152,7 +152,7 @@ await flutterSound.setVolume(0.1);
 ### TODO
 - [ ] Seeking example in `Exmaple` project
 - [x] Volume Control
-- [x] Sync timing for recorder callback handler 
+- [x] Sync timing for recorder callback handler
 
 
 ## Help Maintenance
