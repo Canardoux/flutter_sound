@@ -7,10 +7,14 @@ import android.os.Environment;
 public class AudioModel {
   final public static String DEFAULT_FILE_LOCATION = Environment.getExternalStorageDirectory().getPath() + "/default.mp4";
   public int subsDurationMillis = 10;
+  public long peakLevelUpdateMillis = 800;
+  public boolean shouldProcessDbLevel = true;
 
   private MediaRecorder mediaRecorder;
   private Runnable recorderTicker;
+  private Runnable dbLevelTicker;
   private long recordTime = 0;
+  public final double micLevelBase = 2700;
 
   private MediaPlayer mediaPlayer;
   private long playTime = 0;
@@ -29,6 +33,14 @@ public class AudioModel {
 
   public void setRecorderTicker(Runnable recorderTicker) {
     this.recorderTicker = recorderTicker;
+  }
+
+  public Runnable getDbLevelTicker() {
+    return dbLevelTicker;
+  }
+
+  public void setDbLevelTicker(Runnable ticker){
+    this.dbLevelTicker = ticker;
   }
 
   public long getRecordTime() {

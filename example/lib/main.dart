@@ -17,18 +17,22 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isRecording = false;
   bool _isPlaying = false;
-  StreamSubscription _recorderSubscription;
+  StreamSubscription _recorderSubscription;  
+  StreamSubscription _dbPeakSubscription;
   StreamSubscription _playerSubscription;
   FlutterSound flutterSound;
 
   String _recorderTxt = '00:00:00';
   String _playerTxt = '00:00:00';
+  double _dbLevel;
 
   @override
   void initState() {
     super.initState();
     flutterSound = new FlutterSound();
     flutterSound.setSubscriptionDuration(0.01);
+    flutterSound.setDbPeakLevelUpdate(0.8);
+    flutterSound.setDbLevelEnabled(true);
   }
 
   void startRecorder() async{
@@ -44,6 +48,13 @@ class _MyAppState extends State<MyApp> {
           this._recorderTxt = txt.substring(0, 8);
         });
       });
+      _dbPeakSubscription =
+          flutterSound.onRecorderDbPeakChanged.listen((value) {
+            print("got update -> $value");
+            setState(() {
+              this._dbLevel = value;
+            });
+          });
 
       this.setState(() {
         this._isRecording = true;
@@ -61,6 +72,10 @@ class _MyAppState extends State<MyApp> {
       if (_recorderSubscription != null) {
         _recorderSubscription.cancel();
         _recorderSubscription = null;
+      }
+      if (_dbPeakSubscription != null) {
+        _dbPeakSubscription.cancel();
+        _dbPeakSubscription = null;
       }
 
       this.setState(() {
@@ -149,6 +164,11 @@ class _MyAppState extends State<MyApp> {
                     ),
                   ),
                 ),
+                _isRecording ? LinearProgressIndicator(
+                  value: 100.0 / 120.0 * (this._dbLevel ?? 1) / 100,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                  backgroundColor: Colors.red,
+                ) : Container()
               ],
             ),
             Row(

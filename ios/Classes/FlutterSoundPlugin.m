@@ -6,8 +6,11 @@
   AVAudioRecorder *audioRecorder;
   AVAudioPlayer *audioPlayer;
   NSTimer *timer;
+  NSTimer *dbPeakTimer;
 }
 double subscriptionDuration = 0.01;
+double dbPeakInterval = 0.8;
+bool shouldProcessDbLevel = false;
 FlutterMethodChannel* _channel;
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
@@ -24,17 +27,22 @@ FlutterMethodChannel* _channel;
   */
   [_channel invokeMethod:@"audioPlayerDidFinishPlaying" arguments:status];
 
-  if (timer != nil) {
-    [timer invalidate];
-    timer = nil;
-  }
+  [self stopTimer];
+}
+
+- (void) stopTimer{
+    if (timer != nil) {
+        [timer invalidate];
+        timer = nil;
+    }
 }
 
 - (void)updateRecorderProgress:(NSTimer*) timer
 {
   NSNumber *currentTime = [NSNumber numberWithDouble:audioRecorder.currentTime * 1000];
+    [audioRecorder updateMeters];
 
-  NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}", [currentTime stringValue]];
+NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}", [currentTime stringValue]];
   /*
   NSDictionary *status = @{
                            @"current_position" : [currentTime stringValue],
@@ -50,8 +58,7 @@ FlutterMethodChannel* _channel;
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
 
   if ([duration intValue] == 0 && timer != nil) {
-    [timer invalidate];
-    timer = nil;
+    [self stopTimer];
     return;
   }
 
@@ -65,6 +72,12 @@ FlutterMethodChannel* _channel;
   */
 
   [_channel invokeMethod:@"updateProgress" arguments:status];
+}
+
+- (void)updateDbPeakProgress:(NSTimer*) dbPeakTimer
+{
+      NSNumber *normalizedPeakLevel = [NSNumber numberWithDouble:MIN(pow(10.0, [audioRecorder peakPowerForChannel:0] / 20.0) * 120.0, 120)];
+      [_channel invokeMethod:@"updateDbPeakProgress" arguments:normalizedPeakLevel];
 }
 
 - (void)startRecorderTimer
@@ -87,6 +100,17 @@ FlutterMethodChannel* _channel;
                                            userInfo:nil
                                            repeats:YES];
   });
+}
+
+- (void)startDbTimer
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self->dbPeakTimer = [NSTimer scheduledTimerWithTimeInterval:dbPeakInterval
+                                                       target:self
+                                                     selector:@selector(updateDbPeakProgress:)
+                                                     userInfo:nil
+                                                      repeats:YES];
+    });
 }
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
@@ -124,7 +148,16 @@ FlutterMethodChannel* _channel;
   } else if ([@"setVolume" isEqualToString:call.method]) {
     NSNumber* volume = (NSNumber*)call.arguments[@"volume"];
     [self setVolume:[volume doubleValue] result:result];
-  } else {
+  }
+  else if ([@"setDbPeakLevelUpdate" isEqualToString:call.method]) {
+      NSNumber* intervalInSecs = (NSNumber*)call.arguments[@"intervalInSecs"];
+      [self setDbPeakLevelUpdate:[intervalInSecs doubleValue] result:result];
+  }
+  else if ([@"setDbLevelEnabled" isEqualToString:call.method]) {
+      BOOL enabled = [call.arguments[@"enabled"] boolValue];
+      [self setDbLevelEnabled:enabled result:result];
+  }
+  else {
     result(FlutterMethodNotImplemented);
   }
 }
@@ -132,6 +165,16 @@ FlutterMethodChannel* _channel;
 - (void)setSubscriptionDuration:(double)duration result: (FlutterResult)result {
   subscriptionDuration = duration;
   result(@"setSubscriptionDuration");
+}
+
+- (void)setDbPeakLevelUpdate:(double)intervalInSecs result: (FlutterResult)result {
+    dbPeakInterval = intervalInSecs;
+    result(@"setDbPeakLevelUpdate");
+}
+
+- (void)setDbLevelEnabled:(BOOL)enabled result: (FlutterResult)result {
+    shouldProcessDbLevel = enabled == YES;
+    result(@"setDbLevelEnabled");
 }
 
 - (void)startRecorder:(NSString*)path result: (FlutterResult)result {
@@ -163,6 +206,11 @@ FlutterMethodChannel* _channel;
   [audioRecorder setDelegate:self];
   [audioRecorder record];
   [self startRecorderTimer];
+[audioRecorder setMeteringEnabled:shouldProcessDbLevel];
+  if(shouldProcessDbLevel == true) {
+        [self startDbTimer];
+  }
+
 
   NSString *filePath = self->audioFileURL.absoluteString;
   result(filePath);
@@ -170,6 +218,12 @@ FlutterMethodChannel* _channel;
 
 - (void)stopRecorder:(FlutterResult)result {
   [audioRecorder stop];
+
+  // Stop Db Timer
+  [dbPeakTimer invalidate];
+  dbPeakTimer = nil;
+  [self stopTimer];
+    
   AVAudioSession *audioSession = [AVAudioSession sharedInstance];
   [audioSession setActive:NO error:nil];
 

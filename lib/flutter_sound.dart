@@ -6,7 +6,10 @@ import 'package:flutter/services.dart';
 class FlutterSound {
   static const MethodChannel _channel = const MethodChannel('flutter_sound');
   static StreamController<RecordStatus> _recorderController;
+  static StreamController<double> _dbPeakController;
   static StreamController<PlayStatus> _playerController;
+  /// Value ranges from 0 to 120
+  Stream<double> get onRecorderDbPeakChanged => _dbPeakController.stream;
   Stream<RecordStatus> get onRecorderStateChanged => _recorderController.stream;
   Stream<PlayStatus> get onPlayerStateChanged => _playerController.stream;
 
@@ -25,12 +28,18 @@ class FlutterSound {
     if (_recorderController == null) {
       _recorderController = new StreamController.broadcast();
     }
+    if (_dbPeakController == null) {
+      _dbPeakController = new StreamController.broadcast();
+    }
 
     _channel.setMethodCallHandler((MethodCall call) {
       switch (call.method) {
         case "updateRecorderProgress":
           Map<String, dynamic> result = json.decode(call.arguments);
           _recorderController.add(new RecordStatus.fromJSON(result));
+          break;
+        case "updateDbPeakProgress":
+          _dbPeakController.add(call.arguments);
           break;
         default:
           throw new ArgumentError('Unknown method ${call.method} ');
@@ -74,6 +83,15 @@ class FlutterSound {
     }
   }
 
+    Future<void> _removeDbPeakCallback() async {
+    if (_dbPeakController != null) {
+      _dbPeakController
+        ..add(null)
+        ..close();
+      _dbPeakController = null;
+    }
+  }
+
   Future<void> _removePlayerCallback() async {
     if (_playerController != null) {
       _playerController
@@ -112,6 +130,7 @@ class FlutterSound {
 
     this._isRecording = false;
     _removeRecorderCallback();
+    _removeDbPeakCallback();
     return result;
   }
 
@@ -178,13 +197,33 @@ class FlutterSound {
     });
     return result;
   }
+
+  /// Defines the interval at which the peak level should be updated.
+  /// Default is 0.8 seconds
+  Future<String> setDbPeakLevelUpdate(double intervalInSecs) async {
+    String result = await _channel
+      .invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
+    'intervalInSecs': intervalInSecs,
+    });
+    return result;
+  }
+
+  /// Enables or disables processing the Peak level in db's. Default is disabled
+  Future<String> setDbLevelEnabled(bool enabled) async {
+    String result = await _channel
+      .invokeMethod('setDbLevelEnabled', <String, dynamic>{
+    'enabled': enabled,
+    });
+    return result;
+  }  
 }
 
 class RecordStatus {
-  final double currentPosition;
+   double currentPosition;
 
-  RecordStatus.fromJSON(Map<String, dynamic> json)
-      : currentPosition = double.parse(json['current_position']);
+  RecordStatus.fromJSON(Map<String, dynamic> json){
+    currentPosition = double.parse(json['current_position']);
+  }
 
   @override
   String toString() {
