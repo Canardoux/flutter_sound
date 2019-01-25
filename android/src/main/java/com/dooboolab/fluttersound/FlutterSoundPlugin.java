@@ -59,7 +59,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
         result.success("Android " + android.os.Build.VERSION.RELEASE);
         break;
       case "startRecorder":
-        int sampleRate = call.argument("sampleRate");
+        int sampleRate = (int) Math.round((Double) call.argument("sampleRate"));
         int numChannels = call.argument("numChannels");
         this.startRecorder(numChannels, sampleRate, path, result);
         break;
