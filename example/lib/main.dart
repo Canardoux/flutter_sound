@@ -25,7 +25,7 @@ class _MyAppState extends State<MyApp> {
   String _playerTxt = '00:00:00';
 
   double slider_current_position = 0.0;
-  double max_duration = 0.0;
+  double max_duration = 1.0;
 
 
   @override
@@ -260,11 +260,11 @@ class _MyAppState extends State<MyApp> {
                 value: slider_current_position,
                 min: 0.0,
                 max: max_duration,
-                onChanged: (double value) {
-                  setState(() async{
-                    String result = await flutterSound.seekToPlayer(value);
-                  });
-                },
+//                onChanged: (double value) {
+//                  setState(() async{
+//                    String result = await flutterSound.seekToPlayer(value.toInt());
+//                  });
+//                },
                 divisions: max_duration.toInt()
               )
             )
