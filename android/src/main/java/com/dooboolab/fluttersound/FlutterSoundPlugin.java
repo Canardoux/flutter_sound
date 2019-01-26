@@ -344,7 +344,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
     int currentMillis = this.model.getMediaPlayer().getCurrentPosition();
     Log.d(TAG, "currentMillis: " + currentMillis);
-    millis += currentMillis;
+    // millis += currentMillis; [This was the problem for me]
 
     Log.d(TAG, "seekTo: " + millis);
 

@@ -24,6 +24,10 @@ class _MyAppState extends State<MyApp> {
   String _recorderTxt = '00:00:00';
   String _playerTxt = '00:00:00';
 
+  double slider_current_position = 0.0;
+  double max_duration = 0.0;
+
+
   @override
   void initState() {
     super.initState();
@@ -79,6 +83,9 @@ class _MyAppState extends State<MyApp> {
     try {
       _playerSubscription = flutterSound.onPlayerStateChanged.listen((e) {
         if (e != null) {
+          slider_current_position = e.currentPosition;
+          max_duration = e.duration;
+
           DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
           String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
           this.setState(() {
@@ -246,6 +253,21 @@ class _MyAppState extends State<MyApp> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
             ),
+            Container(
+              width: 56.0,
+              height: 56.0,
+              child: Slider(
+                value: slider_current_position,
+                min: 0.0,
+                max: max_duration,
+                onChanged: (double value) {
+                  setState(() async{
+                    String result = await flutterSound.seekToPlayer(value);
+                  });
+                },
+                divisions: max_duration.toInt()
+              )
+            )
           ],
         ),
       ),
