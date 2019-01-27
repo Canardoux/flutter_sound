@@ -140,8 +140,9 @@ FlutterMethodChannel* _channel;
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
   } else {
-    audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:path]];
+    audioFileURL = [NSURL fileURLWithPath:path];
   }
+  NSLog(@"HERE");
 
   NSDictionary *audioSettings = [NSDictionary dictionaryWithObjectsAndKeys:
                                  [NSNumber numberWithFloat:[sampleRate doubleValue]],AVSampleRateKey,
@@ -181,12 +182,12 @@ FlutterMethodChannel* _channel;
 
 - (void)startPlayer:(NSString*)path result: (FlutterResult)result {
   if ([path class] == [NSNull class]) {
-    path = @"sound.m4a";
+    audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
+  } else {
+    audioFileURL = [NSURL fileURLWithPath:path];
   }
 
-  if ([[path substringToIndex:4] isEqualToString:@"http"]) {
-    audioFileURL = [NSURL URLWithString:path];
-
+  if ([[audioFileURL.absoluteString substringToIndex:4] isEqualToString:@"http"]) {
     NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
         dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             // NSData *data = [NSData dataWithContentsOfURL:audioFileURL];
@@ -211,8 +212,6 @@ FlutterMethodChannel* _channel;
 
     [downloadTask resume];
   } else {
-    audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:path]];
-
     // if (!audioPlayer) { // Fix sound distoring when playing recorded audio again.
       audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:nil];
       audioPlayer.delegate = self;
