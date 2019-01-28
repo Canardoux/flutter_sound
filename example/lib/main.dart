@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void startPlayer() async{
-    String path = await flutterSound.startPlayer(null);
+    String path = await flutterSound.startPlayer('https://firebasestorage.googleapis.com/v0/b/the-best-rapper.appspot.com/o/dope_rap_beat.mp3?alt=media&token=174bb1aa-90ab-42c0-8573-fb3dbd0d5989');
     await flutterSound.setVolume(1.0);
     print('startPlayer: $path');
 
@@ -254,17 +254,14 @@ class _MyAppState extends State<MyApp> {
               crossAxisAlignment: CrossAxisAlignment.center,
             ),
             Container(
-              width: 56.0,
               height: 56.0,
               child: Slider(
                 value: slider_current_position,
                 min: 0.0,
                 max: max_duration,
-//                onChanged: (double value) {
-//                  setState(() async{
-//                    String result = await flutterSound.seekToPlayer(value.toInt());
-//                  });
-//                },
+                onChanged: (double value) async{
+                  await flutterSound.seekToPlayer(value.toInt());
+                },
                 divisions: max_duration.toInt()
               )
             )
