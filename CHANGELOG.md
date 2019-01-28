@@ -7,6 +7,7 @@
 + Reduce the size of audio file in `1.2.4`. Related [#26](https://github.com/dooboolab/flutter_sound/issues/26).
 + Fixed `recording` issue in android in `1.2.5`.
 + Changed `seekToPlayer` to place exact `secs` instead adding it.
++ Fix file URI for recording and playing in iOS.
 ## 1.1.+
 * Released 1.1.0 with beautiful logo from mansa.
 * Improved readme.
