@@ -1,3 +1,6 @@
+## 1.3.+
++ Support db/meter [#41](https://github.com/dooboolab/flutter_sound/pull/41)
+
 ## 1.2.+
 * Fixed sound distorting when playing recorded audio again. Issue [#14](https://github.com/dooboolab/flutter_sound/issues/14).
 * Fixed `seekToPlayer` for android. Issue [#10](https://github.com/dooboolab/flutter_sound/issues/10).
