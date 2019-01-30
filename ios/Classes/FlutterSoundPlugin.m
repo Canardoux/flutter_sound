@@ -235,20 +235,27 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 }
 
 - (void)startPlayer:(NSString*)path result: (FlutterResult)result {
+  bool isRemote = false;
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
   } else {
-    audioFileURL = [NSURL fileURLWithPath:path];
+    NSURL *remoteUrl = [NSURL URLWithString:path];
+    if(remoteUrl && remoteUrl.scheme && remoteUrl.host){
+        audioFileURL = remoteUrl;
+        isRemote = true;
+    } else {
+        audioFileURL = [NSURL fileURLWithPath:path];
+    }
   }
 
-  if ([[audioFileURL.absoluteString substringToIndex:4] isEqualToString:@"http"]) {
+  if (isRemote) {
     NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
         dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             // NSData *data = [NSData dataWithContentsOfURL:audioFileURL];
       if (!self->audioPlayer) {
-        self->audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
         self->audioPlayer.delegate = self;
       }
+      self->audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
 
         // Able to play in silent mode
         [[AVAudioSession sharedInstance]
