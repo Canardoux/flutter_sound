@@ -6,8 +6,11 @@
   AVAudioRecorder *audioRecorder;
   AVAudioPlayer *audioPlayer;
   NSTimer *timer;
+  NSTimer *dbPeakTimer;
 }
 double subscriptionDuration = 0.01;
+double dbPeakInterval = 0.8;
+bool shouldProcessDbLevel = false;
 FlutterMethodChannel* _channel;
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
@@ -24,17 +27,22 @@ FlutterMethodChannel* _channel;
   */
   [_channel invokeMethod:@"audioPlayerDidFinishPlaying" arguments:status];
 
-  if (timer != nil) {
-    [timer invalidate];
-    timer = nil;
-  }
+  [self stopTimer];
+}
+
+- (void) stopTimer{
+    if (timer != nil) {
+        [timer invalidate];
+        timer = nil;
+    }
 }
 
 - (void)updateRecorderProgress:(NSTimer*) timer
 {
   NSNumber *currentTime = [NSNumber numberWithDouble:audioRecorder.currentTime * 1000];
+    [audioRecorder updateMeters];
 
-  NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}", [currentTime stringValue]];
+NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}", [currentTime stringValue]];
   /*
   NSDictionary *status = @{
                            @"current_position" : [currentTime stringValue],
@@ -50,8 +58,7 @@ FlutterMethodChannel* _channel;
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
 
   if ([duration intValue] == 0 && timer != nil) {
-    [timer invalidate];
-    timer = nil;
+    [self stopTimer];
     return;
   }
 
@@ -65,6 +72,12 @@ FlutterMethodChannel* _channel;
   */
 
   [_channel invokeMethod:@"updateProgress" arguments:status];
+}
+
+- (void)updateDbPeakProgress:(NSTimer*) dbPeakTimer
+{
+      NSNumber *normalizedPeakLevel = [NSNumber numberWithDouble:MIN(pow(10.0, [audioRecorder peakPowerForChannel:0] / 20.0) * 120.0, 120)];
+      [_channel invokeMethod:@"updateDbPeakProgress" arguments:normalizedPeakLevel];
 }
 
 - (void)startRecorderTimer
@@ -87,6 +100,17 @@ FlutterMethodChannel* _channel;
                                            userInfo:nil
                                            repeats:YES];
   });
+}
+
+- (void)startDbTimer
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self->dbPeakTimer = [NSTimer scheduledTimerWithTimeInterval:dbPeakInterval
+                                                       target:self
+                                                     selector:@selector(updateDbPeakProgress:)
+                                                     userInfo:nil
+                                                      repeats:YES];
+    });
 }
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
@@ -126,7 +150,16 @@ FlutterMethodChannel* _channel;
   } else if ([@"setVolume" isEqualToString:call.method]) {
     NSNumber* volume = (NSNumber*)call.arguments[@"volume"];
     [self setVolume:[volume doubleValue] result:result];
-  } else {
+  }
+  else if ([@"setDbPeakLevelUpdate" isEqualToString:call.method]) {
+      NSNumber* intervalInSecs = (NSNumber*)call.arguments[@"intervalInSecs"];
+      [self setDbPeakLevelUpdate:[intervalInSecs doubleValue] result:result];
+  }
+  else if ([@"setDbLevelEnabled" isEqualToString:call.method]) {
+      BOOL enabled = [call.arguments[@"enabled"] boolValue];
+      [self setDbLevelEnabled:enabled result:result];
+  }
+  else {
     result(FlutterMethodNotImplemented);
   }
 }
@@ -136,12 +169,23 @@ FlutterMethodChannel* _channel;
   result(@"setSubscriptionDuration");
 }
 
+- (void)setDbPeakLevelUpdate:(double)intervalInSecs result: (FlutterResult)result {
+    dbPeakInterval = intervalInSecs;
+    result(@"setDbPeakLevelUpdate");
+}
+
+- (void)setDbLevelEnabled:(BOOL)enabled result: (FlutterResult)result {
+    shouldProcessDbLevel = enabled == YES;
+    result(@"setDbLevelEnabled");
+}
+
 - (void)startRecorder :(NSString*)path :(NSNumber*)numChannels :(NSNumber*)sampleRate result: (FlutterResult)result {
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
   } else {
-    audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:path]];
+    audioFileURL = [NSURL fileURLWithPath:path];
   }
+  NSLog(@"HERE");
 
   NSDictionary *audioSettings = [NSDictionary dictionaryWithObjectsAndKeys:
                                  [NSNumber numberWithFloat:[sampleRate doubleValue]],AVSampleRateKey,
@@ -166,12 +210,23 @@ FlutterMethodChannel* _channel;
   [audioRecorder record];
   [self startRecorderTimer];
 
+  [audioRecorder setMeteringEnabled:shouldProcessDbLevel];
+  if(shouldProcessDbLevel == true) {
+        [self startDbTimer];
+  }
+
   NSString *filePath = self->audioFileURL.absoluteString;
   result(filePath);
 }
 
 - (void)stopRecorder:(FlutterResult)result {
   [audioRecorder stop];
+
+  // Stop Db Timer
+  [dbPeakTimer invalidate];
+  dbPeakTimer = nil;
+  [self stopTimer];
+    
   AVAudioSession *audioSession = [AVAudioSession sharedInstance];
   [audioSession setActive:NO error:nil];
 
@@ -181,12 +236,12 @@ FlutterMethodChannel* _channel;
 
 - (void)startPlayer:(NSString*)path result: (FlutterResult)result {
   if ([path class] == [NSNull class]) {
-    path = @"sound.m4a";
+    audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
+  } else {
+    audioFileURL = [NSURL fileURLWithPath:path];
   }
 
-  if ([[path substringToIndex:4] isEqualToString:@"http"]) {
-    audioFileURL = [NSURL URLWithString:path];
-
+  if ([[audioFileURL.absoluteString substringToIndex:4] isEqualToString:@"http"]) {
     NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
         dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             // NSData *data = [NSData dataWithContentsOfURL:audioFileURL];
@@ -211,8 +266,6 @@ FlutterMethodChannel* _channel;
 
     [downloadTask resume];
   } else {
-    audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:path]];
-
     // if (!audioPlayer) { // Fix sound distoring when playing recorded audio again.
       audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:nil];
       audioPlayer.delegate = self;

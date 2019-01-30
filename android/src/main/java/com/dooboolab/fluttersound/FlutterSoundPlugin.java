@@ -42,6 +42,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   final private AudioModel model = new AudioModel();
   private Timer mTimer = new Timer();
   final private Handler recordHandler = new Handler();
+  final private Handler dbPeakLevelHandler = new Handler();
   private static MethodChannel channel;
 
   /** Plugin registration. */
@@ -59,7 +60,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
         result.success("Android " + android.os.Build.VERSION.RELEASE);
         break;
       case "startRecorder":
-        int sampleRate = call.argument("sampleRate");
+        int sampleRate = (int) Math.round((Double) call.argument("sampleRate"));
         int numChannels = call.argument("numChannels");
         this.startRecorder(numChannels, sampleRate, path, result);
         break;
@@ -85,6 +86,14 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       case "setVolume":
         double volume = call.argument("volume");
         this.setVolume(volume, result);
+        break;
+      case "setDbPeakLevelUpdate":
+        double intervalInSecs = call.argument("intervalInSecs");
+        this.setDbPeakLevelUpdate(intervalInSecs, result);
+        break;
+      case "setDbLevelEnabled":
+        boolean enabled = call.argument("enabled");
+        this.setDbLevelEnabled(enabled, result);
         break;
       case "setSubscriptionDuration":
         if (call.argument("sec") == null) return;
@@ -145,6 +154,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       this.model.getMediaRecorder().prepare();
       this.model.getMediaRecorder().start();
 
+      // Remove all pending runnables, this is just for safety (should never happen)
+      recordHandler.removeCallbacksAndMessages(null);
       final long systemTime = SystemClock.elapsedRealtime();
       this.model.setRecorderTicker(new Runnable() {
         @Override
@@ -167,7 +178,22 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
           }
         }
       });
-      this.model.getRecorderTicker().run();
+      recordHandler.post(this.model.getRecorderTicker());
+
+      if(this.model.shouldProcessDbLevel) {
+        dbPeakLevelHandler.removeCallbacksAndMessages(null);
+        this.model.setDbLevelTicker(new Runnable() {
+          @Override
+          public void run() {
+            //int ratio = model.getMediaRecorder().getMaxAmplitude() / micBase;
+            double dbLevel = 20 * Math.log10(model.getMediaRecorder().getMaxAmplitude() / model.micLevelBase);
+            double normalizedDbLevel = Math.min(Math.pow(10, dbLevel / 20.0) * 120.0, 120);
+            channel.invokeMethod("updateDbPeakProgress", normalizedDbLevel);
+            dbPeakLevelHandler.postDelayed(model.getDbLevelTicker(), (FlutterSoundPlugin.this.model.peakLevelUpdateMillis));
+          }
+        });
+        dbPeakLevelHandler.post(this.model.getDbLevelTicker());
+      }
       result.success(path);
     } catch (Exception e) {
       Log.e(TAG, "Exception: ", e);
@@ -176,7 +202,9 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
   @Override
   public void stopRecorder(final Result result) {
-    recordHandler.removeCallbacks(this.model.getRecorderTicker());
+    // This remove all pending runnables
+    recordHandler.removeCallbacksAndMessages(null);
+    dbPeakLevelHandler.removeCallbacksAndMessages(null);
     if (this.model.getMediaRecorder() == null) {
       Log.d(TAG, "mediaRecorder is null");
       result.error(ERR_RECORDER_IS_NULL, ERR_RECORDER_IS_NULL, ERR_RECORDER_IS_NULL);
@@ -344,7 +372,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
     int currentMillis = this.model.getMediaPlayer().getCurrentPosition();
     Log.d(TAG, "currentMillis: " + currentMillis);
-    millis += currentMillis;
+    // millis += currentMillis; [This was the problem for me]
 
     Log.d(TAG, "seekTo: " + millis);
 
@@ -362,6 +390,18 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     float mVolume = (float) volume;
     this.model.getMediaPlayer().setVolume(mVolume, mVolume);
     result.success("Set volume");
+  }
+
+  @Override
+  public void setDbPeakLevelUpdate(double intervalInSecs, Result result) {
+    this.model.peakLevelUpdateMillis = (long) (intervalInSecs * 1000);
+    result.success("setDbPeakLevelUpdate: " + this.model.peakLevelUpdateMillis);
+  }
+
+  @Override
+  public void setDbLevelEnabled(boolean enabled, MethodChannel.Result result) {
+    this.model.shouldProcessDbLevel = enabled;
+    result.success("setDbLevelEnabled: " + this.model.shouldProcessDbLevel);
   }
 
   @Override

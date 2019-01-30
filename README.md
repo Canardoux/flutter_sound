@@ -149,6 +149,29 @@ String path = await flutterSound.startPlayer(null);
 await flutterSound.setVolume(0.1);
 ```
 
+#### Using the amplitude meter
+The amplitude meter allows displaying a basic representation of the input sound.
+When enabled, it returns values ranging 0-120dB.
+
+```dart
+//// By default this option is disabled, you can enable it by calling
+setDbLevelEnabled(true);
+```
+
+```dart
+//// You can tweak the frequency of updates by calling this function (unit is seconds)
+updateDbPeakProgress(0.8);
+```
+
+```dart
+//// You need to subscribe in order to receive the value updates
+_dbPeakSubscription = flutterSound.onRecorderDbPeakChanged.listen((value) {
+  setState(() {
+    this._dbLevel = value;
+  });
+});
+```
+
 ### TODO
 - [ ] Seeking example in `Exmaple` project
 - [x] Volume Control

@@ -17,18 +17,26 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isRecording = false;
   bool _isPlaying = false;
-  StreamSubscription _recorderSubscription;
+  StreamSubscription _recorderSubscription;  
+  StreamSubscription _dbPeakSubscription;
   StreamSubscription _playerSubscription;
   FlutterSound flutterSound;
 
   String _recorderTxt = '00:00:00';
   String _playerTxt = '00:00:00';
+  double _dbLevel;
+
+  double slider_current_position = 0.0;
+  double max_duration = 1.0;
+
 
   @override
   void initState() {
     super.initState();
     flutterSound = new FlutterSound();
     flutterSound.setSubscriptionDuration(0.01);
+    flutterSound.setDbPeakLevelUpdate(0.8);
+    flutterSound.setDbLevelEnabled(true);
   }
 
   void startRecorder() async{
@@ -44,6 +52,13 @@ class _MyAppState extends State<MyApp> {
           this._recorderTxt = txt.substring(0, 8);
         });
       });
+      _dbPeakSubscription =
+          flutterSound.onRecorderDbPeakChanged.listen((value) {
+            print("got update -> $value");
+            setState(() {
+              this._dbLevel = value;
+            });
+          });
 
       this.setState(() {
         this._isRecording = true;
@@ -62,6 +77,10 @@ class _MyAppState extends State<MyApp> {
         _recorderSubscription.cancel();
         _recorderSubscription = null;
       }
+      if (_dbPeakSubscription != null) {
+        _dbPeakSubscription.cancel();
+        _dbPeakSubscription = null;
+      }
 
       this.setState(() {
         this._isRecording = false;
@@ -72,13 +91,16 @@ class _MyAppState extends State<MyApp> {
   }
 
   void startPlayer() async{
-    String path = await flutterSound.startPlayer(null);
+    String path = await flutterSound.startPlayer('https://firebasestorage.googleapis.com/v0/b/the-best-rapper.appspot.com/o/dope_rap_beat.mp3?alt=media&token=174bb1aa-90ab-42c0-8573-fb3dbd0d5989');
     await flutterSound.setVolume(1.0);
     print('startPlayer: $path');
 
     try {
       _playerSubscription = flutterSound.onPlayerStateChanged.listen((e) {
         if (e != null) {
+          slider_current_position = e.currentPosition;
+          max_duration = e.duration;
+
           DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
           String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
           this.setState(() {
@@ -149,6 +171,11 @@ class _MyAppState extends State<MyApp> {
                     ),
                   ),
                 ),
+                _isRecording ? LinearProgressIndicator(
+                  value: 100.0 / 120.0 * (this._dbLevel ?? 1) / 100,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                  backgroundColor: Colors.red,
+                ) : Container()
               ],
             ),
             Row(
@@ -246,6 +273,18 @@ class _MyAppState extends State<MyApp> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
             ),
+            Container(
+              height: 56.0,
+              child: Slider(
+                value: slider_current_position,
+                min: 0.0,
+                max: max_duration,
+                onChanged: (double value) async{
+                  await flutterSound.seekToPlayer(value.toInt());
+                },
+                divisions: max_duration.toInt()
+              )
+            )
           ],
         ),
       ),
