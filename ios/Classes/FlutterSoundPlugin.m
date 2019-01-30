@@ -252,10 +252,10 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
         dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             // NSData *data = [NSData dataWithContentsOfURL:audioFileURL];
-      if (!self->audioPlayer) {
+            
+        // We must create a new Audio Player instance to be able to play a different Url
+        self->audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
         self->audioPlayer.delegate = self;
-      }
-      self->audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
 
         // Able to play in silent mode
         [[AVAudioSession sharedInstance]
