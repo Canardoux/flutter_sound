@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'dart:io';
 import 'dart:async';
@@ -17,7 +18,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isRecording = false;
   bool _isPlaying = false;
-  StreamSubscription _recorderSubscription;  
+  StreamSubscription _recorderSubscription;
   StreamSubscription _dbPeakSubscription;
   StreamSubscription _playerSubscription;
   FlutterSound flutterSound;
@@ -45,8 +46,11 @@ class _MyAppState extends State<MyApp> {
       print('startRecorder: $path');
 
       _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
-        DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
-        String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
+        initializeDateFormatting();
+        DateTime date = new DateTime.fromMillisecondsSinceEpoch(
+            e.currentPosition.toInt(),
+            isUtc: true);
+        String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
 
         this.setState(() {
           this._recorderTxt = txt.substring(0, 8);
@@ -101,8 +105,11 @@ class _MyAppState extends State<MyApp> {
           slider_current_position = e.currentPosition;
           max_duration = e.duration;
 
-          DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
-          String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
+          initializeDateFormatting();
+          DateTime date = new DateTime.fromMillisecondsSinceEpoch(
+              e.currentPosition.toInt(),
+              isUtc: true);
+          String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
           this.setState(() {
             this._isPlaying = true;
             this._playerTxt = txt.substring(0, 8);
