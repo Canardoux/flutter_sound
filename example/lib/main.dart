@@ -38,6 +38,7 @@ class _MyAppState extends State<MyApp> {
     flutterSound.setSubscriptionDuration(0.01);
     flutterSound.setDbPeakLevelUpdate(0.8);
     flutterSound.setDbLevelEnabled(true);
+    initializeDateFormatting();
   }
 
   void startRecorder() async{
@@ -46,7 +47,6 @@ class _MyAppState extends State<MyApp> {
       print('startRecorder: $path');
 
       _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
-        initializeDateFormatting();
         DateTime date = new DateTime.fromMillisecondsSinceEpoch(
             e.currentPosition.toInt(),
             isUtc: true);
@@ -105,7 +105,7 @@ class _MyAppState extends State<MyApp> {
           slider_current_position = e.currentPosition;
           max_duration = e.duration;
 
-          initializeDateFormatting();
+
           DateTime date = new DateTime.fromMillisecondsSinceEpoch(
               e.currentPosition.toInt(),
               isUtc: true);
