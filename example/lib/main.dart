@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'dart:io';
 import 'dart:async';
@@ -17,7 +18,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isRecording = false;
   bool _isPlaying = false;
-  StreamSubscription _recorderSubscription;  
+  StreamSubscription _recorderSubscription;
   StreamSubscription _dbPeakSubscription;
   StreamSubscription _playerSubscription;
   FlutterSound flutterSound;
@@ -37,6 +38,7 @@ class _MyAppState extends State<MyApp> {
     flutterSound.setSubscriptionDuration(0.01);
     flutterSound.setDbPeakLevelUpdate(0.8);
     flutterSound.setDbLevelEnabled(true);
+    initializeDateFormatting();
   }
 
   void startRecorder() async{
@@ -45,8 +47,10 @@ class _MyAppState extends State<MyApp> {
       print('startRecorder: $path');
 
       _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
-        DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
-        String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
+        DateTime date = new DateTime.fromMillisecondsSinceEpoch(
+            e.currentPosition.toInt(),
+            isUtc: true);
+        String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
 
         this.setState(() {
           this._recorderTxt = txt.substring(0, 8);
@@ -91,7 +95,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void startPlayer() async{
-    String path = await flutterSound.startPlayer('https://firebasestorage.googleapis.com/v0/b/the-best-rapper.appspot.com/o/dope_rap_beat.mp3?alt=media&token=174bb1aa-90ab-42c0-8573-fb3dbd0d5989');
+    String path = await flutterSound.startPlayer(null);
     await flutterSound.setVolume(1.0);
     print('startPlayer: $path');
 
@@ -101,8 +105,11 @@ class _MyAppState extends State<MyApp> {
           slider_current_position = e.currentPosition;
           max_duration = e.duration;
 
-          DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
-          String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
+
+          DateTime date = new DateTime.fromMillisecondsSinceEpoch(
+              e.currentPosition.toInt(),
+              isUtc: true);
+          String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
           this.setState(() {
             this._isPlaying = true;
             this._playerTxt = txt.substring(0, 8);

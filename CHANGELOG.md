@@ -1,5 +1,6 @@
 ## 1.3.+
 + Support db/meter [#41](https://github.com/dooboolab/flutter_sound/pull/41)
++ Show wrong recorder timer text [#47](https://github.com/dooboolab/flutter_sound/pull/47)
 
 ## 1.2.+
 * Fixed sound distorting when playing recorded audio again. Issue [#14](https://github.com/dooboolab/flutter_sound/issues/14).
