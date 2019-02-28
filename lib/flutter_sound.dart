@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:flutter_sound/android_encoder.dart';
+import 'package:flutter_sound/ios_quality.dart';
 
 class FlutterSound {
   static const MethodChannel _channel = const MethodChannel('flutter_sound');
@@ -101,18 +103,25 @@ class FlutterSound {
     }
   }
 
-  Future<String> startRecorder(String uri, {int sampleRate = 44100, int numChannels = 2}) async {
+  Future<String> startRecorder(String uri,
+      {int sampleRate = 44100, int numChannels = 2,
+        AndroidEncoder androidEncoder = AndroidEncoder.AAC,
+        IosQuality iosQuality = IosQuality.LOW
+      }) async {
+    print("IOS ENCODER ${iosQuality.value}");
     try {
       String result =
-          await _channel.invokeMethod('startRecorder', <String, dynamic>{
+      await _channel.invokeMethod('startRecorder', <String, dynamic>{
         'path': uri,
         'sampleRate': sampleRate,
-        'numChannels': numChannels
+        'numChannels': numChannels,
+        'androidEncoder': androidEncoder?.value,
+        'iosQuality': iosQuality?.value
       });
       _setRecorderCallback();
 
       if (this._isRecording) {
-        throw new Exception('Recorder is already recroding.');
+        throw new Exception('Recorder is already recording.');
       }
       this._isRecording = true;
       return result;
@@ -215,7 +224,7 @@ class FlutterSound {
     'enabled': enabled,
     });
     return result;
-  }  
+  }
 }
 
 class RecordStatus {

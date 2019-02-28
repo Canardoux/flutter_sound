@@ -129,7 +129,8 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     NSString* path = (NSString*)call.arguments[@"path"];
     NSNumber* sampleRate = (NSNumber*)call.arguments[@"sampleRate"];
     NSNumber* numChannels = (NSNumber*)call.arguments[@"numChannels"];
-    [self startRecorder:path:numChannels:sampleRate result:result];
+    NSNumber* iosQuality = (NSNumber*)call.arguments[@"iosQuality"];
+      [self startRecorder:path:numChannels:sampleRate:iosQuality result:result];
   } else if ([@"stopRecorder" isEqualToString:call.method]) {
     [self stopRecorder:result];
   } else if ([@"startPlayer" isEqualToString:call.method]) {
@@ -179,7 +180,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     result(@"setDbLevelEnabled");
 }
 
-- (void)startRecorder :(NSString*)path :(NSNumber*)numChannels :(NSNumber*)sampleRate result: (FlutterResult)result {
+- (void)startRecorder :(NSString*)path :(NSNumber*)numChannels :(NSNumber*)sampleRate :(NSNumber*)iosQuality result: (FlutterResult)result {
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
   } else {
@@ -191,7 +192,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
                                  [NSNumber numberWithFloat:[sampleRate doubleValue]],AVSampleRateKey,
                                  [NSNumber numberWithInt: kAudioFormatMPEG4AAC],AVFormatIDKey,
                                  [NSNumber numberWithInt: [numChannels intValue]],AVNumberOfChannelsKey,
-                                 [NSNumber numberWithInt: AVAudioQualityMin],AVEncoderAudioQualityKey,nil];
+                                 [NSNumber numberWithInt: [iosQuality intValue]],AVEncoderAudioQualityKey,nil];
 
   // Setup audio session
   AVAudioSession *session = [AVAudioSession sharedInstance];

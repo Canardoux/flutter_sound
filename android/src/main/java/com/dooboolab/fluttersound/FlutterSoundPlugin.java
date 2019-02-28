@@ -62,7 +62,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       case "startRecorder":
         int sampleRate = call.argument("sampleRate");
         int numChannels = call.argument("numChannels");
-        this.startRecorder(numChannels, sampleRate, path, result);
+        int androidEncoder = call.argument("androidEncoder");
+        this.startRecorder(numChannels, sampleRate, androidEncoder, path, result);
         break;
       case "stopRecorder":
         this.stopRecorder(result);
@@ -119,7 +120,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   }
 
   @Override
-  public void startRecorder(int numChannels, int sampleRate, String path, final Result result) {
+  public void startRecorder(int numChannels, int sampleRate, int androidEncoder, String path, final Result result) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       if (
           reg.activity().checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
@@ -144,7 +145,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       this.model.setMediaRecorder(new MediaRecorder());
       this.model.getMediaRecorder().setAudioSource(MediaRecorder.AudioSource.MIC);
       this.model.getMediaRecorder().setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-      this.model.getMediaRecorder().setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+      this.model.getMediaRecorder().setAudioEncoder(androidEncoder);
       this.model.getMediaRecorder().setAudioChannels(numChannels);
       this.model.getMediaRecorder().setAudioSamplingRate(sampleRate);
       this.model.getMediaRecorder().setOutputFile(path);
