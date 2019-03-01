@@ -3,7 +3,7 @@ package com.dooboolab.fluttersound;
 import io.flutter.plugin.common.MethodChannel;
 
 interface AudioInterface {
-  void startRecorder(int numChannels, int sampleRate, String path, MethodChannel.Result result);
+  void startRecorder(int numChannels, int sampleRate, int androidEncoder, String path, MethodChannel.Result result);
   void stopRecorder(MethodChannel.Result result);
   void startPlayer(String path, MethodChannel.Result result);
   void stopPlayer(MethodChannel.Result result);
