@@ -63,7 +63,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
         int sampleRate = call.argument("sampleRate");
         int numChannels = call.argument("numChannels");
         int androidEncoder = call.argument("androidEncoder");
-        this.startRecorder(numChannels, sampleRate, androidEncoder, path, result);
+        Integer bitRate = call.argument("bitRate");
+        this.startRecorder(numChannels, sampleRate, bitRate, androidEncoder, path, result);
         break;
       case "stopRecorder":
         this.stopRecorder(result);
@@ -120,7 +121,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   }
 
   @Override
-  public void startRecorder(int numChannels, int sampleRate, int androidEncoder, String path, final Result result) {
+  public void startRecorder(int numChannels, int sampleRate, Integer bitRate, int androidEncoder, String path, final Result result) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       if (
           reg.activity().checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
@@ -148,7 +149,13 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       this.model.getMediaRecorder().setAudioEncoder(androidEncoder);
       this.model.getMediaRecorder().setAudioChannels(numChannels);
       this.model.getMediaRecorder().setAudioSamplingRate(sampleRate);
+
       this.model.getMediaRecorder().setOutputFile(path);
+
+      // If bitrate is defined, the use it, otherwise use the OS default
+      if(bitRate != null){
+        this.model.getMediaRecorder().setAudioEncodingBitRate(bitRate);
+      }
     }
 
     try {
