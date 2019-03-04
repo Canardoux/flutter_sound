@@ -114,9 +114,9 @@ class FlutterSound {
         'path': uri,
         'sampleRate': sampleRate,
         'numChannels': numChannels,
+        'bitRate': bitRate,
         'androidEncoder': androidEncoder?.value,
-        'iosQuality': iosQuality?.value,
-        'bitRate': bitRate
+        'iosQuality': iosQuality?.value
       });
       _setRecorderCallback();
 
