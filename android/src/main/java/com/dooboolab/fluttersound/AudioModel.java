@@ -5,7 +5,7 @@ import android.media.MediaRecorder;
 import android.os.Environment;
 
 public class AudioModel {
-  final public static String DEFAULT_FILE_LOCATION = Environment.getExternalStorageDirectory().getPath() + "/default.mp4";
+  final public static String DEFAULT_FILE_LOCATION = Environment.getExternalStorageDirectory().getPath() + "/default.m4a";
   public int subsDurationMillis = 10;
   public long peakLevelUpdateMillis = 800;
   public boolean shouldProcessDbLevel = true;

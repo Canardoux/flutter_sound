@@ -130,7 +130,8 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     NSNumber* sampleRate = (NSNumber*)call.arguments[@"sampleRate"];
     NSNumber* numChannels = (NSNumber*)call.arguments[@"numChannels"];
     NSNumber* iosQuality = (NSNumber*)call.arguments[@"iosQuality"];
-      [self startRecorder:path:numChannels:sampleRate:iosQuality result:result];
+    NSNumber* bitRate = (NSNumber*)call.arguments[@"bitRate"];
+      [self startRecorder:path:numChannels:sampleRate:iosQuality:bitRate result:result];
   } else if ([@"stopRecorder" isEqualToString:call.method]) {
     [self stopRecorder:result];
   } else if ([@"startPlayer" isEqualToString:call.method]) {
@@ -180,19 +181,24 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     result(@"setDbLevelEnabled");
 }
 
-- (void)startRecorder :(NSString*)path :(NSNumber*)numChannels :(NSNumber*)sampleRate :(NSNumber*)iosQuality result: (FlutterResult)result {
+- (void)startRecorder :(NSString*)path :(NSNumber*)numChannels :(NSNumber*)sampleRate :(NSNumber*)iosQuality :(NSNumber*)bitRate result: (FlutterResult)result {
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
   } else {
     audioFileURL = [NSURL fileURLWithPath:path];
   }
-  NSLog(@"HERE");
 
-  NSDictionary *audioSettings = [NSDictionary dictionaryWithObjectsAndKeys:
+  NSMutableDictionary *audioSettings = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                  [NSNumber numberWithFloat:[sampleRate doubleValue]],AVSampleRateKey,
                                  [NSNumber numberWithInt: kAudioFormatMPEG4AAC],AVFormatIDKey,
                                  [NSNumber numberWithInt: [numChannels intValue]],AVNumberOfChannelsKey,
                                  [NSNumber numberWithInt: [iosQuality intValue]],AVEncoderAudioQualityKey,nil];
+    
+    // If bitrate is defined, the use it, otherwise use the OS default
+    if(bitRate != nil) {
+        [audioSettings setValue:[NSNumber numberWithInt: [bitRate intValue]]
+                    forKey:AVEncoderBitRateKey];
+    }
 
   // Setup audio session
   AVAudioSession *session = [AVAudioSession sharedInstance];

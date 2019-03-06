@@ -104,17 +104,17 @@ class FlutterSound {
   }
 
   Future<String> startRecorder(String uri,
-      {int sampleRate = 44100, int numChannels = 2,
+      {int sampleRate = 44100, int numChannels = 2, int bitRate,
         AndroidEncoder androidEncoder = AndroidEncoder.AAC,
         IosQuality iosQuality = IosQuality.LOW
       }) async {
-    print("IOS ENCODER ${iosQuality.value}");
     try {
       String result =
       await _channel.invokeMethod('startRecorder', <String, dynamic>{
         'path': uri,
         'sampleRate': sampleRate,
         'numChannels': numChannels,
+        'bitRate': bitRate,
         'androidEncoder': androidEncoder?.value,
         'iosQuality': iosQuality?.value
       });
