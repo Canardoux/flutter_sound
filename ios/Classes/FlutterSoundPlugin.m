@@ -195,7 +195,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
                                  [NSNumber numberWithInt: [iosQuality intValue]],AVEncoderAudioQualityKey,nil];
     
     // If bitrate is defined, the use it, otherwise use the OS default
-    if(bitRate != nil) {
+    if(![bitRate isEqual:[NSNull null]]) {
         [audioSettings setValue:[NSNumber numberWithInt: [bitRate intValue]]
                     forKey:AVEncoderBitRateKey];
     }
