@@ -76,7 +76,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 
 - (void)updateDbPeakProgress:(NSTimer*) dbPeakTimer
 {
-      NSNumber *normalizedPeakLevel = [NSNumber numberWithDouble:MIN(pow(10.0, [audioRecorder peakPowerForChannel:0] / 20.0) * 120.0, 120)];
+      NSNumber *normalizedPeakLevel = [NSNumber numberWithDouble:MIN(pow(10.0, [audioRecorder peakPowerForChannel:0] / 20.0) * 160.0, 160.0)];
       [_channel invokeMethod:@"updateDbPeakProgress" arguments:normalizedPeakLevel];
 }
 

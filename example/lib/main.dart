@@ -179,7 +179,7 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
                 _isRecording ? LinearProgressIndicator(
-                  value: 100.0 / 120.0 * (this._dbLevel ?? 1) / 100,
+                  value: 100.0 / 160.0 * (this._dbLevel ?? 1) / 100,
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
                   backgroundColor: Colors.red,
                 ) : Container()

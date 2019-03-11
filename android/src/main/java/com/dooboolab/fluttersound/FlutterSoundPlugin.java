@@ -195,7 +195,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
           public void run() {
             //int ratio = model.getMediaRecorder().getMaxAmplitude() / micBase;
             double dbLevel = 20 * Math.log10(model.getMediaRecorder().getMaxAmplitude() / model.micLevelBase);
-            double normalizedDbLevel = Math.min(Math.pow(10, dbLevel / 20.0) * 120.0, 120);
+            double normalizedDbLevel = Math.min(Math.pow(10, dbLevel / 20.0) * 160.0, 160.0);
             channel.invokeMethod("updateDbPeakProgress", normalizedDbLevel);
             dbPeakLevelHandler.postDelayed(model.getDbLevelTicker(), (FlutterSoundPlugin.this.model.peakLevelUpdateMillis));
           }
