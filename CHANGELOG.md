@@ -2,6 +2,7 @@
 + Support db/meter [#41](https://github.com/dooboolab/flutter_sound/pull/41)
 + Show wrong recorder timer text [#47](https://github.com/dooboolab/flutter_sound/pull/47)
 + Add ability to specify Android & iOS encoder [#49](https://github.com/dooboolab/flutter_sound/pull/49)
++ Adjust db range and fix nullable check in ios [#59](https://github.com/dooboolab/flutter_sound/pull/59)
 
 ## 1.2.+
 * Fixed sound distorting when playing recorded audio again. Issue [#14](https://github.com/dooboolab/flutter_sound/issues/14).
