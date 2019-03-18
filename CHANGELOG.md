@@ -1,3 +1,9 @@
+## 1.3.6
++ Android: Adds a single threaded command scheduler for all recording related
+  commands.
++ Switch source & target compability to Java 8
++ Bump gradle plugin version dependencies
+
 ## 1.3.+
 + Support db/meter [#41](https://github.com/dooboolab/flutter_sound/pull/41)
 + Show wrong recorder timer text [#47](https://github.com/dooboolab/flutter_sound/pull/47)
