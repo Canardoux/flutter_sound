@@ -56,9 +56,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   public void onMethodCall(MethodCall call, Result result) {
     String path = call.argument("path");
     switch (call.method) {
-      case "getPlatformVersion":
-        result.success("Android " + android.os.Build.VERSION.RELEASE);
-        break;
       case "startRecorder":
         int sampleRate = call.argument("sampleRate");
         int numChannels = call.argument("numChannels");

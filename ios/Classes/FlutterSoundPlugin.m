@@ -123,9 +123,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-  if ([@"getPlatformVersion" isEqualToString:call.method]) {
-    result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
-  } else if ([@"startRecorder" isEqualToString:call.method]) {
+  if ([@"startRecorder" isEqualToString:call.method]) {
     NSString* path = (NSString*)call.arguments[@"path"];
     NSNumber* sampleRate = (NSNumber*)call.arguments[@"sampleRate"];
     NSNumber* numChannels = (NSNumber*)call.arguments[@"numChannels"];
