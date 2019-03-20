@@ -14,6 +14,8 @@ import org.json.JSONObject;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -34,6 +36,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   private static final String ERR_RECORDER_IS_NULL = "ERR_RECORDER_IS_NULL";
   private static final String ERR_RECORDER_IS_RECORDING = "ERR_RECORDER_IS_RECORDING";
 
+  private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor();
 
   private static Registrar reg;
   final private AudioModel model = new AudioModel();
@@ -50,18 +53,20 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   }
 
   @Override
-  public void onMethodCall(MethodCall call, Result result) {
-    String path = call.argument("path");
+  public void onMethodCall(final MethodCall call, final Result result) {
+    final String path = call.argument("path");
     switch (call.method) {
       case "startRecorder":
-        int sampleRate = call.argument("sampleRate");
-        int numChannels = call.argument("numChannels");
-        int androidEncoder = call.argument("androidEncoder");
-        Integer bitRate = call.argument("bitRate");
-        this.startRecorder(numChannels, sampleRate, bitRate, androidEncoder, path, result);
+        taskScheduler.submit(() -> {
+          int sampleRate = call.argument("sampleRate");
+          int numChannels = call.argument("numChannels");
+          int androidEncoder = call.argument("androidEncoder");
+          Integer bitRate = call.argument("bitRate");
+          startRecorder(numChannels, sampleRate, bitRate, androidEncoder, path, result);
+        });
         break;
       case "stopRecorder":
-        this.stopRecorder(result);
+        taskScheduler.submit(() -> stopRecorder(result));
         break;
       case "startPlayer":
         this.startPlayer(path, result);
