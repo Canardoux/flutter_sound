@@ -14,9 +14,9 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_sound/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
-  flutter_sound: ec7c1debf6cd72d44b1270a1f7a999af15ca8113
+  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  flutter_sound: 0e8163ceac1e00eb6d894e2ae4641ba726a2c479
 
 PODFILE CHECKSUM: 1e5af4103afd21ca5ead147d7b81d06f494f51a2
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.1
