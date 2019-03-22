@@ -1,3 +1,9 @@
+## 1.3.7+1
++ Android: Remove reference to non-AndroidX classes which improves compatibility
+
+## 1.3.7
++ No changes.
+
 ## 1.3.6
 + Android: Adds a single threaded command scheduler for all recording related
   commands.
