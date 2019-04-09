@@ -357,8 +357,9 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 
 - (void)seekToPlayer:(nonnull NSNumber*) time result: (FlutterResult)result {
   if (audioPlayer) {
-    audioPlayer.currentTime = [time doubleValue];
-    result(time);
+      audioPlayer.currentTime = [time doubleValue] / 1000;
+      [self updateProgress:nil];
+      result([time stringValue]);
   } else {
     result([FlutterError
         errorWithCode:@"Audio Player"
