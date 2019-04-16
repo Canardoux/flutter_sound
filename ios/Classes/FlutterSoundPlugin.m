@@ -205,7 +205,11 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   // set volume default to speaker
   UInt32 doChangeDefaultRoute = 1;
   AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(doChangeDefaultRoute), &doChangeDefaultRoute);
-
+  
+  // set up for bluetooth microphone input
+  UInt32 allowBluetoothInput = 1;
+  AudioSessionSetProperty (kAudioSessionProperty_OverrideCategoryEnableBluetoothInput,sizeof (allowBluetoothInput),&allowBluetoothInput);
+ 
   audioRecorder = [[AVAudioRecorder alloc]
                         initWithURL:audioFileURL
                         settings:audioSettings
