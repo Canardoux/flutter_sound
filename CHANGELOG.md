@@ -1,8 +1,7 @@
-## 1.3.7+1
-+ Android: Remove reference to non-AndroidX classes which improves compatibility
-
-## 1.3.7
-+ No changes.
+## 1.4.0
++ AndroidX compatibility improved [#68](https://github.com/dooboolab/flutter_sound/pull/68)
++ iOS: Fixes for seekToPlayer [#72](https://github.com/dooboolab/flutter_sound/pull/72)
++ iOS: Setup configuration for using bluetooth microphone recording input [#73](https://github.com/dooboolab/flutter_sound/pull/73)
 
 ## 1.3.6
 + Android: Adds a single threaded command scheduler for all recording related
@@ -16,6 +15,7 @@
 + Add ability to specify Android & iOS encoder [#49](https://github.com/dooboolab/flutter_sound/pull/49)
 + Adjust db range and fix nullable check in ios [#59](https://github.com/dooboolab/flutter_sound/pull/59)
 + Android: Recording operations on a separate command queue [#66](https://github.com/dooboolab/flutter_sound/pull/66)
++ Android: Remove reference to non-AndroidX classes which improves compatibility
 
 ## 1.2.+
 * Fixed sound distorting when playing recorded audio again. Issue [#14](https://github.com/dooboolab/flutter_sound/issues/14).
