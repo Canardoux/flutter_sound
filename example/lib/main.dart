@@ -149,9 +149,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void seekToPlayer(int milliSecs) async{
-    int secs = Platform.isIOS ? milliSecs / 1000 : milliSecs;
-
-    String result = await flutterSound.seekToPlayer(secs);
+    String result = await flutterSound.seekToPlayer(milliSecs);
     print('seekToPlayer: $result');
   }
 
