@@ -14,6 +14,7 @@ class FlutterSound {
   Stream<double> get onRecorderDbPeakChanged => _dbPeakController.stream;
   Stream<RecordStatus> get onRecorderStateChanged => _recorderController.stream;
   Stream<PlayStatus> get onPlayerStateChanged => _playerController.stream;
+  bool get isPlaying => _isPlaying;
 
   bool _isRecording = false;
   bool _isPlaying = false;
