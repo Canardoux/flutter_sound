@@ -206,12 +206,14 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     // This remove all pending runnables
     recordHandler.removeCallbacksAndMessages(null);
     dbPeakLevelHandler.removeCallbacksAndMessages(null);
+
     if (this.model.getMediaRecorder() == null) {
       Log.d(TAG, "mediaRecorder is null");
       result.error(ERR_RECORDER_IS_NULL, ERR_RECORDER_IS_NULL, ERR_RECORDER_IS_NULL);
       return;
     }
     this.model.getMediaRecorder().stop();
+    this.model.getMediaRecorder().reset();
     this.model.getMediaRecorder().release();
     this.model.setMediaRecorder(null);
     result.success("recorder stopped.");
@@ -289,7 +291,11 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
           Log.d(TAG, "Json Exception: " + je.toString());
         }
         mTimer.cancel();
-        mp.stop();
+        if(mp.isPlaying())
+        {
+          mp.stop();
+        }
+        mp.reset();
         mp.release();
         model.setMediaPlayer(null);
       });
@@ -310,8 +316,9 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     }
 
     try {
-      this.model.getMediaPlayer().stop();
-      this.model.getMediaPlayer().release();
+      this.model.getMediaRecorder().stop();
+      this.model.getMediaRecorder().reset();
+      this.model.getMediaRecorder().release();
       this.model.setMediaPlayer(null);
       result.success("stopped player.");
     } catch (Exception e) {
