@@ -316,9 +316,9 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     }
 
     try {
-      this.model.getMediaRecorder().stop();
-      this.model.getMediaRecorder().reset();
-      this.model.getMediaRecorder().release();
+      this.model.getMediaPlayer().stop();
+      this.model.getMediaPlayer().reset();
+      this.model.getMediaPlayer().release();
       this.model.setMediaPlayer(null);
       result.success("stopped player.");
     } catch (Exception e) {
