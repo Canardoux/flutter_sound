@@ -42,6 +42,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   final private AudioModel model = new AudioModel();
   private Timer mTimer = new Timer();
   final private Handler recordHandler = new Handler();
+  //mainThread handler
+  final private Handler mainHandler = new Handler();
   final private Handler dbPeakLevelHandler = new Handler();
   private static MethodChannel channel;
 
@@ -122,6 +124,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   @Override
   public void startRecorder(int numChannels, int sampleRate, Integer bitRate, int androidEncoder, String path, final Result result) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
       if (
           reg.activity().checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
               || reg.activity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
@@ -195,7 +198,15 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
         });
         dbPeakLevelHandler.post(this.model.getDbLevelTicker());
       }
-      result.success(path);
+
+
+      String finalPath = path;
+      mainHandler.post(new Runnable() {
+        @Override
+        public void run() {
+          result.success(finalPath);
+        }
+      });
     } catch (Exception e) {
       Log.e(TAG, "Exception: ", e);
     }
@@ -216,7 +227,13 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     this.model.getMediaRecorder().reset();
     this.model.getMediaRecorder().release();
     this.model.setMediaRecorder(null);
-    result.success("recorder stopped.");
+    mainHandler.post(new Runnable(){
+      @Override
+      public void run() {
+        result.success("recorder stopped.");
+      }
+    });
+
   }
 
   @Override
@@ -263,7 +280,13 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
               JSONObject json = new JSONObject();
               json.put("duration", String.valueOf(mp.getDuration()));
               json.put("current_position", String.valueOf(mp.getCurrentPosition()));
-              channel.invokeMethod("updateProgress", json.toString());
+              mainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                  channel.invokeMethod("updateProgress", json.toString());
+                }
+              });
+
             } catch (JSONException je) {
               Log.d(TAG, "Json Exception: " + je.toString());
             }
