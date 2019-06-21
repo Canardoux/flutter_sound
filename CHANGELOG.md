@@ -1,3 +1,5 @@
+## 1.4.2
++ Fixed 'mediaplayer went away with unhandled events' bug [#104](https://github.com/dooboolab/flutter_sound/pull/104)
 ## 1.4.1
 + Fixed 'mediaplayer went away with unhandled events' bug [#83](https://github.com/dooboolab/flutter_sound/pull/83)
 ## 1.4.0
