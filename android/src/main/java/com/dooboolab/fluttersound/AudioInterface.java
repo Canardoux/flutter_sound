@@ -5,6 +5,8 @@ import io.flutter.plugin.common.MethodChannel;
 interface AudioInterface {
   void startRecorder(int numChannels, int sampleRate, Integer bitRate, int androidEncoder, String path, MethodChannel.Result result);
   void stopRecorder(MethodChannel.Result result);
+  void pauseRecorder(MethodChannel.Result result);
+  void resumeRecorder(MethodChannel.Result result);
   void startPlayer(String path, MethodChannel.Result result);
   void stopPlayer(MethodChannel.Result result);
   void pausePlayer(MethodChannel.Result result);

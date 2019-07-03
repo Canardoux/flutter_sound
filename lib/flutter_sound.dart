@@ -132,6 +132,30 @@ class FlutterSound {
     }
   }
 
+  Future<String> pauseRecorder() async {
+    try {
+      if (this._isRecording == true) {
+        return await _channel.invokeMethod('pauseRecorder', <String, dynamic>{});
+      } else {
+        throw new Exception("Recorder is not recording.");
+      }
+    } catch (err) {
+      throw new Exception(err);
+    }
+  }
+
+  Future<String> resumeRecorder() async {
+    try {
+      if (this._isRecording == true) {
+        return await _channel.invokeMethod('startRecorder', <String, dynamic>{});
+      } else {
+        throw new Exception("Recorder is not recording.");
+      }
+    } catch(err) {
+      throw new Exception(err);
+    }
+  }
+
   Future<String> stopRecorder() async {
     if (!this._isRecording) {
       throw new Exception('Recorder already stopped.');

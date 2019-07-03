@@ -70,6 +70,12 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       case "stopRecorder":
         taskScheduler.submit(() -> stopRecorder(result));
         break;
+      case "pauseRecorder":
+        taskScheduler.submit(() -> pauseRecorder(result));
+        break;
+      case "resumeRecorder":
+        taskScheduler.submit(() -> resumeRecorder(result));
+        break;
       case "startPlayer":
         this.startPlayer(path, result);
         break;
@@ -175,12 +181,13 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
 //          DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
 //          String displayTime = format.format(time);
-//          model.setRecordTime(time);
+          model.setRecordTime(time);
         try {
           JSONObject json = new JSONObject();
           json.put("current_position", String.valueOf(time));
           channel.invokeMethod("updateRecorderProgress", json.toString());
           recordHandler.postDelayed(model.getRecorderTicker(), model.subsDurationMillis);
+
         } catch (JSONException je) {
           Log.d(TAG, "Json Exception: " + je.toString());
         }
@@ -234,6 +241,34 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       }
     });
 
+  }
+
+  @Override
+  public void pauseRecorder(final Result result) {
+    this.model.getMediaRecorder().pause();
+    recordHandler.removeCallbacksAndMessages(null);
+  }
+
+  @Override
+  public void resumeRecorder(final Result result) {
+    this.model.getMediaRecorder().resume();
+
+    final long cachedRecordedTime = SystemClock.elapsedRealtime() - model.getRecordTime();
+    this.model.setRecorderTicker(() -> {
+
+      long time = SystemClock.elapsedRealtime() - cachedRecordedTime;
+      model.setRecordTime(time);
+      try {
+        JSONObject json = new JSONObject();
+        json.put("current_position", String.valueOf(time));
+        channel.invokeMethod("updateRecorderProgress", json.toString());
+        recordHandler.postDelayed(model.getRecorderTicker(), model.subsDurationMillis);
+
+      } catch (JSONException je) {
+        Log.d(TAG, "Json Exception: " + je.toString());
+      }
+    });
+    recordHandler.post(this.model.getRecorderTicker());
   }
 
   @Override
