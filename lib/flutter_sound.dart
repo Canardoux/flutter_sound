@@ -147,7 +147,7 @@ class FlutterSound {
   Future<String> resumeRecorder() async {
     try {
       if (this._isRecording == true) {
-        return await _channel.invokeMethod('startRecorder', <String, dynamic>{});
+        return await _channel.invokeMethod('resumeRecorder', <String, dynamic>{});
       } else {
         throw new Exception("Recorder is not recording.");
       }
