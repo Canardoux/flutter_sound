@@ -235,11 +235,13 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 - (void)pauseRecorder:(FlutterResult)result {
     [audioRecorder pause];
     [self stopTimer];
+    result(@"recorder paused");
 }
 
 - (void)resumeRecorder:(FlutterResult)result {
     [audioRecorder record];
     [self startRecorderTimer];
+    result(@"recorder resumed");
 }
 
 - (void)stopRecorder:(FlutterResult)result {
