@@ -70,6 +70,12 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       case "stopRecorder":
         taskScheduler.submit(() -> stopRecorder(result));
         break;
+      case "pauseRecorder":
+        taskScheduler.submit(() -> pauseRecorder(result));
+        break;
+      case "resumeRecorder":
+        taskScheduler.submit(() -> resumeRecorder(result));
+        break;
       case "startPlayer":
         this.startPlayer(path, result);
         break;
@@ -164,41 +170,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       this.model.getMediaRecorder().prepare();
       this.model.getMediaRecorder().start();
 
-      // Remove all pending runnables, this is just for safety (should never happen)
-      recordHandler.removeCallbacksAndMessages(null);
-      final long systemTime = SystemClock.elapsedRealtime();
-      this.model.setRecorderTicker(() -> {
-
-        long time = SystemClock.elapsedRealtime() - systemTime;
-//          Log.d(TAG, "elapsedTime: " + SystemClock.elapsedRealtime());
-//          Log.d(TAG, "time: " + time);
-
-//          DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
-//          String displayTime = format.format(time);
-//          model.setRecordTime(time);
-        try {
-          JSONObject json = new JSONObject();
-          json.put("current_position", String.valueOf(time));
-          channel.invokeMethod("updateRecorderProgress", json.toString());
-          recordHandler.postDelayed(model.getRecorderTicker(), model.subsDurationMillis);
-        } catch (JSONException je) {
-          Log.d(TAG, "Json Exception: " + je.toString());
-        }
-      });
-      recordHandler.post(this.model.getRecorderTicker());
-
-      if(this.model.shouldProcessDbLevel) {
-        dbPeakLevelHandler.removeCallbacksAndMessages(null);
-        this.model.setDbLevelTicker(() -> {
-          //int ratio = model.getMediaRecorder().getMaxAmplitude() / micBase;
-          double dbLevel = 20 * Math.log10(model.getMediaRecorder().getMaxAmplitude() / model.micLevelBase);
-          double normalizedDbLevel = Math.min(Math.pow(10, dbLevel / 20.0) * 160.0, 160.0);
-          channel.invokeMethod("updateDbPeakProgress", normalizedDbLevel);
-          dbPeakLevelHandler.postDelayed(model.getDbLevelTicker(), (FlutterSoundPlugin.this.model.peakLevelUpdateMillis));
-        });
-        dbPeakLevelHandler.post(this.model.getDbLevelTicker());
-      }
-
+      this.registerRecordingCallbacks();
 
       String finalPath = path;
       mainHandler.post(new Runnable() {
@@ -217,6 +189,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     // This remove all pending runnables
     recordHandler.removeCallbacksAndMessages(null);
     dbPeakLevelHandler.removeCallbacksAndMessages(null);
+    model.setRecordTime(0);
 
     if (this.model.getMediaRecorder() == null) {
       Log.d(TAG, "mediaRecorder is null");
@@ -234,6 +207,71 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       }
     });
 
+  }
+
+  @Override
+  public void pauseRecorder(final Result result) {
+    if (this.model.getMediaRecorder() == null) {
+      Log.d(TAG, "mediaRecorder is null");
+      result.error(ERR_RECORDER_IS_NULL, ERR_RECORDER_IS_NULL, ERR_RECORDER_IS_NULL);
+      return;
+    }
+
+    this.model.getMediaRecorder().pause();
+    recordHandler.removeCallbacksAndMessages(null);
+    dbPeakLevelHandler.removeCallbacksAndMessages(null);
+
+    result.success("recorder paused");
+  }
+
+  @Override
+  public void resumeRecorder(final Result result) {
+    if (this.model.getMediaRecorder() == null) {
+      Log.d(TAG, "mediaRecorder is null");
+      result.error(ERR_RECORDER_IS_NULL, ERR_RECORDER_IS_NULL, ERR_RECORDER_IS_NULL);
+      return;
+    }
+
+    this.model.getMediaRecorder().resume();
+    this.registerRecordingCallbacks();
+
+    result.success("recorder resumed");
+  }
+
+  private void registerRecordingCallbacks() {
+    // Remove all pending runnables, this is just for safety (should never happen)
+    recordHandler.removeCallbacksAndMessages(null);
+
+    // Factor in recordTime for resume recording cases.
+    final long startTime = SystemClock.elapsedRealtime() - model.getRecordTime();
+
+    this.model.setRecorderTicker(() -> {
+
+      long time = SystemClock.elapsedRealtime() - startTime;
+      model.setRecordTime(time);
+      try {
+        JSONObject json = new JSONObject();
+        json.put("current_position", String.valueOf(time));
+        channel.invokeMethod("updateRecorderProgress", json.toString());
+        recordHandler.postDelayed(model.getRecorderTicker(), model.subsDurationMillis);
+
+      } catch (JSONException je) {
+        Log.d(TAG, "Json Exception: " + je.toString());
+      }
+    });
+    recordHandler.post(this.model.getRecorderTicker());
+
+    if (this.model.shouldProcessDbLevel) {
+      dbPeakLevelHandler.removeCallbacksAndMessages(null);
+      this.model.setDbLevelTicker(() -> {
+        //int ratio = model.getMediaRecorder().getMaxAmplitude() / micBase;
+        double dbLevel = 20 * Math.log10(model.getMediaRecorder().getMaxAmplitude() / model.micLevelBase);
+        double normalizedDbLevel = Math.min(Math.pow(10, dbLevel / 20.0) * 160.0, 160.0);
+        channel.invokeMethod("updateDbPeakProgress", normalizedDbLevel);
+        dbPeakLevelHandler.postDelayed(model.getDbLevelTicker(), (FlutterSoundPlugin.this.model.peakLevelUpdateMillis));
+      });
+      dbPeakLevelHandler.post(this.model.getDbLevelTicker());
+    }
   }
 
   @Override
