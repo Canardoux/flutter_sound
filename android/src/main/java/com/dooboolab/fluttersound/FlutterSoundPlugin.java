@@ -221,7 +221,12 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     recordHandler.removeCallbacksAndMessages(null);
     dbPeakLevelHandler.removeCallbacksAndMessages(null);
 
-    result.success("recorder paused");
+    mainHandler.post(new Runnable(){
+      @Override
+      public void run() {
+        result.success("recorder paused");
+      }
+    });
   }
 
   @Override
@@ -234,8 +239,13 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
     this.model.getMediaRecorder().resume();
     this.registerRecordingCallbacks();
-
-    result.success("recorder resumed");
+    
+    mainHandler.post(new Runnable(){
+      @Override
+      public void run() {
+        result.success("recorder resumed");
+      }
+    });
   }
 
   private void registerRecordingCallbacks() {
