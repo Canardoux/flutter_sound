@@ -67,72 +67,116 @@ When uri path is not set during the `function call` in `startRecorder` or `start
 
 ## Usage
 #### Creating instance.
+In your view/page/dialog widget State class, create an instance of FlutterSound.
+
 ```dart
 FlutterSound flutterSound = new FlutterSound();
 ```
 
 #### Starting recorder with listener.
 ```dart
-String path = await flutterSound.startRecorder(null);
-print('startRecorder: $path');
+Future<String> result = await flutterSound.startRecorder(null);
 
-_recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
-  DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
-  String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
-});
+result.then(path) {
+	print('startRecorder: $path');
+
+	_recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
+	DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
+	String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
+	});
+}
 ```
 
 #### Stop recorder
 ```dart
-String result = await flutterSound.stopRecorder();
-print('stopRecorder: $result');
+Future<String> result = await flutterSound.stopRecorder();
 
-if (_recorderSubscription != null) {
-	_recorderSubscription.cancel();
-	_recorderSubscription = null;
+result.then(value) {
+	print('stopRecorder: $value');
+
+	if (_recorderSubscription != null) {
+		_recorderSubscription.cancel();
+		_recorderSubscription = null;
+	}
 }
 ```
 
-#### Start player
-```dart
-String path = await flutterSound.startPlayer(null);
-print('startPlayer: $path');
+You MUST ensure that the recorder has been stopped when your widget is detached from the ui.
+Overload your widget's dispose() method to stop the recorder when your widget is disposed.
 
-_playerSubscription = flutterSound.onPlayerStateChanged.listen((e) {
-	if (e != null) {
-		DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
-		String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
-		this.setState(() {
-			this._isPlaying = true;
-			this._playerTxt = txt.substring(0, 8);
-		});
-	}
-});
+```dart
+@override
+void dispose() {
+	flutterSound.stopRecorder();
+	super.dispose();
+}
+
+
+#### Start player
+To start playback of a recording call startPlayer.
+
+You must wait for the return value to complete before attempting to add any listeners
+to ensure that the player has fully initialised.
+
+```dart
+Future<String> result = await flutterSound.startPlayer(null);
+
+result.then(path) {
+	print('startPlayer: $path');
+
+	_playerSubscription = flutterSound.onPlayerStateChanged.listen((e) {
+		if (e != null) {
+			DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
+			String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
+			this.setState(() {
+				this._isPlaying = true;
+				this._playerTxt = txt.substring(0, 8);
+			});
+		}
+	});
+}
 ```
 
 #### Stop player
+
+
 ```dart
-String result = await flutterSound.stopPlayer();
-print('stopPlayer: $result');
-if (_playerSubscription != null) {
-	_playerSubscription.cancel();
-	_playerSubscription = null;
+Future<String> result = await flutterSound.stopPlayer();
+
+result.then(value) {
+	print('stopPlayer: $result');
+	if (_playerSubscription != null) {
+		_playerSubscription.cancel();
+		_playerSubscription = null;
+	}
 }
 ```
 
+You MUST ensure that the player has been stopped when your widget is detached from the ui.
+Overload your widget's dispose() method to stop the player when your widget is disposed.
+
+```dart
+@override
+void dispose() {
+	flutterSound.stopPlayer();
+	super.dispose();
+}
+
 #### Pause player
 ```dart
-String result = await flutterSound.pausePlayer();
+Future<String> result = await flutterSound.pausePlayer();
 ```
 
 #### Resume player
 ```dart
-String result = await flutterSound.resumePlayer();
+Future<String> result = await flutterSound.resumePlayer();
 ```
 
 #### Seek player
+
+To seek to a new location the player must already be playing.
 ```dart
-String result = await flutterSound.seekToPlayer(miliSecs);
+String Future<result> = await flutterSound.seekToPlayer(miliSecs);
 ```
 
 #### Setting subscription duration (Optional). 0.01 is default value when not set.
@@ -173,7 +217,7 @@ _dbPeakSubscription = flutterSound.onRecorderDbPeakChanged.listen((value) {
 ```
 
 ### TODO
-- [ ] Seeking example in `Exmaple` project
+- [ ] Seeking example in `Example` project
 - [x] Volume Control
 - [x] Sync timing for recorder callback handler
 
