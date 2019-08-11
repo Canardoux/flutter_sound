@@ -67,7 +67,7 @@ When uri path is not set during the `function call` in `startRecorder` or `start
 
 ## Usage
 #### Creating instance.
-In your view/page/dialog widget State class, create an instance of FlutterSound.
+In your view/page/dialog widget's State class, create an instance of FlutterSound.
 
 ```dart
 FlutterSound flutterSound = new FlutterSound();
@@ -110,7 +110,7 @@ void dispose() {
 	flutterSound.stopRecorder();
 	super.dispose();
 }
-
+```
 
 #### Start player
 To start playback of a recording call startPlayer.
@@ -161,6 +161,7 @@ void dispose() {
 	flutterSound.stopPlayer();
 	super.dispose();
 }
+```
 
 #### Pause player
 ```dart
