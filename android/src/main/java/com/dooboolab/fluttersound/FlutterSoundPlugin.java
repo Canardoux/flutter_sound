@@ -25,7 +25,7 @@ import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /** FlutterSoundPlugin */
-public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.RequestPermissionsResultListener, AudioInterface{ ;
+public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.RequestPermissionsResultListener, AudioInterface{   
   final static String TAG = "FlutterSoundPlugin";
   final static String RECORD_STREAM = "com.dooboolab.fluttersound/record";
   final static String PLAY_STREAM= "com.dooboolab.fluttersound/play";
@@ -190,11 +190,25 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       if(this.model.shouldProcessDbLevel) {
         dbPeakLevelHandler.removeCallbacksAndMessages(null);
         this.model.setDbLevelTicker(() -> {
-          //int ratio = model.getMediaRecorder().getMaxAmplitude() / micBase;
-          double dbLevel = 20 * Math.log10(model.getMediaRecorder().getMaxAmplitude() / model.micLevelBase);
-          double normalizedDbLevel = Math.min(Math.pow(10, dbLevel / 20.0) * 160.0, 160.0);
-          channel.invokeMethod("updateDbPeakProgress", normalizedDbLevel);
-          dbPeakLevelHandler.postDelayed(model.getDbLevelTicker(), (FlutterSoundPlugin.this.model.peakLevelUpdateMillis));
+
+          MediaRecorder recorder = model.getMediaRecorder();
+          if (recorder != null) {
+            double maxAmplitude = recorder.getMaxAmplitude();
+
+            // Calculate db based on the following article.
+            // https://stackoverflow.com/questions/10655703/what-does-androids-getmaxamplitude-function-for-the-mediarecorder-actually-gi
+            // 
+            double ref_pressure = 51805.5336;
+            double p = maxAmplitude / ref_pressure;
+            double p0 = 0.0002;
+            double db = 20.0 * Math.log10(p / p0);
+
+            // Log.d(TAG, "Amp1: " + maxAmplitude + " Base DB: " + db);
+
+            channel.invokeMethod("updateDbPeakProgress", db);
+            dbPeakLevelHandler.postDelayed(model.getDbLevelTicker(),
+            (FlutterSoundPlugin.this.model.peakLevelUpdateMillis));
+          }
         });
         dbPeakLevelHandler.post(this.model.getDbLevelTicker());
       }
