@@ -1,3 +1,5 @@
+## 1.4.3
++ Improved db calcs [#123](https://github.com/dooboolab/flutter_sound/pull/123)
 ## 1.4.2
 + Fixed 'mediaplayer went away with unhandled events' bug [#104](https://github.com/dooboolab/flutter_sound/pull/104)
 ## 1.4.1
