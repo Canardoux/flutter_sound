@@ -10,3 +10,12 @@ build/
 .idea/
 flutter_sound.iml
 flutter_sound_android.iml
+android/.settings/org.eclipse.buildship.core.prefs
+.vscode/launch.json
+android/.classpath
+android/.project
+example/android/.project
+example/android/.settings/org.eclipse.buildship.core.prefs
+example/android/app/.classpath
+example/android/app/.project
+example/android/app/.settings/org.eclipse.buildship.core.prefs
