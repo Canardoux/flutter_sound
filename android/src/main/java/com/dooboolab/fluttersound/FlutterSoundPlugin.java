@@ -199,11 +199,17 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
             // https://stackoverflow.com/questions/10655703/what-does-androids-getmaxamplitude-function-for-the-mediarecorder-actually-gi
             // 
             double ref_pressure = 51805.5336;
-            double p = maxAmplitude / ref_pressure;
+            double p = maxAmplitude  / ref_pressure;
             double p0 = 0.0002;
+
             double db = 20.0 * Math.log10(p / p0);
 
-            // Log.d(TAG, "Amp1: " + maxAmplitude + " Base DB: " + db);
+            // if the microphone is off we get 0 for the amplitude which causes
+            // db to be infinite.
+            if (Double.isInfinite(db))
+              db = 0.0;
+
+            Log.d(TAG, "rawAmplitude: " + maxAmplitude + " Base DB: " + db);
 
             channel.invokeMethod("updateDbPeakProgress", db);
             dbPeakLevelHandler.postDelayed(model.getDbLevelTicker(),
