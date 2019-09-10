@@ -80,6 +80,7 @@ class FlutterSound {
         default:
           throw new ArgumentError('Unknown method ${call.method}');
       }
+      return null;
     });
   }
 
