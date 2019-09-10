@@ -16,7 +16,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _isRecording = false;
-  bool _isPlaying = false;
+  // bool _isPlaying = false;
   StreamSubscription _recorderSubscription;
   StreamSubscription _dbPeakSubscription;
   StreamSubscription _playerSubscription;
@@ -26,8 +26,8 @@ class _MyAppState extends State<MyApp> {
   String _playerTxt = '00:00:00';
   double _dbLevel;
 
-  double slider_current_position = 0.0;
-  double max_duration = 1.0;
+  double sliderCurrentPosition = 0.0;
+  double maxDuration = 1.0;
 
 
   @override
@@ -101,8 +101,8 @@ class _MyAppState extends State<MyApp> {
     try {
       _playerSubscription = flutterSound.onPlayerStateChanged.listen((e) {
         if (e != null) {
-          slider_current_position = e.currentPosition;
-          max_duration = e.duration;
+          sliderCurrentPosition = e.currentPosition;
+          maxDuration = e.duration;
 
 
           DateTime date = new DateTime.fromMillisecondsSinceEpoch(
@@ -110,7 +110,7 @@ class _MyAppState extends State<MyApp> {
               isUtc: true);
           String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
           this.setState(() {
-            this._isPlaying = true;
+            //this._isPlaying = true;
             this._playerTxt = txt.substring(0, 8);
           });
         }
@@ -130,7 +130,7 @@ class _MyAppState extends State<MyApp> {
       }
 
       this.setState(() {
-        this._isPlaying = false;
+        //this._isPlaying = false;
       });
     } catch (err) {
       print('error: $err');
@@ -280,13 +280,13 @@ class _MyAppState extends State<MyApp> {
             Container(
               height: 56.0,
               child: Slider(
-                value: slider_current_position,
+                value: sliderCurrentPosition,
                 min: 0.0,
-                max: max_duration,
+                max: maxDuration,
                 onChanged: (double value) async{
                   await flutterSound.seekToPlayer(value.toInt());
                 },
-                divisions: max_duration.toInt()
+                divisions: maxDuration.toInt()
               )
             )
           ],
