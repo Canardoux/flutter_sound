@@ -1,3 +1,5 @@
+## 1.4.4
++ Stopped recording generating infinite db values [#131](https://github.com/dooboolab/flutter_sound/pull/131)
 ## 1.4.3
 + Improved db calcs [#123](https://github.com/dooboolab/flutter_sound/pull/123)
 ## 1.4.2
