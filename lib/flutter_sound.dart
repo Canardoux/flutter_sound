@@ -153,7 +153,7 @@ class FlutterSound {
     return result;
   }
 
-  Future<String> startPlayer(String uri) async {
+  Future<String> startPlayer(String uri,{headers}) async {
     if (this._isPlaying) {
       throw PlayerRunningException('Player is already playing.');
     }
@@ -162,6 +162,7 @@ class FlutterSound {
       String result =
           await _channel.invokeMethod('startPlayer', <String, dynamic>{
         'path': uri,
+        'headers':headers,
       });
       print('startPlayer result: $result');
 

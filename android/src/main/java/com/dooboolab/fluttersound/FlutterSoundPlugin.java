@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -12,6 +13,7 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -57,6 +59,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   @Override
   public void onMethodCall(final MethodCall call, final Result result) {
     final String path = call.argument("path");
+    Map<String, String> headers = call.argument("headers");
     switch (call.method) {
       case "startRecorder":
         taskScheduler.submit(() -> {
@@ -71,7 +74,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
         taskScheduler.submit(() -> stopRecorder(result));
         break;
       case "startPlayer":
-        this.startPlayer(path, result);
+        this.startPlayer(path,headers,result);
         break;
       case "stopPlayer":
         this.stopPlayer(result);
@@ -257,7 +260,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   }
 
   @Override
-  public void startPlayer(final String path, final Result result) {
+  public void startPlayer(final String path, final Map<String, String> headers, final Result result) {
     if (this.model.getMediaPlayer() != null) {
       Boolean isPaused = !this.model.getMediaPlayer().isPlaying()
           && this.model.getMediaPlayer().getCurrentPosition() > 1;
@@ -279,7 +282,10 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     try {
       if (path == null) {
         this.model.getMediaPlayer().setDataSource(AudioModel.DEFAULT_FILE_LOCATION);
-      } else {
+      } else if(headers != null){
+        Uri uri = Uri.parse(path);
+        this.model.getMediaPlayer().setDataSource(reg.activity(),uri,headers);
+      }else {
         this.model.getMediaPlayer().setDataSource(path);
       }
 
