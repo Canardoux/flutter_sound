@@ -19,3 +19,4 @@ example/android/.settings/org.eclipse.buildship.core.prefs
 example/android/app/.classpath
 example/android/app/.project
 example/android/app/.settings/org.eclipse.buildship.core.prefs
+flutter_export_environment*
