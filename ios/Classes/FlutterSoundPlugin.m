@@ -134,7 +134,8 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     [self stopRecorder:result];
   } else if ([@"startPlayer" isEqualToString:call.method]) {
       NSString* path = (NSString*)call.arguments[@"path"];
-      [self startPlayer:path result:result];
+      NSDictionary* headers = (NSDictionary*)call.arguments[@"headers"];
+      [self startPlayer:path headers:headers result:result];
   } else if ([@"stopPlayer" isEqualToString:call.method]) {
     [self stopPlayer:result];
   } else if ([@"pausePlayer" isEqualToString:call.method]) {
@@ -243,7 +244,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   result(filePath);
 }
 
-- (void)startPlayer:(NSString*)path result: (FlutterResult)result {
+- (void)startPlayer:(NSString*)path headers:(NSDictionary*)headers result: (FlutterResult)result {
   bool isRemote = false;
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
@@ -258,7 +259,13 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   }
 
   if (isRemote) {
-    NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
+    NSURLSession *session = [NSURLSession sharedSession];
+    if([headers class] != [NSNull class]){
+       NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+       configuration.HTTPAdditionalHeaders = headers;
+       session = [NSURLSession sessionWithConfiguration:configuration];
+    }
+    NSURLSessionDataTask *downloadTask = [session
         dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             // NSData *data = [NSData dataWithContentsOfURL:audioFileURL];
             
