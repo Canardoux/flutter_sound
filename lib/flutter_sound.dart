@@ -159,7 +159,9 @@ class FlutterSound {
 
   Future<String> startPlayer(String uri) async {
     if (this._isPlaying) {
-      throw PlayerRunningException('Player is already playing.');
+      this.resumePlayer();
+      return 'Player resumed';
+      // throw PlayerRunningException('Player is already playing.');
     }
 
     try {
@@ -191,21 +193,36 @@ class FlutterSound {
   }
 
   Future<String> pausePlayer() async {
-    String result = await _channel.invokeMethod('pausePlayer');
-    return result;
+    try {
+      String result = await _channel.invokeMethod('pausePlayer');
+      return result;
+    } catch (err) {
+      print('err: $err');
+      return err;
+    }
   }
 
   Future<String> resumePlayer() async {
-    String result = await _channel.invokeMethod('resumePlayer');
-    return result;
+    try {
+      String result = await _channel.invokeMethod('resumePlayer');
+      return result;
+    } catch (err) {
+      print('err: $err');
+      return err;
+    }
   }
 
   Future<String> seekToPlayer(int milliSecs) async {
-    String result =
-        await _channel.invokeMethod('seekToPlayer', <String, dynamic>{
-      'sec': milliSecs,
-    });
-    return result;
+    try {
+      String result =
+          await _channel.invokeMethod('seekToPlayer', <String, dynamic>{
+        'sec': milliSecs,
+      });
+      return result;
+    } catch (err) {
+      print('err: $err');
+      return err;
+    }
   }
 
   Future<String> setVolume(double volume) async {
