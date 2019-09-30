@@ -183,7 +183,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
   } else {
-    audioFileURL = [NSURL fileURLWithPath:path];
+    audioFileURL = [NSURL fileURLWithPath: [NSTemporaryDirectory() stringByAppendingString:path]];
   }
 
   NSMutableDictionary *audioSettings = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -253,7 +253,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
         audioFileURL = remoteUrl;
         isRemote = true;
     } else {
-        audioFileURL = [NSURL fileURLWithPath:path];
+        audioFileURL = [NSURL URLWithString:path];
     }
   }
 
