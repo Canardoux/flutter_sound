@@ -1,3 +1,8 @@
+## 1.4.7
++ Resolve few issues on `ios` record path.
++ Resolve issue `playing` status so player can resume.
++ Resolve [#134](https://github.com/dooboolab/flutter_sound/issues/134)
++ Resolve [#135](https://github.com/dooboolab/flutter_sound/issues/135)
 ## 1.4.4
 + Stopped recording generating infinite db values [#131](https://github.com/dooboolab/flutter_sound/pull/131)
 ## 1.4.3

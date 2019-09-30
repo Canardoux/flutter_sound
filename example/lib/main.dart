@@ -16,6 +16,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _isRecording = false;
+  String _path;
   // bool _isPlaying = false;
   StreamSubscription _recorderSubscription;
   StreamSubscription _dbPeakSubscription;
@@ -42,7 +43,7 @@ class _MyAppState extends State<MyApp> {
 
   void startRecorder() async{
     try {
-      String path = await flutterSound.startRecorder(null);
+      String path = await flutterSound.startRecorder('ios.m4a');
       print('startRecorder: $path');
 
       _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
@@ -65,6 +66,7 @@ class _MyAppState extends State<MyApp> {
 
       this.setState(() {
         this._isRecording = true;
+        this._path = path;
       });
     } catch (err) {
       print('startRecorder error: $err');
@@ -95,7 +97,7 @@ class _MyAppState extends State<MyApp> {
 
   void startPlayer() async{
     try {
-      String path = await flutterSound.startPlayer(null);
+      String path = await flutterSound.startPlayer(this._path);
       await flutterSound.setVolume(1.0);
       print('startPlayer: $path');
 
