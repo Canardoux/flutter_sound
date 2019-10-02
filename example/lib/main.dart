@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:intl/date_symbol_data_local.dart';
@@ -43,7 +44,7 @@ class _MyAppState extends State<MyApp> {
 
   void startRecorder() async{
     try {
-      String path = await flutterSound.startRecorder('ios.m4a');
+      String path = await flutterSound.startRecorder(Platform.isIOS ? 'ios.m4a' : 'android.mp4');
       print('startRecorder: $path');
 
       _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {

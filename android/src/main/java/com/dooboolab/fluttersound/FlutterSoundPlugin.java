@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
+import android.os.Environment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -142,6 +143,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
     if (path == null) {
       path = AudioModel.DEFAULT_FILE_LOCATION;
+    } else {
+      path = Environment.getExternalStorageDirectory().getPath() + "/" + path;
     }
 
     if (this.model.getMediaRecorder() == null) {

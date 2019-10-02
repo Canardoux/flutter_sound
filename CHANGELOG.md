@@ -1,3 +1,5 @@
+## 1.4.8
++ Resolve [#129](https://github.com/dooboolab/flutter_sound/issues/129)
 ## 1.4.7
 + Resolve few issues on `ios` record path.
 + Resolve issue `playing` status so player can resume.
