@@ -223,6 +223,21 @@ _dbPeakSubscription = flutterSound.onRecorderDbPeakChanged.listen((value) {
 - [x] Sync timing for recorder callback handler
 
 
+### DEBUG
+When you face below error,
+```
+* What went wrong:
+A problem occurred evaluating project ':app'.
+> versionCode not found. Define flutter.versionCode in the local.properties file.
+```
+Please add below to your `example/android/local.properties` file.
+```
+flutter.versionName=1.0.0
+flutter.versionCode=1
+flutter.buildMode=debug
+```
+
+
 ## Help Maintenance
 I've been maintaining quite many repos these days and burning out slowly. If you could help me cheer up, buying me a cup of coffee will make my life really happy and get much energy out of it.
 <br/>
