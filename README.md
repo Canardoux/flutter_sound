@@ -87,6 +87,11 @@ result.then(path) {
 }
 ```
 
+If you want to take your own path specify it like below.
+```
+String path = await flutterSound.startRecorder(Platform.isIOS ? 'ios.m4a' : 'android.mp4');
+```
+
 #### Stop recorder
 ```dart
 Future<String> result = await flutterSound.stopRecorder();
