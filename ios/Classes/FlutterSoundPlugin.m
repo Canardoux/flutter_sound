@@ -1,6 +1,11 @@
 #import "FlutterSoundPlugin.h"
 #import <AVFoundation/AVFoundation.h>
 
+NSString* GetDirectoryOfType(NSSearchPathDirectory dir) {
+  NSArray* paths = NSSearchPathForDirectoriesInDomains(dir, NSUserDomainMask, YES);
+  return [paths.firstObject stringByAppendingString:@"/"];
+}
+
 @implementation FlutterSoundPlugin{
   NSURL *audioFileURL;
   AVAudioRecorder *audioRecorder;
@@ -181,9 +186,10 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 
 - (void)startRecorder :(NSString*)path :(NSNumber*)numChannels :(NSNumber*)sampleRate :(NSNumber*)iosQuality :(NSNumber*)bitRate result: (FlutterResult)result {
   if ([path class] == [NSNull class]) {
-    audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
+
+    audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType(NSCachesDirectory) stringByAppendingString:@"sound.m4a"]];
   } else {
-    audioFileURL = [NSURL fileURLWithPath: [NSTemporaryDirectory() stringByAppendingString:path]];
+    audioFileURL = [NSURL fileURLWithPath: [GetDirectoryOfType(NSCachesDirectory) stringByAppendingString:path]];
   }
 
   NSMutableDictionary *audioSettings = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -246,7 +252,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 - (void)startPlayer:(NSString*)path result: (FlutterResult)result {
   bool isRemote = false;
   if ([path class] == [NSNull class]) {
-    audioFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingString:@"sound.m4a"]];
+    audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType(NSCachesDirectory) stringByAppendingString:@"sound.m4a"]];
   } else {
     NSURL *remoteUrl = [NSURL URLWithString:path];
     if(remoteUrl && remoteUrl.scheme && remoteUrl.host){
