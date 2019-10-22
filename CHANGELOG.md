@@ -1,3 +1,5 @@
+## 1.5.0
++ Use `NSCachesDirectory` instead of `NSTemporaryDirectory` [#141](https://github.com/dooboolab/flutter_sound/pull/141)
 ## 1.4.8
 + Resolve [#129](https://github.com/dooboolab/flutter_sound/issues/129)
 ## 1.4.7
