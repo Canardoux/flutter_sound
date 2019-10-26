@@ -189,7 +189,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 
     audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType(NSCachesDirectory) stringByAppendingString:@"sound.m4a"]];
   } else {
-    audioFileURL = [NSURL fileURLWithPath: [GetDirectoryOfType(NSCachesDirectory) stringByAppendingString:path]];
+    audioFileURL = [NSURL fileURLWithPath: path];
   }
 
   NSMutableDictionary *audioSettings = [NSMutableDictionary dictionaryWithObjectsAndKeys:

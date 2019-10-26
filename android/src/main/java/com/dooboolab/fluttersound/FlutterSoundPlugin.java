@@ -143,8 +143,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
     if (path == null) {
       path = AudioModel.DEFAULT_FILE_LOCATION;
-    } else {
-      path = Environment.getExternalStorageDirectory().getPath() + "/" + path;
     }
 
     if (this.model.getMediaRecorder() == null) {
