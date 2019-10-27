@@ -1,3 +1,5 @@
+## 1.5.1
++ Set android recorder encoder default value to `AndroidEncoder.DEFAULT`.
 ## 1.5.0
 + Use `NSCachesDirectory` instead of `NSTemporaryDirectory` [#141](https://github.com/dooboolab/flutter_sound/pull/141)
 ## 1.4.8
