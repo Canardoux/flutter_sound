@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
 
   void startRecorder() async{
     try {
-      String path = await flutterSound.startRecorder(Platform.isIOS ? 'ios.m4a' : 'android.mp4');
+      String path = await flutterSound.startRecorder(null);
       print('startRecorder: $path');
 
       _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
