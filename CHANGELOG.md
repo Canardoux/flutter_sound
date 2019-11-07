@@ -1,3 +1,5 @@
+## 1.5.2
++ Postfix `GetDirectoryType` to avoid conflicts [#147](https://github.com/dooboolab/flutter_sound/pull/147)
 ## 1.5.1
 + Set android recorder encoder default value to `AndroidEncoder.DEFAULT`.
 ## 1.5.0
