@@ -17,6 +17,7 @@ class AndroidEncoder {
   static const AAC_ELD = const AndroidEncoder._internal(5);
   /// Enhanced Low Delay AAC (AAC-ELD) audio codec
   static const VORBIS = const AndroidEncoder._internal(6);
+  static const OPUS = const AndroidEncoder._internal(7);
 }
 
 class AndroidAudioSource {
@@ -49,10 +50,10 @@ class AndroidOutputFormat {
   static const MPEG_4 = const AndroidOutputFormat._internal(2);
   static const AMR_NB = const AndroidOutputFormat._internal(3);
   static const AMR_WB = const AndroidOutputFormat._internal(4);
-  static const AAC_ADIF = const AndroidOutputFormat._internal(5);
   static const AAC_ADTS = const AndroidOutputFormat._internal(6);
   static const OUTPUT_FORMAT_RTP_AVP = const AndroidOutputFormat._internal(7);
   static const MPEG_2_TS = const AndroidOutputFormat._internal(8);
   static const WEBM = const AndroidOutputFormat._internal(9);
+  static const OGG = const AndroidOutputFormat._internal(11);
 }
 

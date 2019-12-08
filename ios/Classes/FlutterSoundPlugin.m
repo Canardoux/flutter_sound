@@ -131,11 +131,23 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
   if ([@"startRecorder" isEqualToString:call.method]) {
     NSString* path = (NSString*)call.arguments[@"path"];
-    NSNumber* sampleRate = (NSNumber*)call.arguments[@"sampleRate"];
-    NSNumber* numChannels = (NSNumber*)call.arguments[@"numChannels"];
+    NSNumber* sampleRateArgs = (NSNumber*)call.arguments[@"sampleRate"];
+    NSNumber* numChannelsArgs = (NSNumber*)call.arguments[@"numChannels"];
     NSNumber* iosQuality = (NSNumber*)call.arguments[@"iosQuality"];
     NSNumber* bitRate = (NSNumber*)call.arguments[@"bitRate"];
-      [self startRecorder:path:numChannels:sampleRate:iosQuality:bitRate result:result];
+
+    float sampleRate = 44100;
+    if (![sampleRateArgs isKindOfClass:[NSNull class]]) {
+      sampleRate = [sampleRateArgs integerValue];
+    }
+
+    int numChannels = 2;
+    if (![numChannelsArgs isKindOfClass:[NSNull class]]) {
+      numChannels = [numChannelsArgs integerValue];
+    }
+
+    [self startRecorder:path:[NSNumber numberWithInt:numChannels]:[NSNumber numberWithInt:sampleRate]:iosQuality:bitRate result:result];
+
   } else if ([@"stopRecorder" isEqualToString:call.method]) {
     [self stopRecorder:result];
   } else if ([@"startPlayer" isEqualToString:call.method]) {
@@ -188,7 +200,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 - (void)startRecorder :(NSString*)path :(NSNumber*)numChannels :(NSNumber*)sampleRate :(NSNumber*)iosQuality :(NSNumber*)bitRate result: (FlutterResult)result {
   if ([path class] == [NSNull class]) {
 
-    audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:@"sound.m4a"]];
+    audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:@"sound.aac"]];
   } else {
     audioFileURL = [NSURL fileURLWithPath: [GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:path]];
   }
@@ -253,7 +265,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 - (void)startPlayer:(NSString*)path result: (FlutterResult)result {
   bool isRemote = false;
   if ([path class] == [NSNull class]) {
-    audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:@"sound.m4a"]];
+    audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:@"sound.aac"]];
   } else {
     NSURL *remoteUrl = [NSURL URLWithString:path];
     if(remoteUrl && remoteUrl.scheme && remoteUrl.host){

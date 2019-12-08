@@ -1,3 +1,9 @@
+## 1.6.0
++ Set android default encoding option to `AAC`.
++ Fix android default poor sound.
+  - Resolve [#155](https://github.com/dooboolab/flutter_sound/issues/155)
+  - Resolve [#95](https://github.com/dooboolab/flutter_sound/issues/95)
+  - Resolve [#75](https://github.com/dooboolab/flutter_sound/issues/79)
 ## 1.5.2
 + Postfix `GetDirectoryType` to avoid conflicts [#147](https://github.com/dooboolab/flutter_sound/pull/147)
 ## 1.5.1
