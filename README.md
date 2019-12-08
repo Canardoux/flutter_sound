@@ -63,7 +63,7 @@ When uri path is not set during the `function call` in `startRecorder` or `start
 + Default path for android
   * `sdcard/sound.aac`.
 + Default path for ios
-  * `sound.m4a`.
+  * `sound.aac`.
 
 ## Usage
 #### Creating instance.
@@ -89,7 +89,7 @@ result.then(path) {
 
 If you want to take your own path specify it like below.
 ```
-String path = await flutterSound.startRecorder(Platform.isIOS ? 'ios.m4a' : 'android.aac');
+String path = await flutterSound.startRecorder(Platform.isIOS ? 'ios.aac' : 'android.aac');
 ```
 
 #### Stop recorder
