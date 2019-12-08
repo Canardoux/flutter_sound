@@ -136,12 +136,12 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     NSNumber* iosQuality = (NSNumber*)call.arguments[@"iosQuality"];
     NSNumber* bitRate = (NSNumber*)call.arguments[@"bitRate"];
 
-    float sampleRate = 16000;
+    float sampleRate = 44100;
     if (![sampleRateArgs isKindOfClass:[NSNull class]]) {
       sampleRate = [sampleRateArgs integerValue];
     }
 
-    int numChannels = 1;
+    int numChannels = 2;
     if (![numChannelsArgs isKindOfClass:[NSNull class]]) {
       numChannels = [numChannelsArgs integerValue];
     }
