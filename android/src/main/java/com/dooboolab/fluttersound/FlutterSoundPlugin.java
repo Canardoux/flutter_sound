@@ -61,10 +61,10 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     switch (call.method) {
       case "startRecorder":
         taskScheduler.submit(() -> {
-          int sampleRate = call.argument("sampleRate");
-          int numChannels = call.argument("numChannels");
-          int androidEncoder = call.argument("androidEncoder");
+          Integer sampleRate = call.argument("sampleRate");
+          Integer numChannels = call.argument("numChannels");
           Integer bitRate = call.argument("bitRate");
+          int androidEncoder = call.argument("androidEncoder");
           int androidAudioSource = call.argument("androidAudioSource");
           int androidOutputFormat = call.argument("androidOutputFormat");
           startRecorder(numChannels, sampleRate, bitRate, androidEncoder, androidAudioSource, androidOutputFormat, path, result);
@@ -125,9 +125,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   }
 
   @Override
-  public void startRecorder(int numChannels, int sampleRate, Integer bitRate, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result) {
+  public void startRecorder(Integer numChannels, Integer sampleRate, Integer bitRate, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
       if (
           reg.activity().checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
               || reg.activity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
@@ -152,13 +151,19 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       this.model.getMediaRecorder().setAudioSource(androidAudioSource);
       this.model.getMediaRecorder().setOutputFormat(androidOutputFormat);
       this.model.getMediaRecorder().setAudioEncoder(androidEncoder);
-      this.model.getMediaRecorder().setAudioChannels(numChannels);
-      this.model.getMediaRecorder().setAudioSamplingRate(sampleRate);
 
       this.model.getMediaRecorder().setOutputFile(path);
 
-      // If bitrate is defined, the use it, otherwise use the OS default
-      if(bitRate != null){
+      if (numChannels != null) {
+        this.model.getMediaRecorder().setAudioChannels(numChannels);
+      }
+
+      if (sampleRate != null) {
+        this.model.getMediaRecorder().setAudioSamplingRate(sampleRate);
+      }
+
+      // If bitrate is defined, then use it, otherwise use the OS default
+      if (bitRate != null) {
         this.model.getMediaRecorder().setAudioEncodingBitRate(bitRate);
       }
     }

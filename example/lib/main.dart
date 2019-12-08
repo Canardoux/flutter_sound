@@ -5,6 +5,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'dart:async';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound/android_encoder.dart';
 
 void main() {
   runApp(new MyApp());
@@ -44,7 +45,11 @@ class _MyAppState extends State<MyApp> {
 
   void startRecorder() async{
     try {
-      String path = await flutterSound.startRecorder(Platform.isIOS ? 'ios.m4a' : 'android.mp4');
+      String path = await flutterSound.startRecorder(
+        Platform.isIOS ? 'ios.aac' : 'android.aac',
+        androidEncoder: AndroidEncoder.AAC,
+        androidAudioSource: AndroidAudioSource.MIC,
+      );
       print('startRecorder: $path');
 
       _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {

@@ -61,7 +61,7 @@ On *Android* you need to add a permission to `AndroidManifest.xml`:
 ## Default uri path
 When uri path is not set during the `function call` in `startRecorder` or `startPlayer`, they are saved in below path depending on the platform.
 + Default path for android
-  * `sdcard/sound.mp4`.
+  * `sdcard/sound.aac`.
 + Default path for ios
   * `sound.m4a`.
 
@@ -89,7 +89,7 @@ result.then(path) {
 
 If you want to take your own path specify it like below.
 ```
-String path = await flutterSound.startRecorder(Platform.isIOS ? 'ios.m4a' : 'android.mp4');
+String path = await flutterSound.startRecorder(Platform.isIOS ? 'ios.m4a' : 'android.aac');
 ```
 
 #### Stop recorder

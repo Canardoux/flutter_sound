@@ -131,11 +131,23 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
   if ([@"startRecorder" isEqualToString:call.method]) {
     NSString* path = (NSString*)call.arguments[@"path"];
-    NSNumber* sampleRate = (NSNumber*)call.arguments[@"sampleRate"];
-    NSNumber* numChannels = (NSNumber*)call.arguments[@"numChannels"];
+    NSNumber* sampleRateArgs = (NSNumber*)call.arguments[@"sampleRate"];
+    NSNumber* numChannelsArgs = (NSNumber*)call.arguments[@"numChannels"];
     NSNumber* iosQuality = (NSNumber*)call.arguments[@"iosQuality"];
     NSNumber* bitRate = (NSNumber*)call.arguments[@"bitRate"];
-      [self startRecorder:path:numChannels:sampleRate:iosQuality:bitRate result:result];
+
+    float sampleRate = 16000;
+    if (![sampleRateArgs isKindOfClass:[NSNull class]]) {
+      sampleRate = [sampleRateArgs integerValue];
+    }
+
+    int numChannels = 1;
+    if (![numChannelsArgs isKindOfClass:[NSNull class]]) {
+      numChannels = [numChannelsArgs integerValue];
+    }
+
+    [self startRecorder:path:[NSNumber numberWithInt:numChannels]:[NSNumber numberWithInt:sampleRate]:iosQuality:bitRate result:result];
+
   } else if ([@"stopRecorder" isEqualToString:call.method]) {
     [self stopRecorder:result];
   } else if ([@"startPlayer" isEqualToString:call.method]) {
