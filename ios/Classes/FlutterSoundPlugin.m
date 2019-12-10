@@ -153,6 +153,9 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   } else if ([@"startPlayer" isEqualToString:call.method]) {
       NSString* path = (NSString*)call.arguments[@"path"];
       [self startPlayer:path result:result];
+  } else if ([@"startPlayerFromBuffer" isEqualToString:call.method]) {
+      FlutterStandardTypedData* dataBuffer = (FlutterStandardTypedData*)call.arguments[@"dataBuffer"];
+      [self startPlayerFromBuffer:dataBuffer result:result];
   } else if ([@"stopPlayer" isEqualToString:call.method]) {
     [self stopPlayer:result];
   } else if ([@"pausePlayer" isEqualToString:call.method]) {
@@ -243,7 +246,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
         [self startDbTimer];
   }
 
-  NSString *filePath = self->audioFileURL.absoluteString;
+  NSString *filePath = self->audioFileURL.path; // A real file path and not a URL to the file [LARPOUX]
   result(filePath);
 }
 
@@ -318,6 +321,20 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     result(filePath);
   }
 }
+
+
+- (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result {
+  audioPlayer = [[AVAudioPlayer alloc] initWithData: [dataBuffer data] error: nil];
+  audioPlayer.delegate = self;
+  [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: nil];
+  [audioPlayer play];
+  [self startTimer];
+  result(@"Playing from buffer");
+}
+
+
+
+
 
 - (void)stopPlayer:(FlutterResult)result {
   if (audioPlayer) {

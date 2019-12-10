@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 import 'dart:convert';
+import 'dart:typed_data' show Uint8List;
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/android_encoder.dart';
 import 'package:flutter_sound/ios_quality.dart';
@@ -157,7 +158,8 @@ class FlutterSound {
     return result;
   }
 
-  Future<String> startPlayer(String uri) async {
+
+  Future<String> _startPlayer(String method, Map <String, dynamic> what) async {
     if (this._isPlaying) {
       this.resumePlayer();
       return 'Player resumed';
@@ -166,20 +168,25 @@ class FlutterSound {
 
     try {
       String result =
-          await _channel.invokeMethod('startPlayer', <String, dynamic>{
-        'path': uri,
-      });
-      print('startPlayer result: $result');
+      await _channel.invokeMethod(method, what);
 
-      _setPlayerCallback();
-
-      this._isPlaying = true;
+      if (result != null)
+      {
+        print ('startPlayer result: $result');
+        _setPlayerCallback ();
+        this._isPlaying = true;
+      }
 
       return result;
     } catch (err) {
       throw Exception(err);
     }
   }
+
+
+  Future<String> startPlayer(String uri) async => _startPlayer('startPlayer', {'path': uri});
+  Future<String> startPlayerFromBuffer(Uint8List dataBuffer) async => _startPlayer('startPlayerFromBuffer', {'dataBuffer': dataBuffer});
+
 
   Future<String> stopPlayer() async {
     if (!this._isPlaying) {

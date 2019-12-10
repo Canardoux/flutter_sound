@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.media.MediaDataSource;
 import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -76,6 +77,11 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       case "startPlayer":
         this.startPlayer(path, result);
         break;
+      case "startPlayerFromBuffer":
+        byte[] dataBuffer = call.argument("dataBuffer");
+        this.startPlayerFromBuffer(dataBuffer, result);
+        break;
+
       case "stopPlayer":
         this.stopPlayer(result);
         break;
@@ -264,9 +270,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
   }
 
-  @Override
-  public void startPlayer(final String path, final Result result) {
-    if (this.model.getMediaPlayer() != null) {
+  public void _startPlayer(final String path, MediaDataSource dataBuffer, final Result result) {
+     if (this.model.getMediaPlayer() != null) {
       Boolean isPaused = !this.model.getMediaPlayer().isPlaying()
           && this.model.getMediaPlayer().getCurrentPosition() > 1;
 
@@ -285,6 +290,10 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     mTimer = new Timer();
 
     try {
+      if (dataBuffer != null)
+      {
+        model.getMediaPlayer().setDataSource(dataBuffer);
+      } else
       if (path == null) {
         this.model.getMediaPlayer().setDataSource(AudioModel.DEFAULT_FILE_LOCATION);
       } else {
@@ -322,7 +331,12 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
         };
 
         mTimer.schedule(mTask, 0, model.subsDurationMillis);
-        String resolvedPath = path == null ? AudioModel.DEFAULT_FILE_LOCATION : path;
+        String resolvedPath;
+        if (dataBuffer != null)
+        {
+          resolvedPath = "(From memory buffer)";
+        } else
+          resolvedPath = (path == null) ? AudioModel.DEFAULT_FILE_LOCATION : path;
         result.success((resolvedPath));
       });
       /*
@@ -356,6 +370,37 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       result.error(ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage());
     }
   }
+
+  @Override
+  public void startPlayer(final String path, final Result result)
+  {
+    _startPlayer(path, null, result) ;
+  }
+
+  public void startPlayerFromBuffer(final byte[] dataBuffer, final Result result)
+  {
+    class flutterSoundBuffer extends MediaDataSource
+    {
+      byte[] dataBuffer;
+      /* ctor */ flutterSoundBuffer(byte[] buffer){dataBuffer = buffer;}
+      public int readAt(long position, byte[] buffer, int offset, int size)
+      {
+        if (position > dataBuffer.length)
+          return -1; // end of buffer
+        long ln = size;
+        if (position + size > dataBuffer.length)
+          ln = dataBuffer.length - position;
+        System.arraycopy(dataBuffer, (int)position, buffer, offset, (int)ln);
+        return (int)ln;
+      }
+      public long getSize(){return dataBuffer.length;}
+      public void close(){dataBuffer = null;}
+    }
+
+    _startPlayer(null, new flutterSoundBuffer(dataBuffer), result) ;
+  }
+
+
 
   @Override
   public void stopPlayer(final Result result) {
