@@ -46,6 +46,7 @@ On *Android* you need to add a permission to `AndroidManifest.xml`:
 | startRecorder | `String uri`, `int sampleRate`, `int numChannels` | `String` uri | Start recording. This will return uri used. |
 | stopRecorder | | `String` message | Stop recording.  |
 | startPlayer | `String uri` | `String` message | Start playing.  |
+| startPlayerFromBuffer | `Uint8List dataBuffer` | `String` message | Start playing.  |
 | stopPlayer | | `String` message | Stop playing. |
 | pausePlayer | | `String` message | Pause playing. |
 | resumePlayer | | `String` message | Resume playing. |
@@ -118,7 +119,8 @@ void dispose() {
 ```
 
 #### Start player
-To start playback of a recording call startPlayer.
+To start playback of a record from a URL call startPlayer.
+To start playback of a record from a memory buffer call startPlayerFromBuffer
 
 You must wait for the return value to complete before attempting to add any listeners
 to ensure that the player has fully initialised.
