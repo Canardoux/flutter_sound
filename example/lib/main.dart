@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data' show Uint8List;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:intl/date_symbol_data_local.dart';
@@ -31,7 +32,7 @@ class _MyAppState extends State<MyApp> {
 
   double sliderCurrentPosition = 0.0;
   double maxDuration = 1.0;
-
+  int _playFromBuffer = 0;
 
   @override
   void initState() {
@@ -101,11 +102,43 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  Future <Uint8List> makeBuffer(String path) async
+  {
+
+    try
+    {
+      File file = File(path);
+      file.openRead();
+      var contents = await file.readAsBytes ();
+      print ('The file is ${contents.length} bytes long.');
+      return contents;
+    } catch (e)
+    {
+      print(e);
+      return null;
+    }
+  }
+
   void startPlayer() async{
     try {
-      String path = await flutterSound.startPlayer(this._path);
-      await flutterSound.setVolume(1.0);
-      print('startPlayer: $path');
+      String path = null;
+      if (_playFromBuffer == 0) // Do we want to play from buffer or from file ?
+      {
+        path = await flutterSound.startPlayer (this._path); // From file
+
+      } else
+        {
+          path = await flutterSound.startPlayerFromBuffer (await makeBuffer(this._path)); // From buffer
+        }
+      if (path == null)
+        {
+          print ('Error starting player');
+          return;
+        } else
+          {
+            print('startPlayer: $path');
+          }
+       await flutterSound.setVolume(1.0);
 
       _playerSubscription = flutterSound.onPlayerStateChanged.listen((e) {
         if (e != null) {
@@ -219,7 +252,7 @@ class _MyAppState extends State<MyApp> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(top: 60.0, bottom:16.0),
+                  margin: EdgeInsets.only(top: 30.0, bottom:16.0),
                   child: Text(
                     this._playerTxt,
                     style: TextStyle(
@@ -296,7 +329,40 @@ class _MyAppState extends State<MyApp> {
                 },
                 divisions: maxDuration.toInt()
               )
-            )
+            ),
+            Container
+              (
+              color: Color(0xFFC0C0C0),
+              child: Row
+                (
+                children:
+                    [
+                Radio
+                  (
+                  value: 0,
+                  groupValue: _playFromBuffer,
+                  onChanged: (radioBtn)
+                  {
+                    setState
+                      (() {_playFromBuffer = radioBtn;});
+                    },
+                  ),
+              new Text('Play from file'),
+                Radio
+                  (
+                  value: 1,
+                  groupValue: _playFromBuffer,
+                  onChanged: (radioBtn)
+                  {
+                    setState
+                      (() {_playFromBuffer = radioBtn;});
+                  },
+                  ),
+                new Text('Play from buffer'),
+
+                    ],
+              ),
+            ),
           ],
         ),
       ),
