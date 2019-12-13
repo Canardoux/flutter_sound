@@ -246,7 +246,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
         [self startDbTimer];
   }
 
-  NSString *filePath = self->audioFileURL.path; // A real file path and not a URL to the file [LARPOUX]
+  NSString *filePath = self->audioFileURL.path;
   result(filePath);
 }
 
