@@ -6,6 +6,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter_sound/android_encoder.dart';
 import 'package:flutter_sound/ios_quality.dart';
 
+// this enum MUST be synchronized with fluttersound/AudioInterface.java  and ios/Classes/FlutterSoundPlugin.h
+enum t_CODEC
+{
+	DEFAULT,
+	CODEC_AAC,
+	CODEC_OPUS,
+	CODEC_CAF_OPUS, // Apple encapsulates its bits in its own special envelope : .caf instead of a regular ogg/opus (.opus). This is completely stupid, this is Apple.
+	CODEC_MP3,
+	CODEC_VORBIS,
+	CODEC_PCM,
+}
+
 class FlutterSound {
   static const MethodChannel _channel = const MethodChannel('flutter_sound');
   static StreamController<RecordStatus> _recorderController;
@@ -114,9 +126,10 @@ class FlutterSound {
 
   Future<String> startRecorder(String uri,
       {int sampleRate, int numChannels, int bitRate,
+        t_CODEC codec = t_CODEC.DEFAULT,
         AndroidEncoder androidEncoder = AndroidEncoder.AAC,
         AndroidAudioSource androidAudioSource = AndroidAudioSource.MIC,
-        AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.MPEG_4,
+        AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.DEFAULT,
         IosQuality iosQuality = IosQuality.LOW,
       }) async {
         
@@ -131,6 +144,7 @@ class FlutterSound {
         'sampleRate': sampleRate,
         'numChannels': numChannels,
         'bitRate': bitRate,
+        'codec': codec.index,
         'androidEncoder': androidEncoder?.value,
         'androidAudioSource': androidAudioSource?.value,
         'androidOutputFormat': androidOutputFormat?.value,

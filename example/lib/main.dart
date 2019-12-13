@@ -33,6 +33,7 @@ class _MyAppState extends State<MyApp> {
   double sliderCurrentPosition = 0.0;
   double maxDuration = 1.0;
   int _playFromBuffer = 0;
+  t_CODEC _codec = t_CODEC.CODEC_AAC;
 
   @override
   void initState() {
@@ -44,11 +45,26 @@ class _MyAppState extends State<MyApp> {
     initializeDateFormatting();
   }
 
+  static const List<String> paths =
+  [
+  		'sound.aac',	// DEFAULT
+  		'sound.aac',	// CODEC_AAC
+  		'sound.opus',	// CODEC_OPUS 
+  		'sound.caf',	// CODEC_CAF_OPUS 
+  		'sound.mp3',	// CODEC_MP3 
+  		'sound.ogg',	// CODEC_VORBIS
+  		'sound.wav',	// CODEC_PCM 
+];
   void startRecorder() async{
     try {
-      String path = await flutterSound.startRecorder(
-        Platform.isIOS ? 'ios.aac' : 'android.aac',
-        androidEncoder: AndroidEncoder.AAC,
+      String path = await flutterSound.startRecorder
+      (
+        paths[_codec.index],
+        codec: _codec,
+        sampleRate: 16000,
+        bitRate: 16000,
+        numChannels: 1,
+        //androidEncoder: AndroidEncoder.AAC, // Kept for ascendant compatibility. But it conflits with "codec:" parameter
         androidAudioSource: AndroidAudioSource.MIC,
       );
       print('startRecorder: $path');
@@ -202,6 +218,42 @@ class _MyAppState extends State<MyApp> {
         ),
         body: ListView(
           children: <Widget>[
+            Visibility(
+              visible: (!Platform.isAndroid) ,
+            child: Container
+              (
+              color: Color(0xFFC0C0C0),
+              child: Row
+                (
+                children:
+                [
+                  Radio
+                    (
+                    value: t_CODEC.CODEC_AAC,
+                    groupValue: _codec,
+                    onChanged: (radioBtn)
+                    {
+                      setState
+                        (() {_codec = radioBtn;});
+                    },
+                    ),
+                  Text('AAC'),
+                  Radio
+                    (
+                    value: t_CODEC.CODEC_CAF_OPUS,
+                    groupValue: _codec,
+                    onChanged: (radioBtn)
+                    {
+                      setState
+                        (() {_codec = radioBtn;});
+                    },
+                    ),
+                  Text('caf/opus'),
+                ],
+                ),
+              ),
+            ),
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,

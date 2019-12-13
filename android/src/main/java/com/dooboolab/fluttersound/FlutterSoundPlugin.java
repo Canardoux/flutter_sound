@@ -6,11 +6,13 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.MediaDataSource;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.os.Environment;
 
+import io.flutter.util.PathUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -66,9 +68,11 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
           Integer numChannels = call.argument("numChannels");
           Integer bitRate = call.argument("bitRate");
           int androidEncoder = call.argument("androidEncoder");
+          int _codec = call.argument("codec");
+          t_CODEC codec = t_CODEC.values()[_codec];
           int androidAudioSource = call.argument("androidAudioSource");
           int androidOutputFormat = call.argument("androidOutputFormat");
-          startRecorder(numChannels, sampleRate, bitRate, androidEncoder, androidAudioSource, androidOutputFormat, path, result);
+          startRecorder(numChannels, sampleRate, bitRate, codec,  androidEncoder, androidAudioSource, androidOutputFormat, path, result);
         });
         break;
       case "stopRecorder":
@@ -130,8 +134,10 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     return false;
   }
 
+  int codecArray[] = {MediaRecorder.AudioEncoder.AAC, MediaRecorder.AudioEncoder.OPUS};
+
   @Override
-  public void startRecorder(Integer numChannels, Integer sampleRate, Integer bitRate, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result) {
+  public void startRecorder(Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       if (
           reg.activity().checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
@@ -146,17 +152,66 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       }
     }
 
-    if (path == null) {
-      path = AudioModel.DEFAULT_FILE_LOCATION;
-    } else {
-      path = Environment.getExternalStorageDirectory().getPath() + "/" + path;
-    }
-
-    if (this.model.getMediaRecorder() == null) {
+    path = PathUtils.getDataDirectory(reg.context()) + "/" + path; // SDK 29 : you may not write in getExternalStorageDirectory() [LARPOUX]
+ 
+    if (this.model.getMediaRecorder() == null)
+    {
       this.model.setMediaRecorder(new MediaRecorder());
-      this.model.getMediaRecorder().setAudioSource(androidAudioSource);
-      this.model.getMediaRecorder().setOutputFormat(androidOutputFormat);
-      this.model.getMediaRecorder().setAudioEncoder(androidEncoder);
+    } else
+    {
+      this.model.getMediaRecorder().reset(); 
+    }
+    this.model.getMediaRecorder().setAudioSource(androidAudioSource);
+    int codecArray[] =
+            {
+                    0 // DEFAULT
+                    , MediaRecorder.AudioEncoder.AAC
+                    , MediaRecorder.AudioEncoder.OPUS
+                    , 0 // CODEC_CAF_OPUS (specific Apple)
+                    , 0 // CODEC_MP3 (not implemented)
+                    , 0 // CODEC_VORBIS (not implemented)
+                    , 0 // CODEC_PCM (not implemented)
+            };
+    int formatsArray[] =
+            {
+                      MediaRecorder.OutputFormat.MPEG_4 // DEFAULT
+                    , MediaRecorder.OutputFormat.MPEG_4 // CODEC_AAC
+                    , MediaRecorder.OutputFormat.OGG    // CODEC_OPUS
+                    , 0                                 // CODEC_CAF_OPUS (this is apple specific)
+                    , 0                                 // CODEC_MP3
+                    , MediaRecorder.OutputFormat.OGG    // CODEC_VORBIS
+                    , 0                                 // CODEC_PCM
+
+            };
+    if (codecArray[codec.ordinal()] != 0)
+    {
+      androidEncoder = codecArray[codec.ordinal()];
+      androidOutputFormat = formatsArray[codec.ordinal()];
+    }
+    this.model.getMediaRecorder().setOutputFormat (androidOutputFormat);
+    model.getMediaRecorder().setAudioEncoder(androidEncoder);
+
+    if (path == null)
+    {
+      switch(androidEncoder)
+      {
+        case MediaRecorder.AudioEncoder.AAC:
+          path = "sound.acc";
+          break;
+        case MediaRecorder.AudioEncoder.OPUS:
+          path = "sound.opus";
+          break;
+        case MediaRecorder.AudioEncoder.VORBIS:
+          path = "sound.ogg";
+          break;
+        case MediaRecorder.AudioEncoder.DEFAULT:
+          path = "sound.acc";
+          break; // ?
+        default:
+          path = "sound.acc";
+          break; // ?
+      }
+    }
 
       this.model.getMediaRecorder().setOutputFile(path);
 
@@ -171,7 +226,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       // If bitrate is defined, then use it, otherwise use the OS default
       if (bitRate != null) {
         this.model.getMediaRecorder().setAudioEncodingBitRate(bitRate);
-      }
     }
 
     try {
