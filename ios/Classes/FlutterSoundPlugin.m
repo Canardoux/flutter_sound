@@ -243,7 +243,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
         [self startDbTimer];
   }
 
-  NSString *filePath = self->audioFileURL.absoluteString;
+  NSString *filePath = self->audioFileURL.path;
   result(filePath);
 }
 
