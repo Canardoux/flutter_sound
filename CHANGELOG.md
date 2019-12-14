@@ -1,3 +1,5 @@
+## 1.7.0
++ startPlayerFromBuffer, to play from a buffer [#170](https://github.com/dooboolab/flutter_sound/pull/170)
 ## 1.6.0
 + Set android default encoding option to `AAC`.
 + Fix android default poor sound.
