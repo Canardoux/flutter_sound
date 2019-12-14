@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data' show Uint8List;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:intl/date_symbol_data_local.dart';
@@ -31,7 +32,8 @@ class _MyAppState extends State<MyApp> {
 
   double sliderCurrentPosition = 0.0;
   double maxDuration = 1.0;
-
+  int _playFromBuffer = 0;
+  t_CODEC _codec = t_CODEC.CODEC_AAC;
 
   @override
   void initState() {
@@ -43,11 +45,26 @@ class _MyAppState extends State<MyApp> {
     initializeDateFormatting();
   }
 
+  static const List<String> paths =
+  [
+  		'sound.aac',	// DEFAULT
+  		'sound.aac',	// CODEC_AAC
+  		'sound.opus',	// CODEC_OPUS 
+  		'sound.caf',	// CODEC_CAF_OPUS 
+  		'sound.mp3',	// CODEC_MP3 
+  		'sound.ogg',	// CODEC_VORBIS
+  		'sound.wav',	// CODEC_PCM 
+];
   void startRecorder() async{
     try {
-      String path = await flutterSound.startRecorder(
-        Platform.isIOS ? 'ios.aac' : 'android.aac',
-        androidEncoder: AndroidEncoder.AAC,
+      String path = await flutterSound.startRecorder
+      (
+        paths[_codec.index],
+        codec: _codec,
+        sampleRate: 16000,
+        bitRate: 16000,
+        numChannels: 1,
+        //androidEncoder: AndroidEncoder.AAC, // Kept for ascendant compatibility. But it conflits with "codec:" parameter
         androidAudioSource: AndroidAudioSource.MIC,
       );
       print('startRecorder: $path');
@@ -101,11 +118,40 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  Future <Uint8List> makeBuffer(String path) async
+  {
+
+    try
+    {
+      File file = File(path);
+      file.openRead();
+      var contents = await file.readAsBytes ();
+      print ('The file is ${contents.length} bytes long.');
+      return contents;
+    } catch (e)
+    {
+      print(e);
+      return null;
+    }
+  }
+
   void startPlayer() async{
     try {
-      String path = await flutterSound.startPlayer(this._path);
-      await flutterSound.setVolume(1.0);
-      print('startPlayer: $path');
+      String path = null;
+      if (_playFromBuffer == 0) { // Do we want to play from buffer or from file ?
+        path = await flutterSound.startPlayer(this._path); // From file
+
+      } else {
+        Uint8List buffer = await makeBuffer(this._path);
+        if (buffer != null)
+          path = await flutterSound.startPlayerFromBuffer(buffer); // From buffer
+      }
+      if (path == null) {
+        print ('Error starting player');
+        return;
+      }
+       print('startPlayer: $path');
+       await flutterSound.setVolume(1.0);
 
       _playerSubscription = flutterSound.onPlayerStateChanged.listen((e) {
         if (e != null) {
@@ -169,6 +215,42 @@ class _MyAppState extends State<MyApp> {
         ),
         body: ListView(
           children: <Widget>[
+            Visibility(
+              visible: (!Platform.isAndroid) ,
+            child: Container
+              (
+              color: Color(0xFFC0C0C0),
+              child: Row
+                (
+                children:
+                [
+                  Radio
+                    (
+                    value: t_CODEC.CODEC_AAC,
+                    groupValue: _codec,
+                    onChanged: (radioBtn)
+                    {
+                      setState
+                        (() {_codec = radioBtn;});
+                    },
+                    ),
+                  Text('AAC'),
+                  Radio
+                    (
+                    value: t_CODEC.CODEC_CAF_OPUS,
+                    groupValue: _codec,
+                    onChanged: (radioBtn)
+                    {
+                      setState
+                        (() {_codec = radioBtn;});
+                    },
+                    ),
+                  Text('caf/opus'),
+                ],
+                ),
+              ),
+            ),
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -219,7 +301,7 @@ class _MyAppState extends State<MyApp> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(top: 60.0, bottom:16.0),
+                  margin: EdgeInsets.only(top: 30.0, bottom:16.0),
                   child: Text(
                     this._playerTxt,
                     style: TextStyle(
@@ -296,7 +378,40 @@ class _MyAppState extends State<MyApp> {
                 },
                 divisions: maxDuration.toInt()
               )
-            )
+            ),
+            Container
+              (
+              color: Color(0xFFC0C0C0),
+              child: Row
+                (
+                children:
+                    [
+                Radio
+                  (
+                  value: 0,
+                  groupValue: _playFromBuffer,
+                  onChanged: (radioBtn)
+                  {
+                    setState
+                      (() {_playFromBuffer = radioBtn;});
+                    },
+                  ),
+              new Text('Play from file'),
+                Radio
+                  (
+                  value: 1,
+                  groupValue: _playFromBuffer,
+                  onChanged: (radioBtn)
+                  {
+                    setState
+                      (() {_playFromBuffer = radioBtn;});
+                  },
+                  ),
+                new Text('Play from buffer'),
+
+                    ],
+              ),
+            ),
           ],
         ),
       ),

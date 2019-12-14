@@ -1,6 +1,29 @@
 #import "FlutterSoundPlugin.h"
 #import <AVFoundation/AVFoundation.h>
 
+NSString* defaultExtensions [] =
+{
+	  @"sound.aac" 	// CODEC_DEFAULT
+	  @"sound.aac" 	// CODEC_AAC
+	, @"sound.opus"	// CODEC_OPUS
+	, @"sound.caf"	// CODEC_CAF_OPUS
+	, @"sound.mp3"	// CODEC_MP3
+	, @"sound.ogg"	// CODEC_VORBIS
+	, @"sound.wav"	// CODE_PCM
+};
+
+AudioFormatID formats [] =
+{
+	  kAudioFormatMPEG4AAC	// CODEC_DEFAULT
+        , kAudioFormatMPEG4AAC	// CODEC_AAC
+	, 0						// CODEC_OPUS
+	, kAudioFormatOpus		// CODEC_CAF_OPUS
+	, 0						// CODEC_MP3
+	, 0						// CODEC_OGG
+	, 0						// CODEC_PCM
+};
+
+
 // post fix with _FlutterSound to avoid conflicts with common libs including path_provider
 NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir) {
   NSArray* paths = NSSearchPathForDirectoriesInDomains(dir, NSUserDomainMask, YES);
@@ -135,6 +158,13 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     NSNumber* numChannelsArgs = (NSNumber*)call.arguments[@"numChannels"];
     NSNumber* iosQuality = (NSNumber*)call.arguments[@"iosQuality"];
     NSNumber* bitRate = (NSNumber*)call.arguments[@"bitRate"];
+    NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
+    
+    t_CODEC coder = CODEC_AAC;
+    if (![codec isKindOfClass:[NSNull class]])
+    {
+            coder = [codec intValue];
+    }
 
     float sampleRate = 44100;
     if (![sampleRateArgs isKindOfClass:[NSNull class]]) {
@@ -146,13 +176,16 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
       numChannels = [numChannelsArgs integerValue];
     }
 
-    [self startRecorder:path:[NSNumber numberWithInt:numChannels]:[NSNumber numberWithInt:sampleRate]:iosQuality:bitRate result:result];
+    [self startRecorder:path:[NSNumber numberWithInt:numChannels]:[NSNumber numberWithInt:sampleRate]:coder:iosQuality:bitRate result:result];
 
   } else if ([@"stopRecorder" isEqualToString:call.method]) {
     [self stopRecorder:result];
   } else if ([@"startPlayer" isEqualToString:call.method]) {
       NSString* path = (NSString*)call.arguments[@"path"];
       [self startPlayer:path result:result];
+  } else if ([@"startPlayerFromBuffer" isEqualToString:call.method]) {
+      FlutterStandardTypedData* dataBuffer = (FlutterStandardTypedData*)call.arguments[@"dataBuffer"];
+      [self startPlayerFromBuffer:dataBuffer result:result];
   } else if ([@"stopPlayer" isEqualToString:call.method]) {
     [self stopPlayer:result];
   } else if ([@"pausePlayer" isEqualToString:call.method]) {
@@ -197,19 +230,25 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     result(@"setDbLevelEnabled");
 }
 
-- (void)startRecorder :(NSString*)path :(NSNumber*)numChannels :(NSNumber*)sampleRate :(NSNumber*)iosQuality :(NSNumber*)bitRate result: (FlutterResult)result {
+- (void)startRecorder
+        :(NSString*)path
+        :(NSNumber*)numChannels
+        :(NSNumber*)sampleRate
+        :(t_CODEC) codec
+        :(NSNumber*)iosQuality
+        :(NSNumber*)bitRate
+        result: (FlutterResult)result {
   if ([path class] == [NSNull class]) {
-
-    audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:@"sound.aac"]];
+    audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:defaultExtensions[codec] ]];
   } else {
     audioFileURL = [NSURL fileURLWithPath: [GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:path]];
   }
-
   NSMutableDictionary *audioSettings = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                  [NSNumber numberWithFloat:[sampleRate doubleValue]],AVSampleRateKey,
-                                 [NSNumber numberWithInt: kAudioFormatMPEG4AAC],AVFormatIDKey,
+                                 [NSNumber numberWithInt: formats[codec] ],AVFormatIDKey,
                                  [NSNumber numberWithInt: [numChannels intValue]],AVNumberOfChannelsKey,
-                                 [NSNumber numberWithInt: [iosQuality intValue]],AVEncoderAudioQualityKey,nil];
+                                 [NSNumber numberWithInt: [iosQuality intValue]],AVEncoderAudioQualityKey,
+                                 nil];
     
     // If bitrate is defined, the use it, otherwise use the OS default
     if(![bitRate isEqual:[NSNull null]]) {
@@ -318,6 +357,20 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     result(filePath);
   }
 }
+
+
+- (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result {
+  audioPlayer = [[AVAudioPlayer alloc] initWithData: [dataBuffer data] error: nil];
+  audioPlayer.delegate = self;
+  [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: nil];
+  [audioPlayer play];
+  [self startTimer];
+  result(@"Playing from buffer");
+}
+
+
+
+
 
 - (void)stopPlayer:(FlutterResult)result {
   if (audioPlayer) {

@@ -4,12 +4,15 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.media.MediaDataSource;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.os.Environment;
 
+import io.flutter.util.PathUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -65,9 +68,11 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
           Integer numChannels = call.argument("numChannels");
           Integer bitRate = call.argument("bitRate");
           int androidEncoder = call.argument("androidEncoder");
+          int _codec = call.argument("codec");
+          t_CODEC codec = t_CODEC.values()[_codec];
           int androidAudioSource = call.argument("androidAudioSource");
           int androidOutputFormat = call.argument("androidOutputFormat");
-          startRecorder(numChannels, sampleRate, bitRate, androidEncoder, androidAudioSource, androidOutputFormat, path, result);
+          startRecorder(numChannels, sampleRate, bitRate, codec,  androidEncoder, androidAudioSource, androidOutputFormat, path, result);
         });
         break;
       case "stopRecorder":
@@ -76,6 +81,11 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       case "startPlayer":
         this.startPlayer(path, result);
         break;
+      case "startPlayerFromBuffer":
+        byte[] dataBuffer = call.argument("dataBuffer");
+        this.startPlayerFromBuffer(dataBuffer, result);
+        break;
+
       case "stopPlayer":
         this.stopPlayer(result);
         break;
@@ -124,8 +134,10 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     return false;
   }
 
+  int codecArray[] = {MediaRecorder.AudioEncoder.AAC, MediaRecorder.AudioEncoder.OPUS};
+
   @Override
-  public void startRecorder(Integer numChannels, Integer sampleRate, Integer bitRate, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result) {
+  public void startRecorder(Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       if (
           reg.activity().checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
@@ -140,17 +152,66 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       }
     }
 
-    if (path == null) {
-      path = AudioModel.DEFAULT_FILE_LOCATION;
-    } else {
-      path = Environment.getExternalStorageDirectory().getPath() + "/" + path;
-    }
-
-    if (this.model.getMediaRecorder() == null) {
+    path = PathUtils.getDataDirectory(reg.context()) + "/" + path; // SDK 29 : you may not write in getExternalStorageDirectory() [LARPOUX]
+ 
+    if (this.model.getMediaRecorder() == null)
+    {
       this.model.setMediaRecorder(new MediaRecorder());
-      this.model.getMediaRecorder().setAudioSource(androidAudioSource);
-      this.model.getMediaRecorder().setOutputFormat(androidOutputFormat);
-      this.model.getMediaRecorder().setAudioEncoder(androidEncoder);
+    } else
+    {
+      this.model.getMediaRecorder().reset(); 
+    }
+    this.model.getMediaRecorder().setAudioSource(androidAudioSource);
+    int codecArray[] =
+            {
+                    0 // DEFAULT
+                    , MediaRecorder.AudioEncoder.AAC
+                    , MediaRecorder.AudioEncoder.OPUS
+                    , 0 // CODEC_CAF_OPUS (specific Apple)
+                    , 0 // CODEC_MP3 (not implemented)
+                    , 0 // CODEC_VORBIS (not implemented)
+                    , 0 // CODEC_PCM (not implemented)
+            };
+    int formatsArray[] =
+            {
+                      MediaRecorder.OutputFormat.MPEG_4 // DEFAULT
+                    , MediaRecorder.OutputFormat.MPEG_4 // CODEC_AAC
+                    , MediaRecorder.OutputFormat.OGG    // CODEC_OPUS
+                    , 0                                 // CODEC_CAF_OPUS (this is apple specific)
+                    , 0                                 // CODEC_MP3
+                    , MediaRecorder.OutputFormat.OGG    // CODEC_VORBIS
+                    , 0                                 // CODEC_PCM
+
+            };
+    if (codecArray[codec.ordinal()] != 0)
+    {
+      androidEncoder = codecArray[codec.ordinal()];
+      androidOutputFormat = formatsArray[codec.ordinal()];
+    }
+    this.model.getMediaRecorder().setOutputFormat (androidOutputFormat);
+    model.getMediaRecorder().setAudioEncoder(androidEncoder);
+
+    if (path == null)
+    {
+      switch(androidEncoder)
+      {
+        case MediaRecorder.AudioEncoder.AAC:
+          path = "sound.acc";
+          break;
+        case MediaRecorder.AudioEncoder.OPUS:
+          path = "sound.opus";
+          break;
+        case MediaRecorder.AudioEncoder.VORBIS:
+          path = "sound.ogg";
+          break;
+        case MediaRecorder.AudioEncoder.DEFAULT:
+          path = "sound.acc";
+          break; // ?
+        default:
+          path = "sound.acc";
+          break; // ?
+      }
+    }
 
       this.model.getMediaRecorder().setOutputFile(path);
 
@@ -165,7 +226,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       // If bitrate is defined, then use it, otherwise use the OS default
       if (bitRate != null) {
         this.model.getMediaRecorder().setAudioEncodingBitRate(bitRate);
-      }
     }
 
     try {
@@ -264,9 +324,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
   }
 
-  @Override
-  public void startPlayer(final String path, final Result result) {
-    if (this.model.getMediaPlayer() != null) {
+  public void _startPlayer(final String path, MediaDataSource dataBuffer, final Result result) {
+     if (this.model.getMediaPlayer() != null) {
       Boolean isPaused = !this.model.getMediaPlayer().isPlaying()
           && this.model.getMediaPlayer().getCurrentPosition() > 1;
 
@@ -285,6 +344,10 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     mTimer = new Timer();
 
     try {
+      if (dataBuffer != null)
+      {
+        model.getMediaPlayer().setDataSource(dataBuffer);
+      } else
       if (path == null) {
         this.model.getMediaPlayer().setDataSource(AudioModel.DEFAULT_FILE_LOCATION);
       } else {
@@ -322,7 +385,12 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
         };
 
         mTimer.schedule(mTask, 0, model.subsDurationMillis);
-        String resolvedPath = path == null ? AudioModel.DEFAULT_FILE_LOCATION : path;
+        String resolvedPath;
+        if (dataBuffer != null)
+        {
+          resolvedPath = "(From memory buffer)";
+        } else
+          resolvedPath = (path == null) ? AudioModel.DEFAULT_FILE_LOCATION : path;
         result.success((resolvedPath));
       });
       /*
@@ -356,6 +424,37 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       result.error(ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage());
     }
   }
+
+  @Override
+  public void startPlayer(final String path, final Result result)
+  {
+    _startPlayer(path, null, result) ;
+  }
+
+  public void startPlayerFromBuffer(final byte[] dataBuffer, final Result result)
+  {
+    class flutterSoundBuffer extends MediaDataSource
+    {
+      byte[] dataBuffer;
+      /* ctor */ flutterSoundBuffer(byte[] buffer){dataBuffer = buffer;}
+      public int readAt(long position, byte[] buffer, int offset, int size)
+      {
+        if (position > dataBuffer.length)
+          return -1; // end of buffer
+        long ln = size;
+        if (position + size > dataBuffer.length)
+          ln = dataBuffer.length - position;
+        System.arraycopy(dataBuffer, (int)position, buffer, offset, (int)ln);
+        return (int)ln;
+      }
+      public long getSize(){return dataBuffer.length;}
+      public void close(){dataBuffer = null;}
+    }
+
+    _startPlayer(null, new flutterSoundBuffer(dataBuffer), result) ;
+  }
+
+
 
   @Override
   public void stopPlayer(final Result result) {

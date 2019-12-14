@@ -43,9 +43,10 @@ On *Android* you need to add a permission to `AndroidManifest.xml`:
 | Func  | Param  | Return | Description |
 | :------------ |:---------------:| :---------------:| :-----|
 | setSubscriptionDuration | `double sec` | `String` message | Set subscription timer in seconds. Default is `0.01` if not using this method.|
-| startRecorder | `String uri`, `int sampleRate`, `int numChannels` | `String` uri | Start recording. This will return uri used. |
+| startRecorder | `String uri`, `int sampleRate`, `int numChannels`, t_CODEC codec | `String` uri | Start recording. This will return uri used. |
 | stopRecorder | | `String` message | Stop recording.  |
 | startPlayer | `String uri` | `String` message | Start playing.  |
+| startPlayerFromBuffer | `Uint8List dataBuffer` | `String` message | Start playing.  |
 | stopPlayer | | `String` message | Stop playing. |
 | pausePlayer | | `String` message | Pause playing. |
 | resumePlayer | | `String` message | Resume playing. |
@@ -61,7 +62,7 @@ On *Android* you need to add a permission to `AndroidManifest.xml`:
 ## Default uri path
 When uri path is not set during the `function call` in `startRecorder` or `startPlayer`, they are saved in below path depending on the platform.
 + Default path for android
-  * `sdcard/sound.aac`.
+  * `Library/Caches/sound.aac`.
 + Default path for ios
   * `sound.aac`.
 
@@ -91,6 +92,17 @@ If you want to take your own path specify it like below.
 ```
 String path = await flutterSound.startRecorder(Platform.isIOS ? 'ios.aac' : 'android.aac');
 ```
+Actually on iOS, you can choose from two encoders :
+- AAC (this is the default)
+- CAF/OPUS
+
+To encode with OPUS you do the following :
+```dart
+await flutterSound.startRecorder(null, codec: t_CODEC.CODEC_CAF_OPUS,)
+```
+Recently, Apple added a support for encoding with the standard OPUS codec. Unfortunetly, Apple encapsulates its data in its own proprietary envelope : CAF. This is really stupid, this is Apple
+
+On Android the OPUS codec is not yet supported by flutter_sound.
 
 #### Stop recorder
 ```dart
@@ -118,7 +130,8 @@ void dispose() {
 ```
 
 #### Start player
-To start playback of a recording call startPlayer.
+- To start playback of a record from a URL call startPlayer.
+- To start playback of a record from a memory buffer call startPlayerFromBuffer
 
 You must wait for the return value to complete before attempting to add any listeners
 to ensure that the player has fully initialised.

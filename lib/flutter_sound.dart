@@ -1,9 +1,22 @@
 import 'dart:async';
 import 'dart:core';
 import 'dart:convert';
+import 'dart:typed_data' show Uint8List;
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/android_encoder.dart';
 import 'package:flutter_sound/ios_quality.dart';
+
+// this enum MUST be synchronized with fluttersound/AudioInterface.java  and ios/Classes/FlutterSoundPlugin.h
+enum t_CODEC
+{
+	DEFAULT,
+	CODEC_AAC,
+	CODEC_OPUS,
+	CODEC_CAF_OPUS, // Apple encapsulates its bits in its own special envelope : .caf instead of a regular ogg/opus (.opus). This is completely stupid, this is Apple.
+	CODEC_MP3,
+	CODEC_VORBIS,
+	CODEC_PCM,
+}
 
 class FlutterSound {
   static const MethodChannel _channel = const MethodChannel('flutter_sound');
@@ -113,9 +126,10 @@ class FlutterSound {
 
   Future<String> startRecorder(String uri,
       {int sampleRate, int numChannels, int bitRate,
+        t_CODEC codec = t_CODEC.DEFAULT,
         AndroidEncoder androidEncoder = AndroidEncoder.AAC,
         AndroidAudioSource androidAudioSource = AndroidAudioSource.MIC,
-        AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.MPEG_4,
+        AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.DEFAULT,
         IosQuality iosQuality = IosQuality.LOW,
       }) async {
         
@@ -130,6 +144,7 @@ class FlutterSound {
         'sampleRate': sampleRate,
         'numChannels': numChannels,
         'bitRate': bitRate,
+        'codec': codec.index,
         'androidEncoder': androidEncoder?.value,
         'androidAudioSource': androidAudioSource?.value,
         'androidOutputFormat': androidOutputFormat?.value,
@@ -157,7 +172,8 @@ class FlutterSound {
     return result;
   }
 
-  Future<String> startPlayer(String uri) async {
+
+  Future<String> _startPlayer(String method, Map <String, dynamic> what) async {
     if (this._isPlaying) {
       this.resumePlayer();
       return 'Player resumed';
@@ -166,20 +182,25 @@ class FlutterSound {
 
     try {
       String result =
-          await _channel.invokeMethod('startPlayer', <String, dynamic>{
-        'path': uri,
-      });
-      print('startPlayer result: $result');
+      await _channel.invokeMethod(method, what);
 
-      _setPlayerCallback();
-
-      this._isPlaying = true;
+      if (result != null)
+      {
+        print ('startPlayer result: $result');
+        _setPlayerCallback ();
+        this._isPlaying = true;
+      }
 
       return result;
     } catch (err) {
       throw Exception(err);
     }
   }
+
+
+  Future<String> startPlayer(String uri) async => _startPlayer('startPlayer', {'path': uri});
+  Future<String> startPlayerFromBuffer(Uint8List dataBuffer) async => _startPlayer('startPlayerFromBuffer', {'dataBuffer': dataBuffer});
+
 
   Future<String> stopPlayer() async {
     if (!this._isPlaying) {
