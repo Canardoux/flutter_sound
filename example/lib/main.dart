@@ -144,7 +144,9 @@ class _MyAppState extends State<MyApp> {
 
       } else
         {
-          path = await flutterSound.startPlayerFromBuffer (await makeBuffer(this._path)); // From buffer
+          Uint8List buffer = await makeBuffer(this._path);
+          if (buffer != null)
+            path = await flutterSound.startPlayerFromBuffer (buffer); // From buffer
         }
       if (path == null)
         {
