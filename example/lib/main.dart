@@ -140,13 +140,13 @@ class _MyAppState extends State<MyApp> {
       String path = null;
       if (_playFromBuffer == 0) // Do we want to play from buffer or from file ?
       {
-        path = await flutterSound.startPlayer (this._path); // From file
+        path = await flutterSound.startPlayer(this._path); // From file
 
       } else
         {
           Uint8List buffer = await makeBuffer(this._path);
           if (buffer != null)
-            path = await flutterSound.startPlayerFromBuffer (buffer); // From buffer
+            path = await flutterSound.startPlayerFromBuffer(buffer); // From buffer
         }
       if (path == null)
         {
