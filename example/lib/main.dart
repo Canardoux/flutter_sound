@@ -138,24 +138,19 @@ class _MyAppState extends State<MyApp> {
   void startPlayer() async{
     try {
       String path = null;
-      if (_playFromBuffer == 0) // Do we want to play from buffer or from file ?
-      {
+      if (_playFromBuffer == 0) { // Do we want to play from buffer or from file ?
         path = await flutterSound.startPlayer(this._path); // From file
 
-      } else
-        {
-          Uint8List buffer = await makeBuffer(this._path);
-          if (buffer != null)
-            path = await flutterSound.startPlayerFromBuffer(buffer); // From buffer
-        }
-      if (path == null)
-        {
-          print ('Error starting player');
-          return;
-        } else
-          {
-            print('startPlayer: $path');
-          }
+      } else {
+        Uint8List buffer = await makeBuffer(this._path);
+        if (buffer != null)
+          path = await flutterSound.startPlayerFromBuffer(buffer); // From buffer
+      }
+      if (path == null) {
+        print ('Error starting player');
+        return;
+      }
+       print('startPlayer: $path');
        await flutterSound.setVolume(1.0);
 
       _playerSubscription = flutterSound.onPlayerStateChanged.listen((e) {
