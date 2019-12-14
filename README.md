@@ -62,7 +62,7 @@ On *Android* you need to add a permission to `AndroidManifest.xml`:
 ## Default uri path
 When uri path is not set during the `function call` in `startRecorder` or `startPlayer`, they are saved in below path depending on the platform.
 + Default path for android
-  * `sdcard/sound.aac`.
+  * `Library/Caches/sound.aac`.
 + Default path for ios
   * `sound.aac`.
 
