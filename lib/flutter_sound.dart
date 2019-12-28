@@ -248,7 +248,7 @@ class FlutterSound {
   }
 
   Future<String> setVolume(double volume) async {
-    double indexedVolume = Platform.isIOS() ? volume * 100 : volume;
+    double indexedVolume = Platform.isIOS ? volume * 100 : volume;
     String result = '';
     if (volume < 0.0 || volume > 1.0) {
       result = 'Value of volume should be between 0.0 and 1.0.';
