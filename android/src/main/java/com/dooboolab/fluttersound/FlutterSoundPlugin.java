@@ -134,7 +134,27 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     return false;
   }
 
-  int codecArray[] = {MediaRecorder.AudioEncoder.AAC, MediaRecorder.AudioEncoder.OPUS};
+
+  int codecArray[] = {
+                  0 // DEFAULT
+                  , MediaRecorder.AudioEncoder.AAC
+                  , MediaRecorder.AudioEncoder.OPUS
+                  , 0 // CODEC_CAF_OPUS (specific Apple)
+                  , 0 // CODEC_MP3 (not implemented)
+                  , MediaRecorder.AudioEncoder.VORBIS
+                  , 0 // CODEC_PCM (not implemented)
+          };
+  int formatsArray[] = {
+                  MediaRecorder.OutputFormat.MPEG_4 // DEFAULT
+                  , MediaRecorder.OutputFormat.MPEG_4 // CODEC_AAC
+                  , MediaRecorder.OutputFormat.OGG    // CODEC_OPUS
+                  , 0                                 // CODEC_CAF_OPUS (this is apple specific)
+                  , 0                                 // CODEC_MP3
+                  , MediaRecorder.OutputFormat.OGG    // CODEC_VORBIS
+                  , 0                                 // CODEC_PCM
+
+          };
+
 
   @Override
   public void startRecorder(Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result) {
@@ -153,43 +173,22 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     }
 
     path = PathUtils.getDataDirectory(reg.context()) + "/" + path; // SDK 29 : you may not write in getExternalStorageDirectory() [LARPOUX]
+    MediaRecorder mediaRecorder = model.getMediaRecorder();
  
-    if (this.model.getMediaRecorder() == null)
-    {
-      this.model.setMediaRecorder(new MediaRecorder());
-    } else
-    {
-      this.model.getMediaRecorder().reset(); 
+    if (mediaRecorder == null) {
+      model.setMediaRecorder(new MediaRecorder());
+      mediaRecorder = model.getMediaRecorder();
+    } else {
+      mediaRecorder.reset();
     }
-    this.model.getMediaRecorder().setAudioSource(androidAudioSource);
-    int codecArray[] =
-            {
-                    0 // DEFAULT
-                    , MediaRecorder.AudioEncoder.AAC
-                    , MediaRecorder.AudioEncoder.OPUS
-                    , 0 // CODEC_CAF_OPUS (specific Apple)
-                    , 0 // CODEC_MP3 (not implemented)
-                    , 0 // CODEC_VORBIS (not implemented)
-                    , 0 // CODEC_PCM (not implemented)
-            };
-    int formatsArray[] =
-            {
-                      MediaRecorder.OutputFormat.MPEG_4 // DEFAULT
-                    , MediaRecorder.OutputFormat.MPEG_4 // CODEC_AAC
-                    , MediaRecorder.OutputFormat.OGG    // CODEC_OPUS
-                    , 0                                 // CODEC_CAF_OPUS (this is apple specific)
-                    , 0                                 // CODEC_MP3
-                    , MediaRecorder.OutputFormat.OGG    // CODEC_VORBIS
-                    , 0                                 // CODEC_PCM
-
-            };
-    if (codecArray[codec.ordinal()] != 0)
-    {
-      androidEncoder = codecArray[codec.ordinal()];
-      androidOutputFormat = formatsArray[codec.ordinal()];
+    mediaRecorder.setAudioSource(androidAudioSource);
+    if (codecArray[codec.ordinal()] == 0) {
+      result.error(TAG, "UNSUPPORTED", "Unsupported encoder");
+      return;
     }
-    this.model.getMediaRecorder().setOutputFormat (androidOutputFormat);
-    model.getMediaRecorder().setAudioEncoder(androidEncoder);
+    androidEncoder = codecArray[codec.ordinal()];
+    androidOutputFormat = formatsArray[codec.ordinal()];
+    mediaRecorder.setOutputFormat (androidOutputFormat);
 
     if (path == null)
     {
@@ -213,24 +212,27 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       }
     }
 
-      this.model.getMediaRecorder().setOutputFile(path);
+    mediaRecorder.setOutputFile(path);
+    mediaRecorder.setAudioEncoder(androidEncoder);
 
-      if (numChannels != null) {
-        this.model.getMediaRecorder().setAudioChannels(numChannels);
+
+    if (numChannels != null) {
+        mediaRecorder.setAudioChannels(numChannels);
       }
 
       if (sampleRate != null) {
-        this.model.getMediaRecorder().setAudioSamplingRate(sampleRate);
+        mediaRecorder.setAudioSamplingRate(sampleRate);
       }
 
       // If bitrate is defined, then use it, otherwise use the OS default
       if (bitRate != null) {
-        this.model.getMediaRecorder().setAudioEncodingBitRate(bitRate);
-    }
+        mediaRecorder.setAudioEncodingBitRate(bitRate);
+      }
+
 
     try {
-      this.model.getMediaRecorder().prepare();
-      this.model.getMediaRecorder().start();
+      mediaRecorder.prepare();
+      mediaRecorder.start();
 
       // Remove all pending runnables, this is just for safety (should never happen)
       recordHandler.removeCallbacksAndMessages(null);
