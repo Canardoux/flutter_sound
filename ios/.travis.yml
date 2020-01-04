@@ -1,0 +1,20 @@
+language: objective-c
+
+script: ./build-ffmpeg.sh 2>.stderr
+
+env:
+    global:
+        - secure: "POoeB0wNaIPKORu8solBfDwSbgk6bsxSJpVWqVawledYiZHnYLXUDzDawoKOXzjJ1oQQiluZWCmv+RXDA9gthTNrH08fuUEvsUHBr7sgHqaOskEbKN/s2962FLy4FRZdQyZFkrrzNcqnc3xaxgF5ZyjRewtB0JioaOSAPEH8ALc="
+        - TARBALL=ffmpeg-ios-$TRAVIS_BRANCH.tar.bz2
+
+after_success:
+    - tar cjf $TARBALL FFmpeg-iOS .stderr scratch/*/config.log ffmpeg*/LICENSE.md ffmpeg*/COPYING.* README.md
+    - openssl aes-256-cbc -k "$secret" -in .sf -d -a -out id_sf
+    - chmod 600 id_sf
+    - scp -i id_sf -o 'StrictHostKeyChecking no' $TARBALL koolbear@frs.sourceforge.net:/home/frs/project/ffmpeg-ios
+
+after_failure: cat .stderr
+
+osx_image: xcode8.3
+
+sudo: false

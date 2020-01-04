@@ -6,6 +6,13 @@
 pubspec.lock
 
 build/
+ios/FFmpeg-iOS/
+ios/FFmpeg.framework/
+ios/scratch/
+ios/thin/
+iOS/fat/
+iOS/scratch/
+ios/ffmpeg-*/
 
 .idea/
 flutter_sound.iml

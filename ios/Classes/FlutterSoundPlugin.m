@@ -1,4 +1,5 @@
 #import "FlutterSoundPlugin.h"
+#import "opus2caf.h"
 #import <AVFoundation/AVFoundation.h>
 
 NSString* defaultExtensions [] =
@@ -14,10 +15,10 @@ NSString* defaultExtensions [] =
 
 AudioFormatID formats [] =
 {
-	  kAudioFormatMPEG4AAC	// CODEC_DEFAULT
-        , kAudioFormatMPEG4AAC	// CODEC_AAC
+	  kAudioFormatMPEG4AAC	                        // CODEC_DEFAULT
+        , kAudioFormatMPEG4AAC	                        // CODEC_AAC
 	, 0						// CODEC_OPUS
-	, kAudioFormatOpus		// CODEC_CAF_OPUS
+	, kAudioFormatOpus		                // CODEC_CAF_OPUS
 	, 0						// CODEC_MP3
 	, 0						// CODEC_OGG
 	, 0						// CODEC_PCM
@@ -302,6 +303,15 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 }
 
 - (void)startPlayer:(NSString*)path result: (FlutterResult)result {
+{ // just for development
+        path = [ [[NSBundle mainBundle] resourcePath] stringByAppendingString: @"/sample-opus.opus"];// !!!!!!!!!!!!!!!!!!
+}
+  if ( [[path pathExtension] isEqualToString: @"opus"])
+  {
+        NSString* outputPath = [NSTemporaryDirectory() stringByAppendingString: @"flutter_sound.caf"];
+        opus2caf([path cString], [outputPath cString]);
+        path = outputPath;
+  }
   bool isRemote = false;
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:@"sound.aac"]];

@@ -21,6 +21,10 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		C511FEED23C0711600498508 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C511FEEC23C0711600498508 /* libz.tbd */; };
+		C511FEEF23C0716A00498508 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C511FEEE23C0716A00498508 /* libiconv.tbd */; };
+		C511FEF123C071A700498508 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C511FEF023C071A700498508 /* libbz2.tbd */; };
+		C511FEF523C0725C00498508 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C511FEF423C0725C00498508 /* VideoToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -57,6 +61,10 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C511FEEC23C0711600498508 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		C511FEEE23C0716A00498508 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		C511FEF023C071A700498508 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		C511FEF423C0725C00498508 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		DE83E239C9FEB56014FBE936 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -65,6 +73,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C511FEF123C071A700498508 /* libbz2.tbd in Frameworks */,
+				C511FEF523C0725C00498508 /* VideoToolbox.framework in Frameworks */,
+				C511FEEF23C0716A00498508 /* libiconv.tbd in Frameworks */,
+				C511FEED23C0711600498508 /* libz.tbd in Frameworks */,
 				9705A1C61CF904A100538489 /* Flutter.framework in Frameworks */,
 				3B80C3941E831B6300D905FE /* App.framework in Frameworks */,
 				670E0D016E1F72A7F08D9336 /* libPods-Runner.a in Frameworks */,
@@ -86,6 +98,10 @@
 		721C0A64B6CD929BA300D8E8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C511FEF423C0725C00498508 /* VideoToolbox.framework */,
+				C511FEF023C071A700498508 /* libbz2.tbd */,
+				C511FEEE23C0716A00498508 /* libiconv.tbd */,
+				C511FEEC23C0711600498508 /* libz.tbd */,
 				909073FE6D93D73F20886D46 /* libPods-Runner.a */,
 			);
 			name = Frameworks;
@@ -197,6 +213,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
