@@ -17,7 +17,7 @@ AudioFormatID formats [] =
 {
 	  kAudioFormatMPEG4AAC	                        // CODEC_DEFAULT
         , kAudioFormatMPEG4AAC	                        // CODEC_AAC
-	, 0						// CODEC_OPUS
+	, kAudioFormatOpus				// CODEC_OPUS
 	, kAudioFormatOpus		                // CODEC_CAF_OPUS
 	, 0						// CODEC_MP3
 	, 0						// CODEC_OGG
@@ -37,6 +37,7 @@ NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir) {
   AVAudioPlayer *audioPlayer;
   NSTimer *timer;
   NSTimer *dbPeakTimer;
+  t_CODEC codec;
 }
 double subscriptionDuration = 0.01;
 double dbPeakInterval = 0.8;
@@ -235,15 +236,24 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
         :(NSString*)path
         :(NSNumber*)numChannels
         :(NSNumber*)sampleRate
-        :(t_CODEC) codec
+        :(t_CODEC) aCodec
         :(NSNumber*)iosQuality
         :(NSNumber*)bitRate
         result: (FlutterResult)result {
+  codec = aCodec;
+        
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:defaultExtensions[codec] ]];
   } else {
     audioFileURL = [NSURL fileURLWithPath: [GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:path]];
   }
+  
+  NSURL* url = audioFileURL;
+  if ( [[path pathExtension] isEqualToString: @"opus"] || (codec == CODEC_OPUS) ) {
+    codec = CODEC_OPUS;
+    url = [NSURL fileURLWithPath: [NSTemporaryDirectory() stringByAppendingString: @"/flutter_sound.caf"] ];
+  }
+  
   NSMutableDictionary *audioSettings = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                  [NSNumber numberWithFloat:[sampleRate doubleValue]],AVSampleRateKey,
                                  [NSNumber numberWithInt: formats[codec] ],AVFormatIDKey,
@@ -270,7 +280,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   AudioSessionSetProperty (kAudioSessionProperty_OverrideCategoryEnableBluetoothInput,sizeof (allowBluetoothInput),&allowBluetoothInput);
  
   audioRecorder = [[AVAudioRecorder alloc]
-                        initWithURL:audioFileURL
+                        initWithURL:url
                         settings:audioSettings
                         error:nil];
 
@@ -299,16 +309,16 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   [audioSession setActive:NO error:nil];
 
   NSString *filePath = audioFileURL.absoluteString;
+  if (codec == CODEC_OPUS) {
+   NSString* inputPath = [NSTemporaryDirectory() stringByAppendingString: @"/flutter_sound.caf"];
+   opus2caf([inputPath cString], [filePath cString]);
+  }
   result(filePath);
 }
 
 - (void)startPlayer:(NSString*)path result: (FlutterResult)result {
-{ // just for development
-        path = [ [[NSBundle mainBundle] resourcePath] stringByAppendingString: @"/sample-opus.opus"];// !!!!!!!!!!!!!!!!!!
-}
-  if ( [[path pathExtension] isEqualToString: @"opus"])
-  {
-        NSString* outputPath = [NSTemporaryDirectory() stringByAppendingString: @"flutter_sound.caf"];
+  if ( [[path pathExtension] isEqualToString: @"opus"]) {
+        NSString* outputPath = [NSTemporaryDirectory() stringByAppendingString: @"/flutter_sound.caf"];
         opus2caf([path cString], [outputPath cString]);
         path = outputPath;
   }
