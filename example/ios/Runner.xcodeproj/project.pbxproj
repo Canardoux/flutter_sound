@@ -25,6 +25,9 @@
 		C511FEEF23C0716A00498508 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C511FEEE23C0716A00498508 /* libiconv.tbd */; };
 		C511FEF123C071A700498508 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C511FEF023C071A700498508 /* libbz2.tbd */; };
 		C511FEF523C0725C00498508 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C511FEF423C0725C00498508 /* VideoToolbox.framework */; };
+		C5B6885623C1049F000F10AE /* libflutter_sound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5B6885523C1049F000F10AE /* libflutter_sound.a */; };
+		C5B6885823C104CC000F10AE /* FFmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5B6885723C104CC000F10AE /* FFmpeg.framework */; };
+		C5B6885923C104CC000F10AE /* FFmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5B6885723C104CC000F10AE /* FFmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +39,7 @@
 			files = (
 				3B80C3951E831B6300D905FE /* App.framework in Embed Frameworks */,
 				9705A1C71CF904A300538489 /* Flutter.framework in Embed Frameworks */,
+				C5B6885923C104CC000F10AE /* FFmpeg.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -65,6 +69,8 @@
 		C511FEEE23C0716A00498508 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		C511FEF023C071A700498508 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		C511FEF423C0725C00498508 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		C5B6885523C1049F000F10AE /* libflutter_sound.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libflutter_sound.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5B6885723C104CC000F10AE /* FFmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FFmpeg.framework; path = ../../ios/FFmpeg.framework; sourceTree = "<group>"; };
 		DE83E239C9FEB56014FBE936 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,6 +81,8 @@
 			files = (
 				C511FEF123C071A700498508 /* libbz2.tbd in Frameworks */,
 				C511FEF523C0725C00498508 /* VideoToolbox.framework in Frameworks */,
+				C5B6885823C104CC000F10AE /* FFmpeg.framework in Frameworks */,
+				C5B6885623C1049F000F10AE /* libflutter_sound.a in Frameworks */,
 				C511FEEF23C0716A00498508 /* libiconv.tbd in Frameworks */,
 				C511FEED23C0711600498508 /* libz.tbd in Frameworks */,
 				9705A1C61CF904A100538489 /* Flutter.framework in Frameworks */,
@@ -98,6 +106,8 @@
 		721C0A64B6CD929BA300D8E8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C5B6885723C104CC000F10AE /* FFmpeg.framework */,
+				C5B6885523C1049F000F10AE /* libflutter_sound.a */,
 				C511FEF423C0725C00498508 /* VideoToolbox.framework */,
 				C511FEF023C071A700498508 /* libbz2.tbd */,
 				C511FEEE23C0716A00498508 /* libiconv.tbd */,

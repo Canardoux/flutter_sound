@@ -29,7 +29,7 @@
  */
 
 //#include <libavutil/timestamp.h>
-#include <libavformat/avformat.h>
+#include <FFmpeg/avformat.h>
 //#include <stdbool.h>
 
 void log_packet(const AVFormatContext *fmt_ctx, const AVPacket *pkt, const char *tag)
