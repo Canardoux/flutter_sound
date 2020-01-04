@@ -72,8 +72,8 @@ Actually, the following codecs are supported by flutter_sound:
 
 | | AAC  | OGG/Opus  | CAF/Opus | MP3 | OGG/Vorbis | PCM |
 | :------------ |:---------------:| :---------------:| :-----| :-----| :-----| :-----|
-| iOS encoder| Yes | No | Yes | No | No | No |
-| iOS decoder| Yes | No | Yes | Yes | No | Yes |
+| iOS encoder| Yes | Yes | Yes | No | No | No |
+| iOS decoder| Yes | Yes | Yes | Yes | No | Yes |
 | Android encoder| Yes | No | No | No | No | No |
 | Android decoder| Yes | Yes | No | Yes | Yes | Yes |
 
