@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data' show Uint8List;
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/android_encoder.dart';
@@ -349,15 +350,15 @@ class FlutterSound {
   }
 
   Future<String> setVolume(double volume) async {
+    double indexedVolume = Platform.isIOS ? volume * 100 : volume;
     String result = '';
     if (volume < 0.0 || volume > 1.0) {
       result = 'Value of volume should be between 0.0 and 1.0.';
       return result;
     }
 
-    result = await _channel
-        .invokeMethod('setVolume', <String, dynamic>{
-      'volume': volume,
+    result = await _channel.invokeMethod('setVolume', <String, dynamic>{
+      'volume': indexedVolume,
     });
     return result;
   }
