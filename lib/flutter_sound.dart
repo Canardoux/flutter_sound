@@ -37,11 +37,7 @@ class FlutterSound {
   [
     true, // DEFAULT
     true, // AAC
-<<<<<<< HEAD
     true, // OGG/OPUS
-=======
-    false, // OGG/OPUS
->>>>>>> upstream/master
     true, // CAF/OPUS
     false, // MP3
     false, // OGG/VORBIS
@@ -53,11 +49,7 @@ class FlutterSound {
   [
     true, // DEFAULT
     true, // AAC
-<<<<<<< HEAD
     true, // OGG/OPUS
-=======
-    false, // OGG/OPUS
->>>>>>> upstream/master
     true, // CAF/OPUS
     true, // MP3
     false, // OGG/VORBIS
