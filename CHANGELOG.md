@@ -1,3 +1,14 @@
+## 1.8.0
+- Fix issue #175(https://github.com/dooboolab/flutter_sound/issues/175)
+  - add functions
+      . isEncoderSupported(t_CODEC codec);
+      . isDecoderSupported(t_CODEC codec);
+  - add property 'audioState'
+  - check if codec is really supported before doing 'startRecorder'
+  - modify the example app : disable buttons when the button is not compatible with the current state
+  - in the example, add sound assets encoded with the various encoder
+  - modify the example to play from assets
+  - modify the example to allow selection of various codec
 ## 1.7.0
 + startPlayerFromBuffer, to play from a buffer [#170](https://github.com/dooboolab/flutter_sound/pull/170)
 ## 1.6.0
