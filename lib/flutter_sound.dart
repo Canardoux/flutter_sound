@@ -286,8 +286,8 @@ class FlutterSound {
   }
 
 
-  Future<String> startPlayer(String uri) async => _startPlayer('startPlayer', {'path': uri});
-  Future<String> startPlayerFromBuffer(Uint8List dataBuffer) async => _startPlayer('startPlayerFromBuffer', {'dataBuffer': dataBuffer});
+  Future<String> startPlayer(String uri, {codec = t_CODEC.DEFAULT,}) async => _startPlayer('startPlayer', {'path': uri, 'codec': codec.index,});
+  Future<String> startPlayerFromBuffer(Uint8List dataBuffer, {t_CODEC codec = t_CODEC.DEFAULT,}) async => _startPlayer('startPlayerFromBuffer', {'dataBuffer': dataBuffer, 'codec': codec.index,});
 
 
   Future<String> stopPlayer() async {

@@ -163,8 +163,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
     
     t_CODEC coder = CODEC_AAC;
-    if (![codec isKindOfClass:[NSNull class]])
-    {
+    if (![codec isKindOfClass:[NSNull class]]) {
             coder = [codec intValue];
     }
 
@@ -184,10 +183,20 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     [self stopRecorder:result];
   } else if ([@"startPlayer" isEqualToString:call.method]) {
       NSString* path = (NSString*)call.arguments[@"path"];
-      [self startPlayer:path result:result];
+      NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
+      t_CODEC decodec = DEFAULT;
+      if (![codec isKindOfClass:[NSNull class]]) {
+              decodec = [codec intValue];
+      }
+      [self startPlayer:path:decodec result:result];
   } else if ([@"startPlayerFromBuffer" isEqualToString:call.method]) {
       FlutterStandardTypedData* dataBuffer = (FlutterStandardTypedData*)call.arguments[@"dataBuffer"];
-      [self startPlayerFromBuffer:dataBuffer result:result];
+      NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
+      t_CODEC decodec = DEFAULT;
+      if (![codec isKindOfClass:[NSNull class]]) {
+              decodec = [codec intValue];
+      }
+      [self startPlayerFromBuffer:dataBuffer:decodec result:result];
   } else if ([@"stopPlayer" isEqualToString:call.method]) {
     [self stopPlayer:result];
   } else if ([@"pausePlayer" isEqualToString:call.method]) {
@@ -316,8 +325,8 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   result(filePath);
 }
 
-- (void)startPlayer:(NSString*)path result: (FlutterResult)result {
-  if ( [[path pathExtension] isEqualToString: @"opus"]) {
+- (void)startPlayer:(NSString*)path :(t_CODEC) aCodec result: (FlutterResult)result {
+  if ( [[path pathExtension] isEqualToString: @"opus"] || (aCodec == CODEC_OPUS)) {
         NSString* outputPath = [NSTemporaryDirectory() stringByAppendingString: @"/flutter_sound.caf"];
         opus2caf([path cString], [outputPath cString]);
         path = outputPath;
@@ -360,10 +369,8 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 
     [downloadTask resume];
   } else {
-    // if (!audioPlayer) { // Fix sound distoring when playing recorded audio again.
       audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:nil];
       audioPlayer.delegate = self;
-    // }
 
     // Able to play in silent mode
     [[AVAudioSession sharedInstance]
@@ -379,7 +386,13 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 }
 
 
-- (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result {
+- (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer:(t_CODEC) aCodec result: (FlutterResult)result {
+  if (aCodec == CODEC_OPUS) {
+    NSString* outputPath = [NSTemporaryDirectory() stringByAppendingString: @"/flutter_sound.opus"];
+    [ [dataBuffer data] writeToFile: outputPath atomically: false];
+    [ self startPlayer: outputPath: aCodec result:result];
+    return;
+  }
   audioPlayer = [[AVAudioPlayer alloc] initWithData: [dataBuffer data] error: nil];
   audioPlayer.delegate = self;
   [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: nil];

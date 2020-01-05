@@ -165,17 +165,17 @@ class _MyAppState extends State<MyApp> {
       String path = null;
       if (_media == t_MEDIA.ASSET) {
           Uint8List buffer =  (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
-          path = await flutterSound.startPlayerFromBuffer (buffer);
+          path = await flutterSound.startPlayerFromBuffer (buffer, codec: _codec);
       } else
       if (_media == t_MEDIA.FILE) {// Do we want to play from buffer or from file ?
         if (await fileExists(_path[_codec.index]))
-          path = await flutterSound.startPlayer(this._path[_codec.index]); // From file
+          path = await flutterSound.startPlayer(this._path[_codec.index], codec: _codec,); // From file
       } else
       if (_media == t_MEDIA.BUFFER) { // Do we want to play from buffer or from file ? 
         if (await fileExists(_path[_codec.index])) {
                 Uint8List buffer = await makeBuffer (this._path[_codec.index]);
                 if ( buffer != null )
-                        path = await flutterSound.startPlayerFromBuffer (buffer); // From buffer
+                        path = await flutterSound.startPlayerFromBuffer (buffer, codec: _codec,); // From buffer
         }
       }
       if (path == null) {
@@ -402,7 +402,7 @@ class _MyAppState extends State<MyApp> {
                       (() {_codec = radioBtn;});
                   },
                   ),
-                Text('CAF/Opus'),
+                Text('CAF'),
               ],
               ),
             ),
