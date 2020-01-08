@@ -231,7 +231,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     mediaRecorder.setOutputFile(path);
     mediaRecorder.setAudioEncoder(androidEncoder);
 
-
     if (numChannels != null) {
         mediaRecorder.setAudioChannels(numChannels);
       }
