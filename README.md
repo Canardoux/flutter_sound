@@ -66,6 +66,22 @@ When uri path is not set during the `function call` in `startRecorder` or `start
 + Default path for ios
   * `sound.aac`.
 
+
+## Codec compatibility
+Actually, the following codecs are supported by flutter_sound:
+
+| | AAC  | OGG/Opus  | CAF/Opus | MP3 | OGG/Vorbis | PCM |
+| :------------ |:---------------:| :---------------:| :-----| :-----| :-----| :-----|
+| iOS encoder| Yes | No | Yes | No | No | No |
+| iOS decoder| Yes | No | Yes | Yes | No | Yes |
+| Android encoder| Yes | No | No | No | No | No |
+| Android decoder| Yes | Yes | No | Yes | Yes | Yes |
+
+This table will eventually be upgrated when more codecs will be added.
+
+
+
+
 ## Usage
 #### Creating instance.
 In your view/page/dialog widget's State class, create an instance of FlutterSound.
