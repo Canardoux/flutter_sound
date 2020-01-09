@@ -29,7 +29,7 @@ bool _isIosEncoderSupported [] =
 {
     true, // DEFAULT
     true, // AAC
-    false, // OGG/OPUS
+    true, // OGG/OPUS
     true, // CAF/OPUS
     false, // MP3
     false, // OGG/VORBIS
@@ -41,7 +41,7 @@ bool _isIosDecoderSupported [] =
 {
     true, // DEFAULT
     true, // AAC
-    false, // OGG/OPUS
+    true, // OGG/OPUS
     true, // CAF/OPUS
     true, // MP3
     false, // OGG/VORBIS
@@ -214,19 +214,19 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   } else if ([@"startPlayer" isEqualToString:call.method]) {
       NSString* path = (NSString*)call.arguments[@"path"];
       NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
-      t_CODEC decodec = DEFAULT;
+      t_CODEC coder = CODEC_AAC;
       if (![codec isKindOfClass:[NSNull class]]) {
-              decodec = [codec intValue];
+        coder = [codec intValue];
       }
-      [self startPlayer:path:decodec result:result];
+      [self startPlayer:path:coder result:result];
   } else if ([@"startPlayerFromBuffer" isEqualToString:call.method]) {
       FlutterStandardTypedData* dataBuffer = (FlutterStandardTypedData*)call.arguments[@"dataBuffer"];
       NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
-      t_CODEC decodec = DEFAULT;
+      t_CODEC coder = CODEC_AAC;
       if (![codec isKindOfClass:[NSNull class]]) {
-              decodec = [codec intValue];
+        coder = [codec intValue];
       }
-      [self startPlayerFromBuffer:dataBuffer:decodec result:result];
+      [self startPlayerFromBuffer:dataBuffer:coder result:result];
   } else if ([@"stopPlayer" isEqualToString:call.method]) {
     [self stopPlayer:result];
   } else if ([@"pausePlayer" isEqualToString:call.method]) {
@@ -361,7 +361,10 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   NSString *filePath = audioFileURL.absoluteString;
   if (codec == CODEC_OPUS) {
    NSString* inputPath = [NSTemporaryDirectory() stringByAppendingString: @"/flutter_sound.caf"];
-   opus2caf([inputPath cString], [filePath cString]);
+   if (opus2caf([inputPath cString], [filePath cString]) == 0 ) {
+        result(0);
+        return;
+   }
   }
   result(filePath);
 }
@@ -369,7 +372,10 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 - (void)startPlayer:(NSString*)path :(t_CODEC) aCodec result: (FlutterResult)result {
   if ( [[path pathExtension] isEqualToString: @"opus"] || (aCodec == CODEC_OPUS)) {
         NSString* outputPath = [NSTemporaryDirectory() stringByAppendingString: @"/flutter_sound.caf"];
-        opus2caf([path cString], [outputPath cString]);
+        if (opus2caf([path cString], [outputPath cString]) == 0) {
+                result(0);
+                return;
+        }
         path = outputPath;
   }
   bool isRemote = false;

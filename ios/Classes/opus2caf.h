@@ -27,4 +27,4 @@
  * Remux streams from one container format to another.
  * @example remuxing.c
  */
-void opus2caf(const char* inputPath, const char* outputPath);
+int opus2caf(const char* inputPath, const char* outputPath);
