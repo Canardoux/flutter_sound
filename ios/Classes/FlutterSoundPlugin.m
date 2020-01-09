@@ -25,6 +25,30 @@ AudioFormatID formats [] =
 };
 
 
+bool _isIosEncoderSupported [] =
+{
+    true, // DEFAULT
+    true, // AAC
+    false, // OGG/OPUS
+    true, // CAF/OPUS
+    false, // MP3
+    false, // OGG/VORBIS
+    false, // WAV/PCM
+};
+
+
+bool _isIosDecoderSupported [] =
+{
+    true, // DEFAULT
+    true, // AAC
+    false, // OGG/OPUS
+    true, // CAF/OPUS
+    true, // MP3
+    false, // OGG/VORBIS
+    true, // WAV/PCM
+};
+
+
 // post fix with _FlutterSound to avoid conflicts with common libs including path_provider
 NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir) {
   NSArray* paths = NSSearchPathForDirectoriesInDomains(dir, NSUserDomainMask, YES);
@@ -179,8 +203,14 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 
     [self startRecorder:path:[NSNumber numberWithInt:numChannels]:[NSNumber numberWithInt:sampleRate]:coder:iosQuality:bitRate result:result];
 
+  } else if ([@"isEncoderSupported" isEqualToString:call.method]) {
+    NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
+    [self isEncoderSupported:[codec intValue] result:result];
+  } else if ([@"isDecoderSupported" isEqualToString:call.method]) {
+     NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
+     [self isDecoderSupported:[codec intValue] result:result];
   } else if ([@"stopRecorder" isEqualToString:call.method]) {
-    [self stopRecorder:result];
+    [self stopRecorder: result];
   } else if ([@"startPlayer" isEqualToString:call.method]) {
       NSString* path = (NSString*)call.arguments[@"path"];
       NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
@@ -224,6 +254,17 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   else {
     result(FlutterMethodNotImplemented);
   }
+}
+
+
+- (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result {
+  NSNumber*  b = [NSNumber numberWithBool: _isIosDecoderSupported[codec] ];
+  result(b);
+}
+
+- (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result {
+  NSNumber*  b = [NSNumber numberWithBool: _isIosEncoderSupported[codec] ];
+  result(b);
 }
 
 - (void)setSubscriptionDuration:(double)duration result: (FlutterResult)result {

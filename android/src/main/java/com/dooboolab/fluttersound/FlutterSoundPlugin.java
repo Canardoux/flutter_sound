@@ -4,13 +4,13 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.media.MediaDataSource;
 import android.os.Build;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
-import android.os.Environment;
+import android.app.Activity;
+import android.support.v4.app.ActivityCompat;
+import java.io.*;
 
 import io.flutter.util.PathUtils;
 import org.json.JSONException;
@@ -27,6 +27,31 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
+
+// SDK compatibility
+// -----------------
+
+class sdkCompat {
+  static final int AUDIO_ENCODER_VORBIS = 6;  // MediaRecorder.AudioEncoder.VORBIS added in API level 21
+  static final int AUDIO_ENCODER_OPUS   = 7;  // MediaRecorder.AudioEncoder.OPUS   added in API level 29
+  static final int OUTPUT_FORMAT_OGG    = 11; // MediaRecorder.OutputFormat.OGG    added in API level 29
+  static final int VERSION_CODES_M      = 23; // added in API level 23
+
+  static int checkRecordPermission(Registrar reg) {
+    if (Build.VERSION.SDK_INT >= sdkCompat.VERSION_CODES_M) {// Before Marshmallow, record permission was always granted.
+      Activity activity = reg.activity();
+      if (reg.context().checkCallingOrSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.RECORD_AUDIO,}, 0);
+        if (reg.context().checkCallingOrSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
+          return PackageManager.PERMISSION_DENIED;
+      }
+    }
+    return PackageManager.PERMISSION_GRANTED;
+  }
+  protected static void setDataSource(AudioModel model, byte[] dataBuffer) {
+  }
+}
+// *****************
 
 /** FlutterSoundPlugin */
 public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.RequestPermissionsResultListener, AudioInterface{   
@@ -51,7 +76,36 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   final private Handler dbPeakLevelHandler = new Handler();
   private static MethodChannel channel;
 
-  /** Plugin registration. */
+  final static int CODEC_OPUS = 2;
+  final static int CODEC_VORBIS = 5;
+
+
+
+   boolean _isAndroidEncoderSupported [] =
+   {
+                   true, // DEFAULT
+                   true, // AAC
+                   false, // OGG/OPUS
+                   false, // CAF/OPUS
+                   false, // MP3
+                   false, // OGG/VORBIS
+                   false, // WAV/PCM
+   };
+
+
+   boolean _isAndroidDecoderSupported [] =
+   {
+                   true, // DEFAULT
+                   true, // AAC
+                   true, // OGG/OPUS
+                   false, // CAF/OPUS
+                   true, // MP3
+                   true, // OGG/VORBIS
+                   true, // WAV/PCM
+   };
+
+
+    /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
     channel = new MethodChannel(registrar.messenger(), "flutter_sound");
     channel.setMethodCallHandler(new FlutterSoundPlugin());
@@ -62,6 +116,25 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   public void onMethodCall(final MethodCall call, final Result result) {
     final String path = call.argument("path");
     switch (call.method) {
+      case "isDecoderSupported": {
+        int _codec = call.argument("codec");
+        boolean b = _isAndroidDecoderSupported[_codec];
+        if (Build.VERSION.SDK_INT < 23) {
+          if ( (_codec == CODEC_OPUS) || (_codec == CODEC_VORBIS) )
+            b = false;
+        }
+
+        result.success(b);
+      } break;
+      case "isEncoderSupported": {
+        int _codec = call.argument("codec");
+        boolean b = _isAndroidEncoderSupported[_codec];
+        if (Build.VERSION.SDK_INT < 29) {
+          if ( (_codec == CODEC_OPUS) || (_codec == CODEC_VORBIS) )
+            b = false;
+        }
+          result.success(b);
+      } break;
       case "startRecorder":
         taskScheduler.submit(() -> {
           Integer sampleRate = call.argument("sampleRate");
@@ -81,9 +154,12 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       case "startPlayer":
         this.startPlayer(path, result);
         break;
+
       case "startPlayerFromBuffer":
+        Integer _codec = call.argument("codec");
+        t_CODEC codec = t_CODEC.values()[(_codec != null) ? _codec : 0 ];
         byte[] dataBuffer = call.argument("dataBuffer");
-        this.startPlayerFromBuffer(dataBuffer, result);
+        this.startPlayerFromBuffer(dataBuffer, codec, result);
         break;
 
       case "stopPlayer":
@@ -134,43 +210,43 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     return false;
   }
 
-
-  int codecArray[] = {
-                  0 // DEFAULT
-                  , MediaRecorder.AudioEncoder.AAC
-                  , MediaRecorder.AudioEncoder.OPUS
-                  , 0 // CODEC_CAF_OPUS (specific Apple)
-                  , 0 // CODEC_MP3 (not implemented)
-                  , MediaRecorder.AudioEncoder.VORBIS
-                  , 0 // CODEC_PCM (not implemented)
-          };
-  int formatsArray[] = {
-                  MediaRecorder.OutputFormat.MPEG_4 // DEFAULT
-                  , MediaRecorder.OutputFormat.MPEG_4 // CODEC_AAC
-                  , MediaRecorder.OutputFormat.OGG    // CODEC_OPUS
-                  , 0                                 // CODEC_CAF_OPUS (this is apple specific)
-                  , 0                                 // CODEC_MP3
-                  , MediaRecorder.OutputFormat.OGG    // CODEC_VORBIS
-                  , 0                                 // CODEC_PCM
-
-          };
-
-
   @Override
   public void startRecorder(Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      if (
-          reg.activity().checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
-              || reg.activity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-          ) {
-        reg.activity().requestPermissions(new String[]{
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        }, 0);
-        result.error(TAG, "NO PERMISSION GRANTED", Manifest.permission.RECORD_AUDIO + " or " + Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        return;
+    final int v = Build.VERSION.SDK_INT;
+      //import android.media.MediaDataSource;
+      int codecArray[] = {
+                0 // DEFAULT
+              , MediaRecorder.AudioEncoder.AAC
+              , sdkCompat.AUDIO_ENCODER_OPUS
+              , 0 // CODEC_CAF_OPUS (specific Apple)
+              , 0 // CODEC_MP3 (not implemented)
+              , sdkCompat.AUDIO_ENCODER_VORBIS
+              , 0 // CODEC_PCM (not implemented)
+      };
+      int formatsArray[] = {
+                MediaRecorder.OutputFormat.MPEG_4   // DEFAULT
+              , MediaRecorder.OutputFormat.MPEG_4 // CODEC_AAC
+              , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_OPUS
+              , 0                                 // CODEC_CAF_OPUS (this is apple specific)
+              , 0                                 // CODEC_MP3
+              , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_VORBIS
+              , 0                                 // CODEC_PCM
+      };
+      String pathArray[] = {
+                "sound.acc"   // DEFAULT
+              , "sound.acc"   // CODEC_AAC
+              , "sound.opus"  // CODEC_OPUS
+              , "sound.caf"   // CODEC_CAF_OPUS (this is apple specific)
+              , "sound.mp3"   // CODEC_MP3
+              , "sound.ogg"   // CODEC_VORBIS
+              , "sound.wav"   // CODEC_PCM
+      };
+
+
+      if ( sdkCompat.checkRecordPermission(reg) != PackageManager.PERMISSION_GRANTED) {
+          result.error(TAG, "NO PERMISSION GRANTED", Manifest.permission.RECORD_AUDIO + " or " + Manifest.permission.WRITE_EXTERNAL_STORAGE);
+          return;
       }
-    }
 
     path = PathUtils.getDataDirectory(reg.context()) + "/" + path; // SDK 29 : you may not write in getExternalStorageDirectory() [LARPOUX]
     MediaRecorder mediaRecorder = model.getMediaRecorder();
@@ -191,30 +267,10 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     mediaRecorder.setOutputFormat (androidOutputFormat);
 
     if (path == null)
-    {
-      switch(androidEncoder)
-      {
-        case MediaRecorder.AudioEncoder.AAC:
-          path = "sound.acc";
-          break;
-        case MediaRecorder.AudioEncoder.OPUS:
-          path = "sound.opus";
-          break;
-        case MediaRecorder.AudioEncoder.VORBIS:
-          path = "sound.ogg";
-          break;
-        case MediaRecorder.AudioEncoder.DEFAULT:
-          path = "sound.acc";
-          break; // ?
-        default:
-          path = "sound.acc";
-          break; // ?
-      }
-    }
+      path = pathArray[codec.ordinal()];
 
     mediaRecorder.setOutputFile(path);
     mediaRecorder.setAudioEncoder(androidEncoder);
-
 
     if (numChannels != null) {
         mediaRecorder.setAudioChannels(numChannels);
@@ -326,7 +382,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
   }
 
-  public void _startPlayer(final String path, MediaDataSource dataBuffer, final Result result) {
+  public void startPlayer(final String path, final Result result) {
      if (this.model.getMediaPlayer() != null) {
       Boolean isPaused = !this.model.getMediaPlayer().isPlaying()
           && this.model.getMediaPlayer().getCurrentPosition() > 1;
@@ -346,10 +402,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     mTimer = new Timer();
 
     try {
-      if (dataBuffer != null)
-      {
-        model.getMediaPlayer().setDataSource(dataBuffer);
-      } else
       if (path == null) {
         this.model.getMediaPlayer().setDataSource(AudioModel.DEFAULT_FILE_LOCATION);
       } else {
@@ -388,10 +440,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
         mTimer.schedule(mTask, 0, model.subsDurationMillis);
         String resolvedPath;
-        if (dataBuffer != null)
-        {
-          resolvedPath = "(From memory buffer)";
-        } else
           resolvedPath = (path == null) ? AudioModel.DEFAULT_FILE_LOCATION : path;
         result.success((resolvedPath));
       });
@@ -427,35 +475,27 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     }
   }
 
-  @Override
-  public void startPlayer(final String path, final Result result)
+  public void startPlayerFromBuffer(final byte[] dataBuffer, t_CODEC codec, final Result result)
   {
-    _startPlayer(path, null, result) ;
-  }
+    String extentionArray[] = {
+              "acc"   // DEFAULT
+            , "acc"   // CODEC_AAC
+            , "opus"  // CODEC_OPUS
+            , "caf"   // CODEC_CAF_OPUS (this is apple specific)
+            , "mp3"   // CODEC_MP3
+            , "ogg"   // CODEC_VORBIS
+            , "wav"   // CODEC_PCM
+    };
 
-  public void startPlayerFromBuffer(final byte[] dataBuffer, final Result result)
-  {
-    class flutterSoundBuffer extends MediaDataSource
-    {
-      byte[] dataBuffer;
-      /* ctor */ flutterSoundBuffer(byte[] buffer){dataBuffer = buffer;}
-      public int readAt(long position, byte[] buffer, int offset, int size)
-      {
-        if (position > dataBuffer.length)
-          return -1; // end of buffer
-        long ln = size;
-        if (position + size > dataBuffer.length)
-          ln = dataBuffer.length - position;
-        System.arraycopy(dataBuffer, (int)position, buffer, offset, (int)ln);
-        return (int)ln;
-      }
-      public long getSize(){return dataBuffer.length;}
-      public void close(){dataBuffer = null;}
+    try {
+      File f = File.createTempFile("flutter_sound", extentionArray[codec.ordinal()]);
+      FileOutputStream fos = new FileOutputStream(f);
+      fos.write(dataBuffer);
+      startPlayer(f.getAbsolutePath(), result);
+    } catch(Exception e) {
+      result.error(ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage());
     }
-
-    _startPlayer(null, new flutterSoundBuffer(dataBuffer), result) ;
   }
-
 
 
   @Override
