@@ -1,7 +1,10 @@
 import 'dart:async';
-import 'dart:core';
 import 'dart:convert';
+import 'dart:core';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_sound/android_encoder.dart';
 import 'package:flutter_sound/ios_quality.dart';
 
@@ -10,15 +13,34 @@ class FlutterSound {
   static StreamController<RecordStatus> _recorderController;
   static StreamController<double> _dbPeakController;
   static StreamController<PlayStatus> _playerController;
+  static StreamController<PlaybackState> _playbackStateChangedController;
+
   /// Value ranges from 0 to 120
   Stream<double> get onRecorderDbPeakChanged => _dbPeakController.stream;
   Stream<RecordStatus> get onRecorderStateChanged => _recorderController.stream;
   Stream<PlayStatus> get onPlayerStateChanged => _playerController.stream;
+
+  /// Notifies the listeners whenever the playback state of the audio player changes.
+  ///
+  /// This stream stops working when releaseMediaPlayer() is called.
+  Stream<PlaybackState> get onPlaybackStateChanged =>
+      _playbackStateChangedController.stream;
   bool get isPlaying => _isPlaying;
   bool get isRecording => _isRecording;
 
   bool _isRecording = false;
   bool _isPlaying = false;
+  // The current state of the playback
+  PlaybackState _playbackState;
+
+  // Whether the handler for when the user tries to skip forward was set
+  bool _skipTrackForwardHandlerSet = false;
+  // Whether the handler for when the user tries to skip backward was set
+  bool _skipTrackBackwardHandlerSet = false;
+
+  // The handlers for when a Dart method is invoked from the native code
+  Map<String, Function(MethodCall)> _callHandlers =
+      <String, Function(MethodCall)>{};
 
   Future<String> setSubscriptionDuration(double sec) async {
     String result = await _channel
@@ -29,58 +51,35 @@ class FlutterSound {
   }
 
   Future<void> _setRecorderCallback() async {
-    if (_recorderController == null) {
-      _recorderController = new StreamController.broadcast();
-    }
-    if (_dbPeakController == null) {
-      _dbPeakController = new StreamController.broadcast();
-    }
-
-    _channel.setMethodCallHandler((MethodCall call) {
-      switch (call.method) {
-        case "updateRecorderProgress":
-          Map<String, dynamic> result = json.decode(call.arguments);
-          if (_recorderController != null)
-            _recorderController.add(new RecordStatus.fromJSON(result));
-          break;
-        case "updateDbPeakProgress":
-        if (_dbPeakController!= null)
-          _dbPeakController.add(call.arguments);
-          break;
-        default:
-          throw new ArgumentError('Unknown method ${call.method} ');
+    _callHandlers.addAll({
+      "updateRecorderProgress": (call) {
+        Map<String, dynamic> result = json.decode(call.arguments);
+        if (_recorderController != null)
+          _recorderController.add(new RecordStatus.fromJSON(result));
+      },
+      "updateDbPeakProgress": (call) {
+        if (_dbPeakController != null) _dbPeakController.add(call.arguments);
       }
-      return null;
     });
   }
 
   Future<void> _setPlayerCallback() async {
-    if (_playerController == null) {
-      _playerController = new StreamController.broadcast();
-    }
-
-    _channel.setMethodCallHandler((MethodCall call) {
-      switch (call.method) {
-        case "updateProgress":
-          Map<String, dynamic> result = jsonDecode(call.arguments);
-          if (_playerController!=null)
-            _playerController.add(new PlayStatus.fromJSON(result));
-          break;
-        case "audioPlayerDidFinishPlaying":
-          Map<String, dynamic> result = jsonDecode(call.arguments);
-          PlayStatus status = new PlayStatus.fromJSON(result);
-          if (status.currentPosition != status.duration) {
-            status.currentPosition = status.duration;
-          }
-          if (_playerController != null)
-            _playerController.add(status);
-          this._isPlaying = false;
-          _removePlayerCallback();
-          break;
-        default:
-          throw new ArgumentError('Unknown method ${call.method}');
+    _callHandlers.addAll({
+      'updateProgress': (call) {
+        Map<String, dynamic> result = jsonDecode(call.arguments);
+        if (_playerController != null)
+          _playerController.add(new PlayStatus.fromJSON(result));
+      },
+      'audioPlayerDidFinishPlaying': (call) {
+        Map<String, dynamic> result = jsonDecode(call.arguments);
+        PlayStatus status = new PlayStatus.fromJSON(result);
+        if (status.currentPosition != status.duration) {
+          status.currentPosition = status.duration;
+        }
+        if (_playerController != null) _playerController.add(status);
+        this._isPlaying = false;
+        _removePlayerCallback();
       }
-      return null;
     });
   }
 
@@ -93,7 +92,7 @@ class FlutterSound {
     }
   }
 
-    Future<void> _removeDbPeakCallback() async {
+  Future<void> _removeDbPeakCallback() async {
     if (_dbPeakController != null) {
       _dbPeakController
         ..add(null)
@@ -111,21 +110,30 @@ class FlutterSound {
     }
   }
 
-  Future<String> startRecorder(String uri,
-      {int sampleRate = 44100, int numChannels = 2, int bitRate,
-        AndroidEncoder androidEncoder = AndroidEncoder.DEFAULT,
-        AndroidAudioSource androidAudioSource = AndroidAudioSource.MIC,
-        AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.MPEG_4,
-        IosQuality iosQuality = IosQuality.LOW,
-      }) async {
-        
+  void _removePlaybackStateCallback() {
+    if (_playbackStateChangedController != null) {
+      _playbackStateChangedController.close();
+      _playbackStateChangedController = null;
+    }
+  }
+
+  Future<String> startRecorder(
+    String uri, {
+    int sampleRate = 44100,
+    int numChannels = 2,
+    int bitRate,
+    AndroidEncoder androidEncoder = AndroidEncoder.DEFAULT,
+    AndroidAudioSource androidAudioSource = AndroidAudioSource.MIC,
+    AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.MPEG_4,
+    IosQuality iosQuality = IosQuality.LOW,
+  }) async {
     if (this._isRecording) {
       throw new RecorderRunningException('Recorder is already recording.');
     }
 
     try {
       String result =
-      await _channel.invokeMethod('startRecorder', <String, dynamic>{
+          await _channel.invokeMethod('startRecorder', <String, dynamic>{
         'path': uri,
         'sampleRate': sampleRate,
         'numChannels': numChannels,
@@ -135,7 +143,13 @@ class FlutterSound {
         'androidOutputFormat': androidOutputFormat?.value,
         'iosQuality': iosQuality?.value
       });
-      _setRecorderCallback();
+
+      if (_recorderController == null) {
+        _recorderController = new StreamController.broadcast();
+      }
+      if (_dbPeakController == null) {
+        _dbPeakController = new StreamController.broadcast();
+      }
 
       this._isRecording = true;
       return result;
@@ -157,7 +171,10 @@ class FlutterSound {
     return result;
   }
 
-  Future<String> startPlayer(String uri) async {
+  /// Starts playing the given [track], knowing whether the user can skip
+  /// forward or backward from this track.
+  Future<String> startPlayer(
+      Track track, bool canSkipForward, bool canSkipBackward) async {
     if (this._isPlaying) {
       this.resumePlayer();
       return 'Player resumed';
@@ -165,13 +182,21 @@ class FlutterSound {
     }
 
     try {
+      if (_playerController == null) {
+        _playerController = new StreamController.broadcast();
+      }
+
+      if (_playbackStateChangedController == null) {
+        _playbackStateChangedController = StreamController.broadcast();
+      }
+
+      final trackJson = track.toJsonString();
       String result =
           await _channel.invokeMethod('startPlayer', <String, dynamic>{
-        'path': uri,
+        'track': trackJson,
+        'canSkipForward': _skipTrackForwardHandlerSet && canSkipForward,
+        'canSkipBackward': _skipTrackBackwardHandlerSet && canSkipBackward,
       });
-      print('startPlayer result: $result');
-
-      _setPlayerCallback();
 
       this._isPlaying = true;
 
@@ -181,6 +206,10 @@ class FlutterSound {
     }
   }
 
+  /// Stops the media player.
+  ///
+  /// If you would like to continue using the audio player you have to release
+  /// and initialize it again.
   Future<String> stopPlayer() async {
     if (!this._isPlaying) {
       throw PlayerStoppedException('Player already stopped.');
@@ -232,8 +261,7 @@ class FlutterSound {
       return result;
     }
 
-    result = await _channel
-        .invokeMethod('setVolume', <String, dynamic>{
+    result = await _channel.invokeMethod('setVolume', <String, dynamic>{
       'volume': volume,
     });
     return result;
@@ -242,20 +270,135 @@ class FlutterSound {
   /// Defines the interval at which the peak level should be updated.
   /// Default is 0.8 seconds
   Future<String> setDbPeakLevelUpdate(double intervalInSecs) async {
-    String result = await _channel
-      .invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
-    'intervalInSecs': intervalInSecs,
+    String result =
+        await _channel.invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
+      'intervalInSecs': intervalInSecs,
     });
     return result;
   }
 
   /// Enables or disables processing the Peak level in db's. Default is disabled
   Future<String> setDbLevelEnabled(bool enabled) async {
-    String result = await _channel
-      .invokeMethod('setDbLevelEnabled', <String, dynamic>{
-    'enabled': enabled,
+    String result =
+        await _channel.invokeMethod('setDbLevelEnabled', <String, dynamic>{
+      'enabled': enabled,
     });
     return result;
+  }
+
+  /// Sets the function to call when the user tries to skip forward or backward
+  /// from the notification.
+  void _setSkipTrackHandlers({
+    Function skipForward,
+    Function skipBackward,
+  }) {
+    _skipTrackForwardHandlerSet = skipForward != null;
+    _skipTrackBackwardHandlerSet = skipBackward != null;
+
+    /*_channel.setMethodCallHandler((MethodCall call) async {
+      switch (call.method) {
+        case 'skipForward':
+          if (skipForward != null) skipForward();
+          break;
+        case 'skipBackward':
+          if (skipBackward != null) skipBackward();
+          break;
+      }
+    });*/
+
+    _callHandlers.addAll({
+      'skipForward': (call) {
+        if (skipForward != null) skipForward();
+      },
+      'skipBackward': (call) {
+        if (skipBackward != null) skipBackward();
+      },
+    });
+  }
+
+  /// Sets the function to execute when the playback state changes
+  void _setPlaybackStateUpdateListeners() {
+    _callHandlers.addAll({
+      'updatePlaybackState': (call) {
+        switch (call.arguments) {
+          case 0:
+            _playbackState = PlaybackState.PLAYING;
+            break;
+          case 1:
+            _playbackState = PlaybackState.PAUSED;
+            break;
+          case 2:
+            _playbackState = PlaybackState.STOPPED;
+            break;
+          default:
+            throw Exception(
+                'An invalid playback state was given to updatePlaybackState.');
+        }
+
+        // If the controller has been initialized notify the listeners that the
+        // playback state has changed.
+        if (_playbackStateChangedController != null) {
+          _playbackStateChangedController.add(_playbackState);
+        }
+      },
+    });
+  }
+
+  /// Initializes the media player and all the callbacks for the player and the
+  /// recorder. This must be called before all other media player and recorder
+  /// methods.
+  ///
+  /// [skipForwardHandler] and [skipBackwardForward] are functions that are
+  /// called when the user tries to skip forward or backward using the
+  /// notification controls. They can be null.
+  ///
+  /// Media player and recorder controls should be displayed only after this
+  /// method has finished executing.
+  Future<void> initialize({
+    Function skipForwardHandler,
+    Function skipBackwardForward,
+  }) async {
+    try {
+      await _channel.invokeMethod('initializeMediaPlayer');
+      _setPlaybackStateUpdateListeners();
+      _setSkipTrackHandlers(
+        skipForward: skipForwardHandler,
+        skipBackward: skipBackwardForward,
+      );
+      _setPlayerCallback();
+      _setRecorderCallback();
+
+      // Add the method call handler
+      _channel.setMethodCallHandler((MethodCall call) async {
+        if (!_callHandlers.containsKey(call.method)) {
+          throw new ArgumentError('Unknown method ${call.method}');
+        }
+
+        _callHandlers.forEach((methodName, callback) {
+          if (methodName == call.method) callback(call);
+        });
+
+        return null;
+      });
+    } catch (err) {
+      print('err: $err');
+      throw PlayerNotInitializedException(err);
+    }
+  }
+
+  /// Resets the media player and cleans up the device resources. This must be
+  /// called when the player is no longer needed.
+  Future<void> releaseMediaPlayer() async {
+    try {
+      // Stop the player playback before releasing
+      if (_playbackState != PlaybackState.STOPPED) await stopPlayer();
+      await _channel.invokeMethod('releaseMediaPlayer');
+
+      _removePlaybackStateCallback();
+    } catch (err) {
+      print('err: $err');
+      throw PlayerNotInitializedException(err);
+    }
   }
 }
 
@@ -306,3 +449,53 @@ class RecorderStoppedException implements Exception {
   RecorderStoppedException(this.message);
 }
 
+class PlayerNotInitializedException implements Exception {
+  final String message;
+  PlayerNotInitializedException(this.message);
+}
+
+/// The possible states of the playback.
+enum PlaybackState {
+  /// The audio player is playing an audio file
+  PLAYING,
+
+  /// The audio player is currently paused
+  PAUSED,
+
+  /// The audio player has been stopped
+  STOPPED,
+}
+
+/// The track to play in the audio player
+class Track {
+  /// The title of this track
+  final String trackTitle;
+
+  /// The name of the author of this track
+  final String trackAuthor;
+
+  /// The path that points to the track audio file
+  final String trackPath;
+
+  /// The URL that points to the album art of the track
+  final String albumArtUrl;
+
+  Track({
+    @required this.trackPath,
+    this.trackTitle,
+    this.trackAuthor,
+    this.albumArtUrl,
+  }) : assert(trackPath != null);
+
+  /// Convert this object to a JSON string
+  String toJsonString() {
+    final jsonObj = {
+      "path": trackPath,
+      "title": trackTitle,
+      "author": trackAuthor,
+      "albumArt": albumArtUrl,
+    };
+
+    return json.encode(jsonObj);
+  }
+}

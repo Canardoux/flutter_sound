@@ -42,10 +42,12 @@ On *Android* you need to add a permission to `AndroidManifest.xml`:
 ## Methods
 | Func  | Param  | Return | Description |
 | :------------ |:---------------:| :---------------:| :-----|
+| initialize | `Function skipForwardHandler`, `Function skipBackwardForward` | `void` | Initializes the media player and all the callbacks for the player and the recorder. This must be called before all other media player and recorder methods.| 
+| releaseMediaPlayer |  | `void` | Resets the media player and cleans up the device resources. This must be called when the player is no longer needed.| 
 | setSubscriptionDuration | `double sec` | `String` message | Set subscription timer in seconds. Default is `0.01` if not using this method.|
 | startRecorder | `String uri`, `int sampleRate`, `int numChannels` | `String` uri | Start recording. This will return uri used. |
 | stopRecorder | | `String` message | Stop recording.  |
-| startPlayer | `String uri` | `String` message | Start playing.  |
+| startPlayer | `Track track`, `bool canSkipForward`, `bool canSkipBackward` | `String` message | Start playing.  |
 | stopPlayer | | `String` message | Stop playing. |
 | pausePlayer | | `String` message | Pause playing. |
 | resumePlayer | | `String` message | Resume playing. |
@@ -56,6 +58,7 @@ On *Android* you need to add a permission to `AndroidManifest.xml`:
 | :------------ |:---------------:| :---------------:|
 | onRecorderStateChanged | `<RecordStatus>` | Able to listen to subscription when recorder starts. |
 | onPlayerStateChanged | `<PlayStatus>` | Able to listen to subscription when player starts. |
+| onPlaybackStateChanged | `<PlaybackState>` | Able to listen to subscription when player starts.
 
 
 ## Default uri path
@@ -71,6 +74,22 @@ In your view/page/dialog widget's State class, create an instance of FlutterSoun
 
 ```dart
 FlutterSound flutterSound = new FlutterSound();
+```
+
+#### Initialize the player.
+In order to be able to execute all the player methods, you must initialize the player by calling the ```initialize``` method.
+You could also pass two functions as arguments of ```initialize```, and they will be triggered when the user tries to skip forward or backward using the buttons in the notification.
+Furthermore, your application should display media player controls only when the initialization finished successfully.
+
+```dart
+@override
+void initState() {
+	super.initState();
+	flutterSound.initialize()
+	.then((_) {
+          displayMediaPlayerControls();
+        });
+}
 ```
 
 #### Starting recorder with listener.
@@ -117,14 +136,36 @@ void dispose() {
 }
 ```
 
+#### Create a ```Track``` object
+In order to play a sound you must create a ```Track``` object to pass to ```startPlayer```.
+
+The ```Track``` class is provided by the flutter_sound package. Its constructor takes in 1 required argument and 3 optional arguments:
+* ```trackPath``` (required): a ```String``` representing the path that points to the audio file to play;
+* ```trackTitle```: the ```String``` to display in the notification as the title of the track;
+* ```trackAuthor``` the ```String``` to display in the notification as the name of the author of the track;
+* ```albumArtUrl``` a ```String``` representing the URL that points to the image to display in the notification as album art.
+
+```dart
+Track track = new Track(
+	trackPath: "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3", // An example audio file
+        trackTitle: "Track Title",
+        trackAuthor: "Track Author",
+        albumArtUrl: "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_1MB.png", // An example image
+);
+```
+
+
 #### Start player
-To start playback of a recording call startPlayer.
+To start playing a sound you have to call ```startPlayer```. This function takes in 3 arguments:
+* a ```Track```, which is the track that the player is going to play;
+* a ```boolean```, whether the user can skip forward from this track (and whether the "skip forward" button in the notification should be enabled);
+* a ```boolean```, whether the user can skip backbard from this track (and whether the "skip backward" button in the notification should be enabled).
 
 You must wait for the return value to complete before attempting to add any listeners
 to ensure that the player has fully initialised.
 
 ```dart
-Future<String> result = await flutterSound.startPlayer(null);
+Future<String> result = await flutterSound.startPlayer(track, false, false);
 
 result.then(path) {
 	print('startPlayer: $path');
@@ -142,6 +183,17 @@ result.then(path) {
 }
 ```
 
+#### Listen to plyaback state changes
+
+If you subscribe to the ```onPlaybackStateChanged``` ```Stream``` you will be notified whenever the audio player starts playing a sound, is paused or stopped.
+
+```dart
+_playbackStateSubscription = flutterSound.onPlaybackStateChanged.listen((newState) {
+        print('The new playack state is: $newState');
+});
+```
+
+
 #### Stop player
 
 
@@ -157,16 +209,7 @@ result.then(value) {
 }
 ```
 
-You MUST ensure that the player has been stopped when your widget is detached from the ui.
-Overload your widget's dispose() method to stop the player when your widget is disposed.
-
-```dart
-@override
-void dispose() {
-	flutterSound.stopPlayer();
-	super.dispose();
-}
-```
+If you want to continue using the player after calling ```stopPlayer``` you must call ```releaseMediaPlayer``` and then ```initialize``` again.
 
 #### Pause player
 ```dart
@@ -220,6 +263,19 @@ _dbPeakSubscription = flutterSound.onRecorderDbPeakChanged.listen((value) {
     this._dbLevel = value;
   });
 });
+```
+
+#### Release the player
+You MUST ensure that the player has been released when your widget is detached from the ui.
+Overload your widget's ```dispose()``` method to release the player when your widget is disposed.
+In this way you will reset the player and clean up the device resources, but the player will be no longer usable.
+
+```dart
+@override
+void dispose() {
+	flutterSound.releaseMediaPlayer();
+	super.dispose();
+}
 ```
 
 ### TODO
