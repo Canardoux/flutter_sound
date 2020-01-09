@@ -28,12 +28,8 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
-
-// ****************************************** //
-// *                                        * //
-// *        SDK compatibility               * //
-// *                                        * //
-// ****************************************** //
+// SDK compatibility
+// -----------------
 
 class sdkCompat {
   static final int AUDIO_ENCODER_VORBIS = 6;  // MediaRecorder.AudioEncoder.VORBIS added in API level 21
@@ -41,8 +37,6 @@ class sdkCompat {
   static final int OUTPUT_FORMAT_OGG    = 11; // MediaRecorder.OutputFormat.OGG    added in API level 29
   static final int VERSION_CODES_M      = 23; // added in API level 23
 
-  // PermissionChecker added in version 23
-  // -------------------------------------
   static int checkRecordPermission(Registrar reg) {
     if (Build.VERSION.SDK_INT >= sdkCompat.VERSION_CODES_M) {// Before Marshmallow, record permission was always granted.
       Activity activity = reg.activity();
@@ -54,12 +48,10 @@ class sdkCompat {
     }
     return PackageManager.PERMISSION_GRANTED;
   }
-  // setDataSource(MediaSource) added in version 23
-  // ----------------------------------------------
   protected static void setDataSource(AudioModel model, byte[] dataBuffer) {
   }
 }
-// *******************************************
+// *****************
 
 /** FlutterSoundPlugin */
 public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.RequestPermissionsResultListener, AudioInterface{   
@@ -84,7 +76,36 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   final private Handler dbPeakLevelHandler = new Handler();
   private static MethodChannel channel;
 
-  /** Plugin registration. */
+  final static int CODEC_OPUS = 2;
+  final static int CODEC_VORBIS = 5;
+
+
+
+   boolean _isAndroidEncoderSupported [] =
+   {
+                   true, // DEFAULT
+                   true, // AAC
+                   false, // OGG/OPUS
+                   false, // CAF/OPUS
+                   false, // MP3
+                   false, // OGG/VORBIS
+                   false, // WAV/PCM
+   };
+
+
+   boolean _isAndroidDecoderSupported [] =
+   {
+                   true, // DEFAULT
+                   true, // AAC
+                   true, // OGG/OPUS
+                   false, // CAF/OPUS
+                   true, // MP3
+                   true, // OGG/VORBIS
+                   true, // WAV/PCM
+   };
+
+
+    /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
     channel = new MethodChannel(registrar.messenger(), "flutter_sound");
     channel.setMethodCallHandler(new FlutterSoundPlugin());
@@ -95,6 +116,25 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   public void onMethodCall(final MethodCall call, final Result result) {
     final String path = call.argument("path");
     switch (call.method) {
+      case "isDecoderSupported": {
+        int _codec = call.argument("codec");
+        boolean b = _isAndroidDecoderSupported[_codec];
+        if (Build.VERSION.SDK_INT < 23) {
+          if ( (_codec == CODEC_OPUS) || (_codec == CODEC_VORBIS) )
+            b = false;
+        }
+
+        result.success(b);
+      } break;
+      case "isEncoderSupported": {
+        int _codec = call.argument("codec");
+        boolean b = _isAndroidEncoderSupported[_codec];
+        if (Build.VERSION.SDK_INT < 29) {
+          if ( (_codec == CODEC_OPUS) || (_codec == CODEC_VORBIS) )
+            b = false;
+        }
+          result.success(b);
+      } break;
       case "startRecorder":
         taskScheduler.submit(() -> {
           Integer sampleRate = call.argument("sampleRate");
@@ -114,6 +154,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       case "startPlayer":
         this.startPlayer(path, result);
         break;
+
       case "startPlayerFromBuffer":
         Integer _codec = call.argument("codec");
         t_CODEC codec = t_CODEC.values()[(_codec != null) ? _codec : 0 ];
@@ -341,7 +382,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
   }
 
-  public void _startPlayer(final String path, final Result result) {
+  public void startPlayer(final String path, final Result result) {
      if (this.model.getMediaPlayer() != null) {
       Boolean isPaused = !this.model.getMediaPlayer().isPlaying()
           && this.model.getMediaPlayer().getCurrentPosition() > 1;
@@ -434,12 +475,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     }
   }
 
-  @Override
-  public void startPlayer(final String path, final Result result)
-  {
-    _startPlayer(path, result) ;
-  }
-
   public void startPlayerFromBuffer(final byte[] dataBuffer, t_CODEC codec, final Result result)
   {
     String extentionArray[] = {
@@ -456,7 +491,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       File f = File.createTempFile("flutter_sound", extentionArray[codec.ordinal()]);
       FileOutputStream fos = new FileOutputStream(f);
       fos.write(dataBuffer);
-      _startPlayer(f.getAbsolutePath(), result);
+      startPlayer(f.getAbsolutePath(), result);
     } catch(Exception e) {
       result.error(ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage());
     }

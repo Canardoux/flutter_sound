@@ -31,57 +31,6 @@ enum t_AUDIO_STATE
 
 
 class FlutterSound {
-
-
-  List<bool> _isIosEncoderSupported =
-  [
-    true, // DEFAULT
-    true, // AAC
-    false, // OGG/OPUS
-    true, // CAF/OPUS
-    false, // MP3
-    false, // OGG/VORBIS
-    false, // WAV/PCM
-  ];
-
-
-  List<bool> _isIosDecoderSupported =
-  [
-    true, // DEFAULT
-    true, // AAC
-    false, // OGG/OPUS
-    true, // CAF/OPUS
-    true, // MP3
-    false, // OGG/VORBIS
-    true, // WAV/PCM
-  ];
-
-
-
-  List<bool> _isAndroidEncoderSupported =
-  [
-    true, // DEFAULT
-    true, // AAC
-    false, // OGG/OPUS
-    false, // CAF/OPUS
-    false, // MP3
-    false, // OGG/VORBIS
-    false, // WAV/PCM
-  ];
-
-
-  List<bool> _isAndroidDecoderSupported =
-  [
-    true, // DEFAULT
-    true, // AAC
-    true, // OGG/OPUS
-    false, // CAF/OPUS
-    true, // MP3
-    true, // OGG/VORBIS
-    true, // WAV/PCM
-  ];
-
-
   static const MethodChannel _channel = const MethodChannel('flutter_sound');
   static StreamController<RecordStatus> _recorderController;
   static StreamController<double> _dbPeakController;
@@ -99,22 +48,16 @@ class FlutterSound {
   t_AUDIO_STATE _audio_state = t_AUDIO_STATE.IS_STOPPED;
   bool _isPlaying() => _audio_state == t_AUDIO_STATE.IS_PLAYING || _audio_state == t_AUDIO_STATE.IS_PAUSED;
 
-  bool isEncoderSupported(t_CODEC codec) {
-    if (Platform.isAndroid) {
-      return _isAndroidEncoderSupported[codec.index];
-    } else if (Platform.isIOS) {
-      return _isIosEncoderSupported[codec.index];
-    } else
-      return false;
+  Future<bool> isEncoderSupported(t_CODEC codec) async {
+      bool result =
+          await _channel.invokeMethod('isEncoderSupported', <String, dynamic> { 'codec': codec.index } );
+      return result;
   }
 
-  bool isDecoderSupported(t_CODEC codec) {
-    if (Platform.isAndroid) {
-      return _isAndroidDecoderSupported[codec.index];
-    } else if (Platform.isIOS) {
-      return _isIosDecoderSupported[codec.index];
-    } else
-      return false;
+  Future<bool>  isDecoderSupported(t_CODEC codec) async {
+    bool result =
+        await _channel.invokeMethod('isDecoderSupported', <String, dynamic> { 'codec': codec.index } );
+    return result;
   }
 
   Future<String> setSubscriptionDuration(double sec) async {
@@ -220,7 +163,7 @@ class FlutterSound {
     if (_audio_state != t_AUDIO_STATE.IS_STOPPED) {
       throw new RecorderRunningException('Recorder is not stopped.');
     }
-    if (!isEncoderSupported(codec))
+    if (! await isEncoderSupported(codec))
       throw new RecorderRunningException('Codec not supported.');
     try {
       String result =
