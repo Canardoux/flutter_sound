@@ -48,13 +48,11 @@ class sdkCompat {
     }
     return PackageManager.PERMISSION_GRANTED;
   }
-  protected static void setDataSource(AudioModel model, byte[] dataBuffer) {
-  }
 }
 // *****************
 
 /** FlutterSoundPlugin */
-public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.RequestPermissionsResultListener, AudioInterface{   
+public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.RequestPermissionsResultListener, AudioInterface{
   final static String TAG = "FlutterSoundPlugin";
   final static String RECORD_STREAM = "com.dooboolab.fluttersound/record";
   final static String PLAY_STREAM= "com.dooboolab.fluttersound/play";
@@ -79,31 +77,65 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   final static int CODEC_OPUS = 2;
   final static int CODEC_VORBIS = 5;
 
+  static boolean _isAndroidEncoderSupported [] = {
+    true, // DEFAULT
+    true, // AAC
+    false, // OGG/OPUS
+    false, // CAF/OPUS
+    false, // MP3
+    false, // OGG/VORBIS
+    false, // WAV/PCM
+  };
 
+  static boolean _isAndroidDecoderSupported [] = {
+    true, // DEFAULT
+    true, // AAC
+    true, // OGG/OPUS
+    false, // CAF/OPUS
+    true, // MP3
+    true, // OGG/VORBIS
+    true, // WAV/PCM
+  };
 
-   boolean _isAndroidEncoderSupported [] =
-   {
-                   true, // DEFAULT
-                   true, // AAC
-                   false, // OGG/OPUS
-                   false, // CAF/OPUS
-                   false, // MP3
-                   false, // OGG/VORBIS
-                   false, // WAV/PCM
-   };
+  static int codecArray[] = {
+      0 // DEFAULT
+    , MediaRecorder.AudioEncoder.AAC
+    , sdkCompat.AUDIO_ENCODER_OPUS
+    , 0 // CODEC_CAF_OPUS (specific Apple)
+    , 0 // CODEC_MP3 (not implemented)
+    , sdkCompat.AUDIO_ENCODER_VORBIS
+    , 0 // CODEC_PCM (not implemented)
+  };
 
+  static int formatsArray[] = {
+      MediaRecorder.OutputFormat.MPEG_4 // DEFAULT
+    , MediaRecorder.OutputFormat.MPEG_4 // CODEC_AAC
+    , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_OPUS
+    , 0                                 // CODEC_CAF_OPUS (this is apple specific)
+    , 0                                 // CODEC_MP3
+    , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_VORBIS
+    , 0                                 // CODEC_PCM
+  };
 
-   boolean _isAndroidDecoderSupported [] =
-   {
-                   true, // DEFAULT
-                   true, // AAC
-                   true, // OGG/OPUS
-                   false, // CAF/OPUS
-                   true, // MP3
-                   true, // OGG/VORBIS
-                   true, // WAV/PCM
-   };
+  static String pathArray[] = {
+      "sound.acc"   // DEFAULT
+    , "sound.acc"   // CODEC_AAC
+    , "sound.opus"  // CODEC_OPUS
+    , "sound.caf"   // CODEC_CAF_OPUS (this is apple specific)
+    , "sound.mp3"   // CODEC_MP3
+    , "sound.ogg"   // CODEC_VORBIS
+    , "sound.wav"   // CODEC_PCM
+  };
 
+  String extentionArray[] = {
+      "acc"   // DEFAULT
+    , "acc"   // CODEC_AAC
+    , "opus"  // CODEC_OPUS
+    , "caf"   // CODEC_CAF_OPUS (this is apple specific)
+    , "mp3"   // CODEC_MP3
+    , "ogg"   // CODEC_VORBIS
+    , "wav"   // CODEC_PCM
+  };
 
     /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
@@ -213,35 +245,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   @Override
   public void startRecorder(Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result) {
     final int v = Build.VERSION.SDK_INT;
-      //import android.media.MediaDataSource;
-      int codecArray[] = {
-                0 // DEFAULT
-              , MediaRecorder.AudioEncoder.AAC
-              , sdkCompat.AUDIO_ENCODER_OPUS
-              , 0 // CODEC_CAF_OPUS (specific Apple)
-              , 0 // CODEC_MP3 (not implemented)
-              , sdkCompat.AUDIO_ENCODER_VORBIS
-              , 0 // CODEC_PCM (not implemented)
-      };
-      int formatsArray[] = {
-                MediaRecorder.OutputFormat.MPEG_4   // DEFAULT
-              , MediaRecorder.OutputFormat.MPEG_4 // CODEC_AAC
-              , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_OPUS
-              , 0                                 // CODEC_CAF_OPUS (this is apple specific)
-              , 0                                 // CODEC_MP3
-              , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_VORBIS
-              , 0                                 // CODEC_PCM
-      };
-      String pathArray[] = {
-                "sound.acc"   // DEFAULT
-              , "sound.acc"   // CODEC_AAC
-              , "sound.opus"  // CODEC_OPUS
-              , "sound.caf"   // CODEC_CAF_OPUS (this is apple specific)
-              , "sound.mp3"   // CODEC_MP3
-              , "sound.ogg"   // CODEC_VORBIS
-              , "sound.wav"   // CODEC_PCM
-      };
-
 
       if ( sdkCompat.checkRecordPermission(reg) != PackageManager.PERMISSION_GRANTED) {
           result.error(TAG, "NO PERMISSION GRANTED", Manifest.permission.RECORD_AUDIO + " or " + Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -250,7 +253,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
     path = PathUtils.getDataDirectory(reg.context()) + "/" + path; // SDK 29 : you may not write in getExternalStorageDirectory() [LARPOUX]
     MediaRecorder mediaRecorder = model.getMediaRecorder();
- 
+
     if (mediaRecorder == null) {
       model.setMediaRecorder(new MediaRecorder());
       mediaRecorder = model.getMediaRecorder();
@@ -323,7 +326,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
             // Calculate db based on the following article.
             // https://stackoverflow.com/questions/10655703/what-does-androids-getmaxamplitude-function-for-the-mediarecorder-actually-gi
-            // 
+            //
             double ref_pressure = 51805.5336;
             double p = maxAmplitude  / ref_pressure;
             double p0 = 0.0002;
@@ -477,16 +480,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
   public void startPlayerFromBuffer(final byte[] dataBuffer, t_CODEC codec, final Result result)
   {
-    String extentionArray[] = {
-              "acc"   // DEFAULT
-            , "acc"   // CODEC_AAC
-            , "opus"  // CODEC_OPUS
-            , "caf"   // CODEC_CAF_OPUS (this is apple specific)
-            , "mp3"   // CODEC_MP3
-            , "ogg"   // CODEC_VORBIS
-            , "wav"   // CODEC_PCM
-    };
-
     try {
       File f = File.createTempFile("flutter_sound", extentionArray[codec.ordinal()]);
       FileOutputStream fos = new FileOutputStream(f);
