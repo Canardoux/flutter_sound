@@ -9,7 +9,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.app.Activity;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 import java.io.*;
 
 import io.flutter.util.PathUtils;

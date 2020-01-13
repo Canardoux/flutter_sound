@@ -39,6 +39,9 @@ On *Android* you need to add a permission to `AndroidManifest.xml`:
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 ```
 
+## Migration Guide
+To migrate to `2.0.0` you must migrate your Android app to Android X by following the [Migrating to AndroidX Guide](https://developer.android.com/jetpack/androidx/migrate).
+
 ## Methods
 | Func  | Param  | Return | Description |
 | :------------ |:---------------:| :---------------:| :-----|
