@@ -28,7 +28,18 @@ enum t_AUDIO_STATE
         IS_RECORDING,
 }
 
+const defaultPath = 'sound.aac';
 
+final List<String> paths =
+  [
+  		defaultPath,	// DEFAULT
+  		'sound.aac',	// CODEC_AAC
+  		'sound.opus',	// CODEC_OPUS
+  		'sound.caf',	// CODEC_CAF_OPUS
+  		'sound.mp3',	// CODEC_MP3
+  		'sound.ogg',	// CODEC_VORBIS
+  		'sound.wav',	// CODEC_PCM
+];
 
 class FlutterSound {
   static const MethodChannel _channel = const MethodChannel('flutter_sound');
@@ -151,23 +162,23 @@ class FlutterSound {
     }
   }
 
-  Future<String> startRecorder(String uri,
-      {int sampleRate, int numChannels, int bitRate,
-        t_CODEC codec = t_CODEC.DEFAULT,
+  Future<String> startRecorder(
+      {
+        String uri = defaultPath,
+        int sampleRate = 16000, int numChannels = 1, int bitRate = 16000,
+        t_CODEC codec = t_CODEC.CODEC_AAC,
         AndroidEncoder androidEncoder = AndroidEncoder.AAC,
         AndroidAudioSource androidAudioSource = AndroidAudioSource.MIC,
         AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.DEFAULT,
         IosQuality iosQuality = IosQuality.LOW,
       }) async {
-        
     if (_audio_state != t_AUDIO_STATE.IS_STOPPED) {
       throw new RecorderRunningException('Recorder is not stopped.');
     }
     if (! await isEncoderSupported(codec))
       throw new RecorderRunningException('Codec not supported.');
     try {
-      String result =
-      await _channel.invokeMethod('startRecorder', <String, dynamic>{
+      var param = <String, dynamic>{
         'path': uri,
         'sampleRate': sampleRate,
         'numChannels': numChannels,
@@ -177,7 +188,9 @@ class FlutterSound {
         'androidAudioSource': androidAudioSource?.value,
         'androidOutputFormat': androidOutputFormat?.value,
         'iosQuality': iosQuality?.value
-      });
+      };
+
+      String result = await _channel.invokeMethod('startRecorder', param);
       _setRecorderCallback();
         _audio_state = t_AUDIO_STATE.IS_RECORDING;
       return result;

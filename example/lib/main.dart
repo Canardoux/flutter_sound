@@ -53,27 +53,18 @@ class _MyAppState extends State<MyApp> {
     initializeDateFormatting();
   }
 
-  static const List<String> paths =
-  [
-  		'sound.aac',	// DEFAULT
-  		'sound.aac',	// CODEC_AAC
-  		'sound.opus',	// CODEC_OPUS
-  		'sound.caf',	// CODEC_CAF_OPUS
-  		'sound.mp3',	// CODEC_MP3
-  		'sound.ogg',	// CODEC_VORBIS
-  		'sound.wav',	// CODEC_PCM
-];
   void startRecorder() async{
     try {
-      String path = await flutterSound.startRecorder
-      (
-        paths[_codec.index],
-        codec: _codec,
-        sampleRate: 16000,
-        bitRate: 16000,
-        numChannels: 1,
-        androidAudioSource: AndroidAudioSource.MIC,
-      );
+      // String path = await flutterSound.startRecorder
+      // (
+      //   paths[_codec.index],
+      //   codec: _codec,
+      //   sampleRate: 16000,
+      //   bitRate: 16000,
+      //   numChannels: 1,
+      //   androidAudioSource: AndroidAudioSource.MIC,
+      // );
+      String path = await flutterSound.startRecorder();
       print('startRecorder: $path');
 
       _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
@@ -109,7 +100,7 @@ class _MyAppState extends State<MyApp> {
 
   void stopRecorder() async {
     try {
-      String result = await flutterSound.stopRecorder ();
+      String result = await flutterSound.stopRecorder();
       print ('stopRecorder: $result');
 
       if ( _recorderSubscription != null ) {
@@ -165,7 +156,7 @@ class _MyAppState extends State<MyApp> {
       String path = null;
       if (_media == t_MEDIA.ASSET) {
           Uint8List buffer =  (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
-          path = await flutterSound.startPlayerFromBuffer (buffer);
+          path = await flutterSound.startPlayerFromBuffer(buffer);
       } else
       if (_media == t_MEDIA.FILE) {// Do we want to play from buffer or from file ?
         if (await fileExists(_path[_codec.index]))
@@ -175,7 +166,7 @@ class _MyAppState extends State<MyApp> {
         if (await fileExists(_path[_codec.index])) {
                 Uint8List buffer = await makeBuffer (this._path[_codec.index]);
                 if ( buffer != null )
-                        path = await flutterSound.startPlayerFromBuffer (buffer); // From buffer
+                        path = await flutterSound.startPlayerFromBuffer(buffer); // From buffer
         }
       }
       if (path == null) {

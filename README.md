@@ -95,7 +95,7 @@ FlutterSound flutterSound = new FlutterSound();
 
 #### Starting recorder with listener.
 ```dart
-Future<String> result = await flutterSound.startRecorder(null);
+Future<String> result = await flutterSound.startRecorder();
 
 result.then(path) {
 	print('startRecorder: $path');
@@ -117,7 +117,7 @@ Actually on iOS, you can choose from two encoders :
 
 To encode with OPUS you do the following :
 ```dart
-await flutterSound.startRecorder(null, codec: t_CODEC.CODEC_CAF_OPUS,)
+await flutterSound.startRecorder(codec: t_CODEC.CODEC_CAF_OPUS,)
 ```
 Recently, Apple added a support for encoding with the standard OPUS codec. Unfortunetly, Apple encapsulates its data in its own proprietary envelope : CAF. This is really stupid, this is Apple
 
