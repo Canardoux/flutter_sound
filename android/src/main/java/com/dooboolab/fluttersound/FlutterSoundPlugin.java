@@ -251,7 +251,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
           return;
       }
 
-    path = PathUtils.getDataDirectory(reg.context()) + "/" + path; // SDK 29 : you may not write in getExternalStorageDirectory() [LARPOUX]
+    // The caller must be allowed to specify its path. We must not change it here
+    // path = PathUtils.getDataDirectory(reg.context()) + "/" + path; // SDK 29 : you may not write in getExternalStorageDirectory() [LARPOUX]
     MediaRecorder mediaRecorder = model.getMediaRecorder();
 
     if (mediaRecorder == null) {

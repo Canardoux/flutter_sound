@@ -46,10 +46,10 @@ To migrate to `2.0.0` you must migrate your Android app to Android X by followin
 | Func  | Param  | Return | Description |
 | :------------ |:---------------:| :---------------:| :-----|
 | setSubscriptionDuration | `double sec` | `String` message | Set subscription timer in seconds. Default is `0.01` if not using this method.|
-| startRecorder | `String uri`, `int sampleRate`, `int numChannels`, t_CODEC codec | `String` uri | Start recording. This will return uri used. |
+| startRecorder | `String uri`, `int sampleRate`, `int numChannels`, `t_CODEC codec` | `String` uri | Start recording. This will return uri used. |
 | stopRecorder | | `String` message | Stop recording.  |
-| startPlayer | `String uri` | `String` message | Start playing.  |
-| startPlayerFromBuffer | `Uint8List dataBuffer` | `String` message | Start playing.  |
+| startPlayer | `String uri`, `t_CODEC codec`  | `String` message | Start playing.  |
+| startPlayerFromBuffer | `Uint8List dataBuffer`,  `t_CODEC codec` | `String` message | Start playing.  |
 | stopPlayer | | `String` message | Stop playing. |
 | pausePlayer | | `String` message | Pause playing. |
 | resumePlayer | | `String` message | Resume playing. |
@@ -75,8 +75,8 @@ Actually, the following codecs are supported by flutter_sound:
 
 | | AAC  | OGG/Opus  | CAF/Opus | MP3 | OGG/Vorbis | PCM |
 | :------------ |:---------------:| :---------------:| :-----| :-----| :-----| :-----|
-| iOS encoder| Yes | No | Yes | No | No | No |
-| iOS decoder| Yes | No | Yes | Yes | No | Yes |
+| iOS encoder| Yes | Yes | Yes | No | No | No |
+| iOS decoder| Yes | Yes | Yes | Yes | No | Yes |
 | Android encoder| Yes | No | No | No | No | No |
 | Android decoder| Yes | Yes | No | Yes | Yes | Yes |
 
@@ -95,7 +95,7 @@ FlutterSound flutterSound = new FlutterSound();
 
 #### Starting recorder with listener.
 ```dart
-Future<String> result = await flutterSound.startRecorder();
+Future<String> result = await flutterSound.startRecorder(codec: t_CODEC.CODEC_AAC,);
 
 result.then(path) {
 	print('startRecorder: $path');
@@ -107,19 +107,25 @@ result.then(path) {
 }
 ```
 
-If you want to take your own path specify it like below.
+The recorded file will be stored in a temporary directory. If you want to take your own path specify it like below.
 ```
-String path = await flutterSound.startRecorder(Platform.isIOS ? 'ios.aac' : 'android.aac');
+Directory tempDir = await getTemporaryDirectory ();
+File fout = await File ('${tempDir.path}/flutter_sound-tmp.caf');
+String path = await flutterSound.startRecorder(fout.path, codec: t_CODEC.CODEC_AAC,);
 ```
-Actually on iOS, you can choose from two encoders :
+
+Actually on iOS, you can choose from three encoders :
 - AAC (this is the default)
 - CAF/OPUS
+-  OGG/OPUS
+
+Recently, Apple added a support for encoding with the standard OPUS codec. Unfortunetly, Apple encapsulates its data in its own proprietary envelope : CAF. This is really stupid, this is Apple. If you need to record with regular OGG/OPUS you must add `flutter_ffmpeg` to your dependencies.
+Please, look to the [flutter_ffmpeg plugin README](https://pub.dev/packages/flutter_ffmpeg) for instructions for how to include this plugin into your app
 
 To encode with OPUS you do the following :
 ```dart
-await flutterSound.startRecorder(codec: t_CODEC.CODEC_CAF_OPUS,)
+await flutterSound.startRecorder(foot.path, codec: t_CODEC.CODEC_OPUS,)
 ```
-Recently, Apple added a support for encoding with the standard OPUS codec. Unfortunetly, Apple encapsulates its data in its own proprietary envelope : CAF. This is really stupid, this is Apple
 
 On Android the OPUS codec is not yet supported by flutter_sound.
 
@@ -156,7 +162,9 @@ You must wait for the return value to complete before attempting to add any list
 to ensure that the player has fully initialised.
 
 ```dart
-Future<String> result = await flutterSound.startPlayer(null);
+Directory tempDir = await getTemporaryDirectory ();
+File fin = await File ('${tempDir.path}/flutter_sound-tmp.aac');
+Future<String> result = await flutterSound.startPlayer(fin.path);
 
 result.then(path) {
 	print('startPlayer: $path');
@@ -172,6 +180,15 @@ result.then(path) {
 		}
 	});
 }
+```
+
+#### Start player from buffer
+
+For playing data from a memory buffer instead of a file, you can do the following :
+
+```dart
+Uint8List buffer =  (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
+path = await flutterSound.startPlayerFromBuffer(buffer, codec: t_CODEC.CODEC_AAC,);
 ```
 
 #### Stop player
@@ -253,6 +270,11 @@ _dbPeakSubscription = flutterSound.onRecorderDbPeakChanged.listen((value) {
   });
 });
 ```
+
+#### Playing OGG/OPUS on iOS
+
+To play OGG/OPUS on iOS you must add flutter_ffmpeg to your dependencies.
+Please, look to the [flutter_ffmpeg plugin README](https://pub.dev/packages/flutter_ffmpeg) for instructions for how to include this plugin into your app. Playing OGG/OPUS on Android is no problem, even without flutter_ffmpeg.
 
 ### TODO
 - [ ] Seeking example in `Example` project

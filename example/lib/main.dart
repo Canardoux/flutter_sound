@@ -42,6 +42,8 @@ class _MyAppState extends State<MyApp> {
   double maxDuration = 1.0;
   t_MEDIA _media = t_MEDIA.FILE;
   t_CODEC _codec = t_CODEC.CODEC_AAC;
+  bool _encoderSupported = true; // Optimist
+  bool _decoderSupported = true; // Optimist
 
   @override
   void initState() {
@@ -64,7 +66,7 @@ class _MyAppState extends State<MyApp> {
       //   numChannels: 1,
       //   androidAudioSource: AndroidAudioSource.MIC,
       // );
-      String path = await flutterSound.startRecorder();
+      String path = await flutterSound.startRecorder( codec: _codec, );
       print('startRecorder: $path');
 
       _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
@@ -125,6 +127,7 @@ class _MyAppState extends State<MyApp> {
           return await File(path).exists();
   }
 
+  // In this simple example, we just load a file in memory.This is stupid but just for demonstation  of startPlayerFromBuffer()
   Future <Uint8List> makeBuffer(String path) async {
     try {
       if (!await fileExists(path))
@@ -156,7 +159,7 @@ class _MyAppState extends State<MyApp> {
       String path = null;
       if (_media == t_MEDIA.ASSET) {
           Uint8List buffer =  (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
-          path = await flutterSound.startPlayerFromBuffer(buffer);
+          path = await flutterSound.startPlayerFromBuffer(buffer, codec: _codec,);
       } else
       if (_media == t_MEDIA.FILE) {// Do we want to play from buffer or from file ?
         if (await fileExists(_path[_codec.index]))
@@ -166,7 +169,7 @@ class _MyAppState extends State<MyApp> {
         if (await fileExists(_path[_codec.index])) {
                 Uint8List buffer = await makeBuffer (this._path[_codec.index]);
                 if ( buffer != null )
-                        path = await flutterSound.startPlayerFromBuffer(buffer); // From buffer
+                        path = await flutterSound.startPlayerFromBuffer(buffer, codec: _codec,); // From buffer
         }
       }
       if (path == null) {
@@ -252,6 +255,9 @@ class _MyAppState extends State<MyApp> {
           if ( _path[_codec.index] == null )
             return null;
         }
+        // Disable the button if the selected codec is not supported
+        if ( ! _decoderSupported )
+          return null;
         return  flutterSound.audioState == t_AUDIO_STATE.IS_STOPPED ? startPlayer : null;
   }
 
@@ -260,6 +266,10 @@ class _MyAppState extends State<MyApp> {
       return null;
     if (flutterSound.audioState == t_AUDIO_STATE.IS_RECORDING)
             return stopRecorder;
+    // Disable the button if the selected codec is not supported
+    if ( ! _encoderSupported )
+      return null;
+
     return  flutterSound.audioState == t_AUDIO_STATE.IS_STOPPED ? startRecorder : null;
   }
 
@@ -269,6 +279,12 @@ class _MyAppState extends State<MyApp> {
           return flutterSound.audioState == t_AUDIO_STATE.IS_STOPPED ?  AssetImage('res/icons/ic_mic.png') : AssetImage('res/icons/ic_stop.png');
   }
 
+  setCodec (t_CODEC codec) async {
+    _encoderSupported = await flutterSound.isEncoderSupported(codec);
+    _decoderSupported = await flutterSound.isDecoderSupported(codec);
+    setState
+      (() {_codec = codec;});
+  }
 
   Widget makeNavigationBar(BuildContext context) {
     return ButtonBar
@@ -363,11 +379,7 @@ class _MyAppState extends State<MyApp> {
                   (
                   value: t_CODEC.CODEC_AAC,
                   groupValue: _codec,
-                  onChanged: (radioBtn)
-                  {
-                    setState
-                      (() {_codec = radioBtn;});
-                  },
+                  onChanged: setCodec,
                   ),
                 Text('AAC'),
 
@@ -375,11 +387,7 @@ class _MyAppState extends State<MyApp> {
                   (
                   value: t_CODEC.CODEC_OPUS,
                   groupValue: _codec,
-                  onChanged: (radioBtn)
-                  {
-                    setState
-                      (() {_codec = radioBtn;});
-                  },
+                  onChanged: setCodec,
                   ),
                 Text('OGG/Opus'),
 
@@ -387,11 +395,7 @@ class _MyAppState extends State<MyApp> {
                   (
                   value: t_CODEC.CODEC_CAF_OPUS,
                   groupValue: _codec,
-                  onChanged: (radioBtn)
-                  {
-                    setState
-                      (() {_codec = radioBtn;});
-                  },
+                  onChanged: setCodec,
                   ),
                 Text('CAF/Opus'),
               ],
@@ -410,11 +414,7 @@ class _MyAppState extends State<MyApp> {
                 (
                 value: t_CODEC.CODEC_MP3,
                 groupValue: _codec,
-                onChanged: (radioBtn)
-                {
-                  setState
-                    (() {_codec = radioBtn;});
-                },
+                onChanged: setCodec,
                 ),
               Text('MP3'),
 
@@ -422,11 +422,7 @@ class _MyAppState extends State<MyApp> {
                 (
                 value: t_CODEC.CODEC_VORBIS,
                 groupValue: _codec,
-                onChanged: (radioBtn)
-                {
-                  setState
-                    (() {_codec = radioBtn;});
-                },
+                onChanged: setCodec,
                 ),
               Text('OGG/Vorbis'),
 
@@ -434,11 +430,7 @@ class _MyAppState extends State<MyApp> {
                 (
                 value: t_CODEC.CODEC_PCM,
                 groupValue: _codec,
-                onChanged: (radioBtn)
-                {
-                  setState
-                    (() {_codec = radioBtn;});
-                },
+                onChanged: setCodec,
                 ),
               Text('PCM'),
             ],
