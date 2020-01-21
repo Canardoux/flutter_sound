@@ -63,11 +63,7 @@ To migrate to `2.0.0` you must migrate your Android app to Android X by followin
 
 
 ## Default uri path
-When uri path is not set during the `function call` in `startRecorder` or `startPlayer`, they are saved in below path depending on the platform.
-+ Default path for android
-  * `Library/Caches/sound.aac`.
-+ Default path for ios
-  * `sound.aac`.
+When uri path is not set during the `function call` in `startRecorder` or `startPlayer`, they are saved in a temporary directory depending on the platform.
 
 
 ## Codec compatibility
