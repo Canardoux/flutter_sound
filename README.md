@@ -106,7 +106,7 @@ result.then(path) {
 The recorded file will be stored in a temporary directory. If you want to take your own path specify it like below.
 ```
 Directory tempDir = await getTemporaryDirectory ();
-File fout = await File ('${tempDir.path}/flutter_sound-tmp.caf');
+File fout = await File ('${tempDir.path}/flutter_sound-tmp.aac');
 String path = await flutterSound.startRecorder(fout.path, codec: t_CODEC.CODEC_AAC,);
 ```
 
@@ -115,7 +115,7 @@ Actually on iOS, you can choose from three encoders :
 - CAF/OPUS
 -  OGG/OPUS
 
-Recently, Apple added a support for encoding with the standard OPUS codec. Unfortunetly, Apple encapsulates its data in its own proprietary envelope : CAF. This is really stupid, this is Apple. If you need to record with regular OGG/OPUS you must add `flutter_ffmpeg` to your dependencies.
+Recently, Apple added a support for encoding with the standard OPUS codec. Unfortunatly, Apple encapsulates its data in its own proprietary envelope : CAF. This is really stupid, this is Apple. If you need to record with regular OGG/OPUS you must add `flutter_ffmpeg` to your dependencies.
 Please, look to the [flutter_ffmpeg plugin README](https://pub.dev/packages/flutter_ffmpeg) for instructions for how to include this plugin into your app
 
 To encode with OPUS you do the following :
@@ -123,7 +123,7 @@ To encode with OPUS you do the following :
 await flutterSound.startRecorder(foot.path, codec: t_CODEC.CODEC_OPUS,)
 ```
 
-On Android the OPUS codec is not yet supported by flutter_sound.
+On Android the OPUS codec is not yet supported by flutter_sound Recorder. (But Player is OK on Android)
 
 #### Stop recorder
 ```dart
