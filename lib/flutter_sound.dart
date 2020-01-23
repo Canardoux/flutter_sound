@@ -148,7 +148,7 @@ class FlutterSound {
       _playerController = null;
     }
   }
-
+  
   void _removePlaybackStateCallback() {
     if (_playbackStateChangedController != null) {
       _playbackStateChangedController.close();
@@ -158,9 +158,9 @@ class FlutterSound {
 
   Future<String> startRecorder(
     String uri, {
-    int sampleRate,
-    int numChannels,
-    int bitRate,
+    int sampleRate = 16000,
+    int numChannels = 1,
+    int bitRate= 16000,
     t_CODEC codec = t_CODEC.DEFAULT,
     AndroidEncoder androidEncoder = AndroidEncoder.AAC,
     AndroidAudioSource androidAudioSource = AndroidAudioSource.MIC,

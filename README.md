@@ -39,6 +39,9 @@ On *Android* you need to add a permission to `AndroidManifest.xml`:
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 ```
 
+## Migration Guide
+To migrate to `2.0.0` you must migrate your Android app to Android X by following the [Migrating to AndroidX Guide](https://developer.android.com/jetpack/androidx/migrate).
+
 ## Methods
 | Func  | Param  | Return | Description |
 | :------------ |:---------------:| :---------------:| :-----|
@@ -110,7 +113,7 @@ void initState() {
 
 #### Starting recorder with listener.
 ```dart
-Future<String> result = await flutterSound.startRecorder(null);
+Future<String> result = await flutterSound.startRecorder();
 
 result.then(path) {
 	print('startRecorder: $path');
@@ -132,7 +135,7 @@ Actually on iOS, you can choose from two encoders :
 
 To encode with OPUS you do the following :
 ```dart
-await flutterSound.startRecorder(null, codec: t_CODEC.CODEC_CAF_OPUS,)
+await flutterSound.startRecorder(codec: t_CODEC.CODEC_CAF_OPUS,)
 ```
 Recently, Apple added a support for encoding with the standard OPUS codec. Unfortunetly, Apple encapsulates its data in its own proprietary envelope : CAF. This is really stupid, this is Apple
 
