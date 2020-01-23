@@ -223,6 +223,8 @@ result.then(path) {
 }
 ```
 
+You can call ```startPlayer``` only when you have just initialized the player or when you have just called ```stopPlayer```.
+
 #### Listen to plyaback state changes
 
 If you subscribe to the ```onPlaybackStateChanged``` ```Stream``` you will be notified whenever the audio player starts playing a sound, is paused or stopped.
@@ -248,7 +250,7 @@ result.then(value) {
 }
 ```
 
-If you want to continue using the player after calling ```stopPlayer``` you must call ```releaseMediaPlayer``` and then ```initialize``` again.
+If you want to continue using the player after calling ```stopPlayer``` you must call either ```startPlayer``` or ```releaseMediaPlayer``` and then ```initialize``` again.
 
 #### Pause player
 ```dart
