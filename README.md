@@ -63,7 +63,7 @@ To migrate to `2.0.0` you must migrate your Android app to Android X by followin
 
 
 ## Default uri path
-When uri path is not set during the `function call` in `startRecorder` or `startPlayer`, they are saved in a temporary directory depending on the platform.
+When uri path is not set during the `function call` in `startRecorder` or `startPlayer`, records are saved/read to/from a temporary directory depending on the platform.
 
 
 ## Codec compatibility
@@ -270,7 +270,7 @@ _dbPeakSubscription = flutterSound.onRecorderDbPeakChanged.listen((value) {
 #### Playing OGG/OPUS on iOS
 
 To play OGG/OPUS on iOS you must add flutter_ffmpeg to your dependencies.
-Please, look to the [flutter_ffmpeg plugin README](https://pub.dev/packages/flutter_ffmpeg) for instructions for how to include this plugin into your app. Playing OGG/OPUS on Android is no problem, even without flutter_ffmpeg.
+Please, look to the [flutter_ffmpeg plugin README](https://pub.dev/packages/flutter_ffmpeg) for instructions for how to include this plugin into your app. Playing OGG/OPUS on Android is no problem, even without flutter_ffmpeg. Please notice that [flutter_ffmpeg plugin](https://pub.dev/packages/flutter_ffmpeg) needs on Android a minAndroidSdk 24 (or later).
 
 ### TODO
 - [ ] Seeking example in `Example` project
