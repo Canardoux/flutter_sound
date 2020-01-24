@@ -105,9 +105,9 @@ result.then(path) {
 
 The recorded file will be stored in a temporary directory. If you want to take your own path specify it like below.
 ```
-Directory tempDir = await getTemporaryDirectory ();
-File fout = await File ('${tempDir.path}/flutter_sound-tmp.aac');
-String path = await flutterSound.startRecorder(fout.path, codec: t_CODEC.CODEC_AAC,);
+Directory tempDir = await getTemporaryDirectory();
+File outputFile = await File ('${tempDir.path}/flutter_sound-tmp.aac');
+String path = await flutterSound.startRecorder(outputFile.path, codec: t_CODEC.CODEC_AAC,);
 ```
 
 Actually on iOS, you can choose from three encoders :
@@ -158,7 +158,7 @@ You must wait for the return value to complete before attempting to add any list
 to ensure that the player has fully initialised.
 
 ```dart
-Directory tempDir = await getTemporaryDirectory ();
+Directory tempDir = await getTemporaryDirectory();
 File fin = await File ('${tempDir.path}/flutter_sound-tmp.aac');
 Future<String> result = await flutterSound.startPlayer(fin.path);
 

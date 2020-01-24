@@ -42,8 +42,6 @@ class _MyAppState extends State<MyApp> {
   double maxDuration = 1.0;
   t_MEDIA _media = t_MEDIA.FILE;
   t_CODEC _codec = t_CODEC.CODEC_AAC;
-  bool _encoderSupported = true; // Optimist
-  bool _decoderSupported = true; // Optimist
 
   @override
   void initState() {
@@ -165,7 +163,7 @@ class _MyAppState extends State<MyApp> {
         if (await fileExists(_path[_codec.index]))
           path = await flutterSound.startPlayer(this._path[_codec.index]); // From file
       } else
-      if (_media == t_MEDIA.BUFFER) { // Do we want to play from buffer or from file ? 
+      if (_media == t_MEDIA.BUFFER) { // Do we want to play from buffer or from file ?
         if (await fileExists(_path[_codec.index])) {
                 Uint8List buffer = await makeBuffer (this._path[_codec.index]);
                 if ( buffer != null )
@@ -255,9 +253,6 @@ class _MyAppState extends State<MyApp> {
           if ( _path[_codec.index] == null )
             return null;
         }
-        // Disable the button if the selected codec is not supported
-        if ( ! _decoderSupported )
-          return null;
         return  flutterSound.audioState == t_AUDIO_STATE.IS_STOPPED ? startPlayer : null;
   }
 
@@ -266,9 +261,6 @@ class _MyAppState extends State<MyApp> {
       return null;
     if (flutterSound.audioState == t_AUDIO_STATE.IS_RECORDING)
             return stopRecorder;
-    // Disable the button if the selected codec is not supported
-    if ( ! _encoderSupported )
-      return null;
 
     return  flutterSound.audioState == t_AUDIO_STATE.IS_STOPPED ? startRecorder : null;
   }
@@ -280,8 +272,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   setCodec (t_CODEC codec) async {
-    _encoderSupported = await flutterSound.isEncoderSupported(codec);
-    _decoderSupported = await flutterSound.isDecoderSupported(codec);
     setState
       (() {_codec = codec;});
   }
