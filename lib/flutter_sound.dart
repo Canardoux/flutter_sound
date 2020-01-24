@@ -425,7 +425,7 @@ class FlutterSound {
     } catch (err) {
       print('err: $err');
       _audioState = t_AUDIO_STATE.IS_STOPPED; // In fact _audioState is in an unknown state
-      return err;
+      throw Exception(err);;
     }
   }
 
@@ -441,7 +441,7 @@ class FlutterSound {
       return result;
     } catch (err) {
       print('err: $err');
-      return err;
+      throw Exception(err);;
     }
   }
 
@@ -454,7 +454,7 @@ class FlutterSound {
       return result;
     } catch (err) {
       print('err: $err');
-      return err;
+      throw Exception(err);;
     }
   }
 
