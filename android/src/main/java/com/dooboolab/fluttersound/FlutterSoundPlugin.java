@@ -39,6 +39,9 @@ class sdkCompat {
 
   static int checkRecordPermission(Registrar reg) {
     if (Build.VERSION.SDK_INT >= sdkCompat.VERSION_CODES_M) {// Before Marshmallow, record permission was always granted.
+      if (reg.activity() == null) {
+        throw new IllegalStateException("Requesting permission needs a foreground activity");
+      }
       Activity activity = reg.activity();
       if (reg.context().checkCallingOrSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
         ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.RECORD_AUDIO,}, 0);
