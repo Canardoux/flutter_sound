@@ -1,5 +1,17 @@
-## 1.8.0
-- Fix issue #175(https://github.com/dooboolab/flutter_sound/issues/175)
+## 2.0.3
+- Resolve [#194](https://github.com/dooboolab/flutter_sound/issues/194)
+  * `stopReocorder` resolve path.
+- Resolve [#198](https://github.com/dooboolab/flutter_sound/issues/198)
+  * Improve static handler in android.
+
+## 2.0.1
+- Add compatibility for android sdk 19.
+- Add `androidx` compatibility.
+- Resolve [#193](https://github.com/dooboolab/flutter_sound/issues/193)
+  * Restore default `startRecorder`
+
+## 1.9.0
+- Fix issue [#175](https://github.com/dooboolab/flutter_sound/issues/175)
   - add functions
       . isEncoderSupported(t_CODEC codec);
       . isDecoderSupported(t_CODEC codec);

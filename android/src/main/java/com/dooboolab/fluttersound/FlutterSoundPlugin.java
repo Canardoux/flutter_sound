@@ -142,11 +142,16 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
   String finalPath;
 
-    /** Plugin registration. */
-  public static void registerWith(Registrar registrar) {
+
+  private FlutterSoundPlugin(Registrar registrar){
     channel = new MethodChannel(registrar.messenger(), "flutter_sound");
-    channel.setMethodCallHandler(new FlutterSoundPlugin());
+    channel.setMethodCallHandler(this);
     reg = registrar;
+  }
+
+  /** Plugin registration. */
+  public static void registerWith(Registrar registrar) {
+    FlutterSoundPlugin plugin = new FlutterSoundPlugin(registrar);
   }
 
   @Override
