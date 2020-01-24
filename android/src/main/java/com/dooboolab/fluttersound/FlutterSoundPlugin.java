@@ -140,6 +140,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     , "wav"   // CODEC_PCM
   };
 
+  String finalPath;
+
     /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
     channel = new MethodChannel(registrar.messenger(), "flutter_sound");
@@ -352,7 +354,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       }
 
 
-      String finalPath = path;
+      finalPath = path;
       mainHandler.post(new Runnable() {
         @Override
         public void run() {
@@ -382,7 +384,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     mainHandler.post(new Runnable(){
       @Override
       public void run() {
-        result.success("recorder stopped.");
+        result.success(finalPath);
       }
     });
 
@@ -445,8 +447,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
         };
 
         mTimer.schedule(mTask, 0, model.subsDurationMillis);
-        String resolvedPath;
-          resolvedPath = (path == null) ? AudioModel.DEFAULT_FILE_LOCATION : path;
+        String resolvedPath = (path == null) ? AudioModel.DEFAULT_FILE_LOCATION : path;
         result.success((resolvedPath));
       });
       /*
