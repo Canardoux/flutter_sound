@@ -18,8 +18,10 @@ For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
 
 ## Install
-Add ```flutter_sound``` as a dependency in pubspec.yaml
-For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).
+Add ```flutter_sound``` as a dependency in pubspec.yaml.
+For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).</br>
+Add ```permission_handler``` as a dependency in pubspec.yaml. Refer to [here](permission_handler) for help.</br>
+If you need ffmpeg, add ```flutter_ffmpeg``` as a dependency in pubspec.yaml. Refer to [here](https://github.com/tanersener/flutter-ffmpeg) for help.
 
 ## Post Installation
 On *iOS* you need to add a usage description to `info.plist`:
@@ -270,7 +272,7 @@ _dbPeakSubscription = flutterSound.onRecorderDbPeakChanged.listen((value) {
 #### Playing OGG/OPUS on iOS
 
 To play OGG/OPUS on iOS you must add flutter_ffmpeg to your dependencies.
-Please, look to the [flutter_ffmpeg plugin README](https://pub.dev/packages/flutter_ffmpeg) for instructions for how to include this plugin into your app. Playing OGG/OPUS on Android is no problem, even without flutter_ffmpeg. Please notice that [flutter_ffmpeg plugin](https://pub.dev/packages/flutter_ffmpeg) needs on Android a minAndroidSdk 24 (or later). If you want a minSdkVersion 16, you must use the LTS flutter_ffmpeg package (not tested).
+Please, look to the [flutter_ffmpeg plugin README](https://pub.dev/packages/flutter_ffmpeg) for instructions for how to include this plugin into your app. Playing OGG/OPUS on Android is no problem, even without flutter_ffmpeg. Please notice that [flutter_ffmpeg plugin](https://pub.dev/packages/flutter_ffmpeg) on Android needs a minAndroidSdk 24 (or later). If you want a minSdkVersion 16, you must use the LTS flutter_ffmpeg package (not tested).
 
 ### TODO
 - [ ] Seeking example in `Example` project
