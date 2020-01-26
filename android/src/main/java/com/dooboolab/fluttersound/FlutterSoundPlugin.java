@@ -136,17 +136,24 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
     channel.setMethodCallHandler(new FlutterSoundPlugin());
   }
 
-  String finalPath;
+  /*
 
+  //[LARPOUX] : I guess that the following code is not necessary since we support FLUTTER EMBEDED V2
+
+ 
   private FlutterSoundPlugin(Registrar registrar){
     channel = new MethodChannel(registrar.messenger(), "flutter_sound");
     channel.setMethodCallHandler(this);
   }
 
-  /** Plugin registration. */
+  / ** Plugin registration. * /
   public static void registerWith(Registrar registrar) {
     FlutterSoundPlugin plugin = new FlutterSoundPlugin(registrar);
   }
+  */
+
+  String finalPath;
+
 
   @Override
   public void onMethodCall(final MethodCall call, final Result result) {

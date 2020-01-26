@@ -14,9 +14,17 @@ android/.settings/org.eclipse.buildship.core.prefs
 .vscode/launch.json
 android/.classpath
 android/.project
+
 example/android/.project
 example/android/.settings/org.eclipse.buildship.core.prefs
 example/android/app/.classpath
 example/android/app/.project
 example/android/app/.settings/org.eclipse.buildship.core.prefs
+
+example-emb-V2/android/.project
+example-emb-V2/android/.settings/org.eclipse.buildship.core.prefs
+example-emb-V2/android/app/.classpath
+example-emb-V2/android/app/.project
+example-emb-V2/android/app/.settings/org.eclipse.buildship.core.prefs
+
 flutter_export_environment*
