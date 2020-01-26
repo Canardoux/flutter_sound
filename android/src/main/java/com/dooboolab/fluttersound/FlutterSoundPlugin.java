@@ -8,11 +8,8 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
-import android.app.Activity;
-import androidx.core.app.ActivityCompat;
 import java.io.*;
 
-import io.flutter.util.PathUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,11 +18,11 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 // SDK compatibility
@@ -36,23 +33,11 @@ class sdkCompat {
   static final int AUDIO_ENCODER_OPUS   = 7;  // MediaRecorder.AudioEncoder.OPUS   added in API level 29
   static final int OUTPUT_FORMAT_OGG    = 11; // MediaRecorder.OutputFormat.OGG    added in API level 29
   static final int VERSION_CODES_M      = 23; // added in API level 23
-
-  static int checkRecordPermission(Registrar reg) {
-    if (Build.VERSION.SDK_INT >= sdkCompat.VERSION_CODES_M) {// Before Marshmallow, record permission was always granted.
-      Activity activity = reg.activity();
-      if (reg.context().checkCallingOrSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.RECORD_AUDIO,}, 0);
-        if (reg.context().checkCallingOrSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
-          return PackageManager.PERMISSION_DENIED;
-      }
-    }
-    return PackageManager.PERMISSION_GRANTED;
-  }
 }
 // *****************
 
 /** FlutterSoundPlugin */
-public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.RequestPermissionsResultListener, AudioInterface{
+public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, FlutterPlugin {
   final static String TAG = "FlutterSoundPlugin";
   final static String RECORD_STREAM = "com.dooboolab.fluttersound/record";
   final static String PLAY_STREAM= "com.dooboolab.fluttersound/play";
@@ -65,7 +50,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
   private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor();
 
-  private static Registrar reg;
   final private AudioModel model = new AudioModel();
   private Timer mTimer = new Timer();
   final private Handler recordHandler = new Handler();
@@ -118,8 +102,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   };
 
   static String pathArray[] = {
-      "sound.acc"   // DEFAULT
-    , "sound.acc"   // CODEC_AAC
+      "sound.aac"   // DEFAULT
+    , "sound.aac"   // CODEC_AAC
     , "sound.opus"  // CODEC_OPUS
     , "sound.caf"   // CODEC_CAF_OPUS (this is apple specific)
     , "sound.mp3"   // CODEC_MP3
@@ -128,20 +112,31 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   };
 
   String extentionArray[] = {
-      "acc"   // DEFAULT
-    , "acc"   // CODEC_AAC
-    , "opus"  // CODEC_OPUS
-    , "caf"   // CODEC_CAF_OPUS (this is apple specific)
-    , "mp3"   // CODEC_MP3
-    , "ogg"   // CODEC_VORBIS
-    , "wav"   // CODEC_PCM
+      ".aac"   // DEFAULT
+    , ".aac"   // CODEC_AAC
+    , ".opus"  // CODEC_OPUS
+    , ".caf"   // CODEC_CAF_OPUS (this is apple specific)
+    , ".mp3"   // CODEC_MP3
+    , ".ogg"   // CODEC_VORBIS
+    , ".wav"   // CODEC_PCM
   };
 
-    /** Plugin registration. */
+
+  @Override
+  public void onAttachedToEngine(FlutterPlugin.FlutterPluginBinding binding) {
+    channel = new MethodChannel(binding.getFlutterEngine().getDartExecutor(), "flutter_sound");
+    channel.setMethodCallHandler(new FlutterSoundPlugin());
+  }
+
+
+  @Override
+  public void onDetachedFromEngine(FlutterPlugin.FlutterPluginBinding binding) {
+  }
+
+  /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
     channel = new MethodChannel(registrar.messenger(), "flutter_sound");
     channel.setMethodCallHandler(new FlutterSoundPlugin());
-    reg = registrar;
   }
 
   @Override
@@ -231,26 +226,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   }
 
   @Override
-  public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-    final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-    switch (requestCode) {
-      case REQUEST_RECORD_AUDIO_PERMISSION:
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-          return true;
-        break;
-    }
-    return false;
-  }
-
-  @Override
   public void startRecorder(Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result) {
     final int v = Build.VERSION.SDK_INT;
-
-      if ( sdkCompat.checkRecordPermission(reg) != PackageManager.PERMISSION_GRANTED) {
-          result.error(TAG, "NO PERMISSION GRANTED", Manifest.permission.RECORD_AUDIO + " or " + Manifest.permission.WRITE_EXTERNAL_STORAGE);
-          return;
-      }
-
     // The caller must be allowed to specify its path. We must not change it here
     // path = PathUtils.getDataDirectory(reg.context()) + "/" + path; // SDK 29 : you may not write in getExternalStorageDirectory() [LARPOUX]
     MediaRecorder mediaRecorder = model.getMediaRecorder();
@@ -261,22 +238,24 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     } else {
       mediaRecorder.reset();
     }
-    mediaRecorder.setAudioSource(androidAudioSource);
-    if (codecArray[codec.ordinal()] == 0) {
-      result.error(TAG, "UNSUPPORTED", "Unsupported encoder");
-      return;
-    }
-    androidEncoder = codecArray[codec.ordinal()];
-    androidOutputFormat = formatsArray[codec.ordinal()];
-    mediaRecorder.setOutputFormat (androidOutputFormat);
 
-    if (path == null)
-      path = pathArray[codec.ordinal()];
+    try {
+       if (codecArray[codec.ordinal()] == 0) {
+        result.error(TAG, "UNSUPPORTED", "Unsupported encoder");
+        return;
+      }
+      mediaRecorder.setAudioSource(androidAudioSource);
+      androidEncoder = codecArray[codec.ordinal()];
+      androidOutputFormat = formatsArray[codec.ordinal()];
+      mediaRecorder.setOutputFormat (androidOutputFormat);
 
-    mediaRecorder.setOutputFile(path);
-    mediaRecorder.setAudioEncoder(androidEncoder);
+      if (path == null)
+        path = pathArray[codec.ordinal()];
 
-    if (numChannels != null) {
+      mediaRecorder.setOutputFile(path);
+      mediaRecorder.setAudioEncoder(androidEncoder);
+
+      if (numChannels != null) {
         mediaRecorder.setAudioChannels(numChannels);
       }
 
@@ -290,7 +269,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       }
 
 
-    try {
       mediaRecorder.prepare();
       mediaRecorder.start();
 
@@ -587,7 +565,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   }
 
   @Override
-  public void setDbLevelEnabled(boolean enabled, MethodChannel.Result result) {
+  public void setDbLevelEnabled(boolean enabled, Result result) {
     this.model.shouldProcessDbLevel = enabled;
     result.success("setDbLevelEnabled: " + this.model.shouldProcessDbLevel);
   }

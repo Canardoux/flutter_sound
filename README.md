@@ -270,7 +270,7 @@ _dbPeakSubscription = flutterSound.onRecorderDbPeakChanged.listen((value) {
 #### Playing OGG/OPUS on iOS
 
 To play OGG/OPUS on iOS you must add flutter_ffmpeg to your dependencies.
-Please, look to the [flutter_ffmpeg plugin README](https://pub.dev/packages/flutter_ffmpeg) for instructions for how to include this plugin into your app. Playing OGG/OPUS on Android is no problem, even without flutter_ffmpeg. Please notice that [flutter_ffmpeg plugin](https://pub.dev/packages/flutter_ffmpeg) needs on Android a minAndroidSdk 24 (or later).
+Please, look to the [flutter_ffmpeg plugin README](https://pub.dev/packages/flutter_ffmpeg) for instructions for how to include this plugin into your app. Playing OGG/OPUS on Android is no problem, even without flutter_ffmpeg. Please notice that [flutter_ffmpeg plugin](https://pub.dev/packages/flutter_ffmpeg) needs on Android a minAndroidSdk 24 (or later). If you want a minSdkVersion 16, you must use the LTS flutter_ffmpeg package (not tested).
 
 ### TODO
 - [ ] Seeking example in `Example` project

@@ -8,6 +8,8 @@ import 'package:flutter_sound/android_encoder.dart';
 import 'package:flutter_sound/ios_quality.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:permission_handler/permission_handler.dart';
+
 
 import 'dart:io' show Platform;
 
@@ -240,6 +242,12 @@ class FlutterSound {
         AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.DEFAULT,
         IosQuality iosQuality = IosQuality.LOW,
       }) async {
+
+    // Request Microphone permission if needed
+    Map<PermissionGroup, PermissionStatus> permission = await PermissionHandler().requestPermissions([PermissionGroup.microphone]);
+    if (permission[PermissionGroup.microphone]!= PermissionStatus.granted)
+      throw new Exception("Microphone permission not granted");
+
     if (_audioState != t_AUDIO_STATE.IS_STOPPED) {
       throw new RecorderRunningException('Recorder is not stopped.');
     }
@@ -388,12 +396,12 @@ class FlutterSound {
     // We write the data in a temporary file before calling ffmpeg.
     if ( (codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS) ) {
       Directory tempDir = await getTemporaryDirectory();
-      File fin = await File('${tempDir.path}/flutter_sound-tmp.opus');
-      if (fin.existsSync())
-        await fin.delete();
-      fin.writeAsBytesSync(dataBuffer); // Write the user buffer into the temporary file
+      File inputFile = await File('${tempDir.path}/flutter_sound-tmp.opus');
+      if (inputFile.existsSync())
+        await inputFile.delete();
+      inputFile.writeAsBytesSync(dataBuffer); // Write the user buffer into the temporary file
       // Now we can play the temporary file
-      return await _startPlayer('startPlayer', {'path': fin.path, 'codec': codec,}); // And play something that Apple will be happy with.
+      return await _startPlayer('startPlayer', {'path': inputFile.path, 'codec': codec,}); // And play something that Apple will be happy with.
     } else
       return await _startPlayer ('startPlayerFromBuffer', {'dataBuffer': dataBuffer, 'codec': codec});
   }
