@@ -34,7 +34,6 @@ class sdkCompat {
   static final int OUTPUT_FORMAT_OGG    = 11; // MediaRecorder.OutputFormat.OGG    added in API level 29
   static final int VERSION_CODES_M      = 23; // added in API level 23
 }
-// *****************
 
 /** FlutterSoundPlugin */
 public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, FlutterPlugin {
@@ -121,13 +120,11 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
     , ".wav"   // CODEC_PCM
   };
 
-
   @Override
   public void onAttachedToEngine(FlutterPlugin.FlutterPluginBinding binding) {
     channel = new MethodChannel(binding.getFlutterEngine().getDartExecutor(), "flutter_sound");
     channel.setMethodCallHandler(new FlutterSoundPlugin());
   }
-
 
   @Override
   public void onDetachedFromEngine(FlutterPlugin.FlutterPluginBinding binding) {
@@ -137,6 +134,18 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
   public static void registerWith(Registrar registrar) {
     channel = new MethodChannel(registrar.messenger(), "flutter_sound");
     channel.setMethodCallHandler(new FlutterSoundPlugin());
+  }
+
+  String finalPath;
+
+  private FlutterSoundPlugin(Registrar registrar){
+    channel = new MethodChannel(registrar.messenger(), "flutter_sound");
+    channel.setMethodCallHandler(this);
+  }
+
+  /** Plugin registration. */
+  public static void registerWith(Registrar registrar) {
+    FlutterSoundPlugin plugin = new FlutterSoundPlugin(registrar);
   }
 
   @Override
@@ -328,7 +337,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
       }
 
 
-      String finalPath = path;
+      finalPath = path;
       mainHandler.post(new Runnable() {
         @Override
         public void run() {
@@ -358,7 +367,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
     mainHandler.post(new Runnable(){
       @Override
       public void run() {
-        result.success("recorder stopped.");
+        result.success(finalPath);
       }
     });
 
@@ -421,8 +430,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
         };
 
         mTimer.schedule(mTask, 0, model.subsDurationMillis);
-        String resolvedPath;
-          resolvedPath = (path == null) ? AudioModel.DEFAULT_FILE_LOCATION : path;
+        String resolvedPath = (path == null) ? AudioModel.DEFAULT_FILE_LOCATION : path;
         result.success((resolvedPath));
       });
       /*
