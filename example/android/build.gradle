@@ -1,3 +1,6 @@
+// Comment out the following line if you do not need the audio ffmpeg package
+ext.flutterFFmpegPackage = 'audio-lts'
+
 buildscript {
     repositories {
         google()

@@ -72,7 +72,7 @@ target 'Runner' do
     symlink = File.join('.symlinks', 'plugins', name)
     File.symlink(path, symlink)
     if name == 'flutter_ffmpeg'
-        pod name+'/audio', :path => File.join(symlink, 'ios')
+        pod name+'/audio-lts', :path => File.join(symlink, 'ios')
     else
         pod name, :path => File.join(symlink, 'ios')
     end

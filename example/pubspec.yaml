@@ -15,8 +15,10 @@ dependencies:
   flutter_sound:
     path: ../
   permission_handler: '^4.2.0+hotfix.2'
-  # uncoment the following line if flutter_ffmpeg is needed
-  # flutter_ffmpeg: ^0.2.10
+    
+  # Coment out the following line if flutter_ffmpeg is not needed
+  flutter_ffmpeg: ^0.2.10
+ 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

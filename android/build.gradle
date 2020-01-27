@@ -1,8 +1,8 @@
 group 'com.dooboolab.fluttersound'
 version '1.0-SNAPSHOT'
 
-// Uncomment the following line if you need the audio ffmpeg package
-// ext.flutterFFmpegPackage = 'audio'
+// Comment out the following line if you do not need the audio ffmpeg package
+ext.flutterFFmpegPackage = 'audio-lts'
 
 buildscript {
     repositories {
