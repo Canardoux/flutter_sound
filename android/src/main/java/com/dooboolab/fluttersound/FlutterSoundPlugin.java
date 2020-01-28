@@ -111,8 +111,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
   };
 
   static int formatsArray[] = {
-      MediaRecorder.OutputFormat.MPEG_4 // DEFAULT
-    , MediaRecorder.OutputFormat.MPEG_4 // CODEC_AAC
+      MediaRecorder.OutputFormat.AAC_ADTS // DEFAULT
+    , MediaRecorder.OutputFormat.AAC_ADTS // CODEC_AAC
     , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_OPUS
     , 0                                 // CODEC_CAF_OPUS (this is apple specific)
     , 0                                 // CODEC_MP3
