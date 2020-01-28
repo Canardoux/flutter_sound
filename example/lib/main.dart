@@ -269,7 +269,6 @@ class _MyAppState extends State<MyApp> {
     // Disable the button if the selected codec is not supported
     if ( ! _encoderSupported )
       return null;
-
     return  flutterSound.audioState == t_AUDIO_STATE.IS_STOPPED ? startRecorder : null;
   }
 

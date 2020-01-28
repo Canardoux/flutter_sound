@@ -137,9 +137,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
   }
 
   /*
-
   //[LARPOUX] : I guess that the following code is not necessary since we support FLUTTER EMBEDED V2
-
  
   private FlutterSoundPlugin(Registrar registrar){
     channel = new MethodChannel(registrar.messenger(), "flutter_sound");

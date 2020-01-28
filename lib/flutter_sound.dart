@@ -9,8 +9,6 @@ import 'package:flutter_sound/ios_quality.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
-
-
 import 'dart:io' show Platform;
 
 // this enum MUST be synchronized with fluttersound/AudioInterface.java  and ios/Classes/FlutterSoundPlugin.h
@@ -104,8 +102,6 @@ class FlutterSound {
       return -1;
     }
   }
-
-
 
   /// Returns true if the specified encoder is supported by flutter_sound on this platform
   Future<bool> isEncoderSupported(t_CODEC codec) async {
