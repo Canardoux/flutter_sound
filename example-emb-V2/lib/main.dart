@@ -6,7 +6,6 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'dart:async';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_sound/android_encoder.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 enum t_MEDIA
