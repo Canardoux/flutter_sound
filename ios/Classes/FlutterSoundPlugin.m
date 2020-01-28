@@ -282,7 +282,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:defaultExtensions[codec] ]];
   } else {
-    audioFileURL = [NSURL fileURLWithPath: [GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:path]];
+    audioFileURL = [NSURL fileURLWithPath: path];
   }
   NSMutableDictionary *audioSettings = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                  [NSNumber numberWithFloat:[sampleRate doubleValue]],AVSampleRateKey,
