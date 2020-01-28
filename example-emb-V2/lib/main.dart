@@ -156,7 +156,7 @@ class _MyAppState extends State<MyApp> {
 
   void startPlayer() async{
     try {
-      String path = null;
+      String path ;
       if (_media == t_MEDIA.ASSET) { // Do we want to play from Asset ?
           Uint8List buffer =  (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
           path = await flutterSound.startPlayerFromBuffer(buffer, codec: _codec,);
