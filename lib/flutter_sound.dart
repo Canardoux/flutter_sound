@@ -71,7 +71,7 @@ class FlutterSound {
   Future<String> defaultPath(t_CODEC codec) async
   {
     Directory tempDir = await getTemporaryDirectory ();
-    File fout = await File ('${tempDir.path}/${defaultPaths[codec.index]}');
+    File fout =  File ('${tempDir.path}/${defaultPaths[codec.index]}');
     return fout.path;
   }
 
@@ -80,9 +80,9 @@ class FlutterSound {
   Future<bool>isFFmpegSupported() async
   {
     try {
-      final Map<dynamic, dynamic> vers = await _FFmpegChannel.invokeMethod('getFFmpegVersion');
-      final Map<dynamic, dynamic> platform = await _FFmpegChannel.invokeMethod('getPlatform');
-      final Map<dynamic, dynamic> packageName = await _FFmpegChannel.invokeMethod('getPackageName');
+      await _FFmpegChannel.invokeMethod('getFFmpegVersion');
+       await _FFmpegChannel.invokeMethod('getPlatform');
+       await _FFmpegChannel.invokeMethod('getPackageName');
       return true;
     } catch (e) {
       return false;
@@ -234,7 +234,7 @@ class FlutterSound {
 
   Future<String> startRecorder(
       {
-        String uri = null,
+        String uri ,
         int sampleRate = 16000, int numChannels = 1, int bitRate = 16000,
         t_CODEC codec = t_CODEC.CODEC_AAC,
         AndroidEncoder androidEncoder = AndroidEncoder.AAC,
@@ -266,7 +266,7 @@ class FlutterSound {
       isOppOpus = true;
       codec = t_CODEC.CODEC_CAF_OPUS;
       Directory tempDir = await getTemporaryDirectory ();
-      File fout = await File ('${tempDir.path}/flutter_sound-tmp.caf');
+      File fout =  File ('${tempDir.path}/flutter_sound-tmp.caf');
       if (fout.existsSync()) // delete the old temporary file if it exists
         await fout.delete();
       uri = fout.path;
@@ -351,7 +351,6 @@ class FlutterSound {
     {
       t_CODEC codec = what['codec'];
       String path = what['path']; // can be null
-      Uint8List dataBuffer = what['dataBuffer']; // can be null
       if (codec != null)
         what['codec'] = codec.index; // Flutter cannot transfer an enum to a native plugin. We use an integer instead
 
@@ -360,7 +359,7 @@ class FlutterSound {
       if ( (Platform.isIOS) &&
             ( (codec == t_CODEC.CODEC_OPUS) || (_fileExtension(path) == '.opus') )  ) {
           Directory tempDir = await getTemporaryDirectory ();
-          File fout = await File ('${tempDir.path}/flutter_sound-tmp.caf');
+          File fout =  File ('${tempDir.path}/flutter_sound-tmp.caf');
           if (fout.existsSync()) // delete the old temporary file if it exists
             await fout.delete();
           // The following ffmpeg instruction does not decode and re-encode the file. It just remux the OPUS data into an Apple CAF envelope.
@@ -390,13 +389,13 @@ class FlutterSound {
 
   Future<String> startPlayer(String uri) async => _startPlayer('startPlayer', {'path': uri});
 
-  Future<String> startPlayerFromBuffer(Uint8List dataBuffer, {t_CODEC codec = null,}) async {
+  Future<String> startPlayerFromBuffer(Uint8List dataBuffer, {t_CODEC codec ,}) async {
 
     // If we want to play OGG/OPUS on iOS, we need to remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We write the data in a temporary file before calling ffmpeg.
     if ( (codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS) ) {
       Directory tempDir = await getTemporaryDirectory();
-      File inputFile = await File('${tempDir.path}/flutter_sound-tmp.opus');
+      File inputFile =  File('${tempDir.path}/flutter_sound-tmp.opus');
       if (inputFile.existsSync())
         await inputFile.delete();
       inputFile.writeAsBytesSync(dataBuffer); // Write the user buffer into the temporary file
@@ -433,7 +432,7 @@ class FlutterSound {
     } catch (err) {
       print('err: $err');
       _audioState = t_AUDIO_STATE.IS_STOPPED; // In fact _audioState is in an unknown state
-      throw Exception(err);;
+      throw Exception(err);
     }
   }
 
@@ -449,7 +448,7 @@ class FlutterSound {
       return result;
     } catch (err) {
       print('err: $err');
-      throw Exception(err);;
+      throw Exception(err);
     }
   }
 
@@ -462,7 +461,7 @@ class FlutterSound {
       return result;
     } catch (err) {
       print('err: $err');
-      throw Exception(err);;
+      throw Exception(err);
     }
   }
 
