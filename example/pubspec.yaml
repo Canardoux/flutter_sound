@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
   flutter_sound:
     path: ../
-  permission_handler: '^4.2.0+hotfix.2'
+  
     
   # Coment out the following line if flutter_ffmpeg is not needed
   flutter_ffmpeg: ^0.2.10
@@ -28,8 +28,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_sound:
-    path: ../
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
