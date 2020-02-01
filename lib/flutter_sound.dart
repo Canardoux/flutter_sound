@@ -20,38 +20,37 @@ enum t_CODEC {
   CODEC_PCM,
 }
 
-enum t_AUDIO_STATE {
-  IS_STOPPED,
-  IS_PAUSED,
-  IS_PLAYING,
-  IS_RECORDING,
-}
-
 class FlutterSound {
   static const MethodChannel _channel = const MethodChannel('flutter_sound');
   static StreamController<RecordStatus> _recorderController;
   static StreamController<double> _dbPeakController;
   static StreamController<PlayStatus> _playerController;
   static StreamController<PlaybackState> _playbackStateChangedController;
+  static StreamController<RecordingState> _recordingStateChangedController;
 
   /// Value ranges from 0 to 120
   Stream<double> get onRecorderDbPeakChanged => _dbPeakController.stream;
   Stream<RecordStatus> get onRecorderStateChanged => _recorderController.stream;
   Stream<PlayStatus> get onPlayerStateChanged => _playerController.stream;
 
-  /// Notifies the listeners whenever the playback state of the audio player changes.
+  /// Notifies the listeners whenever the playback state of the audio player
+  /// changes.
   ///
   /// This stream stops working when releaseMediaPlayer() is called.
   Stream<PlaybackState> get onPlaybackStateChanged =>
       _playbackStateChangedController.stream;
 
-  @Deprecated('Prefer to use audio_state variable')
-  bool get isPlaying => _isPlaying();
-  bool get isRecording => _isRecording();
-  t_AUDIO_STATE get audioState => _audio_state;
+  /// Notifies the listeners whenever the recorder is recording or stopped.
+  Stream<RecordingState> get onRecordingStateChanged =>
+      _recordingStateChangedController.stream;
 
   /// The current state of the playback
   PlaybackState _playbackState;
+  PlaybackState get playbackState => _playbackState;
+
+  /// The current state of the recorder
+  RecordingState _recordingState;
+  RecordingState get recorderState => _recordingState;
 
   // Whether the handler for when the user tries to skip forward was set
   bool _skipTrackForwardHandlerSet = false;
@@ -62,33 +61,23 @@ class FlutterSound {
   Map<String, Function(MethodCall)> _callHandlers =
       <String, Function(MethodCall)>{};
 
-  bool _isRecording() => _audio_state == t_AUDIO_STATE.IS_RECORDING;
-  t_AUDIO_STATE _audio_state = t_AUDIO_STATE.IS_STOPPED;
-  bool _isPlaying() =>
-      _audio_state == t_AUDIO_STATE.IS_PLAYING ||
-      _audio_state == t_AUDIO_STATE.IS_PAUSED;
-
-  Future<bool> isEncoderSupported(t_CODEC codec) async {
-    bool result = await _channel.invokeMethod(
+  Future<bool> isEncoderSupported(t_CODEC codec) {
+    return _channel.invokeMethod(
         'isEncoderSupported', <String, dynamic>{'codec': codec.index});
-    return result;
   }
 
-  Future<bool> isDecoderSupported(t_CODEC codec) async {
-    bool result = await _channel.invokeMethod(
+  Future<bool> isDecoderSupported(t_CODEC codec) {
+    return _channel.invokeMethod(
         'isDecoderSupported', <String, dynamic>{'codec': codec.index});
-    return result;
   }
 
-  Future<String> setSubscriptionDuration(double sec) async {
-    String result = await _channel
-        .invokeMethod('setSubscriptionDuration', <String, dynamic>{
+  Future<String> setSubscriptionDuration(double sec) {
+    return _channel.invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'sec': sec,
     });
-    return result;
   }
 
-  Future<void> _setRecorderCallback() async {
+  void _setRecorderCallback() {
     _callHandlers.addAll({
       "updateRecorderProgress": (call) {
         Map<String, dynamic> result = json.decode(call.arguments);
@@ -101,7 +90,7 @@ class FlutterSound {
     });
   }
 
-  Future<void> _setPlayerCallback() async {
+  void _setPlayerCallback() {
     _callHandlers.addAll({
       'updateProgress': (call) {
         Map<String, dynamic> result = jsonDecode(call.arguments);
@@ -115,14 +104,15 @@ class FlutterSound {
           status.currentPosition = status.duration;
         }
         if (_playerController != null) _playerController.add(status);
-        _audio_state = t_AUDIO_STATE.IS_STOPPED;
-        if (_playbackStateChangedController != null)
+        if (_playbackStateChangedController != null) {
+          _playbackState = PlaybackState.COMPLETED;
           _playbackStateChangedController.add(PlaybackState.COMPLETED);
+        }
       }
     });
   }
 
-  Future<void> _removeRecorderCallback() async {
+  void _removeRecorderCallback() {
     if (_recorderController != null) {
       _recorderController
         ..add(null)
@@ -131,7 +121,14 @@ class FlutterSound {
     }
   }
 
-  Future<void> _removeDbPeakCallback() async {
+  void _removeRecordingStateCallback() {
+    if (_recordingStateChangedController != null) {
+      _recordingStateChangedController.close();
+      _recordingStateChangedController = null;
+    }
+  }
+
+  void _removeDbPeakCallback() {
     if (_dbPeakController != null) {
       _dbPeakController
         ..add(null)
@@ -140,7 +137,7 @@ class FlutterSound {
     }
   }
 
-  Future<void> _removePlayerCallback() async {
+  void _removePlayerCallback() {
     if (_playerController != null) {
       _playerController
         ..add(null)
@@ -148,7 +145,7 @@ class FlutterSound {
       _playerController = null;
     }
   }
-  
+
   void _removePlaybackStateCallback() {
     if (_playbackStateChangedController != null) {
       _playbackStateChangedController.close();
@@ -156,59 +153,66 @@ class FlutterSound {
     }
   }
 
+  void _updateRecordingState(RecordingState newState) {
+    _recordingState = newState;
+    _recordingStateChangedController.add(_recordingState);
+  }
+
   Future<String> startRecorder(
     String uri, {
     int sampleRate = 16000,
     int numChannels = 1,
-    int bitRate= 16000,
+    int bitRate = 16000,
     t_CODEC codec = t_CODEC.DEFAULT,
     AndroidEncoder androidEncoder = AndroidEncoder.AAC,
     AndroidAudioSource androidAudioSource = AndroidAudioSource.MIC,
     AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.DEFAULT,
     IosQuality iosQuality = IosQuality.LOW,
   }) async {
-    if (_audio_state != t_AUDIO_STATE.IS_STOPPED) {
+    if (_recordingState != null && _recordingState != RecordingState.STOPPED) {
       throw new RecorderRunningException('Recorder is not stopped.');
     }
     if (!await isEncoderSupported(codec))
       throw new RecorderRunningException('Codec not supported.');
-    try {
-      String result =
-          await _channel.invokeMethod('startRecorder', <String, dynamic>{
-        'path': uri,
-        'sampleRate': sampleRate,
-        'numChannels': numChannels,
-        'bitRate': bitRate,
-        'codec': codec.index,
-        'androidEncoder': androidEncoder?.value,
-        'androidAudioSource': androidAudioSource?.value,
-        'androidOutputFormat': androidOutputFormat?.value,
-        'iosQuality': iosQuality?.value
-      });
 
-      if (_recorderController == null) {
-        _recorderController = new StreamController.broadcast();
-      }
-      if (_dbPeakController == null) {
-        _dbPeakController = new StreamController.broadcast();
-      }
+    String result =
+        await _channel.invokeMethod('startRecorder', <String, dynamic>{
+      'path': uri,
+      'sampleRate': sampleRate,
+      'numChannels': numChannels,
+      'bitRate': bitRate,
+      'codec': codec.index,
+      'androidEncoder': androidEncoder?.value,
+      'androidAudioSource': androidAudioSource?.value,
+      'androidOutputFormat': androidOutputFormat?.value,
+      'iosQuality': iosQuality?.value
+    });
 
-      _audio_state = t_AUDIO_STATE.IS_RECORDING;
-      return result;
-    } catch (err) {
-      throw new Exception(err);
+    if (_recorderController == null) {
+      _recorderController = new StreamController.broadcast();
     }
+    if (_recordingStateChangedController == null) {
+      _recordingStateChangedController = new StreamController.broadcast();
+    }
+    if (_dbPeakController == null) {
+      _dbPeakController = new StreamController.broadcast();
+    }
+
+    _updateRecordingState(RecordingState.RECORDING);
+    return result;
   }
 
   Future<String> stopRecorder() async {
-    if (_audio_state != t_AUDIO_STATE.IS_RECORDING) {
+    if (_recordingState != RecordingState.RECORDING) {
       throw new RecorderStoppedException('Recorder is not recording.');
     }
 
     String result = await _channel.invokeMethod('stopRecorder');
 
-    _audio_state = t_AUDIO_STATE.IS_STOPPED;
+    _updateRecordingState(RecordingState.STOPPED);
+
     _removeRecorderCallback();
+    _removeRecordingStateCallback();
     _removeDbPeakCallback();
     return result;
   }
@@ -233,113 +237,72 @@ class FlutterSound {
           'this platform.');
     }
 
-    try {
-      final trackMap = track.toMap();
-      String result =
-          await _channel.invokeMethod('startPlayer', <String, dynamic>{
-        'track': trackMap,
-        'canSkipForward': _skipTrackForwardHandlerSet && canSkipForward,
-        'canSkipBackward': _skipTrackBackwardHandlerSet && canSkipBackward,
-      });
-
-      _audio_state = t_AUDIO_STATE.IS_PLAYING;
-
-      return result;
-    } catch (err) {
-      throw Exception(err);
-    }
+    final trackMap = track.toMap();
+    return _channel.invokeMethod('startPlayer', <String, dynamic>{
+      'track': trackMap,
+      'canSkipForward': _skipTrackForwardHandlerSet && canSkipForward,
+      'canSkipBackward': _skipTrackBackwardHandlerSet && canSkipBackward,
+    });
   }
 
   /// Stops the media player.
   ///
   /// If you would like to continue using the audio player you have to release
   /// and initialize it again.
-  Future<String> stopPlayer() async {
+  Future<String> stopPlayer() {
     if (_playbackState == null || _playbackState == PlaybackState.STOPPED) {
       throw PlayerRunningException('Player is not playing.');
     }
 
-    _audio_state = t_AUDIO_STATE.IS_STOPPED;
-
-    return await _channel.invokeMethod('stopPlayer');
+    return _channel.invokeMethod('stopPlayer');
   }
 
-  Future<String> pausePlayer() async {
+  Future<String> pausePlayer() {
     if (_playbackState != PlaybackState.PLAYING) {
       throw PlayerRunningException('Player is not playing.');
     }
 
-    try {
-      String result = await _channel.invokeMethod('pausePlayer');
-      if (result != null) _audio_state = t_AUDIO_STATE.IS_PAUSED;
-      return result;
-    } catch (err) {
-      print('err: $err');
-      _audio_state = t_AUDIO_STATE
-          .IS_STOPPED; // In fact _audio_state is in an unknown state
-      return err;
-    }
+    return _channel.invokeMethod('pausePlayer');
   }
 
-  Future<String> resumePlayer() async {
+  Future<String> resumePlayer() {
     if (_playbackState != PlaybackState.PAUSED) {
       throw PlayerRunningException('Player is not paused.');
     }
 
-    try {
-      String result = await _channel.invokeMethod('resumePlayer');
-      if (result != null) _audio_state = t_AUDIO_STATE.IS_PLAYING;
-      return result;
-    } catch (err) {
-      print('err: $err');
-      return err;
-    }
+    return _channel.invokeMethod('resumePlayer');
   }
 
-  Future<String> seekToPlayer(int milliSecs) async {
-    try {
-      String result =
-          await _channel.invokeMethod('seekToPlayer', <String, dynamic>{
-        'sec': milliSecs,
-      });
-      return result;
-    } catch (err) {
-      print('err: $err');
-      return err;
-    }
+  Future<String> seekToPlayer(int milliSecs) {
+    return _channel.invokeMethod('seekToPlayer', <String, dynamic>{
+      'sec': milliSecs,
+    });
   }
 
-  Future<String> setVolume(double volume) async {
+  Future<String> setVolume(double volume) {
     double indexedVolume = Platform.isIOS ? volume * 100 : volume;
-    String result = '';
     if (volume < 0.0 || volume > 1.0) {
-      result = 'Value of volume should be between 0.0 and 1.0.';
-      return result;
+      throw RangeError('Value of volume should be between 0.0 and 1.0.');
     }
 
-    result = await _channel.invokeMethod('setVolume', <String, dynamic>{
+    return _channel.invokeMethod('setVolume', <String, dynamic>{
       'volume': indexedVolume,
     });
-    return result;
   }
 
   /// Defines the interval at which the peak level should be updated.
   /// Default is 0.8 seconds
-  Future<String> setDbPeakLevelUpdate(double intervalInSecs) async {
-    String result =
-        await _channel.invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
+  Future<String> setDbPeakLevelUpdate(double intervalInSecs) {
+    return _channel.invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
       'intervalInSecs': intervalInSecs,
     });
-    return result;
   }
 
   /// Enables or disables processing the Peak level in db's. Default is disabled
-  Future<String> setDbLevelEnabled(bool enabled) async {
-    String result =
-        await _channel.invokeMethod('setDbLevelEnabled', <String, dynamic>{
+  Future<String> setDbLevelEnabled(bool enabled) {
+    return _channel.invokeMethod('setDbLevelEnabled', <String, dynamic>{
       'enabled': enabled,
     });
-    return result;
   }
 
   /// Sets the function to call when the user tries to skip forward or backward
@@ -350,17 +313,6 @@ class FlutterSound {
   }) {
     _skipTrackForwardHandlerSet = skipForward != null;
     _skipTrackBackwardHandlerSet = skipBackward != null;
-
-    /*_channel.setMethodCallHandler((MethodCall call) async {
-      switch (call.method) {
-        case 'skipForward':
-          if (skipForward != null) skipForward();
-          break;
-        case 'skipBackward':
-          if (skipBackward != null) skipBackward();
-          break;
-      }
-    });*/
 
     _callHandlers.addAll({
       'skipForward': (call) {
@@ -444,7 +396,6 @@ class FlutterSound {
         return null;
       });
     } catch (err) {
-      print('err: $err');
       throw PlayerNotInitializedException(err);
     }
   }
@@ -532,6 +483,15 @@ enum PlaybackState {
 
   /// The audio player finished playing the current track
   COMPLETED,
+}
+
+/// The possible states of the recorder
+enum RecordingState {
+  /// The recorder is currently recording audio
+  RECORDING,
+
+  /// The recorder has been stopped because it has finished recording audio
+  STOPPED,
 }
 
 /// The track to play in the audio player

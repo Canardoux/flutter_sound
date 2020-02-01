@@ -62,116 +62,116 @@ class sdkCompat {
 
 /** FlutterSoundPlugin */
 public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.RequestPermissionsResultListener, AudioInterface{
-  final static String TAG = "FlutterSoundPlugin";
-  final static String RECORD_STREAM = "com.dooboolab.fluttersound/record";
-  final static String PLAY_STREAM= "com.dooboolab.fluttersound/play";
+    final static String TAG = "FlutterSoundPlugin";
+    final static String RECORD_STREAM = "com.dooboolab.fluttersound/record";
+    final static String PLAY_STREAM= "com.dooboolab.fluttersound/play";
 
-  private static final String ERR_UNKNOWN = "ERR_UNKNOWN";
-  private static final String ERR_PLAYER_IS_NULL = "ERR_PLAYER_IS_NULL";
-  private static final String ERR_PLAYER_IS_PLAYING = "ERR_PLAYER_IS_PLAYING";
-  private static final String ERR_RECORDER_IS_NULL = "ERR_RECORDER_IS_NULL";
-  private static final String ERR_RECORDER_IS_RECORDING = "ERR_RECORDER_IS_RECORDING";
+    private static final String ERR_UNKNOWN = "ERR_UNKNOWN";
+    private static final String ERR_PLAYER_IS_NULL = "ERR_PLAYER_IS_NULL";
+    private static final String ERR_PLAYER_IS_PLAYING = "ERR_PLAYER_IS_PLAYING";
+    private static final String ERR_RECORDER_IS_NULL = "ERR_RECORDER_IS_NULL";
+    private static final String ERR_RECORDER_IS_RECORDING = "ERR_RECORDER_IS_RECORDING";
 
-  private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor();
+    private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor();
 
-  private static Registrar reg;
-  final private AudioModel model = new AudioModel();
-  private Timer mTimer = new Timer();
-  final private Handler recordHandler = new Handler();
-  //mainThread handler
-  final private Handler mainHandler = new Handler();
-  final private Handler dbPeakLevelHandler = new Handler();
-  private static MethodChannel channel;
-  private MediaBrowserHelper mMediaBrowserHelper;
+    private static Registrar reg;
+    final private AudioModel model = new AudioModel();
+    private Timer mTimer = new Timer();
+    final private Handler recordHandler = new Handler();
+    //mainThread handler
+    final private Handler mainHandler = new Handler();
+    final private Handler dbPeakLevelHandler = new Handler();
+    private static MethodChannel channel;
+    private MediaBrowserHelper mMediaBrowserHelper;
 
-  final static int CODEC_OPUS = 2;
-  final static int CODEC_VORBIS = 5;
+    final static int CODEC_OPUS = 2;
+    final static int CODEC_VORBIS = 5;
 
-  static boolean _isAndroidEncoderSupported [] = {
-    true, // DEFAULT
-    true, // AAC
-    false, // OGG/OPUS
-    false, // CAF/OPUS
-    false, // MP3
-    false, // OGG/VORBIS
-    false, // WAV/PCM
-  };
+    static boolean _isAndroidEncoderSupported [] = {
+            true, // DEFAULT
+            true, // AAC
+            false, // OGG/OPUS
+            false, // CAF/OPUS
+            false, // MP3
+            false, // OGG/VORBIS
+            false, // WAV/PCM
+    };
 
-  static boolean _isAndroidDecoderSupported [] = {
-    true, // DEFAULT
-    true, // AAC
-    true, // OGG/OPUS
-    false, // CAF/OPUS
-    true, // MP3
-    true, // OGG/VORBIS
-    true, // WAV/PCM
-  };
+    static boolean _isAndroidDecoderSupported [] = {
+            true, // DEFAULT
+            true, // AAC
+            true, // OGG/OPUS
+            false, // CAF/OPUS
+            true, // MP3
+            true, // OGG/VORBIS
+            true, // WAV/PCM
+    };
 
-  static int codecArray[] = {
-      0 // DEFAULT
-    , MediaRecorder.AudioEncoder.AAC
-    , sdkCompat.AUDIO_ENCODER_OPUS
-    , 0 // CODEC_CAF_OPUS (specific Apple)
-    , 0 // CODEC_MP3 (not implemented)
-    , sdkCompat.AUDIO_ENCODER_VORBIS
-    , 0 // CODEC_PCM (not implemented)
-  };
+    static int codecArray[] = {
+            0 // DEFAULT
+            , MediaRecorder.AudioEncoder.AAC
+            , sdkCompat.AUDIO_ENCODER_OPUS
+            , 0 // CODEC_CAF_OPUS (specific Apple)
+            , 0 // CODEC_MP3 (not implemented)
+            , sdkCompat.AUDIO_ENCODER_VORBIS
+            , 0 // CODEC_PCM (not implemented)
+    };
 
-  static int formatsArray[] = {
-      MediaRecorder.OutputFormat.MPEG_4 // DEFAULT
-    , MediaRecorder.OutputFormat.MPEG_4 // CODEC_AAC
-    , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_OPUS
-    , 0                                 // CODEC_CAF_OPUS (this is apple specific)
-    , 0                                 // CODEC_MP3
-    , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_VORBIS
-    , 0                                 // CODEC_PCM
-  };
+    static int formatsArray[] = {
+            MediaRecorder.OutputFormat.MPEG_4 // DEFAULT
+            , MediaRecorder.OutputFormat.MPEG_4 // CODEC_AAC
+            , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_OPUS
+            , 0                                 // CODEC_CAF_OPUS (this is apple specific)
+            , 0                                 // CODEC_MP3
+            , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_VORBIS
+            , 0                                 // CODEC_PCM
+    };
 
-  static String pathArray[] = {
-      "sound.acc"   // DEFAULT
-    , "sound.acc"   // CODEC_AAC
-    , "sound.opus"  // CODEC_OPUS
-    , "sound.caf"   // CODEC_CAF_OPUS (this is apple specific)
-    , "sound.mp3"   // CODEC_MP3
-    , "sound.ogg"   // CODEC_VORBIS
-    , "sound.wav"   // CODEC_PCM
-  };
+    static String pathArray[] = {
+            "sound.acc"   // DEFAULT
+            , "sound.acc"   // CODEC_AAC
+            , "sound.opus"  // CODEC_OPUS
+            , "sound.caf"   // CODEC_CAF_OPUS (this is apple specific)
+            , "sound.mp3"   // CODEC_MP3
+            , "sound.ogg"   // CODEC_VORBIS
+            , "sound.wav"   // CODEC_PCM
+    };
 
-  String extentionArray[] = {
-      "acc"   // DEFAULT
-    , "acc"   // CODEC_AAC
-    , "opus"  // CODEC_OPUS
-    , "caf"   // CODEC_CAF_OPUS (this is apple specific)
-    , "mp3"   // CODEC_MP3
-    , "ogg"   // CODEC_VORBIS
-    , "wav"   // CODEC_PCM
-  };
+    String extentionArray[] = {
+            "acc"   // DEFAULT
+            , "acc"   // CODEC_AAC
+            , "opus"  // CODEC_OPUS
+            , "caf"   // CODEC_CAF_OPUS (this is apple specific)
+            , "mp3"   // CODEC_MP3
+            , "ogg"   // CODEC_VORBIS
+            , "wav"   // CODEC_PCM
+    };
 
-  String finalPath;
+    String finalPath;
 
 
-  private FlutterSoundPlugin(Registrar registrar){
-    channel = new MethodChannel(registrar.messenger(), "flutter_sound");
-    channel.setMethodCallHandler(this);
-    reg = registrar;
-  }
+    private FlutterSoundPlugin(Registrar registrar){
+        channel = new MethodChannel(registrar.messenger(), "flutter_sound");
+        channel.setMethodCallHandler(this);
+        reg = registrar;
+    }
 
-  /** Plugin registration. */
-  public static void registerWith(Registrar registrar) {
-    FlutterSoundPlugin plugin = new FlutterSoundPlugin(registrar);
-  }
+    /** Plugin registration. */
+    public static void registerWith(Registrar registrar) {
+        FlutterSoundPlugin plugin = new FlutterSoundPlugin(registrar);
+    }
 
-  @Override
-  public void onMethodCall(final MethodCall call, final Result result) {
-    final String path = call.argument("path");
-    switch (call.method) {
-      case "isDecoderSupported": {
-        int _codec = call.argument("codec");
-        boolean b = _isAndroidDecoderSupported[_codec];
-        if (Build.VERSION.SDK_INT < 23) {
-          if ( (_codec == CODEC_OPUS) || (_codec == CODEC_VORBIS) )
-            b = false;
-        }
+    @Override
+    public void onMethodCall(final MethodCall call, final Result result) {
+        final String path = call.argument("path");
+        switch (call.method) {
+            case "isDecoderSupported": {
+                int _codec = call.argument("codec");
+                boolean b = _isAndroidDecoderSupported[_codec];
+                if (Build.VERSION.SDK_INT < 23) {
+                    if ( (_codec == CODEC_OPUS) || (_codec == CODEC_VORBIS) )
+                        b = false;
+                }
 
                 result.success(b);
             }

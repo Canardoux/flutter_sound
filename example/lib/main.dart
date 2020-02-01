@@ -48,7 +48,6 @@ class _MyAppState extends State<MyApp> {
   // be displayed.
   bool _canDisplayPlayerControls = false;
   PlaybackState _playbackState;
-  bool _isCodecButtonEnabled = false;
 
   @override
   void initState() {
@@ -114,6 +113,10 @@ class _MyAppState extends State<MyApp> {
       );
 
       print('startRecorder: $path');
+
+      flutterSound.onRecordingStateChanged.listen((newState) {
+        print('This is the new recording state: $newState');
+      });
 
       _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
         DateTime date = new DateTime.fromMillisecondsSinceEpoch(
@@ -316,7 +319,6 @@ class _MyAppState extends State<MyApp> {
           onChanged: (newMedia) {
             setState(() {
               _media = newMedia;
-              _isCodecButtonEnabled = _media != t_MEDIA.REMOTE_EXAMPLE_FILE;
             });
           },
           items: <DropdownMenuItem<t_MEDIA>>[
