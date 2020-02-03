@@ -203,9 +203,7 @@ class FlutterSound {
 
   Future<void> _removeRecorderCallback() async {
     if (_recorderController != null) {
-      _recorderController
-        ..add(null)
-        ..close();
+      _recorderController.close();
       _recorderController = null;
     }
   }
