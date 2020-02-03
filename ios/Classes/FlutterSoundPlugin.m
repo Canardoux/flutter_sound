@@ -295,24 +295,24 @@ bool isPlaying = false;
 }
 
 - (void)startRecorder
-:(NSString*)path
-:(NSNumber*)numChannels
-:(NSNumber*)sampleRate
-:(t_CODEC) codec
-:(NSNumber*)iosQuality
-:(NSNumber*)bitRate
-result: (FlutterResult)result {
-    if ([path class] == [NSNull class]) {
-        audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:defaultExtensions[codec] ]];
-    } else {
-        audioFileURL = [NSURL fileURLWithPath: [GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:path]];
-    }
-    NSMutableDictionary *audioSettings = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                          [NSNumber numberWithFloat:[sampleRate doubleValue]],AVSampleRateKey,
-                                          [NSNumber numberWithInt: formats[codec] ],AVFormatIDKey,
-                                          [NSNumber numberWithInt: [numChannels intValue]],AVNumberOfChannelsKey,
-                                          [NSNumber numberWithInt: [iosQuality intValue]],AVEncoderAudioQualityKey,
-                                          nil];
+        :(NSString*)path
+        :(NSNumber*)numChannels
+        :(NSNumber*)sampleRate
+        :(t_CODEC) codec
+        :(NSNumber*)iosQuality
+        :(NSNumber*)bitRate
+        result: (FlutterResult)result {
+  if ([path class] == [NSNull class]) {
+    audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:defaultExtensions[codec] ]];
+  } else {
+    audioFileURL = [NSURL fileURLWithPath: path];
+  }
+  NSMutableDictionary *audioSettings = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                 [NSNumber numberWithFloat:[sampleRate doubleValue]],AVSampleRateKey,
+                                 [NSNumber numberWithInt: formats[codec] ],AVFormatIDKey,
+                                 [NSNumber numberWithInt: [numChannels intValue]],AVNumberOfChannelsKey,
+                                 [NSNumber numberWithInt: [iosQuality intValue]],AVEncoderAudioQualityKey,
+                                 nil];
     
     // If bitrate is defined, the use it, otherwise use the OS default
     if(![bitRate isEqual:[NSNull null]]) {

@@ -103,15 +103,16 @@ class _MyAppState extends State<MyApp> {
   ];
   void startRecorder() async {
     try {
-      String path = await flutterSound.startRecorder(
-        paths[_codec.index],
-        codec: _codec,
-        sampleRate: 16000,
-        bitRate: 16000,
-        numChannels: 1,
-        androidAudioSource: AndroidAudioSource.MIC,
-      );
-
+      // String path = await flutterSound.startRecorder
+      // (
+      //   paths[_codec.index],
+      //   codec: _codec,
+      //   sampleRate: 16000,
+      //   bitRate: 16000,
+      //   numChannels: 1,
+      //   androidAudioSource: AndroidAudioSource.MIC,
+      // );
+      String path = await flutterSound.startRecorder( codec: _codec, );
       print('startRecorder: $path');
 
       flutterSound.onRecordingStateChanged.listen((newState) {
@@ -173,7 +174,8 @@ class _MyAppState extends State<MyApp> {
     return await File(path).exists();
   }
 
-  Future<Uint8List> makeBuffer(String path) async {
+  // In this simple example, we just load a file in memory.This is stupid but just for demonstation  of startPlayerFromBuffer()
+  Future <Uint8List> makeBuffer(String path) async {
     try {
       if (!await fileExists(path)) return null;
       File file = File(path);
