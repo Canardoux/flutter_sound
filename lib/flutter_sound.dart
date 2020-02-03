@@ -55,7 +55,7 @@ class FlutterSound {
 
   /// Value ranges from 0 to 120
   Stream<double> get onRecorderDbPeakChanged => _dbPeakController.stream;
-  Stream<RecordStatus> get onRecorderStateChanged => _recorderController.stream;
+  Stream<RecordStatus> get onRecorderStateChanged => (_recorderController != null) ? _recorderController.stream : null;
   Stream<PlayStatus> get onPlayerStateChanged => (_playerController != null) ? _playerController.stream : null;
   @Deprecated('Prefer to use audio_state variable')
   bool get isPlaying => _isPlaying();
