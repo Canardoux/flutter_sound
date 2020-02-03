@@ -69,7 +69,7 @@ class FlutterSound {
   Future<String> defaultPath(t_CODEC codec) async
   {
     Directory tempDir = await getTemporaryDirectory ();
-    File fout =  File ('${tempDir.path}/${defaultPaths[codec.index]}');
+    File fout = File ('${tempDir.path}/${defaultPaths[codec.index]}');
     return fout.path;
   }
 
@@ -230,7 +230,7 @@ class FlutterSound {
 
   Future<String> startRecorder(
       {
-        String uri ,
+        String uri,
         int sampleRate = 16000, int numChannels = 1, int bitRate = 16000,
         t_CODEC codec = t_CODEC.CODEC_AAC,
         AndroidEncoder androidEncoder = AndroidEncoder.AAC,
@@ -262,7 +262,7 @@ class FlutterSound {
       isOppOpus = true;
       codec = t_CODEC.CODEC_CAF_OPUS;
       Directory tempDir = await getTemporaryDirectory ();
-      File fout =  File ('${tempDir.path}/flutter_sound-tmp.caf');
+      File fout = File ('${tempDir.path}/flutter_sound-tmp.caf');
       if (fout.existsSync()) // delete the old temporary file if it exists
         await fout.delete();
       uri = fout.path;

@@ -1,3 +1,5 @@
+## 2.0.4
+- OGG/OPUS support on iOS [#199](https://github.com/dooboolab/flutter_sound/pull/199)
 ## 2.0.3
 - Resolve [#194](https://github.com/dooboolab/flutter_sound/issues/194)
   * `stopReocorder` resolve path.
