@@ -56,7 +56,7 @@ class FlutterSound {
   /// Value ranges from 0 to 120
   Stream<double> get onRecorderDbPeakChanged => _dbPeakController.stream;
   Stream<RecordStatus> get onRecorderStateChanged => _recorderController.stream;
-  Stream<PlayStatus> get onPlayerStateChanged => _playerController.stream;
+  Stream<PlayStatus> get onPlayerStateChanged => (_playerController != null) ? _playerController.stream : null;
   @Deprecated('Prefer to use audio_state variable')
   bool get isPlaying => _isPlaying();
   bool get isRecording => _isRecording();
@@ -390,6 +390,16 @@ class FlutterSound {
     // If we want to play OGG/OPUS on iOS, we need to remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We write the data in a temporary file before calling ffmpeg.
     if ( (codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS) ) {
+      if (_audioState == t_AUDIO_STATE.IS_PAUSED) {
+        this.resumePlayer();
+        _audioState = t_AUDIO_STATE.IS_PLAYING;
+        return 'Player resumed';
+        // throw PlayerRunningException('Player is already playing.');
+      }
+      if (_audioState != t_AUDIO_STATE.IS_STOPPED) {
+        throw PlayerRunningException('Player is not stopped.');
+      }
+
       Directory tempDir = await getTemporaryDirectory();
       File inputFile =  File('${tempDir.path}/flutter_sound-tmp.opus');
       if (inputFile.existsSync())
@@ -403,16 +413,15 @@ class FlutterSound {
 
 
   Future<String> stopPlayer() async {
-
-    if (_audioState != t_AUDIO_STATE.IS_PAUSED && _audioState != t_AUDIO_STATE.IS_PLAYING ) {
-            throw PlayerRunningException('Player is not playing.');
-    }
-
     _audioState = t_AUDIO_STATE.IS_STOPPED;
 
-    String result = await _channel.invokeMethod('stopPlayer');
-    _removePlayerCallback();
-    return result;
+    try
+    {
+      String result = await _channel.invokeMethod( 'stopPlayer' );
+      return result;
+    } catch (e) {}
+    return null;
+
   }
 
   Future<String> pausePlayer() async {
