@@ -337,10 +337,8 @@ class FlutterSound {
       return 'Player resumed';
       // throw PlayerRunningException('Player is already playing.');
     }
-    if (_audioState != t_AUDIO_STATE.IS_STOPPED) {
-            throw PlayerRunningException('Player is not stopped.');
-    }
 
+    await stopPlayer();
     try
     {
       t_CODEC codec = what['codec'];
@@ -392,11 +390,8 @@ class FlutterSound {
         this.resumePlayer();
         _audioState = t_AUDIO_STATE.IS_PLAYING;
         return 'Player resumed';
-        // throw PlayerRunningException('Player is already playing.');
       }
-      if (_audioState != t_AUDIO_STATE.IS_STOPPED) {
-        throw PlayerRunningException('Player is not stopped.');
-      }
+      await stopPlayer();
 
       Directory tempDir = await getTemporaryDirectory();
       File inputFile =  File('${tempDir.path}/flutter_sound-tmp.opus');
