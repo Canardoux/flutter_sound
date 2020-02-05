@@ -61,7 +61,6 @@ class FlutterSound {
   /// This stream stops working when releaseMediaPlayer() is called.
   Stream<PlaybackState> get onPlaybackStateChanged =>
       _playbackStateChangedController.stream;
-
   /// Notifies the listeners whenever the recorder is recording or stopped.
   Stream<RecordingState> get onRecordingStateChanged =>
       _recordingStateChangedController.stream;

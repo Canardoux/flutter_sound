@@ -61,8 +61,8 @@ To migrate to `2.0.0` you must migrate your Android app to Android X by followin
 | :------------ |:---------------:| :---------------:|
 | onRecorderStateChanged | `<RecordStatus>` | Able to listen to subscription when recorder starts. |
 | onPlayerStateChanged | `<PlayStatus>` | Able to listen to subscription when player starts. |
-| onPlaybackStateChanged | `<PlaybackState>` | Able to listen to subscription when player starts.
-
+| onPlaybackStateChanged | `<PlaybackState>` | Able to listen to subscription when player starts, no more able when player is released. Notifies the listener when the player starts playing, is paused, stopped or finished playing.
+| onRecordingStateChanged | `<RecordingState>` | Able to listen to subscription when recorder starts recording, no more able when recorder is stopped. Notifies the listener when the recorder start recording or is stopped.
 
 ## Default uri path
 When uri path is not set during the `function call` in `startRecorder` or `startPlayer`, records are saved/read to/from a temporary directory depending on the platform.
