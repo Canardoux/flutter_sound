@@ -31,6 +31,60 @@ enum t_AUDIO_STATE
         IS_RECORDING,
 }
 
+enum t_IOS_SESSION_CATEGORY
+{
+  AMBIENT,
+  MULTI_ROUTE,
+  PLAY_AND_RECORD,
+  PLAYBACK,
+  RECORD,
+  SOLO_AMBIENT,
+}
+
+final List<String> iosSessionCategory =
+  [
+    'AVAudioSessionCategoryAmbient',
+    'AVAudioSessionCategoryMultiRoute',
+    'AVAudioSessionCategoryPlayAndRecord',
+    'AVAudioSessionCategoryPlayback',
+    'AVAudioSessionCategoryRecord',
+    'AVAudioSessionCategorySoloAmbient',
+  ];
+
+enum t_IOS_SESSION_MODE
+{
+  DEFAULT,
+  GAME_CHAT,
+  MEASUREMENT,
+  MOVIE_PLAYBACK,
+  SPOKEN_AUDIO,
+  VIDEO_CHAT,
+  VIDEO_RECORDING,
+  VOICE_CHAT,
+  VOICE_PROMPT,
+}
+
+final List<String> iosSessionMode =
+  [
+    'AVAudioSessionModeDefault',
+    'AVAudioSessionModeGameChat',
+    'AVAudioSessionModeMeasurement',
+    'AVAudioSessionModeMoviePlayback',
+    'AVAudioSessionModeSpokenAudio',
+    'AVAudioSessionModeVideoChat',
+    'AVAudioSessionModeVideoRecording',
+    'AVAudioSessionModeVoiceChat',
+    'AVAudioSessionModeVoicePrompt',
+  ];
+
+// Options for setSessionCategory on iOS
+const int IOS_MIX_WITH_OTHERS = 0x1;
+const int IOS_DUCK_OTHERS = 0x2;
+const int IOS_INTERRUPT_SPOKEN_AUDIO_AND_MIX_WITH_OTHERS = 0x11;
+const int IOS_ALLOW_BLUETOOTH = 0x4;
+const int IOS_ALLOW_BLUETOOTH_A2DP = 0x20;
+const int IOS_ALLOW_AIR_PLAY = 0x40;
+const int IOS_DEFAULT_TO_SPEAKER = 0x8;
 
 final List<String> defaultPaths =
   [
@@ -41,11 +95,12 @@ final List<String> defaultPaths =
   		'sound.mp3',	// CODEC_MP3
   		'sound.ogg',	// CODEC_VORBIS
   		'sound.wav',	// CODEC_PCM
-];
+  ];
 
-class FlutterSound {
-  static const MethodChannel _channel = const MethodChannel('flutter_sound');
-  static const MethodChannel _FFmpegChannel = const MethodChannel('flutter_ffmpeg');
+class FlutterSound
+{
+  static const MethodChannel _channel = const MethodChannel( 'flutter_sound' );
+  static const MethodChannel _FFmpegChannel = const MethodChannel( 'flutter_ffmpeg' );
   static StreamController<RecordStatus> _recorderController;
   static StreamController<double> _dbPeakController;
   static StreamController<PlayStatus> _playerController;
@@ -54,35 +109,54 @@ class FlutterSound {
   static String tmpUri; // Used by startRecorder/stopRecorder to keep the temporary uri to record CAF
 
   /// Value ranges from 0 to 120
-  Stream<double> get onRecorderDbPeakChanged => _dbPeakController.stream;
-  Stream<RecordStatus> get onRecorderStateChanged => (_recorderController != null) ? _recorderController.stream : null;
-  Stream<PlayStatus> get onPlayerStateChanged => (_playerController != null) ? _playerController.stream : null;
-  @Deprecated('Prefer to use audio_state variable')
-  bool get isPlaying => _isPlaying();
-  bool get isRecording => _isRecording();
-  t_AUDIO_STATE get audioState => _audioState;
+  Stream<double> get onRecorderDbPeakChanged
+  => _dbPeakController.stream;
 
-  bool _isRecording() => _audioState == t_AUDIO_STATE.IS_RECORDING ;
+  Stream<RecordStatus> get onRecorderStateChanged
+  => (_recorderController != null) ? _recorderController.stream : null;
+
+  Stream<PlayStatus> get onPlayerStateChanged
+  => (_playerController != null) ? _playerController.stream : null;
+
+  @Deprecated( 'Prefer to use audio_state variable' )
+  bool get isPlaying
+  => _isPlaying( );
+
+  bool get isRecording
+  => _isRecording( );
+
+  t_AUDIO_STATE get audioState
+  => _audioState;
+
+  bool _isRecording( )
+  => _audioState == t_AUDIO_STATE.IS_RECORDING;
   t_AUDIO_STATE _audioState = t_AUDIO_STATE.IS_STOPPED;
-  bool _isPlaying() => _audioState == t_AUDIO_STATE.IS_PLAYING || _audioState == t_AUDIO_STATE.IS_PAUSED;
 
-  Future<String> defaultPath(t_CODEC codec) async
+  bool _isPlaying( )
+  => _audioState == t_AUDIO_STATE.IS_PLAYING || _audioState == t_AUDIO_STATE.IS_PAUSED;
+
+  Future<String> defaultPath( t_CODEC codec )
+  async
   {
-    Directory tempDir = await getTemporaryDirectory ();
-    File fout = File ('${tempDir.path}/${defaultPaths[codec.index]}');
+    Directory tempDir = await getTemporaryDirectory( );
+    File fout = File( '${tempDir.path}/${defaultPaths[codec.index]}' );
     return fout.path;
   }
 
 
-  /// Returns true if the flutter_ffmpeg plugin is really plugged
-  Future<bool>isFFmpegSupported() async
+  /// Returns true if the flutter_ffmpeg plugin is really plugged in
+  Future<bool> isFFmpegSupported( )
+  async
   {
-    try {
-      await _FFmpegChannel.invokeMethod('getFFmpegVersion');
-       await _FFmpegChannel.invokeMethod('getPlatform');
-       await _FFmpegChannel.invokeMethod('getPackageName');
+    try
+    {
+      await _FFmpegChannel.invokeMethod( 'getFFmpegVersion' );
+      await _FFmpegChannel.invokeMethod( 'getPlatform' );
+      await _FFmpegChannel.invokeMethod( 'getPackageName' );
       return true;
-    } catch (e) {
+    }
+    catch (e)
+    {
       return false;
     }
   }
@@ -92,49 +166,73 @@ class FlutterSound {
   /// and without any complain from the link-editor.
   ///
   /// Executes FFmpeg with [commandArguments] provided.
-  Future<int> executeFFmpegWithArguments(List<String> arguments) async {
-    try {
+  Future<int> executeFFmpegWithArguments( List<String> arguments )
+  async {
+    try
+    {
       final Map<dynamic, dynamic> result = await _FFmpegChannel
-          .invokeMethod('executeFFmpegWithArguments', {'arguments': arguments});
+                  .invokeMethod( 'executeFFmpegWithArguments', {'arguments': arguments} );
       return result['rc'];
-    } on PlatformException catch (e) {
-      print("Plugin error: ${e.message}");
+    }
+    on PlatformException catch (e)
+    {
+      print( "Plugin error: ${e.message}" );
       return -1;
     }
   }
 
   /// Returns true if the specified encoder is supported by flutter_sound on this platform
-  Future<bool> isEncoderSupported(t_CODEC codec) async {
-      bool result;
-      // For encoding ogg/opus on ios, we need to support two steps :
-      // - encode CAF/OPPUS (with native Apple AVFoundation)
-      // - remux CAF file format to OPUS file format (with ffmpeg)
+  Future<bool> isEncoderSupported( t_CODEC codec )
+  async {
+    bool result;
+    // For encoding ogg/opus on ios, we need to support two steps :
+    // - encode CAF/OPPUS (with native Apple AVFoundation)
+    // - remux CAF file format to OPUS file format (with ffmpeg)
 
-      if ( (codec == t_CODEC.CODEC_OPUS) &&  (Platform.isIOS) ){
-        if ( ! await isFFmpegSupported() )
-          result = false;
-        else
-          result = await _channel.invokeMethod('isEncoderSupported', <String, dynamic> { 'codec': t_CODEC.CODEC_CAF_OPUS.index } );
-      } else
-        result = await _channel.invokeMethod('isEncoderSupported', <String, dynamic> { 'codec': codec.index } );
-      return result;
+    if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS))
+    {
+      if (!await isFFmpegSupported( ))
+        result = false;
+      else
+        result = await _channel.invokeMethod( 'isEncoderSupported', <String, dynamic>{ 'codec': t_CODEC.CODEC_CAF_OPUS.index} );
+    } else
+      result = await _channel.invokeMethod( 'isEncoderSupported', <String, dynamic>{ 'codec': codec.index} );
+    return result;
   }
 
 
   /// Returns true if the specified decoder is supported by flutter_sound on this platform
-  Future<bool>  isDecoderSupported(t_CODEC codec) async {
+  Future<bool> isDecoderSupported( t_CODEC codec )
+  async {
     bool result;
     // For decoding ogg/opus on ios, we need to support two steps :
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
-    if ( (codec == t_CODEC.CODEC_OPUS) &&  (Platform.isIOS) ){
-        if ( ! await isFFmpegSupported() )
-          result = false;
-        else
-          result = await _channel.invokeMethod('isDecoderSupported', <String, dynamic> { 'codec': t_CODEC.CODEC_CAF_OPUS.index } );
+    if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS))
+    {
+      if (!await isFFmpegSupported( ))
+        result = false;
+      else
+        result = await _channel.invokeMethod( 'isDecoderSupported', <String, dynamic>{ 'codec': t_CODEC.CODEC_CAF_OPUS.index} );
     } else
-        result = await _channel.invokeMethod('isDecoderSupported', <String, dynamic> { 'codec': codec.index } );
+      result = await _channel.invokeMethod( 'isDecoderSupported', <String, dynamic>{ 'codec': codec.index} );
     return result;
+  }
+
+  /// Actually for iOS only.
+  /// If this function is not called, everthing is managed by default by flutter_sound.
+  /// If this function is called, it is probably called just once when the app starts.
+  /// After calling this function, the caller is responsible for using correctly iosSetActive
+  ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
+  Future<bool> iosSetCategory( t_IOS_SESSION_CATEGORY category, t_IOS_SESSION_MODE mode, int options ) async {
+    bool r = await _channel.invokeMethod( 'iosSetCategory', <String, dynamic>{ 'category': iosSessionCategory[category.index], 'mode': iosSessionMode[mode.index], 'options': options } );
+    return r;
+  }
+
+  /// Actually for iOS only. After iosSetCategory() the caller must manage his audio session with this function
+  Future<bool> iosSetActive( bool enabled) async {
+    bool r = await _channel.invokeMethod( 'iosSetActive', <String, dynamic>{ 'enabled': enabled } );
+    return r;
   }
 
   Future<String> setSubscriptionDuration(double sec) async {

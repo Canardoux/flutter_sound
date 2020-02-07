@@ -15,12 +15,12 @@ NSString* defaultExtensions [] =
 AudioFormatID formats [] =
 {
 	  kAudioFormatMPEG4AAC	// CODEC_DEFAULT
-    , kAudioFormatMPEG4AAC	// CODEC_AAC
-	, 0						// CODEC_OPUS
-	, kAudioFormatOpus		// CODEC_CAF_OPUS
-	, 0						// CODEC_MP3
-	, 0						// CODEC_OGG
-	, 0						// CODEC_PCM
+        , kAudioFormatMPEG4AAC	// CODEC_AAC
+	, 0			// CODEC_OPUS
+	, kAudioFormatOpus	// CODEC_CAF_OPUS
+	, 0			// CODEC_MP3
+	, 0			// CODEC_OGG
+	, 0			// CODEC_PCM
 };
 
 
@@ -47,6 +47,14 @@ bool _isIosDecoderSupported [] =
     true, // WAV/PCM
 };
 
+static enum t_SET_CATEGORY_DONE
+{
+        NOT_SET,
+        FOR_PLAYING, // Flutter_sound did it during startPlayer()
+        FOR_RECORDING, // Flutter_sound did it during startRecorder()
+        BY_USER // The caller did it himself : flutterSound must not change that (The user is also responsible of setActive() )
+} setCategoryDone = NOT_SET; // Lazzy initialization in startRecorder() and startPlayer()
+
 
 // post fix with _FlutterSound to avoid conflicts with common libs including path_provider
 NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir) {
@@ -72,12 +80,7 @@ FlutterMethodChannel* _channel;
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
 
   NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
-  /*
-  NSDictionary *status = @{
-                           @"duration" : [duration stringValue],
-                           @"current_position" : [currentTime stringValue],
-                           };
-  */
+  
   [_channel invokeMethod:@"audioPlayerDidFinishPlaying" arguments:status];
 
   [self stopTimer];
@@ -117,13 +120,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 
 
   NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
-  /*
-  NSDictionary *status = @{
-                           @"duration" : [duration stringValue],
-                           @"current_position" : [currentTime stringValue],
-                           };
-  */
-
+  
   [_channel invokeMethod:@"updateProgress" arguments:status];
 }
 
@@ -240,14 +237,51 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
       BOOL enabled = [call.arguments[@"enabled"] boolValue];
       [self setDbLevelEnabled:enabled result:result];
   }
+  else if ([@"iosSetCategory" isEqualToString:call.method]) {
+      NSString* categ = (NSString*)call.arguments[@"category"];
+      NSString* mode = (NSString*)call.arguments[@"mode"];
+      NSNumber* options = (NSNumber*)call.arguments[@"options"];
+      [self setCategory: categ mode: mode options: [options intValue] result:result];
+  }
+  else if ([@"iosSetActive" isEqualToString:call.method]) {
+    BOOL enabled = [call.arguments[@"enabled"] boolValue];
+    [self setActive:enabled result:result];
+  }
+
   else {
     result(FlutterMethodNotImplemented);
   }
 }
 
+- (void)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options result:(FlutterResult)result {
+        // Able to play in silent mode
+  BOOL b = [[AVAudioSession sharedInstance]
+     setCategory: categ
+     mode: mode
+     options: options
+     error: nil];
+  setCategoryDone = BY_USER;
+  NSNumber* r = [NSNumber numberWithBool: b];
+  result(r);
+}
+
+- (void)setActive:(BOOL)enabled result:(FlutterResult)result {
+  if ((setCategoryDone == NOT_SET) && enabled) { // This is not normal : setCategoryDone must be set BY_USER before. We assume that the user wants to control his playback but forgot to call setCategory.
+    setCategoryDone = BY_USER;
+    BOOL b = [[AVAudioSession sharedInstance]
+      setCategory: AVAudioSessionCategoryPlayback
+      mode: AVAudioSessionModeDefault
+      options: 0 //AVAudioSessionCategoryOptionDuckOthers
+      error: nil];
+  }
+  BOOL b = [[AVAudioSession sharedInstance]  setActive:enabled error:nil] ;
+  NSNumber* r = [NSNumber numberWithBool: b];
+  result(r);
+}
+  
 
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result {
-  NSNumber*  b = [NSNumber numberWithBool: _isIosDecoderSupported[codec] ];
+  NSNumber* b = [NSNumber numberWithBool: _isIosDecoderSupported[codec] ];
   result(b);
 }
 
@@ -298,8 +332,11 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     }
 
   // Setup audio session
-  AVAudioSession *session = [AVAudioSession sharedInstance];
-  [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+  if ((setCategoryDone == NOT_SET) || (setCategoryDone == FOR_PLAYING) ) {
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+        setCategoryDone = FOR_RECORDING;
+  }
 
   // set volume default to speaker
   UInt32 doChangeDefaultRoute = 1;
@@ -328,6 +365,8 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 }
 
 - (void)stopRecorder:(FlutterResult)result {
+  if (setCategoryDone != BY_USER)
+        [[AVAudioSession sharedInstance]  setActive:NO error:nil];
   [audioRecorder stop];
 
   // Stop Db Timer
@@ -336,7 +375,6 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   [self stopTimer];
     
   AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-  [audioSession setActive:NO error:nil];
 
   NSString *filePath = audioFileURL.absoluteString;
   result(filePath);
@@ -355,7 +393,13 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
         audioFileURL = [NSURL URLWithString:path];
     }
   }
-
+        // Able to play in silent mode
+  if (setCategoryDone == NOT_SET) {
+          [[AVAudioSession sharedInstance]
+              setCategory: AVAudioSessionCategoryPlayback
+              error: nil];
+           setCategoryDone = FOR_PLAYING;
+  }
   if (isRemote) {
     NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
         dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -365,12 +409,9 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
         self->audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
         self->audioPlayer.delegate = self;
 
-        // Able to play in silent mode
-        [[AVAudioSession sharedInstance]
-            setCategory: AVAudioSessionCategoryPlayback
-            error: nil];
         // Able to play in background
-        [[AVAudioSession sharedInstance] setActive: YES error: nil];
+        if (setCategoryDone != BY_USER)
+                [[AVAudioSession sharedInstance] setActive: YES error: nil];
         [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 
         [self->audioPlayer play];
@@ -386,10 +427,8 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
       audioPlayer.delegate = self;
     // }
 
-    // Able to play in silent mode
-    [[AVAudioSession sharedInstance]
-        setCategory: AVAudioSessionCategoryPlayback
-        error: nil];
+    if (setCategoryDone != BY_USER)
+        [[AVAudioSession sharedInstance] setActive: YES error: nil];
 
     [audioPlayer play];
     [self startTimer];
@@ -403,7 +442,20 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 - (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result {
   audioPlayer = [[AVAudioPlayer alloc] initWithData: [dataBuffer data] error: nil];
   audioPlayer.delegate = self;
-  [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: nil];
+  if (setCategoryDone == NOT_SET) {
+          [[AVAudioSession sharedInstance]
+              setCategory: AVAudioSessionCategoryPlayback
+              error: nil];
+              // Able to play in silent mode
+              [[AVAudioSession sharedInstance]
+                  setCategory: AVAudioSessionCategoryPlayback
+                  mode: AVAudioSessionModeVoicePrompt
+                  options: AVAudioSessionCategoryOptionDuckOthers
+                  error: nil]; // [LARPOUX]
+
+          setCategoryDone = FOR_PLAYING;
+  }
+
   [audioPlayer play];
   [self startTimer];
   result(@"Playing from buffer");
@@ -414,6 +466,8 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 
 
 - (void)stopPlayer:(FlutterResult)result {
+  if (setCategoryDone != BY_USER)
+      [[AVAudioSession sharedInstance] setActive: NO error: nil];
   if (audioPlayer) {
     if (timer != nil) {
         [timer invalidate];
@@ -421,6 +475,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     }
     [audioPlayer stop];
     audioPlayer = nil;
+
     result(@"stop play");
   } else {
     result([FlutterError
@@ -463,9 +518,6 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
     return;
   }
 
-  [[AVAudioSession sharedInstance]
-    setCategory: AVAudioSessionCategoryPlayback
-    error: nil];
   [audioPlayer play];
   [self startTimer];
   NSString *filePath = audioFileURL.absoluteString;
