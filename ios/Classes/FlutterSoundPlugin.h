@@ -19,5 +19,5 @@ typedef enum
 - (void)updateProgress:(NSTimer*) timer;
 - (void)startTimer;
 - (void)setupNowPlaying;
-- (void)setupRemoteCommandCenter:(bool)canSkipForward canSkipBackward: (bool)canSkipBackward result: (FlutterResult)result;
+- (void)setupRemoteCommandCenter:(BOOL)canSkipForward canSkipBackward: (BOOL)canSkipBackward result: (FlutterResult)result;
 @end

@@ -71,8 +71,20 @@ public class MediaBrowserHelper {
         }
     };
 
-    MediaBrowserHelper(Activity activity, Callable<Void> serviceSuccConnectionCallback, Callable<Void> serviceUnsuccConnectionCallback) {
+    /**
+     * Initialize the media browser helper.
+     *
+     *
+     * @param activity The activity in which to initialize the media browser helper.
+     * @param includeAudioPlayerFeatures Whether the media player should include the audio player
+     *                                  features.
+     * @param serviceSuccConnectionCallback The callback to call when the connection is successful.
+     * @param serviceUnsuccConnectionCallback The callback to call when the connection
+     *                                       is unsuccessful.
+     */
+    MediaBrowserHelper(Activity activity, boolean includeAudioPlayerFeatures, Callable<Void> serviceSuccConnectionCallback, Callable<Void> serviceUnsuccConnectionCallback) {
         mActivity = activity;
+        BackgroundAudioService.includeAudioPlayerFeatures = includeAudioPlayerFeatures;
         mServiceConnectionSuccessCallback = serviceSuccConnectionCallback;
         mServiceConnectionUnsuccessfulCallback = serviceUnsuccConnectionCallback;
 

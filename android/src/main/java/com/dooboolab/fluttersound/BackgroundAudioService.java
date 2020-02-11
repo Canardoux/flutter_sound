@@ -57,6 +57,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
     public static Callable skipTrackForwardHandler;
     public static Callable skipTrackBackwardHandler;
     public static Function playbackStateUpdater;
+    public static boolean includeAudioPlayerFeatures;
 
     public final static int PLAYING_STATE = 0;
     public final static int PAUSED_STATE = 1;
@@ -67,6 +68,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
      */
     public static Track currentTrack;
 
+    private boolean mIsNoisyReceiverRegistered;
     private MediaPlayer mMediaPlayer;
     private MediaSessionCompat mMediaSessionCompat;
     private AudioFocusRequest mAudioFocusRequest;
@@ -331,7 +333,12 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
             audioManager.abandonAudioFocus(this);
         }
 
-        unregisterReceiver(mNoisyReceiver);
+        // Unregister the noisy receiver only if it was previously set
+        if(mIsNoisyReceiverRegistered) {
+            unregisterReceiver(mNoisyReceiver);
+            mIsNoisyReceiverRegistered = false;
+        }
+
         NotificationManagerCompat.from(this).cancel(1);
         resetMediaPlayer();
     }
@@ -344,7 +351,11 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
 
         initMediaPlayer();
         initMediaSession();
-        initNoisyReceiver();
+
+        // Do not initialize the noisy receiver if we should not include audio player features
+        if(includeAudioPlayerFeatures) {
+          initNoisyReceiver();
+        }
     }
 
     private void initMediaPlayer() {
@@ -359,8 +370,11 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         mMediaPlayer.setOnCompletionListener(this);
         // Set the onPreparedListener
         mMediaPlayer.setOnPreparedListener(mp -> {
-            // Start retrieving the album art
-            new AlbumArtDownloader().execute(currentTrack.getAlbumArt());
+            // Start retrieving the album art if the audio player features should be included
+            if(includeAudioPlayerFeatures) {
+                new AlbumArtDownloader().execute(currentTrack.getAlbumArt());
+            }
+
             // Pass the audio file metadata to the media session
             initMediaSessionMetadata(null);
 
@@ -383,18 +397,21 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         String mediaSessionDebugTag = "flutter_sound_media_session";
         mMediaSessionCompat =
                 new MediaSessionCompat(getApplicationContext(), mediaSessionDebugTag, mediaButtonReceiver, null);
-
         // Pass to the media session the callback that responds to media button events
         mMediaSessionCompat.setCallback(mMediaSessionCallback);
-        // Inform the session that it is capable of handling media button events and
-        // transport control commands.
-        mMediaSessionCompat.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
 
-        // Create a new Intent for handling media button inputs on pre-Lollipop devices
-        Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
-        mediaButtonIntent.setClass(this, MediaButtonReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, 0);
-        mMediaSessionCompat.setMediaButtonReceiver(pendingIntent);
+        // Do not support hardware media playback actions if we are not including audio features
+        if(includeAudioPlayerFeatures) {
+            // Inform the session that it is capable of handling media button events and
+            // transport control commands.
+            mMediaSessionCompat.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+
+            // Create a new Intent for handling media button inputs on pre-Lollipop devices
+            Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
+            mediaButtonIntent.setClass(this, MediaButtonReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, 0);
+            mMediaSessionCompat.setMediaButtonReceiver(pendingIntent);
+        }
 
         // Pass the media session token to this service
         setSessionToken(mMediaSessionCompat.getSessionToken());
@@ -403,18 +420,23 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
     private void initMediaSessionMetadata(Bitmap albumArt) {
         // Build the metadata of the currently playing audio file
         MediaMetadataCompat.Builder metadataBuilder = new MediaMetadataCompat.Builder();
-        metadataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON, albumArt);
-        metadataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
 
         // Add the track duration
         metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, mMediaPlayer.getDuration());
 
-        //lock screen icon for pre lollipop
-        metadataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, albumArt);
-        metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, currentTrack.getTitle());
-        metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, currentTrack.getAuthor());
-        // metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, 1);
-        // metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, 1);
+        // Include the other metadata if the audio player features should be included
+        if(includeAudioPlayerFeatures) {
+            // Add the display icon and the album art
+            metadataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON, albumArt);
+            metadataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
+
+            //lock screen icon for pre lollipop
+            metadataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, albumArt);
+            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, currentTrack.getTitle());
+            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, currentTrack.getAuthor());
+            // metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, 1);
+            // metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, 1);
+        }
 
         // Pass the metadata of the currently playing audio file to the media session
         mMediaSessionCompat.setMetadata(metadataBuilder.build());
@@ -424,6 +446,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         // Register the callback to trigger when the headphones are unplugged
         IntentFilter filter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
         registerReceiver(mNoisyReceiver, filter);
+        mIsNoisyReceiverRegistered = true;
     }
 
     private void resetMediaPlayer() {
@@ -531,11 +554,17 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
 
     /**
      * Shows a notification with the media controls to handle the media player playback.
+     * If audio player features should not be included the notification won't be displayed.
      *
      * @param context The context in which to display the notification
      * @param action  The main action to display in the notification (play or pause button).
      */
     private void displayNotification(Context context, NotificationCompat.Action action) {
+        // Don't display the notification if the audio player features should not be included
+        if(!includeAudioPlayerFeatures) {
+            return;
+        }
+
         NotificationManager notificationManager = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Get the audio metadata

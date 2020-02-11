@@ -61,6 +61,7 @@ class FlutterSound {
   /// This stream stops working when releaseMediaPlayer() is called.
   Stream<PlaybackState> get onPlaybackStateChanged =>
       _playbackStateChangedController.stream;
+
   /// Notifies the listeners whenever the recorder is recording or stopped.
   Stream<RecordingState> get onRecordingStateChanged =>
       _recordingStateChangedController.stream;
@@ -354,9 +355,13 @@ class FlutterSound {
     return result;
   }
 
-  /// Starts playing the given [track], knowing whether the user can skip
-  /// forward or backward from this track.
-  Future<String> startPlayer(
+  /// Plays the given [track]. [canSkipForward] and [canSkipBackward] must be
+  /// passed to provide information on whether the user can skip to the next
+  /// or to the previous song in the lock screen controls.
+  ///
+  /// This method should only be used if the audio player has been initialize
+  /// with the audio player specific features.
+  Future<String> startPlayerFromTrack(
       Track track, bool canSkipForward, bool canSkipBackward) async {
     // Check whether we can start the player
     if (_playbackState != null &&
@@ -374,12 +379,30 @@ class FlutterSound {
           'this platform.');
     }
 
-    final trackMap = track.toMap();
+    final trackMap = await track.toMap();
     return _channel.invokeMethod('startPlayer', <String, dynamic>{
       'track': trackMap,
       'canSkipForward': _skipTrackForwardHandlerSet && canSkipForward,
       'canSkipBackward': _skipTrackBackwardHandlerSet && canSkipBackward,
     });
+  }
+
+  /// Plays the file that [fileUri] points to.
+  ///
+  /// This method should only be used if the audio player has been initialized
+  /// without including the audio player specific features.
+  Future<String> startPlayer(String fileUri) {
+    final track = Track(trackPath: fileUri);
+    return startPlayerFromTrack(track, false, false);
+  }
+
+  /// Plays the audio file in [buffer] decoded according to [codec].
+  ///
+  /// This method should only be used if the audio player has been initialized
+  /// without including the audio player specific features.
+  Future<String> startPlayerFromBuffer(Uint8List buffer, t_CODEC codec) {
+    final track = Track(dataBuffer: buffer, codec: codec);
+    return startPlayerFromTrack(track, false, false);
   }
 
   /// Stops the media player.
@@ -493,18 +516,28 @@ class FlutterSound {
   /// recorder. This must be called before all other media player and recorder
   /// methods.
   ///
+  /// If [includeAudioPlayerFeatures] is true, the audio player specific
+  /// features will be included (eg. playback handling via hardware buttons,
+  /// lock screen controls). If you initialized the media player with the
+  /// audio player features, but you don't want them anymore, you must
+  /// re-initialize it. Do the same if you initialized the media player without
+  /// the audio player features, but you need them now.
+  ///
   /// [skipForwardHandler] and [skipBackwardForward] are functions that are
   /// called when the user tries to skip forward or backward using the
   /// notification controls. They can be null.
   ///
   /// Media player and recorder controls should be displayed only after this
   /// method has finished executing.
-  Future<void> initialize({
+  Future<void> initialize(
+    bool includeAudioPlayerFeatures, {
     Function skipForwardHandler,
     Function skipBackwardForward,
   }) async {
     try {
-      await _channel.invokeMethod('initializeMediaPlayer');
+      await _channel.invokeMethod('initializeMediaPlayer', <String, dynamic>{
+        'includeAudioPlayerFeatures': includeAudioPlayerFeatures,
+      });
       _setPlaybackStateUpdateListeners();
       _setSkipTrackHandlers(
         skipForward: skipForwardHandler,
@@ -648,8 +681,9 @@ class Track {
   /// The URL that points to the album art of the track
   final String albumArtUrl;
 
-  /// The codec of the audio file to play
-  final t_CODEC codec;
+  /// The codec of the audio file to play. If this parameter's value is null
+  /// it will be set to [t_CODEC.DEFAULT].
+  t_CODEC codec;
 
   Track({
     this.trackPath,
@@ -657,32 +691,37 @@ class Track {
     this.trackTitle,
     this.trackAuthor,
     this.albumArtUrl,
-    this.codec,
-  })  : assert(trackPath != null || dataBuffer != null,
-            'You should provide a path or a buffer for the audio content to play.'),
-        assert(
-            (trackPath != null && dataBuffer == null) ||
-                (trackPath == null && dataBuffer != null),
-            'You cannot provide both a path and a buffer.');
+    this.codec = t_CODEC.DEFAULT,
+  }) {
+    codec = codec == null ? t_CODEC.DEFAULT : codec;
+    assert(trackPath != null || dataBuffer != null,
+        'You should provide a path or a buffer for the audio content to play.');
+    assert(
+        (trackPath != null && dataBuffer == null) ||
+            (trackPath == null && dataBuffer != null),
+        'You cannot provide both a path and a buffer.');
+  }
 
   /// Convert this object to a [Map] containing the properties of this object
   /// as values.
-  Map<String, dynamic> toMap() {
+  Future<Map<String, dynamic>> toMap() async {
+    // Re-mux OGG format to play in iOS
+    // await _adaptOggToIos(); // TODO: test it
+
     final map = {
       "path": trackPath,
       "dataBuffer": dataBuffer,
       "title": trackTitle,
       "author": trackAuthor,
       "albumArt": albumArtUrl,
-      "bufferCodecIndex": codec.index,
+      "bufferCodecIndex": codec?.index,
     };
 
     return map;
   }
 
   Future<void> _adaptOggToIos() async {
-    // TODO: use this method
-    // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
+    // If we want to play OGG/OPUS on iOS, we re-mux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We use FFmpeg for that task.
     if ((Platform.isIOS) &&
         ((codec == t_CODEC.CODEC_OPUS) ||
@@ -694,16 +733,20 @@ class Track {
       // The following ffmpeg instruction does not decode and re-encode the file. It just remux the OPUS data into an Apple CAF envelope.
       // It is probably very fast and the user will not notice any delay, even with a very large data.
       // This is the price to pay for the Apple stupidity.
-      // TODO: check this out. It was in _startFromByffer fout.writeAsBytesSync(dataBuffer); // Write the user buffer into the temporary file
-      var rc = await FlutterSound.executeFFmpegWithArguments([
-        '-i',
-        trackPath,
-        '-c:a',
-        'copy',
-        fout.path,
-      ]); // remux OGG to CAF
-      if (rc != 0) {
-        throw 'FFmpeg exited with code ${rc}';
+      if (dataBuffer != null) {
+        // Write the user buffer into the temporary file
+        fout.writeAsBytesSync(dataBuffer);
+      } else if (trackPath != null) {
+        var rc = await FlutterSound.executeFFmpegWithArguments([
+          '-i',
+          trackPath,
+          '-c:a',
+          'copy',
+          fout.path,
+        ]); // remux OGG to CAF
+        if (rc != 0) {
+          throw 'FFmpeg exited with code ${rc}';
+        }
       }
       // Now we can play Apple CAF/OPUS
       trackPath = fout.path;

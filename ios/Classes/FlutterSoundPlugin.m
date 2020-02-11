@@ -73,6 +73,7 @@ bool shouldProcessDbLevel = false;
 FlutterMethodChannel* _channel;
 
 bool isPlaying = false;
+BOOL includeAPFeatures = false;
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
     NSLog(@"audioPlayerDidFinishPlaying");
@@ -230,9 +231,9 @@ bool isPlaying = false;
     } else if ([@"startPlayer" isEqualToString:call.method]) {
         NSDictionary* trackDict = (NSDictionary*) call.arguments[@"track"];
         track = [[Track alloc] initFromDictionary:trackDict];
-        
-        bool canSkipForward = (bool)call.arguments[@"canSkipForward"];
-        bool canSkipBackward = (bool)call.arguments[@"canSkipBackward"];
+       
+       BOOL canSkipForward = [call.arguments[@"canSkipForward"] boolValue];
+       BOOL canSkipBackward = [call.arguments[@"canSkipBackward"] boolValue];
         
         [self startPlayer:canSkipForward canSkipBackward:canSkipBackward result:result];
     } else if ([@"stopPlayer" isEqualToString:call.method]) {
@@ -259,7 +260,9 @@ bool isPlaying = false;
         BOOL enabled = [call.arguments[@"enabled"] boolValue];
         [self setDbLevelEnabled:enabled result:result];
     } else if ([@"initializeMediaPlayer" isEqualToString:call.method]) {
-        [self initializeMediaPlayer:result];
+        BOOL includeAudioPlayerFeatures = [call.arguments[@"includeAudioPlayerFeatures"] boolValue];
+        
+        [self initializeMediaPlayer:includeAudioPlayerFeatures result:result];
     } else if ([@"releaseMediaPlayer" isEqualToString:call.method]) {
         [self releaseMediaPlayer:result];
     }
@@ -365,7 +368,7 @@ bool isPlaying = false;
     result(filePath);
 }
 
-- (void)startPlayer:(bool)canSkipForward canSkipBackward: (bool)canSkipBackward result: (FlutterResult)result {
+- (void)startPlayer:(BOOL)canSkipForward canSkipBackward: (BOOL)canSkipBackward result: (FlutterResult)result {
     if(!track) {
         result([FlutterError errorWithCode:@"UNAVAILABLE"
                                    message:@"The track passed to startPlayer is not valid."
@@ -463,8 +466,10 @@ bool isPlaying = false;
     [_channel invokeMethod:@"updatePlaybackState" arguments:playingState];
     
     // Display the notification with the media controls
-    [self setupRemoteCommandCenter:canSkipForward canSkipBackward:canSkipBackward result:result];
-    [self setupNowPlaying:nil];
+    if (includeAPFeatures) {
+      [self setupRemoteCommandCenter:canSkipForward   canSkipBackward:canSkipBackward result:result];
+      [self setupNowPlaying:nil];
+    }
 }
 
 - (void)stopPlayer:(FlutterResult)result {
@@ -625,7 +630,7 @@ bool isPlaying = false;
 
 // Give the system information about what to do when the notification
 // control buttons are pressed.
-- (void)setupRemoteCommandCenter:(bool)canSkipForward canSkipBackward: (bool)canSkipBackward result: (FlutterResult)result {
+- (void)setupRemoteCommandCenter:(BOOL)canSkipForward canSkipBackward: (BOOL)canSkipBackward result: (FlutterResult)result {
     MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
     [commandCenter.togglePlayPauseCommand setEnabled:YES];
     [commandCenter.nextTrackCommand setEnabled:canSkipForward];
@@ -670,8 +675,11 @@ bool isPlaying = false;
     }];
 }
 
-- (void)initializeMediaPlayer:(FlutterResult)result {
-    // No initialization is needed for the iOS audio player, then exit the method
+-(void)initializeMediaPlayer:(BOOL)includeAudioPlayerFeatures result: (FlutterResult)result {
+    // Set whether we have to include the audio player features
+    includeAPFeatures = includeAudioPlayerFeatures;
+    // No further initialization is needed for the iOS audio player, then exit
+    // the method.
     result(@"The player had already been initialized.");
 }
 

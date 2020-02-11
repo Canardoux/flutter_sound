@@ -14,8 +14,6 @@ import android.util.Log;
 import androidx.arch.core.util.Function;
 import androidx.core.app.ActivityCompat;
 
-import com.google.gson.Gson;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +32,6 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
-import io.flutter.util.PathUtils;
 
 // SDK compatibility
 // -----------------
@@ -242,7 +239,9 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
                 this.setSubscriptionDuration(duration, result);
                 break;
             case "initializeMediaPlayer":
-                this.initializeMediaPlayer(result);
+                boolean includeAudioPlayerFeatures = call.argument("includeAudioPlayerFeatures");
+
+                this.initializeMediaPlayer(includeAudioPlayerFeatures, result);
                 break;
             case "releaseMediaPlayer":
                 this.releaseMediaPlayer(result);
@@ -410,13 +409,14 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     }
 
     @Override
-    public void initializeMediaPlayer(final Result result) {
+    public void initializeMediaPlayer(boolean includeAudioPlayerFeatures, final Result result) {
         // Initialize the media browser if it hasn't already been initialized
         if (mMediaBrowserHelper == null) {
             // If the initialization will be successful, result.success will
             // be called, otherwise result.error will be called.
             mMediaBrowserHelper = new MediaBrowserHelper(
                     reg.activity(),
+                    includeAudioPlayerFeatures,
                     new MediaPlayerConnectionListener(result, true),
                     new MediaPlayerConnectionListener(result, false)
             );

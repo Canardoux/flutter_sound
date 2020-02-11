@@ -27,7 +27,7 @@ interface AudioInterface {
   void setSubscriptionDuration(double sec, MethodChannel.Result result);
   void setDbPeakLevelUpdate(double intervalInSecs, MethodChannel.Result result);
   void setDbLevelEnabled(boolean enabled, MethodChannel.Result result);
-  void initializeMediaPlayer(MethodChannel.Result result);
+  void initializeMediaPlayer(boolean includeAudioPlayerFeatures, MethodChannel.Result result);
   void releaseMediaPlayer(MethodChannel.Result result);
 }
   

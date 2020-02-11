@@ -446,7 +446,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dooboolab.flutterSoundExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dooboolab.flutterSoundExample2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -470,7 +470,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dooboolab.flutterSoundExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dooboolab.flutterSoundExample2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "apple-generic";
 			};

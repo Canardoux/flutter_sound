@@ -4,7 +4,6 @@ import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter_sound/android_encoder.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -48,6 +47,8 @@ class _MyAppState extends State<MyApp> {
   // be displayed.
   bool _canDisplayPlayerControls = false;
   PlaybackState _playbackState;
+  // Whether the user wants to use the audio player features
+  bool _isAudioPlayer = true;
 
   @override
   void initState() {
@@ -58,21 +59,7 @@ class _MyAppState extends State<MyApp> {
     flutterSound.setDbLevelEnabled(true);
     initializeDateFormatting();
 
-    flutterSound.initialize(
-      skipForwardHandler: () {
-        print("Skip forward successfully called!");
-      },
-      skipBackwardForward: () {
-        print("Skip backward successfully called!");
-      },
-    ).then((_) {
-      print('media player initialization successful');
-      setState(() {
-        _canDisplayPlayerControls = true;
-      });
-    }).catchError((_) {
-      print('media player initialization unsuccessful');
-    });
+    initializePlayer();
   }
 
   @override
@@ -89,7 +76,37 @@ class _MyAppState extends State<MyApp> {
       _playbackStateSubscription = null;
     }
 
-    flutterSound.releaseMediaPlayer();
+    releasePlayer();
+  }
+
+  Future<void> initializePlayer() async {
+    try {
+      await flutterSound.initialize(
+        _isAudioPlayer,
+        skipForwardHandler: () {
+          print("Skip forward successfully called!");
+        },
+        skipBackwardForward: () {
+          print("Skip backward successfully called!");
+        },
+      );
+
+      print('media player initialization successful');
+
+      setState(() {
+        _canDisplayPlayerControls = true;
+      });
+    } catch (e) {
+      print('media player initialization unsuccessful');
+    }
+  }
+
+  Future<void> releasePlayer() async {
+    await flutterSound.releaseMediaPlayer();
+    print('media player released successfully');
+    setState(() {
+      _canDisplayPlayerControls = false;
+    });
   }
 
   static const List<String> paths = [
@@ -112,7 +129,9 @@ class _MyAppState extends State<MyApp> {
       //   numChannels: 1,
       //   androidAudioSource: AndroidAudioSource.MIC,
       // );
-      String path = await flutterSound.startRecorder( codec: _codec, );
+      String path = await flutterSound.startRecorder(
+        codec: _codec,
+      );
       print('startRecorder: $path');
 
       flutterSound.onRecordingStateChanged.listen((newState) {
@@ -175,7 +194,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   // In this simple example, we just load a file in memory.This is stupid but just for demonstation  of startPlayerFromBuffer()
-  Future <Uint8List> makeBuffer(String path) async {
+  Future<Uint8List> makeBuffer(String path) async {
     try {
       if (!await fileExists(path)) return null;
       File file = File(path);
@@ -256,15 +275,24 @@ class _MyAppState extends State<MyApp> {
         audioFilePath = exampleAudioFilePath;
       }
 
-      final track = Track(
-        trackPath: audioFilePath,
-        dataBuffer: buffer,
-        codec: _codec,
-        trackTitle: "Song Title",
-        trackAuthor: "Song Author",
-        albumArtUrl: albumArtPath,
-      );
-      path = await flutterSound.startPlayer(track, true, false);
+      // Check whether the user wants to use the audio player features
+      if (_isAudioPlayer) {
+        final track = Track(
+          trackPath: audioFilePath,
+          dataBuffer: buffer,
+          codec: buffer == null ? null : _codec,
+          trackTitle: "Song Title",
+          trackAuthor: "Song Author",
+          albumArtUrl: albumArtPath,
+        );
+        path = await flutterSound.startPlayerFromTrack(track, true, false);
+      } else {
+        if (audioFilePath != null) {
+          path = await flutterSound.startPlayer(audioFilePath);
+        } else if (buffer != null) {
+          path = await flutterSound.startPlayerFromBuffer(buffer, _codec);
+        }
+      }
 
       if (path == null) {
         print('Error starting player');
@@ -518,18 +546,6 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
               ),
-              Container(
-                width: 56.0,
-                height: 56.0,
-                child: IconButton(
-                  icon: Icon(Icons.bug_report),
-                  onPressed: () async {
-                    await flutterSound.releaseMediaPlayer();
-                    await flutterSound.initialize();
-                    print('player initialized');
-                  },
-                ),
-              ),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -564,6 +580,28 @@ class _MyAppState extends State<MyApp> {
     );
 
     final dropdowns = makeDropdowns(context);
+    final trackSwitch = Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Text('Use Audio player features:'),
+          ),
+          Switch(
+            value: _isAudioPlayer,
+            onChanged: (newVal) async {
+              setState(() {
+                _isAudioPlayer = newVal;
+              });
+
+              await releasePlayer();
+              await initializePlayer();
+            },
+          ),
+        ],
+      ),
+    );
 
     return MaterialApp(
       home: Scaffold(
@@ -575,6 +613,7 @@ class _MyAppState extends State<MyApp> {
             recorderSection,
             playerSection,
             dropdowns,
+            trackSwitch,
           ],
         ),
       ),
