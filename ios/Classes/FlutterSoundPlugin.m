@@ -475,13 +475,8 @@ BOOL includeAPFeatures = false;
 - (void)stopPlayer:(FlutterResult)result {
     // Check whether the audio player is valid
     if (audioPlayer) {
-        // The audio player is valid, then invalidate it along with the timer
-        if (timer != nil) {
-            [timer invalidate];
-            timer = nil;
-        }
+        // The audio player is valid, then stop it
         [audioPlayer stop];
-        audioPlayer = nil;
         
         isPlaying = false;
         
@@ -684,9 +679,13 @@ BOOL includeAPFeatures = false;
 }
 
 - (void)releaseMediaPlayer:(FlutterResult)result {
-    // The code used to release all the media player resources is the same of the one needed
-    // to stop the media playback. Then, use that one.
-    [self stopRecorder:result];
+    // Invalidate the timer and the audio player
+    if (timer != nil) {
+        [timer invalidate];
+        timer = nil;
+    }
+    audioPlayer = nil;
+    
     result(@"The player has been successfully released");
 }
 
