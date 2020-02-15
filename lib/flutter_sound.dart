@@ -77,6 +77,12 @@ final List<String> iosSessionMode =
     'AVAudioSessionModeVoicePrompt',
   ];
 
+// Values for AUDIO_FOCUS_GAIN on Android
+const int ANDROID_AUDIOFOCUS_GAIN = 1;
+const int ANDROID_AUDIOFOCUS_GAIN_TRANSIENT = 2;
+const int ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK = 3;
+const int ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE = 4;
+
 // Options for setSessionCategory on iOS
 const int IOS_MIX_WITH_OTHERS = 0x1;
 const int IOS_DUCK_OTHERS = 0x2;
@@ -85,6 +91,8 @@ const int IOS_ALLOW_BLUETOOTH = 0x4;
 const int IOS_ALLOW_BLUETOOTH_A2DP = 0x20;
 const int IOS_ALLOW_AIR_PLAY = 0x40;
 const int IOS_DEFAULT_TO_SPEAKER = 0x8;
+
+
 
 final List<String> defaultPaths =
   [
@@ -219,19 +227,35 @@ class FlutterSound
     return result;
   }
 
-  /// Actually for iOS only.
+  /// For iOS only.
   /// If this function is not called, everthing is managed by default by flutter_sound.
   /// If this function is called, it is probably called just once when the app starts.
-  /// After calling this function, the caller is responsible for using correctly iosSetActive
+  /// After calling this function, the caller is responsible for using correctly setActive
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
   Future<bool> iosSetCategory( t_IOS_SESSION_CATEGORY category, t_IOS_SESSION_MODE mode, int options ) async {
+    if (!Platform.isIOS)
+      return false;
     bool r = await _channel.invokeMethod( 'iosSetCategory', <String, dynamic>{ 'category': iosSessionCategory[category.index], 'mode': iosSessionMode[mode.index], 'options': options } );
     return r;
   }
 
-  /// Actually for iOS only. After iosSetCategory() the caller must manage his audio session with this function
-  Future<bool> iosSetActive( bool enabled) async {
-    bool r = await _channel.invokeMethod( 'iosSetActive', <String, dynamic>{ 'enabled': enabled } );
+
+  /// For Android only.
+  /// If this function is not called, everthing is managed by default by flutter_sound.
+  /// If this function is called, it is probably called just once when the app starts.
+  /// After calling this function, the caller is responsible for using correctly setActive
+  ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
+  Future<bool> androidAudioFocusRequest( int focusGain ) async {
+    if (!Platform.isAndroid)
+      return false;
+    bool r = await _channel.invokeMethod( 'androidAudioFocusRequest', <String, dynamic>{ 'focusGain': focusGain} );
+    return r;
+  }
+
+
+  ///  After iosSetCategory() or androidAudioFocusRequest the caller must manage his audio session with this function
+  Future<bool> setActive( bool enabled) async {
+    bool r = await _channel.invokeMethod( 'setActive', <String, dynamic>{ 'enabled': enabled } );
     return r;
   }
 

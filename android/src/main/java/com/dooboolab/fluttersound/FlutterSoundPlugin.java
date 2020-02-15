@@ -1,13 +1,16 @@
 package com.dooboolab.fluttersound;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
+import android.media.AudioFocusRequest;
 import java.io.*;
 
 import org.json.JSONException;
@@ -39,7 +42,7 @@ class sdkCompat {
 public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, FlutterPlugin {
   final static String TAG = "FlutterSoundPlugin";
   final static String RECORD_STREAM = "com.dooboolab.fluttersound/record";
-  final static String PLAY_STREAM= "com.dooboolab.fluttersound/play";
+  final static String PLAY_STREAM = "com.dooboolab.fluttersound/play";
 
   private static final String ERR_UNKNOWN = "ERR_UNKNOWN";
   private static final String ERR_PLAYER_IS_NULL = "ERR_PLAYER_IS_NULL";
@@ -47,98 +50,108 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
   private static final String ERR_RECORDER_IS_NULL = "ERR_RECORDER_IS_NULL";
   private static final String ERR_RECORDER_IS_RECORDING = "ERR_RECORDER_IS_RECORDING";
 
-  private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor();
+  private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor ();
 
-  final private AudioModel model = new AudioModel();
-  private Timer mTimer = new Timer();
-  final private Handler recordHandler = new Handler();
+  final private AudioModel model = new AudioModel ();
+  private Timer mTimer = new Timer ();
+  final private Handler recordHandler = new Handler ();
   //mainThread handler
-  final private Handler mainHandler = new Handler();
-  final private Handler dbPeakLevelHandler = new Handler();
+  final private Handler mainHandler = new Handler ();
+  final private Handler dbPeakLevelHandler = new Handler ();
   private static MethodChannel channel;
+  private static Context applicationContext;
+  private static AudioManager audioManager;
+  private static AudioFocusRequest audioFocusRequest = null;
+
 
   final static int CODEC_OPUS = 2;
   final static int CODEC_VORBIS = 5;
 
-  static boolean _isAndroidEncoderSupported [] = {
-    true, // DEFAULT
-    true, // AAC
-    false, // OGG/OPUS
-    false, // CAF/OPUS
-    false, // MP3
-    false, // OGG/VORBIS
-    false, // WAV/PCM
+  static boolean _isAndroidEncoderSupported[] = {
+          true, // DEFAULT
+          true, // AAC
+          false, // OGG/OPUS
+          false, // CAF/OPUS
+          false, // MP3
+          false, // OGG/VORBIS
+          false, // WAV/PCM
   };
 
-  static boolean _isAndroidDecoderSupported [] = {
-    true, // DEFAULT
-    true, // AAC
-    true, // OGG/OPUS
-    false, // CAF/OPUS
-    true, // MP3
-    true, // OGG/VORBIS
-    true, // WAV/PCM
+  static boolean _isAndroidDecoderSupported[] = {
+          true, // DEFAULT
+          true, // AAC
+          true, // OGG/OPUS
+          false, // CAF/OPUS
+          true, // MP3
+          true, // OGG/VORBIS
+          true, // WAV/PCM
   };
 
   static int codecArray[] = {
-      0 // DEFAULT
-    , MediaRecorder.AudioEncoder.AAC
-    , sdkCompat.AUDIO_ENCODER_OPUS
-    , 0 // CODEC_CAF_OPUS (specific Apple)
-    , 0 // CODEC_MP3 (not implemented)
-    , sdkCompat.AUDIO_ENCODER_VORBIS
-    , 0 // CODEC_PCM (not implemented)
+          0 // DEFAULT
+          , MediaRecorder.AudioEncoder.AAC
+          , sdkCompat.AUDIO_ENCODER_OPUS
+          , 0 // CODEC_CAF_OPUS (specific Apple)
+          , 0 // CODEC_MP3 (not implemented)
+          , sdkCompat.AUDIO_ENCODER_VORBIS
+          , 0 // CODEC_PCM (not implemented)
   };
 
   static int formatsArray[] = {
-      MediaRecorder.OutputFormat.MPEG_4 // DEFAULT
-    , MediaRecorder.OutputFormat.MPEG_4 // CODEC_AAC
-    , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_OPUS
-    , 0                                 // CODEC_CAF_OPUS (this is apple specific)
-    , 0                                 // CODEC_MP3
-    , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_VORBIS
-    , 0                                 // CODEC_PCM
+          MediaRecorder.OutputFormat.MPEG_4 // DEFAULT
+          , MediaRecorder.OutputFormat.MPEG_4 // CODEC_AAC
+          , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_OPUS
+          , 0                                 // CODEC_CAF_OPUS (this is apple specific)
+          , 0                                 // CODEC_MP3
+          , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_VORBIS
+          , 0                                 // CODEC_PCM
   };
 
   static String pathArray[] = {
-      "sound.aac"   // DEFAULT
-    , "sound.aac"   // CODEC_AAC
-    , "sound.opus"  // CODEC_OPUS
-    , "sound.caf"   // CODEC_CAF_OPUS (this is apple specific)
-    , "sound.mp3"   // CODEC_MP3
-    , "sound.ogg"   // CODEC_VORBIS
-    , "sound.wav"   // CODEC_PCM
+          "sound.aac"   // DEFAULT
+          , "sound.aac"   // CODEC_AAC
+          , "sound.opus"  // CODEC_OPUS
+          , "sound.caf"   // CODEC_CAF_OPUS (this is apple specific)
+          , "sound.mp3"   // CODEC_MP3
+          , "sound.ogg"   // CODEC_VORBIS
+          , "sound.wav"   // CODEC_PCM
   };
 
   String extentionArray[] = {
-      ".aac"   // DEFAULT
-    , ".aac"   // CODEC_AAC
-    , ".opus"  // CODEC_OPUS
-    , ".caf"   // CODEC_CAF_OPUS (this is apple specific)
-    , ".mp3"   // CODEC_MP3
-    , ".ogg"   // CODEC_VORBIS
-    , ".wav"   // CODEC_PCM
+          ".aac"   // DEFAULT
+          , ".aac"   // CODEC_AAC
+          , ".opus"  // CODEC_OPUS
+          , ".caf"   // CODEC_CAF_OPUS (this is apple specific)
+          , ".mp3"   // CODEC_MP3
+          , ".ogg"   // CODEC_VORBIS
+          , ".wav"   // CODEC_PCM
   };
 
   @Override
-  public void onAttachedToEngine(FlutterPlugin.FlutterPluginBinding binding) {
-    channel = new MethodChannel(binding.getFlutterEngine().getDartExecutor(), "flutter_sound");
-    channel.setMethodCallHandler(new FlutterSoundPlugin());
+  public void onAttachedToEngine ( FlutterPlugin.FlutterPluginBinding binding ) {
+    applicationContext = binding.getApplicationContext ();
+    audioManager = (AudioManager)applicationContext.getSystemService(Context.AUDIO_SERVICE);
+    channel = new MethodChannel ( binding.getFlutterEngine ().getDartExecutor (), "flutter_sound" );
+    channel.setMethodCallHandler ( new FlutterSoundPlugin () );
   }
 
   @Override
-  public void onDetachedFromEngine(FlutterPlugin.FlutterPluginBinding binding) {
+  public void onDetachedFromEngine ( FlutterPlugin.FlutterPluginBinding binding ) {
   }
 
-  /** Plugin registration. */
-  public static void registerWith(Registrar registrar) {
-    channel = new MethodChannel(registrar.messenger(), "flutter_sound");
-    channel.setMethodCallHandler(new FlutterSoundPlugin());
+  /**
+   * Plugin registration.
+   */
+  public static void registerWith ( Registrar registrar ) {
+    applicationContext = registrar.context ();
+    audioManager = (AudioManager)applicationContext.getSystemService(Context.AUDIO_SERVICE);
+    channel = new MethodChannel ( registrar.messenger (), "flutter_sound" );
+    channel.setMethodCallHandler ( new FlutterSoundPlugin () );
   }
 
   /*
   //[LARPOUX] : I guess that the following code is not necessary since we support FLUTTER EMBEDED V2
- 
+
   private FlutterSoundPlugin(Registrar registrar){
     channel = new MethodChannel(registrar.messenger(), "flutter_sound");
     channel.setMethodCallHandler(this);
@@ -154,90 +167,119 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
 
 
   @Override
-  public void onMethodCall(final MethodCall call, final Result result) {
-    final String path = call.argument("path");
-    switch (call.method) {
+  public void onMethodCall ( final MethodCall call, final Result result ) {
+    final String path = call.argument ( "path" );
+    switch ( call.method ) {
       case "isDecoderSupported": {
-        int _codec = call.argument("codec");
-        boolean b = _isAndroidDecoderSupported[_codec];
-        if (Build.VERSION.SDK_INT < 23) {
-          if ( (_codec == CODEC_OPUS) || (_codec == CODEC_VORBIS) )
+        int _codec = call.argument ( "codec" );
+        boolean b = _isAndroidDecoderSupported[ _codec ];
+        if ( Build.VERSION.SDK_INT < 23 ) {
+          if ( ( _codec == CODEC_OPUS ) || ( _codec == CODEC_VORBIS ) )
             b = false;
         }
-
-        result.success(b);
-      } break;
+        result.success ( b );
+      }
+      break;
       case "isEncoderSupported": {
-        int _codec = call.argument("codec");
-        boolean b = _isAndroidEncoderSupported[_codec];
-        if (Build.VERSION.SDK_INT < 29) {
-          if ( (_codec == CODEC_OPUS) || (_codec == CODEC_VORBIS) )
+        int _codec = call.argument ( "codec" );
+        boolean b = _isAndroidEncoderSupported[ _codec ];
+        if ( Build.VERSION.SDK_INT < 29 ) {
+          if ( ( _codec == CODEC_OPUS ) || ( _codec == CODEC_VORBIS ) )
             b = false;
         }
-          result.success(b);
-      } break;
+        result.success ( b );
+      }
+      break;
       case "startRecorder":
-        taskScheduler.submit(() -> {
-          Integer sampleRate = call.argument("sampleRate");
-          Integer numChannels = call.argument("numChannels");
-          Integer bitRate = call.argument("bitRate");
-          int androidEncoder = call.argument("androidEncoder");
-          int _codec = call.argument("codec");
-          t_CODEC codec = t_CODEC.values()[_codec];
-          int androidAudioSource = call.argument("androidAudioSource");
-          int androidOutputFormat = call.argument("androidOutputFormat");
-          startRecorder(numChannels, sampleRate, bitRate, codec,  androidEncoder, androidAudioSource, androidOutputFormat, path, result);
-        });
+        taskScheduler.submit ( () -> {
+          Integer sampleRate = call.argument ( "sampleRate" );
+          Integer numChannels = call.argument ( "numChannels" );
+          Integer bitRate = call.argument ( "bitRate" );
+          int androidEncoder = call.argument ( "androidEncoder" );
+          int _codec = call.argument ( "codec" );
+          t_CODEC codec = t_CODEC.values ()[ _codec ];
+          int androidAudioSource = call.argument ( "androidAudioSource" );
+          int androidOutputFormat = call.argument ( "androidOutputFormat" );
+          startRecorder ( numChannels, sampleRate, bitRate, codec, androidEncoder, androidAudioSource, androidOutputFormat, path, result );
+        } );
         break;
       case "stopRecorder":
-        taskScheduler.submit(() -> stopRecorder(result));
+        taskScheduler.submit ( () -> stopRecorder ( result ) );
         break;
       case "startPlayer":
-        this.startPlayer(path, result);
+        this.startPlayer ( path, result );
         break;
 
       case "startPlayerFromBuffer":
-        Integer _codec = call.argument("codec");
-        t_CODEC codec = t_CODEC.values()[(_codec != null) ? _codec : 0 ];
-        byte[] dataBuffer = call.argument("dataBuffer");
-        this.startPlayerFromBuffer(dataBuffer, codec, result);
+        Integer _codec = call.argument ( "codec" );
+        t_CODEC codec = t_CODEC.values ()[ ( _codec != null ) ? _codec : 0 ];
+        byte[] dataBuffer = call.argument ( "dataBuffer" );
+        this.startPlayerFromBuffer ( dataBuffer, codec, result );
         break;
 
       case "stopPlayer":
-        this.stopPlayer(result);
+        this.stopPlayer ( result );
         break;
       case "pausePlayer":
-        this.pausePlayer(result);
+        this.pausePlayer ( result );
         break;
       case "resumePlayer":
-        this.resumePlayer(result);
+        this.resumePlayer ( result );
         break;
       case "seekToPlayer":
-        int sec = call.argument("sec");
-        this.seekToPlayer(sec, result);
+        int sec = call.argument ( "sec" );
+        this.seekToPlayer ( sec, result );
         break;
       case "setVolume":
-        double volume = call.argument("volume");
-        this.setVolume(volume, result);
+        double volume = call.argument ( "volume" );
+        this.setVolume ( volume, result );
         break;
       case "setDbPeakLevelUpdate":
-        double intervalInSecs = call.argument("intervalInSecs");
-        this.setDbPeakLevelUpdate(intervalInSecs, result);
+        double intervalInSecs = call.argument ( "intervalInSecs" );
+        this.setDbPeakLevelUpdate ( intervalInSecs, result );
         break;
       case "setDbLevelEnabled":
-        boolean enabled = call.argument("enabled");
-        this.setDbLevelEnabled(enabled, result);
+        boolean enabled = call.argument ( "enabled" );
+        this.setDbLevelEnabled ( enabled, result );
         break;
       case "setSubscriptionDuration":
-        if (call.argument("sec") == null) return;
-        double duration = call.argument("sec");
-        this.setSubscriptionDuration(duration, result);
+        if ( call.argument ( "sec" ) == null ) return;
+        double duration = call.argument ( "sec" );
+        this.setSubscriptionDuration ( duration, result );
+        break;
+      case "androidAudioFocusRequest":
+        Integer audioFocusGain = call.argument ( "focusGain" );
+        this.androidAudioFocusRequest(audioFocusGain, result);
+        break;
+
+      case "setActive":
+        Boolean b = call.argument ( "enabled" );
+        this.setActive (b, result );
         break;
       default:
-        result.notImplemented();
+        result.notImplemented ();
         break;
     }
   }
+  private void androidAudioFocusRequest ( Integer focusGain, final Result result) {
+    audioFocusRequest = new AudioFocusRequest.Builder (AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
+            //.setAudioAttributes(mPlaybackAttributes)
+            //.setAcceptsDelayedFocusGain(true)
+            //.setWillPauseWhenDucked(true)
+            //.setOnAudioFocusChangeListener(this, mMyHandler)
+            .build();
+    Boolean b = true;
+    result.success (b);
+  }
+
+    private void setActive ( boolean enabled, final Result result) {
+    Boolean b;
+    if (enabled)
+      b = (audioManager.requestAudioFocus(audioFocusRequest) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED);
+    else
+      b = (audioManager.abandonAudioFocusRequest(audioFocusRequest) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED);
+    result.success(b);
+}
 
   @Override
   public void startRecorder(Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result) {

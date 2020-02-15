@@ -52,8 +52,11 @@ static enum t_SET_CATEGORY_DONE
         NOT_SET,
         FOR_PLAYING, // Flutter_sound did it during startPlayer()
         FOR_RECORDING, // Flutter_sound did it during startRecorder()
-        BY_USER // The caller did it himself : flutterSound must not change that (The user is also responsible of setActive() )
-} setCategoryDone = NOT_SET; // Lazzy initialization in startRecorder() and startPlayer()
+        BY_USER // The caller did it himself : flutterSound must not change that (The user is also responsible of setActive(false) )
+} ; // Lazzy initialization in startRecorder() and startPlayer()
+
+enum t_SET_CATEGORY_DONE setCategoryDone = NOT_SET;
+enum t_SET_CATEGORY_DONE setActiveDone = NOT_SET;
 
 
 // post fix with _FlutterSound to avoid conflicts with common libs including path_provider
@@ -243,7 +246,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
       NSNumber* options = (NSNumber*)call.arguments[@"options"];
       [self setCategory: categ mode: mode options: [options intValue] result:result];
   }
-  else if ([@"iosSetActive" isEqualToString:call.method]) {
+  else if ([@"setActive" isEqualToString:call.method]) {
     BOOL enabled = [call.arguments[@"enabled"] boolValue];
     [self setActive:enabled result:result];
   }
@@ -266,13 +269,28 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 }
 
 - (void)setActive:(BOOL)enabled result:(FlutterResult)result {
-  if ((setCategoryDone == NOT_SET) && enabled) { // This is not normal : setCategoryDone must be set BY_USER before. We assume that the user wants to control his playback but forgot to call setCategory.
-    setCategoryDone = BY_USER;
-    BOOL b = [[AVAudioSession sharedInstance]
-      setCategory: AVAudioSessionCategoryPlayback
-      mode: AVAudioSessionModeDefault
-      options: 0 //AVAudioSessionCategoryOptionDuckOthers
-      error: nil];
+  if (enabled) {
+        if (setActiveDone != NOT_SET) { // Already activated. Nothing todo;
+                setActiveDone = BY_USER;
+                result(0);
+                return;
+        }
+        if (setCategoryDone == NOT_SET) { // This is not normal : setCategoryDone must be set BY_USER before. We assume that the user wants to control his playback but forgot to call setCategory.
+           setCategoryDone = FOR_PLAYING;
+           BOOL b = [[AVAudioSession sharedInstance]
+             setCategory: AVAudioSessionCategoryPlayback
+             mode: AVAudioSessionModeDefault
+             options: 0 //AVAudioSessionCategoryOptionDuckOthers
+             error: nil];
+         }
+         setActiveDone = BY_USER;
+
+  } else {
+        if (setActiveDone == NOT_SET) { // Already desactivated
+                result(0);
+                return;
+        }
+        setActiveDone = NOT_SET;
   }
   BOOL b = [[AVAudioSession sharedInstance]  setActive:enabled error:nil] ;
   NSNumber* r = [NSNumber numberWithBool: b];
@@ -365,8 +383,10 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 }
 
 - (void)stopRecorder:(FlutterResult)result {
-  if (setCategoryDone != BY_USER)
+  if (setActiveDone != BY_USER) {
         [[AVAudioSession sharedInstance]  setActive:NO error:nil];
+        setActiveDone = NOT_SET;
+  }
   [audioRecorder stop];
 
   // Stop Db Timer
@@ -393,13 +413,19 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
         audioFileURL = [NSURL URLWithString:path];
     }
   }
-        // Able to play in silent mode
+  // Able to play in silent mode
   if (setCategoryDone == NOT_SET) {
           [[AVAudioSession sharedInstance]
               setCategory: AVAudioSessionCategoryPlayback
               error: nil];
            setCategoryDone = FOR_PLAYING;
   }
+  // Able to play in background
+  if (setActiveDone == NOT_SET) {
+          [[AVAudioSession sharedInstance] setActive: YES error: nil];
+          setActiveDone = FOR_PLAYING;
+  }
+
   if (isRemote) {
     NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
         dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -409,9 +435,6 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
         self->audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
         self->audioPlayer.delegate = self;
 
-        // Able to play in background
-        if (setCategoryDone != BY_USER)
-                [[AVAudioSession sharedInstance] setActive: YES error: nil];
         [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 
         [self->audioPlayer play];
@@ -426,10 +449,6 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
       audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:nil];
       audioPlayer.delegate = self;
     // }
-
-    if (setCategoryDone != BY_USER)
-        [[AVAudioSession sharedInstance] setActive: YES error: nil];
-
     [audioPlayer play];
     [self startTimer];
 
@@ -442,19 +461,19 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 - (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result {
   audioPlayer = [[AVAudioPlayer alloc] initWithData: [dataBuffer data] error: nil];
   audioPlayer.delegate = self;
+  // Able to play in silent mode
   if (setCategoryDone == NOT_SET) {
           [[AVAudioSession sharedInstance]
               setCategory: AVAudioSessionCategoryPlayback
               error: nil];
-              // Able to play in silent mode
-              [[AVAudioSession sharedInstance]
-                  setCategory: AVAudioSessionCategoryPlayback
-                  mode: AVAudioSessionModeVoicePrompt
-                  options: AVAudioSessionCategoryOptionDuckOthers
-                  error: nil]; // [LARPOUX]
-
-          setCategoryDone = FOR_PLAYING;
+           setCategoryDone = FOR_PLAYING;
   }
+  // Able to play in background
+  if (setActiveDone == NOT_SET) {
+          [[AVAudioSession sharedInstance] setActive: YES error: nil];
+          setActiveDone = FOR_PLAYING;
+  }
+
 
   [audioPlayer play];
   [self startTimer];
@@ -466,8 +485,10 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 
 
 - (void)stopPlayer:(FlutterResult)result {
-  if (setCategoryDone != BY_USER)
+  if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) ) {
       [[AVAudioSession sharedInstance] setActive: NO error: nil];
+      setActiveDone = NOT_SET;
+  }
   if (audioPlayer) {
     if (timer != nil) {
         [timer invalidate];
