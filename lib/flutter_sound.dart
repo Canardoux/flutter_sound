@@ -246,27 +246,6 @@ class FlutterSound {
     }
   }
 
-  void _initializeRecorderStreams() {
-    if (_recorderController == null) {
-      _recorderController = new StreamController.broadcast();
-    }
-    if (_recordingStateChangedController == null) {
-      _recordingStateChangedController = new StreamController.broadcast();
-    }
-    if (_dbPeakController == null) {
-      _dbPeakController = new StreamController.broadcast();
-    }
-  }
-
-  void _initializePlayerStreams() {
-    if (_playerController == null) {
-      _playerController = new StreamController.broadcast();
-    }
-    if (_playbackStateChangedController == null) {
-      _playbackStateChangedController = StreamController.broadcast();
-    }
-  }
-
   void _updateRecordingState(RecordingState newState) {
     _recordingState = newState;
     _recordingStateChangedController.add(_recordingState);
@@ -321,6 +300,16 @@ class FlutterSound {
       };
 
       String result = await _channel.invokeMethod('startRecorder', param);
+
+      if (_recorderController == null) {
+        _recorderController = new StreamController.broadcast();
+      }
+      if (_recordingStateChangedController == null) {
+        _recordingStateChangedController = new StreamController.broadcast();
+      }
+      if (_dbPeakController == null) {
+        _dbPeakController = new StreamController.broadcast();
+      }
 
       _updateRecordingState(RecordingState.RECORDING);
 
@@ -557,8 +546,12 @@ class FlutterSound {
       _setPlayerCallback();
       _setRecorderCallback();
 
-      _initializePlayerStreams();
-      _initializeRecorderStreams();
+      if (_playerController == null) {
+        _playerController = new StreamController.broadcast();
+      }
+      if (_playbackStateChangedController == null) {
+        _playbackStateChangedController = StreamController.broadcast();
+      }
 
       // Add the method call handler
       _channel.setMethodCallHandler((MethodCall call) async {
