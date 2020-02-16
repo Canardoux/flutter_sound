@@ -582,8 +582,7 @@ class FlutterSound {
   Future<void> releaseMediaPlayer() async {
     try {
       // Stop the player playback before releasing
-      if (_playbackState != null && _playbackState != PlaybackState.STOPPED)
-        await stopPlayer();
+      if (_playbackState != PlaybackState.STOPPED) await stopPlayer();
       await _channel.invokeMethod('releaseMediaPlayer');
 
       _removePlaybackStateCallback();

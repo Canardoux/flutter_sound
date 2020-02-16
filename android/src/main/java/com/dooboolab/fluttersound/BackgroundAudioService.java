@@ -328,7 +328,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if(mAudioFocusRequest != null) audioManager.abandonAudioFocusRequest(mAudioFocusRequest);
+            audioManager.abandonAudioFocusRequest(mAudioFocusRequest);
         } else {
             audioManager.abandonAudioFocus(this);
         }
