@@ -113,11 +113,6 @@ public class MediaBrowserHelper {
      * Call this in onDestroy().
      */
     void releaseMediaBrowser() {
-        // Pause the media player if it is playing
-        if (mediaControllerCompat.getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING) {
-            mediaControllerCompat.getTransportControls().pause();
-        }
-
         mMediaBrowserCompat.disconnect();
     }
 
