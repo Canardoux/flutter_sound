@@ -1,4 +1,23 @@
+/*
+ * flauto is a flutter_sound module.
+ * flutter_sound is distributed with a MIT License
+ *
+ * Copyright (c) 2018 dooboolab
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ */
+
+ 
 #import "FlutterSoundPlugin.h"
+#import "flauto.h" // Just to register it
 #import <AVFoundation/AVFoundation.h>
 
 NSString* defaultExtensions [] =
@@ -68,11 +87,11 @@ NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir) {
 @implementation FlutterSoundPlugin{
   NSURL *audioFileURL;
   AVAudioRecorder *audioRecorder;
-  AVAudioPlayer *audioPlayer;
   NSTimer *timer;
   NSTimer *dbPeakTimer;
 }
-double subscriptionDuration = 0.01;
+double subscriptionDuration;
+
 double dbPeakInterval = 0.8;
 bool shouldProcessDbLevel = false;
 FlutterMethodChannel* _channel;
@@ -84,7 +103,7 @@ FlutterMethodChannel* _channel;
 
   NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
   
-  [_channel invokeMethod:@"audioPlayerDidFinishPlaying" arguments:status];
+  [[ self getChannel] invokeMethod:@"audioPlayerFinishedPlaying" arguments: status];
 
   [self stopTimer];
 }
@@ -96,27 +115,31 @@ FlutterMethodChannel* _channel;
     }
 }
 
-- (void)updateRecorderProgress:(NSTimer*) timer
+- (void) stopDbPeakTimer {
+        if (dbPeakTimer != nil) { // This is not normal !!!!
+               [dbPeakTimer invalidate];
+               dbPeakTimer = nil;
+        }
+
+}
+
+- (void)updateRecorderProgress:(NSTimer*) atimer
 {
+  assert (timer == timer);
   NSNumber *currentTime = [NSNumber numberWithDouble:audioRecorder.currentTime * 1000];
     [audioRecorder updateMeters];
 
-NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}", [currentTime stringValue]];
-  /*
-  NSDictionary *status = @{
-                           @"current_position" : [currentTime stringValue],
-                           };
-  */
-
-  [_channel invokeMethod:@"updateRecorderProgress" arguments:status];
+  NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}", [currentTime stringValue]];
+  [[ self getChannel] invokeMethod:@"updateRecorderProgress" arguments:status];
 }
 
-- (void)updateProgress:(NSTimer*) timer
+- (void)updateProgress:(NSTimer*) atimer
 {
+  assert(timer == atimer);
   NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
 
-  if ([duration intValue] == 0 && timer != nil) {
+  if (subscriptionDuration == 0.0 && timer != nil) { // Just one shot !
     [self stopTimer];
     return;
   }
@@ -124,47 +147,54 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 
   NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
   
-  [_channel invokeMethod:@"updateProgress" arguments:status];
+  [[ self getChannel] invokeMethod:@"updateProgress" arguments:status];
 }
 
-- (void)updateDbPeakProgress:(NSTimer*) dbPeakTimer
+- (void)updateDbPeakProgress:(NSTimer*) atimer
 {
+      assert (dbPeakTimer == atimer);
       NSNumber *normalizedPeakLevel = [NSNumber numberWithDouble:MIN(pow(10.0, [audioRecorder peakPowerForChannel:0] / 20.0) * 160.0, 160.0)];
-      [_channel invokeMethod:@"updateDbPeakProgress" arguments:normalizedPeakLevel];
+      [[ self getChannel] invokeMethod:@"updateDbPeakProgress" arguments:normalizedPeakLevel];
 }
 
 - (void)startRecorderTimer
 {
-  dispatch_async(dispatch_get_main_queue(), ^{
+  [self stopTimer];
+  //dispatch_async(dispatch_get_main_queue(), ^{
       self->timer = [NSTimer scheduledTimerWithTimeInterval: subscriptionDuration
                                            target:self
                                            selector:@selector(updateRecorderProgress:)
                                            userInfo:nil
                                            repeats:YES];
-  });
+  //});
 }
 
 - (void)startTimer
 {
-  dispatch_async(dispatch_get_main_queue(), ^{
+  [self stopTimer];
+  //dispatch_async(dispatch_get_main_queue(), ^{ // ??? Why Async ?  (no async for recorder)
       self->timer = [NSTimer scheduledTimerWithTimeInterval:subscriptionDuration
                                            target:self
                                            selector:@selector(updateProgress:)
                                            userInfo:nil
                                            repeats:YES];
-  });
+  //});
 }
 
 - (void)startDbTimer
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
+    // Stop Db Timer
+    [self stopDbPeakTimer];
+    //dispatch_async(dispatch_get_main_queue(), ^{
         self->dbPeakTimer = [NSTimer scheduledTimerWithTimeInterval:dbPeakInterval
                                                        target:self
                                                      selector:@selector(updateDbPeakProgress:)
                                                      userInfo:nil
                                                       repeats:YES];
-    });
+    //});
 }
+
+FlutterSoundPlugin* flutterSoundModule; // Singleton
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
   FlutterMethodChannel* channel = [FlutterMethodChannel
@@ -173,7 +203,16 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   FlutterSoundPlugin* instance = [[FlutterSoundPlugin alloc] init];
   [registrar addMethodCallDelegate:instance channel:channel];
   _channel = channel;
+  
+  flutterSoundModule = instance;
+  extern void flautoreg(NSObject<FlutterPluginRegistrar>*);
+  flautoreg(registrar); // Here, this is not a nice place to do that, but someone has to do it somewhere...
+
 }
+-(FlutterMethodChannel*) getChannel {
+  return _channel;
+}
+
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
   if ([@"startRecorder" isEqualToString:call.method]) {
@@ -389,9 +428,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   }
   [audioRecorder stop];
 
-  // Stop Db Timer
-  [dbPeakTimer invalidate];
-  dbPeakTimer = nil;
+  [self stopDbPeakTimer];
   [self stopTimer];
     
   AVAudioSession *audioSession = [AVAudioSession sharedInstance];
@@ -425,6 +462,8 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
           [[AVAudioSession sharedInstance] setActive: YES error: nil];
           setActiveDone = FOR_PLAYING;
   }
+  [self stopDbPeakTimer]; // This is not be possible. Just in case ...
+
 
   if (isRemote) {
     NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
@@ -432,8 +471,8 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
             // NSData *data = [NSData dataWithContentsOfURL:audioFileURL];
             
         // We must create a new Audio Player instance to be able to play a different Url
-        self->audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
-        self->audioPlayer.delegate = self;
+        audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
+        audioPlayer.delegate = self;
 
         [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 
@@ -473,8 +512,7 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
           [[AVAudioSession sharedInstance] setActive: YES error: nil];
           setActiveDone = FOR_PLAYING;
   }
-
-
+  [self stopDbPeakTimer]; // This is not possible, but just in case ...
   [audioPlayer play];
   [self startTimer];
   result(@"Playing from buffer");
@@ -489,11 +527,9 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
       [[AVAudioSession sharedInstance] setActive: NO error: nil];
       setActiveDone = NOT_SET;
   }
+  [self stopTimer];
+  [self stopDbPeakTimer]; // Just in case ...
   if (audioPlayer) {
-    if (timer != nil) {
-        [timer invalidate];
-        timer = nil;
-    }
     [audioPlayer stop];
     audioPlayer = nil;
 

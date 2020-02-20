@@ -14,8 +14,19 @@ typedef enum
 } t_CODEC;
 
 @interface FlutterSoundPlugin : NSObject<FlutterPlugin, AVAudioPlayerDelegate>
-- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player
-        successfully:(BOOL)flag;
-- (void)updateProgress:(NSTimer*) timer;
+{
+        AVAudioPlayer *audioPlayer;
+}
+- (FlutterMethodChannel*) getChannel;
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag;
+- (void)updateProgress: (NSTimer*)timer;
 - (void)startTimer;
+- (void)stopPlayer: (FlutterResult)result;
+- (void)pausePlayer:(FlutterResult)result;
+- (void)resumePlayer:(FlutterResult)result;
+- (void)stopTimer;
+
+
 @end
+extern FlutterSoundPlugin* flutterSoundModule; // Singleton

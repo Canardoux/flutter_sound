@@ -1,6 +1,5 @@
 .DS_Store
 .dart_tool/
-.history
 
 .packages
 .pub/
@@ -15,9 +14,6 @@ android/.settings/org.eclipse.buildship.core.prefs
 .vscode/launch.json
 android/.classpath
 android/.project
-*.swp
-
-example/.flutter-plugins-dependencies
 example/android/.project
 example/android/.settings/org.eclipse.buildship.core.prefs
 example/android/app/.classpath

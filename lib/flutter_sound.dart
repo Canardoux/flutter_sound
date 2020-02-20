@@ -1,26 +1,44 @@
+/*
+ * This is a flutter_sound module.
+ * flutter_sound is distributed with a MIT License
+ *
+ * Copyright (c) 2018 dooboolab
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ */
+
 import 'dart:async';
-import 'dart:core';
 import 'dart:convert';
+import 'dart:core';
 import 'dart:io';
+import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
+
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/android_encoder.dart';
 import 'package:flutter_sound/ios_quality.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
-import 'dart:io' show Platform;
+import 'package:path_provider/path_provider.dart';
+//import 'package:flutter_sound/flutter_sound.dart';
 
 // this enum MUST be synchronized with fluttersound/AudioInterface.java  and ios/Classes/FlutterSoundPlugin.h
-enum t_CODEC
-{
-	DEFAULT,
-	CODEC_AAC,
-	CODEC_OPUS,
-	CODEC_CAF_OPUS, // Apple encapsulates its bits in its own special envelope : .caf instead of a regular ogg/opus (.opus). This is completely stupid, this is Apple.
-	CODEC_MP3,
-	CODEC_VORBIS,
-	CODEC_PCM,
+enum t_CODEC {
+  DEFAULT,
+  CODEC_AAC,
+  CODEC_OPUS,
+  CODEC_CAF_OPUS, // Apple encapsulates its bits in its own special envelope : .caf instead of a regular ogg/opus (.opus). This is completely stupid, this is Apple.
+  CODEC_MP3,
+  CODEC_VORBIS,
+  CODEC_PCM,
 }
 
 enum t_AUDIO_STATE
@@ -94,77 +112,112 @@ const int IOS_DEFAULT_TO_SPEAKER = 0x8;
 
 
 
-final List<String> defaultPaths =
-  [
-                'sound.aac',	// DEFAULT
-  		'sound.aac',	// CODEC_AAC
-  		'sound.opus',	// CODEC_OPUS
-  		'sound.caf',	// CODEC_CAF_OPUS
-  		'sound.mp3',	// CODEC_MP3
-  		'sound.ogg',	// CODEC_VORBIS
-  		'sound.wav',	// CODEC_PCM
-  ];
+final List<String> defaultPaths = [
+  'sound.aac', // DEFAULT
+  'sound.aac', // CODEC_AAC
+  'sound.opus', // CODEC_OPUS
+  'sound.caf', // CODEC_CAF_OPUS
+  'sound.mp3', // CODEC_MP3
+  'sound.ogg', // CODEC_VORBIS
+  'sound.wav', // CODEC_PCM
+];
 
-class FlutterSound
-{
-  static const MethodChannel _channel = const MethodChannel( 'flutter_sound' );
-  static const MethodChannel _FFmpegChannel = const MethodChannel( 'flutter_ffmpeg' );
+
+/// The possible states of the playback.
+enum PlaybackState {
+  /// The audio player is playing an audio file
+  PLAYING,
+
+  /// The audio player is currently paused
+  PAUSED,
+
+  /// The audio player has been stopped
+  STOPPED,
+
+  /// The audio player finished playing the current track
+  //COMPLETED,
+}
+
+
+/// The possible states of the recorder
+enum RecordingState {
+  /// The recorder is currently recording audio
+  RECORDING,
+
+  /// The recorder has been stopped because it has finished recording audio
+  STOPPED,
+}
+
+
+/// Return the file extension for the given path.
+/// path can be null. We return null in this case.
+String fileExtension(String path) {
+  if (path == null) return null;
+  String r = p.extension(path);
+  return r;
+}
+
+FlutterSound flutterSound = FlutterSound( ); // Singleton
+
+class FlutterSound {
+  static const MethodChannel _channel = const MethodChannel('flutter_sound');
+  static const MethodChannel _FFmpegChannel = const MethodChannel('flutter_ffmpeg');
   static StreamController<RecordStatus> _recorderController;
   static StreamController<double> _dbPeakController;
-  static StreamController<PlayStatus> _playerController;
+  StreamController<PlayStatus> playerController;
   static bool isOppOpus = false; // Set by startRecorder when the user wants to record an ogg/opus
   static String savedUri; // Used by startRecorder/stopRecorder to keep the caller wanted uri
   static String tmpUri; // Used by startRecorder/stopRecorder to keep the temporary uri to record CAF
 
+
+  /// The current state of the playback
+  PlaybackState playbackState;
+
+  /// The current state of the recorder
+  RecordingState _recordingState;
+  RecordingState get recorderState => _recordingState;
+
+
   /// Value ranges from 0 to 120
-  Stream<double> get onRecorderDbPeakChanged
-  => _dbPeakController.stream;
+  Stream<double> get onRecorderDbPeakChanged => _dbPeakController.stream;
+  Stream<RecordStatus> get onRecorderStateChanged => _recorderController.stream;
+  Stream<PlayStatus> get onPlayerStateChanged => playerController.stream;
 
-  Stream<RecordStatus> get onRecorderStateChanged
-  => (_recorderController != null) ? _recorderController.stream : null;
+  var audioPlayerFinishedPlaying; // User callback "whenFinished:"
 
-  Stream<PlayStatus> get onPlayerStateChanged
-  => (_playerController != null) ? _playerController.stream : null;
+  bool get isPlaying => _isPlaying( );
 
-  @Deprecated( 'Prefer to use audio_state variable' )
-  bool get isPlaying
-  => _isPlaying( );
-
-  bool get isRecording
-  => _isRecording( );
+  bool get isRecording => _isRecording( );
 
   t_AUDIO_STATE get audioState
-  => _audioState;
-
-  bool _isRecording( )
-  => _audioState == t_AUDIO_STATE.IS_RECORDING;
-  t_AUDIO_STATE _audioState = t_AUDIO_STATE.IS_STOPPED;
-
-  bool _isPlaying( )
-  => _audioState == t_AUDIO_STATE.IS_PLAYING || _audioState == t_AUDIO_STATE.IS_PAUSED;
-
-  Future<String> defaultPath( t_CODEC codec )
-  async
   {
-    Directory tempDir = await getTemporaryDirectory( );
-    File fout = File( '${tempDir.path}/${defaultPaths[codec.index]}' );
+    if (_recordingState == RecordingState.RECORDING)
+      return t_AUDIO_STATE.IS_RECORDING;
+    else if (playbackState == PlaybackState.PAUSED)
+      return t_AUDIO_STATE.IS_PAUSED;
+    else
+      return (playbackState == PlaybackState.PLAYING) ? t_AUDIO_STATE.IS_PLAYING : t_AUDIO_STATE.IS_STOPPED;
+  }
+
+  bool _isRecording( ) => _recordingState == t_AUDIO_STATE.IS_RECORDING;
+  bool _isPlaying( ) => playbackState == t_AUDIO_STATE.IS_PLAYING || playbackState == t_AUDIO_STATE.IS_PAUSED;
+
+  MethodChannel getChannel() => _channel;
+
+  Future<String> defaultPath(t_CODEC codec) async {
+    Directory tempDir = await getTemporaryDirectory();
+    File fout = File('${tempDir.path}/${defaultPaths[codec.index]}');
     return fout.path;
   }
 
-
   /// Returns true if the flutter_ffmpeg plugin is really plugged in
-  Future<bool> isFFmpegSupported( )
-  async
-  {
-    try
-    {
-      await _FFmpegChannel.invokeMethod( 'getFFmpegVersion' );
-      await _FFmpegChannel.invokeMethod( 'getPlatform' );
-      await _FFmpegChannel.invokeMethod( 'getPackageName' );
+  Future<bool> isFFmpegSupported() async {
+    try {
+      await _FFmpegChannel.invokeMethod('getFFmpegVersion');
+      await _FFmpegChannel.invokeMethod('getPlatform');
+      await _FFmpegChannel.invokeMethod('getPackageName');
       return true;
-    }
-    catch (e)
-    {
+    } catch (e) {
       return false;
     }
   }
@@ -174,56 +227,52 @@ class FlutterSound
   /// and without any complain from the link-editor.
   ///
   /// Executes FFmpeg with [commandArguments] provided.
-  Future<int> executeFFmpegWithArguments( List<String> arguments )
-  async {
-    try
-    {
-      final Map<dynamic, dynamic> result = await _FFmpegChannel
-                  .invokeMethod( 'executeFFmpegWithArguments', {'arguments': arguments} );
+  static Future<int> executeFFmpegWithArguments(List<String> arguments) async {
+    try {
+      final Map<dynamic, dynamic> result = await _FFmpegChannel.invokeMethod(
+          'executeFFmpegWithArguments', {'arguments': arguments});
       return result['rc'];
-    }
-    on PlatformException catch (e)
-    {
-      print( "Plugin error: ${e.message}" );
+    } on PlatformException catch (e) {
+      print("Plugin error: ${e.message}");
       return -1;
     }
   }
 
   /// Returns true if the specified encoder is supported by flutter_sound on this platform
-  Future<bool> isEncoderSupported( t_CODEC codec )
-  async {
+  Future<bool> isEncoderSupported(t_CODEC codec) async {
     bool result;
     // For encoding ogg/opus on ios, we need to support two steps :
     // - encode CAF/OPPUS (with native Apple AVFoundation)
     // - remux CAF file format to OPUS file format (with ffmpeg)
 
-    if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS))
-    {
-      if (!await isFFmpegSupported( ))
+    if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS)) {
+      if (!await isFFmpegSupported())
         result = false;
       else
-        result = await _channel.invokeMethod( 'isEncoderSupported', <String, dynamic>{ 'codec': t_CODEC.CODEC_CAF_OPUS.index} );
+        result = await getChannel().invokeMethod('isEncoderSupported',
+            <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index});
     } else
-      result = await _channel.invokeMethod( 'isEncoderSupported', <String, dynamic>{ 'codec': codec.index} );
+      result = await getChannel().invokeMethod(
+          'isEncoderSupported', <String, dynamic>{'codec': codec.index});
     return result;
   }
 
 
   /// Returns true if the specified decoder is supported by flutter_sound on this platform
-  Future<bool> isDecoderSupported( t_CODEC codec )
-  async {
+  Future<bool> isDecoderSupported(t_CODEC codec) async {
     bool result;
     // For decoding ogg/opus on ios, we need to support two steps :
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
-    if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS))
-    {
-      if (!await isFFmpegSupported( ))
+    if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS)) {
+      if (!await isFFmpegSupported())
         result = false;
       else
-        result = await _channel.invokeMethod( 'isDecoderSupported', <String, dynamic>{ 'codec': t_CODEC.CODEC_CAF_OPUS.index} );
+        result = await getChannel().invokeMethod('isDecoderSupported',
+            <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index});
     } else
-      result = await _channel.invokeMethod( 'isDecoderSupported', <String, dynamic>{ 'codec': codec.index} );
+      result = await getChannel().invokeMethod(
+          'isDecoderSupported', <String, dynamic>{'codec': codec.index});
     return result;
   }
 
@@ -235,7 +284,7 @@ class FlutterSound
   Future<bool> iosSetCategory( t_IOS_SESSION_CATEGORY category, t_IOS_SESSION_MODE mode, int options ) async {
     if (!Platform.isIOS)
       return false;
-    bool r = await _channel.invokeMethod( 'iosSetCategory', <String, dynamic>{ 'category': iosSessionCategory[category.index], 'mode': iosSessionMode[mode.index], 'options': options } );
+    bool r = await getChannel().invokeMethod( 'iosSetCategory', <String, dynamic>{ 'category': iosSessionCategory[category.index], 'mode': iosSessionMode[mode.index], 'options': options } );
     return r;
   }
 
@@ -248,24 +297,30 @@ class FlutterSound
   Future<bool> androidAudioFocusRequest( int focusGain ) async {
     if (!Platform.isAndroid)
       return false;
-    bool r = await _channel.invokeMethod( 'androidAudioFocusRequest', <String, dynamic>{ 'focusGain': focusGain} );
+    bool r = await getChannel().invokeMethod( 'androidAudioFocusRequest', <String, dynamic>{ 'focusGain': focusGain} );
     return r;
   }
 
 
   ///  After iosSetCategory() or androidAudioFocusRequest the caller must manage his audio session with this function
   Future<bool> setActive( bool enabled) async {
-    bool r = await _channel.invokeMethod( 'setActive', <String, dynamic>{ 'enabled': enabled } );
+    bool r = await getChannel().invokeMethod( 'setActive', <String, dynamic>{ 'enabled': enabled } );
     return r;
   }
 
-  Future<String> setSubscriptionDuration(double sec) async {
-    String result = await _channel
-        .invokeMethod('setSubscriptionDuration', <String, dynamic>{
+  Future<String> setSubscriptionDuration(double sec) {
+    return getChannel().invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'sec': sec,
     });
-    return result;
   }
+
+  Future<dynamic> channelRecorderMethodCallHandler( MethodCall call ) // This procedure is superCharged in "flauto"
+  {
+    switch (call.method) {
+    default:
+      throw new ArgumentError('Unknown method ${call.method} ');
+    }
+}
 
   Future<void> _setRecorderCallback() async {
     if (_recorderController == null) {
@@ -275,62 +330,78 @@ class FlutterSound
       _dbPeakController = new StreamController.broadcast();
     }
 
-    _channel.setMethodCallHandler((MethodCall call) {
-      switch (call.method) {
-        case "updateRecorderProgress":
-          Map<String, dynamic> result = json.decode(call.arguments);
-          if (_recorderController != null)
-            _recorderController.add(new RecordStatus.fromJSON(result));
-          break;
-        case "updateDbPeakProgress":
-        if (_dbPeakController!= null)
-          _dbPeakController.add(call.arguments);
-          break;
-        default:
-          throw new ArgumentError('Unknown method ${call.method} ');
-      }
-      return null;
+
+    getChannel().setMethodCallHandler((MethodCall call) {
+      // This lambda function is necessary because channelMethodCallHandler is a virtual function (polymorphism)
+      return channelMethodCallHandler(call);
     });
+
   }
 
-  Future<void> _setPlayerCallback() async {
-    if (_playerController == null) {
-      _playerController = new StreamController.broadcast();
-    }
-
-    _channel.setMethodCallHandler((MethodCall call) {
+  Future<dynamic> channelMethodCallHandler( MethodCall call ) // This procedure is superCharged in "flauto"
+  {
       switch (call.method) {
         case "updateProgress":
           Map<String, dynamic> result = jsonDecode(call.arguments);
-          if (_playerController!=null)
-            _playerController.add(new PlayStatus.fromJSON(result));
+          if (playerController!=null)
+            playerController.add(new PlayStatus.fromJSON(result));
           break;
-        case "audioPlayerDidFinishPlaying":
+        case "audioPlayerFinishedPlaying":
+
           Map<String, dynamic> result = jsonDecode(call.arguments);
           PlayStatus status = new PlayStatus.fromJSON(result);
           if (status.currentPosition != status.duration) {
             status.currentPosition = status.duration;
           }
-          if (_playerController != null)
-            _playerController.add(status);
-          _audioState = t_AUDIO_STATE.IS_STOPPED;
+          if (playerController != null)
+            playerController.add(status);
+
+          playbackState = PlaybackState.STOPPED;
           _removePlayerCallback();
+          if (audioPlayerFinishedPlaying != null)
+            audioPlayerFinishedPlaying();
           break;
+        case "updateRecorderProgress":
+          Map<String, dynamic> result = json.decode(call.arguments);
+          if (_recorderController != null)
+            _recorderController.add(new RecordStatus.fromJSON(result));
+          break;
+
+        case "updateDbPeakProgress":
+          if (_dbPeakController!= null)
+            _dbPeakController.add(call.arguments);
+          break;
+
         default:
           throw new ArgumentError('Unknown method ${call.method}');
       }
       return null;
+    }
+
+ Future<void> setPlayerCallback() async {
+    if (playerController == null) {
+      playerController = new StreamController.broadcast();
+    }
+
+    getChannel().setMethodCallHandler((MethodCall call) {
+    // This lambda function is necessary because channelMethodCallHandler is a virtual function (polymorphism)
+    return channelMethodCallHandler(call);
     });
   }
 
-  Future<void> _removeRecorderCallback() async {
+
+
+  void _removeRecorderCallback() {
     if (_recorderController != null) {
-      _recorderController.close();
+      _recorderController
+        ..add(null) // ????? We keep that strange line for backwardcompatibility
+        ..close();
       _recorderController = null;
     }
   }
 
-    Future<void> _removeDbPeakCallback() async {
+
+  void _removeDbPeakCallback() {
     if (_dbPeakController != null) {
       _dbPeakController
         ..add(null)
@@ -339,32 +410,35 @@ class FlutterSound
     }
   }
 
-  Future<void> _removePlayerCallback() async {
-    if (_playerController != null) {
-      _playerController
+  void _removePlayerCallback() {
+    if (playerController != null) {
+      playerController
         ..add(null)
         ..close();
-      _playerController = null;
+      playerController = null;
     }
   }
 
-  Future<String> startRecorder(
-      {
-        String uri,
-        int sampleRate = 16000, int numChannels = 1, int bitRate = 16000,
-        t_CODEC codec = t_CODEC.CODEC_AAC,
-        AndroidEncoder androidEncoder = AndroidEncoder.AAC,
-        AndroidAudioSource androidAudioSource = AndroidAudioSource.MIC,
-        AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.DEFAULT,
-        IosQuality iosQuality = IosQuality.LOW,
-      }) async {
+
+  Future<String> startRecorder({
+                                 String uri,
+                                 int sampleRate = 16000, int numChannels = 1, int bitRate = 16000,
+                                 t_CODEC codec = t_CODEC.CODEC_AAC,
+                                 AndroidEncoder androidEncoder = AndroidEncoder.AAC,
+                                 AndroidAudioSource androidAudioSource = AndroidAudioSource.MIC,
+                                 AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.DEFAULT,
+                                 IosQuality iosQuality = IosQuality.LOW,
+                               }) async {
 
     // Request Microphone permission if needed
-    Map<PermissionGroup, PermissionStatus> permission = await PermissionHandler().requestPermissions([PermissionGroup.microphone]);
-    if (permission[PermissionGroup.microphone]!= PermissionStatus.granted)
-      throw new Exception("Microphone permission not granted");
-
-    if (_audioState != t_AUDIO_STATE.IS_STOPPED) {
+    //[LARPOUX]!!!!!Map<PermissionGroup, PermissionStatus> permission = await PermissionHandler().requestPermissions([PermissionGroup.microphone]);
+    //if (permission[PermissionGroup.microphone]!= PermissionStatus.granted)
+     // throw new Exception("Microphone permission not granted");
+//
+    //if (_recordingState != t_AUDIO_STATE.IS_STOPPED) {
+     // throw new RecorderRunningException('Recorder is not stopped.');
+    //}
+    if (_recordingState != null && _recordingState != RecordingState.STOPPED) {
       throw new RecorderRunningException('Recorder is not stopped.');
     }
     if (! await isEncoderSupported(codec))
@@ -377,7 +451,7 @@ class FlutterSound
     // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
     // We use FFmpeg for that task.
     if ( (Platform.isIOS) &&
-        ( (codec == t_CODEC.CODEC_OPUS) || (_fileExtension(uri) == '.opus') )  ) {
+        ( (codec == t_CODEC.CODEC_OPUS) || (fileExtension(uri) == '.opus') )  ) {
       savedUri = uri;
       isOppOpus = true;
       codec = t_CODEC.CODEC_CAF_OPUS;
@@ -403,12 +477,14 @@ class FlutterSound
         'iosQuality': iosQuality?.value
       };
 
-      String result = await _channel.invokeMethod('startRecorder', param);
+      String result = await getChannel().invokeMethod('startRecorder', param);
+
+
       _setRecorderCallback();
-      _audioState = t_AUDIO_STATE.IS_RECORDING;
+      _recordingState =RecordingState.RECORDING;
       // if the caller wants OGG/OPUS we must remux the temporary file
-      if ( (result != null) && isOppOpus) {
-         return savedUri;
+      if ((result != null) && isOppOpus) {
+        return savedUri;
       }
       return result;
     } catch (err) {
@@ -417,26 +493,31 @@ class FlutterSound
   }
 
   Future<String> stopRecorder() async {
-    if (_audioState != t_AUDIO_STATE.IS_RECORDING) {
+    if (_recordingState != RecordingState.RECORDING) {
       throw new RecorderStoppedException('Recorder is not recording.');
     }
 
-    String result = await _channel.invokeMethod('stopRecorder');
+    String result = await getChannel().invokeMethod('stopRecorder');
 
-    _audioState = t_AUDIO_STATE.IS_STOPPED;
+    _recordingState = RecordingState.STOPPED;
+
     _removeRecorderCallback();
     _removeDbPeakCallback();
 
     if (isOppOpus) {
       // delete the target if it exists (ffmpeg gives an error if the output file already exists)
       File f = File(savedUri);
-      if (f.existsSync())
-        await f.delete();
+      if (f.existsSync()) await f.delete();
       // The following ffmpeg instruction re-encode the Apple CAF to OPUS. Unfortunatly we cannot just remix the OPUS data,
       // because Apple does not set the "extradata" in its private OPUS format.
-      var rc = await executeFFmpegWithArguments (['-i', tmpUri, '-c:a', 'libopus', savedUri,]); // remux CAF to OGG
-      if (rc != 0)
-        return null;
+      var rc = await executeFFmpegWithArguments([
+        '-i',
+        tmpUri,
+        '-c:a',
+        'libopus',
+        savedUri,
+      ]); // remux CAF to OGG
+      if (rc != 0) return null;
       return savedUri;
     }
     return result;
@@ -444,7 +525,7 @@ class FlutterSound
 
   /// Return the file extension for the given path.
   /// path can be null. We return null in this case.
-  String _fileExtension(String path) {
+  String fileExtension(String path) {
       if (path == null )
         return null;
       String r =  p.extension(path);
@@ -453,14 +534,7 @@ class FlutterSound
 
   Future<String> _startPlayer(String method, Map <String, dynamic> what) async {
     String result;
-    if (_audioState == t_AUDIO_STATE.IS_PAUSED) {
-      this.resumePlayer();
-      _audioState = t_AUDIO_STATE.IS_PLAYING;
-      return 'Player resumed';
-      // throw PlayerRunningException('Player is already playing.');
-    }
-
-    await stopPlayer();
+    await stopPlayer(); // Just in case
     try
     {
       t_CODEC codec = what['codec'];
@@ -471,7 +545,7 @@ class FlutterSound
       // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
       // We use FFmpeg for that task.
       if ( (Platform.isIOS) &&
-            ( (codec == t_CODEC.CODEC_OPUS) || (_fileExtension(path) == '.opus') )  ) {
+            ( (codec == t_CODEC.CODEC_OPUS) || (fileExtension(path) == '.opus') )  ) {
           Directory tempDir = await getTemporaryDirectory ();
           File fout =  File ('${tempDir.path}/flutter_sound-tmp.caf');
           if (fout.existsSync()) // delete the old temporary file if it exists
@@ -483,140 +557,131 @@ class FlutterSound
           if (rc != 0)
             return null;
           // Now we can play Apple CAF/OPUS
-          result = await _channel.invokeMethod ('startPlayer', {'path': fout.path});
-      } else
-        result = await _channel.invokeMethod(method, what);
+          audioPlayerFinishedPlaying =  what['whenFinished'];
+          what['whenFinished'] = null; // We must remove this parameter because _channel.invokeMethod() does not like it
+          result = await getChannel().invokeMethod ('startPlayer', {'path': fout.path});
+      } else {
+          audioPlayerFinishedPlaying =  what['whenFinished'];
+          what['whenFinished'] = null; // We must remove this parameter because _channel.invokeMethod() does not like it
+          result = await getChannel().invokeMethod(method, what);
+      }
 
       if (result != null)
       {
         print ('startPlayer result: $result');
-        _setPlayerCallback ();
-        _audioState = t_AUDIO_STATE.IS_PLAYING;
+        setPlayerCallback ();
+
+        playbackState = PlaybackState.PLAYING;
       }
 
       return result;
     } catch (err) {
+      audioPlayerFinishedPlaying = null;
       throw Exception(err);
     }
   }
 
 
-  Future<String> startPlayer(String uri) async => _startPlayer('startPlayer', {'path': uri});
+    Future<String> startPlayer(String uri, {t_CODEC codec , whenFinished(), }) async => _startPlayer( 'startPlayer', {'path': uri, 'codec': codec, 'whenFinished': whenFinished,} );
 
-  Future<String> startPlayerFromBuffer(Uint8List dataBuffer, {t_CODEC codec ,}) async {
+    Future<String> startPlayerFromBuffer(Uint8List dataBuffer, {t_CODEC codec, whenFinished(), }) async {
 
-    // If we want to play OGG/OPUS on iOS, we need to remux the OGG file format to a specific Apple CAF envelope before starting the player.
-    // We write the data in a temporary file before calling ffmpeg.
-    if ( (codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS) ) {
-      if (_audioState == t_AUDIO_STATE.IS_PAUSED) {
-        this.resumePlayer();
-        _audioState = t_AUDIO_STATE.IS_PLAYING;
-        return 'Player resumed';
+      // If we want to play OGG/OPUS on iOS, we need to remux the OGG file format to a specific Apple CAF envelope before starting the player.
+      // We write the data in a temporary file before calling ffmpeg.
+      if ( (codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS) ) {
+          if (playbackState == PlaybackState.PAUSED) {
+            this.resumePlayer();
+            playbackState = PlaybackState.PLAYING;
+            return 'Player resumed';
+          }
+          await stopPlayer();
+          Directory tempDir = await getTemporaryDirectory();
+          File inputFile =  File('${tempDir.path}/flutter_sound-tmp.opus');
+          if (inputFile.existsSync())
+            await inputFile.delete();
+          inputFile.writeAsBytesSync(dataBuffer); // Write the user buffer into the temporary file
+          // Now we can play the temporary file
+          return await _startPlayer('startPlayer', {'path': inputFile.path, 'codec': codec, 'whenFinished': whenFinished, }); // And play something that Apple will be happy with.
+      } else
+        return await _startPlayer ('startPlayerFromBuffer', {'dataBuffer': dataBuffer, 'codec': codec, 'whenFinished': whenFinished, });
+    }
+
+
+    Future<String> stopPlayer() async {
+      playbackState = PlaybackState.STOPPED;
+      audioPlayerFinishedPlaying = null;
+
+      try
+      {
+        String result = await getChannel().invokeMethod( 'stopPlayer' );
+        return result;
+      } catch (e) {}
+      return null;
+
+    }
+
+
+    Future<String> _stopPlayerwithCallback() async {
+      if (audioPlayerFinishedPlaying != null) {
+        audioPlayerFinishedPlaying();
+        audioPlayerFinishedPlaying = null;
       }
-      await stopPlayer();
 
-      Directory tempDir = await getTemporaryDirectory();
-      File inputFile =  File('${tempDir.path}/flutter_sound-tmp.opus');
-      if (inputFile.existsSync())
-        await inputFile.delete();
-      inputFile.writeAsBytesSync(dataBuffer); // Write the user buffer into the temporary file
-      // Now we can play the temporary file
-      return await _startPlayer('startPlayer', {'path': inputFile.path, 'codec': codec,}); // And play something that Apple will be happy with.
-    } else
-      return await _startPlayer ('startPlayerFromBuffer', {'dataBuffer': dataBuffer, 'codec': codec});
-  }
-
-
-  Future<String> stopPlayer() async {
-    _audioState = t_AUDIO_STATE.IS_STOPPED;
-
-    try
-    {
-      String result = await _channel.invokeMethod( 'stopPlayer' );
-      return result;
-    } catch (e) {}
-    return null;
-
-  }
-
-  Future<String> pausePlayer() async {
-  if (_audioState != t_AUDIO_STATE.IS_PLAYING ) {
-          throw PlayerRunningException('Player is not playing.');
-  }
-
-          try {
-      String result = await _channel.invokeMethod('pausePlayer');
-      if (result != null)
-        _audioState = t_AUDIO_STATE.IS_PAUSED;
-      return result;
-    } catch (err) {
-      print('err: $err');
-      _audioState = t_AUDIO_STATE.IS_STOPPED; // In fact _audioState is in an unknown state
-      throw Exception(err);
-    }
-  }
-
-  Future<String> resumePlayer() async {
-    if (_audioState != t_AUDIO_STATE.IS_PAUSED ) {
-          throw PlayerRunningException('Player is not paused.');
+      return stopPlayer();
     }
 
-    try {
-      String result = await _channel.invokeMethod('resumePlayer');
-      if (result != null)
-        _audioState = t_AUDIO_STATE.IS_PLAYING;
-      return result;
-    } catch (err) {
-      print('err: $err');
-      throw Exception(err);
-    }
-  }
 
-  Future<String> seekToPlayer(int milliSecs) async {
-    try {
-      String result =
-          await _channel.invokeMethod('seekToPlayer', <String, dynamic>{
+  Future<String> pausePlayer() {
+      if (playbackState != PlaybackState.PLAYING) {
+        _stopPlayerwithCallback(); // To recover a clean state
+        throw PlayerRunningException('Player is not playing.'); // I am not sure that it is good to throw an exception here
+      }
+      playbackState = PlaybackState.PAUSED;
+
+      return getChannel().invokeMethod('pausePlayer');
+    }
+
+    Future<String> resumePlayer() {
+      if (playbackState != PlaybackState.PAUSED) {
+        _stopPlayerwithCallback(); // To recover a clean state
+        throw PlayerRunningException('Player is not paused.'); // I am not sure that it is good to throw an exception here
+      }
+      playbackState = PlaybackState.PLAYING;
+      return getChannel().invokeMethod('resumePlayer');
+    }
+
+    Future<String> seekToPlayer(int milliSecs) {
+      return getChannel().invokeMethod('seekToPlayer', <String, dynamic>{
         'sec': milliSecs,
       });
-      return result;
-    } catch (err) {
-      print('err: $err');
-      throw Exception(err);
-    }
-  }
-
-  Future<String> setVolume(double volume) async {
-    double indexedVolume = Platform.isIOS ? volume * 100 : volume;
-    String result = '';
-    if (volume < 0.0 || volume > 1.0) {
-      result = 'Value of volume should be between 0.0 and 1.0.';
-      return result;
     }
 
-    result = await _channel.invokeMethod('setVolume', <String, dynamic>{
-      'volume': indexedVolume,
-    });
-    return result;
-  }
+    Future<String> setVolume(double volume) {
+      double indexedVolume = Platform.isIOS ? volume * 100 : volume;
+      if (volume < 0.0 || volume > 1.0) {
+        throw RangeError('Value of volume should be between 0.0 and 1.0.');
+      }
 
-  /// Defines the interval at which the peak level should be updated.
-  /// Default is 0.8 seconds
-  Future<String> setDbPeakLevelUpdate(double intervalInSecs) async {
-    String result = await _channel
-      .invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
-    'intervalInSecs': intervalInSecs,
-    });
-    return result;
-  }
+      return getChannel().invokeMethod('setVolume', <String, dynamic>{
+        'volume': indexedVolume,
+      });
+    }
 
-  /// Enables or disables processing the Peak level in db's. Default is disabled
-  Future<String> setDbLevelEnabled(bool enabled) async {
-    String result = await _channel
-      .invokeMethod('setDbLevelEnabled', <String, dynamic>{
-    'enabled': enabled,
-    });
-    return result;
-  }
+    /// Defines the interval at which the peak level should be updated.
+    /// Default is 0.8 seconds
+    Future<String> setDbPeakLevelUpdate(double intervalInSecs) {
+      return getChannel().invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
+        'intervalInSecs': intervalInSecs,
+      });
+    }
+
+    /// Enables or disables processing the Peak level in db's. Default is disabled
+    Future<String> setDbLevelEnabled(bool enabled) {
+      return getChannel().invokeMethod('setDbLevelEnabled', <String, dynamic>{
+        'enabled': enabled,
+      });
+    }
+
 }
 
 class RecordStatus {
