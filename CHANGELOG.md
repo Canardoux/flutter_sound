@@ -1,3 +1,6 @@
+## 2.0.5
+- Hotfix [#221](https://github.com/dooboolab/flutter_sound/issues/221)
+- Use AAC-LC format instead of MPEG-4 [#209](https://github.com/dooboolab/flutter_sound/pull/209)
 ## 2.0.4
 - OGG/OPUS support on iOS [#199](https://github.com/dooboolab/flutter_sound/pull/199)
 ## 2.0.3
