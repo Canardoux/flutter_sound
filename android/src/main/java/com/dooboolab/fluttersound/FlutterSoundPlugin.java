@@ -282,6 +282,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
 
     if (path == null)
       path = pathArray[codec.ordinal()];
+    else
+      path = reg.activity().getExternalFilesDirs("external")[0] + path;
 
     mediaRecorder.setOutputFile(path);
     mediaRecorder.setAudioEncoder(androidEncoder);
