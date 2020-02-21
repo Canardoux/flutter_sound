@@ -64,7 +64,10 @@ class _MyAppState extends State<MyApp> {
       //   numChannels: 1,
       //   androidAudioSource: AndroidAudioSource.MIC,
       // );
-      String path = await flutterSound.startRecorder( codec: _codec, );
+      String path = await flutterSound.startRecorder(
+        uri: 'sound.aac',
+        codec: _codec,
+      );
       print('startRecorder: $path');
 
       _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
