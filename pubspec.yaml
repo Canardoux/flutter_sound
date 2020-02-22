@@ -6,8 +6,8 @@ homepage: https://github.com/dooboolab/flutter_sound
 environment:
     sdk: ">=1.19.0 <3.0.0"
 dependencies:
-  path_provider: ^1.6.0
-  path: ^1.6.4
+  path_provider: ">=1.0.0 <2.0.0"
+  path: ">=1.0.0 <2.0.0"
   flutter:
     sdk: flutter
 
