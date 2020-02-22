@@ -6,7 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'dart:async';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:flutter/services.dart' show rootBundle;
 
 enum t_MEDIA

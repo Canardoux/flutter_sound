@@ -103,7 +103,7 @@ result.then(path) {
 }
 ```
 
-The recorded file will be stored in a temporary directory. If you want to take your own path specify it like below.
+The recorded file will be stored in a temporary directory. If you want to take your own path specify it like below. We are using [path_provider](https://pub.dev/packages/path_provider) in below so you may have to install it.
 ```
 Directory tempDir = await getTemporaryDirectory();
 File outputFile = await File ('${tempDir.path}/flutter_sound-tmp.aac');

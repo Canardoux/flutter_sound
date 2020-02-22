@@ -6,7 +6,7 @@ import 'dart:typed_data' show Uint8List;
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/android_encoder.dart';
 import 'package:flutter_sound/ios_quality.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 
 import 'dart:io' show Platform;
