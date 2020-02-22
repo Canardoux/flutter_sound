@@ -6,7 +6,7 @@ import 'dart:typed_data' show Uint8List;
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/android_encoder.dart';
 import 'package:flutter_sound/ios_quality.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 
 import 'dart:io' show Platform;
@@ -352,7 +352,7 @@ class FlutterSound {
       if ( (Platform.isIOS) &&
             ( (codec == t_CODEC.CODEC_OPUS) || (_fileExtension(path) == '.opus') )  ) {
           Directory tempDir = await getTemporaryDirectory ();
-          File fout = await File ('${tempDir.path}/flutter_sound-tmp.caf');
+          File fout = File ('${tempDir.path}/flutter_sound-tmp.caf');
           if (fout.existsSync()) // delete the old temporary file if it exists
             await fout.delete();
           // The following ffmpeg instruction does not decode and re-encode the file. It just remux the OPUS data into an Apple CAF envelope.

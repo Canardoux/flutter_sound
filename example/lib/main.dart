@@ -6,7 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'dart:async';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_sound/android_encoder.dart';
+import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:flutter/services.dart' show rootBundle;
 
 enum t_MEDIA
@@ -64,8 +64,10 @@ class _MyAppState extends State<MyApp> {
       //   numChannels: 1,
       //   androidAudioSource: AndroidAudioSource.MIC,
       // );
+      Directory tempDir = await getTemporaryDirectory();
+
       String path = await flutterSound.startRecorder(
-        uri: 'sound.aac',
+        uri: '${tempDir.path}/sound.aac',
         codec: _codec,
       );
       print('startRecorder: $path');
