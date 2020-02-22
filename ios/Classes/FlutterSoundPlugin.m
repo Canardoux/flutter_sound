@@ -72,6 +72,7 @@ double dbPeakInterval = 0.8;
 bool shouldProcessDbLevel = false;
 FlutterMethodChannel* _channel;
 
+MPRemoteCommandCenter *commandCenter;
 bool isPlaying = false;
 BOOL includeAPFeatures = false;
 
@@ -623,13 +624,13 @@ BOOL includeAPFeatures = false;
     [playingInfoCenter setNowPlayingInfo:songInfo];
 }
 
-// Give the system information about what to do when the notification
-// control buttons are pressed.
-- (void)setupRemoteCommandCenter:(BOOL)canSkipForward canSkipBackward: (BOOL)canSkipBackward result: (FlutterResult)result {
-    MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+
+// Initializes the Remote Command Center to use to handle the playback from
+// outside the app. It gives the system information about what to do when
+// the notification control buttons are pressed.
+- (void)initRemoteCommandCenter:(FlutterResult)result {
+    commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
     [commandCenter.togglePlayPauseCommand setEnabled:YES];
-    [commandCenter.nextTrackCommand setEnabled:canSkipForward];
-    [commandCenter.previousTrackCommand setEnabled:canSkipBackward];
     
     [commandCenter.togglePlayPauseCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
         if(isPlaying) {
@@ -670,9 +671,22 @@ BOOL includeAPFeatures = false;
     }];
 }
 
+// Enables or disables the skip buttons of the Remote Command Center
+- (void)setupRemoteCommandCenter:(BOOL)canSkipForward canSkipBackward: (BOOL)canSkipBackward result: (FlutterResult)result {
+    [commandCenter.nextTrackCommand setEnabled:canSkipForward];
+    [commandCenter.previousTrackCommand setEnabled:canSkipBackward];
+}
+
 -(void)initializeMediaPlayer:(BOOL)includeAudioPlayerFeatures result: (FlutterResult)result {
     // Set whether we have to include the audio player features
     includeAPFeatures = includeAudioPlayerFeatures;
+    
+    // Initialize the remote command center if we have to use the audio
+    // player features.
+    if(includeAPFeatures) {
+        [self initRemoteCommandCenter:result];
+    }
+    
     // No further initialization is needed for the iOS audio player, then exit
     // the method.
     result(@"The player had already been initialized.");
