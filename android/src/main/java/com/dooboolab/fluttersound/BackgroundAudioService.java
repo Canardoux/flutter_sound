@@ -103,18 +103,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
                 return;
             }
 
-            // Activate the MediaSessionCompat and give it the playing state
-            mMediaSessionCompat.setActive(true);
-            setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING);
-
-            // Show a notification to handle the media playback
-            showPlayingNotification();
-
-            // Start the audio player
-            mMediaPlayer.start();
-
-            // Update the playback state
-            playbackStateUpdater.apply(PLAYING_STATE);
+            startPlayerPlayback();
         }
 
         /**
@@ -226,6 +215,26 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
     };
 
 
+    /**
+     * Starts the playback of the player (without requesting audio focus).
+     */
+    @SuppressWarnings("unchecked")
+    private void startPlayerPlayback() {
+        // Activate the MediaSessionCompat and give it the playing state
+        mMediaSessionCompat.setActive(true);
+        setMediaPlaybackState(PlaybackStateCompat.STATE_PLAYING);
+
+        // Show a notification to handle the media playback
+        showPlayingNotification();
+
+        // Start the audio player
+        mMediaPlayer.start();
+
+        // Update the playback state
+        playbackStateUpdater.apply(PLAYING_STATE);
+    }
+
+
     // Not important for general audio service, required for class
     @Nullable
     @Override
@@ -268,14 +277,10 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         switch (focusChange) {
             case AudioManager.AUDIOFOCUS_LOSS: {
                 // Another app has requested audio focus, then stop audio playback
-                if (mMediaPlayer.isPlaying()) {
-                    mMediaPlayer.stop();
-                }
-                break;
             }
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT: {
                 // Another app wants to play audio for a short time, then pause audio playback
-                mMediaPlayer.pause();
+                mMediaSessionCallback.onPause();
                 break;
             }
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK: {
@@ -287,11 +292,14 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
                 break;
             }
             case AudioManager.AUDIOFOCUS_GAIN: {
-                // A AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK event has completed, then resume volume at its previous levels
+                // The audio focus was granted: either a request was accepted, or a
+                // AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK event has completed.
                 if (mMediaPlayer != null) {
+                    // Restart the player if it was not playing
                     if (!mMediaPlayer.isPlaying()) {
-                        mMediaPlayer.start();
+                        startPlayerPlayback();
                     }
+                    // Set the volume to its previous levels
                     mMediaPlayer.setVolume(1.0f, 1.0f);
                 }
                 break;
