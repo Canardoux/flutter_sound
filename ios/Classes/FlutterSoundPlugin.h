@@ -21,5 +21,6 @@ typedef enum
 - (void)setupNowPlaying;
 - (void)setupRemoteCommandCenter:(BOOL)canSkipForward canSkipBackward: (BOOL)canSkipBackward result: (FlutterResult)result;
 - (void)initRemoteCommandCenter:(FlutterResult)result;
+- (void)releaseRemoteCommandCenter;
 
 @end

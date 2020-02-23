@@ -671,6 +671,19 @@ BOOL includeAPFeatures = false;
     }];
 }
 
+// Invalidates the remote command center
+- (void) releaseRemoteCommandCenter {
+    [commandCenter.togglePlayPauseCommand setEnabled:NO];
+    [commandCenter.nextTrackCommand setEnabled:NO];
+    [commandCenter.previousTrackCommand setEnabled:NO];
+    
+    [commandCenter.togglePlayPauseCommand removeTarget:nil];
+    [commandCenter.nextTrackCommand removeTarget:nil];
+    [commandCenter.previousTrackCommand removeTarget:nil];
+    
+    commandCenter = nil;
+}
+
 // Enables or disables the skip buttons of the Remote Command Center
 - (void)setupRemoteCommandCenter:(BOOL)canSkipForward canSkipBackward: (BOOL)canSkipBackward result: (FlutterResult)result {
     [commandCenter.nextTrackCommand setEnabled:canSkipForward];
@@ -699,6 +712,9 @@ BOOL includeAPFeatures = false;
         timer = nil;
     }
     audioPlayer = nil;
+    
+    // Invalidate the remote command center
+    [self releaseRemoteCommandCenter];
     
     result(@"The player has been successfully released");
 }
