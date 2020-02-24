@@ -141,6 +141,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         public void onPause() {
             super.onPause();
             // Someone requested to pause the playback, then pause it
+            Log.d("Background Audio Service", "onPause()");
 
             // Check whether the media player is playing
             if (mMediaPlayer.isPlaying()) {
@@ -343,6 +344,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            assert (mAudioFocusRequest != null);
             audioManager.abandonAudioFocusRequest(mAudioFocusRequest);
         } else {
             audioManager.abandonAudioFocus(this);

@@ -116,26 +116,31 @@ class Track
                         File fout = await File( '${tempDir.path}/flutter_sound-tmp.caf' );
                         if (fout.existsSync( )) // delete the old temporary file if it exists
                                 await fout.delete( );
+                        int rc;
+                        String inputFileName = trackPath;
                         // The following ffmpeg instruction does not decode and re-encode the file. It just remux the OPUS data into an Apple CAF envelope.
                         // It is probably very fast and the user will not notice any delay, even with a very large data.
                         // This is the price to pay for the Apple stupidity.
                         if (dataBuffer != null)
                         {
                                 // Write the user buffer into the temporary file
-                                fout.writeAsBytesSync( dataBuffer );
-                        } else if (trackPath != null)
+                                inputFileName = '${tempDir.path}/flutter_sound-tmp.opus';
+                                File fin = await File( inputFileName );
+                                fin.writeAsBytesSync( dataBuffer );
+                        }
+                        rc = await FlutterSound.executeFFmpegWithArguments( [
+                                                                                    '-y',
+                                                                                    '-loglevel',
+                                                                                    'error',
+                                                                                    '-i',
+                                                                                    inputFileName,
+                                                                                    '-c:a',
+                                                                                    'copy',
+                                                                                    fout.path,
+                                                                            ] ); // remux OGG to CAF
+                        if (rc != 0)
                         {
-                                var rc = await FlutterSound.executeFFmpegWithArguments( [
-                                                                                                '-i',
-                                                                                                trackPath,
-                                                                                                '-c:a',
-                                                                                                'copy',
-                                                                                                fout.path,
-                                                                                        ] ); // remux OGG to CAF
-                                if (rc != 0)
-                                {
-                                        throw 'FFmpeg exited with code ${rc}';
-                                }
+                                throw 'FFmpeg exited with code ${rc}';
                         }
                         // Now we can play Apple CAF/OPUS
                         trackPath = fout.path;
@@ -245,7 +250,7 @@ class Flauto extends FlutterSound
         /// This method should only be used if the   player has been initialize
         /// with the audio player specific features.
         Future<String> startPlayerFromTrack(
-                    Track track, {t_CODEC codec, whenFinished( ), bool canSkipForward, bool canSkipBackward } )
+                    Track track, {t_CODEC codec, whenFinished( ), bool canSkipForward = false, bool canSkipBackward = false} )
         async {
                 // Check whether we can start the player
                 if (playbackState != null &&
@@ -264,10 +269,16 @@ class Flauto extends FlutterSound
                                                                   'this platform.' );
                 }
 
+
+                await track._adaptOggToIos( );
+
                 final trackMap = await track.toMap( );
-                audioPlayerFinishedPlaying =  whenFinished;
-                setPlayerCallback();
-                return getChannel( ).invokeMethod( 'startPlayerFromTrack', <String, dynamic>{
+
+
+                audioPlayerFinishedPlaying = whenFinished;
+                setPlayerCallback( );
+                return getChannel( ).invokeMethod( 'startPlayerFromTrack', <String, dynamic>
+                {
                         'track': trackMap,
                         //'whenFinished': whenFinished,
                         'canSkipForward': _skipTrackForwardHandlerSet && canSkipForward,
@@ -284,7 +295,7 @@ class Flauto extends FlutterSound
                                     } )
         {
                 _skipBackward = skipBackward;
-                _skipForward = _skipForward;
+                _skipForward = skipForward;
                 _skipTrackForwardHandlerSet = skipForward != null;
                 _skipTrackBackwardHandlerSet = skipBackward != null;
         }
@@ -293,7 +304,7 @@ class Flauto extends FlutterSound
         {
                 switch (call.method)
                 {
-                         case 'audioPlayerFinishedPlaying':
+                        case 'audioPlayerFinishedPlaying':
                                 {
                                         Map<String, dynamic> result = jsonDecode( call.arguments );
                                         PlayStatus status = new PlayStatus.fromJSON( result );
@@ -370,7 +381,7 @@ class Flauto extends FlutterSound
 
         void _removePlayerCallback( )
         {
-                if ( playerController != null)
+                if (playerController != null)
                 {
                         playerController
                                 ..add( null )

@@ -11,6 +11,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import androidx.arch.core.util.Function;
 
 import java.util.concurrent.Callable;
+import android.util.Log;
 
 
 public class MediaBrowserHelper {
@@ -129,6 +130,7 @@ public class MediaBrowserHelper {
     }
 
     void pausePlayback() {
+            Log.d ("Media Browser Helper" , "pausePlayback()");
             mediaControllerCompat.getTransportControls().pause();
     }
 

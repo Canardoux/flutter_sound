@@ -421,7 +421,7 @@ public class Flauto extends FlutterSoundPlugin {
 
                 json.put ( "duration", String.valueOf ( trackDuration ) );
                 json.put ( "current_position", String.valueOf ( currentPosition ) );
-                channel.invokeMethod ( "audioPlayerDidFinishPlaying", json.toString () );
+                channel.invokeMethod ( "audioPlayerFinishedPlaying", json.toString () );
             } catch ( JSONException je ) {
                 Log.d ( TAG, "Json Exception: " + je.toString () );
             }

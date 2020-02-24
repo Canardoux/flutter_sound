@@ -431,10 +431,10 @@ class FlutterSound {
                                }) async {
 
     // Request Microphone permission if needed
-    //[LARPOUX]!!!!!Map<PermissionGroup, PermissionStatus> permission = await PermissionHandler().requestPermissions([PermissionGroup.microphone]);
-    //if (permission[PermissionGroup.microphone]!= PermissionStatus.granted)
-     // throw new Exception("Microphone permission not granted");
-//
+    Map<PermissionGroup, PermissionStatus> permission = await PermissionHandler().requestPermissions([PermissionGroup.microphone]);
+    if (permission[PermissionGroup.microphone]!= PermissionStatus.granted)
+      throw new Exception("Microphone permission not granted");
+
     //if (_recordingState != t_AUDIO_STATE.IS_STOPPED) {
      // throw new RecorderRunningException('Recorder is not stopped.');
     //}
@@ -511,6 +511,8 @@ class FlutterSound {
       // The following ffmpeg instruction re-encode the Apple CAF to OPUS. Unfortunatly we cannot just remix the OPUS data,
       // because Apple does not set the "extradata" in its private OPUS format.
       var rc = await executeFFmpegWithArguments([
+        '-loglevel', 'error',
+        '-y',
         '-i',
         tmpUri,
         '-c:a',
@@ -553,7 +555,7 @@ class FlutterSound {
           // The following ffmpeg instruction does not decode and re-encode the file. It just remux the OPUS data into an Apple CAF envelope.
           // It is probably very fast and the user will not notice any delay, even with a very large data.
           // This is the price to pay for the Apple stupidity.
-          var rc = await executeFFmpegWithArguments (['-i', path, '-c:a', 'copy', fout.path,]); // remux OGG to CAF
+          var rc = await executeFFmpegWithArguments (['-loglevel', 'error', '-y', '-i', path, '-c:a', 'copy', fout.path,]); // remux OGG to CAF
           if (rc != 0)
             return null;
           // Now we can play Apple CAF/OPUS

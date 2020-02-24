@@ -174,7 +174,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
         @Override
         public void onAttachedToEngine ( FlutterPlugin.FlutterPluginBinding binding ) {
                 ctx = binding.getApplicationContext ();
-                // [LARPOUX]!!!audioManager = ( AudioManager ) ctx.getSystemService ( Context.AUDIO_SERVICE );
+                audioManager = ( AudioManager ) ctx.getSystemService ( Context.AUDIO_SERVICE );
                 channel = new MethodChannel ( binding.getBinaryMessenger (), "flutter_sound" );
                 channel.setMethodCallHandler ( flutterSoundPlugin );
                 Flauto.attachFlauto(ctx, binding.getBinaryMessenger ());
@@ -213,7 +213,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
                 flutterSoundPlugin.audioManager = ( AudioManager ) flutterSoundPlugin.ctx.getSystemService ( Context.AUDIO_SERVICE );
                 channel = new MethodChannel ( registrar.messenger (), "flutter_sound" );
                 channel.setMethodCallHandler ( flutterSoundPlugin );
-                //flutterSoundPlugin.ctx = registrar.activeContext ();
                 flutterSoundPlugin.androidActivity = registrar.activity ();
                 Flauto.attachFlauto(flutterSoundPlugin.ctx, registrar.messenger ());
         }
@@ -329,11 +328,13 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
         }
 
         private void setActive ( boolean enabled, final Result result ) {
-                Boolean b;
-                if ( enabled )
-                        b = ( audioManager.requestAudioFocus ( audioFocusRequest ) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED );
-                else
-                        b = ( audioManager.abandonAudioFocusRequest ( audioFocusRequest ) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED );
+                Boolean b = false;
+                try {
+                        if ( enabled )
+                                b = ( audioManager.requestAudioFocus ( audioFocusRequest ) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED );
+                        else
+                                b = ( audioManager.abandonAudioFocusRequest ( audioFocusRequest ) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED );
+                } catch (Exception e) {b = false;}
                 result.success ( b );
         }
 
@@ -341,7 +342,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
         public void startRecorder ( Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result ) {
                 final int v = Build.VERSION.SDK_INT;
                 // The caller must be allowed to specify its path. We must not change it here
-                // path = PathUtils.getDataDirectory(reg.context()) + "/" + path; // SDK 29 : you may not write in getExternalStorageDirectory() [LARPOUX]
+                // path = PathUtils.getDataDirectory(reg.context()) + "/" + path; // SDK 29 : you may not write in getExternalStorageDirectory()
                 MediaRecorder mediaRecorder = model.getMediaRecorder ();
 
                 if ( mediaRecorder == null ) {
@@ -526,8 +527,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
                 }
               });
 
-            } catch (JSONException je) {
-              Log.d(TAG, "Json Exception: " + je.toString());
+            } catch (Exception e) {
+              Log.d(TAG, "Exception: " + e.toString());
             }
           }
         };

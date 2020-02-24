@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
   bool _canDisplayPlayerControls = false;
   //PlaybackState _playbackState;
   // Whether the user wants to use the audio player features
-  bool _isAudioPlayer = true;
+  bool _isAudioPlayer = false;
 
   void _initializeExample(FlutterSound module) {
     flutterSoundModule = module;
@@ -66,8 +66,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    initializePlayer( );
-    _initializeExample(flauto);
+    //initializePlayer( );
+    _initializeExample(flutterSoundModule);
 
 
   }
@@ -107,13 +107,24 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initializePlayer() async {
     try {
+      /*
+      if (Platform.isIOS)
+        await flauto.iosSetCategory( t_IOS_SESSION_CATEGORY. /*PLAYBACK*/PLAYBACK, t_IOS_SESSION_MODE. /*VOICE_PROMPT*/DEFAULT, IOS_DUCK_OTHERS );
+      else if (Platform.isAndroid)
+        await flauto.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK );
+*/
+
       await flauto.initializeMediaPlayer(
         _isAudioPlayer,
-        skipForwardHandler: () {
+        skipForwardHandler: () async {
           print("Skip forward successfully called!");
+          await stopPlayer();
+          await startPlayer();
         },
         skipBackwardForward: () {
           print("Skip backward successfully called!");
+          stopPlayer();
+          startPlayer();
         },
       );
 
@@ -268,7 +279,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void startPlayer() async {
+  Future<void> startPlayer() async {
     try {
 
       final exampleAudioFilePath =
@@ -277,10 +288,10 @@ class _MyAppState extends State<MyApp> {
           "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_500kB.png";
 
       String path;
-      Uint8List buffer;
+      Uint8List dataBuffer;
       String audioFilePath;
       if (_media == t_MEDIA.ASSET) {
-        buffer = (await rootBundle.load(assetSample[_codec.index]))
+        dataBuffer = (await rootBundle.load(assetSample[_codec.index]))
             .buffer
             .asUint8List();
       } else if (_media == t_MEDIA.FILE) {
@@ -290,8 +301,8 @@ class _MyAppState extends State<MyApp> {
       } else if (_media == t_MEDIA.BUFFER) {
         // Do we want to play from buffer or from file ?
         if (await fileExists(_path[_codec.index])) {
-          buffer = await makeBuffer(this._path[_codec.index]);
-          if (buffer == null) {
+          dataBuffer = await makeBuffer(this._path[_codec.index]);
+          if (dataBuffer == null) {
             throw Exception('Unable to create the buffer');
           }
         }
@@ -304,11 +315,13 @@ class _MyAppState extends State<MyApp> {
       if (_isAudioPlayer) {
         final track = Track(
           trackPath: audioFilePath,
+          dataBuffer: dataBuffer,
+          codec: _codec,
           trackTitle: "This is a record",
           trackAuthor: "from flutter_sound",
           albumArtUrl: albumArtPath,
           );
-        path = await flauto.startPlayerFromTrack(track, canSkipForward:true, canSkipBackward:false,
+        path = await flauto.startPlayerFromTrack(track, canSkipForward:true, canSkipBackward:true,
                                                              whenFinished: ()
                                                              {
                                                                print ('I hope you enjoyed listening to this song from [3" Of Blood]');
@@ -323,9 +336,9 @@ class _MyAppState extends State<MyApp> {
             setState( ( )
                       {} );
           } );
-        } else if (buffer != null)
+        } else if (dataBuffer != null)
         {
-          path = await flutterSoundModule.startPlayerFromBuffer( buffer, codec: _codec, whenFinished: ( )
+          path = await flutterSoundModule.startPlayerFromBuffer( dataBuffer, codec: _codec, whenFinished: ( )
           {
             print( 'Play finished' );
             setState( ( )
@@ -349,7 +362,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {});
   }
 
-  void stopPlayer() async {
+  Future<void> stopPlayer() async {
       try {
         String result = await flutterSoundModule.stopPlayer();
         print('stopPlayer: $result');
@@ -394,6 +407,7 @@ class _MyAppState extends State<MyApp> {
           value: _media,
           onChanged: (newMedia) {
             setState(() {
+              _codec = t_CODEC.CODEC_MP3; // Actually this is the only example we use in this example
               _media = newMedia;
             });
           },
@@ -651,7 +665,7 @@ class _MyAppState extends State<MyApp> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
-            child: Text('Use Audio player features:'),
+            child: Text('Use the "flauto" module:'),
           ),
           Switch(
             value: _isAudioPlayer,

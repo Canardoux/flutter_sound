@@ -66,16 +66,8 @@ bool _isIosDecoderSupported [] =
     true, // WAV/PCM
 };
 
-static enum t_SET_CATEGORY_DONE
-{
-        NOT_SET,
-        FOR_PLAYING, // Flutter_sound did it during startPlayer()
-        FOR_RECORDING, // Flutter_sound did it during startRecorder()
-        BY_USER // The caller did it himself : flutterSound must not change that (The user is also responsible of setActive(false) )
-} ; // Lazzy initialization in startRecorder() and startPlayer()
-
-enum t_SET_CATEGORY_DONE setCategoryDone = NOT_SET;
-enum t_SET_CATEGORY_DONE setActiveDone = NOT_SET;
+extern t_SET_CATEGORY_DONE setCategoryDone = NOT_SET;
+extern t_SET_CATEGORY_DONE setActiveDone = NOT_SET;
 
 
 // post fix with _FlutterSound to avoid conflicts with common libs including path_provider
@@ -256,7 +248,8 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
       FlutterStandardTypedData* dataBuffer = (FlutterStandardTypedData*)call.arguments[@"dataBuffer"];
       [self startPlayerFromBuffer:dataBuffer result:result];
   } else if ([@"stopPlayer" isEqualToString:call.method]) {
-    [self stopPlayer:result];
+    [self stopPlayer];
+    result(@"stop play");
   } else if ([@"pausePlayer" isEqualToString:call.method]) {
     [self pausePlayer:result];
   } else if ([@"resumePlayer" isEqualToString:call.method]) {
@@ -298,7 +291,7 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
 - (void)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options result:(FlutterResult)result {
         // Able to play in silent mode
   BOOL b = [[AVAudioSession sharedInstance]
-     setCategory: categ
+     setCategory:  categ // AVAudioSessionCategoryPlayback 
      mode: mode
      options: options
      error: nil];
@@ -314,15 +307,7 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
                 result(0);
                 return;
         }
-        if (setCategoryDone == NOT_SET) { // This is not normal : setCategoryDone must be set BY_USER before. We assume that the user wants to control his playback but forgot to call setCategory.
-           setCategoryDone = FOR_PLAYING;
-           BOOL b = [[AVAudioSession sharedInstance]
-             setCategory: AVAudioSessionCategoryPlayback
-             mode: AVAudioSessionModeDefault
-             options: 0 //AVAudioSessionCategoryOptionDuckOthers
-             error: nil];
-         }
-         setActiveDone = BY_USER;
+        setActiveDone = BY_USER;
 
   } else {
         if (setActiveDone == NOT_SET) { // Already desactivated
@@ -422,10 +407,6 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
 }
 
 - (void)stopRecorder:(FlutterResult)result {
-  if (setActiveDone != BY_USER) {
-        [[AVAudioSession sharedInstance]  setActive:NO error:nil];
-        setActiveDone = NOT_SET;
-  }
   [audioRecorder stop];
 
   [self stopDbPeakTimer];
@@ -520,30 +501,22 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
 
 
 
-
-
-- (void)stopPlayer:(FlutterResult)result {
-  if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) ) {
-      [[AVAudioSession sharedInstance] setActive: NO error: nil];
-      setActiveDone = NOT_SET;
-  }
+- (void)stopPlayer {
   [self stopTimer];
   [self stopDbPeakTimer]; // Just in case ...
   if (audioPlayer) {
     [audioPlayer stop];
     audioPlayer = nil;
-
-    result(@"stop play");
-  } else {
-    result([FlutterError
-        errorWithCode:@"Audio Player"
-        message:@"player is not set"
-        details:nil]);
+  }
+  if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) ) {
+      [[AVAudioSession sharedInstance] setActive: NO error: nil];
+      setActiveDone = NOT_SET;
   }
 }
 
 - (void)pausePlayer:(FlutterResult)result {
-  if (audioPlayer && [audioPlayer isPlaying]) {
+  if (audioPlayer) {
+   isPlaying = false;
     [audioPlayer pause];
     if (timer != nil) {
         [timer invalidate];
@@ -559,13 +532,6 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
 }
 
 - (void)resumePlayer:(FlutterResult)result {
-  if (!audioFileURL) {
-    result([FlutterError
-            errorWithCode:@"Audio Player"
-            message:@"fileURL is not defined"
-            details:nil]);
-    return;
-  }
 
   if (!audioPlayer) {
     result([FlutterError
@@ -574,7 +540,7 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
             details:nil]);
     return;
   }
-
+  isPlaying = true;
   [audioPlayer play];
   [self startTimer];
   NSString *filePath = audioFileURL.absoluteString;
