@@ -489,8 +489,6 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     } catch (Exception e) {
       Log.e(TAG, "startPlayer() exception");
       result.error(ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage());
-//      Log.e(TAG, e.getStackTrace().toString());
-//      Log.e(TAG, Thread.currentThread().getStackTrace().toString());
     }
   }
 
