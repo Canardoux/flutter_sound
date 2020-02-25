@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -420,7 +421,9 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
       if (path == null) {
         this.model.getMediaPlayer().setDataSource(AudioModel.DEFAULT_FILE_LOCATION);
       } else {
-        this.model.getMediaPlayer().setDataSource(path);
+        Uri uriFileName = Uri.fromFile(new File(path));
+        String uriStr = uriFileName.toString();
+        this.model.getMediaPlayer().setDataSource(uriStr);
       }
 
       this.model.getMediaPlayer().setOnPreparedListener(mp -> {
@@ -486,6 +489,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, PluginRegistry.Req
     } catch (Exception e) {
       Log.e(TAG, "startPlayer() exception");
       result.error(ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage());
+//      Log.e(TAG, e.getStackTrace().toString());
+//      Log.e(TAG, Thread.currentThread().getStackTrace().toString());
     }
   }
 
