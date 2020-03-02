@@ -157,6 +157,12 @@ String fileExtension(String path) {
   return r;
 }
 
+typedef void t_whenFinished();
+typedef void t_whenPaused (bool paused);
+typedef void t_onSkip ();
+typedef void t_updateProgress(int current, int max);
+
+
 FlutterSound flutterSound = FlutterSound( ); // Singleton
 
 class FlutterSound {
@@ -183,7 +189,12 @@ class FlutterSound {
   Stream<RecordStatus> get onRecorderStateChanged => _recorderController.stream;
   Stream<PlayStatus> get onPlayerStateChanged => playerController.stream;
 
-  var audioPlayerFinishedPlaying; // User callback "whenFinished:"
+   t_whenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
+   t_whenPaused whenPause;  // User callback "whenPaused:"
+   t_onSkip onSkipForward;  // User callback "whenPaused:"
+   t_onSkip onSkipBackward;  // User callback "whenPaused:"
+   t_updateProgress onUpdateProgress;
+
 
   bool get isPlaying => _isPlaying( );
 
@@ -345,9 +356,15 @@ class FlutterSound {
           Map<String, dynamic> result = jsonDecode(call.arguments);
           if (playerController!=null)
             playerController.add(new PlayStatus.fromJSON(result));
+          if (onUpdateProgress != null)
+          {
+            int cur = int.parse(result['current_position']);
+            int max =  int.parse(result['duration']);
+            onUpdateProgress( cur,max);
+          }
           break;
-        case "audioPlayerFinishedPlaying":
 
+        case "audioPlayerFinishedPlaying":
           Map<String, dynamic> result = jsonDecode(call.arguments);
           PlayStatus status = new PlayStatus.fromJSON(result);
           if (status.currentPosition != status.duration) {
@@ -361,6 +378,20 @@ class FlutterSound {
           if (audioPlayerFinishedPlaying != null)
             audioPlayerFinishedPlaying();
           break;
+
+        case 'pause':
+          {
+            if (whenPause != null) whenPause( true );
+          }
+          break;
+
+        case 'resume':
+          {
+            if (whenPause != null) whenPause( false );
+          }
+          break;
+
+
         case "updateRecorderProgress":
           Map<String, dynamic> result = json.decode(call.arguments);
           if (_recorderController != null)
@@ -371,6 +402,19 @@ class FlutterSound {
           if (_dbPeakController!= null)
             _dbPeakController.add(call.arguments);
           break;
+
+        case 'skipForward':
+          {
+            if (onSkipForward != null) onSkipForward( );
+          }
+          break;
+
+        case 'skipBackward':
+          {
+            if (onSkipBackward != null) onSkipBackward( );
+          }
+          break;
+
 
         default:
           throw new ArgumentError('Unknown method ${call.method}');

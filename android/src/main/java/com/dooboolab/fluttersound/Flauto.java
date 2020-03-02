@@ -18,15 +18,23 @@ package com.dooboolab.fluttersound;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.AudioManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.RemoteException;
 import android.os.SystemClock;
+import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaControllerCompat;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
@@ -68,19 +76,99 @@ public class Flauto extends FlutterSoundPlugin {
 
     private static MethodChannel channel;
     static Flauto flauto = new Flauto (); // Singleton
-    private MediaBrowserHelper mMediaBrowserHelper;
     private Timer mTimer = new Timer();
     final private Handler mainHandler = new Handler();
     static private Context androidContext;
+    //private static Registrar reg;
+/*
+    private MediaPlayer mMediaPlayer;
+    private MediaSessionCompat mMediaSessionCompat;
+
+    private BroadcastReceiver mNoisyReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if( mMediaPlayer != null && mMediaPlayer.isPlaying() ) {
+                mMediaPlayer.pause();
+            }
+        }
+    };
 
 
+    private MediaSessionCompat.Callback mMediaSessionCallback = new MediaSessionCompat.Callback() {
+
+        @Override
+        public void onPlay() {
+            super.onPlay();
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+        }
+
+        @Override
+        public void onPlayFromMediaId(String mediaId, Bundle extras) {
+            super.onPlayFromMediaId(mediaId, extras);
+        }
+    };
+
+
+*/
+    private static final int STATE_PAUSED = 0;
+    private static final int STATE_PLAYING = 1;
+
+    private int mCurrentState;
+
+    private MediaBrowserCompat mMediaBrowserCompat;
+    private MediaControllerCompat mMediaControllerCompat;
 
 
     public static void attachFlauto ( Context ctx, BinaryMessenger messenger ) {
         channel = new MethodChannel ( messenger, "flauto" );
         channel.setMethodCallHandler ( flauto );
         androidContext = ctx;
+
     }
+
+
+    private MediaBrowserCompat.ConnectionCallback mMediaBrowserCompatConnectionCallback = new MediaBrowserCompat.ConnectionCallback() {
+
+        @Override
+        public void onConnected() {
+            super.onConnected();
+            try {
+                mMediaControllerCompat = new MediaControllerCompat(androidActivity, mMediaBrowserCompat.getSessionToken());
+                mMediaControllerCompat.registerCallback(mMediaControllerCompatCallback);
+                MediaControllerCompat.setMediaController(androidActivity,mMediaControllerCompat);
+                mMediaControllerCompat.getTransportControls().playFromMediaId(String.valueOf(R.raw.warner_tautz_off_broadway),null);
+            } catch( RemoteException e ) {
+
+            }
+        }
+    };
+
+    private MediaControllerCompat.Callback mMediaControllerCompatCallback = new MediaControllerCompat.Callback() {
+
+        @Override
+        public void onPlaybackStateChanged(PlaybackStateCompat state) {
+            super.onPlaybackStateChanged(state);
+            if( state == null ) {
+                return;
+            }
+
+            switch( state.getState() ) {
+                case PlaybackStateCompat.STATE_PLAYING: {
+                    mCurrentState = STATE_PLAYING;
+                    break;
+                }
+                case PlaybackStateCompat.STATE_PAUSED: {
+                    mCurrentState = STATE_PAUSED;
+                    break;
+                }
+            }
+        }
+    };
+
 
     MethodChannel getChannel () {
         return channel;
@@ -135,24 +223,37 @@ public class Flauto extends FlutterSoundPlugin {
 
     public void initializeMediaPlayer ( boolean includeAudioPlayerFeatures, final Result result ) {
         // Initialize the media browser if it hasn't already been initialized
-        if ( mMediaBrowserHelper == null ) {
+             /* [LARPOUX]
+       if ( mMediaBrowserHelper == null ) {
             // If the initialization will be successful, result.success will
             // be called, otherwise result.error will be called.
             mMediaBrowserHelper = new MediaBrowserHelper (
-                    this,
+                    reg.activity(),
                     includeAudioPlayerFeatures,
                     new MediaPlayerConnectionListener ( result, true ),
                     new MediaPlayerConnectionListener ( result, false )
             );
+
             // Pass the playback state updater to the media browser
             mMediaBrowserHelper.setPlaybackStateUpdater ( new PlaybackStateUpdater () );
-            //result.success ( "The player had already been initialized." );
         } else {
             result.success ( "The player had already been initialized." );
         }
+
+              */
+
+        mMediaBrowserCompat = new MediaBrowserCompat(ctx, new ComponentName (ctx, BackgroundAudioService.class),
+                mMediaBrowserCompatConnectionCallback, androidActivity.getIntent().getExtras());
+
+
+        mMediaBrowserCompat.connect();
+
+
+        result.success ( "The player had already been initialized." );
     }
 
     public void releaseMediaPlayer ( final Result result ) {
+        /* [LARPOUX]
         // Throw an error if the media player is not initialized
         if ( mMediaBrowserHelper == null ) {
             result.error ( TAG, "The player cannot be released because it is not initialized.", null );
@@ -162,15 +263,26 @@ public class Flauto extends FlutterSoundPlugin {
         // Release the media browser
         mMediaBrowserHelper.releaseMediaBrowser ();
         mMediaBrowserHelper = null;
+
+         */
+
+
+        if( mMediaControllerCompat.getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING ) {
+            mMediaControllerCompat.getTransportControls().pause();
+        }
+
+        mMediaBrowserCompat.disconnect();
+        mMediaBrowserCompat = null;
         result.success ( "The player has been successfully released" );
     }
 
     private boolean wasMediaPlayerInitialized ( final Result result ) {
-        if ( mMediaBrowserHelper == null ) {
+        if ( mMediaBrowserCompat == null ) {
             Log.e ( TAG, "initializePlayer() must be called before this method." );
             result.error ( TAG, "initializePlayer() must be called before this method.", null );
             return false;
         }
+
         return true;
     }
 
@@ -214,34 +326,35 @@ public class Flauto extends FlutterSoundPlugin {
 
         // Add or remove the handlers for when the user tries to skip the current track
         if ( canSkipForward ) {
-            mMediaBrowserHelper.setSkipTrackForwardHandler ( new SkipTrackHandler ( true ) );
+            BackgroundAudioService.skipTrackForwardHandler =  new SkipTrackHandler ( true );
         } else {
-            mMediaBrowserHelper.removeSkipTrackForwardHandler ();
+            BackgroundAudioService.skipTrackForwardHandler = null;
         }
         if ( canSkipBackward ) {
-            mMediaBrowserHelper.setSkipTrackBackwardHandler ( new SkipTrackHandler ( false ) );
+            BackgroundAudioService.skipTrackBackwardHandler =  new SkipTrackHandler ( false );
         } else {
-            mMediaBrowserHelper.removeSkipTrackBackwardHandler ();
+            BackgroundAudioService.skipTrackBackwardHandler = null;
         }
 
         // Pass to the media browser the metadata to use in the notification
-        mMediaBrowserHelper.setNotificationMetadata ( track );
+        // [LARPOUX] // mMediaBrowserHelper.setNotificationMetadata ( track );
 
         // Add the listeners for the onPrepared and onCompletion events
-        mMediaBrowserHelper.setMediaPlayerOnPreparedListener ( new MediaPlayerOnPreparedListener ( result, path ) );
-        mMediaBrowserHelper.setMediaPlayerOnCompletionListener ( new MediaPlayerOnCompletionListener () );
+        // [LARPOUX] // mMediaBrowserHelper.setMediaPlayerOnPreparedListener ( new MediaPlayerOnPreparedListener ( result, path ) );
+        // [LARPOUX] // mMediaBrowserHelper.setMediaPlayerOnCompletionListener ( new MediaPlayerOnCompletionListener () );
 
         // Check whether a path to an audio file was given
         if ( path == null ) {
             // No paths were given, then use the default file
-            mMediaBrowserHelper.mediaControllerCompat.getTransportControls ()
-                    .playFromMediaId ( AudioModel.DEFAULT_FILE_LOCATION, null );
+            // [LARPOUX] // mMediaBrowserHelper.mediaControllerCompat.getTransportControls ()
+            // [LARPOUX] // .playFromMediaId ( AudioModel.DEFAULT_FILE_LOCATION, null );
         } else {
             // A path was given, then send it to the media player
-            mMediaBrowserHelper.mediaControllerCompat.getTransportControls ()
-                    .playFromMediaId ( path, null );
+            // [LARPOUX] // mMediaBrowserHelper.mediaControllerCompat.getTransportControls ()
+            // [LARPOUX] // .playFromMediaId ( path, null );
         }
-
+        //mMediaControllerCompat.getTransportControls().playFromMediaId(path, null );
+        mMediaControllerCompat.getTransportControls().play();
         // The media player is started in the on prepared callback
     }
 
@@ -257,7 +370,8 @@ public class Flauto extends FlutterSoundPlugin {
 
         try {
             // Stop the playback
-            mMediaBrowserHelper.stop ();
+            // [LARPOUX] // mMediaBrowserHelper.stop ();
+            mMediaControllerCompat.getTransportControls().stop ();
             result.success ( "stopped player." );
         } catch ( Exception e ) {
             Log.e ( TAG, "stopPlay exception: " + e.getMessage () );
@@ -272,7 +386,8 @@ public class Flauto extends FlutterSoundPlugin {
 
         try {
             // Pause the media player
-            mMediaBrowserHelper.pausePlayback ();
+            // [LARPOUX] // mMediaBrowserHelper.pausePlayback ();
+            mMediaControllerCompat.getTransportControls().pause ();
             result.success ( "paused player." );
         } catch ( Exception e ) {
             Log.e ( TAG, "pausePlay exception: " + e.getMessage () );
@@ -286,15 +401,18 @@ public class Flauto extends FlutterSoundPlugin {
         if ( !wasMediaPlayerInitialized ( result ) ) return;
 
         // Throw an error if we can't resume the media player because it is already playing
+        /* [LARPOUX]
         PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState ();
         if ( playbackState != null && playbackState.getState () == PlaybackStateCompat.STATE_PLAYING ) {
             result.error ( ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING );
             return;
         }
 
+         */
+
         try {
             // Resume the player
-            mMediaBrowserHelper.playPlayback ();
+            // [LARPOUX] // mMediaBrowserHelper.playPlayback ();
 
             // Seek the player to the last position and resume it
             result.success ( "resumed player." );
@@ -318,7 +436,7 @@ public class Flauto extends FlutterSoundPlugin {
         // Log.d(TAG, "seekTo: " + millis);
 
         // Seek the player to the given position
-        mMediaBrowserHelper.seekTo ( millis );
+        // [LARPOUX] // mMediaBrowserHelper.seekTo ( millis );
 
         // long newCurrentPos = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState().getPosition();
         // Log.d(TAG, "new current position: " + newCurrentPos);
@@ -332,12 +450,12 @@ public class Flauto extends FlutterSoundPlugin {
         if ( !wasMediaPlayerInitialized ( result ) ) return;
 
         // Get the maximum value for the volume
-        int maxVolume = mMediaBrowserHelper.mediaControllerCompat.getPlaybackInfo ().getMaxVolume ();
+        // [LARPOUX] // int maxVolume = mMediaBrowserHelper.mediaControllerCompat.getPlaybackInfo ().getMaxVolume ();
         // Get the value of the new volume level
-        int newVolume = ( int ) Math.floor ( volume * maxVolume );
+        // [LARPOUX] // int newVolume = ( int ) Math.floor ( volume * maxVolume );
 
         // Adjust the media player volume to the given level
-        mMediaBrowserHelper.mediaControllerCompat.setVolumeTo ( newVolume, 0 );
+        // [LARPOUX] // mMediaBrowserHelper.mediaControllerCompat.setVolumeTo ( newVolume, 0 );
         result.success ( "Set volume" );
     }
 
@@ -345,6 +463,7 @@ public class Flauto extends FlutterSoundPlugin {
     /**
      * The callable instance to call when the media player is prepared.
      */
+    /* [LARPOUX]
     private class MediaPlayerOnPreparedListener implements Callable<Void> {
         private Result mResult;
         private String mPath;
@@ -400,10 +519,11 @@ public class Flauto extends FlutterSoundPlugin {
             return null;
         }
     }
-
+     */
     /**
      * The callable instance to call when the media player calls the onCompletion event.
      */
+    /* [LARPOUX]
     private class MediaPlayerOnCompletionListener implements Callable<Void> {
         MediaPlayerOnCompletionListener () {
         }
@@ -431,9 +551,12 @@ public class Flauto extends FlutterSoundPlugin {
         }
     }
 
+     */
+
     /**
      * The callable instance to call when the media player has been connected.
      */
+    /* [LARPOUX]
     private class MediaPlayerConnectionListener implements Callable<Void> {
         private Result mResult;
         // Whether this callback is called when the connection is successful
@@ -455,12 +578,14 @@ public class Flauto extends FlutterSoundPlugin {
         }
     }
 
+     */
+
 
 
     /**
      * A listener that is triggered when the skip buttons in the notification are clicked.
      */
-    private class SkipTrackHandler implements Callable<Void> {
+    public static class SkipTrackHandler implements Callable<Void> {
         private boolean mIsSkippingForward;
 
         SkipTrackHandler ( boolean isSkippingForward ) {
@@ -479,9 +604,11 @@ public class Flauto extends FlutterSoundPlugin {
         }
     }
 
+
     /**
      * A function that triggers a function in the Dart code to update the playback state.
      */
+    /* [LARPOUX]
     private class PlaybackStateUpdater implements Function<Integer, Void> {
         @Override
         public Void apply ( Integer newState ) {
@@ -489,4 +616,5 @@ public class Flauto extends FlutterSoundPlugin {
             return null;
         }
     }
+     */
 }

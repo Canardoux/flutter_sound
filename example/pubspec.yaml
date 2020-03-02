@@ -15,8 +15,8 @@ dependencies:
   flutter_sound:
     path: ../
   permission_handler: '^4.2.0+hotfix.2'
-  
-# Coment out the following line if flutter_ffmpeg is not needed
+
+# Comment out the following line if flutter_ffmpeg is not needed
   flutter_ffmpeg: ^0.2.10
 
 
@@ -65,7 +65,7 @@ flutter:
   - res/icons/ic_volume_up.png
   - res/icons/2.0x/ic_volume_up.png
   - res/icons/3.0x/ic_volume_up.png
-  
+
   - assets/samples/
 
 

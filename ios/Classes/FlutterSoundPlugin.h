@@ -39,6 +39,8 @@ extern t_SET_CATEGORY_DONE setActiveDone;
 - (void)pausePlayer:(FlutterResult)result;
 - (void)resumePlayer:(FlutterResult)result;
 - (void)stopTimer;
+- (void)pause;
+- (void)resume;
 
 
 @end

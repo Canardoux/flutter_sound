@@ -59,7 +59,7 @@
     
     NSString *albumArtString = [jsonData objectForKey:@"albumArt"];
     albumArt = albumArtString;
-    
+        
     FlutterStandardTypedData *dataBufferJson = [jsonData objectForKey:@"dataBuffer"];
     dataBuffer = dataBufferJson;
     

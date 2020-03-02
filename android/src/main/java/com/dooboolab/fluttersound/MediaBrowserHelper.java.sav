@@ -1,7 +1,6 @@
 package com.dooboolab.fluttersound;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.ComponentName;
 import android.os.RemoteException;
 import android.support.v4.media.MediaBrowserCompat;
@@ -11,14 +10,13 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import androidx.arch.core.util.Function;
 
 import java.util.concurrent.Callable;
-import android.util.Log;
 
 
 public class MediaBrowserHelper {
     MediaControllerCompat mediaControllerCompat;
 
     private MediaBrowserCompat mMediaBrowserCompat;
-    private FlutterSoundPlugin flutterSoundModule;
+    private Activity mActivity;
     // The function to call when the media browser successfully connects
     // to the service.
     private Callable<Void> mServiceConnectionSuccessCallback;
@@ -34,8 +32,8 @@ public class MediaBrowserHelper {
             // MediaControllerCompat object and associate it with MediaSessionCompat. Once completed,
             // start the audio playback.
             try {
-                mediaControllerCompat = new MediaControllerCompat(flutterSoundModule.androidActivity, mMediaBrowserCompat.getSessionToken());
-                MediaControllerCompat.setMediaController(flutterSoundModule.androidActivity, mediaControllerCompat);
+                mediaControllerCompat = new MediaControllerCompat(mActivity, mMediaBrowserCompat.getSessionToken());
+                MediaControllerCompat.setMediaController(mActivity, mediaControllerCompat);
 
                 // Start the audio playback
                 // MediaControllerCompat.getMediaController(mActivity).getTransportControls().playFromMediaId("http://path-to-audio-file.com", null);
@@ -77,16 +75,15 @@ public class MediaBrowserHelper {
      * Initialize the media browser helper.
      *
      *
-     * @param module The flutterSound module in which to initialize the media browser helper.
+     * @param activity The activity in which to initialize the media browser helper.
      * @param includeAudioPlayerFeatures Whether the media player should include the audio player
      *                                  features.
      * @param serviceSuccConnectionCallback The callback to call when the connection is successful.
      * @param serviceUnsuccConnectionCallback The callback to call when the connection
      *                                       is unsuccessful.
      */
-    MediaBrowserHelper(FlutterSoundPlugin module, boolean includeAudioPlayerFeatures, Callable<Void> serviceSuccConnectionCallback, Callable<Void> serviceUnsuccConnectionCallback) {
-        //mActivity = activity;
-        flutterSoundModule = module;
+    MediaBrowserHelper(Activity activity, boolean includeAudioPlayerFeatures, Callable<Void> serviceSuccConnectionCallback, Callable<Void> serviceUnsuccConnectionCallback) {
+        mActivity = activity;
         BackgroundAudioService.includeAudioPlayerFeatures = includeAudioPlayerFeatures;
         mServiceConnectionSuccessCallback = serviceSuccConnectionCallback;
         mServiceConnectionUnsuccessfulCallback = serviceUnsuccConnectionCallback;
@@ -99,15 +96,14 @@ public class MediaBrowserHelper {
      * Initialize the media browser in this class
      */
     private void initMediaBrowser() {
-
         // Create and connect a MediaBrowserCompat
         mMediaBrowserCompat = new MediaBrowserCompat(
-                flutterSoundModule.ctx,
-                new ComponentName(flutterSoundModule.ctx, BackgroundAudioService.class),
-                //new ComponentName("com.dooboolab.fluttersound", "BackgroundAudioService"),
+                mActivity,
+                new ComponentName(mActivity, BackgroundAudioService.class),
                 mMediaBrowserCompatConnectionCallback,
-                flutterSoundModule.androidActivity.getIntent().getExtras()
+                mActivity.getIntent().getExtras()
         );
+
         mMediaBrowserCompat.connect();
     }
 
@@ -117,11 +113,6 @@ public class MediaBrowserHelper {
      * Call this in onDestroy().
      */
     void releaseMediaBrowser() {
-        // Pause the media player if it is playing
-        if (mediaControllerCompat.getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING) {
-            mediaControllerCompat.getTransportControls().pause();
-        }
-
         mMediaBrowserCompat.disconnect();
     }
 
@@ -130,7 +121,6 @@ public class MediaBrowserHelper {
     }
 
     void pausePlayback() {
-            Log.d ("Media Browser Helper" , "pausePlayback()");
             mediaControllerCompat.getTransportControls().pause();
     }
 

@@ -115,7 +115,7 @@ class _MyAppState extends State<MyApp> {
 */
 
       await flauto.initializeMediaPlayer(
-        _isAudioPlayer,
+        /*_isAudioPlayer,
         skipForwardHandler: () async {
           print("Skip forward successfully called!");
           await stopPlayer();
@@ -126,6 +126,8 @@ class _MyAppState extends State<MyApp> {
           stopPlayer();
           startPlayer();
         },
+
+         */
       );
 
       print('media player initialization successful');
@@ -284,8 +286,8 @@ class _MyAppState extends State<MyApp> {
 
       final exampleAudioFilePath =
           "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
-      final albumArtPath =
-          "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_500kB.png";
+      //final albumArtPath =
+          //"https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_500kB.png";
 
       String path;
       Uint8List dataBuffer;
@@ -319,9 +321,9 @@ class _MyAppState extends State<MyApp> {
           codec: _codec,
           trackTitle: "This is a record",
           trackAuthor: "from flutter_sound",
-          albumArtUrl: albumArtPath,
+          albumArtUrl: null,
           );
-        path = await flauto.startPlayerFromTrack(track, canSkipForward:true, canSkipBackward:true,
+        path = await flauto.startPlayerFromTrack(track, /*canSkipForward:true, canSkipBackward:true,*/
                                                              whenFinished: ()
                                                              {
                                                                print ('I hope you enjoyed listening to this song from [3" Of Blood]');
@@ -407,7 +409,8 @@ class _MyAppState extends State<MyApp> {
           value: _media,
           onChanged: (newMedia) {
             setState(() {
-              _codec = t_CODEC.CODEC_MP3; // Actually this is the only example we use in this example
+              if (newMedia == t_MEDIA.REMOTE_EXAMPLE_FILE)
+                _codec = t_CODEC.CODEC_MP3; // Actually this is the only example we use in this example
               _media = newMedia;
             });
           },

@@ -99,6 +99,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
         String finalPath;
 
         static Context ctx;
+        static Registrar reg;
         static Activity androidActivity;
 
 
@@ -209,12 +210,13 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
          * Plugin registration.
          */
         public static void registerWith ( Registrar registrar ) {
+                reg = registrar;
                 flutterSoundPlugin.ctx = registrar.context ();
                 flutterSoundPlugin.audioManager = ( AudioManager ) flutterSoundPlugin.ctx.getSystemService ( Context.AUDIO_SERVICE );
                 channel = new MethodChannel ( registrar.messenger (), "flutter_sound" );
                 channel.setMethodCallHandler ( flutterSoundPlugin );
                 flutterSoundPlugin.androidActivity = registrar.activity ();
-                Flauto.attachFlauto(flutterSoundPlugin.ctx, registrar.messenger ());
+                Flauto.attachFlauto(ctx, registrar.messenger ());
         }
 
 
@@ -689,7 +691,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
 
     @Override
     public void setSubscriptionDuration(double sec, Result result) {
-        this.model.subsDurationMillis = (int) (sec * 1000);
+        this.model.subsDurationMillis = (int) (sec * 10000);// [LARPOUX]
         result.success("setSubscriptionDuration: " + this.model.subsDurationMillis);
     }
 

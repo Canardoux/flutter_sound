@@ -125,6 +125,7 @@ FlutterMethodChannel* _channel;
   [[ self getChannel] invokeMethod:@"updateRecorderProgress" arguments:status];
 }
 
+
 - (void)updateProgress:(NSTimer*) atimer
 {
   assert(timer == atimer);
@@ -141,6 +142,8 @@ FlutterMethodChannel* _channel;
   
   [[ self getChannel] invokeMethod:@"updateProgress" arguments:status];
 }
+
+
 
 - (void)updateDbPeakProgress:(NSTimer*) atimer
 {
@@ -514,14 +517,27 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
   }
 }
 
+- (void)pause {
+        assert(isPlaying);
+         isPlaying = false;
+          [audioPlayer pause];
+          if (timer != nil) {
+              [timer invalidate];
+              timer = nil;
+              }
+}
+
+- (void)resume {
+        assert(!isPlaying);
+        isPlaying = true;
+        [audioPlayer play];
+        [self startTimer];
+
+}
+
 - (void)pausePlayer:(FlutterResult)result {
   if (audioPlayer) {
-   isPlaying = false;
-    [audioPlayer pause];
-    if (timer != nil) {
-        [timer invalidate];
-        timer = nil;
-    }
+  [self pause];
     result(@"pause play");
   } else {
     result([FlutterError
@@ -540,9 +556,7 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
             details:nil]);
     return;
   }
-  isPlaying = true;
-  [audioPlayer play];
-  [self startTimer];
+  [self resume];
   NSString *filePath = audioFileURL.absoluteString;
   result(filePath);
 }

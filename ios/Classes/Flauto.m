@@ -40,7 +40,7 @@ int PAUSED_STATE = 1;
 int STOPPED_STATE = 2;
 
 FlutterMethodChannel* _flautoChannel;
-BOOL includeAPFeatures = false;
+//BOOL includeAPFeatures = false;
 Flauto* flautoModule; // Singleton
 
 //+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar fluttterSoundModule: (FlutterSoundPlugin*)fluttterModule {
@@ -75,10 +75,12 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
          [super stopPlayer];
          result(@"stop play");
   } else if ([@"initializeMediaPlayer" isEqualToString:call.method]) {
-         BOOL includeAudioPlayerFeatures = [call.arguments[@"includeAudioPlayerFeatures"] boolValue];
-         [self initializeMediaPlayer:includeAudioPlayerFeatures result:result];
+         //BOOL includeAudioPlayerFeatures = [call.arguments[@"includeAudioPlayerFeatures"] boolValue];
+         [self initializeMediaPlayer: result:result];
   } else if ([@"releaseMediaPlayer" isEqualToString:call.method]) {
          [self releaseMediaPlayer:result];
+  } else if ([@"pausePlayer" isEqualToString:call.method]) {
+         [self pausePlayer:result];
   } else {
          [super handleMethodCall: call  result: result];
   }
@@ -204,10 +206,8 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
     [ [self getChannel] invokeMethod:@"updatePlaybackState" arguments:playingState];
     
     // Display the notification with the media controls
-    if (includeAPFeatures) {
-      //[self setupRemoteCommandCenter:canSkipForward   canSkipBackward:canSkipBackward result:result];
+      [self setupRemoteCommandCenter:true canSkipForward:canSkipForward   canSkipBackward:canSkipBackward result:result];
       [self setupNowPlaying:nil];
-    }
 }
 
 // Give the system information about what the audio player
@@ -220,11 +220,17 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
     NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
     // The caller specify an asset to be used.
     // Probably good in the future to allow the caller to specify the image itself, and not a resource.
-    if(track.albumArt != nil)
+    if (albumArt == nil)
     {
-        UIImage* artworkImage = [UIImage imageNamed: track.albumArt];
-        MPMediaItemArtwork *albumArt2 = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
-        [songInfo setObject:albumArt2 forKey: MPMediaItemPropertyArtwork];
+            if ([track.albumArt class] != [NSNull class])
+            {
+                UIImage* artworkImage = [UIImage imageNamed: track.albumArt];
+                MPMediaItemArtwork *albumArt2 = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
+                [songInfo setObject:albumArt2 forKey: MPMediaItemPropertyArtwork];
+            }
+    } else
+    {
+            [songInfo setObject:albumArt forKey: MPMediaItemPropertyArtwork];
     }
     
     NSNumber *progress = [NSNumber numberWithDouble: audioPlayer.currentTime];
@@ -239,83 +245,125 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
     [playingInfoCenter setNowPlayingInfo:songInfo];
 }
 
-// Give the system information about what to do when the notification
-// control buttons are pressed.
-- (void)setupRemoteCommandCenter:(BOOL)canSkipForward canSkipBackward: (BOOL)canSkipBackward result: (FlutterResult)result {
-    MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
-    [commandCenter.togglePlayPauseCommand setEnabled:YES];
-    [commandCenter.nextTrackCommand setEnabled:canSkipForward];
-    [commandCenter.previousTrackCommand setEnabled:canSkipBackward];
-    
-     
-    
-    // [commandCenter.playCommand setEnabled:YES];
-    // [commandCenter.pauseCommand setEnabled:YES];
-    //   [commandCenter.playCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
-    //       // [[MediaController sharedInstance] playOrPauseMusic];    // Begin playing the current track.
-    //       [self resumePlayer:result];
-    //       return MPRemoteCommandHandlerStatusSuccess;
-    //   }];
-    //
-    //   [commandCenter.pauseCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
-    //       // [[MediaController sharedInstance] playOrPauseMusic];    // Begin playing the current track.
-    //       [self pausePlayer:result];
-    //       return MPRemoteCommandHandlerStatusSuccess;
-    //   }];
-    if (pauseTarget != nil) // Not normal, need to be clean
-    {
-        [commandCenter.togglePlayPauseCommand removeTarget: pauseTarget action: nil];
-        pauseTarget = nil;
-    }
-    if (forwardTarget != nil) // Not normal, need to be clean
-    {
-        [commandCenter.nextTrackCommand removeTarget: forwardTarget action: nil];
-        forwardTarget = nil;
-    }
-    
-    if (backwardTarget != nil) // Not normal, need to be clean
-    {
-        [commandCenter.previousTrackCommand removeTarget: backwardTarget action: nil];
-        backwardTarget = nil;
-    }
-    
-    pauseTarget = [commandCenter.togglePlayPauseCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
-         printf("Pause handler called by ios\n");
-         if(isPlaying) {
-             [self pausePlayer: result];
-         } else {
-             [self resumePlayer: result];
-         }
-         
-         // [[MediaController sharedInstance] playOrPauseMusic];    // Begin playing the current track.
-         return MPRemoteCommandHandlerStatusSuccess;
-     }];
 
+- (void)cleanTarget:(BOOL)canPause canSkipForward:(BOOL)canSkipForward  canSkipBackward:(BOOL)canSkipBackward
+{
+        // [commandCenter.playCommand setEnabled:YES];
+          // [commandCenter.pauseCommand setEnabled:YES];
+          //   [commandCenter.playCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+          //       // [[MediaController sharedInstance] playOrPauseMusic];    // Begin playing the current track.
+          //       [self resumePlayer:result];
+          //       return MPRemoteCommandHandlerStatusSuccess;
+          //   }];
+          //
+          //   [commandCenter.pauseCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+          //       // [[MediaController sharedInstance] playOrPauseMusic];    // Begin playing the current track.
+          //       [self pausePlayer:result];
+          //       return MPRemoteCommandHandlerStatusSuccess;
+          //   }];
+          MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+          [commandCenter.togglePlayPauseCommand setEnabled:canPause];
+          [commandCenter.nextTrackCommand setEnabled:canSkipForward];
+          [commandCenter.previousTrackCommand setEnabled:canSkipBackward];
 
-    forwardTarget = [commandCenter.nextTrackCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
-        [[self getChannel] invokeMethod:@"skipForward" arguments:nil];
-        // [[MediaController sharedInstance] fastForward];    // forward to next track.
-        printf("Next handler called by ios\n");
-        return MPRemoteCommandHandlerStatusSuccess;
-    }];
-    
-    backwardTarget = [commandCenter.previousTrackCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
-        [[self getChannel] invokeMethod:@"skipBackward" arguments:nil];
-        // [[MediaController sharedInstance] rewind];    // back to previous track.
-        printf("Previous handler called by ios\n");
-        return MPRemoteCommandHandlerStatusSuccess;
-    }];
+          if (pauseTarget != nil)
+          {
+              [commandCenter.togglePlayPauseCommand removeTarget: pauseTarget action: nil];
+              pauseTarget = nil;
+          }
+          if (forwardTarget != nil)
+          {
+              [commandCenter.nextTrackCommand removeTarget: forwardTarget action: nil];
+              forwardTarget = nil;
+          }
+          
+          if (backwardTarget != nil)
+          {
+              [commandCenter.previousTrackCommand removeTarget: backwardTarget action: nil];
+              backwardTarget = nil;
+          }
+          
+          if (canPause)
+          {
+                  pauseTarget = [commandCenter.togglePlayPauseCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+                       printf("Pause handler called by ios\n");
+                       FlutterResult result;
+                       if(isPlaying) {
+                            //!!!![self pause];
+                            [[self getChannel] invokeMethod:@"pause" arguments:nil];
+                        } else {
+                            //!!!![self resume];
+                            [[self getChannel] invokeMethod:@"resume" arguments:nil];
+                        }
+                  
+                           return MPRemoteCommandHandlerStatusSuccess;
+                          }];
+
+          }
+                     
+             if (canSkipForward)
+                {
+                        forwardTarget = [commandCenter.nextTrackCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+                            [[self getChannel] invokeMethod:@"skipForward" arguments:nil];
+                            // [[MediaController sharedInstance] fastForward];    // forward to next track.
+                            printf("Next handler called by ios\n");
+                            return MPRemoteCommandHandlerStatusSuccess;
+                        }];
+                }
+                
+                if (canSkipBackward)
+                {
+                        backwardTarget = [commandCenter.previousTrackCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+                            [[self getChannel] invokeMethod:@"skipBackward" arguments:nil];
+                            // [[MediaController sharedInstance] rewind];    // back to previous track.
+                            printf("Previous handler called by ios\n");
+                            return MPRemoteCommandHandlerStatusSuccess;
+                        }];
+                }
 }
 
 
--(void)initializeMediaPlayer:(BOOL)includeAudioPlayerFeatures result: (FlutterResult)result {
+- (void)stopPlayer {
+  [self stopTimer];
+  if (audioPlayer) {
+    [audioPlayer stop];
+    //[LARPOUX]audioPlayer = nil;
+  }
+  [self cleanTarget:false canSkipForward:false canSkipBackward:false];
+  if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) ) {
+      [[AVAudioSession sharedInstance] setActive: NO error: nil];
+      setActiveDone = NOT_SET;
+  }
+}
+
+
+
+// Give the system information about what to do when the notification
+// control buttons are pressed.
+- (void)setupRemoteCommandCenter:(BOOL)canPause canSkipForward:(BOOL)canSkipForward canSkipBackward:(BOOL)canSkipBackward result: (FlutterResult)result {
+    
+     
+    [self cleanTarget:canPause canSkipForward:canSkipForward canSkipBackward:canSkipBackward];
+    /*
+         if(isPlaying) {
+             [self pausePlayer: result];
+             [[self getChannel] invokeMethod:@"pause" arguments:nil];
+         } else {
+             [self resumePlayer: result];
+             [[self getChannel] invokeMethod:@"resume" arguments:nil];
+         }
+         
+         // [[MediaController sharedInstance] playOrPauseMusic];    // Begin playing the current track.
+         */
+ 
+
+   }
+
+
+-(void)initializeMediaPlayer: result: (FlutterResult)result {
     // Set whether we have to include the audio player features
-    includeAPFeatures = includeAudioPlayerFeatures;
-    if (includeAPFeatures) {
-      [self setupRemoteCommandCenter:true   canSkipBackward:true result:result];
-      //[self setupNowPlaying:nil];
-        }
-    // No further initialization is needed for the iOS audio player, then exit
+    //includeAPFeatures = includeAudioPlayerFeatures;
+     // No further initialization is needed for the iOS audio player, then exit
     // the method.
     result(@"The player had already been initialized.");
 }
@@ -352,32 +400,5 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir) {
     NSArray* paths = NSSearchPathForDirectoriesInDomains(dir, NSUserDomainMask, YES);
     return [paths.firstObject stringByAppendingString:@"/"];
 }
-
--(void)updateProgress:(NSTimer*) timer
-{
-    // Get the duration of the current audio file
-    NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
-    // Get the current position in the current audio file
-    NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
-    
-    // If the duration is null but the timer was started, stop it
-    if ([duration intValue] == 0 && timer != nil) {
-        [self stopTimer];
-        return;
-    }
-     
-     // Compose a string containing the status of the playback with duration and current position
-     NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
-     /*
-      NSDictionary *status = @{
-      @"duration" : [duration stringValue],
-      @"current_position" : [currentTime stringValue],
-      };
-      */
-     
-     // Pass the string containing the status of the playback to the native code
-     [[self getChannel] invokeMethod:@"updateProgress" arguments:status];
- }
-
 
 @end

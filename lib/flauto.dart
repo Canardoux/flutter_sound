@@ -157,14 +157,14 @@ class Flauto extends FlutterSound
         StreamController<PlaybackState> _playbackStateChangedController;
 
         //StreamController<PlayStatus> _playerController;
-        Function _skipForward;
-        Function _skipBackward;
+        //Function _skipForward;
+        //Function _skipBackward;
 
         // Whether the handler for when the user tries to skip forward was set
-        bool _skipTrackForwardHandlerSet = false;
+        //bool _skipTrackForwardHandlerSet = false;
 
         // Whether the handler for when the user tries to skip backward was set
-        bool _skipTrackBackwardHandlerSet = false;
+        //bool _skipTrackBackwardHandlerSet = false;
 
 
         @override
@@ -188,26 +188,20 @@ class Flauto extends FlutterSound
         ///
         /// Media player and recorder controls should be displayed only after this
         /// method has finished executing.
-        Future<void> initializeMediaPlayer(
-                    bool includeAudioPlayerFeatures, {
-                            Function skipForwardHandler,
-                            Function skipBackwardForward,
-                    } )
+        Future<void> initializeMediaPlayer( )
         async {
                 try
                 {
                         await getChannel( ).invokeMethod( 'initializeMediaPlayer', <String, dynamic>{
-                                'includeAudioPlayerFeatures': includeAudioPlayerFeatures,
+                                'includeAudioPlayerFeatures': true,
                         } );
-                        _setSkipTrackHandlers(
-                                skipForward: skipForwardHandler,
-                                skipBackward: skipBackwardForward,
-                                );
+                        onSkipBackward = null;
+                        onSkipForward = null;
 
-                        if (playerController == null)
-                        {
-                                playerController = new StreamController.broadcast( );
-                        }
+                        //if (playerController == null)
+                        //{
+                                //playerController = new StreamController.broadcast( );
+                        //}
                         if (_playbackStateChangedController == null)
                         {
                                 _playbackStateChangedController = StreamController.broadcast( );
@@ -235,6 +229,8 @@ class Flauto extends FlutterSound
                         _removePlaybackStateCallback( );
                         _removePlayerCallback( );
                         playbackState = null;
+                        onSkipBackward = null;
+                        onSkipForward = null;
                 }
                 catch (err)
                 {
@@ -250,7 +246,15 @@ class Flauto extends FlutterSound
         /// This method should only be used if the   player has been initialize
         /// with the audio player specific features.
         Future<String> startPlayerFromTrack(
-                    Track track, {t_CODEC codec, whenFinished( ), bool canSkipForward = false, bool canSkipBackward = false} )
+                    Track track,
+                    {
+                            t_CODEC codec,
+                            t_whenFinished whenFinished,
+                            t_whenPaused whenPaused,
+                            t_onSkip onSkipForward = null,
+                            t_onSkip onSkipBackward = null,
+                            t_updateProgress onUpdateProgress = null,
+                    } )
         async {
                 // Check whether we can start the player
                 if (playbackState != null &&
@@ -276,29 +280,19 @@ class Flauto extends FlutterSound
 
 
                 audioPlayerFinishedPlaying = whenFinished;
+                this.whenPause = whenPaused;
+                this.onSkipForward = onSkipForward;
+                this.onSkipBackward = onSkipBackward;
+                this.onUpdateProgress = onUpdateProgress;
                 setPlayerCallback( );
                 return getChannel( ).invokeMethod( 'startPlayerFromTrack', <String, dynamic>
                 {
                         'track': trackMap,
-                        //'whenFinished': whenFinished,
-                        'canSkipForward': _skipTrackForwardHandlerSet && canSkipForward,
-                        'canSkipBackward': _skipTrackBackwardHandlerSet && canSkipBackward,
+                        'canSkipForward': onSkipForward != null,
+                        'canSkipBackward': onSkipBackward != null,
                 } );
         }
 
-
-        /// Sets the function to call when the user tries to skip forward or backward
-        /// from the notification.
-        void _setSkipTrackHandlers( {
-                                            Function skipForward,
-                                            Function skipBackward,
-                                    } )
-        {
-                _skipBackward = skipBackward;
-                _skipForward = skipForward;
-                _skipTrackForwardHandlerSet = skipForward != null;
-                _skipTrackBackwardHandlerSet = skipBackward != null;
-        }
 
         Future<dynamic> channelMethodCallHandler( MethodCall call )
         {
@@ -326,6 +320,7 @@ class Flauto extends FlutterSound
                                         }
                                 }
                                 break;
+
                         case 'updatePlaybackState':
                                 {
                                         switch (call.arguments)
@@ -350,17 +345,6 @@ class Flauto extends FlutterSound
                                         {
                                                 _playbackStateChangedController.add( playbackState );
                                         }
-                                }
-                                break;
-
-                        case 'skipForward':
-                                {
-                                        if (_skipForward != null) _skipForward( );
-                                }
-                                break;
-                        case 'skipBackward':
-                                {
-                                        if (_skipBackward != null) _skipBackward( );
                                 }
                                 break;
 
