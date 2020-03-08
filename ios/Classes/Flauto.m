@@ -35,9 +35,9 @@
     id backwardTarget;
     id pauseTarget;
  }
-int PLAYING_STATE = 0;
-int PAUSED_STATE = 1;
-int STOPPED_STATE = 2;
+int STOPPED_STATE = 0;
+int PLAYING_STATE = 1;
+int PAUSED_STATE = 2;
 
 FlutterMethodChannel* _flautoChannel;
 //BOOL includeAPFeatures = false;
@@ -64,6 +64,7 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
 
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
+   printf("--> %s\n", call.method.cString);
    if ([@"startPlayerFromTrack" isEqualToString:call.method]) {
             NSDictionary* trackDict = (NSDictionary*) call.arguments[@"track"];
             track = [[Track alloc] initFromDictionary:trackDict];
@@ -71,22 +72,23 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
            BOOL canSkipForward = [call.arguments[@"canSkipForward"] boolValue];
            BOOL canSkipBackward = [call.arguments[@"canSkipBackward"] boolValue];
            [self startPlayer:canSkipForward canSkipBackward:canSkipBackward result:result];
-  } else if ([@"stopPlayer" isEqualToString:call.method]) {
-         [super stopPlayer];
-         result(@"stop play");
+  //} else if ([@"stopPlayer" isEqualToString:call.method]) {
+         //[super stopPlayer];
+         //result(@"stop play");
   } else if ([@"initializeMediaPlayer" isEqualToString:call.method]) {
          //BOOL includeAudioPlayerFeatures = [call.arguments[@"includeAudioPlayerFeatures"] boolValue];
          [self initializeMediaPlayer: result:result];
   } else if ([@"releaseMediaPlayer" isEqualToString:call.method]) {
          [self releaseMediaPlayer:result];
-  } else if ([@"pausePlayer" isEqualToString:call.method]) {
-         [self pausePlayer:result];
+  //} else if ([@"pausePlayer" isEqualToString:call.method]) {
+         //[self pausePlayer:result];
   } else {
          [super handleMethodCall: call  result: result];
   }
 }
 
 - (void)startPlayer:(BOOL)canSkipForward canSkipBackward: (BOOL)canSkipBackward result: (FlutterResult)result {
+        printf("startPlayer\n");
     if(!track) {
         result([FlutterError errorWithCode:@"UNAVAILABLE"
                                    message:@"The track passed to startPlayer is not valid."
@@ -132,9 +134,9 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
                  setActiveDone = FOR_PLAYING;
          }
 
-
+        isPaused = false;
         
-        // Check whether the file path poits to a remote or local file
+        // Check whether the file path points to a remote or local file
         if (isRemote) {
             NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
                                                   dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -201,7 +203,7 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
         result(@"Playing from buffer");
     }
     
-    isPlaying = true;
+    //isPlaying = true;
     NSNumber *playingState = [NSNumber numberWithInt:PLAYING_STATE];
     [ [self getChannel] invokeMethod:@"updatePlaybackState" arguments:playingState];
     
@@ -215,7 +217,8 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
 // notification to control the media playback.
 - (void)setupNowPlaying:(MPMediaItemArtwork*)albumArt{
     // Initialize the MPNowPlayingInfoCenter
-    
+    printf("setupNowPlaying\n");
+
     MPNowPlayingInfoCenter *playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
     NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
     // The caller specify an asset to be used.
@@ -240,7 +243,8 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
     [songInfo setObject:track.author forKey:MPMediaItemPropertyArtist];
     [songInfo setObject:progress forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
     [songInfo setObject:duration forKey:MPMediaItemPropertyPlaybackDuration];
-    [songInfo setObject:[NSNumber numberWithDouble:(isPlaying ? 1.0f : 0.0f)] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+    bool b = [audioPlayer isPlaying];
+    [songInfo setObject:[NSNumber numberWithDouble:(b ? 1.0f : 0.0f)] forKey:MPNowPlayingInfoPropertyPlaybackRate];
     
     [playingInfoCenter setNowPlayingInfo:songInfo];
 }
@@ -248,7 +252,8 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
 
 - (void)cleanTarget:(BOOL)canPause canSkipForward:(BOOL)canSkipForward  canSkipBackward:(BOOL)canSkipBackward
 {
-        // [commandCenter.playCommand setEnabled:YES];
+        printf("cleanTarget\n");
+// [commandCenter.playCommand setEnabled:YES];
           // [commandCenter.pauseCommand setEnabled:YES];
           //   [commandCenter.playCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
           //       // [[MediaController sharedInstance] playOrPauseMusic];    // Begin playing the current track.
@@ -262,10 +267,7 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
           //       return MPRemoteCommandHandlerStatusSuccess;
           //   }];
           MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
-          [commandCenter.togglePlayPauseCommand setEnabled:canPause];
-          [commandCenter.nextTrackCommand setEnabled:canSkipForward];
-          [commandCenter.previousTrackCommand setEnabled:canSkipBackward];
-
+  
           if (pauseTarget != nil)
           {
               [commandCenter.togglePlayPauseCommand removeTarget: pauseTarget action: nil];
@@ -282,13 +284,17 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
               [commandCenter.previousTrackCommand removeTarget: backwardTarget action: nil];
               backwardTarget = nil;
           }
+          [commandCenter.togglePlayPauseCommand setEnabled:canPause];
+          [commandCenter.nextTrackCommand setEnabled:canSkipForward];
+          [commandCenter.previousTrackCommand setEnabled:canSkipBackward];
           
           if (canPause)
           {
                   pauseTarget = [commandCenter.togglePlayPauseCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
                        printf("Pause handler called by ios\n");
                        FlutterResult result;
-                       if(isPlaying) {
+                       bool b = [audioPlayer isPlaying];
+                       if (b) {
                             //!!!![self pause];
                             [[self getChannel] invokeMethod:@"pause" arguments:nil];
                         } else {
@@ -301,7 +307,7 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
 
           }
                      
-             if (canSkipForward)
+                if (canSkipForward)
                 {
                         forwardTarget = [commandCenter.nextTrackCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
                             [[self getChannel] invokeMethod:@"skipForward" arguments:nil];
@@ -324,7 +330,9 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
 
 
 - (void)stopPlayer {
+  printf("stopPlayer\n");
   [self stopTimer];
+  isPaused = false;
   if (audioPlayer) {
     [audioPlayer stop];
     //[LARPOUX]audioPlayer = nil;
@@ -342,20 +350,12 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
 // control buttons are pressed.
 - (void)setupRemoteCommandCenter:(BOOL)canPause canSkipForward:(BOOL)canSkipForward canSkipBackward:(BOOL)canSkipBackward result: (FlutterResult)result {
     
-     
+     printf("setupRemoteCommandCenter\n");
+
     [self cleanTarget:canPause canSkipForward:canSkipForward canSkipBackward:canSkipBackward];
-    /*
-         if(isPlaying) {
-             [self pausePlayer: result];
-             [[self getChannel] invokeMethod:@"pause" arguments:nil];
-         } else {
-             [self resumePlayer: result];
-             [[self getChannel] invokeMethod:@"resume" arguments:nil];
-         }
+ 
          
          // [[MediaController sharedInstance] playOrPauseMusic];    // Begin playing the current track.
-         */
- 
 
    }
 
@@ -365,13 +365,15 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
     //includeAPFeatures = includeAudioPlayerFeatures;
      // No further initialization is needed for the iOS audio player, then exit
     // the method.
-    result(@"The player had already been initialized.");
+    printf("initializeMediaPlayer\n");
+    result(@"The player has been initialized.");
 }
 
 - (void)releaseMediaPlayer:(FlutterResult)result {
     // The code used to release all the media player resources is the same of the one needed
     // to stop the media playback. Then, use that one.
     // [self stopRecorder:result];
+    printf("releaseMediaPlayer\n");
     [self stopPlayer];
     MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
     if (pauseTarget != nil)

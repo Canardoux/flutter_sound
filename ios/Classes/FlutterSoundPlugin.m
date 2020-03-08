@@ -69,6 +69,7 @@ bool _isIosDecoderSupported [] =
 extern t_SET_CATEGORY_DONE setCategoryDone = NOT_SET;
 extern t_SET_CATEGORY_DONE setActiveDone = NOT_SET;
 
+extern bool isPaused = false;
 
 // post fix with _FlutterSound to avoid conflicts with common libs including path_provider
 NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir) {
@@ -89,6 +90,7 @@ bool shouldProcessDbLevel = false;
 FlutterMethodChannel* _channel;
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
+  printf("audioPlayerDidFinishPlaying\n");
   NSLog(@"audioPlayerDidFinishPlaying");
   NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
@@ -96,11 +98,12 @@ FlutterMethodChannel* _channel;
   NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
   
   [[ self getChannel] invokeMethod:@"audioPlayerFinishedPlaying" arguments: status];
-
+  isPaused = false;
   [self stopTimer];
 }
 
 - (void) stopTimer{
+    printf("stopTimer\n");
     if (timer != nil) {
         [timer invalidate];
         timer = nil;
@@ -108,6 +111,7 @@ FlutterMethodChannel* _channel;
 }
 
 - (void) stopDbPeakTimer {
+        printf("stopDbPeakTimer\n");
         if (dbPeakTimer != nil) { // This is not normal !!!!
                [dbPeakTimer invalidate];
                dbPeakTimer = nil;
@@ -117,6 +121,7 @@ FlutterMethodChannel* _channel;
 
 - (void)updateRecorderProgress:(NSTimer*) atimer
 {
+  printf("updateRecorderProgress\n");
   assert (timer == timer);
   NSNumber *currentTime = [NSNumber numberWithDouble:audioRecorder.currentTime * 1000];
     [audioRecorder updateMeters];
@@ -128,6 +133,7 @@ FlutterMethodChannel* _channel;
 
 - (void)updateProgress:(NSTimer*) atimer
 {
+  printf(".");
   assert(timer == atimer);
   NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
@@ -139,7 +145,6 @@ FlutterMethodChannel* _channel;
 
 
   NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
-  
   [[ self getChannel] invokeMethod:@"updateProgress" arguments:status];
 }
 
@@ -147,13 +152,15 @@ FlutterMethodChannel* _channel;
 
 - (void)updateDbPeakProgress:(NSTimer*) atimer
 {
-      assert (dbPeakTimer == atimer);
-      NSNumber *normalizedPeakLevel = [NSNumber numberWithDouble:MIN(pow(10.0, [audioRecorder peakPowerForChannel:0] / 20.0) * 160.0, 160.0)];
-      [[ self getChannel] invokeMethod:@"updateDbPeakProgress" arguments:normalizedPeakLevel];
+      printf("updateDbPeakProgress\n");
+        assert (dbPeakTimer == atimer);
+        NSNumber *normalizedPeakLevel = [NSNumber numberWithDouble:MIN(pow(10.0, [audioRecorder peakPowerForChannel:0] / 20.0) * 160.0, 160.0)];
+        [[ self getChannel] invokeMethod:@"updateDbPeakProgress" arguments:normalizedPeakLevel];
 }
 
 - (void)startRecorderTimer
 {
+  printf("startRecorderTimer\n");
   [self stopTimer];
   //dispatch_async(dispatch_get_main_queue(), ^{
       self->timer = [NSTimer scheduledTimerWithTimeInterval: subscriptionDuration
@@ -166,8 +173,9 @@ FlutterMethodChannel* _channel;
 
 - (void)startTimer
 {
-  [self stopTimer];
-  //dispatch_async(dispatch_get_main_queue(), ^{ // ??? Why Async ?  (no async for recorder)
+      [self stopTimer];
+      printf("startTimer\n");
+      //dispatch_async(dispatch_get_main_queue(), ^{ // ??? Why Async ?  (no async for recorder)
       self->timer = [NSTimer scheduledTimerWithTimeInterval:subscriptionDuration
                                            target:self
                                            selector:@selector(updateProgress:)
@@ -178,6 +186,7 @@ FlutterMethodChannel* _channel;
 
 - (void)startDbTimer
 {
+    printf("startDbTimer\n");
     // Stop Db Timer
     [self stopDbPeakTimer];
     //dispatch_async(dispatch_get_main_queue(), ^{
@@ -210,7 +219,8 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
 
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-  if ([@"startRecorder" isEqualToString:call.method]) {
+  printf("--> %s\n",call.method.cString);
+if ([@"startRecorder" isEqualToString:call.method]) {
     NSString* path = (NSString*)call.arguments[@"path"];
     NSNumber* sampleRateArgs = (NSNumber*)call.arguments[@"sampleRate"];
     NSNumber* numChannelsArgs = (NSNumber*)call.arguments[@"numChannels"];
@@ -267,10 +277,12 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
     NSNumber* volume = (NSNumber*)call.arguments[@"volume"];
     [self setVolume:[volume doubleValue] result:result];
   }
+  
   else if ([@"setDbPeakLevelUpdate" isEqualToString:call.method]) {
       NSNumber* intervalInSecs = (NSNumber*)call.arguments[@"intervalInSecs"];
       [self setDbPeakLevelUpdate:[intervalInSecs doubleValue] result:result];
   }
+  
   else if ([@"setDbLevelEnabled" isEqualToString:call.method]) {
       BOOL enabled = [call.arguments[@"enabled"] boolValue];
       [self setDbLevelEnabled:enabled result:result];
@@ -285,13 +297,33 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
     BOOL enabled = [call.arguments[@"enabled"] boolValue];
     [self setActive:enabled result:result];
   }
-
+  
+  else if ([@"getPlayerState" isEqualToString:call.method]) {
+       [self getPlayerState: result];
+  }
+  
   else {
     result(FlutterMethodNotImplemented);
   }
 }
 
+- (t_AUDIO_STATE)audioState
+{
+        if ( [audioPlayer isPlaying] )
+                return IS_PLAYING;
+        if (isPaused)
+                return IS_PAUSED;
+        return IS_PLAYING;
+}
+
+- (void)getPlayerState: (FlutterResult)result
+{
+        NSNumber* state = [NSNumber numberWithInteger: [self audioState] ];
+        result(state);
+}
+
 - (void)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options result:(FlutterResult)result {
+        printf("setCategory\n");
         // Able to play in silent mode
   BOOL b = [[AVAudioSession sharedInstance]
      setCategory:  categ // AVAudioSessionCategoryPlayback 
@@ -319,6 +351,7 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
         }
         setActiveDone = NOT_SET;
   }
+  printf(enabled ? "setActive true\n" : "setActive false\n");
   BOOL b = [[AVAudioSession sharedInstance]  setActive:enabled error:nil] ;
   NSNumber* r = [NSNumber numberWithBool: b];
   result(r);
@@ -326,26 +359,31 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
   
 
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result {
+  printf("isDecoderSupported\n");
   NSNumber* b = [NSNumber numberWithBool: _isIosDecoderSupported[codec] ];
   result(b);
 }
 
 - (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result {
+  printf("isEncoderSupported\n");
   NSNumber*  b = [NSNumber numberWithBool: _isIosEncoderSupported[codec] ];
   result(b);
 }
 
 - (void)setSubscriptionDuration:(double)duration result: (FlutterResult)result {
+  printf("setSubscriptionDuration\n");
   subscriptionDuration = duration;
   result(@"setSubscriptionDuration");
 }
 
 - (void)setDbPeakLevelUpdate:(double)intervalInSecs result: (FlutterResult)result {
+    printf("setDbPeakLevelUpdate\n");
     dbPeakInterval = intervalInSecs;
     result(@"setDbPeakLevelUpdate");
 }
 
 - (void)setDbLevelEnabled:(BOOL)enabled result: (FlutterResult)result {
+    printf("setDbLevelEnabled\n");
     shouldProcessDbLevel = enabled == YES;
     result(@"setDbLevelEnabled");
 }
@@ -358,6 +396,7 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
         :(NSNumber*)iosQuality
         :(NSNumber*)bitRate
         result: (FlutterResult)result {
+  printf("startRecorder\n");
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:defaultExtensions[codec] ]];
   } else {
@@ -410,6 +449,7 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
 }
 
 - (void)stopRecorder:(FlutterResult)result {
+  printf("stopRecorder\n");
   [audioRecorder stop];
 
   [self stopDbPeakTimer];
@@ -422,6 +462,7 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
 }
 
 - (void)startPlayer:(NSString*)path result: (FlutterResult)result {
+  printf("startPlayer\n");
   bool isRemote = false;
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:@"sound.aac"]];
@@ -448,6 +489,7 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
   }
   [self stopDbPeakTimer]; // This is not be possible. Just in case ...
 
+  isPaused = false;
 
   if (isRemote) {
     NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
@@ -460,10 +502,21 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
 
         [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 
-        [self->audioPlayer play];
-        [self startTimer];
-        NSString *filePath = self->audioFileURL.absoluteString;
-        result(filePath);
+        bool b = [self->audioPlayer play];
+        if (!b)
+        {
+                [self stopPlayer];
+                ([FlutterError
+                errorWithCode:@"Audio Player"
+                message:@"Play failure"
+                details:nil]);
+
+        } else
+        {
+                [self startTimer];
+                NSString *filePath = self->audioFileURL.absoluteString;
+                result(filePath);
+        }
     }];
 
     [downloadTask resume];
@@ -472,16 +525,26 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
       audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:nil];
       audioPlayer.delegate = self;
     // }
-    [audioPlayer play];
-    [self startTimer];
-
-    NSString *filePath = audioFileURL.absoluteString;
-    result(filePath);
+    bool b = [audioPlayer play];
+    if (!b)
+    {
+             [self stopPlayer];
+             ([FlutterError
+             errorWithCode:@"Audio Player"
+             message:@"Play failure"
+             details:nil]);
+    } else
+    {
+            [self startTimer];
+            NSString *filePath = audioFileURL.absoluteString;
+            result(filePath);
+    }
   }
 }
 
 
 - (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result {
+  printf("startPlayerFromBuffer\n");
   audioPlayer = [[AVAudioPlayer alloc] initWithData: [dataBuffer data] error: nil];
   audioPlayer.delegate = self;
   // Able to play in silent mode
@@ -497,15 +560,28 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
           setActiveDone = FOR_PLAYING;
   }
   [self stopDbPeakTimer]; // This is not possible, but just in case ...
-  [audioPlayer play];
-  [self startTimer];
-  result(@"Playing from buffer");
+  isPaused = false;
+  bool b = [audioPlayer play];
+  if (!b)
+  {
+           [self stopPlayer];
+           ([FlutterError
+           errorWithCode:@"Audio Player"
+           message:@"Play failure"
+           details:nil]);
+  } else
+  {
+        [self startTimer];
+        result(@"Playing from buffer");
+  }
 }
 
 
 
 - (void)stopPlayer {
+  printf("stopPlayer\n");
   [self stopTimer];
+  isPaused = false;
   [self stopDbPeakTimer]; // Just in case ...
   if (audioPlayer) {
     [audioPlayer stop];
@@ -517,51 +593,118 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
   }
 }
 
-- (void)pause {
-        assert(isPlaying);
-         isPlaying = false;
+- (void)pause
+{
+        printf("pause\n");
+        //assert(isPlaying);
+         //isPlaying = false;
+
           [audioPlayer pause];
-          if (timer != nil) {
+          isPaused = true;
+          if (timer != nil)
+          {
               [timer invalidate];
               timer = nil;
-              }
+          }
 }
 
-- (void)resume {
-        assert(!isPlaying);
-        isPlaying = true;
-        [audioPlayer play];
-        [self startTimer];
+- (bool)resume
+{
+        printf("resume\n");
+        isPaused = true;
 
+        bool b = false;
+        if ( [audioPlayer isPlaying] )
+        {
+                printf("audioPlayer is already playing!\n");
+        } else
+        {
+                b = [audioPlayer play];
+                if (b)
+                {
+                        [self startTimer];
+                } else
+                {
+                        printf("resume : resume failed!\n");
+                }
+                
+        }
+        return b;
 }
 
-- (void)pausePlayer:(FlutterResult)result {
-  if (audioPlayer) {
-  [self pause];
-    result(@"pause play");
-  } else {
-    result([FlutterError
-        errorWithCode:@"Audio Player"
-        message:@"player is not set"
-        details:nil]);
-  }
+- (void)pausePlayer:(FlutterResult)result
+{
+        printf("pausePlayer\n");
+        if (audioPlayer)
+        {
+                 if (! [audioPlayer isPlaying] )
+                 {
+                        isPaused = false;
+
+                         printf("audioPlayer is not playing!\n");
+                         result([FlutterError
+                                  errorWithCode:@"Audio Player"
+                                  message:@"audioPlayer is not playing"
+                                  details:nil]);
+
+                 } else
+                 {
+                        [self pause];
+                        result(@"pause play");
+                 }
+        } else
+        {
+                printf("resumePlayer : player is not set\n");
+                result([FlutterError
+                        errorWithCode:@"Audio Player"
+                        message:@"player is not set"
+                        details:nil]);
+        }
 }
 
-- (void)resumePlayer:(FlutterResult)result {
+- (void)resumePlayer:(FlutterResult)result
+{
 
-  if (!audioPlayer) {
-    result([FlutterError
-            errorWithCode:@"Audio Player"
-            message:@"player is not set"
-            details:nil]);
-    return;
-  }
-  [self resume];
-  NSString *filePath = audioFileURL.absoluteString;
-  result(filePath);
+   printf("resumePlayer\n");
+   isPaused = false;
+
+   if (!audioPlayer)
+   {
+            printf("resumePlayer : player is not set\n");
+            result([FlutterError
+                    errorWithCode:@"Audio Player"
+                    message:@"player is not set"
+                    details:nil]);
+            return;
+   }
+   if ( [audioPlayer isPlaying] )
+   {
+           printf("audioPlayer is already playing!\n");
+           result([FlutterError
+                    errorWithCode:@"Audio Player"
+                    message:@"audioPlayer is already playing"
+                    details:nil]);
+
+   } else
+   {
+
+        bool b = [self resume];
+        if (b)
+        {
+                NSString *filePath = audioFileURL.absoluteString;
+                result(filePath);
+        } else
+        {
+                result([FlutterError
+                         errorWithCode:@"Audio Player"
+                         message:@"resume failed"
+                         details:nil]);
+        }
+   }
 }
 
 - (void)seekToPlayer:(nonnull NSNumber*) time result: (FlutterResult)result {
+  printf("seekToPlayer\n");
   if (audioPlayer) {
       audioPlayer.currentTime = [time doubleValue] / 1000;
       [self updateProgress:nil];
@@ -575,6 +718,7 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
 }
 
 - (void)setVolume:(double) volume result: (FlutterResult)result {
+    printf("setVolume\n");
     if (audioPlayer) {
         [audioPlayer setVolume: volume];
         result(@"volume set");

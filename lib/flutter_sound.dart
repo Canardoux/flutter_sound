@@ -43,10 +43,10 @@ enum t_CODEC {
 
 enum t_AUDIO_STATE
 {
-        IS_STOPPED,
-        IS_PAUSED,
-        IS_PLAYING,
-        IS_RECORDING,
+    IS_STOPPED,
+    IS_PLAYING,
+    IS_PAUSED,
+    IS_RECORDING,
 }
 
 enum t_IOS_SESSION_CATEGORY
@@ -123,21 +123,6 @@ final List<String> defaultPaths = [
 ];
 
 
-/// The possible states of the playback.
-enum PlaybackState {
-  /// The audio player is playing an audio file
-  PLAYING,
-
-  /// The audio player is currently paused
-  PAUSED,
-
-  /// The audio player has been stopped
-  STOPPED,
-
-  /// The audio player finished playing the current track
-  //COMPLETED,
-}
-
 
 /// The possible states of the recorder
 enum RecordingState {
@@ -177,7 +162,11 @@ class FlutterSound {
 
 
   /// The current state of the playback
-  PlaybackState playbackState;
+  Future<t_AUDIO_STATE> getPlayerState() async
+  {
+    t_AUDIO_STATE result = await getChannel().invokeMethod( 'getPlayerState', );
+    return result;
+  }
 
   /// The current state of the recorder
   RecordingState _recordingState;
@@ -196,22 +185,13 @@ class FlutterSound {
    t_updateProgress onUpdateProgress;
 
 
-  bool get isPlaying => _isPlaying( );
+  //bool get isPlaying => (  getPlayerState( ) == (t_AUDIO_STATE.IS_PLAYING) );
 
   bool get isRecording => _isRecording( );
 
-  t_AUDIO_STATE get audioState
-  {
-    if (_recordingState == RecordingState.RECORDING)
-      return t_AUDIO_STATE.IS_RECORDING;
-    else if (playbackState == PlaybackState.PAUSED)
-      return t_AUDIO_STATE.IS_PAUSED;
-    else
-      return (playbackState == PlaybackState.PLAYING) ? t_AUDIO_STATE.IS_PLAYING : t_AUDIO_STATE.IS_STOPPED;
-  }
 
   bool _isRecording( ) => _recordingState == t_AUDIO_STATE.IS_RECORDING;
-  bool _isPlaying( ) => playbackState == t_AUDIO_STATE.IS_PLAYING || playbackState == t_AUDIO_STATE.IS_PAUSED;
+  //bool isPlaying( ) => playbackState == t_AUDIO_STATE.IS_PLAYING || playbackState == t_AUDIO_STATE.IS_PAUSED;
 
   MethodChannel getChannel() => _channel;
 
@@ -373,7 +353,7 @@ class FlutterSound {
           if (playerController != null)
             playerController.add(status);
 
-          playbackState = PlaybackState.STOPPED;
+          //playbackState = PlaybackState.STOPPED;
           _removePlayerCallback();
           if (audioPlayerFinishedPlaying != null)
             audioPlayerFinishedPlaying();
@@ -617,7 +597,7 @@ class FlutterSound {
         print ('startPlayer result: $result');
         setPlayerCallback ();
 
-        playbackState = PlaybackState.PLAYING;
+        //playbackState = PlaybackState.PLAYING;
       }
 
       return result;
@@ -635,11 +615,11 @@ class FlutterSound {
       // If we want to play OGG/OPUS on iOS, we need to remux the OGG file format to a specific Apple CAF envelope before starting the player.
       // We write the data in a temporary file before calling ffmpeg.
       if ( (codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS) ) {
-          if (playbackState == PlaybackState.PAUSED) {
-            this.resumePlayer();
-            playbackState = PlaybackState.PLAYING;
-            return 'Player resumed';
-          }
+          //if (playbackState == PlaybackState.PAUSED) {
+            //this.resumePlayer();
+            //playbackState = PlaybackState.PLAYING;
+            //return 'Player resumed';
+          //}
           await stopPlayer();
           Directory tempDir = await getTemporaryDirectory();
           File inputFile =  File('${tempDir.path}/flutter_sound-tmp.opus');
@@ -654,7 +634,7 @@ class FlutterSound {
 
 
     Future<String> stopPlayer() async {
-      playbackState = PlaybackState.STOPPED;
+      //playbackState = PlaybackState.STOPPED;
       audioPlayerFinishedPlaying = null;
 
       try
@@ -678,21 +658,21 @@ class FlutterSound {
 
 
   Future<String> pausePlayer() {
-      if (playbackState != PlaybackState.PLAYING) {
-        _stopPlayerwithCallback(); // To recover a clean state
-        throw PlayerRunningException('Player is not playing.'); // I am not sure that it is good to throw an exception here
-      }
-      playbackState = PlaybackState.PAUSED;
+      //if (playbackState != PlaybackState.PLAYING) {
+        //_stopPlayerwithCallback(); // To recover a clean state
+        //throw PlayerRunningException('Player is not playing.'); // I am not sure that it is good to throw an exception here
+      //}
+      //playbackState = PlaybackState.PAUSED;
 
       return getChannel().invokeMethod('pausePlayer');
     }
 
     Future<String> resumePlayer() {
-      if (playbackState != PlaybackState.PAUSED) {
-        _stopPlayerwithCallback(); // To recover a clean state
-        throw PlayerRunningException('Player is not paused.'); // I am not sure that it is good to throw an exception here
-      }
-      playbackState = PlaybackState.PLAYING;
+      //if (playbackState != PlaybackState.PAUSED) {
+        //_stopPlayerwithCallback(); // To recover a clean state
+        //throw PlayerRunningException('Player is not paused.'); // I am not sure that it is good to throw an exception here
+      //}
+      //playbackState = PlaybackState.PLAYING;
       return getChannel().invokeMethod('resumePlayer');
     }
 

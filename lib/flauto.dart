@@ -154,7 +154,7 @@ Flauto flauto = Flauto( ); // Singleton
 class Flauto extends FlutterSound
 {
         static const MethodChannel _channel = const MethodChannel( 'flauto' );
-        StreamController<PlaybackState> _playbackStateChangedController;
+        StreamController<t_AUDIO_STATE> _playbackStateChangedController;
 
         //StreamController<PlayStatus> _playerController;
         //Function _skipForward;
@@ -223,12 +223,12 @@ class Flauto extends FlutterSound
                 try
                 {
                         // Stop the player playback before releasing
-                        if (playbackState != PlaybackState.STOPPED) await stopPlayer( );
+                        await stopPlayer( );
                         await getChannel( ).invokeMethod( 'releaseMediaPlayer' );
 
                         _removePlaybackStateCallback( );
                         _removePlayerCallback( );
-                        playbackState = null;
+                        //playbackState = null;
                         onSkipBackward = null;
                         onSkipForward = null;
                 }
@@ -257,14 +257,16 @@ class Flauto extends FlutterSound
                     } )
         async {
                 // Check whether we can start the player
-                if (playbackState != null &&
-                    playbackState != PlaybackState.STOPPED)
+                /*
+                if ( (await getPlayerState()) != t_AUDIO_STATE.STOPPED)
                 {
                         throw PlayerRunningException(
                                     'Cannot start player in playback state "$playbackState". The player '
                                                 'must be just initialized or in "${PlaybackState.STOPPED}" '
                                                 'state' );
                 }
+
+                 */
 
                 // Check the current codec is not supported on this platform
                 if (!await flutterSound.isDecoderSupported( track.codec ))
@@ -310,9 +312,9 @@ class Flauto extends FlutterSound
                                         if (_playbackStateChangedController != null)
                                         {
                                                 //playbackState = PlaybackState.STOPPED;
-                                                _playbackStateChangedController.add( PlaybackState.STOPPED );
+                                                _playbackStateChangedController.add( t_AUDIO_STATE.IS_STOPPED );
                                         }
-                                        playbackState = PlaybackState.STOPPED;
+                                        //playbackState = PlaybackState.STOPPED;
                                         if (audioPlayerFinishedPlaying != null)
                                         {
                                                 audioPlayerFinishedPlaying( );
@@ -323,21 +325,25 @@ class Flauto extends FlutterSound
 
                         case 'updatePlaybackState':
                                 {
+                                        t_AUDIO_STATE playbackState =  t_AUDIO_STATE.IS_PAUSED;
+
                                         switch (call.arguments)
                                         {
                                                 case 0:
-                                                        playbackState = PlaybackState.PLAYING;
+                                                        playbackState = t_AUDIO_STATE.IS_STOPPED;
                                                         break;
                                                 case 1:
-                                                        playbackState = PlaybackState.PAUSED;
+                                                        playbackState = t_AUDIO_STATE.IS_PLAYING;
                                                         break;
                                                 case 2:
-                                                        playbackState = PlaybackState.STOPPED;
+                                                        playbackState = t_AUDIO_STATE.IS_PAUSED;
                                                         break;
-                                                default:
+                                                 default:
                                                         throw Exception(
                                                                     'An invalid playback state was given to updatePlaybackState.' );
                                         }
+
+
 
                                         // If the controller has been initialized notify the listeners that the
                                         // playback state has changed.

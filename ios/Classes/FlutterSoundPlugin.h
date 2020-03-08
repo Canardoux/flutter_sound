@@ -18,17 +18,28 @@ typedef enum
         NOT_SET,
         FOR_PLAYING, // Flutter_sound did it during startPlayer()
         FOR_RECORDING, // Flutter_sound did it during startRecorder()
-        BY_USER // The caller did it himself : flutterSound must not change that (The user is also responsible of setActive(false) )
+        BY_USER // The caller did it himself : flutterSound must not change that)
 } t_SET_CATEGORY_DONE;
+
+typedef enum
+{
+        IS_STOPPED,
+        IS_PLAYING,
+        IS_PAUSED,
+        IS_RECORDING
+} t_AUDIO_STATE;
+
 
 extern t_SET_CATEGORY_DONE setCategoryDone;
 extern t_SET_CATEGORY_DONE setActiveDone;
+extern bool isPaused ;
+
 
 
 @interface FlutterSoundPlugin : NSObject<FlutterPlugin, AVAudioPlayerDelegate>
 {
         AVAudioPlayer *audioPlayer;
-        BOOL isPlaying ;
+        //BOOL isPlaying ;
 }
 - (FlutterMethodChannel*) getChannel;
 
@@ -40,7 +51,7 @@ extern t_SET_CATEGORY_DONE setActiveDone;
 - (void)resumePlayer:(FlutterResult)result;
 - (void)stopTimer;
 - (void)pause;
-- (void)resume;
+- (bool)resume;
 
 
 @end
