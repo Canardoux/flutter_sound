@@ -286,13 +286,21 @@ class Flauto extends FlutterSound
                 this.onSkipForward = onSkipForward;
                 this.onSkipBackward = onSkipBackward;
                 this.onUpdateProgress = onUpdateProgress;
-                setPlayerCallback( );
-                return getChannel( ).invokeMethod( 'startPlayerFromTrack', <String, dynamic>
+                String result =  await getChannel( ).invokeMethod( 'startPlayerFromTrack', <String, dynamic>
                 {
                         'track': trackMap,
                         'canSkipForward': onSkipForward != null,
                         'canSkipBackward': onSkipBackward != null,
                 } );
+
+                if (result != null)
+                {
+                        print ('startPlayer result: $result');
+                        setPlayerCallback ();
+
+                        playbackState = PlaybackState.PLAYING;
+                }
+                return result;
         }
 
 
@@ -314,7 +322,7 @@ class Flauto extends FlutterSound
                                                 //playbackState = PlaybackState.STOPPED;
                                                 _playbackStateChangedController.add( t_AUDIO_STATE.IS_STOPPED );
                                         }
-                                        //playbackState = PlaybackState.STOPPED;
+                                        playbackState = PlaybackState.STOPPED;
                                         if (audioPlayerFinishedPlaying != null)
                                         {
                                                 audioPlayerFinishedPlaying( );

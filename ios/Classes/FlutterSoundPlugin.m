@@ -121,7 +121,7 @@ FlutterMethodChannel* _channel;
 
 - (void)updateRecorderProgress:(NSTimer*) atimer
 {
-  printf("updateRecorderProgress\n");
+  //printf("updateRecorderProgress\n");
   assert (timer == timer);
   NSNumber *currentTime = [NSNumber numberWithDouble:audioRecorder.currentTime * 1000];
     [audioRecorder updateMeters];
@@ -133,7 +133,6 @@ FlutterMethodChannel* _channel;
 
 - (void)updateProgress:(NSTimer*) atimer
 {
-  printf(".");
   assert(timer == atimer);
   NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
@@ -141,7 +140,7 @@ FlutterMethodChannel* _channel;
   if (subscriptionDuration == 0.0 && timer != nil) { // Just one shot !
     [self stopTimer];
     return;
-  }
+}
 
 
   NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
@@ -176,7 +175,7 @@ FlutterMethodChannel* _channel;
       [self stopTimer];
       printf("startTimer\n");
       //dispatch_async(dispatch_get_main_queue(), ^{ // ??? Why Async ?  (no async for recorder)
-      self->timer = [NSTimer scheduledTimerWithTimeInterval:subscriptionDuration
+      self -> timer = [NSTimer scheduledTimerWithTimeInterval:subscriptionDuration
                                            target:self
                                            selector:@selector(updateProgress:)
                                            userInfo:nil
@@ -295,6 +294,7 @@ if ([@"startRecorder" isEqualToString:call.method]) {
   }
   else if ([@"setActive" isEqualToString:call.method]) {
     BOOL enabled = [call.arguments[@"enabled"] boolValue];
+    enabled = true;// [LARPOUX]
     [self setActive:enabled result:result];
   }
   
@@ -336,6 +336,7 @@ if ([@"startRecorder" isEqualToString:call.method]) {
 }
 
 - (void)setActive:(BOOL)enabled result:(FlutterResult)result {
+enabled = true; // [LARPOUX]
   if (enabled) {
         if (setActiveDone != NOT_SET) { // Already activated. Nothing todo;
                 setActiveDone = BY_USER;
@@ -351,6 +352,7 @@ if ([@"startRecorder" isEqualToString:call.method]) {
         }
         setActiveDone = NOT_SET;
   }
+  enabled = true; // [LARPOUX]
   printf(enabled ? "setActive true\n" : "setActive false\n");
   BOOL b = [[AVAudioSession sharedInstance]  setActive:enabled error:nil] ;
   NSNumber* r = [NSNumber numberWithBool: b];
@@ -588,7 +590,7 @@ if ([@"startRecorder" isEqualToString:call.method]) {
     audioPlayer = nil;
   }
   if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) ) {
-      [[AVAudioSession sharedInstance] setActive: NO error: nil];
+      // [LARPOUX] [[AVAudioSession sharedInstance] setActive: NO error: nil];
       setActiveDone = NOT_SET;
   }
 }
@@ -664,6 +666,7 @@ if ([@"startRecorder" isEqualToString:call.method]) {
 
 - (void)resumePlayer:(FlutterResult)result
 {
+[[AVAudioSession sharedInstance]  setActive:YES error:nil] ;// [LARPOUX]
 
    printf("resumePlayer\n");
    isPaused = false;
@@ -687,8 +690,9 @@ if ([@"startRecorder" isEqualToString:call.method]) {
 
    } else
    {
-
+[[AVAudioSession sharedInstance]  setActive:YES error:nil] ; // [LARPOUX]
         bool b = [self resume];
+        [[AVAudioSession sharedInstance]  setActive:YES error:nil] ; // [LARPOUX]
         if (b)
         {
                 NSString *filePath = audioFileURL.absoluteString;

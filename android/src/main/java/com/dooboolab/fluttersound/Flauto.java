@@ -79,6 +79,12 @@ public class Flauto extends FlutterSoundPlugin {
     private Timer mTimer = new Timer();
     final private Handler mainHandler = new Handler();
     static private Context androidContext;
+    public int subsDurationMillis = 10;
+    public long peakLevelUpdateMillis = 800;
+    public boolean shouldProcessDbLevel = true;
+
+
+
     //private static Registrar reg;
 /*
     private MediaPlayer mMediaPlayer;
@@ -186,7 +192,7 @@ public class Flauto extends FlutterSoundPlugin {
 
                 boolean canSkipForward = call.argument ( "canSkipForward" );
                 boolean canSkipBackward = call.argument ( "canSkipBackward" );
-                this.startPlayerFromTrack ( track, canSkipForward, canSkipBackward, result );
+                startPlayerFromTrack ( track, canSkipForward, canSkipBackward, result );
                 break;
 
             case "stopPlayer":
@@ -206,6 +212,20 @@ public class Flauto extends FlutterSoundPlugin {
                 double volume = call.argument ( "volume" );
                 this.setVolume ( volume, result );
                 break;
+            case "setDbPeakLevelUpdate":
+                double intervalInSecs = call.argument("intervalInSecs");
+                this.setDbPeakLevelUpdate(intervalInSecs, result);
+                break;
+            case "setDbLevelEnabled":
+                boolean enabled = call.argument("enabled");
+                this.setDbLevelEnabled(enabled, result);
+                break;
+            case "setSubscriptionDuration":
+                if (call.argument("sec") == null) return;
+                double duration = call.argument("sec");
+                this.setSubscriptionDuration(duration, result);
+                break;
+
             case "initializeMediaPlayer":
                 boolean includeAudioPlayerFeatures = call.argument ( "includeAudioPlayerFeatures" );
 
@@ -244,7 +264,8 @@ public class Flauto extends FlutterSoundPlugin {
 
         mMediaBrowserCompat = new MediaBrowserCompat(ctx, new ComponentName (ctx, BackgroundAudioService.class),
                 mMediaBrowserCompatConnectionCallback, androidActivity.getIntent().getExtras());
-
+        BackgroundAudioService.activity = androidActivity;
+        BackgroundAudioService.playbackStateUpdater =  ( new PlaybackStateUpdater () );
 
         mMediaBrowserCompat.connect();
 
@@ -337,21 +358,21 @@ public class Flauto extends FlutterSoundPlugin {
         }
 
         // Pass to the media browser the metadata to use in the notification
-        // [LARPOUX] // mMediaBrowserHelper.setNotificationMetadata ( track );
+        // LARPOUX] // BackgroundAudioService.currentTrack = track;
 
         // Add the listeners for the onPrepared and onCompletion events
-        // [LARPOUX] // mMediaBrowserHelper.setMediaPlayerOnPreparedListener ( new MediaPlayerOnPreparedListener ( result, path ) );
-        // [LARPOUX] // mMediaBrowserHelper.setMediaPlayerOnCompletionListener ( new MediaPlayerOnCompletionListener () );
+        BackgroundAudioService.mediaPlayerOnPreparedListener =  ( new MediaPlayerOnPreparedListener ( result, path ) );
+        BackgroundAudioService.mediaPlayerOnCompletionListener =  ( new MediaPlayerOnCompletionListener () );
 
         // Check whether a path to an audio file was given
         if ( path == null ) {
             // No paths were given, then use the default file
-            // [LARPOUX] // mMediaBrowserHelper.mediaControllerCompat.getTransportControls ()
-            // [LARPOUX] // .playFromMediaId ( AudioModel.DEFAULT_FILE_LOCATION, null );
+            mMediaControllerCompat.getTransportControls ()
+            .playFromMediaId ( AudioModel.DEFAULT_FILE_LOCATION, null );
         } else {
             // A path was given, then send it to the media player
-            // [LARPOUX] // mMediaBrowserHelper.mediaControllerCompat.getTransportControls ()
-            // [LARPOUX] // .playFromMediaId ( path, null );
+            mMediaControllerCompat.getTransportControls ()
+            .playFromMediaId ( path, null );
         }
         //mMediaControllerCompat.getTransportControls().playFromMediaId(path, null );
         mMediaControllerCompat.getTransportControls().play();
@@ -413,6 +434,7 @@ public class Flauto extends FlutterSoundPlugin {
         try {
             // Resume the player
             // [LARPOUX] // mMediaBrowserHelper.playPlayback ();
+            mMediaControllerCompat.getTransportControls().play();
 
             // Seek the player to the last position and resume it
             result.success ( "resumed player." );
@@ -426,6 +448,7 @@ public class Flauto extends FlutterSoundPlugin {
     public void seekToPlayer ( int millis, final Result result ) {
         // Exit the method if a media browser helper was not initialized
         if ( !wasMediaPlayerInitialized ( result ) ) return;
+        mMediaControllerCompat.getTransportControls().seekTo(millis);
 
         // Get the current position of the media player in milliseconds, but only to log it
         // int currentMillis = this.model.getMediaPlayer().getCurrentPosition();
@@ -448,22 +471,38 @@ public class Flauto extends FlutterSoundPlugin {
     public void setVolume ( double volume, final Result result ) {
         // Exit the method if a media browser helper was not initialized
         if ( !wasMediaPlayerInitialized ( result ) ) return;
-
         // Get the maximum value for the volume
-        // [LARPOUX] // int maxVolume = mMediaBrowserHelper.mediaControllerCompat.getPlaybackInfo ().getMaxVolume ();
+        int maxVolume = mMediaControllerCompat.getPlaybackInfo().getMaxVolume();
         // Get the value of the new volume level
-        // [LARPOUX] // int newVolume = ( int ) Math.floor ( volume * maxVolume );
+        int newVolume = (int) Math.floor(volume * maxVolume);
 
         // Adjust the media player volume to the given level
-        // [LARPOUX] // mMediaBrowserHelper.mediaControllerCompat.setVolumeTo ( newVolume, 0 );
-        result.success ( "Set volume" );
+        mMediaControllerCompat.setVolumeTo(newVolume, 0);
+        result.success("Set volume");        result.success ( "Set volume" );
     }
 
+
+    @Override
+    public void setDbPeakLevelUpdate(double intervalInSecs, Result result) {
+        peakLevelUpdateMillis = (long) (intervalInSecs * 1000);
+        result.success("setDbPeakLevelUpdate: " + peakLevelUpdateMillis);
+    }
+
+    @Override
+    public void setDbLevelEnabled(boolean enabled, MethodChannel.Result result) {
+        shouldProcessDbLevel = enabled;
+        result.success("setDbLevelEnabled: " + shouldProcessDbLevel);
+    }
+
+    @Override
+    public void setSubscriptionDuration(double sec, Result result) {
+        subsDurationMillis = (int) (sec * 1000);
+        result.success("setSubscriptionDuration: " + subsDurationMillis);
+    }
 
     /**
      * The callable instance to call when the media player is prepared.
      */
-    /* [LARPOUX]
     private class MediaPlayerOnPreparedListener implements Callable<Void> {
         private Result mResult;
         private String mPath;
@@ -476,10 +515,10 @@ public class Flauto extends FlutterSoundPlugin {
         @Override
         public Void call () throws Exception {
             // The content is ready to be played, then play it
-            mMediaBrowserHelper.playPlayback ();
+            mMediaControllerCompat.getTransportControls().play();
 
             // Set timer task to send event to RN
-            long trackDuration = mMediaBrowserHelper.mediaControllerCompat.getMetadata ().getLong ( MediaMetadataCompat.METADATA_KEY_DURATION );
+            long trackDuration = mMediaControllerCompat.getMetadata ().getLong ( MediaMetadataCompat.METADATA_KEY_DURATION );
 
             TimerTask mTask = new TimerTask () {
                 @Override
@@ -490,7 +529,7 @@ public class Flauto extends FlutterSoundPlugin {
 
                     try {
                         JSONObject json = new JSONObject ();
-                        PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState ();
+                        PlaybackStateCompat playbackState = mMediaControllerCompat.getPlaybackState ();
 
                         if ( playbackState == null ) return;
 
@@ -512,18 +551,17 @@ public class Flauto extends FlutterSoundPlugin {
                 }
             };
 
-            mTimer.schedule ( mTask, 0, model.subsDurationMillis );
+            mTimer.schedule ( mTask, 0, subsDurationMillis );
             String resolvedPath = mPath == null ? AudioModel.DEFAULT_FILE_LOCATION : mPath;
             mResult.success ( ( resolvedPath ) );
 
             return null;
         }
     }
-     */
+
     /**
      * The callable instance to call when the media player calls the onCompletion event.
      */
-    /* [LARPOUX]
     private class MediaPlayerOnCompletionListener implements Callable<Void> {
         MediaPlayerOnCompletionListener () {
         }
@@ -531,15 +569,15 @@ public class Flauto extends FlutterSoundPlugin {
         @Override
         public Void call () throws Exception {
             // Reset the timer
-            long trackDuration = mMediaBrowserHelper.mediaControllerCompat.getMetadata ().getLong ( MediaMetadataCompat.METADATA_KEY_DURATION );
+            // [LARPOUX]long trackDuration = mMediaControllerCompat.getMetadata ().getLong ( MediaMetadataCompat.METADATA_KEY_DURATION );
 
             Log.d ( TAG, "Plays completed." );
             try {
                 JSONObject json = new JSONObject ();
                 long currentPosition =
-                        mMediaBrowserHelper.mediaControllerCompat.getPlaybackState ().getPosition ();
+                        mMediaControllerCompat.getPlaybackState ().getPosition ();
 
-                json.put ( "duration", String.valueOf ( trackDuration ) );
+                json.put ( "duration", String.valueOf (1000/* [LARPOUX] trackDuration */) );
                 json.put ( "current_position", String.valueOf ( currentPosition ) );
                 channel.invokeMethod ( "audioPlayerFinishedPlaying", json.toString () );
             } catch ( JSONException je ) {
@@ -551,12 +589,10 @@ public class Flauto extends FlutterSoundPlugin {
         }
     }
 
-     */
 
     /**
      * The callable instance to call when the media player has been connected.
      */
-    /* [LARPOUX]
     private class MediaPlayerConnectionListener implements Callable<Void> {
         private Result mResult;
         // Whether this callback is called when the connection is successful
@@ -578,7 +614,6 @@ public class Flauto extends FlutterSoundPlugin {
         }
     }
 
-     */
 
 
 
@@ -608,7 +643,6 @@ public class Flauto extends FlutterSoundPlugin {
     /**
      * A function that triggers a function in the Dart code to update the playback state.
      */
-    /* [LARPOUX]
     private class PlaybackStateUpdater implements Function<Integer, Void> {
         @Override
         public Void apply ( Integer newState ) {
@@ -616,5 +650,4 @@ public class Flauto extends FlutterSoundPlugin {
             return null;
         }
     }
-     */
 }

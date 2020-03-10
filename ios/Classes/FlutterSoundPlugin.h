@@ -24,9 +24,9 @@ typedef enum
 typedef enum
 {
         IS_STOPPED,
-        IS_PLAYING,
         IS_PAUSED,
-        IS_RECORDING
+        IS_PLAYING,
+        IS_RECORDING,
 } t_AUDIO_STATE;
 
 

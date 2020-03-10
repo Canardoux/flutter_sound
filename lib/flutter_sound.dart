@@ -124,14 +124,31 @@ final List<String> defaultPaths = [
 
 
 
+/// The possible states of the playback.
+enum PlaybackState {
+        /// The audio player is playing an audio file
+        PLAYING,
+
+        /// The audio player is currently paused
+        PAUSED,
+
+        /// The audio player has been stopped
+        STOPPED,
+
+        /// The audio player finished playing the current track
+        //COMPLETED,
+}
+
+
 /// The possible states of the recorder
 enum RecordingState {
-  /// The recorder is currently recording audio
-  RECORDING,
+        /// The recorder is currently recording audio
+        RECORDING,
 
-  /// The recorder has been stopped because it has finished recording audio
-  STOPPED,
+        /// The recorder has been stopped because it has finished recording audio
+        STOPPED,
 }
+
 
 
 /// Return the file extension for the given path.
@@ -168,6 +185,9 @@ class FlutterSound {
     return result;
   }
 
+  /// The current state of the playback
+  PlaybackState playbackState;
+
   /// The current state of the recorder
   RecordingState _recordingState;
   RecordingState get recorderState => _recordingState;
@@ -192,6 +212,16 @@ class FlutterSound {
 
   bool _isRecording( ) => _recordingState == t_AUDIO_STATE.IS_RECORDING;
   //bool isPlaying( ) => playbackState == t_AUDIO_STATE.IS_PLAYING || playbackState == t_AUDIO_STATE.IS_PAUSED;
+
+  t_AUDIO_STATE get audioState
+  {
+    if (_recordingState == RecordingState.RECORDING)
+      return t_AUDIO_STATE.IS_RECORDING;
+    else if (playbackState == PlaybackState.PAUSED)
+      return t_AUDIO_STATE.IS_PAUSED;
+    else
+      return (playbackState == PlaybackState.PLAYING) ? t_AUDIO_STATE.IS_PLAYING : t_AUDIO_STATE.IS_STOPPED;
+  }
 
   MethodChannel getChannel() => _channel;
 
@@ -353,7 +383,7 @@ class FlutterSound {
           if (playerController != null)
             playerController.add(status);
 
-          //playbackState = PlaybackState.STOPPED;
+          playbackState = PlaybackState.STOPPED;
           _removePlayerCallback();
           if (audioPlayerFinishedPlaying != null)
             audioPlayerFinishedPlaying();
@@ -597,7 +627,7 @@ class FlutterSound {
         print ('startPlayer result: $result');
         setPlayerCallback ();
 
-        //playbackState = PlaybackState.PLAYING;
+        playbackState = PlaybackState.PLAYING;
       }
 
       return result;
@@ -634,7 +664,7 @@ class FlutterSound {
 
 
     Future<String> stopPlayer() async {
-      //playbackState = PlaybackState.STOPPED;
+      playbackState = PlaybackState.STOPPED;
       audioPlayerFinishedPlaying = null;
 
       try
@@ -658,21 +688,21 @@ class FlutterSound {
 
 
   Future<String> pausePlayer() {
-      //if (playbackState != PlaybackState.PLAYING) {
-        //_stopPlayerwithCallback(); // To recover a clean state
-        //throw PlayerRunningException('Player is not playing.'); // I am not sure that it is good to throw an exception here
-      //}
-      //playbackState = PlaybackState.PAUSED;
+      if (playbackState != PlaybackState.PLAYING) {
+        _stopPlayerwithCallback(); // To recover a clean state
+        throw PlayerRunningException('Player is not playing.'); // I am not sure that it is good to throw an exception here
+      }
+      playbackState = PlaybackState.PAUSED;
 
       return getChannel().invokeMethod('pausePlayer');
     }
 
     Future<String> resumePlayer() {
-      //if (playbackState != PlaybackState.PAUSED) {
-        //_stopPlayerwithCallback(); // To recover a clean state
-        //throw PlayerRunningException('Player is not paused.'); // I am not sure that it is good to throw an exception here
-      //}
-      //playbackState = PlaybackState.PLAYING;
+      if (playbackState != PlaybackState.PAUSED) {
+        _stopPlayerwithCallback(); // To recover a clean state
+        throw PlayerRunningException('Player is not paused.'); // I am not sure that it is good to throw an exception here
+      }
+      playbackState = PlaybackState.PLAYING;
       return getChannel().invokeMethod('resumePlayer');
     }
 
