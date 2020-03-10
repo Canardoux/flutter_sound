@@ -3,8 +3,10 @@ import 'dart:io';
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'dart:async';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter_sound/flauto.dart';
@@ -30,67 +32,59 @@ class MyApp extends StatefulWidget
         => new _MyAppState( );
 }
 
-class _MyAppState extends State<MyApp>
-{
-        bool _isRecording = false;
-        List<String> _path = [null, null, null, null, null, null, null];
-        StreamSubscription _recorderSubscription;
-        StreamSubscription _dbPeakSubscription;
-        StreamSubscription _playerSubscription;
-        StreamSubscription _playbackStateSubscription;
-        FlutterSound flutterSoundModule = flutterSound;
 
-        String _recorderTxt = '00:00:00';
-        String _playerTxt = '00:00:00';
-        double _dbLevel;
 
-        double sliderCurrentPosition = 0.0;
-        double maxDuration = 1.0;
-        t_MEDIA _media = t_MEDIA.FILE;
-        t_CODEC _codec = t_CODEC.CODEC_AAC;
-        bool _encoderSupported = true; // Optimist
-        bool _decoderSupported = true; // Optimist
+       // [LARPOUX] void cancelRecorderSubscriptions( )
+// [LARPOUX] {
+// [LARPOUX] if (_recorderSubscription != null)
+class _MyAppState extends State<MyApp> {
+  bool _isRecording = false;
+  List <String> _path = [null, null, null, null, null, null, null];
+  StreamSubscription _recorderSubscription;
+  StreamSubscription _dbPeakSubscription;
+  StreamSubscription _playerSubscription;
+  FlutterSound flutterSoundModule;
 
-        // Whether the media player has been initialized and the UI controls can
-        // be displayed.
-        bool _canDisplayPlayerControls = false;
+  String _recorderTxt = '00:00:00';
+  String _playerTxt = '00:00:00';
+  double _dbLevel;
 
-        //PlaybackState _playbackState;
-        // Whether the user wants to use the audio player features
-        bool _isAudioPlayer = false;
+  double sliderCurrentPosition = 0.0;
+  double maxDuration = 1.0;
+  t_MEDIA _media = t_MEDIA.FILE;
+  t_CODEC _codec = t_CODEC.CODEC_AAC;
 
-        void _initializeExample( FlutterSound module )
-        {
-                flutterSoundModule = module;
-                flutterSoundModule.setSubscriptionDuration( 0.01 );
-                flutterSoundModule.setDbPeakLevelUpdate( 0.8 );
-                flutterSoundModule.setDbLevelEnabled( true );
-                initializeDateFormatting( );
+  bool _encoderSupported = true; // Optimist
+  bool _decoderSupported = true; // Optimist
 
-                setCodec( _codec );
-        }
+  // Whether the media player has been initialized and the UI controls can
+  // be displayed.
+  bool _canDisplayPlayerControls = false;
 
-        @override
-        void initState( )
-        {
-                super.initState( );
-                //initializePlayer( );
-                _initializeExample( flutterSoundModule );
-        }
+  bool _isAudioPlayer = false;
 
-        void cancelRecorderSubscriptions( )
-        {
-                if (_recorderSubscription != null)
-                {
-                        _recorderSubscription.cancel( );
-                        _recorderSubscription = null;
-                }
-                if (_dbPeakSubscription != null)
-                {
-                        _dbPeakSubscription.cancel( );
-                        _dbPeakSubscription = null;
-                }
-        }
+  void _initializeExample( FlutterSound module )
+  {
+          flutterSoundModule = module;
+          flutterSoundModule.setSubscriptionDuration( 0.01 );
+          flutterSoundModule.setDbPeakLevelUpdate( 0.8 );
+          flutterSoundModule.setDbLevelEnabled( true );
+          initializeDateFormatting( );
+
+          setCodec( _codec );
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    flutterSound = new FlutterSound();
+    flutterSound.setSubscriptionDuration(0.01);
+    flutterSound.setDbPeakLevelUpdate(0.8);
+    flutterSound.setDbLevelEnabled(true);
+    initializeDateFormatting();
+    _initializeExample( flutterSoundModule );
+    }
 
         void cancelPlayerSubscriptions( )
         {
@@ -121,27 +115,13 @@ class _MyAppState extends State<MyApp>
                 try
                 {
                         /*
-      if (Platform.isIOS)
-        await flauto.iosSetCategory( t_IOS_SESSION_CATEGORY. /*PLAYBACK*/PLAYBACK, t_IOS_SESSION_MODE. /*VOICE_PROMPT*/DEFAULT, IOS_DUCK_OTHERS );
-      else if (Platform.isAndroid)
-        await flauto.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK );
-*/
+                        if (Platform.isIOS)
+                        await flauto.iosSetCategory( t_IOS_SESSION_CATEGORY. /*PLAYBACK*/PLAYBACK, t_IOS_SESSION_MODE. /*VOICE_PROMPT*/DEFAULT, IOS_DUCK_OTHERS );
+                        else if (Platform.isAndroid)
+                        await flauto.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK );
+                        */
 
-                        await flauto.initializeMediaPlayer(
-                                /*_isAudioPlayer,
-        skipForwardHandler: () async {
-          print("Skip forward successfully called!");
-          await stopPlayer();
-          await startPlayer();
-        },
-        skipBackwardForward: () {
-          print("Skip backward successfully called!");
-          stopPlayer();
-          startPlayer();
-        },
-
-         */
-                                );
+                        await flauto.initializeMediaPlayer( );
 
                         print( 'media player initialization successful' );
 
@@ -185,64 +165,63 @@ class _MyAppState extends State<MyApp>
                 'sound.wav', // CODEC_PCM
         ];
 
-        void startRecorder( )
-        async {
-                try
-                {
-                        // String path = await flutterSoundModule.startRecorder
-                        // (
-                        //   paths[_codec.index],
-                        //   codec: _codec,
-                        //   sampleRate: 16000,
-                        //   bitRate: 16000,
-                        //   numChannels: 1,
-                        //   androidAudioSource: AndroidAudioSource.MIC,
-                        // );
-                        String path = await flutterSoundModule.startRecorder(
-                                codec: _codec,
-                                );
-                        print( 'startRecorder: $path' );
-                        cancelRecorderSubscriptions( );
-                        _recorderSubscription = flutterSoundModule.onRecorderStateChanged.listen( ( e )
-                                                                                                  {
-                                                                                                          if (e != null)
-                                                                                                          {
-                                                                                                                  DateTime date = new DateTime.fromMillisecondsSinceEpoch(
-                                                                                                                              e.currentPosition.toInt( ),
-                                                                                                                              isUtc: true );
-                                                                                                                  String txt = DateFormat( 'mm:ss:SS', 'en_GB' ).format( date );
 
-                                                                                                                  this.setState( ( )
-                                                                                                                                 {
-                                                                                                                                         this._recorderTxt = txt.substring( 0, 8 );
-                                                                                                                                 } );
-                                                                                                          }
-                                                                                                  } );
-                        _dbPeakSubscription =
-                                    flutterSoundModule.onRecorderDbPeakChanged.listen( ( value )
-                                                                                       {
-                                                                                               print( "got update -> $value" );
-                                                                                               setState( ( )
-                                                                                                         {
-                                                                                                                 this._dbLevel = value;
-                                                                                                         } );
-                                                                                       } );
+  void startRecorder() async{
+          try {
+                  // String path = await flutterSound.startRecorder
+                  // (
+                  //   paths[_codec.index],
+                  //   codec: _codec,
+                  //   sampleRate: 16000,
+                  //   bitRate: 16000,
+                  //   numChannels: 1,
+                  //   androidAudioSource: AndroidAudioSource.MIC,
+                  // );
+                  Directory tempDir = await getTemporaryDirectory();
 
-                        this.setState( ( )
-                                       {
-                                               this._isRecording = true;
-                                               this._path[_codec.index] = path;
-                                       } );
-                }
-                catch (err)
-                {
-                        print( 'startRecorder error: $err' );
-                        setState( ( )
-                                  {
-                                          this._isRecording = false;
-                                  } );
-                }
-        }
+                  String path = await flutterSound.startRecorder(
+                          uri: '${tempDir.path}/sound.aac', // [LARPOUX] not cool
+                          codec: _codec,
+                          );
+                  print('startRecorder: $path');
+
+                  _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
+                          DateTime date = new DateTime.fromMillisecondsSinceEpoch(
+                                      e.currentPosition.toInt(),
+                                      isUtc: true);
+                          String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
+
+                          this.setState(() {
+                                  this._recorderTxt = txt.substring(0, 8);
+                          });
+                  });
+                  _dbPeakSubscription =
+                              flutterSound.onRecorderDbPeakChanged.listen((value) {
+                                      print("got update -> $value");
+                                      setState(() {
+                                              this._dbLevel = value;
+                                      });
+                              });
+
+                  this.setState(() {
+                          this._isRecording = true;
+                          this._path[_codec.index] = path;
+                  });
+          } catch (err) {
+                  print ('startRecorder error: $err');
+                  setState (()
+                            {
+                                    _recorderSubscription.cancel( );
+                                    _recorderSubscription = null;
+                            }
+                                        if (_dbPeakSubscription != null)
+                  {
+                          _dbPeakSubscription.cancel( );
+                          _dbPeakSubscription = null;
+                  }
+          }
+  }
+
 
         void stopRecorder( )
         async {
@@ -300,13 +279,6 @@ class _MyAppState extends State<MyApp>
         void _addListeners( )
         {
                 cancelPlayerSubscriptions( );
-                /*
-    _playbackStateSubscription =
-        flutterSoundModule.onPlaybackStateChanged.listen((newState) {
-      //_playbackState = newState;
-      print('The new playack state is: $newState');
-    });
-     */
                 _playerSubscription = flutterSoundModule.onPlayerStateChanged.listen( ( e )
                                                                                       {
                                                                                               if (e != null)
@@ -783,8 +755,6 @@ class _MyAppState extends State<MyApp>
                                                 valueColor: AlwaysStoppedAnimation<Color>( Colors.green ),
                                                 backgroundColor: Colors.red
                                                 ) : Container( ),
-                                    //////],
-                                    //////),
                                     Row(
                                             children: <Widget>[
                                                     Container(
