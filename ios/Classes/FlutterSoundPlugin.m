@@ -112,9 +112,9 @@ FlutterMethodChannel* _channel;
 
 - (void) stopDbPeakTimer {
         printf("stopDbPeakTimer\n");
-        if (dbPeakTimer != nil) { // This is not normal !!!!
+        if (self -> dbPeakTimer != nil) {
                [dbPeakTimer invalidate];
-               dbPeakTimer = nil;
+               self -> dbPeakTimer = nil;
         }
 
 }
@@ -140,7 +140,7 @@ FlutterMethodChannel* _channel;
   if (subscriptionDuration == 0.0 && timer != nil) { // Just one shot !
     [self stopTimer];
     return;
-}
+  }
 
 
   NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
@@ -189,7 +189,7 @@ FlutterMethodChannel* _channel;
     // Stop Db Timer
     [self stopDbPeakTimer];
     //dispatch_async(dispatch_get_main_queue(), ^{
-        self->dbPeakTimer = [NSTimer scheduledTimerWithTimeInterval:dbPeakInterval
+        self -> dbPeakTimer = [NSTimer scheduledTimerWithTimeInterval:dbPeakInterval
                                                        target:self
                                                      selector:@selector(updateDbPeakProgress:)
                                                      userInfo:nil
@@ -244,6 +244,10 @@ if ([@"startRecorder" isEqualToString:call.method]) {
     }
 
     [self startRecorder:path:[NSNumber numberWithInt:numChannels]:[NSNumber numberWithInt:sampleRate]:coder:iosQuality:bitRate result:result];
+    
+  } else if ([@"initializeMediaPlayer" isEqualToString:call.method]) {
+  
+  } else if ([@"releaseMediaPlayer" isEqualToString:call.method]) {
 
   } else if ([@"isEncoderSupported" isEqualToString:call.method]) {
     NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
@@ -298,9 +302,9 @@ if ([@"startRecorder" isEqualToString:call.method]) {
     [self setActive:enabled result:result];
   }
   
-  else if ([@"getPlayerState" isEqualToString:call.method]) {
-       [self getPlayerState: result];
-  }
+  //else if ([@"getPlayerState" isEqualToString:call.method]) {
+       //[self getPlayerState: result];
+  //}
   
   else {
     result(FlutterMethodNotImplemented);
@@ -316,11 +320,11 @@ if ([@"startRecorder" isEqualToString:call.method]) {
         return IS_PLAYING;
 }
 
-- (void)getPlayerState: (FlutterResult)result
-{
-        NSNumber* state = [NSNumber numberWithInteger: [self audioState] ];
-        result(state);
-}
+//- (void)getPlayerState: (FlutterResult)result
+//{
+//        NSNumber* state = [NSNumber numberWithInteger: [self audioState] ];
+//        result(state);
+//}
 
 - (void)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options result:(FlutterResult)result {
         printf("setCategory\n");
@@ -496,7 +500,6 @@ enabled = true; // [LARPOUX]
   if (isRemote) {
     NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
         dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            // NSData *data = [NSData dataWithContentsOfURL:audioFileURL];
             
         // We must create a new Audio Player instance to be able to play a different Url
         audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
@@ -513,15 +516,13 @@ enabled = true; // [LARPOUX]
                 message:@"Play failure"
                 details:nil]);
 
-        } else
-        {
-                [self startTimer];
-                NSString *filePath = self->audioFileURL.absoluteString;
-                result(filePath);
         }
     }];
 
-    [downloadTask resume];
+     [self startTimer];
+     NSString *filePath = self->audioFileURL.absoluteString;
+     result(filePath);
+     [downloadTask resume];
   } else {
     // if (!audioPlayer) { // Fix sound distoring when playing recorded audio again.
       audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:nil];

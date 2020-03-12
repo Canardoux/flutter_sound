@@ -51,14 +51,13 @@ import java.util.concurrent.Callable;
 public class BackgroundAudioService extends MediaBrowserServiceCompat implements MediaPlayer.OnCompletionListener, AudioManager.OnAudioFocusChangeListener {
 
     final static String TAG = "BackgroundAudioService";
-    static final String notificationChannelId = "flutter_sound_channel_01";
+    static final String notificationChannelId = "com.dooboolab.flutter_sound_channel_01";
 
     public static Callable mediaPlayerOnPreparedListener;
     public static Callable mediaPlayerOnCompletionListener;
     public static Callable skipTrackForwardHandler;
     public static Callable skipTrackBackwardHandler;
     public static Function playbackStateUpdater;
-    public static boolean includeAudioPlayerFeatures;
     public static Activity activity;
 
     public final static int PLAYING_STATE = 0;
@@ -151,7 +150,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
                 // Prepare the player for playback
                 mMediaPlayer.prepareAsync();
 
-            } catch (Exception e) {
+            } catch (IOException e) {
                 Log.e(TAG, "The following error occurred while trying to set the track to play in the audio player.", e);
             }
         }
@@ -378,9 +377,9 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         initMediaSession();
 
         // Do not initialize the noisy receiver if we should not include audio player features
-        if(includeAudioPlayerFeatures) {
-            initNoisyReceiver();
-        }
+        //if(includeAudioPlayerFeatures) {
+          initNoisyReceiver();
+        //}
     }
 
     private void initMediaPlayer() {
@@ -396,10 +395,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         // Set the onPreparedListener
         mMediaPlayer.setOnPreparedListener(mp -> {
             // Start retrieving the album art if the audio player features should be included
-            //if(includeAudioPlayerFeatures)
-            //{
-                //new AlbumArtDownloader().execute(currentTrack.getAlbumArt());
-            //}
+                // [LARPOUX] new AlbumArtDownloader().execute(currentTrack.getAlbumArtUrl());
 
             // Pass the audio file metadata to the media session
             initMediaSessionMetadata(null);
@@ -426,8 +422,6 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         // Pass to the media session the callback that responds to media button events
         mMediaSessionCompat.setCallback(mMediaSessionCallback);
 
-        // Do not support hardware media playback actions if we are not including audio features
-        if(includeAudioPlayerFeatures) {
             // Inform the session that it is capable of handling media button events and
             // transport control commands.
             mMediaSessionCompat.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
@@ -435,9 +429,8 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
             // Create a new Intent for handling media button inputs on pre-Lollipop devices
             Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
             mediaButtonIntent.setClass(this, MediaButtonReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, 0);
-            mMediaSessionCompat.setMediaButtonReceiver(pendingIntent);
-        }
+            PendingIntent pendingIntentx = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, 0);
+            mMediaSessionCompat.setMediaButtonReceiver(pendingIntentx);
 
         // Set the session activity
         Context context = getApplicationContext();
@@ -457,7 +450,6 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, mMediaPlayer.getDuration());
 
         // Include the other metadata if the audio player features should be included
-        if(includeAudioPlayerFeatures) {
             // Add the display icon and the album art
             metadataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON, albumArt);
             metadataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
@@ -468,7 +460,6 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
             metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, currentTrack.getAuthor());
             // metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, 1);
             // metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, 1);
-        }
 
         // Pass the metadata of the currently playing audio file to the media session
         mMediaSessionCompat.setMetadata(metadataBuilder.build());
@@ -592,11 +583,6 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
      * @param action  The main action to display in the notification (play or pause button).
      */
     private void displayNotification(Context context, NotificationCompat.Action action) {
-        // Don't display the notification if the audio player features should not be included
-        if(!includeAudioPlayerFeatures) {
-            return;
-        }
-
         // NotificationManager notificationManager = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Get the audio metadata
@@ -649,8 +635,8 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
                     .setStyle(style);
 
             // Create the notification channel, if needed
-            String notificationChannelId = "flutter_sound_channel_01";
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                //String notificationChannelId = "flutter_sound_channel_01";
                 // Initialize the channel with name, description, importance and ID
                 CharSequence name = "flutter_sound";
                 String channelDescription = "Media playback controls";
@@ -691,7 +677,6 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
     /**
      * A tool to download the album art to display in the notification in a background thread.
      */
-    /*
     private class AlbumArtDownloader extends AsyncTask<String, Void, Bitmap> {
         @Override
         protected Bitmap doInBackground(String... params) {
@@ -719,6 +704,4 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
             super.onPostExecute(bitmap);
         }
     }
-
-     */
 }

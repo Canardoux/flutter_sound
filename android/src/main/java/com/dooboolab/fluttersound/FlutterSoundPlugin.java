@@ -88,10 +88,10 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
 
         final AudioModel model = new AudioModel ();
         private Timer mTimer = new Timer ();
-        final private Handler recordHandler = new Handler ();
+        final public Handler recordHandler = new Handler ();
         //mainThread handler
         final private Handler mainHandler = new Handler ();
-        final private Handler dbPeakLevelHandler = new Handler ();
+        final public Handler dbPeakLevelHandler = new Handler ();
         private static MethodChannel channel;
         //private static Context applicationContext;
         AudioManager audioManager;
@@ -137,8 +137,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
         };
 
         static int formatsArray[] = {
-                MediaRecorder.OutputFormat.MPEG_4 // DEFAULT
-                , MediaRecorder.OutputFormat.MPEG_4 // CODEC_AAC
+                MediaRecorder.OutputFormat.AAC_ADTS // DEFAULT
+                , MediaRecorder.OutputFormat.AAC_ADTS // CODEC_AAC
                 , sdkCompat.OUTPUT_FORMAT_OGG       // CODEC_OPUS
                 , 0                                 // CODEC_CAF_OPUS (this is apple specific)
                 , 0                                 // CODEC_MP3
@@ -225,6 +225,15 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
         public void onMethodCall ( final MethodCall call, final Result result ) {
                 final String path = call.argument ( "path" );
                 switch ( call.method ) {
+
+                        case "initializeMediaPlayer":
+                                result.success (true);
+                                break;
+
+                        case "releaseMediaPlayer":
+                                result.success (true);
+                                break;
+
                         case "isDecoderSupported": {
                                 int _codec = call.argument ( "codec" );
                                 boolean b = _isAndroidDecoderSupported[ _codec ];

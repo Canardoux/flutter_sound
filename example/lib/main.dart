@@ -33,17 +33,16 @@ class MyApp extends StatefulWidget
 }
 
 
-
-       // [LARPOUX] void cancelRecorderSubscriptions( )
-// [LARPOUX] {
-// [LARPOUX] if (_recorderSubscription != null)
 class _MyAppState extends State<MyApp> {
   bool _isRecording = false;
   List <String> _path = [null, null, null, null, null, null, null];
   StreamSubscription _recorderSubscription;
   StreamSubscription _dbPeakSubscription;
   StreamSubscription _playerSubscription;
-  FlutterSound flutterSoundModule;
+  StreamSubscription _playbackStateSubscription;
+  static FlutterSound flutterSound = FlutterSound();
+  static Flauto flauto = Flauto();
+  static FlutterSound flutterSoundModule;
 
   String _recorderTxt = '00:00:00';
   String _playerTxt = '00:00:00';
@@ -61,11 +60,15 @@ class _MyAppState extends State<MyApp> {
   // be displayed.
   bool _canDisplayPlayerControls = false;
 
+  // Whether the user wants to use the audio player features
   bool _isAudioPlayer = false;
 
   void _initializeExample( FlutterSound module )
   {
+          if ( flutterSoundModule != null)
+                  flutterSoundModule.releaseMediaPlayer();
           flutterSoundModule = module;
+          flutterSoundModule.initializeMediaPlayer();
           flutterSoundModule.setSubscriptionDuration( 0.01 );
           flutterSoundModule.setDbPeakLevelUpdate( 0.8 );
           flutterSoundModule.setDbLevelEnabled( true );
@@ -78,13 +81,22 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    flutterSound = new FlutterSound();
-    flutterSound.setSubscriptionDuration(0.01);
-    flutterSound.setDbPeakLevelUpdate(0.8);
-    flutterSound.setDbLevelEnabled(true);
-    initializeDateFormatting();
-    _initializeExample( flutterSoundModule );
-    }
+    _initializeExample( flutterSound);
+  }
+
+        void cancelRecorderSubscriptions( )
+        {
+                if (_recorderSubscription != null)
+                {
+                        _recorderSubscription.cancel( );
+                        _recorderSubscription = null;
+                }
+                if (_dbPeakSubscription != null)
+                {
+                        _dbPeakSubscription.cancel( );
+                        _dbPeakSubscription = null;
+                }
+        }
 
         void cancelPlayerSubscriptions( )
         {
@@ -168,7 +180,7 @@ class _MyAppState extends State<MyApp> {
 
   void startRecorder() async{
           try {
-                  // String path = await flutterSound.startRecorder
+                  // String path = await flutterSoundModule.startRecorder
                   // (
                   //   paths[_codec.index],
                   //   codec: _codec,
@@ -179,13 +191,13 @@ class _MyAppState extends State<MyApp> {
                   // );
                   Directory tempDir = await getTemporaryDirectory();
 
-                  String path = await flutterSound.startRecorder(
-                          uri: '${tempDir.path}/sound.aac', // [LARPOUX] not cool
+                  String path = await flutterSoundModule.startRecorder(
+                          uri: '${tempDir.path}/${paths[_codec.index]}',
                           codec: _codec,
                           );
                   print('startRecorder: $path');
 
-                  _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
+                  _recorderSubscription = flutterSoundModule.onRecorderStateChanged.listen((e) {
                           DateTime date = new DateTime.fromMillisecondsSinceEpoch(
                                       e.currentPosition.toInt(),
                                       isUtc: true);
@@ -196,7 +208,7 @@ class _MyAppState extends State<MyApp> {
                           });
                   });
                   _dbPeakSubscription =
-                              flutterSound.onRecorderDbPeakChanged.listen((value) {
+                              flutterSoundModule.onRecorderDbPeakChanged.listen((value) {
                                       print("got update -> $value");
                                       setState(() {
                                               this._dbLevel = value;
@@ -207,18 +219,25 @@ class _MyAppState extends State<MyApp> {
                           this._isRecording = true;
                           this._path[_codec.index] = path;
                   });
-          } catch (err) {
+          } catch (err)
+          {
                   print ('startRecorder error: $err');
                   setState (()
                             {
-                                    _recorderSubscription.cancel( );
-                                    _recorderSubscription = null;
+                                    stopRecorder();
+                                    this._isRecording = false;
+                                    if (_recorderSubscription != null)
+                                    {
+                                            _recorderSubscription.cancel( );
+                                            _recorderSubscription = null;
+                                    }
+                                    if (_dbPeakSubscription != null)
+                                    {
+                                            _dbPeakSubscription.cancel( );
+                                            _dbPeakSubscription = null;
+                                    }
                             }
-                                        if (_dbPeakSubscription != null)
-                  {
-                          _dbPeakSubscription.cancel( );
-                          _dbPeakSubscription = null;
-                  }
+                   );
           }
   }
 
@@ -305,6 +324,8 @@ class _MyAppState extends State<MyApp> {
                 {
                         final exampleAudioFilePath =
                                     "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
+                        final albumArtPath =
+                                    "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_500kB.png";
                         //final albumArtPath =
                         //"https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_500kB.png";
 
@@ -347,7 +368,7 @@ class _MyAppState extends State<MyApp> {
                                         codec: _codec,
                                         trackTitle: "This is a record",
                                         trackAuthor: "from flutter_sound",
-                                        albumArtUrl: null,
+                                        albumArtUrl: albumArtPath,
                                         );
                                 path = await flauto.startPlayerFromTrack( track, /*canSkipForward:true, canSkipBackward:true,*/
                                                                                       whenFinished: ( )
@@ -581,17 +602,25 @@ class _MyAppState extends State<MyApp> {
                 return flutterSoundModule.audioState == t_AUDIO_STATE.IS_STOPPED ? startPlayer : null;
         }
 
+        void startStopRecorder()
+        {
+                if (flutterSoundModule.audioState == t_AUDIO_STATE.IS_RECORDING)
+                        stopRecorder();
+                else
+                        startRecorder();
+        }
+
         onStartRecorderPressed( )
         {
                 if (_media == t_MEDIA.ASSET || _media == t_MEDIA.BUFFER || _media == t_MEDIA.REMOTE_EXAMPLE_FILE)
                         return null;
-                if (flutterSoundModule.audioState == t_AUDIO_STATE.IS_RECORDING)
-                        return stopRecorder;
-                // Disable the button if the selected codec is not supported
+                 // Disable the button if the selected codec is not supported
                 if (!_encoderSupported)
                         return null;
+                if (flutterSoundModule.audioState == t_AUDIO_STATE.IS_PAUSED || flutterSoundModule.audioState == t_AUDIO_STATE.IS_PLAYING)
+                        return null;
+                return startStopRecorder;
 
-                return flutterSoundModule.audioState == t_AUDIO_STATE.IS_STOPPED ? startRecorder : null;
         }
 
         AssetImage recorderAssetImage( )
@@ -629,12 +658,11 @@ class _MyAppState extends State<MyApp> {
                         {
                                 if (!newVal)
                                 {
-                                        releasePlayer( );
+
                                         _initializeExample( flutterSound );
                                 } else
                                 {
                                         _initializeExample( flauto );
-                                        initializePlayer( );
                                 }
                         }
                         catch (err)
@@ -716,7 +744,7 @@ class _MyAppState extends State<MyApp> {
                                         async {
                                                 await flutterSoundModule.seekToPlayer( value.toInt( ) );
                                         },
-                                        divisions: maxDuration.toInt( ) ) );
+                                        divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt( ) ) );
 
                 final dropdowns = makeDropdowns( context );
                 final trackSwitch = Padding(
@@ -852,9 +880,9 @@ class _MyAppState extends State<MyApp> {
                                                         max: maxDuration,
                                                         onChanged: ( double value )
                                                         async {
-                                                                await flutterSound.seekToPlayer( value.toInt( ) );
+                                                                await flutterSoundModule.seekToPlayer( value.toInt( ) );
                                                         },
-                                                        divisions: maxDuration.toInt( )
+                                                        divisions:  maxDuration == 0.0 ? 1 : maxDuration.toInt( )
                                                         )
                                             ),
                         ],

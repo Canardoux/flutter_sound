@@ -63,17 +63,25 @@ class Track
         /// The URL that points to the album art of the track
         final String albumArtUrl;
 
+        /// The asset that points to the album art of the track
+        final String albumArtAsset;
+
+        /// The image that points to the album art of the track
+        final String albumArtImage;
+
         /// The codec of the audio file to play. If this parameter's value is null
         /// it will be set to [t_CODEC.DEFAULT].
         t_CODEC codec;
 
         Track( {
-                       this.trackPath,
-                       this.dataBuffer,
-                       this.trackTitle,
-                       this.trackAuthor,
-                       this.albumArtUrl,
-                       this.codec = t_CODEC.DEFAULT,
+                        this.trackPath,
+                        this.dataBuffer,
+                        this.trackTitle,
+                        this.trackAuthor,
+                        this.albumArtUrl = null,
+                        this.albumArtAsset = null,
+                        this.albumArtImage = null,
+                        this.codec = t_CODEC.DEFAULT,
                } )
         {
                 codec = codec == null ? t_CODEC.DEFAULT : codec;
@@ -97,7 +105,8 @@ class Track
                         "dataBuffer": dataBuffer,
                         "title": trackTitle,
                         "author": trackAuthor,
-                        "albumArt": albumArtUrl,
+                        "albumArtUrl": albumArtUrl,
+                        "albumArtAsset": albumArtAsset,
                         "bufferCodecIndex": codec?.index,
                 };
 
@@ -149,7 +158,7 @@ class Track
 
 }
 
-Flauto flauto = Flauto( ); // Singleton
+//Flauto flauto = Flauto( ); // Singleton
 
 class Flauto extends FlutterSound
 {
@@ -192,9 +201,7 @@ class Flauto extends FlutterSound
         async {
                 try
                 {
-                        await getChannel( ).invokeMethod( 'initializeMediaPlayer', <String, dynamic>{
-                                'includeAudioPlayerFeatures': true,
-                        } );
+                        await getChannel( ).invokeMethod( 'initializeMediaPlayer');
                         onSkipBackward = null;
                         onSkipForward = null;
 
@@ -256,20 +263,9 @@ class Flauto extends FlutterSound
                             t_updateProgress onUpdateProgress = null,
                     } )
         async {
-                // Check whether we can start the player
-                /*
-                if ( (await getPlayerState()) != t_AUDIO_STATE.STOPPED)
-                {
-                        throw PlayerRunningException(
-                                    'Cannot start player in playback state "$playbackState". The player '
-                                                'must be just initialized or in "${PlaybackState.STOPPED}" '
-                                                'state' );
-                }
-
-                 */
 
                 // Check the current codec is not supported on this platform
-                if (!await flutterSound.isDecoderSupported( track.codec ))
+                if (!await isDecoderSupported( track.codec ))
                 {
                         throw PlayerRunningException( 'The selected codec is not supported on '
                                                                   'this platform.' );
@@ -289,6 +285,7 @@ class Flauto extends FlutterSound
                 String result =  await getChannel( ).invokeMethod( 'startPlayerFromTrack', <String, dynamic>
                 {
                         'track': trackMap,
+                        'canPause': whenPaused != null,
                         'canSkipForward': onSkipForward != null,
                         'canSkipBackward': onSkipBackward != null,
                 } );
@@ -298,7 +295,7 @@ class Flauto extends FlutterSound
                         print ('startPlayer result: $result');
                         setPlayerCallback ();
 
-                        playbackState = PlaybackState.PLAYING;
+                        audioState = t_AUDIO_STATE.IS_PLAYING;
                 }
                 return result;
         }
@@ -322,7 +319,7 @@ class Flauto extends FlutterSound
                                                 //playbackState = PlaybackState.STOPPED;
                                                 _playbackStateChangedController.add( t_AUDIO_STATE.IS_STOPPED );
                                         }
-                                        playbackState = PlaybackState.STOPPED;
+                                        audioState = t_AUDIO_STATE.IS_STOPPED;
                                         if (audioPlayerFinishedPlaying != null)
                                         {
                                                 audioPlayerFinishedPlaying( );
@@ -330,38 +327,6 @@ class Flauto extends FlutterSound
                                         }
                                 }
                                 break;
-
-                        case 'updatePlaybackState':
-                                {
-                                        t_AUDIO_STATE playbackState =  t_AUDIO_STATE.IS_PAUSED;
-
-                                        switch (call.arguments)
-                                        {
-                                                case 0:
-                                                        playbackState = t_AUDIO_STATE.IS_STOPPED;
-                                                        break;
-                                                case 1:
-                                                        playbackState = t_AUDIO_STATE.IS_PLAYING;
-                                                        break;
-                                                case 2:
-                                                        playbackState = t_AUDIO_STATE.IS_PAUSED;
-                                                        break;
-                                                 default:
-                                                        throw Exception(
-                                                                    'An invalid playback state was given to updatePlaybackState.' );
-                                        }
-
-
-
-                                        // If the controller has been initialized notify the listeners that the
-                                        // playback state has changed.
-                                        if (_playbackStateChangedController != null)
-                                        {
-                                                _playbackStateChangedController.add( playbackState );
-                                        }
-                                }
-                                break;
-
 
                         default:
                                 super.channelMethodCallHandler( call );

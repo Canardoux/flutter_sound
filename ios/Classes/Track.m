@@ -6,7 +6,8 @@
 @synthesize path;
 @synthesize title;
 @synthesize author;
-@synthesize albumArt;
+@synthesize albumArtUrl;
+@synthesize albumArtAsset;
 @synthesize dataBuffer;
 
 // Returns true if the audio file is stored as a path represented by a string, false if
@@ -34,8 +35,11 @@
         NSString *authorString = [responseObj objectForKey:@"author"];
         author = authorString;
         
-        NSString *albumArtString = [responseObj objectForKey:@"albumArt"];
-        albumArt = albumArtString;
+        NSString *albumArtUrlString = [responseObj objectForKey:@"albumArtUrl"];
+        albumArtUrl = albumArtUrlString;
+        
+        NSString *albumArtAssetString = [responseObj objectForKey:@"albumArtAsset"];
+        albumArtAsset = albumArtAssetString;
         
         FlutterStandardTypedData *dataBufferJson = [responseObj objectForKey:@"dataBuffer"];
         dataBuffer = dataBufferJson;
@@ -57,9 +61,12 @@
     NSString *authorString = [jsonData objectForKey:@"author"];
     author = authorString;
     
-    NSString *albumArtString = [jsonData objectForKey:@"albumArt"];
-    albumArt = albumArtString;
+    NSString *albumArtUrlString = [jsonData objectForKey:@"albumArtUrl"];
+    albumArtUrl = albumArtUrlString;
         
+    NSString *albumArtAssetString = [jsonData objectForKey:@"albumArtAsset"];
+    albumArtAsset = albumArtAssetString;
+         
     FlutterStandardTypedData *dataBufferJson = [jsonData objectForKey:@"dataBuffer"];
     dataBuffer = dataBufferJson;
     
