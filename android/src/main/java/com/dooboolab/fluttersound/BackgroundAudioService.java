@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioAttributes;
@@ -397,14 +398,30 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         // Set the onCompletion listener
         mMediaPlayer.setOnCompletionListener(this);
         // Set the onPreparedListener
-        mMediaPlayer.setOnPreparedListener(mp -> {
+        mMediaPlayer.setOnPreparedListener(mp ->
+        {
             // Start retrieving the album art if the audio player features should be included
             //if(includeAudioPlayerFeatures) {
-                new AlbumArtDownloader().execute(currentTrack.getAlbumArtUrl());
-            //}
+            Bitmap albumArt = null;
+            if (currentTrack.getAlbumArtUrl () != null)
+            {
+                new AlbumArtDownloader ().execute ( currentTrack.getAlbumArtUrl () );
+                //}
 
-            // Pass the audio file metadata to the media session
-            initMediaSessionMetadata(null);
+                // Pass the audio file metadata to the media session
+
+            } else
+            if (currentTrack.getAlbumArtAsset () != null)
+            try
+            {
+                AssetManager assetManager = getApplicationContext ().getAssets ();
+                InputStream istr = assetManager.open ( currentTrack.getAlbumArtAsset () );
+                albumArt = BitmapFactory.decodeStream(istr);
+
+            } catch (IOException e)
+            {
+            }
+            initMediaSessionMetadata ( albumArt );
 
             // Call the callback
             if (mediaPlayerOnPreparedListener != null) {

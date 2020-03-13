@@ -561,8 +561,8 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
           json.put("duration", String.valueOf(mp.getDuration()));
           json.put("current_position", String.valueOf(mp.getCurrentPosition()));
               getChannel().invokeMethod("audioPlayerFinishedPlaying", json.toString());
-        } catch (JSONException je) {
-          Log.d(TAG, "Json Exception: " + je.toString());
+        } catch (Exception e) {
+          Log.d(TAG, "Json Exception: " + e.toString());
         }
         mTimer.cancel();
         if(mp.isPlaying())
