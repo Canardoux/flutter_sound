@@ -137,11 +137,19 @@ FlutterMethodChannel* _channel;
   NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
 
-  if (subscriptionDuration == 0.0 && timer != nil) { // Just one shot !
+  if ([duration intValue] == 0 && timer != nil) {
     [self stopTimer];
     return;
   }
-
+  
+  // The following patch is necessary, because of an ios bug.
+  // When the user does pause/resume/pause/resume/... very quickly
+  // then ios enter a loop and the app does not have control any more
+  if (![audioPlayer isPlaying] )
+  {
+            [self stopPlayer];
+            return;
+  }
 
   NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
   [[ self getChannel] invokeMethod:@"updateProgress" arguments:status];

@@ -51,13 +51,14 @@ import java.util.concurrent.Callable;
 public class BackgroundAudioService extends MediaBrowserServiceCompat implements MediaPlayer.OnCompletionListener, AudioManager.OnAudioFocusChangeListener {
 
     final static String TAG = "BackgroundAudioService";
-    static final String notificationChannelId = "com.dooboolab.flutter_sound_channel_01";
+    static final String notificationChannelId = "flutter_sound_channel_01";
 
     public static Callable mediaPlayerOnPreparedListener;
     public static Callable mediaPlayerOnCompletionListener;
     public static Callable skipTrackForwardHandler;
     public static Callable skipTrackBackwardHandler;
     public static Function playbackStateUpdater;
+    //public static boolean includeAudioPlayerFeatures;
     public static Activity activity;
 
     public final static int PLAYING_STATE = 0;
@@ -68,6 +69,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
      * The track that we're currently playing
      */
     public static Track currentTrack;
+
 
     private boolean mIsNoisyReceiverRegistered;
     private MediaPlayer mMediaPlayer;
@@ -234,6 +236,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         // Start the audio player
         mMediaPlayer.start();
 
+
         // Start the service
         startService(new Intent(activity, BackgroundAudioService.class));
 
@@ -246,7 +249,8 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         stopForeground(removeNotification);
         // Stop the service
         stopSelf();
-    }
+
+       }
 
 
     // Not important for general audio service, required for class
@@ -395,7 +399,9 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         // Set the onPreparedListener
         mMediaPlayer.setOnPreparedListener(mp -> {
             // Start retrieving the album art if the audio player features should be included
-                // [LARPOUX] new AlbumArtDownloader().execute(currentTrack.getAlbumArtUrl());
+            //if(includeAudioPlayerFeatures) {
+                new AlbumArtDownloader().execute(currentTrack.getAlbumArtUrl());
+            //}
 
             // Pass the audio file metadata to the media session
             initMediaSessionMetadata(null);
@@ -422,6 +428,9 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         // Pass to the media session the callback that responds to media button events
         mMediaSessionCompat.setCallback(mMediaSessionCallback);
 
+
+        // Do not support hardware media playback actions if we are not including audio features
+        if(true) {
             // Inform the session that it is capable of handling media button events and
             // transport control commands.
             mMediaSessionCompat.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
@@ -429,15 +438,15 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
             // Create a new Intent for handling media button inputs on pre-Lollipop devices
             Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
             mediaButtonIntent.setClass(this, MediaButtonReceiver.class);
-            PendingIntent pendingIntentx = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, 0);
-            mMediaSessionCompat.setMediaButtonReceiver(pendingIntentx);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, 0);
+            mMediaSessionCompat.setMediaButtonReceiver(pendingIntent);
+        }
 
         // Set the session activity
         Context context = getApplicationContext();
         Intent intent = new Intent(context, activity.getClass());
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         mMediaSessionCompat.setSessionActivity(pendingIntent);
-
         // Pass the media session token to this service
         setSessionToken(mMediaSessionCompat.getSessionToken());
     }
@@ -448,8 +457,8 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
 
         // Add the track duration
         metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, mMediaPlayer.getDuration());
-
         // Include the other metadata if the audio player features should be included
+        if(true) {
             // Add the display icon and the album art
             metadataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON, albumArt);
             metadataBuilder.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
@@ -460,7 +469,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
             metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, currentTrack.getAuthor());
             // metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, 1);
             // metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, 1);
-
+        }
         // Pass the metadata of the currently playing audio file to the media session
         mMediaSessionCompat.setMetadata(metadataBuilder.build());
     }
@@ -556,7 +565,8 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
 
         // Show the notification
         displayNotification(getApplicationContext(), actionPause);
-    }
+
+      }
 
     /**
      * Shows a notification with the media controls for the paused state.
@@ -583,7 +593,12 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
      * @param action  The main action to display in the notification (play or pause button).
      */
     private void displayNotification(Context context, NotificationCompat.Action action) {
-        // NotificationManager notificationManager = null;
+        // Don't display the notification if the audio player features should not be included
+        //if(!includeAudioPlayerFeatures) {
+            //return;
+        //}
+
+        NotificationManager notificationManager = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Get the audio metadata
             MediaControllerCompat controller = mMediaSessionCompat.getController();
@@ -607,7 +622,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
                             this,
                             PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS) : null
             );
-            boolean skipForwardEnabled = skipTrackForwardHandler != null;
+            boolean skipForwardEnabled = true; //skipTrackForwardHandler != null;
             NotificationCompat.Action skipForward = new NotificationCompat.Action(
                     skipForwardEnabled ? R.drawable.ic_skip_next_on : R.drawable.ic_skip_next_off,
                     "Skip Forward",
@@ -635,8 +650,8 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
                     .setStyle(style);
 
             // Create the notification channel, if needed
+            String notificationChannelId = "flutter_sound_channel_01";
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                //String notificationChannelId = "flutter_sound_channel_01";
                 // Initialize the channel with name, description, importance and ID
                 CharSequence name = "flutter_sound";
                 String channelDescription = "Media playback controls";
@@ -650,24 +665,28 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
                 builder.setChannelId(notificationChannelId);
 
                 // Get the notification manager and create the notification channel
-                // notificationManager = context.getSystemService(NotificationManager.class);
-                // notificationManager.createNotificationChannel(channel);
+                notificationManager = context.getSystemService(NotificationManager.class);
+                notificationManager.createNotificationChannel(channel);
             }
 
             // Build the notification
             Notification notification = builder.build();
+            /*
+            ////NotificationManagerCompat notificationManager2 = NotificationManagerCompat.from(Flauto.androidContext);
+            ////notificationManager2.notify(12345, notification);
+
 
             // Check whether a notification manager have already been created
-//            if (notificationManager == null) {
-//                // The notification manager has not been created yet, then create it now
-//                NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
-//                // Send the notification
-//                notificationManagerCompat.notify(1, notification);
-//            } else {
-//                // The notification manager has already been created, then send the notification
-//                notificationManager.notify(1, notification);
-//            }
-
+            if (notificationManager == null) {
+                // The notification manager has not been created yet, then create it now
+                NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
+                // Send the notification
+                notificationManagerCompat.notify(135, notification);
+            } else {
+                // The notification manager has already been created, then send the notification
+                notificationManager.notify(135, notification);
+            }
+*/
             // Display the notification and place the service in the foreground
             startForeground(1, notification);
 
@@ -700,6 +719,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         protected void onPostExecute(Bitmap bitmap) {
             // Reinitialize the metadata when the image has been downloaded
             initMediaSessionMetadata(bitmap);
+
 
             super.onPostExecute(bitmap);
         }

@@ -78,7 +78,7 @@ public class Flauto extends FlutterSoundPlugin {
     static Flauto flauto = new Flauto (); // Singleton
     private Timer mTimer = new Timer ();
     final private Handler mainHandler = new Handler ();
-    static private Context androidContext;
+    static public Context androidContext;
     public int subsDurationMillis = 10;
     public long peakLevelUpdateMillis = 800;
     public boolean shouldProcessDbLevel = true;
@@ -211,9 +211,8 @@ public class Flauto extends FlutterSoundPlugin {
             );
             // Pass the playback state updater to the media browser
             mMediaBrowserHelper.setPlaybackStateUpdater ( new PlaybackStateUpdater () );
-        } else {
-            result.success ( "The player had already been initialized." );
         }
+            result.success ( "The player had already been initialized." );
     }
 
     public void releaseMediaPlayer ( final Result result ) {
@@ -279,23 +278,23 @@ public class Flauto extends FlutterSoundPlugin {
         mTimer = new Timer ();
 
         // Add or remove the handlers for when the user tries to skip the current track
-        if ( canSkipForward ) {
-            BackgroundAudioService.skipTrackForwardHandler = new SkipTrackHandler ( true );
+        if (canSkipForward) {
+            mMediaBrowserHelper.setSkipTrackForwardHandler(new SkipTrackHandler(true));
         } else {
-            BackgroundAudioService.skipTrackForwardHandler = null;
+            mMediaBrowserHelper.removeSkipTrackForwardHandler();
         }
-        if ( canSkipBackward ) {
-            BackgroundAudioService.skipTrackBackwardHandler = new SkipTrackHandler ( false );
+        if (canSkipBackward) {
+            mMediaBrowserHelper.setSkipTrackBackwardHandler(new SkipTrackHandler(false));
         } else {
-            BackgroundAudioService.skipTrackBackwardHandler = null;
+            mMediaBrowserHelper.removeSkipTrackBackwardHandler();
         }
 
         // Pass to the media browser the metadata to use in the notification
         mMediaBrowserHelper.setNotificationMetadata ( track );
 
         // Add the listeners for the onPrepared and onCompletion events
-        BackgroundAudioService.mediaPlayerOnPreparedListener = ( new MediaPlayerOnPreparedListener ( result, path ) );
-        BackgroundAudioService.mediaPlayerOnCompletionListener = ( new MediaPlayerOnCompletionListener () );
+        mMediaBrowserHelper.setMediaPlayerOnPreparedListener ( new MediaPlayerOnPreparedListener ( result, path ) );
+        mMediaBrowserHelper.setMediaPlayerOnCompletionListener( new MediaPlayerOnCompletionListener () );
 
         // Check whether a path to an audio file was given
         if ( path == null ) {

@@ -63,10 +63,10 @@ class _MyAppState extends State<MyApp> {
   // Whether the user wants to use the audio player features
   bool _isAudioPlayer = false;
 
-  void _initializeExample( FlutterSound module )
+  void _initializeExample( FlutterSound module ) async
   {
           if ( flutterSoundModule != null)
-                  flutterSoundModule.releaseMediaPlayer();
+                  await flutterSoundModule.releaseMediaPlayer();
           flutterSoundModule = module;
           flutterSoundModule.initializeMediaPlayer();
           flutterSoundModule.setSubscriptionDuration( 0.01 );
