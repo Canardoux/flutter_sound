@@ -100,12 +100,15 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
             // Someone asked to start the playback, then start it
 
             // Request the audio focus and check if it was granted
+            /*
             if (!successfullyRetrievedAudioFocus()) {
                 // The audio focus was not granted, then don't start the playback
                 // TODO: handle failed audio focus request more gracefully
                 Log.e(TAG, "The audio focus has not been granted, then it's impossible to play audio.");
                 return;
             }
+
+             */
 
             startPlayerPlayback();
         }
@@ -153,7 +156,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
                 // Prepare the player for playback
                 mMediaPlayer.prepareAsync();
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 Log.e(TAG, "The following error occurred while trying to set the track to play in the audio player.", e);
             }
         }
@@ -352,6 +355,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         super.onDestroy();
         // This service is no longer used and is being removed, then clean up any resources it holds
         // and abandon the audio focus.
+        /*
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -359,6 +363,8 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         } else {
             audioManager.abandonAudioFocus(this);
         }
+
+         */
 
         // Unregister the noisy receiver only if it was previously set
         if(mIsNoisyReceiverRegistered) {
@@ -513,6 +519,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
      *
      * @return Whether the audio focus was successfully retrieved.
      */
+    /*
     private boolean successfullyRetrievedAudioFocus() {
         // Get a reference to the system AudioManager
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -540,6 +547,8 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
         // Check whether the audio focus was gained
         return result == AudioManager.AUDIOFOCUS_GAIN;
     }
+
+     */
 
     private void setMediaPlaybackState(int state) {
         // Build a playback state from the given state
@@ -610,10 +619,6 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
      * @param action  The main action to display in the notification (play or pause button).
      */
     private void displayNotification(Context context, NotificationCompat.Action action) {
-        // Don't display the notification if the audio player features should not be included
-        //if(!includeAudioPlayerFeatures) {
-            //return;
-        //}
 
         NotificationManager notificationManager = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -688,22 +693,7 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat implements
 
             // Build the notification
             Notification notification = builder.build();
-            /*
-            ////NotificationManagerCompat notificationManager2 = NotificationManagerCompat.from(Flauto.androidContext);
-            ////notificationManager2.notify(12345, notification);
 
-
-            // Check whether a notification manager have already been created
-            if (notificationManager == null) {
-                // The notification manager has not been created yet, then create it now
-                NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
-                // Send the notification
-                notificationManagerCompat.notify(135, notification);
-            } else {
-                // The notification manager has already been created, then send the notification
-                notificationManager.notify(135, notification);
-            }
-*/
             // Display the notification and place the service in the foreground
             startForeground(1, notification);
 

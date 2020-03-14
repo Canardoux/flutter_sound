@@ -29,11 +29,7 @@ import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/services.dart';
-import 'package:flutter_sound/android_encoder.dart';
-import 'package:flutter_sound/ios_quality.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:path/path.dart' as p;
-import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 
 
@@ -97,9 +93,6 @@ class Track
         /// as values.
         Future<Map<String, dynamic>> toMap( )
         async {
-                // Re-mux OGG format to play in iOS
-                // await _adaptOggToIos(); // TODO: test it
-
                 final map = {
                         "path": trackPath,
                         "dataBuffer": dataBuffer,
@@ -158,27 +151,23 @@ class Track
 
 }
 
-//Flauto flauto = Flauto( ); // Singleton
-
 class Flauto extends FlutterSound
 {
         static const MethodChannel _channel = const MethodChannel( 'flauto' );
         StreamController<t_AUDIO_STATE> _playbackStateChangedController;
 
-        //StreamController<PlayStatus> _playerController;
-        //Function _skipForward;
-        //Function _skipBackward;
-
-        // Whether the handler for when the user tries to skip forward was set
-        //bool _skipTrackForwardHandlerSet = false;
-
-        // Whether the handler for when the user tries to skip backward was set
-        //bool _skipTrackBackwardHandlerSet = false;
-
 
         @override
         MethodChannel getChannel( )
         => _channel;
+
+        Flauto()
+        {
+                if (!isInited)
+                        {
+                                initializeMediaPlayer();
+                        }
+        }
 
         /// Initializes the media player and all the callbacks for the player and the
         /// recorder. This must be called before all other media player and recorder
@@ -198,28 +187,29 @@ class Flauto extends FlutterSound
         /// Media player and recorder controls should be displayed only after this
         /// method has finished executing.
         Future<void> initializeMediaPlayer( )
-        async {
-                try
+        async
+        {
+                if (!isInited)
                 {
-                        await getChannel( ).invokeMethod( 'initializeMediaPlayer');
-                        onSkipBackward = null;
-                        onSkipForward = null;
-
-                        //if (playerController == null)
-                        //{
-                                //playerController = new StreamController.broadcast( );
-                        //}
-                        if (_playbackStateChangedController == null)
+                        try
                         {
-                                _playbackStateChangedController = StreamController.broadcast( );
-                        }
+                                await getChannel( ).invokeMethod( 'initializeMediaPlayer' );
+                                onSkipBackward = null;
+                                onSkipForward = null;
 
-                        // Add the method call handler
-                        getChannel( ).setMethodCallHandler( channelMethodCallHandler );
-                }
-                catch (err)
-                {
-                        throw err;
+                                if (_playbackStateChangedController == null)
+                                {
+                                        _playbackStateChangedController = StreamController.broadcast( );
+                                }
+
+                                // Add the method call handler
+                                getChannel( ).setMethodCallHandler( channelMethodCallHandler );
+                        }
+                        catch (err)
+                        {
+                                throw err;
+                        }
+                        isInited = true;
                 }
         }
 
@@ -229,13 +219,13 @@ class Flauto extends FlutterSound
         async {
                 try
                 {
+                        isInited = false;
                         // Stop the player playback before releasing
                         await stopPlayer( );
                         await getChannel( ).invokeMethod( 'releaseMediaPlayer' );
 
                         _removePlaybackStateCallback( );
                         _removePlayerCallback( );
-                        //playbackState = null;
                         onSkipBackward = null;
                         onSkipForward = null;
                 }
@@ -316,7 +306,6 @@ class Flauto extends FlutterSound
                                         if (playerController != null) playerController.add( status );
                                         if (_playbackStateChangedController != null)
                                         {
-                                                //playbackState = PlaybackState.STOPPED;
                                                 _playbackStateChangedController.add( t_AUDIO_STATE.IS_STOPPED );
                                         }
                                         audioState = t_AUDIO_STATE.IS_STOPPED;

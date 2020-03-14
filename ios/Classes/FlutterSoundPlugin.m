@@ -90,7 +90,6 @@ bool shouldProcessDbLevel = false;
 FlutterMethodChannel* _channel;
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
-  printf("audioPlayerDidFinishPlaying\n");
   NSLog(@"audioPlayerDidFinishPlaying");
   NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
@@ -103,7 +102,6 @@ FlutterMethodChannel* _channel;
 }
 
 - (void) stopTimer{
-    printf("stopTimer\n");
     if (timer != nil) {
         [timer invalidate];
         timer = nil;
@@ -111,7 +109,6 @@ FlutterMethodChannel* _channel;
 }
 
 - (void) stopDbPeakTimer {
-        printf("stopDbPeakTimer\n");
         if (self -> dbPeakTimer != nil) {
                [dbPeakTimer invalidate];
                self -> dbPeakTimer = nil;
@@ -121,7 +118,6 @@ FlutterMethodChannel* _channel;
 
 - (void)updateRecorderProgress:(NSTimer*) atimer
 {
-  //printf("updateRecorderProgress\n");
   assert (timer == timer);
   NSNumber *currentTime = [NSNumber numberWithDouble:audioRecorder.currentTime * 1000];
     [audioRecorder updateMeters];
@@ -142,24 +138,20 @@ FlutterMethodChannel* _channel;
     return;
   }
   
-  // The following patch is necessary, because of an ios bug.
-  // When the user does pause/resume/pause/resume/... very quickly
-  // then ios enter a loop and the app does not have control any more
-  if (![audioPlayer isPlaying] )
-  {
-            [self stopPlayer];
-            return;
-  }
+    NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
+    [[ self getChannel] invokeMethod:@"updateProgress" arguments:status];
+        if (![audioPlayer isPlaying] )
+        {
+                  [self stopPlayer];
+                  return;
+        }
 
-  NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
-  [[ self getChannel] invokeMethod:@"updateProgress" arguments:status];
 }
 
 
 
 - (void)updateDbPeakProgress:(NSTimer*) atimer
 {
-      printf("updateDbPeakProgress\n");
         assert (dbPeakTimer == atimer);
         NSNumber *normalizedPeakLevel = [NSNumber numberWithDouble:MIN(pow(10.0, [audioRecorder peakPowerForChannel:0] / 20.0) * 160.0, 160.0)];
         [[ self getChannel] invokeMethod:@"updateDbPeakProgress" arguments:normalizedPeakLevel];
@@ -167,7 +159,6 @@ FlutterMethodChannel* _channel;
 
 - (void)startRecorderTimer
 {
-  printf("startRecorderTimer\n");
   [self stopTimer];
   //dispatch_async(dispatch_get_main_queue(), ^{
       self->timer = [NSTimer scheduledTimerWithTimeInterval: subscriptionDuration
@@ -181,7 +172,6 @@ FlutterMethodChannel* _channel;
 - (void)startTimer
 {
       [self stopTimer];
-      printf("startTimer\n");
       //dispatch_async(dispatch_get_main_queue(), ^{ // ??? Why Async ?  (no async for recorder)
       self -> timer = [NSTimer scheduledTimerWithTimeInterval:subscriptionDuration
                                            target:self
@@ -193,7 +183,6 @@ FlutterMethodChannel* _channel;
 
 - (void)startDbTimer
 {
-    printf("startDbTimer\n");
     // Stop Db Timer
     [self stopDbPeakTimer];
     //dispatch_async(dispatch_get_main_queue(), ^{
@@ -205,7 +194,6 @@ FlutterMethodChannel* _channel;
     //});
 }
 
-FlutterSoundPlugin* flutterSoundModule; // Singleton
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
   FlutterMethodChannel* channel = [FlutterMethodChannel
@@ -215,7 +203,7 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
   [registrar addMethodCallDelegate:instance channel:channel];
   _channel = channel;
   
-  flutterSoundModule = instance;
+  //flutterSoundModule = instance;
   extern void flautoreg(NSObject<FlutterPluginRegistrar>*);
   flautoreg(registrar); // Here, this is not a nice place to do that, but someone has to do it somewhere...
 
@@ -226,7 +214,6 @@ FlutterSoundPlugin* flutterSoundModule; // Singleton
 
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-  printf("--> %s\n",call.method.cString);
 if ([@"startRecorder" isEqualToString:call.method]) {
     NSString* path = (NSString*)call.arguments[@"path"];
     NSNumber* sampleRateArgs = (NSNumber*)call.arguments[@"sampleRate"];
@@ -306,13 +293,8 @@ if ([@"startRecorder" isEqualToString:call.method]) {
   }
   else if ([@"setActive" isEqualToString:call.method]) {
     BOOL enabled = [call.arguments[@"enabled"] boolValue];
-    enabled = true;// [LARPOUX]
     [self setActive:enabled result:result];
   }
-  
-  //else if ([@"getPlayerState" isEqualToString:call.method]) {
-       //[self getPlayerState: result];
-  //}
   
   else {
     result(FlutterMethodNotImplemented);
@@ -328,14 +310,7 @@ if ([@"startRecorder" isEqualToString:call.method]) {
         return IS_PLAYING;
 }
 
-//- (void)getPlayerState: (FlutterResult)result
-//{
-//        NSNumber* state = [NSNumber numberWithInteger: [self audioState] ];
-//        result(state);
-//}
-
 - (void)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options result:(FlutterResult)result {
-        printf("setCategory\n");
         // Able to play in silent mode
   BOOL b = [[AVAudioSession sharedInstance]
      setCategory:  categ // AVAudioSessionCategoryPlayback 
@@ -343,12 +318,12 @@ if ([@"startRecorder" isEqualToString:call.method]) {
      options: options
      error: nil];
   setCategoryDone = BY_USER;
+  setActiveDone = NOT_SET;
   NSNumber* r = [NSNumber numberWithBool: b];
   result(r);
 }
 
 - (void)setActive:(BOOL)enabled result:(FlutterResult)result {
-enabled = true; // [LARPOUX]
   if (enabled) {
         if (setActiveDone != NOT_SET) { // Already activated. Nothing todo;
                 setActiveDone = BY_USER;
@@ -364,8 +339,6 @@ enabled = true; // [LARPOUX]
         }
         setActiveDone = NOT_SET;
   }
-  enabled = true; // [LARPOUX]
-  printf(enabled ? "setActive true\n" : "setActive false\n");
   BOOL b = [[AVAudioSession sharedInstance]  setActive:enabled error:nil] ;
   NSNumber* r = [NSNumber numberWithBool: b];
   result(r);
@@ -373,31 +346,26 @@ enabled = true; // [LARPOUX]
   
 
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result {
-  printf("isDecoderSupported\n");
   NSNumber* b = [NSNumber numberWithBool: _isIosDecoderSupported[codec] ];
   result(b);
 }
 
 - (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result {
-  printf("isEncoderSupported\n");
   NSNumber*  b = [NSNumber numberWithBool: _isIosEncoderSupported[codec] ];
   result(b);
 }
 
 - (void)setSubscriptionDuration:(double)duration result: (FlutterResult)result {
-  printf("setSubscriptionDuration\n");
   subscriptionDuration = duration;
   result(@"setSubscriptionDuration");
 }
 
 - (void)setDbPeakLevelUpdate:(double)intervalInSecs result: (FlutterResult)result {
-    printf("setDbPeakLevelUpdate\n");
     dbPeakInterval = intervalInSecs;
     result(@"setDbPeakLevelUpdate");
 }
 
 - (void)setDbLevelEnabled:(BOOL)enabled result: (FlutterResult)result {
-    printf("setDbLevelEnabled\n");
     shouldProcessDbLevel = enabled == YES;
     result(@"setDbLevelEnabled");
 }
@@ -410,7 +378,6 @@ enabled = true; // [LARPOUX]
         :(NSNumber*)iosQuality
         :(NSNumber*)bitRate
         result: (FlutterResult)result {
-  printf("startRecorder\n");
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:defaultExtensions[codec] ]];
   } else {
@@ -463,7 +430,6 @@ enabled = true; // [LARPOUX]
 }
 
 - (void)stopRecorder:(FlutterResult)result {
-  printf("stopRecorder\n");
   [audioRecorder stop];
 
   [self stopDbPeakTimer];
@@ -476,7 +442,6 @@ enabled = true; // [LARPOUX]
 }
 
 - (void)startPlayer:(NSString*)path result: (FlutterResult)result {
-  printf("startPlayer\n");
   bool isRemote = false;
   if ([path class] == [NSNull class]) {
     audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:@"sound.aac"]];
@@ -555,7 +520,6 @@ enabled = true; // [LARPOUX]
 
 
 - (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result {
-  printf("startPlayerFromBuffer\n");
   audioPlayer = [[AVAudioPlayer alloc] initWithData: [dataBuffer data] error: nil];
   audioPlayer.delegate = self;
   // Able to play in silent mode
@@ -590,7 +554,6 @@ enabled = true; // [LARPOUX]
 
 
 - (void)stopPlayer {
-  printf("stopPlayer\n");
   [self stopTimer];
   isPaused = false;
   [self stopDbPeakTimer]; // Just in case ...
@@ -599,17 +562,13 @@ enabled = true; // [LARPOUX]
     audioPlayer = nil;
   }
   if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) ) {
-      // [LARPOUX] [[AVAudioSession sharedInstance] setActive: NO error: nil];
+      [[AVAudioSession sharedInstance] setActive: NO error: nil];
       setActiveDone = NOT_SET;
   }
 }
 
 - (void)pause
 {
-        printf("pause\n");
-        //assert(isPlaying);
-         //isPlaying = false;
-
           [audioPlayer pause];
           isPaused = true;
           if (timer != nil)
@@ -617,11 +576,14 @@ enabled = true; // [LARPOUX]
               [timer invalidate];
               timer = nil;
           }
+          if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) ) {
+              [[AVAudioSession sharedInstance] setActive: NO error: nil];
+              setActiveDone = NOT_SET;
+          }
 }
 
 - (bool)resume
 {
-        printf("resume\n");
         isPaused = true;
 
         bool b = false;
@@ -634,18 +596,20 @@ enabled = true; // [LARPOUX]
                 if (b)
                 {
                         [self startTimer];
+                        if (setActiveDone == NOT_SET) {
+                                [[AVAudioSession sharedInstance] setActive: YES error: nil];
+                                setActiveDone = FOR_PLAYING;
+                        }
                 } else
                 {
                         printf("resume : resume failed!\n");
                 }
-                
         }
         return b;
 }
 
 - (void)pausePlayer:(FlutterResult)result
 {
-        printf("pausePlayer\n");
         if (audioPlayer)
         {
                  if (! [audioPlayer isPlaying] )
@@ -675,9 +639,7 @@ enabled = true; // [LARPOUX]
 
 - (void)resumePlayer:(FlutterResult)result
 {
-[[AVAudioSession sharedInstance]  setActive:YES error:nil] ;// [LARPOUX]
-
-   printf("resumePlayer\n");
+ 
    isPaused = false;
 
    if (!audioPlayer)
@@ -699,9 +661,8 @@ enabled = true; // [LARPOUX]
 
    } else
    {
-[[AVAudioSession sharedInstance]  setActive:YES error:nil] ; // [LARPOUX]
+        [[AVAudioSession sharedInstance]  setActive:YES error:nil] ;
         bool b = [self resume];
-        [[AVAudioSession sharedInstance]  setActive:YES error:nil] ; // [LARPOUX]
         if (b)
         {
                 NSString *filePath = audioFileURL.absoluteString;
@@ -717,7 +678,6 @@ enabled = true; // [LARPOUX]
 }
 
 - (void)seekToPlayer:(nonnull NSNumber*) time result: (FlutterResult)result {
-  printf("seekToPlayer\n");
   if (audioPlayer) {
       audioPlayer.currentTime = [time doubleValue] / 1000;
       [self updateProgress:nil];
@@ -731,7 +691,6 @@ enabled = true; // [LARPOUX]
 }
 
 - (void)setVolume:(double) volume result: (FlutterResult)result {
-    printf("setVolume\n");
     if (audioPlayer) {
         [audioPlayer setVolume: volume];
         result(@"volume set");

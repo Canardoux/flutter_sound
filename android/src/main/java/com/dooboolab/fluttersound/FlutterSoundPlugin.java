@@ -41,10 +41,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -55,10 +53,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import java.util.concurrent.Callable;
-import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
-//import io.flutter.embedding.engine.plugins.activity;
 
 // SDK compatibility
 // -----------------
@@ -72,6 +67,15 @@ class sdkCompat {
 
 /** FlutterSoundPlugin */
 public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, FlutterPlugin, ActivityAware {
+        enum  t_SET_CATEGORY_DONE
+        {
+                NOT_SET,
+                FOR_PLAYING, // Flutter_sound did it during startPlayer()
+                FOR_RECORDING, // Flutter_sound did it during startRecorder()
+                BY_USER // The caller did it himself : flutterSound must not change that)
+        };
+
+        t_SET_CATEGORY_DONE setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
         static FlutterSoundPlugin flutterSoundPlugin = new FlutterSoundPlugin(); // Singleton
 
         final static String TAG = "FlutterSoundPlugin";
@@ -94,7 +98,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
         final public Handler dbPeakLevelHandler = new Handler ();
         private static MethodChannel channel;
         //private static Context applicationContext;
-        AudioManager audioManager;
+        static AudioManager audioManager;
         AudioFocusRequest audioFocusRequest = null;
         String finalPath;
 
@@ -213,6 +217,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
                 reg = registrar;
                 flutterSoundPlugin.ctx = registrar.context ();
                 flutterSoundPlugin.audioManager = ( AudioManager ) flutterSoundPlugin.ctx.getSystemService ( Context.AUDIO_SERVICE );
+	        audioManager = ( AudioManager ) ctx.getSystemService ( Context.AUDIO_SERVICE );
                 channel = new MethodChannel ( registrar.messenger (), "flutter_sound" );
                 channel.setMethodCallHandler ( flutterSoundPlugin );
                 flutterSoundPlugin.androidActivity = registrar.activity ();
@@ -227,6 +232,12 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
                 switch ( call.method ) {
 
                         case "initializeMediaPlayer":
+                                audioFocusRequest = new AudioFocusRequest.Builder ( AudioManager.AUDIOFOCUS_GAIN )
+                                        //.setAudioAttributes(mPlaybackAttributes)
+                                        //.setAcceptsDelayedFocusGain(true)
+                                        //.setWillPauseWhenDucked(true)
+                                        //.setOnAudioFocusChangeListener(this, mMyHandler)
+                                        .build ();
                                 result.success (true);
                                 break;
 
@@ -335,16 +346,44 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
                         //.setOnAudioFocusChangeListener(this, mMyHandler)
                         .build ();
                 Boolean b = true;
+                setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
+
                 result.success ( b );
+        }
+
+        boolean requestFocus()
+        {
+               return ( audioManager.requestAudioFocus ( audioFocusRequest ) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED );
+        }
+
+        boolean abandonFocus()
+        {
+                return ( audioManager.abandonAudioFocusRequest ( audioFocusRequest ) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED );
+
         }
 
         private void setActive ( boolean enabled, final Result result ) {
                 Boolean b = false;
                 try {
                         if ( enabled )
-                                b = ( audioManager.requestAudioFocus ( audioFocusRequest ) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED );
-                        else
-                                b = ( audioManager.abandonAudioFocusRequest ( audioFocusRequest ) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED );
+                        {
+                                if (setActiveDone != t_SET_CATEGORY_DONE.NOT_SET) { // Already activated. Nothing todo;
+                                        setActiveDone = t_SET_CATEGORY_DONE.BY_USER;
+                                        result.success (0);
+                                        return;
+                                }
+                                setActiveDone = t_SET_CATEGORY_DONE.BY_USER;
+                                requestFocus();
+                        } else
+                        {
+                                if (setActiveDone == t_SET_CATEGORY_DONE.NOT_SET) { // Already desactivated
+                                        result.success(0);
+                                        return;
+                                }
+
+                                setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
+                                abandonFocus ();
+                        }
                 } catch (Exception e) {b = false;}
                 result.success ( b );
         }
@@ -513,6 +552,11 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
       } else {
         this.model.getMediaPlayer().setDataSource(path);
       }
+      if (setActiveDone == t_SET_CATEGORY_DONE.NOT_SET) {
+
+              setActiveDone = t_SET_CATEGORY_DONE.FOR_PLAYING;
+              requestFocus ();
+      }
 
       this.model.getMediaPlayer().setOnPreparedListener(mp -> {
         Log.d(TAG, "mediaPlayer prepared and start");
@@ -569,6 +613,12 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
         {
           mp.stop();
         }
+      if ((setActiveDone != t_SET_CATEGORY_DONE.BY_USER) && (setActiveDone != t_SET_CATEGORY_DONE.NOT_SET) )
+      {
+
+              setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
+              abandonFocus ();
+      }
         mp.reset();
         mp.release();
         model.setMediaPlayer(null);
@@ -602,6 +652,12 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
         result.error(ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL);
         return;
       }
+          if ((setActiveDone != t_SET_CATEGORY_DONE.BY_USER) && (setActiveDone != t_SET_CATEGORY_DONE.NOT_SET) )
+          {
+
+                  setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
+                  abandonFocus ();
+          }
 
       try {
         this.model.getMediaPlayer().stop();
@@ -622,6 +678,12 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
         result.error(ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL);
         return;
       }
+          if ((setActiveDone!= t_SET_CATEGORY_DONE.BY_USER) && (setActiveDone != t_SET_CATEGORY_DONE.NOT_SET) )
+          {
+
+                  setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
+                  abandonFocus ();
+          }
 
       try {
         this.model.getMediaPlayer().pause();
@@ -644,6 +706,11 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
         result.error(ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING);
         return;
       }
+          if (setActiveDone == t_SET_CATEGORY_DONE.NOT_SET) {
+
+                  setActiveDone = t_SET_CATEGORY_DONE.FOR_PLAYING;
+                  requestFocus ();
+          }
 
       try {
         this.model.getMediaPlayer().seekTo(this.model.getMediaPlayer().getCurrentPosition());
@@ -700,7 +767,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
 
     @Override
     public void setSubscriptionDuration(double sec, Result result) {
-        this.model.subsDurationMillis = (int) (sec * 10000);// [LARPOUX]
+        this.model.subsDurationMillis = (int) (sec * 1000);
         result.success("setSubscriptionDuration: " + this.model.subsDurationMillis);
     }
 

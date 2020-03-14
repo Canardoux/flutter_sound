@@ -82,13 +82,12 @@ public class MediaStyleHelper {
             Context context, MediaSessionCompat mediaSession) {
         MediaControllerCompat controller = mediaSession.getController();
 
-        // [LARPOUX]
         mediaSession.setMetadata(initMediaSessionMetadata( null));
 
         MediaMetadataCompat mediaMetadata = controller.getMetadata();
         MediaDescriptionCompat description = mediaMetadata.getDescription();
 
-        //!!!NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);//!!!
+        //!!!NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);//!!! [LARPOUX]
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder
                 .setContentTitle(description.getTitle())

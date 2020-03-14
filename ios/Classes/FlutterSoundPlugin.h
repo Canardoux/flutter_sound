@@ -39,7 +39,6 @@ extern bool isPaused ;
 @interface FlutterSoundPlugin : NSObject<FlutterPlugin, AVAudioPlayerDelegate>
 {
         AVAudioPlayer *audioPlayer;
-        //BOOL isPlaying ;
 }
 - (FlutterMethodChannel*) getChannel;
 

@@ -17,8 +17,6 @@ enum t_CODEC
 interface AudioInterface {
   void startRecorder(Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, MethodChannel.Result result);
   void stopRecorder(MethodChannel.Result result);
-  //void startPlayer(Track path, boolean canSkipForward,
-                     //boolean canSkipBackward, MethodChannel.Result result);
   void stopPlayer(MethodChannel.Result result);
   void pausePlayer(MethodChannel.Result result);
   void resumePlayer(MethodChannel.Result result);
@@ -27,6 +25,4 @@ interface AudioInterface {
   void setSubscriptionDuration(double sec, MethodChannel.Result result);
   void setDbPeakLevelUpdate(double intervalInSecs, MethodChannel.Result result);
   void setDbLevelEnabled(boolean enabled, MethodChannel.Result result);
-//void initializeMediaPlayer(boolean includeAudioPlayerFeatures, MethodChannel.Result result);
-//void releaseMediaPlayer(MethodChannel.Result result);
 }

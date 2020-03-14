@@ -78,8 +78,6 @@ public class MediaBrowserHelper {
      *
      *
      * @param activity The activity in which to initialize the media browser helper.
-     * @param includeAudioPlayerFeatures Whether the media player should include the audio player
-     *                                  features.
      * @param serviceSuccConnectionCallback The callback to call when the connection is successful.
      * @param serviceUnsuccConnectionCallback The callback to call when the connection
      *                                       is unsuccessful.

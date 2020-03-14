@@ -16,33 +16,14 @@ package com.dooboolab.fluttersound;
  * copies or substantial portions of the Software.
  */
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.media.AudioManager;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.RemoteException;
-import android.os.SystemClock;
-import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.MediaControllerCompat;
-import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;
-import androidx.core.app.ActivityCompat;
-import android.media.AudioFocusRequest;
-import java.io.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,23 +34,10 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import io.flutter.embedding.engine.FlutterEngine;
-import io.flutter.embedding.engine.plugins.FlutterPlugin;
-import io.flutter.embedding.engine.plugins.activity.ActivityAware;
-import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import java.util.concurrent.Callable;
-import io.flutter.plugin.common.PluginRegistry;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
-//import io.flutter.embedding.engine.plugins.activity;
-
 
 /** FlutterSoundPlugin */
 public class Flauto extends FlutterSoundPlugin {
@@ -85,49 +53,8 @@ public class Flauto extends FlutterSoundPlugin {
     private MediaBrowserHelper mMediaBrowserHelper;
 
 
-    //private static Registrar reg;
-/*
-    private MediaPlayer mMediaPlayer;
-    private MediaSessionCompat mMediaSessionCompat;
-
-    private BroadcastReceiver mNoisyReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if( mMediaPlayer != null && mMediaPlayer.isPlaying() ) {
-                mMediaPlayer.pause();
-            }
-        }
-    };
-
-
-    private MediaSessionCompat.Callback mMediaSessionCallback = new MediaSessionCompat.Callback() {
-
-        @Override
-        public void onPlay() {
-            super.onPlay();
-        }
-
-        @Override
-        public void onPause() {
-            super.onPause();
-        }
-
-        @Override
-        public void onPlayFromMediaId(String mediaId, Bundle extras) {
-            super.onPlayFromMediaId(mediaId, extras);
-        }
-    };
-
-
-*/
     private static final int STATE_PAUSED = 0;
     private static final int STATE_PLAYING = 1;
-
-    private int mCurrentState;
-
-    //private MediaBrowserCompat mMediaBrowserCompat;
-    //private MediaControllerCompat mMediaControllerCompat;
-
 
     public static void attachFlauto ( Context ctx, BinaryMessenger messenger ) {
         channel = new MethodChannel ( messenger, "flauto" );
@@ -246,14 +173,6 @@ public class Flauto extends FlutterSoundPlugin {
         // Exit the method if a media browser helper was not initialized
         if ( !wasMediaPlayerInitialized ( result ) ) return;
 
-        // Just resume the playback if it was paused
-//        PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
-//        if (playbackState != null && playbackState.getState() == PlaybackStateCompat.STATE_PAUSED) {
-//            // The player was paused, then resume it
-//            mMediaBrowserHelper.playPlayback();
-//            result.success("player resumed");
-//            return;
-//        }
 
         // Check whether the audio file is stored by a string or a buffer
         String path;
@@ -289,6 +208,12 @@ public class Flauto extends FlutterSoundPlugin {
             mMediaBrowserHelper.removeSkipTrackBackwardHandler();
         }
 
+        if (setActiveDone == t_SET_CATEGORY_DONE.NOT_SET) {
+            requestFocus ();
+            setActiveDone = t_SET_CATEGORY_DONE.FOR_PLAYING;
+        }
+
+
         // Pass to the media browser the metadata to use in the notification
         mMediaBrowserHelper.setNotificationMetadata ( track );
 
@@ -320,6 +245,11 @@ public class Flauto extends FlutterSoundPlugin {
 
         // Exit the method if a media browser helper was not initialized
         if ( !wasMediaPlayerInitialized ( result ) ) return;
+        if ((setActiveDone!= t_SET_CATEGORY_DONE.BY_USER) && (setActiveDone != t_SET_CATEGORY_DONE.NOT_SET) )
+        {
+            abandonFocus ();
+            setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
+        }
 
         try {
             // Stop the playback
@@ -335,6 +265,12 @@ public class Flauto extends FlutterSoundPlugin {
     public void pausePlayer ( final Result result ) {
         // Exit the method if a media browser helper was not initialized
         if ( !wasMediaPlayerInitialized ( result ) ) return;
+
+        if ((setActiveDone!= t_SET_CATEGORY_DONE.BY_USER) && (setActiveDone != t_SET_CATEGORY_DONE.NOT_SET) )
+        {
+            abandonFocus ();
+            setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
+        }
 
         try {
             // Pause the media player
@@ -357,6 +293,10 @@ public class Flauto extends FlutterSoundPlugin {
         if ( playbackState != null && playbackState.getState () == PlaybackStateCompat.STATE_PLAYING ) {
             result.error ( ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING );
             return;
+        }
+        if (setActiveDone == t_SET_CATEGORY_DONE.NOT_SET) {
+            requestFocus ();
+            setActiveDone = t_SET_CATEGORY_DONE.FOR_PLAYING;
         }
 
         try {
@@ -507,6 +447,7 @@ public class Flauto extends FlutterSoundPlugin {
                 json.put ( "duration", String.valueOf ( trackDuration ) );
                 json.put ( "current_position", String.valueOf ( currentPosition ) );
                 channel.invokeMethod ( "audioPlayerFinishedPlaying", json.toString () );
+                abandonFocus ();
             } catch ( JSONException je ) {
                 Log.d ( TAG, "Json Exception: " + je.toString () );
             }

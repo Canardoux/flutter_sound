@@ -3,7 +3,6 @@
 #import "FlutterSoundPlugin.h"
 
 @interface Flauto : FlutterSoundPlugin // NSObject<FlutterPlugin, AVAudioPlayerDelegate>
-//+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar;
 
 -(FlutterMethodChannel*) getChannel;
 

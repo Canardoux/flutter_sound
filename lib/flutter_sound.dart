@@ -138,8 +138,6 @@ typedef void t_onSkip ( );
 typedef void t_updateProgress( int current, int max );
 
 
-//FlutterSound flutterSound = FlutterSound( ); // Singleton
-
 class FlutterSound
 {
         static const MethodChannel _channel = const MethodChannel( 'flutter_sound' );
@@ -151,21 +149,7 @@ class FlutterSound
         static String savedUri; // Used by startRecorder/stopRecorder to keep the caller wanted uri
         static String tmpUri; // Used by startRecorder/stopRecorder to keep the temporary uri to record CAF
 
-
-        /// The current state of the playback
-        //Future<t_AUDIO_STATE> getPlayerState() async
-        //{
-        //t_AUDIO_STATE result = await getChannel().invokeMethod( 'getPlayerState', );
-        //return result;
-        //}
-
-        /// The current state of the playback
-        //t_AUDIO_STATE playbackState;
-
-        /// The current state of the recorder
-        //t_AUDIO_STATE _recordingState;
-        //t_AUDIO_STATE get recorderState => _recordingState;
-
+        bool isInited = false;
 
         /// Value ranges from 0 to 120
         Stream<double> get onRecorderDbPeakChanged
@@ -184,17 +168,21 @@ class FlutterSound
         t_updateProgress onUpdateProgress;
 
 
-        //bool get isPlaying => (  getPlayerState( ) == (t_AUDIO_STATE.IS_PLAYING) );
+        bool get isPlaying
+        => ( audioState == (t_AUDIO_STATE.IS_PLAYING) );
 
         bool get isRecording
         => audioState == t_AUDIO_STATE.IS_RECORDING;
-
-        //bool isPlaying( ) => playbackState == t_AUDIO_STATE.IS_PLAYING || playbackState == t_AUDIO_STATE.IS_PAUSED;
 
         t_AUDIO_STATE audioState = t_AUDIO_STATE.IS_STOPPED;
 
         MethodChannel getChannel( )
         => _channel;
+
+        FlutterSound( )
+        {
+                initializeMediaPlayer( );
+        }
 
         Future<String> defaultPath( t_CODEC codec )
         async {
@@ -205,7 +193,11 @@ class FlutterSound
 
         Future<void> initializeMediaPlayer( )
         async {
-                await getChannel( ).invokeMethod( 'initializeMediaPlayer' );
+                if (!isInited)
+                {
+                        await getChannel( ).invokeMethod( 'initializeMediaPlayer' );
+                        isInited = true;
+                }
         }
 
 
@@ -216,6 +208,7 @@ class FlutterSound
                 // Stop the player playback before releasing
                 await stopPlayer( );
                 await getChannel( ).invokeMethod( 'releaseMediaPlayer' );
+                isInited = false;
         }
 
         /// Returns true if the flutter_ffmpeg plugin is really plugged in
@@ -297,7 +290,7 @@ class FlutterSound
         }
 
         /// For iOS only.
-        /// If this function is not called, everthing is managed by default by flutter_sound.
+        /// If this function is not called, everything is managed by default by flutter_sound.
         /// If this function is called, it is probably called just once when the app starts.
         /// After calling this function, the caller is responsible for using correctly setActive
         ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
@@ -311,7 +304,7 @@ class FlutterSound
 
 
         /// For Android only.
-        /// If this function is not called, everthing is managed by default by flutter_sound.
+        /// If this function is not called, everything is managed by default by flutter_sound.
         /// If this function is called, it is probably called just once when the app starts.
         /// After calling this function, the caller is responsible for using correctly setActive
         ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
@@ -324,7 +317,7 @@ class FlutterSound
         }
 
 
-        ///  After iosSetCategory() or androidAudioFocusRequest the caller must manage his audio session with this function
+        ///  The caller can manage his audio focus with this function
         Future<bool> setActive( bool enabled )
         async {
                 bool r = await getChannel( ).invokeMethod( 'setActive', <String, dynamic>{ 'enabled': enabled} );
@@ -461,7 +454,7 @@ class FlutterSound
                 if (_recorderController != null)
                 {
                         _recorderController
-                                ..add( null ) // ????? We keep that strange line for backwardcompatibility
+                                ..add( null ) // We keep that strange line for backwardcompatibility
                                 ..close( );
                         _recorderController = null;
                 }
@@ -506,9 +499,6 @@ class FlutterSound
                 if (permission[PermissionGroup.microphone] != PermissionStatus.granted)
                         throw new Exception( "Microphone permission not granted" );
 
-                //if (_recordingState != t_AUDIO_STATE.IS_STOPPED) {
-                // throw new RecorderRunningException('Recorder is not stopped.');
-                //}
                 if (audioState != null && audioState != t_AUDIO_STATE.IS_STOPPED)
                 {
                         throw new RecorderRunningException( 'Recorder is not stopped.' );
@@ -585,6 +575,7 @@ class FlutterSound
                         if (f.existsSync( )) await f.delete( );
                         // The following ffmpeg instruction re-encode the Apple CAF to OPUS. Unfortunatly we cannot just remix the OPUS data,
                         // because Apple does not set the "extradata" in its private OPUS format.
+                        // It will be good if we can improve this...
                         var rc = await executeFFmpegWithArguments( [
                                                                            '-loglevel', 'error',
                                                                            '-y',
@@ -674,11 +665,6 @@ class FlutterSound
                 // We write the data in a temporary file before calling ffmpeg.
                 if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS))
                 {
-                        //if (playbackState == PlaybackState.PAUSED) {
-                        //this.resumePlayer();
-                        //playbackState = PlaybackState.PLAYING;
-                        //return 'Player resumed';
-                        //}
                         await stopPlayer( );
                         Directory tempDir = await getTemporaryDirectory( );
                         File inputFile = File( '${tempDir.path}/flutter_sound-tmp.opus' );
