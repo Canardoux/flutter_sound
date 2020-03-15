@@ -91,6 +91,11 @@ FlutterMethodChannel* _channel;
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
   NSLog(@"audioPlayerDidFinishPlaying");
+  if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) ) {
+      [[AVAudioSession sharedInstance] setActive: NO error: nil];
+      setActiveDone = NOT_SET;
+  }
+
   NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
 
@@ -133,18 +138,19 @@ FlutterMethodChannel* _channel;
   NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
 
-  if ([duration intValue] == 0 && timer != nil) {
-    [self stopTimer];
-    return;
-  }
+  // [LARPOUX] I do not understand why ...
+  // if ([duration intValue] == 0 && timer != nil) {
+  //   [self stopTimer];
+  //   return;
+  // }
   
     NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
     [[ self getChannel] invokeMethod:@"updateProgress" arguments:status];
-        if (![audioPlayer isPlaying] )
-        {
-                  [self stopPlayer];
-                  return;
-        }
+//        if (![audioPlayer isPlaying] )
+//        {
+//                  [self stopPlayer];
+//                  return;
+//        }
 
 }
 

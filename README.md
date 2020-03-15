@@ -38,35 +38,39 @@ On *iOS* you need to add a usage description to `info.plist`:
 On *Android* you need to add a permission to `AndroidManifest.xml`:
 ```xml
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
 ```
 
 ## Migration Guide
 To migrate to `2.0.0` you must migrate your Android app to Android X by following the [Migrating to AndroidX Guide](https://developer.android.com/jetpack/androidx/migrate).
 
+
 ## Methods
 | Func  | Param  | Return | Description |
 | :------------ |:---------------:| :---------------:| :-----|
-| initialize | `bool includeAudioPlayerFeatures`, `Function skipForwardHandler`, `Function skipBackwardForward` | `void` | Initializes the media player and all the callbacks for the player and the recorder. Based on the value of ```includeAudioPlayerFeatures``` the audio player features will be included or not. This must be called before all other media player and recorder methods.| 
-| releaseMediaPlayer |  | `void` | Resets the media player and cleans up the device resources. This must be called when the player is no longer needed.| 
-| setSubscriptionDuration | `double sec` | `String` message | Set subscription timer in seconds. Default is `0.01` if not using this method.|
+| initialize |  | `void` | Initializes the media player and all the callbacks for the player and the recorder. This procedure is implicitely called during the FlutterSound constructor. So you probably will not use this function yourself.|
+| releaseMediaPlayer |  | `void` | Resets the media player and cleans up the device resources. This must be called when the player is no longer needed.|
+| setSubscriptionDuration | `double sec` | `String` message | Set subscription timer in seconds. Default is `0.010` if not using this method.|
 | startRecorder | `String uri`, `int sampleRate`, `int numChannels`, `t_CODEC codec` | `String` uri | Start recording. This will return uri used. |
 | stopRecorder | | `String` message | Stop recording.  |
-| startPlayer | `String` fileUri | | Starts playing the file at the given URI. |
-| startPlayerFromTrack | `Track track`, `bool canSkipForward`, `bool canSkipBackward` | `String` message | Start playing using a ```Track``` object.  |
-| startPlayerFromBuffer | `Uint8List dataBuffer`,  `t_CODEC codec` | `String` message | Start playing using a buffer encoded with the given codec  |
+| startPlayer | `String` fileUri,  `t_CODEC codec`, `whenFinished()` | | Starts playing the file at the given URI. |
+| startPlayerFromBuffer | `Uint8List dataBuffer`,  `t_CODEC codec`, `whenFinished()` | `String` message | Start playing using a buffer encoded with the given codec  |
 | stopPlayer | | `String` message | Stop playing. |
 | pausePlayer | | `String` message | Pause playing. |
 | resumePlayer | | `String` message | Resume playing. |
 | seekToPlayer | `int milliSecs` position to goTo | `String` message | Seek audio to selected position in seconds. Parameter should be less than audio duration to correctly placed. |
+| iosSetCategory | `SESSION_CATEGORY`, `SESSION_MODE`, options | Boolean | Set the session category on iOS.|
+| androidAudioFocusRequest | `int` focusGain | Boolean | Define the Android Focus request to use in subsequent requests to get audio focus |
+| setActive | `bool` enabled | Boolean | Request or Abandon the audio focus |
+
 
 ## Subscriptions
 | Subscription | Return | Description |
 | :------------ |:---------------:| :---------------:|
 | onRecorderStateChanged | `<RecordStatus>` | Able to listen to subscription when recorder starts. |
 | onPlayerStateChanged | `<PlayStatus>` | Able to listen to subscription when player starts. |
-| onPlaybackStateChanged | `<PlaybackState>` | Able to listen to subscription when player starts, no more able when player is released. Notifies the listener when the player starts playing, is paused, stopped or finished playing.
-| onRecordingStateChanged | `<RecordingState>` | Able to listen to subscription when recorder starts recording, no more able when recorder is stopped. Notifies the listener when the recorder start recording or is stopped.
+
 
 ## Default uri path
 When uri path is not set during the `function call` in `startRecorder` or `startPlayer`, records are saved/read to/from a temporary directory depending on the platform.
@@ -95,22 +99,7 @@ In your view/page/dialog widget's State class, create an instance of FlutterSoun
 FlutterSound flutterSound = new FlutterSound();
 ```
 
-#### Initialize the player.
-In order to be able to execute all the player methods, you must initialize the player by calling the ```initialize``` method, passing in whether you want to use the audio player features (e.g. lock screen controls).
-You could also pass two functions as arguments of ```initialize```, and they will be triggered when the user tries to skip forward or backward using the buttons in the notification.
-Furthermore, your application should display media player controls only when the initialization finished successfully.
 
-```dart
-@override
-void initState() {
-	super.initState();
-	// Intialize the player including the audio player features
-	flutterSound.initialize(true)
-	.then((_) {
-          displayMediaPlayerControls();
-        });
-}
-```
 
 #### Starting recorder with listener.
 ```dart
@@ -173,60 +162,29 @@ void dispose() {
 }
 ```
 
-#### Create a ```Track``` object (required with audio player features)
-In order to play a sound when you initialized the player with the audio player features, you must create a ```Track``` object to pass to ```startPlayerFromTrack```.
-
-The ```Track``` class is provided by the flutter_sound package. Its constructor takes in 1 required argument and 3 optional arguments:
-* ```trackPath``` (required): a ```String``` representing the path that points to the audio file to play. This must be provided if ```dataBuffer``` is null, but you cannot provide both;
-* ```dataBuffer``` (required): a ```Uint8List```, a buffer that contains an audio file. This must be provided if ```trackPath``` is null, but you cannot provide both;
-* ```trackTitle```: the ```String``` to display in the notification as the title of the track;
-* ```trackAuthor``` the ```String``` to display in the notification as the name of the author of the track;
-* ```albumArtUrl``` a ```String``` representing the URL that points to the image to display in the notification as album art.
-
-```dart
-// Create with the path to the audio file
-Track track = new Track(
-	trackPath: "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3", // An example audio file
-        trackTitle: "Track Title",
-        trackAuthor: "Track Author",
-        albumArtUrl: "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_1MB.png", // An example image
-);
-
-// Load a local audio file and get it as a buffer
-Uint8List buffer = (await rootBundle.load('samples/audio.mp3'))
-    	.buffer
-    	.asUint8List();
-// Create with the buffer
-Track track = new Track(
-	dataBuffer: buffer,
-        trackTitle: "Track Title",
-        trackAuthor: "Track Author",
-        albumArtUrl: "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_1MB.png", // An example image
-);
-```
-
 #### Start player
 - To start playback of a record from a URL call startPlayer.
 - To start playback of a record from a memory buffer call startPlayerFromBuffer
 
-##### With audio player features
-If the player was initialized with the audio player features, then you must use ```startPlayerFromTrack``` to play a sound. This function takes in 3 arguments:
-* a ```Track```, which is the track that the player is going to play;
-* a ```boolean```, whether the user can skip forward from this track (and whether the "skip forward" button in the notification should be enabled);
-* a ```boolean```, whether the user can skip backbard from this track (and whether the "skip backward" button in the notification should be enabled).
 
-```dart
-Future<String> result = await flutterSound.startPlayerFromTrack(track, false, false);
-```
 
-##### Without audio player features
-If the player was initialized without the audio player features you can use both ```startPlayer``` or ```startPlayerFromBuffer``` to play a sound. The former takes in a URI that points to the file to play, while the latter takes in a buffer containing the file to play and the codec to decode that buffer.
+
+You can use both ```startPlayer``` or ```startPlayerFromBuffer``` to play a sound. The former takes in a URI that points to the file to play, while the latter takes in a buffer containing the file to play and the codec to decode that buffer.
+
+Those two functions can have an optional parameter `whenFinished:()` for specifying what to do when the playback will be finished.
 
 ```dart
 // An example audio file
 final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
 
-Future<String> result = await flutterSound.startPlayer(fileUri);
+String result = await flutterSound.startPlayer
+	(
+		fileUri,
+		whenFinished: ()
+		{
+			 print( 'I hope you enjoyed listening to this song' );
+		},
+	);
 ```
 
 ```dart
@@ -235,7 +193,15 @@ Uint8List buffer = (await rootBundle.load('samples/audio.mp3'))
     	.buffer
     	.asUint8List();
 
-Future<String> result = await flutterSound.startPlayerFromBuffer(fileUri, t_CODEC.DEFAULT);
+Future<String> result = await flutterSound.startPlayerFromBuffer
+	(
+		buffer,
+		whenFinished: ()
+		{
+			 print( 'I hope you enjoyed listening to this song' );
+		},
+	);
+
 ```
 
 
@@ -263,17 +229,8 @@ result.then(path) {
 }
 ```
 
-You can call ```startPlayer```, ```startPlayerFromTrack``` or ```startPlayerFromBuffer``` only when you have just initialized the player or when you have just called ```stopPlayer```.
 
-#### Listen to plyaback state changes
 
-If you subscribe to the ```onPlaybackStateChanged``` ```Stream``` you will be notified whenever the audio player starts playing a sound, is paused or stopped.
-
-```dart
-_playbackStateSubscription = flutterSound.onPlaybackStateChanged.listen((newState) {
-        print('The new playack state is: $newState');
-});
-```
 
 
 #### Start player from buffer
@@ -282,7 +239,15 @@ For playing data from a memory buffer instead of a file, you can do the followin
 
 ```dart
 Uint8List buffer =  (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
-path = await flutterSound.startPlayerFromBuffer(buffer, codec: t_CODEC.CODEC_AAC,);
+String result = await flutterSound.startPlayerFromBuffer
+	(
+		buffer,
+		codec: t_CODEC.CODEC_AAC,
+		whenFinished: ()
+		{
+			 print( 'I hope you enjoyed listening to this song' );
+		},
+	);
 ```
 
 #### Stop player
@@ -321,6 +286,42 @@ Future<String> result = await flutterSound.pausePlayer();
 Future<String> result = await flutterSound.resumePlayer();
 ```
 
+#### iosSetCategory(), androidAudioFocusRequest() and setActive() - (optional)
+
+Those three functions are optional. If you do not control the audio focus with the function `setActive()`, flutter_sound will require the audio focus each time the function `startPlayer()` is called and will release it when the sound is finished or when you call the function `stopPlayer()`.
+
+
+Before controling the focus with `setActive()` you must call `iosSetCategory()` on iOS or `androidAudioFocusRequest()` on Android. `setActive()` and `androidAudioFocusRequest()` are useful if you want to `duck others`.
+ Those functions are probably called just once when the app starts.
+After calling this function, the caller is responsible for using correctly `setActive()`
+probably before startRecorder or startPlayer, and stopPlayer and stopRecorder.
+
+You can refer to [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosession/1771734-setcategory) to understand the parameters needed for `iosSetCategory()` and to the [Android documentation](https://developer.android.com/reference/android/media/AudioFocusRequest)	to understand the parameter needed for `androidAudioFocusRequest()`.
+
+```dart
+if (_duckOthers)
+{
+	if (Platform.isIOS)
+		await flutterSound.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DUCK_OTHERS |  IOS_DEFAULT_TO_SPEAKER );
+	else if (Platform.isAndroid)
+		await flutterSound.a`ndroidAudioFocusRequest(` ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK );
+} else
+{
+	if (Platform.isIOS)
+		await flutterSound.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DEFAULT_TO_SPEAKER );
+	else if (Platform.isAndroid)
+		await flutterSound.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN );
+}
+...
+...
+flutterSound.setActive(true); // Get the audio focus
+flutterSound.startPlayer(aSound);
+flutterSound.startPlayer(anotherSong);
+flutterSound.setActive(false); // Release the audio focus
+```
+
+
+
 #### Seek player
 
 To seek to a new location the player must already be playing.
@@ -328,7 +329,7 @@ To seek to a new location the player must already be playing.
 String Future<result> = await flutterSound.seekToPlayer(miliSecs);
 ```
 
-#### Setting subscription duration (Optional). 0.01 is default value when not set.
+#### Setting subscription duration (Optional). 0.010 is default value when not set.
 ```dart
 /// 0.01 is default
 flutterSound.setSubscriptionDuration(0.01);
@@ -378,10 +379,83 @@ void dispose() {
 }
 ```
 
+
 #### Playing OGG/OPUS on iOS
 
 To play OGG/OPUS on iOS you must add flutter_ffmpeg to your dependencies.
 Please, look to the [flutter_ffmpeg plugin README](https://pub.dev/packages/flutter_ffmpeg) for instructions for how to include this plugin into your app. Playing OGG/OPUS on Android is no problem, even without flutter_ffmpeg. Please notice that [flutter_ffmpeg plugin](https://pub.dev/packages/flutter_ffmpeg) on Android needs a minAndroidSdk 16 (or later) if you use the LTS Release, but minAndroidSdk 24 (or later) if you use the Main Release.
+
+## Flauto
+Flauto is a new flutter_sound module which is able to show controls on the lock screen.
+Using Flauto is very simple : just use the Flauto constructor instead of the regular FlutterSound.
+
+``` dart
+flutterSound = Flauto();
+```
+
+You must use ```startPlayerFromTrack``` to play a sound. This function takes in 1 required argument and 3 optional arguments:
+* a ```Track```, which is the track that the player is going to play;
+* `whenFinished:()` : A call back function for specifying what to do when the song is finished
+* `onSkipBackward:()`, A call back function for specifying what to do when  the user press the skip-backward button on the lock screen
+* `onSkipForward:()`, A call back function for specifying what to do when  the user press the skip-forward button on the lock screen
+
+```dart
+path = await flauto.startPlayerFromTrack
+(
+	track,
+	whenFinished: ( )
+	{
+		print( 'I hope you enjoyed listening to this song' );
+	},
+
+	onSkipBackward: ( )
+	{
+		print( 'Skip backward' );
+		stopPlayer( );
+		startPlayer( );
+	},
+	onSkipForward: ( )
+	{
+		print( 'Skip forward' );
+		stopPlayer( );
+		startPlayer( );
+	},
+
+);
+
+```
+
+#### Create a ```Track``` object
+In order to play a sound when you initialized the player with the audio player features, you must create a ```Track``` object to pass to ```startPlayerFromTrack```.
+
+The ```Track``` class is provided by the flutter_sound package. Its constructor takes in 1 required argument and 3 optional arguments:
+* ```trackPath``` (required): a ```String``` representing the path that points to the audio file to play. This must be provided if ```dataBuffer``` is null, but you cannot provide both;
+* ```dataBuffer``` (required): a ```Uint8List```, a buffer that contains an audio file. This must be provided if ```trackPath``` is null, but you cannot provide both;
+* ```trackTitle```: the ```String``` to display in the notification as the title of the track;
+* ```trackAuthor``` the ```String``` to display in the notification as the name of the author of the track;
+* ```albumArtUrl``` a ```String``` representing the URL that points to the image to display in the notification as album art.
+
+```dart
+// Create with the path to the audio file
+Track track = new Track(
+	trackPath: "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3", // An example audio file
+        trackTitle: "Track Title",
+        trackAuthor: "Track Author",
+        albumArtUrl: "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_1MB.png", // An example image
+);
+
+// Load a local audio file and get it as a buffer
+Uint8List buffer = (await rootBundle.load('samples/audio.mp3'))
+    	.buffer
+    	.asUint8List();
+// Create with the buffer
+Track track = new Track(
+	dataBuffer: buffer,
+        trackTitle: "Track Title",
+        trackAuthor: "Track Author",
+        albumArtUrl: "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_1MB.png", // An example image
+);
+```
 
 ### TODO
 - [ ] Seeking example in `Example` project

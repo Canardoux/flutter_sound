@@ -1,6 +1,20 @@
 package com.dooboolab.fluttersound;
-
-import androidx.annotation.Nullable;
+/*
+ * This is a flutter_sound module.
+ * flutter_sound is distributed with a MIT License
+ *
+ * Copyright (c) 2018 dooboolab
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ */
 
 import java.util.HashMap;
 
@@ -37,7 +51,7 @@ public class Track {
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+            this.author = author;
     }
 
     public String getTitle() {
@@ -64,7 +78,6 @@ public class Track {
         this.albumArtAsset = albumArtAsset;
     }
 
-
     public byte[] getDataBuffer() {
         return dataBuffer;
     }
@@ -78,10 +91,11 @@ public class Track {
     }
 
     /**
-     * Returns whether the audio file of this track is stored by a string or a buffer.
+     * Returns whether the audio file of this track is stored by a string or a
+     * buffer.
      *
-     * @return true if the audio file of this track is stored by a string, false if it is stored
-     * by a buffer.
+     * @return true if the audio file of this track is stored by a string, false if
+     *         it is stored by a buffer.
      */
     public boolean isUsingPath() {
         return path != null;

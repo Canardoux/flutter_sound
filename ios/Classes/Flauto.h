@@ -4,7 +4,7 @@
 
 @interface Flauto : FlutterSoundPlugin // NSObject<FlutterPlugin, AVAudioPlayerDelegate>
 
--(FlutterMethodChannel*) getChannel;
+- (FlutterMethodChannel *)getChannel;
 
 @end
-extern Flauto* flautoModule; // Singleton
+extern Flauto *flautoModule; // Singleton

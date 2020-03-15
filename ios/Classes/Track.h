@@ -1,6 +1,7 @@
 #import <Flutter/Flutter.h>
 
-@interface Track : NSObject {
+@interface Track : NSObject
+{
     NSString *path;
     NSString *title;
     NSString *author;
@@ -16,8 +17,8 @@
 @property(nonatomic, retain) NSString *albumArtAsset;
 @property(nonatomic, retain) FlutterStandardTypedData *dataBuffer;
 
-- (id) initFromJson: (NSString*) jsonString;
-- (id) initFromDictionary: (NSDictionary*) jsonData;
-- (bool) isUsingPath;
+- (id)initFromJson:(NSString *)jsonString;
+- (id)initFromDictionary:(NSDictionary *)jsonData;
+- (bool)isUsingPath;
 
 @end
