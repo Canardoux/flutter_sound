@@ -64,7 +64,7 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
            BOOL canPause  = [call.arguments[@"canPause"] boolValue];
            BOOL canSkipForward = [call.arguments[@"canSkipForward"] boolValue];
            BOOL canSkipBackward = [call.arguments[@"canSkipBackward"] boolValue];
-           [self startPlayer: canPause canSkipForward:canSkipForward canSkipBackward:canSkipBackward result:result];
+           [self startPlayerFromTrack: canPause canSkipForward:canSkipForward canSkipBackward:canSkipBackward result:result];
   } else if ([@"initializeMediaPlayer" isEqualToString:call.method]) {
          [self initializeMediaPlayer: result:result];
   } else if ([@"releaseMediaPlayer" isEqualToString:call.method]) {
@@ -75,7 +75,7 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
 }
 
 
-- (void)startPlayer:(BOOL)canPause canSkipForward: (BOOL)canSkipForward canSkipBackward: (BOOL)canSkipBackward result: (FlutterResult)result {
+- (void)startPlayerFromTrack:(BOOL)canPause canSkipForward: (BOOL)canSkipForward canSkipBackward: (BOOL)canSkipBackward result: (FlutterResult)result {
     if(!track) {
         result([FlutterError errorWithCode:@"UNAVAILABLE"
                                    message:@"The track passed to startPlayer is not valid."
@@ -212,8 +212,10 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
     if ((track.albumArtAsset) && ([track.albumArtAsset class] != [NSNull class])   )
     {
             UIImage* artworkImage = [UIImage imageNamed: track.albumArtAsset];
-            MPMediaItemArtwork* albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
-            [songInfo setObject:albumArt forKey: MPMediaItemPropertyArtwork];
+            if (artworkImage != nil) {
+                MPMediaItemArtwork* albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
+                [songInfo setObject:albumArt forKey: MPMediaItemPropertyArtwork];
+            }
     }
 
     NSNumber *progress = [NSNumber numberWithDouble: audioPlayer.currentTime];

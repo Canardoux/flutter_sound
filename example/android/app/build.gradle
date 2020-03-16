@@ -29,6 +29,11 @@ android {
     compileSdkVersion 28
 
     sourceSets {
+             main {
+            assets {
+                srcDirs 'src/main/assets'
+            }
+        }
         main.java.srcDirs += 'src/main/kotlin'
     }
 

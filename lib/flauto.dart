@@ -59,7 +59,7 @@ class Track {
   final String albumArtAsset;
 
   /// The image that points to the album art of the track
-  final String albumArtImage;
+  //final String albumArtImage;
 
   /// The codec of the audio file to play. If this parameter's value is null
   /// it will be set to [t_CODEC.DEFAULT].
@@ -72,7 +72,7 @@ class Track {
     this.trackAuthor,
     this.albumArtUrl = null,
     this.albumArtAsset = null,
-    this.albumArtImage = null,
+    //this.albumArtImage = null,
     this.codec = t_CODEC.DEFAULT,
   }) {
     codec = codec == null ? t_CODEC.DEFAULT : codec;

@@ -105,7 +105,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> setDuck() async {
-    //flutterSoundModule.setActive(false);
     if (_duckOthers) {
       if (Platform.isIOS)
         await flutterSoundModule.iosSetCategory(t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DUCK_OTHERS | IOS_DEFAULT_TO_SPEAKER);
@@ -115,7 +114,6 @@ class _MyAppState extends State<MyApp> {
         await flutterSoundModule.iosSetCategory(t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DEFAULT_TO_SPEAKER);
       else if (Platform.isAndroid) await flutterSoundModule.androidAudioFocusRequest(ANDROID_AUDIOFOCUS_GAIN);
     }
-    //flutterSoundModule.setActive(true);
   }
 
   Future<void> releasePlayer() async {
@@ -285,15 +283,31 @@ class _MyAppState extends State<MyApp> {
 
       // Check whether the user wants to use the audio player features
       if (_isAudioPlayer) {
-        final track = Track(
+        String albumArtUrl;
+        String albumArtAsset;
+        if (_media == t_MEDIA.REMOTE_EXAMPLE_FILE)
+          albumArtUrl = albumArtPath;
+        else {
+          if (Platform.isIOS) {
+            albumArtAsset = 'AppIcon';
+          } else if (Platform.isAndroid) {
+            albumArtAsset = 'AppIcon.png';
+          }
+
+        }
+
+    final track = Track(
           trackPath: audioFilePath,
           dataBuffer: dataBuffer,
           codec: _codec,
           trackTitle: "This is a record",
           trackAuthor: "from flutter_sound",
-          albumArtUrl: albumArtPath,
+          albumArtUrl: albumArtUrl,
+          albumArtAsset: albumArtAsset,
         );
-        Flauto flauto = flutterSoundModule;
+
+
+    Flauto flauto = flutterSoundModule;
         path = await flauto.startPlayerFromTrack(
           track,
           /*canSkipForward:true, canSkipBackward:true,*/
