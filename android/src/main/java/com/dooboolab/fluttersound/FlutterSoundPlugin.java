@@ -220,13 +220,7 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
                 switch (call.method) {
 
                         case "initializeMediaPlayer":
-                                audioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                                                // .setAudioAttributes(mPlaybackAttributes)
-                                                // .setAcceptsDelayedFocusGain(true)
-                                                // .setWillPauseWhenDucked(true)
-                                                // .setOnAudioFocusChangeListener(this, mMyHandler)
-                                                .build();
-                                result.success(true);
+                                 result.success(true);
                                 break;
 
                         case "releaseMediaPlayer":
@@ -329,25 +323,58 @@ public class FlutterSoundPlugin implements MethodCallHandler, AudioInterface, Fl
         }
 
         private void androidAudioFocusRequest(Integer focusGain, final Result result) {
-                audioFocusRequest = new AudioFocusRequest.Builder(focusGain)
+                if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        audioFocusRequest = new AudioFocusRequest.Builder ( focusGain )
                                 // .setAudioAttributes(mPlaybackAttributes)
                                 // .setAcceptsDelayedFocusGain(true)
                                 // .setWillPauseWhenDucked(true)
                                 // .setOnAudioFocusChangeListener(this, mMyHandler)
-                                .build();
-                Boolean b = true;
-                setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
+                                .build ();
+                        Boolean b = true;
+                        setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
 
-                result.success(b);
+                        result.success ( b );
+                } else
+                {
+                        Boolean b = false;
+                        result.success(b);
+                }
         }
 
         boolean requestFocus() {
-                return (audioManager.requestAudioFocus(audioFocusRequest) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED);
+                if  (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ) {
+                        if (audioFocusRequest == null)
+                        {
+                                audioFocusRequest = new AudioFocusRequest.Builder ( AudioManager.AUDIOFOCUS_GAIN )
+                                        //.setAudioAttributes(mPlaybackAttributes)
+                                        //.setAcceptsDelayedFocusGain(true)
+                                        //.setWillPauseWhenDucked(true)
+                                        //.setOnAudioFocusChangeListener(this, mMyHandler)
+                                        .build ();
+                        }
+                        return (audioManager.requestAudioFocus(audioFocusRequest) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED);
+                } else
+                {
+                        return false;
+                }
         }
 
         boolean abandonFocus() {
-                return (audioManager.abandonAudioFocusRequest(
-                                audioFocusRequest) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED);
+                if  (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                        if  (audioFocusRequest == null)
+                        {
+                                audioFocusRequest = new AudioFocusRequest.Builder ( AudioManager.AUDIOFOCUS_GAIN )
+                                        //.setAudioAttributes(mPlaybackAttributes)
+                                        //.setAcceptsDelayedFocusGain(true)
+                                        //.setWillPauseWhenDucked(true)
+                                        //.setOnAudioFocusChangeListener(this, mMyHandler)
+                                        .build ();
+                        }
+                        return (audioManager.abandonAudioFocusRequest( audioFocusRequest) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED);
+                } else
+                {
+                        return false;
+                }
 
         }
 
