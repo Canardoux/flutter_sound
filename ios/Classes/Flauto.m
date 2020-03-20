@@ -190,7 +190,8 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
 // Give the system information about what the audio player
 // is currently playing. Takes in the image to display in the
 // notification to control the media playback.
-- (void)setupNowPlaying{
+- (void)setupNowPlaying
+{
     // Initialize the MPNowPlayingInfoCenter
 
     MPNowPlayingInfoCenter *playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
@@ -270,30 +271,37 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
           [commandCenter.previousTrackCommand setEnabled:canSkipBackward];
 
           {
-                  pauseTarget = [commandCenter.togglePlayPauseCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+                pauseTarget = [commandCenter.togglePlayPauseCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
+                {
                        FlutterResult result;
                        bool b = [audioPlayer isPlaying];
                        // If the caller wants to control the pause button, just call him
-                       if (b) {
+                       if (b)
+                       {
                             if (canPause)
                                 [[self getChannel] invokeMethod:@"pause" arguments:nil];
                             else
                                 [self pause];
-                        } else {
+                        } else
+                        {
                             if (canPause)
-                                [[self getChannel] invokeMethod:@"resume" arguments:nil];
-                            else
+                            {
+                                if (isPaused)
+                                        [[self getChannel] invokeMethod:@"resume" arguments:nil];
+                                else
+                                        [[self getChannel] invokeMethod:@"pause" arguments:nil]; // Patch : ios, maybe a pause during the timer instruction
+                                        
+                            } else
                                 [self resume];
                         }
-
-                           return MPRemoteCommandHandlerStatusSuccess;
-                          }];
-
+                        return MPRemoteCommandHandlerStatusSuccess;
+                }];
           }
 
                 if (canSkipForward)
                 {
-                        forwardTarget = [commandCenter.nextTrackCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+                        forwardTarget = [commandCenter.nextTrackCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
+                        {
                             [[self getChannel] invokeMethod:@"skipForward" arguments:nil];
                             // [[MediaController sharedInstance] fastForward];    // forward to next track.
                             return MPRemoteCommandHandlerStatusSuccess;
@@ -302,7 +310,8 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
 
                 if (canSkipBackward)
                 {
-                        backwardTarget = [commandCenter.previousTrackCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+                        backwardTarget = [commandCenter.previousTrackCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
+                        {
                             [[self getChannel] invokeMethod:@"skipBackward" arguments:nil];
                             // [[MediaController sharedInstance] rewind];    // back to previous track.
                             return MPRemoteCommandHandlerStatusSuccess;
@@ -311,18 +320,22 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
 }
 
 
-- (void)stopPlayer {
-  [self stopTimer];
-  isPaused = false;
-  if (audioPlayer) {
-    [audioPlayer stop];
-    //audioPlayer = nil;
-  }
-  [self cleanTarget:false canSkipForward:false canSkipBackward:false];
-  if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) ) {
-      [[AVAudioSession sharedInstance] setActive: NO error: nil];
-      setActiveDone = NOT_SET;
-  }
+- (void)stopPlayer
+{
+          [self stopTimer];
+          isPaused = false;
+          if (audioPlayer)
+          {
+                [audioPlayer stop];
+                //audioPlayer = nil;
+          }
+          // ????  [self cleanTarget:false canSkipForward:false canSkipBackward:false];
+          if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) )
+          {
+                [self cleanTarget:false canSkipForward:false canSkipBackward:false]; // ???
+                [[AVAudioSession sharedInstance] setActive: NO error: nil];
+                setActiveDone = NOT_SET;
+          }
 }
 
 

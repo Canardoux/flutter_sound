@@ -299,6 +299,8 @@ probably before startRecorder or startPlayer, and stopPlayer and stopRecorder.
 
 You can refer to [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosession/1771734-setcategory) to understand the parameters needed for `iosSetCategory()` and to the [Android documentation](https://developer.android.com/reference/android/media/AudioFocusRequest) to understand the parameter needed for `androidAudioFocusRequest()`.
 
+Remark : those three functions does work on Android before SDK 26.
+
 ```dart
 if (_duckOthers)
 {
