@@ -145,7 +145,7 @@ class FlutterSound {
 
   Stream<RecordStatus> get onRecorderStateChanged => _recorderController.stream;
 
-  Stream<PlayStatus> get onPlayerStateChanged => playerController.stream;
+  Stream<PlayStatus> get onPlayerStateChanged => playerController != null ? playerController.stream : null;
 
   t_whenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
   t_whenPaused whenPause; // User callback "whenPaused:"
