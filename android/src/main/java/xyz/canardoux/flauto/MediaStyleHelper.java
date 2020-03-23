@@ -1,4 +1,4 @@
-package com.dooboolab.fluttersound;
+package xyz.canardoux.flauto;
 /*
  * This is a flutter_sound module.
  * flutter_sound is distributed with a MIT License
@@ -27,7 +27,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.media.app.NotificationCompat.MediaStyle;
 import androidx.media.session.MediaButtonReceiver;
-import com.dooboolab.fluttersound.R;
+import xyz.canardoux.flauto.R;
 
 //import androidx.appcompat.app.NotificationCompat;
 
@@ -65,7 +65,7 @@ public class MediaStyleHelper {
          * Build a notification using the information from the given media session.
          * Makes heavy use of {@link MediaMetadataCompat#getDescription()} to extract
          * the appropriate information.
-         * 
+         *
          * @param context      Context used to construct the notification.
          * @param mediaSession Media session to get information.
          * @return A pre-built notification with information from the given media

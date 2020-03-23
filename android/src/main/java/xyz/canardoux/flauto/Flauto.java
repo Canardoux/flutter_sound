@@ -1,4 +1,4 @@
-package com.dooboolab.fluttersound;
+package xyz.canardoux.flauto;
 /*
  * This is a flutter_sound module.
  * flutter_sound is distributed with a MIT License

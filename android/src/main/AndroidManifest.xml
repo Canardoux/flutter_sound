@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.dooboolab.fluttersound">
+  package="xyz.canardoux.flauto">
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application>

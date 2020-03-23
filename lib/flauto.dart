@@ -29,7 +29,7 @@ import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/services.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flauto/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
 
 class PlayerNotInitializedException implements Exception {

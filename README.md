@@ -1,4 +1,4 @@
-# flutter_sound
+# Flauto
 
 <img src="https://raw.githubusercontent.com/dooboolab/flutter_sound/master/Logotype primary.png" width="70%" height="70%" />
 
