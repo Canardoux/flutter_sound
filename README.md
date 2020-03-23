@@ -21,10 +21,20 @@ For help getting started with Flutter, view our online
 
 ## Install
 
-Add `flutter_sound` as a dependency in pubspec.yaml.
+Add `flauto` as a dependency in pubspec.yaml. The actual beta version is `flauto: ^3.0.0+2`
 For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).</br>
 Add `permission_handler` as a dependency in pubspec.yaml. Refer to [here](permission_handler) for help.</br>
 If you need ffmpeg, add `flutter_ffmpeg` as a dependency in pubspec.yaml. Refer to [here](https://github.com/tanersener/flutter-ffmpeg) for help.
+```
+dependencies:
+  flutter:
+    sdk: flutter
+  flauto: ^3.0.0+2
+  permission_handler: ^4.4.0
+
+# Comment out the following line if flutter_ffmpeg is not needed
+  flutter_ffmpeg: ^0.2.10
+```
 
 ## Post Installation
 
@@ -49,7 +59,7 @@ On _Android_ you need to add a permission to `AndroidManifest.xml`:
 
 ## Migration Guide
 
-To migrate to `2.0.0` you must migrate your Android app to Android X by following the [Migrating to AndroidX Guide](https://developer.android.com/jetpack/androidx/migrate).
+To migrate to `3.0.0` you must migrate your Android app to Android X by following the [Migrating to AndroidX Guide](https://developer.android.com/jetpack/androidx/migrate).
 
 ## Methods
 
