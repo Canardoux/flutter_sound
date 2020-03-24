@@ -1,3 +1,7 @@
+## 3.0.1
+- Add the two API verbs :
+  -  getLastFFmpegReturnCode()
+  -  getLastFFmpegCommandOutput()
 ## 3.0.0
 - Module `flauto` for controlling flutter_sound from the lock-screen
 - API to control the `audiofocus`
