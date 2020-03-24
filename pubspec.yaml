@@ -1,6 +1,6 @@
 name: flauto
 description: Flutter plugin that relates to sound like audio and recorder. (flutter_sound fork).
-version: 3.0.0+2
+version: 3.0.1+1
 
 homepage: https://github.com/canardoux/flauto
 environment:

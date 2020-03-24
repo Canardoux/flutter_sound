@@ -1,21 +1,21 @@
 /*
- * flauto is a flutter_sound module.
- * flutter_sound is distributed with a MIT License
+ * This file is part of Flauto.
  *
- * Copyright (c) 2018 dooboolab
+ *   Flauto is free software: you can redistribute it and/or modify
+ *   it under the terms of the Lesser GNU General Public License
+ *   version 3 (LGPL3) as published by the Free Software Foundation.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ *   Flauto is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ *   You should have received a copy of the Lesser GNU General Public License
+ *   along with Flauto.  If not, see <https://www.gnu.org/licenses/>.
  */
 
- 
+
+
 #import "FlutterSoundPlugin.h"
 #import "flauto.h" // Just to register it
 #import <AVFoundation/AVFoundation.h>
@@ -100,7 +100,7 @@ FlutterMethodChannel* _channel;
   NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
 
   NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
-  
+
   [[ self getChannel] invokeMethod:@"audioPlayerFinishedPlaying" arguments: status];
   isPaused = false;
   [self stopTimer];
@@ -143,7 +143,7 @@ FlutterMethodChannel* _channel;
   //   [self stopTimer];
   //   return;
   // }
-  
+
     NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
     [[ self getChannel] invokeMethod:@"updateProgress" arguments:status];
 //        if (![audioPlayer isPlaying] )
@@ -208,7 +208,7 @@ FlutterMethodChannel* _channel;
   FlutterSoundPlugin* instance = [[FlutterSoundPlugin alloc] init];
   [registrar addMethodCallDelegate:instance channel:channel];
   _channel = channel;
-  
+
   //flutterSoundModule = instance;
   extern void flautoreg(NSObject<FlutterPluginRegistrar>*);
   flautoreg(registrar); // Here, this is not a nice place to do that, but someone has to do it somewhere...
@@ -227,7 +227,7 @@ if ([@"startRecorder" isEqualToString:call.method]) {
     NSNumber* iosQuality = (NSNumber*)call.arguments[@"iosQuality"];
     NSNumber* bitRate = (NSNumber*)call.arguments[@"bitRate"];
     NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
-    
+
     t_CODEC coder = CODEC_AAC;
     if (![codec isKindOfClass:[NSNull class]])
     {
@@ -245,9 +245,9 @@ if ([@"startRecorder" isEqualToString:call.method]) {
     }
 
     [self startRecorder:path:[NSNumber numberWithInt:numChannels]:[NSNumber numberWithInt:sampleRate]:coder:iosQuality:bitRate result:result];
-    
+
   } else if ([@"initializeMediaPlayer" isEqualToString:call.method]) {
-  
+
   } else if ([@"releaseMediaPlayer" isEqualToString:call.method]) {
 
   } else if ([@"isEncoderSupported" isEqualToString:call.method]) {
@@ -281,12 +281,12 @@ if ([@"startRecorder" isEqualToString:call.method]) {
     NSNumber* volume = (NSNumber*)call.arguments[@"volume"];
     [self setVolume:[volume doubleValue] result:result];
   }
-  
+
   else if ([@"setDbPeakLevelUpdate" isEqualToString:call.method]) {
       NSNumber* intervalInSecs = (NSNumber*)call.arguments[@"intervalInSecs"];
       [self setDbPeakLevelUpdate:[intervalInSecs doubleValue] result:result];
   }
-  
+
   else if ([@"setDbLevelEnabled" isEqualToString:call.method]) {
       BOOL enabled = [call.arguments[@"enabled"] boolValue];
       [self setDbLevelEnabled:enabled result:result];
@@ -301,7 +301,7 @@ if ([@"startRecorder" isEqualToString:call.method]) {
     BOOL enabled = [call.arguments[@"enabled"] boolValue];
     [self setActive:enabled result:result];
   }
-  
+
   else {
     result(FlutterMethodNotImplemented);
   }
@@ -319,7 +319,7 @@ if ([@"startRecorder" isEqualToString:call.method]) {
 - (void)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options result:(FlutterResult)result {
         // Able to play in silent mode
   BOOL b = [[AVAudioSession sharedInstance]
-     setCategory:  categ // AVAudioSessionCategoryPlayback 
+     setCategory:  categ // AVAudioSessionCategoryPlayback
      mode: mode
      options: options
      error: nil];
@@ -349,7 +349,7 @@ if ([@"startRecorder" isEqualToString:call.method]) {
   NSNumber* r = [NSNumber numberWithBool: b];
   result(r);
 }
-  
+
 
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result {
   NSNumber* b = [NSNumber numberWithBool: _isIosDecoderSupported[codec] ];
@@ -395,7 +395,7 @@ if ([@"startRecorder" isEqualToString:call.method]) {
                                  [NSNumber numberWithInt: [numChannels intValue]],AVNumberOfChannelsKey,
                                  [NSNumber numberWithInt: [iosQuality intValue]],AVEncoderAudioQualityKey,
                                  nil];
-    
+
     // If bitrate is defined, the use it, otherwise use the OS default
     if(![bitRate isEqual:[NSNull null]]) {
         [audioSettings setValue:[NSNumber numberWithInt: [bitRate intValue]]
@@ -412,11 +412,11 @@ if ([@"startRecorder" isEqualToString:call.method]) {
   // set volume default to speaker
   UInt32 doChangeDefaultRoute = 1;
   AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(doChangeDefaultRoute), &doChangeDefaultRoute);
-  
+
   // set up for bluetooth microphone input
   UInt32 allowBluetoothInput = 1;
   AudioSessionSetProperty (kAudioSessionProperty_OverrideCategoryEnableBluetoothInput,sizeof (allowBluetoothInput),&allowBluetoothInput);
- 
+
   audioRecorder = [[AVAudioRecorder alloc]
                         initWithURL:audioFileURL
                         settings:audioSettings
@@ -440,7 +440,7 @@ if ([@"startRecorder" isEqualToString:call.method]) {
 
   [self stopDbPeakTimer];
   [self stopTimer];
-    
+
   AVAudioSession *audioSession = [AVAudioSession sharedInstance];
 
   NSString *filePath = audioFileURL.absoluteString;
@@ -479,7 +479,7 @@ if ([@"startRecorder" isEqualToString:call.method]) {
   if (isRemote) {
     NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
         dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            
+
         // We must create a new Audio Player instance to be able to play a different Url
         audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
         audioPlayer.delegate = self;
@@ -645,7 +645,7 @@ if ([@"startRecorder" isEqualToString:call.method]) {
 
 - (void)resumePlayer:(FlutterResult)result
 {
- 
+
    isPaused = false;
 
    if (!audioPlayer)

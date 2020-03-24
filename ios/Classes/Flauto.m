@@ -1,19 +1,19 @@
 /*
- * flauto is a flutter_sound module.
- * flutter_sound is distributed with a MIT License
+ * This file is part of Flauto.
  *
- * Copyright (c) 2018 dooboolab
+ *   Flauto is free software: you can redistribute it and/or modify
+ *   it under the terms of the Lesser GNU General Public License
+ *   version 3 (LGPL3) as published by the Free Software Foundation.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ *   Flauto is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ *   You should have received a copy of the Lesser GNU General Public License
+ *   along with Flauto.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 
 /*
  * flauto is a flutter_sound module.
@@ -134,7 +134,7 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
                                                       // We must create a new Audio Player instance to be able to play a different Url
                                                       audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
                                                       audioPlayer.delegate = self;
-                                                      
+
                                                       dispatch_async(dispatch_get_main_queue(), ^{
                                                           [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
                                                       });
@@ -290,7 +290,7 @@ extern void flautoreg(NSObject<FlutterPluginRegistrar>* registrar)
                                         [[self getChannel] invokeMethod:@"resume" arguments:nil];
                                 else
                                         [[self getChannel] invokeMethod:@"pause" arguments:nil]; // Patch : ios, maybe a pause during the timer instruction
-                                        
+
                             } else
                                 [self resume];
                         }

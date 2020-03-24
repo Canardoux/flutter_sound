@@ -25,6 +25,12 @@ Add `flauto` as a dependency in pubspec.yaml. The actual beta version is `flauto
 For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).</br>
 Add `permission_handler` as a dependency in pubspec.yaml. Refer to [here](permission_handler) for help.</br>
 If you need ffmpeg, add `flutter_ffmpeg` as a dependency in pubspec.yaml. Refer to [here](https://github.com/tanersener/flutter-ffmpeg) for help.
+
+The sources [are here](https://github.com/Canardoux/flauto).
+- branch `stable` is the actual flutter_sound 2.1.1
+- branch `beta` is the new plugin with advance features (V 3.0.0)
+- branch `master` is just for the project development and not to be used.
+
 ```
 dependencies:
   flutter:
