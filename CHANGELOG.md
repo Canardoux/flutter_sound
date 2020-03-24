@@ -1,3 +1,13 @@
+## 3.0.1
+- Add the two API verbs :
+  -  getLastFFmpegReturnCode()
+  -  getLastFFmpegCommandOutput()
+## 3.0.0
+- Module `flauto` for controlling flutter_sound from the lock-screen
+- API to control the `audiofocus`
+- API to set the `audio-category` (i.e. duck-others)
+- AndroidX and Android embbeded-V2 support
+- Add a parameter to `startPlayer` to specify a callback when the song is finished
 ## 2.1.1
 - Amazon billing: Trigger purchaseUpdated callback when iap purchased [#165](https://github.com/dooboolab/flutter_inapp_purchase/pull/165).
 ## 2.1.0

@@ -1,8 +1,8 @@
-name: flutter_sound
-description: Flutter plugin that relates to sound like audio and recorder.
-version: 2.1.1
-author: dooboolab<dooboolab@gmail.com>
-homepage: https://github.com/dooboolab/flutter_sound
+name: flauto
+description: Flutter plugin that relates to sound like audio and recorder. (flutter_sound fork).
+version: 3.0.1+1
+
+homepage: https://github.com/canardoux/flauto
 environment:
     sdk: ">=1.19.0 <3.0.0"
 dependencies:
@@ -18,8 +18,12 @@ dependencies:
 # The following section is specific to Flutter.
 flutter:
   plugin:
-    androidPackage: com.dooboolab.fluttersound
+    androidPackage: xyz.canardoux.flauto
     pluginClass: FlutterSoundPlugin
+
+
+    #androidPackage: xyz.canardoux.flauto
+    #pluginClass: FlutterSoundPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

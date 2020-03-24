@@ -1,19 +1,19 @@
 /*
- * This is a flutter_sound module.
- * flutter_sound is distributed with a MIT License
+ * This file is part of Flauto.
  *
- * Copyright (c) 2018 dooboolab
+ *   Flauto is free software: you can redistribute it and/or modify
+ *   it under the terms of the Lesser GNU General Public License
+ *   version 3 (LGPL3) as published by the Free Software Foundation.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ *   Flauto is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ *   You should have received a copy of the Lesser GNU General Public License
+ *   along with Flauto.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 
 import 'dart:async';
 import 'dart:convert';
@@ -23,8 +23,8 @@ import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/services.dart';
-import 'package:flutter_sound/android_encoder.dart';
-import 'package:flutter_sound/ios_quality.dart';
+import 'package:flauto/android_encoder.dart';
+import 'package:flauto/ios_quality.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
@@ -188,7 +188,7 @@ class FlutterSound {
   }
 
   /// Returns true if the flutter_ffmpeg plugin is really plugged in
-  Future<bool> isFFmpegSupported() async {
+  static Future<bool> isFFmpegSupported() async {
     try {
       await _FFmpegChannel.invokeMethod('getFFmpegVersion');
       await _FFmpegChannel.invokeMethod('getPlatform');
@@ -206,6 +206,8 @@ class FlutterSound {
   /// Executes FFmpeg with [commandArguments] provided.
   static Future<int> executeFFmpegWithArguments(List<String> arguments) async {
     try {
+      if (! await isFFmpegSupported() )
+        return -1;
       final Map<dynamic, dynamic> result = await _FFmpegChannel.invokeMethod('executeFFmpegWithArguments', {'arguments': arguments});
       return result['rc'];
     } on PlatformException catch (e) {
@@ -213,6 +215,43 @@ class FlutterSound {
       return -1;
     }
   }
+
+
+  /// We use here our own ffmpeg "getLastReturnCode" procedure instead of the one provided by the flutter_ffmpeg plugin,
+  /// so that the developers not interested by ffmpeg can use flutter_plugin without the flutter_ffmpeg plugin
+  /// and without any complain from the link-editor.
+  ///
+  /// Returns return code of last executed command.
+  Future<int> getLastFFmpegReturnCode() async {
+    try {
+      final Map<dynamic, dynamic> result =
+      await _FFmpegChannel.invokeMethod('getLastReturnCode');
+      return result['lastRc'];
+    } on PlatformException catch (e) {
+      print("Plugin error: ${e.message}");
+      return -1;
+    }
+  }
+
+  /// We use here our own ffmpeg "getLastCommandOutput" procedure instead of the one provided by the flutter_ffmpeg plugin,
+  /// so that the developers not interested by ffmpeg can use flutter_plugin without the flutter_ffmpeg plugin
+  /// and without any complain from the link-editor.
+  ///
+  /// Returns log output of last executed command. Please note that disabling redirection using
+  /// This method does not support executing multiple concurrent commands. If you execute multiple commands at the same time, this method will return output from all executions.
+  /// [disableRedirection()] method also disables this functionality.
+  Future<String> getLastFFmpegCommandOutput() async {
+    try {
+      final Map<dynamic, dynamic> result =
+      await _FFmpegChannel.invokeMethod('getLastCommandOutput');
+      return result['lastCommandOutput'];
+    } on PlatformException catch (e) {
+      print("Plugin error: ${e.message}");
+      return null;
+    }
+  }
+
+
 
   /// Returns true if the specified encoder is supported by flutter_sound on this platform
   Future<bool> isEncoderSupported(t_CODEC codec) async {
