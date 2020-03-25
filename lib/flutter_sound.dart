@@ -12,46 +12,46 @@ import 'package:path/path.dart' as p;
 import 'dart:io' show Platform;
 
 // this enum MUST be synchronized with fluttersound/AudioInterface.java  and ios/Classes/FlutterSoundPlugin.h
-enum t_CODEC
-{
-	DEFAULT,
-	CODEC_AAC,
-	CODEC_OPUS,
-	CODEC_CAF_OPUS, // Apple encapsulates its bits in its own special envelope : .caf instead of a regular ogg/opus (.opus). This is completely stupid, this is Apple.
-	CODEC_MP3,
-	CODEC_VORBIS,
-	CODEC_PCM,
+enum t_CODEC {
+  DEFAULT,
+  CODEC_AAC,
+  CODEC_OPUS,
+  CODEC_CAF_OPUS, // Apple encapsulates its bits in its own special envelope : .caf instead of a regular ogg/opus (.opus). This is completely stupid, this is Apple.
+  CODEC_MP3,
+  CODEC_VORBIS,
+  CODEC_PCM,
 }
 
-enum t_AUDIO_STATE
-{
-        IS_STOPPED,
-        IS_PAUSED,
-        IS_PLAYING,
-        IS_RECORDING,
+enum t_AUDIO_STATE {
+  IS_STOPPED,
+  IS_PAUSED,
+  IS_PLAYING,
+  IS_RECORDING,
 }
 
-
-final List<String> defaultPaths =
-  [
-                'sound.aac',	// DEFAULT
-  		'sound.aac',	// CODEC_AAC
-  		'sound.opus',	// CODEC_OPUS
-  		'sound.caf',	// CODEC_CAF_OPUS
-  		'sound.mp3',	// CODEC_MP3
-  		'sound.ogg',	// CODEC_VORBIS
-  		'sound.wav',	// CODEC_PCM
+final List<String> defaultPaths = [
+  'sound.aac', // DEFAULT
+  'sound.aac', // CODEC_AAC
+  'sound.opus', // CODEC_OPUS
+  'sound.caf', // CODEC_CAF_OPUS
+  'sound.mp3', // CODEC_MP3
+  'sound.ogg', // CODEC_VORBIS
+  'sound.wav', // CODEC_PCM
 ];
 
 class FlutterSound {
   static const MethodChannel _channel = const MethodChannel('flutter_sound');
-  static const MethodChannel _FFmpegChannel = const MethodChannel('flutter_ffmpeg');
+  static const MethodChannel _FFmpegChannel =
+      const MethodChannel('flutter_ffmpeg');
   static StreamController<RecordStatus> _recorderController;
   static StreamController<double> _dbPeakController;
   static StreamController<PlayStatus> _playerController;
-  static bool isOppOpus = false; // Set by startRecorder when the user wants to record an ogg/opus
-  static String savedUri; // Used by startRecorder/stopRecorder to keep the caller wanted uri
-  static String tmpUri; // Used by startRecorder/stopRecorder to keep the temporary uri to record CAF
+  static bool isOppOpus =
+      false; // Set by startRecorder when the user wants to record an ogg/opus
+  static String
+      savedUri; // Used by startRecorder/stopRecorder to keep the caller wanted uri
+  static String
+      tmpUri; // Used by startRecorder/stopRecorder to keep the temporary uri to record CAF
 
   /// Value ranges from 0 to 120
   Stream<double> get onRecorderDbPeakChanged => _dbPeakController.stream;
@@ -62,25 +62,27 @@ class FlutterSound {
   bool get isRecording => _isRecording();
   t_AUDIO_STATE get audioState => _audioState;
 
-  bool _isRecording() => _audioState == t_AUDIO_STATE.IS_RECORDING ;
+  bool _isRecording() => _audioState == t_AUDIO_STATE.IS_RECORDING;
   t_AUDIO_STATE _audioState = t_AUDIO_STATE.IS_STOPPED;
-  bool _isPlaying() => _audioState == t_AUDIO_STATE.IS_PLAYING || _audioState == t_AUDIO_STATE.IS_PAUSED;
+  bool _isPlaying() =>
+      _audioState == t_AUDIO_STATE.IS_PLAYING ||
+      _audioState == t_AUDIO_STATE.IS_PAUSED;
 
-  Future<String> defaultPath(t_CODEC codec) async
-  {
-    Directory tempDir = await getTemporaryDirectory ();
-    File fout = File ('${tempDir.path}/${defaultPaths[codec.index]}');
+  Future<String> defaultPath(t_CODEC codec) async {
+    Directory tempDir = await getTemporaryDirectory();
+    File fout = File('${tempDir.path}/${defaultPaths[codec.index]}');
     return fout.path;
   }
 
-
   /// Returns true if the flutter_ffmpeg plugin is really plugged
-  Future<bool>isFFmpegSupported() async
-  {
+  Future<bool> isFFmpegSupported() async {
     try {
-      final Map<dynamic, dynamic> vers = await _FFmpegChannel.invokeMethod('getFFmpegVersion');
-      final Map<dynamic, dynamic> platform = await _FFmpegChannel.invokeMethod('getPlatform');
-      final Map<dynamic, dynamic> packageName = await _FFmpegChannel.invokeMethod('getPackageName');
+      final Map<dynamic, dynamic> vers =
+          await _FFmpegChannel.invokeMethod('getFFmpegVersion');
+      final Map<dynamic, dynamic> platform =
+          await _FFmpegChannel.invokeMethod('getPlatform');
+      final Map<dynamic, dynamic> packageName =
+          await _FFmpegChannel.invokeMethod('getPackageName');
       return true;
     } catch (e) {
       return false;
@@ -94,8 +96,8 @@ class FlutterSound {
   /// Executes FFmpeg with [commandArguments] provided.
   Future<int> executeFFmpegWithArguments(List<String> arguments) async {
     try {
-      final Map<dynamic, dynamic> result = await _FFmpegChannel
-          .invokeMethod('executeFFmpegWithArguments', {'arguments': arguments});
+      final Map<dynamic, dynamic> result = await _FFmpegChannel.invokeMethod(
+          'executeFFmpegWithArguments', {'arguments': arguments});
       return result['rc'];
     } on PlatformException catch (e) {
       print("Plugin error: ${e.message}");
@@ -103,39 +105,40 @@ class FlutterSound {
     }
   }
 
-
-
   /// Returns true if the specified encoder is supported by flutter_sound on this platform
   Future<bool> isEncoderSupported(t_CODEC codec) async {
-      bool result;
-      // For encoding ogg/opus on ios, we need to support two steps :
-      // - encode CAF/OPPUS (with native Apple AVFoundation)
-      // - remux CAF file format to OPUS file format (with ffmpeg)
+    bool result;
+    // For encoding ogg/opus on ios, we need to support two steps :
+    // - encode CAF/OPPUS (with native Apple AVFoundation)
+    // - remux CAF file format to OPUS file format (with ffmpeg)
 
-      if ( (codec == t_CODEC.CODEC_OPUS) &&  (Platform.isIOS) ){
-        if ( ! await isFFmpegSupported() )
-          result = false;
-        else
-          result = await _channel.invokeMethod('isEncoderSupported', <String, dynamic> { 'codec': t_CODEC.CODEC_CAF_OPUS.index } );
-      } else
-        result = await _channel.invokeMethod('isEncoderSupported', <String, dynamic> { 'codec': codec.index } );
-      return result;
+    if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS)) {
+      if (!await isFFmpegSupported())
+        result = false;
+      else
+        result = await _channel.invokeMethod('isEncoderSupported',
+            <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index});
+    } else
+      result = await _channel.invokeMethod(
+          'isEncoderSupported', <String, dynamic>{'codec': codec.index});
+    return result;
   }
 
-
   /// Returns true if the specified decoder is supported by flutter_sound on this platform
-  Future<bool>  isDecoderSupported(t_CODEC codec) async {
+  Future<bool> isDecoderSupported(t_CODEC codec) async {
     bool result;
     // For decoding ogg/opus on ios, we need to support two steps :
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
-    if ( (codec == t_CODEC.CODEC_OPUS) &&  (Platform.isIOS) ){
-        if ( ! await isFFmpegSupported() )
-          result = false;
-        else
-          result = await _channel.invokeMethod('isDecoderSupported', <String, dynamic> { 'codec': t_CODEC.CODEC_CAF_OPUS.index } );
+    if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS)) {
+      if (!await isFFmpegSupported())
+        result = false;
+      else
+        result = await _channel.invokeMethod('isDecoderSupported',
+            <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index});
     } else
-        result = await _channel.invokeMethod('isDecoderSupported', <String, dynamic> { 'codec': codec.index } );
+      result = await _channel.invokeMethod(
+          'isDecoderSupported', <String, dynamic>{'codec': codec.index});
     return result;
   }
 
@@ -163,8 +166,7 @@ class FlutterSound {
             _recorderController.add(new RecordStatus.fromJSON(result));
           break;
         case "updateDbPeakProgress":
-        if (_dbPeakController!= null)
-          _dbPeakController.add(call.arguments);
+          if (_dbPeakController != null) _dbPeakController.add(call.arguments);
           break;
         default:
           throw new ArgumentError('Unknown method ${call.method} ');
@@ -182,7 +184,7 @@ class FlutterSound {
       switch (call.method) {
         case "updateProgress":
           Map<String, dynamic> result = jsonDecode(call.arguments);
-          if (_playerController!=null)
+          if (_playerController != null)
             _playerController.add(new PlayStatus.fromJSON(result));
           break;
         case "audioPlayerDidFinishPlaying":
@@ -191,8 +193,7 @@ class FlutterSound {
           if (status.currentPosition != status.duration) {
             status.currentPosition = status.duration;
           }
-          if (_playerController != null)
-            _playerController.add(status);
+          if (_playerController != null) _playerController.add(status);
           _audioState = t_AUDIO_STATE.IS_STOPPED;
           _removePlayerCallback();
           break;
@@ -212,7 +213,7 @@ class FlutterSound {
     }
   }
 
-    Future<void> _removeDbPeakCallback() async {
+  Future<void> _removeDbPeakCallback() async {
     if (_dbPeakController != null) {
       _dbPeakController
         ..add(null)
@@ -230,35 +231,34 @@ class FlutterSound {
     }
   }
 
-  Future<String> startRecorder(
-      {
-        String uri,
-        int sampleRate = 16000, int numChannels = 1, int bitRate = 16000,
-        t_CODEC codec = t_CODEC.CODEC_AAC,
-        AndroidEncoder androidEncoder = AndroidEncoder.AAC,
-        AndroidAudioSource androidAudioSource = AndroidAudioSource.MIC,
-        AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.DEFAULT,
-        IosQuality iosQuality = IosQuality.LOW,
-      }) async {
+  Future<String> startRecorder({
+    String uri,
+    int sampleRate = 16000,
+    int numChannels = 1,
+    int bitRate = 16000,
+    t_CODEC codec = t_CODEC.CODEC_AAC,
+    AndroidEncoder androidEncoder = AndroidEncoder.AAC,
+    AndroidAudioSource androidAudioSource = AndroidAudioSource.MIC,
+    AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.DEFAULT,
+    IosQuality iosQuality = IosQuality.LOW,
+  }) async {
     if (_audioState != t_AUDIO_STATE.IS_STOPPED) {
       throw new RecorderRunningException('Recorder is not stopped.');
     }
-    if (! await isEncoderSupported(codec))
+    if (!await isEncoderSupported(codec))
       throw new RecorderRunningException('Codec not supported.');
 
-    if (uri == null)
-      uri = await defaultPath(codec);
-
+    if (uri == null) uri = await defaultPath(codec);
 
     // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
     // We use FFmpeg for that task.
-    if ( (Platform.isIOS) &&
-        ( (codec == t_CODEC.CODEC_OPUS) || (_fileExtension(uri) == '.opus') )  ) {
+    if ((Platform.isIOS) &&
+        ((codec == t_CODEC.CODEC_OPUS) || (_fileExtension(uri) == '.opus'))) {
       savedUri = uri;
       isOppOpus = true;
       codec = t_CODEC.CODEC_CAF_OPUS;
-      Directory tempDir = await getTemporaryDirectory ();
-      File fout = File ('${tempDir.path}/flutter_sound-tmp.caf');
+      Directory tempDir = await getTemporaryDirectory();
+      File fout = File('${tempDir.path}/flutter_sound-tmp.caf');
       if (fout.existsSync()) // delete the old temporary file if it exists
         await fout.delete();
       uri = fout.path;
@@ -266,7 +266,7 @@ class FlutterSound {
     } else
       isOppOpus = false;
 
-      try {
+    try {
       var param = <String, dynamic>{
         'path': uri,
         'sampleRate': sampleRate,
@@ -283,13 +283,17 @@ class FlutterSound {
       _setRecorderCallback();
       _audioState = t_AUDIO_STATE.IS_RECORDING;
       // if the caller wants OGG/OPUS we must remux the temporary file
-      if ( (result != null) && isOppOpus) {
-         return savedUri;
+      if ((result != null) && isOppOpus) {
+        return savedUri;
       }
       return result;
     } catch (err) {
       throw new Exception(err);
     }
+  }
+
+  Future<void> setAudioMeterToAmbient() async {
+    await _channel.invokeMethod('setAudioMeterToAmbient');
   }
 
   Future<String> stopRecorder() async {
@@ -306,13 +310,17 @@ class FlutterSound {
     if (isOppOpus) {
       // delete the target if it exists (ffmpeg gives an error if the output file already exists)
       File f = File(savedUri);
-      if (f.existsSync())
-        await f.delete();
+      if (f.existsSync()) await f.delete();
       // The following ffmpeg instruction re-encode the Apple CAF to OPUS. Unfortunatly we cannot just remix the OPUS data,
       // because Apple does not set the "extradata" in its private OPUS format.
-      var rc = await executeFFmpegWithArguments (['-i', tmpUri, '-c:a', 'libopus', savedUri,]); // remux CAF to OGG
-      if (rc != 0)
-        return null;
+      var rc = await executeFFmpegWithArguments([
+        '-i',
+        tmpUri,
+        '-c:a',
+        'libopus',
+        savedUri,
+      ]); // remux CAF to OGG
+      if (rc != 0) return null;
       return savedUri;
     }
     return result;
@@ -321,13 +329,12 @@ class FlutterSound {
   /// Return the file extension for the given path.
   /// path can be null. We return null in this case.
   String _fileExtension(String path) {
-      if (path == null )
-        return null;
-      String r =  p.extension(path);
-      return r;
+    if (path == null) return null;
+    String r = p.extension(path);
+    return r;
   }
 
-  Future<String> _startPlayer(String method, Map <String, dynamic> what) async {
+  Future<String> _startPlayer(String method, Map<String, dynamic> what) async {
     String result;
     if (_audioState == t_AUDIO_STATE.IS_PAUSED) {
       this.resumePlayer();
@@ -336,40 +343,46 @@ class FlutterSound {
       // throw PlayerRunningException('Player is already playing.');
     }
     if (_audioState != t_AUDIO_STATE.IS_STOPPED) {
-            throw PlayerRunningException('Player is not stopped.');
+      throw PlayerRunningException('Player is not stopped.');
     }
 
-    try
-    {
+    try {
       t_CODEC codec = what['codec'];
       String path = what['path']; // can be null
       Uint8List dataBuffer = what['dataBuffer']; // can be null
       if (codec != null)
-        what['codec'] = codec.index; // Flutter cannot transfer an enum to a native plugin. We use an integer instead
+        what['codec'] = codec
+            .index; // Flutter cannot transfer an enum to a native plugin. We use an integer instead
 
       // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
       // We use FFmpeg for that task.
-      if ( (Platform.isIOS) &&
-            ( (codec == t_CODEC.CODEC_OPUS) || (_fileExtension(path) == '.opus') )  ) {
-          Directory tempDir = await getTemporaryDirectory ();
-          File fout = File ('${tempDir.path}/flutter_sound-tmp.caf');
-          if (fout.existsSync()) // delete the old temporary file if it exists
-            await fout.delete();
-          // The following ffmpeg instruction does not decode and re-encode the file. It just remux the OPUS data into an Apple CAF envelope.
-          // It is probably very fast and the user will not notice any delay, even with a very large data.
-          // This is the price to pay for the Apple stupidity.
-          var rc = await executeFFmpegWithArguments (['-i', path, '-c:a', 'copy', fout.path,]); // remux OGG to CAF
-          if (rc != 0)
-            return null;
-          // Now we can play Apple CAF/OPUS
-          result = await _channel.invokeMethod ('startPlayer', {'path': fout.path});
+      if ((Platform.isIOS) &&
+          ((codec == t_CODEC.CODEC_OPUS) ||
+              (_fileExtension(path) == '.opus'))) {
+        Directory tempDir = await getTemporaryDirectory();
+        File fout = File('${tempDir.path}/flutter_sound-tmp.caf');
+        if (fout.existsSync()) // delete the old temporary file if it exists
+          await fout.delete();
+        // The following ffmpeg instruction does not decode and re-encode the file. It just remux the OPUS data into an Apple CAF envelope.
+        // It is probably very fast and the user will not notice any delay, even with a very large data.
+        // This is the price to pay for the Apple stupidity.
+        var rc = await executeFFmpegWithArguments([
+          '-i',
+          path,
+          '-c:a',
+          'copy',
+          fout.path,
+        ]); // remux OGG to CAF
+        if (rc != 0) return null;
+        // Now we can play Apple CAF/OPUS
+        result =
+            await _channel.invokeMethod('startPlayer', {'path': fout.path});
       } else
         result = await _channel.invokeMethod(method, what);
 
-      if (result != null)
-      {
-        print ('startPlayer result: $result');
-        _setPlayerCallback ();
+      if (result != null) {
+        print('startPlayer result: $result');
+        _setPlayerCallback();
         _audioState = t_AUDIO_STATE.IS_PLAYING;
       }
 
@@ -379,30 +392,33 @@ class FlutterSound {
     }
   }
 
+  Future<String> startPlayer(String uri) async =>
+      _startPlayer('startPlayer', {'path': uri});
 
-  Future<String> startPlayer(String uri) async => _startPlayer('startPlayer', {'path': uri});
-
-  Future<String> startPlayerFromBuffer(Uint8List dataBuffer, { t_CODEC codec }) async {
-
+  Future<String> startPlayerFromBuffer(Uint8List dataBuffer,
+      {t_CODEC codec}) async {
     // If we want to play OGG/OPUS on iOS, we need to remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We write the data in a temporary file before calling ffmpeg.
-    if ( (codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS) ) {
+    if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS)) {
       Directory tempDir = await getTemporaryDirectory();
       File fin = File('${tempDir.path}/flutter_sound-tmp.opus');
-      if (fin.existsSync())
-        await fin.delete();
-      fin.writeAsBytesSync(dataBuffer); // Write the user buffer into the temporary file
+      if (fin.existsSync()) await fin.delete();
+      fin.writeAsBytesSync(
+          dataBuffer); // Write the user buffer into the temporary file
       // Now we can play the temporary file
-      return await _startPlayer('startPlayer', {'path': fin.path, 'codec': codec,}); // And play something that Apple will be happy with.
+      return await _startPlayer('startPlayer', {
+        'path': fin.path,
+        'codec': codec,
+      }); // And play something that Apple will be happy with.
     } else
-      return await _startPlayer ('startPlayerFromBuffer', {'dataBuffer': dataBuffer, 'codec': codec});
+      return await _startPlayer(
+          'startPlayerFromBuffer', {'dataBuffer': dataBuffer, 'codec': codec});
   }
 
-
   Future<String> stopPlayer() async {
-
-    if (_audioState != t_AUDIO_STATE.IS_PAUSED && _audioState != t_AUDIO_STATE.IS_PLAYING ) {
-            throw PlayerRunningException('Player is not playing.');
+    if (_audioState != t_AUDIO_STATE.IS_PAUSED &&
+        _audioState != t_AUDIO_STATE.IS_PLAYING) {
+      throw PlayerRunningException('Player is not playing.');
     }
 
     _audioState = t_AUDIO_STATE.IS_STOPPED;
@@ -413,31 +429,31 @@ class FlutterSound {
   }
 
   Future<String> pausePlayer() async {
-  if (_audioState != t_AUDIO_STATE.IS_PLAYING ) {
-          throw PlayerRunningException('Player is not playing.');
-  }
+    if (_audioState != t_AUDIO_STATE.IS_PLAYING) {
+      throw PlayerRunningException('Player is not playing.');
+    }
 
-          try {
+    try {
       String result = await _channel.invokeMethod('pausePlayer');
-      if (result != null)
-        _audioState = t_AUDIO_STATE.IS_PAUSED;
+      if (result != null) _audioState = t_AUDIO_STATE.IS_PAUSED;
       return result;
     } catch (err) {
       print('err: $err');
-      _audioState = t_AUDIO_STATE.IS_STOPPED; // In fact _audioState is in an unknown state
-      throw Exception(err);;
+      _audioState = t_AUDIO_STATE
+          .IS_STOPPED; // In fact _audioState is in an unknown state
+      throw Exception(err);
+      ;
     }
   }
 
   Future<String> resumePlayer() async {
-    if (_audioState != t_AUDIO_STATE.IS_PAUSED ) {
-          throw PlayerRunningException('Player is not paused.');
+    if (_audioState != t_AUDIO_STATE.IS_PAUSED) {
+      throw PlayerRunningException('Player is not paused.');
     }
 
     try {
       String result = await _channel.invokeMethod('resumePlayer');
-      if (result != null)
-        _audioState = t_AUDIO_STATE.IS_PLAYING;
+      if (result != null) _audioState = t_AUDIO_STATE.IS_PLAYING;
       return result;
     } catch (err) {
       print('err: $err');
@@ -454,7 +470,8 @@ class FlutterSound {
       return result;
     } catch (err) {
       print('err: $err');
-      throw Exception(err);;
+      throw Exception(err);
+      ;
     }
   }
 
@@ -475,18 +492,18 @@ class FlutterSound {
   /// Defines the interval at which the peak level should be updated.
   /// Default is 0.8 seconds
   Future<String> setDbPeakLevelUpdate(double intervalInSecs) async {
-    String result = await _channel
-      .invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
-    'intervalInSecs': intervalInSecs,
+    String result =
+        await _channel.invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
+      'intervalInSecs': intervalInSecs,
     });
     return result;
   }
 
   /// Enables or disables processing the Peak level in db's. Default is disabled
   Future<String> setDbLevelEnabled(bool enabled) async {
-    String result = await _channel
-      .invokeMethod('setDbLevelEnabled', <String, dynamic>{
-    'enabled': enabled,
+    String result =
+        await _channel.invokeMethod('setDbLevelEnabled', <String, dynamic>{
+      'enabled': enabled,
     });
     return result;
   }
@@ -538,4 +555,3 @@ class RecorderStoppedException implements Exception {
   final String message;
   RecorderStoppedException(this.message);
 }
-

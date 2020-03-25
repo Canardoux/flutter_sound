@@ -208,6 +208,8 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
   } else if ([@"isDecoderSupported" isEqualToString:call.method]) {
      NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
      [self isDecoderSupported:[codec intValue] result:result];
+  } else if ([@"setAudioMeterToAmbient" isEqualToString:call.method]) {
+      [self setAudioMeterToAmbient:result];
   } else if ([@"stopRecorder" isEqualToString:call.method]) {
     [self stopRecorder: result];
   } else if ([@"startPlayer" isEqualToString:call.method]) {
@@ -325,6 +327,11 @@ NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}",
 
   NSString *filePath = self->audioFileURL.path;
   result(filePath);
+}
+
+- (void)setAudioMeterToAmbient:(FlutterResult)result {
+  [audioRecorder setMeteringEnabled:YES];
+  result([NSNumber numberWithBool:YES]);
 }
 
 - (void)stopRecorder:(FlutterResult)result {
