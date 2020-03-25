@@ -1,20 +1,21 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data' show Uint8List;
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' show DateFormat;
-import 'package:intl/date_symbol_data_local.dart';
 
-import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart' show DateFormat;
+import 'package:flutter_sound/flauto.dart';
 
-enum t_MEDIA
-{
-        FILE,
-        BUFFER,
-        ASSET,
-        STREAM,
+enum t_MEDIA {
+  FILE,
+  BUFFER,
+  ASSET,
+  STREAM,
+  REMOTE_EXAMPLE_FILE,
 }
 
 void main() {
@@ -28,11 +29,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _isRecording = false;
-  List <String> _path = [null, null, null, null, null, null, null];
+  List<String> _path = [null, null, null, null, null, null, null];
   StreamSubscription _recorderSubscription;
   StreamSubscription _dbPeakSubscription;
   StreamSubscription _playerSubscription;
-  FlutterSound flutterSound;
+  StreamSubscription _playbackStateSubscription;
+  static FlutterSound flutterSoundModule;
 
   String _recorderTxt = '00:00:00';
   String _playerTxt = '00:00:00';
@@ -43,19 +45,103 @@ class _MyAppState extends State<MyApp> {
   t_MEDIA _media = t_MEDIA.FILE;
   t_CODEC _codec = t_CODEC.CODEC_AAC;
 
+  bool _encoderSupported = true; // Optimist
+  bool _decoderSupported = true; // Optimist
+
+  // Whether the media player has been initialized and the UI controls can
+  // be displayed.
+  bool _canDisplayPlayerControls = false;
+
+  // Whether the user wants to use the audio player features
+  bool _isAudioPlayer = false;
+  bool _duckOthers = false;
+
+  void _initializeExample(FlutterSound module) async {
+    flutterSoundModule = module;
+    flutterSoundModule.initializeMediaPlayer();
+    flutterSoundModule.setSubscriptionDuration(0.01);
+    flutterSoundModule.setDbPeakLevelUpdate(0.8);
+    flutterSoundModule.setDbLevelEnabled(true);
+    initializeDateFormatting();
+    setCodec(_codec);
+    setDuck();
+  }
+
   @override
   void initState() {
     super.initState();
-    flutterSound = new FlutterSound();
-    flutterSound.setSubscriptionDuration(0.01);
-    flutterSound.setDbPeakLevelUpdate(0.8);
-    flutterSound.setDbLevelEnabled(true);
-    initializeDateFormatting();
+    _initializeExample(FlutterSound());
   }
 
-  void startRecorder() async{
+  void cancelRecorderSubscriptions() {
+    if (_recorderSubscription != null) {
+      _recorderSubscription.cancel();
+      _recorderSubscription = null;
+    }
+    if (_dbPeakSubscription != null) {
+      _dbPeakSubscription.cancel();
+      _dbPeakSubscription = null;
+    }
+  }
+
+  void cancelPlayerSubscriptions() {
+    if (_playerSubscription != null) {
+      _playerSubscription.cancel();
+      _playerSubscription = null;
+    }
+
+    if (_playbackStateSubscription != null) {
+      _playbackStateSubscription.cancel();
+      _playbackStateSubscription = null;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    cancelPlayerSubscriptions();
+    cancelRecorderSubscriptions();
+    releasePlayer();
+  }
+
+  Future<void> setDuck() async {
+    if (_duckOthers) {
+      if (Platform.isIOS)
+        await flutterSoundModule.iosSetCategory(t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DUCK_OTHERS | IOS_DEFAULT_TO_SPEAKER);
+      else if (Platform.isAndroid) await flutterSoundModule.androidAudioFocusRequest(ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+    } else {
+      if (Platform.isIOS)
+        await flutterSoundModule.iosSetCategory(t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DEFAULT_TO_SPEAKER);
+      else if (Platform.isAndroid) await flutterSoundModule.androidAudioFocusRequest(ANDROID_AUDIOFOCUS_GAIN);
+    }
+  }
+
+  Future<void> releasePlayer() async {
     try {
-      // String path = await flutterSound.startRecorder
+      await flutterSoundModule.releaseMediaPlayer();
+      print('media player released successfully');
+      setState(() {
+        _canDisplayPlayerControls = false;
+      });
+    } catch (e) {
+      print('media player released unsuccessful');
+      print(e);
+    }
+  }
+
+  static const List<String> paths = [
+    'sound.aac', // DEFAULT
+    'sound.aac', // CODEC_AAC
+    'sound.opus', // CODEC_OPUS
+    'sound.caf', // CODEC_CAF_OPUS
+    'sound.mp3', // CODEC_MP3
+    'sound.ogg', // CODEC_VORBIS
+    'sound.wav', // CODEC_PCM
+  ];
+
+  void startRecorder() async {
+    try {
+      // String path = await flutterSoundModule.startRecorder
       // (
       //   paths[_codec.index],
       //   codec: _codec,
@@ -66,79 +152,73 @@ class _MyAppState extends State<MyApp> {
       // );
       Directory tempDir = await getTemporaryDirectory();
 
-      String path = await flutterSound.startRecorder(
-        uri: '${tempDir.path}/sound.aac',
+      String path = await flutterSoundModule.startRecorder(
+        uri: '${tempDir.path}/${paths[_codec.index]}',
         codec: _codec,
       );
       print('startRecorder: $path');
 
-      _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
-        DateTime date = new DateTime.fromMillisecondsSinceEpoch(
-            e.currentPosition.toInt(),
-            isUtc: true);
+      _recorderSubscription = flutterSoundModule.onRecorderStateChanged.listen((e) {
+        DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt(), isUtc: true);
         String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
 
         this.setState(() {
           this._recorderTxt = txt.substring(0, 8);
         });
       });
-      _dbPeakSubscription =
-          flutterSound.onRecorderDbPeakChanged.listen((value) {
-            print("got update -> $value");
-            setState(() {
-              this._dbLevel = value;
-            });
-          });
+      _dbPeakSubscription = flutterSoundModule.onRecorderDbPeakChanged.listen((value) {
+        print("got update -> $value");
+        setState(() {
+          this._dbLevel = value;
+        });
+      });
 
       this.setState(() {
         this._isRecording = true;
         this._path[_codec.index] = path;
       });
     } catch (err) {
-      print ('startRecorder error: $err');
-      setState (()
-                {
-                  this._isRecording = false;
-                });
+      print('startRecorder error: $err');
+      setState(() {
+        stopRecorder();
+        this._isRecording = false;
+        if (_recorderSubscription != null) {
+          _recorderSubscription.cancel();
+          _recorderSubscription = null;
+        }
+        if (_dbPeakSubscription != null) {
+          _dbPeakSubscription.cancel();
+          _dbPeakSubscription = null;
+        }
+      });
     }
   }
 
   void stopRecorder() async {
     try {
-      String result = await flutterSound.stopRecorder();
-      print ('stopRecorder: $result');
-
-      if ( _recorderSubscription != null ) {
-        _recorderSubscription.cancel ();
-        _recorderSubscription = null;
-      }
-      if ( _dbPeakSubscription != null ) {
-        _dbPeakSubscription.cancel ();
-        _dbPeakSubscription = null;
-      }
-    } catch ( err ) {
-      print ('stopRecorder error: $err');
+      String result = await flutterSoundModule.stopRecorder();
+      print('stopRecorder: $result');
+      cancelRecorderSubscriptions();
+    } catch (err) {
+      print('stopRecorder error: $err');
     }
     this.setState(() {
       this._isRecording = false;
-
     });
-
-   }
-
-  Future<bool> fileExists(String path) async {
-          return await File(path).exists();
   }
 
-  // In this simple example, we just load a file in memory.This is stupid but just for demonstation  of startPlayerFromBuffer()
-  Future <Uint8List> makeBuffer(String path) async {
+  Future<bool> fileExists(String path) async {
+    return await File(path).exists();
+  }
+
+  // In this simple example, we just load a file in memory.This is stupid but just for demonstration  of startPlayerFromBuffer()
+  Future<Uint8List> makeBuffer(String path) async {
     try {
-      if (!await fileExists(path))
-              return null;
+      if (!await fileExists(path)) return null;
       File file = File(path);
       file.openRead();
-      var contents = await file.readAsBytes ();
-      print ('The file is ${contents.length} bytes long.');
+      var contents = await file.readAsBytes();
+      print('The file is ${contents.length} bytes long.');
       return contents;
     } catch (e) {
       print(e);
@@ -146,8 +226,7 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  List<String>assetSample =
-  [
+  List<String> assetSample = [
     'assets/samples/sample.aac',
     'assets/samples/sample.aac',
     'assets/samples/sample.opus',
@@ -157,292 +236,557 @@ class _MyAppState extends State<MyApp> {
     'assets/samples/sample.wav',
   ];
 
-  void startPlayer() async{
+  void _addListeners() {
+    cancelPlayerSubscriptions();
+    _playerSubscription = flutterSoundModule.onPlayerStateChanged.listen((e) {
+      if (e != null) {
+        sliderCurrentPosition = e.currentPosition;
+        maxDuration = e.duration;
+
+        DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt(), isUtc: true);
+        String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
+        this.setState(() {
+          //this._isPlaying = true;
+          this._playerTxt = txt.substring(0, 8);
+        });
+      }
+    });
+  }
+
+  Future<void> startPlayer() async {
     try {
-      String path = null;
+      final exampleAudioFilePath = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
+      final albumArtPath = "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_500kB.png";
+      //final albumArtPath =
+      //"https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_500kB.png";
+
+      String path;
+      Uint8List dataBuffer;
+      String audioFilePath;
       if (_media == t_MEDIA.ASSET) {
-          Uint8List buffer =  (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
-          path = await flutterSound.startPlayerFromBuffer(buffer, codec: _codec,);
-      } else
-      if (_media == t_MEDIA.FILE) {// Do we want to play from buffer or from file ?
-        if (await fileExists(_path[_codec.index]))
-          path = await flutterSound.startPlayer(this._path[_codec.index]); // From file
-      } else
-      if (_media == t_MEDIA.BUFFER) { // Do we want to play from buffer or from file ?
+        dataBuffer = (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
+      } else if (_media == t_MEDIA.FILE) {
+        // Do we want to play from buffer or from file ?
+        if (await fileExists(_path[_codec.index])) audioFilePath = this._path[_codec.index];
+      } else if (_media == t_MEDIA.BUFFER) {
+        // Do we want to play from buffer or from file ?
         if (await fileExists(_path[_codec.index])) {
-                Uint8List buffer = await makeBuffer (this._path[_codec.index]);
-                if ( buffer != null )
-                        path = await flutterSound.startPlayerFromBuffer(buffer, codec: _codec,); // From buffer
+          dataBuffer = await makeBuffer(this._path[_codec.index]);
+          if (dataBuffer == null) {
+            throw Exception('Unable to create the buffer');
+          }
         }
+      } else if (_media == t_MEDIA.REMOTE_EXAMPLE_FILE) {
+        // We have to play an example audio file loaded via a URL
+        audioFilePath = exampleAudioFilePath;
       }
-      if (path == null) {
-        print ('Error starting player');
-        return;
-      }
-       print('startPlayer: $path');
-       await flutterSound.setVolume(1.0);
 
-      _playerSubscription = flutterSound.onPlayerStateChanged.listen((e) {
-        if (e != null) {
-          sliderCurrentPosition = e.currentPosition;
-          maxDuration = e.duration;
+      // Check whether the user wants to use the audio player features
+      if (_isAudioPlayer) {
+        String albumArtUrl;
+        String albumArtAsset;
+        if (_media == t_MEDIA.REMOTE_EXAMPLE_FILE)
+          albumArtUrl = albumArtPath;
+        else {
+          if (Platform.isIOS) {
+            albumArtAsset = 'AppIcon';
+          } else if (Platform.isAndroid) {
+            albumArtAsset = 'AppIcon.png';
+          }
+
+        }
+
+    final track = Track(
+          trackPath: audioFilePath,
+          dataBuffer: dataBuffer,
+          codec: _codec,
+          trackTitle: "This is a record",
+          trackAuthor: "from flutter_sound",
+          albumArtUrl: albumArtUrl,
+          albumArtAsset: albumArtAsset,
+        );
 
 
-          DateTime date = new DateTime.fromMillisecondsSinceEpoch(
-              e.currentPosition.toInt(),
-              isUtc: true);
-          String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
-          this.setState(() {
-            //this._isPlaying = true;
-            this._playerTxt = txt.substring(0, 8);
+    Flauto flauto = flutterSoundModule;
+        path = await flauto.startPlayerFromTrack(
+          track,
+          /*canSkipForward:true, canSkipBackward:true,*/
+          whenFinished: () {
+            print('I hope you enjoyed listening to this song');
+          },
+          onSkipBackward: () {
+            print('Skip backward');
+            stopPlayer();
+            startPlayer();
+          },
+          onSkipForward: () {
+            print('Skip forward');
+            stopPlayer();
+            startPlayer();
+          },
+        );
+      } else {
+        if (audioFilePath != null) {
+          path = await flutterSoundModule.startPlayer(audioFilePath, codec: _codec, whenFinished: () {
+            print('Play finished');
+            setState(() {});
+          });
+        } else if (dataBuffer != null) {
+          path = await flutterSoundModule.startPlayerFromBuffer(dataBuffer, codec: _codec, whenFinished: () {
+            print('Play finished');
+            setState(() {});
           });
         }
-      });
+
+        if (path == null) {
+          print('Error starting player');
+          return;
+        }
+      }
+      _addListeners();
+
+      print('startPlayer: $path');
+      // await flutterSoundModule.setVolume(1.0);
     } catch (err) {
       print('error: $err');
     }
-    setState(() {} );
+    setState(() {});
   }
 
-  void stopPlayer() async{
+  Future<void> stopPlayer() async {
     try {
-      String result = await flutterSound.stopPlayer();
+      String result = await flutterSoundModule.stopPlayer();
       print('stopPlayer: $result');
       if (_playerSubscription != null) {
         _playerSubscription.cancel();
         _playerSubscription = null;
       }
       sliderCurrentPosition = 0.0;
-      } catch (err) {
+    } catch (err) {
       print('error: $err');
     }
     this.setState(() {
       //this._isPlaying = false;
     });
-
   }
 
-  void pausePlayer() async{
-    String result;
-    try {
-      if ( flutterSound.audioState == t_AUDIO_STATE.IS_PAUSED ) {
-        result = await flutterSound.resumePlayer ();
-        print ('resumePlayer: $result');
-      } else {
-        result = await flutterSound.pausePlayer ();
-        print ('pausePlayer: $result');
-      }
-    } catch(err) {
-      print('error: $err');
+  pauseResumePlayer() {
+    if (flutterSoundModule.audioState == t_AUDIO_STATE.IS_PLAYING) {
+      flutterSoundModule.pausePlayer();
+    } else {
+      flutterSoundModule.resumePlayer();
     }
-    setState(() {} );
   }
 
-  void seekToPlayer(int milliSecs) async{
-    String result = await flutterSound.seekToPlayer(milliSecs);
+  void seekToPlayer(int milliSecs) async {
+    String result = await flutterSoundModule.seekToPlayer(milliSecs);
     print('seekToPlayer: $result');
   }
 
+  Widget makeDropdowns(BuildContext context) {
+    final mediaDropdown = Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: Text('Media:'),
+        ),
+        DropdownButton<t_MEDIA>(
+          value: _media,
+          onChanged: (newMedia) {
+            setState(() {
+              if (newMedia == t_MEDIA.REMOTE_EXAMPLE_FILE) _codec = t_CODEC.CODEC_MP3; // Actually this is the only example we use in this example
+              _media = newMedia;
+            });
+          },
+          items: <DropdownMenuItem<t_MEDIA>>[
+            DropdownMenuItem<t_MEDIA>(
+              value: t_MEDIA.FILE,
+              child: Text('File'),
+            ),
+            DropdownMenuItem<t_MEDIA>(
+              value: t_MEDIA.BUFFER,
+              child: Text('Buffer'),
+            ),
+            DropdownMenuItem<t_MEDIA>(
+              value: t_MEDIA.ASSET,
+              child: Text('Asset'),
+            ),
+            DropdownMenuItem<t_MEDIA>(
+              value: t_MEDIA.REMOTE_EXAMPLE_FILE,
+              child: Text('Remote Example File'),
+            ),
+          ],
+        ),
+      ],
+    );
 
-  onPausePlayerPressed() {
-          return flutterSound.audioState == t_AUDIO_STATE.IS_PLAYING || flutterSound.audioState == t_AUDIO_STATE.IS_PAUSED ?  pausePlayer : null;
+    final codecDropdown = Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: Text('Codec:'),
+        ),
+        DropdownButton<t_CODEC>(
+          value: _codec,
+          onChanged: (newCodec) {
+            setCodec(newCodec);
+            setState(() {
+              _codec = newCodec;
+            });
+          },
+          items: <DropdownMenuItem<t_CODEC>>[
+            DropdownMenuItem<t_CODEC>(
+              value: t_CODEC.CODEC_AAC,
+              child: Text('AAC'),
+            ),
+            DropdownMenuItem<t_CODEC>(
+              value: t_CODEC.CODEC_OPUS,
+              child: Text('OGG/Opus'),
+            ),
+            DropdownMenuItem<t_CODEC>(
+              value: t_CODEC.CODEC_CAF_OPUS,
+              child: Text('CAF/Opus'),
+            ),
+            DropdownMenuItem<t_CODEC>(
+              value: t_CODEC.CODEC_MP3,
+              child: Text('MP3'),
+            ),
+            DropdownMenuItem<t_CODEC>(
+              value: t_CODEC.CODEC_VORBIS,
+              child: Text('OGG/Vorbis'),
+            ),
+            DropdownMenuItem<t_CODEC>(
+              value: t_CODEC.CODEC_PCM,
+              child: Text('PCM'),
+            ),
+          ],
+        ),
+      ],
+    );
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: mediaDropdown,
+          ),
+          codecDropdown,
+        ],
+      ),
+    );
+  }
+
+  onPauseResumePlayerPressed() {
+    switch (flutterSoundModule.audioState) {
+      case t_AUDIO_STATE.IS_PAUSED:
+        return pauseResumePlayer;
+        break;
+      case t_AUDIO_STATE.IS_PLAYING:
+        return pauseResumePlayer;
+        break;
+      case t_AUDIO_STATE.IS_STOPPED:
+        return null;
+        break;
+      case t_AUDIO_STATE.IS_RECORDING:
+        return null;
+        break;
+    }
   }
 
   onStopPlayerPressed() {
-          return flutterSound.audioState == t_AUDIO_STATE.IS_PLAYING  || flutterSound.audioState == t_AUDIO_STATE.IS_PAUSED ?  stopPlayer : null;
+    return flutterSoundModule.audioState == t_AUDIO_STATE.IS_PLAYING || flutterSoundModule.audioState == t_AUDIO_STATE.IS_PAUSED ? stopPlayer : null;
   }
 
   onStartPlayerPressed() {
-        if (_media == t_MEDIA.FILE || _media == t_MEDIA.BUFFER)
-        {
-          if ( _path[_codec.index] == null )
-            return null;
-        }
-        return  flutterSound.audioState == t_AUDIO_STATE.IS_STOPPED ? startPlayer : null;
+    if (_media == t_MEDIA.FILE || _media == t_MEDIA.BUFFER) // A file must be already recorded to play it
+    {
+      if (_path[_codec.index] == null) return null;
+    }
+    if (_media == t_MEDIA.REMOTE_EXAMPLE_FILE && _codec != t_CODEC.CODEC_MP3) // in this example we use just a remote mp3 file
+      return null;
+
+    // Disable the button if the selected codec is not supported
+    if (!_decoderSupported) return null;
+    return flutterSoundModule.audioState == t_AUDIO_STATE.IS_STOPPED ? startPlayer : null;
+  }
+
+  void startStopRecorder() {
+    if (flutterSoundModule.audioState == t_AUDIO_STATE.IS_RECORDING)
+      stopRecorder();
+    else
+      startRecorder();
   }
 
   onStartRecorderPressed() {
-    if (_media == t_MEDIA.ASSET || _media == t_MEDIA.BUFFER)
-      return null;
-    if (flutterSound.audioState == t_AUDIO_STATE.IS_RECORDING)
-            return stopRecorder;
-
-    return  flutterSound.audioState == t_AUDIO_STATE.IS_STOPPED ? startRecorder : null;
+    if (_media == t_MEDIA.ASSET || _media == t_MEDIA.BUFFER || _media == t_MEDIA.REMOTE_EXAMPLE_FILE) return null;
+    // Disable the button if the selected codec is not supported
+    if (!_encoderSupported) return null;
+    if (flutterSoundModule.audioState == t_AUDIO_STATE.IS_PAUSED || flutterSoundModule.audioState == t_AUDIO_STATE.IS_PLAYING) return null;
+    return startStopRecorder;
   }
 
   AssetImage recorderAssetImage() {
-    if (onStartRecorderPressed() == null)
-      return  AssetImage('res/icons/ic_mic_disabled.png');
-          return flutterSound.audioState == t_AUDIO_STATE.IS_STOPPED ?  AssetImage('res/icons/ic_mic.png') : AssetImage('res/icons/ic_stop.png');
+    if (onStartRecorderPressed() == null) return AssetImage('res/icons/ic_mic_disabled.png');
+    return flutterSoundModule.audioState == t_AUDIO_STATE.IS_STOPPED ? AssetImage('res/icons/ic_mic.png') : AssetImage('res/icons/ic_stop.png');
   }
 
-  setCodec (t_CODEC codec) async {
-    setState
-      (() {_codec = codec;});
+  setCodec(t_CODEC codec) async {
+    _encoderSupported = await flutterSoundModule.isEncoderSupported(codec);
+    _decoderSupported = await flutterSoundModule.isDecoderSupported(codec);
+
+    setState(() {
+      _codec = codec;
+    });
   }
 
-  Widget makeNavigationBar(BuildContext context) {
-    return ButtonBar
-      (
-      mainAxisSize: MainAxisSize.max, // this will take space as minimum as posible(to center)
-      children: <Widget>
-      [
-        Text('Media'),
-        Container
-          (
-          margin: const EdgeInsets.all(0.0),
-          padding: const EdgeInsets.all(0.0),
-          decoration: BoxDecoration
-            (
-            color: Color(0xFFC6E5E2),
-            border: Border.all (color: Color(0xFF2F2376), width: 3,),
-            ),
+  audioPlayerSwitchChanged() {
+    if (flutterSoundModule.audioState != t_AUDIO_STATE.IS_STOPPED) return null;
+    return ((newVal) async {
+      try {
+        if (flutterSoundModule != null) flutterSoundModule.releaseMediaPlayer();
 
-          child: Row
-            (
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children:
-            [
-              Radio
-                (
-                value: t_MEDIA.FILE,
-                groupValue: _media,
-                onChanged: (radioBtn)
-                {
-                  setState
-                    (() {_media = radioBtn;});
-                },
-                ),
-              new Text('File'),
+        _isAudioPlayer = newVal;
+        if (!newVal) {
+          _initializeExample(FlutterSound());
+        } else {
+          _initializeExample(Flauto());
+        }
+        setState(() {});
+      } catch (err) {
+        print(err);
+      }
+    });
+  }
 
-              Radio
-                (
-                value: t_MEDIA.BUFFER,
-                groupValue: _media,
-                onChanged: (radioBtn)
-                {
-                  setState
-                    (() {_media = radioBtn;});
-                },
-                ),
-              new Text('Buffer'),
+  duckOthersSwitchChanged() {
+    return ((newVal) async {
+      _duckOthers = newVal;
 
-              Radio
-                (
-                value: t_MEDIA.ASSET,
-                groupValue: _media,
-                onChanged: (radioBtn)
-                {
-                  setState
-                    (() {_media = radioBtn;});
-                },
-                ),
-              new Text('Asset'),
-
-
-
-            ],
-            ),
-          ),
-        Divider(),
-
-        Text('Codec'),
-  Container
-  (
-    height:105,
-    margin: const EdgeInsets.all(0.0),
-    padding: const EdgeInsets.all(0.0),
-    decoration: BoxDecoration
-    (
-      color: Color(0xFFC6E5E2),
-      border: Border.all (color: Color(0xFF2F2376), width: 3,),
-    ),
-
-    child: Column
-    (
-        children:
-        [
-            Container
-            (
-            color: Color(0xFFC6E5E2),
-            child: Row
-              (
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children:
-              [
-                Radio
-                  (
-                  value: t_CODEC.CODEC_AAC,
-                  groupValue: _codec,
-                  onChanged: setCodec,
-                  ),
-                Text('AAC'),
-
-                Radio
-                  (
-                  value: t_CODEC.CODEC_OPUS,
-                  groupValue: _codec,
-                  onChanged: setCodec,
-                  ),
-                Text('OGG/Opus'),
-
-                Radio
-                  (
-                  value: t_CODEC.CODEC_CAF_OPUS,
-                  groupValue: _codec,
-                  onChanged: setCodec,
-                  ),
-                Text('CAF/Opus'),
-              ],
-              ),
-            ),
-
-        Container
-          (
-          color: Color(0xFFC6E5E2),
-          child: Row
-            (
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children:
-            [
-              Radio
-                (
-                value: t_CODEC.CODEC_MP3,
-                groupValue: _codec,
-                onChanged: setCodec,
-                ),
-              Text('MP3'),
-
-              Radio
-                (
-                value: t_CODEC.CODEC_VORBIS,
-                groupValue: _codec,
-                onChanged: setCodec,
-                ),
-              Text('OGG/Vorbis'),
-
-              Radio
-                (
-                value: t_CODEC.CODEC_PCM,
-                groupValue: _codec,
-                onChanged: setCodec,
-                ),
-              Text('PCM'),
-            ],
-            ),
-          ),
-    ],
-      ),
-    ),
-
-      ],
-      )
-    ;
-
+      try {
+        setDuck();
+        setState(() {});
+      } catch (err) {
+        print(err);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final recorderProgressIndicator = _isRecording
+        ? LinearProgressIndicator(
+            value: 100.0 / 160.0 * (this._dbLevel ?? 1) / 100,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+            backgroundColor: Colors.red,
+          )
+        : Container();
+    final playerControls = ((!_canDisplayPlayerControls) && _isAudioPlayer)
+        ? Container(child: Container(child: CircularProgressIndicator()))
+        : Row(
+            children: <Widget>[
+              Container(
+                width: 56.0,
+                height: 56.0,
+                child: ClipOval(
+                  child: FlatButton(
+                    onPressed: onStartPlayerPressed(),
+                    padding: EdgeInsets.all(8.0),
+                    child: Image(
+                      image: AssetImage(onStartPlayerPressed() != null ? 'res/icons/ic_play.png' : 'res/icons/ic_play_disabled.png'),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                width: 56.0,
+                height: 56.0,
+                child: ClipOval(
+                  child: FlatButton(
+                    onPressed: onPauseResumePlayerPressed(),
+                    padding: EdgeInsets.all(8.0),
+                    child: Image(
+                      width: 36.0,
+                      height: 36.0,
+                      image: AssetImage(onPauseResumePlayerPressed() != null ? 'res/icons/ic_pause.png' : 'res/icons/ic_pause_disabled.png'),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                width: 56.0,
+                height: 56.0,
+                child: ClipOval(
+                  child: FlatButton(
+                    onPressed: onStopPlayerPressed(),
+                    padding: EdgeInsets.all(8.0),
+                    child: Image(
+                      width: 28.0,
+                      height: 28.0,
+                      image: AssetImage(onStopPlayerPressed() != null ? 'res/icons/ic_stop.png' : 'res/icons/ic_stop_disabled.png'),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+          );
+    final playerSlider = Container(
+        height: 56.0,
+        child: Slider(
+            value: sliderCurrentPosition,
+            min: 0.0,
+            max: maxDuration,
+            onChanged: (double value) async {
+              await flutterSoundModule.seekToPlayer(value.toInt());
+            },
+            divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt()));
+
+    final dropdowns = makeDropdowns(context);
+    final trackSwitch = Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 4),
+            child: Text('"Flauto":'),
+          ),
+          Switch(
+            value: _isAudioPlayer,
+            onChanged: audioPlayerSwitchChanged(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 4.0),
+            child: Text('Duck Others:'),
+          ),
+          Switch(
+            value: _duckOthers,
+            onChanged: duckOthersSwitchChanged(),
+          ),
+        ],
+      ),
+    );
+
+    Widget recorderSection = Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+      Container(
+        margin: EdgeInsets.only(top: 12.0, bottom: 16.0),
+        child: Text(
+          this._recorderTxt,
+          style: TextStyle(
+            fontSize: 35.0,
+            color: Colors.black,
+          ),
+        ),
+      ),
+      _isRecording ? LinearProgressIndicator(value: 100.0 / 160.0 * (this._dbLevel ?? 1) / 100, valueColor: AlwaysStoppedAnimation<Color>(Colors.green), backgroundColor: Colors.red) : Container(),
+      Row(
+        children: <Widget>[
+          Container(
+            width: 56.0,
+            height: 50.0,
+            child: ClipOval(
+              child: FlatButton(
+                onPressed: onStartRecorderPressed(),
+                padding: EdgeInsets.all(8.0),
+                child: Image(
+                  image: recorderAssetImage(),
+                ),
+              ),
+            ),
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+      ),
+    ]);
+
+    Widget playerSection = Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.only(top: 12.0, bottom: 16.0),
+          child: Text(
+            this._playerTxt,
+            style: TextStyle(
+              fontSize: 35.0,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        Row(
+          children: <Widget>[
+            Container(
+              width: 56.0,
+              height: 50.0,
+              child: ClipOval(
+                child: FlatButton(
+                  onPressed: onStartPlayerPressed(),
+                  disabledColor: Colors.white,
+                  padding: EdgeInsets.all(8.0),
+                  child: Image(
+                    image: AssetImage(onStartPlayerPressed() != null ? 'res/icons/ic_play.png' : 'res/icons/ic_play_disabled.png'),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              width: 56.0,
+              height: 50.0,
+              child: ClipOval(
+                child: FlatButton(
+                  onPressed: onPauseResumePlayerPressed(),
+                  disabledColor: Colors.white,
+                  padding: EdgeInsets.all(8.0),
+                  child: Image(
+                    width: 36.0,
+                    height: 36.0,
+                    image: AssetImage(onPauseResumePlayerPressed() != null ? 'res/icons/ic_pause.png' : 'res/icons/ic_pause_disabled.png'),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              width: 56.0,
+              height: 50.0,
+              child: ClipOval(
+                child: FlatButton(
+                  onPressed: onStopPlayerPressed(),
+                  disabledColor: Colors.white,
+                  padding: EdgeInsets.all(8.0),
+                  child: Image(
+                    width: 28.0,
+                    height: 28.0,
+                    image: AssetImage(onStopPlayerPressed() != null ? 'res/icons/ic_stop.png' : 'res/icons/ic_stop_disabled.png'),
+                  ),
+                ),
+              ),
+            ),
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+        ),
+        Container(
+            height: 30.0,
+            child: Slider(
+                value: sliderCurrentPosition,
+                min: 0.0,
+                max: maxDuration,
+                onChanged: (double value) async {
+                  await flutterSoundModule.seekToPlayer(value.toInt());
+                },
+                divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt())),
+      ],
+    );
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -450,130 +794,12 @@ class _MyAppState extends State<MyApp> {
         ),
         body: ListView(
           children: <Widget>[
-
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(top: 12.0, bottom:16.0),
-                  child: Text(
-                    this._recorderTxt,
-                    style: TextStyle(
-                      fontSize: 35.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                _isRecording ? LinearProgressIndicator(
-                  value: 100.0 / 160.0 * (this._dbLevel ?? 1) / 100,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                  backgroundColor: Colors.red,
-                ) : Container()
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Container(
-                  width: 56.0,
-                  height: 50.0,
-                  child: ClipOval(
-                    child: FlatButton(
-                      onPressed: onStartRecorderPressed(),
-                      padding: EdgeInsets.all(8.0),
-                      child: Image(
-                        image: recorderAssetImage(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(top: 12.0, bottom:16.0),
-                  child: Text(
-                    this._playerTxt,
-                    style: TextStyle(
-                      fontSize: 35.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Container(
-                  width: 56.0,
-                  height: 50.0,
-                  child: ClipOval(
-                    child: FlatButton(
-                      onPressed: onStartPlayerPressed(),
-                      disabledColor: Colors.white,
-                      padding: EdgeInsets.all(8.0),
-                      child: Image(
-                        image: AssetImage(onStartPlayerPressed() != null ? 'res/icons/ic_play.png' : 'res/icons/ic_play_disabled.png'),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 56.0,
-                  height: 50.0,
-                  child: ClipOval(
-                    child: FlatButton(
-                      onPressed: onPausePlayerPressed(),
-                      disabledColor: Colors.white,
-                      padding: EdgeInsets.all(8.0),
-                      child: Image(
-                        width: 36.0,
-                        height: 36.0,
-                        image: AssetImage(onPausePlayerPressed() != null ? 'res/icons/ic_pause.png' : 'res/icons/ic_pause_disabled.png'),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 56.0,
-                  height: 50.0,
-                  child: ClipOval(
-                    child: FlatButton(
-                      onPressed: onStopPlayerPressed(),
-                      disabledColor: Colors.white,
-                      padding: EdgeInsets.all(8.0),
-                      child: Image(
-                        width: 28.0,
-                        height: 28.0,
-                        image: AssetImage(onStopPlayerPressed() != null ? 'res/icons/ic_stop.png' : 'res/icons/ic_stop_disabled.png'),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-            ),
-            Container(
-              height: 30.0,
-              child: Slider(
-                value: sliderCurrentPosition,
-                min: 0.0,
-                max: maxDuration,
-                onChanged: (double value) async{
-                  await flutterSound.seekToPlayer(value.toInt());
-                },
-                divisions: maxDuration.toInt()
-              )
-            ),
-           ],
+            recorderSection,
+            playerSection,
+            dropdowns,
+            trackSwitch,
+          ],
         ),
-        bottomNavigationBar: makeNavigationBar(context),
       ),
     );
   }

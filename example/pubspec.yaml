@@ -14,7 +14,11 @@ dependencies:
     sdk: flutter
   flutter_sound:
     path: ../
+  permission_handler: ^4.4.0
+
+# Comment out the following line if flutter_ffmpeg is not needed
   flutter_ffmpeg: ^0.2.10
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -27,8 +31,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_sound:
-    path: ../
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -65,7 +67,7 @@ flutter:
   - res/icons/ic_volume_up.png
   - res/icons/2.0x/ic_volume_up.png
   - res/icons/3.0x/ic_volume_up.png
-  
+
   - assets/samples/
 
 

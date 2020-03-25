@@ -10,6 +10,7 @@ dependencies:
   path: ">=1.0.0 <2.0.0"
   flutter:
     sdk: flutter
+  permission_handler: ^4.4.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
