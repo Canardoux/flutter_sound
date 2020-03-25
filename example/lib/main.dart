@@ -19,12 +19,14 @@ import 'dart:io';
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/material.dart';
-import 'package:flauto/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:flauto/flauto.dart';
+import 'package:flauto/flauto_player.dart';
+import 'package:flauto/flutter_sound.dart';
+import 'package:flauto/track_player.dart';
 
 enum t_MEDIA
 {
@@ -385,7 +387,7 @@ class _MyAppState extends State<MyApp>
                                         );
 
 
-                                Flauto flauto = flutterSoundModule;
+                                TrackPlayer flauto = TrackPlayer();
                                 path = await flauto.startPlayerFromTrack(
                                         track,
                                         /*canSkipForward:true, canSkipBackward:true,*/
@@ -470,7 +472,7 @@ class _MyAppState extends State<MyApp>
 
         pauseResumePlayer( )
         {
-                if (flutterSoundModule.audioState == t_AUDIO_STATE.IS_PLAYING)
+                if (flutterSoundModule.isPlaying)
                 {
                         flutterSoundModule.pausePlayer( );
                 } else
@@ -678,7 +680,7 @@ class _MyAppState extends State<MyApp>
                                         _initializeExample( FlutterSound( ) );
                                 } else
                                 {
-                                        _initializeExample( Flauto( ) );
+                                        _initializeExample( FlutterSound( ) );
                                 }
                                 setState( ( )
                                           {} );

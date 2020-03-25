@@ -1,9 +1,3 @@
-//
-//  Flauto.m
-//  flauto
-//
-//  Created by larpoux on 24/03/2020.
-//
 /*
  * This file is part of Flauto.
  *
@@ -19,27 +13,26 @@
  *   You should have received a copy of the Lesser GNU General Public License
  *   along with Flauto.  If not, see <https://www.gnu.org/licenses/>.
  */
+ 
+#ifndef TrackPlayer_h
+#define TrackPlayer_h
 
 
-
-#import "flauto.h"
+#import <Flutter/Flutter.h>
 #import "FlautoPlayer.h"
-#import "FlautoRecorder.h"
-#import "TrackPlayer.h"
-#import <AVFoundation/AVFoundation.h>
-#import <Foundation/Foundation.h>
 
+extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 
-@implementation Flauto
+@interface TrackPlayer : FlautoPlayer
 {
+
 }
 
-
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
-{
-        FlautoPlayerReg(registrar);
-        FlautoRecorderReg(registrar);
-        FlautoPlayerReg(registrar);
-}
+- (FlutterMethodChannel *)getChannel;
+- (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)initializeTrackPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)releaseTrackPlayer:(FlutterMethodCall *)call result:(FlutterResult)result;
 
 @end
+
+#endif // TrackPlayer_h

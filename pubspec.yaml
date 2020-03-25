@@ -1,5 +1,5 @@
 name: flauto
-description: Flutter plugin that relates to sound like audio and recorder. (flutter_sound fork).
+description: Flutter plugin that relates to sound like audio and recorder. (A flutter_sound fork).
 version: 3.0.1+1
 
 homepage: https://github.com/canardoux/flauto
@@ -19,7 +19,7 @@ dependencies:
 flutter:
   plugin:
     androidPackage: xyz.canardoux.flauto
-    pluginClass: FlutterSoundPlugin
+    pluginClass: Flauto
 
 
     #androidPackage: xyz.canardoux.flauto

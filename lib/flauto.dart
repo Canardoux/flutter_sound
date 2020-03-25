@@ -15,11 +15,6 @@
  */
 
 
-/*
- * The purpose of this module is to offer higher level functionnalities, using MediaService/MediaBrowser.
- * This module may use flutter_sound module, but flutter_sound module may not depends on this module.
- */
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
@@ -28,285 +23,104 @@ import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/services.dart';
-import 'package:flauto/flutter_sound.dart';
+import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
+import 'package:path/path.dart' as p;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 
-class PlayerNotInitializedException implements Exception {
-  final String message;
 
-  PlayerNotInitializedException(this.message);
+// this enum MUST be synchronized with fluttersound/AudioInterface.java  and ios/Classes/FlutterSoundPlugin.h
+enum t_CODEC
+{
+        DEFAULT,
+        CODEC_AAC,
+        CODEC_OPUS,
+        CODEC_CAF_OPUS, // Apple encapsulates its bits in its own special envelope : .caf instead of a regular ogg/opus (.opus). This is completely stupid, this is Apple.
+        CODEC_MP3,
+        CODEC_VORBIS,
+        CODEC_PCM,
 }
 
-/// The track to play in the audio player
-class Track {
-  /// The title of this track
-  final String trackTitle;
+const MethodChannel _FFmpegChannel = const MethodChannel( 'flutter_ffmpeg' );
 
-  /// The buffer containing the audio file to play
-  final Uint8List dataBuffer;
-
-  /// The name of the author of this track
-  final String trackAuthor;
-
-  /// The path that points to the track audio file
-  String trackPath;
-
-  /// The URL that points to the album art of the track
-  final String albumArtUrl;
-
-  /// The asset that points to the album art of the track
-  final String albumArtAsset;
-
-  /// The image that points to the album art of the track
-  //final String albumArtImage;
-
-  /// The codec of the audio file to play. If this parameter's value is null
-  /// it will be set to [t_CODEC.DEFAULT].
-  t_CODEC codec;
-
-  Track({
-    this.trackPath,
-    this.dataBuffer,
-    this.trackTitle,
-    this.trackAuthor,
-    this.albumArtUrl = null,
-    this.albumArtAsset = null,
-    //this.albumArtImage = null,
-    this.codec = t_CODEC.DEFAULT,
-  }) {
-    codec = codec == null ? t_CODEC.DEFAULT : codec;
-    assert(trackPath != null || dataBuffer != null, 'You should provide a path or a buffer for the audio content to play.');
-    assert((trackPath != null && dataBuffer == null) || (trackPath == null && dataBuffer != null), 'You cannot provide both a path and a buffer.');
-  }
-
-  /// Convert this object to a [Map] containing the properties of this object
-  /// as values.
-  Future<Map<String, dynamic>> toMap() async {
-    final map = {
-      "path": trackPath,
-      "dataBuffer": dataBuffer,
-      "title": trackTitle,
-      "author": trackAuthor,
-      "albumArtUrl": albumArtUrl,
-      "albumArtAsset": albumArtAsset,
-      "bufferCodecIndex": codec?.index,
-    };
-
-    return map;
-  }
-
-  Future<void> _adaptOggToIos() async {
-    // If we want to play OGG/OPUS on iOS, we re-mux the OGG file format to a specific Apple CAF envelope before starting the player.
-    // We use FFmpeg for that task.
-    if ((Platform.isIOS) && ((codec == t_CODEC.CODEC_OPUS) || (fileExtension(trackPath) == '.opus'))) {
-      Directory tempDir = await getTemporaryDirectory();
-      File fout = await File('${tempDir.path}/flutter_sound-tmp.caf');
-      if (fout.existsSync()) // delete the old temporary file if it exists
-        await fout.delete();
-      int rc;
-      String inputFileName = trackPath;
-      // The following ffmpeg instruction does not decode and re-encode the file. It just remux the OPUS data into an Apple CAF envelope.
-      // It is probably very fast and the user will not notice any delay, even with a very large data.
-      // This is the price to pay for the Apple stupidity.
-      if (dataBuffer != null) {
-        // Write the user buffer into the temporary file
-        inputFileName = '${tempDir.path}/flutter_sound-tmp.opus';
-        File fin = await File(inputFileName);
-        fin.writeAsBytesSync(dataBuffer);
-      }
-      rc = await FlutterSound.executeFFmpegWithArguments([
-        '-y',
-        '-loglevel',
-        'error',
-        '-i',
-        inputFileName,
-        '-c:a',
-        'copy',
-        fout.path,
-      ]); // remux OGG to CAF
-      if (rc != 0) {
-        throw 'FFmpeg exited with code ${rc}';
-      }
-      // Now we can play Apple CAF/OPUS
-      trackPath = fout.path;
-    }
-  }
-}
-
-class Flauto extends FlutterSound {
-  static const MethodChannel _channel = const MethodChannel('flauto');
-  StreamController<t_AUDIO_STATE> _playbackStateChangedController;
-
-  @override
-  MethodChannel getChannel() => _channel;
-
-  Flauto() {
-    if (!isInited) {
-      initializeMediaPlayer();
-    }
-  }
-
-  /// Initializes the media player and all the callbacks for the player and the
-  /// recorder. This must be called before all other media player and recorder
-  /// methods.
-  ///
-  /// If [includeAudioPlayerFeatures] is true, the audio player specific
-  /// features will be included (eg. playback handling via hardware buttons,
-  /// lock screen controls). If you initialized the media player with the
-  /// audio player features, but you don't want them anymore, you must
-  /// re-initialize it. Do the same if you initialized the media player without
-  /// the audio player features, but you need them now.
-  ///
-  /// [skipForwardHandler] and [skipBackwardForward] are functions that are
-  /// called when the user tries to skip forward or backward using the
-  /// notification controls. They can be null.
-  ///
-  /// Media player and recorder controls should be displayed only after this
-  /// method has finished executing.
-  Future<void> initializeMediaPlayer() async {
-    if (!isInited) {
-      try {
-        await getChannel().invokeMethod('initializeMediaPlayer');
-        onSkipBackward = null;
-        onSkipForward = null;
-
-        if (_playbackStateChangedController == null) {
-          _playbackStateChangedController = StreamController.broadcast();
-        }
-
-        // Add the method call handler
-        getChannel().setMethodCallHandler(channelMethodCallHandler);
-      } catch (err) {
-        throw err;
-      }
-      isInited = true;
-    }
-  }
-
-  /// Resets the media player and cleans up the device resources. This must be
-  /// called when the player is no longer needed.
-  Future<void> releaseMediaPlayer() async {
-    try {
-      isInited = false;
-      // Stop the player playback before releasing
-      await stopPlayer();
-      await getChannel().invokeMethod('releaseMediaPlayer');
-
-      _removePlaybackStateCallback();
-      _removePlayerCallback();
-      onSkipBackward = null;
-      onSkipForward = null;
-    } catch (err) {
-      print('err: $err');
-      throw err;
-    }
-  }
-
-  /// Plays the given [track]. [canSkipForward] and [canSkipBackward] must be
-  /// passed to provide information on whether the user can skip to the next
-  /// or to the previous song in the lock screen controls.
-  ///
-  /// This method should only be used if the   player has been initialize
-  /// with the audio player specific features.
-  Future<String> startPlayerFromTrack(
-    Track track, {
-    t_CODEC codec,
-    t_whenFinished whenFinished,
-    t_whenPaused whenPaused,
-    t_onSkip onSkipForward = null,
-    t_onSkip onSkipBackward = null,
-    t_updateProgress onUpdateProgress = null,
-  }) async {
-    // Check the current codec is not supported on this platform
-    if (!await isDecoderSupported(track.codec)) {
-      throw PlayerRunningException('The selected codec is not supported on '
-          'this platform.');
-    }
-
-    await track._adaptOggToIos();
-
-    final trackMap = await track.toMap();
-
-    audioPlayerFinishedPlaying = whenFinished;
-    this.whenPause = whenPaused;
-    this.onSkipForward = onSkipForward;
-    this.onSkipBackward = onSkipBackward;
-    this.onUpdateProgress = onUpdateProgress;
-    String result = await getChannel().invokeMethod('startPlayerFromTrack', <String, dynamic>{
-      'track': trackMap,
-      'canPause': whenPaused != null,
-      'canSkipForward': onSkipForward != null,
-      'canSkipBackward': onSkipBackward != null,
-    });
-
-    if (result != null) {
-      print('startPlayer result: $result');
-      setPlayerCallback();
-
-      audioState = t_AUDIO_STATE.IS_PLAYING;
-    }
-    return result;
-  }
-
-  /// Plays the file that [fileUri] points to.
-  Future<String> startPlayer(
-    String fileUri, {
-    t_CODEC codec,
-    whenFinished(),
-  }) {
-    final track = Track(trackPath: fileUri, codec: codec);
-    return startPlayerFromTrack(track, whenFinished: whenFinished);
-  }
-
-  /// Plays the audio file in [buffer] decoded according to [codec].
-  Future<String> startPlayerFromBuffer(
-    Uint8List dataBuffer, {
-    t_CODEC codec,
-    whenFinished(),
-  }) {
-    final track = Track(dataBuffer: dataBuffer, codec: codec);
-    return startPlayerFromTrack(track, whenFinished: whenFinished);
-  }
-
-  Future<dynamic> channelMethodCallHandler(MethodCall call) {
-    switch (call.method) {
-      case 'audioPlayerFinishedPlaying':
+/// Returns true if the flutter_ffmpeg plugin is really plugged in
+Future<bool> isFFmpegSupported( )
+async {
+        try
         {
-          Map<String, dynamic> result = jsonDecode(call.arguments);
-          PlayStatus status = new PlayStatus.fromJSON(result);
-          if (status.currentPosition != status.duration) {
-            status.currentPosition = status.duration;
-          }
-          if (playerController != null) playerController.add(status);
-          if (_playbackStateChangedController != null) {
-            _playbackStateChangedController.add(t_AUDIO_STATE.IS_STOPPED);
-          }
-          audioState = t_AUDIO_STATE.IS_STOPPED;
-          if (audioPlayerFinishedPlaying != null) {
-            audioPlayerFinishedPlaying();
-            audioPlayerFinishedPlaying = null;
-          }
+                await _FFmpegChannel.invokeMethod( 'getFFmpegVersion' );
+                await _FFmpegChannel.invokeMethod( 'getPlatform' );
+                await _FFmpegChannel.invokeMethod( 'getPackageName' );
+                return true;
         }
-        break;
-
-      default:
-        super.channelMethodCallHandler(call);
-    }
-  }
-
-  void _removePlaybackStateCallback() {
-    if (_playbackStateChangedController != null) {
-      _playbackStateChangedController.close();
-      _playbackStateChangedController = null;
-    }
-  }
-
-  void _removePlayerCallback() {
-    if (playerController != null) {
-      playerController
-        ..add(null)
-        ..close();
-      playerController = null;
-    }
-  }
+        catch (e)
+        {
+                return false;
+        }
 }
+
+
+/// We use here our own ffmpeg "execute" procedure instead of the one provided by the flutter_ffmpeg plugin,
+/// so that the developers not interested by ffmpeg can use flutter_plugin without the flutter_ffmpeg plugin
+/// and without any complain from the link-editor.
+///
+/// Executes FFmpeg with [commandArguments] provided.
+Future<int> executeFFmpegWithArguments( List<String> arguments )
+async {
+try
+{
+if (!await isFFmpegSupported( ))
+return -1;
+final Map<dynamic, dynamic> result = await _FFmpegChannel.invokeMethod( 'executeFFmpegWithArguments', {'arguments': arguments} );
+return result['rc'];
+}
+on PlatformException catch (e)
+{
+print( "Plugin error: ${e.message}" );
+return -1;
+}
+}
+
+
+/// We use here our own ffmpeg "getLastReturnCode" procedure instead of the one provided by the flutter_ffmpeg plugin,
+/// so that the developers not interested by ffmpeg can use flutter_plugin without the flutter_ffmpeg plugin
+/// and without any complain from the link-editor.
+///
+/// Returns return code of last executed command.
+Future<int> getLastFFmpegReturnCode( )
+async {
+        try
+        {
+                final Map<dynamic, dynamic> result =
+                await _FFmpegChannel.invokeMethod( 'getLastReturnCode' );
+                return result['lastRc'];
+        }
+        on PlatformException catch (e)
+        {
+                print( "Plugin error: ${e.message}" );
+                return -1;
+        }
+}
+
+/// We use here our own ffmpeg "getLastCommandOutput" procedure instead of the one provided by the flutter_ffmpeg plugin,
+/// so that the developers not interested by ffmpeg can use flutter_plugin without the flutter_ffmpeg plugin
+/// and without any complain from the link-editor.
+///
+/// Returns log output of last executed command. Please note that disabling redirection using
+/// This method does not support executing multiple concurrent commands. If you execute multiple commands at the same time, this method will return output from all executions.
+/// [disableRedirection()] method also disables this functionality.
+Future<String> getLastFFmpegCommandOutput( )
+async {
+        try
+        {
+                final Map<dynamic, dynamic> result =
+                await _FFmpegChannel.invokeMethod( 'getLastCommandOutput' );
+                return result['lastCommandOutput'];
+        }
+        on PlatformException catch (e)
+        {
+                print( "Plugin error: ${e.message}" );
+                return null;
+        }
+}
+
