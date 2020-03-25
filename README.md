@@ -7,8 +7,17 @@
 </p>
 This plugin provides simple recorder and player functionalities for both `android` and `ios` platforms. This only supports default file extension for each platform.
 This plugin handles file from remote url.
-This plugin can handle playback stream from native (To sync exact time with bridging).
-<br/><img src="https://firebasestorage.googleapis.com/v0/b/flutterdart-5d354.appspot.com/o/flutter_sound.gif?alt=media&token=f9e01ee6-0dc6-4988-b96a-52cc4f4824c4"/>
+This plugin can handle playback stream from native (To sync exact time with bridging).<br/>
+
+![flauto](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
+
+## Breaking News
+* `3.0.0` release has breaking features have been added by the work on code name `flauto` in [#243](https://github.com/dooboolab/flutter_sound/pull/243)
+  - OGG/OPUS support on iOS
+  - Playing in lock screen
+  - Playing in notification
+  - Support tracking
+  > Please honor all wonderful contributors [Larpoux](https://github.com/Larpoux), [bsutton](https://github.com/bsutton), [salvatore373](https://github.com/salvatore373) :tada:!
 
 ## Free Read
 
