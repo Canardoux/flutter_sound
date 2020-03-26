@@ -71,13 +71,13 @@ public class BackgroundAudioService extends MediaBrowserServiceCompat
     final static String TAG = "BackgroundAudioService";
     static final String notificationChannelId = "flutter_sound_channel_01";
 
-    public static Callable mediaPlayerOnPreparedListener;
-    public static Callable mediaPlayerOnCompletionListener;
-    public static Callable skipTrackForwardHandler;
-    public static Callable skipTrackBackwardHandler;
-    public static Function playbackStateUpdater;
+    public Callable mediaPlayerOnPreparedListener;
+    public Callable mediaPlayerOnCompletionListener;
+    public Callable skipTrackForwardHandler;
+    public Callable skipTrackBackwardHandler;
+    public Function playbackStateUpdater;
     // public static boolean includeAudioPlayerFeatures;
-    public static Activity activity;
+    public Activity activity;
 
     public final static int PLAYING_STATE = 0;
     public final static int PAUSED_STATE = 1;
