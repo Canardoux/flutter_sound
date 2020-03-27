@@ -39,7 +39,7 @@
 {
         FlautoPlayerReg(registrar);
         FlautoRecorderReg(registrar);
-        FlautoPlayerReg(registrar);
+        TrackPlayerReg(registrar);
 }
 
 @end

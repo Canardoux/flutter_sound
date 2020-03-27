@@ -22,6 +22,10 @@ import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
+import 'package:flauto/flutter_sound.dart';
+import 'package:flauto/track_player.dart';
+import 'package:flauto/flauto_recorder.dart';
+import 'package:flauto/flauto_player.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
@@ -67,18 +71,18 @@ async {
 /// Executes FFmpeg with [commandArguments] provided.
 Future<int> executeFFmpegWithArguments( List<String> arguments )
 async {
-try
-{
-if (!await isFFmpegSupported( ))
-return -1;
-final Map<dynamic, dynamic> result = await _FFmpegChannel.invokeMethod( 'executeFFmpegWithArguments', {'arguments': arguments} );
-return result['rc'];
-}
-on PlatformException catch (e)
-{
-print( "Plugin error: ${e.message}" );
-return -1;
-}
+        try
+        {
+                if (!await isFFmpegSupported( ))
+                        return -1;
+                final Map<dynamic, dynamic> result = await _FFmpegChannel.invokeMethod( 'executeFFmpegWithArguments', {'arguments': arguments} );
+                return result['rc'];
+        }
+        on PlatformException catch (e)
+        {
+                print( "Plugin error: ${e.message}" );
+                return -1;
+        }
 }
 
 
@@ -124,3 +128,44 @@ async {
         }
 }
 
+
+/// This class is deprecated. It is just to keep backward compatibility.
+/// New users must use the class TrackPlayer
+@deprecated
+class Flauto extends FlutterSound
+{
+        Flauto()
+        {
+                initializeMediaPlayer( );
+        }
+
+        void initializeMediaPlayer( )
+        async
+        {
+                if (soundPlayer == null)
+                        soundPlayer = TrackPlayer( );
+                if (soundRecorder == null)
+                        soundRecorder = FlautoRecorder( );
+                await soundPlayer.initialize( );
+                await soundRecorder.initialize( );
+        }
+
+        Future<String> startPlayerFromTrack(
+                    Track track, {
+                            t_CODEC codec,
+                            t_whenFinished whenFinished,
+                            t_whenPaused whenPaused,
+                            t_onSkip onSkipForward = null,
+                            t_onSkip onSkipBackward = null,
+                    } ) async
+        {
+                TrackPlayer player = soundPlayer;
+                await player.startPlayerFromTrack( track,
+                                                     whenFinished: whenFinished,
+                                                     onSkipBackward: onSkipBackward,
+                                                     onSkipForward: onSkipForward,
+                                             );
+        }
+
+
+}

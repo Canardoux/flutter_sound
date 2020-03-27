@@ -17,12 +17,12 @@
 
 
 #import "FlautoPlayer.h"
-#import "flauto.h" // Just to register it
 #import <AVFoundation/AVFoundation.h>
 
 
 
 static FlutterMethodChannel* _channel;
+NSMutableArray* flautoPlayerSlots;
 
 
 static bool _isIosDecoderSupported [] =
@@ -39,91 +39,133 @@ static bool _isIosDecoderSupported [] =
 
 //--------------------------------------------------------------------------------------------
 
+
+
 @implementation FlautoPlayerManager
 {
+ }
 
-}
-
+static FlautoPlayerManager* flautoPlayerManager; // Singleton
 
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
 {
         _channel = [FlutterMethodChannel methodChannelWithName:@"xyz.canardoux.flauto_player"
                                         binaryMessenger:[registrar messenger]];
-        FlautoPlayerManager* instance = [[FlautoPlayerManager alloc] init];
-        [registrar addMethodCallDelegate:instance channel:_channel];
+        assert (flautoPlayerManager == nil);
+        flautoPlayerManager = [[FlautoPlayerManager alloc] init];
+        [registrar addMethodCallDelegate:flautoPlayerManager channel:_channel];
 }
 
+
+- (FlautoPlayerManager*)init
+{
+        self = [super init];
+        flautoPlayerSlots = [[NSMutableArray alloc] init];
+        return self;
+}
 
 extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 {
         [FlautoPlayerManager registerWithRegistrar: registrar];
 }
 
+- (void)invokeMethod: (NSString*)methodName arguments: (NSDictionary*)call
+{
+        [_channel invokeMethod: methodName arguments: call ];
+}
+
+- (void)freeSlot: (int)slotNo
+{
+        flautoPlayerSlots[slotNo] = [NSNull null];
+}
+
+
+- (FlautoPlayerManager*)getManager
+{
+        return flautoPlayerManager;
+}
+
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result
 {
-       if ([@"initializeFlautoPlayer" isEqualToString:call.method])
+        int slotNo = [call.arguments[@"slotNo"] intValue];
+        assert ( (slotNo >= 0) && (slotNo <= [flautoPlayerSlots count]));
+        
+        if (slotNo == [flautoPlayerSlots count])
         {
-                theFlautoPlayer = [[FlautoPlayer alloc] init];
-                [theFlautoPlayer initializeFlautoPlayer: call result:result];
+               [flautoPlayerSlots addObject: [NSNull null]];
+        }
+
+        FlautoPlayer* aFlautoPlayer = flautoPlayerSlots[slotNo];
+        
+        if ([@"initializeMediaPlayer" isEqualToString:call.method])
+        {
+                assert (flautoPlayerSlots[slotNo] ==  [NSNull null] );
+                aFlautoPlayer = [[FlautoPlayer alloc] init: slotNo];
+                flautoPlayerSlots[slotNo] = aFlautoPlayer;
+                [aFlautoPlayer initializeFlautoPlayer: call result:result];
         } else
         
-        if ([@"releaseFlautoPlayer" isEqualToString:call.method])
+        if ([@"releaseMediaPlayer" isEqualToString:call.method])
         {
-                [theFlautoPlayer releaseFlautoPlayer: call result:result];
+                [aFlautoPlayer releaseFlautoPlayer: call result:result];
+                [flautoPlayerSlots replaceObjectAtIndex:slotNo withObject:[NSNull null]];
+                flautoPlayerSlots[slotNo] = [NSNull null];
+                slotNo = -1;
+
         } else
         
         if ([@"isDecoderSupported" isEqualToString:call.method])
         {
                 NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
-                [FlautoPlayer isDecoderSupported:[codec intValue] result:result];
+                [aFlautoPlayer isDecoderSupported:[codec intValue] result:result];
         } else
         
         if ([@"startPlayer" isEqualToString:call.method])
         {
                 NSString* path = (NSString*)call.arguments[@"path"];
-                [theFlautoPlayer startPlayer:path result:result];
+                [aFlautoPlayer startPlayer:path result:result];
         } else
         
         if ([@"startPlayerFromBuffer" isEqualToString:call.method])
         {
                 FlutterStandardTypedData* dataBuffer = (FlutterStandardTypedData*)call.arguments[@"dataBuffer"];
-                [theFlautoPlayer startPlayerFromBuffer:dataBuffer result:result];
+                [aFlautoPlayer startPlayerFromBuffer:dataBuffer result:result];
         } else
         
         if ([@"stopPlayer" isEqualToString:call.method])
         {
-                [theFlautoPlayer stopPlayer];
+                [aFlautoPlayer stopPlayer];
                 result(@"stop play");
         } else
           
         if ([@"pausePlayer" isEqualToString:call.method])
         {
-                [theFlautoPlayer pausePlayer:result];
+                [aFlautoPlayer pausePlayer:result];
         } else
           
         if ([@"resumePlayer" isEqualToString:call.method])
         {
-                [theFlautoPlayer resumePlayer:result];
+                [aFlautoPlayer resumePlayer:result];
         } else
           
         if ([@"seekToPlayer" isEqualToString:call.method])
         {
                 NSNumber* sec = (NSNumber*)call.arguments[@"sec"];
-                [theFlautoPlayer seekToPlayer:sec result:result];
+                [aFlautoPlayer seekToPlayer:sec result:result];
         } else
         
         if ([@"setSubscriptionDuration" isEqualToString:call.method])
         {
                 NSNumber* sec = (NSNumber*)call.arguments[@"sec"];
-                [theFlautoPlayer setSubscriptionDuration:[sec doubleValue] result:result];
+                [aFlautoPlayer setSubscriptionDuration:[sec doubleValue] result:result];
         } else
         
         if ([@"setVolume" isEqualToString:call.method])
         {
                 NSNumber* volume = (NSNumber*)call.arguments[@"volume"];
-                [theFlautoPlayer setVolume:[volume doubleValue] result:result];
+                [aFlautoPlayer setVolume:[volume doubleValue] result:result];
         } else
         
         if ([@"iosSetCategory" isEqualToString:call.method])
@@ -131,13 +173,13 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 NSString* categ = (NSString*)call.arguments[@"category"];
                 NSString* mode = (NSString*)call.arguments[@"mode"];
                 NSNumber* options = (NSNumber*)call.arguments[@"options"];
-                [theFlautoPlayer setCategory: categ mode: mode options: [options intValue] result:result];
+                [aFlautoPlayer setCategory: categ mode: mode options: [options intValue] result:result];
         } else
         
         if ([@"setActive" isEqualToString:call.method])
         {
                 BOOL enabled = [call.arguments[@"enabled"] boolValue];
-                [theFlautoPlayer setActive:enabled result:result];
+                [aFlautoPlayer setActive:enabled result:result];
         } else
         
         {
@@ -157,10 +199,17 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         //AVAudioPlayer* audioPlayer; // In the interface
         NSTimer *timer;
         double subscriptionDuration;
+        int slotNo;
 }
 
 
-+ (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result
+- (FlautoPlayer*)init: (int)aSlotNo
+{
+        slotNo = aSlotNo;
+        return self;
+}
+
+- (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result
 {
         NSNumber*  b = [NSNumber numberWithBool: _isIosDecoderSupported[codec] ];
         result(b);
@@ -168,18 +217,30 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
 
 
--(FlutterMethodChannel*) getChannel
+-(FlautoPlayerManager*) getPlugin
 {
-        return _channel;
+        return flautoPlayerManager;
 }
+
+
+- (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg
+{
+        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": stringArg};
+        [[self getPlugin] invokeMethod: methodName arguments: dic ];
+}
+
 
 - (void)initializeFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
         isPaused = false;
+        result([NSNumber numberWithBool: YES]);
 }
 
 - (void)releaseFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
+        [[self getPlugin]freeSlot: slotNo];
+        result(@"The player has been successfully released");
+
 }
 
 - (void)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options result:(FlutterResult)result
@@ -527,7 +588,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         // }
 
         NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue],                         [currentTime stringValue]];
-        [[ self getChannel] invokeMethod:@"updateProgress" arguments:status];
+        [self invokeMethod:@"updateProgress" stringArg:status];
 //        if (![audioPlayer isPlaying] )
 //        {
 //                  [self stopPlayer];
@@ -579,7 +640,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
         NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
 
-        [[ self getChannel] invokeMethod:@"audioPlayerFinishedPlaying" arguments: status];
+        [self invokeMethod:@"audioPlayerFinishedPlaying" stringArg: status];
         isPaused = false;
         [self stopTimer];
 }

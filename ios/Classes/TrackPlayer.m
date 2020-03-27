@@ -21,7 +21,6 @@
  * This module may use flutter_sound module, but flutter_sound module may not depends on this module.
  */
 
-#import "flauto.h"
 #import "TrackPlayer.h"
 #import "Track.h"
 #import <AVFoundation/AVFoundation.h>
@@ -34,18 +33,11 @@ static FlutterMethodChannel* _channel;
 //---------------------------------------------------------------------------------------------
 
 
-@interface TrackPlayerManager : FlautoPlayerManager
-{
-        TrackPlayer* theTrackPlayer; // Temporary !!!!!!!!!!!
-}
-
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar;
-@end
-
-
 @implementation TrackPlayerManager
 {
+        //NSMutableArray* trackPlayerSlots;
 }
+static TrackPlayerManager* trackPlayerManager; // Singleton
 
 
 
@@ -53,33 +45,72 @@ static FlutterMethodChannel* _channel;
 {
         _channel = [FlutterMethodChannel methodChannelWithName:@"xyz.canardoux.track_player"
                                         binaryMessenger:[registrar messenger]];
-        TrackPlayerManager* instance = [[TrackPlayerManager alloc] init];
-        [registrar addMethodCallDelegate:instance channel:_channel];
+        trackPlayerManager = [[TrackPlayerManager alloc] init]; // In super class
+        [registrar addMethodCallDelegate:trackPlayerManager channel:_channel];
 }
 
+- (TrackPlayerManager*)init
+{
+        self = [super init];
+        flautoPlayerSlots = [[NSMutableArray alloc] init];
+        return self;
+}
 
-extern void trackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
+extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 {
         [TrackPlayerManager registerWithRegistrar: registrar];
 }
 
+- (void)invokeMethod: (NSString*)methodName arguments: (NSDictionary*)call
+{
+        [_channel invokeMethod: methodName arguments: call ];
+}
+
+
+- (void)freeSlot: (int)slotNo
+{
+        flautoPlayerSlots[slotNo] = [NSNull null];
+}
+
+- (FlautoPlayerManager*)getManager
+{
+        return trackPlayerManager;
+}
+
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result
 {
+        int slotNo = [call.arguments[@"slotNo"] intValue];
+        assert ( (slotNo >= 0) && (slotNo <= [flautoPlayerSlots count]));
+        if (slotNo == [flautoPlayerSlots count])
+        {
+               [flautoPlayerSlots addObject:  [NSNull null] ];
+        }
+        //assert ( trackPlayerSlots[slotNo] != nil );
+
+        TrackPlayer* aTrackPlayer = flautoPlayerSlots[slotNo];
+        
+        if ([@"initializeMediaPlayer" isEqualToString:call.method])
+        {
+                 assert (flautoPlayerSlots[slotNo] ==  [NSNull null] );
+                 aTrackPlayer = [[TrackPlayer alloc] init: slotNo];
+                 flautoPlayerSlots[slotNo] = aTrackPlayer;
+
+                 [aTrackPlayer initializeTrackPlayer: call result:result];
+        } else
+        
+        if ([@"releaseMediaPlayer" isEqualToString:call.method])
+        {
+                [aTrackPlayer releaseTrackPlayer: call  result: result];
+                flautoPlayerSlots[slotNo] = [NSNull null];
+                slotNo = -1;
+                
+        } else
+        
         if ([@"startPlayerFromTrack" isEqualToString:call.method])
         {
-                 [theTrackPlayer startPlayerFromTrack: call result:result];
+                 [aTrackPlayer startPlayerFromTrack: call result:result];
         } else
-        
-        if ([@"initializeTrackPlayer" isEqualToString:call.method])
-        {
-                 theTrackPlayer = [[TrackPlayer alloc] init];
-                 [theTrackPlayer initializeTrackPlayer: call result:result];
-        } else
-        
-        if ([@"releaseTrackPlayer" isEqualToString:call.method])
-        {
-                [theTrackPlayer releaseTrackPlayer: call  result: result];
-        } else
+
         {
                 [super handleMethodCall: call  result: result];
         }
@@ -102,13 +133,14 @@ extern void trackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
        id pauseTarget;
        t_SET_CATEGORY_DONE setCategoryDone;
        t_SET_CATEGORY_DONE setActiveDone;
+       int slotNo;
 
 }
 
-
-- (FlutterMethodChannel*) getChannel
+- (TrackPlayer*)init: (int)aSlotNo
 {
-        return _channel;
+        slotNo = aSlotNo;
+        return self;
 }
 
 - (void)initializeTrackPlayer:(FlutterMethodCall *)call result:(FlutterResult)result
@@ -119,9 +151,45 @@ extern void trackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
 - (void)releaseTrackPlayer:(FlutterMethodCall *)call result:(FlutterResult)result
 {
+        // The code used to release all the media player resources is the same of the one needed
+         // to stop the media playback. Then, use that one.
+         // [self stopRecorder:result];
+         [self stopPlayer];
+         MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+         if (pauseTarget != nil)
+         {
+                 [commandCenter.togglePlayPauseCommand removeTarget: pauseTarget action: nil];
+                 pauseTarget = nil;
+         }
+         if (forwardTarget != nil)
+         {
+                 [commandCenter.nextTrackCommand removeTarget: forwardTarget action: nil];
+                 forwardTarget = nil;
+         }
+
+         if (backwardTarget != nil)
+         {
+                 [commandCenter.previousTrackCommand removeTarget: backwardTarget action: nil];
+                 backwardTarget = nil;
+         }
+
+        [[self getPlugin] freeSlot: slotNo];
+        result(@"The player has been successfully released");
 
 }
 
+
+- (FlautoPlayerManager*) getPlugin
+{
+        return trackPlayerManager;
+}
+
+
+- (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg
+{
+        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": stringArg};
+        [[self getPlugin] invokeMethod: methodName arguments: dic ];
+}
 
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result
 {
@@ -248,7 +316,7 @@ extern void trackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [self startTimer];
                 result(@"Playing from buffer");
         }
-        //[ [self getChannel] invokeMethod:@"updatePlaybackState" arguments:playingState];
+        //[ self invokeMethod:@"updatePlaybackState" arguments:playingState];
 
         // Display the notification with the media controls
         [self setupRemoteCommandCenter:canPause canSkipForward:canSkipForward   canSkipBackward:canSkipBackward result:result];
@@ -349,7 +417,7 @@ extern void trackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                         if (b)
                         {
                                 if (canPause)
-                                        [[self getChannel] invokeMethod:@"pause" arguments:nil];
+                                        [self invokeMethod:@"pause" stringArg:@""];
                                 else
                                         [self pause];
                         } else
@@ -357,9 +425,9 @@ extern void trackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                                 if (canPause)
                                 {
                                         if (isPaused)
-                                                [[self getChannel] invokeMethod:@"resume" arguments:nil];
+                                                [self invokeMethod:@"resume" stringArg:@""];
                                         else
-                                                [[self getChannel] invokeMethod:@"pause" arguments:nil]; // Patch : ios, maybe a pause during the timer instruction
+                                                [self invokeMethod:@"pause" stringArg:@""]; // Patch : ios, maybe a pause during the timer instruction
 
                                 } else
                                         [self resume];
@@ -372,7 +440,7 @@ extern void trackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         {
                 forwardTarget = [commandCenter.nextTrackCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
                 {
-                        [[self getChannel] invokeMethod:@"skipForward" arguments:nil];
+                        [self invokeMethod:@"skipForward" stringArg:@""];
                         // [[MediaController sharedInstance] fastForward];    // forward to next track.
                         return MPRemoteCommandHandlerStatusSuccess;
                 }];
@@ -382,7 +450,7 @@ extern void trackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         {
                 backwardTarget = [commandCenter.previousTrackCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
                 {
-                        [[self getChannel] invokeMethod:@"skipBackward" arguments:nil];
+                        [self invokeMethod:@"skipBackward" stringArg:@""];
                         // [[MediaController sharedInstance] rewind];    // back to previous track.
                         return MPRemoteCommandHandlerStatusSuccess;
                 }];
@@ -417,43 +485,6 @@ extern void trackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         [self cleanTarget:canPause canSkipForward:canSkipForward canSkipBackward:canSkipBackward];
 }
 
-
--(void)initializeMediaPlayer: result: (FlutterResult)result
-{
-        // Set whether we have to include the audio player features
-        //includeAPFeatures = includeAudioPlayerFeatures;
-        // No further initialization is needed for the iOS audio player, then exit
-        // the method.
-        result(@"The player has been initialized.");
-}
-
-- (void)releaseMediaPlayer:(FlutterResult)result
-{
-        // The code used to release all the media player resources is the same of the one needed
-        // to stop the media playback. Then, use that one.
-        // [self stopRecorder:result];
-        [self stopPlayer];
-        MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
-        if (pauseTarget != nil)
-        {
-                [commandCenter.togglePlayPauseCommand removeTarget: pauseTarget action: nil];
-                pauseTarget = nil;
-        }
-        if (forwardTarget != nil)
-        {
-                [commandCenter.nextTrackCommand removeTarget: forwardTarget action: nil];
-                forwardTarget = nil;
-        }
-
-        if (backwardTarget != nil)
-        {
-                [commandCenter.previousTrackCommand removeTarget: backwardTarget action: nil];
-                backwardTarget = nil;
-        }
-
-        result(@"The player has been successfully released");
-
-}
 
 // post fix with _FlutterSound to avoid conflicts with common libs including path_provider
 static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)

@@ -38,7 +38,82 @@ enum t_RECORDER_STATE
         IS_RECORDING,
 }
 
-const MethodChannel _channel = const MethodChannel( 'xyz.canardoux.flauto_recorder' );
+FlautoRecorderPlugin flautoRecorderPlugin; // Singleton, lazy initialized
+
+class FlautoRecorderPlugin
+{
+        MethodChannel channel ;
+
+        List<FlautoRecorder> slots = [];
+        FlautoRecorderPlugin()
+        {
+                channel = const MethodChannel( 'xyz.canardoux.flauto_recorder' );
+                channel.setMethodCallHandler( ( MethodCall call )
+                                                    {
+                                                            // This lambda function is necessary because channelMethodCallHandler is a virtual function (polymorphism)
+                                                            return channelMethodCallHandler( call );
+                                                    } );
+
+        }
+
+        int lookupEmptySlot(FlautoRecorder aRecorder)
+        {
+                for (int i = 0; i < slots.length; ++i)
+                        {
+                                if (slots[i] == null)
+                                        {
+                                                slots[i] = aRecorder;
+                                                return i;
+                                        }
+                        }
+                slots.add(aRecorder);
+                return slots.length - 1;
+        }
+
+        void freeSlot(int slotNo)
+        {
+              slots[slotNo] = null;
+        }
+
+
+        MethodChannel getChannel( )
+        => channel;
+
+
+        Future<dynamic> invokeMethod(String methodName, Map<String, dynamic> call)
+        {
+                return getChannel( ).invokeMethod( methodName, call );
+        }
+
+
+        Future<dynamic> channelMethodCallHandler( MethodCall call ) // This procedure is superCharged in "flauto"
+        {
+                int slotNo = call.arguments['slotNo'];
+                FlautoRecorder aRecorder = slots[slotNo];
+                switch (call.method)
+                {
+                        case "updateRecorderProgress":
+                                {
+                                        aRecorder.upgradeRecorderProgress(call.arguments);
+                                 }
+                                break;
+
+                        case "updateDbPeakProgress":
+                                {
+                                        aRecorder.updateDbPeakProgress(call.arguments);
+                                 }
+                                break;
+
+
+                        default:
+                                throw new ArgumentError( 'Unknown method ${call.method}' );
+                }
+                return null;
+        }
+
+
+
+}
 
 final List<String> defaultPaths = [
         'flauto.aac', // DEFAULT
@@ -57,6 +132,7 @@ class FlautoRecorder
         t_RECORDER_STATE recorderState = t_RECORDER_STATE.IS_STOPPED;
         StreamController<RecordStatus> _recorderController;
         StreamController<double> _dbPeakController;
+        int slotNo = null;
 
         bool isOggOpus = false; // Set by startRecorder when the user wants to record an ogg/opus
         String savedUri; // Used by startRecorder/stopRecorder to keep the caller wanted uri
@@ -65,9 +141,6 @@ class FlautoRecorder
 
         bool isRecording( )
         => (recorderState == (t_RECORDER_STATE.IS_RECORDING));
-
-        MethodChannel getChannel( )
-        => _channel;
 
         Stream<RecordStatus> get onRecorderStateChanged => _recorderController.stream;
 
@@ -78,19 +151,34 @@ class FlautoRecorder
 
         FlautoRecorder( )
         {
-                initialize( );
+                if (!isInited)
+                {
+                        initialize( );
+                }
         }
 
-        Future<FlautoRecorder> initialize( )
-        async
+        FlautoRecorderPlugin getPlugin() => flautoRecorderPlugin;
+        Future<dynamic> invokeMethod(String methodName, Map<String, dynamic> call)
+        {
+                call['slotNo'] = slotNo;
+                return getPlugin().invokeMethod( methodName, call );
+        }
+
+
+
+        Future<FlautoRecorder> initialize( ) async
         {
                 if (!isInited)
                 {
                         isInited = true;
-                        await getChannel( ).invokeMethod( 'initializeFlautoRecorder' );
+                        if (flautoRecorderPlugin == null)
+                                flautoRecorderPlugin = FlautoRecorderPlugin(); // The lazy singleton
+                        slotNo = getPlugin().lookupEmptySlot(this);
+                        bool b = await invokeMethod( 'initializeFlautoRecorder', {} );
                 }
                 return this;
         }
+
 
         Future<void> release( )
         async
@@ -98,32 +186,21 @@ class FlautoRecorder
                 isInited = false;
                 await stopRecorder();
                 _removeRecorderCallback();
-                await getChannel( ).invokeMethod( 'releaseFlautoRecorder' );
+                await invokeMethod( 'releaseFlautoRecorder' , {});
+                getPlugin().freeSlot(slotNo);
+                slotNo = null;
         }
 
-
-        Future<dynamic> channelMethodCallHandler( MethodCall call ) // This procedure is superCharged in "flauto"
+        void upgradeRecorderProgress(Map call)
         {
-                switch (call.method)
-                {
-                        case "updateRecorderProgress":
-                                {
-                                        Map<String, dynamic> result = json.decode( call.arguments );
-                                        if (_recorderController != null) _recorderController.add( new RecordStatus.fromJSON( result ) );
-                                }
-                                break;
+                Map<String, dynamic> result = json.decode(call['arg'] );
+                if (_recorderController != null) _recorderController.add( new RecordStatus.fromJSON( result ) );
 
-                        case "updateDbPeakProgress":
-                                {
-                                        if (_dbPeakController != null) _dbPeakController.add( call.arguments );
-                                }
-                                break;
+        }
 
-
-                        default:
-                                throw new ArgumentError( 'Unknown method ${call.method}' );
-                }
-                return null;
+        void updateDbPeakProgress(Map call)
+        {
+                if (_dbPeakController != null) _dbPeakController.add( call['arg'] );
         }
 
 
@@ -140,9 +217,9 @@ class FlautoRecorder
                         if (!await isFFmpegSupported( ))
                                 result = false;
                         else
-                                result = await getChannel( ).invokeMethod( 'isEncoderSupported', <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index} );
+                                result = await invokeMethod( 'isEncoderSupported', <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index} );
                 } else
-                        result = await getChannel( ).invokeMethod( 'isEncoderSupported', <String, dynamic>{'codec': codec.index} );
+                        result = await invokeMethod( 'isEncoderSupported', <String, dynamic>{'codec': codec.index} );
                 return result;
         }
 
@@ -159,12 +236,7 @@ class FlautoRecorder
                         _dbPeakController = new StreamController.broadcast( );
                 }
 
-                getChannel( ).setMethodCallHandler( ( MethodCall call )
-                                                    {
-                                                            // This lambda function is necessary because channelMethodCallHandler is a virtual function (polymorphism)
-                                                            return channelMethodCallHandler( call );
-                                                    } );
-        }
+         }
 
         void _removeRecorderCallback( )
         {
@@ -193,19 +265,21 @@ class FlautoRecorder
 
         /// Defines the interval at which the peak level should be updated.
         /// Default is 0.8 seconds
-        Future<String> setDbPeakLevelUpdate( double intervalInSecs )
+        Future<String> setDbPeakLevelUpdate( double intervalInSecs ) async
         {
-                return getChannel( ).invokeMethod( 'setDbPeakLevelUpdate', <String, dynamic>{
+                String r = await invokeMethod( 'setDbPeakLevelUpdate', <String, dynamic>{
                         'intervalInSecs': intervalInSecs,
                 } );
+                return r;
         }
 
         /// Enables or disables processing the Peak level in db's. Default is disabled
-        Future<String> setDbLevelEnabled( bool enabled )
+        Future<String> setDbLevelEnabled( bool enabled ) async
         {
-                return getChannel( ).invokeMethod( 'setDbLevelEnabled', <String, dynamic>{
+                String r = await invokeMethod( 'setDbLevelEnabled', <String, dynamic>{
                         'enabled': enabled,
                 } );
+                return r;
         }
 
 
@@ -285,7 +359,7 @@ class FlautoRecorder
                                 'iosQuality': iosQuality?.value
                         };
 
-                        String result = await getChannel( ).invokeMethod( 'startRecorder', param );
+                        String result = await invokeMethod( 'startRecorder', param );
 
                         _setRecorderCallback( );
                         recorderState = t_RECORDER_STATE.IS_RECORDING;
@@ -304,7 +378,7 @@ class FlautoRecorder
 
         Future<String> stopRecorder( )
         async {
-                String result = await getChannel( ).invokeMethod( 'stopRecorder' );
+                String result = await invokeMethod( 'stopRecorder', {} );
 
                 recorderState = t_RECORDER_STATE.IS_STOPPED;
 

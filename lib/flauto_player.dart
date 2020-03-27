@@ -104,8 +104,112 @@ typedef void t_whenPaused( bool paused );
 typedef void t_onSkip( );
 typedef void t_updateProgress( int current, int max );
 
-const MethodChannel _channel = const MethodChannel( 'xyz.canardoux.flauto_player' );
 
+FlautoPlayerPlugin flautoPlayerPlugin; // Singleton, lazy initialized
+List<FlautoPlayer> slots = [];
+
+class FlautoPlayerPlugin
+{
+        MethodChannel channel;
+
+
+        FlautoPlayerPlugin( )
+        {
+                setCallback();
+         }
+
+        void setCallback()
+        {
+                channel = const MethodChannel( 'xyz.canardoux.flauto_player' );
+                channel.setMethodCallHandler( ( MethodCall call )
+                                              {
+                                                      // This lambda function is necessary because channelMethodCallHandler is a virtual function (polymorphism)
+                                                      return channelMethodCallHandler( call );
+                                              } );
+        }
+
+
+
+        int lookupEmptySlot( FlautoPlayer aPlayer )
+        {
+                for (int i = 0; i < slots.length; ++i)
+                {
+                        if (slots[i] == null)
+                        {
+                                slots[i] = aPlayer;
+                                return i;
+                        }
+                }
+                slots.add( aPlayer );
+                return slots.length - 1;
+        }
+
+
+        void freeSlot( int slotNo )
+        {
+                slots[slotNo] = null;
+        }
+
+
+        MethodChannel getChannel( )
+        => channel;
+
+
+        Future<dynamic> invokeMethod( String methodName, Map<String, dynamic> call )
+        {
+                return getChannel( ).invokeMethod( methodName, call );
+        }
+
+
+        Future<dynamic> channelMethodCallHandler( MethodCall call ) // This procedure is superCharged in "flauto"
+        {
+                int slotNo = call.arguments['slotNo'];
+                FlautoPlayer aPlayer = slots[slotNo];
+                switch (call.method)
+                {
+                        case "updateProgress":
+                                {
+                                        aPlayer.updateProgress( call.arguments );
+                                }
+                                break;
+
+                        case "audioPlayerFinishedPlaying":
+                                {
+                                        aPlayer.audioPlayerFinished( call.arguments );
+                                }
+                                break;
+
+                        case 'pause':
+                                {
+                                        aPlayer.pause( call.arguments );
+                                }
+                                break;
+
+                        case 'resume':
+                                {
+                                        aPlayer.resume( call.arguments );
+                                }
+                                break;
+
+
+                        case 'skipForward':
+                                {
+                                        aPlayer.skipBackward( call.arguments );
+                                }
+                                break;
+
+                        case 'skipBackward':
+                                {}
+                                break;
+
+                        default:
+                                throw new ArgumentError( 'Unknown method ${call.method}' );
+                }
+                return null;
+        }
+
+
+}
 
 
 /// Return the file extension for the given path.
@@ -127,9 +231,11 @@ class FlautoPlayer
         t_onSkip onSkipForward; // User callback "whenPaused:"
         t_onSkip onSkipBackward; // User callback "whenPaused:"
         t_updateProgress onUpdateProgress;
+        int slotNo = null;
 
 
-        Stream<PlayStatus> get onPlayerStateChanged => playerController != null ? playerController.stream : null;
+        Stream<PlayStatus> get onPlayerStateChanged
+        => playerController != null ? playerController.stream : null;
 
         bool isPlaying( )
         => playerState == t_PLAYER_STATE.IS_PLAYING;
@@ -137,21 +243,32 @@ class FlautoPlayer
         bool isPaused( )
         => playerState == t_PLAYER_STATE.IS_PAUSED;
 
-        MethodChannel getChannel( )
-        => _channel;
 
         FlautoPlayer( )
         {
                 initialize( );
         }
 
+        FlautoPlayerPlugin getPlugin( )
+        => flautoPlayerPlugin;
 
-        Future<FlautoPlayer> initialize( ) async
+        Future<dynamic> invokeMethod( String methodName, Map<String, dynamic> call )
+        async
+        {
+                call['slotNo'] = slotNo;
+                return getPlugin( ).invokeMethod( methodName, call );
+        }
+
+        Future<FlautoPlayer> initialize( )
+        async
         {
                 if (!isInited)
                 {
                         isInited = true;
-                        await getChannel( ).invokeMethod( 'initializeFlautoPlayer' );
+                        if (flautoPlayerPlugin == null)
+                                flautoPlayerPlugin = FlautoPlayerPlugin( ); // The lazy singleton
+                        slotNo = getPlugin( ).lookupEmptySlot( this );
+                        bool b = await invokeMethod( 'initializeMediaPlayer', {} );
                 }
                 return this;
         }
@@ -161,8 +278,52 @@ class FlautoPlayer
         {
                 isInited = false;
                 await stopPlayer( );
-                _removePlayerCallback();
-                await getChannel( ).invokeMethod( 'releaseFlautoPlayer' );
+                _removePlayerCallback( );
+                await invokeMethod( 'releaseMediaPlayer', {} );
+                getPlugin( ).freeSlot(slotNo);
+                slotNo = null;
+        }
+
+
+        void updateProgress( Map call )
+        {
+                String arg = call['arg'];
+                Map<String, dynamic> result = jsonDecode( arg );
+                if (playerController != null)
+                        playerController.add( new PlayStatus.fromJSON( result ) );
+        }
+
+        void audioPlayerFinished(Map call )
+        {
+                String arg = call['arg'];
+
+                Map<String, dynamic> result = jsonDecode(arg );
+                PlayStatus status = new PlayStatus.fromJSON( result );
+                if (status.currentPosition != status.duration)
+                {
+                        status.currentPosition = status.duration;
+                }
+                if (playerController != null)
+                        playerController.add( status );
+
+                playerState = t_PLAYER_STATE.IS_STOPPED;
+                _removePlayerCallback( );
+                if (audioPlayerFinishedPlaying != null) audioPlayerFinishedPlaying( );
+        }
+
+        void pause( Map call )
+        {
+                if (whenPause != null) whenPause( true );
+        }
+
+        void resume( Map call)
+        {
+                if (whenPause != null) whenPause( false );
+        }
+
+        void skipBackward( Map call)
+        {
+                if (onSkipBackward != null) onSkipBackward( );
         }
 
         /// Returns true if the specified decoder is supported by flutter_sound on this platform
@@ -177,9 +338,9 @@ class FlautoPlayer
                         if (!await isFFmpegSupported( ))
                                 result = false;
                         else
-                                result = await getChannel( ).invokeMethod( 'isDecoderSupported', <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index} );
+                                result = await invokeMethod( 'isDecoderSupported', <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index} );
                 } else
-                        result = await getChannel( ).invokeMethod( 'isDecoderSupported', <String, dynamic>{'codec': codec.index} );
+                        result = await invokeMethod( 'isDecoderSupported', <String, dynamic>{'codec': codec.index} );
                 return result;
         }
 
@@ -192,7 +353,7 @@ class FlautoPlayer
         Future<bool> iosSetCategory( t_IOS_SESSION_CATEGORY category, t_IOS_SESSION_MODE mode, int options )
         async {
                 if (!Platform.isIOS) return false;
-                bool r = await getChannel( ).invokeMethod( 'iosSetCategory', <String, dynamic>{'category': iosSessionCategory[category.index], 'mode': iosSessionMode[mode.index], 'options': options} );
+                bool r = await invokeMethod( 'iosSetCategory', <String, dynamic>{'category': iosSessionCategory[category.index], 'mode': iosSessionMode[mode.index], 'options': options} );
                 return r;
         }
 
@@ -204,81 +365,25 @@ class FlautoPlayer
         Future<bool> androidAudioFocusRequest( int focusGain )
         async {
                 if (!Platform.isAndroid) return false;
-                bool r = await getChannel( ).invokeMethod( 'androidAudioFocusRequest', <String, dynamic>{'focusGain': focusGain} );
+                bool r = await invokeMethod( 'androidAudioFocusRequest', <String, dynamic>{'focusGain': focusGain} );
                 return r;
         }
 
         ///  The caller can manage his audio focus with this function
         Future<bool> setActive( bool enabled )
         async {
-                bool r = await getChannel( ).invokeMethod( 'setActive', <String, dynamic>{'enabled': enabled} );
+                bool r = await invokeMethod( 'setActive', <String, dynamic>{'enabled': enabled} );
                 return r;
         }
 
 
-        Future<dynamic> channelMethodCallHandler( MethodCall call ) // This procedure is superCharged in "flauto"
-        {
-                switch (call.method)
-                {
-                        case "updateProgress":
-                                {
-                                        Map<String, dynamic> result = jsonDecode( call.arguments );
-                                        if (playerController != null) playerController.add( new PlayStatus.fromJSON( result ) );
-                                }
-                                break;
-
-                        case "audioPlayerFinishedPlaying":
-                                {
-                                        Map<String, dynamic> result = jsonDecode( call.arguments );
-                                        PlayStatus status = new PlayStatus.fromJSON( result );
-                                        if (status.currentPosition != status.duration)
-                                        {
-                                                status.currentPosition = status.duration;
-                                        }
-                                        if (playerController != null) playerController.add( status );
-
-                                        playerState = t_PLAYER_STATE.IS_STOPPED;
-                                        _removePlayerCallback( );
-                                        if (audioPlayerFinishedPlaying != null) audioPlayerFinishedPlaying( );
-                                }
-                                break;
-
-                        case 'pause':
-                                {
-                                        if (whenPause != null) whenPause( true );
-                                }
-                                break;
-
-                        case 'resume':
-                                {
-                                        if (whenPause != null) whenPause( false );
-                                }
-                                break;
-
-
-                        case 'skipForward':
-                                {
-                                        if (onSkipForward != null) onSkipForward( );
-                                }
-                                break;
-
-                        case 'skipBackward':
-                                {
-                                        if (onSkipBackward != null) onSkipBackward( );
-                                }
-                                break;
-
-                        default:
-                                throw new ArgumentError( 'Unknown method ${call.method}' );
-                }
-                return null;
-        }
-
         Future<String> setSubscriptionDuration( double sec )
+        async
         {
-                return getChannel( ).invokeMethod( 'setSubscriptionDuration', <String, dynamic>{
+                String r = await invokeMethod( 'setSubscriptionDuration', <String, dynamic>{
                         'sec': sec,
                 } );
+                return r;
         }
 
 
@@ -288,12 +393,6 @@ class FlautoPlayer
                 {
                         playerController = new StreamController.broadcast( );
                 }
-
-                getChannel( ).setMethodCallHandler( ( MethodCall call )
-                                                    {
-                                                            // This lambda function is necessary because channelMethodCallHandler is a virtual function (polymorphism)
-                                                            return channelMethodCallHandler( call );
-                                                    } );
         }
 
         void _removePlayerCallback( )
@@ -343,12 +442,12 @@ class FlautoPlayer
                                 // Now we can play Apple CAF/OPUS
                                 audioPlayerFinishedPlaying = what['whenFinished'];
                                 what['whenFinished'] = null; // We must remove this parameter because _channel.invokeMethod() does not like it
-                                result = await getChannel( ).invokeMethod( 'startPlayer', {'path': fout.path} );
+                                result = await invokeMethod( 'startPlayer', {'path': fout.path} );
                         } else
                         {
                                 audioPlayerFinishedPlaying = what['whenFinished'];
                                 what['whenFinished'] = null; // We must remove this parameter because _channel.invokeMethod() does not like it
-                                result = await getChannel( ).invokeMethod( method, what );
+                                result = await invokeMethod( method, what );
                         }
 
                         if (result != null)
@@ -373,7 +472,7 @@ class FlautoPlayer
                             t_CODEC codec,
                             whenFinished( ),
                     } )
-         =>
+        =>
                     _startPlayer( 'startPlayer', {
                             'path': uri,
                             'codec': codec,
@@ -416,11 +515,13 @@ class FlautoPlayer
 
                 try
                 {
-                        String result = await getChannel( ).invokeMethod( 'stopPlayer' );
+                        String result = await invokeMethod( 'stopPlayer', {} );
                         return result;
                 }
                 catch (e)
-                {}
+                {
+
+                }
                 return null;
         }
 
@@ -436,6 +537,7 @@ class FlautoPlayer
         }
 
         Future<String> pausePlayer( )
+        async
         {
                 if (playerState != t_PLAYER_STATE.IS_PLAYING)
                 {
@@ -444,10 +546,12 @@ class FlautoPlayer
                 }
                 playerState = t_PLAYER_STATE.IS_PAUSED;
 
-                return getChannel( ).invokeMethod( 'pausePlayer' );
+                String r = await invokeMethod( 'pausePlayer', {} );
+                return r;
         }
 
         Future<String> resumePlayer( )
+        async
         {
                 if (playerState != t_PLAYER_STATE.IS_PAUSED)
                 {
@@ -455,17 +559,21 @@ class FlautoPlayer
                         throw PlayerRunningException( 'Player is not paused.' ); // I am not sure that it is good to throw an exception here
                 }
                 playerState = t_PLAYER_STATE.IS_PLAYING;
-                return getChannel( ).invokeMethod( 'resumePlayer' );
+                String r = await invokeMethod( 'resumePlayer', {} );
+                return r;
         }
 
         Future<String> seekToPlayer( int milliSecs )
+        async
         {
-                return getChannel( ).invokeMethod( 'seekToPlayer', <String, dynamic>{
+                String r = await invokeMethod( 'seekToPlayer', <String, dynamic>{
                         'sec': milliSecs,
                 } );
+                return r;
         }
 
         Future<String> setVolume( double volume )
+        async
         {
                 double indexedVolume = Platform.isIOS ? volume * 100 : volume;
                 if (volume < 0.0 || volume > 1.0)
@@ -473,9 +581,10 @@ class FlautoPlayer
                         throw RangeError( 'Value of volume should be between 0.0 and 1.0.' );
                 }
 
-                return getChannel( ).invokeMethod( 'setVolume', <String, dynamic>{
+                String r = await invokeMethod( 'setVolume', <String, dynamic>{
                         'volume': indexedVolume,
                 } );
+                return r;
         }
 
 

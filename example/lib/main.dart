@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp>
         StreamSubscription _dbPeakSubscription;
         StreamSubscription _playerSubscription;
         StreamSubscription _playbackStateSubscription;
-        static FlutterSound flutterSoundModule;
+        static FlutterSound flutterSoundModule = FlutterSound();
 
         String _recorderTxt = '00:00:00';
         String _playerTxt = '00:00:00';
@@ -81,11 +81,11 @@ class _MyAppState extends State<MyApp>
 
         void _initializeExample( FlutterSound module )
         async {
-                flutterSoundModule = module;
-                flutterSoundModule.initializeMediaPlayer( );
-                flutterSoundModule.setSubscriptionDuration( 0.01 );
-                flutterSoundModule.setDbPeakLevelUpdate( 0.8 );
-                flutterSoundModule.setDbLevelEnabled( true );
+                flutterSoundModule =  module;
+                await module.initializeMediaPlayer( );
+                await flutterSoundModule.setSubscriptionDuration( 0.01 );
+                await flutterSoundModule.setDbPeakLevelUpdate( 0.8 );
+                await flutterSoundModule.setDbLevelEnabled( true );
                 initializeDateFormatting( );
                 setCodec( _codec );
                 setDuck( );
@@ -95,7 +95,7 @@ class _MyAppState extends State<MyApp>
         void initState( )
         {
                 super.initState( );
-                _initializeExample( FlutterSound( ) );
+                _initializeExample( flutterSoundModule );
         }
 
         void cancelRecorderSubscriptions( )
@@ -387,13 +387,16 @@ class _MyAppState extends State<MyApp>
                                         );
 
 
-                                TrackPlayer flauto = TrackPlayer();
-                                path = await flauto.startPlayerFromTrack(
+                                Flauto f = flutterSoundModule;
+                                path = await f.startPlayerFromTrack(
                                         track,
                                         /*canSkipForward:true, canSkipBackward:true,*/
                                         whenFinished: ( )
                                         {
                                                 print( 'I hope you enjoyed listening to this song' );
+                                                setState(() {
+
+                                                });
                                         },
                                         onSkipBackward: ( )
                                         {
@@ -435,6 +438,7 @@ class _MyAppState extends State<MyApp>
                                 }
                         }
                         _addListeners( );
+
 
                         print( 'startPlayer: $path' );
                         // await flutterSoundModule.setVolume(1.0);
@@ -672,7 +676,8 @@ class _MyAppState extends State<MyApp>
                 async {
                         try
                         {
-                                if (flutterSoundModule != null) flutterSoundModule.releaseMediaPlayer( );
+                                if (flutterSoundModule != null)
+                                        await flutterSoundModule.releaseMediaPlayer( );
 
                                 _isAudioPlayer = newVal;
                                 if (!newVal)
@@ -680,7 +685,7 @@ class _MyAppState extends State<MyApp>
                                         _initializeExample( FlutterSound( ) );
                                 } else
                                 {
-                                        _initializeExample( FlutterSound( ) );
+                                        _initializeExample( Flauto( ) );
                                 }
                                 setState( ( )
                                           {} );
@@ -795,7 +800,7 @@ class _MyAppState extends State<MyApp>
                                                 ),
                                         Switch(
                                                 value: _isAudioPlayer,
-                                                onChanged: audioPlayerSwitchChanged( ),
+                                                onChanged: audioPlayerSwitchChanged(),
                                                 ),
                                         Padding(
                                                 padding: const EdgeInsets.only( right: 4.0 ),

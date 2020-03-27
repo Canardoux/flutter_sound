@@ -71,31 +71,32 @@ FlutterMethodChannel* _flautoRecorderChannel;
 //---------------------------------------------------------------------------------------------
 
 
-@interface FlautoRecorderManager : NSObject
-{
-        FlautoRecorder* theFlautoRecorder; // Temporary !!!!!!!!!!!
-}
-
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar;
-@end
-
-
 
 @implementation FlautoRecorderManager
 {
+        NSMutableArray* flautoRecorderSlots;
 }
 
-FlutterMethodChannel* _flautoRecorderChannel;
+static FlautoRecorderManager* flautoRecorderManager; // Singleton
+//FlutterMethodChannel* _flautoRecorderChannel;
 
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
 {
         _channel = [FlutterMethodChannel methodChannelWithName:@"xyz.canardoux.flauto_recorder"
                                         binaryMessenger:[registrar messenger]];
-        FlautoRecorderManager* instance = [[FlautoRecorderManager alloc] init];
-        [registrar addMethodCallDelegate:instance channel:_channel];
+        assert (flautoRecorderManager == nil);
+        flautoRecorderManager = [[FlautoRecorderManager alloc] init];
+        [registrar addMethodCallDelegate:flautoRecorderManager channel:_channel];
 }
 
+
+- (FlautoRecorderManager*)init
+{
+        self = [super init];
+        flautoRecorderSlots = [[NSMutableArray alloc] init];
+        return self;
+}
 
 extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
 {
@@ -104,52 +105,72 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
 
 
 
+- (void)invokeMethod: (NSString*)methodName arguments: (NSDictionary*)call
+{
+        [_channel invokeMethod: methodName arguments: call ];
+}
+
+
+- (void)freeSlot: (int)slotNo
+{
+        flautoRecorderSlots[slotNo] = [NSNull null];
+}
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result
 {
-         if ([@"initializeFlautoRecorder" isEqualToString:call.method])
-         {
-                theFlautoRecorder = [[FlautoRecorder alloc] init];
-                [theFlautoRecorder initializeFlautoRecorder: call result:result];
-         } else
+        int slotNo = [call.arguments[@"slotNo"] intValue];
+        assert ( (slotNo >= 0) && (slotNo <= [flautoRecorderSlots count]));
+        if (slotNo == [flautoRecorderSlots count])
+        {
+                 [flautoRecorderSlots addObject: [NSNull null] ];
+        }
+        FlautoRecorder* aFlautoRecorder = flautoRecorderSlots[slotNo];
+        
+        if ([@"initializeFlautoRecorder" isEqualToString:call.method])
+        {
+                assert (flautoRecorderSlots[slotNo] ==  [NSNull null] );
+                aFlautoRecorder = [[FlautoRecorder alloc] init: slotNo];
+                flautoRecorderSlots[slotNo] =aFlautoRecorder;
+                [aFlautoRecorder initializeFlautoRecorder: call result:result];
+        } else
          
-         if ([@"releaseFlautoRecorder" isEqualToString:call.method])
-         {
-                [theFlautoRecorder releaseFlautoRecorder:call result:result];
-         } else
+        if ([@"releaseFlautoRecorder" isEqualToString:call.method])
+        {
+                [aFlautoRecorder releaseFlautoRecorder:call result:result];
+        } else
          
         if ([@"isEncoderSupported" isEqualToString:call.method])
         {
                 NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
-                [FlautoRecorder isEncoderSupported:[codec intValue] result:result];
+                [aFlautoRecorder isEncoderSupported:[codec intValue] result:result];
         } else
         
         if ([@"startRecorder" isEqualToString:call.method])
         {
-                     [theFlautoRecorder startRecorder:call result:result];
+                     [aFlautoRecorder startRecorder:call result:result];
         } else
         
         if ([@"stopRecorder" isEqualToString:call.method])
         {
-                [theFlautoRecorder stopRecorder: result];
+                [aFlautoRecorder stopRecorder: result];
         } else
         
         if ([@"setDbPeakLevelUpdate" isEqualToString:call.method])
         {
                 NSNumber* intervalInSecs = (NSNumber*)call.arguments[@"intervalInSecs"];
-                [theFlautoRecorder setDbPeakLevelUpdate:[intervalInSecs doubleValue] result:result];
+                [aFlautoRecorder setDbPeakLevelUpdate:[intervalInSecs doubleValue] result:result];
         } else
         
         if ([@"setDbLevelEnabled" isEqualToString:call.method])
         {
                 BOOL enabled = [call.arguments[@"enabled"] boolValue];
-                [theFlautoRecorder setDbLevelEnabled:enabled result:result];
+                [aFlautoRecorder setDbLevelEnabled:enabled result:result];
         } else
         
         if ([@"setSubscriptionDuration" isEqualToString:call.method])
         {
                 NSNumber* sec = (NSNumber*)call.arguments[@"sec"];
-                [theFlautoRecorder setSubscriptionDuration:[sec doubleValue] result:result];
+                [aFlautoRecorder setSubscriptionDuration:[sec doubleValue] result:result];
         } else
         
         {
@@ -173,7 +194,36 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
         double dbPeakInterval;
         bool shouldProcessDbLevel;
         double subscriptionDuration;
+        int slotNo;
 
+}
+
+
+- (FlautoRecorder*)init: (int)aSlotNo
+{
+        slotNo = aSlotNo;
+        return self;
+}
+
+
+
+-(FlautoRecorderManager*) getPlugin
+{
+        return flautoRecorderManager;
+}
+
+
+- (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg
+{
+        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": stringArg};
+        [[self getPlugin] invokeMethod: methodName arguments: dic ];
+}
+
+
+- (void)invokeMethod: (NSString*)methodName numberArg: (NSNumber*)arg
+{
+        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": arg};
+        [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 
 
@@ -181,10 +231,14 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
 {
         dbPeakInterval = 0.8;
         shouldProcessDbLevel = false;
+        result([NSNumber numberWithBool: YES]);
 }
 
 - (void)releaseFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
 {
+        [[self getPlugin] freeSlot: slotNo];
+        slotNo = -1;
+        result([NSNumber numberWithBool: YES]);
 }
 
 - (FlutterMethodChannel*) getChannel
@@ -192,7 +246,7 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
         return _channel;
 }
 
-+ (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result
+- (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result
 {
         NSNumber* b = [NSNumber numberWithBool: _isIosEncoderSupported[codec] ];
         result(b);
@@ -380,7 +434,7 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
         [audioRecorder updateMeters];
 
         NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}", [currentTime stringValue]];
-        [[self getChannel] invokeMethod:@"updateRecorderProgress" arguments:status];
+        [self invokeMethod:@"updateRecorderProgress" stringArg: status];
 }
 
 
@@ -388,7 +442,7 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
 {
         assert (dbPeakTimer == atimer);
         NSNumber *normalizedPeakLevel = [NSNumber numberWithDouble:MIN(pow(10.0, [audioRecorder peakPowerForChannel:0] / 20.0) * 160.0, 160.0)];
-        [[ self getChannel] invokeMethod:@"updateDbPeakProgress" arguments:normalizedPeakLevel];
+        [self invokeMethod:@"updateDbPeakProgress" numberArg: normalizedPeakLevel];
 }
 
 

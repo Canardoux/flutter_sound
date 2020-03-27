@@ -30,6 +30,18 @@ typedef enum
 */
 
 extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
+extern NSMutableArray* flautoPlayerSlots;
+
+
+@interface FlautoPlayerManager : NSObject<FlutterPlugin>
+{
+}
+
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar;
+- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result;
+- (void)invokeMethod: (NSString*)methodName arguments: (NSDictionary*)call;
+- (void)freeSlot: (int)slotNo;
+@end
 
 @interface FlautoPlayer : NSObject <AVAudioPlayerDelegate>
 {
@@ -38,11 +50,12 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
         t_SET_CATEGORY_DONE setCategoryDone;
         t_SET_CATEGORY_DONE setActiveDone;
 }
-+ (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result;
 
-- (FlutterMethodChannel *)getChannel;
+- (FlautoPlayerManager*) getPlugin;
+- (FlautoPlayer*)init: (int)aSlotNo;
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag;
+- (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result;
 - (void)updateProgress:(NSTimer *)timer;
 - (void)startTimer;
 - (void)stopPlayer;
@@ -51,7 +64,6 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 - (void)stopTimer;
 - (void)pause;
 - (bool)resume;
-- (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result;
 - (void)startPlayer:(NSString*)path result: (FlutterResult)result;
 - (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result;
 - (void)seekToPlayer:(nonnull NSNumber*) time result: (FlutterResult)result;
@@ -61,17 +73,6 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 - (void)setActive:(BOOL)enabled result:(FlutterResult)result;
 - (void)initializeFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)releaseFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
-@end
-
-
-@interface FlautoPlayerManager : NSObject<FlutterPlugin>
-{
-        FlautoPlayer* theFlautoPlayer; // Temporary !!!!!!!!!!!
-}
-
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar;
-- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result;
-
 @end
 
 

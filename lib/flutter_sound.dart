@@ -51,8 +51,8 @@ enum t_AUDIO_STATE
 class FlutterSound
 {
 
-        FlautoPlayer soundPlayer = FlautoPlayer( );
-        FlautoRecorder soundRecorder = FlautoRecorder( );
+        FlautoPlayer soundPlayer;
+        FlautoRecorder soundRecorder ;
 
 
         bool get isPlaying
@@ -76,6 +76,10 @@ class FlutterSound
         void initializeMediaPlayer( )
         async
         {
+                if (soundPlayer == null)
+                        soundPlayer = FlautoPlayer( );
+                if (soundRecorder == null)
+                        soundRecorder = FlautoRecorder( );
                 await soundPlayer.initialize( );
                 await soundRecorder.initialize( );
         }
@@ -83,10 +87,13 @@ class FlutterSound
         /// Resets the media player and cleans up the device resources. This must be
         /// called when the player is no longer needed.
         Future<void> releaseMediaPlayer( )
-        async {
+        async
+        {
                 // Stop the player playback before releasing
                 await soundPlayer.release( );
+                soundPlayer = null;
                 await soundRecorder.release( );
+                soundRecorder = null;
         }
 
 /*
