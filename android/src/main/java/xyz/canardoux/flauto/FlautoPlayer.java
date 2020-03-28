@@ -44,7 +44,10 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Callable;
@@ -69,148 +72,139 @@ class FlautoPlayerPlugin
 	implements MethodCallHandler
 {
 	public static MethodChannel      channel;
+	public static List<FlautoPlayer> slots;
 	static        Context            androidContext;
 	static        FlautoPlayerPlugin flautoPlayerPlugin; // singleton
-	FlautoPlayer theFlautoPlayer; // Temporary !!!!!!!!!!!
-
-	static boolean _isAndroidDecoderSupported[] = {
-		true, // DEFAULT
-		true, // AAC
-		true, // OGG/OPUS
-		false, // CAF/OPUS
-		true, // MP3
-		true, // OGG/VORBIS
-		true, // WAV/PCM
-	};
-
-
-	final static int CODEC_OPUS   = 2;
-	final static int CODEC_VORBIS = 5;
 
 
 	public static void attachFlautoPlayer (
-		Context ctx,
-		BinaryMessenger messenger
+		Context ctx, BinaryMessenger messenger
 	                                      )
 	{
+		assert ( flautoPlayerPlugin == null );
 		flautoPlayerPlugin = new FlautoPlayerPlugin ();
-		channel            = new MethodChannel ( messenger, "xyz.canardoux.flauto_player" );
+		assert ( slots == null );
+		slots   = new ArrayList<FlautoPlayer> ();
+		channel = new MethodChannel ( messenger, "xyz.canardoux.flauto_player" );
 		channel.setMethodCallHandler ( flautoPlayerPlugin );
 		androidContext = ctx;
 
 	}
 
 
+	void invokeMethod ( String methodName, Map dic )
+	{
+		channel.invokeMethod ( methodName, dic );
+	}
+
+	void freeSlot ( int slotNo )
+	{
+		slots.set ( slotNo, null );
+	}
+
+
+	FlautoPlayerPlugin getManager ()
+	{
+		return flautoPlayerPlugin;
+	}
+
 	@Override
 	public void onMethodCall (
-		final MethodCall call,
-		final Result result
+		final MethodCall call, final Result result
 	                         )
 	{
-		final String path = call.argument ( "path" );
+		int slotNo = call.argument ( "slotNo" );
+		assert ( ( slotNo >= 0 ) && ( slotNo <= slots.size () ) );
+
+		if ( slotNo == slots.size () )
+		{
+			slots.add ( slotNo, null );
+		}
+
+		FlautoPlayer aPlayer = slots.get ( slotNo );
 		switch ( call.method )
 		{
 
-			case "initializeFlautoPlayer":
+			case "initializeMediaPlayer":
 			{
-				theFlautoPlayer = new FlautoPlayer ();
-				theFlautoPlayer.initializeFlautoPlayer ( call, result );
+				assert ( slots.get ( slotNo ) == null );
+				aPlayer = new FlautoPlayer ( slotNo );
+				slots.set ( slotNo, aPlayer );
+				aPlayer.initializeFlautoPlayer ( call, result );
 
-				result.success ( true );
 			}
 			break;
 
-			case "releaseFlautoPlayer":
+			case "releaseMediaPlayer":
 			{
-				theFlautoPlayer.releaseFlautoPlayer ( call, result );
-				result.success ( true );
+				aPlayer.releaseFlautoPlayer ( call, result );
+				slots.set ( slotNo, null );
 			}
 			break;
 
 			case "isDecoderSupported":
 			{
-				int     _codec = call.argument ( "codec" );
-				boolean b      = _isAndroidDecoderSupported[ _codec ];
-				if ( Build.VERSION.SDK_INT < 23 )
-				{
-					if ( ( _codec == CODEC_OPUS ) || ( _codec == CODEC_VORBIS ) )
-					{
-						b = false;
-					}
-				}
-				result.success ( b );
+				aPlayer.isDecoderSupported ( call, result );
 			}
 			break;
 
 			case "startPlayer":
 			{
-				theFlautoPlayer.startPlayer ( path, result );
+				aPlayer.startPlayer ( call, result );
 			}
 			break;
 
 			case "startPlayerFromBuffer":
 			{
-				Integer _codec     = call.argument ( "codec" );
-				t_CODEC codec      = t_CODEC.values ()[ ( _codec != null ) ? _codec : 0 ];
-				byte[]  dataBuffer = call.argument ( "dataBuffer" );
-				theFlautoPlayer.startPlayerFromBuffer ( dataBuffer, codec, result );
+				aPlayer.startPlayerFromBuffer ( call, result );
 			}
 			break;
 
 			case "stopPlayer":
 			{
-				theFlautoPlayer.stopPlayer ( result );
+				aPlayer.stopPlayer ( call, result );
 			}
 			break;
 
 			case "pausePlayer":
 			{
-				theFlautoPlayer.pausePlayer ( result );
+				aPlayer.pausePlayer ( call, result );
 			}
 			break;
 
 			case "resumePlayer":
 			{
-				theFlautoPlayer.resumePlayer ( result );
+				aPlayer.resumePlayer ( call, result );
 			}
 			break;
 
 			case "seekToPlayer":
 			{
-				int sec = call.argument ( "sec" );
-				theFlautoPlayer.seekToPlayer ( sec, result );
+				aPlayer.seekToPlayer ( call, result );
 			}
 			break;
 
 			case "setVolume":
 			{
-				double volume = call.argument ( "volume" );
-				theFlautoPlayer.setVolume ( volume, result );
+				aPlayer.setVolume ( call, result );
 			}
 			break;
 
 			case "setSubscriptionDuration":
 			{
-				if ( call.argument ( "sec" ) == null )
-				{
-					return;
-				}
-				double duration = call.argument ( "sec" );
-				theFlautoPlayer.setSubscriptionDuration ( duration, result );
+				aPlayer.setSubscriptionDuration ( call, result );
 			}
 			break;
 
 			case "androidAudioFocusRequest":
 			{
-				Integer audioFocusGain = call.argument ( "focusGain" );
-				theFlautoPlayer.androidAudioFocusRequest ( audioFocusGain, result );
+				aPlayer.androidAudioFocusRequest ( call, result );
 			}
 			break;
 
 			case "setActive":
 			{
-				Boolean b = call.argument ( "enabled" );
-				theFlautoPlayer.setActive ( b, result );
+				aPlayer.setActive ( call, result );
 			}
 			break;
 
@@ -282,6 +276,20 @@ public class FlautoPlayer
 
 	;
 
+	final static int CODEC_OPUS   = 2;
+	final static int CODEC_VORBIS = 5;
+
+	static boolean _isAndroidDecoderSupported[] = {
+		true, // DEFAULT
+		true, // AAC
+		true, // OGG/OPUS
+		false, // CAF/OPUS
+		true, // MP3
+		true, // OGG/VORBIS
+		true, // WAV/PCM
+	};
+
+
 	String extentionArray[] = {
 		".aac" // DEFAULT
 		, ".aac" // CODEC_AAC
@@ -300,38 +308,64 @@ public class FlautoPlayer
 	t_SET_CATEGORY_DONE setActiveDone     = t_SET_CATEGORY_DONE.NOT_SET;
 	AudioFocusRequest   audioFocusRequest = null;
 	AudioManager        audioManager;
+	int                 slotNo;
 
 
 	static final String ERR_UNKNOWN           = "ERR_UNKNOWN";
 	static final String ERR_PLAYER_IS_NULL    = "ERR_PLAYER_IS_NULL";
 	static final String ERR_PLAYER_IS_PLAYING = "ERR_PLAYER_IS_PLAYING";
 
+	FlautoPlayer ( int aSlotNo )
+	{
+		slotNo = aSlotNo;
+	}
 
-	void initializeFlautoPlayer (
-		final MethodCall call,
-		final Result result
-	                            )
+
+	FlautoPlayerPlugin getPlugin ()
+	{
+		return FlautoPlayerPlugin.flautoPlayerPlugin;
+	}
+
+
+	void initializeFlautoPlayer ( final MethodCall call, final Result result )
 	{
 		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
+		result.success ( "Flauto Player Initialized" );
 	}
 
-	void releaseFlautoPlayer (
-		final MethodCall call,
-		final Result result
-	                         )
+	void releaseFlautoPlayer ( final MethodCall call, final Result result )
 	{
+		result.success ( "Flauto Recorder Released" );
 	}
 
-	MethodChannel getChannel ()
+
+
+	void invokeMethodWithString ( String methodName, String arg )
 	{
-		return FlautoPlayerPlugin.channel;
+		Map<String, Object> dic = new HashMap<String, Object> ();
+		dic.put ( "slotNo", slotNo );
+		dic.put ( "arg", arg );
+		getPlugin ().invokeMethod ( methodName, dic );
 	}
 
-	public void startPlayer (
-		final String path,
-		final Result result
-	                        )
+	void invokeMethodWithDouble ( String methodName, double arg )
 	{
+		Map<String, Object> dic = new HashMap<String, Object> ();
+		dic.put ( "slotNo", slotNo );
+		dic.put ( "arg", arg );
+		getPlugin ().invokeMethod ( methodName, dic );
+	}
+
+	public void startPlayer ( final MethodCall call, final Result result )
+	{
+		final String path = call.argument ( "path" );
+		_startPlayer(path, result);
+	}
+
+	public void _startPlayer ( String path, final Result result )
+	{
+
+
 		if ( this.model.getMediaPlayer () != null )
 		{
 			Boolean isPaused = !this.model.getMediaPlayer ().isPlaying () && this.model.getMediaPlayer ().getCurrentPosition () > 1;
@@ -394,7 +428,7 @@ public class FlautoPlayer
 								                                                     @Override
 								                                                     public void run ()
 								                                                     {
-									                                                     getChannel ().invokeMethod ( "updateProgress", json.toString () );
+									                                                     invokeMethodWithString ( "updateProgress", json.toString () );
 								                                                     }
 							                                                     } );
 
@@ -424,7 +458,7 @@ public class FlautoPlayer
 					                                                       JSONObject json = new JSONObject ();
 					                                                       json.put ( "duration", String.valueOf ( mp.getDuration () ) );
 					                                                       json.put ( "current_position", String.valueOf ( mp.getCurrentPosition () ) );
-					                                                       getChannel ().invokeMethod ( "audioPlayerFinishedPlaying", json.toString () );
+					                                                       invokeMethodWithString ( "audioPlayerFinishedPlaying", json.toString () );
 				                                                       }
 				                                                       catch ( Exception e )
 				                                                       {
@@ -454,18 +488,17 @@ public class FlautoPlayer
 		}
 	}
 
-	public void startPlayerFromBuffer (
-		final byte[] dataBuffer,
-		t_CODEC codec,
-		final Result result
-	                                  )
+	public void startPlayerFromBuffer ( final MethodCall call, final Result result )
 	{
+		Integer _codec     = call.argument ( "codec" );
+		t_CODEC codec      = t_CODEC.values ()[ ( _codec != null ) ? _codec : 0 ];
+		byte[]  dataBuffer = call.argument ( "dataBuffer" );
 		try
 		{
 			File             f   = File.createTempFile ( "flutter_sound", extentionArray[ codec.ordinal () ] );
 			FileOutputStream fos = new FileOutputStream ( f );
 			fos.write ( dataBuffer );
-			startPlayer ( f.getAbsolutePath (), result );
+			_startPlayer ( f.getAbsolutePath (), result );
 		}
 		catch ( Exception e )
 		{
@@ -473,13 +506,13 @@ public class FlautoPlayer
 		}
 	}
 
-	public void stopPlayer ( final Result result )
+	public void stopPlayer ( final MethodCall call, final Result result )
 	{
 		mTimer.cancel ();
 
 		if ( this.model.getMediaPlayer () == null )
 		{
-			result.error ( ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL );
+			result.success ( "Player already Closed");
 			return;
 		}
 		if ( ( setActiveDone != t_SET_CATEGORY_DONE.BY_USER ) && ( setActiveDone != t_SET_CATEGORY_DONE.NOT_SET ) )
@@ -504,11 +537,26 @@ public class FlautoPlayer
 		}
 	}
 
-	public void pausePlayer ( final Result result )
+	public void isDecoderSupported ( final MethodCall call, final Result result )
+	{
+		int     _codec = call.argument ( "codec" );
+		boolean b      = _isAndroidDecoderSupported[ _codec ];
+		if ( Build.VERSION.SDK_INT < 23 )
+		{
+			if ( ( _codec == CODEC_OPUS ) || ( _codec == CODEC_VORBIS ) )
+			{
+				b = false;
+			}
+		}
+		result.success ( b );
+
+	}
+
+	public void pausePlayer ( final MethodCall call, final Result result )
 	{
 		if ( this.model.getMediaPlayer () == null )
 		{
-			result.error ( ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL );
+			result.error ( ERR_PLAYER_IS_NULL, "pausePlayer()", ERR_PLAYER_IS_NULL );
 			return;
 		}
 		if ( ( setActiveDone != t_SET_CATEGORY_DONE.BY_USER ) && ( setActiveDone != t_SET_CATEGORY_DONE.NOT_SET ) )
@@ -531,11 +579,11 @@ public class FlautoPlayer
 
 	}
 
-	public void resumePlayer ( final Result result )
+	public void resumePlayer ( final MethodCall call, final Result result )
 	{
 		if ( this.model.getMediaPlayer () == null )
 		{
-			result.error ( ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL );
+			result.error ( ERR_PLAYER_IS_NULL, "resumePlayer", ERR_PLAYER_IS_NULL );
 			return;
 		}
 
@@ -564,14 +612,13 @@ public class FlautoPlayer
 		}
 	}
 
-	public void seekToPlayer (
-		int millis,
-		final Result result
-	                         )
+	public void seekToPlayer ( final MethodCall call, final Result result )
 	{
+		int millis = call.argument ( "sec" ) ;
+
 		if ( this.model.getMediaPlayer () == null )
 		{
-			result.error ( ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL );
+			result.error ( ERR_PLAYER_IS_NULL, "seekToPlayer()", ERR_PLAYER_IS_NULL );
 			return;
 		}
 
@@ -585,14 +632,13 @@ public class FlautoPlayer
 		result.success ( String.valueOf ( millis ) );
 	}
 
-	public void setVolume (
-		double volume,
-		final Result result
-	                      )
+	public void setVolume ( final MethodCall call, final Result result )
 	{
+		double volume = call.argument ( "volume" );
+
 		if ( this.model.getMediaPlayer () == null )
 		{
-			result.error ( ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL, ERR_PLAYER_IS_NULL );
+			result.error ( ERR_PLAYER_IS_NULL, "setVolume()", ERR_PLAYER_IS_NULL );
 			return;
 		}
 
@@ -602,20 +648,22 @@ public class FlautoPlayer
 	}
 
 
-	public void setSubscriptionDuration (
-		double sec,
-		Result result
-	                                    )
+	public void setSubscriptionDuration ( final MethodCall call, Result result )
 	{
-		this.model.subsDurationMillis = ( int ) ( sec * 1000 );
+		if ( call.argument ( "sec" ) == null )
+		{
+			return;
+		}
+		double duration = call.argument ( "sec" );
+
+		this.model.subsDurationMillis = ( int ) ( duration * 1000 );
 		result.success ( "setSubscriptionDuration: " + this.model.subsDurationMillis );
 	}
 
-	void androidAudioFocusRequest (
-		Integer focusGain,
-		final Result result
-	                              )
+	void androidAudioFocusRequest ( final MethodCall call, final Result result )
 	{
+		Integer focusGain = call.argument ( "focusGain" );
+
 		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
 		{
 			audioFocusRequest = new AudioFocusRequest.Builder ( focusGain )
@@ -676,11 +724,10 @@ public class FlautoPlayer
 
 	}
 
-	void setActive (
-		boolean enabled,
-		final Result result
-	               )
+	void setActive ( final MethodCall call, final Result result )
 	{
+		Boolean enabled = call.argument ( "enabled" );
+
 		Boolean b = false;
 		try
 		{

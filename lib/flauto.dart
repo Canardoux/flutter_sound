@@ -31,6 +31,7 @@ import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 
 // this enum MUST be synchronized with fluttersound/AudioInterface.java  and ios/Classes/FlutterSoundPlugin.h
@@ -45,8 +46,12 @@ enum t_CODEC
         CODEC_PCM,
 }
 
-const MethodChannel _FFmpegChannel = const MethodChannel( 'flutter_ffmpeg' );
+FlutterFFmpeg flutterFFmpeg ;
+FlutterFFmpegConfig _flutterFFmpegConfig ;
 
+//!!!const MethodChannel _FFmpegChannel = const MethodChannel( 'flutter_ffmpeg' );
+
+/*!!!
 /// Returns true if the flutter_ffmpeg plugin is really plugged in
 Future<bool> isFFmpegSupported( )
 async {
@@ -62,7 +67,7 @@ async {
                 return false;
         }
 }
-
+*/
 
 /// We use here our own ffmpeg "execute" procedure instead of the one provided by the flutter_ffmpeg plugin,
 /// so that the developers not interested by ffmpeg can use flutter_plugin without the flutter_ffmpeg plugin
@@ -70,7 +75,11 @@ async {
 ///
 /// Executes FFmpeg with [commandArguments] provided.
 Future<int> executeFFmpegWithArguments( List<String> arguments )
-async {
+{
+        if(flutterFFmpeg == null)
+                flutterFFmpeg = new FlutterFFmpeg();
+        return flutterFFmpeg.executeWithArguments(arguments);
+        /* !!!
         try
         {
                 if (!await isFFmpegSupported( ))
@@ -83,6 +92,8 @@ async {
                 print( "Plugin error: ${e.message}" );
                 return -1;
         }
+
+         */
 }
 
 
@@ -92,7 +103,13 @@ async {
 ///
 /// Returns return code of last executed command.
 Future<int> getLastFFmpegReturnCode( )
-async {
+{
+        //if(_flutterFFmpeg == null)
+                //_flutterFFmpeg = new FlutterFFmpeg();
+        if ( _flutterFFmpegConfig == null)
+                _flutterFFmpegConfig = new FlutterFFmpegConfig();
+        return _flutterFFmpegConfig.getLastReturnCode();
+        /*
         try
         {
                 final Map<dynamic, dynamic> result =
@@ -104,6 +121,7 @@ async {
                 print( "Plugin error: ${e.message}" );
                 return -1;
         }
+         */
 }
 
 /// We use here our own ffmpeg "getLastCommandOutput" procedure instead of the one provided by the flutter_ffmpeg plugin,
@@ -115,6 +133,10 @@ async {
 /// [disableRedirection()] method also disables this functionality.
 Future<String> getLastFFmpegCommandOutput( )
 async {
+        if ( _flutterFFmpegConfig == null)
+                _flutterFFmpegConfig = new FlutterFFmpegConfig();
+        return _flutterFFmpegConfig.getLastCommandOutput();
+       /*
         try
         {
                 final Map<dynamic, dynamic> result =
@@ -126,6 +148,8 @@ async {
                 print( "Plugin error: ${e.message}" );
                 return null;
         }
+
+         */
 }
 
 

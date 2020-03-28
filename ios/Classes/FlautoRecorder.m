@@ -78,7 +78,6 @@ FlutterMethodChannel* _flautoRecorderChannel;
 }
 
 static FlautoRecorderManager* flautoRecorderManager; // Singleton
-//FlutterMethodChannel* _flautoRecorderChannel;
 
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar

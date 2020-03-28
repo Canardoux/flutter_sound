@@ -268,7 +268,7 @@ class FlautoPlayer
                         if (flautoPlayerPlugin == null)
                                 flautoPlayerPlugin = FlautoPlayerPlugin( ); // The lazy singleton
                         slotNo = getPlugin( ).lookupEmptySlot( this );
-                        bool b = await invokeMethod( 'initializeMediaPlayer', {} );
+                        await invokeMethod( 'initializeMediaPlayer', {} );
                 }
                 return this;
         }
@@ -335,9 +335,9 @@ class FlautoPlayer
                 // - decode CAF/OPPUS (with native Apple AVFoundation)
                 if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS))
                 {
-                        if (!await isFFmpegSupported( ))
-                                result = false;
-                        else
+                        //if (!await isFFmpegSupported( ))
+                                //result = false;
+                        //else
                                 result = await invokeMethod( 'isDecoderSupported', <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index} );
                 } else
                         result = await invokeMethod( 'isDecoderSupported', <String, dynamic>{'codec': codec.index} );

@@ -44,7 +44,11 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Callable;
@@ -70,111 +74,111 @@ class FlautoRecorderPlugin
 	implements MethodCallHandler
 {
 	public static MethodChannel        channel;
-	static        Context              androidContext;
-	static        FlautoRecorderPlugin flautoRecorderPlugin; // singleton
-	FlautoRecorder theFlautoRecorder; // Temporary !!!!!!!!!!!
-	static boolean _isAndroidEncoderSupported[] = {
-		true, // DEFAULT
-		true, // AAC
-		false, // OGG/OPUS
-		false, // CAF/OPUS
-		false, // MP3
-		false, // OGG/VORBIS
-		false, // WAV/PCM
-	};
+	public static List<FlautoRecorder> slots;
 
-	final static int CODEC_OPUS   = 2;
-	final static int CODEC_VORBIS = 5;
+	static Context              androidContext;
+	static FlautoRecorderPlugin flautoRecorderPlugin; // singleton
+
 
 	static final String ERR_UNKNOWN               = "ERR_UNKNOWN";
 	static final String ERR_RECORDER_IS_NULL      = "ERR_RECORDER_IS_NULL";
 	static final String ERR_RECORDER_IS_RECORDING = "ERR_RECORDER_IS_RECORDING";
 
 
-
-	public static void attachFlautoRecorder (
-		Context ctx,
-		BinaryMessenger messenger
-	                                        )
+	public static void attachFlautoRecorder ( Context ctx, BinaryMessenger messenger )
 	{
+		assert ( flautoRecorderPlugin == null );
 		flautoRecorderPlugin = new FlautoRecorderPlugin ();
-		channel              = new MethodChannel ( messenger, "xyz.canardoux.flauto_recorder" );
+		assert ( slots == null );
+		slots   = new ArrayList<FlautoRecorder> ();
+		channel = new MethodChannel ( messenger, "xyz.canardoux.flauto_recorder" );
 		channel.setMethodCallHandler ( flautoRecorderPlugin );
 		androidContext = ctx;
+	}
 
+
+	void invokeMethod ( String methodName, Map dic )
+	{
+		channel.invokeMethod ( methodName, dic );
+	}
+
+	void freeSlot ( int slotNo )
+	{
+		slots.set ( slotNo, null );
+	}
+
+
+	FlautoRecorderPlugin getManager ()
+	{
+		return flautoRecorderPlugin;
 	}
 
 
 	@Override
-	public void onMethodCall (
-		final MethodCall call,
-		final Result result
-	                         )
+	public void onMethodCall ( final MethodCall call, final Result result )
 	{
-		//final String path = call.argument ( "path" );
+		int slotNo = call.argument ( "slotNo" );
+		assert ( ( slotNo >= 0 ) && ( slotNo <= slots.size () ) );
+
+		if ( slotNo == slots.size () )
+		{
+			slots.add ( slotNo, null );
+		}
+
+		FlautoRecorder aRecorder = slots.get ( slotNo );
 		switch ( call.method )
 		{
-
 			case "initializeFlautoRecorder":
-				theFlautoRecorder = new FlautoRecorder ();
-				theFlautoRecorder.initializeFlautoRecorder ( call, result );
-				result.success ( true );
-				break;
+			{
+				assert ( slots.get ( slotNo ) == null );
+				aRecorder = new FlautoRecorder ( slotNo );
+				slots.set ( slotNo, aRecorder );
+				aRecorder.initializeFlautoRecorder ( call, result );
+			}
+			break;
 
 			case "releaseFlautoRecorder":
-				theFlautoRecorder.releaseFlautoRecorder ( call, result );
-				result.success ( true );
-				break;
+			{
+				aRecorder.releaseFlautoRecorder ( call, result );
+				slots.set ( slotNo, null );
+			}
+			break;
 
 			case "isEncoderSupported":
 			{
-				int     _codec = call.argument ( "codec" );
-				boolean b      = _isAndroidEncoderSupported[ _codec ];
-				if ( Build.VERSION.SDK_INT < 29 )
-				{
-					if ( ( _codec == CODEC_OPUS ) || ( _codec == CODEC_VORBIS ) )
-					{
-						b = false;
-					}
-				}
-				result.success ( b );
+				aRecorder.isEncoderSupported ( call, result );
 			}
 			break;
 			case "startRecorder":
 			{
-				theFlautoRecorder.startRecorder(call, result);
+				aRecorder.startRecorder ( call, result );
 			}
 			break;
 
 			case "stopRecorder":
 			{
-				theFlautoRecorder.stopRecorder ( result );
+				aRecorder.stopRecorder ( call, result );
 			}
 			break;
 
 
 			case "setDbPeakLevelUpdate":
 			{
-				double intervalInSecs = call.argument ( "intervalInSecs" );
-				theFlautoRecorder.setDbPeakLevelUpdate ( intervalInSecs, result );
+
+				aRecorder.setDbPeakLevelUpdate ( call, result );
 			}
 			break;
 
 			case "setDbLevelEnabled":
 			{
-				boolean enabled = call.argument ( "enabled" );
-				theFlautoRecorder.setDbLevelEnabled ( enabled, result );
+
+				aRecorder.setDbLevelEnabled ( call, result );
 			}
 			break;
 
 			case "setSubscriptionDuration":
 			{
-				if ( call.argument ( "sec" ) == null )
-				{
-					return;
-				}
-				double duration = call.argument ( "sec" );
-				theFlautoRecorder.setSubscriptionDuration ( duration, result );
+				aRecorder.setSubscriptionDuration ( call, result );
 			}
 			break;
 
@@ -190,48 +194,57 @@ class FlautoRecorderPlugin
 }
 
 
-class RecorderAudioModel {
-	final public static String DEFAULT_FILE_LOCATION = Environment.getDataDirectory ().getPath () + "/default.aac"; // SDK
-	public int subsDurationMillis = 10;
-	public long peakLevelUpdateMillis = 800;
-	public boolean shouldProcessDbLevel = true;
+class RecorderAudioModel
+{
+	final public static String  DEFAULT_FILE_LOCATION = Environment.getDataDirectory ().getPath () + "/default.aac"; // SDK
+	public              int     subsDurationMillis    = 10;
+	public              long    peakLevelUpdateMillis = 800;
+	public              boolean shouldProcessDbLevel  = true;
 
-	private MediaRecorder mediaRecorder;
-	private Runnable recorderTicker;
-	private Runnable dbLevelTicker;
-	private long recordTime = 0;
-	public final double micLevelBase = 2700;
+	private      MediaRecorder mediaRecorder;
+	private      Runnable      recorderTicker;
+	private      Runnable      dbLevelTicker;
+	private      long          recordTime   = 0;
+	public final double        micLevelBase = 2700;
 
 
-	public MediaRecorder getMediaRecorder() {
+	public MediaRecorder getMediaRecorder ()
+	{
 		return mediaRecorder;
 	}
 
-	public void setMediaRecorder(MediaRecorder mediaRecorder) {
+	public void setMediaRecorder ( MediaRecorder mediaRecorder )
+	{
 		this.mediaRecorder = mediaRecorder;
 	}
 
-	public Runnable getRecorderTicker() {
+	public Runnable getRecorderTicker ()
+	{
 		return recorderTicker;
 	}
 
-	public void setRecorderTicker(Runnable recorderTicker) {
+	public void setRecorderTicker ( Runnable recorderTicker )
+	{
 		this.recorderTicker = recorderTicker;
 	}
 
-	public Runnable getDbLevelTicker() {
+	public Runnable getDbLevelTicker ()
+	{
 		return dbLevelTicker;
 	}
 
-	public void setDbLevelTicker(Runnable ticker) {
+	public void setDbLevelTicker ( Runnable ticker )
+	{
 		this.dbLevelTicker = ticker;
 	}
 
-	public long getRecordTime() {
+	public long getRecordTime ()
+	{
 		return recordTime;
 	}
 
-	public void setRecordTime(long recordTime) {
+	public void setRecordTime ( long recordTime )
+	{
 		this.recordTime = recordTime;
 	}
 
@@ -240,6 +253,19 @@ class RecorderAudioModel {
 
 public class FlautoRecorder
 {
+	static boolean _isAndroidEncoderSupported[] = {
+		true, // DEFAULT
+		true, // AAC
+		false, // OGG/OPUS
+		false, // CAF/OPUS
+		false, // MP3
+		false, // OGG/VORBIS
+		false, // WAV/PCM
+	};
+
+	final static int CODEC_OPUS   = 2;
+	final static int CODEC_VORBIS = 5;
+
 
 	static int codecArray[] = {
 		0 // DEFAULT
@@ -259,7 +285,7 @@ public class FlautoRecorder
 		, 0 // CODEC_PCM
 	};
 
-	static String pathArray[] = {
+	static       String pathArray[]               = {
 		"sound.aac" // DEFAULT
 		, "sound.aac" // CODEC_AAC
 		, "sound.opus" // CODEC_OPUS
@@ -268,71 +294,101 @@ public class FlautoRecorder
 		, "sound.ogg" // CODEC_VORBIS
 		, "sound.wav" // CODEC_PCM
 	};
-	static final String ERR_RECORDER_IS_NULL = "ERR_RECORDER_IS_NULL";
+	static final String ERR_RECORDER_IS_NULL      = "ERR_RECORDER_IS_NULL";
 	static final String ERR_RECORDER_IS_RECORDING = "ERR_RECORDER_IS_RECORDING";
 
 
-	final static String TAG           = "FlutterSoundPlugin";
-	final         RecorderAudioModel model = new RecorderAudioModel ();
-	final public Handler      recordHandler      = new Handler ();
-	final public Handler      dbPeakLevelHandler = new Handler ();
+	final static String             TAG                = "FlutterSoundPlugin";
+	final        RecorderAudioModel model              = new RecorderAudioModel ();
+	final public Handler            recordHandler      = new Handler ();
+	final public Handler            dbPeakLevelHandler = new Handler ();
 	String finalPath;
-	private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor();
+	int    slotNo;
+	private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor ();
+	private Handler mainHandler = new Handler();
 
-
-
-
-	void initializeFlautoRecorder (
-		final MethodCall call,
-		final Result result
-	                              )
+	FlautoRecorder ( int aSlotNo )
 	{
+		slotNo = aSlotNo;
 	}
 
-	void releaseFlautoRecorder (
-		final MethodCall call,
-		final Result result
-	                           )
+
+	FlautoRecorderPlugin getPlugin ()
 	{
+		return FlautoRecorderPlugin.flautoRecorderPlugin;
 	}
 
+
+	void initializeFlautoRecorder ( final MethodCall call, final Result result )
+	{
+		result.success ( "Flauto Recorder Initialized" );
+	}
+
+	void releaseFlautoRecorder ( final MethodCall call, final Result result )
+	{
+		result.success ( "Flauto Recorder Released" );
+	}
+
+	void isEncoderSupported ( final MethodCall call, final Result result )
+	{
+		int     _codec = call.argument ( "codec" );
+		boolean b      = _isAndroidEncoderSupported[ _codec ];
+		if ( Build.VERSION.SDK_INT < 29 )
+		{
+			if ( ( _codec == CODEC_OPUS ) || ( _codec == CODEC_VORBIS ) )
+			{
+				b = false;
+			}
+		}
+		result.success ( b );
+	}
+
+/*
 	MethodChannel getChannel ()
 	{
 		return FlautoRecorderPlugin.channel;
 	}
 
+ */
 
-public void startRecorder(	final MethodCall call,
-                                  final Result result )
-{
-	//taskScheduler.submit ( () ->
-	                       {
-		                       Integer sampleRate          = call.argument ( "sampleRate" );
-		                       Integer numChannels         = call.argument ( "numChannels" );
-		                       Integer bitRate             = call.argument ( "bitRate" );
-		                       int     androidEncoder      = call.argument ( "androidEncoder" );
-		                       int     _codec              = call.argument ( "codec" );
-		                       t_CODEC codec               = t_CODEC.values ()[ _codec ];
-		                       int     androidAudioSource  = call.argument ( "androidAudioSource" );
-		                       int     androidOutputFormat = call.argument ( "androidOutputFormat" );
-		                       final String path = call.argument ( "path" );
-		                       _startRecorder ( numChannels, sampleRate, bitRate, codec, androidEncoder, androidAudioSource, androidOutputFormat, path, result );
-	                       }
-	                     //);
+	void invokeMethodWithString ( String methodName, String arg )
+	{
+		Map<String, Object> dic = new HashMap<String, Object> ();
+		dic.put ( "slotNo", slotNo );
+		dic.put ( "arg", arg );
+		getPlugin ().invokeMethod ( methodName, dic );
+	}
 
-}
+	void invokeMethodWithDouble ( String methodName, double arg )
+	{
+		Map<String, Object> dic = new HashMap<String, Object> ();
+		dic.put ( "slotNo", slotNo );
+		dic.put ( "arg", arg );
+		getPlugin ().invokeMethod ( methodName, dic );
+	}
+
+	public void startRecorder ( final MethodCall call, final Result result )
+	{
+		//taskScheduler.submit ( () ->
+		{
+			Integer      sampleRate          = call.argument ( "sampleRate" );
+			Integer      numChannels         = call.argument ( "numChannels" );
+			Integer      bitRate             = call.argument ( "bitRate" );
+			int          androidEncoder      = call.argument ( "androidEncoder" );
+			int          _codec              = call.argument ( "codec" );
+			t_CODEC      codec               = t_CODEC.values ()[ _codec ];
+			int          androidAudioSource  = call.argument ( "androidAudioSource" );
+			int          androidOutputFormat = call.argument ( "androidOutputFormat" );
+			final String path                = call.argument ( "path" );
+			_startRecorder ( numChannels, sampleRate, bitRate, codec, androidEncoder, androidAudioSource, androidOutputFormat, path, result );
+		}
+		//);
+
+	}
 
 	public void _startRecorder (
-		Integer numChannels,
-		Integer sampleRate,
-		Integer bitRate,
-		t_CODEC codec,
-		int androidEncoder,
-		int androidAudioSource,
-		int androidOutputFormat,
-		String path,
-		final Result result
-	                          )
+		Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result
+	                           )
 	{
 		final int v = Build.VERSION.SDK_INT;
 		// The caller must be allowed to specify its path. We must not change it here
@@ -405,7 +461,7 @@ public void startRecorder(	final MethodCall call,
 				                               {
 					                               JSONObject json = new JSONObject ();
 					                               json.put ( "current_position", String.valueOf ( time ) );
-					                               getChannel ().invokeMethod ( "updateRecorderProgress", json.toString () );
+					                               invokeMethodWithString ( "updateRecorderProgress", json.toString () );
 					                               recordHandler.postDelayed ( model.getRecorderTicker (), model.subsDurationMillis );
 				                               }
 				                               catch ( JSONException je )
@@ -444,7 +500,7 @@ public void startRecorder(	final MethodCall call,
 
 						                              Log.d ( TAG, "rawAmplitude: " + maxAmplitude + " Base DB: " + db );
 
-						                              getChannel ().invokeMethod ( "updateDbPeakProgress", db );
+						                              invokeMethodWithDouble (  "updateDbPeakProgress", db );
 						                              dbPeakLevelHandler.postDelayed ( model.getDbLevelTicker (), ( model.peakLevelUpdateMillis ) );
 					                              }
 				                              } );
@@ -452,15 +508,15 @@ public void startRecorder(	final MethodCall call,
 			}
 
 			finalPath = path;
-			//mainHandler.post ( new Runnable ()
+			mainHandler.post ( new Runnable ()
 			{
 				//@Override
-				//public void run ()
+				public void run ()
 				{
 					result.success ( finalPath );
 				}
 			}
-			//);
+			);
 		}
 		catch ( Exception e )
 		{
@@ -468,13 +524,13 @@ public void startRecorder(	final MethodCall call,
 		}
 	}
 
-	public void stopRecorder ( final Result result )
+	public void stopRecorder ( final MethodCall call, final Result result )
 	{
 		//taskScheduler.submit ( () -> _stopRecorder ( result ) );
-		_stopRecorder ( result );
+		_stopRecorder ( call, result );
 	}
 
-	public void _stopRecorder ( final Result result )
+	public void _stopRecorder ( final MethodCall call, final Result result )
 	{
 		// This remove all pending runnables
 		recordHandler.removeCallbacksAndMessages ( null );
@@ -483,50 +539,49 @@ public void startRecorder(	final MethodCall call,
 		if ( this.model.getMediaRecorder () == null )
 		{
 			Log.d ( TAG, "mediaRecorder is null" );
-			result.error ( ERR_RECORDER_IS_NULL, ERR_RECORDER_IS_NULL, ERR_RECORDER_IS_NULL );
+			result.success ( "Media Recorder is closed" );
 			return;
 		}
 		this.model.getMediaRecorder ().stop ();
 		this.model.getMediaRecorder ().reset ();
 		this.model.getMediaRecorder ().release ();
 		this.model.setMediaRecorder ( null );
-		//mainHandler.post ( new Runnable ()
+		mainHandler.post ( new Runnable ()
 		{
-			//@Override
-			//public void run ()
+			@Override
+			public void run ()
 			{
 				result.success ( finalPath );
 			}
 		}
-		//);
+		);
 
 	}
 
 
-	public void setDbPeakLevelUpdate (
-		double intervalInSecs,
-		Result result
-	                                 )
+	public void setDbPeakLevelUpdate ( final MethodCall call, final Result result )
 	{
+		double intervalInSecs = call.argument ( "intervalInSecs" );
 		this.model.peakLevelUpdateMillis = ( long ) ( intervalInSecs * 1000 );
 		result.success ( "setDbPeakLevelUpdate: " + this.model.peakLevelUpdateMillis );
 	}
 
-	public void setDbLevelEnabled (
-		boolean enabled,
-		MethodChannel.Result result
-	                              )
+	public void setDbLevelEnabled ( final MethodCall call, final Result result )
 	{
+		boolean enabled = call.argument ( "enabled" );
 		this.model.shouldProcessDbLevel = enabled;
 		result.success ( "setDbLevelEnabled: " + this.model.shouldProcessDbLevel );
 	}
 
-	public void setSubscriptionDuration (
-		double sec,
-		Result result
-	                                    )
+	public void setSubscriptionDuration ( final MethodCall call, final Result result )
 	{
-		this.model.subsDurationMillis = ( int ) ( sec * 1000 );
+		if ( call.argument ( "sec" ) == null )
+		{
+			return;
+		}
+		double duration = call.argument ( "sec" );
+
+		this.model.subsDurationMillis = ( int ) ( duration * 1000 );
 		result.success ( "setSubscriptionDuration: " + this.model.subsDurationMillis );
 	}
 

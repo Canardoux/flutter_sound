@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   permission_handler: ^4.4.0
+  flutter_ffmpeg: ^0.2.10
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

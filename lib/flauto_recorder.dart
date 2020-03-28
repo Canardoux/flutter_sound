@@ -174,7 +174,7 @@ class FlautoRecorder
                         if (flautoRecorderPlugin == null)
                                 flautoRecorderPlugin = FlautoRecorderPlugin(); // The lazy singleton
                         slotNo = getPlugin().lookupEmptySlot(this);
-                        bool b = await invokeMethod( 'initializeFlautoRecorder', {} );
+                        await invokeMethod( 'initializeFlautoRecorder', {} );
                 }
                 return this;
         }
@@ -214,9 +214,9 @@ class FlautoRecorder
 
                 if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS))
                 {
-                        if (!await isFFmpegSupported( ))
-                                result = false;
-                        else
+                        //if (!await isFFmpegSupported( ))
+                                //result = false;
+                       //else
                                 result = await invokeMethod( 'isEncoderSupported', <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index} );
                 } else
                         result = await invokeMethod( 'isEncoderSupported', <String, dynamic>{'codec': codec.index} );
@@ -393,7 +393,7 @@ class FlautoRecorder
                         // The following ffmpeg instruction re-encode the Apple CAF to OPUS. Unfortunatly we cannot just remix the OPUS data,
                         // because Apple does not set the "extradata" in its private OPUS format.
                         // It will be good if we can improve this...
-                        var rc = await executeFFmpegWithArguments( [
+                        int rc = await executeFFmpegWithArguments( [
                                                                            '-loglevel',
                                                                            'error',
                                                                            '-y',

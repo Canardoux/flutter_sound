@@ -112,8 +112,6 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [aFlautoPlayer releaseFlautoPlayer: call result:result];
                 [flautoPlayerSlots replaceObjectAtIndex:slotNo withObject:[NSNull null]];
                 flautoPlayerSlots[slotNo] = [NSNull null];
-                slotNo = -1;
-
         } else
         
         if ([@"isDecoderSupported" isEqualToString:call.method])

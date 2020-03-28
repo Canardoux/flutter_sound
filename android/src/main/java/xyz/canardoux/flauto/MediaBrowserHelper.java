@@ -42,22 +42,22 @@ public class MediaBrowserHelper
 	// to the service.
 	private Callable<Void>     mServiceConnectionUnsuccessfulCallback;
 
-	private BackgroundAudioService backgroundAudioService = new BackgroundAudioService ();
+	//private BackgroundAudioService backgroundAudioService ;
 
-	private MediaBrowserCompat.ConnectionCallback mMediaBrowserCompatConnectionCallback = new MediaBrowserCompat.ConnectionCallback ()
+	private MediaBrowserCompat.ConnectionCallback mMediaBrowserCompatConnectionCallback = new MediaBrowserCompat.ConnectionCallback()
 	{
 		@Override
-		public void onConnected ()
+		public void onConnected()
 		{
-			super.onConnected ();
+			super.onConnected();
 			// A new MediaBrowserCompat object is created and connected. Then, initialize a
 			// MediaControllerCompat object and associate it with MediaSessionCompat. Once
 			// completed,
 			// start the audio playback.
 			try
 			{
-				mediaControllerCompat = new MediaControllerCompat ( mActivity, mMediaBrowserCompat.getSessionToken () );
-				MediaControllerCompat.setMediaController ( mActivity, mediaControllerCompat );
+				mediaControllerCompat = new MediaControllerCompat( mActivity, mMediaBrowserCompat.getSessionToken() );
+				MediaControllerCompat.setMediaController( mActivity, mediaControllerCompat );
 
 				// Start the audio playback
 				// MediaControllerCompat.getMediaController(mActivity).getTransportControls().playFromMediaId("http://path-to-audio-file.com",
@@ -66,7 +66,7 @@ public class MediaBrowserHelper
 			}
 			catch ( RemoteException e )
 			{
-				Log.e ( "MediaBrowserHelper", "The following error occurred while" + " initializing the media controller.", e );
+				Log.e( "MediaBrowserHelper", "The following error occurred while" + " initializing the media controller.", e );
 			}
 
 			// Call the successful connection callback if it was provided
@@ -74,34 +74,34 @@ public class MediaBrowserHelper
 			{
 				try
 				{
-					mServiceConnectionSuccessCallback.call ();
+					mServiceConnectionSuccessCallback.call();
 					// Remove the callback
 					mServiceConnectionSuccessCallback = null;
 				}
 				catch ( Exception e )
 				{
-					e.printStackTrace ();
+					e.printStackTrace();
 				}
 			}
 		}
 
 		@Override
-		public void onConnectionFailed ()
+		public void onConnectionFailed()
 		{
-			super.onConnectionFailed ();
+			super.onConnectionFailed();
 
 			// Call the unsuccessful connection callback if it was provided
 			if ( mServiceConnectionUnsuccessfulCallback != null )
 			{
 				try
 				{
-					mServiceConnectionUnsuccessfulCallback.call ();
+					mServiceConnectionUnsuccessfulCallback.call();
 					// Remove the callback
 					mServiceConnectionUnsuccessfulCallback = null;
 				}
 				catch ( Exception e )
 				{
-					e.printStackTrace ();
+					e.printStackTrace();
 				}
 			}
 		}
@@ -117,30 +117,29 @@ public class MediaBrowserHelper
 	 * @param serviceUnsuccConnectionCallback The callback to call when the
 	 *                                        connection is unsuccessful.
 	 */
-	MediaBrowserHelper (
-		Activity activity,
-		Callable<Void> serviceSuccConnectionCallback,
-		Callable<Void> serviceUnsuccConnectionCallback
-	                   )
+	MediaBrowserHelper(
+		Activity activity, Callable<Void> serviceSuccConnectionCallback, Callable<Void> serviceUnsuccConnectionCallback
+	                  )
 	{
 		mActivity                              = activity;
 		mServiceConnectionSuccessCallback      = serviceSuccConnectionCallback;
 		mServiceConnectionUnsuccessfulCallback = serviceUnsuccConnectionCallback;
-		backgroundAudioService.activity        = mActivity;
-		initMediaBrowser ();
+		//////backgroundAudioService = new BackgroundAudioService ();
+		/////backgroundAudioService.activity        = mActivity;
+		initMediaBrowser();
 	}
 
 	/**
 	 * Initialize the media browser in this class
 	 */
-	private void initMediaBrowser ()
+	private void initMediaBrowser()
 	{
 		// Create and connect a MediaBrowserCompat
-		mMediaBrowserCompat = new MediaBrowserCompat ( mActivity, new ComponentName ( mActivity, BackgroundAudioService.class ), mMediaBrowserCompatConnectionCallback, mActivity.getIntent ().getExtras () );
+		mMediaBrowserCompat = new MediaBrowserCompat( mActivity, new ComponentName( mActivity, BackgroundAudioService.class ), mMediaBrowserCompatConnectionCallback, mActivity.getIntent().getExtras() );
 
-		//BackgroundAudioService.activity = mActivity;
+		BackgroundAudioService.activity = mActivity;
 
-		mMediaBrowserCompat.connect ();
+		mMediaBrowserCompat.connect();
 	}
 
 	/**
@@ -148,73 +147,73 @@ public class MediaBrowserHelper
 	 * <p>
 	 * Call this in onDestroy().
 	 */
-	void releaseMediaBrowser ()
+	void releaseMediaBrowser()
 	{
-		mMediaBrowserCompat.disconnect ();
+		mMediaBrowserCompat.disconnect();
 	}
 
-	void playPlayback ()
+	void playPlayback()
 	{
-		mediaControllerCompat.getTransportControls ().play ();
+		mediaControllerCompat.getTransportControls().play();
 	}
 
-	void pausePlayback ()
+	void pausePlayback()
 	{
-		mediaControllerCompat.getTransportControls ().pause ();
+		mediaControllerCompat.getTransportControls().pause();
 	}
 
-	void seekTo ( long newPosition )
+	void seekTo( long newPosition )
 	{
-		mediaControllerCompat.getTransportControls ().seekTo ( newPosition );
+		mediaControllerCompat.getTransportControls().seekTo( newPosition );
 	}
 
-	void stop ()
+	void stop()
 	{
-		mediaControllerCompat.getTransportControls ().stop ();
+		mediaControllerCompat.getTransportControls().stop();
 	}
 
-	void setMediaPlayerOnPreparedListener ( Callable<Void> callback )
+	void setMediaPlayerOnPreparedListener( Callable<Void> callback )
 	{
-		backgroundAudioService.mediaPlayerOnPreparedListener = callback;
+		BackgroundAudioService.mediaPlayerOnPreparedListener = callback;
 	}
 
-	void setMediaPlayerOnCompletionListener ( Callable<Void> callback )
+	void setMediaPlayerOnCompletionListener( Callable<Void> callback )
 	{
-            backgroundAudioService.mediaPlayerOnCompletionListener = callback;
+		BackgroundAudioService.mediaPlayerOnCompletionListener = callback;
 	}
 
 	/**
 	 * Add a handler for when the user taps the button to skip the track forward.
 	 */
-	void setSkipTrackForwardHandler ( Callable<Void> handler )
+	void setSkipTrackForwardHandler( Callable<Void> handler )
 	{
-            backgroundAudioService.skipTrackForwardHandler = handler;
+		BackgroundAudioService.skipTrackForwardHandler = handler;
 	}
 
 	/**
 	 * Remove the handler for when the user taps the button to skip the track
 	 * forward.
 	 */
-	void removeSkipTrackForwardHandler ()
+	void removeSkipTrackForwardHandler()
 	{
-            backgroundAudioService.skipTrackForwardHandler = null;
+		BackgroundAudioService.skipTrackForwardHandler = null;
 	}
 
 	/**
 	 * Add a handler for when the user taps the button to skip the track backward.
 	 */
-	void setSkipTrackBackwardHandler ( Callable<Void> handler )
+	void setSkipTrackBackwardHandler( Callable<Void> handler )
 	{
-            backgroundAudioService.skipTrackBackwardHandler = handler;
+		BackgroundAudioService.skipTrackBackwardHandler = handler;
 	}
 
 	/**
 	 * Remove the handler for when the user taps the button to skip the track
 	 * backward.
 	 */
-	void removeSkipTrackBackwardHandler ()
+	void removeSkipTrackBackwardHandler()
 	{
-            backgroundAudioService.skipTrackBackwardHandler = null;
+		BackgroundAudioService.skipTrackBackwardHandler = null;
 	}
 
 	/**
@@ -223,9 +222,9 @@ public class MediaBrowserHelper
 	 *
 	 * @param track The currently playing track.
 	 */
-	void setNotificationMetadata ( Track track )
+	void setNotificationMetadata( Track track )
 	{
-            backgroundAudioService.currentTrack = track;
+		BackgroundAudioService.currentTrack = track;
 	}
 
 	/**
@@ -235,8 +234,8 @@ public class MediaBrowserHelper
 	 * @param playbackStateUpdater The function to execute to update the playback
 	 *                             state in the Flutter code.
 	 */
-	void setPlaybackStateUpdater ( Function playbackStateUpdater )
+	void setPlaybackStateUpdater( Function playbackStateUpdater )
 	{
-            backgroundAudioService.playbackStateUpdater = playbackStateUpdater;
+		BackgroundAudioService.playbackStateUpdater = playbackStateUpdater;
 	}
 }

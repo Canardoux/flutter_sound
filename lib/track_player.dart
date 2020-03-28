@@ -163,7 +163,7 @@ class TrackPlayer extends FlautoPlayer
 
                         try
                         {
-                                bool b = await invokeMethod( 'initializeMediaPlayer', {} );
+                                await invokeMethod( 'initializeMediaPlayer', {} );
                                 onSkipBackward = null;
                                 onSkipForward = null;
 
