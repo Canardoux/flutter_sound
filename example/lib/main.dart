@@ -202,7 +202,7 @@ class _MyAppState extends State<MyApp>
 
                         _recorderSubscription = flutterSoundModule.onRecorderStateChanged.listen( ( e )
                                                                                                   {
-                                                                                                          if (e.currentPosition != null)
+                                                                                                          if (e != null && e.currentPosition != null)
                                                                                                           {
                                                                                                                   DateTime date = new DateTime.fromMillisecondsSinceEpoch( e.currentPosition.toInt( ), isUtc: true );
                                                                                                                   String txt = DateFormat( 'mm:ss:SS', 'en_GB' ).format( date );
