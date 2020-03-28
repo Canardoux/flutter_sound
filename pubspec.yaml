@@ -1,6 +1,6 @@
 name: flutter_sound
 description: Flutter plugin that relates to sound like audio and recorder.
-version: 2.1.1
+version: 3.0.0
 author: dooboolab<dooboolab@gmail.com>
 homepage: https://github.com/dooboolab/flutter_sound
 environment:
@@ -10,6 +10,7 @@ dependencies:
   path: ">=1.0.0 <2.0.0"
   flutter:
     sdk: flutter
+  permission_handler: ^4.4.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

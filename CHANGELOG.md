@@ -1,6 +1,7 @@
+## 3.0.0
+- Code name `flauto` has been merged [#243](https://github.com/dooboolab/flutter_sound/pull/243)
+  > Highly honor [Larpoux](https://github.com/Larpoux), [bsutton](https://github.com/bsutton), [salvatore373](https://github.com/salvatore373) :tada:!
 ## 2.1.1
-- Amazon billing: Trigger purchaseUpdated callback when iap purchased [#165](https://github.com/dooboolab/flutter_inapp_purchase/pull/165).
-## 2.1.0
 - Handle custom audio path from [path_provider](https://pub.dev/packages/path_provider).
 ## 2.0.5
 - Hotfix [#221](https://github.com/dooboolab/flutter_sound/issues/221)
@@ -12,7 +13,6 @@
   * `stopReocorder` resolve path.
 - Resolve [#198](https://github.com/dooboolab/flutter_sound/issues/198)
   * Improve static handler in android.
-
 ## 2.0.1
 - Add compatibility for android sdk 19.
 - Add `androidx` compatibility.
