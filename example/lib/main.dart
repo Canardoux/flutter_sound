@@ -27,6 +27,7 @@ import 'package:flauto/flauto.dart';
 import 'package:flauto/flauto_player.dart';
 import 'package:flauto/flutter_sound.dart';
 import 'package:flauto/track_player.dart';
+import 'package:flauto/flauto_recorder.dart';
 
 enum t_MEDIA
 {
@@ -57,7 +58,8 @@ class _MyAppState extends State<MyApp>
         StreamSubscription _dbPeakSubscription;
         StreamSubscription _playerSubscription;
         StreamSubscription _playbackStateSubscription;
-        static FlutterSound flutterSoundModule = FlutterSound();
+        static FlautoPlayer playerModule = FlautoPlayer();
+        static FlautoRecorder recorderModule = FlautoRecorder();
 
         String _recorderTxt = '00:00:00';
         String _playerTxt = '00:00:00';
@@ -79,13 +81,19 @@ class _MyAppState extends State<MyApp>
         bool _isAudioPlayer = false;
         bool _duckOthers = false;
 
-        void _initializeExample( FlutterSound module )
+
+        t_AUDIO_STATE get audioState
+        => playerModule.isPlaying() ? t_AUDIO_STATE.IS_PLAYING : playerModule.isPaused() ? t_AUDIO_STATE.IS_PAUSED : recorderModule.isRecording() ? t_AUDIO_STATE.IS_RECORDING : t_AUDIO_STATE.IS_STOPPED;
+
+
+        void _initializeExample( FlautoPlayer module )
         async {
-                flutterSoundModule =  module;
-                await module.initializeMediaPlayer( );
-                await flutterSoundModule.setSubscriptionDuration( 0.01 );
-                await flutterSoundModule.setDbPeakLevelUpdate( 0.8 );
-                await flutterSoundModule.setDbLevelEnabled( true );
+                playerModule =  module;
+                await module.initialize( );
+                await playerModule.setSubscriptionDuration( 0.01 );
+                await recorderModule.setSubscriptionDuration( 0.01 );
+                await recorderModule.setDbPeakLevelUpdate( 0.8 );
+                await recorderModule.setDbLevelEnabled( true );
                 initializeDateFormatting( );
                 setCodec( _codec );
                 setDuck( );
@@ -95,7 +103,7 @@ class _MyAppState extends State<MyApp>
         void initState( )
         {
                 super.initState( );
-                _initializeExample( flutterSoundModule );
+                _initializeExample( playerModule );
         }
 
         void cancelRecorderSubscriptions( )
@@ -141,13 +149,13 @@ class _MyAppState extends State<MyApp>
                 if (_duckOthers)
                 {
                         if (Platform.isIOS)
-                                await flutterSoundModule.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DUCK_OTHERS | IOS_DEFAULT_TO_SPEAKER );
-                        else if (Platform.isAndroid) await flutterSoundModule.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK );
+                                await playerModule.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DUCK_OTHERS | IOS_DEFAULT_TO_SPEAKER );
+                        else if (Platform.isAndroid) await playerModule.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK );
                 } else
                 {
                         if (Platform.isIOS)
-                                await flutterSoundModule.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DEFAULT_TO_SPEAKER );
-                        else if (Platform.isAndroid) await flutterSoundModule.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN );
+                                await playerModule.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DEFAULT_TO_SPEAKER );
+                        else if (Platform.isAndroid) await playerModule.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN );
                 }
         }
 
@@ -155,7 +163,7 @@ class _MyAppState extends State<MyApp>
         async {
                 try
                 {
-                        await flutterSoundModule.releaseMediaPlayer( );
+                        await playerModule.release( );
                         print( 'media player released successfully' );
                         setState( ( )
                                   {
@@ -194,13 +202,13 @@ class _MyAppState extends State<MyApp>
                         // );
                         Directory tempDir = await getTemporaryDirectory( );
 
-                        String path = await flutterSoundModule.startRecorder(
+                        String path = await recorderModule.startRecorder(
                                 uri: '${tempDir.path}/${paths[_codec.index]}',
                                 codec: _codec,
                                 );
                         print( 'startRecorder: $path' );
 
-                        _recorderSubscription = flutterSoundModule.onRecorderStateChanged.listen( ( e )
+                        _recorderSubscription = recorderModule.onRecorderStateChanged.listen( ( e )
                                                                                                   {
                                                                                                           if (e != null && e.currentPosition != null)
                                                                                                           {
@@ -213,7 +221,7 @@ class _MyAppState extends State<MyApp>
                                                                                                                                  } );
                                                                                                           }
                                                                                                   } );
-                        _dbPeakSubscription = flutterSoundModule.onRecorderDbPeakChanged.listen( ( value )
+                        _dbPeakSubscription = recorderModule.onRecorderDbPeakChanged.listen( ( value )
                                                                                                  {
                                                                                                          print( "got update -> $value" );
                                                                                                          setState( ( )
@@ -253,7 +261,7 @@ class _MyAppState extends State<MyApp>
         async {
                 try
                 {
-                        String result = await flutterSoundModule.stopRecorder( );
+                        String result = await recorderModule.stopRecorder( );
                         print( 'stopRecorder: $result' );
                         cancelRecorderSubscriptions( );
                 }
@@ -304,7 +312,7 @@ class _MyAppState extends State<MyApp>
         void _addListeners( )
         {
                 cancelPlayerSubscriptions( );
-                _playerSubscription = flutterSoundModule.onPlayerStateChanged.listen( ( e )
+                _playerSubscription = playerModule.onPlayerStateChanged.listen( ( e )
                                                                                       {
                                                                                               if (e != null)
                                                                                               {
@@ -387,7 +395,7 @@ class _MyAppState extends State<MyApp>
                                         );
 
 
-                                Flauto f = flutterSoundModule;
+                                TrackPlayer f = playerModule;
                                 path = await f.startPlayerFromTrack(
                                         track,
                                         /*canSkipForward:true, canSkipBackward:true,*/
@@ -415,7 +423,7 @@ class _MyAppState extends State<MyApp>
                         {
                                 if (audioFilePath != null)
                                 {
-                                        path = await flutterSoundModule.startPlayer( audioFilePath, codec: _codec, whenFinished: ( )
+                                        path = await playerModule.startPlayer( audioFilePath, codec: _codec, whenFinished: ( )
                                         {
                                                 print( 'Play finished' );
                                                 setState( ( )
@@ -423,7 +431,7 @@ class _MyAppState extends State<MyApp>
                                         } );
                                 } else if (dataBuffer != null)
                                 {
-                                        path = await flutterSoundModule.startPlayerFromBuffer( dataBuffer, codec: _codec, whenFinished: ( )
+                                        path = await playerModule.startPlayerFromBuffer( dataBuffer, codec: _codec, whenFinished: ( )
                                         {
                                                 print( 'Play finished' );
                                                 setState( ( )
@@ -455,7 +463,7 @@ class _MyAppState extends State<MyApp>
         async {
                 try
                 {
-                        String result = await flutterSoundModule.stopPlayer( );
+                        String result = await playerModule.stopPlayer( );
                         print( 'stopPlayer: $result' );
                         if (_playerSubscription != null)
                         {
@@ -476,18 +484,18 @@ class _MyAppState extends State<MyApp>
 
         pauseResumePlayer( )
         {
-                if (flutterSoundModule.isPlaying)
+                if (playerModule.isPlaying())
                 {
-                        flutterSoundModule.pausePlayer( );
+                        playerModule.pausePlayer( );
                 } else
                 {
-                        flutterSoundModule.resumePlayer( );
+                        playerModule.resumePlayer( );
                 }
         }
 
         void seekToPlayer( int milliSecs )
         async {
-                String result = await flutterSoundModule.seekToPlayer( milliSecs );
+                String result = await playerModule.seekToPlayer( milliSecs );
                 print( 'seekToPlayer: $result' );
         }
 
@@ -599,7 +607,7 @@ class _MyAppState extends State<MyApp>
 
         onPauseResumePlayerPressed( )
         {
-                switch (flutterSoundModule.audioState)
+                switch (audioState)
                 {
                         case t_AUDIO_STATE.IS_PAUSED:
                                 return pauseResumePlayer;
@@ -618,26 +626,28 @@ class _MyAppState extends State<MyApp>
 
         onStopPlayerPressed( )
         {
-                return flutterSoundModule.audioState == t_AUDIO_STATE.IS_PLAYING || flutterSoundModule.audioState == t_AUDIO_STATE.IS_PAUSED ? stopPlayer : null;
+                return playerModule.isPlaying() || playerModule.isPaused()  ? stopPlayer : null;
         }
 
         onStartPlayerPressed( )
         {
                 if (_media == t_MEDIA.FILE || _media == t_MEDIA.BUFFER) // A file must be already recorded to play it
                 {
-                        if (_path[_codec.index] == null) return null;
+                        if (_path[_codec.index] == null)
+                                return null;
                 }
                 if (_media == t_MEDIA.REMOTE_EXAMPLE_FILE && _codec != t_CODEC.CODEC_MP3) // in this example we use just a remote mp3 file
                         return null;
 
                 // Disable the button if the selected codec is not supported
-                if (!_decoderSupported) return null;
-                return flutterSoundModule.audioState == t_AUDIO_STATE.IS_STOPPED ? startPlayer : null;
+                if (!_decoderSupported)
+                        return null;
+                return  ( isStopped())? startPlayer : null;
         }
 
         void startStopRecorder( )
         {
-                if (flutterSoundModule.audioState == t_AUDIO_STATE.IS_RECORDING)
+                if (recorderModule.isRecording())
                         stopRecorder( );
                 else
                         startRecorder( );
@@ -645,23 +655,29 @@ class _MyAppState extends State<MyApp>
 
         onStartRecorderPressed( )
         {
-                if (_media == t_MEDIA.ASSET || _media == t_MEDIA.BUFFER || _media == t_MEDIA.REMOTE_EXAMPLE_FILE) return null;
+                if (_media == t_MEDIA.ASSET || _media == t_MEDIA.BUFFER || _media == t_MEDIA.REMOTE_EXAMPLE_FILE)
+                        return null;
                 // Disable the button if the selected codec is not supported
-                if (!_encoderSupported) return null;
-                if (flutterSoundModule.audioState == t_AUDIO_STATE.IS_PAUSED || flutterSoundModule.audioState == t_AUDIO_STATE.IS_PLAYING) return null;
+                if (!_encoderSupported)
+                        return null;
+                if (!playerModule.isStopped())
+                        return null;
                 return startStopRecorder;
         }
 
+        bool isStopped() => (recorderModule.isStopped() && playerModule.isStopped());
+
         AssetImage recorderAssetImage( )
         {
-                if (onStartRecorderPressed( ) == null) return AssetImage( 'res/icons/ic_mic_disabled.png' );
-                return flutterSoundModule.audioState == t_AUDIO_STATE.IS_STOPPED ? AssetImage( 'res/icons/ic_mic.png' ) : AssetImage( 'res/icons/ic_stop.png' );
+                if (onStartRecorderPressed( ) == null)
+                        return AssetImage( 'res/icons/ic_mic_disabled.png' );
+                return recorderModule.isStopped() ? AssetImage( 'res/icons/ic_mic.png' ) : AssetImage( 'res/icons/ic_stop.png' );
         }
 
         setCodec( t_CODEC codec )
         async {
-                _encoderSupported = await flutterSoundModule.isEncoderSupported( codec );
-                _decoderSupported = await flutterSoundModule.isDecoderSupported( codec );
+                _encoderSupported = await recorderModule.isEncoderSupported( codec );
+                _decoderSupported = await playerModule.isDecoderSupported( codec );
 
                 setState( ( )
                           {
@@ -671,21 +687,21 @@ class _MyAppState extends State<MyApp>
 
         audioPlayerSwitchChanged( )
         {
-                if (flutterSoundModule.audioState != t_AUDIO_STATE.IS_STOPPED) return null;
+                if (!isStopped()) return null;
                 return (( newVal )
                 async {
                         try
                         {
-                                if (flutterSoundModule != null)
-                                        await flutterSoundModule.releaseMediaPlayer( );
+                                if (playerModule != null)
+                                        await playerModule.release( );
 
                                 _isAudioPlayer = newVal;
                                 if (!newVal)
                                 {
-                                        _initializeExample( FlutterSound( ) );
+                                        _initializeExample( FlautoPlayer( ) );
                                 } else
                                 {
-                                        _initializeExample( Flauto( ) );
+                                        _initializeExample( TrackPlayer( ) );
                                 }
                                 setState( ( )
                                           {} );
@@ -785,7 +801,7 @@ class _MyAppState extends State<MyApp>
                                         max: maxDuration,
                                         onChanged: ( double value )
                                         async {
-                                                await flutterSoundModule.seekToPlayer( value.toInt( ) );
+                                                await playerModule.seekToPlayer( value.toInt( ) );
                                         },
                                         divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt( ) ) );
 
@@ -921,7 +937,7 @@ class _MyAppState extends State<MyApp>
                                                         max: maxDuration,
                                                         onChanged: ( double value )
                                                         async {
-                                                                await flutterSoundModule.seekToPlayer( value.toInt( ) );
+                                                                await playerModule.seekToPlayer( value.toInt( ) );
                                                         },
                                                         divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt( ) ) ),
                         ],

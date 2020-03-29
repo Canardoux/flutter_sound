@@ -243,6 +243,8 @@ class FlautoPlayer
         bool isPaused( )
         => playerState == t_PLAYER_STATE.IS_PAUSED;
 
+        bool isStopped( )
+        => playerState == t_PLAYER_STATE.IS_STOPPED;
 
         FlautoPlayer( )
         {

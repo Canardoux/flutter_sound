@@ -129,6 +129,8 @@ class FlutterSound
         Future<bool> androidAudioFocusRequest( int focusGain )
         => soundPlayer.androidAudioFocusRequest( focusGain );
 
+        Future<bool> setActive(bool enabled) => soundPlayer.setActive(enabled);
+
         Future<String> startRecorder( {
                                               String uri,
                                               int sampleRate = 16000,

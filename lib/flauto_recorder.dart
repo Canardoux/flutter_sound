@@ -142,6 +142,10 @@ class FlautoRecorder
         bool isRecording( )
         => (recorderState == (t_RECORDER_STATE.IS_RECORDING));
 
+        bool isStopped( )
+        => (recorderState == (t_RECORDER_STATE.IS_STOPPED));
+
+
         Stream<RecordStatus> get onRecorderStateChanged => _recorderController.stream;
 
         /// Value ranges from 0 to 120
@@ -259,6 +263,16 @@ class FlautoRecorder
                                 ..close( );
                         _dbPeakController = null;
                 }
+        }
+
+
+        Future<String> setSubscriptionDuration( double sec )
+        async
+        {
+                String r = await invokeMethod( 'setSubscriptionDuration', <String, dynamic>{
+                        'sec': sec,
+                } );
+                return r;
         }
 
 
