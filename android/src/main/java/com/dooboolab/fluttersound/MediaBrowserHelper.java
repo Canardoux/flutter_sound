@@ -121,8 +121,6 @@ public class MediaBrowserHelper {
                 new ComponentName(mActivity, BackgroundAudioService.class), mMediaBrowserCompatConnectionCallback,
                 mActivity.getIntent().getExtras());
 
-        BackgroundAudioService.activity = mActivity;
-
         mMediaBrowserCompat.connect();
     }
 
