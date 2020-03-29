@@ -105,6 +105,7 @@ public class MediaBrowserHelper {
     MediaBrowserHelper(Activity activity, Callable<Void> serviceSuccConnectionCallback,
             Callable<Void> serviceUnsuccConnectionCallback) {
         mActivity = activity;
+        BackgroundAudioService.activity = mActivity;
         mServiceConnectionSuccessCallback = serviceSuccConnectionCallback;
         mServiceConnectionUnsuccessfulCallback = serviceUnsuccConnectionCallback;
 
