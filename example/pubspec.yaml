@@ -12,10 +12,8 @@ version: 1.0.0+1
 dependencies:
   flutter:
     sdk: flutter
-  flauto:
+  flutter_sound:
     path: ../
-  #flauto: ^3.0.1+1
-  permission_handler: ^4.4.0
 
 
   # The following adds the Cupertino Icons font to your application.

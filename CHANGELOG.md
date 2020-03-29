@@ -1,13 +1,17 @@
+## 3.1.0
+- flutter_sound modules are re-entrant [#250](https://github.com/dooboolab/flutter_sound/issues/250) and [#232](https://github.com/dooboolab/flutter_sound/issues/232)
+  - We can open several ```flauto_player``` at the same time
+  - We can open several ```flauto_recorder``` at the same time
 ## 3.0.1
-- Add the two API verbs :
+- Add the two API verbs : [#244](https://github.com/dooboolab/flutter_sound/issues/244)
   -  getLastFFmpegReturnCode()
   -  getLastFFmpegCommandOutput()
 ## 3.0.0
-- Module `flauto` for controlling flutter_sound from the lock-screen
-- API to control the `audiofocus`
-- API to set the `audio-category` (i.e. duck-others)
-- AndroidX and Android embbeded-V2 support
-- Add a parameter to `startPlayer` to specify a callback when the song is finished
+- Module `flauto` for controlling flutter_sound from the lock-screen [219](https://github.com/dooboolab/flutter_sound/issues/219)
+- API to control the `audiofocus` [#219](https://github.com/dooboolab/flutter_sound/issues/219)
+- API to set the `audio-category` (i.e. duck-others) [#219](https://github.com/dooboolab/flutter_sound/issues/219)
+- AndroidX and Android embbeded-V2 support [#203](https://github.com/dooboolab/flutter_sound/issues/203)
+- Add a parameter to `startPlayer` to specify a callback when the song is finished [#215](https://github.com/dooboolab/flutter_sound/issues/215)
 ## 2.1.1
 - Amazon billing: Trigger purchaseUpdated callback when iap purchased [#165](https://github.com/dooboolab/flutter_inapp_purchase/pull/165).
 ## 2.1.0

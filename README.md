@@ -20,28 +20,46 @@ For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
 
 ## Install
+For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).
 
-Add `flauto` as a dependency in pubspec.yaml. The actual beta version is `flauto: ^3.0.0+2`
-For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).</br>
-Add `permission_handler` as a dependency in pubspec.yaml. Refer to [here](permission_handler) for help.</br>
-If you need ffmpeg, add `flutter_ffmpeg` as a dependency in pubspec.yaml. Refer to [here](https://github.com/tanersener/flutter-ffmpeg) for help.
+Add `flutter_sound` as a dependency in pubspec.yaml. The actual version is `flauto: ^3.0.0`
 
-The sources [are here](https://github.com/Canardoux/flauto).
-- branch `stable` is the actual flutter_sound 2.1.1
-- branch `beta` is the new plugin with advance features (V 3.0.0)
-- branch `master` is just for the project development and not to be used.
+
+The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
 
 ```
 dependencies:
   flutter:
     sdk: flutter
-  flauto: ^3.0.0+2
-  permission_handler: ^4.4.0
-
-# Comment out the following line if flutter_ffmpeg is not needed
-  flutter_ffmpeg: ^0.2.10
+  flutter_sound: ^3.0.0
 ```
+### FFmpeg
 
+flutter_sound makes use of flutter_ffmpeg.
+Please, look to [flutter_ffmpeg documentation](https://pub.dev/packages/flutter_ffmpeg) to see how to add it to your App.
+
+- On iOS you will have to enter something like that in your ```Podfile```
+
+```
+  # Prepare symlinks folder. We use symlinks to avoid having Podfile.lock
+  # referring to absolute paths on developers' machines.
+  system('rm -rf .symlinks')
+  system('mkdir -p .symlinks/plugins')
+  plugin_pods = parse_KV_file('../.flutter-plugins')
+  plugin_pods.each do |name, path|
+    symlink = File.join('.symlinks', 'plugins', name)
+    File.symlink(path, symlink)
+    if name == 'flutter_ffmpeg'
+        pod name+'/audio-lts', :path => File.join(symlink, 'ios')
+    else
+        pod name, :path => File.join(symlink, 'ios')
+    end
+  end
+```
+- On Android you will have to enter the following line in your `pubspec.yaml` file.
+```
+ext.flutterFFmpegPackage = 'audio-lts'
+```
 ## Post Installation
 
 On _iOS_ you need to add a usage description to `info.plist`:
@@ -71,7 +89,7 @@ To migrate to `3.0.0` you must migrate your Android app to Android X by followin
 
 | Func                     |                               Param                                |      Return      | Description                                                                                                                                                                                                        |
 | :----------------------- | :----------------------------------------------------------------: | :--------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| initialize               |                                                                    |      `void`      | Initializes the media player and all the callbacks for the player and the recorder. This procedure is implicitely called during the FlutterSound constructor. So you probably will not use this function yourself. |
+| initialize               |                                                                    |      `void`      | Initializes the media player and all the callbacks for the player and the recorder. This procedure is implicitely called during the Flutter Sound constructors. So you probably will not use this function yourself. |
 | releaseMediaPlayer       |                                                                    |      `void`      | Resets the media player and cleans up the device resources. This must be called when the player is no longer needed.                                                                                               |
 | setSubscriptionDuration  |                            `double sec`                            | `String` message | Set subscription timer in seconds. Default is `0.010` if not using this method.                                                                                                                                    |
 | startRecorder            | `String uri`, `int sampleRate`, `int numChannels`, `t_CODEC codec` |   `String` uri   | Start recording. This will return uri used.                                                                                                                                                                        |
@@ -110,25 +128,25 @@ Actually, the following codecs are supported by flutter_sound:
 
 This table will eventually be upgrated when more codecs will be added.
 
-## Usage
+## FlautoRecorder Usage
 
 #### Creating instance.
 
-In your view/page/dialog widget's State class, create an instance of FlutterSound.
+In your view/page/dialog widget's State class, create an instance of FlautoRecorder.
 
 ```dart
-FlutterSound flutterSound = new FlutterSound();
+FlautoRecorder flautoRecorder = new FlautoRecorder().initialize();
 ```
 
 #### Starting recorder with listener.
 
 ```dart
-Future<String> result = await flutterSound.startRecorder(codec: t_CODEC.CODEC_AAC,);
+Future<String> result = await flautoRecorder.flautoRecorder(codec: t_CODEC.CODEC_AAC,);
 
 result.then(path) {
 	print('startRecorder: $path');
 
-	_recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
+	_recorderSubscription = flautoRecorder.onRecorderStateChanged.listen((e) {
 	DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
 	String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
 	});
@@ -140,7 +158,7 @@ The recorded file will be stored in a temporary directory. If you want to take y
 ```
 Directory tempDir = await getTemporaryDirectory();
 File outputFile = await File ('${tempDir.path}/flutter_sound-tmp.aac');
-String path = await flutterSound.startRecorder(outputFile.path, codec: t_CODEC.CODEC_AAC,);
+String path = await flautoRecorder.startRecorder(outputFile.path, codec: t_CODEC.CODEC_AAC,);
 ```
 
 Actually on iOS, you can choose from three encoders :
@@ -149,13 +167,11 @@ Actually on iOS, you can choose from three encoders :
 - CAF/OPUS
 - OGG/OPUS
 
-Recently, Apple added a support for encoding with the standard OPUS codec. Unfortunatly, Apple encapsulates its data in its own proprietary envelope : CAF. This is really stupid, this is Apple. If you need to record with regular OGG/OPUS you must add `flutter_ffmpeg` to your dependencies.
-Please, look to the [flutter_ffmpeg plugin README](https://pub.dev/packages/flutter_ffmpeg) for instructions for how to include this plugin into your app
-
+Recently, Apple added a support for encoding with the standard OPUS codec. Unfortunatly, Apple encapsulates its data in its own proprietary envelope : CAF. This is really stupid, this is Apple.
 To encode with OPUS you do the following :
 
 ```dart
-await flutterSound.startRecorder(foot.path, codec: t_CODEC.CODEC_OPUS,)
+await flautoRecorder.flautoRecorder(foot.path, codec: t_CODEC.CODEC_OPUS,)
 ```
 
 On Android the OPUS codec is not yet supported by flutter_sound Recorder. (But Player is OK on Android)
@@ -163,7 +179,7 @@ On Android the OPUS codec is not yet supported by flutter_sound Recorder. (But P
 #### Stop recorder
 
 ```dart
-Future<String> result = await flutterSound.stopRecorder();
+Future<String> result = await flautoRecorder.stopRecorder();
 
 result.then(value) {
 	print('stopRecorder: $value');
@@ -181,186 +197,9 @@ Overload your widget's dispose() method to stop the recorder when your widget is
 ```dart
 @override
 void dispose() {
-	flutterSound.stopRecorder();
+	flautoRecorder.release();
 	super.dispose();
 }
-```
-
-#### Start player
-
-- To start playback of a record from a URL call startPlayer.
-- To start playback of a record from a memory buffer call startPlayerFromBuffer
-
-You can use both `startPlayer` or `startPlayerFromBuffer` to play a sound. The former takes in a URI that points to the file to play, while the latter takes in a buffer containing the file to play and the codec to decode that buffer.
-
-Those two functions can have an optional parameter `whenFinished:()` for specifying what to do when the playback will be finished.
-
-```dart
-// An example audio file
-final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
-
-String result = await flutterSound.startPlayer
-	(
-		fileUri,
-		whenFinished: ()
-		{
-			 print( 'I hope you enjoyed listening to this song' );
-		},
-	);
-```
-
-```dart
-// Load a local audio file and get it as a buffer
-Uint8List buffer = (await rootBundle.load('samples/audio.mp3'))
-    	.buffer
-    	.asUint8List();
-
-Future<String> result = await flutterSound.startPlayerFromBuffer
-	(
-		buffer,
-		whenFinished: ()
-		{
-			 print( 'I hope you enjoyed listening to this song' );
-		},
-	);
-
-```
-
-You must wait for the return value to complete before attempting to add any listeners
-to ensure that the player has fully initialised.
-
-```dart
-Directory tempDir = await getTemporaryDirectory();
-File fin = await File ('${tempDir.path}/flutter_sound-tmp.aac');
-Future<String> result = await flutterSound.startPlayer(fin.path);
-
-result.then(path) {
-	print('startPlayer: $path');
-
-	_playerSubscription = flutterSound.onPlayerStateChanged.listen((e) {
-		if (e != null) {
-			DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
-			String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
-			this.setState(() {
-				this._isPlaying = true;
-				this._playerTxt = txt.substring(0, 8);
-			});
-		}
-	});
-}
-```
-
-#### Start player from buffer
-
-For playing data from a memory buffer instead of a file, you can do the following :
-
-```dart
-Uint8List buffer =  (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
-String result = await flutterSound.startPlayerFromBuffer
-	(
-		buffer,
-		codec: t_CODEC.CODEC_AAC,
-		whenFinished: ()
-		{
-			 print( 'I hope you enjoyed listening to this song' );
-		},
-	);
-```
-
-#### Stop player
-
-```dart
-Future<String> result = await flutterSound.stopPlayer();
-
-result.then(value) {
-	print('stopPlayer: $result');
-	if (_playerSubscription != null) {
-		_playerSubscription.cancel();
-		_playerSubscription = null;
-	}
-}
-```
-
-You MUST ensure that the player has been stopped when your widget is detached from the ui.
-Overload your widget's dispose() method to stop the player when your widget is disposed.
-
-```dart
-@override
-void dispose() {
-	flutterSound.stopPlayer();
-	super.dispose();
-}
-```
-
-#### Pause player
-
-```dart
-Future<String> result = await flutterSound.pausePlayer();
-```
-
-#### Resume player
-
-```dart
-Future<String> result = await flutterSound.resumePlayer();
-```
-
-#### iosSetCategory(), androidAudioFocusRequest() and setActive() - (optional)
-
-Those three functions are optional. If you do not control the audio focus with the function `setActive()`, flutter_sound will require the audio focus each time the function `startPlayer()` is called and will release it when the sound is finished or when you call the function `stopPlayer()`.
-
-Before controling the focus with `setActive()` you must call `iosSetCategory()` on iOS or `androidAudioFocusRequest()` on Android. `setActive()` and `androidAudioFocusRequest()` are useful if you want to `duck others`.
-Those functions are probably called just once when the app starts.
-After calling this function, the caller is responsible for using correctly `setActive()`
-probably before startRecorder or startPlayer, and stopPlayer and stopRecorder.
-
-You can refer to [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosession/1771734-setcategory) to understand the parameters needed for `iosSetCategory()` and to the [Android documentation](https://developer.android.com/reference/android/media/AudioFocusRequest) to understand the parameter needed for `androidAudioFocusRequest()`.
-
-Remark : those three functions does work on Android before SDK 26.
-
-```dart
-if (_duckOthers)
-{
-	if (Platform.isIOS)
-		await flutterSound.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DUCK_OTHERS |  IOS_DEFAULT_TO_SPEAKER );
-	else if (Platform.isAndroid)
-		await flutterSound.a`ndroidAudioFocusRequest(` ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK );
-} else
-{
-	if (Platform.isIOS)
-		await flutterSound.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DEFAULT_TO_SPEAKER );
-	else if (Platform.isAndroid)
-		await flutterSound.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN );
-}
-...
-...
-flutterSound.setActive(true); // Get the audio focus
-flutterSound.startPlayer(aSound);
-flutterSound.startPlayer(anotherSong);
-flutterSound.setActive(false); // Release the audio focus
-```
-
-#### Seek player
-
-To seek to a new location the player must already be playing.
-
-```dart
-String Future<result> = await flutterSound.seekToPlayer(miliSecs);
-```
-
-#### Setting subscription duration (Optional). 0.010 is default value when not set.
-
-```dart
-/// 0.01 is default
-flutterSound.setSubscriptionDuration(0.01);
-```
-
-#### Setting volume.
-
-```dart
-/// 1.0 is default
-/// Currently, volume can be changed when player is running. Try manage this right after player starts.
-String path = await flutterSound.startPlayer(fileUri);
-await flutterSound.setVolume(0.1);
 ```
 
 #### Using the amplitude meter
@@ -380,11 +219,198 @@ updateDbPeakProgress(0.8);
 
 ```dart
 //// You need to subscribe in order to receive the value updates
-_dbPeakSubscription = flutterSound.onRecorderDbPeakChanged.listen((value) {
+_dbPeakSubscription = flautoPlayer.onRecorderDbPeakChanged.listen((value) {
   setState(() {
     this._dbLevel = value;
   });
 });
+```
+
+
+## FlautoPlayer Usage
+#### Creating instance.
+
+In your view/page/dialog widget's State class, create an instance of FlautoPlayer.
+
+```dart
+FlautoPlayer flautoPlayer = new FlautoPlayer().initialize();
+```
+
+#### Start player
+
+- To start playback of a record from a URL call startPlayer.
+- To start playback of a record from a memory buffer call startPlayerFromBuffer
+
+You can use both `startPlayer` or `startPlayerFromBuffer` to play a sound. The former takes in a URI that points to the file to play, while the latter takes in a buffer containing the file to play and the codec to decode that buffer.
+
+Those two functions can have an optional parameter `whenFinished:()` for specifying what to do when the playback will be finished.
+
+```dart
+// An example audio file
+final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
+
+String result = await flautoPlayer.startPlayer
+	(
+		fileUri,
+		whenFinished: ()
+		{
+			 print( 'I hope you enjoyed listening to this song' );
+		},
+	);
+```
+
+```dart
+// Load a local audio file and get it as a buffer
+Uint8List buffer = (await rootBundle.load('samples/audio.mp3'))
+    	.buffer
+    	.asUint8List();
+
+Future<String> result = await flautoPlayer.startPlayerFromBuffer
+	(
+		buffer,
+		whenFinished: ()
+		{
+			 print( 'I hope you enjoyed listening to this song' );
+		},
+	);
+
+```
+
+You must wait for the return value to complete before attempting to add any listeners
+to ensure that the player has fully initialised.
+
+```dart
+Directory tempDir = await getTemporaryDirectory();
+File fin = await File ('${tempDir.path}/flutter_sound-tmp.aac');
+Future<String> result = await flautoPlayer.startPlayer(fin.path);
+
+result.then(path) {
+	print('startPlayer: $path');
+
+	_playerSubscription = flautoPlayer.onPlayerStateChanged.listen((e) {
+		if (e != null) {
+			DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
+			String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
+			this.setState(() {
+				this._isPlaying = true;
+				this._playerTxt = txt.substring(0, 8);
+			});
+		}
+	});
+}
+```
+
+#### Start player from buffer
+
+For playing data from a memory buffer instead of a file, you can do the following :
+
+```dart
+Uint8List buffer =  (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
+String result = await flautoPlayer.startPlayerFromBuffer
+	(
+		buffer,
+		codec: t_CODEC.CODEC_AAC,
+		whenFinished: ()
+		{
+			 print( 'I hope you enjoyed listening to this song' );
+		},
+	);
+```
+
+#### Stop player
+
+```dart
+Future<String> result = await flautoPlayer.stopPlayer();
+
+result.then(value) {
+	print('stopPlayer: $result');
+	if (_playerSubscription != null) {
+		_playerSubscription.cancel();
+		_playerSubscription = null;
+	}
+}
+```
+
+You MUST ensure that the player has been stopped when your widget is detached from the ui.
+Overload your widget's dispose() method to stop the player when your widget is disposed.
+
+```dart
+@override
+void dispose() {
+	flautoPlayer.stopPlayer();
+	super.dispose();
+}
+```
+
+#### Pause player
+
+```dart
+Future<String> result = await flautoPlayer.pausePlayer();
+```
+
+#### Resume player
+
+```dart
+Future<String> result = await flautoPlayer.resumePlayer();
+```
+
+#### iosSetCategory(), androidAudioFocusRequest() and setActive() - (optional)
+
+Those three functions are optional. If you do not control the audio focus with the function `setActive()`, flutter_sound will require the audio focus each time the function `startPlayer()` is called and will release it when the sound is finished or when you call the function `stopPlayer()`.
+
+Before controling the focus with `setActive()` you must call `iosSetCategory()` on iOS or `androidAudioFocusRequest()` on Android. `setActive()` and `androidAudioFocusRequest()` are useful if you want to `duck others`.
+Those functions are probably called just once when the app starts.
+After calling this function, the caller is responsible for using correctly `setActive()`
+probably before startRecorder or startPlayer, and stopPlayer and stopRecorder.
+
+You can refer to [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosession/1771734-setcategory) to understand the parameters needed for `iosSetCategory()` and to the [Android documentation](https://developer.android.com/reference/android/media/AudioFocusRequest) to understand the parameter needed for `androidAudioFocusRequest()`.
+
+Remark : those three functions does work on Android before SDK 26.
+
+```dart
+if (_duckOthers)
+{
+	if (Platform.isIOS)
+		await flautoPlayer.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DUCK_OTHERS |  IOS_DEFAULT_TO_SPEAKER );
+	else if (Platform.isAndroid)
+		await flautoPlayer.a`ndroidAudioFocusRequest(` ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK );
+} else
+{
+	if (Platform.isIOS)
+		await flautoPlayer.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DEFAULT_TO_SPEAKER );
+	else if (Platform.isAndroid)
+		await flautoPlayer.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN );
+}
+...
+...
+flautoPlayer.setActive(true); // Get the audio focus
+flautoPlayer.startPlayer(aSound);
+flautoPlayer.startPlayer(anotherSong);
+flautoPlayer.setActive(false); // Release the audio focus
+```
+
+#### Seek player
+
+To seek to a new location the player must already be playing.
+
+```dart
+String Future<result> = await flautoPlayer.seekToPlayer(miliSecs);
+```
+
+#### Setting subscription duration (Optional). 0.010 is default value when not set.
+
+```dart
+/// 0.01 is default
+flautoPlayer.setSubscriptionDuration(0.01);
+```
+
+#### Setting volume.
+
+```dart
+/// 1.0 is default
+/// Currently, volume can be changed when player is running. Try manage this right after player starts.
+String path = await flautoPlayer.startPlayer(fileUri);
+await flautoPlayer.setVolume(0.1);
 ```
 
 #### Release the player
@@ -396,23 +422,19 @@ In this way you will reset the player and clean up the device resources, but the
 ```dart
 @override
 void dispose() {
-	flutterSound.releaseMediaPlayer();
+	flautoPlayer.release();
 	super.dispose();
 }
 ```
 
-#### Playing OGG/OPUS on iOS
 
-To play OGG/OPUS on iOS you must add flutter_ffmpeg to your dependencies.
-Please, look to the [flutter_ffmpeg plugin README](https://pub.dev/packages/flutter_ffmpeg) for instructions for how to include this plugin into your app. Playing OGG/OPUS on Android is no problem, even without flutter_ffmpeg. Please notice that [flutter_ffmpeg plugin](https://pub.dev/packages/flutter_ffmpeg) on Android needs a minAndroidSdk 16 (or later) if you use the LTS Release, but minAndroidSdk 24 (or later) if you use the Main Release.
+## TrackPlayer
 
-## Flauto
-
-Flauto is a new flutter_sound module which is able to show controls on the lock screen.
-Using Flauto is very simple : just use the Flauto constructor instead of the regular FlutterSound.
+TrackPlayer is a new flutter_sound module which is able to show controls on the lock screen.
+Using TrackPlayer is very simple : just use the TrackPlayer constructor instead of the regular FlautoPlayer.
 
 ```dart
-flutterSound = Flauto();
+trackPlayer = TrackPlayer();
 ```
 
 You must `startPlayerFromTrack` to play a sound. This function takes in 1 required argument and 3 optional arguments:
@@ -423,7 +445,7 @@ You must `startPlayerFromTrack` to play a sound. This function takes in 1 requir
 - `onSkipForward:()`, A call back function for specifying what to do when the user press the skip-forward button on the lock screen
 
 ```dart
-path = await flauto.startPlayerFromTrack
+path = await trackPlayer.startPlayerFromTrack
 (
 	track,
 	whenFinished: ( )

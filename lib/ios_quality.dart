@@ -1,19 +1,18 @@
 /*
- * This file is part of Flauto.
+ * This file is part of Flutter-Sound (Flauto).
  *
- *   Flauto is free software: you can redistribute it and/or modify
+ *   Flutter-Sound (Flauto) is free software: you can redistribute it and/or modify
  *   it under the terms of the Lesser GNU General Public License
  *   version 3 (LGPL3) as published by the Free Software Foundation.
  *
- *   Flauto is distributed in the hope that it will be useful,
+ *   Flutter-Sound (Flauto) is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the Lesser GNU General Public License
- *   along with Flauto.  If not, see <https://www.gnu.org/licenses/>.
+ *   along with Flutter-Sound (Flauto).  If not, see <https://www.gnu.org/licenses/>.
  */
-
 
 class IosQuality {
   final _value;

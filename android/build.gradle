@@ -1,7 +1,6 @@
 group 'com.dooboolab.fluttersound'
 version '1.0-SNAPSHOT'
 
-// Comment out the following line if you do not need the audio ffmpeg package
 ext.flutterFFmpegPackage = 'audio-lts'
 
 buildscript {
@@ -43,5 +42,4 @@ dependencies {
     implementation 'androidx.core:core:1.0.0'
     implementation 'androidx.media:media:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    //implementation 'com.android.support:support-v13:28'
 }
