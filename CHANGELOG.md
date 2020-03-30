@@ -3,6 +3,7 @@
 - New API verbs : [##242](https://github.com/dooboolab/flutter_sound/issues/242)
   - flautoRecorder.pauseRecorder()
   - flautoRecorder.resumeRecorder()
+- flutter_sound is now compatible with permission_handler 5.x.x [#259](https://github.com/dooboolab/flutter_sound/issues/259)
 
 ## 3.1.0
 
