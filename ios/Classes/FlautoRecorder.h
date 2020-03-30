@@ -58,6 +58,8 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar);
 - (void)initializeFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)releaseFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)setSubscriptionDuration:(double)duration result: (FlutterResult)result;
+- (void)pauseRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
+- (void)resumeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 
 @end
 

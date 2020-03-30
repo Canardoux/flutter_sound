@@ -210,7 +210,7 @@ class FlautoPlayer {
   bool isStopped() => playerState == t_PLAYER_STATE.IS_STOPPED;
 
   FlautoPlayer() {
-    initialize();
+    //initialize();
   }
 
   FlautoPlayerPlugin getPlugin() => flautoPlayerPlugin;

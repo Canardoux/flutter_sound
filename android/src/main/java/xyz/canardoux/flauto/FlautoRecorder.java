@@ -182,6 +182,19 @@ class FlautoRecorderPlugin
 			}
 			break;
 
+			case "pauseRecorder":
+			{
+				aRecorder.pauseRecorder ( call, result );
+			}
+			break;
+
+
+			case "resumeRecorder":
+			{
+				aRecorder.resumeRecorder ( call, result );
+			}
+			break;
+
 
 			default:
 			{
@@ -412,6 +425,7 @@ public class FlautoRecorder
 				result.error ( TAG, "UNSUPPORTED", "Unsupported encoder" );
 				return;
 			}
+			mediaRecorder.reset();
 			mediaRecorder.setAudioSource ( androidAudioSource );
 			androidEncoder      = codecArray[ codec.ordinal () ];
 			androidOutputFormat = formatsArray[ codec.ordinal () ];
@@ -510,7 +524,7 @@ public class FlautoRecorder
 			finalPath = path;
 			mainHandler.post ( new Runnable ()
 			{
-				//@Override
+				@Override
 				public void run ()
 				{
 					result.success ( finalPath );
@@ -521,16 +535,29 @@ public class FlautoRecorder
 		catch ( Exception e )
 		{
 			Log.e ( TAG, "Exception: ", e );
+			result.error( TAG, "Error starting recorder", e.getMessage() );
+			try
+			{
+				boolean b = _stopRecorder( );
+
+			} catch (Exception e2)
+			{
+
+			}
 		}
 	}
 
 	public void stopRecorder ( final MethodCall call, final Result result )
 	{
 		//taskScheduler.submit ( () -> _stopRecorder ( result ) );
-		_stopRecorder ( call, result );
+		boolean b = _stopRecorder (  );
+		if (b)
+			result.success ( "Media Recorder is closed" );
+		else
+			result.success ( " Cannot close Recorder");
 	}
 
-	public void _stopRecorder ( final MethodCall call, final Result result )
+	public boolean _stopRecorder (  )
 	{
 		// This remove all pending runnables
 		recordHandler.removeCallbacksAndMessages ( null );
@@ -539,24 +566,78 @@ public class FlautoRecorder
 		if ( this.model.getMediaRecorder () == null )
 		{
 			Log.d ( TAG, "mediaRecorder is null" );
-			result.success ( "Media Recorder is closed" );
-			return;
+
+			return true;
 		}
-		this.model.getMediaRecorder ().stop ();
-		this.model.getMediaRecorder ().reset ();
-		this.model.getMediaRecorder ().release ();
-		this.model.setMediaRecorder ( null );
+		try
+		{
+			try
+			{
+				this.model.getMediaRecorder().resume(); // This is stupid, but cannot reset() if Pause Mode !
+			} catch (Exception e)
+			{}
+			this.model.getMediaRecorder().reset();
+			//this.model.getMediaRecorder().stop();
+			this.model.getMediaRecorder().release();
+			this.model.setMediaRecorder( null );
+		} catch  ( Exception e )
+		{
+			Log.d ( TAG, "Error Stop Recorder" );
+			return false;
+
+		}
 		mainHandler.post ( new Runnable ()
 		{
 			@Override
 			public void run ()
 			{
-				result.success ( finalPath );
+
 			}
 		}
 		);
-
+		return true;
 	}
+
+	public void pauseRecorder ( final MethodCall call, final Result result )
+	{
+		if ( this.model.getMediaRecorder () == null )
+		{
+			Log.d ( TAG, "mediaRecorder is null" );
+			result.error ( TAG, "Recorder is closed", "\"Recorder is closed\"" );
+			return;
+		}
+		if ( Build.VERSION.SDK_INT < 24 )
+		{
+			result.error ( TAG, "Bad Android API level", "\"Pause/Resume needs at least Android API 24\"" );
+		} else
+		{
+			recordHandler.removeCallbacksAndMessages ( null );
+			dbPeakLevelHandler.removeCallbacksAndMessages ( null );
+			this.model.getMediaRecorder().pause();
+			result.success( "Recorder is paused");
+		}
+	}
+
+
+	public void resumeRecorder ( final MethodCall call, final Result result )
+	{
+		if ( this.model.getMediaRecorder () == null )
+		{
+			Log.d ( TAG, "mediaRecorder is null" );
+			result.error ( TAG, "Recorder is closed", "\"Recorder is closed\"" );
+			return;
+		}
+		if ( Build.VERSION.SDK_INT < 24 )
+		{
+			result.error ( TAG, "Bad Android API level", "\"Pause/Resume needs at least Android API 24\"" );
+		} else
+		{
+			recordHandler.post ( this.model.getRecorderTicker () );
+			this.model.getMediaRecorder().resume();
+			result.success( true);
+		}
+	}
+
 
 
 	public void setDbPeakLevelUpdate ( final MethodCall call, final Result result )

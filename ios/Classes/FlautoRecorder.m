@@ -172,6 +172,16 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [aFlautoRecorder setSubscriptionDuration:[sec doubleValue] result:result];
         } else
         
+        if ([@"pauseRecorder" isEqualToString:call.method])
+        {
+                [aFlautoRecorder pauseRecorder:call result:result];
+        } else
+        
+        if ([@"resumeRecorder" isEqualToString:call.method])
+        {
+                [aFlautoRecorder resumeRecorder:call result:result];
+        } else
+        
         {
                 result(FlutterMethodNotImplemented);
         }
@@ -424,6 +434,24 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
         subscriptionDuration = duration;
         result(@"setSubscriptionDuration");
 }
+
+- (void)pauseRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
+{
+        [audioRecorder pause];
+
+        [self stopDbPeakTimer];
+        [self stopRecorderTimer];
+        result(@"Recorder is Paused");
+}
+
+- (void)resumeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
+{
+        bool b = [audioRecorder record];
+        [self startDbTimer];
+        [self startRecorderTimer];
+        result([NSNumber numberWithBool: b]);
+}
+
 
 
 - (void)updateRecorderProgress:(NSTimer*) atimer
