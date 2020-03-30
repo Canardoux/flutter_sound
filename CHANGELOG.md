@@ -1,24 +1,19 @@
-## 3.1.1
-
-- New API verbs : [##242](https://github.com/dooboolab/flutter_sound/issues/242)
-  - flautoRecorder.pauseRecorder()
-  - flautoRecorder.resumeRecorder()
-- flutter_sound is now compatible with permission_handler 5.x.x [#259](https://github.com/dooboolab/flutter_sound/issues/259)
-- Add two new API verbs : [#244](https://github.com/dooboolab/flutter_sound/issues/244)
-  - flutterSoundHelper.FFmpegGetMediaInformation() which return info on the given record
-  - flutterSoundHelper.duration() which return the number of milli-seconds for the given record
-
 ## 3.1.0
 
 - flutter_sound modules are re-entrant [#250](https://github.com/dooboolab/flutter_sound/issues/250) and [#232](https://github.com/dooboolab/flutter_sound/issues/232)
+
   - We can open several `flauto_player` at the same time
   - We can open several `flauto_recorder` at the same time
 
-## 3.0.1
-
-- Add the two API verbs : [#244](https://github.com/dooboolab/flutter_sound/issues/244)
+- Add new API verbs : [#244](https://github.com/dooboolab/flutter_sound/issues/244)
   - flutterSoundHelper.getLastFFmpegReturnCode()
   - flutterSoundHelper.getLastFFmpegCommandOutput()
+  - flutterSoundHelper.FFmpegGetMediaInformation() which return info on the given record
+  - flutterSoundHelper.duration() which return the number of milli-seconds for the given record
+- Add new API verbs : [##242](https://github.com/dooboolab/flutter_sound/issues/242)
+  - flautoRecorder.pauseRecorder()
+  - flautoRecorder.resumeRecorder()
+- flutter_sound is now compatible with permission_handler 5.x.x [#259](https://github.com/dooboolab/flutter_sound/issues/259)
 
 ## 3.0.0
 
