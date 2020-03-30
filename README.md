@@ -540,8 +540,8 @@ Track track = new Track(
 
 There are two utilities functions that you can use to have informations on a file.
 
-- FlutterSound.FFmpegGetMediaInformation(_<A_file_path>_);
-- flutterSound.duration(_<A_file_path>_)
+- FlutterSoundHelper.FFmpegGetMediaInformation(_<A_file_path>_);
+- FlutterSoundHelper.duration(_<A_file_path>_)
 
 The informations got with FFmpegGetMediaInformation() are [documented here](https://pub.dev/packages/flutter_ffmpeg).
 The integer returned by flutterSound.duration() is the number of milli-seconds for the given record.
