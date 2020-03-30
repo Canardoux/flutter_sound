@@ -105,6 +105,7 @@ public class MediaBrowserHelper {
     MediaBrowserHelper(Activity activity, Callable<Void> serviceSuccConnectionCallback,
             Callable<Void> serviceUnsuccConnectionCallback) {
         mActivity = activity;
+        BackgroundAudioService.activity = mActivity;
         mServiceConnectionSuccessCallback = serviceSuccConnectionCallback;
         mServiceConnectionUnsuccessfulCallback = serviceUnsuccConnectionCallback;
 
@@ -119,8 +120,6 @@ public class MediaBrowserHelper {
         mMediaBrowserCompat = new MediaBrowserCompat(mActivity,
                 new ComponentName(mActivity, BackgroundAudioService.class), mMediaBrowserCompatConnectionCallback,
                 mActivity.getIntent().getExtras());
-
-        BackgroundAudioService.activity = mActivity;
 
         mMediaBrowserCompat.connect();
     }
