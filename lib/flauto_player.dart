@@ -358,7 +358,7 @@ class FlautoPlayer {
         // The following ffmpeg instruction does not decode and re-encode the file. It just remux the OPUS data into an Apple CAF envelope.
         // It is probably very fast and the user will not notice any delay, even with a very large data.
         // This is the price to pay for the Apple stupidity.
-        var rc = await executeFFmpegWithArguments([
+        var rc = await flutterSoundHelper.executeFFmpegWithArguments([
           '-loglevel',
           'error',
           '-y',

@@ -331,7 +331,7 @@ class FlautoRecorder {
       // The following ffmpeg instruction re-encode the Apple CAF to OPUS. Unfortunatly we cannot just remix the OPUS data,
       // because Apple does not set the "extradata" in its private OPUS format.
       // It will be good if we can improve this...
-      int rc = await executeFFmpegWithArguments([
+      int rc = await flutterSoundHelper.executeFFmpegWithArguments([
         '-loglevel',
         'error',
         '-y',

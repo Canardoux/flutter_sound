@@ -371,7 +371,7 @@ class Track {
         File fin = await File(inputFileName);
         fin.writeAsBytesSync(dataBuffer);
       }
-      rc = await executeFFmpegWithArguments([
+      rc = await flutterSoundHelper.executeFFmpegWithArguments([
         '-y',
         '-loglevel',
         'error',
