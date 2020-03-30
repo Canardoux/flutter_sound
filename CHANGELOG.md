@@ -1,3 +1,5 @@
+## 3.0.0+1
+- bugfix [#254](https://github.com/dooboolab/flutter_sound/issues/254)
 ## 3.0.0
 - Code name `flauto` has been merged [#243](https://github.com/dooboolab/flutter_sound/pull/243)
   > Highly honor [Larpoux](https://github.com/Larpoux), [bsutton](https://github.com/bsutton), [salvatore373](https://github.com/salvatore373) :tada:!
