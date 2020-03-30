@@ -20,10 +20,10 @@ For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
 
 ## Install
+
 For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).
 
 Add `flutter_sound` as a dependency in pubspec.yaml. The actual version is `flauto: ^3.0.0`
-
 
 The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
 
@@ -33,12 +33,13 @@ dependencies:
     sdk: flutter
   flutter_sound: ^3.0.0
 ```
+
 ### FFmpeg
 
 flutter_sound makes use of flutter_ffmpeg.
 Please, look to [flutter_ffmpeg documentation](https://pub.dev/packages/flutter_ffmpeg) to see how to add it to your App.
 
-- On iOS you will have to enter something like that in your ```Podfile```
+- On iOS you will have to enter something like that in your `Podfile`
 
 ```
   # Prepare symlinks folder. We use symlinks to avoid having Podfile.lock
@@ -56,10 +57,13 @@ Please, look to [flutter_ffmpeg documentation](https://pub.dev/packages/flutter_
     end
   end
 ```
+
 - On Android you will have to enter the following line in your `pubspec.yaml` file.
+
 ```
 ext.flutterFFmpegPackage = 'audio-lts'
 ```
+
 ## Post Installation
 
 On _iOS_ you need to add a usage description to `info.plist`:
@@ -87,22 +91,24 @@ To migrate to `3.0.0` you must migrate your Android app to Android X by followin
 
 ## Methods
 
-| Func                     |                               Param                                |      Return      | Description                                                                                                                                                                                                        |
-| :----------------------- | :----------------------------------------------------------------: | :--------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Func                     |                               Param                                |      Return      | Description                                                                                                                                                                                                          |
+| :----------------------- | :----------------------------------------------------------------: | :--------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | initialize               |                                                                    |      `void`      | Initializes the media player and all the callbacks for the player and the recorder. This procedure is implicitely called during the Flutter Sound constructors. So you probably will not use this function yourself. |
-| releaseMediaPlayer       |                                                                    |      `void`      | Resets the media player and cleans up the device resources. This must be called when the player is no longer needed.                                                                                               |
-| setSubscriptionDuration  |                            `double sec`                            | `String` message | Set subscription timer in seconds. Default is `0.010` if not using this method.                                                                                                                                    |
-| startRecorder            | `String uri`, `int sampleRate`, `int numChannels`, `t_CODEC codec` |   `String` uri   | Start recording. This will return uri used.                                                                                                                                                                        |
-| stopRecorder             |                                                                    | `String` message | Stop recording.                                                                                                                                                                                                    |
-| startPlayer              |        `String` fileUri, `t_CODEC codec`, `whenFinished()`         |                  | Starts playing the file at the given URI.                                                                                                                                                                          |
-| startPlayerFromBuffer    |     `Uint8List dataBuffer`, `t_CODEC codec`, `whenFinished()`      | `String` message | Start playing using a buffer encoded with the given codec                                                                                                                                                          |
-| stopPlayer               |                                                                    | `String` message | Stop playing.                                                                                                                                                                                                      |
-| pausePlayer              |                                                                    | `String` message | Pause playing.                                                                                                                                                                                                     |
-| resumePlayer             |                                                                    | `String` message | Resume playing.                                                                                                                                                                                                    |
-| seekToPlayer             |                  `int milliSecs` position to goTo                  | `String` message | Seek audio to selected position in seconds. Parameter should be less than audio duration to correctly placed.                                                                                                      |
-| iosSetCategory           |            `SESSION_CATEGORY`, `SESSION_MODE`, options             |     Boolean      | Set the session category on iOS.                                                                                                                                                                                   |
-| androidAudioFocusRequest |                          `int` focusGain                           |     Boolean      | Define the Android Focus request to use in subsequent requests to get audio focus                                                                                                                                  |
-| setActive                |                           `bool` enabled                           |     Boolean      | Request or Abandon the audio focus                                                                                                                                                                                 |
+| releaseMediaPlayer       |                                                                    |      `void`      | Resets the media player and cleans up the device resources. This must be called when the player is no longer needed.                                                                                                 |
+| setSubscriptionDuration  |                            `double sec`                            | `String` message | Set subscription timer in seconds. Default is `0.010` if not using this method.                                                                                                                                      |
+| startRecorder            | `String uri`, `int sampleRate`, `int numChannels`, `t_CODEC codec` |   `String` uri   | Start recording. This will return uri used.                                                                                                                                                                          |
+| stopRecorder             |                                                                    | `String` message | Stop recording.                                                                                                                                                                                                      |
+| pauseRecorder            |                                                                    | `String` message | Pause recording.                                                                                                                                                                                                     |
+| resumeRecorder           |                                                                    | `String` message | Resume recording.                                                                                                                                                                                                    |
+| startPlayer              |        `String` fileUri, `t_CODEC codec`, `whenFinished()`         |                  | Starts playing the file at the given URI.                                                                                                                                                                            |
+| startPlayerFromBuffer    |     `Uint8List dataBuffer`, `t_CODEC codec`, `whenFinished()`      | `String` message | Start playing using a buffer encoded with the given codec                                                                                                                                                            |
+| stopPlayer               |                                                                    | `String` message | Stop playing.                                                                                                                                                                                                        |
+| pausePlayer              |                                                                    | `String` message | Pause playing.                                                                                                                                                                                                       |
+| resumePlayer             |                                                                    | `String` message | Resume playing.                                                                                                                                                                                                      |
+| seekToPlayer             |                  `int milliSecs` position to goTo                  | `String` message | Seek audio to selected position in seconds. Parameter should be less than audio duration to correctly placed.                                                                                                        |
+| iosSetCategory           |            `SESSION_CATEGORY`, `SESSION_MODE`, options             |     Boolean      | Set the session category on iOS.                                                                                                                                                                                     |
+| androidAudioFocusRequest |                          `int` focusGain                           |     Boolean      | Define the Android Focus request to use in subsequent requests to get audio focus                                                                                                                                    |
+| setActive                |                           `bool` enabled                           |     Boolean      | Request or Abandon the audio focus                                                                                                                                                                                   |
 
 ## Subscriptions
 
@@ -133,9 +139,16 @@ This table will eventually be upgrated when more codecs will be added.
 #### Creating instance.
 
 In your view/page/dialog widget's State class, create an instance of FlautoRecorder.
+Before acessing the FlautoRecorder API, you must initialize it with initialize().
+When finished with this FlautoRecorder instance, you must release it with release().
 
 ```dart
 FlautoRecorder flautoRecorder = new FlautoRecorder().initialize();
+
+...
+...
+
+flautoRecorder.release();
 ```
 
 #### Starting recorder with listener.
@@ -202,6 +215,18 @@ void dispose() {
 }
 ```
 
+#### Pause recorder
+
+```dart
+Future<String> result = await flautoRecorder.pauseRecorder();
+```
+
+#### Resume recorder
+
+```dart
+Future<String> result = await flautoRecorder.resumeRecorder();
+```
+
 #### Using the amplitude meter
 
 The amplitude meter allows displaying a basic representation of the input sound.
@@ -226,14 +251,21 @@ _dbPeakSubscription = flautoPlayer.onRecorderDbPeakChanged.listen((value) {
 });
 ```
 
-
 ## FlautoPlayer Usage
+
 #### Creating instance.
 
 In your view/page/dialog widget's State class, create an instance of FlautoPlayer.
+Before acessing the FlautoPlayer API, you must initialize it with initialize().
+When finished with this FlautoPlayer instance, you must release it with release().
 
 ```dart
 FlautoPlayer flautoPlayer = new FlautoPlayer().initialize();
+
+...
+...
+
+flautoPlayer.release();
 ```
 
 #### Start player
@@ -426,7 +458,6 @@ void dispose() {
 	super.dispose();
 }
 ```
-
 
 ## TrackPlayer
 
