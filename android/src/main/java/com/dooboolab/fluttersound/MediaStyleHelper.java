@@ -1,4 +1,4 @@
-package xyz.canardoux.flauto;
+package com.dooboolab.fluttersound;
 /*
  * This file is part of Flutter-Sound (Flauto).
  *
@@ -27,7 +27,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.media.app.NotificationCompat.MediaStyle;
 import androidx.media.session.MediaButtonReceiver;
-import xyz.canardoux.flauto.R;
+import com.dooboolab.fluttersound.R;
 
 //import androidx.appcompat.app.NotificationCompat;
 

@@ -1,4 +1,4 @@
-package xyz.canardoux.flauto;
+package com.dooboolab.fluttersound;
 /*
  * This file is part of Flauto.
  *

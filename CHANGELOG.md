@@ -1,24 +1,26 @@
 ## 3.1.0
 
 - flutter_sound modules are re-entrant [#250](https://github.com/dooboolab/flutter_sound/issues/250) and [#232](https://github.com/dooboolab/flutter_sound/issues/232)
-
-  - We can open several `flauto_player` at the same time
-  - We can open several `flauto_recorder` at the same time
-
+  - We can open several `FlutterSoundPlayer` at the same time
+  - We can open several `FlutterSoundRecorder` at the same time
 - Add new API verbs : [#244](https://github.com/dooboolab/flutter_sound/issues/244)
   - flutterSoundHelper.getLastFFmpegReturnCode()
   - flutterSoundHelper.getLastFFmpegCommandOutput()
   - flutterSoundHelper.FFmpegGetMediaInformation() which return info on the given record
   - flutterSoundHelper.duration() which return the number of milli-seconds for the given record
 - Add new API verbs : [##242](https://github.com/dooboolab/flutter_sound/issues/242)
-  - flautoRecorder.pauseRecorder()
-  - flautoRecorder.resumeRecorder()
+  - FlutterSoundRecorder.pauseRecorder()
+  - FlutterSoundRecorder.resumeRecorder()
 - flutter_sound is now compatible with permission_handler 5.x.x [#259](https://github.com/dooboolab/flutter_sound/issues/259)
 - API to control the `audiofocus` [#219](https://github.com/dooboolab/flutter_sound/issues/219)
 - API to set the `audio-category` (i.e. duck-others) [#219](https://github.com/dooboolab/flutter_sound/issues/219)
 - AndroidX and Android embbeded-V2 support [#203](https://github.com/dooboolab/flutter_sound/issues/203)
 - Add a parameter to `startPlayer` to specify a callback when the song is finished [#215](https://github.com/dooboolab/flutter_sound/issues/215)
 - License is now LGPL 3.0 instead of MIT
+
+## 3.0.0+1
+
+- bugfix [#254](https://github.com/dooboolab/flutter_sound/issues/254)
 
 ## 3.0.0
 

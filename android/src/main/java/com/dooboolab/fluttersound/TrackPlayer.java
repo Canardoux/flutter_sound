@@ -1,4 +1,4 @@
-package xyz.canardoux.flauto;
+package com.dooboolab.fluttersound;
 /*
  * This file is part of Flutter-Sound (Flauto).
  *
@@ -74,9 +74,9 @@ import java.util.concurrent.Callable;
 
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
-import xyz.canardoux.flauto.FlautoPlayer;
-import xyz.canardoux.flauto.MediaBrowserHelper;
-import xyz.canardoux.flauto.Track;
+import com.dooboolab.fluttersound.FlautoPlayer;
+import com.dooboolab.fluttersound.MediaBrowserHelper;
+import com.dooboolab.fluttersound.Track;
 
 
 class TrackPlayerPlugin
@@ -696,8 +696,3 @@ public class TrackPlayer extends FlautoPlayer
 
 }
 //---------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-

@@ -25,8 +25,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_sound/android_encoder.dart';
 import 'package:flutter_sound/ios_quality.dart';
 import 'package:flutter_sound/flauto.dart';
-import 'package:flutter_sound/flauto_player.dart';
-import 'package:flutter_sound/flauto_recorder.dart';
+import 'package:flutter_sound/flutter_sound_player.dart';
+import 'package:flutter_sound/flutter_sound_recorder.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
@@ -46,8 +46,8 @@ enum t_AUDIO_STATE {
 /// New users must use the classes SoundPlayer and SoundRecorder
 @deprecated
 class FlutterSound {
-  FlautoPlayer soundPlayer;
-  FlautoRecorder soundRecorder;
+  FlutterSoundPlayer soundPlayer;
+  FlutterSoundRecorder soundRecorder;
 
   bool get isPlaying => soundPlayer.isPlaying();
 
@@ -68,8 +68,8 @@ class FlutterSound {
   }
 
   void initializeMediaPlayer() async {
-    if (soundPlayer == null) soundPlayer = FlautoPlayer();
-    if (soundRecorder == null) soundRecorder = FlautoRecorder();
+    if (soundPlayer == null) soundPlayer = FlutterSoundPlayer();
+    if (soundRecorder == null) soundRecorder = FlutterSoundRecorder();
     await soundPlayer.initialize();
     await soundRecorder.initialize();
   }

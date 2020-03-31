@@ -19,7 +19,7 @@ dependencies:
 # The following section is specific to Flutter.
 flutter:
   plugin:
-    androidPackage: xyz.canardoux.flauto
+    androidPackage: com.dooboolab.fluttersound
     pluginClass: Flauto
 
 

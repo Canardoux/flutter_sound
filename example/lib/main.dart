@@ -24,10 +24,10 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter_sound/flauto.dart';
-import 'package:flutter_sound/flauto_player.dart';
+import 'package:flutter_sound/flutter_sound_player.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/track_player.dart';
-import 'package:flutter_sound/flauto_recorder.dart';
+import 'package:flutter_sound/flutter_sound_recorder.dart';
 
 enum t_MEDIA
 {
@@ -66,11 +66,10 @@ class _MyAppState extends State<MyApp>
         StreamSubscription _playerSubscription;
         StreamSubscription _playbackStateSubscription;
 
-        FlautoPlayer playerModule;
-
-        FlautoRecorder recorderModule;
-        FlautoPlayer playerModule_2; // Used if REENTRANCE_CONCURENCY
-        FlautoRecorder recorderModule_2; // Used if REENTRANCE_CONCURENCY
+        FlutterSoundPlayer playerModule;
+        FlutterSoundRecorder recorderModule;
+        FlutterSoundPlayer playerModule_2; // Used if REENTRANCE_CONCURENCY
+        FlutterSoundRecorder recorderModule_2; // Used if REENTRANCE_CONCURENCY
 
         String _recorderTxt = '00:00:00';
         String _playerTxt = '00:00:00';
@@ -90,7 +89,7 @@ class _MyAppState extends State<MyApp>
 
         double _duration = null;
 
-        Future<void> _initializeExample( FlautoPlayer module )
+        Future<void> _initializeExample( FlutterSoundPlayer module )
         async {
                 playerModule = module;
                 await module.initialize( );
@@ -103,8 +102,8 @@ class _MyAppState extends State<MyApp>
 
         Future<void> init( )
         async {
-                playerModule = await FlautoPlayer( ).initialize( );
-                recorderModule = await FlautoRecorder( ).initialize( );
+                playerModule = await FlutterSoundPlayer( ).initialize( );
+                recorderModule = await FlutterSoundRecorder( ).initialize( );
                 await _initializeExample( playerModule );
 
                 await recorderModule.setDbPeakLevelUpdate( 0.8 );
@@ -112,11 +111,11 @@ class _MyAppState extends State<MyApp>
                 await recorderModule.setDbLevelEnabled( true );
                 if (REENTRANCE_CONCURENCY)
                 {
-                        playerModule_2 = await FlautoPlayer( ).initialize( );
+                        playerModule_2 = await FlutterSoundPlayer( ).initialize( );
                         await playerModule_2.setSubscriptionDuration( 0.01 );
                         await playerModule_2.setSubscriptionDuration( 0.01 );
 
-                        recorderModule_2 = await FlautoRecorder( ).initialize( );
+                        recorderModule_2 = await FlutterSoundRecorder( ).initialize( );
                         await recorderModule_2.setSubscriptionDuration( 0.01 );
                         await recorderModule_2.setDbPeakLevelUpdate( 0.8 );
                         await recorderModule_2.setDbLevelEnabled( true );
@@ -838,7 +837,7 @@ class _MyAppState extends State<MyApp>
                                 _isAudioPlayer = newVal;
                                 if (!newVal)
                                 {
-                                        _initializeExample( FlautoPlayer( ) );
+                                        _initializeExample( FlutterSoundPlayer( ) );
                                 } else
                                 {
                                         _initializeExample( TrackPlayer( ) );

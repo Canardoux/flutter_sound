@@ -27,7 +27,7 @@ import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/services.dart';
-import 'package:flutter_sound/flauto_player.dart';
+import 'package:flutter_sound/flutter_sound_player.dart';
 import 'package:flutter_sound/flauto.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -97,7 +97,7 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
   }
 }
 
-class TrackPlayer extends FlautoPlayer {
+class TrackPlayer extends FlutterSoundPlayer {
   //static const MethodChannel _channel = const MethodChannel( 'xyz.canardoux.track_player' );
   StreamController<t_PLAYER_STATE> _playbackStateChangedController;
   t_onSkip onSkipForward; // User callback "whenPaused:"
@@ -135,7 +135,7 @@ class TrackPlayer extends FlautoPlayer {
   ///
   /// Media player and recorder controls should be displayed only after this
   /// method has finished executing.
-  Future<FlautoPlayer> initialize() async {
+  Future<FlutterSoundPlayer> initialize() async {
     if (!isInited) {
       isInited = true;
       if (trackPlayerPlugin == null) trackPlayerPlugin = TrackPlayerPlugin(); // The lazy singleton

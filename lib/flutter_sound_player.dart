@@ -99,7 +99,7 @@ typedef void t_onSkip();
 typedef void t_updateProgress(int current, int max);
 
 FlautoPlayerPlugin flautoPlayerPlugin; // Singleton, lazy initialized
-List<FlautoPlayer> slots = [];
+List<FlutterSoundPlayer> slots = [];
 
 class FlautoPlayerPlugin {
   MethodChannel channel;
@@ -116,7 +116,7 @@ class FlautoPlayerPlugin {
     });
   }
 
-  int lookupEmptySlot(FlautoPlayer aPlayer) {
+  int lookupEmptySlot(FlutterSoundPlayer aPlayer) {
     for (int i = 0; i < slots.length; ++i) {
       if (slots[i] == null) {
         slots[i] = aPlayer;
@@ -140,7 +140,7 @@ class FlautoPlayerPlugin {
   Future<dynamic> channelMethodCallHandler(MethodCall call) // This procedure is superCharged in "flauto"
   {
     int slotNo = call.arguments['slotNo'];
-    FlautoPlayer aPlayer = slots[slotNo];
+    FlutterSoundPlayer aPlayer = slots[slotNo];
     switch (call.method) {
       case "updateProgress":
         {
@@ -192,7 +192,7 @@ String fileExtension(String path) {
   return r;
 }
 
-class FlautoPlayer {
+class FlutterSoundPlayer {
   bool isInited = false;
   t_PLAYER_STATE playerState = t_PLAYER_STATE.IS_STOPPED;
   StreamController<PlayStatus> playerController;
@@ -209,7 +209,7 @@ class FlautoPlayer {
 
   bool isStopped() => playerState == t_PLAYER_STATE.IS_STOPPED;
 
-  FlautoPlayer() {
+  FlutterSoundPlayer() {
     //initialize();
   }
 
@@ -220,7 +220,7 @@ class FlautoPlayer {
     return getPlugin().invokeMethod(methodName, call);
   }
 
-  Future<FlautoPlayer> initialize() async {
+  Future<FlutterSoundPlayer> initialize() async {
     if (!isInited) {
       isInited = true;
       if (flautoPlayerPlugin == null) flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton

@@ -41,7 +41,7 @@ FlautoRecorderPlugin flautoRecorderPlugin; // Singleton, lazy initialized
 class FlautoRecorderPlugin {
   MethodChannel channel;
 
-  List<FlautoRecorder> slots = [];
+  List<FlutterSoundRecorder> slots = [];
 
   FlautoRecorderPlugin() {
     channel = const MethodChannel('xyz.canardoux.flauto_recorder');
@@ -51,7 +51,7 @@ class FlautoRecorderPlugin {
     });
   }
 
-  int lookupEmptySlot(FlautoRecorder aRecorder) {
+  int lookupEmptySlot(FlutterSoundRecorder aRecorder) {
     for (int i = 0; i < slots.length; ++i) {
       if (slots[i] == null) {
         slots[i] = aRecorder;
@@ -75,7 +75,7 @@ class FlautoRecorderPlugin {
   Future<dynamic> channelMethodCallHandler(MethodCall call) // This procedure is superCharged in "flauto"
   {
     int slotNo = call.arguments['slotNo'];
-    FlautoRecorder aRecorder = slots[slotNo];
+    FlutterSoundRecorder aRecorder = slots[slotNo];
     switch (call.method) {
       case "updateRecorderProgress":
         {
@@ -106,7 +106,7 @@ final List<String> defaultPaths = [
   'flauto.wav', // CODEC_PCM
 ];
 
-class FlautoRecorder {
+class FlutterSoundRecorder {
   bool isInited = false;
   t_RECORDER_STATE recorderState = t_RECORDER_STATE.IS_STOPPED;
   StreamController<RecordStatus> _recorderController;
@@ -128,7 +128,7 @@ class FlautoRecorder {
   /// Value ranges from 0 to 120
   Stream<double> get onRecorderDbPeakChanged => _dbPeakController.stream;
 
-  FlautoRecorder() {
+  FlutterSoundRecorder() {
     //if (!isInited)
     {
       //initialize( );
@@ -142,7 +142,7 @@ class FlautoRecorder {
     return getPlugin().invokeMethod(methodName, call);
   }
 
-  Future<FlautoRecorder> initialize() async {
+  Future<FlutterSoundRecorder> initialize() async {
     if (!isInited) {
       isInited = true;
       if (flautoRecorderPlugin == null) flautoRecorderPlugin = FlautoRecorderPlugin(); // The lazy singleton

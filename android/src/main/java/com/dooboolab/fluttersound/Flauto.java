@@ -1,3 +1,4 @@
+package com.dooboolab.fluttersound;
 /*
  * This file is part of Flutter-Sound (Flauto).
  *
@@ -13,8 +14,6 @@
  *   You should have received a copy of the Lesser GNU General Public License
  *   along with Flutter-Sound (Flauto).  If not, see <https://www.gnu.org/licenses/>.
  */
-
-package xyz.canardoux.flauto;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
@@ -65,7 +64,7 @@ import java.util.concurrent.Callable;
 
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
-import xyz.canardoux.flauto.FlautoPlayer;
+import com.dooboolab.fluttersound.FlautoPlayer;
 
 
 // this enum MUST be synchronized with lib/flutter_sound.dart and ios/Classes/FlutterSoundPlugin.h
