@@ -56,6 +56,7 @@ public class MediaBrowserHelper
 			// start the audio playback.
 			try
 			{
+				assert(mActivity != null);
 				mediaControllerCompat = new MediaControllerCompat( mActivity, mMediaBrowserCompat.getSessionToken() );
 				MediaControllerCompat.setMediaController( mActivity, mediaControllerCompat );
 
@@ -121,6 +122,7 @@ public class MediaBrowserHelper
 		Activity activity, Callable<Void> serviceSuccConnectionCallback, Callable<Void> serviceUnsuccConnectionCallback
 	                  )
 	{
+		assert(activity != null);
 		mActivity                              = activity;
 		BackgroundAudioService.activity        = mActivity;
 		mServiceConnectionSuccessCallback      = serviceSuccConnectionCallback;
@@ -134,6 +136,7 @@ public class MediaBrowserHelper
 	 */
 	private void initMediaBrowser()
 	{
+		assert(mActivity != null);
 		BackgroundAudioService.activity = mActivity;
 		// Create and connect a MediaBrowserCompat
 		mMediaBrowserCompat = new MediaBrowserCompat( mActivity, new ComponentName( mActivity, BackgroundAudioService.class ), mMediaBrowserCompatConnectionCallback, mActivity.getIntent().getExtras() );

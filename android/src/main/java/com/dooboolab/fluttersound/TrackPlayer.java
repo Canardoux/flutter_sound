@@ -211,6 +211,7 @@ public class TrackPlayer extends FlautoPlayer
 	{
 		//super.initializeFlautoPlayer( call, result );
 		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
+		assert(Flauto.androidActivity != null);
 
 		// Initialize the media browser if it hasn't already been initialized
 		if ( mMediaBrowserHelper == null )
