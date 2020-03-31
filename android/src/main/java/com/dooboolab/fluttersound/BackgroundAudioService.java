@@ -284,6 +284,7 @@ public class BackgroundAudioService
 		mMediaPlayer.start();
 
 		// Start the service
+		assert (activity != null);
 		startService( new Intent( activity, BackgroundAudioService.class ) );
 
 		// Update the playback state
@@ -542,20 +543,18 @@ public class BackgroundAudioService
 
 		// Do not support hardware media playback actions if we are not including audio
 		// features
-		if ( true )
-		{
-			// Inform the session that it is capable of handling media button events and
-			// transport control commands.
-			mMediaSessionCompat.setFlags( MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS );
+		// Inform the session that it is capable of handling media button events and
+		// transport control commands.
+		mMediaSessionCompat.setFlags( MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS );
 
-			// Create a new Intent for handling media button inputs on pre-Lollipop devices
-			Intent mediaButtonIntent = new Intent( Intent.ACTION_MEDIA_BUTTON );
-			mediaButtonIntent.setClass( this, MediaButtonReceiver.class );
-			PendingIntent pendingIntent = PendingIntent.getBroadcast( this, 0, mediaButtonIntent, 0 );
-			mMediaSessionCompat.setMediaButtonReceiver( pendingIntent );
-		}
+		// Create a new Intent for handling media button inputs on pre-Lollipop devices
+		Intent mediaButtonIntent = new Intent( Intent.ACTION_MEDIA_BUTTON );
+		mediaButtonIntent.setClass( this, MediaButtonReceiver.class );
+		PendingIntent pendingIntent = PendingIntent.getBroadcast( this, 0, mediaButtonIntent, 0 );
+		mMediaSessionCompat.setMediaButtonReceiver( pendingIntent );
 
 		// Set the session activity
+		assert(activity != null);
 		Context       context       = getApplicationContext();
 		Intent        intent        = new Intent( context, activity.getClass() );
 		PendingIntent pendingIntent = PendingIntent.getActivity( context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT );
