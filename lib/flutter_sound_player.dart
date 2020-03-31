@@ -203,14 +203,13 @@ class FlutterSoundPlayer {
 
   Stream<PlayStatus> get onPlayerStateChanged => playerController != null ? playerController.stream : null;
 
-  bool isPlaying() => playerState == t_PLAYER_STATE.IS_PLAYING;
+  bool get isPlaying => playerState == t_PLAYER_STATE.IS_PLAYING;
 
-  bool isPaused() => playerState == t_PLAYER_STATE.IS_PAUSED;
+  bool get isPaused => playerState == t_PLAYER_STATE.IS_PAUSED;
 
-  bool isStopped() => playerState == t_PLAYER_STATE.IS_STOPPED;
+  bool get isStopped => playerState == t_PLAYER_STATE.IS_STOPPED;
 
   FlutterSoundPlayer() {
-    //initialize();
   }
 
   FlautoPlayerPlugin getPlugin() => flautoPlayerPlugin;

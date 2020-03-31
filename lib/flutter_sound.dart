@@ -49,17 +49,17 @@ class FlutterSound {
   FlutterSoundPlayer soundPlayer;
   FlutterSoundRecorder soundRecorder;
 
-  bool get isPlaying => soundPlayer.isPlaying();
+  bool get isPlaying => soundPlayer.isPlaying;
 
-  bool get isRecording => soundRecorder.isRecording();
+  bool get isRecording => soundRecorder.isRecording;
 
-  bool get isPaused => soundPlayer.isPaused();
+  bool get isPaused => soundPlayer.isPaused;
 
   t_AUDIO_STATE get audioState {
-    if (soundPlayer.isPlaying()) return t_AUDIO_STATE.IS_PLAYING;
-    if (soundPlayer.isPaused()) return t_AUDIO_STATE.IS_PAUSED;
-    if (soundRecorder.isRecording()) return t_AUDIO_STATE.IS_RECORDING;
-    if (soundRecorder.isPaused()) return t_AUDIO_STATE.IS_RECORDING_PAUSED;
+    if (soundPlayer.isPlaying) return t_AUDIO_STATE.IS_PLAYING;
+    if (soundPlayer.isPaused) return t_AUDIO_STATE.IS_PAUSED;
+    if (soundRecorder.isRecording) return t_AUDIO_STATE.IS_RECORDING;
+    if (soundRecorder.isPaused) return t_AUDIO_STATE.IS_RECORDING_PAUSED;
     return t_AUDIO_STATE.IS_STOPPED;
   }
 

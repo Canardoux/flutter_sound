@@ -133,13 +133,13 @@ class _MyAppState extends State<MyApp>
         {
                 if (playerModule != null)
                 {
-                        if (playerModule.isPlaying( )) return t_AUDIO_STATE.IS_PLAYING;
-                        if (playerModule.isPaused( )) return t_AUDIO_STATE.IS_PAUSED;
+                        if (playerModule.isPlaying) return t_AUDIO_STATE.IS_PLAYING;
+                        if (playerModule.isPaused) return t_AUDIO_STATE.IS_PAUSED;
                 }
                 if (recorderModule != null)
                 {
-                        if (recorderModule.isRecording( )) return t_AUDIO_STATE.IS_RECORDING;
-                        if (recorderModule.isPaused( )) return t_AUDIO_STATE.IS_RECORDING_PAUSED;
+                        if (recorderModule.isPaused) return t_AUDIO_STATE.IS_RECORDING_PAUSED;
+                        if (recorderModule.isRecording) return t_AUDIO_STATE.IS_RECORDING;
                 }
                 return t_AUDIO_STATE.IS_STOPPED;
         }
@@ -575,7 +575,7 @@ class _MyAppState extends State<MyApp>
 
         pauseResumePlayer( )
         {
-                if (playerModule.isPlaying( ))
+                if (playerModule.isPlaying)
                 {
                         playerModule.pausePlayer( );
                         if (REENTRANCE_CONCURENCY)
@@ -594,19 +594,21 @@ class _MyAppState extends State<MyApp>
 
         pauseResumeRecorder( )
         {
-                if (recorderModule.isRecording( ))
+                if (recorderModule.isPaused)
                 {
+                        {
+                                recorderModule.resumeRecorder( );
+                                if (REENTRANCE_CONCURENCY)
+                                {
+                                        recorderModule_2.resumeRecorder( );
+                                }
+                        }
+                } else
+                        {
                         recorderModule.pauseRecorder( );
                         if (REENTRANCE_CONCURENCY)
                         {
                                 recorderModule_2.pauseRecorder( );
-                        }
-                } else
-                {
-                        recorderModule.resumeRecorder( );
-                        if (REENTRANCE_CONCURENCY)
-                        {
-                                recorderModule_2.resumeRecorder( );
                         }
                 }
         }
@@ -790,7 +792,7 @@ class _MyAppState extends State<MyApp>
 
         void startStopRecorder( )
         {
-                if (recorderModule.isRecording( ))
+                if (recorderModule.isRecording)
                         stopRecorder( );
                 else
                         startRecorder( );
