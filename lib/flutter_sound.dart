@@ -84,17 +84,6 @@ class FlutterSound {
     soundRecorder = null;
   }
 
-/*
-        Future<dynamic> channelRecorderMethodCallHandler( MethodCall call ) // This procedure is superCharged in "flauto"
-        {
-                switch (call.method)
-                {
-                        default:
-                                throw new ArgumentError( 'Unknown method ${call.method} ' );
-                }
-        }
-
- */
 
   Stream<RecordStatus> get onRecorderStateChanged => soundRecorder.onRecorderStateChanged;
 

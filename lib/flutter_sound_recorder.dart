@@ -128,8 +128,7 @@ class FlutterSoundRecorder {
   /// Value ranges from 0 to 120
   Stream<double> get onRecorderDbPeakChanged => _dbPeakController.stream;
 
-  FlutterSoundRecorder() {
-  }
+  FlutterSoundRecorder() {}
 
   FlautoRecorderPlugin getPlugin() => flautoRecorderPlugin;
 

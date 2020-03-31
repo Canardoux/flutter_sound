@@ -409,14 +409,16 @@ public class FlautoRecorder
 		// you may not write in getExternalStorageDirectory()
 		MediaRecorder mediaRecorder = model.getMediaRecorder ();
 
-		if ( mediaRecorder == null )
-		{
-			model.setMediaRecorder ( new MediaRecorder () );
-			mediaRecorder = model.getMediaRecorder ();
-		} else
+		if ( mediaRecorder != null )
 		{
 			mediaRecorder.reset ();
+			//mediaRecorder.release();
+		} else
+		{
+			mediaRecorder = new MediaRecorder ();
+			model.setMediaRecorder (mediaRecorder );
 		}
+
 
 		try
 		{
@@ -571,13 +573,19 @@ public class FlautoRecorder
 		}
 		try
 		{
-			try
+			if ( Build.VERSION.SDK_INT >= 24 )
 			{
-				this.model.getMediaRecorder().resume(); // This is stupid, but cannot reset() if Pause Mode !
-			} catch (Exception e)
-			{}
+
+				try
+				{
+					this.model.getMediaRecorder().resume(); // This is stupid, but cannot reset() if Pause Mode !
+				}
+				catch ( Exception e )
+				{
+				}
+			}
+			this.model.getMediaRecorder().stop();
 			this.model.getMediaRecorder().reset();
-			//this.model.getMediaRecorder().stop();
 			this.model.getMediaRecorder().release();
 			this.model.setMediaRecorder( null );
 		} catch  ( Exception e )
