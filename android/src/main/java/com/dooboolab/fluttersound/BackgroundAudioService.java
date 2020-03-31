@@ -557,8 +557,8 @@ public class BackgroundAudioService
 		assert(activity != null);
 		Context       context       = getApplicationContext();
 		Intent        intent        = new Intent( context, activity.getClass() );
-		PendingIntent pendingIntent = PendingIntent.getActivity( context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT );
-		mMediaSessionCompat.setSessionActivity( pendingIntent );
+		PendingIntent pendingIntent2 = PendingIntent.getActivity( context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT );
+		mMediaSessionCompat.setSessionActivity( pendingIntent2 );
 		// Pass the media session token to this service
 		setSessionToken( mMediaSessionCompat.getSessionToken() );
 	}
