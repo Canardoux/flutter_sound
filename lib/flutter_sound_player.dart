@@ -351,7 +351,7 @@ class FlutterSoundPlayer {
       // We use FFmpeg for that task.
       if ((Platform.isIOS) && ((codec == t_CODEC.CODEC_OPUS) || (fileExtension(path) == '.opus'))) {
         Directory tempDir = await getTemporaryDirectory();
-        File fout = File('${tempDir.path}/flutter_sound-tmp.caf');
+        File fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
         if (fout.existsSync()) // delete the old temporary file if it exists
           await fout.delete();
         // The following ffmpeg instruction does not decode and re-encode the file. It just remux the OPUS data into an Apple CAF envelope.
@@ -413,7 +413,7 @@ class FlutterSoundPlayer {
     if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS)) {
       await stopPlayer();
       Directory tempDir = await getTemporaryDirectory();
-      File inputFile = File('${tempDir.path}/flutter_sound-tmp.opus');
+      File inputFile = File('${tempDir.path}/$slotNo-flutter_sound-tmp.opus');
       if (inputFile.existsSync()) await inputFile.delete();
       inputFile.writeAsBytesSync(dataBuffer); // Write the user buffer into the temporary file
       // Now we can play the temporary file

@@ -189,13 +189,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   static const List<String> paths = [
-    'sound.aac', // DEFAULT
-    'sound.aac', // CODEC_AAC
-    'sound.opus', // CODEC_OPUS
-    'sound.caf', // CODEC_CAF_OPUS
-    'sound.mp3', // CODEC_MP3
-    'sound.ogg', // CODEC_VORBIS
-    'sound.wav', // CODEC_PCM
+    'flutter_sound_example.aac', // DEFAULT
+    'flutter_sound_example.aac', // CODEC_AAC
+    'flutter_sound_example.opus', // CODEC_OPUS
+    'flutter_sound_example.caf', // CODEC_CAF_OPUS
+    'flutter_sound_example.mp3', // CODEC_MP3
+    'flutter_sound_example.ogg', // CODEC_VORBIS
+    'flutter_sound_example.wav', // CODEC_PCM
   ];
 
   void startRecorder() async {
@@ -212,7 +212,7 @@ class _MyAppState extends State<MyApp> {
       Directory tempDir = await getTemporaryDirectory();
 
       String path = await recorderModule.startRecorder(
-        uri: '${tempDir.path}/${paths[_codec.index]}',
+        uri: '${tempDir.path}/${recorderModule.slotNo}-${paths[_codec.index]}',
         codec: _codec,
       );
       print('startRecorder: $path');
@@ -234,9 +234,17 @@ class _MyAppState extends State<MyApp> {
         });
       });
       if (REENTRANCE_CONCURENCY) {
-        await playerModule_2.startPlayer(exampleAudioFilePath, codec: t_CODEC.CODEC_MP3, whenFinished: () {
-          print('Secondary Play finished');
-        });
+        try
+        {
+          Uint8List dataBuffer = (await rootBundle.load( assetSample[_codec.index] )).buffer.asUint8List( );
+          await playerModule_2.startPlayerFromBuffer( dataBuffer, codec: _codec, whenFinished: ( )
+          {
+            //await playerModule_2.startPlayer(exampleAudioFilePath, codec: t_CODEC.CODEC_MP3, whenFinished: () {
+            print( 'Secondary Play finished' );
+          } );
+        } catch(e) {
+          print('startRecorder error: $e');
+        }
         await recorderModule_2.startRecorder(
           uri: '${tempDir.path}/flutter_sound_recorder2.aac',
           codec: t_CODEC.CODEC_AAC,
@@ -440,7 +448,10 @@ class _MyAppState extends State<MyApp> {
       }
       _addListeners();
       if (REENTRANCE_CONCURENCY && _media != t_MEDIA.REMOTE_EXAMPLE_FILE) {
-        playerModule_2.startPlayer(exampleAudioFilePath, codec: t_CODEC.CODEC_MP3, whenFinished: () {
+          Uint8List dataBuffer = (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
+          await playerModule_2.startPlayerFromBuffer(dataBuffer, codec: _codec, whenFinished: () {
+
+          //playerModule_2.startPlayer(exampleAudioFilePath, codec: t_CODEC.CODEC_MP3, whenFinished: () {
           print('Secondary Play finished');
         });
       }

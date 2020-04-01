@@ -495,7 +495,7 @@ public class FlautoPlayer
 		byte[]  dataBuffer = call.argument ( "dataBuffer" );
 		try
 		{
-			File             f   = File.createTempFile ( "flutter_sound", extentionArray[ codec.ordinal () ] );
+			File             f   = File.createTempFile ( "flutter_sound_buffer-" + Integer.toString(slotNo), extentionArray[ codec.ordinal () ] );
 			FileOutputStream fos = new FileOutputStream ( f );
 			fos.write ( dataBuffer );
 			_startPlayer ( f.getAbsolutePath (), result );

@@ -276,7 +276,7 @@ class FlutterSoundRecorder {
       isOggOpus = true;
       codec = t_CODEC.CODEC_CAF_OPUS;
       Directory tempDir = await getTemporaryDirectory();
-      File fout = File('${tempDir.path}/flutter_sound-tmp.caf');
+      File fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
       if (fout.existsSync()) // delete the old temporary file if it exists
         await fout.delete();
       uri = fout.path;
