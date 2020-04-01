@@ -440,11 +440,16 @@ public class TrackPlayer extends FlutterSoundPlayer
 			return;
 		}
 
-		int millis = this.model.getMediaPlayer().getCurrentPosition();
-		Log.d(TAG, "seekTo: " + millis);
+		if (this.model.getMediaPlayer() != null) {
+			int millis = this.model.getMediaPlayer().getCurrentPosition();
+			Log.d(TAG, "seekTo: " + millis);
 
-		this.model.getMediaPlayer().seekTo(millis);
-		result.success( String.valueOf( millis ) );
+			this.model.getMediaPlayer().seekTo(millis);
+			result.success( String.valueOf( millis ) );
+			return;
+		}
+
+		result.error( TAG, "mediaPlayer is null.", null );
 	}
 
 	@Override

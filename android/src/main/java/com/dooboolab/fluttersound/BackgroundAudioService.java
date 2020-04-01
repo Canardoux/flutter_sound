@@ -665,10 +665,14 @@ public class BackgroundAudioService
 
 		// playbackStateBuilder.setState(state,
 		// PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, playbackSpeed);
-		playbackStateBuilder.setState( state, mMediaPlayer.getCurrentPosition(), playbackSpeed );
+		if (mMediaPlayer != null) {
+			playbackStateBuilder.setState( state, mMediaPlayer.getCurrentPosition(), playbackSpeed );
+		}
 
 		// Pass the playback state to the media session
-		mMediaSessionCompat.setPlaybackState( playbackStateBuilder.build() );
+		if (mMediaSessionCompat != null) {
+			mMediaSessionCompat.setPlaybackState( playbackStateBuilder.build() );
+		}
 	}
 
 	/**
