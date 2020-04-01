@@ -91,7 +91,7 @@ class FlautoRecorderPlugin
 		flautoRecorderPlugin = new FlautoRecorderPlugin ();
 		assert ( slots == null );
 		slots   = new ArrayList<FlautoRecorder> ();
-		channel = new MethodChannel ( messenger, "xyz.canardoux.flauto_recorder" );
+		channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_recorder" );
 		channel.setMethodCallHandler ( flautoRecorderPlugin );
 		androidContext = ctx;
 	}

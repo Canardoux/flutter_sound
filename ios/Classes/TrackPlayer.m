@@ -43,7 +43,7 @@ static TrackPlayerManager* trackPlayerManager; // Singleton
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
 {
-        _channel = [FlutterMethodChannel methodChannelWithName:@"xyz.canardoux.track_player"
+        _channel = [FlutterMethodChannel methodChannelWithName:@"com.dooboolab.flutter_sound_track_player"
                                         binaryMessenger:[registrar messenger]];
         trackPlayerManager = [[TrackPlayerManager alloc] init]; // In super class
         [registrar addMethodCallDelegate:trackPlayerManager channel:_channel];

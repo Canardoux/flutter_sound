@@ -85,7 +85,7 @@ class FlautoPlayerPlugin
 		flautoPlayerPlugin = new FlautoPlayerPlugin ();
 		assert ( slots == null );
 		slots   = new ArrayList<FlautoPlayer> ();
-		channel = new MethodChannel ( messenger, "xyz.canardoux.flauto_player" );
+		channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_player" );
 		channel.setMethodCallHandler ( flautoPlayerPlugin );
 		androidContext = ctx;
 

@@ -50,7 +50,7 @@ static FlautoPlayerManager* flautoPlayerManager; // Singleton
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
 {
-        _channel = [FlutterMethodChannel methodChannelWithName:@"xyz.canardoux.flauto_player"
+        _channel = [FlutterMethodChannel methodChannelWithName:@"com.dooboolab.flutter_sound_player"
                                         binaryMessenger:[registrar messenger]];
         assert (flautoPlayerManager == nil);
         flautoPlayerManager = [[FlautoPlayerManager alloc] init];

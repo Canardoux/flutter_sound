@@ -82,7 +82,7 @@ static FlautoRecorderManager* flautoRecorderManager; // Singleton
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
 {
-        _channel = [FlutterMethodChannel methodChannelWithName:@"xyz.canardoux.flauto_recorder"
+        _channel = [FlutterMethodChannel methodChannelWithName:@"com.dooboolab.flutter_sound_recorder"
                                         binaryMessenger:[registrar messenger]];
         assert (flautoRecorderManager == nil);
         flautoRecorderManager = [[FlautoRecorderManager alloc] init];

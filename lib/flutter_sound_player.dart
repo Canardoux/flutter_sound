@@ -109,7 +109,7 @@ class FlautoPlayerPlugin {
   }
 
   void setCallback() {
-    channel = const MethodChannel('xyz.canardoux.flauto_player');
+    channel = const MethodChannel('com.dooboolab.flutter_sound_player');
     channel.setMethodCallHandler((MethodCall call) {
       // This lambda function is necessary because channelMethodCallHandler is a virtual function (polymorphism)
       return channelMethodCallHandler(call);

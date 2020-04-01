@@ -44,7 +44,7 @@ class FlautoRecorderPlugin {
   List<FlutterSoundRecorder> slots = [];
 
   FlautoRecorderPlugin() {
-    channel = const MethodChannel('xyz.canardoux.flauto_recorder');
+    channel = const MethodChannel('com.dooboolab.flutter_sound_recorder');
     channel.setMethodCallHandler((MethodCall call) {
       // This lambda function is necessary because channelMethodCallHandler is a virtual function (polymorphism)
       return channelMethodCallHandler(call);

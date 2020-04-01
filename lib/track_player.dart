@@ -42,7 +42,7 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
   }
 
   void setCallback() {
-    channel = const MethodChannel('xyz.canardoux.track_player');
+    channel = const MethodChannel('com.dooboolab.flutter_sound_track_player');
     channel.setMethodCallHandler((MethodCall call) {
       // This lambda function is necessary because channelMethodCallHandler is a virtual function (polymorphism)
       return channelMethodCallHandler(call);

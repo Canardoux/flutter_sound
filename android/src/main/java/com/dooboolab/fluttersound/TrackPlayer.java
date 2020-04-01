@@ -94,7 +94,7 @@ class TrackPlayerPlugin
 		trackPlayerPlugin = new TrackPlayerPlugin();
 		assert ( slots == null );
 		slots   = new ArrayList<FlautoPlayer>();
-		channel           = new MethodChannel( messenger, "xyz.canardoux.track_player" );
+		channel           = new MethodChannel( messenger, "com.dooboolab.flutter_sound_track_player" );
 		channel.setMethodCallHandler( trackPlayerPlugin );
 		androidContext = ctx;
 
