@@ -113,19 +113,19 @@ public class MediaBrowserHelper
 	 *
 	 * @param activity                        The activity in which to initialize
 	 *                                        the media browser helper.
-	 * @param serviceSuccConnectionCallback   The callback to call when the
+	 * @param serviceSuccessConnectionCallback   The callback to call when the
 	 *                                        connection is successful.
 	 * @param serviceUnsuccConnectionCallback The callback to call when the
 	 *                                        connection is unsuccessful.
 	 */
 	MediaBrowserHelper(
-		Activity activity, Callable<Void> serviceSuccConnectionCallback, Callable<Void> serviceUnsuccConnectionCallback
+		Activity activity, Callable<Void> serviceSuccessConnectionCallback, Callable<Void> serviceUnsuccConnectionCallback
 	                  )
 	{
 		assert(activity != null);
 		mActivity                              = activity;
 		BackgroundAudioService.activity        = mActivity;
-		mServiceConnectionSuccessCallback      = serviceSuccConnectionCallback;
+		mServiceConnectionSuccessCallback      = serviceSuccessConnectionCallback;
 		mServiceConnectionUnsuccessfulCallback = serviceUnsuccConnectionCallback;
 		//////backgroundAudioService = new BackgroundAudioService ();
 		initMediaBrowser();
