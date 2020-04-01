@@ -74,7 +74,7 @@ import java.util.concurrent.Callable;
 
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
-import com.dooboolab.fluttersound.FlautoPlayer;
+import com.dooboolab.fluttersound.FlutterSoundPlayer;
 import com.dooboolab.fluttersound.MediaBrowserHelper;
 import com.dooboolab.fluttersound.Track;
 
@@ -93,7 +93,7 @@ class TrackPlayerPlugin
 		assert ( flautoPlayerPlugin == null );
 		trackPlayerPlugin = new TrackPlayerPlugin();
 		assert ( slots == null );
-		slots   = new ArrayList<FlautoPlayer>();
+		slots   = new ArrayList<FlutterSoundPlayer>();
 		channel           = new MethodChannel( messenger, "com.dooboolab.flutter_sound_track_player" );
 		channel.setMethodCallHandler( trackPlayerPlugin );
 		androidContext = ctx;
@@ -187,7 +187,7 @@ class TrackPlayerPlugin
 //-----------------------------------------------------------------------------------------------------------------------------
 
 
-public class TrackPlayer extends FlautoPlayer
+public class TrackPlayer extends FlutterSoundPlayer
 {
 	private       MediaBrowserHelper mMediaBrowserHelper;
 	private       Timer              mTimer      = new Timer();

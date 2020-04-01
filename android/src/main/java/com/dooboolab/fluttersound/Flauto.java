@@ -64,7 +64,7 @@ import java.util.concurrent.Callable;
 
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
-import com.dooboolab.fluttersound.FlautoPlayer;
+import com.dooboolab.fluttersound.FlutterSoundPlayer;
 
 
 // this enum MUST be synchronized with lib/flutter_sound.dart and ios/Classes/FlutterSoundPlugin.h

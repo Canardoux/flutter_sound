@@ -23,8 +23,8 @@
 
 
 #import "flauto.h"
-#import "FlautoPlayer.h"
-#import "FlautoRecorder.h"
+#import "FlutterSoundPlayer.h"
+#import "FlutterSoundRecorder.h"
 #import "TrackPlayer.h"
 #import <AVFoundation/AVFoundation.h>
 #import <Foundation/Foundation.h>

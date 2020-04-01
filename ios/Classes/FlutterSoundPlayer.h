@@ -43,7 +43,7 @@ extern NSMutableArray* flautoPlayerSlots;
 - (void)freeSlot: (int)slotNo;
 @end
 
-@interface FlautoPlayer : NSObject <AVAudioPlayerDelegate>
+@interface FlutterSoundPlayer : NSObject <AVAudioPlayerDelegate>
 {
         AVAudioPlayer *audioPlayer;
         bool isPaused ;
@@ -52,7 +52,7 @@ extern NSMutableArray* flautoPlayerSlots;
 }
 
 - (FlautoPlayerManager*) getPlugin;
-- (FlautoPlayer*)init: (int)aSlotNo;
+- (FlutterSoundPlayer*)init: (int)aSlotNo;
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag;
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result;

@@ -43,12 +43,12 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar);
 
 
 
-@interface FlautoRecorder : NSObject <AVAudioPlayerDelegate>
+@interface FlutterSoundRecorder : NSObject <AVAudioPlayerDelegate>
 {
 }
 
 - (FlautoRecorderManager*) getPlugin;
-- (FlautoRecorder*)init: (int)aSlotNo;
+- (FlutterSoundRecorder*)init: (int)aSlotNo;
 
 - (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result;
 - (void)startRecorder :(FlutterMethodCall*)call result:(FlutterResult)result;

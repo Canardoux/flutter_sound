@@ -22,7 +22,7 @@
 
 
 
-#import "FlautoRecorder.h"
+#import "FlutterSoundRecorder.h"
 #import "flauto.h" // Just to register it
 #import <AVFoundation/AVFoundation.h>
 
@@ -123,12 +123,12 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
         {
                  [flautoRecorderSlots addObject: [NSNull null] ];
         }
-        FlautoRecorder* aFlautoRecorder = flautoRecorderSlots[slotNo];
+        FlutterSoundRecorder* aFlautoRecorder = flautoRecorderSlots[slotNo];
         
         if ([@"initializeFlautoRecorder" isEqualToString:call.method])
         {
                 assert (flautoRecorderSlots[slotNo] ==  [NSNull null] );
-                aFlautoRecorder = [[FlautoRecorder alloc] init: slotNo];
+                aFlautoRecorder = [[FlutterSoundRecorder alloc] init: slotNo];
                 flautoRecorderSlots[slotNo] =aFlautoRecorder;
                 [aFlautoRecorder initializeFlautoRecorder: call result:result];
         } else
@@ -192,7 +192,7 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
 //---------------------------------------------------------------------------------------------
 
 
-@implementation FlautoRecorder
+@implementation FlutterSoundRecorder
 {
         NSURL *audioFileURL;
         AVAudioRecorder* audioRecorder;
@@ -208,7 +208,7 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
 }
 
 
-- (FlautoRecorder*)init: (int)aSlotNo
+- (FlutterSoundRecorder*)init: (int)aSlotNo
 {
         slotNo = aSlotNo;
         return self;

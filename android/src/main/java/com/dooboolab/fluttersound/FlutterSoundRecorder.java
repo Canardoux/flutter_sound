@@ -74,7 +74,7 @@ class FlautoRecorderPlugin
 	implements MethodCallHandler
 {
 	public static MethodChannel        channel;
-	public static List<FlautoRecorder> slots;
+	public static List<FlutterSoundRecorder> slots;
 
 	static Context              androidContext;
 	static FlautoRecorderPlugin flautoRecorderPlugin; // singleton
@@ -90,7 +90,7 @@ class FlautoRecorderPlugin
 		assert ( flautoRecorderPlugin == null );
 		flautoRecorderPlugin = new FlautoRecorderPlugin ();
 		assert ( slots == null );
-		slots   = new ArrayList<FlautoRecorder> ();
+		slots   = new ArrayList<FlutterSoundRecorder> ();
 		channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_recorder" );
 		channel.setMethodCallHandler ( flautoRecorderPlugin );
 		androidContext = ctx;
@@ -125,13 +125,13 @@ class FlautoRecorderPlugin
 			slots.add ( slotNo, null );
 		}
 
-		FlautoRecorder aRecorder = slots.get ( slotNo );
+		FlutterSoundRecorder aRecorder = slots.get ( slotNo );
 		switch ( call.method )
 		{
 			case "initializeFlautoRecorder":
 			{
 				assert ( slots.get ( slotNo ) == null );
-				aRecorder = new FlautoRecorder ( slotNo );
+				aRecorder = new FlutterSoundRecorder ( slotNo );
 				slots.set ( slotNo, aRecorder );
 				aRecorder.initializeFlautoRecorder ( call, result );
 			}
@@ -264,7 +264,7 @@ class RecorderAudioModel
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------
 
-public class FlautoRecorder
+public class FlutterSoundRecorder
 {
 	static boolean _isAndroidEncoderSupported[] = {
 		true, // DEFAULT
@@ -320,7 +320,7 @@ public class FlautoRecorder
 	private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor ();
 	private Handler mainHandler = new Handler();
 
-	FlautoRecorder ( int aSlotNo )
+	FlutterSoundRecorder ( int aSlotNo )
 	{
 		slotNo = aSlotNo;
 	}

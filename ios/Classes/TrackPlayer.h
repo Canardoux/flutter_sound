@@ -19,7 +19,7 @@
 
 
 #import <Flutter/Flutter.h>
-#import "FlautoPlayer.h"
+#import "FlutterSoundPlayer.h"
 
 extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 
@@ -33,7 +33,7 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 @end
 
 
-@interface TrackPlayer : FlautoPlayer
+@interface TrackPlayer : FlutterSoundPlayer
 {
 
 }

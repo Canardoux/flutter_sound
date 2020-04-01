@@ -72,7 +72,7 @@ class FlautoPlayerPlugin
 	implements MethodCallHandler
 {
 	public static MethodChannel      channel;
-	public static List<FlautoPlayer> slots;
+	public static List<FlutterSoundPlayer> slots;
 	static        Context            androidContext;
 	static        FlautoPlayerPlugin flautoPlayerPlugin; // singleton
 
@@ -84,7 +84,7 @@ class FlautoPlayerPlugin
 		assert ( flautoPlayerPlugin == null );
 		flautoPlayerPlugin = new FlautoPlayerPlugin ();
 		assert ( slots == null );
-		slots   = new ArrayList<FlautoPlayer> ();
+		slots   = new ArrayList<FlutterSoundPlayer> ();
 		channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_player" );
 		channel.setMethodCallHandler ( flautoPlayerPlugin );
 		androidContext = ctx;
@@ -121,14 +121,14 @@ class FlautoPlayerPlugin
 			slots.add ( slotNo, null );
 		}
 
-		FlautoPlayer aPlayer = slots.get ( slotNo );
+		FlutterSoundPlayer aPlayer = slots.get ( slotNo );
 		switch ( call.method )
 		{
 
 			case "initializeMediaPlayer":
 			{
 				assert ( slots.get ( slotNo ) == null );
-				aPlayer = new FlautoPlayer ( slotNo );
+				aPlayer = new FlutterSoundPlayer ( slotNo );
 				slots.set ( slotNo, aPlayer );
 				aPlayer.initializeFlautoPlayer ( call, result );
 
@@ -263,7 +263,7 @@ class PlayerAudioModel
 //-------------------------------------------------------------------------------------------------------------
 
 
-public class FlautoPlayer
+public class FlutterSoundPlayer
 {
 
 
@@ -315,7 +315,7 @@ public class FlautoPlayer
 	static final String ERR_PLAYER_IS_NULL    = "ERR_PLAYER_IS_NULL";
 	static final String ERR_PLAYER_IS_PLAYING = "ERR_PLAYER_IS_PLAYING";
 
-	FlautoPlayer ( int aSlotNo )
+	FlutterSoundPlayer ( int aSlotNo )
 	{
 		slotNo = aSlotNo;
 	}

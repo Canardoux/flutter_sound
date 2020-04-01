@@ -16,7 +16,7 @@
 
 
 
-#import "FlautoPlayer.h"
+#import "FlutterSoundPlayer.h"
 #import <AVFoundation/AVFoundation.h>
 
 
@@ -97,12 +97,12 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                [flautoPlayerSlots addObject: [NSNull null]];
         }
 
-        FlautoPlayer* aFlautoPlayer = flautoPlayerSlots[slotNo];
+        FlutterSoundPlayer* aFlautoPlayer = flautoPlayerSlots[slotNo];
         
         if ([@"initializeMediaPlayer" isEqualToString:call.method])
         {
                 assert (flautoPlayerSlots[slotNo] ==  [NSNull null] );
-                aFlautoPlayer = [[FlautoPlayer alloc] init: slotNo];
+                aFlautoPlayer = [[FlutterSoundPlayer alloc] init: slotNo];
                 flautoPlayerSlots[slotNo] = aFlautoPlayer;
                 [aFlautoPlayer initializeFlautoPlayer: call result:result];
         } else
@@ -191,7 +191,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 //---------------------------------------------------------------------------------------------
 
 
-@implementation FlautoPlayer
+@implementation FlutterSoundPlayer
 {
         NSURL *audioFileURL;
         //AVAudioPlayer* audioPlayer; // In the interface
@@ -201,7 +201,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 }
 
 
-- (FlautoPlayer*)init: (int)aSlotNo
+- (FlutterSoundPlayer*)init: (int)aSlotNo
 {
         slotNo = aSlotNo;
         return self;
