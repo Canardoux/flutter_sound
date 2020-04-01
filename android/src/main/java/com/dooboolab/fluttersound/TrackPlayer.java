@@ -434,22 +434,20 @@ public class TrackPlayer extends FlutterSoundPlayer
 	@Override
 	public void seekToPlayer(final MethodCall call,Result result )
 	{
+		int millis = call.argument ( "sec" ) ;
+
 		// Exit the method if a media browser helper was not initialized
 		if ( !wasMediaPlayerInitialized( result ) )
 		{
+			Log.d(TAG, "seekToPlayer ended with no initialization");
 			return;
 		}
 
-		if (this.model.getMediaPlayer() != null) {
-			int millis = this.model.getMediaPlayer().getCurrentPosition();
-			Log.d(TAG, "seekTo: " + millis);
+		mMediaBrowserHelper.seekTo(millis);
+		// Should declaratively change state: https://stackoverflow.com/questions/39719320/seekto-does-not-trigger-onplaybackstatechanged-in-mediacontrollercompat
+		mMediaBrowserHelper.playPlayback();
 
-			this.model.getMediaPlayer().seekTo(millis);
-			result.success( String.valueOf( millis ) );
-			return;
-		}
-
-		result.error( TAG, "mediaPlayer is null.", null );
+		result.success( String.valueOf( millis ) );
 	}
 
 	@Override
