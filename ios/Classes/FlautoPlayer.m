@@ -575,7 +575,6 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
 - (void)updateProgress:(NSTimer*) atimer
 {
-        assert(timer == atimer);
         NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
         NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
 
