@@ -217,12 +217,15 @@ void dispose() {
 
 #### Pause recorder
 
+On Android this API verb needs al least SDK24.
+
 ```dart
 Future<String> result = await flutterSoundRecorder.pauseRecorder();
 ```
 
 #### Resume recorder
 
+On Android this API verb needs al least SDK24.
 ```dart
 Future<String> result = await flutterSoundRecorder.resumeRecorder();
 ```
