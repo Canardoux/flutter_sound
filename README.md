@@ -12,12 +12,13 @@ This plugin can handle playback stream from native (To sync exact time with brid
 ![flauto](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
 
 ## Breaking News
-* `3.0.0` release has breaking features have been added by the work on code name `flauto` in [#243](https://github.com/dooboolab/flutter_sound/pull/243)
+
+- `3.0.0` release has breaking features have been added by the work on code name `flauto` in [#243](https://github.com/dooboolab/flutter_sound/pull/243)
   - OGG/OPUS support on iOS
   - Playing in lock screen
   - Playing in notification
   - Support tracking
-  > Please honor all wonderful contributors [Larpoux](https://github.com/Larpoux), [bsutton](https://github.com/bsutton), [salvatore373](https://github.com/salvatore373) :tada:!
+    > Please honor all wonderful contributors [Larpoux](https://github.com/Larpoux), [bsutton](https://github.com/bsutton), [salvatore373](https://github.com/salvatore373) :tada:!
 
 ## Free Read
 
@@ -32,7 +33,7 @@ For help getting started with Flutter, view our online
 
 For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).
 
-Add `flutter_sound` as a dependency in pubspec.yaml. The actual version is `flauto: ^3.0.0`
+Add `flutter_sound` as a dependency in pubspec.yaml. The actual version is `flauto: ^3.1.2`
 
 The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
 
@@ -235,6 +236,7 @@ Future<String> result = await flutterSoundRecorder.pauseRecorder();
 #### Resume recorder
 
 On Android this API verb needs al least SDK24.
+
 ```dart
 Future<String> result = await flutterSoundRecorder.resumeRecorder();
 ```
