@@ -117,7 +117,7 @@ class FlutterSoundRecorder {
   String savedUri; // Used by startRecorder/stopRecorder to keep the caller wanted uri
   String tmpUri; // Used by startRecorder/stopRecorder to keep the temporary uri to record CAF
 
-  bool get isRecording => (recorderState == t_RECORDER_STATE.IS_RECORDING || recorderState == t_RECORDER_STATE.IS_PAUSED);
+  bool get isRecording => (recorderState == t_RECORDER_STATE.IS_RECORDING ); //|| recorderState == t_RECORDER_STATE.IS_PAUSED);
 
   bool get isStopped => (recorderState == t_RECORDER_STATE.IS_STOPPED);
 

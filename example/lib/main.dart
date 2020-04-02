@@ -684,7 +684,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void startStopRecorder() {
-    if (recorderModule.isRecording)
+    if (recorderModule.isRecording || recorderModule.isPaused)
       stopRecorder();
     else
       startRecorder();

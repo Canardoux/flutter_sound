@@ -33,7 +33,7 @@ For help getting started with Flutter, view our online
 
 For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).
 
-Add `flutter_sound` as a dependency in pubspec.yaml. The actual version is `flauto: ^3.1.2`
+Add `flutter_sound` as a dependency in pubspec.yaml. The actual version is `flauto: ^3.1.3`
 
 The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
 
@@ -41,7 +41,7 @@ The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound)
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sound: ^3.0.0
+  flutter_sound: ^3.1.0
 ```
 
 ### FFmpeg

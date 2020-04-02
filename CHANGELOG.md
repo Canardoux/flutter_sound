@@ -1,3 +1,7 @@
+## 3.1.3
+
+- The `isRecording` variable is false when the recorder is paused
+
 ## 3.1.2
 
 - Flutter Sound depends on permission_handler: ^4.4.0 [#263](https://github.com/dooboolab/flutter_sound/issues/263)
