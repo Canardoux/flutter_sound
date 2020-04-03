@@ -1,3 +1,11 @@
+## 3.1.4
+
+- Change dependecies in range
+  ```
+  permission_handler: ">=4.0.0 <5.0.0"
+  flutter_ffmpeg: ">=0.2.0 <1.0.0"
+  ```
+
 ## 3.1.3
 
 - The `isRecording` variable is false when the recorder is paused
