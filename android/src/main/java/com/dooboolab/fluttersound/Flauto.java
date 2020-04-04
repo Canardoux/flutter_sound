@@ -92,9 +92,6 @@ public class Flauto
 	public void onAttachedToEngine ( FlutterPlugin.FlutterPluginBinding binding )
 	{
 		ctx = binding.getApplicationContext ();
-		//audioManager = ( AudioManager ) ctx.getSystemService ( Context.AUDIO_SERVICE );
-		//channel = new MethodChannel ( binding.getBinaryMessenger (), "flutter_sound" );
-		//channel.setMethodCallHandler ( flutterSoundPlugin );
 		FlautoPlayerPlugin.attachFlautoPlayer ( ctx, binding.getBinaryMessenger () );
 		FlautoRecorderPlugin.attachFlautoRecorder ( ctx, binding.getBinaryMessenger () );
 		TrackPlayerPlugin.attachTrackPlayer ( ctx, binding.getBinaryMessenger () );
@@ -108,13 +105,11 @@ public class Flauto
 	{
 		reg = registrar;
 		ctx = registrar.context ();
-		//flutterSoundPlugin.audioManager = (AudioManager) flutterSoundPlugin.ctx
-		//.getSystemService(Context.AUDIO_SERVICE);
-		//audioManager = (AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
-		//channel = new MethodChannel(registrar.messenger(), "flutter_sound");
-		//channel.setMethodCallHandler(flutterSoundPlugin);
 		androidActivity = registrar.activity ();
 		FlautoPlayerPlugin.attachFlautoPlayer ( ctx, registrar.messenger () );
+		FlautoRecorderPlugin.attachFlautoRecorder ( ctx, registrar.messenger ()  );
+		TrackPlayerPlugin.attachTrackPlayer ( ctx, registrar.messenger ()  );
+
 	}
 
 

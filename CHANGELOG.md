@@ -1,3 +1,8 @@
+
+## 3.1.5
+
+- Fix a bug when initializing for Flutter Embedded V1 on Android [#267](https://github.com/dooboolab/flutter_sound/issues/267)
+
 ## 3.1.4
 
 - Change dependecies in range
@@ -8,7 +13,7 @@
 
 ## 3.1.3
 
-- The `isRecording` variable is false when the recorder is paused
+- The `isRecording` variable is false when the recorder is paused [#266](https://github.com/dooboolab/flutter_sound/issues/266)
 
 ## 3.1.2
 
