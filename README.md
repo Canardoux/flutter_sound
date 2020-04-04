@@ -68,7 +68,7 @@ Please, look to [flutter_ffmpeg documentation](https://pub.dev/packages/flutter_
   end
 ```
 
-- On Android you will have to enter the following line in your `pubspec.yaml` file.
+- On Android you will have to enter the following line in your `android/build.gradle` file.
 
 ```
 ext.flutterFFmpegPackage = 'audio-lts'
