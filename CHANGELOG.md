@@ -7,6 +7,7 @@
 - On iOS, ```setMeteringEnabled:YES``` is called during ```setDbLevelEnabled()``` [#252](https://github.com/dooboolab/flutter_sound/pull/252), [#251](https://github.com/dooboolab/flutter_sound/issues/251)
 - The call to ```initialize()``` is now obsolete [271](https://github.com/dooboolab/flutter_sound/issues/271)
 - README : [#265](https://github.com/dooboolab/flutter_sound/issues/265)
+- Codec PCM for recorder on iOS
 
 ## 3.1.5
 
