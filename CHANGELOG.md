@@ -5,6 +5,8 @@
 - Add _removePlayerCallback, _removeRecorderCallback() and _removeDbPeakCallback() inside release() [#248](https://github.com/dooboolab/flutter_sound/pull/248)
 - Fix conflict with permission_handler 5.x.x [#274](https://github.com/dooboolab/flutter_sound/pull/274)
 - On iOS, ```setMeteringEnabled:YES``` is called during ```setDbLevelEnabled()``` [#252](https://github.com/dooboolab/flutter_sound/pull/252), [#251](https://github.com/dooboolab/flutter_sound/issues/251)
+- The call to ```initialize()``` is now obsolete [271](https://github.com/dooboolab/flutter_sound/issues/271)
+- README : [#265](https://github.com/dooboolab/flutter_sound/issues/265)
 
 ## 3.1.5
 
