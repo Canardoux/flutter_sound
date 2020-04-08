@@ -262,9 +262,9 @@ class FlutterSoundRecorder {
     IosQuality iosQuality = IosQuality.LOW,
   }) async {
     // Request Microphone permission if needed
-    Map<PermissionGroup, PermissionStatus> permission = await PermissionHandler().requestPermissions([PermissionGroup.microphone]);
-    if (permission[PermissionGroup.microphone] != PermissionStatus.granted) throw new Exception("Microphone permission not granted");
-
+     PermissionStatus status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) throw new Exception("Microphone permission not granted");
+   
     if (recorderState != null && recorderState != t_RECORDER_STATE.IS_STOPPED) {
       throw new RecorderRunningException('Recorder is not stopped.');
     }

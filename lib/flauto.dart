@@ -28,7 +28,6 @@ import 'package:flutter_sound/flutter_sound_player.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
-import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 

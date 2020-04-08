@@ -27,7 +27,6 @@ import 'package:flutter_sound/ios_quality.dart';
 import 'package:flutter_sound/flauto.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
-import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 
 enum t_PLAYER_STATE {
