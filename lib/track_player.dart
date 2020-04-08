@@ -70,7 +70,7 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
     return getChannel().invokeMethod(methodName, call);
   }
 
-  Future<dynamic> channelMethodCallHandler(MethodCall call) // This procedure is superCharged in "flauto"
+  Future<dynamic> channelMethodCallHandler(MethodCall call)
   {
     int slotNo = call.arguments['slotNo'];
     TrackPlayer aTrackPlayer = slots[slotNo];
@@ -99,7 +99,7 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
 
 class TrackPlayer extends FlutterSoundPlayer {
   //static const MethodChannel _channel = const MethodChannel( 'xyz.canardoux.track_player' );
-  StreamController<t_PLAYER_STATE> _playbackStateChangedController;
+  //StreamController<t_PLAYER_STATE> _playbackStateChangedController;
   t_onSkip onSkipForward; // User callback "whenPaused:"
   t_onSkip onSkipBackward; // User callback "whenPaused:"
 
@@ -146,10 +146,10 @@ class TrackPlayer extends FlutterSoundPlayer {
         onSkipBackward = null;
         onSkipForward = null;
 
-        if (_playbackStateChangedController == null) {
-          _playbackStateChangedController = StreamController.broadcast();
-          _playbackStateChangedController.close();
-        }
+        //if (_playbackStateChangedController == null) {
+          //_playbackStateChangedController = StreamController.broadcast();
+          //_playbackStateChangedController.close();
+        //}
 
         // Add the method call handler
         //getChannel( ).setMethodCallHandler( channelMethodCallHandler );
@@ -164,25 +164,29 @@ class TrackPlayer extends FlutterSoundPlayer {
 /// Resets the media player and cleans up the device resources. This must be
   /// called when the player is no longer needed.
   Future<void> release() async {
-    try {
-      isInited = false;
-      // Stop the player playback before releasing
-      await stopPlayer();
-      await invokeMethod('releaseMediaPlayer', {});
+    if (isInited) {
+      try
+      {
+        isInited = false;
+        // Stop the player playback before releasing
+        await stopPlayer( );
+        await invokeMethod( 'releaseMediaPlayer', {} );
 
-      _removePlaybackStateCallback();
-      _removePlayerCallback(); // playerController is closed by this function
+        _removePlayerCallback( ); // playerController is closed by this function
 
-      //playerController?.close();
+        //playerController?.close();
 
-      onSkipBackward = null;
-      onSkipForward = null;
-    } catch (err) {
-      print('err: $err');
-      throw err;
+        onSkipBackward = null;
+        onSkipForward = null;
+      }
+      catch (err)
+      {
+        print( 'err: $err' );
+        throw err;
+      }
+      getPlugin( ).freeSlot( slotNo );
+      slotNo = null;
     }
-    getPlugin().freeSlot(slotNo);
-    slotNo = null;
   }
 
   void skipForward(Map call) {
@@ -202,9 +206,9 @@ class TrackPlayer extends FlutterSoundPlayer {
     }
     if (playerController != null)
       playerController.add(status);
-    if (_playbackStateChangedController != null) {
-      _playbackStateChangedController.add(t_PLAYER_STATE.IS_STOPPED);
-    }
+    //if (_playbackStateChangedController != null) {
+      //_playbackStateChangedController.add(t_PLAYER_STATE.IS_STOPPED);
+    //}
     playerState = t_PLAYER_STATE.IS_STOPPED;
     if (audioPlayerFinishedPlaying != null) {
       audioPlayerFinishedPlaying();
@@ -233,6 +237,7 @@ class TrackPlayer extends FlutterSoundPlayer {
       throw PlayerRunningException('The selected codec is not supported on '
           'this platform.');
     }
+    initialize();
 
     await track._adaptOggToIos();
 
@@ -265,6 +270,7 @@ class TrackPlayer extends FlutterSoundPlayer {
     t_CODEC codec,
     whenFinished(),
   }) {
+    initialize();
     final track = Track(trackPath: fileUri, codec: codec);
     return startPlayerFromTrack(track, whenFinished: whenFinished);
   }
@@ -275,16 +281,11 @@ class TrackPlayer extends FlutterSoundPlayer {
     t_CODEC codec,
     whenFinished(),
   }) {
+    initialize();
     final track = Track(dataBuffer: dataBuffer, codec: codec);
     return startPlayerFromTrack(track, whenFinished: whenFinished);
   }
 
-  void _removePlaybackStateCallback() {
-    if (_playbackStateChangedController != null) {
-      _playbackStateChangedController.close();
-      _playbackStateChangedController = null;
-    }
-  }
 
   void _removePlayerCallback() {
     if (playerController != null) {

@@ -273,7 +273,7 @@ public class FlutterSoundRecorder
 		false, // CAF/OPUS
 		false, // MP3
 		false, // OGG/VORBIS
-		false, // WAV/PCM
+		false, //PCM
 	};
 
 	final static int CODEC_OPUS   = 2;
@@ -282,9 +282,12 @@ public class FlutterSoundRecorder
 
 	static int codecArray[] = {
 		0 // DEFAULT
-		, MediaRecorder.AudioEncoder.AAC, sdkCompat.AUDIO_ENCODER_OPUS, 0, // CODEC_CAF_OPUS (specific Apple)
+		, MediaRecorder.AudioEncoder.AAC,
+		sdkCompat.AUDIO_ENCODER_OPUS,
+		0, // CODEC_CAF_OPUS (specific Apple)
 		0,// CODEC_MP3 (not implemented)
-		sdkCompat.AUDIO_ENCODER_VORBIS, 0 // CODEC_PCM (not implemented)
+		sdkCompat.AUDIO_ENCODER_VORBIS,
+		7 // MediaRecorder.AudioEncoder.DEFAULT // CODEC_PCM (not implemented)
 	};
 
 
@@ -295,7 +298,7 @@ public class FlutterSoundRecorder
 		, 0 // CODEC_CAF_OPUS (this is apple specific)
 		, 0 // CODEC_MP3
 		, sdkCompat.OUTPUT_FORMAT_OGG // CODEC_VORBIS
-		, 0 // CODEC_PCM
+		, sdkCompat.ENCODING_PCM_16BIT// CODEC_PCM
 	};
 
 	static       String pathArray[]               = {
@@ -305,7 +308,7 @@ public class FlutterSoundRecorder
 		, "sound.caf" // CODEC_CAF_OPUS (this is apple specific)
 		, "sound.mp3" // CODEC_MP3
 		, "sound.ogg" // CODEC_VORBIS
-		, "sound.wav" // CODEC_PCM
+		, "sound.pcm" // CODEC_PCM
 	};
 	static final String ERR_RECORDER_IS_NULL      = "ERR_RECORDER_IS_NULL";
 	static final String ERR_RECORDER_IS_RECORDING = "ERR_RECORDER_IS_RECORDING";
@@ -424,8 +427,8 @@ public class FlutterSoundRecorder
 		{
 			if ( codecArray[ codec.ordinal () ] == 0 )
 			{
-				result.error ( TAG, "UNSUPPORTED", "Unsupported encoder" );
-				return;
+				//result.error ( TAG, "UNSUPPORTED", "Unsupported encoder" );
+				//return;
 			}
 			mediaRecorder.reset();
 			mediaRecorder.setAudioSource ( androidAudioSource );

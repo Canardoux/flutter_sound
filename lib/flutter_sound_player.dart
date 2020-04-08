@@ -136,7 +136,7 @@ class FlautoPlayerPlugin {
     return getChannel().invokeMethod(methodName, call);
   }
 
-  Future<dynamic> channelMethodCallHandler(MethodCall call) // This procedure is superCharged in "flauto"
+  Future<dynamic> channelMethodCallHandler(MethodCall call)
   {
     int slotNo = call.arguments['slotNo'];
     FlutterSoundPlayer aPlayer = slots[slotNo];
@@ -165,17 +165,6 @@ class FlautoPlayerPlugin {
         }
         break;
 
-/*
-                        case 'skipForward':
-                                {
-                                        aPlayer.skipBackward( call.arguments );
-                                }
-                                break;
-
-                        case 'skipBackward':
-                                {}
-                                break;
-*/
       default:
         throw new ArgumentError('Unknown method ${call.method}');
     }
@@ -229,14 +218,17 @@ class FlutterSoundPlayer {
   }
 
   Future<void> release() async {
-    isInited = false;
-    await stopPlayer();
-    _removePlayerCallback(); // playerController is closed by this function
-    await invokeMethod('releaseMediaPlayer', {});
-    playerController?.close();
+    if (isInited)
+    {
+      isInited = false;
+      await stopPlayer( );
+      _removePlayerCallback( ); // playerController is closed by this function
+      await invokeMethod( 'releaseMediaPlayer', {} );
+      playerController?.close( );
 
-    getPlugin().freeSlot(slotNo);
-    slotNo = null;
+      getPlugin( ).freeSlot( slotNo );
+      slotNo = null;
+    }
   }
 
 
@@ -270,16 +262,11 @@ void updateProgress(Map call) {
   void resume(Map call) {
     if (whenPause != null) whenPause(false);
   }
-/*
-        void skipBackward( Map call)
-        {
-                if (onSkipBackward != null) onSkipBackward( );
-        }
-*/
 
   /// Returns true if the specified decoder is supported by flutter_sound on this platform
   Future<bool> isDecoderSupported(t_CODEC codec) async {
     bool result;
+    initialize();
     // For decoding ogg/opus on ios, we need to support two steps :
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
@@ -299,6 +286,7 @@ void updateProgress(Map call) {
   /// After calling this function, the caller is responsible for using correctly setActive
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
   Future<bool> iosSetCategory(t_IOS_SESSION_CATEGORY category, t_IOS_SESSION_MODE mode, int options) async {
+    initialize();
     if (!Platform.isIOS) return false;
     bool r = await invokeMethod('iosSetCategory', <String, dynamic>{'category': iosSessionCategory[category.index], 'mode': iosSessionMode[mode.index], 'options': options});
     return r;
@@ -310,6 +298,7 @@ void updateProgress(Map call) {
   /// After calling this function, the caller is responsible for using correctly setActive
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
   Future<bool> androidAudioFocusRequest(int focusGain) async {
+    initialize();
     if (!Platform.isAndroid) return false;
     bool r = await invokeMethod('androidAudioFocusRequest', <String, dynamic>{'focusGain': focusGain});
     return r;
@@ -317,11 +306,13 @@ void updateProgress(Map call) {
 
   ///  The caller can manage his audio focus with this function
   Future<bool> setActive(bool enabled) async {
+    initialize();
     bool r = await invokeMethod('setActive', <String, dynamic>{'enabled': enabled});
     return r;
   }
 
   Future<String> setSubscriptionDuration(double sec) async {
+    initialize();
     String r = await invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'sec': sec,
     });
@@ -396,22 +387,22 @@ void updateProgress(Map call) {
     }
   }
 
-  Future<String> startPlayer(
-    String uri, {
-    t_CODEC codec,
-    whenFinished(),
-  }) =>
-      _startPlayer('startPlayer', {
-        'path': uri,
-        'codec': codec,
-        'whenFinished': whenFinished,
-      });
+  Future<String> startPlayer( String uri, {t_CODEC codec, whenFinished(),})
+  {
+    initialize();
+    return _startPlayer( 'startPlayer', {
+      'path': uri,
+      'codec': codec,
+      'whenFinished': whenFinished,
+    } );
+  }
 
   Future<String> startPlayerFromBuffer(
     Uint8List dataBuffer, {
     t_CODEC codec,
     whenFinished(),
   }) async {
+    initialize();
     // If we want to play OGG/OPUS on iOS, we need to remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We write the data in a temporary file before calling ffmpeg.
     if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS)) {
@@ -477,6 +468,7 @@ void updateProgress(Map call) {
   }
 
   Future<String> seekToPlayer(int milliSecs) async {
+    initialize();
     String r = await invokeMethod('seekToPlayer', <String, dynamic>{
       'sec': milliSecs,
     });
@@ -484,6 +476,7 @@ void updateProgress(Map call) {
   }
 
   Future<String> setVolume(double volume) async {
+    initialize();
     double indexedVolume = Platform.isIOS ? volume * 100 : volume;
     if (volume < 0.0 || volume > 1.0) {
       throw RangeError('Value of volume should be between 0.0 and 1.0.');

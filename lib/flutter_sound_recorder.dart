@@ -148,13 +148,15 @@ class FlutterSoundRecorder {
   }
 
   Future<void> release() async {
-    isInited = false;
-    await stopRecorder();
-    _removeRecorderCallback(); // _recorderController will be closed by this function
-    _removeDbPeakCallback(); // _dbPeakController will be closed by this function
-    await invokeMethod('releaseFlautoRecorder', {});
-    getPlugin().freeSlot(slotNo);
-    slotNo = null;
+    if (isInited) {
+      isInited = false;
+      await stopRecorder( );
+      _removeRecorderCallback( ); // _recorderController will be closed by this function
+      _removeDbPeakCallback( ); // _dbPeakController will be closed by this function
+      await invokeMethod( 'releaseFlautoRecorder', {} );
+      getPlugin( ).freeSlot( slotNo );
+      slotNo = null;
+    }
   }
 
 
@@ -170,6 +172,7 @@ class FlutterSoundRecorder {
 
   /// Returns true if the specified encoder is supported by flutter_sound on this platform
   Future<bool> isEncoderSupported(t_CODEC codec) async {
+    initialize();
     bool result;
     // For encoding ogg/opus on ios, we need to support two steps :
     // - encode CAF/OPPUS (with native Apple AVFoundation)
@@ -213,6 +216,7 @@ class FlutterSoundRecorder {
   }
 
   Future<String> setSubscriptionDuration(double sec) async {
+    initialize();
     String r = await invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'sec': sec,
     });
@@ -222,6 +226,7 @@ class FlutterSoundRecorder {
   /// Defines the interval at which the peak level should be updated.
   /// Default is 0.8 seconds
   Future<String> setDbPeakLevelUpdate(double intervalInSecs) async {
+    initialize();
     String r = await invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
       'intervalInSecs': intervalInSecs,
     });
@@ -230,6 +235,7 @@ class FlutterSoundRecorder {
 
   /// Enables or disables processing the Peak level in db's. Default is disabled
   Future<String> setDbLevelEnabled(bool enabled) async {
+    initialize();
     String r = await invokeMethod('setDbLevelEnabled', <String, dynamic>{
       'enabled': enabled,
     });
@@ -261,10 +267,11 @@ class FlutterSoundRecorder {
     AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.DEFAULT,
     IosQuality iosQuality = IosQuality.LOW,
   }) async {
+    initialize();
     // Request Microphone permission if needed
      PermissionStatus status = await Permission.microphone.request();
     if (status != PermissionStatus.granted) throw new Exception("Microphone permission not granted");
-   
+
     if (recorderState != null && recorderState != t_RECORDER_STATE.IS_STOPPED) {
       throw new RecorderRunningException('Recorder is not stopped.');
     }

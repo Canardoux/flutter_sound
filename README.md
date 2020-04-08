@@ -33,7 +33,7 @@ For help getting started with Flutter, view our online
 
 For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).
 
-Add `flutter_sound` as a dependency in pubspec.yaml. The actual version is `flauto: ^3.1.5`
+Add `flutter_sound` as a dependency in pubspec.yaml. The actual version is `flauto: 3.1.6`
 
 The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
 
@@ -69,6 +69,7 @@ Please, look to [flutter_ffmpeg documentation](https://pub.dev/packages/flutter_
 ```
 
 - On Android you will have to enter the following line in your `android/build.gradle` file.
+This is a global specification : you can add this line everywhere. For example at the beginning or the end of the file.
 
 ```
 ext.flutterFFmpegPackage = 'audio-lts'
@@ -137,7 +138,7 @@ Actually, the following codecs are supported by flutter_sound:
 
 |                 | AAC | OGG/Opus | CAF/Opus | MP3 | OGG/Vorbis | PCM |
 | :-------------- | :-: | :------: | :------- | :-- | :--------- | :-- |
-| iOS encoder     | Yes |   Yes    | Yes      | No  | No         | No  |
+| iOS encoder     | Yes |   Yes    | Yes      | No  | No         | Yes |
 | iOS decoder     | Yes |   Yes    | Yes      | Yes | No         | Yes |
 | Android encoder | Yes |    No    | No       | No  | No         | No  |
 | Android decoder | Yes |   Yes    | No       | Yes | Yes        | Yes |
@@ -184,20 +185,20 @@ File outputFile = await File ('${tempDir.path}/flutter_sound-tmp.aac');
 String path = await flutterSoundRecorder.startRecorder(outputFile.path, codec: t_CODEC.CODEC_AAC,);
 ```
 
-Actually on iOS, you can choose from three encoders :
+Actually on iOS, you can choose from four encoders :
 
 - AAC (this is the default)
 - CAF/OPUS
 - OGG/OPUS
+- PCM
 
-Recently, Apple added a support for encoding with the standard OPUS codec. Unfortunatly, Apple encapsulates its data in its own proprietary envelope : CAF. This is really stupid, this is Apple.
-To encode with OPUS you do the following :
+For example, to encode with OPUS you do the following :
 
 ```dart
 await flutterSoundRecorder.startRecorder(foot.path, codec: t_CODEC.CODEC_OPUS,)
 ```
 
-On Android the OPUS codec is not yet supported by flutter_sound Recorder. (But Player is OK on Android)
+Note : On Android the OPUS codec and the PCM are not yet supported by flutter_sound Recorder. (But Player is OK on Android)
 
 #### Stop recorder
 
@@ -227,7 +228,7 @@ void dispose() {
 
 #### Pause recorder
 
-On Android this API verb needs al least SDK24.
+On Android this API verb needs al least SDK-24.
 
 ```dart
 Future<String> result = await flutterSoundRecorder.pauseRecorder();
@@ -235,7 +236,7 @@ Future<String> result = await flutterSoundRecorder.pauseRecorder();
 
 #### Resume recorder
 
-On Android this API verb needs al least SDK24.
+On Android this API verb needs al least SDK-24.
 
 ```dart
 Future<String> result = await flutterSoundRecorder.resumeRecorder();
@@ -383,7 +384,7 @@ Overload your widget's dispose() method to stop the player when your widget is d
 ```dart
 @override
 void dispose() {
-	flutterSoundPlayer.stopPlayer();
+	flutterSoundPlayer.release();
 	super.dispose();
 }
 ```
@@ -482,7 +483,7 @@ Using TrackPlayer is very simple : just use the TrackPlayer constructor instead 
 trackPlayer = TrackPlayer();
 ```
 
-You must `startPlayerFromTrack` to play a sound. This function takes in 1 required argument and 3 optional arguments:
+You call `startPlayerFromTrack` to play a sound. This function takes in 1 required argument and 3 optional arguments:
 
 - a `Track`, which is the track that the player is going to play;
 - `whenFinished:()` : A call back function for specifying what to do when the song is finished
@@ -558,7 +559,7 @@ There are two utilities functions that you can use to have informations on a fil
 - FlutterSoundHelper.duration(_<A_file_path>_)
 
 The informations got with FFmpegGetMediaInformation() are [documented here](https://pub.dev/packages/flutter_ffmpeg).
-The integer returned by flutterSound.duration() is the number of milli-seconds for the given record.
+The integer returned by flutterSound.duration() is an estimation of the number of milli-seconds for the given record.
 
 ```
 int duration = await flutterSoundHelper.duration( this._path[_codec.index] );
@@ -570,6 +571,9 @@ Map<dynamic, dynamic> info = await flutterSoundHelper.FFmpegGetMediaInformation(
 - [x] Seeking example in `Example` project
 - [x] Volume Control
 - [x] Sync timing for recorder callback handler
+- [ ] Record PCM on Android
+- [ ] Record OPUS on Android
+- [ ] Streaming records to speech to text
 
 ### DEBUG
 

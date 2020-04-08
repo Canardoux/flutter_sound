@@ -228,6 +228,8 @@ class sdkCompat
 	static final int AUDIO_ENCODER_OPUS   = 7; // MediaRecorder.AudioEncoder.OPUS added in API level 29
 	static final int OUTPUT_FORMAT_OGG    = 11; // MediaRecorder.OutputFormat.OGG added in API level 29
 	static final int VERSION_CODES_M      = 23; // added in API level 23
+	static final int ENCODING_PCM_16BIT   = 2;
+	static final int ENCODING_OPUS        = 20; // Android R
 }
 
 class PlayerAudioModel

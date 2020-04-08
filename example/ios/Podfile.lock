@@ -10,7 +10,7 @@ PODS:
     - Flutter
   - path_provider_macos (0.0.1):
     - Flutter
-  - "permission_handler (4.4.0+hotfix.4)":
+  - "permission_handler (5.0.0+hotfix.3)":
     - Flutter
 
 DEPENDENCIES:
@@ -46,7 +46,7 @@ SPEC CHECKSUMS:
   mobile-ffmpeg-audio: adc36047b8032bc0f8e5c4e6ab7cb110189d9b37
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
-  permission_handler: 8278954f2382902f63f00dd8828769c0bd6d511b
+  permission_handler: 4a985b5448897c27fdeadde84f7452520c0e6c58
 
 PODFILE CHECKSUM: 984ca4e2f5a85740acf68367b99ccc29ae2db14b
 

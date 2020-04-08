@@ -195,7 +195,7 @@ class _MyAppState extends State<MyApp> {
     'flutter_sound_example.caf', // CODEC_CAF_OPUS
     'flutter_sound_example.mp3', // CODEC_MP3
     'flutter_sound_example.ogg', // CODEC_VORBIS
-    'flutter_sound_example.wav', // CODEC_PCM
+    'flutter_sound_example.pcm', // CODEC_PCM
   ];
 
   void startRecorder() async {
@@ -334,7 +334,7 @@ class _MyAppState extends State<MyApp> {
     'assets/samples/sample.caf',
     'assets/samples/sample.mp3',
     'assets/samples/sample.ogg',
-    'assets/samples/sample.wav',
+    'assets/samples/sample.pcm',
   ];
 
   void _addListeners() {

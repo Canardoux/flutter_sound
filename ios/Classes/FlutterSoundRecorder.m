@@ -38,7 +38,7 @@ static bool _isIosEncoderSupported [] =
     true, // CAF/OPUS
     false, // MP3
     false, // OGG/VORBIS
-    false, // WAV/PCM
+    true, // PCM
 };
 
 static NSString* defaultExtensions [] =
@@ -49,7 +49,7 @@ static NSString* defaultExtensions [] =
         , @"sound.caf"        // CODEC_CAF_OPUS
         , @"sound.mp3"        // CODEC_MP3
         , @"sound.ogg"        // CODEC_VORBIS
-        , @"sound.wav"        // CODE_PCM
+        , @"sound.pcm"        // CODE_PCM
 };
 
 static AudioFormatID formats [] =
@@ -60,7 +60,7 @@ static AudioFormatID formats [] =
         , kAudioFormatOpus        // CODEC_CAF_OPUS
         , 0                        // CODEC_MP3
         , 0                        // CODEC_OGG
-        , 0                        // CODEC_PCM
+        , kAudioFormatLinearPCM    // CODEC_PCM
 };
 
 
@@ -394,7 +394,8 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
 
 - (void)setDbLevelEnabled:(BOOL)enabled result: (FlutterResult)result
 {
-        shouldProcessDbLevel = enabled == YES;
+        shouldProcessDbLevel = (enabled == YES);
+        [audioRecorder setMeteringEnabled: (enabled == YES)];
         result(@"setDbLevelEnabled");
 }
 
