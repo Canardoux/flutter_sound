@@ -105,9 +105,9 @@ class TrackPlayer extends FlutterSoundPlayer {
 
   @override
   TrackPlayer() {
-    if (!isInited) {
-      initialize();
-    }
+    //if (!isInited) {
+      //initialize();
+    //}
   }
 
   TrackPlayerPlugin getPlugin() => trackPlayerPlugin;
@@ -148,6 +148,7 @@ class TrackPlayer extends FlutterSoundPlayer {
 
         if (_playbackStateChangedController == null) {
           _playbackStateChangedController = StreamController.broadcast();
+          _playbackStateChangedController.close();
         }
 
         // Add the method call handler
@@ -159,7 +160,8 @@ class TrackPlayer extends FlutterSoundPlayer {
     return this;
   }
 
-  /// Resets the media player and cleans up the device resources. This must be
+
+/// Resets the media player and cleans up the device resources. This must be
   /// called when the player is no longer needed.
   Future<void> release() async {
     try {
@@ -169,7 +171,10 @@ class TrackPlayer extends FlutterSoundPlayer {
       await invokeMethod('releaseMediaPlayer', {});
 
       _removePlaybackStateCallback();
-      _removePlayerCallback();
+      _removePlayerCallback(); // playerController is closed by this function
+
+      //playerController?.close();
+
       onSkipBackward = null;
       onSkipForward = null;
     } catch (err) {
@@ -195,7 +200,8 @@ class TrackPlayer extends FlutterSoundPlayer {
     if (status.currentPosition != status.duration) {
       status.currentPosition = status.duration;
     }
-    if (playerController != null) playerController.add(status);
+    if (playerController != null)
+      playerController.add(status);
     if (_playbackStateChangedController != null) {
       _playbackStateChangedController.add(t_PLAYER_STATE.IS_STOPPED);
     }
@@ -204,6 +210,8 @@ class TrackPlayer extends FlutterSoundPlayer {
       audioPlayerFinishedPlaying();
       audioPlayerFinishedPlaying = null;
     }
+    _removePlayerCallback(); // playerController is closed by this function
+
   }
 
   /// Plays the given [track]. [canSkipForward] and [canSkipBackward] must be

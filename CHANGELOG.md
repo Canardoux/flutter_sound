@@ -1,7 +1,12 @@
 
-## 3.1.5
+## 3.1.6
 
 - Fix a bug when initializing for Flutter Embedded V1 on Android [#267](https://github.com/dooboolab/flutter_sound/issues/267)
+- Add _removePlayerCallback, _removeRecorderCallback() and _removeDbPeakCallback() inside release() [#248](https://github.com/dooboolab/flutter_sound/pull/248)
+
+## 3.1.5
+
+- Fix README : [#268](https://github.com/dooboolab/flutter_sound/pull/268)
 
 ## 3.1.4
 

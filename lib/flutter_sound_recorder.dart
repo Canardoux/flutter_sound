@@ -150,11 +150,14 @@ class FlutterSoundRecorder {
   Future<void> release() async {
     isInited = false;
     await stopRecorder();
-    _removeRecorderCallback();
+    _removeRecorderCallback(); // _recorderController will be closed by this function
+    _removeDbPeakCallback(); // _dbPeakController will be closed by this function
     await invokeMethod('releaseFlautoRecorder', {});
     getPlugin().freeSlot(slotNo);
     slotNo = null;
   }
+
+
 
   void upgradeRecorderProgress(Map call) {
     Map<String, dynamic> result = json.decode(call['arg']);

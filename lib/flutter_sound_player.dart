@@ -232,13 +232,17 @@ class FlutterSoundPlayer {
   Future<void> release() async {
     isInited = false;
     await stopPlayer();
-    _removePlayerCallback();
+    _removePlayerCallback(); // playerController is closed by this function
     await invokeMethod('releaseMediaPlayer', {});
+    playerController?.close();
+
     getPlugin().freeSlot(slotNo);
     slotNo = null;
   }
 
-  void updateProgress(Map call) {
+
+
+void updateProgress(Map call) {
     String arg = call['arg'];
     Map<String, dynamic> result = jsonDecode(arg);
     if (playerController != null) playerController.add(new PlayStatus.fromJSON(result));
@@ -256,6 +260,7 @@ class FlutterSoundPlayer {
 
     playerState = t_PLAYER_STATE.IS_STOPPED;
     _removePlayerCallback();
+
     if (audioPlayerFinishedPlaying != null) audioPlayerFinishedPlaying();
   }
 
@@ -435,6 +440,7 @@ class FlutterSoundPlayer {
     audioPlayerFinishedPlaying = null;
 
     try {
+      _removePlayerCallback(); // playerController is closed by this function
       String result = await invokeMethod('stopPlayer', {});
       return result;
     } catch (e) {}
