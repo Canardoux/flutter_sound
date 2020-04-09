@@ -15,11 +15,7 @@
  */
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
-import 'dart:io';
-import 'dart:io' show Platform;
-import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/track_player.dart';
@@ -67,7 +63,8 @@ class FlutterSoundHelper {
   Future<int> getLastFFmpegReturnCode() {
     //if(_flutterFFmpeg == null)
     //_flutterFFmpeg = new FlutterFFmpeg();
-    if (_flutterFFmpegConfig == null) _flutterFFmpegConfig = new FlutterFFmpegConfig();
+    if (_flutterFFmpegConfig == null)
+      _flutterFFmpegConfig = new FlutterFFmpegConfig();
     return _flutterFFmpegConfig.getLastReturnCode();
     /*
         try
@@ -92,7 +89,8 @@ class FlutterSoundHelper {
   /// This method does not support executing multiple concurrent commands. If you execute multiple commands at the same time, this method will return output from all executions.
   /// [disableRedirection()] method also disables this functionality.
   Future<String> getLastFFmpegCommandOutput() async {
-    if (_flutterFFmpegConfig == null) _flutterFFmpegConfig = new FlutterFFmpegConfig();
+    if (_flutterFFmpegConfig == null)
+      _flutterFFmpegConfig = new FlutterFFmpegConfig();
     return _flutterFFmpegConfig.getLastCommandOutput();
     /*
         try
@@ -124,7 +122,7 @@ class FlutterSoundHelper {
     if (uri == null) return null;
     Map<dynamic, dynamic> info = await FFmpegGetMediaInformation(uri);
     if (info == null) return null;
-    int duration = info['duration'];
+    int duration = info['duration'] as int;
     return duration;
   }
 }
@@ -133,6 +131,7 @@ class FlutterSoundHelper {
 /// New users must use the class TrackPlayer
 @deprecated
 class Flauto extends FlutterSound {
+  TrackPlayer trackPlayer;
   Flauto() {
     initializeMediaPlayer();
   }
@@ -147,13 +146,12 @@ class Flauto extends FlutterSound {
   Future<String> startPlayerFromTrack(
     Track track, {
     t_CODEC codec,
-    t_whenFinished whenFinished,
-    t_whenPaused whenPaused,
-    t_onSkip onSkipForward = null,
-    t_onSkip onSkipBackward = null,
+    TWhenFinished whenFinished,
+    TwhenPaused whenPaused,
+    TonSkip onSkipForward = null,
+    TonSkip onSkipBackward = null,
   }) async {
-    TrackPlayer player = soundPlayer;
-    await player.startPlayerFromTrack(
+    return await trackPlayer.startPlayerFromTrack(
       track,
       whenFinished: whenFinished,
       onSkipBackward: onSkipBackward,

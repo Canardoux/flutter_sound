@@ -22,8 +22,6 @@ import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/services.dart';
-import 'package:flutter_sound/android_encoder.dart';
-import 'package:flutter_sound/ios_quality.dart';
 import 'package:flutter_sound/flauto.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
@@ -92,10 +90,10 @@ const int IOS_ALLOW_BLUETOOTH_A2DP = 0x20;
 const int IOS_ALLOW_AIR_PLAY = 0x40;
 const int IOS_DEFAULT_TO_SPEAKER = 0x8;
 
-typedef void t_whenFinished();
-typedef void t_whenPaused(bool paused);
-typedef void t_onSkip();
-typedef void t_updateProgress(int current, int max);
+typedef void TWhenFinished();
+typedef void TwhenPaused(bool paused);
+typedef void TonSkip();
+typedef void TupdateProgress(int current, int max);
 
 FlautoPlayerPlugin flautoPlayerPlugin; // Singleton, lazy initialized
 List<FlutterSoundPlayer> slots = [];
@@ -133,35 +131,35 @@ class FlautoPlayerPlugin {
   MethodChannel getChannel() => channel;
 
   Future<dynamic> invokeMethod(String methodName, Map<String, dynamic> call) {
-    return getChannel().invokeMethod(methodName, call);
+    return getChannel().invokeMethod<dynamic>(methodName, call);
   }
 
   Future<dynamic> channelMethodCallHandler(MethodCall call)
   {
-    int slotNo = call.arguments['slotNo'];
+    int slotNo = call.arguments['slotNo'] as int;
     FlutterSoundPlayer aPlayer = slots[slotNo];
     switch (call.method) {
       case "updateProgress":
         {
-          aPlayer.updateProgress(call.arguments);
+          aPlayer.updateProgress(call.arguments as Map);
         }
         break;
 
       case "audioPlayerFinishedPlaying":
         {
-          aPlayer.audioPlayerFinished(call.arguments);
+          aPlayer.audioPlayerFinished(call.arguments as Map);
         }
         break;
 
       case 'pause':
         {
-          aPlayer.pause(call.arguments);
+          aPlayer.pause(call.arguments as Map);
         }
         break;
 
       case 'resume':
         {
-          aPlayer.resume(call.arguments);
+          aPlayer.resume(call.arguments as Map);
         }
         break;
 
@@ -184,12 +182,13 @@ class FlutterSoundPlayer {
   bool isInited = false;
   t_PLAYER_STATE playerState = t_PLAYER_STATE.IS_STOPPED;
   StreamController<PlayStatus> playerController;
-  t_whenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
-  t_whenPaused whenPause; // User callback "whenPaused:"
-  t_updateProgress onUpdateProgress;
+  TWhenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
+  TwhenPaused whenPause; // User callback "whenPaused:"
+  TupdateProgress onUpdateProgress;
   int slotNo = null;
 
-  Stream<PlayStatus> get onPlayerStateChanged => playerController != null ? playerController.stream : null;
+  Stream<PlayStatus> get onPlayerStateChanged =>
+      playerController != null ? playerController.stream : null;
 
   bool get isPlaying => playerState == t_PLAYER_STATE.IS_PLAYING;
 
@@ -197,12 +196,12 @@ class FlutterSoundPlayer {
 
   bool get isStopped => playerState == t_PLAYER_STATE.IS_STOPPED;
 
-  FlutterSoundPlayer() {
-  }
+  FlutterSoundPlayer() {}
 
   FlautoPlayerPlugin getPlugin() => flautoPlayerPlugin;
 
-  Future<dynamic> invokeMethod(String methodName, Map<String, dynamic> call) async {
+  Future<dynamic> invokeMethod(
+      String methodName, Map<String, dynamic> call) async {
     call['slotNo'] = slotNo;
     return getPlugin().invokeMethod(methodName, call);
   }
@@ -210,9 +209,10 @@ class FlutterSoundPlayer {
   Future<FlutterSoundPlayer> initialize() async {
     if (!isInited) {
       isInited = true;
-      if (flautoPlayerPlugin == null) flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton
+      if (flautoPlayerPlugin == null)
+        flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton
       slotNo = getPlugin().lookupEmptySlot(this);
-      await invokeMethod('initializeMediaPlayer', {});
+      await invokeMethod('initializeMediaPlayer', <String, dynamic>{});
     }
     return this;
   }
@@ -223,7 +223,7 @@ class FlutterSoundPlayer {
       isInited = false;
       await stopPlayer( );
       _removePlayerCallback( ); // playerController is closed by this function
-      await invokeMethod( 'releaseMediaPlayer', {} );
+      await invokeMethod( 'releaseMediaPlayer', <String, dynamic>{} );
       playerController?.close( );
 
       getPlugin( ).freeSlot( slotNo );
@@ -234,15 +234,15 @@ class FlutterSoundPlayer {
 
 
 void updateProgress(Map call) {
-    String arg = call['arg'];
-    Map<String, dynamic> result = jsonDecode(arg);
+    String arg = call['arg'] as String;
+    Map<String, dynamic> result = jsonDecode(arg) as Map<String, dynamic>;
     if (playerController != null) playerController.add(new PlayStatus.fromJSON(result));
   }
 
   void audioPlayerFinished(Map call) {
-    String arg = call['arg'];
+    String arg = call['arg'] as String;
 
-    Map<String, dynamic> result = jsonDecode(arg);
+    Map<String, dynamic> result = jsonDecode(arg) as Map<String, dynamic>;
     PlayStatus status = new PlayStatus.fromJSON(result);
     if (status.currentPosition != status.duration) {
       status.currentPosition = status.duration;
@@ -274,9 +274,12 @@ void updateProgress(Map call) {
       //if (!await isFFmpegSupported( ))
       //result = false;
       //else
-      result = await invokeMethod('isDecoderSupported', <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index});
+      result = await invokeMethod('isDecoderSupported',
+          <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index}) as bool;
     } else
-      result = await invokeMethod('isDecoderSupported', <String, dynamic>{'codec': codec.index});
+      result = await invokeMethod(
+              'isDecoderSupported', <String, dynamic>{'codec': codec.index})
+          as bool;
     return result;
   }
 
@@ -288,7 +291,11 @@ void updateProgress(Map call) {
   Future<bool> iosSetCategory(t_IOS_SESSION_CATEGORY category, t_IOS_SESSION_MODE mode, int options) async {
     initialize();
     if (!Platform.isIOS) return false;
-    bool r = await invokeMethod('iosSetCategory', <String, dynamic>{'category': iosSessionCategory[category.index], 'mode': iosSessionMode[mode.index], 'options': options});
+    bool r = await invokeMethod('iosSetCategory', <String, dynamic>{
+      'category': iosSessionCategory[category.index],
+      'mode': iosSessionMode[mode.index],
+      'options': options
+    }) as bool;
     return r;
   }
 
@@ -300,14 +307,15 @@ void updateProgress(Map call) {
   Future<bool> androidAudioFocusRequest(int focusGain) async {
     initialize();
     if (!Platform.isAndroid) return false;
-    bool r = await invokeMethod('androidAudioFocusRequest', <String, dynamic>{'focusGain': focusGain});
+    bool r = await invokeMethod('androidAudioFocusRequest',
+        <String, dynamic>{'focusGain': focusGain}) as bool;
     return r;
   }
 
   ///  The caller can manage his audio focus with this function
   Future<bool> setActive(bool enabled) async {
     initialize();
-    bool r = await invokeMethod('setActive', <String, dynamic>{'enabled': enabled});
+    bool r = await invokeMethod('setActive', <String, dynamic>{'enabled': enabled})as bool;
     return r;
   }
 
@@ -315,7 +323,7 @@ void updateProgress(Map call) {
     initialize();
     String r = await invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'sec': sec,
-    });
+    }) as String;
     return r;
   }
 
@@ -338,13 +346,16 @@ void updateProgress(Map call) {
     String result;
     await stopPlayer(); // Just in case
     try {
-      t_CODEC codec = what['codec'];
-      String path = what['path']; // can be null
-      if (codec != null) what['codec'] = codec.index; // Flutter cannot transfer an enum to a native plugin. We use an integer instead
+      t_CODEC codec = what['codec'] as t_CODEC;
+      String path = what['path'] as String; // can be null
+      if (codec != null)
+        what['codec'] = codec
+            .index; // Flutter cannot transfer an enum to a native plugin. We use an integer instead
 
       // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
       // We use FFmpeg for that task.
-      if ((Platform.isIOS) && ((codec == t_CODEC.CODEC_OPUS) || (fileExtension(path) == '.opus'))) {
+      if ((Platform.isIOS) &&
+          ((codec == t_CODEC.CODEC_OPUS) || (fileExtension(path) == '.opus'))) {
         Directory tempDir = await getTemporaryDirectory();
         File fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
         if (fout.existsSync()) // delete the old temporary file if it exists
@@ -364,13 +375,16 @@ void updateProgress(Map call) {
         ]); // remux OGG to CAF
         if (rc != 0) return null;
         // Now we can play Apple CAF/OPUS
-        audioPlayerFinishedPlaying = what['whenFinished'];
-        what['whenFinished'] = null; // We must remove this parameter because _channel.invokeMethod() does not like it
-        result = await invokeMethod('startPlayer', {'path': fout.path});
+        audioPlayerFinishedPlaying = what['whenFinished'] as void Function();
+        what['whenFinished'] =
+            null; // We must remove this parameter because _channel.invokeMethod() does not like it
+        result = await invokeMethod(
+            'startPlayer', <String, dynamic>{'path': fout.path}) as String;
       } else {
-        audioPlayerFinishedPlaying = what['whenFinished'];
-        what['whenFinished'] = null; // We must remove this parameter because _channel.invokeMethod() does not like it
-        result = await invokeMethod(method, what);
+        audioPlayerFinishedPlaying = what['whenFinished'] as void Function();
+        what['whenFinished'] =
+            null; // We must remove this parameter because _channel.invokeMethod() does not like it
+        result = await invokeMethod(method, what) as String;
       }
 
       if (result != null) {
@@ -387,10 +401,10 @@ void updateProgress(Map call) {
     }
   }
 
-  Future<String> startPlayer( String uri, {t_CODEC codec, whenFinished(),})
+  Future<String> startPlayer( String uri, {t_CODEC codec, TWhenFinished whenFinished,})
   {
     initialize();
-    return _startPlayer( 'startPlayer', {
+    return _startPlayer( 'startPlayer', <String, dynamic>{
       'path': uri,
       'codec': codec,
       'whenFinished': whenFinished,
@@ -400,7 +414,7 @@ void updateProgress(Map call) {
   Future<String> startPlayerFromBuffer(
     Uint8List dataBuffer, {
     t_CODEC codec,
-    whenFinished(),
+    TWhenFinished whenFinished,
   }) async {
     initialize();
     // If we want to play OGG/OPUS on iOS, we need to remux the OGG file format to a specific Apple CAF envelope before starting the player.
@@ -410,15 +424,16 @@ void updateProgress(Map call) {
       Directory tempDir = await getTemporaryDirectory();
       File inputFile = File('${tempDir.path}/$slotNo-flutter_sound-tmp.opus');
       if (inputFile.existsSync()) await inputFile.delete();
-      inputFile.writeAsBytesSync(dataBuffer); // Write the user buffer into the temporary file
+      inputFile.writeAsBytesSync(
+          dataBuffer); // Write the user buffer into the temporary file
       // Now we can play the temporary file
-      return await _startPlayer('startPlayer', {
+      return await _startPlayer('startPlayer', <String, dynamic>{
         'path': inputFile.path,
         'codec': codec,
         'whenFinished': whenFinished,
       }); // And play something that Apple will be happy with.
     } else
-      return await _startPlayer('startPlayerFromBuffer', {
+      return await _startPlayer('startPlayerFromBuffer', <String, dynamic>{
         'dataBuffer': dataBuffer,
         'codec': codec,
         'whenFinished': whenFinished,
@@ -431,7 +446,7 @@ void updateProgress(Map call) {
 
     try {
       _removePlayerCallback(); // playerController is closed by this function
-      String result = await invokeMethod('stopPlayer', {});
+      String result = await invokeMethod('stopPlayer', <String, dynamic>{})as String;
       return result;
     } catch (e) {}
     return null;
@@ -449,21 +464,24 @@ void updateProgress(Map call) {
   Future<String> pausePlayer() async {
     if (playerState != t_PLAYER_STATE.IS_PLAYING) {
       _stopPlayerwithCallback(); // To recover a clean state
-      throw PlayerRunningException('Player is not playing.'); // I am not sure that it is good to throw an exception here
+      throw PlayerRunningException(
+          'Player is not playing.'); // I am not sure that it is good to throw an exception here
     }
     playerState = t_PLAYER_STATE.IS_PAUSED;
 
-    String r = await invokeMethod('pausePlayer', {});
+    String r = await invokeMethod('pausePlayer', <String, dynamic>{}) as String;
     return r;
   }
 
   Future<String> resumePlayer() async {
     if (playerState != t_PLAYER_STATE.IS_PAUSED) {
       _stopPlayerwithCallback(); // To recover a clean state
-      throw PlayerRunningException('Player is not paused.'); // I am not sure that it is good to throw an exception here
+      throw PlayerRunningException(
+          'Player is not paused.'); // I am not sure that it is good to throw an exception here
     }
     playerState = t_PLAYER_STATE.IS_PLAYING;
-    String r = await invokeMethod('resumePlayer', {});
+    String r =
+        await invokeMethod('resumePlayer', <String, dynamic>{}) as String;
     return r;
   }
 
@@ -471,7 +489,7 @@ void updateProgress(Map call) {
     initialize();
     String r = await invokeMethod('seekToPlayer', <String, dynamic>{
       'sec': milliSecs,
-    });
+    }) as String;
     return r;
   }
 
@@ -484,7 +502,7 @@ void updateProgress(Map call) {
 
     String r = await invokeMethod('setVolume', <String, dynamic>{
       'volume': indexedVolume,
-    });
+    }) as String;
     return r;
   }
 }
@@ -493,9 +511,16 @@ class PlayStatus {
   final double duration;
   double currentPosition;
 
+  /// A convenience ctor. If you are using a stream builder
+  /// you can use this to set initialData with both duration
+  /// and postion as 0.
+  PlayStatus.zero()
+      : duration = 0,
+        currentPosition = 0;
+
   PlayStatus.fromJSON(Map<String, dynamic> json)
-      : duration = double.parse(json['duration']),
-        currentPosition = double.parse(json['current_position']);
+      : duration = double.parse(json['duration'] as String),
+        currentPosition = double.parse(json['current_position'] as String);
 
   @override
   String toString() {

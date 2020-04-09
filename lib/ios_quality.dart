@@ -15,7 +15,7 @@
  */
 
 class IosQuality {
-  final _value;
+  final int _value;
   const IosQuality._internal(this._value);
   toString() => 'IOSQuality.$_value';
   int get value => _value;

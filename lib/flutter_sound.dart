@@ -15,13 +15,9 @@
  */
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
-import 'dart:io';
-import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
-import 'package:flutter/services.dart';
 import 'package:flutter_sound/android_encoder.dart';
 import 'package:flutter_sound/ios_quality.dart';
 import 'package:flutter_sound/flauto.dart';
@@ -83,20 +79,27 @@ class FlutterSound {
     soundRecorder = null;
   }
 
+  Stream<RecordStatus> get onRecorderStateChanged =>
+      soundRecorder.onRecorderStateChanged;
 
-  Stream<RecordStatus> get onRecorderStateChanged => soundRecorder.onRecorderStateChanged;
+  Stream<double> get onRecorderDbPeakChanged =>
+      soundRecorder.onRecorderDbPeakChanged;
 
-  Stream<double> get onRecorderDbPeakChanged => soundRecorder.onRecorderDbPeakChanged;
+  Future<String> setSubscriptionDuration(double sec) =>
+      soundPlayer.setSubscriptionDuration(sec);
 
-  Future<String> setSubscriptionDuration(double sec) => soundPlayer.setSubscriptionDuration(sec);
+  Future<String> setDbPeakLevelUpdate(double intervalInSecs) =>
+      soundRecorder.setDbPeakLevelUpdate(intervalInSecs);
 
-  Future<String> setDbPeakLevelUpdate(double intervalInSecs) => soundRecorder.setDbPeakLevelUpdate(intervalInSecs);
+  Future<String> setDbLevelEnabled(bool enabled) =>
+      soundRecorder.setDbLevelEnabled(enabled);
 
-  Future<String> setDbLevelEnabled(bool enabled) => soundRecorder.setDbLevelEnabled(enabled);
+  Future<bool> iosSetCategory(t_IOS_SESSION_CATEGORY category,
+          t_IOS_SESSION_MODE mode, int options) =>
+      soundPlayer.iosSetCategory(category, mode, options);
 
-  Future<bool> iosSetCategory(t_IOS_SESSION_CATEGORY category, t_IOS_SESSION_MODE mode, int options) => soundPlayer.iosSetCategory(category, mode, options);
-
-  Future<bool> androidAudioFocusRequest(int focusGain) => soundPlayer.androidAudioFocusRequest(focusGain);
+  Future<bool> androidAudioFocusRequest(int focusGain) =>
+      soundPlayer.androidAudioFocusRequest(focusGain);
 
   Future<bool> setActive(bool enabled) => soundPlayer.setActive(enabled);
 
@@ -127,21 +130,23 @@ class FlutterSound {
   Future<String> pauseRecorder() => soundRecorder.pauseRecorder();
   Future<bool> resumeRecorder() => soundRecorder.resumeRecorder();
 
-  Stream<PlayStatus> get onPlayerStateChanged => soundPlayer.onPlayerStateChanged;
+  Stream<PlayStatus> get onPlayerStateChanged =>
+      soundPlayer.onPlayerStateChanged;
 
   Future<String> startPlayer(
     String uri, {
     t_CODEC codec,
-    whenFinished(),
+    TWhenFinished whenFinished,
   }) =>
       soundPlayer.startPlayer(uri, codec: codec, whenFinished: whenFinished);
 
   Future<String> startPlayerFromBuffer(
     Uint8List dataBuffer, {
     t_CODEC codec,
-    whenFinished(),
+    TWhenFinished whenFinished,
   }) =>
-      soundPlayer.startPlayerFromBuffer(dataBuffer, codec: codec, whenFinished: whenFinished);
+      soundPlayer.startPlayerFromBuffer(dataBuffer,
+          codec: codec, whenFinished: whenFinished);
 
   Future<String> stopPlayer() => soundPlayer.stopPlayer();
 
@@ -149,11 +154,14 @@ class FlutterSound {
 
   Future<String> resumePlayer() => soundPlayer.resumePlayer();
 
-  Future<String> seekToPlayer(int milliSecs) => soundPlayer.seekToPlayer(milliSecs);
+  Future<String> seekToPlayer(int milliSecs) =>
+      soundPlayer.seekToPlayer(milliSecs);
 
   Future<String> setVolume(double volume) => soundPlayer.setVolume(volume);
 
-  Future<bool> isEncoderSupported(t_CODEC codec) => soundRecorder.isEncoderSupported(codec);
+  Future<bool> isEncoderSupported(t_CODEC codec) =>
+      soundRecorder.isEncoderSupported(codec);
 
-  Future<bool> isDecoderSupported(t_CODEC codec) => soundPlayer.isDecoderSupported(codec);
+  Future<bool> isDecoderSupported(t_CODEC codec) =>
+      soundPlayer.isDecoderSupported(codec);
 }

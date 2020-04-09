@@ -15,7 +15,7 @@
  */
 
 class AndroidEncoder {
-  final _value;
+  final int _value;
   const AndroidEncoder._internal(this._value);
   toString() => 'AndroidEncoder.$_value';
   int get value => _value;
@@ -43,7 +43,7 @@ class AndroidEncoder {
 }
 
 class AndroidAudioSource {
-  final _value;
+  final int _value;
   const AndroidAudioSource._internal(this._value);
   toString() => 'AndroidAudioSource.$_value';
   int get value => _value;
@@ -62,7 +62,7 @@ class AndroidAudioSource {
 }
 
 class AndroidOutputFormat {
-  final _value;
+  final int _value;
   const AndroidOutputFormat._internal(this._value);
   toString() => 'AndroidOutputFormat.$_value';
   int get value => _value;

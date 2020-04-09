@@ -19,7 +19,6 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'dart:io' show Platform;
-import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/android_encoder.dart';
@@ -27,8 +26,8 @@ import 'package:flutter_sound/ios_quality.dart';
 import 'package:flutter_sound/flauto.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
-import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 enum t_RECORDER_STATE {
   IS_STOPPED,
@@ -69,23 +68,26 @@ class FlautoRecorderPlugin {
   MethodChannel getChannel() => channel;
 
   Future<dynamic> invokeMethod(String methodName, Map<String, dynamic> call) {
-    return getChannel().invokeMethod(methodName, call);
+    return getChannel().invokeMethod<dynamic>(methodName, call);
   }
 
-  Future<dynamic> channelMethodCallHandler(MethodCall call) // This procedure is superCharged in "flauto"
+  Future<dynamic> channelMethodCallHandler(
+      MethodCall call) // This procedure is superCharged in "flauto"
   {
-    int slotNo = call.arguments['slotNo'];
+    int slotNo = call.arguments['slotNo'] as int;
     FlutterSoundRecorder aRecorder = slots[slotNo];
     switch (call.method) {
       case "updateRecorderProgress":
         {
-          aRecorder.upgradeRecorderProgress(call.arguments);
+          aRecorder
+              .updateRecorderProgress(call.arguments as Map<dynamic, dynamic>);
         }
         break;
 
       case "updateDbPeakProgress":
         {
-          aRecorder.updateDbPeakProgress(call.arguments);
+          aRecorder
+              .updateDbPeakProgress(call.arguments as Map<dynamic, dynamic>);
         }
         break;
 
@@ -113,11 +115,16 @@ class FlutterSoundRecorder {
   StreamController<double> _dbPeakController;
   int slotNo = null;
 
-  bool isOggOpus = false; // Set by startRecorder when the user wants to record an ogg/opus
-  String savedUri; // Used by startRecorder/stopRecorder to keep the caller wanted uri
-  String tmpUri; // Used by startRecorder/stopRecorder to keep the temporary uri to record CAF
+  bool isOggOpus =
+      false; // Set by startRecorder when the user wants to record an ogg/opus
+  String
+      savedUri; // Used by startRecorder/stopRecorder to keep the caller wanted uri
+  String
+      tmpUri; // Used by startRecorder/stopRecorder to keep the temporary uri to record CAF
 
-  bool get isRecording => (recorderState == t_RECORDER_STATE.IS_RECORDING ); //|| recorderState == t_RECORDER_STATE.IS_PAUSED);
+  bool get isRecording => (recorderState ==
+      t_RECORDER_STATE
+          .IS_RECORDING); //|| recorderState == t_RECORDER_STATE.IS_PAUSED);
 
   bool get isStopped => (recorderState == t_RECORDER_STATE.IS_STOPPED);
 
@@ -140,9 +147,10 @@ class FlutterSoundRecorder {
   Future<FlutterSoundRecorder> initialize() async {
     if (!isInited) {
       isInited = true;
-      if (flautoRecorderPlugin == null) flautoRecorderPlugin = FlautoRecorderPlugin(); // The lazy singleton
+      if (flautoRecorderPlugin == null)
+        flautoRecorderPlugin = FlautoRecorderPlugin(); // The lazy singleton
       slotNo = getPlugin().lookupEmptySlot(this);
-      await invokeMethod('initializeFlautoRecorder', {});
+      await invokeMethod('initializeFlautoRecorder', <String, dynamic>{});
     }
     return this;
   }
@@ -150,24 +158,24 @@ class FlutterSoundRecorder {
   Future<void> release() async {
     if (isInited) {
       isInited = false;
-      await stopRecorder( );
-      _removeRecorderCallback( ); // _recorderController will be closed by this function
-      _removeDbPeakCallback( ); // _dbPeakController will be closed by this function
-      await invokeMethod( 'releaseFlautoRecorder', {} );
-      getPlugin( ).freeSlot( slotNo );
+      await stopRecorder();
+      _removeRecorderCallback(); // _recorderController will be closed by this function
+      _removeDbPeakCallback(); // _dbPeakController will be closed by this function
+      await invokeMethod('releaseFlautoRecorder', <String, dynamic>{});
+      getPlugin().freeSlot(slotNo);
       slotNo = null;
     }
   }
 
-
-
-  void upgradeRecorderProgress(Map call) {
-    Map<String, dynamic> result = json.decode(call['arg']);
-    if (_recorderController != null) _recorderController.add(new RecordStatus.fromJSON(result));
+  void updateRecorderProgress(Map call) {
+    Map<String, dynamic> result =
+        json.decode(call['arg'] as String) as Map<String, dynamic>;
+    if (_recorderController != null)
+      _recorderController.add(new RecordStatus.fromJSON(result));
   }
 
-  void updateDbPeakProgress(Map call) {
-    if (_dbPeakController != null) _dbPeakController.add(call['arg']);
+  void updateDbPeakProgress(Map<dynamic, dynamic> call) {
+    if (_dbPeakController != null) _dbPeakController.add(call['arg'] as double);
   }
 
   /// Returns true if the specified encoder is supported by flutter_sound on this platform
@@ -182,9 +190,12 @@ class FlutterSoundRecorder {
       //if (!await isFFmpegSupported( ))
       //result = false;
       //else
-      result = await invokeMethod('isEncoderSupported', <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index});
+      result = await invokeMethod('isEncoderSupported',
+          <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index}) as bool;
     } else
-      result = await invokeMethod('isEncoderSupported', <String, dynamic>{'codec': codec.index});
+      result = await invokeMethod(
+              'isEncoderSupported', <String, dynamic>{'codec': codec.index})
+          as bool;
     return result;
   }
 
@@ -215,11 +226,14 @@ class FlutterSoundRecorder {
     }
   }
 
+  /// Sets the frequency at which duration updates are sent to
+  /// duration listeners.
+  /// The default is every 10 milliseconds.
   Future<String> setSubscriptionDuration(double sec) async {
     initialize();
     String r = await invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'sec': sec,
-    });
+    }) as String;
     return r;
   }
 
@@ -229,7 +243,7 @@ class FlutterSoundRecorder {
     initialize();
     String r = await invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
       'intervalInSecs': intervalInSecs,
-    });
+    }) as String;
     return r;
   }
 
@@ -238,7 +252,7 @@ class FlutterSoundRecorder {
     initialize();
     String r = await invokeMethod('setDbLevelEnabled', <String, dynamic>{
       'enabled': enabled,
-    });
+    }) as String;
     return r;
   }
 
@@ -269,19 +283,22 @@ class FlutterSoundRecorder {
   }) async {
     initialize();
     // Request Microphone permission if needed
-     PermissionStatus status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) throw new Exception("Microphone permission not granted");
+    PermissionStatus status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted)
+      throw new Exception("Microphone permission not granted");
 
     if (recorderState != null && recorderState != t_RECORDER_STATE.IS_STOPPED) {
       throw new RecorderRunningException('Recorder is not stopped.');
     }
-    if (!await isEncoderSupported(codec)) throw new RecorderRunningException('Codec not supported.');
+    if (!await isEncoderSupported(codec))
+      throw new RecorderRunningException('Codec not supported.');
 
     if (uri == null) uri = await defaultPath(codec);
 
     // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
     // We use FFmpeg for that task.
-    if ((Platform.isIOS) && ((codec == t_CODEC.CODEC_OPUS) || (fileExtension(uri) == '.opus'))) {
+    if ((Platform.isIOS) &&
+        ((codec == t_CODEC.CODEC_OPUS) || (fileExtension(uri) == '.opus'))) {
       savedUri = uri;
       isOggOpus = true;
       codec = t_CODEC.CODEC_CAF_OPUS;
@@ -307,7 +324,7 @@ class FlutterSoundRecorder {
         'iosQuality': iosQuality?.value
       };
 
-      String result = await invokeMethod('startRecorder', param);
+      String result = await invokeMethod('startRecorder', param) as String;
 
       _setRecorderCallback();
       recorderState = t_RECORDER_STATE.IS_RECORDING;
@@ -322,7 +339,8 @@ class FlutterSoundRecorder {
   }
 
   Future<String> stopRecorder() async {
-    String result = await invokeMethod('stopRecorder', {});
+    String result =
+        await invokeMethod('stopRecorder', <String, dynamic>{}) as String;
 
     recorderState = t_RECORDER_STATE.IS_STOPPED;
 
@@ -353,13 +371,14 @@ class FlutterSoundRecorder {
   }
 
   Future<String> pauseRecorder() async {
-    String result = await invokeMethod('pauseRecorder', {});
+    String result =
+        await invokeMethod('pauseRecorder', <String, dynamic>{}) as String;
     recorderState = t_RECORDER_STATE.IS_PAUSED;
     return result;
   }
 
   Future<bool> resumeRecorder() async {
-    bool b = await invokeMethod('resumeRecorder', {});
+    bool b = await invokeMethod('resumeRecorder', <String, dynamic>{}) as bool;
     if (!b) {
       stopRecorder();
       return false;
@@ -372,7 +391,8 @@ class FlutterSoundRecorder {
 class RecordStatus {
   final double currentPosition;
 
-  RecordStatus.fromJSON(Map<String, dynamic> json) : currentPosition = double.parse(json['current_position']);
+  RecordStatus.fromJSON(Map<String, dynamic> json)
+      : currentPosition = double.parse(json['current_position'] as String);
 
   @override
   String toString() {
