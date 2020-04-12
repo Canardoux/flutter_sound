@@ -51,7 +51,7 @@ Please, look to [flutter_ffmpeg documentation](https://pub.dev/packages/flutter_
 
 - On iOS you will have to enter something like that in your `Podfile`
 
-```
+  ```
   # Prepare symlinks folder. We use symlinks to avoid having Podfile.lock
   # referring to absolute paths on developers' machines.
   system('rm -rf .symlinks')
@@ -66,35 +66,39 @@ Please, look to [flutter_ffmpeg documentation](https://pub.dev/packages/flutter_
         pod name, :path => File.join(symlink, 'ios')
     end
   end
-```
+  ```
 
 - On Android you will have to enter the following line in your `android/build.gradle` file.
-This is a global specification : you can add this line everywhere. For example at the beginning or the end of the file.
 
-```
-ext.flutterFFmpegPackage = 'audio-lts'
-```
+
+  Add the line to the very end of your `build.gradle` file.
+
+  ```
+  ext.flutterFFmpegPackage = 'audio-lts'
+  ```
+
+  Note: there are two `build.gradle` files the `android` directory tree. Make certain you modify correct one as noted above.
+
 
 ## Post Installation
 
-On _iOS_ you need to add a usage description to `info.plist`:
+- On _iOS_ you need to add a usage description to `info.plist`:
 
-```xml
-<key>NSMicrophoneUsageDescription</key>
-<string>This sample uses the microphone to record your speech and convert it to text.</string>
-<key>UIBackgroundModes</key>
-<array>
-	<string>audio</string>
-</array>
-```
+  ```xml
+  <key>NSMicrophoneUsageDescription</key>
+    <string>This sample uses the microphone to record your speech and convert it to text.</string>
+  <key>UIBackgroundModes</key>
+  <array>
+  	<string>audio</string>
+  </array>
+  ```
 
-On _Android_ you need to add a permission to `AndroidManifest.xml`:
+- On _Android_ you need to add a permission to `AndroidManifest.xml`:
 
-```xml
-<uses-permission android:name="android.permission.RECORD_AUDIO" />
-<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
-```
+  ```xml
+  <uses-permission android:name="android.permission.RECORD_AUDIO" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  ```
 
 ## Migration Guide
 
