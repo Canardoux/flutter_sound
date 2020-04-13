@@ -267,11 +267,14 @@ class FlutterSoundRecorder {
     AndroidAudioSource androidAudioSource = AndroidAudioSource.MIC,
     AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.DEFAULT,
     IosQuality iosQuality = IosQuality.LOW,
+    bool requestPermission = true,
   }) async {
     initialize();
     // Request Microphone permission if needed
-     PermissionStatus status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) throw new Exception("Microphone permission not granted");
+    if (requestPermission) {
+      PermissionStatus status = await Permission.microphone.request();
+      if (status != PermissionStatus.granted) throw new Exception("Microphone permission not granted");
+    }
 
     if (recorderState != null && recorderState != t_RECORDER_STATE.IS_STOPPED) {
       throw new RecorderRunningException('Recorder is not stopped.');
