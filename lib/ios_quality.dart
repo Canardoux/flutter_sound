@@ -20,9 +20,9 @@ class IosQuality {
   toString() => 'IOSQuality.$_value';
   int get value => _value;
 
-  static const MIN = const IosQuality._internal(0);
-  static const LOW = const IosQuality._internal(0x20);
-  static const MEDIUM = const IosQuality._internal(0x40);
-  static const HIGH = const IosQuality._internal(0x60);
-  static const MAX = const IosQuality._internal(0x7F);
+  static const MIN =  IosQuality._internal(0);
+  static const LOW =  IosQuality._internal(0x20);
+  static const MEDIUM =  IosQuality._internal(0x40);
+  static const HIGH =  IosQuality._internal(0x60);
+  static const MAX =  IosQuality._internal(0x7F);
 }

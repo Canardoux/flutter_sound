@@ -15,21 +15,14 @@
  */
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
-import 'dart:io';
-import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
-import 'package:flutter/services.dart';
 import 'package:flutter_sound/android_encoder.dart';
 import 'package:flutter_sound/ios_quality.dart';
 import 'package:flutter_sound/flauto.dart';
 import 'package:flutter_sound/flutter_sound_player.dart';
 import 'package:flutter_sound/flutter_sound_recorder.dart';
-import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 
 /// This module is deprecated. It is just to keep backward compatibility.
 /// New users must muse the classes SoundPlayer and SoundRecorder

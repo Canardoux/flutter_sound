@@ -25,8 +25,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic: ^1.8.0
+  #pedantic: ^1.9.0
   effective_dart: ^1.0.0
+  #lint: ^1.1.1
 
 
 

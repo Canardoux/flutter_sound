@@ -19,12 +19,11 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'dart:io' show Platform;
-import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/services.dart';
-import 'package:flutter_sound/android_encoder.dart';
-import 'package:flutter_sound/ios_quality.dart';
-import 'package:flutter_sound/flauto.dart';
+import 'android_encoder.dart';
+import 'ios_quality.dart';
+import 'flauto.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
@@ -72,7 +71,7 @@ class FlautoRecorderPlugin {
     return getChannel().invokeMethod(methodName, call);
   }
 
-  Future<dynamic> channelMethodCallHandler(MethodCall call) // This procedure is superCharged in "flauto"
+  Future<dynamic> channelMethodCallHandler(MethodCall call)
   {
     int slotNo = call.arguments['slotNo'];
     FlutterSoundRecorder aRecorder = slots[slotNo];
@@ -90,7 +89,7 @@ class FlautoRecorderPlugin {
         break;
 
       default:
-        throw new ArgumentError('Unknown method ${call.method}');
+        throw  ArgumentError('Unknown method ${call.method}');
     }
     return null;
   }
@@ -111,7 +110,7 @@ class FlutterSoundRecorder {
   t_RECORDER_STATE recorderState = t_RECORDER_STATE.IS_STOPPED;
   StreamController<RecordStatus> _recorderController;
   StreamController<double> _dbPeakController;
-  int slotNo = null;
+  int slotNo;
 
   bool isOggOpus = false; // Set by startRecorder when the user wants to record an ogg/opus
   String savedUri; // Used by startRecorder/stopRecorder to keep the caller wanted uri
@@ -128,7 +127,7 @@ class FlutterSoundRecorder {
   /// Value ranges from 0 to 120
   Stream<double> get onRecorderDbPeakChanged => _dbPeakController.stream;
 
-  FlutterSoundRecorder() {}
+  //FlutterSoundRecorder() {}
 
   FlautoRecorderPlugin getPlugin() => flautoRecorderPlugin;
 
@@ -163,7 +162,9 @@ class FlutterSoundRecorder {
 
   void upgradeRecorderProgress(Map call) {
     Map<String, dynamic> result = json.decode(call['arg']);
-    if (_recorderController != null) _recorderController.add(new RecordStatus.fromJSON(result));
+    if (_recorderController != null) {
+            _recorderController.add( RecordStatus.fromJSON( result ) );
+    }
   }
 
   void updateDbPeakProgress(Map call) {
@@ -190,10 +191,10 @@ class FlutterSoundRecorder {
 
   Future<void> _setRecorderCallback() async {
     if (_recorderController == null) {
-      _recorderController = new StreamController.broadcast();
+      _recorderController =  StreamController.broadcast();
     }
     if (_dbPeakController == null) {
-      _dbPeakController = new StreamController.broadcast();
+      _dbPeakController =  StreamController.broadcast();
     }
   }
 
@@ -246,13 +247,13 @@ class FlutterSoundRecorder {
   /// path can be null. We return null in this case.
   String fileExtension(String path) {
     if (path == null) return null;
-    String r = p.extension(path);
+    var r = p.extension(path);
     return r;
   }
 
   Future<String> defaultPath(t_CODEC codec) async {
-    Directory tempDir = await getTemporaryDirectory();
-    File fout = File('${tempDir.path}/${defaultPaths[codec.index]}');
+    var tempDir = await getTemporaryDirectory();
+    var fout = File('${tempDir.path}/${defaultPaths[codec.index]}');
     return fout.path;
   }
 
@@ -281,18 +282,22 @@ class FlutterSoundRecorder {
 
     // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
     // We use FFmpeg for that task.
-    if ((Platform.isIOS) && ((codec == t_CODEC.CODEC_OPUS) || (fileExtension(uri) == '.opus'))) {
+    if (
+        (Platform.isIOS) &&
+        ((codec == t_CODEC.CODEC_OPUS) || (fileExtension(uri) == '.opus'))
+      ) {
       savedUri = uri;
       isOggOpus = true;
       codec = t_CODEC.CODEC_CAF_OPUS;
-      Directory tempDir = await getTemporaryDirectory();
-      File fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
-      if (fout.existsSync()) // delete the old temporary file if it exists
-        await fout.delete();
+      var tempDir = await getTemporaryDirectory();
+      var fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
+      if (fout.existsSync()) { // delete the old temporary file if it exists
+      }  await fout.delete();
       uri = fout.path;
       tmpUri = uri;
-    } else
+    } else {
       isOggOpus = false;
+    }
 
     try {
       var param = <String, dynamic>{
@@ -330,10 +335,12 @@ class FlutterSoundRecorder {
     _removeDbPeakCallback();
 
     if (isOggOpus) {
-      // delete the target if it exists (ffmpeg gives an error if the output file already exists)
+      // delete the target if it exists
+      // (ffmpeg gives an error if the output file already exists)
       File f = File(savedUri);
       if (f.existsSync()) await f.delete();
-      // The following ffmpeg instruction re-encode the Apple CAF to OPUS. Unfortunatly we cannot just remix the OPUS data,
+      // The following ffmpeg instruction re-encode the Apple CAF to OPUS.
+      // Unfortunately we cannot just remix the OPUS data,
       // because Apple does not set the "extradata" in its private OPUS format.
       // It will be good if we can improve this...
       int rc = await flutterSoundHelper.executeFFmpegWithArguments([
