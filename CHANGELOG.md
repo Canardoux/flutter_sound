@@ -1,4 +1,10 @@
 
+## 3.1.7
+
+- Codec PCM for recorder on iOS
+- Optional argument ```requestPermission``` before ```startRecorder()``` so that the App can control itself the recording permissions.
+
+
 ## 3.1.6+1
 
 - Fix a bug when initializing for Flutter Embedded V1 on Android [#267](https://github.com/dooboolab/flutter_sound/issues/267)
@@ -7,7 +13,6 @@
 - On iOS, ```setMeteringEnabled:YES``` is called during ```setDbLevelEnabled()``` [#252](https://github.com/dooboolab/flutter_sound/pull/252), [#251](https://github.com/dooboolab/flutter_sound/issues/251)
 - The call to ```initialize()``` is now obsolete [271](https://github.com/dooboolab/flutter_sound/issues/271)
 - README : [#265](https://github.com/dooboolab/flutter_sound/issues/265)
-- Codec PCM for recorder on iOS
 
 ## 3.1.5
 
