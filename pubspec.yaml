@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   permission_handler: ">=5.0.0 <6.0.0"
-  flutter_ffmpeg: ">=0.2.0 <1.0.0"
+  #flutter_ffmpeg: ">=0.2.0 <1.0.0"
 
 dev_dependencies:
   flutter_test:

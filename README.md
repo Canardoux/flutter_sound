@@ -33,7 +33,7 @@ For help getting started with Flutter, view our online
 
 For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).
 
-Add `flutter_sound` as a dependency in pubspec.yaml. The actual version is `flauto: 3.1.6`
+Add `flutter_sound` as a dependency in pubspec.yaml. The actual version is `flauto: 4.0.0`
 
 The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
 
@@ -46,38 +46,15 @@ dependencies:
 
 ### FFmpeg
 
-flutter_sound makes use of flutter_ffmpeg.
-Please, look to [flutter_ffmpeg documentation](https://pub.dev/packages/flutter_ffmpeg) to see how to add it to your App.
+flutter_sound makes use of flutter_ffmpeg. In contrary to Flutter Sound Version 3.x.x, in Version 4.0.x your App can be built without any Flutter-FFmpeg dependency.
 
-- On iOS you will have to enter something like that in your `Podfile`
+If you come from Flutter Sound Version 3.x.x, you must remove this dependency from your ```pubspec.yaml```.
+You must also delete the line ```ext.flutterFFmpegPackage = 'audio-lts'``` from your ```android/build.gradle```
+and the special line ```pod name+'/audio-lts', :path => File.join(symlink, 'ios')``` in your Podfile.
+If you do not do that, you will have duplicates modules during your App building.
 
-  ```
-  # Prepare symlinks folder. We use symlinks to avoid having Podfile.lock
-  # referring to absolute paths on developers' machines.
-  system('rm -rf .symlinks')
-  system('mkdir -p .symlinks/plugins')
-  plugin_pods = parse_KV_file('../.flutter-plugins')
-  plugin_pods.each do |name, path|
-    symlink = File.join('.symlinks', 'plugins', name)
-    File.symlink(path, symlink)
-    if name == 'flutter_ffmpeg'
-        pod name+'/audio-lts', :path => File.join(symlink, 'ios')
-    else
-        pod name, :path => File.join(symlink, 'ios')
-    end
-  end
-  ```
-
-- On Android you will have to enter the following line in your `android/build.gradle` file.
-
-
-  Add the line to the very end of your `build.gradle` file.
-
-  ```
-  ext.flutterFFmpegPackage = 'audio-lts'
-  ```
-
-  Note: there are two `build.gradle` files the `android` directory tree. Make certain you modify correct one as noted above.
+```flutter_ffmpeg audio-lts``` is now embedding inside flutter_sound. If your App needs to use FFmpeg, you must use the embedded version inside flutter_sound
+instead of adding a new dependency in your pubspec.yaml.
 
 
 ## Post Installation

@@ -22,7 +22,7 @@ import 'package:flutter_sound/track_player.dart';
 import 'package:flutter_sound/flutter_sound_recorder.dart';
 import 'package:flutter_sound/flutter_sound_player.dart';
 
-import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
+import 'flutter_ffmpeg.dart';
 
 // this enum MUST be synchronized with fluttersound/AudioInterface.java  and ios/Classes/FlutterSoundPlugin.h
 enum t_CODEC {
