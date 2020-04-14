@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_sound/flauto.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
@@ -77,7 +78,7 @@ class RecorderState {
     }
   }
 
-  void startRecorder() async {
+  void startRecorder(BuildContext context) async {
     try {
       await PlayerState().stopPlayer();
       Directory tempDir = await getTemporaryDirectory();
@@ -87,6 +88,7 @@ class RecorderState {
             '${tempDir.path}/${recorderModule.slotNo}-${MediaPath.paths[ActiveCodec().codec.index]}',
         codec: ActiveCodec().codec,
       );
+
       print('startRecorder: $path');
 
       trackDuration();
@@ -114,8 +116,12 @@ class RecorderState {
       }
 
       MediaPath().setCodecPath(ActiveCodec().codec, path);
-    } catch (err) {
+    } on RecorderException catch (err) {
       print('startRecorder error: $err');
+
+      var error =
+          SnackBar(content: Text('Failed to start recording: ${err.message}'));
+      Scaffold.of(context).showSnackBar(error);
 
       stopRecorder();
     }

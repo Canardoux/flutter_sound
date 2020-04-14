@@ -86,7 +86,7 @@ class _RecorderControlsState extends State<RecorderControls> {
       height: 50.0,
       child: ClipOval(
         child: FlatButton(
-          onPressed: () => startStopRecorder(),
+          onPressed: () => startStopRecorder(context),
           padding: EdgeInsets.all(8.0),
           child: Image(
             image: recorderAssetImage(),
@@ -140,13 +140,13 @@ class _RecorderControlsState extends State<RecorderControls> {
     return true;
   }
 
-  void startStopRecorder() async {
+  void startStopRecorder(BuildContext context) async {
     paused = false;
     if (RecorderState().isRecording || RecorderState().isPaused) {
       await RecorderState().stopRecorder();
     } else {
       try {
-        await RecorderState().startRecorder();
+        await RecorderState().startRecorder(context);
       } catch (e) {
         /// force a refresh to reflect the failure in the ui.
 
