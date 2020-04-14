@@ -149,7 +149,7 @@ class FlautoPlayerPlugin {
 
       case "audioPlayerFinishedPlaying":
         {
-          aPlayer.audioPlayerFinished(call.arguments);
+          aPlayer.audioPlayerFinished(call.arguments as Map);
         }
         break;
 
@@ -243,6 +243,11 @@ class FlutterSoundPlayer {
   }
 
   void audioPlayerFinished(Map call) {
+    String args = call['arg'] as String;
+    Map<String, dynamic> result =
+    jsonDecode(args) as Map<String, dynamic>;
+    PlayStatus status = PlayStatus.fromJSON(result);
+
     if (status.currentPosition != status.duration) {
       status.currentPosition = status.duration;
     }
@@ -421,7 +426,7 @@ class FlutterSoundPlayer {
     String uri, {
     t_CODEC codec,
     TWhenFinished whenFinished,
-  }) {
+  }) async {
      await initialize();
    	 return await _startPlayer('startPlayer', <String, dynamic>{
        'path': uri,

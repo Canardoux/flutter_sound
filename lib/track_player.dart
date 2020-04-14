@@ -80,7 +80,7 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
     switch (call.method) {
       case 'audioPlayerFinishedPlaying':
         {
-           aTrackPlayer.audioPlayerFinished(call.argument);
+           aTrackPlayer.audioPlayerFinished(call.arguments as Map<String, dynamic>);
         }
         break;
       case 'skipForward':
@@ -192,6 +192,11 @@ class TrackPlayer extends FlutterSoundPlayer {
   }
 
   void audioPlayerFinished(Map call) {
+    String args = call['arg'] as String;
+    Map<String, dynamic> result =
+    jsonDecode(args) as Map<String, dynamic>;
+    PlayStatus status = PlayStatus.fromJSON(result);
+
     if (status.currentPosition != status.duration) {
       status.currentPosition = status.duration;
     }
