@@ -169,7 +169,7 @@ flutterSoundRecorder.release();
 #### Starting recorder with listener.
 
 ```dart
-Future<String> result = await FlutterSoundRecorder.startRecorder(codec: t_CODEC.CODEC_AAC,);
+Future<String> result = await flutterSoundRecorder.startRecorder(codec: t_CODEC.CODEC_AAC,);
 
 result.then(path) {
 	print('startRecorder: $path');
@@ -187,6 +187,14 @@ The recorded file will be stored in a temporary directory. If you want to take y
 Directory tempDir = await getTemporaryDirectory();
 File outputFile = await File ('${tempDir.path}/flutter_sound-tmp.aac');
 String path = await flutterSoundRecorder.startRecorder(outputFile.path, codec: t_CODEC.CODEC_AAC,);
+```
+
+If the App does nothing special, ```startRecorder()``` will take care of controlling the permissions, and request itself the permission
+for Recording, if necessary. If the Application wants to control itself the permissions, without any help from flutter_sound,
+it must specify :
+```
+myFlutterSoundModule.requestPermission = false;
+await myFlutterSoundModule.startRecorder(...);
 ```
 
 Actually on iOS, you can choose from four encoders :
