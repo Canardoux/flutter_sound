@@ -54,6 +54,7 @@ class _MyAppState extends State<MyApp> {
   // Whether the user wants to use the audio player features
   bool _isTrackPlayer = false;
 
+  /// Allows us to switch the player module
   Future<void> _resetModules(FlutterSoundPlayer module) async {
     PlayerState().reset(module);
     RecorderState().reset();
