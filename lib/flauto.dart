@@ -17,7 +17,6 @@
 import 'dart:async';
 import 'dart:core';
 
-
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/track_player.dart';
 import 'package:flutter_sound/flutter_sound_recorder.dart';
@@ -49,7 +48,7 @@ class FlutterSoundHelper {
   ///
   /// Executes FFmpeg with [commandArguments] provided.
   Future<int> executeFFmpegWithArguments(List<String> arguments) {
-    if (flutterFFmpeg == null) flutterFFmpeg = new FlutterFFmpeg();
+    if (flutterFFmpeg == null) flutterFFmpeg = FlutterFFmpeg();
     return flutterFFmpeg.executeWithArguments(arguments);
   }
 
@@ -61,8 +60,9 @@ class FlutterSoundHelper {
   Future<int> getLastFFmpegReturnCode() {
     //if(_flutterFFmpeg == null)
     //_flutterFFmpeg = new FlutterFFmpeg();
-    if (_flutterFFmpegConfig == null)
-      _flutterFFmpegConfig = new FlutterFFmpegConfig();
+    if (_flutterFFmpegConfig == null) {
+      _flutterFFmpegConfig = FlutterFFmpegConfig();
+    }
     return _flutterFFmpegConfig.getLastReturnCode();
     /*
         try
@@ -87,8 +87,9 @@ class FlutterSoundHelper {
   /// This method does not support executing multiple concurrent commands. If you execute multiple commands at the same time, this method will return output from all executions.
   /// [disableRedirection()] method also disables this functionality.
   Future<String> getLastFFmpegCommandOutput() async {
-    if (_flutterFFmpegConfig == null)
-      _flutterFFmpegConfig = new FlutterFFmpegConfig();
+    if (_flutterFFmpegConfig == null) {
+      _flutterFFmpegConfig = FlutterFFmpegConfig();
+    }
     return _flutterFFmpegConfig.getLastCommandOutput();
     /*
         try
@@ -108,7 +109,7 @@ class FlutterSoundHelper {
 
   Future<Map<dynamic, dynamic>> FFmpegGetMediaInformation(String uri) async {
     if (uri == null) return null;
-    if (_flutterFFprobe == null) _flutterFFprobe = new FlutterFFprobe();
+    if (_flutterFFprobe == null) _flutterFFprobe = FlutterFFprobe();
     try {
       return await _flutterFFprobe.getMediaInformation(uri);
     } catch (e) {
@@ -145,11 +146,12 @@ class Flauto extends FlutterSound {
     t_CODEC codec,
     TWhenFinished whenFinished,
     TwhenPaused whenPaused,
-    TonSkip onSkipForward = null,
-    TonSkip onSkipBackward = null,
+    TonSkip onSkipForward,
+    TonSkip onSkipBackward,
   }) async {
-    TrackPlayer player = soundPlayer;
-    return player.startPlayerFromTrack(
+    /// The soundPlayer is always a TrackPlayer.
+    TrackPlayer trackPlayer = soundPlayer as TrackPlayer;
+    return trackPlayer.startPlayerFromTrack(
       track,
       whenFinished: whenFinished,
       onSkipBackward: onSkipBackward,

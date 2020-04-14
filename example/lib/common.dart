@@ -6,29 +6,34 @@ import 'package:intl/intl.dart';
 import 'media_path.dart';
 
 enum t_MEDIA {
-  FILE,
-  BUFFER,
-  ASSET,
-  STREAM,
-  REMOTE_EXAMPLE_FILE,
+  /// The media is stored in a local file
+  file,
+  // The media is stored in a in memory buffer
+  buffer,
+  // The media is stored in an asset.
+  asset,
+  // The media is being streamed
+  stream,
+  // The media is a remote sample file.
+  remoteExampleFile,
 }
 
 Future<double> getDuration(t_CODEC codec) async {
   Future<double> duration;
   switch (MediaPath().media) {
-    case t_MEDIA.FILE:
-    case t_MEDIA.BUFFER:
-      int d =
+    case t_MEDIA.file:
+    case t_MEDIA.buffer:
+      var d =
           await flutterSoundHelper.duration(MediaPath().pathForCodec(codec));
       duration = Future.value(d != null ? d / 1000.0 : null);
       break;
-    case t_MEDIA.ASSET:
+    case t_MEDIA.asset:
       duration = null;
       break;
-    case t_MEDIA.REMOTE_EXAMPLE_FILE:
+    case t_MEDIA.remoteExampleFile:
       duration = null;
       break;
-    case t_MEDIA.STREAM:
+    case t_MEDIA.stream:
       duration = null;
       break;
   }
@@ -36,8 +41,7 @@ Future<double> getDuration(t_CODEC codec) async {
 }
 
 String formatDuration(double duration) {
-  DateTime date =
-      DateTime.fromMillisecondsSinceEpoch(duration.toInt(), isUtc: true);
+  var date = DateTime.fromMillisecondsSinceEpoch(duration.toInt(), isUtc: true);
   return DateFormat('mm:ss', 'en_GB').format(date);
 }
 

@@ -47,8 +47,8 @@ class _PlayerControlsState extends State<PlayerControls> {
           stream: PlayerState().playStatusStream,
           initialData: PlayStatus.zero(),
           builder: (context, snapshot) {
-            PlayStatus playStatus = snapshot.data;
-            double duration = playStatus.duration;
+            var playStatus = snapshot.data;
+            var duration = playStatus.duration;
             return Text(
               formatDuration(duration),
               style: TextStyle(
@@ -65,11 +65,11 @@ class _PlayerControlsState extends State<PlayerControls> {
         future: getDuration(ActiveCodec().codec),
         initialData: 0.0,
         builder: (context, snapshot) {
-          double duration = snapshot.data;
+          var duration = snapshot.data;
           duration ??= 0;
           return Container(
             height: 30.0,
-            child: Text(duration != 0 ? "Duration: ${duration} sec." : ''),
+            child: Text(duration != 0 ? "Duration: $duration sec." : ''),
           );
         });
   }
@@ -82,7 +82,7 @@ class _PlayerControlsState extends State<PlayerControls> {
         child: GrayedOut(
             grayedOut: PlayerState().isStopped,
             child: FlatButton(
-              onPressed: () => stopPlayer(),
+              onPressed: stopPlayer,
               disabledColor: Colors.white,
               padding: EdgeInsets.all(8.0),
               child: Image(
@@ -110,7 +110,7 @@ class _PlayerControlsState extends State<PlayerControls> {
       height: 50.0,
       child: ClipOval(
           child: FlatButton(
-        onPressed: () => startPlayer(),
+        onPressed: startPlayer,
         disabledColor: Colors.white,
         padding: EdgeInsets.all(8.0),
         child: Image(
@@ -121,28 +121,28 @@ class _PlayerControlsState extends State<PlayerControls> {
   }
 
   void startPlayer() async {
-    bool canPlay = true;
+    var canPlay = true;
     if (MediaPath().isExampleFile) {
       if (ActiveCodec().codec != t_CODEC.CODEC_MP3) {
         canPlay = false;
         var error = SnackBar(
             backgroundColor: Colors.red,
-            content: Text(
-                'You must set the Coded to MP3 to play the "Remote Example File"'));
+            content: Text('You must set the Coded to MP3 to '
+                'play the "Remote Example File"'));
         Scaffold.of(context).showSnackBar(error);
       }
     } else if (!MediaPath().isAsset &&
         !MediaPath().exists(ActiveCodec().codec)) {
       canPlay = false;
       var error = SnackBar(
-          content: Text(
-              'Record a message first or select "Remote Example File" from Media'));
+          content: Text('Record a message first or select '
+              '"Remote Example File" from Media'));
       Scaffold.of(context).showSnackBar(error);
     }
 
     if (canPlay) {
       if (PlayerState().isStopped) {
-        await PlayerState().startPlayer(whenFinished: () => playbackFinished());
+        await PlayerState().startPlayer(whenFinished: playbackFinished);
       } else {
         await PlayerState().pauseResumePlayer();
       }
@@ -152,7 +152,7 @@ class _PlayerControlsState extends State<PlayerControls> {
   }
 
   AssetImage getPlayIcon() {
-    String path = 'res/icons/ic_play.png';
+    var path = 'res/icons/ic_play.png';
     if ((PlayerState().isPlaying)) {
       path = 'res/icons/ic_pause.png';
     } else if (PlayerState().isPaused) {

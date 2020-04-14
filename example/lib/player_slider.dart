@@ -21,8 +21,8 @@ class _PlayerSliderState extends State<PlayerSlider> {
         stream: PlayerState().playStatusStream,
         initialData: PlayStatus.zero(),
         builder: (context, snapshot) {
-          double duration = 0;
-          double position = 0;
+          var duration = 0.0;
+          var position = 0.0;
           var playStatus = snapshot.data;
           duration = playStatus.duration;
           position = playStatus.currentPosition;
@@ -32,7 +32,7 @@ class _PlayerSliderState extends State<PlayerSlider> {
                   value: min(position, duration),
                   min: 0.0,
                   max: duration,
-                  onChanged: (double value) async {
+                  onChanged: ( value) async {
                     await PlayerState().seekToPlayer(value.toInt());
                   },
                   divisions: duration == 0.0 ? 1 : duration.toInt()));

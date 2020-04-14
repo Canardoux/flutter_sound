@@ -12,7 +12,7 @@ import 'main.dart';
 import 'media_path.dart';
 
 class PlayerState {
-  static PlayerState _self = PlayerState._internal();
+  static final PlayerState _self = PlayerState._internal();
 
   bool _duckOthers = false;
 
@@ -23,7 +23,7 @@ class PlayerState {
 
   FlutterSoundPlayer playerModule_2; // Used if REENTRANCE_CONCURENCY
 
-  StreamController<PlayStatus> _playStatusController =
+  final StreamController<PlayStatus> _playStatusController =
       StreamController<PlayStatus>.broadcast();
 
   factory PlayerState() {
@@ -73,7 +73,7 @@ class PlayerState {
     playerModule = await FlutterSoundPlayer().initialize();
     ActiveCodec().playerModule = playerModule;
 
-    if (REENTRANCE_CONCURENCY) {
+    if (renetranceConcurrency) {
       playerModule_2 = await FlutterSoundPlayer().initialize();
       await playerModule_2.setSubscriptionDuration(0.01);
       await playerModule_2.setSubscriptionDuration(0.01);
@@ -87,7 +87,7 @@ class PlayerState {
     }
   }
 
-  Future<void> setDuck(bool duckOthers) async {
+  Future<void> setDuck({bool duckOthers}) async {
     _duckOthers = duckOthers;
     if (_duckOthers) {
       if (Platform.isIOS) {
@@ -150,14 +150,14 @@ class PlayerState {
         // Do we want to play from buffer or from file ?
         if (await fileExists(MediaPath().pathForCodec(ActiveCodec().codec))) {
           dataBuffer =
-              await makeBuffer(MediaPath().pathForCodec(ActiveCodec().codec));
+              await _makeBuffer(MediaPath().pathForCodec(ActiveCodec().codec));
           if (dataBuffer == null) {
             throw Exception('Unable to create the buffer');
           }
         }
       } else if (MediaPath().isExampleFile) {
         // We have to play an example audio file loaded via a URL
-        audioFilePath = EXAMPLE_AUDIO_FILE_PATH;
+        audioFilePath = exampleAudioFilePath;
       }
 
       // Check whether the user wants to use the audio player features
@@ -184,7 +184,7 @@ class PlayerState {
           albumArtAsset: albumArtAsset,
         );
 
-        TrackPlayer f = playerModule as TrackPlayer;
+        var f = playerModule as TrackPlayer;
         path = await f.startPlayerFromTrack(
           track,
           /*canSkipForward:true, canSkipBackward:true,*/
@@ -224,14 +224,13 @@ class PlayerState {
         }
       }
       addListeners();
-      if (REENTRANCE_CONCURENCY && !MediaPath().isExampleFile) {
-        Uint8List dataBuffer =
+      if (renetranceConcurrency && !MediaPath().isExampleFile) {
+        var dataBuffer =
             (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
                 .buffer
                 .asUint8List();
         await playerModule_2.startPlayerFromBuffer(dataBuffer,
             codec: ActiveCodec().codec, whenFinished: () {
-          //playerModule_2.startPlayer(exampleAudioFilePath, codec: t_CODEC.CODEC_MP3, whenFinished: () {
           print('Secondary Play finished');
         });
       }
@@ -245,8 +244,9 @@ class PlayerState {
 
   Future<void> stopPlayer() async {
     try {
-      String result = await playerModule.stopPlayer();
+      var result = await playerModule.stopPlayer();
       print('stopPlayer: $result');
+
       /// signal
       _playStatusController.add(PlayStatus.zero());
       if (_playerSubscription != null) {
@@ -256,9 +256,9 @@ class PlayerState {
     } catch (err) {
       print('error: $err');
     }
-    if (REENTRANCE_CONCURENCY) {
+    if (renetranceConcurrency) {
       try {
-        String result = await playerModule_2.stopPlayer();
+        var result = await playerModule_2.stopPlayer();
         print('stopPlayer_2: $result');
       } catch (err) {
         print('error: $err');
@@ -269,27 +269,28 @@ class PlayerState {
   void pauseResumePlayer() {
     if (playerModule.isPlaying) {
       playerModule.pausePlayer();
-      if (REENTRANCE_CONCURENCY) {
+      if (renetranceConcurrency) {
         playerModule_2.pausePlayer();
       }
     } else {
       playerModule.resumePlayer();
-      if (REENTRANCE_CONCURENCY) {
+      if (renetranceConcurrency) {
         playerModule_2.resumePlayer();
       }
     }
   }
 
   void seekToPlayer(int milliSecs) async {
-    String result = await playerModule.seekToPlayer(milliSecs);
+    var result = await playerModule.seekToPlayer(milliSecs);
     print('seekToPlayer: $result');
   }
 
-  // In this simple example, we just load a file in memory.This is stupid but just for demonstration  of startPlayerFromBuffer()
-  Future<Uint8List> makeBuffer(String path) async {
+  // In this simple example, we just load a file in memory.
+  // This is stupid but just for demonstration  of startPlayerFromBuffer()
+  Future<Uint8List> _makeBuffer(String path) async {
     try {
       if (!await fileExists(path)) return null;
-      File file = File(path);
+      var file = File(path);
       file.openRead();
       var contents = await file.readAsBytes();
       print('The file is ${contents.length} bytes long.');

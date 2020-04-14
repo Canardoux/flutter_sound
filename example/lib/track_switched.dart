@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sound_example/player_state.dart';
 
 import 'grayed_out.dart';
+import 'player_state.dart';
 
 class TrackSwitch extends StatefulWidget {
   final void Function(bool allowTracks) switchPlayer;
@@ -36,8 +36,8 @@ class _TrackSwitchState extends State<TrackSwitch> {
               grayedOut: !PlayerState().isStopped,
               child: Switch(
                 value: widget._isAudioPlayer,
-                onChanged: (allowTracks) =>
-                    onAudioPlayerSwitchChanged(allowTracks),
+                onChanged: (allow) =>
+                    onAudioPlayerSwitchChanged(allowTracks: allow),
               )),
           Padding(
             padding: const EdgeInsets.only(right: 4.0),
@@ -45,18 +45,19 @@ class _TrackSwitchState extends State<TrackSwitch> {
           ),
           Switch(
             value: PlayerState().duckOthers,
-            onChanged: (value) => duckOthersSwitchChanged(value),
+            onChanged: (duckOthers) =>
+                duckOthersSwitchChanged(duckOthers: duckOthers),
           ),
         ],
       ),
     );
   }
 
-  void onAudioPlayerSwitchChanged(bool allowTracks) async {
+  void onAudioPlayerSwitchChanged({bool allowTracks = false}) async {
     widget.switchPlayer(allowTracks);
   }
 
-  void duckOthersSwitchChanged(bool duckOthers) {
-    PlayerState().setDuck(duckOthers);
+  void duckOthersSwitchChanged({bool duckOthers}) {
+    PlayerState().setDuck(duckOthers: duckOthers);
   }
 }

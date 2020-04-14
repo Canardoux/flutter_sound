@@ -3,7 +3,7 @@ import 'package:flutter_sound/flauto.dart';
 import 'common.dart';
 
 class MediaPath {
-  static MediaPath _self = MediaPath._internal();
+  static final MediaPath _self = MediaPath._internal();
   static const List<String> paths = [
     'flutter_sound_example.aac', // DEFAULT
     'flutter_sound_example.aac', // CODEC_AAC
@@ -14,21 +14,21 @@ class MediaPath {
     'flutter_sound_example.wav', // CODEC_PCM
   ];
 
-  List<String> _path = [null, null, null, null, null, null, null];
-  t_MEDIA _media = t_MEDIA.FILE;
+  final List<String> _path = [null, null, null, null, null, null, null];
+  t_MEDIA media = t_MEDIA.file;
 
   factory MediaPath() {
     return _self;
   }
   MediaPath._internal();
 
-  bool get isAsset => _media == t_MEDIA.ASSET;
+  bool get isAsset => media == t_MEDIA.asset;
 
-  bool get isFile => _media == t_MEDIA.FILE;
+  bool get isFile => media == t_MEDIA.file;
 
-  bool get isBuffer => _media == t_MEDIA.BUFFER;
+  bool get isBuffer => media == t_MEDIA.buffer;
 
-  bool get isExampleFile => _media == t_MEDIA.REMOTE_EXAMPLE_FILE;
+  bool get isExampleFile => media == t_MEDIA.remoteExampleFile;
 
   void setCodecPath(t_CODEC codec, String path) {
     _path[codec.index] = path;
@@ -42,7 +42,5 @@ class MediaPath {
     return _path[codec.index] != null;
   }
 
-  t_MEDIA get media => _media;
-
-  set media(t_MEDIA media) => _media = media;
+ 
 }

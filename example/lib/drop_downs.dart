@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flauto.dart';
 
-import 'main.dart';
 import 'active_codec.dart';
 import 'common.dart';
+import 'main.dart';
 import 'media_path.dart';
 
 class Dropdowns extends StatefulWidget {
@@ -109,10 +109,10 @@ class _DropdownsState extends State<Dropdowns> {
     return DropdownButton<t_MEDIA>(
       value: MediaPath().media,
       onChanged: (newMedia) {
-        if (newMedia == t_MEDIA.REMOTE_EXAMPLE_FILE) {
+        if (newMedia == t_MEDIA.remoteExampleFile) {
           ActiveCodec().setCodec(t_CODEC.CODEC_MP3);
           MediaPath()
-              .setCodecPath(ActiveCodec().codec, EXAMPLE_AUDIO_FILE_PATH);
+              .setCodecPath(ActiveCodec().codec, exampleAudioFilePath);
         } // Actually this is the only example we use in this example
         MediaPath().media = newMedia;
 
@@ -120,19 +120,19 @@ class _DropdownsState extends State<Dropdowns> {
       },
       items: <DropdownMenuItem<t_MEDIA>>[
         DropdownMenuItem<t_MEDIA>(
-          value: t_MEDIA.FILE,
+          value: t_MEDIA.file,
           child: Text('File'),
         ),
         DropdownMenuItem<t_MEDIA>(
-          value: t_MEDIA.BUFFER,
+          value: t_MEDIA.buffer,
           child: Text('Buffer'),
         ),
         DropdownMenuItem<t_MEDIA>(
-          value: t_MEDIA.ASSET,
+          value: t_MEDIA.asset,
           child: Text('Asset'),
         ),
         DropdownMenuItem<t_MEDIA>(
-          value: t_MEDIA.REMOTE_EXAMPLE_FILE,
+          value: t_MEDIA.remoteExampleFile,
           child: Text('Remote Example File'),
         ),
       ],

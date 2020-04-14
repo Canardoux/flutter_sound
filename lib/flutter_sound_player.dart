@@ -21,7 +21,6 @@ import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
-
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flauto.dart';
 
@@ -29,11 +28,12 @@ import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import 'package:flutter/services.dart';
 import 'flauto.dart';
 
 enum t_PLAYER_STATE {
-  IS_STOPPED, /// Player is stopped
+  IS_STOPPED,
+
+  /// Player is stopped
   IS_PLAYING,
   IS_PAUSED,
 }
@@ -140,9 +140,8 @@ class FlautoPlayerPlugin {
     return getChannel().invokeMethod<dynamic>(methodName, call);
   }
 
-
   Future<dynamic> channelMethodCallHandler(MethodCall call) {
-    int slotNo = call.arguments['slotNo'];
+    int slotNo = call.arguments['slotNo'] as int;
     var aPlayer = slots[slotNo];
 
     switch (call.method) {
@@ -157,7 +156,7 @@ class FlautoPlayerPlugin {
           String args = call.arguments['arg'] as String;
           Map<String, dynamic> result =
               jsonDecode(args) as Map<String, dynamic>;
-          PlayStatus status = new PlayStatus.fromJSON(result);
+          PlayStatus status = PlayStatus.fromJSON(result);
 
           aPlayer.audioPlayerFinished(status);
         }
@@ -176,7 +175,7 @@ class FlautoPlayerPlugin {
         break;
 
       default:
-        throw  ArgumentError('Unknown method ${call.method}');
+        throw ArgumentError('Unknown method ${call.method}');
     }
     return null;
   }
@@ -197,11 +196,10 @@ class FlutterSoundPlayer {
   TWhenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
   TwhenPaused whenPause; // User callback "whenPaused:"
   TupdateProgress onUpdateProgress;
-  int slotNo = null;
+  int slotNo;
 
   Stream<PlayStatus> get onPlayerStateChanged =>
       playerController != null ? playerController.stream : null;
-
 
   bool get isPlaying => playerState == t_PLAYER_STATE.IS_PLAYING;
 
@@ -209,7 +207,7 @@ class FlutterSoundPlayer {
 
   bool get isStopped => playerState == t_PLAYER_STATE.IS_STOPPED;
 
-  FlutterSoundPlayer() {}
+  FlutterSoundPlayer();
 
   FlautoPlayerPlugin getPlugin() => flautoPlayerPlugin;
 
@@ -238,27 +236,22 @@ class FlutterSoundPlayer {
       await stopPlayer();
       _removePlayerCallback(); // playerController is closed by this function
       await invokeMethod('releaseMediaPlayer', <String, dynamic>{});
-      playerController?.close();
+      await playerController?.close();
 
       getPlugin().freeSlot(slotNo);
       slotNo = null;
     }
   }
 
-void updateProgress(Map call) {
-    String arg = call['arg'];
-    Map<String, dynamic> result = jsonDecode(arg);
+  void updateProgress(Map call) {
+    String arg = call['arg'] as String;
+    Map<String, dynamic> result = jsonDecode(arg) as Map<String, dynamic>;
     if (playerController != null) {
-      playerController.add( PlayStatus.fromJSON(result));
+      playerController.add(PlayStatus.fromJSON(result));
     }
   }
 
-  void audioPlayerFinished(Map call) {
-    String arg = call['arg'];
-
-    Map<String, dynamic> result = jsonDecode(arg);
-    var status =  PlayStatus.fromJSON(result);
-
+  void audioPlayerFinished(PlayStatus status) {
     if (status.currentPosition != status.duration) {
       status.currentPosition = status.duration;
     }
@@ -281,7 +274,7 @@ void updateProgress(Map call) {
   /// Returns true if the specified decoder is supported by flutter_sound on this platform
   Future<bool> isDecoderSupported(t_CODEC codec) async {
     bool result;
-    initialize();
+    await initialize();
     // For decoding ogg/opus on ios, we need to support two steps :
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
@@ -291,10 +284,11 @@ void updateProgress(Map call) {
       //else
       result = await invokeMethod('isDecoderSupported',
           <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index}) as bool;
-    } else
+    } else {
       result = await invokeMethod(
               'isDecoderSupported', <String, dynamic>{'codec': codec.index})
           as bool;
+    }
     return result;
   }
 
@@ -308,7 +302,7 @@ void updateProgress(Map call) {
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
   Future<bool> iosSetCategory(t_IOS_SESSION_CATEGORY category,
       t_IOS_SESSION_MODE mode, int options) async {
-    initialize();
+    await initialize();
     if (!Platform.isIOS) return false;
     bool r = await invokeMethod('iosSetCategory', <String, dynamic>{
       'category': iosSessionCategory[category.index],
@@ -325,7 +319,7 @@ void updateProgress(Map call) {
   /// After calling this function, the caller is responsible for using correctly setActive
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
   Future<bool> androidAudioFocusRequest(int focusGain) async {
-    initialize();
+    await initialize();
     if (!Platform.isAndroid) return false;
     bool r = await invokeMethod('androidAudioFocusRequest',
         <String, dynamic>{'focusGain': focusGain}) as bool;
@@ -335,7 +329,7 @@ void updateProgress(Map call) {
 
   ///  The caller can manage his audio focus with this function
   Future<bool> setActive(bool enabled) async {
-    initialize();
+    await initialize();
     bool r =
         await invokeMethod('setActive', <String, dynamic>{'enabled': enabled})
             as bool;
@@ -344,7 +338,7 @@ void updateProgress(Map call) {
   }
 
   Future<String> setSubscriptionDuration(double sec) async {
-    initialize();
+    await initialize();
     String r = await invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'sec': sec,
     }) as String;
@@ -353,7 +347,7 @@ void updateProgress(Map call) {
 
   Future<void> setPlayerCallback() async {
     if (playerController == null) {
-      playerController = new StreamController.broadcast();
+      playerController = StreamController.broadcast();
     }
   }
 
@@ -370,23 +364,21 @@ void updateProgress(Map call) {
     String result;
     await stopPlayer(); // Just in case
     try {
-
-      t_CODEC codec = what['codec'];
-      String path = what['path']; // can be null
-      // Flutter cannot transfer an enum to a native plugin.
-      // We use an integer instead
+      t_CODEC codec = what['codec'] as t_CODEC;
+      String path = what['path'] as String; // can be null
       if (codec != null) {
         what['codec'] = codec.index;
-      }
+      } // Flutter cannot transfer an enum to a native plugin. We use an integer instead
+
       // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
       // We use FFmpeg for that task.
-      if ( (Platform.isIOS) &&
-           ((codec == t_CODEC.CODEC_OPUS) || (fileExtension(path) == '.opus'))
-      ) {
+      if ((Platform.isIOS) &&
+          ((codec == t_CODEC.CODEC_OPUS) || (fileExtension(path) == '.opus'))) {
         var tempDir = await getTemporaryDirectory();
         var fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
-        if (fout.existsSync()) { // delete the old temporary file if it exists
-            await fout.delete();
+        if (fout.existsSync()) {
+          // delete the old temporary file if it exists
+          await fout.delete();
         }
         // The following ffmpeg instruction
         // does not decode and re-encode the file.
@@ -422,7 +414,7 @@ void updateProgress(Map call) {
 
       if (result != null) {
         print('startPlayer result: $result');
-        setPlayerCallback();
+        await setPlayerCallback();
 
         playerState = t_PLAYER_STATE.IS_PLAYING;
       }
@@ -452,7 +444,7 @@ void updateProgress(Map call) {
     t_CODEC codec,
     TWhenFinished whenFinished,
   }) async {
-    initialize();
+    await initialize();
     // If we want to play OGG/OPUS on iOS, we need to remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We write the data in a temporary file before calling ffmpeg.
     if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS)) {
@@ -463,7 +455,8 @@ void updateProgress(Map call) {
       if (inputFile.existsSync()) {
         await inputFile.delete();
       }
-      inputFile.writeAsBytesSync(dataBuffer); // Write the user buffer into the temporary file
+      inputFile.writeAsBytesSync(
+          dataBuffer); // Write the user buffer into the temporary file
 
       // Now we can play the temporary file
       return await _startPlayer('startPlayer', <String, dynamic>{
@@ -471,12 +464,13 @@ void updateProgress(Map call) {
         'codec': codec,
         'whenFinished': whenFinished,
       }); // And play something that Apple will be happy with.
-    } else
+    } else {
       return await _startPlayer('startPlayerFromBuffer', <String, dynamic>{
         'dataBuffer': dataBuffer,
         'codec': codec,
         'whenFinished': whenFinished,
       });
+    }
   }
 
   Future<String> stopPlayer() async {
@@ -488,8 +482,10 @@ void updateProgress(Map call) {
       String result =
           await invokeMethod('stopPlayer', <String, dynamic>{}) as String;
       return result;
-    } catch (e) {}
-    return null;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
   }
 
   Future<String> _stopPlayerwithCallback() async {
@@ -503,7 +499,7 @@ void updateProgress(Map call) {
 
   Future<String> pausePlayer() async {
     if (playerState != t_PLAYER_STATE.IS_PLAYING) {
-      _stopPlayerwithCallback(); // To recover a clean state
+      await _stopPlayerwithCallback(); // To recover a clean state
       throw PlayerRunningException(
           'Player is not playing.'); // I am not sure that it is good to throw an exception here
     }
@@ -515,7 +511,7 @@ void updateProgress(Map call) {
 
   Future<String> resumePlayer() async {
     if (playerState != t_PLAYER_STATE.IS_PAUSED) {
-      _stopPlayerwithCallback(); // To recover a clean state
+      await _stopPlayerwithCallback(); // To recover a clean state
       throw PlayerRunningException(
           'Player is not paused.'); // I am not sure that it is good to throw an exception here
     }
@@ -526,7 +522,7 @@ void updateProgress(Map call) {
   }
 
   Future<String> seekToPlayer(int milliSecs) async {
-    initialize();
+    await initialize();
     String r = await invokeMethod('seekToPlayer', <String, dynamic>{
       'sec': milliSecs,
     }) as String;
@@ -534,7 +530,7 @@ void updateProgress(Map call) {
   }
 
   Future<String> setVolume(double volume) async {
-    initialize();
+    await initialize();
     var indexedVolume = Platform.isIOS ? volume * 100 : volume;
     if (volume < 0.0 || volume > 1.0) {
       throw RangeError('Value of volume should be between 0.0 and 1.0.');

@@ -83,7 +83,7 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
           String args = call.arguments['arg'] as String;
           Map<String, dynamic> result =
               jsonDecode(args) as Map<String, dynamic>;
-          PlayStatus status = new PlayStatus.fromJSON(result);
+          PlayStatus status = PlayStatus.fromJSON(result);
           aTrackPlayer.audioPlayerFinished(status);
         }
         break;
@@ -107,7 +107,6 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
 }
 
 class TrackPlayer extends FlutterSoundPlayer {
-
   //static const MethodChannel _channel = const MethodChannel( 'xyz.canardoux.track_player' );
   //StreamController<t_PLAYER_STATE> _playbackStateChangedController;
   TonSkip onSkipForward; // User callback "whenPaused:"
@@ -147,7 +146,7 @@ class TrackPlayer extends FlutterSoundPlayer {
       isInited = true;
 
       if (trackPlayerPlugin == null) {
-        trackPlayerPlugin = TrackPlayerPlugin( ); // The lazy singleton
+        trackPlayerPlugin = TrackPlayerPlugin(); // The lazy singleton
       }
       slotNo = getPlugin().lookupEmptyTrackPlayerSlot(this);
 
@@ -159,7 +158,7 @@ class TrackPlayer extends FlutterSoundPlayer {
         // Add the method call handler
         //getChannel( ).setMethodCallHandler( channelMethodCallHandler );
       } catch (err) {
-        throw err;
+        rethrow;
       }
     }
     return this;
@@ -183,7 +182,7 @@ class TrackPlayer extends FlutterSoundPlayer {
         onSkipForward = null;
       } catch (err) {
         print('err: $err');
-        throw err;
+        rethrow;
       }
       getPlugin().freeSlot(slotNo);
       slotNo = null;
@@ -202,9 +201,9 @@ class TrackPlayer extends FlutterSoundPlayer {
     if (status.currentPosition != status.duration) {
       status.currentPosition = status.duration;
     }
-    
+
     if (playerController != null) {
-      playerController.add( status );
+      playerController.add(status);
     }
 
     playerState = t_PLAYER_STATE.IS_STOPPED;
@@ -226,16 +225,15 @@ class TrackPlayer extends FlutterSoundPlayer {
     t_CODEC codec,
     TWhenFinished whenFinished,
     TwhenPaused whenPaused,
-    TonSkip onSkipForward = null,
-    TonSkip onSkipBackward = null,
-
+    TonSkip onSkipForward,
+    TonSkip onSkipBackward,
   }) async {
     // Check the current codec is not supported on this platform
     if (!await isDecoderSupported(track.codec)) {
       throw PlayerRunningException('The selected codec is not supported on '
           'this platform.');
     }
-    initialize();
+    await initialize();
 
     await track._adaptOggToIos();
 
@@ -246,7 +244,7 @@ class TrackPlayer extends FlutterSoundPlayer {
     this.onSkipForward = onSkipForward;
     this.onSkipBackward = onSkipBackward;
     this.onUpdateProgress = onUpdateProgress;
-    setPlayerCallback();
+    await setPlayerCallback();
     String result =
         await invokeMethod('startPlayerFromTrack', <String, dynamic>{
       'track': trackMap,
@@ -333,7 +331,7 @@ class Track {
     this.dataBuffer,
     this.trackTitle,
     this.trackAuthor,
-    this.albumArtUrl ,
+    this.albumArtUrl,
     this.albumArtAsset,
     this.codec = t_CODEC.DEFAULT,
   }) {
@@ -371,8 +369,9 @@ class Track {
             (fileExtension(trackPath) == '.opus'))) {
       Directory tempDir = await getTemporaryDirectory();
       File fout = await File('${tempDir.path}/flutter_sound-tmp.caf');
-      if (fout.existsSync()) // delete the old temporary file if it exists
+      if (fout.existsSync()) {
         await fout.delete();
+      }
 
       int rc;
       var inputFileName = trackPath;

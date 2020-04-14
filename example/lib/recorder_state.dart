@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flauto.dart';
@@ -14,14 +12,14 @@ import 'media_path.dart';
 import 'player_state.dart';
 
 class RecorderState {
-  static double DURATION_INTERVAL = 1.0;
-  static RecorderState _self = RecorderState._internal();
+  static const _durationInterval = 1.0;
+  static final RecorderState _self = RecorderState._internal();
   StreamSubscription _recorderSubscription;
   StreamSubscription _dbPeakSubscription;
   FlutterSoundRecorder recorderModule;
   FlutterSoundRecorder recorderModule_2; // Used if REENTRANCE_CONCURENCY
 
-  StreamController<double> _durationController =
+  final StreamController<double> _durationController =
       StreamController<double>.broadcast();
   StreamController<double> dbLevelController =
       StreamController<double>.broadcast();
@@ -39,9 +37,9 @@ class RecorderState {
     await recorderModule.setDbPeakLevelUpdate(0.8);
     await recorderModule.setDbLevelEnabled(true);
     await recorderModule.setDbLevelEnabled(true);
-    if (REENTRANCE_CONCURENCY) {
+    if (renetranceConcurrency) {
       recorderModule_2 = await FlutterSoundRecorder().initialize();
-      await recorderModule_2.setSubscriptionDuration(DURATION_INTERVAL);
+      await recorderModule_2.setSubscriptionDuration(_durationInterval);
       await recorderModule_2.setDbPeakLevelUpdate(0.8);
       await recorderModule_2.setDbLevelEnabled(true);
     }
@@ -49,10 +47,10 @@ class RecorderState {
   }
 
   void reset() async {
-    await recorderModule.setSubscriptionDuration(DURATION_INTERVAL);
+    await recorderModule.setSubscriptionDuration(_durationInterval);
 
-    if (REENTRANCE_CONCURENCY) {
-      await recorderModule_2.setSubscriptionDuration(DURATION_INTERVAL);
+    if (renetranceConcurrency) {
+      await recorderModule_2.setSubscriptionDuration(_durationInterval);
     }
 
     // cause the recording UI to refesh and update with
@@ -70,10 +68,10 @@ class RecorderState {
 
   void stopRecorder() async {
     try {
-      String result = await recorderModule.stopRecorder();
+      var result = await recorderModule.stopRecorder();
       print('stopRecorder: $result');
       cancelRecorderSubscriptions();
-      if (REENTRANCE_CONCURENCY) {
+      if (renetranceConcurrency) {
         await recorderModule_2.stopRecorder();
         await PlayerState().stopPlayer();
       }
@@ -85,9 +83,9 @@ class RecorderState {
   void startRecorder(BuildContext context) async {
     try {
       await PlayerState().stopPlayer();
-      Directory tempDir = await getTemporaryDirectory();
+      var tempDir = await getTemporaryDirectory();
 
-      String path = await recorderModule.startRecorder(
+      var path = await recorderModule.startRecorder(
         uri:
             '${tempDir.path}/${recorderModule.slotNo}-${MediaPath.paths[ActiveCodec().codec.index]}',
         codec: ActiveCodec().codec,
@@ -97,19 +95,19 @@ class RecorderState {
 
       trackDuration();
       trackDBLevel();
-      if (REENTRANCE_CONCURENCY) {
+      if (renetranceConcurrency) {
         try {
-          Uint8List dataBuffer =
+          var dataBuffer =
               (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
                   .buffer
                   .asUint8List();
           await PlayerState().playerModule_2.startPlayerFromBuffer(dataBuffer,
               codec: ActiveCodec().codec, whenFinished: () {
-            //await playerModule_2.startPlayer(exampleAudioFilePath, codec: t_CODEC.CODEC_MP3, whenFinished: () {
             print('Secondary Play finished');
           });
         } catch (e) {
           print('startRecorder error: $e');
+          rethrow;
         }
         await recorderModule_2.startRecorder(
           uri: '${tempDir.path}/flutter_sound_recorder2.aac',
@@ -144,7 +142,7 @@ class RecorderState {
   void trackDuration() {
     _recorderSubscription = recorderModule.onRecorderStateChanged.listen((e) {
       if (e != null && e.currentPosition != null) {
-        double duration = e.currentPosition;
+        var duration = e.currentPosition;
         // print("got duration update -> $duration");
         _durationController.add(duration);
       }
@@ -155,13 +153,13 @@ class RecorderState {
     if (recorderModule.isPaused) {
       {
         recorderModule.resumeRecorder();
-        if (REENTRANCE_CONCURENCY) {
+        if (renetranceConcurrency) {
           recorderModule_2.resumeRecorder();
         }
       }
     } else {
       recorderModule.pauseRecorder();
-      if (REENTRANCE_CONCURENCY) {
+      if (renetranceConcurrency) {
         recorderModule_2.pauseRecorder();
       }
     }

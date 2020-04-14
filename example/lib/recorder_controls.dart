@@ -49,7 +49,7 @@ class _RecorderControlsState extends State<RecorderControls> {
             stream: RecorderState().dbLevelStream,
             initialData: 1.0,
             builder: (context, snapshot) {
-              double dbLevel = snapshot.data;
+              var dbLevel = snapshot.data;
               return LinearProgressIndicator(
                   value: 100.0 / 160.0 * (dbLevel ?? 1) / 100,
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
@@ -63,8 +63,8 @@ class _RecorderControlsState extends State<RecorderControls> {
         stream: RecorderState().durationStream,
         initialData: 0.0,
         builder: (context, snapshot) {
-          double duration = snapshot.data;
-          String txt = formatDuration(duration);
+          var duration = snapshot.data;
+          var txt = formatDuration(duration);
 
           return Container(
             margin: EdgeInsets.only(top: 12.0, bottom: 16.0),
@@ -105,7 +105,7 @@ class _RecorderControlsState extends State<RecorderControls> {
         child: GrayedOut(
             grayedOut: !isRecording(),
             child: FlatButton(
-              onPressed: () => pauseResumeRecorder(),
+              onPressed: pauseResumeRecorder,
               disabledColor: Colors.white,
               padding: EdgeInsets.all(8.0),
               child: Image(
