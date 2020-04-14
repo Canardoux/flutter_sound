@@ -285,13 +285,14 @@ class FlutterSoundRecorder {
     // Request Microphone permission if needed
     PermissionStatus status = await Permission.microphone.request();
     if (status != PermissionStatus.granted)
-      throw new Exception("Microphone permission not granted");
+      throw new RecordingPermissionException(
+          "Microphone permission not granted");
 
     if (recorderState != null && recorderState != t_RECORDER_STATE.IS_STOPPED) {
       throw new RecorderRunningException('Recorder is not stopped.');
     }
     if (!await isEncoderSupported(codec))
-      throw new RecorderRunningException('Codec not supported.');
+      throw new CodecNotSupportedException('Codec not supported.');
 
     if (uri == null) uri = await defaultPath(codec);
 
@@ -400,8 +401,22 @@ class RecordStatus {
   }
 }
 
-class RecorderRunningException implements Exception {
-  final String message;
+class RecorderException implements Exception {
+  final String _message;
 
-  RecorderRunningException(this.message);
+  RecorderException(this._message);
+
+  String get message => _message;
+}
+
+class RecorderRunningException extends RecorderException {
+  RecorderRunningException(String message) : super(message);
+}
+
+class CodecNotSupportedException extends RecorderException {
+  CodecNotSupportedException(String message) : super(message);
+}
+
+class RecordingPermissionException extends RecorderException {
+  RecordingPermissionException(String message) : super(message);
 }
