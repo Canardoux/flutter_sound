@@ -54,6 +54,10 @@ class RecorderState {
     if (REENTRANCE_CONCURENCY) {
       await recorderModule_2.setSubscriptionDuration(DURATION_INTERVAL);
     }
+
+    // cause the recording UI to refesh and update with
+    // any state changes.
+    await RecorderState().stopRecorder();
   }
 
   Stream<double> get durationStream {
