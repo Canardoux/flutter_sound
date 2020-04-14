@@ -21,19 +21,15 @@ import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
-import 'package:flutter/services.dart';
-import 'package:flutter_sound/flauto.dart';
-
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
+import 'package:flutter/services.dart';
 import 'flauto.dart';
 
 enum t_PLAYER_STATE {
-  IS_STOPPED,
-
-  /// Player is stopped
+  IS_STOPPED, /// Player is stopped
   IS_PLAYING,
   IS_PAUSED,
 }
@@ -153,12 +149,7 @@ class FlautoPlayerPlugin {
 
       case "audioPlayerFinishedPlaying":
         {
-          String args = call.arguments['arg'] as String;
-          Map<String, dynamic> result =
-              jsonDecode(args) as Map<String, dynamic>;
-          PlayStatus status = PlayStatus.fromJSON(result);
-
-          aPlayer.audioPlayerFinished(status);
+          aPlayer.audioPlayerFinished(call.arguments);
         }
         break;
 
@@ -251,7 +242,7 @@ class FlutterSoundPlayer {
     }
   }
 
-  void audioPlayerFinished(PlayStatus status) {
+  void audioPlayerFinished(Map call) {
     if (status.currentPosition != status.duration) {
       status.currentPosition = status.duration;
     }
@@ -304,7 +295,7 @@ class FlutterSoundPlayer {
       t_IOS_SESSION_MODE mode, int options) async {
     await initialize();
     if (!Platform.isIOS) return false;
-    bool r = await invokeMethod('iosSetCategory', <String, dynamic>{
+    var r = await invokeMethod('iosSetCategory', <String, dynamic>{
       'category': iosSessionCategory[category.index],
       'mode': iosSessionMode[mode.index],
       'options': options
@@ -321,7 +312,7 @@ class FlutterSoundPlayer {
   Future<bool> androidAudioFocusRequest(int focusGain) async {
     await initialize();
     if (!Platform.isAndroid) return false;
-    bool r = await invokeMethod('androidAudioFocusRequest',
+    var r = await invokeMethod('androidAudioFocusRequest',
         <String, dynamic>{'focusGain': focusGain}) as bool;
 
     return r;
@@ -330,10 +321,9 @@ class FlutterSoundPlayer {
   ///  The caller can manage his audio focus with this function
   Future<bool> setActive(bool enabled) async {
     await initialize();
-    bool r =
+    var r =
         await invokeMethod('setActive', <String, dynamic>{'enabled': enabled})
             as bool;
-
     return r;
   }
 
@@ -366,9 +356,11 @@ class FlutterSoundPlayer {
     try {
       t_CODEC codec = what['codec'] as t_CODEC;
       String path = what['path'] as String; // can be null
+      // Flutter cannot transfer an enum to a native plugin.
+      // We use an integer instead
       if (codec != null) {
         what['codec'] = codec.index;
-      } // Flutter cannot transfer an enum to a native plugin. We use an integer instead
+      }
 
       // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
       // We use FFmpeg for that task.
@@ -386,7 +378,6 @@ class FlutterSoundPlayer {
         // It is probably very fast
         // and the user will not notice any delay,
         // even with a very large data.
-
         // This is the price to pay for the Apple stupidity.
         var rc = await flutterSoundHelper.executeFFmpegWithArguments([
           '-loglevel',
@@ -431,9 +422,9 @@ class FlutterSoundPlayer {
     t_CODEC codec,
     TWhenFinished whenFinished,
   }) {
-    initialize();
-    return _startPlayer('startPlayer', <String, dynamic>{
-      'path': uri,
+     await initialize();
+   	 return await _startPlayer('startPlayer', <String, dynamic>{
+       'path': uri,
       'codec': codec,
       'whenFinished': whenFinished,
     });
@@ -484,7 +475,7 @@ class FlutterSoundPlayer {
       return result;
     } catch (e) {
       print(e);
-      rethrow;
+      return null; // stopPlayer() can always be called safely without getting errors
     }
   }
 

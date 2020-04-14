@@ -80,11 +80,7 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
     switch (call.method) {
       case 'audioPlayerFinishedPlaying':
         {
-          String args = call.arguments['arg'] as String;
-          Map<String, dynamic> result =
-              jsonDecode(args) as Map<String, dynamic>;
-          PlayStatus status = PlayStatus.fromJSON(result);
-          aTrackPlayer.audioPlayerFinished(status);
+           aTrackPlayer.audioPlayerFinished(call.argument);
         }
         break;
       case 'skipForward':
@@ -107,8 +103,6 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
 }
 
 class TrackPlayer extends FlutterSoundPlayer {
-  //static const MethodChannel _channel = const MethodChannel( 'xyz.canardoux.track_player' );
-  //StreamController<t_PLAYER_STATE> _playbackStateChangedController;
   TonSkip onSkipForward; // User callback "whenPaused:"
   TonSkip onSkipBackward; // User callback "whenPaused:"
 
@@ -197,7 +191,7 @@ class TrackPlayer extends FlutterSoundPlayer {
     if (onSkipBackward != null) onSkipBackward();
   }
 
-  void audioPlayerFinished(PlayStatus status) {
+  void audioPlayerFinished(Map call) {
     if (status.currentPosition != status.duration) {
       status.currentPosition = status.duration;
     }
@@ -266,10 +260,10 @@ class TrackPlayer extends FlutterSoundPlayer {
     String fileUri, {
     t_CODEC codec,
     TWhenFinished whenFinished,
-  }) {
-    initialize();
+  }) async {
+    await initialize();
     final track = Track(trackPath: fileUri, codec: codec);
-    return startPlayerFromTrack(track, whenFinished: whenFinished);
+    return await startPlayerFromTrack(track, whenFinished: whenFinished);
   }
 
   /// Plays the audio file in [buffer] decoded according to [codec].
@@ -277,10 +271,10 @@ class TrackPlayer extends FlutterSoundPlayer {
     Uint8List dataBuffer, {
     t_CODEC codec,
     TWhenFinished whenFinished,
-  }) {
-    initialize();
+  }) async {
+    await initialize();
     final track = Track(dataBuffer: dataBuffer, codec: codec);
-    return startPlayerFromTrack(track, whenFinished: whenFinished);
+    return await startPlayerFromTrack(track, whenFinished: whenFinished);
   }
 
   void _removePlayerCallback() {
@@ -291,12 +285,6 @@ class TrackPlayer extends FlutterSoundPlayer {
       playerController = null;
     }
   }
-}
-
-class PlayerNotInitializedException implements Exception {
-  final String message;
-
-  PlayerNotInitializedException(this.message);
 }
 
 /// The track to play in the audio player
@@ -367,8 +355,8 @@ class Track {
     if ((Platform.isIOS) &&
         ((codec == t_CODEC.CODEC_OPUS) ||
             (fileExtension(trackPath) == '.opus'))) {
-      Directory tempDir = await getTemporaryDirectory();
-      File fout = await File('${tempDir.path}/flutter_sound-tmp.caf');
+      var tempDir = await getTemporaryDirectory();
+      var fout = await File('${tempDir.path}/flutter_sound-tmp.caf');
       if (fout.existsSync()) {
         await fout.delete();
       }
