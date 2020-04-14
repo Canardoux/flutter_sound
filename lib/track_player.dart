@@ -70,8 +70,7 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
     return getChannel().invokeMethod<dynamic>(methodName, call);
   }
 
-  Future<dynamic> channelMethodCallHandler(MethodCall call)
-  {
+  Future<dynamic> channelMethodCallHandler(MethodCall call) {
     int slotNo = call.arguments['slotNo'] as int;
     TrackPlayer aTrackPlayer = slots[slotNo] as TrackPlayer;
     // for the methods that don't have return values
@@ -80,8 +79,11 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
     switch (call.method) {
       case 'audioPlayerFinishedPlaying':
         {
-          aTrackPlayer
-              .audioPlayerFinished(call.arguments as Map<String, dynamic>);
+          String args = call.arguments['args'] as String;
+          Map<String, dynamic> result =
+              jsonDecode(args) as Map<String, dynamic>;
+          PlayStatus status = new PlayStatus.fromJSON(result);
+          aTrackPlayer.audioPlayerFinished(status);
         }
         break;
       case 'skipForward':
@@ -111,7 +113,7 @@ class TrackPlayer extends FlutterSoundPlayer {
   @override
   TrackPlayer() {
     //if (!isInited) {
-      //initialize();
+    //initialize();
     //}
   }
 
@@ -154,8 +156,8 @@ class TrackPlayer extends FlutterSoundPlayer {
         onSkipForward = null;
 
         //if (_playbackStateChangedController == null) {
-          //_playbackStateChangedController = StreamController.broadcast();
-          //_playbackStateChangedController.close();
+        //_playbackStateChangedController = StreamController.broadcast();
+        //_playbackStateChangedController.close();
         //}
 
         // Add the method call handler
@@ -167,31 +169,27 @@ class TrackPlayer extends FlutterSoundPlayer {
     return this;
   }
 
-
-/// Resets the media player and cleans up the device resources. This must be
+  /// Resets the media player and cleans up the device resources. This must be
   /// called when the player is no longer needed.
   Future<void> release() async {
     if (isInited) {
-      try
-      {
+      try {
         isInited = false;
         // Stop the player playback before releasing
-        await stopPlayer( );
-        await invokeMethod( 'releaseMediaPlayer', <String, dynamic>{} );
+        await stopPlayer();
+        await invokeMethod('releaseMediaPlayer', <String, dynamic>{});
 
-        _removePlayerCallback( ); // playerController is closed by this function
+        _removePlayerCallback(); // playerController is closed by this function
 
         //playerController?.close();
 
         onSkipBackward = null;
         onSkipForward = null;
-      }
-      catch (err)
-      {
-        print( 'err: $err' );
+      } catch (err) {
+        print('err: $err');
         throw err;
       }
-      getPlugin( ).freeSlot( slotNo );
+      getPlugin().freeSlot(slotNo);
       slotNo = null;
     }
   }
@@ -204,17 +202,13 @@ class TrackPlayer extends FlutterSoundPlayer {
     if (onSkipBackward != null) onSkipBackward();
   }
 
-  void audioPlayerFinished(Map call) {
-    String arg = call['arg'] as String;
-    Map<String, dynamic> result = jsonDecode(arg) as Map<String, dynamic>;
-    PlayStatus status = new PlayStatus.fromJSON(result);
+  void audioPlayerFinished(PlayStatus status) {
     if (status.currentPosition != status.duration) {
       status.currentPosition = status.duration;
     }
-    if (playerController != null)
-      playerController.add(status);
+    if (playerController != null) playerController.add(status);
     //if (_playbackStateChangedController != null) {
-      //_playbackStateChangedController.add(t_PLAYER_STATE.IS_STOPPED);
+    //_playbackStateChangedController.add(t_PLAYER_STATE.IS_STOPPED);
     //}
     playerState = t_PLAYER_STATE.IS_STOPPED;
     if (audioPlayerFinishedPlaying != null) {
@@ -222,7 +216,6 @@ class TrackPlayer extends FlutterSoundPlayer {
       audioPlayerFinishedPlaying = null;
     }
     _removePlayerCallback(); // playerController is closed by this function
-
   }
 
   /// Plays the given [track]. [canSkipForward] and [canSkipBackward] must be
@@ -293,7 +286,6 @@ class TrackPlayer extends FlutterSoundPlayer {
     final track = Track(dataBuffer: dataBuffer, codec: codec);
     return startPlayerFromTrack(track, whenFinished: whenFinished);
   }
-
 
   void _removePlayerCallback() {
     if (playerController != null) {

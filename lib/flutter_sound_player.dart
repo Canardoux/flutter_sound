@@ -134,8 +134,7 @@ class FlautoPlayerPlugin {
     return getChannel().invokeMethod<dynamic>(methodName, call);
   }
 
-  Future<dynamic> channelMethodCallHandler(MethodCall call)
-  {
+  Future<dynamic> channelMethodCallHandler(MethodCall call) {
     int slotNo = call.arguments['slotNo'] as int;
     FlutterSoundPlayer aPlayer = slots[slotNo];
     switch (call.method) {
@@ -147,7 +146,12 @@ class FlautoPlayerPlugin {
 
       case "audioPlayerFinishedPlaying":
         {
-          aPlayer.audioPlayerFinished(call.arguments as Map);
+          String args = call.arguments['args'] as String;
+          Map<String, dynamic> result =
+              jsonDecode(args) as Map<String, dynamic>;
+          PlayStatus status = new PlayStatus.fromJSON(result);
+
+          aPlayer.audioPlayerFinished(status);
         }
         break;
 
@@ -218,32 +222,26 @@ class FlutterSoundPlayer {
   }
 
   Future<void> release() async {
-    if (isInited)
-    {
+    if (isInited) {
       isInited = false;
-      await stopPlayer( );
-      _removePlayerCallback( ); // playerController is closed by this function
-      await invokeMethod( 'releaseMediaPlayer', <String, dynamic>{} );
-      playerController?.close( );
+      await stopPlayer();
+      _removePlayerCallback(); // playerController is closed by this function
+      await invokeMethod('releaseMediaPlayer', <String, dynamic>{});
+      playerController?.close();
 
-      getPlugin( ).freeSlot( slotNo );
+      getPlugin().freeSlot(slotNo);
       slotNo = null;
     }
   }
 
-
-
-void updateProgress(Map call) {
+  void updateProgress(Map call) {
     String arg = call['arg'] as String;
     Map<String, dynamic> result = jsonDecode(arg) as Map<String, dynamic>;
-    if (playerController != null) playerController.add(new PlayStatus.fromJSON(result));
+    if (playerController != null)
+      playerController.add(new PlayStatus.fromJSON(result));
   }
 
-  void audioPlayerFinished(Map call) {
-    String arg = call['arg'] as String;
-
-    Map<String, dynamic> result = jsonDecode(arg) as Map<String, dynamic>;
-    PlayStatus status = new PlayStatus.fromJSON(result);
+  void audioPlayerFinished(PlayStatus status) {
     if (status.currentPosition != status.duration) {
       status.currentPosition = status.duration;
     }
@@ -288,7 +286,8 @@ void updateProgress(Map call) {
   /// If this function is called, it is probably called just once when the app starts.
   /// After calling this function, the caller is responsible for using correctly setActive
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
-  Future<bool> iosSetCategory(t_IOS_SESSION_CATEGORY category, t_IOS_SESSION_MODE mode, int options) async {
+  Future<bool> iosSetCategory(t_IOS_SESSION_CATEGORY category,
+      t_IOS_SESSION_MODE mode, int options) async {
     initialize();
     if (!Platform.isIOS) return false;
     bool r = await invokeMethod('iosSetCategory', <String, dynamic>{
@@ -315,7 +314,9 @@ void updateProgress(Map call) {
   ///  The caller can manage his audio focus with this function
   Future<bool> setActive(bool enabled) async {
     initialize();
-    bool r = await invokeMethod('setActive', <String, dynamic>{'enabled': enabled})as bool;
+    bool r =
+        await invokeMethod('setActive', <String, dynamic>{'enabled': enabled})
+            as bool;
     return r;
   }
 
@@ -401,14 +402,17 @@ void updateProgress(Map call) {
     }
   }
 
-  Future<String> startPlayer( String uri, {t_CODEC codec, TWhenFinished whenFinished,})
-  {
+  Future<String> startPlayer(
+    String uri, {
+    t_CODEC codec,
+    TWhenFinished whenFinished,
+  }) {
     initialize();
-    return _startPlayer( 'startPlayer', <String, dynamic>{
+    return _startPlayer('startPlayer', <String, dynamic>{
       'path': uri,
       'codec': codec,
       'whenFinished': whenFinished,
-    } );
+    });
   }
 
   Future<String> startPlayerFromBuffer(
@@ -446,7 +450,8 @@ void updateProgress(Map call) {
 
     try {
       _removePlayerCallback(); // playerController is closed by this function
-      String result = await invokeMethod('stopPlayer', <String, dynamic>{})as String;
+      String result =
+          await invokeMethod('stopPlayer', <String, dynamic>{}) as String;
       return result;
     } catch (e) {}
     return null;
