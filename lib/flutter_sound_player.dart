@@ -146,7 +146,7 @@ class FlautoPlayerPlugin {
 
       case "audioPlayerFinishedPlaying":
         {
-          String args = call.arguments['args'] as String;
+          String args = call.arguments['arg'] as String;
           Map<String, dynamic> result =
               jsonDecode(args) as Map<String, dynamic>;
           PlayStatus status = new PlayStatus.fromJSON(result);
