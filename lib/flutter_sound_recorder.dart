@@ -173,7 +173,7 @@ class FlutterSoundRecorder {
 
   /// Returns true if the specified encoder is supported by flutter_sound on this platform
   Future<bool> isEncoderSupported(t_CODEC codec) async {
-    initialize();
+    await initialize();
     bool result;
     // For encoding ogg/opus on ios, we need to support two steps :
     // - encode CAF/OPPUS (with native Apple AVFoundation)
@@ -217,7 +217,7 @@ class FlutterSoundRecorder {
   }
 
   Future<String> setSubscriptionDuration(double sec) async {
-    initialize();
+    await initialize();
     String r = await invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'sec': sec,
     });
@@ -227,7 +227,7 @@ class FlutterSoundRecorder {
   /// Defines the interval at which the peak level should be updated.
   /// Default is 0.8 seconds
   Future<String> setDbPeakLevelUpdate(double intervalInSecs) async {
-    initialize();
+    await initialize();
     String r = await invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
       'intervalInSecs': intervalInSecs,
     });
@@ -236,7 +236,7 @@ class FlutterSoundRecorder {
 
   /// Enables or disables processing the Peak level in db's. Default is disabled
   Future<String> setDbLevelEnabled(bool enabled) async {
-    initialize();
+    await initialize();
     String r = await invokeMethod('setDbLevelEnabled', <String, dynamic>{
       'enabled': enabled,
     });
@@ -269,7 +269,7 @@ class FlutterSoundRecorder {
     IosQuality iosQuality = IosQuality.LOW,
     bool requestPermission = true,
   }) async {
-    initialize();
+    await initialize();
     // Request Microphone permission if needed
     if (requestPermission) {
       PermissionStatus status = await Permission.microphone.request();
@@ -294,8 +294,8 @@ class FlutterSoundRecorder {
       codec = t_CODEC.CODEC_CAF_OPUS;
       var tempDir = await getTemporaryDirectory();
       var fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
-      if (fout.existsSync()) { // delete the old temporary file if it exists
-      }  await fout.delete();
+      //if (fout.existsSync()) { // delete the old temporary file if it exists
+      //}  await fout.delete();
       uri = fout.path;
       tmpUri = uri;
     } else {

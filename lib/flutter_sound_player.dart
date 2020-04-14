@@ -271,7 +271,7 @@ void updateProgress(Map call) {
   /// Returns true if the specified decoder is supported by flutter_sound on this platform
   Future<bool> isDecoderSupported(t_CODEC codec) async {
     bool result;
-    initialize();
+    await initialize();
     // For decoding ogg/opus on ios, we need to support two steps :
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
@@ -294,7 +294,7 @@ void updateProgress(Map call) {
   /// the caller is responsible for using correctly setActive
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
   Future<bool> iosSetCategory(t_IOS_SESSION_CATEGORY category, t_IOS_SESSION_MODE mode, int options) async {
-    initialize();
+    await initialize();
     if (!Platform.isIOS) return false;
     var r = await invokeMethod('iosSetCategory', <String, dynamic>{'category': iosSessionCategory[category.index], 'mode': iosSessionMode[mode.index], 'options': options});
     return r;
@@ -306,7 +306,7 @@ void updateProgress(Map call) {
   /// After calling this function, the caller is responsible for using correctly setActive
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
   Future<bool> androidAudioFocusRequest(int focusGain) async {
-    initialize();
+    await initialize();
     if (!Platform.isAndroid) return false;
     var r = await invokeMethod('androidAudioFocusRequest', <String, dynamic>{'focusGain': focusGain});
     return r;
@@ -314,7 +314,7 @@ void updateProgress(Map call) {
 
   ///  The caller can manage his audio focus with this function
   Future<bool> setActive(bool enabled) async {
-    initialize();
+    await initialize();
     var r = await invokeMethod(
                 'setActive',
                 <String, dynamic>{'enabled': enabled}
@@ -323,7 +323,7 @@ void updateProgress(Map call) {
   }
 
   Future<String> setSubscriptionDuration(double sec) async {
-    initialize();
+    await await initialize();
     String r = await invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'sec': sec,
     });
@@ -408,10 +408,10 @@ void updateProgress(Map call) {
     }
   }
 
-  Future<String> startPlayer( String uri, {t_CODEC codec, whenFinished(),})
+  Future<String> startPlayer( String uri, {t_CODEC codec, whenFinished(),}) async
   {
-    initialize();
-    return _startPlayer( 'startPlayer', {
+    await initialize();
+    return await _startPlayer( 'startPlayer', {
       'path': uri,
       'codec': codec,
       'whenFinished': whenFinished,
@@ -423,7 +423,7 @@ void updateProgress(Map call) {
     t_CODEC codec,
     whenFinished(),
   }) async {
-    initialize();
+    await initialize();
     // If we want to play OGG/OPUS on iOS, we need to remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We write the data in a temporary file before calling ffmpeg.
     if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS)) {
@@ -491,7 +491,7 @@ void updateProgress(Map call) {
   }
 
   Future<String> seekToPlayer(int milliSecs) async {
-    initialize();
+    await initialize();
     String r = await invokeMethod('seekToPlayer', <String, dynamic>{
       'sec': milliSecs,
     });
@@ -499,7 +499,7 @@ void updateProgress(Map call) {
   }
 
   Future<String> setVolume(double volume) async {
-    initialize();
+    await initialize();
     var indexedVolume = Platform.isIOS ? volume * 100 : volume;
     if (volume < 0.0 || volume > 1.0) {
       throw RangeError('Value of volume should be between 0.0 and 1.0.');

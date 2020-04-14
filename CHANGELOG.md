@@ -1,8 +1,12 @@
 
 ## 3.1.7
 
+- Fix a bug ('async') when the app forget to initalize its Flutter Sound module. [#287](https://github.com/dooboolab/flutter_sound/issues/287)
+
+## 3.1.7
+
 - Codec PCM for recorder on iOS
-- Optional argument ```requestPermission``` before ```startRecorder()``` so that the App can control itself the recording permissions.
+- Optional argument ```requestPermission``` before ```startRecorder()``` so that the App can control itself the recording permissions. [#283](https://github.com/dooboolab/flutter_sound/pull/283)
 
 
 ## 3.1.6+1

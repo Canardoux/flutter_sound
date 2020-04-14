@@ -230,7 +230,7 @@ class TrackPlayer extends FlutterSoundPlayer {
       throw PlayerRunningException('The selected codec is not supported on '
           'this platform.');
     }
-    initialize();
+    await initialize();
 
     await track._adaptOggToIos();
 
@@ -262,10 +262,10 @@ class TrackPlayer extends FlutterSoundPlayer {
     String fileUri, {
     t_CODEC codec,
     whenFinished(),
-  }) {
-    initialize();
+  }) async {
+    await initialize();
     final track = Track(trackPath: fileUri, codec: codec);
-    return startPlayerFromTrack(track, whenFinished: whenFinished);
+    return await startPlayerFromTrack(track, whenFinished: whenFinished);
   }
 
   /// Plays the audio file in [buffer] decoded according to [codec].
@@ -273,10 +273,10 @@ class TrackPlayer extends FlutterSoundPlayer {
     Uint8List dataBuffer, {
     t_CODEC codec,
     whenFinished(),
-  }) {
-    initialize();
+  }) async {
+    await initialize();
     final track = Track(dataBuffer: dataBuffer, codec: codec);
-    return startPlayerFromTrack(track, whenFinished: whenFinished);
+    return await startPlayerFromTrack(track, whenFinished: whenFinished);
   }
 
 
@@ -288,12 +288,6 @@ class TrackPlayer extends FlutterSoundPlayer {
       playerController = null;
     }
   }
-}
-
-class PlayerNotInitializedException implements Exception {
-  final String message;
-
-  PlayerNotInitializedException(this.message);
 }
 
 /// The track to play in the audio player
