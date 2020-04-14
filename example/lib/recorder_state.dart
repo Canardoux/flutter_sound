@@ -119,8 +119,9 @@ class RecorderState {
     } on RecorderException catch (err) {
       print('startRecorder error: $err');
 
-      var error =
-          SnackBar(content: Text('Failed to start recording: ${err.message}'));
+      var error = SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('Failed to start recording: ${err.message}'));
       Scaffold.of(context).showSnackBar(error);
 
       stopRecorder();

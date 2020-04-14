@@ -126,6 +126,7 @@ class _PlayerControlsState extends State<PlayerControls> {
       if (ActiveCodec().codec != t_CODEC.CODEC_MP3) {
         canPlay = false;
         var error = SnackBar(
+            backgroundColor: Colors.red,
             content: Text(
                 'You must set the Coded to MP3 to play the "Remote Example File"'));
         Scaffold.of(context).showSnackBar(error);
