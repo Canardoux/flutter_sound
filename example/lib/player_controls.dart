@@ -164,6 +164,7 @@ class _PlayerControlsState extends State<PlayerControls> {
   }
 
   void playbackFinished() {
+    PlayerState().stopPlayer();
     setState(() {});
   }
 }
