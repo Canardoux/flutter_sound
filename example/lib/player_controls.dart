@@ -130,7 +130,7 @@ class _PlayerControlsState extends State<PlayerControls> {
                 'You must set the Coded to MP3 to play the "Remote Example File"'));
         Scaffold.of(context).showSnackBar(error);
       }
-    } else if (!MediaPath().exists(ActiveCodec().codec)) {
+    } else if (!MediaPath().isAsset && !MediaPath().exists(ActiveCodec().codec)) {
       canPlay = false;
       var error = SnackBar(
           content: Text(
