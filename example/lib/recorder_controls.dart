@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
-import 'active_codec.dart';
 import 'common.dart';
 import 'grayed_out.dart';
 import 'media_path.dart';
@@ -85,6 +84,8 @@ class _RecorderControlsState extends State<RecorderControls> {
       width: 56.0,
       height: 50.0,
       child: ClipOval(
+          child: GrayedOut(
+        grayedOut: !canRecord(),
         child: FlatButton(
           onPressed: () => startStopRecorder(context),
           padding: EdgeInsets.all(8.0),
@@ -92,7 +93,7 @@ class _RecorderControlsState extends State<RecorderControls> {
             image: recorderAssetImage(),
           ),
         ),
-      ),
+      )),
     );
   }
 
@@ -129,10 +130,12 @@ class _RecorderControlsState extends State<RecorderControls> {
 
   bool canRecord() {
     if (MediaPath().isAsset ||
-        MediaPath().isBuffer ||
+        // MediaPath().isBuffer ||
         MediaPath().isExampleFile) return false;
     // Disable the button if the selected codec is not supported
-    if (!ActiveCodec().encoderSupported) return false;
+    // Removed this test as felt it was better to display an error
+    // when the user attempts to record so they know why they can't record.
+    // if (!ActiveCodec().encoderSupported) return false;
 
     if (audioState != t_AUDIO_STATE.IS_RECORDING &&
         audioState != t_AUDIO_STATE.IS_RECORDING_PAUSED &&
