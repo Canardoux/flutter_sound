@@ -21,14 +21,19 @@ import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
+
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flauto.dart';
+
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
+import 'package:flutter/services.dart';
+import 'flauto.dart';
+
 enum t_PLAYER_STATE {
-  IS_STOPPED,
+  IS_STOPPED, /// Player is stopped
   IS_PLAYING,
   IS_PAUSED,
 }
@@ -108,13 +113,14 @@ class FlautoPlayerPlugin {
   void setCallback() {
     channel = const MethodChannel('com.dooboolab.flutter_sound_player');
     channel.setMethodCallHandler((MethodCall call) {
-      // This lambda function is necessary because channelMethodCallHandler is a virtual function (polymorphism)
+      // This lambda function is necessary because
+      // channelMethodCallHandler is a virtual function (polymorphism)
       return channelMethodCallHandler(call);
     });
   }
 
   int lookupEmptySlot(FlutterSoundPlayer aPlayer) {
-    for (int i = 0; i < slots.length; ++i) {
+    for (var i = 0; i < slots.length; ++i) {
       if (slots[i] == null) {
         slots[i] = aPlayer;
         return i;
@@ -134,9 +140,11 @@ class FlautoPlayerPlugin {
     return getChannel().invokeMethod<dynamic>(methodName, call);
   }
 
+
   Future<dynamic> channelMethodCallHandler(MethodCall call) {
-    int slotNo = call.arguments['slotNo'] as int;
-    FlutterSoundPlayer aPlayer = slots[slotNo];
+    int slotNo = call.arguments['slotNo'];
+    var aPlayer = slots[slotNo];
+
     switch (call.method) {
       case "updateProgress":
         {
@@ -168,7 +176,7 @@ class FlautoPlayerPlugin {
         break;
 
       default:
-        throw new ArgumentError('Unknown method ${call.method}');
+        throw  ArgumentError('Unknown method ${call.method}');
     }
     return null;
   }
@@ -178,7 +186,7 @@ class FlautoPlayerPlugin {
 /// path can be null. We return null in this case.
 String fileExtension(String path) {
   if (path == null) return null;
-  String r = p.extension(path);
+  var r = p.extension(path);
   return r;
 }
 
@@ -193,6 +201,7 @@ class FlutterSoundPlayer {
 
   Stream<PlayStatus> get onPlayerStateChanged =>
       playerController != null ? playerController.stream : null;
+
 
   bool get isPlaying => playerState == t_PLAYER_STATE.IS_PLAYING;
 
@@ -213,8 +222,10 @@ class FlutterSoundPlayer {
   Future<FlutterSoundPlayer> initialize() async {
     if (!isInited) {
       isInited = true;
-      if (flautoPlayerPlugin == null)
+
+      if (flautoPlayerPlugin == null) {
         flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton
+      }
       slotNo = getPlugin().lookupEmptySlot(this);
       await invokeMethod('initializeMediaPlayer', <String, dynamic>{});
     }
@@ -234,14 +245,20 @@ class FlutterSoundPlayer {
     }
   }
 
-  void updateProgress(Map call) {
-    String arg = call['arg'] as String;
-    Map<String, dynamic> result = jsonDecode(arg) as Map<String, dynamic>;
-    if (playerController != null)
-      playerController.add(new PlayStatus.fromJSON(result));
+void updateProgress(Map call) {
+    String arg = call['arg'];
+    Map<String, dynamic> result = jsonDecode(arg);
+    if (playerController != null) {
+      playerController.add( PlayStatus.fromJSON(result));
+    }
   }
 
-  void audioPlayerFinished(PlayStatus status) {
+  void audioPlayerFinished(Map call) {
+    String arg = call['arg'];
+
+    Map<String, dynamic> result = jsonDecode(arg);
+    var status =  PlayStatus.fromJSON(result);
+
     if (status.currentPosition != status.duration) {
       status.currentPosition = status.duration;
     }
@@ -282,9 +299,12 @@ class FlutterSoundPlayer {
   }
 
   /// For iOS only.
-  /// If this function is not called, everything is managed by default by flutter_sound.
-  /// If this function is called, it is probably called just once when the app starts.
-  /// After calling this function, the caller is responsible for using correctly setActive
+  /// If this function is not called,
+  /// everything is managed by default by flutter_sound.
+  /// If this function is called,
+  /// it is probably called just once when the app starts.
+  /// After calling this function,
+  /// the caller is responsible for using correctly setActive
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
   Future<bool> iosSetCategory(t_IOS_SESSION_CATEGORY category,
       t_IOS_SESSION_MODE mode, int options) async {
@@ -295,6 +315,7 @@ class FlutterSoundPlayer {
       'mode': iosSessionMode[mode.index],
       'options': options
     }) as bool;
+
     return r;
   }
 
@@ -308,6 +329,7 @@ class FlutterSoundPlayer {
     if (!Platform.isAndroid) return false;
     bool r = await invokeMethod('androidAudioFocusRequest',
         <String, dynamic>{'focusGain': focusGain}) as bool;
+
     return r;
   }
 
@@ -317,6 +339,7 @@ class FlutterSoundPlayer {
     bool r =
         await invokeMethod('setActive', <String, dynamic>{'enabled': enabled})
             as bool;
+
     return r;
   }
 
@@ -347,22 +370,31 @@ class FlutterSoundPlayer {
     String result;
     await stopPlayer(); // Just in case
     try {
-      t_CODEC codec = what['codec'] as t_CODEC;
-      String path = what['path'] as String; // can be null
-      if (codec != null)
-        what['codec'] = codec
-            .index; // Flutter cannot transfer an enum to a native plugin. We use an integer instead
 
+      t_CODEC codec = what['codec'];
+      String path = what['path']; // can be null
+      // Flutter cannot transfer an enum to a native plugin.
+      // We use an integer instead
+      if (codec != null) {
+        what['codec'] = codec.index;
+      }
       // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
       // We use FFmpeg for that task.
-      if ((Platform.isIOS) &&
-          ((codec == t_CODEC.CODEC_OPUS) || (fileExtension(path) == '.opus'))) {
-        Directory tempDir = await getTemporaryDirectory();
-        File fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
-        if (fout.existsSync()) // delete the old temporary file if it exists
-          await fout.delete();
-        // The following ffmpeg instruction does not decode and re-encode the file. It just remux the OPUS data into an Apple CAF envelope.
-        // It is probably very fast and the user will not notice any delay, even with a very large data.
+      if ( (Platform.isIOS) &&
+           ((codec == t_CODEC.CODEC_OPUS) || (fileExtension(path) == '.opus'))
+      ) {
+        var tempDir = await getTemporaryDirectory();
+        var fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
+        if (fout.existsSync()) { // delete the old temporary file if it exists
+            await fout.delete();
+        }
+        // The following ffmpeg instruction
+        // does not decode and re-encode the file.
+        // It just remux the OPUS data into an Apple CAF envelope.
+        // It is probably very fast
+        // and the user will not notice any delay,
+        // even with a very large data.
+
         // This is the price to pay for the Apple stupidity.
         var rc = await flutterSoundHelper.executeFFmpegWithArguments([
           '-loglevel',
@@ -425,11 +457,14 @@ class FlutterSoundPlayer {
     // We write the data in a temporary file before calling ffmpeg.
     if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS)) {
       await stopPlayer();
-      Directory tempDir = await getTemporaryDirectory();
+      var tempDir = await getTemporaryDirectory();
       File inputFile = File('${tempDir.path}/$slotNo-flutter_sound-tmp.opus');
-      if (inputFile.existsSync()) await inputFile.delete();
-      inputFile.writeAsBytesSync(
-          dataBuffer); // Write the user buffer into the temporary file
+
+      if (inputFile.existsSync()) {
+        await inputFile.delete();
+      }
+      inputFile.writeAsBytesSync(dataBuffer); // Write the user buffer into the temporary file
+
       // Now we can play the temporary file
       return await _startPlayer('startPlayer', <String, dynamic>{
         'path': inputFile.path,
@@ -500,7 +535,7 @@ class FlutterSoundPlayer {
 
   Future<String> setVolume(double volume) async {
     initialize();
-    double indexedVolume = Platform.isIOS ? volume * 100 : volume;
+    var indexedVolume = Platform.isIOS ? volume * 100 : volume;
     if (volume < 0.0 || volume > 1.0) {
       throw RangeError('Value of volume should be between 0.0 and 1.0.');
     }

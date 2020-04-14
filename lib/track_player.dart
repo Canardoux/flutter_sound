@@ -27,8 +27,8 @@ import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/services.dart';
-import 'package:flutter_sound/flutter_sound_player.dart';
-import 'package:flutter_sound/flauto.dart';
+import 'flutter_sound_player.dart';
+import 'flauto.dart';
 import 'package:path_provider/path_provider.dart';
 
 TrackPlayerPlugin trackPlayerPlugin; // Singleton, lazy initialized
@@ -44,7 +44,8 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
   void setCallback() {
     channel = const MethodChannel('com.dooboolab.flutter_sound_track_player');
     channel.setMethodCallHandler((MethodCall call) {
-      // This lambda function is necessary because channelMethodCallHandler is a virtual function (polymorphism)
+      // This lambda function is necessary because channelMethodCallHandler
+      // is a virtual function (polymorphism)
       return channelMethodCallHandler(call);
     });
   }
@@ -100,22 +101,20 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
       default:
         result = super.channelMethodCallHandler(call);
     }
+
     return result;
   }
 }
 
 class TrackPlayer extends FlutterSoundPlayer {
+
   //static const MethodChannel _channel = const MethodChannel( 'xyz.canardoux.track_player' );
   //StreamController<t_PLAYER_STATE> _playbackStateChangedController;
   TonSkip onSkipForward; // User callback "whenPaused:"
   TonSkip onSkipBackward; // User callback "whenPaused:"
 
   @override
-  TrackPlayer() {
-    //if (!isInited) {
-    //initialize();
-    //}
-  }
+  TrackPlayer();
 
   TrackPlayerPlugin getPlugin() => trackPlayerPlugin;
 
@@ -146,19 +145,16 @@ class TrackPlayer extends FlutterSoundPlayer {
   Future<TrackPlayer> initialize() async {
     if (!isInited) {
       isInited = true;
-      if (trackPlayerPlugin == null)
-        trackPlayerPlugin = TrackPlayerPlugin(); // The lazy singleton
+
+      if (trackPlayerPlugin == null) {
+        trackPlayerPlugin = TrackPlayerPlugin( ); // The lazy singleton
+      }
       slotNo = getPlugin().lookupEmptyTrackPlayerSlot(this);
 
       try {
         await invokeMethod('initializeMediaPlayer', <String, dynamic>{});
         onSkipBackward = null;
         onSkipForward = null;
-
-        //if (_playbackStateChangedController == null) {
-        //_playbackStateChangedController = StreamController.broadcast();
-        //_playbackStateChangedController.close();
-        //}
 
         // Add the method call handler
         //getChannel( ).setMethodCallHandler( channelMethodCallHandler );
@@ -206,10 +202,11 @@ class TrackPlayer extends FlutterSoundPlayer {
     if (status.currentPosition != status.duration) {
       status.currentPosition = status.duration;
     }
-    if (playerController != null) playerController.add(status);
-    //if (_playbackStateChangedController != null) {
-    //_playbackStateChangedController.add(t_PLAYER_STATE.IS_STOPPED);
-    //}
+    
+    if (playerController != null) {
+      playerController.add( status );
+    }
+
     playerState = t_PLAYER_STATE.IS_STOPPED;
     if (audioPlayerFinishedPlaying != null) {
       audioPlayerFinishedPlaying();
@@ -231,6 +228,7 @@ class TrackPlayer extends FlutterSoundPlayer {
     TwhenPaused whenPaused,
     TonSkip onSkipForward = null,
     TonSkip onSkipBackward = null,
+
   }) async {
     // Check the current codec is not supported on this platform
     if (!await isDecoderSupported(track.codec)) {
@@ -335,9 +333,8 @@ class Track {
     this.dataBuffer,
     this.trackTitle,
     this.trackAuthor,
-    this.albumArtUrl = null,
-    this.albumArtAsset = null,
-    //this.albumArtImage = null,
+    this.albumArtUrl ,
+    this.albumArtAsset,
     this.codec = t_CODEC.DEFAULT,
   }) {
     codec = codec == null ? t_CODEC.DEFAULT : codec;
@@ -368,6 +365,7 @@ class Track {
   Future<void> _adaptOggToIos() async {
     // If we want to play OGG/OPUS on iOS, we re-mux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We use FFmpeg for that task.
+
     if ((Platform.isIOS) &&
         ((codec == t_CODEC.CODEC_OPUS) ||
             (fileExtension(trackPath) == '.opus'))) {
@@ -375,15 +373,18 @@ class Track {
       File fout = await File('${tempDir.path}/flutter_sound-tmp.caf');
       if (fout.existsSync()) // delete the old temporary file if it exists
         await fout.delete();
+
       int rc;
-      String inputFileName = trackPath;
-      // The following ffmpeg instruction does not decode and re-encode the file. It just remux the OPUS data into an Apple CAF envelope.
-      // It is probably very fast and the user will not notice any delay, even with a very large data.
+      var inputFileName = trackPath;
+      // The following ffmpeg instruction does not decode and re-encode the file.
+      // It just remux the OPUS data into an Apple CAF envelope.
+      // It is probably very fast and the user will not notice any delay,
+      // even with a very large data.
       // This is the price to pay for the Apple stupidity.
       if (dataBuffer != null) {
         // Write the user buffer into the temporary file
         inputFileName = '${tempDir.path}/flutter_sound-tmp.opus';
-        File fin = await File(inputFileName);
+        var fin = await File(inputFileName);
         fin.writeAsBytesSync(dataBuffer);
       }
       rc = await flutterSoundHelper.executeFFmpegWithArguments([
@@ -397,7 +398,7 @@ class Track {
         fout.path,
       ]); // remux OGG to CAF
       if (rc != 0) {
-        throw 'FFmpeg exited with code ${rc}';
+        throw 'FFmpeg exited with code $rc';
       }
       // Now we can play Apple CAF/OPUS
       trackPath = fout.path;

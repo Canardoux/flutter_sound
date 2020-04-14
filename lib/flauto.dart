@@ -17,10 +17,12 @@
 import 'dart:async';
 import 'dart:core';
 
+
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/track_player.dart';
 import 'package:flutter_sound/flutter_sound_recorder.dart';
 import 'package:flutter_sound/flutter_sound_player.dart';
+
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 // this enum MUST be synchronized with fluttersound/AudioInterface.java  and ios/Classes/FlutterSoundPlugin.h
@@ -127,7 +129,6 @@ class FlutterSoundHelper {
 /// New users must use the class TrackPlayer
 @deprecated
 class Flauto extends FlutterSound {
-  TrackPlayer trackPlayer;
   Flauto() {
     initializeMediaPlayer();
   }
@@ -147,7 +148,8 @@ class Flauto extends FlutterSound {
     TonSkip onSkipForward = null,
     TonSkip onSkipBackward = null,
   }) async {
-    return await trackPlayer.startPlayerFromTrack(
+    TrackPlayer player = soundPlayer;
+    return player.startPlayerFromTrack(
       track,
       whenFinished: whenFinished,
       onSkipBackward: onSkipBackward,
