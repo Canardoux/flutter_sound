@@ -1,5 +1,5 @@
 
-## 3.1.7
+## 3.1.8
 
 - Fix a bug ('async') when the app forget to initalize its Flutter Sound module. [#287](https://github.com/dooboolab/flutter_sound/issues/287)
 
