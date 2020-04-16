@@ -3,14 +3,18 @@ import 'package:flutter/material.dart';
 import 'grayed_out.dart';
 import 'player_state.dart';
 
+/// UI widget from the TrackPlayer specific settings
+/// Allow Tracks and Hush Others
 class TrackSwitch extends StatefulWidget {
-  final void Function(bool allowTracks) switchPlayer;
+  final void Function(bool allowTracks) _switchPlayer;
 
+  /// ctor
   const TrackSwitch({
     Key key,
     @required bool isAudioPlayer,
-    @required this.switchPlayer,
+    @required void Function(bool allowTracks) switchPlayer,
   })  : _isAudioPlayer = isAudioPlayer,
+        _switchPlayer = switchPlayer,
         super(key: key);
 
   final bool _isAudioPlayer;
@@ -41,12 +45,12 @@ class _TrackSwitchState extends State<TrackSwitch> {
               )),
           Padding(
             padding: const EdgeInsets.only(right: 4.0),
-            child: Text('Duck Others:'),
+            child: Text('Hush Others:'),
           ),
           Switch(
-            value: PlayerState().duckOthers,
-            onChanged: (duckOthers) =>
-                duckOthersSwitchChanged(duckOthers: duckOthers),
+            value: PlayerState().hushOthers,
+            onChanged: (hushOthers) =>
+                hushOthersSwitchChanged(hushOthers: hushOthers),
           ),
         ],
       ),
@@ -54,10 +58,10 @@ class _TrackSwitchState extends State<TrackSwitch> {
   }
 
   void onAudioPlayerSwitchChanged({bool allowTracks = false}) async {
-    widget.switchPlayer(allowTracks);
+    widget._switchPlayer(allowTracks);
   }
 
-  void duckOthersSwitchChanged({bool duckOthers}) {
-    PlayerState().setDuck(duckOthers: duckOthers);
+  void hushOthersSwitchChanged({bool hushOthers}) {
+    PlayerState().setHush(hushOthers: hushOthers);
   }
 }

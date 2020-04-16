@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flauto.dart';
-import 'package:flutter_sound/flutter_sound_player.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 
 import 'active_codec.dart';
 import 'common.dart';
@@ -9,7 +8,9 @@ import 'media_path.dart';
 import 'player_slider.dart';
 import 'player_state.dart';
 
+/// The UI for a example player.
 class PlayerControls extends StatefulWidget {
+  /// ctor
   const PlayerControls({
     Key key,
   }) : super(key: key);
@@ -48,9 +49,8 @@ class _PlayerControlsState extends State<PlayerControls> {
           initialData: PlayStatus.zero(),
           builder: (context, snapshot) {
             var playStatus = snapshot.data;
-            var duration = playStatus.duration;
             return Text(
-              formatDuration(duration),
+              formatDuration(playStatus.duration),
               style: TextStyle(
                 fontSize: 35.0,
                 color: Colors.black,
@@ -123,7 +123,7 @@ class _PlayerControlsState extends State<PlayerControls> {
   void startPlayer() async {
     var canPlay = true;
     if (MediaPath().isExampleFile) {
-      if (ActiveCodec().codec != t_CODEC.CODEC_MP3) {
+      if (ActiveCodec().codec != Codec.CODEC_MP3) {
         canPlay = false;
         var error = SnackBar(
             backgroundColor: Colors.red,

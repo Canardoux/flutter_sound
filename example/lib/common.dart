@@ -1,50 +1,60 @@
 import 'dart:io';
 
-import 'package:flutter_sound/flauto.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:intl/intl.dart';
 
 import 'media_path.dart';
 
-enum t_MEDIA {
+/// Describes how the media is stored.
+enum MediaStorage {
   /// The media is stored in a local file
   file,
-  // The media is stored in a in memory buffer
+
+  /// The media is stored in a in memory buffer
   buffer,
-  // The media is stored in an asset.
+
+  /// The media is stored in an asset.
   asset,
-  // The media is being streamed
+
+  /// The media is being streamed
   stream,
-  // The media is a remote sample file.
+
+  /// The media is a remote sample file.
   remoteExampleFile,
 }
 
-Future<double> getDuration(t_CODEC codec) async {
+/// get the duration for the media with the given codec.
+Future<double> getDuration(Codec codec) async {
   Future<double> duration;
   switch (MediaPath().media) {
-    case t_MEDIA.file:
-    case t_MEDIA.buffer:
+    case MediaStorage.file:
+    case MediaStorage.buffer:
       var d =
           await flutterSoundHelper.duration(MediaPath().pathForCodec(codec));
       duration = Future.value(d != null ? d / 1000.0 : null);
       break;
-    case t_MEDIA.asset:
+    case MediaStorage.asset:
       duration = null;
       break;
-    case t_MEDIA.remoteExampleFile:
+    case MediaStorage.remoteExampleFile:
       duration = null;
       break;
-    case t_MEDIA.stream:
+    case MediaStorage.stream:
       duration = null;
       break;
   }
   return duration;
 }
 
-String formatDuration(double duration) {
-  var date = DateTime.fromMillisecondsSinceEpoch(duration.toInt(), isUtc: true);
+/// formats a duration for printing.
+///  mm:ss
+String formatDuration(Duration duration) {
+  var date =
+      DateTime.fromMillisecondsSinceEpoch(duration.inMilliseconds, isUtc: true);
   return DateFormat('mm:ss', 'en_GB').format(date);
 }
 
+/// the set of samples availble as assets.
 List<String> assetSample = [
   'assets/samples/sample.aac',
   'assets/samples/sample.aac',
@@ -55,6 +65,7 @@ List<String> assetSample = [
   'assets/samples/sample.wav',
 ];
 
-Future<bool> fileExists(String path) async {
-  return await File(path).exists();
+/// Checks if the past file exists
+bool fileExists(String path)  {
+  return  File(path).existsSync();
 }
