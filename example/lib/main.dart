@@ -17,9 +17,7 @@
 import 'dart:async';
 
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:flutter_sound/flauto.dart';
-import 'package:flutter_sound/flutter_sound_player.dart';
-import 'package:flutter_sound/track_player.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 
 import 'package:flutter/material.dart';
 import 'active_codec.dart';
@@ -69,14 +67,14 @@ class _MyAppState extends State<MyApp> {
 
     await initializeDateFormatting();
 
-    await PlayerState().setDuck(duckOthers: false);
+    await PlayerState().setHush(hushOthers: false);
   }
 
   Future<bool> init() async {
     if (!initialised) {
       await PlayerState().init();
       await RecorderState().init();
-      await ActiveCodec().setCodec(t_CODEC.CODEC_AAC);
+      await ActiveCodec().setCodec(Codec.CODEC_AAC);
       await _resetModules(PlayerState().playerModule);
 
       initialised = true;
@@ -98,7 +96,6 @@ class _MyAppState extends State<MyApp> {
             );
           } else {
             final dropdowns = Dropdowns(
-                context: context,
                 onCodecChanged: (codec) => ActiveCodec().setCodec(codec));
             final trackSwitch = TrackSwitch(
               isAudioPlayer: _isTrackPlayer,
@@ -132,14 +129,12 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     super.dispose();
     PlayerState().cancelPlayerSubscriptions();
-    RecorderState().cancelRecorderSubscriptions();
     releaseFlauto();
   }
 
   Future<void> releaseFlauto() async {
     try {
       await PlayerState().release();
-      RecorderState().release();
     } on Object catch (e) {
       print('Released unsuccessful');
       print(e);
