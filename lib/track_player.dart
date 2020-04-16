@@ -20,91 +20,19 @@
  */
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
-import 'package:flutter/services.dart';
 import 'flutter_sound_player.dart';
-import 'flauto.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'src/flauto.dart';
+import 'src/play_status.dart';
+import 'src/track_player_plugin.dart';
+
 TrackPlayerPlugin trackPlayerPlugin; // Singleton, lazy initialized
-
-class TrackPlayerPlugin extends FlautoPlayerPlugin {
-  MethodChannel channel;
-
-  //List<TrackPlayer> trackPlayerSlots = [];
-  TrackPlayerPlugin() {
-    setCallback();
-  }
-
-  void setCallback() {
-    channel = const MethodChannel('com.dooboolab.flutter_sound_track_player');
-    channel.setMethodCallHandler((MethodCall call) {
-      // This lambda function is necessary because channelMethodCallHandler
-      // is a virtual function (polymorphism)
-      return channelMethodCallHandler(call);
-    });
-  }
-
-  int lookupEmptyTrackPlayerSlot(TrackPlayer aTrackPlayer) {
-    for (int i = 0; i < slots.length; ++i) {
-      if (slots[i] == null) {
-        slots[i] = aTrackPlayer;
-        return i;
-      }
-    }
-    slots.add(aTrackPlayer);
-    return slots.length - 1;
-  }
-
-  void freeSlot(int slotNo) {
-    slots[slotNo] = null;
-  }
-
-  MethodChannel getChannel() => channel;
-
-  Future<dynamic> invokeMethod(String methodName, Map<String, dynamic> call) {
-    return getChannel().invokeMethod<dynamic>(methodName, call);
-  }
-
-  Future<dynamic> channelMethodCallHandler(MethodCall call) {
-    int slotNo = call.arguments['slotNo'] as int;
-    TrackPlayer aTrackPlayer = slots[slotNo] as TrackPlayer;
-    // for the methods that don't have return values
-    // we still need to return a future.
-    Future<dynamic> result = Future<dynamic>.value(null);
-    switch (call.method) {
-      case 'audioPlayerFinishedPlaying':
-        {
-          String args = call.arguments['arg'] as String;
-          Map<String, dynamic> result =
-              jsonDecode(args) as Map<String, dynamic>;
-          PlayStatus status = PlayStatus.fromJSON(result);
-          aTrackPlayer.audioPlayerFinished(status);
-        }
-        break;
-      case 'skipForward':
-        {
-          aTrackPlayer.skipForward(call.arguments as Map<String, dynamic>);
-        }
-        break;
-      case 'skipBackward':
-        {
-          aTrackPlayer.skipBackward(call.arguments as Map<String, dynamic>);
-        }
-        break;
-
-      default:
-        result = super.channelMethodCallHandler(call);
-    }
-
-    return result;
-  }
-}
 
 class TrackPlayer extends FlutterSoundPlayer {
   //static const MethodChannel _channel = const MethodChannel( 'xyz.canardoux.track_player' );
@@ -198,8 +126,8 @@ class TrackPlayer extends FlutterSoundPlayer {
   }
 
   void audioPlayerFinished(PlayStatus status) {
-    if (status.currentPosition != status.duration) {
-      status.currentPosition = status.duration;
+    if (status.position != status.duration) {
+      status.position = status.duration;
     }
 
     if (playerController != null) {
@@ -222,7 +150,7 @@ class TrackPlayer extends FlutterSoundPlayer {
   /// with the audio player specific features.
   Future<String> startPlayerFromTrack(
     Track track, {
-    t_CODEC codec,
+    Codec codec,
     TWhenFinished whenFinished,
     TwhenPaused whenPaused,
     TonSkip onSkipForward,
@@ -264,7 +192,7 @@ class TrackPlayer extends FlutterSoundPlayer {
   /// Plays the file that [fileUri] points to.
   Future<String> startPlayer(
     String fileUri, {
-    t_CODEC codec,
+    Codec codec,
     TWhenFinished whenFinished,
   }) {
     initialize();
@@ -275,7 +203,7 @@ class TrackPlayer extends FlutterSoundPlayer {
   /// Plays the audio file in [buffer] decoded according to [codec].
   Future<String> startPlayerFromBuffer(
     Uint8List dataBuffer, {
-    t_CODEC codec,
+    Codec codec,
     TWhenFinished whenFinished,
   }) {
     initialize();
@@ -323,8 +251,8 @@ class Track {
   //final String albumArtImage;
 
   /// The codec of the audio file to play. If this parameter's value is null
-  /// it will be set to [t_CODEC.DEFAULT].
-  t_CODEC codec;
+  /// it will be set to [Codec.DEFAULT].
+  Codec codec;
 
   Track({
     this.trackPath,
@@ -333,9 +261,9 @@ class Track {
     this.trackAuthor,
     this.albumArtUrl,
     this.albumArtAsset,
-    this.codec = t_CODEC.DEFAULT,
+    this.codec = Codec.DEFAULT,
   }) {
-    codec = codec == null ? t_CODEC.DEFAULT : codec;
+    codec = codec == null ? Codec.DEFAULT : codec;
     assert(trackPath != null || dataBuffer != null,
         'You should provide a path or a buffer for the audio content to play.');
     assert(
@@ -365,7 +293,7 @@ class Track {
     // We use FFmpeg for that task.
 
     if ((Platform.isIOS) &&
-        ((codec == t_CODEC.CODEC_OPUS) ||
+        ((codec == Codec.CODEC_OPUS) ||
             (fileExtension(trackPath) == '.opus'))) {
       Directory tempDir = await getTemporaryDirectory();
       File fout = await File('${tempDir.path}/flutter_sound-tmp.caf');
