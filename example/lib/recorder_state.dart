@@ -34,8 +34,8 @@ class RecorderState {
 
   void init() async {
     recorderModule = await FlutterSoundRecorder().initialize();
+    await recorderModule.setSubscriptionDuration(_durationInterval);
     await recorderModule.setDbPeakLevelUpdate(0.8);
-    await recorderModule.setDbLevelEnabled(true);
     await recorderModule.setDbLevelEnabled(true);
     if (renetranceConcurrency) {
       recorderModule_2 = await FlutterSoundRecorder().initialize();
