@@ -218,7 +218,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 		{
 			// If the initialization will be successful, result.success will
 			// be called, otherwise result.error will be called.
-			mMediaBrowserHelper = new MediaBrowserHelper( Flauto.androidActivity, new MediaPlayerConnectionListener( result, true ), new MediaPlayerConnectionListener( result, false ) );
+			mMediaBrowserHelper = new MediaBrowserHelper( new MediaPlayerConnectionListener( result, true ), new MediaPlayerConnectionListener( result, false ) );
 			// Pass the playback state updater to the media browser
 			mMediaBrowserHelper.setPlaybackStateUpdater( new PlaybackStateUpdater() );
 		}
