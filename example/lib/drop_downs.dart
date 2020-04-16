@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flauto.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 
 import 'active_codec.dart';
 import 'common.dart';
 import 'main.dart';
 import 'media_path.dart';
 
+/// Widget containing the set of drop downs used in the UI
+/// Media
+/// Codec
 class Dropdowns extends StatefulWidget {
-  final BuildContext context;
-  final void Function(t_CODEC) onCodecChanged;
+  final void Function(Codec) _onCodecChanged;
 
+  /// ctor
   const Dropdowns({
     Key key,
-    @required this.context,
-    @required this.onCodecChanged,
-  }) : super(key: key);
+    @required void Function(Codec) onCodecChanged,
+  })  : _onCodecChanged = onCodecChanged,
+        super(key: key);
 
   @override
   _DropdownsState createState() => _DropdownsState();
@@ -65,74 +68,73 @@ class _DropdownsState extends State<Dropdowns> {
     );
   }
 
-  DropdownButton<t_CODEC> buildCodecDropdown() {
-    return DropdownButton<t_CODEC>(
+  DropdownButton<Codec> buildCodecDropdown() {
+    return DropdownButton<Codec>(
       value: ActiveCodec().codec,
       onChanged: (newCodec) {
-        widget.onCodecChanged(newCodec);
+        widget._onCodecChanged(newCodec);
         ActiveCodec().setCodec(newCodec);
 
         setState(() {
           getDuration(ActiveCodec().codec);
         });
       },
-      items: <DropdownMenuItem<t_CODEC>>[
-        DropdownMenuItem<t_CODEC>(
-          value: t_CODEC.CODEC_AAC,
+      items: <DropdownMenuItem<Codec>>[
+        DropdownMenuItem<Codec>(
+          value: Codec.CODEC_AAC,
           child: Text('AAC'),
         ),
-        DropdownMenuItem<t_CODEC>(
-          value: t_CODEC.CODEC_OPUS,
+        DropdownMenuItem<Codec>(
+          value: Codec.CODEC_OPUS,
           child: Text('OGG/Opus'),
         ),
-        DropdownMenuItem<t_CODEC>(
-          value: t_CODEC.CODEC_CAF_OPUS,
+        DropdownMenuItem<Codec>(
+          value: Codec.CODEC_CAF_OPUS,
           child: Text('CAF/Opus'),
         ),
-        DropdownMenuItem<t_CODEC>(
-          value: t_CODEC.CODEC_MP3,
+        DropdownMenuItem<Codec>(
+          value: Codec.CODEC_MP3,
           child: Text('MP3'),
         ),
-        DropdownMenuItem<t_CODEC>(
-          value: t_CODEC.CODEC_VORBIS,
+        DropdownMenuItem<Codec>(
+          value: Codec.CODEC_VORBIS,
           child: Text('OGG/Vorbis'),
         ),
-        DropdownMenuItem<t_CODEC>(
-          value: t_CODEC.CODEC_PCM,
+        DropdownMenuItem<Codec>(
+          value: Codec.CODEC_PCM,
           child: Text('PCM'),
         ),
       ],
     );
   }
 
-  DropdownButton<t_MEDIA> buildMediaDropdown() {
-    return DropdownButton<t_MEDIA>(
+  DropdownButton<MediaStorage> buildMediaDropdown() {
+    return DropdownButton<MediaStorage>(
       value: MediaPath().media,
       onChanged: (newMedia) {
-        if (newMedia == t_MEDIA.remoteExampleFile) {
-          ActiveCodec().setCodec(t_CODEC.CODEC_MP3);
-          MediaPath()
-              .setCodecPath(ActiveCodec().codec, exampleAudioFilePath);
+        if (newMedia == MediaStorage.remoteExampleFile) {
+          ActiveCodec().setCodec(Codec.CODEC_MP3);
+          MediaPath().setCodecPath(ActiveCodec().codec, exampleAudioFilePath);
         } // Actually this is the only example we use in this example
         MediaPath().media = newMedia;
 
         setState(() {});
       },
-      items: <DropdownMenuItem<t_MEDIA>>[
-        DropdownMenuItem<t_MEDIA>(
-          value: t_MEDIA.file,
+      items: <DropdownMenuItem<MediaStorage>>[
+        DropdownMenuItem<MediaStorage>(
+          value: MediaStorage.file,
           child: Text('File'),
         ),
-        DropdownMenuItem<t_MEDIA>(
-          value: t_MEDIA.buffer,
+        DropdownMenuItem<MediaStorage>(
+          value: MediaStorage.buffer,
           child: Text('Buffer'),
         ),
-        DropdownMenuItem<t_MEDIA>(
-          value: t_MEDIA.asset,
+        DropdownMenuItem<MediaStorage>(
+          value: MediaStorage.asset,
           child: Text('Asset'),
         ),
-        DropdownMenuItem<t_MEDIA>(
-          value: t_MEDIA.remoteExampleFile,
+        DropdownMenuItem<MediaStorage>(
+          value: MediaStorage.remoteExampleFile,
           child: Text('Remote Example File'),
         ),
       ],

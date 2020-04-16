@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/flutter_sound_player.dart';
 import 'package:flutter_sound/track_player.dart';
 
@@ -15,7 +16,7 @@ import 'media_path.dart';
 class PlayerState {
   static final PlayerState _self = PlayerState._internal();
 
-  bool _duckOthers = false;
+  bool _hushOthers = false;
 
   StreamSubscription _playerSubscription;
   // StreamSubscription _playbackStateSubscription;
@@ -36,9 +37,9 @@ class PlayerState {
 
   PlayerState._internal();
 
-  /// returns [true] if duckOthers (reduce other players volume)
+  /// returns [true] if hushOthers (reduce other players volume)
   /// is enabled.
-  bool get duckOthers => _duckOthers;
+  bool get hushOthers => _hushOthers;
 
   /// get the PlayStatus stream.
   Stream<PlayStatus> get playStatusStream {
@@ -110,13 +111,13 @@ class PlayerState {
   // Stop Spotify
   // Play both our sound and Spotify
   // Or lower Spotify Sound during our playback.
-  /// [setDuck] controls option three.
-  /// When passsing [true] to [setDuck] the other auidio
+  /// [setHush] controls option three.
+  /// When passsing [true] to [setHush] the other auidio
   /// player's (e.g. spotify) sound is lowered.
   ///
-  Future<void> setDuck({bool duckOthers}) async {
-    _duckOthers = duckOthers;
-    if (_duckOthers) {
+  Future<void> setHush({bool hushOthers}) async {
+    _hushOthers = hushOthers;
+    if (_hushOthers) {
       if (Platform.isIOS) {
         await playerModule.iosSetCategory(
             t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD,
@@ -173,12 +174,12 @@ class PlayerState {
                 .asUint8List();
       } else if (MediaPath().isFile) {
         // Do we want to play from buffer or from file ?
-        if (await fileExists(MediaPath().pathForCodec(ActiveCodec().codec))) {
+        if (fileExists(MediaPath().pathForCodec(ActiveCodec().codec))) {
           audioFilePath = MediaPath().pathForCodec(ActiveCodec().codec);
         }
       } else if (MediaPath().isBuffer) {
         // Do we want to play from buffer or from file ?
-        if (await fileExists(MediaPath().pathForCodec(ActiveCodec().codec))) {
+        if (fileExists(MediaPath().pathForCodec(ActiveCodec().codec))) {
           dataBuffer =
               await _makeBuffer(MediaPath().pathForCodec(ActiveCodec().codec));
           if (dataBuffer == null) {
@@ -322,7 +323,7 @@ class PlayerState {
   // This is stupid but just for demonstration  of startPlayerFromBuffer()
   Future<Uint8List> _makeBuffer(String path) async {
     try {
-      if (!await fileExists(path)) return null;
+      if (!fileExists(path)) return null;
       var file = File(path);
       file.openRead();
       var contents = await file.readAsBytes();

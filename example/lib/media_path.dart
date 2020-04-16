@@ -1,9 +1,12 @@
-import 'package:flutter_sound/flauto.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 
 import 'common.dart';
 
+/// Paths for example media files.
 class MediaPath {
   static final MediaPath _self = MediaPath._internal();
+
+  /// list of sample paths for each codec
   static const List<String> paths = [
     'flutter_sound_example.aac', // DEFAULT
     'flutter_sound_example.aac', // CODEC_AAC
@@ -15,32 +18,40 @@ class MediaPath {
   ];
 
   final List<String> _path = [null, null, null, null, null, null, null];
-  t_MEDIA media = t_MEDIA.file;
 
+  /// The media we are storing
+  MediaStorage media = MediaStorage.file;
+
+  /// ctor
   factory MediaPath() {
     return _self;
   }
   MediaPath._internal();
 
-  bool get isAsset => media == t_MEDIA.asset;
+  /// true if the media is an asset
+  bool get isAsset => media == MediaStorage.asset;
 
-  bool get isFile => media == t_MEDIA.file;
+  /// true if the media is an file
+  bool get isFile => media == MediaStorage.file;
 
-  bool get isBuffer => media == t_MEDIA.buffer;
+  /// true if the media is an buffer
+  bool get isBuffer => media == MediaStorage.buffer;
 
-  bool get isExampleFile => media == t_MEDIA.remoteExampleFile;
+  /// true if the media is the example file.
+  bool get isExampleFile => media == MediaStorage.remoteExampleFile;
 
-  void setCodecPath(t_CODEC codec, String path) {
+  /// Sets the location of the file for the given codec.
+  void setCodecPath(Codec codec, String path) {
     _path[codec.index] = path;
   }
 
-  String pathForCodec(t_CODEC codec) {
+  /// returns the path to the file for the given codec.
+  String pathForCodec(Codec codec) {
     return _path[codec.index];
   }
 
-  bool exists(t_CODEC codec) {
+  /// [true] if a path for the give codec exists.
+  bool exists(Codec codec) {
     return _path[codec.index] != null;
   }
-
- 
 }

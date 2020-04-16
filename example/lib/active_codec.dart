@@ -1,31 +1,39 @@
-import 'package:flutter_sound/flauto.dart';
-import 'package:flutter_sound/flutter_sound_player.dart';
-import 'package:flutter_sound/flutter_sound_recorder.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 
+/// Factory used to track what codec is currently selected.
 class ActiveCodec {
   static final ActiveCodec _self = ActiveCodec._internal();
 
-  t_CODEC _codec = t_CODEC.CODEC_AAC;
+  Codec _codec = Codec.CODEC_AAC;
   bool _encoderSupported = false;
   bool _decoderSupported = false;
 
+  ///
   FlutterSoundPlayer playerModule;
+
+  ///
   FlutterSoundRecorder recorderModule;
 
+  /// Factory to access the active codec.
   factory ActiveCodec() {
     return _self;
   }
   ActiveCodec._internal();
 
-  void setCodec(t_CODEC codec) async {
+  /// Set the active code for the the recording and player modules.
+  void setCodec(Codec codec) async {
     _encoderSupported = await recorderModule.isEncoderSupported(codec);
     _decoderSupported = await playerModule.isDecoderSupported(codec);
 
     _codec = codec;
   }
 
+  /// [true] if the active coded is supported by the recorder
   bool get encoderSupported => _encoderSupported;
+
+  /// [true] if the active coded is supported by the player
   bool get decoderSupported => _decoderSupported;
 
-  t_CODEC get codec => _codec;
+  /// returns the active codec.
+  Codec get codec => _codec;
 }
