@@ -34,7 +34,7 @@ class _TrackSwitchState extends State<TrackSwitch> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 4),
-            child: Text('"Allow Tracks":'),
+            child: Text('Allow Tracks:'),
           ),
           GrayedOut(
               grayedOut: !PlayerState().isStopped,
