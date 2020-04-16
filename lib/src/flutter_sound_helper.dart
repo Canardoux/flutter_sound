@@ -17,43 +17,39 @@
 import 'dart:async';
 import 'dart:core';
 
-import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_sound/track_player.dart';
-import 'package:flutter_sound/flutter_sound_recorder.dart';
-import 'package:flutter_sound/flutter_sound_player.dart';
-
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
-// this enum MUST be synchronized with fluttersound/AudioInterface.java  and ios/Classes/FlutterSoundPlugin.h
-enum Codec {
-  DEFAULT,
-  CODEC_AAC,
-  CODEC_OPUS,
-  CODEC_CAF_OPUS, // Apple encapsulates its bits in its own special envelope : .caf instead of a regular ogg/opus (.opus). This is completely stupid, this is Apple.
-  CODEC_MP3,
-  CODEC_VORBIS,
-  CODEC_PCM,
-}
-
-FlutterSoundHelper flutterSoundHelper = FlutterSoundHelper(); // Singleton
-
+/// Utility class for Flutter Sound.
 class FlutterSoundHelper {
-  FlutterFFmpeg flutterFFmpeg;
+  static FlutterSoundHelper _self;
+
+  FlutterFFmpeg _flutterFFmpeg;
   FlutterFFmpegConfig _flutterFFmpegConfig;
   FlutterFFprobe _flutterFFprobe;
 
-  /// We use here our own ffmpeg "execute" procedure instead of the one provided by the flutter_ffmpeg plugin,
-  /// so that the developers not interested by ffmpeg can use flutter_plugin without the flutter_ffmpeg plugin
+  /// Factory
+  factory FlutterSoundHelper() {
+    _self ??= FlutterSoundHelper._internal();
+    return _self;
+  }
+  FlutterSoundHelper._internal();
+
+  /// We use here our own ffmpeg "execute" procedure instead
+  /// of the one provided by the flutter_ffmpeg plugin,
+  /// so that the developers not interested by ffmpeg can use
+  /// flutter_plugin without the flutter_ffmpeg plugin
   /// and without any complain from the link-editor.
   ///
   /// Executes FFmpeg with [commandArguments] provided.
   Future<int> executeFFmpegWithArguments(List<String> arguments) {
-    if (flutterFFmpeg == null) flutterFFmpeg = FlutterFFmpeg();
-    return flutterFFmpeg.executeWithArguments(arguments);
+    if (_flutterFFmpeg == null) _flutterFFmpeg = FlutterFFmpeg();
+    return _flutterFFmpeg.executeWithArguments(arguments);
   }
 
-  /// We use here our own ffmpeg "getLastReturnCode" procedure instead of the one provided by the flutter_ffmpeg plugin,
-  /// so that the developers not interested by ffmpeg can use flutter_plugin without the flutter_ffmpeg plugin
+  /// We use here our own ffmpeg "getLastReturnCode" procedure
+  ///  instead of the one provided by the flutter_ffmpeg plugin,
+  /// so that the developers not interested by ffmpeg can use
+  /// flutter_plugin without the flutter_ffmpeg plugin
   /// and without any complain from the link-editor.
   ///
   /// Returns return code of last executed command.
@@ -79,12 +75,17 @@ class FlutterSoundHelper {
          */
   }
 
-  /// We use here our own ffmpeg "getLastCommandOutput" procedure instead of the one provided by the flutter_ffmpeg plugin,
-  /// so that the developers not interested by ffmpeg can use flutter_plugin without the flutter_ffmpeg plugin
+  /// We use here our own ffmpeg "getLastCommandOutput" procedure
+  ///  instead of the one provided by the flutter_ffmpeg plugin,
+  /// so that the developers not interested by ffmpeg can use
+  /// flutter_plugin without the flutter_ffmpeg plugin
   /// and without any complain from the link-editor.
   ///
-  /// Returns log output of last executed command. Please note that disabling redirection using
-  /// This method does not support executing multiple concurrent commands. If you execute multiple commands at the same time, this method will return output from all executions.
+  /// Returns log output of last executed command. Please note
+  /// that disabling redirection using
+  /// This method does not support executing multiple concurrent
+  /// commands. If you execute multiple commands at the same time,
+  /// this method will return output from all executions.
   /// [disableRedirection()] method also disables this functionality.
   Future<String> getLastFFmpegCommandOutput() async {
     if (_flutterFFmpegConfig == null) {
@@ -107,21 +108,22 @@ class FlutterSoundHelper {
          */
   }
 
-  Future<Map<dynamic, dynamic>> FFmpegGetMediaInformation(String uri) async {
+  Future<Map<dynamic, dynamic>> _ffMpegGetMediaInformation(String uri) async {
     if (uri == null) return null;
     if (_flutterFFprobe == null) _flutterFFprobe = FlutterFFprobe();
     try {
       return await _flutterFFprobe.getMediaInformation(uri);
-    } catch (e) {
+    } on Object catch (_) {
       return null;
     }
   }
 
+  /// Determines the duration of the passed uri.
   Future<int> duration(String uri) async {
     if (uri == null) return null;
-    Map<dynamic, dynamic> info = await FFmpegGetMediaInformation(uri);
+    var info = await _ffMpegGetMediaInformation(uri);
     if (info == null) return null;
-    int duration = info['duration'] as int;
+    var duration = info['duration'] as int;
     return duration;
   }
 }

@@ -123,7 +123,7 @@ class _PlayerControlsState extends State<PlayerControls> {
   void startPlayer() async {
     var canPlay = true;
     if (MediaPath().isExampleFile) {
-      if (ActiveCodec().codec != Codec.CODEC_MP3) {
+      if (ActiveCodec().codec != Codec.codecMp3) {
         canPlay = false;
         var error = SnackBar(
             backgroundColor: Colors.red,

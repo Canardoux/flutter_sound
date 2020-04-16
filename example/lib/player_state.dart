@@ -4,8 +4,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_sound/flutter_sound_player.dart';
-import 'package:flutter_sound/track_player.dart';
 
 import 'active_codec.dart';
 import 'common.dart';
@@ -81,7 +79,6 @@ class PlayerState {
   void reset(FlutterSoundPlayer module) async {
     playerModule = module;
     await module.initialize();
-    await playerModule.setSubscriptionDuration(0.01);
   }
 
   /// initialise the player.
@@ -91,8 +88,6 @@ class PlayerState {
 
     if (renetranceConcurrency) {
       playerModule_2 = await FlutterSoundPlayer().initialize();
-      await playerModule_2.setSubscriptionDuration(0.01);
-      await playerModule_2.setSubscriptionDuration(0.01);
     }
   }
 
@@ -120,21 +115,23 @@ class PlayerState {
     if (_hushOthers) {
       if (Platform.isIOS) {
         await playerModule.iosSetCategory(
-            IOSSessionCategory.PLAY_AND_RECORD,
-            IOSSessionMode.DEFAULT,
-            IOS_DUCK_OTHERS | IOS_DEFAULT_TO_SPEAKER);
+            IOSSessionCategory.playAndRecord,
+            IOSSessionMode.defaultMode,
+            IOSSessionCategoryOption.iosDuckOthers |
+                IOSSessionCategoryOption.iosDefaultToSpeaker);
       } else if (Platform.isAndroid) {
-        await playerModule.androidAudioFocusRequest(
-            ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+        await playerModule
+            .androidAudioFocusRequest(AndroidAudioFocusGain.transientMayDuck);
       }
     } else {
       if (Platform.isIOS) {
         await playerModule.iosSetCategory(
-            IOSSessionCategory.PLAY_AND_RECORD,
-            IOSSessionMode.DEFAULT,
-            IOS_DEFAULT_TO_SPEAKER);
+            IOSSessionCategory.playAndRecord,
+            IOSSessionMode.defaultMode,
+            IOSSessionCategoryOption.iosDefaultToSpeaker);
       } else if (Platform.isAndroid) {
-        await playerModule.androidAudioFocusRequest(ANDROID_AUDIOFOCUS_GAIN);
+        await playerModule
+            .androidAudioFocusRequest(AndroidAudioFocusGain.defaultGain);
       }
     }
   }
@@ -148,14 +145,6 @@ class PlayerState {
     if (playerModule_2 != null) {
       await playerModule_2.release();
     }
-  }
-
-  void _addListeners() {
-    _playerSubscription = playerModule.dispositionStream.listen((e) {
-      if (e != null) {
-        _playStatusController.add(e);
-      }
-    });
   }
 
   /// Starts the playback from the begining.
@@ -254,7 +243,6 @@ class PlayerState {
           return;
         }
       }
-      _addListeners();
       if (renetranceConcurrency && !MediaPath().isExampleFile) {
         var dataBuffer =
             (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
@@ -314,8 +302,8 @@ class PlayerState {
   }
 
   /// position the playback point
-  void seekToPlayer(int milliSecs) async {
-    var result = await playerModule.seekToPlayer(milliSecs);
+  void seekToPlayer(Duration offset) async {
+    var result = await playerModule.seekToPlayer(offset);
     print('seekToPlayer: $result');
   }
 

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'active_codec.dart';
 import 'common.dart';
 import 'main.dart';
@@ -36,10 +35,6 @@ class RecorderState {
 
   /// required to initialise the recording subsystem.
   void init() async {
-    recorderModule = await FlutterSoundRecorder().initialize();
-    if (renetranceConcurrency) {
-      recorderModule_2 = await FlutterSoundRecorder().initialize();
-    }
     ActiveCodec().recorderModule = recorderModule;
   }
 
@@ -54,15 +49,15 @@ class RecorderState {
   /// Returns a stream of [RecordingDisposition] so you can
   /// display db and duration of the recording as it records.
   /// Use this with a StreamBuilder
-  Stream<RecordingDisposition> dispositionStream(Duration interval) {
-    return recorderModule.dispositionStream(interval);
+  Stream<RecordingDisposition> dispositionStream(
+      {Duration interval = const Duration(milliseconds: 10)}) {
+    return recorderModule.dispositionStream(interval: interval);
   }
 
   /// stops the recorder.
   void stopRecorder() async {
     try {
-      var result = await recorderModule.stopRecorder();
-      print('stopRecorder: $result');
+      await recorderModule.stopRecorder();
       if (renetranceConcurrency) {
         await recorderModule_2.stopRecorder();
         await PlayerState().stopPlayer();
@@ -77,11 +72,9 @@ class RecorderState {
   void startRecorder(BuildContext context) async {
     try {
       await PlayerState().stopPlayer();
-      var tempDir = await getTemporaryDirectory();
-
-      var path = await recorderModule.startRecorder(
-        uri:
-            '${tempDir.path}/${recorderModule.slotNo}-${MediaPath.paths[ActiveCodec().codec.index]}',
+      var path = FlutterSoundRecorder.tempFile();
+      await recorderModule.startRecorder(
+        path: path,
         codec: ActiveCodec().codec,
       );
 
@@ -101,12 +94,12 @@ class RecorderState {
           print('startRecorder error: $e');
           rethrow;
         }
+        var secondaryPath = FlutterSoundRecorder.tempFile();
         await recorderModule_2.startRecorder(
-          uri: '${tempDir.path}/flutter_sound_recorder2.aac',
-          codec: Codec.CODEC_AAC,
+          path: secondaryPath,
+          codec: Codec.codecAac,
         );
-        print(
-            "Secondary record is '${tempDir.path}/flutter_sound_recorder2.aac'");
+        print("Secondary record is '$secondaryPath'");
       }
 
       MediaPath().setCodecPath(ActiveCodec().codec, path);
@@ -115,7 +108,7 @@ class RecorderState {
 
       var error = SnackBar(
           backgroundColor: Colors.red,
-          content: Text('Failed to start recording: ${err.message}'));
+          content: Text('Failed to start recording: $err'));
       Scaffold.of(context).showSnackBar(error);
 
       stopRecorder();

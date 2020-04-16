@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
-import '../flutter_sound_recorder.dart';
+import 'flutter_sound_recorder.dart';
 import 'recording_disposition.dart';
 
+/// An internal class which manages the RecordingDisposition stream.
 class RecordingDispositionManager {
   StreamController<RecordingDisposition> _dispositionController;
 
@@ -13,17 +14,18 @@ class RecordingDispositionManager {
   /// into a single stream.
   DateTime lastDispositonUpdate = DateTime.now();
   // The last duration we received from the plugin
-  Duration lastDispositionDuration = Duration(seconds: 0);
+  Duration _lastDispositionDuration = Duration(seconds: 0);
   // The last db we recieved from the plugin.
-  double lastDispositionDecibels = 0;
+  double _lastDispositionDecibels = 0;
 
   /// The duration between updates to the stream.
   /// Defaults to [10ms].
   Duration interval = Duration(milliseconds: 10);
 
-  FlutterSoundRecorder recorder;
+  final FlutterSoundRecorder _recorder;
 
-  RecordingDispositionManager(this.recorder);
+  /// ctor
+  RecordingDispositionManager(this._recorder);
 
   /// Returns a stream of RecordingDispositions
   /// The stream is a broad cast stream and can be called
@@ -37,7 +39,7 @@ class RecordingDispositionManager {
     this.interval = interval;
 
     _dispositionController ??= StreamController.broadcast();
-    recorder.initialize().then<void>((_) {
+    _recorder.initialize().then<void>((_) {
       _setSubscriptionDuration(interval);
       _setDbLevelEnabled(true);
       _setDbPeakLevelUpdate(interval);
@@ -45,8 +47,10 @@ class RecordingDispositionManager {
     return _dispositionController.stream;
   }
 
+  /// Internal classes calls this method to notify a change
+  /// in the db level.
   void updateDbPeakDispostion(Map<dynamic, dynamic> call) {
-    lastDispositionDecibels = call['arg'] as double;
+    _lastDispositionDecibels = call['arg'] as double;
 
     _trySendDisposition();
   }
@@ -55,10 +59,9 @@ class RecordingDispositionManager {
   /// ignores pauses so we need to subtract any pause time from the
   /// duratin.
   void updateDurationDisposition(Map call, Duration timePaused) {
-    Map<String, dynamic> result =
-        json.decode(call['arg'] as String) as Map<String, dynamic>;
+    var result = json.decode(call['arg'] as String) as Map<String, dynamic>;
 
-    lastDispositionDuration = Duration(
+    _lastDispositionDuration = Duration(
             milliseconds:
                 double.parse(result['current_position'] as String).toInt()) -
         timePaused;
@@ -74,7 +77,7 @@ class RecordingDispositionManager {
           interval.inMilliseconds) {
         lastDispositonUpdate = DateTime.now();
         _dispositionController.add(RecordingDisposition(
-            lastDispositionDuration, lastDispositionDecibels));
+            _lastDispositionDuration, _lastDispositionDecibels));
       }
     }
   }
@@ -83,8 +86,8 @@ class RecordingDispositionManager {
   /// duration listeners.
   /// The default is every 10 milliseconds.
   Future<String> _setSubscriptionDuration(Duration interval) async {
-    await recorder.initialize();
-    String r = await recorder
+    await _recorder.initialize();
+    var r = await _recorder
         .invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'sec': interval.inSeconds.toDouble(),
     }) as String;
@@ -94,9 +97,9 @@ class RecordingDispositionManager {
   /// Defines the interval at which the peak level should be updated.
   /// Default is 0.8 seconds
   Future<String> _setDbPeakLevelUpdate(Duration interval) async {
-    await recorder.initialize();
-    String r =
-        await recorder.invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
+    await _recorder.initialize();
+    var r =
+        await _recorder.invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
       'intervalInSecs': interval.inSeconds.toDouble(),
     }) as String;
     return r;
@@ -104,14 +107,15 @@ class RecordingDispositionManager {
 
   /// Enables or disables processing the Peak level in db's. Default is disabled
   Future<String> _setDbLevelEnabled(bool enabled) async {
-    await recorder.initialize();
-    String r =
-        await recorder.invokeMethod('setDbLevelEnabled', <String, dynamic>{
+    await _recorder.initialize();
+    var r = await _recorder.invokeMethod('setDbLevelEnabled', <String, dynamic>{
       'enabled': enabled,
     }) as String;
     return r;
   }
 
+  /// Call this method once you have finished with the recording
+  /// api so we can release any attached resources.
   void release() {
     if (_dispositionController != null) {
       _dispositionController

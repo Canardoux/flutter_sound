@@ -14,6 +14,7 @@ class RecordingDisposition {
   /// Value ranges from 0 to 120
   final double decibels;
 
+  /// ctor
   RecordingDisposition(this.duration, this.decibels);
 
   /// use this ctor to as the initial value when building

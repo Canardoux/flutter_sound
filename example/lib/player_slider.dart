@@ -33,7 +33,8 @@ class _PlayerSliderState extends State<PlayerSlider> {
                   min: 0.0,
                   max: duration,
                   onChanged: (value) async {
-                    await PlayerState().seekToPlayer(value.toInt());
+                    await PlayerState()
+                        .seekToPlayer(Duration(milliseconds: value.toInt()));
                   },
                   divisions: duration == 0.0 ? 1 : duration.toInt()));
         });

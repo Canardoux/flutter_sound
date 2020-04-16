@@ -2,37 +2,40 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-
-import '../flutter_sound_player.dart';
+import '../playback_disposition.dart';
 import '../track_player.dart';
 import 'flutter_player_plugin.dart';
-import 'playback_disposition.dart';
 
+/// Communications layer with the underlying platform
+/// audio player.
 class TrackPlayerPlugin extends FlautoPlayerPlugin {
+  static TrackPlayerPlugin _self;
   MethodChannel channel;
 
-  //List<TrackPlayer> trackPlayerSlots = [];
-  TrackPlayerPlugin() {
+  /// Factory
+  factory TrackPlayerPlugin() {
+    _self ??= TrackPlayerPlugin._internal();
+    return _self;
+  }
+
+  TrackPlayerPlugin._internal() {
     setCallback();
   }
 
   void setCallback() {
     channel = const MethodChannel('com.dooboolab.flutter_sound_track_player');
-    channel.setMethodCallHandler((MethodCall call) {
-      // This lambda function is necessary because channelMethodCallHandler
-      // is a virtual function (polymorphism)
-      return channelMethodCallHandler(call);
-    });
+    channel.setMethodCallHandler(channelMethodCallHandler);
   }
 
-  int lookupEmptyTrackPlayerSlot(TrackPlayer aTrackPlayer) {
-    for (int i = 0; i < slots.length; ++i) {
+  ///
+  int lookupEmptyTrackPlayerSlot(PlayerPluginConnector playerConnector) {
+    for (var i = 0; i < slots.length; ++i) {
       if (slots[i] == null) {
-        slots[i] = aTrackPlayer;
+        slots[i] = playerConnector;
         return i;
       }
     }
-    slots.add(aTrackPlayer);
+    slots.add(playerConnector);
     return slots.length - 1;
   }
 
@@ -47,18 +50,17 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
   }
 
   Future<dynamic> channelMethodCallHandler(MethodCall call) {
-    int slotNo = call.arguments['slotNo'] as int;
-    TrackPlayer aTrackPlayer = slots[slotNo] as TrackPlayer;
+    var slotNo = call.arguments['slotNo'] as int;
+    var aTrackPlayer = slots[slotNo] as TrackPlayer;
     // for the methods that don't have return values
     // we still need to return a future.
-    Future<dynamic> result = Future<dynamic>.value(null);
+    var result = Future<dynamic>.value(null);
     switch (call.method) {
       case 'audioPlayerFinishedPlaying':
         {
-          String args = call.arguments['arg'] as String;
-          Map<String, dynamic> result =
-              jsonDecode(args) as Map<String, dynamic>;
-          PlaybackDisposition status = PlaybackDisposition.fromJSON(result);
+          var args = call.arguments['arg'] as String;
+          var result = jsonDecode(args) as Map<String, dynamic>;
+          var status = PlaybackDisposition.fromJSON(result);
           aTrackPlayer.audioPlayerFinished(status);
         }
         break;

@@ -30,7 +30,7 @@ Future<double> getDuration(Codec codec) async {
     case MediaStorage.file:
     case MediaStorage.buffer:
       var d =
-          await flutterSoundHelper.duration(MediaPath().pathForCodec(codec));
+          await FlutterSoundHelper().duration(MediaPath().pathForCodec(codec));
       duration = Future.value(d != null ? d / 1000.0 : null);
       break;
     case MediaStorage.asset:
@@ -66,6 +66,6 @@ List<String> assetSample = [
 ];
 
 /// Checks if the past file exists
-bool fileExists(String path)  {
-  return  File(path).existsSync();
+bool fileExists(String path) {
+  return File(path).existsSync();
 }

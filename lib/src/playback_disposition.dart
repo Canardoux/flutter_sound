@@ -1,5 +1,11 @@
+/// Used to stream data about the position of the
+/// playback as playback proceeds.
 class PlaybackDisposition {
+  /// The duration of the media.
   final Duration duration;
+
+  /// The current position within the media
+  /// that we are playing.
   Duration position;
 
   /// A convenience ctor. If you are using a stream builder
@@ -9,6 +15,9 @@ class PlaybackDisposition {
       : duration = Duration(seconds: 0),
         position = Duration(seconds: 0);
 
+  /// Contrucsts a PlaybackDisposition from a json object.
+  /// This is used internally to deserialise data coming
+  /// up from the underlying OS.
   PlaybackDisposition.fromJSON(Map<String, dynamic> json)
       : duration = Duration(
             milliseconds: double.parse(json['duration'] as String).toInt()),

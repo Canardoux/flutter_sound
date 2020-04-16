@@ -49,8 +49,8 @@ class _RecorderControlsState extends State<RecorderControls> {
   Widget buildDBIndicator() {
     return RecorderState().isRecording
         ? StreamBuilder<RecordingDisposition>(
-            stream:
-                RecorderState().dispositionStream(Duration(milliseconds: 50)),
+            stream: RecorderState()
+                .dispositionStream(interval: Duration(milliseconds: 50)),
             initialData: RecordingDisposition.zero(),
             builder: (context, snapshot) {
               var recordingDisposition = snapshot.data;
@@ -65,7 +65,8 @@ class _RecorderControlsState extends State<RecorderControls> {
 
   Widget buildDurationText() {
     return StreamBuilder<RecordingDisposition>(
-        stream: RecorderState().dispositionStream(Duration(milliseconds: 50)),
+        stream: RecorderState()
+            .dispositionStream(interval: Duration(milliseconds: 50)),
         initialData: RecordingDisposition.zero(),
         builder: (context, snapshot) {
           var disposition = snapshot.data;
@@ -126,11 +127,11 @@ class _RecorderControlsState extends State<RecorderControls> {
   }
 
   bool isRecording() {
-    return audioState == t_AUDIO_STATE.IS_RECORDING || isPaused();
+    return audioState == AudioState.isRecording || isPaused();
   }
 
   bool isPaused() {
-    return audioState == t_AUDIO_STATE.IS_RECORDING_PAUSED;
+    return audioState == AudioState.isRecordingPaused;
   }
 
   bool canRecord() {
@@ -142,9 +143,9 @@ class _RecorderControlsState extends State<RecorderControls> {
     // when the user attempts to record so they know why they can't record.
     // if (!ActiveCodec().encoderSupported) return false;
 
-    if (audioState != t_AUDIO_STATE.IS_RECORDING &&
-        audioState != t_AUDIO_STATE.IS_RECORDING_PAUSED &&
-        audioState != t_AUDIO_STATE.IS_STOPPED) return false;
+    if (audioState != AudioState.isRecording &&
+        audioState != AudioState.isRecordingPaused &&
+        audioState != AudioState.isStopped) return false;
     return true;
   }
 
@@ -168,13 +169,13 @@ class _RecorderControlsState extends State<RecorderControls> {
         : AssetImage('res/icons/ic_mic.png');
   }
 
-  t_AUDIO_STATE get audioState {
+  AudioState get audioState {
     if (RecorderState().isPaused) {
-      return t_AUDIO_STATE.IS_RECORDING_PAUSED;
+      return AudioState.isRecordingPaused;
     }
-    if (RecorderState().isRecording) return t_AUDIO_STATE.IS_RECORDING;
+    if (RecorderState().isRecording) return AudioState.isRecording;
 
-    return t_AUDIO_STATE.IS_STOPPED;
+    return AudioState.isStopped;
   }
 
   void pauseResumeRecorder() async {

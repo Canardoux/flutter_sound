@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
     if (!initialised) {
       await PlayerState().init();
       await RecorderState().init();
-      await ActiveCodec().setCodec(Codec.CODEC_AAC);
+      await ActiveCodec().setCodec(Codec.codecAac);
       await _resetModules(PlayerState().playerModule);
 
       initialised = true;
