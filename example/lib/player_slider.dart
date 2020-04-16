@@ -24,8 +24,8 @@ class _PlayerSliderState extends State<PlayerSlider> {
         initialData: PlayStatus.zero(),
         builder: (context, snapshot) {
           var playStatus = snapshot.data;
-          var duration = playStatus.duration.inSeconds as double;
-          var position = playStatus.position.inSeconds as double;
+          var duration = playStatus.duration.inSeconds.toDouble();
+          var position = playStatus.position.inSeconds.toDouble();
           return Container(
               height: 56.0,
               child: Slider(
