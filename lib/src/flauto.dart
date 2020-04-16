@@ -125,37 +125,3 @@ class FlutterSoundHelper {
     return duration;
   }
 }
-
-/// This class is deprecated. It is just to keep backward compatibility.
-/// New users must use the class TrackPlayer
-@deprecated
-class Flauto extends FlutterSound {
-  Flauto() {
-    initializeMediaPlayer();
-  }
-
-  void initializeMediaPlayer() async {
-    if (soundPlayer == null) soundPlayer = TrackPlayer();
-    if (soundRecorder == null) soundRecorder = FlutterSoundRecorder();
-    await soundPlayer.initialize();
-    await soundRecorder.initialize();
-  }
-
-  Future<String> startPlayerFromTrack(
-    Track track, {
-    Codec codec,
-    TWhenFinished whenFinished,
-    TwhenPaused whenPaused,
-    TonSkip onSkipForward,
-    TonSkip onSkipBackward,
-  }) async {
-    /// The soundPlayer is always a TrackPlayer.
-    TrackPlayer trackPlayer = soundPlayer as TrackPlayer;
-    return trackPlayer.startPlayerFromTrack(
-      track,
-      whenFinished: whenFinished,
-      onSkipBackward: onSkipBackward,
-      onSkipForward: onSkipForward,
-    );
-  }
-}

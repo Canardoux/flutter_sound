@@ -1,4 +1,3 @@
-export 'flutter_sound_v1.dart';
 export 'flutter_sound_player.dart' show FlutterSoundPlayer;
 export 'flutter_sound_recorder.dart'
     show
