@@ -1,3 +1,6 @@
+##3.1.10
+
+- Trying to catch Android crash during a dirty Timer. [#289](https://github.com/dooboolab/flutter_sound/issues/289)
 
 ## 3.1.9
 
