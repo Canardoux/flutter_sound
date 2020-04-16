@@ -335,34 +335,34 @@ public class TrackPlayer extends FlutterSoundPlayer
 	}
 
 
-	@Override
-	public void stopPlayer(final MethodCall call, final Result result )
+	private boolean _stopPlayer()
 	{
 		// This remove all pending runnables
 		mTimer.cancel();
-
-		// Exit the method if a media browser helper was not initialized
-		if ( !wasMediaPlayerInitialized( result ) )
-		{
-			return;
-		}
+		if ( mMediaBrowserHelper == null )
+			return false;
 		if ( ( setActiveDone != t_SET_CATEGORY_DONE.BY_USER ) && ( setActiveDone != t_SET_CATEGORY_DONE.NOT_SET ) )
 		{
 			abandonFocus();
 			setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
 		}
-
 		try
 		{
 			// Stop the playback
 			mMediaBrowserHelper.stop();
-			result.success( "stopped player." );
 		}
 		catch ( Exception e )
 		{
-			//Log.e( TAG, "stopPlay exception: " + e.getMessage() );
-			result.success( "Unknown result" );
+			return false;
 		}
+		return true;
+	}
+
+	@Override
+	public void stopPlayer(final MethodCall call, final Result result )
+	{
+		_stopPlayer();
+		result.success( "Unknown result" );
 	}
 
 	@Override
@@ -616,6 +616,16 @@ public class TrackPlayer extends FlutterSoundPlayer
 
 					try
 					{
+						if ((mMediaBrowserHelper == null) || (mMediaBrowserHelper.mediaControllerCompat == null))
+						{
+							Log.e( TAG, "MediaPlayerOnPreparedListener timer: mMediaBrowserHelper.mediaControllerCompat is NULL. This is BAD !!!"  );
+
+							_stopPlayer( );
+							if (mMediaBrowserHelper != null)
+								mMediaBrowserHelper.releaseMediaBrowser();
+							mMediaBrowserHelper = null;
+							return;
+						}
 						JSONObject          json          = new JSONObject();
 						PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
 
@@ -671,6 +681,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 			Exception
 		{
 			// Reset the timer
+			mTimer.cancel();
 			long trackDuration = mMediaBrowserHelper.mediaControllerCompat.getMetadata().getLong( MediaMetadataCompat.METADATA_KEY_DURATION );
 
 			Log.d( TAG, "Plays completed." );
@@ -692,7 +703,6 @@ public class TrackPlayer extends FlutterSoundPlayer
 			{
 				Log.d( TAG, "Json Exception: " + je.toString() );
 			}
-			mTimer.cancel();
 
 			return null;
 		}

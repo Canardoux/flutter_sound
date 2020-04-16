@@ -32,7 +32,6 @@ import java.util.concurrent.Callable;
 public class MediaBrowserHelper
 {
 	MediaControllerCompat mediaControllerCompat;
-
 	private MediaBrowserCompat mMediaBrowserCompat;
 	// The function to call when the media browser successfully connects
 	// to the service.
