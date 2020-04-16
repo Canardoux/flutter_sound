@@ -19,7 +19,7 @@ import 'dart:core';
 import 'dart:io';
 import 'dart:io' show Platform;
 
-import 'package:flutter_sound/src/flutter_plugin.dart';
+import 'package:flutter_sound/src/flutter_recorder_plugin.dart';
 
 import 'ios_quality.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
