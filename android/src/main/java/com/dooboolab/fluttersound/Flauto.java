@@ -54,6 +54,9 @@ public class Flauto
 	public void onAttachedToEngine ( FlutterPlugin.FlutterPluginBinding binding )
 	{
 		ctx = binding.getApplicationContext ();
+
+		//androidActivity = ???
+
 		FlautoPlayerPlugin.attachFlautoPlayer ( ctx, binding.getBinaryMessenger () );
 		FlautoRecorderPlugin.attachFlautoRecorder ( ctx, binding.getBinaryMessenger () );
 		TrackPlayerPlugin.attachTrackPlayer ( ctx, binding.getBinaryMessenger () );

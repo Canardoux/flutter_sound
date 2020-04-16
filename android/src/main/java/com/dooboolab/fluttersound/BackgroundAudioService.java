@@ -82,7 +82,7 @@ public class BackgroundAudioService
 	public        static Callable skipTrackBackwardHandler;
 	public        static Function playbackStateUpdater;
 	// public static boolean includeAudioPlayerFeatures;
-	public static Activity activity;
+	//public static Activity activity;
 
 	public final static int PLAYING_STATE = 0;
 	public final static int PAUSED_STATE  = 1;
@@ -273,8 +273,13 @@ public class BackgroundAudioService
 	 * Starts the playback of the player (without requesting audio focus).
 	 */
 	@SuppressWarnings ( "unchecked" )
-	private void startPlayerPlayback()
+	private boolean startPlayerPlayback()
 	{
+		if (Flauto.androidActivity == null)
+		{
+			Log.e( TAG, "BackgroundAudioService.startPlayerPlayback() : Flauto.androidActivity == null. THIS IS BAD !!!");
+			return false;
+		}
 		// Activate the MediaSessionCompat and give it the playing state
 		mMediaSessionCompat.setActive( true );
 		setMediaPlaybackState( PlaybackStateCompat.STATE_PLAYING );
@@ -286,11 +291,12 @@ public class BackgroundAudioService
 		mMediaPlayer.start();
 
 		// Start the service
-		assert (activity != null);
-		startService( new Intent( activity, BackgroundAudioService.class ) );
+		assert (Flauto.androidActivity != null);
+		startService( new Intent( Flauto.androidActivity, BackgroundAudioService.class ) );
 
 		// Update the playback state
 		playbackStateUpdater.apply( PLAYING_STATE );
+		return true;
 	}
 
 	private void stopBackgroundAudioService( boolean removeNotification )
@@ -581,9 +587,9 @@ public class BackgroundAudioService
 		mMediaSessionCompat.setMediaButtonReceiver( pendingIntent );
 
 		// Set the session activity
-		assert(activity != null);
+		assert(Flauto.androidActivity != null);
 		Context       context       = getApplicationContext();
-		Intent        intent        = new Intent( context, activity.getClass() );
+		Intent        intent        = new Intent( context, Flauto.androidActivity.getClass() );
 		PendingIntent pendingIntent2 = PendingIntent.getActivity( context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT );
 		mMediaSessionCompat.setSessionActivity( pendingIntent2 );
 		// Pass the media session token to this service
