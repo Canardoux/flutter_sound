@@ -21,14 +21,13 @@ import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
-import 'package:flutter/services.dart';
-import 'package:flutter_sound/flauto.dart';
-
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import 'flauto.dart';
+import 'src/flauto.dart';
+import 'src/flutter_player_plugin.dart';
+import 'src/play_status.dart';
 
 enum t_PLAYER_STATE {
   IS_STOPPED,
@@ -103,84 +102,6 @@ typedef void TupdateProgress(int current, int max);
 FlautoPlayerPlugin flautoPlayerPlugin; // Singleton, lazy initialized
 List<FlutterSoundPlayer> slots = [];
 
-class FlautoPlayerPlugin {
-  MethodChannel channel;
-
-  FlautoPlayerPlugin() {
-    setCallback();
-  }
-
-  void setCallback() {
-    channel = const MethodChannel('com.dooboolab.flutter_sound_player');
-    channel.setMethodCallHandler((MethodCall call) {
-      // This lambda function is necessary because
-      // channelMethodCallHandler is a virtual function (polymorphism)
-      return channelMethodCallHandler(call);
-    });
-  }
-
-  int _lookupEmptySlot(FlutterSoundPlayer aPlayer) {
-    for (var i = 0; i < slots.length; ++i) {
-      if (slots[i] == null) {
-        slots[i] = aPlayer;
-        return i;
-      }
-    }
-    slots.add(aPlayer);
-    return slots.length - 1;
-  }
-
-  void freeSlot(int slotNo) {
-    slots[slotNo] = null;
-  }
-
-  MethodChannel getChannel() => channel;
-
-  Future<dynamic> invokeMethod(String methodName, Map<String, dynamic> call) {
-    return getChannel().invokeMethod<dynamic>(methodName, call);
-  }
-
-  Future<dynamic> channelMethodCallHandler(MethodCall call) {
-    int slotNo = call.arguments['slotNo'] as int;
-    var aPlayer = slots[slotNo];
-
-    switch (call.method) {
-      case "updateProgress":
-        {
-          aPlayer._updateProgress(call.arguments as Map);
-        }
-        break;
-
-      case "audioPlayerFinishedPlaying":
-        {
-          String args = call.arguments['arg'] as String;
-          Map<String, dynamic> result =
-              jsonDecode(args) as Map<String, dynamic>;
-          PlayStatus status = PlayStatus.fromJSON(result);
-
-          aPlayer.audioPlayerFinished(status);
-        }
-        break;
-
-      case 'pause':
-        {
-          aPlayer.pause(call.arguments as Map);
-        }
-        break;
-
-      case 'resume':
-        {
-          aPlayer.resume(call.arguments as Map);
-        }
-        break;
-
-      default:
-        throw ArgumentError('Unknown method ${call.method}');
-    }
-    return null;
-  }
-}
-
 /// Return the file extension for the given path.
 /// path can be null. We return null in this case.
 String fileExtension(String path) {
@@ -224,7 +145,7 @@ class FlutterSoundPlayer {
       if (flautoPlayerPlugin == null) {
         flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton
       }
-      slotNo = getPlugin()._lookupEmptySlot(this);
+      slotNo = getPlugin().lookupEmptySlot(this);
       await invokeMethod('initializeMediaPlayer', <String, dynamic>{});
     }
     return this;
@@ -243,7 +164,7 @@ class FlutterSoundPlayer {
     }
   }
 
-  void _updateProgress(Map call) {
+  void updateProgress(Map call) {
     String arg = call['arg'] as String;
     Map<String, dynamic> result = jsonDecode(arg) as Map<String, dynamic>;
     if (playerController != null) {
@@ -252,9 +173,7 @@ class FlutterSoundPlayer {
   }
 
   void audioPlayerFinished(PlayStatus status) {
-    if (status.currentPosition != status.duration) {
-      status.currentPosition = status.duration;
-    }
+    status.position = status.duration;
     if (playerController != null) playerController.add(status);
 
     playerState = t_PLAYER_STATE.IS_STOPPED;
@@ -272,18 +191,18 @@ class FlutterSoundPlayer {
   }
 
   /// Returns true if the specified decoder is supported by flutter_sound on this platform
-  Future<bool> isDecoderSupported(t_CODEC codec) async {
+  Future<bool> isDecoderSupported(Codec codec) async {
     bool result;
     await initialize();
     // For decoding ogg/opus on ios, we need to support two steps :
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
-    if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS)) {
+    if ((codec == Codec.CODEC_OPUS) && (Platform.isIOS)) {
       //if (!await isFFmpegSupported( ))
       //result = false;
       //else
       result = await invokeMethod('isDecoderSupported',
-          <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index}) as bool;
+          <String, dynamic>{'codec': Codec.CODEC_CAF_OPUS.index}) as bool;
     } else {
       result = await invokeMethod(
               'isDecoderSupported', <String, dynamic>{'codec': codec.index})
@@ -364,7 +283,7 @@ class FlutterSoundPlayer {
     String result;
     await stopPlayer(); // Just in case
     try {
-      t_CODEC codec = what['codec'] as t_CODEC;
+      Codec codec = what['codec'] as Codec;
       String path = what['path'] as String; // can be null
       if (codec != null) {
         what['codec'] = codec.index;
@@ -373,7 +292,7 @@ class FlutterSoundPlayer {
       // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
       // We use FFmpeg for that task.
       if ((Platform.isIOS) &&
-          ((codec == t_CODEC.CODEC_OPUS) || (fileExtension(path) == '.opus'))) {
+          ((codec == Codec.CODEC_OPUS) || (fileExtension(path) == '.opus'))) {
         var tempDir = await getTemporaryDirectory();
         var fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
         if (fout.existsSync()) {
@@ -428,7 +347,7 @@ class FlutterSoundPlayer {
 
   Future<String> startPlayer(
     String uri, {
-    t_CODEC codec,
+    Codec codec,
     TWhenFinished whenFinished,
   }) {
     initialize();
@@ -441,13 +360,13 @@ class FlutterSoundPlayer {
 
   Future<String> startPlayerFromBuffer(
     Uint8List dataBuffer, {
-    t_CODEC codec,
+    Codec codec,
     TWhenFinished whenFinished,
   }) async {
     await initialize();
     // If we want to play OGG/OPUS on iOS, we need to remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We write the data in a temporary file before calling ffmpeg.
-    if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS)) {
+    if ((codec == Codec.CODEC_OPUS) && (Platform.isIOS)) {
       await stopPlayer();
       var tempDir = await getTemporaryDirectory();
       File inputFile = File('${tempDir.path}/$slotNo-flutter_sound-tmp.opus');
@@ -540,28 +459,6 @@ class FlutterSoundPlayer {
       'volume': indexedVolume,
     }) as String;
     return r;
-  }
-}
-
-class PlayStatus {
-  final double duration;
-  double currentPosition;
-
-  /// A convenience ctor. If you are using a stream builder
-  /// you can use this to set initialData with both duration
-  /// and postion as 0.
-  PlayStatus.zero()
-      : duration = 0,
-        currentPosition = 0;
-
-  PlayStatus.fromJSON(Map<String, dynamic> json)
-      : duration = double.parse(json['duration'] as String),
-        currentPosition = double.parse(json['current_position'] as String);
-
-  @override
-  String toString() {
-    return 'duration: $duration, '
-        'currentPosition: $currentPosition';
   }
 }
 
