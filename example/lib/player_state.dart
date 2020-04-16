@@ -151,7 +151,7 @@ class PlayerState {
   }
 
   void _addListeners() {
-    _playerSubscription = playerModule.onPlayerStateChanged.listen((e) {
+    _playerSubscription = playerModule.dispositionStream.listen((e) {
       if (e != null) {
         _playStatusController.add(e);
       }

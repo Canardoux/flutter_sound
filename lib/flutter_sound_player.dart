@@ -115,10 +115,10 @@ class FlutterSoundPlayer {
   PlayerState playerState = PlayerState.IS_STOPPED;
   StreamController<PlaybackDisposition> _playerController;
   TWhenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
-  TwhenPaused whenPause; // User callback "whenPaused:"
+  TwhenPaused whenPaused; // User callback "whenPaused:"
   int slotNo;
 
-  Stream<PlaybackDisposition> get onPlayerStateChanged =>
+  Stream<PlaybackDisposition> get dispositionStream =>
       _playerController != null ? _playerController.stream : null;
 
   bool get isPlaying => playerState == PlayerState.IS_PLAYING;
@@ -164,20 +164,15 @@ class FlutterSoundPlayer {
   }
 
   void updateProgress(Map call) {
-    String arg = call['arg'] as String;
+    var arg = call['arg'] as String;
     Map<String, dynamic> result = jsonDecode(arg) as Map<String, dynamic>;
-    if (_playerController != null) {
-      _playerController.add(PlaybackDisposition.fromJSON(result));
-    }
+    _playerController?.add(PlaybackDisposition.fromJSON(result));
   }
 
   void audioPlayerFinished(PlaybackDisposition status) {
     // if we have finished then position should be at the end.
     status.position = status.duration;
-
-    if (_playerController != null) {
-      _playerController.add(status);
-    }
+    _playerController?.add(status);
 
     playerState = PlayerState.IS_STOPPED;
     if (audioPlayerFinishedPlaying != null) {
@@ -188,11 +183,11 @@ class FlutterSoundPlayer {
   }
 
   void pause(Map call) {
-    if (whenPause != null) whenPause(true);
+    if (whenPaused != null) whenPaused(true);
   }
 
   void resume(Map call) {
-    if (whenPause != null) whenPause(false);
+    if (whenPaused != null) whenPaused(false);
   }
 
   /// Returns true if the specified decoder is supported by flutter_sound on this platform
@@ -340,9 +335,6 @@ class FlutterSoundPlayer {
       }
 
       if (result != null) {
-        print('startPlayer result: $result');
-        setPlayerCallback();
-
         playerState = PlayerState.IS_PLAYING;
       }
 
