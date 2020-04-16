@@ -1,85 +1,79 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flauto.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
-import 'package:flutter_sound/flutter_sound_recorder.dart';
 import 'active_codec.dart';
 import 'common.dart';
 import 'main.dart';
 import 'media_path.dart';
 import 'player_state.dart';
 
+/// Tracks the Recoder UI's state.
 class RecorderState {
-  static const _durationInterval = 1.0;
   static final RecorderState _self = RecorderState._internal();
-  StreamSubscription _recorderSubscription;
-  StreamSubscription _dbPeakSubscription;
+
+  /// primary recording moduel
   FlutterSoundRecorder recorderModule;
+
+  /// secondary recording modue used to show that two recordings can occur
+  /// concurrently.
   FlutterSoundRecorder recorderModule_2; // Used if REENTRANCE_CONCURENCY
 
-  final StreamController<double> _durationController =
-      StreamController<double>.broadcast();
-  StreamController<double> dbLevelController =
-      StreamController<double>.broadcast();
-
+  /// Factory ctor
   factory RecorderState() {
     return _self;
   }
 
   RecorderState._internal();
+
+  /// [true] if we are currently recording.
   bool get isRecording => recorderModule != null && recorderModule.isRecording;
+
+  /// [true] if we are recording but currently paused.
   bool get isPaused => recorderModule != null && recorderModule.isPaused;
 
+  /// required to initialise the recording subsystem.
   void init() async {
     recorderModule = await FlutterSoundRecorder().initialize();
-    await recorderModule.setSubscriptionDuration(_durationInterval);
-    await recorderModule.setDbPeakLevelUpdate(0.8);
-    await recorderModule.setDbLevelEnabled(true);
     if (renetranceConcurrency) {
       recorderModule_2 = await FlutterSoundRecorder().initialize();
-      await recorderModule_2.setSubscriptionDuration(_durationInterval);
-      await recorderModule_2.setDbPeakLevelUpdate(0.8);
-      await recorderModule_2.setDbLevelEnabled(true);
     }
     ActiveCodec().recorderModule = recorderModule;
   }
 
+  /// Call this method if you have changed any of the recording
+  /// options.
+  /// Stops the recorder and cause the recording UI to refesh and update with
+  /// any state changes.
   void reset() async {
-    await recorderModule.setSubscriptionDuration(_durationInterval);
-
-    if (renetranceConcurrency) {
-      await recorderModule_2.setSubscriptionDuration(_durationInterval);
-    }
-
-    // cause the recording UI to refesh and update with
-    // any state changes.
     await RecorderState().stopRecorder();
   }
 
-  Stream<double> get durationStream {
-    return _durationController.stream;
+  /// Returns a stream of [RecordingDisposition] so you can
+  /// display db and duration of the recording as it records.
+  /// Use this with a StreamBuilder
+  Stream<RecordingDisposition> dispositionStream(Duration interval) {
+    return recorderModule.dispositionStream(interval);
   }
 
-  Stream<double> get dbLevelStream {
-    return dbLevelController.stream;
-  }
-
+  /// stops the recorder.
   void stopRecorder() async {
     try {
       var result = await recorderModule.stopRecorder();
       print('stopRecorder: $result');
-      cancelRecorderSubscriptions();
       if (renetranceConcurrency) {
         await recorderModule_2.stopRecorder();
         await PlayerState().stopPlayer();
       }
-    } catch (err) {
+    } on Object catch (err) {
       print('stopRecorder error: $err');
+      rethrow;
     }
   }
 
+  /// starts the recorder.
   void startRecorder(BuildContext context) async {
     try {
       await PlayerState().stopPlayer();
@@ -93,8 +87,6 @@ class RecorderState {
 
       print('startRecorder: $path');
 
-      trackDuration();
-      trackDBLevel();
       if (renetranceConcurrency) {
         try {
           var dataBuffer =
@@ -105,13 +97,13 @@ class RecorderState {
               codec: ActiveCodec().codec, whenFinished: () {
             print('Secondary Play finished');
           });
-        } catch (e) {
+        } on Object catch (e) {
           print('startRecorder error: $e');
           rethrow;
         }
         await recorderModule_2.startRecorder(
           uri: '${tempDir.path}/flutter_sound_recorder2.aac',
-          codec: t_CODEC.CODEC_AAC,
+          codec: Codec.CODEC_AAC,
         );
         print(
             "Secondary record is '${tempDir.path}/flutter_sound_recorder2.aac'");
@@ -130,26 +122,9 @@ class RecorderState {
     }
   }
 
-  void trackDBLevel() {
-    _dbPeakSubscription =
-        recorderModule.onRecorderDbPeakChanged.listen((value) {
-      print("got dbLevel update -> $value");
-
-      dbLevelController.add(value);
-    });
-  }
-
-  void trackDuration() {
-    _recorderSubscription = recorderModule.onRecorderStateChanged.listen((e) {
-      if (e != null && e.currentPosition != null) {
-        var duration = e.currentPosition;
-        // print("got duration update -> $duration");
-        _durationController.add(duration);
-      }
-    });
-  }
-
+  /// toggles the pause/resume start of the recorder
   void pauseResumeRecorder() {
+    assert(recorderModule.isRecording);
     if (recorderModule.isPaused) {
       {
         recorderModule.resumeRecorder();
@@ -163,21 +138,5 @@ class RecorderState {
         recorderModule_2.pauseRecorder();
       }
     }
-  }
-
-  void cancelRecorderSubscriptions() {
-    if (_recorderSubscription != null) {
-      _recorderSubscription.cancel();
-      _recorderSubscription = null;
-    }
-    if (_dbPeakSubscription != null) {
-      _dbPeakSubscription.cancel();
-      _dbPeakSubscription = null;
-    }
-  }
-
-  void release() async {
-    await recorderModule.release();
-    await recorderModule_2.release();
   }
 }
