@@ -19,6 +19,6 @@ class PlayStatus {
   @override
   String toString() {
     return 'duration: $duration, '
-        'currentPosition: $position';
+        'position: $position';
   }
 }
