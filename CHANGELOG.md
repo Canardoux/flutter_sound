@@ -1,4 +1,8 @@
 
+## 4.0.0-beta.2
+
+- Add a new parameter in the Track structure : albumArtFile
+
 ## 4.0.0-beta.1
 
 - Adds pedantic lints and major refactoring of example with bug fixes. [#279](https://github.com/dooboolab/flutter_sound/pull/279)
