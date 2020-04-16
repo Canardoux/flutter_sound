@@ -120,8 +120,8 @@ class PlayerState {
     if (_hushOthers) {
       if (Platform.isIOS) {
         await playerModule.iosSetCategory(
-            t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD,
-            t_IOS_SESSION_MODE.DEFAULT,
+            IOSSessionCategory.PLAY_AND_RECORD,
+            IOSSessionMode.DEFAULT,
             IOS_DUCK_OTHERS | IOS_DEFAULT_TO_SPEAKER);
       } else if (Platform.isAndroid) {
         await playerModule.androidAudioFocusRequest(
@@ -130,8 +130,8 @@ class PlayerState {
     } else {
       if (Platform.isIOS) {
         await playerModule.iosSetCategory(
-            t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD,
-            t_IOS_SESSION_MODE.DEFAULT,
+            IOSSessionCategory.PLAY_AND_RECORD,
+            IOSSessionMode.DEFAULT,
             IOS_DEFAULT_TO_SPEAKER);
       } else if (Platform.isAndroid) {
         await playerModule.androidAudioFocusRequest(ANDROID_AUDIOFOCUS_GAIN);
