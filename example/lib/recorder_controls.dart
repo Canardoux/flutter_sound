@@ -52,7 +52,8 @@ class _RecorderControlsState extends State<RecorderControls> {
                 RecorderState().dispositionStream(Duration(milliseconds: 50)),
             initialData: RecordingDisposition.zero(),
             builder: (context, snapshot) {
-              var dbLevel = snapshot.data;
+              var recordingDisposition = snapshot.data;
+              var dbLevel = recordingDisposition.decibels;
               return LinearProgressIndicator(
                   value: 100.0 / 160.0 * (dbLevel ?? 1) / 100,
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
