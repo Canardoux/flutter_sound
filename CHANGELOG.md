@@ -1,4 +1,3 @@
-
 ## 4.0.0-beta.2
 
 - Add a new parameter in the Track structure : albumArtFile
@@ -7,6 +6,10 @@
 
 - Adds pedantic lints and major refactoring of example with bug fixes. [#279](https://github.com/dooboolab/flutter_sound/pull/279)
 - Native code is directely linked with FFmpeg. Flutter Sound App does not need any more to depends on flutter_ffmpeg [#265](https://github.com/dooboolab/flutter_sound/issues/265) and [273](https://github.com/dooboolab/flutter_sound/issues/273)
+
+##3.1.10
+
+- Trying to catch Android crash during a dirty Timer. [#289](https://github.com/dooboolab/flutter_sound/issues/289)
 
 ## 3.1.9
 
