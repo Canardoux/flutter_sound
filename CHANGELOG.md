@@ -1,4 +1,8 @@
 
+## 3.1.9
+
+- Trying to fix the Android crash when AndroidActivity is null [#296](https://github.com/dooboolab/flutter_sound/issues/296)
+
 ## 3.1.8
 
 - Fix a bug ('async') when the app forget to initalize its Flutter Sound module. [#287](https://github.com/dooboolab/flutter_sound/issues/287)
