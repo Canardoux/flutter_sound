@@ -51,13 +51,17 @@ class RecordingDispositionManager {
     _trySendDisposition();
   }
 
-  void updateDurationDisposition(Map call) {
+  /// [timePaused] The raw duration from the android/ios subsystem
+  /// ignores pauses so we need to subtract any pause time from the
+  /// duratin.
+  void updateDurationDisposition(Map call, Duration timePaused) {
     Map<String, dynamic> result =
         json.decode(call['arg'] as String) as Map<String, dynamic>;
 
     lastDispositionDuration = Duration(
-        milliseconds:
-            double.parse(result['current_position'] as String) as int);
+            milliseconds:
+                double.parse(result['current_position'] as String).toInt()) -
+        timePaused;
 
     _trySendDisposition();
   }
@@ -82,7 +86,7 @@ class RecordingDispositionManager {
     await recorder.initialize();
     String r = await recorder
         .invokeMethod('setSubscriptionDuration', <String, dynamic>{
-      'sec': interval.inSeconds as double,
+      'sec': interval.inSeconds.toDouble(),
     }) as String;
     return r;
   }
@@ -93,7 +97,7 @@ class RecordingDispositionManager {
     await recorder.initialize();
     String r =
         await recorder.invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
-      'intervalInSecs': interval.inSeconds as double,
+      'intervalInSecs': interval.inSeconds.toDouble(),
     }) as String;
     return r;
   }
@@ -112,7 +116,7 @@ class RecordingDispositionManager {
     if (_dispositionController != null) {
       _dispositionController
         // TODO signal that the stream is closed?
-        ..add(null) // We keep that strange line for backward compatibility
+        // ..add(null) // We keep that strange line for backward compatibility
         ..close();
       _dispositionController = null;
     }

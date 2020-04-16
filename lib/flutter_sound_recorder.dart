@@ -281,7 +281,7 @@ class FlutterSoundRecorder {
   }
 
   void _updateDurationDisposition(Map arguments) {
-    _dispositionManager.updateDurationDisposition(arguments);
+    _dispositionManager.updateDurationDisposition(arguments, _timePaused);
   }
 
   void _updateDbPeakDispostion(Map arguments) {
