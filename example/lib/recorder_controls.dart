@@ -6,7 +6,9 @@ import 'grayed_out.dart';
 import 'media_path.dart';
 import 'recorder_state.dart';
 
+/// UI for the Recorder example controls
 class RecorderControls extends StatefulWidget {
+  /// ctor
   const RecorderControls({
     Key key,
   }) : super(key: key);
@@ -45,9 +47,10 @@ class _RecorderControlsState extends State<RecorderControls> {
 
   Widget buildDBIndicator() {
     return RecorderState().isRecording
-        ? StreamBuilder<double>(
-            stream: RecorderState().dbLevelStream,
-            initialData: 1.0,
+        ? StreamBuilder<RecordingDisposition>(
+            stream:
+                RecorderState().dispositionStream(Duration(milliseconds: 50)),
+            initialData: RecordingDisposition.zero(),
             builder: (context, snapshot) {
               var dbLevel = snapshot.data;
               return LinearProgressIndicator(
@@ -59,12 +62,12 @@ class _RecorderControlsState extends State<RecorderControls> {
   }
 
   Widget buildDurationText() {
-    return StreamBuilder<double>(
-        stream: RecorderState().durationStream,
-        initialData: 0.0,
+    return StreamBuilder<RecordingDisposition>(
+        stream: RecorderState().dispositionStream(Duration(milliseconds: 50)),
+        initialData: RecordingDisposition.zero(),
         builder: (context, snapshot) {
-          var duration = snapshot.data;
-          var txt = formatDuration(duration);
+          var disposition = snapshot.data;
+          var txt = formatDuration(disposition.duration);
 
           return Container(
             margin: EdgeInsets.only(top: 12.0, bottom: 16.0),
@@ -145,17 +148,15 @@ class _RecorderControlsState extends State<RecorderControls> {
 
   void startStopRecorder(BuildContext context) async {
     paused = false;
-    if (RecorderState().isRecording || RecorderState().isPaused) {
-      await RecorderState().stopRecorder();
-    } else {
-      try {
+    try {
+      if (RecorderState().isRecording || RecorderState().isPaused) {
+        await RecorderState().stopRecorder();
+      } else {
         await RecorderState().startRecorder(context);
-      } catch (e) {
-        /// force a refresh to reflect the failure in the ui.
-
       }
+    } finally {
+      setState(() {});
     }
-    setState(() {});
   }
 
   AssetImage recorderAssetImage() {
