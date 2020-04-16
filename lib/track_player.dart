@@ -29,7 +29,6 @@ import 'flutter_sound_player.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'src/flauto.dart';
-import 'src/play_status.dart';
 import 'src/track_player_plugin.dart';
 
 TrackPlayerPlugin trackPlayerPlugin; // Singleton, lazy initialized
@@ -102,7 +101,7 @@ class TrackPlayer extends FlutterSoundPlayer {
         await stopPlayer();
         await invokeMethod('releaseMediaPlayer', <String, dynamic>{});
 
-        _removePlayerCallback(); // playerController is closed by this function
+        removePlayerCallback(); // playerController is closed by this function
 
         //playerController?.close();
 
@@ -125,22 +124,6 @@ class TrackPlayer extends FlutterSoundPlayer {
     if (onSkipBackward != null) onSkipBackward();
   }
 
-  void audioPlayerFinished(PlayStatus status) {
-    // if we have finished then position should be at the end.
-    status.position = status.duration;
-
-    if (playerController != null) {
-      playerController.add(status);
-    }
-
-    playerState = PlayerState.IS_STOPPED;
-    if (audioPlayerFinishedPlaying != null) {
-      audioPlayerFinishedPlaying();
-      audioPlayerFinishedPlaying = null;
-    }
-    _removePlayerCallback(); // playerController is closed by this function
-  }
-
   /// Plays the given [track]. [canSkipForward] and [canSkipBackward] must be
   /// passed to provide information on whether the user can skip to the next
   /// or to the previous song in the lock screen controls.
@@ -155,7 +138,7 @@ class TrackPlayer extends FlutterSoundPlayer {
     TonSkip onSkipForward,
     TonSkip onSkipBackward,
   }) async {
-    // Check the current codec is not supported on this platform
+    // Check the current codec is supported on this platform
     if (!await isDecoderSupported(track.codec)) {
       throw PlayerRunningException('The selected codec is not supported on '
           'this platform.');
@@ -208,15 +191,6 @@ class TrackPlayer extends FlutterSoundPlayer {
     initialize();
     final track = Track(dataBuffer: dataBuffer, codec: codec);
     return startPlayerFromTrack(track, whenFinished: whenFinished);
-  }
-
-  void _removePlayerCallback() {
-    if (playerController != null) {
-      playerController
-        ..add(null)
-        ..close();
-      playerController = null;
-    }
   }
 }
 

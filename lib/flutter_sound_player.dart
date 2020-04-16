@@ -113,14 +113,14 @@ String fileExtension(String path) {
 class FlutterSoundPlayer {
   bool isInited = false;
   PlayerState playerState = PlayerState.IS_STOPPED;
-  StreamController<PlayStatus> playerController;
+  StreamController<PlayStatus> _playerController;
   TWhenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
   TwhenPaused whenPause; // User callback "whenPaused:"
   TupdateProgress onUpdateProgress;
   int slotNo;
 
   Stream<PlayStatus> get onPlayerStateChanged =>
-      playerController != null ? playerController.stream : null;
+      _playerController != null ? _playerController.stream : null;
 
   bool get isPlaying => playerState == PlayerState.IS_PLAYING;
 
@@ -155,9 +155,9 @@ class FlutterSoundPlayer {
     if (isInited) {
       isInited = false;
       await stopPlayer();
-      _removePlayerCallback(); // playerController is closed by this function
+      removePlayerCallback(); // playerController is closed by this function
       await invokeMethod('releaseMediaPlayer', <String, dynamic>{});
-      await playerController?.close();
+      await _playerController?.close();
 
       getPlugin().freeSlot(slotNo);
       slotNo = null;
@@ -167,19 +167,25 @@ class FlutterSoundPlayer {
   void updateProgress(Map call) {
     String arg = call['arg'] as String;
     Map<String, dynamic> result = jsonDecode(arg) as Map<String, dynamic>;
-    if (playerController != null) {
-      playerController.add(PlayStatus.fromJSON(result));
+    if (_playerController != null) {
+      _playerController.add(PlayStatus.fromJSON(result));
     }
   }
 
   void audioPlayerFinished(PlayStatus status) {
+    // if we have finished then position should be at the end.
     status.position = status.duration;
-    if (playerController != null) playerController.add(status);
+
+    if (_playerController != null) {
+      _playerController.add(status);
+    }
 
     playerState = PlayerState.IS_STOPPED;
-    _removePlayerCallback();
-
-    if (audioPlayerFinishedPlaying != null) audioPlayerFinishedPlaying();
+    if (audioPlayerFinishedPlaying != null) {
+      audioPlayerFinishedPlaying();
+      audioPlayerFinishedPlaying = null;
+    }
+    removePlayerCallback(); // playerController is closed by this function
   }
 
   void pause(Map call) {
@@ -219,8 +225,8 @@ class FlutterSoundPlayer {
   /// After calling this function,
   /// the caller is responsible for using correctly setActive
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
-  Future<bool> iosSetCategory(IOSSessionCategory category,
-      IOSSessionMode mode, int options) async {
+  Future<bool> iosSetCategory(
+      IOSSessionCategory category, IOSSessionMode mode, int options) async {
     await initialize();
     if (!Platform.isIOS) return false;
     bool r = await invokeMethod('iosSetCategory', <String, dynamic>{
@@ -265,29 +271,31 @@ class FlutterSoundPlayer {
   }
 
   void setPlayerCallback() {
-    if (playerController == null) {
-      playerController = StreamController.broadcast();
+    if (_playerController == null) {
+      _playerController = StreamController.broadcast();
     }
   }
 
-  void _removePlayerCallback() {
-    if (playerController != null) {
-      playerController
+  void removePlayerCallback() {
+    if (_playerController != null) {
+      _playerController
         ..add(null)
         ..close();
-      playerController = null;
+      _playerController = null;
     }
   }
 
-  Future<String> _startPlayer(String method, Map<String, dynamic> what) async {
+  Future<String> _startPlayer(
+    String method, {
+    Codec codec,
+    String path,
+    Uint8List dataBuffer,
+    void Function() whenFinished,
+  }) async {
     String result;
     await stopPlayer(); // Just in case
     try {
-      Codec codec = what['codec'] as Codec;
-      String path = what['path'] as String; // can be null
-      if (codec != null) {
-        what['codec'] = codec.index;
-      } // Flutter cannot transfer an enum to a native plugin. We use an integer instead
+      audioPlayerFinishedPlaying = whenFinished;
 
       // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
       // We use FFmpeg for that task.
@@ -319,16 +327,17 @@ class FlutterSoundPlayer {
         ]); // remux OGG to CAF
         if (rc != 0) return null;
         // Now we can play Apple CAF/OPUS
-        audioPlayerFinishedPlaying = what['whenFinished'] as void Function();
-        what['whenFinished'] =
-            null; // We must remove this parameter because _channel.invokeMethod() does not like it
         result = await invokeMethod(
             'startPlayer', <String, dynamic>{'path': fout.path}) as String;
       } else {
-        audioPlayerFinishedPlaying = what['whenFinished'] as void Function();
-        what['whenFinished'] =
-            null; // We must remove this parameter because _channel.invokeMethod() does not like it
-        result = await invokeMethod(method, what) as String;
+        // build the argument map
+        var args = <String, dynamic>{};
+        if (path != null) args['path'] = path;
+        // Flutter cannot transfer an enum to a native plugin. We use an integer instead
+        if (codec != null) args['codec'] = codec.index;
+        if (dataBuffer != null) args['dataBuffer'] = dataBuffer;
+
+        result = await invokeMethod(method, args) as String;
       }
 
       if (result != null) {
@@ -351,11 +360,8 @@ class FlutterSoundPlayer {
     TWhenFinished whenFinished,
   }) {
     initialize();
-    return _startPlayer('startPlayer', <String, dynamic>{
-      'path': uri,
-      'codec': codec,
-      'whenFinished': whenFinished,
-    });
+    return _startPlayer('startPlayer',
+        path: uri, codec: codec, whenFinished: whenFinished);
   }
 
   Future<String> startPlayerFromBuffer(
@@ -378,17 +384,12 @@ class FlutterSoundPlayer {
           dataBuffer); // Write the user buffer into the temporary file
 
       // Now we can play the temporary file
-      return await _startPlayer('startPlayer', <String, dynamic>{
-        'path': inputFile.path,
-        'codec': codec,
-        'whenFinished': whenFinished,
-      }); // And play something that Apple will be happy with.
+      return await _startPlayer('startPlayer',
+          path: inputFile.path, codec: codec, whenFinished: whenFinished);
+      // And play something that Apple will be happy with.
     } else {
-      return await _startPlayer('startPlayerFromBuffer', <String, dynamic>{
-        'dataBuffer': dataBuffer,
-        'codec': codec,
-        'whenFinished': whenFinished,
-      });
+      return await _startPlayer('startPlayerFromBuffer',
+          dataBuffer: dataBuffer, codec: codec, whenFinished: whenFinished);
     }
   }
 
@@ -397,7 +398,7 @@ class FlutterSoundPlayer {
     audioPlayerFinishedPlaying = null;
 
     try {
-      _removePlayerCallback(); // playerController is closed by this function
+      removePlayerCallback(); // playerController is closed by this function
       String result =
           await invokeMethod('stopPlayer', <String, dynamic>{}) as String;
       return result;
