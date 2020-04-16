@@ -133,7 +133,7 @@ class TrackPlayer extends FlutterSoundPlayer {
       playerController.add(status);
     }
 
-    playerState = t_PLAYER_STATE.IS_STOPPED;
+    playerState = PlayerState.IS_STOPPED;
     if (audioPlayerFinishedPlaying != null) {
       audioPlayerFinishedPlaying();
       audioPlayerFinishedPlaying = null;
@@ -183,7 +183,7 @@ class TrackPlayer extends FlutterSoundPlayer {
     if (result != null) {
       print('startPlayer result: $result');
 
-      playerState = t_PLAYER_STATE.IS_PLAYING;
+      playerState = PlayerState.IS_PLAYING;
     }
     return result;
   }

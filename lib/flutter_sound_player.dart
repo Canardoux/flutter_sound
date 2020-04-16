@@ -29,7 +29,7 @@ import 'src/flauto.dart';
 import 'src/flutter_player_plugin.dart';
 import 'src/play_status.dart';
 
-enum t_PLAYER_STATE {
+enum PlayerState {
   IS_STOPPED,
 
   /// Player is stopped
@@ -37,7 +37,7 @@ enum t_PLAYER_STATE {
   IS_PAUSED,
 }
 
-enum t_IOS_SESSION_CATEGORY {
+enum IOSSessionCategory {
   AMBIENT,
   MULTI_ROUTE,
   PLAY_AND_RECORD,
@@ -55,7 +55,7 @@ final List<String> iosSessionCategory = [
   'AVAudioSessionCategorySoloAmbient',
 ];
 
-enum t_IOS_SESSION_MODE {
+enum IOSSessionMode {
   DEFAULT,
   GAME_CHAT,
   MEASUREMENT,
@@ -112,7 +112,7 @@ String fileExtension(String path) {
 
 class FlutterSoundPlayer {
   bool isInited = false;
-  t_PLAYER_STATE playerState = t_PLAYER_STATE.IS_STOPPED;
+  PlayerState playerState = PlayerState.IS_STOPPED;
   StreamController<PlayStatus> playerController;
   TWhenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
   TwhenPaused whenPause; // User callback "whenPaused:"
@@ -122,11 +122,11 @@ class FlutterSoundPlayer {
   Stream<PlayStatus> get onPlayerStateChanged =>
       playerController != null ? playerController.stream : null;
 
-  bool get isPlaying => playerState == t_PLAYER_STATE.IS_PLAYING;
+  bool get isPlaying => playerState == PlayerState.IS_PLAYING;
 
-  bool get isPaused => playerState == t_PLAYER_STATE.IS_PAUSED;
+  bool get isPaused => playerState == PlayerState.IS_PAUSED;
 
-  bool get isStopped => playerState == t_PLAYER_STATE.IS_STOPPED;
+  bool get isStopped => playerState == PlayerState.IS_STOPPED;
 
   FlutterSoundPlayer();
 
@@ -176,7 +176,7 @@ class FlutterSoundPlayer {
     status.position = status.duration;
     if (playerController != null) playerController.add(status);
 
-    playerState = t_PLAYER_STATE.IS_STOPPED;
+    playerState = PlayerState.IS_STOPPED;
     _removePlayerCallback();
 
     if (audioPlayerFinishedPlaying != null) audioPlayerFinishedPlaying();
@@ -219,8 +219,8 @@ class FlutterSoundPlayer {
   /// After calling this function,
   /// the caller is responsible for using correctly setActive
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
-  Future<bool> iosSetCategory(t_IOS_SESSION_CATEGORY category,
-      t_IOS_SESSION_MODE mode, int options) async {
+  Future<bool> iosSetCategory(IOSSessionCategory category,
+      IOSSessionMode mode, int options) async {
     await initialize();
     if (!Platform.isIOS) return false;
     bool r = await invokeMethod('iosSetCategory', <String, dynamic>{
@@ -335,7 +335,7 @@ class FlutterSoundPlayer {
         print('startPlayer result: $result');
         setPlayerCallback();
 
-        playerState = t_PLAYER_STATE.IS_PLAYING;
+        playerState = PlayerState.IS_PLAYING;
       }
 
       return result;
@@ -393,7 +393,7 @@ class FlutterSoundPlayer {
   }
 
   Future<String> stopPlayer() async {
-    playerState = t_PLAYER_STATE.IS_STOPPED;
+    playerState = PlayerState.IS_STOPPED;
     audioPlayerFinishedPlaying = null;
 
     try {
@@ -417,24 +417,24 @@ class FlutterSoundPlayer {
   }
 
   Future<String> pausePlayer() async {
-    if (playerState != t_PLAYER_STATE.IS_PLAYING) {
+    if (playerState != PlayerState.IS_PLAYING) {
       await _stopPlayerwithCallback(); // To recover a clean state
       throw PlayerRunningException(
           'Player is not playing.'); // I am not sure that it is good to throw an exception here
     }
-    playerState = t_PLAYER_STATE.IS_PAUSED;
+    playerState = PlayerState.IS_PAUSED;
 
     String r = await invokeMethod('pausePlayer', <String, dynamic>{}) as String;
     return r;
   }
 
   Future<String> resumePlayer() async {
-    if (playerState != t_PLAYER_STATE.IS_PAUSED) {
+    if (playerState != PlayerState.IS_PAUSED) {
       await _stopPlayerwithCallback(); // To recover a clean state
       throw PlayerRunningException(
           'Player is not paused.'); // I am not sure that it is good to throw an exception here
     }
-    playerState = t_PLAYER_STATE.IS_PLAYING;
+    playerState = PlayerState.IS_PLAYING;
     String r =
         await invokeMethod('resumePlayer', <String, dynamic>{}) as String;
     return r;

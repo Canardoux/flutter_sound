@@ -82,8 +82,8 @@ class FlutterSound {
   Stream<RecordingDisposition> dispositionStream(Duration interval) =>
       soundRecorder.dispositionStream(interval);
 
-  Future<bool> iosSetCategory(t_IOS_SESSION_CATEGORY category,
-          t_IOS_SESSION_MODE mode, int options) =>
+  Future<bool> iosSetCategory(IOSSessionCategory category,
+          IOSSessionMode mode, int options) =>
       soundPlayer.iosSetCategory(category, mode, options);
 
   Future<bool> androidAudioFocusRequest(int focusGain) =>
