@@ -126,9 +126,8 @@ class TrackPlayer extends FlutterSoundPlayer {
   }
 
   void audioPlayerFinished(PlayStatus status) {
-    if (status.position != status.duration) {
-      status.position = status.duration;
-    }
+    // if we have finished then position should be at the end.
+    status.position = status.duration;
 
     if (playerController != null) {
       playerController.add(status);
