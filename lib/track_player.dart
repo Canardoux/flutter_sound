@@ -150,7 +150,7 @@ class TrackPlayer extends FlutterSoundPlayer {
     final trackMap = await track.toMap();
 
     audioPlayerFinishedPlaying = whenFinished;
-    this.whenPause = whenPaused;
+    this.whenPaused = whenPaused;
     this.onSkipForward = onSkipForward;
     this.onSkipBackward = onSkipBackward;
     setPlayerCallback();
