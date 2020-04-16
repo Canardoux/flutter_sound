@@ -153,7 +153,6 @@ class TrackPlayer extends FlutterSoundPlayer {
     this.whenPause = whenPaused;
     this.onSkipForward = onSkipForward;
     this.onSkipBackward = onSkipBackward;
-    this.onUpdateProgress = onUpdateProgress;
     setPlayerCallback();
     String result =
         await invokeMethod('startPlayerFromTrack', <String, dynamic>{

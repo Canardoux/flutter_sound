@@ -116,7 +116,6 @@ class FlutterSoundPlayer {
   StreamController<PlaybackDisposition> _playerController;
   TWhenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
   TwhenPaused whenPause; // User callback "whenPaused:"
-  TupdateProgress onUpdateProgress;
   int slotNo;
 
   Stream<PlaybackDisposition> get onPlayerStateChanged =>
