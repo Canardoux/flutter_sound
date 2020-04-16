@@ -124,7 +124,7 @@ class RecorderState {
 
   /// toggles the pause/resume start of the recorder
   void pauseResumeRecorder() {
-    assert(recorderModule.isRecording);
+    assert(recorderModule.isRecording || recorderModule.isPaused);
     if (recorderModule.isPaused) {
       {
         recorderModule.resumeRecorder();
