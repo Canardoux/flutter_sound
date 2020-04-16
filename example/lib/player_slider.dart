@@ -19,9 +19,9 @@ class PlayerSlider extends StatefulWidget {
 class _PlayerSliderState extends State<PlayerSlider> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<PlayStatus>(
+    return StreamBuilder<PlaybackDisposition>(
         stream: PlayerState().playStatusStream,
-        initialData: PlayStatus.zero(),
+        initialData: PlaybackDisposition.zero(),
         builder: (context, snapshot) {
           var playStatus = snapshot.data;
           var duration = playStatus.duration.inSeconds.toDouble();

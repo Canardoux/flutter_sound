@@ -24,7 +24,7 @@ import 'package:flutter_sound/flutter_sound_recorder.dart';
 
 import 'src/android_encoder.dart';
 import 'src/flauto.dart';
-import 'src/play_status.dart';
+import 'src/playback_disposition.dart';
 import 'src/recording_disposition.dart';
 
 /// This module is deprecated. It is just to keep backward compatibility.
@@ -118,7 +118,7 @@ class FlutterSound {
   Future<String> pauseRecorder() => soundRecorder.pauseRecorder();
   Future<bool> resumeRecorder() => soundRecorder.resumeRecorder();
 
-  Stream<PlayStatus> get onPlayerStateChanged =>
+  Stream<PlaybackDisposition> get onPlayerStateChanged =>
       soundPlayer.onPlayerStateChanged;
 
   Future<String> startPlayer(

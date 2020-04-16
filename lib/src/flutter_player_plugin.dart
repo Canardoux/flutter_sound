@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 import '../flutter_sound_player.dart';
-import 'play_status.dart';
+import 'playback_disposition.dart';
 
 class FlautoPlayerPlugin {
   MethodChannel channel;
@@ -59,7 +59,7 @@ class FlautoPlayerPlugin {
           String args = call.arguments['arg'] as String;
           Map<String, dynamic> result =
               jsonDecode(args) as Map<String, dynamic>;
-          PlayStatus status = PlayStatus.fromJSON(result);
+          PlaybackDisposition status = PlaybackDisposition.fromJSON(result);
 
           aPlayer.audioPlayerFinished(status);
         }

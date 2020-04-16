@@ -44,9 +44,9 @@ class _PlayerControlsState extends State<PlayerControls> {
   Container buildDurationText() {
     return Container(
       margin: EdgeInsets.only(top: 12.0, bottom: 16.0),
-      child: StreamBuilder<PlayStatus>(
+      child: StreamBuilder<PlaybackDisposition>(
           stream: PlayerState().playStatusStream,
-          initialData: PlayStatus.zero(),
+          initialData: PlaybackDisposition.zero(),
           builder: (context, snapshot) {
             var playStatus = snapshot.data;
             return Text(

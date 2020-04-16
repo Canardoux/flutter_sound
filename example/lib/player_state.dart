@@ -27,8 +27,8 @@ class PlayerState {
   /// secondary player used to demo two audio streams playing.
   FlutterSoundPlayer playerModule_2; // Used if REENTRANCE_CONCURENCY
 
-  final StreamController<PlayStatus> _playStatusController =
-      StreamController<PlayStatus>.broadcast();
+  final StreamController<PlaybackDisposition> _playStatusController =
+      StreamController<PlaybackDisposition>.broadcast();
 
   /// factory to retrieve a PlayerState
   factory PlayerState() {
@@ -42,7 +42,7 @@ class PlayerState {
   bool get hushOthers => _hushOthers;
 
   /// get the PlayStatus stream.
-  Stream<PlayStatus> get playStatusStream {
+  Stream<PlaybackDisposition> get playStatusStream {
     return _playStatusController.stream;
   }
 
@@ -280,7 +280,7 @@ class PlayerState {
       print('stopPlayer: $result');
 
       /// signal
-      _playStatusController.add(PlayStatus.zero());
+      _playStatusController.add(PlaybackDisposition.zero());
       if (_playerSubscription != null) {
         await _playerSubscription.cancel();
         _playerSubscription = null;

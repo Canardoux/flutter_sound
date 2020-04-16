@@ -7,7 +7,7 @@ export 'flutter_sound_recorder.dart'
         RecorderRunningException,
         CodecNotSupportedException;
 export 'src/flauto.dart';
-export 'src/play_status.dart' show PlayStatus;
+export 'src/playback_disposition.dart' show PlaybackDisposition;
 export 'src/recording_disposition.dart' show RecordingDisposition;
 
 export 'track_player.dart';

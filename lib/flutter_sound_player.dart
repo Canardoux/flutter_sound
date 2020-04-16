@@ -27,7 +27,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'src/flauto.dart';
 import 'src/flutter_player_plugin.dart';
-import 'src/play_status.dart';
+import 'src/playback_disposition.dart';
 
 enum PlayerState {
   IS_STOPPED,
@@ -113,13 +113,13 @@ String fileExtension(String path) {
 class FlutterSoundPlayer {
   bool isInited = false;
   PlayerState playerState = PlayerState.IS_STOPPED;
-  StreamController<PlayStatus> _playerController;
+  StreamController<PlaybackDisposition> _playerController;
   TWhenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
   TwhenPaused whenPause; // User callback "whenPaused:"
   TupdateProgress onUpdateProgress;
   int slotNo;
 
-  Stream<PlayStatus> get onPlayerStateChanged =>
+  Stream<PlaybackDisposition> get onPlayerStateChanged =>
       _playerController != null ? _playerController.stream : null;
 
   bool get isPlaying => playerState == PlayerState.IS_PLAYING;
@@ -168,11 +168,11 @@ class FlutterSoundPlayer {
     String arg = call['arg'] as String;
     Map<String, dynamic> result = jsonDecode(arg) as Map<String, dynamic>;
     if (_playerController != null) {
-      _playerController.add(PlayStatus.fromJSON(result));
+      _playerController.add(PlaybackDisposition.fromJSON(result));
     }
   }
 
-  void audioPlayerFinished(PlayStatus status) {
+  void audioPlayerFinished(PlaybackDisposition status) {
     // if we have finished then position should be at the end.
     status.position = status.duration;
 
