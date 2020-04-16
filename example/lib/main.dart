@@ -50,6 +50,7 @@ void main() {
   runApp(MyApp());
 }
 
+/// Example app.
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -139,7 +140,7 @@ class _MyAppState extends State<MyApp> {
     try {
       await PlayerState().release();
       RecorderState().release();
-    } catch (e) {
+    } on Object catch (e) {
       print('Released unsuccessful');
       print(e);
       rethrow;
@@ -156,7 +157,7 @@ class _MyAppState extends State<MyApp> {
         await _resetModules(FlutterSoundPlayer());
       }
       setState(() {});
-    } catch (err) {
+    } on Object catch (err) {
       print(err);
       rethrow;
     }
