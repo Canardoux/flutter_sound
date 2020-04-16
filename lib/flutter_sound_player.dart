@@ -119,7 +119,7 @@ class FlautoPlayerPlugin {
     });
   }
 
-  int lookupEmptySlot(FlutterSoundPlayer aPlayer) {
+  int _lookupEmptySlot(FlutterSoundPlayer aPlayer) {
     for (var i = 0; i < slots.length; ++i) {
       if (slots[i] == null) {
         slots[i] = aPlayer;
@@ -147,7 +147,7 @@ class FlautoPlayerPlugin {
     switch (call.method) {
       case "updateProgress":
         {
-          aPlayer.updateProgress(call.arguments as Map);
+          aPlayer._updateProgress(call.arguments as Map);
         }
         break;
 
@@ -224,7 +224,7 @@ class FlutterSoundPlayer {
       if (flautoPlayerPlugin == null) {
         flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton
       }
-      slotNo = getPlugin().lookupEmptySlot(this);
+      slotNo = getPlugin()._lookupEmptySlot(this);
       await invokeMethod('initializeMediaPlayer', <String, dynamic>{});
     }
     return this;
@@ -243,7 +243,7 @@ class FlutterSoundPlayer {
     }
   }
 
-  void updateProgress(Map call) {
+  void _updateProgress(Map call) {
     String arg = call['arg'] as String;
     Map<String, dynamic> result = jsonDecode(arg) as Map<String, dynamic>;
     if (playerController != null) {
@@ -345,7 +345,7 @@ class FlutterSoundPlayer {
     return r;
   }
 
-  Future<void> setPlayerCallback() async {
+  void setPlayerCallback() {
     if (playerController == null) {
       playerController = StreamController.broadcast();
     }
@@ -414,7 +414,7 @@ class FlutterSoundPlayer {
 
       if (result != null) {
         print('startPlayer result: $result');
-        await setPlayerCallback();
+        setPlayerCallback();
 
         playerState = t_PLAYER_STATE.IS_PLAYING;
       }
