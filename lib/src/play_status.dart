@@ -1,4 +1,3 @@
-
 class PlayStatus {
   final Duration duration;
   Duration position;
@@ -12,11 +11,10 @@ class PlayStatus {
 
   PlayStatus.fromJSON(Map<String, dynamic> json)
       : duration = Duration(
-            milliseconds:
-                double.parse(json['duration'] as String) * 1000.0 as int),
+            milliseconds: double.parse(json['duration'] as String).toInt()),
         position = Duration(
-            milliseconds: double.parse(json['current_position'] as String) *
-                1000.0 as int);
+            milliseconds:
+                double.parse(json['current_position'] as String).toInt());
 
   @override
   String toString() {
