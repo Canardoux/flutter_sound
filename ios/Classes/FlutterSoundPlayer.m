@@ -180,6 +180,11 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [aFlautoPlayer setActive:enabled result:result];
         } else
         
+        if ( [@"getResourcePath" isEqualToString:call.method] )
+        {
+                result( [[NSBundle mainBundle] resourcePath]);
+        } else
+
         {
                 result(FlutterMethodNotImplemented);
         }

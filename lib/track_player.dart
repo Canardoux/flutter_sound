@@ -312,6 +312,9 @@ class Track {
   /// The asset that points to the album art of the track
   final String albumArtAsset;
 
+  /// The file that points to the album art of the track
+  final String albumArtFile;
+
   /// The image that points to the album art of the track
   //final String albumArtImage;
 
@@ -326,6 +329,7 @@ class Track {
     this.trackAuthor,
     this.albumArtUrl,
     this.albumArtAsset,
+    this.albumArtFile,
     this.codec = t_CODEC.DEFAULT,
   }) {
     codec = codec == null ? t_CODEC.DEFAULT : codec;
@@ -347,6 +351,7 @@ class Track {
       "author": trackAuthor,
       "albumArtUrl": albumArtUrl,
       "albumArtAsset": albumArtAsset,
+      "albumArtFile": albumArtFile,
       "bufferCodecIndex": codec?.index,
     };
 

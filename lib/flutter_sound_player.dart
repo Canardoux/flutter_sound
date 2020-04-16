@@ -21,7 +21,6 @@ import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
-import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
@@ -537,7 +536,20 @@ class FlutterSoundPlayer {
     }) as String;
     return r;
   }
+
+  Future<String> getResourcePath() async
+  {
+    // iOS : /Volumes/Macos-Ext/Users/larpoux/Library/Developer/CoreSimulator/Devices/DC01AED0-124F-4589-B2FD-DC1D56A967DF/data/Containers/Bundle/Application/7FF3AF75-FD79-4C9C-A76D-0CFB09CB6BC5/Runner.app
+    if (Platform.isIOS)
+    {
+      String s = await invokeMethod( 'getResourcePath', <String, dynamic>{} ) as String;
+      return s;
+    } else
+      return (await getApplicationDocumentsDirectory( )).path;
+  }
+
 }
+
 
 class PlayStatus {
   final double duration;

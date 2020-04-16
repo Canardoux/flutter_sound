@@ -57,6 +57,8 @@ import androidx.media.MediaBrowserServiceCompat;
 import androidx.media.app.NotificationCompat.MediaStyle;
 import androidx.media.session.MediaButtonReceiver;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -511,7 +513,32 @@ public class BackgroundAudioService
                                                                 catch ( IOException e )
                                                                 {
                                                                 }
-                                                            }
+                                                            } else  if ( currentTrack.getAlbumArtFile() != null )
+			                                    {
+				                                    try
+				                                    {
+					                                    File            file            = new File( currentTrack.getAlbumArtFile());
+					                                    FileInputStream istr = new FileInputStream( file);
+					                                    albumArt = BitmapFactory.decodeStream( istr );
+
+				                                    }
+				                                    catch ( IOException e )
+				                                    {
+				                                    }
+			                                    } else
+			                                    {
+				                                    try
+				                                    {
+					                                    AssetManager assetManager = getApplicationContext().getAssets();
+					                                    InputStream  istr         = assetManager.open( "AppIcon.png");
+					                                    albumArt = BitmapFactory.decodeStream( istr );
+
+				                                    }
+				                                    catch ( IOException e )
+				                                    {
+				                                    }
+
+			                                    }
 			                                    initMediaSessionMetadata( albumArt );
 
 			                                    // Call the callback
