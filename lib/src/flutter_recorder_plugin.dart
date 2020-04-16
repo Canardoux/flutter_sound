@@ -7,7 +7,7 @@ import '../flutter_sound_recorder.dart';
 class FlautoRecorderPlugin {
   MethodChannel channel;
 
-  List<FlutterSoundRecorder> slots = [];
+  List<RecorderPluginConnector> slots = [];
 
   FlautoRecorderPlugin() {
     channel = const MethodChannel('com.dooboolab.flutter_sound_recorder');
@@ -17,7 +17,7 @@ class FlautoRecorderPlugin {
     });
   }
 
-  int lookupEmptySlot(FlutterSoundRecorder aRecorder) {
+  int lookupEmptySlot(RecorderPluginConnector aRecorder) {
     for (int i = 0; i < slots.length; ++i) {
       if (slots[i] == null) {
         slots[i] = aRecorder;
@@ -40,7 +40,7 @@ class FlautoRecorderPlugin {
 
   Future<dynamic> channelMethodCallHandler(MethodCall call) {
     int slotNo = call.arguments['slotNo'] as int;
-    FlutterSoundRecorder aRecorder = slots[slotNo];
+    RecorderPluginConnector aRecorder = slots[slotNo];
     switch (call.method) {
       case "updateRecorderProgress":
         {

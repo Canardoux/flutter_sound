@@ -51,27 +51,36 @@ final List<String> defaultPaths = [
 ];
 
 class FlutterSoundRecorder {
-  bool isInited = false;
-  t_RECORDER_STATE recorderState = t_RECORDER_STATE.IS_STOPPED;
+  bool _isInited = false;
+  t_RECORDER_STATE _recorderState = t_RECORDER_STATE.IS_STOPPED;
 
-  RecordingDispositionManager dispositionManager;
+  RecordingDispositionManager _dispositionManager;
 
-  int slotNo;
+  int _slotNo;
 
-  bool isOggOpus =
+  bool _isOggOpus =
       false; // Set by startRecorder when the user wants to record an ogg/opus
   String
-      savedUri; // Used by startRecorder/stopRecorder to keep the caller wanted uri
+      _savedUri; // Used by startRecorder/stopRecorder to keep the caller wanted uri
   String
-      tmpUri; // Used by startRecorder/stopRecorder to keep the temporary uri to record CAF
+      _tmpUri; // Used by startRecorder/stopRecorder to keep the temporary uri to record CAF
 
-  bool get isRecording => (recorderState ==
+  /// track the total time we hav been paused during the current recording session.
+  var _timePaused = Duration(seconds: 0);
+
+  /// I fwe have paused during the current recording session this will be the time
+  /// the most recent pause commenced.
+  DateTime _pauseStarted;
+
+  int get slotNo => _slotNo;
+
+  bool get isRecording => (_recorderState ==
       t_RECORDER_STATE
           .IS_RECORDING); //|| recorderState == t_RECORDER_STATE.IS_PAUSED);
 
-  bool get isStopped => (recorderState == t_RECORDER_STATE.IS_STOPPED);
+  bool get isStopped => (_recorderState == t_RECORDER_STATE.IS_STOPPED);
 
-  bool get isPaused => (recorderState == t_RECORDER_STATE.IS_PAUSED);
+  bool get isPaused => (_recorderState == t_RECORDER_STATE.IS_PAUSED);
 
   FlautoRecorderPlugin getPlugin() => flautoRecorderPlugin;
 
@@ -81,29 +90,29 @@ class FlutterSoundRecorder {
   }
 
   Stream<RecordingDisposition> dispositionStream(Duration interval) {
-    return dispositionManager.stream(interval: interval);
+    return _dispositionManager.stream(interval: interval);
   }
 
   Future<FlutterSoundRecorder> initialize() async {
-    if (!isInited) {
-      isInited = true;
-      dispositionManager = RecordingDispositionManager(this);
+    if (!_isInited) {
+      _isInited = true;
+      _dispositionManager = RecordingDispositionManager(this);
       if (flautoRecorderPlugin == null) {
         flautoRecorderPlugin = FlautoRecorderPlugin();
       } // The lazy singleton
-      slotNo = getPlugin().lookupEmptySlot(this);
+      _slotNo = getPlugin().lookupEmptySlot(RecorderPluginConnector(this));
       await invokeMethod('initializeFlautoRecorder', <String, dynamic>{});
     }
     return this;
   }
 
   Future<void> release() async {
-    if (isInited) {
-      isInited = false;
+    if (_isInited) {
+      _isInited = false;
       await stopRecorder();
       await invokeMethod('releaseFlautoRecorder', <String, dynamic>{});
       getPlugin().freeSlot(slotNo);
-      slotNo = null;
+      _slotNo = null;
     }
   }
 
@@ -156,6 +165,7 @@ class FlutterSoundRecorder {
     bool requestPermission = true,
   }) async {
     await initialize();
+    _timePaused = Duration(seconds: 0);
     // Request Microphone permission if needed
     if (requestPermission) {
       PermissionStatus status = await Permission.microphone.request();
@@ -164,7 +174,8 @@ class FlutterSoundRecorder {
       }
     }
 
-    if (recorderState != null && recorderState != t_RECORDER_STATE.IS_STOPPED) {
+    if (_recorderState != null &&
+        _recorderState != t_RECORDER_STATE.IS_STOPPED) {
       throw RecorderRunningException('Recorder is not stopped.');
     }
     if (!await isEncoderSupported(codec)) {
@@ -177,8 +188,8 @@ class FlutterSoundRecorder {
     // We use FFmpeg for that task.
     if ((Platform.isIOS) &&
         ((codec == Codec.CODEC_OPUS) || (fileExtension(uri) == '.opus'))) {
-      savedUri = uri;
-      isOggOpus = true;
+      _savedUri = uri;
+      _isOggOpus = true;
       codec = Codec.CODEC_CAF_OPUS;
       var tempDir = await getTemporaryDirectory();
       var fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
@@ -187,9 +198,9 @@ class FlutterSoundRecorder {
       }
       await fout.delete();
       uri = fout.path;
-      tmpUri = uri;
+      _tmpUri = uri;
     } else {
-      isOggOpus = false;
+      _isOggOpus = false;
     }
 
     try {
@@ -206,10 +217,10 @@ class FlutterSoundRecorder {
       };
 
       String result = await invokeMethod('startRecorder', param) as String;
-      recorderState = t_RECORDER_STATE.IS_RECORDING;
+      _recorderState = t_RECORDER_STATE.IS_RECORDING;
       // if the caller wants OGG/OPUS we must remux the temporary file
-      if ((result != null) && isOggOpus) {
-        return savedUri;
+      if ((result != null) && _isOggOpus) {
+        return _savedUri;
       }
       return result;
     } catch (err) {
@@ -221,14 +232,14 @@ class FlutterSoundRecorder {
     String result =
         await invokeMethod('stopRecorder', <String, dynamic>{}) as String;
 
-    recorderState = t_RECORDER_STATE.IS_STOPPED;
+    _recorderState = t_RECORDER_STATE.IS_STOPPED;
 
-    dispositionManager.release();
+    _dispositionManager.release();
 
-    if (isOggOpus) {
+    if (_isOggOpus) {
       // delete the target if it exists
       // (ffmpeg gives an error if the output file already exists)
-      File f = File(savedUri);
+      File f = File(_savedUri);
       if (f.existsSync()) await f.delete();
       // The following ffmpeg instruction re-encode the Apple CAF to OPUS.
       // Unfortunately we cannot just remix the OPUS data,
@@ -239,13 +250,13 @@ class FlutterSoundRecorder {
         'error',
         '-y',
         '-i',
-        tmpUri,
+        _tmpUri,
         '-c:a',
         'libopus',
-        savedUri,
+        _savedUri,
       ]); // remux CAF to OGG
       if (rc != 0) return null;
-      return savedUri;
+      return _savedUri;
     }
     return result;
   }
@@ -253,26 +264,43 @@ class FlutterSoundRecorder {
   Future<String> pauseRecorder() async {
     String result =
         await invokeMethod('pauseRecorder', <String, dynamic>{}) as String;
-    recorderState = t_RECORDER_STATE.IS_PAUSED;
+    _pauseStarted = DateTime.now();
+    _recorderState = t_RECORDER_STATE.IS_PAUSED;
     return result;
   }
 
   Future<bool> resumeRecorder() async {
+    _timePaused += (DateTime.now().difference(_pauseStarted));
     bool b = await invokeMethod('resumeRecorder', <String, dynamic>{}) as bool;
     if (!b) {
       await stopRecorder();
       return false;
     }
-    recorderState = t_RECORDER_STATE.IS_RECORDING;
+    _recorderState = t_RECORDER_STATE.IS_RECORDING;
     return true;
   }
 
+  void _updateDurationDisposition(Map arguments) {
+    _dispositionManager.updateDurationDisposition(arguments);
+  }
+
+  void _updateDbPeakDispostion(Map arguments) {
+    _dispositionManager.updateDbPeakDispostion(arguments);
+  }
+}
+
+/// Class exists to help us reduce the public interface
+/// that we expose to users.
+class RecorderPluginConnector {
+  FlutterSoundRecorder recorder;
+  RecorderPluginConnector(this.recorder);
+
   void updateDurationDisposition(Map arguments) {
-    dispositionManager.updateDurationDisposition(arguments);
+    recorder._updateDurationDisposition(arguments);
   }
 
   void updateDbPeakDispostion(Map arguments) {
-    dispositionManager.updateDbPeakDispostion(arguments);
+    recorder._updateDbPeakDispostion(arguments);
   }
 }
 
