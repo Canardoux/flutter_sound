@@ -11,6 +11,7 @@ import 'common.dart';
 import 'main.dart';
 import 'media_path.dart';
 
+/// Used to track the players state.
 class PlayerState {
   static final PlayerState _self = PlayerState._internal();
 
@@ -19,25 +20,32 @@ class PlayerState {
   StreamSubscription _playerSubscription;
   // StreamSubscription _playbackStateSubscription;
 
+  /// the primary player
   FlutterSoundPlayer playerModule;
 
+  /// secondary player used to demo two audio streams playing.
   FlutterSoundPlayer playerModule_2; // Used if REENTRANCE_CONCURENCY
 
   final StreamController<PlayStatus> _playStatusController =
       StreamController<PlayStatus>.broadcast();
 
+  /// factory to retrieve a PlayerState
   factory PlayerState() {
     return _self;
   }
 
   PlayerState._internal();
 
+  /// returns [true] if duckOthers (reduce other players volume)
+  /// is enabled.
   bool get duckOthers => _duckOthers;
 
+  /// get the PlayStatus stream.
   Stream<PlayStatus> get playStatusStream {
     return _playStatusController.stream;
   }
 
+  /// [true] if the player can be started.
   bool get canStart {
     if (MediaPath().isFile ||
         MediaPath().isBuffer) // A file must be already recorded to play it
@@ -53,22 +61,29 @@ class PlayerState {
     return true;
   }
 
+  /// true if the player is currently playing or paused.
   bool get isPlayingOrPaused {
     return isPlaying || isPaused;
   }
 
+  /// true if the player is currently stoped
   bool get isStopped => playerModule != null && playerModule.isStopped;
 
+  /// true if the player is currently playing
   bool get isPlaying => playerModule != null && playerModule.isPlaying;
 
+  /// true if the player is currently paused
   bool get isPaused => playerModule != null && playerModule.isPaused;
 
+  /// the player module. Used when switching between players
+  /// Tracked vs original
   void reset(FlutterSoundPlayer module) async {
     playerModule = module;
     await module.initialize();
     await playerModule.setSubscriptionDuration(0.01);
   }
 
+  /// initialise the player.
   void init() async {
     playerModule = await FlutterSoundPlayer().initialize();
     ActiveCodec().playerModule = playerModule;
@@ -80,6 +95,7 @@ class PlayerState {
     }
   }
 
+  /// cancel all subscriptions.
   void cancelPlayerSubscriptions() {
     if (_playerSubscription != null) {
       _playerSubscription.cancel();
@@ -87,6 +103,17 @@ class PlayerState {
     }
   }
 
+  /// When we play something during whilst other audio is playing
+  ///
+  /// E.g. if Spotify is playing
+  /// We can:
+  // Stop Spotify
+  // Play both our sound and Spotify
+  // Or lower Spotify Sound during our playback.
+  /// [setDuck] controls option three.
+  /// When passsing [true] to [setDuck] the other auidio
+  /// player's (e.g. spotify) sound is lowered.
+  ///
   Future<void> setDuck({bool duckOthers}) async {
     _duckOthers = duckOthers;
     if (_duckOthers) {
@@ -111,6 +138,8 @@ class PlayerState {
     }
   }
 
+  /// Call this method to release the player when
+  /// you have finished.
   void release() async {
     if (playerModule != null) {
       await playerModule.release();
@@ -120,7 +149,7 @@ class PlayerState {
     }
   }
 
-  void addListeners() {
+  void _addListeners() {
     _playerSubscription = playerModule.onPlayerStateChanged.listen((e) {
       if (e != null) {
         _playStatusController.add(e);
@@ -128,6 +157,7 @@ class PlayerState {
     });
   }
 
+  /// Starts the playback from the begining.
   Future<void> startPlayer({void Function() whenFinished}) async {
     try {
       //final albumArtPath =
@@ -223,7 +253,7 @@ class PlayerState {
           return;
         }
       }
-      addListeners();
+      _addListeners();
       if (renetranceConcurrency && !MediaPath().isExampleFile) {
         var dataBuffer =
             (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
@@ -237,11 +267,12 @@ class PlayerState {
 
       print('startPlayer: $path');
       // await flutterSoundModule.setVolume(1.0);
-    } catch (err) {
+    } on Object catch (err) {
       print('error: $err');
     }
   }
 
+  /// stop the player.
   Future<void> stopPlayer() async {
     try {
       var result = await playerModule.stopPlayer();
@@ -253,19 +284,20 @@ class PlayerState {
         await _playerSubscription.cancel();
         _playerSubscription = null;
       }
-    } catch (err) {
+    } on Object catch (err) {
       print('error: $err');
     }
     if (renetranceConcurrency) {
       try {
         var result = await playerModule_2.stopPlayer();
         print('stopPlayer_2: $result');
-      } catch (err) {
+      } on Object catch (err) {
         print('error: $err');
       }
     }
   }
 
+  /// toggles between a paused and resumed state of play.
   void pauseResumePlayer() {
     if (playerModule.isPlaying) {
       playerModule.pausePlayer();
@@ -280,6 +312,7 @@ class PlayerState {
     }
   }
 
+  /// position the playback point
   void seekToPlayer(int milliSecs) async {
     var result = await playerModule.seekToPlayer(milliSecs);
     print('seekToPlayer: $result');
@@ -295,7 +328,7 @@ class PlayerState {
       var contents = await file.readAsBytes();
       print('The file is ${contents.length} bytes long.');
       return contents;
-    } catch (e) {
+    } on Object catch (e) {
       print(e);
       return null;
     }
