@@ -80,17 +80,17 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
     switch (call.method) {
       case 'audioPlayerFinishedPlaying':
         {
-           aTrackPlayer.audioPlayerFinished(call.arguments as Map<String, dynamic>);
+           aTrackPlayer.audioPlayerFinished(call.arguments as Map);
         }
         break;
       case 'skipForward':
         {
-          aTrackPlayer.skipForward(call.arguments as Map<String, dynamic>);
+          aTrackPlayer.skipForward(call.arguments as Map);
         }
         break;
       case 'skipBackward':
         {
-          aTrackPlayer.skipBackward(call.arguments as Map<String, dynamic>);
+          aTrackPlayer.skipBackward(call.arguments as Map);
         }
         break;
 
