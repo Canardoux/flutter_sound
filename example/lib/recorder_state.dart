@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 import 'active_codec.dart';
 import 'common.dart';
 import 'main.dart';
@@ -26,7 +28,13 @@ class RecorderState {
     return _self;
   }
 
-  RecorderState._internal();
+  RecorderState._internal() {
+    recorderModule = SoundRecorder();
+
+    if (renetranceConcurrency) {
+      recorderModule_2 = SoundRecorder();
+    }
+  }
 
   /// [true] if we are currently recording.
   bool get isRecording => recorderModule != null && recorderModule.isRecording;
@@ -73,7 +81,8 @@ class RecorderState {
   void startRecorder(BuildContext context) async {
     try {
       await PlayerState().stopPlayer();
-      var path = tempFile();
+
+      var path = await tempFile();
       await recorderModule.startRecorder(
         path: path,
         codec: ActiveCodec().codec,
@@ -95,7 +104,7 @@ class RecorderState {
           print('startRecorder error: $e');
           rethrow;
         }
-        var secondaryPath = tempFile();
+        var secondaryPath = await tempFile();
         await recorderModule_2.startRecorder(
           path: secondaryPath,
           codec: Codec.codecAac,
