@@ -68,3 +68,8 @@ List<String> assetSample = [
 bool fileExists(String path) {
   return File(path).existsSync();
 }
+
+/// checks if the given directory exists.
+bool directoryExists(String path) {
+  return Directory(path).existsSync();
+}
