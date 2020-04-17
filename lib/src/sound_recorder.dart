@@ -167,7 +167,7 @@ class SoundRecorder {
     _recordingToPath = path;
 
     /// the directory where we are recording to MUST exist.
-    if (!File(dirname(path)).existsSync()) {
+    if (!directoryExists(dirname(path))) {
       throw DirectoryNotFoundException(
           'The directory ${dirname(path)} must exists');
     }
