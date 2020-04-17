@@ -31,7 +31,7 @@ import 'codec.dart';
 
 import 'ios/ios_quality.dart';
 import 'plugins/base_plugin.dart';
-import 'plugins/flutter_recorder_plugin.dart';
+import 'plugins/sound_recorder_plugin.dart';
 import 'recording_disposition.dart';
 import 'recording_disposition_manager.dart';
 import 'util/codec_conversions.dart';

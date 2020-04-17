@@ -8,15 +8,15 @@ import '../sound_player.dart';
 import 'base_plugin.dart';
 
 ///
-class FlutterPlayerPlugin extends BasePluginInterface {
-  static FlutterPlayerPlugin _self;
+class SoundPlayerPlugin extends BasePlugin {
+  static SoundPlayerPlugin _self;
 
   /// Factory
-  factory FlutterPlayerPlugin() {
-    _self ??= FlutterPlayerPlugin._internal();
+  factory SoundPlayerPlugin() {
+    _self ??= SoundPlayerPlugin._internal();
     return _self;
   }
-  FlutterPlayerPlugin._internal() : super('com.dooboolab.flutter_sound_player');
+  SoundPlayerPlugin._internal() : super('com.dooboolab.flutter_sound_player');
 
   ///
   Future<dynamic> onMethodCallback(

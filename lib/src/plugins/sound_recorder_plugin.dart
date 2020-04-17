@@ -7,7 +7,7 @@ import 'base_plugin.dart';
 
 /// Provides communications with the platform
 /// specific plugin.
-class SoundRecorderPlugin extends BasePluginInterface {
+class SoundRecorderPlugin extends BasePlugin {
   static SoundRecorderPlugin _self;
 
   /// Factory

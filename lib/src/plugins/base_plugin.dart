@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 /// provides a set of common methods used by
 /// PluginInterfaces to talk to the underlying
 /// Platform specific plugin.
-abstract class BasePluginInterface {
+abstract class BasePlugin {
   final List<Proxy> _slots = [];
 
   ///
@@ -18,7 +18,7 @@ abstract class BasePluginInterface {
 
   /// Pass in the [_registeredName] which is the registered
   /// name of the plugin.
-  BasePluginInterface(this._registeredName) {
+  BasePlugin(this._registeredName) {
     channel = MethodChannel(_registeredName);
     channel.setMethodCallHandler(_onMethodCallback);
   }

@@ -26,7 +26,7 @@ import 'ios/ios_session_category.dart';
 import 'ios/ios_session_mode.dart';
 import 'playback_disposition.dart';
 import 'plugins/base_plugin.dart';
-import 'plugins/flutter_player_plugin.dart';
+import 'plugins/sound_player_plugin.dart';
 import 'track.dart';
 import 'util/codec_conversions.dart';
 import 'util/file_management.dart' as fm;
@@ -83,13 +83,12 @@ class SoundPlayer {
   /// Create a
   SoundPlayer() {
     _connector = SoundPlayerProxy(this);
-    FlutterPlayerPlugin().register(_connector);
+    SoundPlayerPlugin().register(_connector);
   }
 
   Future<dynamic> _invokeMethod(
       String methodName, Map<String, dynamic> args) async {
-    return await FlutterPlayerPlugin()
-        .invokeMethod(_connector, methodName, args);
+    return await SoundPlayerPlugin().invokeMethod(_connector, methodName, args);
   }
 
   /// internal method
@@ -118,7 +117,7 @@ class SoundPlayer {
       onSkipForward = null;
 
       await _invokeMethod('releaseMediaPlayer', <String, dynamic>{});
-      FlutterPlayerPlugin().release(_connector);
+      SoundPlayerPlugin().release(_connector);
     }
   }
 
