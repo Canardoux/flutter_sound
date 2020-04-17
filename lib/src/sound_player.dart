@@ -96,7 +96,7 @@ class SoundPlayer {
     if (!_isInited) {
       _isInited = true;
 
-      await _invokeMethod('_initializeMediaPlayer', <String, dynamic>{});
+      await _invokeMethod('initializeMediaPlayer', <String, dynamic>{});
 
       /// TODO I think this is unnecessary.
       onSkipBackward = null;
@@ -157,9 +157,8 @@ class SoundPlayer {
   /// [true] if the player is stopped.
   bool get isStopped => playerState == PlayerState.isStopped;
 
-  void _updateProgress(Map<String, dynamic> call) {
-    var arg = call['arg'] as String;
-    var result = jsonDecode(arg) as Map<String, dynamic>;
+  void _updateProgress(String jsonArgs) {
+    var result = jsonDecode(jsonArgs) as Map<String, dynamic>;
     _playerController?.add(PlaybackDisposition.fromJSON(result));
   }
 
@@ -326,7 +325,6 @@ class SoundPlayer {
     TonSkip onSkipForward,
     TonSkip onSkipBackward,
   }) async {
-    assert(_tempMediaFiles.isEmpty);
     await _initialize();
 
     if (!isStopped) {
@@ -474,8 +472,8 @@ class SoundPlayerProxy implements Proxy {
   SoundPlayerProxy(this._player);
 
   ///
-  void updateProgress(Map<String, dynamic> arguments) {
-    _player._updateProgress(arguments);
+  void updateProgress(String jsonArgs) {
+    _player._updateProgress(jsonArgs);
   }
 
   ///
