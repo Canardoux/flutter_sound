@@ -165,7 +165,7 @@ class SoundPlayer {
   /// internal method.
   /// Called by the Platform plug to notify us that
   /// audio has finished playing.
-  void audioPlayerFinished(PlaybackDisposition status) {
+  void _audioPlayerFinished(PlaybackDisposition status) {
     // if we have finished then position should be at the end.
     status.position = status.duration;
     _playerController?.add(status);
@@ -483,7 +483,7 @@ class SoundPlayerProxy implements Proxy {
 
   ///
   void audioPlayerFinished(PlaybackDisposition status) =>
-      _player.audioPlayerFinished(status);
+      _player._audioPlayerFinished(status);
 
   ///
   void pause() => _player._pause();
