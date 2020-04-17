@@ -24,7 +24,8 @@ class SoundPlayerPlugin extends BasePlugin {
     switch (call.method) {
       case "updateProgress":
         {
-          connector.updateProgress(call.arguments as Map<String, dynamic>);
+          var arguments = call.arguments['arg'] as String;
+          connector.updateProgress(arguments);
         }
         break;
 
