@@ -135,8 +135,8 @@ class _PlayerControlsState extends State<PlayerControls> {
         !MediaPath().exists(ActiveCodec().codec)) {
       canPlay = false;
       var error = SnackBar(
-          content: Text('Record a message first or select '
-              '"Remote Example File" from Media'));
+          content: Text("Record a message first or select "
+              "'Remote Example File' or 'Asset' from Media"));
       Scaffold.of(context).showSnackBar(error);
     }
 
