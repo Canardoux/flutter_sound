@@ -91,7 +91,7 @@ abstract class BasePlugin {
   int _findSlot(Proxy connector) {
     var slot = -1;
     for (var i = 0; i < _slots.length; ++i) {
-      if (_slots[i] == null) {
+      if (_slots[i] == connector) {
         slot = i;
         break;
       }
