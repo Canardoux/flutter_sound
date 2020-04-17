@@ -200,7 +200,7 @@ class SoundPlayer {
 
   /// Returns true if the specified decoder is supported
   ///  by flutter_sound on this platform
-  Future<bool> isDecoderSupported(Codec codec) async {
+  Future<bool> isSupported(Codec codec) async {
     bool result;
     await _initialize();
     // For decoding ogg/opus on ios, we need to support two steps :
@@ -223,6 +223,11 @@ class SoundPlayer {
   /// the caller is responsible for using correctly setActive
   ///    probably before startRecorder or startPlayer
   /// and stopPlayer and stopRecorder
+  /// 
+  /// TODO
+  /// Is this in the correct spot if it is only called once?
+  /// Should we have a configuration object that sets
+  /// up global options?
   Future<bool> iosSetCategory(
       IOSSessionCategory category, IOSSessionMode mode, int options) async {
     await _initialize();
@@ -332,7 +337,7 @@ class SoundPlayer {
     }
 
     // Check the current codec is supported on this platform
-    if (!await isDecoderSupported(codec)) {
+    if (!await isSupported(codec)) {
       throw PlayerInvalidStateException(
           'The selected codec is not supported on '
           'this platform.');

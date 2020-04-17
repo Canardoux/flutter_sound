@@ -130,7 +130,7 @@ class SoundRecorder {
 
   /// Returns true if the specified encoder is supported by
   /// flutter_sound on this platform
-  Future<bool> isEncoderSupported(Codec codec) async {
+  Future<bool> isSupported(Codec codec) async {
     await initialize();
     bool result;
     // For encoding ogg/opus on ios, we need to support two steps :
@@ -186,7 +186,7 @@ class SoundRecorder {
     }
 
     /// the codec must be supported.
-    if (!await isEncoderSupported(codec)) {
+    if (!await isSupported(codec)) {
       throw CodecNotSupportedException('Codec not supported.');
     }
 
