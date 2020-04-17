@@ -2,60 +2,35 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
-import '../flutter_sound_recorder.dart';
+import '../sound_recorder.dart';
+import 'base_plugin.dart';
 
 /// Provides communications with the platform
 /// specific plugin.
-class FlautoRecorderPlugin {
-  MethodChannel _channel;
+class SoundRecorderPlugin extends BasePluginInterface {
+  static SoundRecorderPlugin _self;
 
-  final List<RecorderPluginConnector> _slots = [];
-
-  /// ctor
-  FlautoRecorderPlugin() {
-    _channel = const MethodChannel('com.dooboolab.flutter_sound_recorder');
-    _channel.setMethodCallHandler(_channelMethodCallHandler);
+  /// Factory
+  factory SoundRecorderPlugin() {
+    _self ??= SoundRecorderPlugin._internal();
+    return _self;
   }
+  SoundRecorderPlugin._internal()
+      : super('com.dooboolab.flutter_sound_recorder');
 
-  /// Finds and allocates a communications slot.
-  int lookupEmptySlot(RecorderPluginConnector aRecorder) {
-    for (var i = 0; i < _slots.length; ++i) {
-      if (_slots[i] == null) {
-        _slots[i] = aRecorder;
-        return i;
-      }
-    }
-    _slots.add(aRecorder);
-    return _slots.length - 1;
-  }
-
-  /// frees up a communications slot allocated via a call
-  /// to [lookupEmptySlot].
-  void freeSlot(int slotNo) {
-    _slots[slotNo] = null;
-  }
-
-  MethodChannel _getChannel() => _channel;
-
-  /// Invokes a method on the platform specific plugin.
-  Future<dynamic> invokeMethod(String methodName, Map<String, dynamic> call) {
-    return _getChannel().invokeMethod<dynamic>(methodName, call);
-  }
-
-  Future<dynamic> _channelMethodCallHandler(MethodCall call) {
-    var slotNo = call.arguments['slotNo'] as int;
-    var aRecorder = _slots[slotNo];
+  Future<dynamic> onMethodCallback(
+      covariant SoundRecorderProxy connector, MethodCall call) {
     switch (call.method) {
       case "updateRecorderProgress":
         {
-          aRecorder.updateDurationDisposition(
+          connector.updateDurationDisposition(
               call.arguments as Map<dynamic, dynamic>);
         }
         break;
 
       case "updateDbPeakProgress":
         {
-          aRecorder
+          connector
               .updateDbPeakDispostion(call.arguments as Map<dynamic, dynamic>);
         }
         break;

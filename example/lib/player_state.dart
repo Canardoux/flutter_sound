@@ -15,15 +15,16 @@ class PlayerState {
   static final PlayerState _self = PlayerState._internal();
 
   bool _hushOthers = false;
+  bool _useTracks = false;
 
   StreamSubscription _playerSubscription;
   // StreamSubscription _playbackStateSubscription;
 
   /// the primary player
-  FlutterSoundPlayer playerModule;
+  SoundPlayer _playerModule;
 
   /// secondary player used to demo two audio streams playing.
-  FlutterSoundPlayer playerModule_2; // Used if REENTRANCE_CONCURENCY
+  SoundPlayer playerModule_2; // Used if REENTRANCE_CONCURENCY
 
   final StreamController<PlaybackDisposition> _playStatusController =
       StreamController<PlaybackDisposition>.broadcast();
@@ -38,6 +39,13 @@ class PlayerState {
   /// returns [true] if hushOthers (reduce other players volume)
   /// is enabled.
   bool get hushOthers => _hushOthers;
+
+  /// the primary player
+  SoundPlayer get playerModule => _playerModule;
+
+  /// Allows you to change the mode from using tracks
+  /// to not using tracks.
+  void useTracks({bool enabled}) => _useTracks = enabled;
 
   /// get the PlayStatus stream.
   Stream<PlaybackDisposition> get playStatusStream {
@@ -74,21 +82,14 @@ class PlayerState {
   /// true if the player is currently paused
   bool get isPaused => playerModule != null && playerModule.isPaused;
 
-  /// the player module. Used when switching between players
-  /// Tracked vs original
-  void reset(FlutterSoundPlayer module) async {
-    playerModule = module;
-    await module.initialize();
-  }
-
   /// initialise the player.
   void init() async {
-    playerModule = await FlutterSoundPlayer().initialize();
-    ActiveCodec().playerModule = playerModule;
+    _playerModule = SoundPlayer();
 
     if (renetranceConcurrency) {
-      playerModule_2 = await FlutterSoundPlayer().initialize();
+      playerModule_2 = SoundPlayer();
     }
+    ActiveCodec().playerModule = playerModule;
   }
 
   /// cancel all subscriptions.
@@ -181,7 +182,7 @@ class PlayerState {
       }
 
       // Check whether the user wants to use the audio player features
-      if (PlayerState().playerModule is TrackPlayer) {
+      if (_useTracks) {
         String albumArtUrl;
         String albumArtAsset;
         if (MediaPath().isExampleFile) {
@@ -194,18 +195,29 @@ class PlayerState {
           }
         }
 
-        final track = Track(
-          trackPath: audioFilePath,
-          dataBuffer: dataBuffer,
-          codec: ActiveCodec().codec,
-          trackTitle: "This is a record",
-          trackAuthor: "from flutter_sound",
-          albumArtUrl: albumArtUrl,
-          albumArtAsset: albumArtAsset,
-        );
+        Track track;
 
-        var f = playerModule as TrackPlayer;
-        path = await f.startPlayerFromTrack(
+        if (dataBuffer != null) {
+          track = Track.fromBuffer(
+            dataBuffer: dataBuffer,
+            codec: ActiveCodec().codec,
+            trackTitle: "This is a record",
+            trackAuthor: "from flutter_sound",
+            albumArtUrl: albumArtUrl,
+            albumArtAsset: albumArtAsset,
+          );
+        } else {
+          track = Track(
+            trackPath: audioFilePath,
+            codec: ActiveCodec().codec,
+            trackTitle: "This is a record",
+            trackAuthor: "from flutter_sound",
+            albumArtUrl: albumArtUrl,
+            albumArtAsset: albumArtAsset,
+          );
+        }
+
+        await playerModule.startPlayerFromTrack(
           track,
           /*canSkipForward:true, canSkipBackward:true,*/
           whenFinished: () {
@@ -225,22 +237,16 @@ class PlayerState {
         );
       } else {
         if (audioFilePath != null) {
-          path = await playerModule.startPlayer(audioFilePath,
+          await playerModule.startPlayer(audioFilePath,
               codec: ActiveCodec().codec, whenFinished: () {
-            print('Play finished');
             if (whenFinished != null) whenFinished();
           });
         } else if (dataBuffer != null) {
-          path = await playerModule.startPlayerFromBuffer(dataBuffer,
+          await playerModule.startPlayerFromBuffer(dataBuffer,
               codec: ActiveCodec().codec, whenFinished: () {
             print('Play finished');
             if (whenFinished != null) whenFinished();
           });
-        }
-
-        if (path == null) {
-          print('Error starting player');
-          return;
         }
       }
       if (renetranceConcurrency && !MediaPath().isExampleFile) {
@@ -264,8 +270,7 @@ class PlayerState {
   /// stop the player.
   Future<void> stopPlayer() async {
     try {
-      var result = await playerModule.stopPlayer();
-      print('stopPlayer: $result');
+      await playerModule.stopPlayer();
 
       /// signal
       _playStatusController.add(PlaybackDisposition.zero());
@@ -278,8 +283,7 @@ class PlayerState {
     }
     if (renetranceConcurrency) {
       try {
-        var result = await playerModule_2.stopPlayer();
-        print('stopPlayer_2: $result');
+        await playerModule_2.stopPlayer();
       } on Object catch (err) {
         print('error: $err');
       }
@@ -303,8 +307,7 @@ class PlayerState {
 
   /// position the playback point
   void seekToPlayer(Duration offset) async {
-    var result = await playerModule.seekToPlayer(offset);
-    print('seekToPlayer: $result');
+    await playerModule.seekToPlayer(offset);
   }
 
   // In this simple example, we just load a file in memory.

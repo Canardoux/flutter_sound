@@ -20,21 +20,22 @@ import 'dart:io';
 import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
+
 import 'package:path/path.dart';
-import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:uuid/uuid.dart';
 
 import 'android/android_audio_source.dart';
 import 'android/android_encoder.dart';
 import 'android/android_output_format.dart';
 import 'codec.dart';
-import 'flutter_sound_helper.dart';
 
 import 'ios/ios_quality.dart';
+import 'plugins/base_plugin.dart';
 import 'plugins/flutter_recorder_plugin.dart';
 import 'recording_disposition.dart';
 import 'recording_disposition_manager.dart';
+import 'util/codec_conversions.dart';
+import 'util/file_management.dart';
 
 enum _RecorderState {
   isStopped,
@@ -42,16 +43,13 @@ enum _RecorderState {
   isRecording,
 }
 
-FlautoRecorderPlugin _flautoRecorderPlugin; // Singleton, lazy initialized
-
 /// Provide an API for recording audio.
-class FlutterSoundRecorder {
+class SoundRecorder {
   bool _isInited = false;
   _RecorderState _recorderState = _RecorderState.isStopped;
 
   RecordingDispositionManager _dispositionManager;
-
-  int _slotNo;
+  SoundRecorderProxy _connector;
 
 // Set by startRecorder when the user wants to record an ogg/opus
   bool _isOggOpus = false;
@@ -73,8 +71,10 @@ class FlutterSoundRecorder {
   /// the most recent pause commenced.
   DateTime _pauseStarted;
 
-  ///
-  int get slotNo => _slotNo;
+  /// Create a [SoundRecorder] to record audio.
+  SoundRecorder() {
+    _connector = SoundRecorderProxy(this);
+  }
 
   /// returns true if we are recording.
   bool get isRecording => (_recorderState ==
@@ -88,13 +88,7 @@ class FlutterSoundRecorder {
   bool get isPaused => (_recorderState == _RecorderState.isPaused);
 
   ///
-  FlautoRecorderPlugin getPlugin() => _flautoRecorderPlugin;
-
-  ///
-  Future<dynamic> invokeMethod(String methodName, Map<String, dynamic> call) {
-    call['slotNo'] = slotNo;
-    return getPlugin().invokeMethod(methodName, call);
-  }
+  SoundRecorderPlugin getPlugin() => SoundRecorderPlugin();
 
   /// Returns a stream of [RecordingDisposition] which
   /// provides live updates as the recording proceeds.
@@ -108,16 +102,17 @@ class FlutterSoundRecorder {
     return _dispositionManager.stream(interval: interval);
   }
 
+  Future<dynamic> _invokeMethod(String methodName, Map<String, dynamic> args) {
+    return getPlugin().invokeMethod(_connector, methodName, args);
+  }
+
   /// internal method.
-  Future<FlutterSoundRecorder> initialize() async {
+  Future<SoundRecorder> initialize() async {
     if (!_isInited) {
       _isInited = true;
-      _dispositionManager = RecordingDispositionManager(this);
-      if (_flautoRecorderPlugin == null) {
-        _flautoRecorderPlugin = FlautoRecorderPlugin();
-      } // The lazy singleton
-      _slotNo = getPlugin().lookupEmptySlot(RecorderPluginConnector(this));
-      await invokeMethod('initializeFlautoRecorder', <String, dynamic>{});
+      _dispositionManager = RecordingDispositionManager(_connector);
+      getPlugin().register(_connector);
+      await _invokeMethod('initializeFlautoRecorder', <String, dynamic>{});
     }
     return this;
   }
@@ -128,9 +123,8 @@ class FlutterSoundRecorder {
     if (_isInited) {
       _isInited = false;
       await stopRecorder();
-      await invokeMethod('releaseFlautoRecorder', <String, dynamic>{});
-      getPlugin().freeSlot(slotNo);
-      _slotNo = null;
+      await _invokeMethod('releaseFlautoRecorder', <String, dynamic>{});
+      getPlugin().release(_connector);
     }
   }
 
@@ -142,27 +136,14 @@ class FlutterSoundRecorder {
     // For encoding ogg/opus on ios, we need to support two steps :
     // - encode CAF/OPPUS (with native Apple AVFoundation)
     // - remux CAF file format to OPUS file format (with ffmpeg)
-
     if ((codec == Codec.codecOpus) && (Platform.isIOS)) {
-      //if (!await isFFmpegSupported( ))
-      //result = false;
-      //else
-      result = await invokeMethod('isEncoderSupported',
-          <String, dynamic>{'codec': Codec.codecCafOpus.index}) as bool;
-    } else {
-      result = await invokeMethod(
-              'isEncoderSupported', <String, dynamic>{'codec': codec.index})
-          as bool;
+      codec = Codec.codecCafOpus;
     }
-    return result;
-  }
 
-  /// Return the file extension for the given path.
-  /// path can be null. We return null in this case.
-  String fileExtension(String path) {
-    if (path == null) return null;
-    var r = p.extension(path);
-    return r;
+    result = await _invokeMethod(
+        'isEncoderSupported', <String, dynamic>{'codec': codec.index}) as bool;
+
+    return result;
   }
 
   /// Starts the recorder, recording audio to the passed in [path]
@@ -238,9 +219,8 @@ class FlutterSoundRecorder {
         'iosQuality': iosQuality?.value
       };
 
-      var f = File(_recordingToPath);
-      if (f.existsSync()) f.deleteSync();
-      await invokeMethod('startRecorder', param) as String;
+      if (exists(_recordingToPath)) delete(_recordingToPath);
+      await _invokeMethod('startRecorder', param) as String;
       _recorderState = _RecorderState.isRecording;
     } on Object catch (err) {
       throw Exception(err);
@@ -254,33 +234,16 @@ class FlutterSoundRecorder {
   /// for some codecs which aren't natively support. Dependindig on the
   /// size of the file this could take a few moments to a few minutes.
   Future<void> stopRecorder() async {
-    await invokeMethod('stopRecorder', <String, dynamic>{}) as String;
+    await _invokeMethod('stopRecorder', <String, dynamic>{}) as String;
 
     _recorderState = _RecorderState.isStopped;
 
     _dispositionManager.release();
 
     if (_isOggOpus) {
-      /// we have to remux the file to get it into the required codec.
-      // delete the target if it exists
-      // (ffmpeg gives an error if the output file already exists)
-      var f = File(_recordingToOriginalPath);
-      if (f.existsSync()) await f.deleteSync();
-      // The following ffmpeg instruction re-encode the Apple CAF to OPUS.
-      // Unfortunately we cannot just remix the OPUS data,
-      // because Apple does not set the "extradata" in its private OPUS format.
-      // It will be good if we can improve this...
-      var rc = await FlutterSoundHelper().executeFFmpegWithArguments([
-        '-loglevel',
-        'error',
-        '-y',
-        '-i',
-        _recordingToPath,
-        '-c:a',
-        'libopus',
-        _recordingToOriginalPath,
-      ]); // remux CAF to OGG
-      if (rc != 0) return null;
+      CodecConversions.cafOpusToOpus(
+          _recordingToPath, _recordingToOriginalPath);
+
       return _recordingToOriginalPath;
     }
   }
@@ -294,7 +257,7 @@ class FlutterSoundRecorder {
           "You cannot pause recording when the recorder is not running.");
     }
 
-    await invokeMethod('pauseRecorder', <String, dynamic>{}) as String;
+    await _invokeMethod('pauseRecorder', <String, dynamic>{}) as String;
     _pauseStarted = DateTime.now();
     _recorderState = _RecorderState.isPaused;
   }
@@ -310,13 +273,43 @@ class FlutterSoundRecorder {
     _timePaused += (DateTime.now().difference(_pauseStarted));
 
     try {
-      await invokeMethod('resumeRecorder', <String, dynamic>{}) as bool;
+      await _invokeMethod('resumeRecorder', <String, dynamic>{}) as bool;
     } on Object catch (e) {
       print("Exception throw trying to resume the recorder $e");
       await stopRecorder();
       rethrow;
     }
     _recorderState = _RecorderState.isRecording;
+  }
+
+  /// Sets the frequency at which duration updates are sent to
+  /// duration listeners.
+  /// The default is every 10 milliseconds.
+  Future<String> _setSubscriptionDuration(Duration interval) async {
+    await initialize();
+    var r = await _invokeMethod('setSubscriptionDuration', <String, dynamic>{
+      'sec': interval.inSeconds.toDouble(),
+    }) as String;
+    return r;
+  }
+
+  /// Defines the interval at which the peak level should be updated.
+  /// Default is 0.8 seconds
+  Future<String> _setDbPeakLevelUpdate(Duration interval) async {
+    await initialize();
+    var r = await _invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
+      'intervalInSecs': interval.inSeconds.toDouble(),
+    }) as String;
+    return r;
+  }
+
+  /// Enables or disables processing the Peak level in db's. Default is disabled
+  Future<String> _setDbLevelEnabled(bool enabled) async {
+    await initialize();
+    var r = await _invokeMethod('setDbLevelEnabled', <String, dynamic>{
+      'enabled': enabled,
+    }) as String;
+    return r;
   }
 
   void _updateDurationDisposition(Map arguments) {
@@ -326,31 +319,15 @@ class FlutterSoundRecorder {
   void _updateDbPeakDispostion(Map arguments) {
     _dispositionManager.updateDbPeakDispostion(arguments);
   }
-
-  /// creates an empty temporary file in the system temp directory.
-  /// You are responsible for deleting the file once done.
-  /// The temp file name will be <uuid>.tmp
-  /// unless you provide a [suffix] in which
-  /// case the file name will be <uuid>.<suffix>
-
-  static String tempFile({String suffix}) {
-    suffix ??= 'tmp';
-
-    if (!suffix.startsWith('.')) {
-      suffix = '.$suffix';
-    }
-    var uuid = Uuid();
-    return '${join(Directory.systemTemp.path, uuid.v4())}$suffix';
-  }
 }
 
 /// Class exists to help us reduce the public interface
 /// that we expose to users.
-class RecorderPluginConnector {
-  final FlutterSoundRecorder _recorder;
+class SoundRecorderProxy extends Proxy {
+  final SoundRecorder _recorder;
 
   ///
-  RecorderPluginConnector(this._recorder);
+  SoundRecorderProxy(this._recorder);
 
   ///
   void updateDurationDisposition(Map arguments) {
@@ -360,6 +337,21 @@ class RecorderPluginConnector {
   ///
   void updateDbPeakDispostion(Map arguments) {
     _recorder._updateDbPeakDispostion(arguments);
+  }
+
+  ///
+  void setSubscriptionDuration(Duration interval) {
+    _recorder._setSubscriptionDuration(interval);
+  }
+
+  ///
+  void setDbLevelEnabled({bool enabled = true}) {
+    _recorder._setDbLevelEnabled(enabled);
+  }
+
+  ///
+  void setDbPeakLevelUpdate(Duration interval) {
+    _recorder._setDbPeakLevelUpdate(interval);
   }
 }
 

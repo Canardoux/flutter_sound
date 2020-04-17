@@ -9,10 +9,10 @@ class ActiveCodec {
   bool _decoderSupported = false;
 
   ///
-  FlutterSoundPlayer playerModule;
+  SoundPlayer playerModule;
 
   ///
-  FlutterSoundRecorder recorderModule;
+  SoundRecorder recorderModule;
 
   /// Factory to access the active codec.
   factory ActiveCodec() {

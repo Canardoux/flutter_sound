@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'flutter_sound_recorder.dart';
 import 'recording_disposition.dart';
+import 'sound_recorder.dart';
 
 /// An internal class which manages the RecordingDisposition stream.
 class RecordingDispositionManager {
@@ -22,10 +22,10 @@ class RecordingDispositionManager {
   /// Defaults to [10ms].
   Duration interval = Duration(milliseconds: 10);
 
-  final FlutterSoundRecorder _recorder;
+  final SoundRecorderProxy _recorderProxy;
 
   /// ctor
-  RecordingDispositionManager(this._recorder);
+  RecordingDispositionManager(this._recorderProxy);
 
   /// Returns a stream of RecordingDispositions
   /// The stream is a broad cast stream and can be called
@@ -39,11 +39,9 @@ class RecordingDispositionManager {
     this.interval = interval;
 
     _dispositionController ??= StreamController.broadcast();
-    _recorder.initialize().then<void>((_) {
-      _setSubscriptionDuration(interval);
-      _setDbLevelEnabled(true);
-      _setDbPeakLevelUpdate(interval);
-    });
+    _recorderProxy.setSubscriptionDuration(interval);
+    _recorderProxy.setDbLevelEnabled(enabled: true);
+    _recorderProxy.setDbPeakLevelUpdate(interval);
     return _dispositionController.stream;
   }
 
@@ -80,38 +78,6 @@ class RecordingDispositionManager {
             _lastDispositionDuration, _lastDispositionDecibels));
       }
     }
-  }
-
-  /// Sets the frequency at which duration updates are sent to
-  /// duration listeners.
-  /// The default is every 10 milliseconds.
-  Future<String> _setSubscriptionDuration(Duration interval) async {
-    await _recorder.initialize();
-    var r = await _recorder
-        .invokeMethod('setSubscriptionDuration', <String, dynamic>{
-      'sec': interval.inSeconds.toDouble(),
-    }) as String;
-    return r;
-  }
-
-  /// Defines the interval at which the peak level should be updated.
-  /// Default is 0.8 seconds
-  Future<String> _setDbPeakLevelUpdate(Duration interval) async {
-    await _recorder.initialize();
-    var r =
-        await _recorder.invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
-      'intervalInSecs': interval.inSeconds.toDouble(),
-    }) as String;
-    return r;
-  }
-
-  /// Enables or disables processing the Peak level in db's. Default is disabled
-  Future<String> _setDbLevelEnabled(bool enabled) async {
-    await _recorder.initialize();
-    var r = await _recorder.invokeMethod('setDbLevelEnabled', <String, dynamic>{
-      'enabled': enabled,
-    }) as String;
-    return r;
   }
 
   /// Call this method once you have finished with the recording

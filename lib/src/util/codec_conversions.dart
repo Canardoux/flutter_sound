@@ -1,0 +1,82 @@
+import 'dart:async';
+
+import '../ffmpeg_util.dart';
+
+import 'file_management.dart';
+
+/// Provides some codec conversions.
+class CodecConversions {
+  ///
+  /// Takes the file located at [path] which contains
+  /// opus encoded audio file and remux's it
+  /// into a Apple CAF envelope so we can play
+  /// an Opus file on IOS.
+  static Future<String> opusToCafOpus(String path) async {
+    var remuxPath = tempFile(suffix: '.caf');
+    if (exists(remuxPath)) {
+      // delete the old temporary file if it exists
+      delete(remuxPath);
+    }
+    // The following ffmpeg instruction
+    // does not decode and re-encode the file.
+    // It just remux the OPUS data into an Apple CAF envelope.
+    // It is probably very fast
+    // and the user will not notice any delay,
+    // even with a very large data.
+
+    // This is the price to pay for the Apple stupidity.
+    var rc = await FFMpegUtil().executeFFmpegWithArguments([
+      '-loglevel',
+      'error',
+      '-y',
+      '-i',
+      path,
+      '-c:a',
+      'copy',
+      remuxPath,
+    ]); // remux OGG to CAF
+
+    if (rc != 0) {
+      throw RemuxFailedException(
+          'Conversion.opusToCafOpus of $remuxPath failed. Returned $rc');
+    }
+    return remuxPath;
+  }
+
+  /// Converts a Caf Opus encoded file to Opus (ogg).
+  static Future cafOpusToOpus(String fromPath, String toPath) async {
+    /// we have to remux the file to get it into the required codec.
+    // delete the target if it exists
+    // (ffmpeg gives an error if the output file already exists)
+    if (exists(toPath)) delete(toPath);
+    // The following ffmpeg instruction re-encode the Apple CAF to OPUS.
+    // Unfortunately we cannot just remix the OPUS data,
+    // because Apple does not set the "extradata" in its private OPUS format.
+    // It will be good if we can improve this...
+    var rc = await FFMpegUtil().executeFFmpegWithArguments([
+      '-loglevel',
+      'error',
+      '-y',
+      '-i',
+      fromPath,
+      '-c:a',
+      'libopus',
+      toPath,
+    ]); // remux CAF to OGG
+
+    if (rc != 0) {
+      throw RemuxFailedException(
+          'Conversion.cafOpusToOpus of $fromPath failed. Returned $rc');
+    }
+  }
+}
+
+/// Throw if remux a file fails.
+class RemuxFailedException implements Exception {
+  final String _message;
+
+  ///
+  RemuxFailedException(this._message);
+
+  String toString() => _message;
+}

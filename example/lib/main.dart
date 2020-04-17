@@ -61,13 +61,9 @@ class _MyAppState extends State<MyApp> {
   final bool _isTrackPlayer = false;
 
   /// Allows us to switch the player module
-  Future<void> _resetModules(FlutterSoundPlayer module) async {
-    PlayerState().reset(module);
+  Future<void> _switchModes(bool useTracks) async {
+    PlayerState().useTracks(enabled: useTracks);
     RecorderState().reset();
-
-    await initializeDateFormatting();
-
-    await PlayerState().setHush(hushOthers: false);
   }
 
   Future<bool> init() async {
@@ -75,7 +71,7 @@ class _MyAppState extends State<MyApp> {
       await PlayerState().init();
       await RecorderState().init();
       await ActiveCodec().setCodec(Codec.codecAac);
-      await _resetModules(PlayerState().playerModule);
+      await initializeDateFormatting();
 
       initialised = true;
     }
@@ -145,12 +141,7 @@ class _MyAppState extends State<MyApp> {
   void switchPlayer({bool allowTracks}) async {
     try {
       PlayerState().release();
-
-      if (allowTracks) {
-        await _resetModules(TrackPlayer());
-      } else {
-        await _resetModules(FlutterSoundPlayer());
-      }
+      await _switchModes(allowTracks);
       setState(() {});
     } on Object catch (err) {
       print(err);

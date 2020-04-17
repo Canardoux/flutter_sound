@@ -29,8 +29,7 @@ Future<double> getDuration(Codec codec) async {
   switch (MediaPath().media) {
     case MediaStorage.file:
     case MediaStorage.buffer:
-      var d =
-          await FlutterSoundHelper().duration(MediaPath().pathForCodec(codec));
+      var d = await FFMpegUtil().duration(MediaPath().pathForCodec(codec));
       duration = Future.value(d != null ? d / 1000.0 : null);
       break;
     case MediaStorage.asset:

@@ -8,17 +8,18 @@ import 'common.dart';
 import 'main.dart';
 import 'media_path.dart';
 import 'player_state.dart';
+import 'util/temp_file.dart';
 
 /// Tracks the Recoder UI's state.
 class RecorderState {
   static final RecorderState _self = RecorderState._internal();
 
   /// primary recording moduel
-  FlutterSoundRecorder recorderModule;
+  SoundRecorder recorderModule;
 
   /// secondary recording modue used to show that two recordings can occur
   /// concurrently.
-  FlutterSoundRecorder recorderModule_2; // Used if REENTRANCE_CONCURENCY
+  SoundRecorder recorderModule_2; // Used if REENTRANCE_CONCURENCY
 
   /// Factory ctor
   factory RecorderState() {
@@ -72,7 +73,7 @@ class RecorderState {
   void startRecorder(BuildContext context) async {
     try {
       await PlayerState().stopPlayer();
-      var path = FlutterSoundRecorder.tempFile();
+      var path = tempFile();
       await recorderModule.startRecorder(
         path: path,
         codec: ActiveCodec().codec,
@@ -94,7 +95,7 @@ class RecorderState {
           print('startRecorder error: $e');
           rethrow;
         }
-        var secondaryPath = FlutterSoundRecorder.tempFile();
+        var secondaryPath = tempFile();
         await recorderModule_2.startRecorder(
           path: secondaryPath,
           codec: Codec.codecAac,

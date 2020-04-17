@@ -1,25 +1,21 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter/foundation.dart';
+
 import 'codec.dart';
-import 'flutter_sound_helper.dart';
-import 'flutter_sound_player.dart';
+import 'util/temp_media_file.dart';
 
 /// The track to play in the audio player
 class Track {
+  /// The path that points to the track audio file
+  String _trackPath;
+
   /// The title of this track
   final String trackTitle;
 
-  /// The buffer containing the audio file to play
-  final Uint8List dataBuffer;
-
   /// The name of the author of this track
   final String trackAuthor;
-
-  /// The path that points to the track audio file
-  String trackPath;
 
   /// The URL that points to the album art of the track
   final String albumArtUrl;
@@ -34,31 +30,70 @@ class Track {
   /// it will be set to [Codec.DEFAULT].
   Codec codec;
 
+  Uint8List _dataBuffer;
+
+  /// Returns [true] if the Track originated from a
+  /// in memory buffer.
+  bool get isBuffer => _dataBuffer != null || _decantedBuffer != null;
+
+  /// If we are passed a buffer we write
+  /// the buffer to a temporary file.
+  /// We only decant the file when someone tries to access
+  /// the [trackedPath].
+  TempMediaFile _decantedBuffer;
+
   ///
   Track({
-    this.trackPath,
-    this.dataBuffer,
+    @required String trackPath,
     this.trackTitle,
     this.trackAuthor,
     this.albumArtUrl,
     this.albumArtAsset,
     this.codec = Codec.defaultCodec,
-  }) {
+  }) : _trackPath = trackPath {
     codec = codec == null ? Codec.defaultCodec : codec;
-    assert(trackPath != null || dataBuffer != null,
-        'You should provide a path or a buffer for the audio content to play.');
-    assert(
-        (trackPath != null && dataBuffer == null) ||
-            (trackPath == null && dataBuffer != null),
-        'You cannot provide both a path and a buffer.');
+    assert(trackPath != null,
+        'You should provide a path for the audio content to play.');
+  }
+
+  ///
+  Track.fromBuffer({
+    @required Uint8List dataBuffer,
+    this.trackTitle,
+    this.trackAuthor,
+    this.albumArtUrl,
+    this.albumArtAsset,
+    this.codec = Codec.defaultCodec,
+  }) : _dataBuffer = dataBuffer {
+    codec = codec == null ? Codec.defaultCodec : codec;
+    assert(dataBuffer != null,
+        'You should provide a dataBuffer for the audio content to play.');
+  }
+
+  /// The path that points to the tracked audio file
+  String get trackPath {
+    if (_dataBuffer != null) {
+      _decantedBuffer = TempMediaFile.fromBuffer(_dataBuffer);
+      _trackPath = _decantedBuffer.path;
+      _dataBuffer = null;
+    }
+    return _trackPath;
+  }
+
+  /// Call this method to allow the Track to
+  /// clean up any resources that it used.
+  /// This is normally dealt with if you pass the track to
+  /// on of the SoundPlayer.startXX methods.
+  ///
+  void release() {
+    _decantedBuffer?.delete();
   }
 
   /// Convert this object to a [Map] containing the properties of this object
   /// as values.
   Future<Map<String, dynamic>> toMap() async {
     final map = {
-      "path": trackPath,
-      "dataBuffer": dataBuffer,
+      "path": _trackPath,
       "title": trackTitle,
       "author": trackAuthor,
       "albumArtUrl": albumArtUrl,
@@ -67,49 +102,5 @@ class Track {
     };
 
     return map;
-  }
-
-  /// If we want to play OGG/OPUS on iOS, we re-mux the OGG file format to a
-  /// specific Apple CAF envelope before starting the player.
-  /// We use FFmpeg for that task.
-  Future<void> adaptOggToIos() async {
-    if ((Platform.isIOS) &&
-        ((codec == Codec.codecOpus) || (fileExtension(trackPath) == '.opus'))) {
-      var tempDir = await getTemporaryDirectory();
-      var fout = await File('${tempDir.path}/flutter_sound-tmp.caf');
-      if (fout.existsSync()) {
-        await fout.delete();
-      }
-
-      int rc;
-      var inputFileName = trackPath;
-      // The following ffmpeg instruction does not decode and re-encode
-      // the file.
-      // It just remux the OPUS data into an Apple CAF envelope.
-      // It is probably very fast and the user will not notice any delay,
-      // even with a very large data.
-      // This is the price to pay for the Apple stupidity.
-      if (dataBuffer != null) {
-        // Write the user buffer into the temporary file
-        inputFileName = '${tempDir.path}/flutter_sound-tmp.opus';
-        var fin = await File(inputFileName);
-        fin.writeAsBytesSync(dataBuffer);
-      }
-      rc = await FlutterSoundHelper().executeFFmpegWithArguments([
-        '-y',
-        '-loglevel',
-        'error',
-        '-i',
-        inputFileName,
-        '-c:a',
-        'copy',
-        fout.path,
-      ]); // remux OGG to CAF
-      if (rc != 0) {
-        throw 'FFmpeg exited with code $rc';
-      }
-      // Now we can play Apple CAF/OPUS
-      trackPath = fout.path;
-    }
   }
 }

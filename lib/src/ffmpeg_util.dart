@@ -20,19 +20,19 @@ import 'dart:core';
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 /// Utility class for Flutter Sound.
-class FlutterSoundHelper {
-  static FlutterSoundHelper _self;
+class FFMpegUtil {
+  static FFMpegUtil _self;
 
   FlutterFFmpeg _flutterFFmpeg;
   FlutterFFmpegConfig _flutterFFmpegConfig;
   FlutterFFprobe _flutterFFprobe;
 
   /// Factory
-  factory FlutterSoundHelper() {
-    _self ??= FlutterSoundHelper._internal();
+  factory FFMpegUtil() {
+    _self ??= FFMpegUtil._internal();
     return _self;
   }
-  FlutterSoundHelper._internal();
+  FFMpegUtil._internal();
 
   /// We use here our own ffmpeg "execute" procedure instead
   /// of the one provided by the flutter_ffmpeg plugin,

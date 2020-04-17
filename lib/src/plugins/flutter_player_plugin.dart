@@ -2,66 +2,29 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-
-import '../flutter_sound_player.dart';
 import '../playback_disposition.dart';
+import '../sound_player.dart';
+
 import 'base_plugin.dart';
 
 ///
-class FlautoPlayerPlugin extends BasePlugin {
-  static FlautoPlayerPlugin _self;
+class FlutterPlayerPlugin extends BasePluginInterface {
+  static FlutterPlayerPlugin _self;
 
- 
   /// Factory
-  factory FlautoPlayerPlugin() {
-    _self ??= FlautoPlayerPlugin._internal();
+  factory FlutterPlayerPlugin() {
+    _self ??= FlutterPlayerPlugin._internal();
     return _self;
   }
-  FlautoPlayerPlugin._internal()
-  : super ('com.dooboolab.flutter_sound_player') {
-    setCallback();
-  }
+  FlutterPlayerPlugin._internal() : super('com.dooboolab.flutter_sound_player');
 
   ///
-  void setCallback() {
-    channel = const MethodChannel('com.dooboolab.flutter_sound_player');
-    channel.setMethodCallHandler(channelMethodCallHandler);
-  }
-
-  ///
-  int lookupEmptySlot(PlayerPluginConnector aPlayer) {
-    for (var i = 0; i < slots.length; ++i) {
-      if (slots[i] == null) {
-        slots[i] = aPlayer;
-        return i;
-      }
-    }
-    slots.add(aPlayer);
-    return slots.length - 1;
-  }
-
-  ///
-  void freeSlot(int slotNo) {
-    slots[slotNo] = null;
-  }
-
-  ///
-  MethodChannel getChannel() => channel;
-
-  ///
-  Future<dynamic> invokeMethod(String methodName, Map<String, dynamic> call) {
-    return getChannel().invokeMethod<dynamic>(methodName, call);
-  }
-
-  ///
-  Future<dynamic> channelMethodCallHandler(MethodCall call) {
-    var slotNo = call.arguments['slotNo'] as int;
-    var aPlayer = slots[slotNo];
-
+  Future<dynamic> onMethodCallback(
+      covariant SoundPlayerProxy connector, MethodCall call) {
     switch (call.method) {
       case "updateProgress":
         {
-          aPlayer.updateProgress(call.arguments as Map);
+          connector.updateProgress(call.arguments as Map<String, dynamic>);
         }
         break;
 
@@ -71,19 +34,19 @@ class FlautoPlayerPlugin extends BasePlugin {
           var result = jsonDecode(args) as Map<String, dynamic>;
           var status = PlaybackDisposition.fromJSON(result);
 
-          aPlayer.audioPlayerFinished(status);
+          connector.audioPlayerFinished(status);
         }
         break;
 
       case 'pause':
         {
-          aPlayer.pause(call.arguments as Map);
+          connector.pause();
         }
         break;
 
       case 'resume':
         {
-          aPlayer.resume(call.arguments as Map);
+          connector.resume();
         }
         break;
 
