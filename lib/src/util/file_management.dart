@@ -30,6 +30,11 @@ bool exists(String path) {
   return fout.existsSync();
 }
 
+/// Checks if the given path exists.
+bool directoryExists(String path) {
+  return Directory(path).existsSync();
+}
+
 /// Delete the given path.
 void delete(String path) {
   var fout = File(path);
