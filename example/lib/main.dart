@@ -70,6 +70,8 @@ class _MyAppState extends State<MyApp> {
     if (!initialised) {
       await PlayerState().init();
       await RecorderState().init();
+      ActiveCodec().playerModule = PlayerState().playerModule;
+      ActiveCodec().recorderModule = RecorderState().recorderModule;
       await ActiveCodec().setCodec(Codec.codecAac);
       await initializeDateFormatting();
 
