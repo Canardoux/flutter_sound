@@ -41,13 +41,13 @@ class SoundPlayerPlugin extends BasePlugin {
 
       case 'pause':
         {
-          connector.pause();
+          connector.onPaused();
         }
         break;
 
       case 'resume':
         {
-          connector.resume();
+          connector.onResume();
         }
         break;
 

@@ -189,12 +189,12 @@ class SoundPlayer {
   }
 
   /// handles a pause coming up from the player
-  void _pause() {
+  void _onPaused() {
     if (whenPaused != null) whenPaused(true);
   }
 
   /// handles a resume coming up from the player
-  void _resume() {
+  void _onResumed() {
     if (whenPaused != null) whenPaused(false);
   }
 
@@ -223,7 +223,7 @@ class SoundPlayer {
   /// the caller is responsible for using correctly setActive
   ///    probably before startRecorder or startPlayer
   /// and stopPlayer and stopRecorder
-  /// 
+  ///
   /// TODO
   /// Is this in the correct spot if it is only called once?
   /// Should we have a configuration object that sets
@@ -250,6 +250,11 @@ class SoundPlayer {
   ///  for using correctly setActive
   ///    probably before startRecorder or startPlayer
   /// and stopPlayer and stopRecorder
+  ///
+  /// TODO
+  /// Is this in the correct spot if it is only called once?
+  /// Should we have a configuration object that sets
+  /// up global options?
   Future<bool> androidAudioFocusRequest(int focusGain) async {
     await _initialize();
     if (!Platform.isAndroid) return false;
@@ -260,6 +265,10 @@ class SoundPlayer {
   }
 
   ///  The caller can manage his audio focus with this function
+  /// TODO
+  /// Is this in the correct spot if it is only called once?
+  /// Should we have a configuration object that sets
+  /// up global options?
   Future<bool> setActive({bool enabled}) async {
     await _initialize();
     var r =
@@ -269,7 +278,9 @@ class SoundPlayer {
     return r;
   }
 
-  ///
+  /// TODO does this need to be exposed?
+  /// The simple action of stopping the playback may be sufficient
+  /// Given the user has to call stop
   void closeDispositionStream() {
     if (_playerController != null) {
       _playerController
@@ -485,11 +496,11 @@ class SoundPlayerProxy implements Proxy {
   void audioPlayerFinished(PlaybackDisposition status) =>
       _player._audioPlayerFinished(status);
 
-  ///
-  void pause() => _player._pause();
+  /// The OS has sent us a signal that the audio has been paused.
+  void onPaused() => _player._onPaused();
 
-  ///
-  void resume() => _player._resume();
+  /// The OS has sent us a signal that the audio has been resumed.
+  void onResume() => _player._onResumed();
 }
 
 /// The player was in an unexpected state when you tried
