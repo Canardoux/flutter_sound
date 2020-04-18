@@ -18,21 +18,6 @@ import 'slider_position.dart';
 // import 'audio_media.dart';
 // import 'local_context.dart';
 
-/// Describes the state of the playbar.
-enum PlayState {
-  /// stopped
-  stopped,
-
-  ///
-  playing,
-
-  ///
-  paused,
-
-  ///
-  disabled
-}
-
 typedef TonLoad = Future<SoundPlayer> Function();
 
 /// A HTML 5 style audio play bar.
@@ -48,19 +33,22 @@ class PlayBar extends StatefulWidget {
 
   final TonLoad _onLoad;
   final SoundPlayer _player;
+  final bool _showTitle;
 
   /// [PlayBar.fromLoader] allows you to dynamically provide
   /// a [SoundPlayer] when the user clicks the play
   /// button.
   /// You can cancel the play action by returning
   /// null when _onLoad is called.
-  PlayBar.fromLoader(TonLoad onLoad)
+  PlayBar.fromLoader(TonLoad onLoad, {bool showTitle = false})
       : _onLoad = onLoad,
+        _showTitle = showTitle,
         _player = null;
 
   /// Constructs a Playbar with a SoundPlayer
-  PlayBar.fromPlayer(SoundPlayer player)
+  PlayBar.fromPlayer(SoundPlayer player, {bool showTitle = false})
       : _player = player,
+        _showTitle = showTitle,
         _onLoad = null;
 
   @override
@@ -160,8 +148,10 @@ class _PlayBarState extends State<PlayBar> {
         decoration: BoxDecoration(
             color: Colors.grey,
             borderRadius: BorderRadius.circular(PlayBar._barHeight / 2)),
-        child: Row(
-            children: [_buildPlayButton(), _buildDuration(), _buildSlider()]));
+        child: Column(children: [
+          Row(children: [_buildPlayButton(), _buildDuration(), _buildSlider()]),
+          if (widget._showTitle) _buildTitle()
+        ]));
   }
 
   /// Returns the players current state.
@@ -269,7 +259,7 @@ class _PlayBarState extends State<PlayBar> {
 
   /// internal start method.
   void _start() async {
-    _soundPlayer.seekTo(sliderPosition.position);
+    // _soundPlayer.seekTo(sliderPosition.position);
     var watch = StopWatch('start');
     _soundPlayer.start().then((_) {
       playState = PlayState.playing;
@@ -410,9 +400,20 @@ class _PlayBarState extends State<PlayBar> {
       _localController.stream,
       (position) {
         sliderPosition.position = position;
-        widget._player.seekTo(position);
+        _soundPlayer.seekTo(position);
       },
     ));
+  }
+
+  Widget _buildTitle() {
+    return Container(
+      margin: EdgeInsets.only(left: 45, bottom: 5),
+      child: Row(children: [
+        Text(_soundPlayer.trackTitle),
+        Text(' / '),
+        Text(_soundPlayer.trackAuthor)
+      ]),
+    );
   }
 }
 
@@ -426,4 +427,19 @@ class Log {
 
   ///
   static void e(String message) => print(message);
+}
+
+/// Describes the state of the playbar.
+enum PlayState {
+  /// stopped
+  stopped,
+
+  ///
+  playing,
+
+  ///
+  paused,
+
+  ///
+  disabled
 }
