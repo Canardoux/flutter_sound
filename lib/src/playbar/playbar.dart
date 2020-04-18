@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_sound/src/util/stop_watch.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,8 @@ import '../codec.dart';
 import '../util/format.dart';
 import 'grayed_out.dart';
 import 'local_context.dart';
+import 'playbar_slider.dart';
+import 'slider_position.dart';
 
 // import 'audio_controller.dart';
 // import 'audio_media.dart';
@@ -72,7 +75,7 @@ class _PlayBarState extends State<PlayBar> {
   /// we keep our own local stream as the players come and go.
   /// This lets our StreamBuilder work with it worrying about
   /// the player's stream changing under it.
-  final _localController = StreamController<PlaybackDisposition>();
+  final _localController = StreamController<PlaybackDisposition>.broadcast();
 
   // we are current play (but may be paused)
   PlayState _playState = PlayState.stopped;
@@ -105,9 +108,28 @@ class _PlayBarState extends State<PlayBar> {
 
   _PlayBarState._internal() {
     sliderPosition.position = Duration(seconds: 0);
-    sliderPosition._maxPosition = Duration(seconds: 0);
+    sliderPosition.maxPosition = Duration(seconds: 0);
 
     _setCallbacks();
+  }
+
+  /// detect hot reloads when debugging and stop the player.
+  /// If we don't the platform specific code keeps running
+  /// and sending methodCalls to a slot that no longe exists.
+  @override
+  void reassemble() {
+    super.reassemble();
+    if (_soundPlayer != null) {
+      _soundPlayer.stop();
+      playState = PlayState.stopped;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // AudioController.of(context).registerPlayer(this);
+    return ChangeNotifierProvider<SliderPosition>(
+        create: (_) => sliderPosition, child: _buildPlayBar());
   }
 
   void _setCallbacks() {
@@ -129,10 +151,20 @@ class _PlayBarState extends State<PlayBar> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    // AudioController.of(context).registerPlayer(this);
-    return ChangeNotifierProvider<SliderPosition>(
-        create: (_) => sliderPosition, child: _buildPlayBar());
+  void dispose() {
+    Log.d("stopping Player on dispose");
+    _stop(supressState: true);
+    _soundPlayer.release();
+    super.dispose();
+  }
+
+  Widget _buildPlayBar() {
+    return Container(
+        decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(PlayBar._barHeight / 2)),
+        child: Row(
+            children: [_buildPlayButton(), _buildDuration(), _buildSlider()]));
   }
 
   /// Returns the players current state.
@@ -142,35 +174,6 @@ class _PlayBarState extends State<PlayBar> {
 
   set playState(PlayState state) {
     setState(() => _playState = state);
-  }
-
-  @override
-  void dispose() {
-    Log.d("stopping Player on dispose");
-
-    _stop(supressState: true);
-
-    _soundPlayer.release();
-
-    super.dispose();
-  }
-
-  Widget _buildPlayBar() {
-    return Container(
-        decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: BorderRadius.circular(PlayBar._barHeight / 2)),
-        child: Row(children: [
-          _buildPlayButton(),
-          Text('${sliderPosition.position.inSeconds}'
-              ' / '
-              '${Format.duration(sliderPosition._maxPosition)}'),
-          Expanded(child: _buildSlider())
-        ]));
-  }
-
-  Widget _buildSlider() {
-    return PlaybarSlider(_localController.stream, _onSeek);
   }
 
   /// User has clicked the play/pause button.
@@ -257,7 +260,7 @@ class _PlayBarState extends State<PlayBar> {
     /// This means that _onLoad returned null and the user
     /// can display appropriate errors.
     if (_soundPlayer != null) {
-      await _start();
+      _start();
     } else {
       setState(() {
         _transitioning = false;
@@ -267,11 +270,13 @@ class _PlayBarState extends State<PlayBar> {
     }
   }
 
+  /// internal start method.
   void _start() async {
-
     _soundPlayer.seekTo(sliderPosition.position);
+    var watch = StopWatch('start');
     _soundPlayer.start().then((_) {
       playState = PlayState.playing;
+      watch.end();
       Log.d("StartPlayer returned");
     }).catchError((dynamic e) {
       Log.w("Error calling startPlayer ${e.toString()}");
@@ -289,6 +294,9 @@ class _PlayBarState extends State<PlayBar> {
     await _stop();
   }
 
+  ///
+  /// interal stop method.
+  ///
   Future<void> _stop({bool supressState = false}) async {
     if (_soundPlayer.isPlaying) {
       _soundPlayer.stop().then<void>((_) {
@@ -313,24 +321,26 @@ class _PlayBarState extends State<PlayBar> {
     sliderPosition.position = Duration.zero;
   }
 
+  /// put the ui into a 'loading' state which
+  /// will start the spinner.
   set _loading(bool value) {
     setState(() => __loading = value);
   }
 
+  /// current loading state.
   bool get _loading {
     return __loading;
   }
 
+  /// When we are moving between states we mark
+  /// ourselves as 'transition'.
   // ignore: avoid_setters_without_getters
   set _transitioning(bool value) {
     setState(() => __transitioning = value);
   }
 
-  void _onSeek(Duration position) {
-    sliderPosition.position = position;
-    widget._player.seekTo(position);
-  }
-
+  /// Build the play button which includes the loading spinner and pause button
+  ///
   Widget _buildPlayButton() {
     Widget button;
 
@@ -353,7 +363,7 @@ class _PlayBarState extends State<PlayBar> {
         padding: EdgeInsets.only(left: 10, right: 10),
         child: LocalContext(builder: (localContext) {
           return InkWell(
-              onTap: ((sliderPosition._maxPosition.inMicroseconds == 0 &&
+              onTap: ((sliderPosition.maxPosition.inMicroseconds == 0 &&
                           _onLoad == null) ||
                       __transitioning)
                   ? null
@@ -365,15 +375,12 @@ class _PlayBarState extends State<PlayBar> {
   Widget _buildPlayButtonIcon(Widget widget) {
     switch (playState) {
       case PlayState.playing:
-        widget = Icon(Icons.pause,
-            color: (sliderPosition._maxPosition.inMicroseconds == 0
-                ? Colors.blueGrey
-                : Colors.black));
+        widget = Icon(Icons.pause, color: Colors.black);
         break;
       case PlayState.stopped:
       case PlayState.paused:
         widget = Icon(Icons.play_arrow,
-            color: (sliderPosition._maxPosition.inMicroseconds == 0 &&
+            color: (sliderPosition.maxPosition.inMicroseconds == 0 &&
                     _onLoad == null
                 ? Colors.blueGrey
                 : Colors.black));
@@ -387,80 +394,28 @@ class _PlayBarState extends State<PlayBar> {
     return widget;
   }
 
-  void playbackEnabled({bool enabled}) {
-    if (enabled == true) {
-      playState = PlayState.stopped;
-    } else if (enabled == false) {
-      _stop();
-      playState = PlayState.disabled;
-    }
+  Widget _buildDuration() {
+    return StreamBuilder<PlaybackDisposition>(
+        stream: _localController.stream,
+        initialData: PlaybackDisposition.zero(),
+        builder: (context, snapshot) {
+          var disposition = snapshot.data;
+          return Text(
+              '${Format.duration(disposition.position, showSuffix: false)}'
+              ' / '
+              '${Format.duration(disposition.duration)}');
+        });
   }
 
-  void updateDuration(Duration duration) {
-    setState(() => sliderPosition._maxPosition = duration);
-  }
-}
-
-///
-class PlaybarSlider extends StatefulWidget {
-  final void Function(Duration position) _seek;
-
-  ///
-  final Stream<PlaybackDisposition> stream;
-
-  ///
-  PlaybarSlider(this.stream, this._seek);
-
-  @override
-  State<StatefulWidget> createState() {
-    return PlaybarSliderState();
-  }
-}
-
-///
-class PlaybarSliderState extends State<PlaybarSlider> {
-  @override
-  Widget build(BuildContext context) {
-    return SliderTheme(
-        data: SliderTheme.of(context).copyWith(
-            thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6.0),
-            inactiveTrackColor: Colors.blueGrey),
-        child: StreamBuilder<PlaybackDisposition>(
-            stream: widget.stream,
-            initialData: PlaybackDisposition.zero(),
-            builder: (context, snapshot) {
-              var disposition = snapshot.data;
-              return Slider(
-                value: disposition.position.inSeconds.toDouble(),
-                onChanged: (value) =>
-                    widget._seek(Duration(seconds: value.toInt())),
-                max: disposition.duration.inSeconds.toDouble(),
-              );
-            }));
-  }
-}
-
-///
-class SliderPosition extends ChangeNotifier {
-  Duration _position = Duration.zero;
-  Duration _maxPosition = Duration.zero;
-  bool _disposed = false;
-
-  ///
-  set position(Duration position) {
-    _position = position;
-
-    if (!_disposed) notifyListeners();
-  }
-
-  void dispose() {
-    _disposed = true;
-    super.dispose();
-  }
-
-  ///
-  Duration get position {
-    return _position;
+  Widget _buildSlider() {
+    return Expanded(
+        child: PlaybarSlider(
+      _localController.stream,
+      (position) {
+        sliderPosition.position = position;
+        widget._player.seekTo(position);
+      },
+    ));
   }
 }
 

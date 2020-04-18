@@ -98,28 +98,6 @@ class PlayerState {
   ///
   Future<void> setHush({bool hushOthers}) async {
     _hushOthers = hushOthers;
-    if (_hushOthers) {
-      if (Platform.isIOS) {
-        await playerModule.iosSetCategory(
-            IOSSessionCategory.playAndRecord,
-            IOSSessionMode.defaultMode,
-            IOSSessionCategoryOption.iosDuckOthers |
-                IOSSessionCategoryOption.iosDefaultToSpeaker);
-      } else if (Platform.isAndroid) {
-        await playerModule
-            .androidAudioFocusRequest(AndroidAudioFocusGain.transientMayDuck);
-      }
-    } else {
-      if (Platform.isIOS) {
-        await playerModule.iosSetCategory(
-            IOSSessionCategory.playAndRecord,
-            IOSSessionMode.defaultMode,
-            IOSSessionCategoryOption.iosDefaultToSpeaker);
-      } else if (Platform.isAndroid) {
-        await playerModule
-            .androidAudioFocusRequest(AndroidAudioFocusGain.defaultGain);
-      }
-    }
   }
 
   /// Call this method to release the player when
