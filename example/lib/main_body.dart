@@ -174,13 +174,13 @@ class _MainBodyState extends State<MainBody> {
         }
         await _startConcurrentPlayer();
 
-        player.onSkipBackward = ({wasUser}) async {
+        player.onSkipBackward = ({bool wasUser}) async {
           print('Skip backward');
           await player.stop();
           await player.start();
         };
 
-        player.onSkipForward = ({wasUser}) async {
+        player.onSkipForward = ({bool wasUser}) async {
           print('Skip forward');
           await player.stop();
           await player.start();
@@ -242,7 +242,7 @@ class _MainBodyState extends State<MainBody> {
     return player;
   }
 
-  Future createAssetPlayer() async {
+  Future<SoundPlayer> createAssetPlayer() async {
     SoundPlayer player;
     var dataBuffer =
         (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
