@@ -32,9 +32,7 @@ import java.util.concurrent.Callable;
 public class MediaBrowserHelper
 {
 	MediaControllerCompat mediaControllerCompat;
-
 	private MediaBrowserCompat mMediaBrowserCompat;
-	private Activity           mActivity;
 	// The function to call when the media browser successfully connects
 	// to the service.
 	private Callable<Void>     mServiceConnectionSuccessCallback;
@@ -56,9 +54,9 @@ public class MediaBrowserHelper
 			// start the audio playback.
 			try
 			{
-				assert(mActivity != null);
-				mediaControllerCompat = new MediaControllerCompat( mActivity, mMediaBrowserCompat.getSessionToken() );
-				MediaControllerCompat.setMediaController( mActivity, mediaControllerCompat );
+				assert(Flauto.androidActivity != null);
+				mediaControllerCompat = new MediaControllerCompat( Flauto.androidActivity, mMediaBrowserCompat.getSessionToken() );
+				MediaControllerCompat.setMediaController( Flauto.androidActivity, mediaControllerCompat );
 
 				// Start the audio playback
 				// MediaControllerCompat.getMediaController(mActivity).getTransportControls().playFromMediaId("http://path-to-audio-file.com",
@@ -111,20 +109,15 @@ public class MediaBrowserHelper
 	/**
 	 * Initialize the media browser helper.
 	 *
-	 * @param activity                        The activity in which to initialize
-	 *                                        the media browser helper.
 	 * @param serviceSuccessConnectionCallback   The callback to call when the
 	 *                                        connection is successful.
 	 * @param serviceUnsuccConnectionCallback The callback to call when the
 	 *                                        connection is unsuccessful.
 	 */
 	MediaBrowserHelper(
-		Activity activity, Callable<Void> serviceSuccessConnectionCallback, Callable<Void> serviceUnsuccConnectionCallback
+		 Callable<Void> serviceSuccessConnectionCallback, Callable<Void> serviceUnsuccConnectionCallback
 	                  )
 	{
-		assert(activity != null);
-		mActivity                              = activity;
-		BackgroundAudioService.activity        = mActivity;
 		mServiceConnectionSuccessCallback      = serviceSuccessConnectionCallback;
 		mServiceConnectionUnsuccessfulCallback = serviceUnsuccConnectionCallback;
 		//////backgroundAudioService = new BackgroundAudioService ();
@@ -136,10 +129,15 @@ public class MediaBrowserHelper
 	 */
 	private void initMediaBrowser()
 	{
-		assert(mActivity != null);
-		BackgroundAudioService.activity = mActivity;
+		assert(Flauto.androidActivity != null);
 		// Create and connect a MediaBrowserCompat
-		mMediaBrowserCompat = new MediaBrowserCompat( mActivity, new ComponentName( mActivity, BackgroundAudioService.class ), mMediaBrowserCompatConnectionCallback, mActivity.getIntent().getExtras() );
+		mMediaBrowserCompat = new MediaBrowserCompat
+		(
+			Flauto.androidActivity,
+			new ComponentName( Flauto.androidActivity, BackgroundAudioService.class ),
+			mMediaBrowserCompatConnectionCallback,
+			Flauto.androidActivity.getIntent().getExtras()
+		);
 
 
 		mMediaBrowserCompat.connect();

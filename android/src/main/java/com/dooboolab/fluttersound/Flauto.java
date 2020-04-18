@@ -18,53 +18,15 @@ package com.dooboolab.fluttersound;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.media.AudioManager;
-import android.os.Build;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.arch.core.util.Function;
-import androidx.core.app.ActivityCompat;
 
-import android.media.AudioFocusRequest;
+import com.dooboolab.ffmpeg.FlutterFFmpegPlugin;
 
-import java.io.*;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import io.flutter.embedding.engine.plugins.FlutterPlugin;
-import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
-import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
-import io.flutter.plugin.common.MethodChannel.Result;
-
-import java.util.concurrent.Callable;
-
-import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
-import com.dooboolab.fluttersound.FlutterSoundPlayer;
 
 
 // this enum MUST be synchronized with lib/flutter_sound.dart and ios/Classes/FlutterSoundPlugin.h
@@ -92,9 +54,13 @@ public class Flauto
 	public void onAttachedToEngine ( FlutterPlugin.FlutterPluginBinding binding )
 	{
 		ctx = binding.getApplicationContext ();
+
+		//androidActivity = ???
+
 		FlautoPlayerPlugin.attachFlautoPlayer ( ctx, binding.getBinaryMessenger () );
 		FlautoRecorderPlugin.attachFlautoRecorder ( ctx, binding.getBinaryMessenger () );
 		TrackPlayerPlugin.attachTrackPlayer ( ctx, binding.getBinaryMessenger () );
+		FlutterFFmpegPlugin.attachFFmpegPlugin(ctx, binding.getBinaryMessenger () );
 	}
 
 
@@ -106,9 +72,11 @@ public class Flauto
 		reg = registrar;
 		ctx = registrar.context ();
 		androidActivity = registrar.activity ();
+
 		FlautoPlayerPlugin.attachFlautoPlayer ( ctx, registrar.messenger () );
 		FlautoRecorderPlugin.attachFlautoRecorder ( ctx, registrar.messenger ()  );
 		TrackPlayerPlugin.attachTrackPlayer ( ctx, registrar.messenger ()  );
+		FlutterFFmpegPlugin.attachFFmpegPlugin(ctx,registrar.messenger ()  );
 
 	}
 

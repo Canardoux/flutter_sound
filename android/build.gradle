@@ -1,3 +1,4 @@
+ext.flutterFFmpegPackage = 'audio-lts'
 group 'com.dooboolab.fluttersound'
 version '1.0-SNAPSHOT'
 
@@ -38,8 +39,24 @@ android {
     }
 }
 
+static String safePackageName(String prop) {
+    prop.replace("-lts", "")
+}
+
+static String safePackageVersion(String prop, String version, String ltsVersion) {
+    prop.contains("-lts") ? ltsVersion + ".LTS" : version
+}
+
+String safeExtGet(String prop, String fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
+
 dependencies {
     implementation 'androidx.core:core:1.0.0'
     implementation 'androidx.media:media:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.arthenica:mobile-ffmpeg-' + safePackageName(safeExtGet('flutterFFmpegPackage', 'audio-lts')) + ':' + safePackageVersion(safeExtGet('flutterFFmpegPackage', 'audio-lts'), '4.3.1', '4.3.1')
+
 }
+
