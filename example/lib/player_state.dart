@@ -39,6 +39,9 @@ class PlayerState {
   /// the primary player
   SoundPlayer get playerModule => _playerModule;
 
+  /// set the current player module.
+  set playerModule(SoundPlayer player) => _playerModule = player;
+
   /// get the PlayStatus stream.
   Stream<PlaybackDisposition> get playStatusStream {
     return _playStatusController.stream;
