@@ -72,15 +72,10 @@ abstract class BasePlugin {
   /// To use a plugin you start by calling [register]
   /// and finish by calling [release].
   void release(Proxy connector) {
-    var found = false;
-    for (var i = 0; i < _slots.length; ++i) {
-      if (_slots[i] == null) {
-        _slots[i] = null;
-        found = true;
-        break;
-      }
-    }
-    if (!found) {
+    var slot = _findSlot(connector);
+    if (slot != -1) {
+      _slots[slot] = null;
+    } else {
       throw PluginConnectorNotRegisteredException(
           'The PluginConnector was not found when releasing the connector.');
     }
