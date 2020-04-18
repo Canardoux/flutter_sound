@@ -34,10 +34,10 @@ class PlaybarSliderState extends State<PlaybarSlider> {
             builder: (context, snapshot) {
               var disposition = snapshot.data;
               return Slider(
+                max: disposition.duration.inMilliseconds.toDouble(),
                 value: disposition.position.inMilliseconds.toDouble(),
                 onChanged: (value) =>
-                    widget._seek(Duration(seconds: value.toInt())),
-                max: disposition.duration.inMilliseconds.toDouble(),
+                    widget._seek(Duration(milliseconds: value.toInt())),
               );
             }));
   }
