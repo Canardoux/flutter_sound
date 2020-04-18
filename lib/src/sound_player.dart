@@ -19,10 +19,12 @@ import 'dart:convert' hide Codec;
 import 'dart:io';
 import 'dart:typed_data' show Uint8List;
 
+import 'package:flutter_sound/src/android/android_audio_focus_gain.dart';
 import 'package:uuid/uuid.dart';
 
 import 'codec.dart';
 import 'ios/ios_session_category.dart';
+import 'ios/ios_session_category_option.dart';
 import 'ios/ios_session_mode.dart';
 import 'playback_disposition.dart';
 import 'plugins/base_plugin.dart';
@@ -211,6 +213,8 @@ class SoundPlayer {
     }
 
     var path = await _prepareStream();
+
+    _applyHush();
 
     // build the argument map
     var args = <String, dynamic>{};
@@ -450,6 +454,37 @@ class SoundPlayer {
           'You can only change showOSUI whilst the player is stopped');
     }
     _showOSUI = showOSUI;
+  }
+
+  /// Instructs the OS to reduce the volume of other audio
+  /// whilst we play this audio file.
+  /// The exact effect of this is OS dependant.
+  /// The effect is only applied when we start the audio play.
+  /// Changing this value whilst audio is play will have no affect.
+  bool hushOthers;
+
+  /// Apply/Remoe the hush other setting.
+  void _applyHush() async {
+    if (hushOthers) {
+      if (Platform.isIOS) {
+        await iosSetCategory(
+            IOSSessionCategory.playAndRecord,
+            IOSSessionMode.defaultMode,
+            IOSSessionCategoryOption.iosDuckOthers |
+                IOSSessionCategoryOption.iosDefaultToSpeaker);
+      } else if (Platform.isAndroid) {
+        await androidAudioFocusRequest(AndroidAudioFocusGain.transientMayDuck);
+      }
+    } else {
+      if (Platform.isIOS) {
+        await iosSetCategory(
+            IOSSessionCategory.playAndRecord,
+            IOSSessionMode.defaultMode,
+            IOSSessionCategoryOption.iosDefaultToSpeaker);
+      } else if (Platform.isAndroid) {
+        await androidAudioFocusRequest(AndroidAudioFocusGain.defaultGain);
+      }
+    }
   }
 
   /// handles a pause coming up from the player
