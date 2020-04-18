@@ -36,13 +36,11 @@ class _TrackSwitchState extends State<TrackSwitch> {
             padding: const EdgeInsets.only(right: 4),
             child: Text('Use OS Media Player:'),
           ),
-          GrayedOut(
-              grayedOut: !PlayerState().isStopped,
-              child: Switch(
-                value: widget._isAudioPlayer,
-                onChanged: (allow) =>
-                    onAudioPlayerSwitchChanged(allowTracks: allow),
-              )),
+          Switch(
+            value: widget._isAudioPlayer,
+            onChanged: (allow) =>
+                onAudioPlayerSwitchChanged(allowTracks: allow),
+          ),
           Padding(
             padding: const EdgeInsets.only(right: 4.0),
             child: Text('Hush Others:'),
