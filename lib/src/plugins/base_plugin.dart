@@ -54,18 +54,19 @@ abstract class BasePlugin {
   /// with the platform specific plugin.
   /// To use a plugin you start by calling [register]
   /// and finish by calling [release].
-  void register(Proxy connector) {
+  void register(Proxy proxy) {
     var inserted = false;
     for (var i = 0; i < _slots.length; ++i) {
       if (_slots[i] == null) {
-        _slots[i] = connector;
+        _slots[i] = proxy;
         inserted = true;
         break;
       }
     }
     if (!inserted) {
-      _slots.add(connector);
+      _slots.add(proxy);
     }
+    print('registered proxy to slot: ${_slots.length - 1}');
   }
 
   /// Releases the slot used by the connector.
