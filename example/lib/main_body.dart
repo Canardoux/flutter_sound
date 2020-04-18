@@ -160,12 +160,8 @@ class _MainBodyState extends State<MainBody> {
       }
 
       if (player != null) {
-        // Check whether the user wants to use the audio player features
-        if (_useOSUI) {
-          player.showOSUI = true;
-        }
-        player.trackTitle = "This is a record";
-        player.trackAuthor = "from flutter_sound";
+        player.trackTitle = "Flutter at first Sight.";
+        player.trackAuthor = "By flutter_sound";
 
         if (MediaPath().isExampleFile) {
           player.albumArtUrl = albumArtPath;
@@ -178,16 +174,16 @@ class _MainBodyState extends State<MainBody> {
         }
         await _startConcurrentPlayer();
 
-        player.onSkipBackward = ({wasUser}) {
+        player.onSkipBackward = ({wasUser}) async {
           print('Skip backward');
-          player.stop();
-          player.start();
+          await player.stop();
+          await player.start();
         };
 
-        player.onSkipForward = ({wasUser}) {
+        player.onSkipForward = ({wasUser}) async {
           print('Skip forward');
-          player.stop();
-          player.start();
+          await player.stop();
+          await player.start();
         };
       }
     } on Object catch (err) {
@@ -205,8 +201,8 @@ class _MainBodyState extends State<MainBody> {
               .buffer
               .asUint8List();
 
-      PlayerState().playerModule_2 =
-          SoundPlayer.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
+      PlayerState().playerModule_2 = SoundPlayer.fromBuffer(dataBuffer,
+          codec: ActiveCodec().codec, showOSUI: false);
       PlayerState().playerModule_2.onFinished =
           () => print('Secondary Play finished');
 
@@ -217,7 +213,7 @@ class _MainBodyState extends State<MainBody> {
   Future<SoundPlayer> _createRemotePlayer() async {
     // We have to play an example audio file loaded via a URL
     return SoundPlayer.fromPath(exampleAudioFilePath,
-        codec: ActiveCodec().codec);
+        codec: ActiveCodec().codec, showOSUI: _useOSUI);
   }
 
   Future<SoundPlayer> _createBufferPlayer() async {
@@ -229,7 +225,8 @@ class _MainBodyState extends State<MainBody> {
       if (dataBuffer == null) {
         throw Exception('Unable to create the buffer');
       }
-      player = SoundPlayer.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
+      player = SoundPlayer.fromBuffer(dataBuffer,
+          codec: ActiveCodec().codec, showOSUI: _useOSUI);
     }
     return player;
   }
@@ -239,7 +236,8 @@ class _MainBodyState extends State<MainBody> {
     // Do we want to play from buffer or from file ?
     if (fileExists(MediaPath().pathForCodec(ActiveCodec().codec))) {
       var audioFilePath = MediaPath().pathForCodec(ActiveCodec().codec);
-      player = SoundPlayer.fromPath(audioFilePath, codec: ActiveCodec().codec);
+      player = SoundPlayer.fromPath(audioFilePath,
+          codec: ActiveCodec().codec, showOSUI: _useOSUI);
     }
     return player;
   }
@@ -250,7 +248,8 @@ class _MainBodyState extends State<MainBody> {
         (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
             .buffer
             .asUint8List();
-    player = SoundPlayer.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
+    player = SoundPlayer.fromBuffer(dataBuffer,
+        codec: ActiveCodec().codec, showOSUI: _useOSUI);
     return player;
   }
 
@@ -262,7 +261,10 @@ class _MainBodyState extends State<MainBody> {
   Widget buildPlayBar() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: PlayBar.fromLoader(onLoad),
+      child: PlayBar.fromLoader(
+        onLoad,
+        showTitle: true,
+      ),
     );
   }
 }
