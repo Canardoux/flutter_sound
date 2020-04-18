@@ -6,13 +6,13 @@ import 'player_state.dart';
 /// UI widget from the TrackPlayer specific settings
 /// Allow Tracks and Hush Others
 class TrackSwitch extends StatefulWidget {
-  final void Function(bool allowTracks) _switchPlayer;
+  final void Function(bool useOSUI) _switchPlayer;
 
   /// ctor
   const TrackSwitch({
     Key key,
     @required bool isAudioPlayer,
-    @required void Function(bool allowTracks) switchPlayer,
+    @required void Function(bool userOSUI) switchPlayer,
   })  : _isAudioPlayer = isAudioPlayer,
         _switchPlayer = switchPlayer,
         super(key: key);
@@ -34,7 +34,7 @@ class _TrackSwitchState extends State<TrackSwitch> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 4),
-            child: Text('Allow Tracks:'),
+            child: Text('Use OS Media Player:'),
           ),
           GrayedOut(
               grayedOut: !PlayerState().isStopped,

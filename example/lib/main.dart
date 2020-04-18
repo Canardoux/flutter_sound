@@ -16,18 +16,10 @@
 
 import 'dart:async';
 
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:flutter_sound/flutter_sound.dart';
-
 import 'package:flutter/material.dart';
-import 'active_codec.dart';
 
-import 'drop_downs.dart';
-import 'player_controls.dart';
+import 'main_body.dart';
 import 'player_state.dart';
-import 'recorder_controls.dart';
-import 'recorder_state.dart';
-import 'track_switched.dart';
 
 /// Boolean to specify if we want to test the Rentrance/Concurency feature.
 /// If true, we start two instances of FlautoPlayer when
@@ -55,72 +47,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool initialised = false;
-
-  // Whether the user wants to use the audio player features
-  final bool _isTrackPlayer = false;
-
-  /// Allows us to switch the player module
-  Future<void> _switchModes(bool useTracks) async {
-    PlayerState().useTracks(enabled: useTracks);
-    RecorderState().reset();
-  }
-
-  Future<bool> init() async {
-    if (!initialised) {
-      await PlayerState().init();
-      await RecorderState().init();
-      ActiveCodec().playerModule = PlayerState().playerModule;
-      ActiveCodec().recorderModule = RecorderState().recorderModule;
-      await ActiveCodec().setCodec(Codec.codecAac);
-      await initializeDateFormatting();
-
-      initialised = true;
-    }
-    return initialised;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        initialData: false,
-        future: init(),
-        builder: (context, snapshot) {
-          if (snapshot.data == false) {
-            return Container(
-              width: 0,
-              height: 0,
-              color: Colors.white,
-            );
-          } else {
-            final dropdowns = Dropdowns(
-                onCodecChanged: (codec) => ActiveCodec().setCodec(codec));
-            final trackSwitch = TrackSwitch(
-              isAudioPlayer: _isTrackPlayer,
-              switchPlayer: (allow) => switchPlayer(allowTracks: allow),
-            );
-
-            Widget recorderControls = RecorderControls();
-
-            Widget playerControls = PlayerControls();
-
-            return MaterialApp(
-              home: Scaffold(
-                appBar: AppBar(
-                  title: const Text('Flutter Sound'),
-                ),
-                body: ListView(
-                  children: <Widget>[
-                    recorderControls,
-                    playerControls,
-                    dropdowns,
-                    trackSwitch,
-                  ],
-                ),
-              ),
-            );
-          }
-        });
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Flutter Sound'),
+        ),
+        body: MainBody(),
+      ),
+    );
   }
 
   @override
@@ -136,17 +72,6 @@ class _MyAppState extends State<MyApp> {
     } on Object catch (e) {
       print('Released unsuccessful');
       print(e);
-      rethrow;
-    }
-  }
-
-  void switchPlayer({bool allowTracks}) async {
-    try {
-      PlayerState().release();
-      await _switchModes(allowTracks);
-      setState(() {});
-    } on Object catch (err) {
-      print(err);
       rethrow;
     }
   }

@@ -19,7 +19,7 @@ import 'dart:convert' hide Codec;
 import 'dart:io';
 import 'dart:typed_data' show Uint8List;
 
-import 'package:flutter/foundation.dart';
+import 'package:uuid/uuid.dart';
 
 import 'codec.dart';
 import 'ios/ios_session_category.dart';
@@ -27,7 +27,6 @@ import 'ios/ios_session_mode.dart';
 import 'playback_disposition.dart';
 import 'plugins/base_plugin.dart';
 import 'plugins/sound_player_plugin.dart';
-import 'track.dart';
 import 'util/codec_conversions.dart';
 import 'util/file_management.dart' as fm;
 import 'util/temp_media_file.dart';
@@ -44,9 +43,12 @@ enum PlayerState {
   isPaused,
 }
 
-typedef TWhenFinished = void Function();
-typedef TwhenPaused = void Function(bool paused);
-typedef TonSkip = void Function();
+typedef TonEvent = void Function();
+
+/// TODO should we be passing an object that contains
+/// information such as the position in the track when
+/// it was paused?
+typedef TonEventWithCause = void Function({bool wasUser});
 typedef TupdateProgress = void Function(int current, int max);
 
 /// Provides the ability to playback audio from
@@ -56,51 +58,86 @@ typedef TupdateProgress = void Function(int current, int max);
 /// Assets
 /// URL.
 class SoundPlayer {
-  ///
-  TonSkip onSkipForward; // User callback "whenPaused:"
-  ///
-  TonSkip onSkipBackward; // User callback "whenPaused:"
+  TonEvent _onSkipForward;
+  TonEvent _onSkipBackward;
+  TonEvent _onFinished;
+  TonEventWithCause _onPaused;
+  TonEventWithCause _onResumed;
+  TonEventWithCause _onStarted;
+  TonEventWithCause _onStopped;
+  bool _showOSUI = false;
 
-  bool _isInited = false;
+  /// The title of this track
+  String trackTitle;
+
+  /// The name of the author of this track
+  String trackAuthor;
+
+  /// The URL that points to the album art of the track
+  String albumArtUrl;
+
+  /// The asset that points to the album art of the track
+  String albumArtAsset;
+
+  bool _initialized = false;
+
+  /// If the user calls seekTo before starting the track
+  /// we cache the value until we start the player and
+  /// then we apply the seek offset.
+  Duration _seekTo;
+
+  /// The audio for a stream can either be sourced
+  /// by a URI or from a databuffer.
+  /// The URI could be a remote resource (HTTP)
+  /// or a local file or asset.
+  String _uri;
+  Uint8List _dataBuffer;
+
+  /// The codec we will be using to do the playback
+  /// This may not be the original codec that was passed in
+  /// as when preparing the stream we may have to transform
+  /// the codec into one that is supported.
+  Codec _codec;
 
   /// class to communicate with the plugin.
   /// This allows us to hide public methods
   /// from the public api.
-  SoundPlayerProxy _connector;
+  SoundPlayerProxy _proxy;
 
   final List<TempMediaFile> _tempMediaFiles = [];
 
   ///
   PlayerState playerState = PlayerState.isStopped;
-  StreamController<PlaybackDisposition> _playerController;
+  StreamController<PlaybackDisposition> _playerController =
+      StreamController<PlaybackDisposition>();
 
-  /// User callback "whenFinished:"
-  TWhenFinished _whenFinished;
-
-  /// User callback "whenPaused:"
-  TwhenPaused whenPaused;
-
-  /// Create a
-  SoundPlayer() {
-    _connector = SoundPlayerProxy(this);
-    SoundPlayerPlugin().register(_connector);
+  /// The [uri] of the file to download and playback
+  /// The [codec] of the file the [uri] points to.
+  SoundPlayer.fromPath(this._uri, {Codec codec = Codec.defaultCodec}) {
+    _internal(codec);
   }
 
-  Future<dynamic> _invokeMethod(
-      String methodName, Map<String, dynamic> args) async {
-    return await SoundPlayerPlugin().invokeMethod(_connector, methodName, args);
+  /// Create a audio play from a URI
+  SoundPlayer.fromBuffer(Uint8List dataBuffer,
+      {Codec codec = Codec.defaultCodec})
+      : _dataBuffer = dataBuffer {
+    _internal(codec);
+  }
+
+  void _internal(Codec codec) {
+    _codec = codec;
+    _proxy = SoundPlayerProxy(this);
+    SoundPlayerPlugin().register(_proxy);
+    print('regisetered $_proxy');
   }
 
   /// internal method
   Future<SoundPlayer> _initialize() async {
-    if (!_isInited) {
-      _isInited = true;
+    if (!_initialized) {
+      _initialized = true;
+      print('initialise called $_proxy');
 
       await _invokeMethod('initializeMediaPlayer', <String, dynamic>{});
-
-      /// TODO I think this is unnecessary.
-      onSkipBackward = null;
-      onSkipForward = null;
     }
     return this;
   }
@@ -108,20 +145,232 @@ class SoundPlayer {
   /// call this method once you are down with the player
   /// so that it can release all of the attached resources.
   Future<void> release() async {
-    if (_isInited) {
-      _isInited = false;
+    print('releaseing $_proxy');
+    if (_initialized) {
+      _initialized = false;
       // Stop the player playback before releasing
-      await stopPlayer();
+      await stop();
       closeDispositionStream(); // playerController is closed by this function
-      onSkipBackward = null;
-      onSkipForward = null;
 
       await _invokeMethod('releaseMediaPlayer', <String, dynamic>{});
-      SoundPlayerPlugin().release(_connector);
+      SoundPlayerPlugin().release(_proxy);
+
+      _deleteTempFiles();
     }
   }
 
-  /// TODO implement these methods so a user
+  /// Does any preparatory work required on a stream before it can be played.
+  /// This includes converting databuffers to paths and
+  /// any re-encoding required.
+  ///
+  /// Returns the path to be played.
+  Future<String> _prepareStream() async {
+    var path = _uri;
+
+    if (_dataBuffer != null) {
+      var tempMediaFile = TempMediaFile.fromBuffer(_dataBuffer);
+      _tempMediaFiles.add(tempMediaFile);
+
+      /// clear the buffer so we won't do this again.
+      _dataBuffer = null;
+      path = tempMediaFile.path;
+    }
+
+    // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
+    // We use FFmpeg for that task.
+    if ((Platform.isIOS) &&
+        ((_codec == Codec.codecOpus) || (fm.fileExtension(path) == '.opus'))) {
+      var tempMediaFile =
+          TempMediaFile(await CodecConversions.opusToCafOpus(path));
+      _tempMediaFiles.add(tempMediaFile);
+      path = tempMediaFile.path;
+      // update the codec so we won't reencode again.
+      _codec = Codec.codecCafOpus;
+    }
+
+    /// set the uri so next time we come in here we will return the
+    /// correct path.
+    _uri = path;
+    return path;
+  }
+
+  /// Starts playback.
+
+  Future<void> start() async {
+    _initialize();
+
+    if (!isStopped) {
+      throw PlayerInvalidStateException("The player must not be running.");
+    }
+
+    // Check the current codec is supported on this platform
+    if (!await isSupported(_codec)) {
+      throw PlayerInvalidStateException(
+          'The selected codec is not supported on '
+          'this platform.');
+    }
+
+    var path = await _prepareStream();
+
+    // build the argument map
+    var args = <String, dynamic>{};
+    args['path'] = path;
+    // Flutter cannot transfer an enum to a native plugin.
+    // We use an integer instead
+    args['codec'] = _codec.index;
+
+    if (showOSUI) {
+      await _startPlayerOnOSUI(path);
+    } else {
+      await _invokeMethod('startPlayer', args);
+      playerState = PlayerState.isPlaying;
+    }
+
+    /// If the user called seekTo before starting the player
+    /// we immediate do a seek.
+    /// TODO: does this cause any audio glitch (i.e starts playing)
+    /// and then seeks.
+    /// If so we may need to modify the plugin so we pass in a seekTo
+    /// argument.
+    if (_seekTo != null) {
+      await seekTo(_seekTo);
+      _seekTo = null;
+    }
+
+    playerState = PlayerState.isPlaying;
+    if (_onStarted != null) _onStarted(wasUser: false);
+  }
+
+  /// Plays the given [track]. [canSkipForward] and [canSkipBackward] must be
+  /// passed to provide information on whether the user can skip to the next
+  /// or to the previous song in the lock screen controls.
+  ///
+  /// This method should only be used if the player has been initialize
+  /// with the audio player specific features.
+  Future<void> _startPlayerOnOSUI(String path) async {
+    final trackMap = <String, dynamic>{
+      "path": path,
+      "title": trackTitle,
+      "author": trackAuthor,
+      "albumArtUrl": albumArtUrl,
+      "albumArtAsset": albumArtAsset,
+      // TODO is this necessary if we arn't passing a buffer?
+      "bufferCodecIndex": _codec?.index,
+    };
+
+    await _invokeMethod('startPlayerFromTrack', <String, dynamic>{
+      'track': trackMap,
+      // TODO: is this a valid association?
+      // A more direct flag might be appropriate in that
+      // I may want the user to be able to pause but I don't
+      // need to be notified.
+      'canPause': _onPaused != null,
+      'canSkipForward': _onSkipForward != null,
+      'canSkipBackward': _onSkipBackward != null,
+    }) as String;
+  }
+
+  /// Stops playback.
+  Future<void> stop() async {
+    try {
+      closeDispositionStream(); // playerController is closed by this function
+      await _invokeMethod('stopPlayer', <String, dynamic>{}) as String;
+
+      playerState = PlayerState.isStopped;
+      if (_onStopped != null) _onStopped(wasUser: false);
+    } on Object catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  /// Pauses playback.
+  /// If you call this and the audio is not playing
+  /// a [PlayerInvalidStateException] will be thrown.
+  Future<void> pause() async {
+    if (playerState != PlayerState.isPlaying) {
+      throw PlayerInvalidStateException('Player is not playing.');
+    }
+    playerState = PlayerState.isPaused;
+
+    await _invokeMethod('pausePlayer', <String, dynamic>{}) as String;
+
+    if (_onPaused != null) _onPaused(wasUser: false);
+  }
+
+  /// Resumes playback.
+  /// If you call this when audio is not paused
+  /// then a [PlayerInvalidStateException] will be thrown.
+  Future<void> resume() async {
+    if (playerState != PlayerState.isPaused) {
+      throw PlayerInvalidStateException('Player is not paused.');
+    }
+    playerState = PlayerState.isPlaying;
+    await _invokeMethod('resumePlayer', <String, dynamic>{}) as String;
+
+    if (_onResumed != null) _onResumed(wasUser: false);
+  }
+
+  /// Moves the current playback position to the given offset in the
+  /// recording.
+  /// [offset] is the position in the recording to set the playback
+  /// location from.
+  /// TODO: can you call this before calling startPlayer?
+  Future<void> seekTo(Duration offset) async {
+    await _initialize();
+    if (!isPlaying) {
+      _seekTo = offset;
+    } else {
+      await _invokeMethod('seekToPlayer', <String, dynamic>{
+        'sec': offset.inMilliseconds,
+      }) as String;
+    }
+  }
+
+  /// Sets the playback volume
+  /// The [volume] must be in the range 0.0 to 1.0.
+  Future<void> setVolume(double volume) async {
+    await _initialize();
+
+    var indexedVolume = Platform.isIOS ? volume * 100 : volume;
+    if (volume < 0.0 || volume > 1.0) {
+      throw RangeError('Value of volume should be between 0.0 and 1.0.');
+    }
+
+    await _invokeMethod('setVolume', <String, dynamic>{
+      'volume': indexedVolume,
+    }) as String;
+  }
+
+  ///  The caller can manage his audio focus with this function
+  /// Depending on your configuration this will either make
+  /// this player the loudest stream or it will silence all other stream.
+  Future<void> setActive({bool enabled}) async {
+    await _initialize();
+    await _invokeMethod('setActive', <String, dynamic>{'enabled': enabled});
+  }
+
+  /// TODO does this need to be exposed?
+  /// The simple action of stopping the playback may be sufficient
+  /// Given the user has to call stop
+  void closeDispositionStream() {
+    if (_playerController != null) {
+      _playerController..close();
+      _playerController = null;
+    }
+  }
+
+  Future<void> _setSubscriptionDuration(Duration interval) async {
+    assert(interval.inMilliseconds > 0);
+    await _initialize();
+    await _invokeMethod('setSubscriptionDuration', <String, dynamic>{
+      /// we need to use milliseconds as if we use seconds we end
+      /// up rounding down to zero.
+      'sec': (interval.inMilliseconds).toDouble() / 1000,
+    }) as String;
+  }
+
+  // TODO implement these methods so a user
   /// can perform a skip from the api.
   void skipForward(Map call) {
     throw NotImplementedException('skipForward is not currently supported');
@@ -143,7 +392,8 @@ class SoundPlayer {
   /// In most case the interval will be adheared to fairly closely.
   /// If you pause the audio then no updates will be sent to the
   /// stream.
-  Stream<PlaybackDisposition> dispositionStream(Duration interval) {
+  Stream<PlaybackDisposition> dispositionStream(
+      {Duration interval = const Duration(milliseconds: 100)}) {
     _setSubscriptionDuration(interval);
     return _playerController != null ? _playerController.stream : null;
   }
@@ -158,26 +408,23 @@ class SoundPlayer {
   bool get isStopped => playerState == PlayerState.isStopped;
 
   void _updateProgress(String jsonArgs) {
-    var result = jsonDecode(jsonArgs) as Map<String, dynamic>;
-    _playerController?.add(PlaybackDisposition.fromJSON(result));
+    // we only send dispositions whilst playing.
+    if (isPlaying) {
+      var result = jsonDecode(jsonArgs) as Map<String, dynamic>;
+      _playerController?.add(PlaybackDisposition.fromJSON(result));
+    }
   }
 
   /// internal method.
-  /// Called by the Platform plug to notify us that
-  /// audio has finished playing.
+  /// Called by the Platform plugin to notify us that
+  /// audio has finished playing to the end.
   void _audioPlayerFinished(PlaybackDisposition status) {
     // if we have finished then position should be at the end.
     status.position = status.duration;
     _playerController?.add(status);
 
     playerState = PlayerState.isStopped;
-    if (_whenFinished != null) {
-      _whenFinished();
-      _whenFinished = null;
-    }
-
-    _deleteTempFiles();
-    closeDispositionStream(); // playerController is closed by this function
+    if (_onFinished != null) _onFinished();
   }
 
   /// delete any tempoary media files we created whilst recording.
@@ -188,14 +435,129 @@ class SoundPlayer {
     _tempMediaFiles.clear();
   }
 
+  /// If [true] then we will displays the OS's builtin audio player
+  /// allowing you to control the audio from the lock screen.
+  bool get showOSUI => _showOSUI;
+
+  /// If [true] then we will displays the OS's builtin audio player
+  /// allowing you to control the audio from the lock screen.
+  /// It is invalid to change this value whilst audio is playing or paused.
+  /// You must call this method before calling [start] or after
+  /// calling [stop].
+  set showOSUI(bool showOSUI) {
+    if (!isStopped) {
+      throw PlayerInvalidStateException(
+          'You can only change showOSUI whilst the player is stopped');
+    }
+    _showOSUI = showOSUI;
+  }
+
   /// handles a pause coming up from the player
-  void _onPaused() {
-    if (whenPaused != null) whenPaused(true);
+  void _onSystemPaused() {
+    if (_onPaused != null) _onPaused(wasUser: true);
   }
 
   /// handles a resume coming up from the player
-  void _onResumed() {
-    if (whenPaused != null) whenPaused(false);
+  void _onSystemResumed() {
+    if (_onResumed != null) _onResumed(wasUser: true);
+  }
+
+  /// Pass a callback if you want to be notified
+  /// when the user attempts to skip forward to the
+  /// next track.
+  /// This is only meaningful if you have set
+  /// [showOSUI] which has a 'skip' button.
+  /// The SoundPlayer essentially ignores this event
+  /// as the SoundPlayer has no concept of an Album.
+  ///
+  /// It is up to you to create a new SoundPlayer with the
+  /// next track and start it playing.
+  ///
+  // ignore: avoid_setters_without_getters
+  set onSkipForward(TonEvent onSkipForward) {
+    _onSkipForward = onSkipForward;
+  }
+
+  /// Pass a callback if you want to be notified
+  /// when the user attempts to skip backward to the
+  /// prior track.
+  /// This is only meaningful if you have set
+  /// [showOSUI] which has a 'skip' button.
+  /// The SoundPlayer essentially ignores this event
+  /// as the SoundPlayer has no concept of an Album.
+  ///
+  ///
+  // ignore: avoid_setters_without_getters
+  set onSkipBackward(TonEvent onSkipBackward) {
+    _onSkipBackward = onSkipBackward;
+  }
+
+  /// Pass a callback if you want to be notified when
+  /// a track finishes to completion.
+  /// see [onStopped] for events when the user or system stops playback.
+  // ignore: avoid_setters_without_getters
+  set onFinished(TonEvent onFinished) {
+    _onFinished = onFinished;
+  }
+
+  ///
+  /// Pass a callback if you want to be notified when
+  /// playback is paused.
+  /// The [wasUser] argument in the callback will
+  /// be true if the user clicked the pause button
+  /// on the OS UI.  This will only ever happen if you
+  /// called [showOSUI].
+  ///
+  /// [wasUser] will be false if you paused the audio
+  /// via a call to [pause].
+  // ignore: avoid_setters_without_getters
+  set onPaused(TonEventWithCause onPaused) {
+    _onPaused = onPaused;
+  }
+
+  ///
+  /// Pass a callback if you want to be notified when
+  /// playback is resumed.
+  /// The [wasUser] argument in the callback will
+  /// be true if the user clicked the resume button
+  /// on the OS UI.  This will only ever happen if you
+  /// called [showOSUI].
+  ///
+  /// [wasUser] will be false if you resumed the audio
+  /// via a call to [resume].
+  // ignore: avoid_setters_without_getters
+  set onResumed(TonEventWithCause onResumed) {
+    _onResumed = onResumed;
+  }
+
+  /// Pass a callback if you want to be notified
+  /// that audio has started playing.
+  ///
+  /// If the player has to download or transcribe
+  /// the audio then this method won't return
+  /// util the audio actually starts to play.
+  ///
+  /// This can occur if you called [start]
+  /// or the user click the start button on the
+  /// OS UI. To show the OS UI you must have called
+  /// [showOSUI].
+  // ignore: avoid_setters_without_getters
+  set onStarted(TonEventWithCause onStarted) {
+    _onStarted = onStarted;
+  }
+
+  /// Pass a callback if you want to be notified
+  /// that audio has stopped playing.
+  /// This is different from [onFinished] which
+  /// is called when the auido plays to completion.
+  ///
+  /// [onStoppped]  can occur if you called [stop]
+  /// or the user click the stop button on the
+  /// OS UI. To show the OS UI you must have called
+  /// [showOSUI].
+  // ignore: avoid_setters_without_getters
+  set onStopped(TonEventWithCause onStopped) {
+    _onStopped = onStopped;
   }
 
   /// Returns true if the specified decoder is supported
@@ -264,224 +626,15 @@ class SoundPlayer {
     return r;
   }
 
-  ///  The caller can manage his audio focus with this function
-  /// TODO
-  /// Is this in the correct spot if it is only called once?
-  /// Should we have a configuration object that sets
-  /// up global options?
-  Future<bool> setActive({bool enabled}) async {
-    await _initialize();
-    var r =
-        await _invokeMethod('setActive', <String, dynamic>{'enabled': enabled})
-            as bool;
-
-    return r;
-  }
-
-  /// TODO does this need to be exposed?
-  /// The simple action of stopping the playback may be sufficient
-  /// Given the user has to call stop
-  void closeDispositionStream() {
-    if (_playerController != null) {
-      _playerController
-        ..add(null)
-        ..close();
-      _playerController = null;
-    }
-  }
-
-  /// Starts playback of the give URL
-  /// The [uri] of the file to download and playback
-  /// The [codec] of the file the [uri] points to.
-  /// If passed the [whenFinished] callback will be called
-  /// once the playback completes.
-  /// If you set [showTrack] to true then the builtin
-  /// OS audio controls will be displayed.
-
-  Future<void> startPlayer(
-    String uri, {
-    Codec codec,
-    TWhenFinished whenFinished,
-  }) async {
-    await _startPlayer(
-      path: uri,
-      codec: codec,
-      whenFinished: whenFinished,
-    );
-  }
-
-  /// Starts plaback from a buffer.
-  /// The [dataBuffer] that containes the media.
-  /// The [codec] that the media is encoded with.
-  /// If you pass [whenFinished] you method will be called
-  /// when playback completes.
-
-  Future<void> startPlayerFromBuffer(
-    Uint8List dataBuffer, {
-    Codec codec,
-    TWhenFinished whenFinished,
-  }) async {
-    assert(_tempMediaFiles.isEmpty);
-    var tempMediaFile = TempMediaFile.fromBuffer(dataBuffer);
-    _tempMediaFiles.add(tempMediaFile);
-
-    await _startPlayer(
-      path: tempMediaFile.path,
-      codec: codec,
-      whenFinished: whenFinished,
-    );
-  }
-
-  Future<void> _startPlayer({
-    @required String path,
-    Codec codec = Codec.defaultCodec,
-    void Function() whenFinished,
-    void Function(bool) whenPaused,
-    bool showTrack = false,
-    TonSkip onSkipForward,
-    TonSkip onSkipBackward,
-  }) async {
-    await _initialize();
-
-    if (!isStopped) {
-      throw PlayerInvalidStateException("The player must not be running.");
-    }
-
-    // Check the current codec is supported on this platform
-    if (!await isSupported(codec)) {
-      throw PlayerInvalidStateException(
-          'The selected codec is not supported on '
-          'this platform.');
-    }
-
-    _whenFinished = whenFinished;
-
-    // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
-    // We use FFmpeg for that task.
-    if ((Platform.isIOS) &&
-        ((codec == Codec.codecOpus) || (fm.fileExtension(path) == '.opus'))) {
-      var tempMediaFile =
-          TempMediaFile(await CodecConversions.opusToCafOpus(path));
-      _tempMediaFiles.add(tempMediaFile);
-      path = tempMediaFile.path;
-    }
-
-    // build the argument map
-    var args = <String, dynamic>{};
-    args['path'] = path;
-    // Flutter cannot transfer an enum to a native plugin.
-    // We use an integer instead
-    args['codec'] = codec.index;
-
-    await _invokeMethod('startPlayer', args);
-    playerState = PlayerState.isPlaying;
-  }
-
-  /// Plays the given [track]. [canSkipForward] and [canSkipBackward] must be
-  /// passed to provide information on whether the user can skip to the next
-  /// or to the previous song in the lock screen controls.
-  ///
-  /// This method should only be used if the player has been initialize
-  /// with the audio player specific features.
-  Future<void> startPlayerFromTrack(
-    Track track, {
-    TWhenFinished whenFinished,
-    TwhenPaused whenPaused,
-    TonSkip onSkipForward,
-    TonSkip onSkipBackward,
-  }) async {
-    assert(_tempMediaFiles.isEmpty);
-    final trackMap = await track.toMap();
-
-    _whenFinished = whenFinished;
-    this.whenPaused = whenPaused;
-    this.onSkipForward = onSkipForward;
-    this.onSkipBackward = onSkipBackward;
-    await _invokeMethod('startPlayerFromTrack', <String, dynamic>{
-      'track': trackMap,
-      'canPause': whenPaused != null,
-      'canSkipForward': onSkipForward != null,
-      'canSkipBackward': onSkipBackward != null,
-    }) as String;
-
-    playerState = PlayerState.isPlaying;
-  }
-
-  /// Stops playback.
-  Future<void> stopPlayer() async {
-    playerState = PlayerState.isStopped;
-
-    try {
-      closeDispositionStream(); // playerController is closed by this function
-      await _invokeMethod('stopPlayer', <String, dynamic>{}) as String;
-
-      if (_whenFinished != null) _whenFinished();
-      _deleteTempFiles();
-    } on Object catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  /// Pauses playback.
-  /// If you call this and the audio is not playing
-  /// a [PlayerInvalidStateException] will be thrown.
-  Future<void> pausePlayer() async {
-    if (playerState != PlayerState.isPlaying) {
-      throw PlayerInvalidStateException('Player is not playing.');
-    }
-    playerState = PlayerState.isPaused;
-
-    return await _invokeMethod('pausePlayer', <String, dynamic>{}) as String;
-  }
-
-  /// Resumes playback.
-  /// If you call this when audio is not paused
-  /// then a [PlayerInvalidStateException] will be thrown.
-  Future<void> resumePlayer() async {
-    if (playerState != PlayerState.isPaused) {
-      throw PlayerInvalidStateException('Player is not paused.');
-    }
-    playerState = PlayerState.isPlaying;
-    return await _invokeMethod('resumePlayer', <String, dynamic>{}) as String;
-  }
-
-  /// Moves the current playback position to the given offset in the
-  /// recording.
-  /// [offset] is the position in the recording to set the playback
-  /// location from.
-  /// TODO: can you call this before calling startPlayer?
-  Future<void> seekToPlayer(Duration offset) async {
-    await _initialize();
-    await _invokeMethod('seekToPlayer', <String, dynamic>{
-      'sec': offset.inMilliseconds,
-    }) as String;
-  }
-
-  /// Sets the playback volume
-  /// The [volume] must be in the range 0.0 to 1.0.
-  Future<void> setVolume(double volume) async {
-    await _initialize();
-    var indexedVolume = Platform.isIOS ? volume * 100 : volume;
-    if (volume < 0.0 || volume > 1.0) {
-      throw RangeError('Value of volume should be between 0.0 and 1.0.');
-    }
-
-    await _invokeMethod('setVolume', <String, dynamic>{
-      'volume': indexedVolume,
-    }) as String;
-  }
-
-  Future<void> _setSubscriptionDuration(Duration interval) async {
-    await _initialize();
-    await _invokeMethod('setSubscriptionDuration', <String, dynamic>{
-      'sec': interval.inSeconds.toDouble(),
-    }) as String;
+  Future<dynamic> _invokeMethod(
+      String methodName, Map<String, dynamic> args) async {
+    return await SoundPlayerPlugin().invokeMethod(_proxy, methodName, args);
   }
 }
 
 /// Class exists to hide internal methods from the public api
 class SoundPlayerProxy implements Proxy {
+  final Uuid _uuid = Uuid();
   final SoundPlayer _player;
 
   ///
@@ -497,10 +650,12 @@ class SoundPlayerProxy implements Proxy {
       _player._audioPlayerFinished(status);
 
   /// The OS has sent us a signal that the audio has been paused.
-  void onPaused() => _player._onPaused();
+  void onSystemPaused() => _player._onSystemPaused();
 
   /// The OS has sent us a signal that the audio has been resumed.
-  void onResume() => _player._onResumed();
+  void onSystemResumed() => _player._onSystemResumed();
+
+  String toString() => 'Proxy: ${_uuid.hashCode}';
 }
 
 /// The player was in an unexpected state when you tried

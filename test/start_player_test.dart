@@ -6,13 +6,14 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final List<MethodCall> log = <MethodCall>[];
+  final log = <MethodCall>[];
 
-  var player = SoundPlayer();
-  player.startPlayer('example/asset/samples/sample.acc',
-      whenFinished: () => print('finished'));
-  bool isInitialised = false;
-  bool isReleased = false;
+  var player = SoundPlayer.fromPath('example/asset/samples/sample.acc')
+    ..onFinished = (() => print('finished'))
+    ..start();
+
+  var isInitialised = false;
+  var isReleased = false;
   double subscriptionDuration;
   double volume;
   int seekPosition;
@@ -71,6 +72,7 @@ void main() {
         case "setActive":
           return true;
       }
+      return null;
     });
   });
 

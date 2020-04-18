@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
 import 'active_codec.dart';
-import 'common.dart';
 import 'main.dart';
 import 'media_path.dart';
 
@@ -15,7 +12,6 @@ class PlayerState {
   static final PlayerState _self = PlayerState._internal();
 
   bool _hushOthers = false;
-  bool _useTracks = false;
 
   StreamSubscription _playerSubscription;
   // StreamSubscription _playbackStateSubscription;
@@ -43,17 +39,13 @@ class PlayerState {
   /// the primary player
   SoundPlayer get playerModule => _playerModule;
 
-  /// Allows you to change the mode from using tracks
-  /// to not using tracks.
-  void useTracks({bool enabled}) => _useTracks = enabled;
-
   /// get the PlayStatus stream.
   Stream<PlaybackDisposition> get playStatusStream {
     return _playStatusController.stream;
   }
 
   /// [true] if the player can be started.
-  bool get canStart {
+  Future<bool> get canStart async {
     if (MediaPath().isFile ||
         MediaPath().isBuffer) // A file must be already recorded to play it
     {
@@ -61,7 +53,7 @@ class PlayerState {
     }
 
     // Disable the button if the selected codec is not supported
-    if (!ActiveCodec().decoderSupported) return false;
+    if (!(await playerModule.isSupported(ActiveCodec().codec))) return false;
 
     if (!isStopped) return false;
 
@@ -83,14 +75,7 @@ class PlayerState {
   bool get isPaused => playerModule != null && playerModule.isPaused;
 
   /// initialise the player.
-  void init() async {
-    _playerModule = SoundPlayer();
-
-    if (renetranceConcurrency) {
-      playerModule_2 = SoundPlayer();
-    }
-    ActiveCodec().playerModule = playerModule;
-  }
+  void init() async {}
 
   /// cancel all subscriptions.
   void cancelPlayerSubscriptions() {
@@ -148,129 +133,12 @@ class PlayerState {
     }
   }
 
-  /// Starts the playback from the begining.
-  Future<void> startPlayer({void Function() whenFinished}) async {
-    try {
-      //final albumArtPath =
-      //"https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_500kB.png";
-
-      String path;
-      Uint8List dataBuffer;
-      String audioFilePath;
-      if (MediaPath().isAsset) {
-        dataBuffer =
-            (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
-                .buffer
-                .asUint8List();
-      } else if (MediaPath().isFile) {
-        // Do we want to play from buffer or from file ?
-        if (fileExists(MediaPath().pathForCodec(ActiveCodec().codec))) {
-          audioFilePath = MediaPath().pathForCodec(ActiveCodec().codec);
-        }
-      } else if (MediaPath().isBuffer) {
-        // Do we want to play from buffer or from file ?
-        if (fileExists(MediaPath().pathForCodec(ActiveCodec().codec))) {
-          dataBuffer =
-              await _makeBuffer(MediaPath().pathForCodec(ActiveCodec().codec));
-          if (dataBuffer == null) {
-            throw Exception('Unable to create the buffer');
-          }
-        }
-      } else if (MediaPath().isExampleFile) {
-        // We have to play an example audio file loaded via a URL
-        audioFilePath = exampleAudioFilePath;
-      }
-
-      // Check whether the user wants to use the audio player features
-      if (_useTracks) {
-        String albumArtUrl;
-        String albumArtAsset;
-        if (MediaPath().isExampleFile) {
-          albumArtUrl = albumArtPath;
-        } else {
-          if (Platform.isIOS) {
-            albumArtAsset = 'AppIcon';
-          } else if (Platform.isAndroid) {
-            albumArtAsset = 'AppIcon.png';
-          }
-        }
-
-        Track track;
-
-        if (dataBuffer != null) {
-          track = Track.fromBuffer(
-            dataBuffer: dataBuffer,
-            codec: ActiveCodec().codec,
-            trackTitle: "This is a record",
-            trackAuthor: "from flutter_sound",
-            albumArtUrl: albumArtUrl,
-            albumArtAsset: albumArtAsset,
-          );
-        } else {
-          track = Track(
-            trackPath: audioFilePath,
-            codec: ActiveCodec().codec,
-            trackTitle: "This is a record",
-            trackAuthor: "from flutter_sound",
-            albumArtUrl: albumArtUrl,
-            albumArtAsset: albumArtAsset,
-          );
-        }
-
-        await playerModule.startPlayerFromTrack(
-          track,
-          /*canSkipForward:true, canSkipBackward:true,*/
-          whenFinished: () {
-            print('I hope you enjoyed listening to this song');
-            if (whenFinished != null) whenFinished();
-          },
-          onSkipBackward: () {
-            print('Skip backward');
-            stopPlayer();
-            startPlayer();
-          },
-          onSkipForward: () {
-            print('Skip forward');
-            stopPlayer();
-            startPlayer();
-          },
-        );
-      } else {
-        if (audioFilePath != null) {
-          await playerModule.startPlayer(audioFilePath,
-              codec: ActiveCodec().codec, whenFinished: () {
-            if (whenFinished != null) whenFinished();
-          });
-        } else if (dataBuffer != null) {
-          await playerModule.startPlayerFromBuffer(dataBuffer,
-              codec: ActiveCodec().codec, whenFinished: () {
-            print('Play finished');
-            if (whenFinished != null) whenFinished();
-          });
-        }
-      }
-      if (renetranceConcurrency && !MediaPath().isExampleFile) {
-        var dataBuffer =
-            (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
-                .buffer
-                .asUint8List();
-        await playerModule_2.startPlayerFromBuffer(dataBuffer,
-            codec: ActiveCodec().codec, whenFinished: () {
-          print('Secondary Play finished');
-        });
-      }
-
-      print('startPlayer: $path');
-      // await flutterSoundModule.setVolume(1.0);
-    } on Object catch (err) {
-      print('error: $err');
-    }
-  }
-
   /// stop the player.
   Future<void> stopPlayer() async {
     try {
-      await playerModule.stopPlayer();
+      if (playerModule != null) {
+        await playerModule.stop();
+      }
 
       /// signal
       _playStatusController.add(PlaybackDisposition.zero());
@@ -283,7 +151,7 @@ class PlayerState {
     }
     if (renetranceConcurrency) {
       try {
-        await playerModule_2.stopPlayer();
+        await playerModule_2.stop();
       } on Object catch (err) {
         print('error: $err');
       }
@@ -293,36 +161,20 @@ class PlayerState {
   /// toggles between a paused and resumed state of play.
   void pauseResumePlayer() {
     if (playerModule.isPlaying) {
-      playerModule.pausePlayer();
+      playerModule.pause();
       if (renetranceConcurrency) {
-        playerModule_2.pausePlayer();
+        playerModule_2.pause();
       }
     } else {
-      playerModule.resumePlayer();
+      playerModule.resume();
       if (renetranceConcurrency) {
-        playerModule_2.resumePlayer();
+        playerModule_2.resume();
       }
     }
   }
 
   /// position the playback point
   void seekToPlayer(Duration offset) async {
-    await playerModule.seekToPlayer(offset);
-  }
-
-  // In this simple example, we just load a file in memory.
-  // This is stupid but just for demonstration  of startPlayerFromBuffer()
-  Future<Uint8List> _makeBuffer(String path) async {
-    try {
-      if (!fileExists(path)) return null;
-      var file = File(path);
-      file.openRead();
-      var contents = await file.readAsBytes();
-      print('The file is ${contents.length} bytes long.');
-      return contents;
-    } on Object catch (e) {
-      print(e);
-      return null;
-    }
+    await playerModule.seekTo(offset);
   }
 }

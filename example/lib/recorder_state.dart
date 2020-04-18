@@ -95,10 +95,12 @@ class RecorderState {
               (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
                   .buffer
                   .asUint8List();
-          await PlayerState().playerModule_2.startPlayerFromBuffer(dataBuffer,
-              codec: ActiveCodec().codec, whenFinished: () {
-            print('Secondary Play finished');
-          });
+          PlayerState().playerModule_2 =
+              SoundPlayer.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
+          PlayerState().playerModule_2.onFinished =
+              () => print('Secondary Play finished');
+
+          await PlayerState().playerModule_2.start();
         } on Object catch (e) {
           print('startRecorder error: $e');
           rethrow;

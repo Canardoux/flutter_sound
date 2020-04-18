@@ -23,7 +23,9 @@ class ActiveCodec {
   /// Set the active code for the the recording and player modules.
   void setCodec(Codec codec) async {
     _encoderSupported = await recorderModule.isSupported(codec);
-    _decoderSupported = await playerModule.isSupported(codec);
+    if (playerModule != null) {
+      _decoderSupported = await playerModule.isSupported(codec);
+    }
 
     _codec = codec;
   }

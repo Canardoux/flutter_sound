@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:intl/intl.dart';
@@ -72,4 +73,20 @@ bool fileExists(String path) {
 /// checks if the given directory exists.
 bool directoryExists(String path) {
   return Directory(path).existsSync();
+}
+
+/// In this simple example, we just load a file in memory.
+/// This is stupid but just for demonstration  of startPlayerFromBuffer()
+Future<Uint8List> makeBuffer(String path) async {
+  try {
+    if (!fileExists(path)) return null;
+    var file = File(path);
+    file.openRead();
+    var contents = await file.readAsBytes();
+    print('The file is ${contents.length} bytes long.');
+    return contents;
+  } on Object catch (e) {
+    print(e);
+    return null;
+  }
 }
