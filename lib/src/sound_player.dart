@@ -19,9 +19,9 @@ import 'dart:convert' hide Codec;
 import 'dart:io';
 import 'dart:typed_data' show Uint8List;
 
-import 'package:flutter_sound/src/android/android_audio_focus_gain.dart';
 import 'package:uuid/uuid.dart';
 
+import 'android/android_audio_focus_gain.dart';
 import 'codec.dart';
 import 'ios/ios_session_category.dart';
 import 'ios/ios_session_category_option.dart';
@@ -29,6 +29,7 @@ import 'ios/ios_session_mode.dart';
 import 'playback_disposition.dart';
 import 'plugins/base_plugin.dart';
 import 'plugins/sound_player_plugin.dart';
+import 'plugins/sound_player_track_plugin.dart';
 import 'util/codec_conversions.dart';
 import 'util/file_management.dart' as fm;
 import 'util/temp_media_file.dart';
@@ -67,7 +68,7 @@ class SoundPlayer {
   TonEventWithCause _onResumed;
   TonEventWithCause _onStarted;
   TonEventWithCause _onStopped;
-  bool _showOSUI = false;
+  final bool _showOSUI;
 
   /// The title of this track
   String trackTitle;
@@ -106,6 +107,10 @@ class SoundPlayer {
   /// from the public api.
   SoundPlayerProxy _proxy;
 
+  /// The showOSUI passed to the constructor controls which
+  /// plugin we use for the life of this SoundPlayer.
+  BasePlugin _activePlugin;
+
   final List<TempMediaFile> _tempMediaFiles = [];
 
   ///
@@ -114,22 +119,43 @@ class SoundPlayer {
       StreamController<PlaybackDisposition>();
 
   /// The [uri] of the file to download and playback
-  /// The [codec] of the file the [uri] points to.
-  SoundPlayer.fromPath(this._uri, {Codec codec = Codec.defaultCodec}) {
+  /// The [codec] of the file the [uri] points to. The default
+  /// value is [Codec.codecAac].
+  /// If [showOSUI] is [true] then we will displays the OS's builtin
+  /// audio player allowing you to control the audio from the lock screen.
+  /// By default [showOSUI] is false.
+  SoundPlayer.fromPath(this._uri,
+      {Codec codec = Codec.defaultCodec, bool showOSUI = false})
+      : _showOSUI = showOSUI {
     _internal(codec);
   }
 
-  /// Create a audio play from a URI
+  /// Create a audio play from an in memory buffer.
+  /// The [dataBuffer] contains the media to be played.
+  /// The [codec] of the file the [dataBuffer] points to. The default
+  /// value is [Codec.codecAac].
+  /// If [showOSUI] is [true] then we will displays the OS's builtin
+  /// audio player allowing you to control the audio from the lock screen.
+  /// By default [showOSUI] is false.
   SoundPlayer.fromBuffer(Uint8List dataBuffer,
-      {Codec codec = Codec.defaultCodec})
-      : _dataBuffer = dataBuffer {
+      {Codec codec = Codec.defaultCodec, bool showOSUI = false})
+      : _dataBuffer = dataBuffer,
+        _showOSUI = showOSUI {
     _internal(codec);
   }
 
   void _internal(Codec codec) {
     _codec = codec;
     _proxy = SoundPlayerProxy(this);
-    SoundPlayerPlugin().register(_proxy);
+
+    if (_showOSUI == true) {
+      _activePlugin = SoundPlayerTrackPlugin();
+    } else {
+      _activePlugin = SoundPlayerPlugin();
+    }
+
+    _activePlugin.register(_proxy);
+
     print('regisetered $_proxy');
   }
 
@@ -155,7 +181,8 @@ class SoundPlayer {
       closeDispositionStream(); // playerController is closed by this function
 
       await _invokeMethod('releaseMediaPlayer', <String, dynamic>{});
-      SoundPlayerPlugin().release(_proxy);
+      _activePlugin.release(_proxy);
+      // SoundPlayerTrackPlugin().release(_proxy);
 
       _deleteTempFiles();
     }
@@ -223,7 +250,7 @@ class SoundPlayer {
     // We use an integer instead
     args['codec'] = _codec.index;
 
-    if (showOSUI) {
+    if (_showOSUI) {
       await _startPlayerOnOSUI(path);
     } else {
       await _invokeMethod('startPlayer', args);
@@ -317,16 +344,20 @@ class SoundPlayer {
 
   /// Moves the current playback position to the given offset in the
   /// recording.
-  /// [offset] is the position in the recording to set the playback
+  /// [position] is the position in the recording to set the playback
   /// location from.
-  /// TODO: can you call this before calling startPlayer?
-  Future<void> seekTo(Duration offset) async {
+  /// You may call this before [start] or whilst the audio is playing.
+  /// If you call [seekTo] before calling [start] then when you call
+  /// [start] we will start playing the recording from the [position]
+  /// passed to [seekTo].
+  Future<void> seekTo(Duration position) async {
     await _initialize();
+
     if (!isPlaying) {
-      _seekTo = offset;
+      _seekTo = position;
     } else {
       await _invokeMethod('seekToPlayer', <String, dynamic>{
-        'sec': offset.inMilliseconds,
+        'sec': position.inMilliseconds,
       }) as String;
     }
   }
@@ -439,23 +470,6 @@ class SoundPlayer {
     _tempMediaFiles.clear();
   }
 
-  /// If [true] then we will displays the OS's builtin audio player
-  /// allowing you to control the audio from the lock screen.
-  bool get showOSUI => _showOSUI;
-
-  /// If [true] then we will displays the OS's builtin audio player
-  /// allowing you to control the audio from the lock screen.
-  /// It is invalid to change this value whilst audio is playing or paused.
-  /// You must call this method before calling [start] or after
-  /// calling [stop].
-  set showOSUI(bool showOSUI) {
-    if (!isStopped) {
-      throw PlayerInvalidStateException(
-          'You can only change showOSUI whilst the player is stopped');
-    }
-    _showOSUI = showOSUI;
-  }
-
   /// Instructs the OS to reduce the volume of other audio
   /// whilst we play this audio file.
   /// The exact effect of this is OS dependant.
@@ -495,6 +509,16 @@ class SoundPlayer {
   /// handles a resume coming up from the player
   void _onSystemResumed() {
     if (_onResumed != null) _onResumed(wasUser: true);
+  }
+
+  /// handles a skip forward coming up from the player
+  void _onSystemSkipForward() {
+    if (_onSkipForward != null) _onSkipForward();
+  }
+
+  /// handles a skip forward coming up from the player
+  void _onSystemSkipBackwards() {
+    if (_onSkipBackward != null) _onSkipBackward();
   }
 
   /// Pass a callback if you want to be notified
@@ -663,7 +687,7 @@ class SoundPlayer {
 
   Future<dynamic> _invokeMethod(
       String methodName, Map<String, dynamic> args) async {
-    return await SoundPlayerPlugin().invokeMethod(_proxy, methodName, args);
+    return await _activePlugin.invokeMethod(_proxy, methodName, args);
   }
 }
 
@@ -691,6 +715,22 @@ class SoundPlayerProxy implements Proxy {
   void onSystemResumed() => _player._onSystemResumed();
 
   String toString() => 'Proxy: ${_uuid.hashCode}';
+
+  /// The OS track UI skip forward button has been tapped.
+  void skipForward() => _player._onSystemSkipForward();
+
+  /// The OS track UI skip backwards button has been tapped.
+  void skipBackward() => _player._onSystemSkipBackwards();
+
+  /// sent from TrackPlayer.java - no doco on what it means
+  /// Only appears to be sent once on startup and has a value
+  /// of 1.0 or 0.0.
+  /// My best guess its intended to indicate successful registration
+  /// of the MediaBrowserHelper.
+  /// It also appears to be cycling where I pause/resume.
+  void updatePlaybackState(double value) {
+    print('value from updatePlaybackState $value');
+  }
 }
 
 /// The player was in an unexpected state when you tried
