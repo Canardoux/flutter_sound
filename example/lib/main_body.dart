@@ -121,6 +121,7 @@ class _MainBodyState extends State<MainBody> {
 
     if (canPlay) {
       player = await createSoundPlayer();
+      PlayerState().playerModule = player;
       setState(() {});
     }
     return player;
@@ -161,7 +162,7 @@ class _MainBodyState extends State<MainBody> {
       if (player != null) {
         // Check whether the user wants to use the audio player features
         if (_useOSUI) {
-          player.showOSUI;
+          player.showOSUI = true;
         }
         player.trackTitle = "This is a record";
         player.trackAuthor = "from flutter_sound";
