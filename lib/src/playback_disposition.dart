@@ -2,7 +2,7 @@
 /// playback as playback proceeds.
 class PlaybackDisposition {
   /// The duration of the media.
-  final Duration duration;
+  Duration duration;
 
   /// The current position within the media
   /// that we are playing.
@@ -23,7 +23,12 @@ class PlaybackDisposition {
             milliseconds: double.parse(json['duration'] as String).toInt()),
         position = Duration(
             milliseconds:
-                double.parse(json['current_position'] as String).toInt());
+                double.parse(json['current_position'] as String).toInt()) {
+    /// looks like the android subsystem can generate -ve values
+    /// during some transitions so we protect ourselves.
+    if (duration.inMilliseconds < 0) duration = Duration.zero;
+    if (position.inMilliseconds < 0) position = Duration.zero;
+  }
 
   @override
   String toString() {
