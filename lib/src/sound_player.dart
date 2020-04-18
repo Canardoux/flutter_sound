@@ -461,7 +461,7 @@ class SoundPlayer {
   /// The exact effect of this is OS dependant.
   /// The effect is only applied when we start the audio play.
   /// Changing this value whilst audio is play will have no affect.
-  bool hushOthers;
+  bool hushOthers = false;
 
   /// Apply/Remoe the hush other setting.
   void _applyHush() async {
