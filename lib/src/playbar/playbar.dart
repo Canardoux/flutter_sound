@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/src/util/stop_watch.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../flutter_sound.dart';
 import '../codec.dart';
 import '../util/format.dart';
+import '../util/stop_watch.dart';
 import 'grayed_out.dart';
 import 'local_context.dart';
 import 'playbar_slider.dart';
@@ -139,15 +139,12 @@ class _PlayBarState extends State<PlayBar> {
     if (_soundPlayer != null) {
       _soundPlayer.onStarted = ({wasUser}) => _loading = false;
       _soundPlayer.onStopped = ({wasUser}) => playState = PlayState.stopped;
-      _soundPlayer.onFinished = () => onFinished();
+      _soundPlayer.onFinished =
+          () => setState(() => playState = PlayState.stopped);
 
       /// pipe the new sound players stream to our local controller.
       _soundPlayer.dispositionStream().listen(_localController.add);
     }
-  }
-
-  void onFinished() {
-    setState(() => playState = PlayState.stopped);
   }
 
   @override
