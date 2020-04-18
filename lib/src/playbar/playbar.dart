@@ -105,11 +105,12 @@ class _PlayBarState extends State<PlayBar> {
   /// If we don't the platform specific code keeps running
   /// and sending methodCalls to a slot that no longe exists.
   @override
-  void reassemble() {
+  void reassemble() async {
     super.reassemble();
     if (_soundPlayer != null) {
-      _soundPlayer.stop();
-      playState = PlayState.stopped;
+      if (playState != PlayState.stopped) {
+        await stop();
+      }
     }
   }
 
@@ -144,14 +145,16 @@ class _PlayBarState extends State<PlayBar> {
   }
 
   Widget _buildPlayBar() {
+    var rows = <Widget>[];
+    rows.add(
+        Row(children: [_buildPlayButton(), _buildDuration(), _buildSlider()]));
+    if (widget._showTitle) rows.add(_buildTitle());
+
     return Container(
         decoration: BoxDecoration(
             color: Colors.grey,
             borderRadius: BorderRadius.circular(PlayBar._barHeight / 2)),
-        child: Column(children: [
-          Row(children: [_buildPlayButton(), _buildDuration(), _buildSlider()]),
-          if (widget._showTitle) _buildTitle()
-        ]));
+        child: Column(children: rows));
   }
 
   /// Returns the players current state.
