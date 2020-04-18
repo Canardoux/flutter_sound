@@ -148,7 +148,7 @@ class PlayerState {
   }
 
   /// position the playback point
-  void seekToPlayer(Duration offset) async {
-    await playerModule.seekTo(offset);
+  void seekToPlayer(Duration position) async {
+    await playerModule.seekTo(position);
   }
 }
