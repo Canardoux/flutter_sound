@@ -28,6 +28,13 @@ class PlaybackDisposition {
     /// during some transitions so we protect ourselves.
     if (duration.inMilliseconds < 0) duration = Duration.zero;
     if (position.inMilliseconds < 0) position = Duration.zero;
+
+    /// when playing an mp3 I've seen occurances where the position is after
+    /// the duration. So I've added this protection.
+    if (position > duration) {
+      print('Fixed position > duration $position $duration');
+      duration = position;
+    }
   }
 
   @override
