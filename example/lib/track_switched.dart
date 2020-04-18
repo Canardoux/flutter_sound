@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'grayed_out.dart';
 import 'player_state.dart';
 
 /// UI widget from the TrackPlayer specific settings

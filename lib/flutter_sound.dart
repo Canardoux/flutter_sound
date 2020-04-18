@@ -16,5 +16,3 @@ export 'src/sound_recorder.dart'
         RecorderException,
         RecorderRunningException,
         CodecNotSupportedException;
-
-export 'src/track.dart';
