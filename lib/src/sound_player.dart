@@ -303,15 +303,19 @@ class SoundPlayer {
 
   /// Stops playback.
   Future<void> stop() async {
-    try {
-      closeDispositionStream(); // playerController is closed by this function
-      await _invokeMethod('stopPlayer', <String, dynamic>{}) as String;
+    if (isStopped) {
+      print("stop() was called when the player wasn't playing. Ignored");
+    } else {
+      try {
+        closeDispositionStream(); // playerController is closed by this function
+        await _invokeMethod('stopPlayer', <String, dynamic>{}) as String;
 
-      playerState = PlayerState.isStopped;
-      if (_onStopped != null) _onStopped(wasUser: false);
-    } on Object catch (e) {
-      print(e);
-      rethrow;
+        playerState = PlayerState.isStopped;
+        if (_onStopped != null) _onStopped(wasUser: false);
+      } on Object catch (e) {
+        print(e);
+        rethrow;
+      }
     }
   }
 
