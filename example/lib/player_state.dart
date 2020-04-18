@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter_sound/flutter_sound.dart';
 
@@ -17,7 +16,7 @@ class PlayerState {
   // StreamSubscription _playbackStateSubscription;
 
   /// the primary player
-  SoundPlayer _playerModule;
+  SoundPlayer playerModule;
 
   /// secondary player used to demo two audio streams playing.
   SoundPlayer playerModule_2; // Used if REENTRANCE_CONCURENCY
@@ -35,12 +34,6 @@ class PlayerState {
   /// returns [true] if hushOthers (reduce other players volume)
   /// is enabled.
   bool get hushOthers => _hushOthers;
-
-  /// the primary player
-  SoundPlayer get playerModule => _playerModule;
-
-  /// set the current player module.
-  set playerModule(SoundPlayer player) => _playerModule = player;
 
   /// get the PlayStatus stream.
   Stream<PlaybackDisposition> get playStatusStream {
