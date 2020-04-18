@@ -173,7 +173,7 @@ class SoundPlayer {
   /// call this method once you are down with the player
   /// so that it can release all of the attached resources.
   Future<void> release() async {
-    print('releaseing $_proxy');
+    print('releasing $_proxy');
     if (_initialized) {
       _initialized = false;
       // Stop the player playback before releasing
