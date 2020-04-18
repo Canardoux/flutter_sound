@@ -31,6 +31,7 @@
 @property(nonatomic, retain) NSString *author;
 @property(nonatomic, retain) NSString *albumArtUrl;
 @property(nonatomic, retain) NSString *albumArtAsset;
+@property(nonatomic, retain) NSString *albumArtFile;
 @property(nonatomic, retain) FlutterStandardTypedData *dataBuffer;
 
 - (id)initFromJson:(NSString *)jsonString;

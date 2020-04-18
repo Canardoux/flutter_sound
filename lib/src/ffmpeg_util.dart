@@ -17,7 +17,7 @@
 import 'dart:async';
 import 'dart:core';
 
-import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
+import 'package:flutter_sound/flutter_ffmpeg.dart';
 
 /// Utility class for Flutter Sound.
 class FFMpegUtil {

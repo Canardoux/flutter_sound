@@ -24,6 +24,7 @@ public class Track {
     private String author;
     private String albumArtUrl;
     private String albumArtAsset;
+    private String albumArtFile;
 
     private byte[] dataBuffer;
     private Integer bufferCodecIndex;
@@ -34,6 +35,7 @@ public class Track {
         this.title = (String) map.get("title");
         this.albumArtUrl = (String) map.get("albumArtUrl");
         this.albumArtAsset = (String) map.get("albumArtAsset");
+        this.albumArtFile = (String) map.get("albumArtFile");
         this.dataBuffer = (byte[]) map.get("dataBuffer");
         this.bufferCodecIndex = (int) map.get("bufferCodecIndex");
     }
@@ -77,6 +79,15 @@ public class Track {
     public void setAlbumArtAsset(String albumArtAsset) {
         this.albumArtAsset = albumArtAsset;
     }
+
+    public String getAlbumArtFile() {
+        return albumArtFile;
+    }
+
+    public void setAlbumArtFile(String albumArtAsset) {
+        this.albumArtFile = albumArtFile;
+    }
+
 
     public byte[] getDataBuffer() {
         return dataBuffer;

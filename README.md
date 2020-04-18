@@ -9,31 +9,22 @@ This plugin provides simple recorder and player functionalities for both `androi
 This plugin handles file from remote url.
 This plugin can handle playback stream from native (To sync exact time with bridging).
 
-![flauto](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
+![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
 
-## Breaking News
-
-- `3.0.0` release has breaking features have been added by the work on code name `flauto` in [#243](https://github.com/dooboolab/flutter_sound/pull/243)
-  - OGG/OPUS support on iOS
-  - Playing in lock screen
-  - Playing in notification
-  - Support tracking
-    > Please honor all wonderful contributors [Larpoux](https://github.com/Larpoux), [bsutton](https://github.com/bsutton), [salvatore373](https://github.com/salvatore373) :tada:!
 
 ## Free Read
 
 [Medium Blog](https://medium.com/@dooboolab/flutter-sound-plugin-audio-recorder-player-e5a455a8beaf)
 
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
 
 ## Install
 
 For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).
 
-Add `flutter_sound` as a dependency in pubspec.yaml. The actual version is `flauto: 3.1.6`
+Add `flutter_sound` as a dependency in pubspec.yaml. The actual version is `^flutter_sound: 4.0.0-beta.2` .
+Be aware that **it is not released version**, and probably not good to use it in a released App.
+The API is actually to stabilized and will change very soon.
+The actual released App is `flutter_sound: ^3.1.8`
 
 The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
 
@@ -41,43 +32,20 @@ The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound)
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sound: ^3.1.0
+  flutter_sound: ^4.0.0-beta.2
 ```
 
 ### FFmpeg
 
-flutter_sound makes use of flutter_ffmpeg.
-Please, look to [flutter_ffmpeg documentation](https://pub.dev/packages/flutter_ffmpeg) to see how to add it to your App.
+flutter_sound makes use of flutter_ffmpeg. In contrary to Flutter Sound Version 3.x.x, in Version 4.0.x your App can be built without any Flutter-FFmpeg dependency.
 
-- On iOS you will have to enter something like that in your `Podfile`
+If you come from Flutter Sound Version 3.x.x, you must remove this dependency from your ```pubspec.yaml```.
+You must also delete the line ```ext.flutterFFmpegPackage = 'audio-lts'``` from your ```android/build.gradle```
+and the special line ```pod name+'/audio-lts', :path => File.join(symlink, 'ios')``` in your Podfile.
+If you do not do that, you will have duplicates modules during your App building.
 
-  ```
-  # Prepare symlinks folder. We use symlinks to avoid having Podfile.lock
-  # referring to absolute paths on developers' machines.
-  system('rm -rf .symlinks')
-  system('mkdir -p .symlinks/plugins')
-  plugin_pods = parse_KV_file('../.flutter-plugins')
-  plugin_pods.each do |name, path|
-    symlink = File.join('.symlinks', 'plugins', name)
-    File.symlink(path, symlink)
-    if name == 'flutter_ffmpeg'
-        pod name+'/audio-lts', :path => File.join(symlink, 'ios')
-    else
-        pod name, :path => File.join(symlink, 'ios')
-    end
-  end
-  ```
-
-- On Android you will have to enter the following line in your `android/build.gradle` file.
-
-
-  Add the line to the very end of your `build.gradle` file.
-
-  ```
-  ext.flutterFFmpegPackage = 'audio-lts'
-  ```
-
-  Note: there are two `build.gradle` files the `android` directory tree. Make certain you modify correct one as noted above.
+```flutter_ffmpeg audio-lts``` is now embedding inside flutter_sound. If your App needs to use FFmpeg, you must use the embedded version inside flutter_sound
+instead of adding a new dependency in your pubspec.yaml.
 
 
 ## Post Installation
@@ -539,6 +507,7 @@ The `Track` class is provided by the flutter_sound package. Its constructor take
 - `trackTitle`: the `String` to display in the notification as the title of the track;
 - `trackAuthor` the `String` to display in the notification as the name of the author of the track;
 - `albumArtUrl` a `String` representing the URL that points to the image to display in the notification as album art.
+- `albumArtFile`  a `String` representing a local file that points to the image to display in the notification as album art.
 - or `albumArtAsset` : the name of an asset to show in the nofitication
 
 ```dart
@@ -562,6 +531,13 @@ Track track = new Track(
         albumArtUrl: "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_1MB.png", // An example image
 );
 ```
+
+You can specify just one field for the Album Art to display on the lock screen. Either :
+- albumArtUrl
+- albumArtFile
+- albumArtFile
+
+If no Album Art field is specified, Flutter Sound will try to display the App icon.
 
 ## Informations on a record
 

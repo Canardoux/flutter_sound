@@ -335,7 +335,7 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
         // The caller specify an asset to be used.
         // Probably good in the future to allow the caller to specify the image itself, and not a resource.
-        if ((track.albumArtUrl != nil) && ([track.albumArtUrl class] != [NSNull class])   )
+        if ((track.albumArtUrl != nil) && ([track.albumArtUrl class] != [NSNull class])   )         // The albumArt is accessed in a URL
         {
                 // Retrieve the album art for the
                 // current track .
@@ -347,9 +347,26 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                         [songInfo setObject:albumArt forKey:MPMediaItemPropertyArtwork];
                 }
         } else
-        if ((track.albumArtAsset) && ([track.albumArtAsset class] != [NSNull class])   )
+        if ((track.albumArtAsset) && ([track.albumArtAsset class] != [NSNull class])   )        // The albumArt is an Asset
         {
                 UIImage* artworkImage = [UIImage imageNamed: track.albumArtAsset];
+                if (artworkImage != nil)
+                {
+                        MPMediaItemArtwork* albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
+                        [songInfo setObject:albumArt forKey: MPMediaItemPropertyArtwork];
+                }
+        } else
+        if ((track.albumArtFile) && ([track.albumArtFile class] != [NSNull class])   )          //  The AlbumArt is a File
+        {
+                UIImage* artworkImage = [UIImage imageWithContentsOfFile: track.albumArtFile];
+                if (artworkImage != nil)
+                {
+                        MPMediaItemArtwork* albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
+                        [songInfo setObject:albumArt forKey: MPMediaItemPropertyArtwork];
+                }
+        } else // Nothing specified. We try to use the App Icon
+        {
+                UIImage* artworkImage = [UIImage imageNamed: @"AppIcon"];
                 if (artworkImage != nil)
                 {
                         MPMediaItemArtwork* albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];

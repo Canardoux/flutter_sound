@@ -1,8 +1,28 @@
+## 4.0.0-beta.2
+
+- Add a new parameter in the Track structure : albumArtFile
+
+## 4.0.0-beta.1
+
+- Adds pedantic lints and major refactoring of example with bug fixes. [#279](https://github.com/dooboolab/flutter_sound/pull/279)
+- Native code is directely linked with FFmpeg. Flutter Sound App does not need any more to depends on flutter_ffmpeg [#265](https://github.com/dooboolab/flutter_sound/issues/265) and [273](https://github.com/dooboolab/flutter_sound/issues/273)
+
+##3.1.10
+
+- Trying to catch Android crash during a dirty Timer. [#289](https://github.com/dooboolab/flutter_sound/issues/289)
+
+## 3.1.9
+
+- Trying to fix the Android crash when AndroidActivity is null [#296](https://github.com/dooboolab/flutter_sound/issues/296)
+
+## 3.1.8
+
+- Fix a bug ('async') when the app forget to initalize its Flutter Sound module. [#287](https://github.com/dooboolab/flutter_sound/issues/287)
 
 ## 3.1.7
 
 - Codec PCM for recorder on iOS
-- Optional argument ```requestPermission``` before ```startRecorder()``` so that the App can control itself the recording permissions.
+- Optional argument ```requestPermission``` before ```startRecorder()``` so that the App can control itself the recording permissions. [#283](https://github.com/dooboolab/flutter_sound/pull/283)
 
 
 ## 3.1.6+1
