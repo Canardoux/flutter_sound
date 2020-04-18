@@ -24,14 +24,17 @@ class _PlayerSliderState extends State<PlayerSlider> {
         initialData: PlaybackDisposition.zero(),
         builder: (context, snapshot) {
           var playStatus = snapshot.data;
-          var duration = playStatus.duration.inSeconds.toDouble();
-          var position = playStatus.position.inSeconds.toDouble();
+          var duration = playStatus.duration.inMilliseconds.toDouble();
+          var position = playStatus.position.inMilliseconds.toDouble();
+          print('Slider duration: $duration $position');
           return Container(
               height: 56.0,
               child: Slider(
                   value: min(position, duration),
                   min: 0.0,
                   max: duration,
+
+                  /// user has moved the slider.
                   onChanged: (value) async {
                     await PlayerState()
                         .seekToPlayer(Duration(milliseconds: value.toInt()));
