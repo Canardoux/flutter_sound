@@ -111,6 +111,8 @@ class _PlayBarState extends State<PlayBar> {
       if (playState != PlayState.stopped) {
         await stop();
       }
+      _soundPlayer.release();
+      _soundPlayer = null;
     }
   }
 
@@ -148,7 +150,7 @@ class _PlayBarState extends State<PlayBar> {
     var rows = <Widget>[];
     rows.add(
         Row(children: [_buildPlayButton(), _buildDuration(), _buildSlider()]));
-    if (widget._showTitle) rows.add(_buildTitle());
+    if (widget._showTitle && _soundPlayer != null) rows.add(_buildTitle());
 
     return Container(
         decoration: BoxDecoration(
