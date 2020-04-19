@@ -5,9 +5,29 @@
 <p align="left">
   <a href="https://pub.dartlang.org/packages/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square"></a>
 </p>
-This plugin provides simple recorder and player functionalities for both `android` and `ios` platforms. This only supports default file extension for each platform.
-This plugin handles file from remote url.
-This plugin can handle playback stream from native (To sync exact time with bridging).
+
+
+This package provides audio recording and playback functionalities for both `android` and `ios` platforms.
+
+Flutter Sound provides both an api, that you can use with your own UI, and  recording and playback widgets.
+
+Flutter Sound is also able to display the standard OS audio player and which allows user to control the audio from their lock screen.
+
+The key classes are:
+
+## Api classes
+
+SoundPlayer - plays audio
+
+SoundRecorder - records audio
+
+## Wdigets
+
+Playbar - displays an HTML 5 style audio controller
+
+Recorder - displays a recording interface.
+
+Note: there are some limitations on the supported codecs. See the [codec] section below.
 
 ![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
 
@@ -71,6 +91,138 @@ instead of adding a new dependency in your pubspec.yaml.
 ## Migration Guide
 
 To migrate to `3.0.0` you must migrate your Android app to Android X by following the [Migrating to AndroidX Guide](https://developer.android.com/jetpack/androidx/migrate).
+
+## SoundPlayer
+The SoundPlayer class is primarly design to play back audio without display any UI.
+
+If you need a UI to allow your user to control playback you have three options:
+
+1) use the showOSUI parametr on the SoundPlayer constructore. 
+This will display the OS specific Audio player.
+
+2) Use Flutter Sound's Playbar which provide a HTML5 like audio player UI
+
+3) Use the SoundPlayer's apis to role your own widget. You can start with the Playbar code as an example of how to do this.
+
+You can view details on the API at [pub.dev](https://pub.dev/documentation/flutter_sound/latest/)
+
+## Play audio from an asset
+
+To play audio from a project asset copy the file to your asset directory in the root of your project
+
+```asset/sample.acc```
+
+Add the asset to the 'asset' section of your pubspec.yaml
+
+```
+flutter:
+  assets:
+  - sample.acc
+```
+
+Now play the file.
+
+```dart
+var player = SoundPlayer.fromPath('sample.aac');
+player.start();
+```
+
+If you need to play a file with a codec other than aac then you MUST pass the codec.
+
+```dart
+var player = SoundPlayer.fromPath('sample.mp3'
+	, codec:Codec.codecMp3);
+player.start();
+```
+
+## Play audio from an external URL
+
+```dart
+var player = SoundPlayer.fromPath('https://some audio file'
+	, codec:Codec.codecMp3);
+player.start();
+```
+
+## Play audio from an in memory buffer 
+
+```dart
+Uint8List buffer = ....
+var player = SoundPlayer.fromBuffer(buffer
+	, codec:Codec.codecMp3);
+player.start();
+```
+
+## Display the OS Audio Player
+
+If you want to play the audio and have the OS Audio player displayed so the user can control the playback then use:
+
+```dart
+var player = SoundPlayer.fromPath('sample.aac', showOSUI:true);
+player.trackTitle = 'Reckless';
+player.trackAuthor = 'Flutter Sound';
+player.albumArtUrl = 'http://some image url';
+player.start();
+```
+Note how I snuck in the track details. If provided they will be displayed on the OS Audio Player.
+
+If you need to know when the playback finishes the hook the onFinish callback:
+
+```dart
+var player = SoundPlayer.fromPath('sample.aac');
+player.onFinished = () => print('playback finished');
+player.start();
+```
+There are a number of other callbacks you can use to recieve notifications as the playback proceeds such as:
+* onStarted
+* onStopped
+* onPaused
+* onResumed
+
+
+
+If you are building your own widget you might want to display a progress bar that displays the current progress position.
+
+The easiest way to do this is vai the Playbar but if you want to write your own then you will want to user the `dispositionStream` with a StreamBuilder.
+
+```dart
+
+class MyWidgetState
+{
+	
+	void initState()
+	{
+		super.initState();
+		var player = SoundPlayer.fromPath('sample.aac');
+	}
+
+	 Widget build() {
+    	 return Row(children:
+		 	[Button('Play' onTap: onPlay)
+		 		, StreamBuilder<PlaybackDisposition>(
+					stream: player.dispositionStream,
+					initialData: PlaybackDisposition.zero(),
+					builder: (context, snapshot) {
+					var disposition = snapshot.data;
+					return Slider(
+						max: disposition.duration.inMilliseconds.toDouble(),
+						value: disposition.position.inMilliseconds.toDouble(),
+						onChanged: (value) =>
+							player._seek(Duration(milliseconds: value.toInt())),
+					);
+            		}
+				))
+			]);
+      },
+    ));
+  
+  voi onPlay()
+  {
+	  player.start();
+  }
+}
+```  
+
+
 
 ## Methods
 
