@@ -53,12 +53,6 @@ class SoundPlayerTrackPlugin extends BasePlugin {
         connector.skipBackward();
         break;
 
-      /// TODO what does this
-      case 'updatePlaybackState':
-        var value = call.arguments['arg'] as double;
-        connector.updatePlaybackState(value);
-        break;
-
       default:
         throw ArgumentError('Unknown method ${call.method}');
     }
