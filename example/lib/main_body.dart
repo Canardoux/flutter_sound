@@ -261,7 +261,7 @@ class _MainBodyState extends State<MainBody> {
   Widget buildPlayBar() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: PlayBar.fromLoader(
+      child: Playbar.fromLoader(
         onLoad,
         showTitle: true,
       ),

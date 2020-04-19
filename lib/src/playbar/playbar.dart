@@ -24,7 +24,7 @@ typedef TonLoad = Future<SoundPlayer> Function();
 ///   a slider to indicate and change the current play position.
 ///   optionally displays the album title and track if the
 ///   [SoundPlayer] contains those details.
-class PlayBar extends StatefulWidget {
+class Playbar extends StatefulWidget {
   /// only codec support by android unless we have a minSdk of 29
   /// then OGG_VORBIS and OPUS are supported.
   static const Codec standardCodec = Codec.codecAac;
@@ -37,7 +37,7 @@ class PlayBar extends StatefulWidget {
   final SoundPlayer _player;
   final bool _showTitle;
 
-  /// [PlayBar.fromLoader] allows you to dynamically provide
+  /// [Playbar.fromLoader] allows you to dynamically provide
   /// a [SoundPlayer] when the user clicks the play
   /// button.
   /// You can cancel the play action by returning
@@ -50,14 +50,14 @@ class PlayBar extends StatefulWidget {
   /// If [enabled] is true (the default) then the Player will be enabled.
   /// If [enabled] is false then the player will be disabled and the user
   /// will not be able to click the play button.
-  PlayBar.fromLoader(TonLoad onLoad,
+  Playbar.fromLoader(TonLoad onLoad,
       {bool showTitle = false, bool enabled = true})
       : _onLoad = onLoad,
         _showTitle = showTitle,
         _player = null;
 
   ///
-  /// [PlayBar.fromPlayer] Constructs a Playbar with a SoundPlayer.
+  /// [Playbar.fromPlayer] Constructs a Playbar with a SoundPlayer.
   /// [player] is the SoundPlayer that contains the audio to play.
   ///
   /// When the user clicks the play the audio held by the SoundPlayer will
@@ -67,18 +67,18 @@ class PlayBar extends StatefulWidget {
   /// If [enabled] is true (the default) then the Player will be enabled.
   /// If [enabled] is false then the player will be disabled and the user
   /// will not be able to click the play button.
-  PlayBar.fromPlayer(SoundPlayer player, {bool showTitle = false})
+  Playbar.fromPlayer(SoundPlayer player, {bool showTitle = false})
       : _player = player,
         _showTitle = showTitle,
         _onLoad = null;
 
   @override
   State<StatefulWidget> createState() {
-    return _PlayBarState(_player, _onLoad);
+    return _PlaybarState(_player, _onLoad);
   }
 }
 
-class _PlayBarState extends State<PlayBar> {
+class _PlaybarState extends State<Playbar> {
   SliderPosition sliderPosition = SliderPosition();
 
   /// we keep our own local stream as the players come and go.
@@ -111,11 +111,11 @@ class _PlayBarState extends State<PlayBar> {
 
   Slider slider;
 
-  _PlayBarState(this._soundPlayer, this._onLoad) {
-    _PlayBarState._internal();
+  _PlaybarState(this._soundPlayer, this._onLoad) {
+    _PlaybarState._internal();
   }
 
-  _PlayBarState._internal() {
+  _PlaybarState._internal() {
     sliderPosition.position = Duration(seconds: 0);
     sliderPosition.maxPosition = Duration(seconds: 0);
 
@@ -176,7 +176,7 @@ class _PlayBarState extends State<PlayBar> {
     return Container(
         decoration: BoxDecoration(
             color: Colors.grey,
-            borderRadius: BorderRadius.circular(PlayBar._barHeight / 2)),
+            borderRadius: BorderRadius.circular(Playbar._barHeight / 2)),
         child: Column(children: rows));
   }
 
@@ -372,7 +372,7 @@ class _PlayBarState extends State<PlayBar> {
       button = Container(
         margin: const EdgeInsets.only(top: 5.0, bottom: 5),
         child:
-            SpinKitRing(color: Colors.purple, size: PlayBar._barHeight * 0.6),
+            SpinKitRing(color: Colors.purple, size: Playbar._barHeight * 0.6),
       );
     } else {
       button = _buildPlayButtonIcon(button);
