@@ -17,26 +17,41 @@
 /// this enum MUST be synchronized with fluttersound/AudioInterface.java
 /// and ios/Classes/FlutterSoundPlugin.h
 enum Codec {
-  ///
-  defaultCodec,
 
-  ///
-  aac,
+  /// AAC codec in an ADTS container
+  aacADTS,
 
-  ///
-  opus,
+  /// OPUS in an OGG container
+  opusOGG,
 
   /// Apple encapsulates its bits in its own special envelope
   /// .caf instead of a regular ogg/opus (.opus).
   /// This is completely stupid, this is Apple.
-  cafOpus,
+  opusCAF,
 
-  ///
+  /// For those who really insist about supporting MP3. Shame on you !
   mp3,
 
-  ///
-  oggVorbis,
+  /// VORBIS in a OGG container
+  vorbisOGG,
+
+  /// Linear 16 PCM
+  pcm,
+
+  /// AAC codec in a MPEG4 container
+  aacLC,
+
+  /// AAC codec in a 3GP container
+  aac3GP,
+
+  /// AAC in a MPEG4 container
+  aacMP4,
+
+  /// PCM in a .wav container
+  wav,
 
   ///
-  pcm,
+  flac,
+
+
 }

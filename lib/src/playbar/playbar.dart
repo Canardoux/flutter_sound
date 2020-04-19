@@ -43,7 +43,7 @@ typedef TonLoad = Future<SoundPlayer> Function();
 class PlayBar extends StatefulWidget {
   /// only codec support by android unless we have a minSdk of 29
   /// then OGG_VORBIS and OPUS are supported.
-  static const Codec standardCodec = Codec.aac;
+  static const Codec standardCodec = Codec.aacADTS;
   static const int _barHeight = 60;
 
   /// provides a Duration of 0 seconds.
