@@ -34,6 +34,21 @@ class FFMpegUtil {
   }
   FFMpegUtil._internal();
 
+  /// Check if FFmpeg is linked to flutter_sound.
+  /// (flutter_sound_lite is not linked with FFmpeg)
+  /// Return `true` if FFmpeg is there
+  Future<bool> isFFmpegAvailable() async {
+    try {
+      if (_flutterFFmpegConfig == null) {
+        _flutterFFmpegConfig = FlutterFFmpegConfig( );
+      }
+      var version = await _flutterFFmpegConfig.getFFmpegVersion( );
+      return (version != null);
+    } catch (e) {
+      return false;
+    }
+  }
+
   /// Executes FFmpeg with [commandArguments] provided.
   Future<int> executeFFmpegWithArguments(List<String> arguments) {
     if (_flutterFFmpeg == null) _flutterFFmpeg = FlutterFFmpeg();
