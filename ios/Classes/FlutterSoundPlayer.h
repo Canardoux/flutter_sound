@@ -18,6 +18,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "Flauto.h"
 
+
 /*
 
 typedef enum
@@ -76,4 +77,3 @@ extern NSMutableArray* flautoPlayerSlots;
 @end
 
 
-//extern FlutterSoundPlugin *flutterSoundModule; // Singleton
