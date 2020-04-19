@@ -14,14 +14,16 @@ import 'local_context.dart';
 import 'playbar_slider.dart';
 import 'slider_position.dart';
 
-// import 'audio_controller.dart';
-// import 'audio_media.dart';
-// import 'local_context.dart';
-
 typedef TonLoad = Future<SoundPlayer> Function();
 
 /// A HTML 5 style audio play bar.
-/// Allows you to pause/resume and seek and audio track.
+/// Allows you to play/pause/resume and seek an audio track.
+/// The Playbar displays:
+///   a spinner whilst loading audio
+///   play/resume buttons
+///   a slider to indicate and change the current play position.
+///   optionally displays the album title and track if the
+///   [SoundPlayer] contains those details.
 class PlayBar extends StatefulWidget {
   /// only codec support by android unless we have a minSdk of 29
   /// then OGG_VORBIS and OPUS are supported.
@@ -40,12 +42,31 @@ class PlayBar extends StatefulWidget {
   /// button.
   /// You can cancel the play action by returning
   /// null when _onLoad is called.
-  PlayBar.fromLoader(TonLoad onLoad, {bool showTitle = false})
+  /// [onLoad] is the function that is called when the user clicks the
+  /// play button. You return either a SoundPlayer to be played or null
+  /// if you want to cancel the play action.
+  /// If [showTitle] is true (default is false) then the play bar will also
+  /// display the track name and album (if set).
+  /// If [enabled] is true (the default) then the Player will be enabled.
+  /// If [enabled] is false then the player will be disabled and the user
+  /// will not be able to click the play button.
+  PlayBar.fromLoader(TonLoad onLoad,
+      {bool showTitle = false, bool enabled = true})
       : _onLoad = onLoad,
         _showTitle = showTitle,
         _player = null;
 
-  /// Constructs a Playbar with a SoundPlayer
+  ///
+  /// [PlayBar.fromPlayer] Constructs a Playbar with a SoundPlayer.
+  /// [player] is the SoundPlayer that contains the audio to play.
+  ///
+  /// When the user clicks the play the audio held by the SoundPlayer will
+  /// be played.
+  /// If [showTitle] is true (default is false) then the play bar will also
+  /// display the track name and album (if set).
+  /// If [enabled] is true (the default) then the Player will be enabled.
+  /// If [enabled] is false then the player will be disabled and the user
+  /// will not be able to click the play button.
   PlayBar.fromPlayer(SoundPlayer player, {bool showTitle = false})
       : _player = player,
         _showTitle = showTitle,
@@ -168,7 +189,13 @@ class _PlayBarState extends State<PlayBar> {
     setState(() => _playState = state);
   }
 
-  /// User has clicked the play/pause button.
+  /// Called when the user clicks  the Play/Pause button.
+  /// If the audio is paused or stopped the audio will start
+  /// playing.
+  /// If the audio is playing it will be paused.
+  ///
+  /// see [start] for the method to programmitcally start
+  /// the audio playing.
   void onPlay(BuildContext localContext) {
     switch (playState) {
       case PlayState.stopped:
@@ -191,7 +218,7 @@ class _PlayBarState extends State<PlayBar> {
     }
   }
 
-  /// Resume the playing.
+  /// Call [resume] to resume playing the audio.
   void resume() {
     setState(() {
       _transitioning = true;
@@ -208,7 +235,7 @@ class _PlayBarState extends State<PlayBar> {
     }).whenComplete(() => _transitioning = false);
   }
 
-  /// pause playback.
+  /// Call [pause] to pause playing the audio.
   void pause() {
     // pause the player
     setState(() {
@@ -284,7 +311,7 @@ class _PlayBarState extends State<PlayBar> {
     });
   }
 
-  /// stop playback
+  /// Call [stop] to stop the audio playing.
   ///
   Future<void> stop() async {
     await _stop();
@@ -347,10 +374,6 @@ class _PlayBarState extends State<PlayBar> {
         child:
             SpinKitRing(color: Colors.purple, size: PlayBar._barHeight * 0.6),
       );
-      Log.d("#################SpinKit rendered###################");
-      // widget = LoadingIndicator(
-      //   size: PlayBar.BAR_HEIGHT /2,
-      //   color: Theme.of(context).colorScheme.primary);
     } else {
       button = _buildPlayButtonIcon(button);
     }
@@ -415,13 +438,20 @@ class _PlayBarState extends State<PlayBar> {
   }
 
   Widget _buildTitle() {
+    var columns = <Widget>[];
+
+    if (_soundPlayer.trackTitle != null) {
+      columns.add(Text(_soundPlayer.trackTitle));
+    }
+    if (_soundPlayer.trackTitle != null && _soundPlayer.trackAuthor != null) {
+      columns.add(Text(' / '));
+    }
+    if (_soundPlayer.trackAuthor != null) {
+      columns.add(Text(_soundPlayer.trackAuthor));
+    }
     return Container(
       margin: EdgeInsets.only(left: 45, bottom: 5),
-      child: Row(children: [
-        Text(_soundPlayer.trackTitle),
-        Text(' / '),
-        Text(_soundPlayer.trackAuthor)
-      ]),
+      child: Row(children: columns),
     );
   }
 }
