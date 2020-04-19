@@ -81,27 +81,27 @@ class _DropdownsState extends State<Dropdowns> {
       },
       items: <DropdownMenuItem<Codec>>[
         DropdownMenuItem<Codec>(
-          value: Codec.codecAac,
+          value: Codec.aac,
           child: Text('AAC'),
         ),
         DropdownMenuItem<Codec>(
-          value: Codec.codecOpus,
+          value: Codec.opus,
           child: Text('OGG/Opus'),
         ),
         DropdownMenuItem<Codec>(
-          value: Codec.codecCafOpus,
+          value: Codec.cafOpus,
           child: Text('CAF/Opus'),
         ),
         DropdownMenuItem<Codec>(
-          value: Codec.codecMp3,
+          value: Codec.mp3,
           child: Text('MP3'),
         ),
         DropdownMenuItem<Codec>(
-          value: Codec.codecVorbis,
+          value: Codec.vorbis,
           child: Text('OGG/Vorbis'),
         ),
         DropdownMenuItem<Codec>(
-          value: Codec.codecPcm,
+          value: Codec.pcm,
           child: Text('PCM'),
         ),
       ],
@@ -113,7 +113,7 @@ class _DropdownsState extends State<Dropdowns> {
       value: MediaPath().media,
       onChanged: (newMedia) {
         if (newMedia == MediaStorage.remoteExampleFile) {
-          ActiveCodec().setCodec(Codec.codecMp3);
+          ActiveCodec().setCodec(Codec.mp3);
           MediaPath().setCodecPath(ActiveCodec().codec, exampleAudioFilePath);
         } // Actually this is the only example we use in this example
         MediaPath().media = newMedia;

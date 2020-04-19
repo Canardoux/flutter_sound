@@ -136,8 +136,8 @@ class SoundRecorder {
     // For encoding ogg/opus on ios, we need to support two steps :
     // - encode CAF/OPPUS (with native Apple AVFoundation)
     // - remux CAF file format to OPUS file format (with ffmpeg)
-    if ((codec == Codec.codecOpus) && (Platform.isIOS)) {
-      codec = Codec.codecCafOpus;
+    if ((codec == Codec.opus) && (Platform.isIOS)) {
+      codec = Codec.cafOpus;
     }
 
     result = await _invokeMethod(
@@ -154,7 +154,7 @@ class SoundRecorder {
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
-    Codec codec = Codec.codecAac,
+    Codec codec = Codec.aac,
     AndroidEncoder androidEncoder = AndroidEncoder.aacCodec,
     AndroidAudioSource androidAudioSource = AndroidAudioSource.mic,
     AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.defaultFormat,
@@ -196,9 +196,9 @@ class SoundRecorder {
     // We use FFmpeg for that task.
     // The remux occurs when we call stopRecorder
     if ((Platform.isIOS) &&
-        ((codec == Codec.codecOpus) || (fileExtension(path) == '.opus'))) {
+        ((codec == Codec.opus) || (fileExtension(path) == '.opus'))) {
       _isOggOpus = true;
-      codec = Codec.codecCafOpus;
+      codec = Codec.cafOpus;
 
       /// temp file to record CAF/OPUS file to
       _recordingToPath = tempFile(suffix: '.caf');
@@ -371,13 +371,6 @@ class RecorderException implements Exception {
 class RecorderRunningException extends RecorderException {
   ///
   RecorderRunningException(String message) : super(message);
-}
-
-/// Thrown when you attempt to make a recording with a codec
-/// that is not supported on the current platform.
-class CodecNotSupportedException extends RecorderException {
-  ///
-  CodecNotSupportedException(String message) : super(message);
 }
 
 /// Thrown when you attempt to make a recording and don't have

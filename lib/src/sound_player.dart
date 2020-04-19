@@ -19,6 +19,7 @@ import 'dart:convert' hide Codec;
 import 'dart:io';
 import 'dart:typed_data' show Uint8List;
 
+import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 import 'android/android_audio_focus_gain.dart';
@@ -120,27 +121,42 @@ class SoundPlayer {
 
   /// The [uri] of the file to download and playback
   /// The [codec] of the file the [uri] points to. The default
-  /// value is [Codec.codecAac].
+  /// value is [Codec.fromExtension].
+  /// If the default [Codec.fromExtension] is used then
+  /// [SoundPlayer] will use the files extension to guess the codec.
+  /// If the file extension doesn't match a known codec then
+  /// [SoundPlayer] will throw an [CodecNotSupportedException] in which
+  /// case you need pass one of the known codecs.
+  ///
   /// If [showOSUI] is [true] then we will displays the OS's builtin
   /// audio player allowing you to control the audio from the lock screen.
   /// By default [showOSUI] is false.
   SoundPlayer.fromPath(this._uri,
-      {Codec codec = Codec.defaultCodec, bool showOSUI = false})
+      {Codec codec = Codec.fromExtension, bool showOSUI = false})
       : _showOSUI = showOSUI {
+    if (codec == null || codec == Codec.fromExtension) {
+      codec = CodecHelper.determineCodec(_uri);
+      throw CodecNotSupportedException(
+          "The uri's extension does not match any of the supported extensions. "
+          'You must pass in a codec.');
+    }
     _internal(codec);
   }
 
   /// Create a audio play from an in memory buffer.
   /// The [dataBuffer] contains the media to be played.
-  /// The [codec] of the file the [dataBuffer] points to. The default
-  /// value is [Codec.codecAac].
+  /// The [codec] of the file the [dataBuffer] points to.
+  /// You MUST pass a codec.
   /// If [showOSUI] is [true] then we will displays the OS's builtin
   /// audio player allowing you to control the audio from the lock screen.
   /// By default [showOSUI] is false.
   SoundPlayer.fromBuffer(Uint8List dataBuffer,
-      {Codec codec = Codec.defaultCodec, bool showOSUI = false})
+      {@required Codec codec, bool showOSUI = false})
       : _dataBuffer = dataBuffer,
         _showOSUI = showOSUI {
+    if (codec == null) {
+      throw CodecNotSupportedException('You must pass in a codec.');
+    }
     _internal(codec);
   }
 
@@ -208,13 +224,13 @@ class SoundPlayer {
     // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We use FFmpeg for that task.
     if ((Platform.isIOS) &&
-        ((_codec == Codec.codecOpus) || (fm.fileExtension(path) == '.opus'))) {
+        ((_codec == Codec.opus) || (fm.fileExtension(path) == '.opus'))) {
       var tempMediaFile =
           TempMediaFile(await CodecConversions.opusToCafOpus(path));
       _tempMediaFiles.add(tempMediaFile);
       path = tempMediaFile.path;
       // update the codec so we won't reencode again.
-      _codec = Codec.codecCafOpus;
+      _codec = Codec.cafOpus;
     }
 
     /// set the uri so next time we come in here we will return the
@@ -631,8 +647,8 @@ class SoundPlayer {
     // For decoding ogg/opus on ios, we need to support two steps :
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
-    if ((codec == Codec.codecOpus) && (Platform.isIOS)) {
-      codec = Codec.codecCafOpus;
+    if ((codec == Codec.opus) && (Platform.isIOS)) {
+      codec = Codec.cafOpus;
     }
     result = await _invokeMethod(
         'isDecoderSupported', <String, dynamic>{'codec': codec.index}) as bool;
@@ -725,16 +741,6 @@ class SoundPlayerProxy implements Proxy {
 
   /// The OS track UI skip backwards button has been tapped.
   void skipBackward() => _player._onSystemSkipBackwards();
-
-  /// sent from TrackPlayer.java - no doco on what it means
-  /// Only appears to be sent once on startup and has a value
-  /// of 1.0 or 0.0.
-  /// My best guess its intended to indicate successful registration
-  /// of the MediaBrowserHelper.
-  /// It also appears to be cycling where I pause/resume.
-  void updatePlaybackState(double value) {
-    print('value from updatePlaybackState $value');
-  }
 }
 
 /// The player was in an unexpected state when you tried
