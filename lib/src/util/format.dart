@@ -1,3 +1,19 @@
+/*
+ * This file is part of Flutter-Sound.
+ *
+ *   Flutter-Sound is free software: you can redistribute it and/or modify
+ *   it under the terms of the Lesser GNU General Public License
+ *   version 3 (LGPL3) as published by the Free Software Foundation.
+ *
+ *   Flutter-Sound is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the Lesser GNU General Public License
+ *   along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import 'package:intl/intl.dart';
 
 import 'local_date.dart';
@@ -188,7 +204,7 @@ class Format {
 
 	{
     return (date == null ? "" : formatter.format(date));
-		
+
 	}
 
 
@@ -207,7 +223,7 @@ class Format {
 		return format(dateTime, DateFormat(pattern));
 	}
 
-	
+
 
 	 static String format(LocalTime time, String pattern)
 	{
@@ -252,9 +268,9 @@ class Format {
 	}
 
 	/**
-	 * If the date is today we just display the time. If the date is 
+	 * If the date is today we just display the time. If the date is
    * NOT today we just display the date.
-	 * 
+	 *
 	 * @param dateTime
 	 * @return
 	 */
@@ -276,7 +292,7 @@ class Format {
 		return (date == null ? "" : date.format(saasuDateFormat));
 	}
 
-	
+
 
 	 static String formatHHmm(Duration duration)
 	{
@@ -286,19 +302,19 @@ class Format {
 	}
 
 	/**
-	 * Formats the Duration to the given format. 
+	 * Formats the Duration to the given format.
    * Formats support are any supported by
 	 * {@link DurationFormatUtils.formatDuration}
-	 * 
+	 *
 	 * @param duration
 	 * @param format to render duration to.
-	 * @return a blank string if duration is null 
+	 * @return a blank string if duration is null
    * otherwise the duration as per the format.
 	 */
 	 static String format(Duration duration, String format)
 	{
 
-		return (duration == null ? "" 
+		return (duration == null ? ""
       : DurationFormatUtils.formatDuration(duration.toMillis(), format));
 	}
 

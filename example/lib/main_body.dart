@@ -38,7 +38,7 @@ class _MainBodyState extends State<MainBody> {
       await RecorderState().init();
       ActiveCodec().playerModule = PlayerState().playerModule;
       ActiveCodec().recorderModule = RecorderState().recorderModule;
-      await ActiveCodec().setCodec(Codec.codecAac);
+      await ActiveCodec().setCodec(Codec.aac);
       await initializeDateFormatting();
 
       initialised = true;
@@ -100,7 +100,7 @@ class _MainBodyState extends State<MainBody> {
 
     // validate codec for example file
     if (MediaPath().isExampleFile) {
-      if (ActiveCodec().codec != Codec.codecMp3) {
+      if (ActiveCodec().codec != Codec.mp3) {
         canPlay = false;
         var error = SnackBar(
             backgroundColor: Colors.red,

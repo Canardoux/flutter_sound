@@ -108,7 +108,7 @@ class RecorderState {
         var secondaryPath = await tempFile();
         await recorderModule_2.startRecorder(
           path: secondaryPath,
-          codec: Codec.codecAac,
+          codec: Codec.aac,
         );
         print("Secondary record is '$secondaryPath'");
       }
