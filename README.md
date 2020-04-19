@@ -11,6 +11,10 @@ This plugin can handle playback stream from native (To sync exact time with brid
 
 ![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
 
+## Migration Guide
+
+To migrate to `4.0.0`from 3.x.x you must do some minor changes in your configurations files.
+Please refer to the **FFmpeg** section below.
 
 ## Free Read
 
@@ -21,19 +25,35 @@ This plugin can handle playback stream from native (To sync exact time with brid
 
 For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).
 
-Add `flutter_sound` as a dependency in pubspec.yaml. The actual version is `^flutter_sound: 4.0.0-beta.2` .
-Be aware that **it is not released version**, and probably not good to use it in a released App.
-The API is actually to stabilized and will change very soon.
-The actual released App is `flutter_sound: ^3.1.8`
+Flutter Sound comes in two flavors :
+- the **FULL** flavor : flutter_sound
+- the **LITE** flavor : flutter_sound_lite
 
-The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
+The big difference between the two flavors is that the **LITE** flavor does not have `mobile_ffmpeg` embedded inside.
+There is a huge impact on the memory used, but the **LITE** flavor will not be able to do some codecs :
+- Playback OGG/OPUS on iOS
+- Record OGG_OPUS on iOS
+
+Add `flutter_sound` or `flutter_sound_lite` as a dependency in pubspec.yaml. The actual versions are `^flutter_sound: 4.0.0-beta.3` and `^flutter_sound_lite: 4.0.0-beta.3`
+Be aware that **it is not released version**, and probably not good to use it in a released App.
+The API is actually not stabilized and will change very soon.
+The actual released App is `flutter_sound: ^3.1.10`
 
 ```
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sound: ^4.0.0-beta.2
+  flutter_sound: ^4.0.0-beta.3
 ```
+or
+```
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_sound_lite: ^4.0.0-beta.3
+```
+
+The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
 
 ### FFmpeg
 
@@ -68,9 +88,6 @@ instead of adding a new dependency in your pubspec.yaml.
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
   ```
 
-## Migration Guide
-
-To migrate to `3.0.0` you must migrate your Android app to Android X by following the [Migrating to AndroidX Guide](https://developer.android.com/jetpack/androidx/migrate).
 
 ## Methods
 

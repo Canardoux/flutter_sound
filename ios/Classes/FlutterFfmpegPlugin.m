@@ -17,7 +17,10 @@
  * along with FlutterFFmpeg.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #import "FlutterFFmpegPlugin.h"
+
+#ifdef FULL_FLAVOR
 
 #import <mobileffmpeg/ArchDetect.h>
 #import <mobileffmpeg/MobileFFmpegConfig.h>
@@ -408,3 +411,6 @@ extern void FfmpegReg(NSObject<FlutterPluginRegistrar>* registrar)
 }
 
 @end
+
+#endif // FULL_FLAVOR
+
