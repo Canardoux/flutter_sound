@@ -243,6 +243,10 @@ class _PlayBarState extends State<PlayBar> {
     }
 
     if (_onLoad != null) {
+      if (_soundPlayer != null) {
+        _soundPlayer.release();
+      }
+
       /// dynamically load the player.
       _soundPlayer = await _onLoad();
       _setCallbacks();
