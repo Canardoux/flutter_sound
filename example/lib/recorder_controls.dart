@@ -135,18 +135,32 @@ class _RecorderControlsState extends State<RecorderControls> {
   }
 
   bool canRecord() {
+    if (audioState != AudioState.isRecording &&
+        audioState != AudioState.isRecordingPaused &&
+        audioState != AudioState.isStopped) {
+      return false;
+    }
+    return true;
+  }
+
+  bool checkPreconditions() {
+    bool passed = true;
     if (MediaPath().isAsset ||
         // MediaPath().isBuffer ||
-        MediaPath().isExampleFile) return false;
+        MediaPath().isExampleFile) {
+      var error = SnackBar(
+          backgroundColor: Colors.red,
+          content:
+              Text('You must select a Media type of File or Buffer to record'));
+      Scaffold.of(context).showSnackBar(error);
+      passed = false;
+    }
     // Disable the button if the selected codec is not supported
     // Removed this test as felt it was better to display an error
     // when the user attempts to record so they know why they can't record.
     // if (!ActiveCodec().encoderSupported) return false;
 
-    if (audioState != AudioState.isRecording &&
-        audioState != AudioState.isRecordingPaused &&
-        audioState != AudioState.isStopped) return false;
-    return true;
+    return passed;
   }
 
   void startStopRecorder(BuildContext context) async {
@@ -155,7 +169,9 @@ class _RecorderControlsState extends State<RecorderControls> {
       if (RecorderState().isRecording || RecorderState().isPaused) {
         await RecorderState().stopRecorder();
       } else {
-        await RecorderState().startRecorder(context);
+        if (checkPreconditions()) {
+          await RecorderState().startRecorder(context);
+        }
       }
     } finally {
       setState(() {});
