@@ -742,6 +742,20 @@ class SoundPlayerProxy implements Proxy {
   void skipBackward() => _player._onSystemSkipBackwards();
 }
 
+/// Allows a track to access internal methods of a SoundPlayer
+///
+/// This is in expectation that we remove showOSUI from the
+/// SoundPlayer ctor and pass it to a new internal _playTrack() method.
+/// As we don't want to expose the _playTrack method we use
+/// this proxy.
+class TrackProxy {
+  SoundPlayer player;
+  TrackProxy.fromPath(String url, {Codec codec}) {
+    player = SoundPlayer.fromPath(url, codec: codec, showOSUI: true);
+  }
+
+  void play() => player.play();
+}
 
 /// The player was in an unexpected state when you tried
 /// to change it state.

@@ -21,6 +21,10 @@ SoundPlayer - plays audio
 
 SoundRecorder - records audio
 
+Track - play a single track via the OS's audio UI
+
+Album - play a collection of tracks fia the OS's audio UI.
+
 ## Wdigets
 
 Playbar - displays an HTML 5 style audio controller
@@ -92,27 +96,27 @@ instead of adding a new dependency in your pubspec.yaml.
 
 To migrate to `3.0.0` you must migrate your Android app to Android X by following the [Migrating to AndroidX Guide](https://developer.android.com/jetpack/androidx/migrate).
 
-## SoundPlayer
+# SoundPlayer
 The SoundPlayer class is primarly design to play back audio without display any UI.
 
 If you need a UI to allow your user to control playback you have three options:
 
-1) use the showOSUI parametr on the SoundPlayer constructore. 
+1) use the showOSUI parameter on the SoundPlayer constructor. 
 This will display the OS specific Audio player.
 
 2) Use Flutter Sound's Playbar which provide a HTML5 like audio player UI
 
-3) Use the SoundPlayer's apis to role your own widget. You can start with the Playbar code as an example of how to do this.
+3) Use the SoundPlayer's apis to roll your own widget. You can start with the Playbar code as an example of how to do this.
 
-You can view details on the API at [pub.dev](https://pub.dev/documentation/flutter_sound/latest/)
+The API is documented at [pub.dev](https://pub.dev/documentation/flutter_sound/latest/)
 
 ## Play audio from an asset
 
-To play audio from a project asset copy the file to your asset directory in the root of your project
+To play audio from a project asset copy the file to your assets directory in the root of your dart project.
 
-```asset/sample.acc```
+```assets/sample.acc```
 
-Add the asset to the 'asset' section of your pubspec.yaml
+Add the asset to the 'assets' section of your pubspec.yaml
 
 ```
 flutter:
@@ -124,71 +128,123 @@ Now play the file.
 
 ```dart
 var player = SoundPlayer.fromPath('sample.aac');
-player.start();
+player.onFinish = player.release;
+player.play();
 ```
 
-If you need to play a file with a codec other than aac then you MUST pass the codec.
+You must be certain to release the player once you have finished playing the audio.
+You can reuse a `SoundPlayer` as many times as you want as long as you call `SoundPlayer.release()` once you are done with it.
+
+SoundPlayer uses the passed filename extension to determine the correct codec to play. If you need to play a file with an extension that doesn't match one of the known file extensions then you MUST pass in the codec.
+
+See the [codec](https://pub.dev/documentation/flutter_sound/latest/codec/codec-library.html) documentation
+for details on the supported codecs.
 
 ```dart
-var player = SoundPlayer.fromPath('sample.mp3'
-	, codec:Codec.codecMp3);
-player.start();
+var player = SoundPlayer.fromPath('sample.blit', codec: Codec.mp3);
+player.onFinish = player.release;
+player.play();
 ```
 
 ## Play audio from an external URL
 
+You can play a remote audio file by passing a URL to SoundPlayer.
+
+See the [codec](https://pub.dev/documentation/flutter_sound/latest/codec/codec-library.html) documentation
+for details on the supported codecs.
+
 ```dart
 var player = SoundPlayer.fromPath('https://some audio file'
-	, codec:Codec.codecMp3);
-player.start();
+	, codec:Codec.mp3);
+player.onFinish = player.release;
+player.play();
 ```
 
 ## Play audio from an in memory buffer 
+When playing a audio file from a buffer you MUST provide the codec.
+
+
+See the [codec](https://pub.dev/documentation/flutter_sound/latest/codec/codec-library.html) documentation
+for details on the supported codecs.
 
 ```dart
 Uint8List buffer = ....
-var player = SoundPlayer.fromBuffer(buffer
-	, codec:Codec.codecMp3);
-player.start();
+var player = SoundPlayer.fromBuffer(buffer, codec:Codec.mp3);
+player.onFinish = player.release;
+player.play();
 ```
 
-## Display the OS Audio Player
+## Playing a Track via the OS's UI
 
 If you want to play the audio and have the OS Audio player displayed so the user can control the playback then use:
 
 ```dart
-var player = SoundPlayer.fromPath('sample.aac', showOSUI:true);
+var player = Track.fromPath('sample.aac');
 player.trackTitle = 'Reckless';
 player.trackAuthor = 'Flutter Sound';
 player.albumArtUrl = 'http://some image url';
-player.start();
+player.onFinish = player.release;
+player.play();
 ```
 Note how I snuck in the track details. If provided they will be displayed on the OS Audio Player.
 
-If you need to know when the playback finishes the hook the onFinish callback:
+## Playing an album via the OS's UI
+
+If you want to play a collection of tracks via the OS's UI then you can create an Album with a static set of Tracks or a virtual set of Tracks.
+
+### Play album with static set of Tracks
+
+```dart
+var album = Album.fromTracks([
+	Track('sample.acc'),
+	Track('buzz.mp3'),
+]);
+
+album.play();
+```
+
+### Play album with a virtual set of Tracks
+
+Virtual tracks allow you to create an album of infinite size which
+could be useful if you are pulling audio from an external source.
+
+If you create a virtual album you MUST implement the onSkipForward 
+and onSkipBackwards methods to supply the album with Tracks on demand.
+
+```dart
+ var album = Album.virtual();
+album.onSkipForward = (int currentTrackIndex, Track current) 
+		=> Track('http://random/xxxx');
+album.onSkipBackwards = (int currentTrackIndex, Track current) 
+		=> Track('http://random/xxxx');
+
+album.play();
+
+```
+
+## Monitoring progress
+If you need to know when the playback finishes then hook the onFinish callback:
 
 ```dart
 var player = SoundPlayer.fromPath('sample.aac');
 player.onFinished = () => print('playback finished');
-player.start();
+player.play();
 ```
-There are a number of other callbacks you can use to recieve notifications as the playback proceeds such as:
+There are a number of other callbacks you can use to receive notifications as the playback proceeds such as:
 * onStarted
 * onStopped
 * onPaused
 * onResumed
 
 
+## Track playback position
+If you are building your own widget you might want to display a progress bar that displays the current playback position.
 
-If you are building your own widget you might want to display a progress bar that displays the current progress position.
-
-The easiest way to do this is vai the Playbar but if you want to write your own then you will want to user the `dispositionStream` with a StreamBuilder.
+The easiest way to do this is via the Playbar but if you want to write your own then you will want to user the `dispositionStream` with a StreamBuilder.
 
 ```dart
-
 class MyWidgetState
 {
-	
 	void initState()
 	{
 		super.initState();
@@ -217,48 +273,14 @@ class MyWidgetState
   
   voi onPlay()
   {
-	  player.start();
+	  player.play();
   }
 }
 ```  
 
-
-
-## Methods
-
-| Func                     |                               Param                                |      Return      | Description                                                                                                                                                                                                          |
-| :----------------------- | :----------------------------------------------------------------: | :--------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| initialize               |                                                                    |      `void`      | Initializes the media player and all the callbacks for the player and the recorder. This procedure is implicitely called during the Flutter Sound constructors. So you probably will not use this function yourself. |
-| releaseMediaPlayer       |                                                                    |      `void`      | Resets the media player and cleans up the device resources. This must be called when the player is no longer needed.                                                                                                 |
-| setSubscriptionDuration  |                            `double sec`                            | `String` message | Set subscription timer in seconds. Default is `0.010` if not using this method.                                                                                                                                      |
-| startRecorder            | `String uri`, `int sampleRate`, `int numChannels`, `t_CODEC codec` |   `String` uri   | Start recording. This will return uri used.                                                                                                                                                                          |
-| stopRecorder             |                                                                    | `String` message | Stop recording.                                                                                                                                                                                                      |
-| pauseRecorder            |                                                                    | `String` message | Pause recording.                                                                                                                                                                                                     |
-| resumeRecorder           |                                                                    | `String` message | Resume recording.                                                                                                                                                                                                    |
-| startPlayer              |        `String` fileUri, `t_CODEC codec`, `whenFinished()`         |                  | Starts playing the file at the given URI.                                                                                                                                                                            |
-| startPlayerFromBuffer    |     `Uint8List dataBuffer`, `t_CODEC codec`, `whenFinished()`      | `String` message | Start playing using a buffer encoded with the given codec                                                                                                                                                            |
-| stopPlayer               |                                                                    | `String` message | Stop playing.                                                                                                                                                                                                        |
-| pausePlayer              |                                                                    | `String` message | Pause playing.                                                                                                                                                                                                       |
-| resumePlayer             |                                                                    | `String` message | Resume playing.                                                                                                                                                                                                      |
-| seekToPlayer             |                  `int milliSecs` position to goTo                  | `String` message | Seek audio to selected position in seconds. Parameter should be less than audio duration to correctly placed.                                                                                                        |
-| iosSetCategory           |            `SESSION_CATEGORY`, `SESSION_MODE`, options             |     Boolean      | Set the session category on iOS.                                                                                                                                                                                     |
-| androidAudioFocusRequest |                          `int` focusGain                           |     Boolean      | Define the Android Focus request to use in subsequent requests to get audio focus                                                                                                                                    |
-| setActive                |                           `bool` enabled                           |     Boolean      | Request or Abandon the audio focus                                                                                                                                                                                   |
-
-## Subscriptions
-
-| Subscription           |      Return      |                     Description                      |
-| :--------------------- | :--------------: | :--------------------------------------------------: |
-| onRecorderStateChanged | `<RecordStatus>` | Able to listen to subscription when recorder starts. |
-| onPlayerStateChanged   |  `<PlayStatus>`  |  Able to listen to subscription when player starts.  |
-
-## Default uri path
-
-When uri path is not set during the `function call` in `startRecorder` or `startPlayer`, records are saved/read to/from a temporary directory depending on the platform.
-
 ## Codec compatibility
 
-Actually, the following codecs are supported by flutter_sound:
+The following codecs are supported by flutter_sound:
 
 |                 | AAC | OGG/Opus | CAF/Opus | MP3 | OGG/Vorbis | PCM |
 | :-------------- | :-: | :------: | :------- | :-- | :--------- | :-- |
@@ -267,7 +289,7 @@ Actually, the following codecs are supported by flutter_sound:
 | Android encoder | Yes |    No    | No       | No  | No         | No  |
 | Android decoder | Yes |   Yes    | No       | Yes | Yes        | Yes |
 
-This table will eventually be upgrated when more codecs will be added.
+This table will be updated as codecs are added.
 
 ## FlutterSoundRecorder Usage
 

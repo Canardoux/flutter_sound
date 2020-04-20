@@ -8,9 +8,9 @@ void main() {
 
   final log = <MethodCall>[];
 
-  var player = SoundPlayer.fromPath('example/asset/samples/sample.acc')
-    ..onFinished = (() => print('finished'))
-    ..play();
+  var player = SoundPlayer.fromPath('example/asset/samples/sample.acc');
+  player.onFinished = player.release;
+  player.play();
 
   var isInitialised = false;
   var isReleased = false;
