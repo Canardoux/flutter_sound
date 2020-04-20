@@ -1,3 +1,19 @@
+/*
+ * This file is part of Flutter-Sound.
+ *
+ *   Flutter-Sound is free software: you can redistribute it and/or modify
+ *   it under the terms of the Lesser GNU General Public License
+ *   version 3 (LGPL3) as published by the Free Software Foundation.
+ *
+ *   Flutter-Sound is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the Lesser GNU General Public License
+ *   along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -27,7 +43,7 @@ typedef TonLoad = Future<SoundPlayer> Function();
 class Playbar extends StatefulWidget {
   /// only codec support by android unless we have a minSdk of 29
   /// then OGG_VORBIS and OPUS are supported.
-  static const Codec standardCodec = Codec.aac;
+  static const Codec standardCodec = Codec.aacADTS;
   static const int _barHeight = 60;
 
   /// provides a Duration of 0 seconds.

@@ -4,7 +4,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 class ActiveCodec {
   static final ActiveCodec _self = ActiveCodec._internal();
 
-  Codec _codec = Codec.aac;
+  Codec _codec = Codec.aacADTS;
   bool _encoderSupported = false;
   bool _decoderSupported = false;
 

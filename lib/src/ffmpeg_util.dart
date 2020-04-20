@@ -1,17 +1,17 @@
 /*
- * This file is part of Flutter-Sound (Flauto).
+ * This file is part of Flutter-Sound.
  *
- *   Flutter-Sound (Flauto) is free software: you can redistribute it and/or modify
+ *   Flutter-Sound is free software: you can redistribute it and/or modify
  *   it under the terms of the Lesser GNU General Public License
  *   version 3 (LGPL3) as published by the Free Software Foundation.
  *
- *   Flutter-Sound (Flauto) is distributed in the hope that it will be useful,
+ *   Flutter-Sound is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the Lesser GNU General Public License
- *   along with Flutter-Sound (Flauto).  If not, see <https://www.gnu.org/licenses/>.
+ *   along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 import 'dart:async';
@@ -34,24 +34,27 @@ class FFMpegUtil {
   }
   FFMpegUtil._internal();
 
-  /// We use here our own ffmpeg "execute" procedure instead
-  /// of the one provided by the flutter_ffmpeg plugin,
-  /// so that the developers not interested by ffmpeg can use
-  /// flutter_plugin without the flutter_ffmpeg plugin
-  /// and without any complain from the link-editor.
-  ///
+  /// Check if FFmpeg is linked to flutter_sound.
+  /// (flutter_sound_lite is not linked with FFmpeg)
+  /// Return `true` if FFmpeg is there
+  Future<bool> isFFmpegAvailable() async {
+    try {
+      if (_flutterFFmpegConfig == null) {
+        _flutterFFmpegConfig = FlutterFFmpegConfig( );
+      }
+      var version = await _flutterFFmpegConfig.getFFmpegVersion( );
+      return (version != null);
+    } catch (e) {
+      return false;
+    }
+  }
+
   /// Executes FFmpeg with [commandArguments] provided.
   Future<int> executeFFmpegWithArguments(List<String> arguments) {
     if (_flutterFFmpeg == null) _flutterFFmpeg = FlutterFFmpeg();
     return _flutterFFmpeg.executeWithArguments(arguments);
   }
 
-  /// We use here our own ffmpeg "getLastReturnCode" procedure
-  ///  instead of the one provided by the flutter_ffmpeg plugin,
-  /// so that the developers not interested by ffmpeg can use
-  /// flutter_plugin without the flutter_ffmpeg plugin
-  /// and without any complain from the link-editor.
-  ///
   /// Returns return code of last executed command.
   Future<int> getLastFFmpegReturnCode() {
     //if(_flutterFFmpeg == null)
@@ -60,27 +63,8 @@ class FFMpegUtil {
       _flutterFFmpegConfig = FlutterFFmpegConfig();
     }
     return _flutterFFmpegConfig.getLastReturnCode();
-    /*
-        try
-        {
-                final Map<dynamic, dynamic> result =
-                await _FFmpegChannel.invokeMethod( 'getLastReturnCode' );
-                return result['lastRc'];
-        }
-        on PlatformException catch (e)
-        {
-                print( "Plugin error: ${e.message}" );
-                return -1;
-        }
-         */
   }
 
-  /// We use here our own ffmpeg "getLastCommandOutput" procedure
-  ///  instead of the one provided by the flutter_ffmpeg plugin,
-  /// so that the developers not interested by ffmpeg can use
-  /// flutter_plugin without the flutter_ffmpeg plugin
-  /// and without any complain from the link-editor.
-  ///
   /// Returns log output of last executed command. Please note
   /// that disabling redirection using
   /// This method does not support executing multiple concurrent
@@ -92,20 +76,6 @@ class FFMpegUtil {
       _flutterFFmpegConfig = FlutterFFmpegConfig();
     }
     return _flutterFFmpegConfig.getLastCommandOutput();
-    /*
-        try
-        {
-                final Map<dynamic, dynamic> result =
-                await _FFmpegChannel.invokeMethod( 'getLastCommandOutput' );
-                return result['lastCommandOutput'];
-        }
-        on PlatformException catch (e)
-        {
-                print( "Plugin error: ${e.message}" );
-                return null;
-        }
-
-         */
   }
 
   Future<Map<dynamic, dynamic>> _ffMpegGetMediaInformation(String uri) async {

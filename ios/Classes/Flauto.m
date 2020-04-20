@@ -21,11 +21,11 @@
  */
 
 
+#import "FlutterFfmpegPlugin.h"
 
 #import "flauto.h"
 #import "FlutterSoundPlayer.h"
 #import "FlutterSoundRecorder.h"
-#import "FlutterFfmpegPlugin.h"
 #import "TrackPlayer.h"
 #import <AVFoundation/AVFoundation.h>
 #import <Foundation/Foundation.h>
@@ -41,7 +41,9 @@
         FlautoPlayerReg(registrar);
         FlautoRecorderReg(registrar);
         TrackPlayerReg(registrar);
-        FfmpegReg(registrar);
+        #ifdef FULL_FLAVOR
+                FfmpegReg(registrar);
+        #endif
 }
 
 @end

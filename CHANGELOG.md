@@ -1,3 +1,7 @@
+## 4.0.0-beta.3
+
+- A new flutter plugin is born : `flutter_sound_lite` [#291](https://github.com/dooboolab/flutter_sound/issues/291)
+
 ## 4.0.0-beta.2
 
 - Add a new parameter in the Track structure : albumArtFile

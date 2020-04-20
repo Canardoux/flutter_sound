@@ -1,18 +1,19 @@
 /*
- * This file is part of Flutter-Sound (Flauto).
+ * This file is part of Flutter-Sound.
  *
- *   Flutter-Sound (Flauto) is free software: you can redistribute it and/or modify
+ *   Flutter-Sound is free software: you can redistribute it and/or modify
  *   it under the terms of the Lesser GNU General Public License
  *   version 3 (LGPL3) as published by the Free Software Foundation.
  *
- *   Flutter-Sound (Flauto) is distributed in the hope that it will be useful,
+ *   Flutter-Sound is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the Lesser GNU General Public License
- *   along with Flutter-Sound (Flauto).  If not, see <https://www.gnu.org/licenses/>.
+ *   along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 
 import 'dart:async';
 import 'dart:convert' hide Codec;
@@ -224,13 +225,13 @@ class SoundPlayer {
     // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We use FFmpeg for that task.
     if ((Platform.isIOS) &&
-        ((_codec == Codec.opus) || (fm.fileExtension(path) == '.opus'))) {
+        ((_codec == Codec.opusOGG) || (fm.fileExtension(path) == '.opus'))) {
       var tempMediaFile =
           TempMediaFile(await CodecConversions.opusToCafOpus(path));
       _tempMediaFiles.add(tempMediaFile);
       path = tempMediaFile.path;
       // update the codec so we won't reencode again.
-      _codec = Codec.cafOpus;
+      _codec = Codec.opusCAF;
     }
 
     /// set the uri so next time we come in here we will return the
@@ -646,8 +647,8 @@ class SoundPlayer {
     // For decoding ogg/opus on ios, we need to support two steps :
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
-    if ((codec == Codec.opus) && (Platform.isIOS)) {
-      codec = Codec.cafOpus;
+    if ((codec == Codec.opusOGG) && (Platform.isIOS)) {
+      codec = Codec.opusCAF;
     }
     result = await _invokeMethod(
         'isDecoderSupported', <String, dynamic>{'codec': codec.index}) as bool;
