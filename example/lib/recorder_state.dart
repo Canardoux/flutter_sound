@@ -100,7 +100,7 @@ class RecorderState {
           PlayerState().playerModule_2.onFinished =
               () => print('Secondary Play finished');
 
-          await PlayerState().playerModule_2.start();
+          await PlayerState().playerModule_2.play();
         } on Object catch (e) {
           print('startRecorder error: $e');
           rethrow;

@@ -297,7 +297,7 @@ class _PlaybarState extends State<Playbar> {
   void _start() async {
     // _soundPlayer.seekTo(sliderPosition.position);
     var watch = StopWatch('start');
-    _soundPlayer.start().then((_) {
+    _soundPlayer.play().then((_) {
       playState = PlayState.playing;
       watch.end();
       Log.d("StartPlayer returned");

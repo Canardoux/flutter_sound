@@ -47,12 +47,12 @@ enum PlayerState {
   isPaused,
 }
 
-typedef TonEvent = void Function();
+typedef PlayerEvent = void Function();
 
 /// TODO should we be passing an object that contains
 /// information such as the position in the track when
 /// it was paused?
-typedef TonEventWithCause = void Function({bool wasUser});
+typedef PlayerEventWithCause = void Function({bool wasUser});
 typedef TupdateProgress = void Function(int current, int max);
 
 /// Provides the ability to playback audio from
@@ -62,13 +62,13 @@ typedef TupdateProgress = void Function(int current, int max);
 /// Assets
 /// URL.
 class SoundPlayer {
-  TonEvent _onSkipForward;
-  TonEvent _onSkipBackward;
-  TonEvent _onFinished;
-  TonEventWithCause _onPaused;
-  TonEventWithCause _onResumed;
-  TonEventWithCause _onStarted;
-  TonEventWithCause _onStopped;
+  PlayerEvent _onSkipForward;
+  PlayerEvent _onSkipBackward;
+  PlayerEvent _onFinished;
+  PlayerEventWithCause _onPaused;
+  PlayerEventWithCause _onResumed;
+  PlayerEventWithCause _onStarted;
+  PlayerEventWithCause _onStopped;
   final bool _showOSUI;
 
   /// The title of this track
@@ -241,7 +241,7 @@ class SoundPlayer {
 
   /// Starts playback.
 
-  Future<void> start() async {
+  Future<void> play() async {
     _initialize();
 
     if (!isStopped) {
@@ -259,16 +259,15 @@ class SoundPlayer {
 
     _applyHush();
 
-    // build the argument map
-    var args = <String, dynamic>{};
-    args['path'] = path;
-    // Flutter cannot transfer an enum to a native plugin.
-    // We use an integer instead
-    args['codec'] = _codec.index;
-
     if (_showOSUI) {
       await _startPlayerOnOSUI(path);
     } else {
+      // build the argument map
+      var args = <String, dynamic>{};
+      args['path'] = path;
+      // Flutter cannot transfer an enum to a native plugin.
+      // We use an integer instead
+      args['codec'] = _codec.index;
       await _invokeMethod('startPlayer', args);
       playerState = PlayerState.isPlaying;
     }
@@ -366,9 +365,9 @@ class SoundPlayer {
   /// recording.
   /// [position] is the position in the recording to set the playback
   /// location from.
-  /// You may call this before [start] or whilst the audio is playing.
-  /// If you call [seekTo] before calling [start] then when you call
-  /// [start] we will start playing the recording from the [position]
+  /// You may call this before [play] or whilst the audio is playing.
+  /// If you call [seekTo] before calling [play] then when you call
+  /// [play] we will start playing the recording from the [position]
   /// passed to [seekTo].
   Future<void> seekTo(Duration position) async {
     await _initialize();
@@ -553,7 +552,7 @@ class SoundPlayer {
   /// next track and start it playing.
   ///
   // ignore: avoid_setters_without_getters
-  set onSkipForward(TonEvent onSkipForward) {
+  set onSkipForward(PlayerEvent onSkipForward) {
     _onSkipForward = onSkipForward;
   }
 
@@ -567,7 +566,7 @@ class SoundPlayer {
   ///
   ///
   // ignore: avoid_setters_without_getters
-  set onSkipBackward(TonEvent onSkipBackward) {
+  set onSkipBackward(PlayerEvent onSkipBackward) {
     _onSkipBackward = onSkipBackward;
   }
 
@@ -575,7 +574,7 @@ class SoundPlayer {
   /// a track finishes to completion.
   /// see [onStopped] for events when the user or system stops playback.
   // ignore: avoid_setters_without_getters
-  set onFinished(TonEvent onFinished) {
+  set onFinished(PlayerEvent onFinished) {
     _onFinished = onFinished;
   }
 
@@ -590,7 +589,7 @@ class SoundPlayer {
   /// [wasUser] will be false if you paused the audio
   /// via a call to [pause].
   // ignore: avoid_setters_without_getters
-  set onPaused(TonEventWithCause onPaused) {
+  set onPaused(PlayerEventWithCause onPaused) {
     _onPaused = onPaused;
   }
 
@@ -605,7 +604,7 @@ class SoundPlayer {
   /// [wasUser] will be false if you resumed the audio
   /// via a call to [resume].
   // ignore: avoid_setters_without_getters
-  set onResumed(TonEventWithCause onResumed) {
+  set onResumed(PlayerEventWithCause onResumed) {
     _onResumed = onResumed;
   }
 
@@ -616,12 +615,12 @@ class SoundPlayer {
   /// the audio then this method won't return
   /// util the audio actually starts to play.
   ///
-  /// This can occur if you called [start]
+  /// This can occur if you called [play]
   /// or the user click the start button on the
   /// OS UI. To show the OS UI you must have called
   /// [showOSUI].
   // ignore: avoid_setters_without_getters
-  set onStarted(TonEventWithCause onStarted) {
+  set onStarted(PlayerEventWithCause onStarted) {
     _onStarted = onStarted;
   }
 
@@ -635,7 +634,7 @@ class SoundPlayer {
   /// OS UI. To show the OS UI you must have called
   /// [showOSUI].
   // ignore: avoid_setters_without_getters
-  set onStopped(TonEventWithCause onStopped) {
+  set onStopped(PlayerEventWithCause onStopped) {
     _onStopped = onStopped;
   }
 
@@ -742,6 +741,7 @@ class SoundPlayerProxy implements Proxy {
   /// The OS track UI skip backwards button has been tapped.
   void skipBackward() => _player._onSystemSkipBackwards();
 }
+
 
 /// The player was in an unexpected state when you tried
 /// to change it state.

@@ -10,7 +10,7 @@ void main() {
 
   var player = SoundPlayer.fromPath('example/asset/samples/sample.acc')
     ..onFinished = (() => print('finished'))
-    ..start();
+    ..play();
 
   var isInitialised = false;
   var isReleased = false;

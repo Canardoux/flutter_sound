@@ -177,13 +177,13 @@ class _MainBodyState extends State<MainBody> {
         player.onSkipBackward = ({bool wasUser}) async {
           print('Skip backward');
           await player.stop();
-          await player.start();
+          await player.play();
         };
 
         player.onSkipForward = ({bool wasUser}) async {
           print('Skip forward');
           await player.stop();
-          await player.start();
+          await player.play();
         };
       }
     } on Object catch (err) {
@@ -206,7 +206,7 @@ class _MainBodyState extends State<MainBody> {
       PlayerState().playerModule_2.onFinished =
           () => print('Secondary Play finished');
 
-      await PlayerState().playerModule_2.start();
+      await PlayerState().playerModule_2.play();
     }
   }
 
