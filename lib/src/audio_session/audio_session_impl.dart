@@ -73,14 +73,20 @@ class AudioSessionImpl implements AudioSession {
       StreamController<PlaybackDisposition>();
 
   /// Create a [AudioSession] that displays the OS' audio UI.
-  AudioSessionImpl.withUI(
-      {this.canPause, this.canSkipBackward, this.canSkipForward})
-      : _plugin = SoundPlayerTrackPlugin();
+  AudioSessionImpl.withUI({
+    this.canPause = true,
+    this.canSkipBackward = false,
+    this.canSkipForward = false,
+  }) : _plugin = SoundPlayerTrackPlugin();
 
   /// Create an [AudioSession] that does not have a UI.
   /// You can use this version to simply playback audio without
   /// a UI or to build your own UI as [Playbar] does.
-  AudioSessionImpl.noUI() : _plugin = SoundPlayerPlugin();
+  AudioSessionImpl.noUI() : _plugin = SoundPlayerPlugin() {
+    canPause = false;
+    canSkipBackward = false;
+    canSkipForward = false;
+  }
 
   /// Create a audio play from an in memory buffer.
   /// The [dataBuffer] contains the media to be played.
