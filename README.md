@@ -17,13 +17,16 @@ The key classes are:
 
 ## Api classes
 
-SoundPlayer - plays audio
+SoundPlayer - plays audio either using the OS' audio UI or headless.
 
-SoundRecorder - records audio
+SoundRecorder - records audio.
 
-Track - play a single track via the OS's audio UI
+Track - Defines a track including artist and a link to the media.
 
-Album - play a collection of tracks fia the OS's audio UI.
+Album - play a collection of tracks via the OS' audio UI.
+
+AudioSession - low level api for detailed control over your audio streams. You can choose to have the session attached to the OS' audio UI or not.
+
 
 ## Wdigets
 
@@ -174,32 +177,56 @@ player.onFinish = player.release;
 player.play();
 ```
 
-## Playing a Track via the OS's UI
+## Play audio allowing the user to control playback via OS' UI
 
 If you want to play the audio and have the OS Audio player displayed so the user can control the playback then use:
 
 ```dart
-var player = Track.fromPath('sample.aac');
-player.trackTitle = 'Reckless';
-player.trackAuthor = 'Flutter Sound';
-player.albumArtUrl = 'http://some image url';
-player.onFinish = player.release;
+var player = SoundPlayer.fromPath('sample.aac', session: AudioSession.withUI());
+player.onFinish = track.release;
 player.play();
 ```
-Note how I snuck in the track details. If provided they will be displayed on the OS Audio Player.
+
+You can also have the OS' audio player display artist details by 
+providing using Track.
+
+```dart
+var track = Track.fromPath('sample.aac');
+track.trackTitle = 'Reckless';
+track.trackAuthor = 'Flutter Sound';
+track.albumArtUrl = 'http://some image url';
+
+SoundPlayer.fromTrack(track, session: AudioSession.withUI());
+track.onFinish = track.release;
+track.play();
+```
+The artist, author and album art will be displayed on the OS Audio Player.
 
 ## Playing an album via the OS's UI
 
-If you want to play a collection of tracks via the OS's UI then you can create an Album with a static set of Tracks or a virtual set of Tracks.
+If you want to play a collection of tracks then you can create an Album with a static set of Tracks or a virtual set of Tracks.
 
 ### Play album with static set of Tracks
 
 ```dart
 var album = Album.fromTracks([
-	Track('sample.acc'),
-	Track('buzz.mp3'),
+	Track.fromPath('sample.acc'),
+	Track.fromPath('http://fqdn/sample.mp3'),
 ]);
+album.onFinish = album.release;
+album.play();
+```
+By default an Ablum displays the OS' audio UI.
+You can suppress the UI via by passing in AudioSession.noUI()
 
+
+```dart
+var album = Album.fromTracks([
+	Track.fromPath('sample.acc'),
+	Track.fromPath('http://fqdn/sample.mp3'),
+]
+, session: AudioSession.noUI());
+album.onFinish = album.release;
 album.play();
 ```
 
@@ -208,8 +235,8 @@ album.play();
 Virtual tracks allow you to create an album of infinite size which
 could be useful if you are pulling audio from an external source.
 
-If you create a virtual album you MUST implement the onSkipForward 
-and onSkipBackwards methods to supply the album with Tracks on demand.
+If you create a virtual album you MUST implement the `onSkipForward` 
+and `onSkipBackwards` methods to supply the album with Tracks on demand.
 
 ```dart
  var album = Album.virtual();
@@ -217,45 +244,73 @@ album.onSkipForward = (int currentTrackIndex, Track current)
 		=> Track('http://random/xxxx');
 album.onSkipBackwards = (int currentTrackIndex, Track current) 
 		=> Track('http://random/xxxx');
-
+album.onFinish = album.release;		
 album.play();
 
 ```
 
-## Monitoring progress
-If you need to know when the playback finishes then hook the onFinish callback:
+## Controlling Playback
+The `SoundPlayer` provides basic methods to allow you to control playback such as:
+* pause()
+* resume()
+* stop()
+* seekTo(duration)
+
+If you need more detailed control then you need to use an `AudioSession`
+
+
+# AudioSession
+
+An AudioSession provides finer grained control over how the audio is played as well as been able to monitor playback and respond to user events.
+
+The `AudioSession` also allows you to play multiple audio files using the same session. 
+Maintaining the same session is important if you are using the OS' audio UI for user control. 
+If you don't use a single `AudioSession` then the user will experience flicker between tracks as the OS' audio player is destroyed and recreated between each track.
+
+The `Album` class provides an easy to use method of utilising a single session without the complications of an `AudioSession`.
+
 
 ```dart
-var player = SoundPlayer.fromPath('sample.aac');
-player.onFinished = () => print('playback finished');
-player.play();
+var session = AudioSession.withUI();
+
+var track = Track.fromPath('sample.aac');
+session.onStarted => print('started');
+session.onStopped => print('stopped');
+session.onPause => print('paused');
+session.onResume => print('resumed');
+session.onFinished => print('finished');
+session.play(track);
+
 ```
-There are a number of other callbacks you can use to receive notifications as the playback proceeds such as:
-* onStarted
-* onStopped
-* onPaused
-* onResumed
 
 
-## Track playback position
+## Monitor playback position
 If you are building your own widget you might want to display a progress bar that displays the current playback position.
 
 The easiest way to do this is via the Playbar but if you want to write your own then you will want to user the `dispositionStream` with a StreamBuilder.
+To use a `dispositionStream` you need to create an `AudioSession`.
 
 ```dart
 class MyWidgetState
 {
+	var session = AudioSession().noUI();
 	void initState()
 	{
 		super.initState();
-		var player = SoundPlayer.fromPath('sample.aac');
+		session.play(Track.fromPath('sample.aac'));
+	}
+
+	void dispose()
+	{
+		session.release();
+		super.dispose();
 	}
 
 	 Widget build() {
     	 return Row(children:
 		 	[Button('Play' onTap: onPlay)
 		 		, StreamBuilder<PlaybackDisposition>(
-					stream: player.dispositionStream,
+					stream: session.dispositionStream,
 					initialData: PlaybackDisposition.zero(),
 					builder: (context, snapshot) {
 					var disposition = snapshot.data;

@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'recording_disposition.dart';
-import 'sound_recorder.dart';
+import '../recording_disposition.dart';
+import 'sound_recorder_impl.dart';
 
 /// An internal class which manages the RecordingDisposition stream.
 class RecordingDispositionManager {
+  final SoundRecorderImpl _recorder;
   StreamController<RecordingDisposition> _dispositionController;
 
   /// tracks the last time we sent an update
@@ -22,10 +23,8 @@ class RecordingDispositionManager {
   /// Defaults to [10ms].
   Duration interval = Duration(milliseconds: 10);
 
-  final SoundRecorderProxy _recorderProxy;
-
   /// ctor
-  RecordingDispositionManager(this._recorderProxy);
+  RecordingDispositionManager(this._recorder);
 
   /// Returns a stream of RecordingDispositions
   /// The stream is a broad cast stream and can be called
@@ -39,9 +38,9 @@ class RecordingDispositionManager {
     this.interval = interval;
 
     _dispositionController ??= StreamController.broadcast();
-    _recorderProxy.setSubscriptionDuration(interval);
-    _recorderProxy.setDbLevelEnabled(enabled: true);
-    _recorderProxy.setDbPeakLevelUpdate(interval);
+    _recorder.setSubscriptionDuration(interval);
+    _recorder.setDbLevelEnabled(enabled: true);
+    _recorder.setDbPeakLevelUpdate(interval);
     return _dispositionController.stream;
   }
 

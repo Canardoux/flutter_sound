@@ -1,25 +1,29 @@
-import 'sound_player.dart';
-import 'track.dart';
+import '../audio_session/audio_session.dart';
+
+import '../track.dart';
+import 'album.dart';
 
 typedef TrackChange = Track Function(int currentTrackIndex, Track current);
 
-/// An [Album] allows you to play a collection of [Tracks] via
+/// An [AlbumImpl] allows you to play a collection of [Tracks] via
 /// the OS's builtin audio UI.
 ///
-class Album {
+class AlbumImpl implements Album {
+  AudioSession _session;
+
   List<Track> _tracks;
 
   var _currentTrackIndex = 0;
 
   Track currentTrack;
 
-  /// If you use the [Album.virtual] constructor then
+  /// If you use the [AlbumImpl.virtual] constructor then
   /// you need to provide a handlers for [onSkipForward]
   /// method.
   /// see [Album.virtual()] for details.
   TrackChange onSkipForward;
 
-  /// If you use the [Album.virtual] constructor then
+  /// If you use the [AlbumImpl.virtual] constructor then
   /// you need to provide a handlers for [onSkipbackward]
   /// method.
   /// see [Album.virtual()] for details.
@@ -29,13 +33,17 @@ class Album {
   /// via the OS' built in player.
   /// The tracks will be played in order and the user
   /// has the ability to skip forward/backwards.
-  Album.fromTracks(this._tracks) {
-    // wire each track
-    for (var track in _tracks) {
-      track.onSkipBackward = (_) => _skipBackwards();
-      track.onSkipForward = (_) => _skipForwards();
-      track.onFinished = _skipForwards;
-    }
+
+  AlbumImpl.fromTracks(this._tracks, AudioSession session) {
+    AlbumImpl._internal(session);
+  }
+
+  AlbumImpl._internal(AudioSession session) {
+    _session = session ?? AudioSession.withUI();
+
+    _session.onSkipBackward = _skipBackward;
+    _session.onSkipForward = _skipForward;
+    _session.onFinished = _onFinished;
   }
 
   /// Creates a virtual album which will be played
@@ -50,9 +58,12 @@ class Album {
   /// The Album will not allow the user to skip back past the first
   /// track you supplied so there is no looping back over the start
   /// of an album.
-  Album.virtual();
+  AlbumImpl.virtual(AudioSession session) {
+    AlbumImpl._internal(session);
+  }
 
-  void _skipBackwards() {
+  void _onFinished() {}
+  void _skipBackward() {
     if (_currentTrackIndex > 1) {
       stop();
 
@@ -66,7 +77,7 @@ class Album {
     }
   }
 
-  void _skipForwards() {
+  void _skipForward() {
     if (_tracks == null || _currentTrackIndex < _tracks.length - 1) {
       stop();
 
@@ -123,12 +134,19 @@ class Album {
   }
 
   void play() {
-    currentTrack.initialise();
-    currentTrack.play();
+    _session.play(currentTrack);
   }
 
   void stop() {
-    currentTrack.stop();
+    _session.stop();
     currentTrack.release();
+  }
+
+  void pause() {
+    _session.pause();
+  }
+
+  void resume() {
+    _session.resume();
   }
 }

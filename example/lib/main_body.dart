@@ -36,9 +36,8 @@ class _MainBodyState extends State<MainBody> {
     if (!initialised) {
       await PlayerState().init();
       await RecorderState().init();
-      ActiveCodec().playerModule = PlayerState().playerModule;
       ActiveCodec().recorderModule = RecorderState().recorderModule;
-      await ActiveCodec().setCodec(Codec.aac);
+      await ActiveCodec().setCodec(_useOSUI, Codec.aac);
       await initializeDateFormatting();
 
       initialised = true;
@@ -60,7 +59,8 @@ class _MainBodyState extends State<MainBody> {
             );
           } else {
             final dropdowns = Dropdowns(
-                onCodecChanged: (codec) => ActiveCodec().setCodec(codec));
+                onCodecChanged: (codec) =>
+                    ActiveCodec().setCodec(_useOSUI, codec));
             final trackSwitch = TrackSwitch(
               isAudioPlayer: _useOSUI,
               switchPlayer: (allow) => switchPlayer(useOSUI: allow),
@@ -94,8 +94,8 @@ class _MainBodyState extends State<MainBody> {
 
   /// Callback for the PlayBar so we can dynamically load a SoundPlayer after
   /// validating that all othe settings are correct.
-  Future<SoundPlayer> onLoad() async {
-    SoundPlayer player;
+  Future<Track> onLoad() async {
+    Track track;
     var canPlay = true;
 
     // validate codec for example file
@@ -120,89 +120,70 @@ class _MainBodyState extends State<MainBody> {
     }
 
     if (canPlay) {
-      player = await createSoundPlayer();
-      PlayerState().playerModule = player;
+      track = await createTrack();
       setState(() {});
     }
-    return player;
+    return track;
   }
 
-  Future<SoundPlayer> createSoundPlayer() async {
-    SoundPlayer player;
+  Future<Track> createTrack() async {
+    Track track;
     try {
       /// build player from asset
       if (MediaPath().isAsset) {
-        player = await createAssetPlayer();
+        track = await createAssetTrack();
       }
 
       /// build player from file
       else if (MediaPath().isFile) {
         // Do we want to play from buffer or from file ?
-        player = await _createPathPlayer();
+        track = await _createPathTrack();
       }
 
       /// build player from buffer.
       else if (MediaPath().isBuffer) {
         // Do we want to play from buffer or from file ?
-        player = await _createBufferPlayer();
+        track = await _createBufferTrack();
       }
 
       /// build player from example URL
       else if (MediaPath().isExampleFile) {
         // We have to play an example audio file loaded via a URL
-        player = await _createRemotePlayer();
+        track = await _createRemoteTrack();
       }
-      if (!await player.isSupported(ActiveCodec().codec)) {
-        Scaffold.of(context).showSnackBar(SnackBar(
-            content:
-                Text("The codec ${ActiveCodec().codec} is not supported.")));
-        player = null;
-      }
-
-      if (player != null) {
-        player.trackTitle = "Flutter at first Sight.";
-        player.trackAuthor = "By flutter_sound";
+      if (track != null) {
+        track.title = "Flutter at first Sight.";
+        track.author = "By flutter_sound";
 
         if (MediaPath().isExampleFile) {
-          player.albumArtUrl = albumArtPath;
+          track.albumArtUrl = albumArtPath;
         } else {
           if (Platform.isIOS) {
-            player.albumArtAsset = 'AppIcon';
+            track.albumArtAsset = 'AppIcon';
           } else if (Platform.isAndroid) {
-            player.albumArtAsset = 'AppIcon.png';
+            track.albumArtAsset = 'AppIcon.png';
           }
         }
-        await _startConcurrentPlayer();
-
-        player.onSkipBackward = ({bool wasUser}) async {
-          print('Skip backward');
-          await player.stop();
-          await player.play();
-        };
-
-        player.onSkipForward = ({bool wasUser}) async {
-          print('Skip forward');
-          await player.stop();
-          await player.play();
-        };
+        await _startConcurrentPlayer(track);
       }
     } on Object catch (err) {
       print('error: $err');
       rethrow;
     }
-    ActiveCodec().playerModule = player;
-    return player;
+
+    return track;
   }
 
-  Future _startConcurrentPlayer() async {
+  Future _startConcurrentPlayer(Track track) async {
     if (renetranceConcurrency && !MediaPath().isExampleFile) {
       var dataBuffer =
           (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
               .buffer
               .asUint8List();
 
-      PlayerState().playerModule_2 = SoundPlayer.fromBuffer(dataBuffer,
-          codec: ActiveCodec().codec, showOSUI: false);
+      PlayerState().playerModule_2 =
+          SoundPlayer.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
+
       PlayerState().playerModule_2.onFinished =
           () => print('Secondary Play finished');
 
@@ -210,14 +191,13 @@ class _MainBodyState extends State<MainBody> {
     }
   }
 
-  Future<SoundPlayer> _createRemotePlayer() async {
+  Future<Track> _createRemoteTrack() async {
     // We have to play an example audio file loaded via a URL
-    return SoundPlayer.fromPath(exampleAudioFilePath,
-        codec: ActiveCodec().codec, showOSUI: _useOSUI);
+    return Track.fromPath(exampleAudioFilePath, codec: ActiveCodec().codec);
   }
 
-  Future<SoundPlayer> _createBufferPlayer() async {
-    SoundPlayer player;
+  Future<Track> _createBufferTrack() async {
+    Track track;
     // Do we want to play from buffer or from file ?
     if (fileExists(MediaPath().pathForCodec(ActiveCodec().codec))) {
       var dataBuffer =
@@ -225,32 +205,32 @@ class _MainBodyState extends State<MainBody> {
       if (dataBuffer == null) {
         throw Exception('Unable to create the buffer');
       }
-      player = SoundPlayer.fromBuffer(dataBuffer,
-          codec: ActiveCodec().codec, showOSUI: _useOSUI);
+      track = Track.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
     }
-    return player;
+    return track;
   }
 
-  Future<SoundPlayer> _createPathPlayer() async {
-    SoundPlayer player;
+  Future<Track> _createPathTrack() async {
+    Track track;
     // Do we want to play from buffer or from file ?
     if (fileExists(MediaPath().pathForCodec(ActiveCodec().codec))) {
       var audioFilePath = MediaPath().pathForCodec(ActiveCodec().codec);
-      player = SoundPlayer.fromPath(audioFilePath,
-          codec: ActiveCodec().codec, showOSUI: _useOSUI);
+      track = Track.fromPath(audioFilePath, codec: ActiveCodec().codec);
     }
-    return player;
+    return track;
   }
 
-  Future<SoundPlayer> createAssetPlayer() async {
-    SoundPlayer player;
+  Future<Track> createAssetTrack() async {
+    Track track;
     var dataBuffer =
         (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
             .buffer
             .asUint8List();
-    player = SoundPlayer.fromBuffer(dataBuffer,
-        codec: ActiveCodec().codec, showOSUI: _useOSUI);
-    return player;
+    track = Track.fromBuffer(
+      dataBuffer,
+      codec: ActiveCodec().codec,
+    );
+    return track;
   }
 
   /// Allows us to switch the player module

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import '../ffmpeg_util.dart';
+import '../ffmpeg/ffmpeg_util.dart';
 
 import 'file_management.dart';
 

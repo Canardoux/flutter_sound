@@ -14,7 +14,7 @@ import 'local_context.dart';
 import 'playbar_slider.dart';
 import 'slider_position.dart';
 
-typedef TonLoad = Future<SoundPlayer> Function();
+typedef OnLoad = Future<Track> Function();
 
 /// A HTML 5 style audio play bar.
 /// Allows you to play/pause/resume and seek an audio track.
@@ -33,8 +33,9 @@ class Playbar extends StatefulWidget {
   /// provides a Duration of 0 seconds.
   static const zero = Duration(seconds: 0);
 
-  final TonLoad _onLoad;
-  final SoundPlayer _player;
+  final OnLoad _onLoad;
+
+  final Track _track;
   final bool _showTitle;
 
   /// [Playbar.fromLoader] allows you to dynamically provide
@@ -50,11 +51,11 @@ class Playbar extends StatefulWidget {
   /// If [enabled] is true (the default) then the Player will be enabled.
   /// If [enabled] is false then the player will be disabled and the user
   /// will not be able to click the play button.
-  Playbar.fromLoader(TonLoad onLoad,
+  Playbar.fromLoader(OnLoad onLoad,
       {bool showTitle = false, bool enabled = true})
       : _onLoad = onLoad,
         _showTitle = showTitle,
-        _player = null;
+        _track = null;
 
   ///
   /// [Playbar.fromPlayer] Constructs a Playbar with a SoundPlayer.
@@ -67,18 +68,20 @@ class Playbar extends StatefulWidget {
   /// If [enabled] is true (the default) then the Player will be enabled.
   /// If [enabled] is false then the player will be disabled and the user
   /// will not be able to click the play button.
-  Playbar.fromPlayer(SoundPlayer player, {bool showTitle = false})
-      : _player = player,
+  Playbar.fromTrack(Track track, {bool showTitle = false})
+      : _track = track,
         _showTitle = showTitle,
         _onLoad = null;
 
   @override
   State<StatefulWidget> createState() {
-    return _PlaybarState(_player, _onLoad);
+    return _PlaybarState(_track, _onLoad);
   }
 }
 
 class _PlaybarState extends State<Playbar> {
+  final AudioSession _session = AudioSession.noUI();
+
   SliderPosition sliderPosition = SliderPosition();
 
   /// we keep our own local stream as the players come and go.
@@ -97,13 +100,13 @@ class _PlaybarState extends State<Playbar> {
   /// for it to load the audio resource.
   bool __loading = false;
 
-  /// the active [SoundPlayer].
+  /// the [Track] we are playing .
   /// If the fromLoader ctor is used this will be null
   /// until the user clicks the Play button and onLoad
-  /// returns a non null [SoundPlayer]
-  SoundPlayer _soundPlayer;
+  /// returns a non null [Track]
+  Track _track;
 
-  TonLoad _onLoad;
+  OnLoad _onLoad;
 
   StreamSubscription _playerSubscription;
 
@@ -111,7 +114,7 @@ class _PlaybarState extends State<Playbar> {
 
   Slider slider;
 
-  _PlaybarState(this._soundPlayer, this._onLoad) {
+  _PlaybarState(this._track, this._onLoad) {
     _PlaybarState._internal();
   }
 
@@ -128,12 +131,12 @@ class _PlaybarState extends State<Playbar> {
   @override
   void reassemble() async {
     super.reassemble();
-    if (_soundPlayer != null) {
+    if (_track != null) {
       if (playState != PlayState.stopped) {
         await stop();
       }
-      _soundPlayer.release();
-      _soundPlayer = null;
+      _track.release();
+      _track = null;
     }
   }
 
@@ -148,14 +151,13 @@ class _PlaybarState extends State<Playbar> {
     /// TODO
     /// should we chain these events incase the user of our api
     /// also wants to see these events?
-    if (_soundPlayer != null) {
-      _soundPlayer.onStarted = ({wasUser}) => _loading = false;
-      _soundPlayer.onStopped = ({wasUser}) => playState = PlayState.stopped;
-      _soundPlayer.onFinished =
-          () => setState(() => playState = PlayState.stopped);
+    if (_track != null) {
+      _session.onStarted = ({wasUser}) => _loading = false;
+      _session.onStopped = ({wasUser}) => playState = PlayState.stopped;
+      _session.onFinished = () => setState(() => playState = PlayState.stopped);
 
       /// pipe the new sound players stream to our local controller.
-      _soundPlayer.dispositionStream().listen(_localController.add);
+      _session.dispositionStream().listen(_localController.add);
     }
   }
 
@@ -163,7 +165,7 @@ class _PlaybarState extends State<Playbar> {
   void dispose() {
     Log.d("stopping Player on dispose");
     _stop(supressState: true);
-    _soundPlayer.release();
+    _session.release();
     super.dispose();
   }
 
@@ -171,7 +173,7 @@ class _PlaybarState extends State<Playbar> {
     var rows = <Widget>[];
     rows.add(
         Row(children: [_buildPlayButton(), _buildDuration(), _buildSlider()]));
-    if (widget._showTitle && _soundPlayer != null) rows.add(_buildTitle());
+    if (widget._showTitle && _track != null) rows.add(_buildTitle());
 
     return Container(
         decoration: BoxDecoration(
@@ -225,7 +227,7 @@ class _PlaybarState extends State<Playbar> {
       playState = PlayState.playing;
     });
 
-    _soundPlayer
+    _session
         .resume()
         .then((_) => _transitioning = false)
         .catchError((dynamic e) {
@@ -243,7 +245,7 @@ class _PlaybarState extends State<Playbar> {
       playState = PlayState.paused;
     });
 
-    _soundPlayer
+    _session
         .pause()
         .then((_) => _transitioning = false)
         .catchError((dynamic e) {
@@ -264,25 +266,24 @@ class _PlaybarState extends State<Playbar> {
 
     Log.d("Calling startPlayer");
 
-    if (_soundPlayer != null && _soundPlayer.isPlaying) {
+    if (_track != null && _session.isPlaying) {
       Log.d("startPlay called whilst player running. Stopping Player first.");
       await _stop();
     }
 
     if (_onLoad != null) {
-      if (_soundPlayer != null) {
-        _soundPlayer.release();
+      if (_track != null) {
+        _track.release();
       }
 
       /// dynamically load the player.
-      _soundPlayer = await _onLoad();
-      _setCallbacks();
+      _track = await _onLoad();
     }
 
     /// no player than just silently ignore the start action.
     /// This means that _onLoad returned null and the user
     /// can display appropriate errors.
-    if (_soundPlayer != null) {
+    if (_track != null) {
       _start();
     } else {
       setState(() {
@@ -297,7 +298,7 @@ class _PlaybarState extends State<Playbar> {
   void _start() async {
     // _soundPlayer.seekTo(sliderPosition.position);
     var watch = StopWatch('start');
-    _soundPlayer.play().then((_) {
+    _session.play(_track).then((_) {
       playState = PlayState.playing;
       watch.end();
       Log.d("StartPlayer returned");
@@ -321,8 +322,8 @@ class _PlaybarState extends State<Playbar> {
   /// interal stop method.
   ///
   Future<void> _stop({bool supressState = false}) async {
-    if (_soundPlayer.isPlaying) {
-      _soundPlayer.stop().then<void>((_) {
+    if (_session.isPlaying) {
+      _session.stop().then<void>((_) {
         if (_playerSubscription != null) {
           _playerSubscription.cancel;
           _playerSubscription = null;
@@ -432,7 +433,7 @@ class _PlaybarState extends State<Playbar> {
       _localController.stream,
       (position) {
         sliderPosition.position = position;
-        _soundPlayer.seekTo(position);
+        _session.seekTo(position);
       },
     ));
   }
@@ -440,14 +441,14 @@ class _PlaybarState extends State<Playbar> {
   Widget _buildTitle() {
     var columns = <Widget>[];
 
-    if (_soundPlayer.trackTitle != null) {
-      columns.add(Text(_soundPlayer.trackTitle));
+    if (_track.title != null) {
+      columns.add(Text(_track.title));
     }
-    if (_soundPlayer.trackTitle != null && _soundPlayer.trackAuthor != null) {
+    if (_track.title != null && _track.author != null) {
       columns.add(Text(' / '));
     }
-    if (_soundPlayer.trackAuthor != null) {
-      columns.add(Text(_soundPlayer.trackAuthor));
+    if (_track.author != null) {
+      columns.add(Text(_track.author));
     }
     return Container(
       margin: EdgeInsets.only(left: 45, bottom: 5),

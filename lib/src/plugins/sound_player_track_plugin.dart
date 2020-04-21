@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import '../audio_session/audio_session_impl.dart';
 
-import '../playback_disposition.dart';
-import '../sound_player.dart';
+import '../track.dart';
 import 'base_plugin.dart';
 
 ///
@@ -19,38 +18,65 @@ class SoundPlayerTrackPlugin extends BasePlugin {
   SoundPlayerTrackPlugin._internal()
       : super('com.dooboolab.flutter_sound_track_player');
 
+  /// Plays the given [track]. [canSkipForward] and [canSkipBackward] must be
+  /// passed to provide information on whether the user can skip to the next
+  /// or to the previous song in the lock screen controls.
+  ///
+  /// This method should only be used if the player has been initialize
+  /// with the audio player specific features.
+  Future<void> play(AudioSessionImpl session, Track track) async {
+    final trackMap = <String, dynamic>{
+      "title": track.title,
+      "author": track.author,
+      "albumArtUrl": track.albumArtUrl,
+      "albumArtAsset": track.albumArtAsset,
+      // TODO is this necessary if we aren't passing a buffer?
+      "bufferCodecIndex": track.codec?.index,
+    };
+
+    if (track.audio.isURI) {
+      trackMap["path"] = track.audio.uri;
+    } else {
+      trackMap["dataBuffer"] = track.audio.buffer;
+    }
+
+    await invokeMethod(session, 'startPlayerFromTrack', <String, dynamic>{
+      'track': trackMap,
+      'canPause': session.canPause,
+      'canSkipForward': session.canSkipForward,
+      'canSkipBackward': session.canSkipBackward,
+    });
+  }
+
   ///
   Future<dynamic> onMethodCallback(
-      covariant SoundPlayerProxy connector, MethodCall call) {
+      covariant AudioSessionImpl session, MethodCall call) {
     switch (call.method) {
       case "updateProgress":
         var arguments = call.arguments['arg'] as String;
-        connector.updateProgress(arguments);
+        session.updateProgress(BasePlugin.dispositionFromJSON(arguments));
         break;
 
       case "audioPlayerFinishedPlaying":
-        var args = call.arguments['arg'] as String;
-        var result = jsonDecode(args) as Map<String, dynamic>;
-        var status = PlaybackDisposition.fromJSON(result);
-
-        connector.audioPlayerFinished(status);
+        var arguments = call.arguments['arg'] as String;
+        session.audioPlayerFinished(BasePlugin.dispositionFromJSON(arguments));
         break;
 
       case 'pause':
-        connector.onSystemPaused();
+        session.onSystemPaused();
         break;
 
       case 'resume':
-        connector.onSystemResumed();
+        session.onSystemResumed();
         break;
 
       /// track specific methods
       case 'skipForward':
-        connector.skipForward();
+        session.onSystemSkipForward();
         break;
 
       case 'skipBackward':
-        connector.skipBackward();
+        session.onSystemSkipBackward();
         break;
 
       default:

@@ -73,7 +73,10 @@ class _DropdownsState extends State<Dropdowns> {
       value: ActiveCodec().codec,
       onChanged: (newCodec) {
         widget._onCodecChanged(newCodec);
-        ActiveCodec().setCodec(newCodec);
+
+        /// this is hacky as we should be passing the actually
+        /// useOSUI flag.
+        ActiveCodec().setCodec(false, newCodec);
 
         setState(() {
           getDuration(ActiveCodec().codec);
@@ -113,7 +116,7 @@ class _DropdownsState extends State<Dropdowns> {
       value: MediaPath().media,
       onChanged: (newMedia) {
         if (newMedia == MediaStorage.remoteExampleFile) {
-          ActiveCodec().setCodec(Codec.mp3);
+          ActiveCodec().setCodec(false, Codec.mp3);
           MediaPath().setCodecPath(ActiveCodec().codec, exampleAudioFilePath);
         } // Actually this is the only example we use in this example
         MediaPath().media = newMedia;

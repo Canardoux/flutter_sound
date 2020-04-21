@@ -65,9 +65,9 @@ class RecorderState {
   /// stops the recorder.
   void stopRecorder() async {
     try {
-      await recorderModule.stopRecorder();
+      await recorderModule.stop();
       if (renetranceConcurrency) {
-        await recorderModule_2.stopRecorder();
+        await recorderModule_2.stop();
         await PlayerState().stopPlayer();
       }
     } on Object catch (err) {
@@ -131,15 +131,15 @@ class RecorderState {
     assert(recorderModule.isRecording || recorderModule.isPaused);
     if (recorderModule.isPaused) {
       {
-        recorderModule.resumeRecorder();
+        recorderModule.resume();
         if (renetranceConcurrency) {
-          recorderModule_2.resumeRecorder();
+          recorderModule_2.resume();
         }
       }
     } else {
-      recorderModule.pauseRecorder();
+      recorderModule.pause();
       if (renetranceConcurrency) {
-        recorderModule_2.pauseRecorder();
+        recorderModule_2.pause();
       }
     }
   }

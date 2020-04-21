@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_sound/flutter_sound.dart';
 
-import 'active_codec.dart';
 import 'main.dart';
-import 'media_path.dart';
 
 /// Used to track the players state.
 class PlayerState {
@@ -38,22 +36,6 @@ class PlayerState {
   /// get the PlayStatus stream.
   Stream<PlaybackDisposition> get playStatusStream {
     return _playStatusController.stream;
-  }
-
-  /// [true] if the player can be started.
-  Future<bool> get canStart async {
-    if (MediaPath().isFile ||
-        MediaPath().isBuffer) // A file must be already recorded to play it
-    {
-      if (!MediaPath().exists(ActiveCodec().codec)) return false;
-    }
-
-    // Disable the button if the selected codec is not supported
-    if (!(await playerModule.isSupported(ActiveCodec().codec))) return false;
-
-    if (!isStopped) return false;
-
-    return true;
   }
 
   /// true if the player is currently playing or paused.

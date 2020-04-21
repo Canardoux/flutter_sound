@@ -9,9 +9,6 @@ class ActiveCodec {
   bool _decoderSupported = false;
 
   ///
-  SoundPlayer playerModule;
-
-  ///
   SoundRecorder recorderModule;
 
   /// Factory to access the active codec.
@@ -21,11 +18,15 @@ class ActiveCodec {
   ActiveCodec._internal();
 
   /// Set the active code for the the recording and player modules.
-  void setCodec(Codec codec) async {
+  void setCodec(bool withUI, Codec codec) async {
     _encoderSupported = await recorderModule.isSupported(codec);
-    if (playerModule != null) {
-      _decoderSupported = await playerModule.isSupported(codec);
-    }
+    AudioSession session;
+    if (withUI)
+      session = AudioSession.withUI();
+    else
+      session = AudioSession.noUI();
+
+    _decoderSupported = await session.isSupported(codec);
 
     _codec = codec;
   }

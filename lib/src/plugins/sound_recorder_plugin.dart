@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
-import '../sound_recorder.dart';
+import '../impl/sound_recorder_impl.dart';
 import 'base_plugin.dart';
 
 /// Provides communications with the platform
@@ -19,7 +19,7 @@ class SoundRecorderPlugin extends BasePlugin {
       : super('com.dooboolab.flutter_sound_recorder');
 
   Future<dynamic> onMethodCallback(
-      covariant SoundRecorderProxy connector, MethodCall call) {
+      covariant SoundRecorderImpl connector, MethodCall call) {
     switch (call.method) {
       case "updateRecorderProgress":
         {
