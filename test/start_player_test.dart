@@ -12,6 +12,18 @@ void main() {
   player.onFinished = player.release;
   player.play();
 
+SoundRecorder recorder = SoundRecorder.toPath('path to store recording');
+recorder.start();
+
+recorder.onStopped = () => recorder.release();
+  var player2 = SoundPlayer.fromPath(recorder.path)
+	player2.onFinished = () => player2.release();
+	player2.play();
+
+  var player = SoundPlayer.fromPath(recorder.path)
+	..onFinished => player.release();
+	..play();
+
   var isInitialised = false;
   var isReleased = false;
   double subscriptionDuration;
