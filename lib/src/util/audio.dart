@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'codec.dart';
-import 'util/codec_conversions.dart';
-import 'util/temp_media_file.dart';
+import '../codec.dart';
+import '../util/codec_conversions.dart';
+import '../util/temp_media_file.dart';
 
 /// Manages the audio data for a Track.
 class Audio {

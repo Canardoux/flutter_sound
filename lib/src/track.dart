@@ -2,8 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 
-import 'audio.dart';
 import 'codec.dart';
+import 'util/audio.dart';
 
 typedef TrackAction = void Function(Track current);
 
@@ -12,7 +12,7 @@ typedef TrackAction = void Function(Track current);
 /// and the OS playback mechanism.
 ///
 /// So what I want is for:
-/// SoundPlayer - just plays audio no UI.
+/// QuickPlay - just plays audio no UI.
 ///  - able to send events so you can implement your own audio.
 ///
 /// Track - allows you to define additional info such as artist
@@ -20,11 +20,11 @@ typedef TrackAction = void Function(Track current);
 ///   - the problem is that the plugin architecture is awkard for this
 ///     as it encapsulates play back and the UI.
 ///
-/// AudioSession - we pass this around to create a coherent
-/// session.
-/// A SoundPlayer gets a session when it is initialised unless
+/// SoundPlayer - we pass this around to create a coherent
+/// player.
+/// A QuickPlay gets a player when it is initialised unless
 /// one is passed to it.
-/// An album creates a session and passes it to a Track/SoundPlayer
+/// An album creates a player and passes it to a Track/QuickPlay
 ///
 
 ///

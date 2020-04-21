@@ -18,7 +18,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
-import '../audio_session.dart';
+import '../sound_player.dart';
 import '../track.dart';
 import 'base_plugin.dart';
 
@@ -40,7 +40,7 @@ class SoundPlayerTrackPlugin extends BasePlugin {
   ///
   /// This method should only be used if the player has been initialize
   /// with the audio player specific features.
-  Future<void> play(AudioSession session, Track track) async {
+  Future<void> play(SoundPlayer player, Track track) async {
     final trackMap = <String, dynamic>{
       "title": track.title,
       "author": track.author,
@@ -56,43 +56,43 @@ class SoundPlayerTrackPlugin extends BasePlugin {
       trackMap["dataBuffer"] = trackBuffer(track);
     }
 
-    await invokeMethod(session, 'startPlayerFromTrack', <String, dynamic>{
+    await invokeMethod(player, 'startPlayerFromTrack', <String, dynamic>{
       'track': trackMap,
-      'canPause': session.canPause,
-      'canSkipForward': session.canSkipForward,
-      'canSkipBackward': session.canSkipBackward,
+      'canPause': player.canPause,
+      'canSkipForward': player.canSkipForward,
+      'canSkipBackward': player.canSkipBackward,
     });
   }
 
   ///
   Future<dynamic> onMethodCallback(
-      covariant AudioSession session, MethodCall call) {
+      covariant SoundPlayer player, MethodCall call) {
     switch (call.method) {
       case "updateProgress":
         var arguments = call.arguments['arg'] as String;
-        updateProgress(session, BasePlugin.dispositionFromJSON(arguments));
+        updateProgress(player, BasePlugin.dispositionFromJSON(arguments));
         break;
 
       case "audioPlayerFinishedPlaying":
         var arguments = call.arguments['arg'] as String;
-        audioPlayerFinished(session, BasePlugin.dispositionFromJSON(arguments));
+        audioPlayerFinished(player, BasePlugin.dispositionFromJSON(arguments));
         break;
 
       case 'pause':
-        onSystemPaused(session);
+        onSystemPaused(player);
         break;
 
       case 'resume':
-        onSystemResumed(session);
+        onSystemResumed(player);
         break;
 
       /// track specific methods
       case 'skipForward':
-        onSystemSkipForward(session);
+        onSystemSkipForward(player);
         break;
 
       case 'skipBackward':
-        onSystemSkipBackward(session);
+        onSystemSkipBackward(player);
         break;
 
       default:

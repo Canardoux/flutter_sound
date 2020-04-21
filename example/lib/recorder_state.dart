@@ -96,7 +96,7 @@ class RecorderState {
                   .buffer
                   .asUint8List();
           PlayerState().playerModule_2 =
-              SoundPlayer.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
+              QuickPlay.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
           PlayerState().playerModule_2.onFinished =
               () => print('Secondary Play finished');
 
@@ -109,7 +109,6 @@ class RecorderState {
         await recorderModule_2.start(
           path: secondaryPath,
           codec: Codec.aacADTS,
-
         );
         print("Secondary record is '$secondaryPath'");
       }

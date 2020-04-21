@@ -14,10 +14,10 @@ class PlayerState {
   // StreamSubscription _playbackStateSubscription;
 
   /// the primary player
-  SoundPlayer playerModule;
+  QuickPlay playerModule;
 
   /// secondary player used to demo two audio streams playing.
-  SoundPlayer playerModule_2; // Used if REENTRANCE_CONCURENCY
+  QuickPlay playerModule_2; // Used if REENTRANCE_CONCURENCY
 
   final StreamController<PlaybackDisposition> _playStatusController =
       StreamController<PlaybackDisposition>.broadcast();

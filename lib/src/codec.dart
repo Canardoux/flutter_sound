@@ -15,9 +15,12 @@
  */
 import 'package:path/path.dart';
 
-/// this enum MUST be synchronized with fluttersound/AudioInterface.java
-/// and ios/Classes/FlutterSoundPlugin.h
+/// Describes the set of possible codecs.
+/// Not all codecs are support on all OSs nor all actions.
 enum Codec {
+  // this enum MUST be synchronized with fluttersound/AudioInterface.java
+  // and ios/Classes/FlutterSoundPlugin.h
+
   /// This is the default codec. If used
   /// Flutter Sound will use the files extension to guess the codec.
   /// If the file extension doesn't match a known codec then

@@ -62,10 +62,10 @@ class SoundRecorderImpl {
   String _recordingToPath;
 
   /// track the total time we hav been paused during
-  /// the current recording session.
+  /// the current recording player.
   var _timePaused = Duration(seconds: 0);
 
-  /// I fwe have paused during the current recording session this
+  /// I fwe have paused during the current recording player this
   /// will be the time
   /// the most recent pause commenced.
   DateTime _pauseStarted;

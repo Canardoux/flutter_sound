@@ -8,7 +8,7 @@ void main() {
 
   final log = <MethodCall>[];
 
-  var player = SoundPlayer.fromPath('example/asset/samples/sample.acc');
+  var player = QuickPlay.fromPath('example/asset/samples/sample.acc');
   player.onFinished = player.release;
   player.play();
 
@@ -16,11 +16,11 @@ void main() {
 // recorder.start();
 
 // recorder.onStopped = () => recorder.release();
-//   var player2 = SoundPlayer.fromPath(recorder.path)
+//   var player2 = QuickPlay.fromPath(recorder.path)
 // 	player2.onFinished = () => player2.release();
 // 	player2.play();
 
-//   var player = SoundPlayer.fromPath(recorder.path)
+//   var player = QuickPlay.fromPath(recorder.path)
 // 	..onFinished => player.release();
 // 	..play();
 
@@ -89,13 +89,13 @@ void main() {
   });
 
   // test('startPlayer', () {
-  //   var player = SoundPlayer();
+  //   var player = QuickPlay();
 
   //   player.startPlayer('example/asset/samples/sample.acc');
   // }, skip: true);
 
   // test('startPlayer - whenFinished', () {
-  //   var player = SoundPlayer();
+  //   var player = QuickPlay();
 
   //   try {
   //     player.startPlayer('example/asset/samples/sample.acc',

@@ -1,4 +1,4 @@
-import 'audio_session.dart';
+import 'sound_player.dart';
 
 import 'track.dart';
 
@@ -8,7 +8,7 @@ typedef TrackChange = Track Function(int currentTrackIndex, Track current);
 /// the OS's builtin audio UI.
 ///
 class Album {
-  AudioSession _session;
+  SoundPlayer _player;
 
   final bool _virtualAlbum;
 
@@ -43,23 +43,23 @@ class Album {
   /// The tracks will be played in order and the user
   /// has the ability to skip forward/backwards.
   /// By default the Album displays on the OS' audio player.
-  /// To suppress the OS' audio player pass [AudioSession.noUI()]
-  /// to [session].
-  Album.fromTracks(this._tracks, AudioSession session) : _virtualAlbum = false {
-    Album._internal(session, _virtualAlbum);
+  /// To suppress the OS' audio player pass [SoundPlayer.noUI()]
+  /// to [player].
+  Album.fromTracks(this._tracks, SoundPlayer player) : _virtualAlbum = false {
+    Album._internal(player, _virtualAlbum);
 
     if (_tracks.isEmpty) {
       throw NoTracksAlbumException('You must pass at least one track');
     }
   }
 
-  Album._internal(AudioSession session, bool virtualAlbum)
+  Album._internal(SoundPlayer player, bool virtualAlbum)
       : _virtualAlbum = virtualAlbum {
-    _session = session ?? AudioSession.withUI();
+    _player = player ?? SoundPlayer.withUI();
 
-    _session.onSkipBackward = _skipBackward;
-    _session.onSkipForward = _skipForward;
-    _session.onFinished = _onFinished;
+    _player.onSkipBackward = _skipBackward;
+    _player.onSkipForward = _skipForward;
+    _player.onFinished = _onFinished;
   }
 
   /// Creates a virtual album which will be played
@@ -74,8 +74,8 @@ class Album {
   /// The Album will not allow the user to skip back past the first
   /// track you supplied so there is no looping back over the start
   /// of an album.
-  Album.virtual(AudioSession session) : _virtualAlbum = true {
-    Album._internal(session, _virtualAlbum);
+  Album.virtual(SoundPlayer player) : _virtualAlbum = true {
+    Album._internal(player, _virtualAlbum);
   }
 
   void _onFinished() {}
@@ -155,23 +155,23 @@ class Album {
     } else {
       _currentTrack = _tracks[_currentTrackIndex];
     }
-    _session.play(_currentTrack);
+    _player.play(_currentTrack);
   }
 
   /// stop the album playing.
   void stop() {
-    _session.stop();
+    _player.stop();
     trackRelease(_currentTrack);
   }
 
   /// pause the album playing
   void pause() {
-    _session.pause();
+    _player.pause();
   }
 
   /// resume the album playing.
   void resume() {
-    _session.resume();
+    _player.resume();
   }
 }
 

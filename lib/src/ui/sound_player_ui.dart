@@ -23,24 +23,25 @@ import 'package:provider/provider.dart';
 
 import '../../flutter_sound.dart';
 import '../codec.dart';
+import '../track.dart';
 import '../util/format.dart';
 import '../util/stop_watch.dart';
 import 'grayed_out.dart';
 import 'local_context.dart';
-import 'playbar_slider.dart';
+import 'slider.dart';
 import 'slider_position.dart';
 
 typedef OnLoad = Future<Track> Function();
 
 /// A HTML 5 style audio play bar.
 /// Allows you to play/pause/resume and seek an audio track.
-/// The Playbar displays:
+/// The [SoundPlayerUI] displays:
 ///   a spinner whilst loading audio
 ///   play/resume buttons
 ///   a slider to indicate and change the current play position.
 ///   optionally displays the album title and track if the
-///   [SoundPlayer] contains those details.
-class Playbar extends StatefulWidget {
+///   [Track] contains those details.
+class SoundPlayerUI extends StatefulWidget {
   /// only codec support by android unless we have a minSdk of 29
   /// then OGG_VORBIS and OPUS are supported.
   static const Codec standardCodec = Codec.aacADTS;
@@ -54,49 +55,49 @@ class Playbar extends StatefulWidget {
   final Track _track;
   final bool _showTitle;
 
-  /// [Playbar.fromLoader] allows you to dynamically provide
-  /// a [SoundPlayer] when the user clicks the play
+  /// [SoundPlayerUI.fromLoader] allows you to dynamically provide
+  /// a [Track] when the user clicks the play
   /// button.
   /// You can cancel the play action by returning
   /// null when _onLoad is called.
   /// [onLoad] is the function that is called when the user clicks the
-  /// play button. You return either a SoundPlayer to be played or null
+  /// play button. You return either a Track to be played or null
   /// if you want to cancel the play action.
   /// If [showTitle] is true (default is false) then the play bar will also
   /// display the track name and album (if set).
   /// If [enabled] is true (the default) then the Player will be enabled.
   /// If [enabled] is false then the player will be disabled and the user
   /// will not be able to click the play button.
-  Playbar.fromLoader(OnLoad onLoad,
+  SoundPlayerUI.fromLoader(OnLoad onLoad,
       {bool showTitle = false, bool enabled = true})
       : _onLoad = onLoad,
         _showTitle = showTitle,
         _track = null;
 
   ///
-  /// [Playbar.fromPlayer] Constructs a Playbar with a SoundPlayer.
-  /// [player] is the SoundPlayer that contains the audio to play.
+  /// [SoundPlayerUI.fromTrack] Constructs a Playbar with a Track.
+  /// [track] is the Track that contains the audio to play.
   ///
-  /// When the user clicks the play the audio held by the SoundPlayer will
+  /// When the user clicks the play the audio held by the Track will
   /// be played.
   /// If [showTitle] is true (default is false) then the play bar will also
   /// display the track name and album (if set).
   /// If [enabled] is true (the default) then the Player will be enabled.
   /// If [enabled] is false then the player will be disabled and the user
   /// will not be able to click the play button.
-  Playbar.fromTrack(Track track, {bool showTitle = false})
+  SoundPlayerUI.fromTrack(Track track, {bool showTitle = false})
       : _track = track,
         _showTitle = showTitle,
         _onLoad = null;
 
   @override
   State<StatefulWidget> createState() {
-    return _PlaybarState(_track, _onLoad);
+    return _SoundPlayerUIState(_track, _onLoad);
   }
 }
 
-class _PlaybarState extends State<Playbar> {
-  final AudioSession _session = AudioSession.noUI();
+class _SoundPlayerUIState extends State<SoundPlayerUI> {
+  final SoundPlayer _player = SoundPlayer.noUI();
 
   SliderPosition sliderPosition = SliderPosition();
 
@@ -130,11 +131,11 @@ class _PlaybarState extends State<Playbar> {
 
   Slider slider;
 
-  _PlaybarState(this._track, this._onLoad) {
-    _PlaybarState._internal();
+  _SoundPlayerUIState(this._track, this._onLoad) {
+    _SoundPlayerUIState._internal();
   }
 
-  _PlaybarState._internal() {
+  _SoundPlayerUIState._internal() {
     sliderPosition.position = Duration(seconds: 0);
     sliderPosition.maxPosition = Duration(seconds: 0);
 
@@ -168,12 +169,12 @@ class _PlaybarState extends State<Playbar> {
     /// should we chain these events incase the user of our api
     /// also wants to see these events?
     if (_track != null) {
-      _session.onStarted = ({wasUser}) => _loading = false;
-      _session.onStopped = ({wasUser}) => playState = PlayState.stopped;
-      _session.onFinished = () => setState(() => playState = PlayState.stopped);
+      _player.onStarted = ({wasUser}) => _loading = false;
+      _player.onStopped = ({wasUser}) => playState = PlayState.stopped;
+      _player.onFinished = () => setState(() => playState = PlayState.stopped);
 
       /// pipe the new sound players stream to our local controller.
-      _session.dispositionStream().listen(_localController.add);
+      _player.dispositionStream().listen(_localController.add);
     }
   }
 
@@ -181,7 +182,7 @@ class _PlaybarState extends State<Playbar> {
   void dispose() {
     Log.d("stopping Player on dispose");
     _stop(supressState: true);
-    _session.release();
+    _player.release();
     super.dispose();
   }
 
@@ -194,7 +195,7 @@ class _PlaybarState extends State<Playbar> {
     return Container(
         decoration: BoxDecoration(
             color: Colors.grey,
-            borderRadius: BorderRadius.circular(Playbar._barHeight / 2)),
+            borderRadius: BorderRadius.circular(SoundPlayerUI._barHeight / 2)),
         child: Column(children: rows));
   }
 
@@ -243,7 +244,7 @@ class _PlaybarState extends State<Playbar> {
       playState = PlayState.playing;
     });
 
-    _session
+    _player
         .resume()
         .then((_) => _transitioning = false)
         .catchError((dynamic e) {
@@ -261,10 +262,7 @@ class _PlaybarState extends State<Playbar> {
       playState = PlayState.paused;
     });
 
-    _session
-        .pause()
-        .then((_) => _transitioning = false)
-        .catchError((dynamic e) {
+    _player.pause().then((_) => _transitioning = false).catchError((dynamic e) {
       Log.w("Error calling startPlayer ${e.toString()}");
       playState = PlayState.playing;
       return null;
@@ -282,7 +280,7 @@ class _PlaybarState extends State<Playbar> {
 
     Log.d("Calling startPlayer");
 
-    if (_track != null && _session.isPlaying) {
+    if (_track != null && _player.isPlaying) {
       Log.d("startPlay called whilst player running. Stopping Player first.");
       await _stop();
     }
@@ -314,7 +312,7 @@ class _PlaybarState extends State<Playbar> {
   void _start() async {
     // _soundPlayer.seekTo(sliderPosition.position);
     var watch = StopWatch('start');
-    _session.play(_track).then((_) {
+    _player.play(_track).then((_) {
       playState = PlayState.playing;
       watch.end();
       Log.d("StartPlayer returned");
@@ -338,8 +336,8 @@ class _PlaybarState extends State<Playbar> {
   /// interal stop method.
   ///
   Future<void> _stop({bool supressState = false}) async {
-    if (_session.isPlaying) {
-      _session.stop().then<void>((_) {
+    if (_player.isPlaying) {
+      _player.stop().then<void>((_) {
         if (_playerSubscription != null) {
           _playerSubscription.cancel;
           _playerSubscription = null;
@@ -388,8 +386,8 @@ class _PlaybarState extends State<Playbar> {
     if (_loading == true) {
       button = Container(
         margin: const EdgeInsets.only(top: 5.0, bottom: 5),
-        child:
-            SpinKitRing(color: Colors.purple, size: Playbar._barHeight * 0.6),
+        child: SpinKitRing(
+            color: Colors.purple, size: SoundPlayerUI._barHeight * 0.6),
       );
     } else {
       button = _buildPlayButtonIcon(button);
@@ -449,7 +447,7 @@ class _PlaybarState extends State<Playbar> {
       _localController.stream,
       (position) {
         sliderPosition.position = position;
-        _session.seekTo(position);
+        _player.seekTo(position);
       },
     ));
   }

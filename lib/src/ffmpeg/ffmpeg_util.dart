@@ -40,11 +40,11 @@ class FFMpegUtil {
   Future<bool> isFFmpegAvailable() async {
     try {
       if (_flutterFFmpegConfig == null) {
-        _flutterFFmpegConfig = FlutterFFmpegConfig( );
+        _flutterFFmpegConfig = FlutterFFmpegConfig();
       }
-      var version = await _flutterFFmpegConfig.getFFmpegVersion( );
+      var version = await _flutterFFmpegConfig.getFFmpegVersion();
       return (version != null);
-    } catch (e) {
+    } on Object catch (_) {
       return false;
     }
   }

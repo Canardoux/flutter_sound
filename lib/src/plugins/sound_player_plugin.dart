@@ -17,7 +17,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import '../audio_session.dart';
+import '../sound_player.dart';
 
 import '../track.dart';
 import 'base_plugin.dart';
@@ -33,7 +33,7 @@ class SoundPlayerPlugin extends BasePlugin {
   }
   SoundPlayerPlugin._internal() : super('com.dooboolab.flutter_sound_player');
 
-  Future<void> play(AudioSession session, Track track) async {
+  Future<void> play(SoundPlayer player, Track track) async {
     /// sound player plugin does yet support in memory audio.
     trackForceToDisk(track);
     var args = <String, dynamic>{};
@@ -41,11 +41,11 @@ class SoundPlayerPlugin extends BasePlugin {
     // Flutter cannot transfer an enum to a native plugin.
     // We use an integer instead
     args['codec'] = track.codec.index;
-    await invokeMethod(session, 'startPlayer', args);
+    await invokeMethod(player, 'startPlayer', args);
   }
 
   ///
-  Future<dynamic> onMethodCallback(AudioSession audioSession, MethodCall call) {
+  Future<dynamic> onMethodCallback(SoundPlayer audioSession, MethodCall call) {
     switch (call.method) {
       case "updateProgress":
         {

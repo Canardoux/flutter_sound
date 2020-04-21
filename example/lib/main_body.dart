@@ -92,7 +92,7 @@ class _MainBodyState extends State<MainBody> {
     }
   }
 
-  /// Callback for the PlayBar so we can dynamically load a SoundPlayer after
+  /// Callback for the PlayBar so we can dynamically load a QuickPlay after
   /// validating that all othe settings are correct.
   Future<Track> onLoad() async {
     Track track;
@@ -182,7 +182,7 @@ class _MainBodyState extends State<MainBody> {
               .asUint8List();
 
       PlayerState().playerModule_2 =
-          SoundPlayer.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
+          QuickPlay.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
 
       PlayerState().playerModule_2.onFinished =
           () => print('Secondary Play finished');
@@ -241,7 +241,7 @@ class _MainBodyState extends State<MainBody> {
   Widget buildPlayBar() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Playbar.fromLoader(
+      child: SoundPlayerUI.fromLoader(
         onLoad,
         showTitle: true,
       ),

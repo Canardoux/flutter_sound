@@ -14,16 +14,8 @@
  *   along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+export 'src/album.dart';
 export 'src/android/android_audio_focus_gain.dart';
-export 'src/audio_session.dart'
-    show AudioSession
-    hide
-        updateProgress,
-        audioPlayerFinished,
-        onSystemPaused,
-        onSystemResumed,
-        onSystemSkipForward,
-        onSystemSkipBackward;
 export 'src/codec.dart' show Codec, CodecNotSupportedException;
 
 export 'src/ffmpeg/ffmpeg_util.dart';
@@ -32,10 +24,21 @@ export 'src/ios/ios_session_category_option.dart';
 export 'src/ios/ios_session_mode.dart';
 
 export 'src/playback_disposition.dart' show PlaybackDisposition;
-export 'src/playbar/playbar.dart';
+
+export 'src/quick_play.dart' show QuickPlay;
 export 'src/recording_disposition.dart' show RecordingDisposition;
-export 'src/sound_player.dart' show SoundPlayer;
+export 'src/sound_player.dart'
+    show SoundPlayer
+    hide
+        updateProgress,
+        audioPlayerFinished,
+        onSystemPaused,
+        onSystemResumed,
+        onSystemSkipForward,
+        onSystemSkipBackward;
+
 export 'src/sound_recorder.dart'
     show SoundRecorder, RecorderException, RecorderRunningException;
 
-export 'src/track.dart';
+export 'src/track.dart' show Track;
+export 'src/ui/sound_player_ui.dart' show SoundPlayerUI;
