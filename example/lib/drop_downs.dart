@@ -84,15 +84,16 @@ class _DropdownsState extends State<Dropdowns> {
       },
       items: <DropdownMenuItem<Codec>>[
         DropdownMenuItem<Codec>(
-          value: Codec.aac,
+
+          value: Codec.aacADTS,
           child: Text('AAC'),
         ),
         DropdownMenuItem<Codec>(
-          value: Codec.opus,
+          value: Codec.opusOGG,
           child: Text('OGG/Opus'),
         ),
         DropdownMenuItem<Codec>(
-          value: Codec.cafOpus,
+          value: Codec.opusCAF,
           child: Text('CAF/Opus'),
         ),
         DropdownMenuItem<Codec>(
@@ -100,7 +101,8 @@ class _DropdownsState extends State<Dropdowns> {
           child: Text('MP3'),
         ),
         DropdownMenuItem<Codec>(
-          value: Codec.vorbis,
+          value: Codec.vorbisOGG,
+
           child: Text('OGG/Vorbis'),
         ),
         DropdownMenuItem<Codec>(
