@@ -28,6 +28,8 @@ import android.util.Log;
 import androidx.arch.core.util.Function;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class MediaBrowserHelper
 {
@@ -40,7 +42,17 @@ public class MediaBrowserHelper
 	// to the service.
 	private Callable<Void>     mServiceConnectionUnsuccessfulCallback;
 
+	// Used to force calls to wait until the onConnect completes.
+	private CountDownLatch connectLatch = new CountDownLatch(1);
+
 	//private BackgroundAudioService backgroundAudioService ;
+
+	public waitForConnection()
+	{
+		if (!connectLatch.await(2, TimeUnit.MINUTES)){
+			throw MediaControllerTimeoutException();
+		}
+	}
 
 	private MediaBrowserCompat.ConnectionCallback mMediaBrowserCompatConnectionCallback = new MediaBrowserCompat.ConnectionCallback()
 	{
@@ -57,6 +69,7 @@ public class MediaBrowserHelper
 				assert(Flauto.androidActivity != null);
 				mediaControllerCompat = new MediaControllerCompat( Flauto.androidActivity, mMediaBrowserCompat.getSessionToken() );
 				MediaControllerCompat.setMediaController( Flauto.androidActivity, mediaControllerCompat );
+				connectLatch.countDown();
 
 				// Start the audio playback
 				// MediaControllerCompat.getMediaController(mActivity).getTransportControls().playFromMediaId("http://path-to-audio-file.com",
@@ -88,6 +101,7 @@ public class MediaBrowserHelper
 		public void onConnectionFailed()
 		{
 			super.onConnectionFailed();
+			connectLatch.countDown();
 
 			// Call the unsuccessful connection callback if it was provided
 			if ( mServiceConnectionUnsuccessfulCallback != null )
@@ -155,21 +169,25 @@ public class MediaBrowserHelper
 
 	void playPlayback()
 	{
+		waitForConnection();
 		mediaControllerCompat.getTransportControls().play();
 	}
 
 	void pausePlayback()
 	{
+		waitForConnection();
 		mediaControllerCompat.getTransportControls().pause();
 	}
 
 	void seekTo( long newPosition )
 	{
+		waitForConnection();
 		mediaControllerCompat.getTransportControls().seekTo( newPosition );
 	}
 
 	void stop()
 	{
+		waitForConnection();
 		mediaControllerCompat.getTransportControls().stop();
 	}
 
@@ -238,5 +256,13 @@ public class MediaBrowserHelper
 	void setPlaybackStateUpdater( Function playbackStateUpdater )
 	{
 		BackgroundAudioService.playbackStateUpdater = playbackStateUpdater;
+	}
+
+
+	// This class is thrown if we get a timeout waiting for the
+	// media controller to connect.
+	class MediaControllerTimeoutException extends Exception
+	{
+		static final long serialVersionUID = 1;
 	}
 }

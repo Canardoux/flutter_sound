@@ -318,6 +318,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 		mMediaBrowserHelper.setMediaPlayerOnPreparedListener( new MediaPlayerOnPreparedListener( result, path ) );
 		mMediaBrowserHelper.setMediaPlayerOnCompletionListener( new MediaPlayerOnCompletionListener() );
 
+		mMediaBrowserHelper.waitForConnection();
 		// Check whether a path to an audio file was given
 		if ( path == null )
 		{
