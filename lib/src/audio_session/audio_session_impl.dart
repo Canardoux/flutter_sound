@@ -226,14 +226,6 @@ class AudioSessionImpl implements AudioSession {
     await _plugin.setVolume(this, volume);
   }
 
-  ///  The caller can manage his audio focus with this function
-  /// Depending on your configuration this will either make
-  /// this player the loudest stream or it will silence all other stream.
-  Future<void> setActive({bool enabled}) async {
-    await _initialize();
-    _plugin.setActive(this, enabled: enabled);
-  }
-
   /// TODO does this need to be exposed?
   /// The simple action of stopping the playback may be sufficient
   /// Given the user has to call stop
@@ -313,7 +305,7 @@ class AudioSessionImpl implements AudioSession {
             IOSSessionCategoryOption.iosDuckOthers |
                 IOSSessionCategoryOption.iosDefaultToSpeaker);
       } else if (Platform.isAndroid) {
-        await androidAudioFocusRequest(AndroidAudioFocusGain.transientMayDuck);
+        await androidFocusRequest(AndroidAudioFocusGain.transientMayDuck);
       }
     } else {
       if (Platform.isIOS) {
@@ -322,7 +314,7 @@ class AudioSessionImpl implements AudioSession {
             IOSSessionMode.defaultMode,
             IOSSessionCategoryOption.iosDefaultToSpeaker);
       } else if (Platform.isAndroid) {
-        await androidAudioFocusRequest(AndroidAudioFocusGain.defaultGain);
+        await androidFocusRequest(AndroidAudioFocusGain.defaultGain);
       }
     }
   }
@@ -465,8 +457,13 @@ class AudioSessionImpl implements AudioSession {
   /// everything is managed by default by flutter_sound.
   /// If this function is called,
   /// it is probably called just once when the app starts.
+  ///
+  /// NOTE: in reality it is being called everytime we start
+  /// playing audio which from my reading appears to be correct.
+  ///
   /// After calling this function,
-  /// the caller is responsible for using correctly setActive
+  /// the caller is responsible for using [requestAudioFocus]
+  /// and [abandonAudioFocus]
   ///    probably before startRecorder or startPlayer
   /// and stopPlayer and stopRecorder
   ///
@@ -502,17 +499,16 @@ class AudioSessionImpl implements AudioSession {
   /// If this function is called, it is probably called
   ///  just once when the app starts.
   /// After calling this function, the caller is responsible
-  ///  for using correctly setActive
+  ///  for using correctly requestFocus
   ///    probably before startRecorder or startPlayer
   /// and stopPlayer and stopRecorder
   ///
-  /// TODO
-  /// Is this in the correct spot if it is only called once?
-  /// Should we have a configuration object that sets
-  /// up global options?
-  Future<bool> androidAudioFocusRequest(int focusGain) async {
+  /// Unlike [requestFocus] this method allows us to set the gain.
+  ///
+
+  Future<bool> androidFocusRequest(int focusGain) async {
     await _initialize();
-    return await _plugin.androidAudioFocusRequest(this, focusGain);
+    return await _plugin.androidFocusRequest(this, focusGain);
   }
 }
 

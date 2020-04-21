@@ -259,7 +259,8 @@ class AudioSession {
   /// If this function is called,
   /// it is probably called just once when the app starts.
   /// After calling this function,
-  /// the caller is responsible for using correctly setActive
+  /// the caller is responsible for using [requestAudioFocus]
+  /// and [abandonAudioFocus]
   ///    probably before startRecorder or startPlayer
   /// and stopPlayer and stopRecorder
   ///

@@ -30,7 +30,6 @@ import '../android/android_output_format.dart';
 import '../codec.dart';
 
 import '../ios/ios_quality.dart';
-import '../plugins/base_plugin.dart';
 import '../plugins/sound_recorder_plugin.dart';
 import '../recording_disposition.dart';
 import '../sound_recorder.dart';

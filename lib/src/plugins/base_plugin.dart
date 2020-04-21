@@ -156,8 +156,7 @@ abstract class BasePlugin {
   }
 
   ///
-  Future<bool> androidAudioFocusRequest(
-      AudioSession session, int focusGain) async {
+  Future<bool> androidFocusRequest(AudioSession session, int focusGain) async {
     if (!Platform.isAndroid) return false;
     return await invokeMethod(session, 'androidAudioFocusRequest',
         <String, dynamic>{'focusGain': focusGain}) as bool;
@@ -171,12 +170,6 @@ abstract class BasePlugin {
       /// up rounding down to zero.
       'sec': (interval.inMilliseconds).toDouble() / 1000,
     });
-  }
-
-  ///
-  Future<void> setActive(AudioSession session, {bool enabled}) async {
-    await invokeMethod(
-        session, 'setActive', <String, dynamic>{'enabled': enabled});
   }
 
   ///
