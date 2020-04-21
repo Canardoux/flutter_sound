@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import '../audio_session/audio_session_impl.dart';
 
+import '../audio_session.dart';
 import '../track.dart';
 import 'base_plugin.dart';
 
@@ -24,7 +24,7 @@ class SoundPlayerTrackPlugin extends BasePlugin {
   ///
   /// This method should only be used if the player has been initialize
   /// with the audio player specific features.
-  Future<void> play(AudioSessionImpl session, Track track) async {
+  Future<void> play(AudioSession session, Track track) async {
     final trackMap = <String, dynamic>{
       "title": track.title,
       "author": track.author,
@@ -34,10 +34,10 @@ class SoundPlayerTrackPlugin extends BasePlugin {
       "bufferCodecIndex": track.codec?.index,
     };
 
-    if (track.audio.isURI) {
-      trackMap["path"] = track.audio.uri;
+    if (track.isURI) {
+      trackMap["path"] = trackUri(track);
     } else {
-      trackMap["dataBuffer"] = track.audio.buffer;
+      trackMap["dataBuffer"] = trackBuffer(track);
     }
 
     await invokeMethod(session, 'startPlayerFromTrack', <String, dynamic>{
@@ -50,33 +50,33 @@ class SoundPlayerTrackPlugin extends BasePlugin {
 
   ///
   Future<dynamic> onMethodCallback(
-      covariant AudioSessionImpl session, MethodCall call) {
+      covariant AudioSession session, MethodCall call) {
     switch (call.method) {
       case "updateProgress":
         var arguments = call.arguments['arg'] as String;
-        session.updateProgress(BasePlugin.dispositionFromJSON(arguments));
+        updateProgress(session, BasePlugin.dispositionFromJSON(arguments));
         break;
 
       case "audioPlayerFinishedPlaying":
         var arguments = call.arguments['arg'] as String;
-        session.audioPlayerFinished(BasePlugin.dispositionFromJSON(arguments));
+        audioPlayerFinished(session, BasePlugin.dispositionFromJSON(arguments));
         break;
 
       case 'pause':
-        session.onSystemPaused();
+        onSystemPaused(session);
         break;
 
       case 'resume':
-        session.onSystemResumed();
+        onSystemResumed(session);
         break;
 
       /// track specific methods
       case 'skipForward':
-        session.onSystemSkipForward();
+        onSystemSkipForward(session);
         break;
 
       case 'skipBackward':
-        session.onSystemSkipBackward();
+        onSystemSkipBackward(session);
         break;
 
       default:

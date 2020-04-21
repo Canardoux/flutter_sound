@@ -5,8 +5,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-import '../audio_session/audio_session.dart';
-import '../audio_session/audio_session_impl.dart';
+import '../audio_session.dart';
 import '../codec.dart';
 import '../ios/ios_session_category.dart';
 import '../ios/ios_session_mode.dart';
@@ -17,7 +16,7 @@ import '../track.dart';
 /// PluginInterfaces to talk to the underlying
 /// Platform specific plugin.
 abstract class BasePlugin {
-  final List<AudioSessionImpl> _slots = [];
+  final List<AudioSession> _slots = [];
 
   ///
   @protected
@@ -34,11 +33,11 @@ abstract class BasePlugin {
   }
 
   /// Over load this method to play audio.
-  Future<void> play(AudioSessionImpl session, Track track);
+  Future<void> play(AudioSession session, Track track);
 
   /// overload this method to handle callbacks from the underlying
   /// platform specific plugin
-  Future<dynamic> onMethodCallback(AudioSessionImpl session, MethodCall call);
+  Future<dynamic> onMethodCallback(AudioSession session, MethodCall call);
 
   Future<dynamic> _onMethodCallback(MethodCall call) {
     var slotNo = call.arguments['slotNo'] as int;
@@ -67,7 +66,7 @@ abstract class BasePlugin {
   /// with the platform specific plugin.
   /// To use a plugin you start by calling [register]
   /// and finish by calling [release].
-  void register(AudioSessionImpl session) {
+  void register(AudioSession session) {
     var inserted = false;
     for (var i = 0; i < _slots.length; ++i) {
       if (_slots[i] == null) {

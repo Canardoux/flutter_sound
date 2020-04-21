@@ -48,30 +48,52 @@ class Track {
   String albumArtAsset;
 
   ///
-  Audio audio;
+  Audio _audio;
 
   ///
   Track.fromPath(String uri, {Codec codec}) {
-    audio = Audio.fromPath(uri, codec);
+    _audio = Audio.fromPath(uri, codec);
   }
 
   ///
   Track.fromBuffer(Uint8List dataBuffer, {@required Codec codec}) {
-    audio = Audio.fromBuffer(dataBuffer, codec);
+    _audio = Audio.fromBuffer(dataBuffer, codec);
   }
 
   ///
-  Codec get codec => audio.codec;
+  Codec get codec => _audio.codec;
+
+  /// true if the track is a path/url to the audio data.
+  bool get isURI => _audio.isURI;
 
   /// released any system resources.
   /// Under normal circumstances you don't need to call this
   /// method all of flutter_sound classes manage it for you.
-  void release() => audio.release();
+  void _release() => _audio.release();
 
   /// Used to prepare a audio stream for playing.
   /// You should NOT call this method as it is managed
   /// internally.
-  void prepareStream() {
-    audio.prepareStream();
+  void _prepareStream() {
+    _audio.prepareStream();
   }
 }
+
+/// globl functions to allow us to hide methods from the public api.
+
+void trackRelease(Track track) => track._release();
+
+///
+void prepareStream(Track track) => track._prepareStream();
+
+/// Returns the uri this track was constructed
+/// with assuming the [fromPath] ctor or
+/// the databuffer had to be converted to a file.
+String trackUri(Track track) => track._audio.uri;
+
+/// Retursn the databuffer.
+Uint8List trackBuffer(Track track) => track._audio.buffer;
+
+/// The SoundPlayerPlugin doesn't support passing a databuffer
+/// so we need to force the file to disk.
+void trackForceToDisk(Track track) => track._audio.forceToDisk();

@@ -1,29 +1,38 @@
-import '../audio_session/audio_session.dart';
+import 'audio_session.dart';
 
-import '../track.dart';
-import 'album.dart';
+import 'track.dart';
 
 typedef TrackChange = Track Function(int currentTrackIndex, Track current);
 
-/// An [AlbumImpl] allows you to play a collection of [Tracks] via
+/// An [Album] allows you to play a collection of [Tracks] via
 /// the OS's builtin audio UI.
 ///
-class AlbumImpl implements Album {
+class Album {
   AudioSession _session;
+
+  final bool _virtualAlbum;
 
   List<Track> _tracks;
 
   var _currentTrackIndex = 0;
 
-  Track currentTrack;
+  /// Returns the track that is currently selected.
+  Track _currentTrack;
 
-  /// If you use the [AlbumImpl.virtual] constructor then
+  /// If you use the [Album.virtual] constructor then
+  /// you must provide a handler for [onFirstTrack].
+  /// This should return the first track of the album.
+  /// This call may be made multiple times (each time
+  /// the method [play] is called).
+  Track Function() onFirstTrack;
+
+  /// If you use the [Album.virtual] constructor then
   /// you need to provide a handlers for [onSkipForward]
   /// method.
   /// see [Album.virtual()] for details.
   TrackChange onSkipForward;
 
-  /// If you use the [AlbumImpl.virtual] constructor then
+  /// If you use the [Album.virtual] constructor then
   /// you need to provide a handlers for [onSkipbackward]
   /// method.
   /// see [Album.virtual()] for details.
@@ -33,12 +42,19 @@ class AlbumImpl implements Album {
   /// via the OS' built in player.
   /// The tracks will be played in order and the user
   /// has the ability to skip forward/backwards.
+  /// By default the Album displays on the OS' audio player.
+  /// To suppress the OS' audio player pass [AudioSession.noUI()]
+  /// to [session].
+  Album.fromTracks(this._tracks, AudioSession session) : _virtualAlbum = false {
+    Album._internal(session, _virtualAlbum);
 
-  AlbumImpl.fromTracks(this._tracks, AudioSession session) {
-    AlbumImpl._internal(session);
+    if (_tracks.isEmpty) {
+      throw NoTracksAlbumException('You must pass at least one track');
+    }
   }
 
-  AlbumImpl._internal(AudioSession session) {
+  Album._internal(AudioSession session, bool virtualAlbum)
+      : _virtualAlbum = virtualAlbum {
     _session = session ?? AudioSession.withUI();
 
     _session.onSkipBackward = _skipBackward;
@@ -58,8 +74,8 @@ class AlbumImpl implements Album {
   /// The Album will not allow the user to skip back past the first
   /// track you supplied so there is no looping back over the start
   /// of an album.
-  AlbumImpl.virtual(AudioSession session) {
-    AlbumImpl._internal(session);
+  Album.virtual(AudioSession session) : _virtualAlbum = true {
+    Album._internal(session, _virtualAlbum);
   }
 
   void _onFinished() {}
@@ -67,13 +83,13 @@ class AlbumImpl implements Album {
     if (_currentTrackIndex > 1) {
       stop();
 
-      currentTrack = _previousTrack();
+      _currentTrack = _previousTrack();
 
       /// TODO might be nice to have the concept of a transition
       /// when stoping one track and starting the next.
       /// This may require us to monitor the playback progression
       /// and start the transition before the playback completes (e.g. fadeout)
-      if (currentTrack != null) play();
+      if (_currentTrack != null) play();
     }
   }
 
@@ -81,13 +97,13 @@ class AlbumImpl implements Album {
     if (_tracks == null || _currentTrackIndex < _tracks.length - 1) {
       stop();
 
-      currentTrack = _nextTrack();
+      _currentTrack = _nextTrack();
 
       /// TODO might be nice to have the concept of a transition
       /// when stoping one track and starting the next.
       /// This may require us to monitor the playback progression
       /// and start the transition before the playback completes (e.g. fadeout)
-      if (currentTrack != null) play();
+      if (_currentTrack != null) play();
     }
   }
 
@@ -98,16 +114,15 @@ class AlbumImpl implements Album {
     Track previous;
     var originalIndex = _currentTrackIndex;
     _currentTrackIndex--;
-    if (_tracks != null) {
-      previous = _tracks[_currentTrackIndex];
-    } else {
-      // virtual album
+    if (_virtualAlbum) {
       if (onSkipBackward != null) {
         previous = onSkipBackward(
           originalIndex,
-          currentTrack,
+          _currentTrack,
         );
       }
+    } else {
+      previous = _tracks[_currentTrackIndex];
     }
     return previous;
   }
@@ -119,34 +134,53 @@ class AlbumImpl implements Album {
     Track next;
     var originalIndex = _currentTrackIndex;
     _currentTrackIndex++;
-    if (_tracks != null) {
-      next = _tracks[_currentTrackIndex];
-    } else {
-      // virtual album
+    if (_virtualAlbum) {
       if (onSkipForward != null) {
         next = onSkipForward(
           originalIndex,
-          currentTrack,
+          _currentTrack,
         );
       }
+    } else {
+      next = _tracks[_currentTrackIndex];
     }
     return next;
   }
 
+  /// Start the album playing from the first track.
   void play() {
-    _session.play(currentTrack);
+    _currentTrackIndex = 0;
+    if (_virtualAlbum) {
+      _currentTrack = onFirstTrack();
+    } else {
+      _currentTrack = _tracks[_currentTrackIndex];
+    }
+    _session.play(_currentTrack);
   }
 
+  /// stop the album playing.
   void stop() {
     _session.stop();
-    currentTrack.release();
+    trackRelease(_currentTrack);
   }
 
+  /// pause the album playing
   void pause() {
     _session.pause();
   }
 
+  /// resume the album playing.
   void resume() {
     _session.resume();
   }
+}
+
+/// throw if you try to create an album with no tracks.
+class NoTracksAlbumException implements Exception {
+  final String _message;
+
+  ///
+  NoTracksAlbumException(this._message);
+
+  String toString() => _message;
 }

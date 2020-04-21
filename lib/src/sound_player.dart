@@ -19,7 +19,7 @@ import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/foundation.dart';
 
-import 'audio_session/audio_session.dart';
+import 'audio_session.dart';
 import 'codec.dart';
 import 'track.dart';
 

@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import '../audio_session/audio_session.dart';
-import '../audio_session/audio_session_impl.dart';
+import '../audio_session.dart';
 
 import '../track.dart';
 import 'base_plugin.dart';
@@ -20,44 +19,44 @@ class SoundPlayerPlugin extends BasePlugin {
 
   Future<void> play(AudioSession session, Track track) async {
     /// sound player plugin does yet support in memory audio.
-    track.audio.forceToDisk();
+    trackForceToDisk(track);
     var args = <String, dynamic>{};
-    args['path'] = track.audio.uri;
+    args['path'] = trackUri(track);
     // Flutter cannot transfer an enum to a native plugin.
     // We use an integer instead
-    args['codec'] = track.audio.codec.index;
+    args['codec'] = track.codec.index;
     await invokeMethod(session, 'startPlayer', args);
   }
 
   ///
-  Future<dynamic> onMethodCallback(
-      AudioSessionImpl audioSession, MethodCall call) {
+  Future<dynamic> onMethodCallback(AudioSession audioSession, MethodCall call) {
     switch (call.method) {
       case "updateProgress":
         {
           var arguments = call.arguments['arg'] as String;
-          audioSession
-              .updateProgress(BasePlugin.dispositionFromJSON(arguments));
+          updateProgress(
+              audioSession, BasePlugin.dispositionFromJSON(arguments));
         }
         break;
 
       case "audioPlayerFinishedPlaying":
         {
           var arguments = call.arguments['arg'] as String;
-          audioSession
-              .audioPlayerFinished(BasePlugin.dispositionFromJSON(arguments));
+
+          audioPlayerFinished(
+              audioSession, BasePlugin.dispositionFromJSON(arguments));
         }
         break;
 
       case 'pause':
         {
-          audioSession.onSystemPaused();
+          onSystemPaused(audioSession);
         }
         break;
 
       case 'resume':
         {
-          audioSession.onSystemResumed();
+          onSystemResumed(audioSession);
         }
         break;
 

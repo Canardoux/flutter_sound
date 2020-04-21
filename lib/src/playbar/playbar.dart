@@ -135,7 +135,7 @@ class _PlaybarState extends State<Playbar> {
       if (playState != PlayState.stopped) {
         await stop();
       }
-      _track.release();
+      trackRelease(_track);
       _track = null;
     }
   }
@@ -273,7 +273,7 @@ class _PlaybarState extends State<Playbar> {
 
     if (_onLoad != null) {
       if (_track != null) {
-        _track.release();
+        trackRelease(_track);
       }
 
       /// dynamically load the player.

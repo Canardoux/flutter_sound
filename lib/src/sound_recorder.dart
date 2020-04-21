@@ -71,7 +71,7 @@ class SoundRecorder {
   /// Starts the recorder, recording audio to the passed in [path]
   /// using the settings given.
   /// The file at [path] will be overwritten.
-  Future<void> startRecorder({
+  Future<void> start({
     @required String path,
     int sampleRate = 16000,
     int numChannels = 1,

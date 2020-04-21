@@ -82,7 +82,7 @@ class RecorderState {
       await PlayerState().stopPlayer();
 
       var path = await tempFile();
-      await recorderModule.startRecorder(
+      await recorderModule.start(
         path: path,
         codec: ActiveCodec().codec,
       );
@@ -106,7 +106,7 @@ class RecorderState {
           rethrow;
         }
         var secondaryPath = await tempFile();
-        await recorderModule_2.startRecorder(
+        await recorderModule_2.start(
           path: secondaryPath,
           codec: Codec.aac,
         );

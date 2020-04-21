@@ -1,5 +1,13 @@
 export 'src/android/android_audio_focus_gain.dart';
-export 'src/audio_session/audio_session.dart' show AudioSession;
+export 'src/audio_session.dart'
+    show AudioSession
+    hide
+        updateProgress,
+        audioPlayerFinished,
+        onSystemPaused,
+        onSystemResumed,
+        onSystemSkipForward,
+        onSystemSkipBackward;
 export 'src/codec.dart' show Codec, CodecNotSupportedException;
 
 export 'src/ffmpeg/ffmpeg_util.dart';

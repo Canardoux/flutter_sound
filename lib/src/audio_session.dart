@@ -17,26 +17,26 @@
 import 'dart:async';
 import 'dart:io';
 
-import '../android/android_audio_focus_gain.dart';
+import 'android/android_audio_focus_gain.dart';
 
-import '../audio_session/audio_session.dart';
-import '../codec.dart';
-import '../ios/ios_session_category.dart';
-import '../ios/ios_session_category_option.dart';
-import '../ios/ios_session_mode.dart';
-import '../playback_disposition.dart';
-import '../plugins/base_plugin.dart';
-import '../plugins/sound_player_plugin.dart';
-import '../plugins/sound_player_track_plugin.dart';
-import '../track.dart';
+import 'codec.dart';
+import 'ios/ios_session_category.dart';
+import 'ios/ios_session_category_option.dart';
+import 'ios/ios_session_mode.dart';
+import 'playback_disposition.dart';
+import 'plugins/base_plugin.dart';
+import 'plugins/sound_player_plugin.dart';
+import 'plugins/sound_player_track_plugin.dart';
+import 'track.dart' as t;
 
-/// Provides the ability to playback audio from
-/// a variety of sources including:
-/// File
-/// Buffer
-/// Assets
-/// URL.
-class AudioSessionImpl implements AudioSession {
+/// An audio session that supports playing track.
+///
+/// Unforunately the concept of tracks is tightly couple
+/// to displaying using the OS media player due to the
+/// plugin architecture.
+/// It would be nice to review this so a track can be used
+/// with a third party player.
+class AudioSession {
   PlayerEvent _onSkipForward;
   PlayerEvent _onSkipBackward;
   PlayerEvent _onFinished;
@@ -64,7 +64,7 @@ class AudioSessionImpl implements AudioSession {
   final BasePlugin _plugin;
 
   /// The track that we are currently playing.
-  Track _track;
+  t.Track _track;
 
   ///
   PlayerState playerState = PlayerState.isStopped;
@@ -73,7 +73,7 @@ class AudioSessionImpl implements AudioSession {
       StreamController<PlaybackDisposition>();
 
   /// Create a [AudioSession] that displays the OS' audio UI.
-  AudioSessionImpl.withUI({
+  AudioSession.withUI({
     this.canPause = true,
     this.canSkipBackward = false,
     this.canSkipForward = false,
@@ -82,7 +82,7 @@ class AudioSessionImpl implements AudioSession {
   /// Create an [AudioSession] that does not have a UI.
   /// You can use this version to simply playback audio without
   /// a UI or to build your own UI as [Playbar] does.
-  AudioSessionImpl.noUI() : _plugin = SoundPlayerPlugin() {
+  AudioSession.noUI() : _plugin = SoundPlayerPlugin() {
     canPause = false;
     canSkipBackward = false;
     canSkipForward = false;
@@ -92,7 +92,7 @@ class AudioSessionImpl implements AudioSession {
   /// The [dataBuffer] contains the media to be played.
   /// The [codec] of the file the [dataBuffer] points to.
   /// You MUST pass a codec.
-  // AudioSessionImpl.fromBuffer(Uint8List dataBuffer, {@required Codec codec})
+  // AudioSession.fromBuffer(Uint8List dataBuffer, {@required Codec codec})
   //     : _dataBuffer = dataBuffer {
   //   if (codec == null) {
   //     throw CodecNotSupportedException('You must pass in a codec.');
@@ -104,7 +104,7 @@ class AudioSessionImpl implements AudioSession {
   /// This allows us to delay selecting the plugin
   /// until the users try to start playing.
   /// This helps with the [Track] implementation
-  /// which wraps a AudioSessionImpl.
+  /// which wraps a AudioSession.
   Future _initialize() async {
     if (!_initialized) {
       _initialized = true;
@@ -122,14 +122,23 @@ class AudioSessionImpl implements AudioSession {
       await stop();
       closeDispositionStream(); // playerController is closed by this function
 
-      await _track.release();
+      await t.trackRelease(_track);
       await _plugin.release(this);
     }
   }
 
   /// Starts playback.
-
-  Future<void> play(Track track) async {
+  /// The [uri] of the file to download and playback
+  /// The [codec] of the file the [uri] points to. The default
+  /// value is [Codec.fromExtension].
+  /// If the default [Codec.fromExtension] is used then
+  /// [SoundPlayer] will use the files extension to guess the codec.
+  /// If the file extension doesn't match a known codec then
+  /// [SoundPlayer] will throw an [CodecNotSupportedException] in which
+  /// case you need pass one of the known codecs.
+  ///
+  ///
+  Future<void> play(t.Track track) async {
     _initialize();
 
     if (!isStopped) {
@@ -143,7 +152,7 @@ class AudioSessionImpl implements AudioSession {
           'this platform.');
     }
 
-    track.prepareStream();
+    t.prepareStream(track);
 
     _applyHush();
     await _plugin.play(this, _track);
@@ -237,7 +246,7 @@ class AudioSessionImpl implements AudioSession {
   /// Given the user has to call stop
   void closeDispositionStream() {
     if (_playerController != null) {
-      _playerController..close();
+      _playerController.close();
       _playerController = null;
     }
   }
@@ -274,7 +283,7 @@ class AudioSessionImpl implements AudioSession {
   bool get isStopped => playerState == PlayerState.isStopped;
 
   ///
-  void updateProgress(PlaybackDisposition disposition) {
+  void _updateProgress(PlaybackDisposition disposition) {
     // we only send dispositions whilst playing.
     if (isPlaying) {
       _playerController?.add(disposition);
@@ -284,7 +293,7 @@ class AudioSessionImpl implements AudioSession {
   /// internal method.
   /// Called by the Platform plugin to notify us that
   /// audio has finished playing to the end.
-  void audioPlayerFinished(PlaybackDisposition status) {
+  void _audioPlayerFinished(PlaybackDisposition status) {
     // if we have finished then position should be at the end.
     var finalPosition = PlaybackDisposition(status.duration, status.duration);
 
@@ -326,34 +335,32 @@ class AudioSessionImpl implements AudioSession {
   }
 
   /// handles a pause coming up from the player
-  void onSystemPaused() {
+  void _onSystemPaused() {
     if (_onPaused != null) _onPaused(wasUser: true);
   }
 
   /// handles a resume coming up from the player
-  void onSystemResumed() {
+  void _onSystemResumed() {
     if (_onResumed != null) _onResumed(wasUser: true);
   }
 
   /// handles a skip forward coming up from the player
-  void onSystemSkipForward() {
+  void _onSystemSkipForward() {
     if (_onSkipForward != null) _onSkipForward();
   }
 
   /// handles a skip forward coming up from the player
-  void onSystemSkipBackward() {
+  void _onSystemSkipBackward() {
     if (_onSkipBackward != null) _onSkipBackward();
   }
 
   /// Pass a callback if you want to be notified
   /// when the user attempts to skip forward to the
   /// next track.
-  /// This is only meaningful if you have set
-  /// [showOSUI] which has a 'skip' button.
-  /// The AudioSessionImpl essentially ignores this event
-  /// as the AudioSessionImpl has no concept of an Album.
+  /// This is only meaningful if you have used
+  /// [AudioSession.withUI] which has a 'skip' button.
   ///
-  /// It is up to you to create a new AudioSessionImpl with the
+  /// It is up to you to create a new AudioSession with the
   /// next track and start it playing.
   ///
   // ignore: avoid_setters_without_getters
@@ -366,8 +373,8 @@ class AudioSessionImpl implements AudioSession {
   /// prior track.
   /// This is only meaningful if you have set
   /// [showOSUI] which has a 'skip' button.
-  /// The AudioSessionImpl essentially ignores this event
-  /// as the AudioSessionImpl has no concept of an Album.
+  /// The AudioSession essentially ignores this event
+  /// as the AudioSession has no concept of an Album.
   ///
   ///
   // ignore: avoid_setters_without_getters
@@ -388,8 +395,8 @@ class AudioSessionImpl implements AudioSession {
   /// playback is paused.
   /// The [wasUser] argument in the callback will
   /// be true if the user clicked the pause button
-  /// on the OS UI.  This will only ever happen if you
-  /// called [showOSUI].
+  /// on the OS UI.  To show the OS UI you must have called
+  /// [AudioSession.withUI].
   ///
   /// [wasUser] will be false if you paused the audio
   /// via a call to [pause].
@@ -403,8 +410,8 @@ class AudioSessionImpl implements AudioSession {
   /// playback is resumed.
   /// The [wasUser] argument in the callback will
   /// be true if the user clicked the resume button
-  /// on the OS UI.  This will only ever happen if you
-  /// called [showOSUI].
+  /// on the OS UI.  To show the OS UI you must have called
+  /// [AudioSession.withUI].
   ///
   /// [wasUser] will be false if you resumed the audio
   /// via a call to [resume].
@@ -423,7 +430,7 @@ class AudioSessionImpl implements AudioSession {
   /// This can occur if you called [play]
   /// or the user click the start button on the
   /// OS UI. To show the OS UI you must have called
-  /// [showOSUI].
+  /// [AudioSession.withUI].
   // ignore: avoid_setters_without_getters
   set onStarted(PlayerEventWithCause onStarted) {
     _onStarted = onStarted;
@@ -436,8 +443,8 @@ class AudioSessionImpl implements AudioSession {
   ///
   /// [onStoppped]  can occur if you called [stop]
   /// or the user click the stop button on the
-  /// OS UI. To show the OS UI you must have called
-  /// [showOSUI].
+  /// OSs' UI. To show the OS UI you must have called
+  /// [AudioSession.withUI].
   // ignore: avoid_setters_without_getters
   set onStopped(PlayerEventWithCause onStopped) {
     _onStopped = onStopped;
@@ -483,6 +490,7 @@ class AudioSessionImpl implements AudioSession {
     return await _plugin.iosSetCategory(this, category, mode, options);
   }
 
+  /// Reliquences the foreground audio.
   ///  The caller can manage his audio focus with this function
   /// Depending on your configuration this will either make
   /// this player the loudest stream or it will silence all other stream.
@@ -518,6 +526,26 @@ class AudioSessionImpl implements AudioSession {
   }
 }
 
+///
+enum PlayerState {
+  ///
+  isStopped,
+
+  /// Player is stopped
+  isPlaying,
+
+  ///
+  isPaused,
+}
+
+typedef PlayerEvent = void Function();
+
+/// TODO should we be passing an object that contains
+/// information such as the position in the track when
+/// it was paused?
+typedef PlayerEventWithCause = void Function({bool wasUser});
+typedef UpdatePlayerProgress = void Function(int current, int max);
+
 /// The player was in an unexpected state when you tried
 /// to change it state.
 /// e.g. you tried to pause when the player was stopped.
@@ -540,3 +568,26 @@ class NotImplementedException implements Exception {
 
   String toString() => _message;
 }
+
+/// Forwarders so we can hide methods from the public api.
+
+void updateProgress(AudioSession session, PlaybackDisposition disposition) =>
+    session._updateProgress(disposition);
+
+///
+void audioPlayerFinished(AudioSession session, PlaybackDisposition status) =>
+    session._audioPlayerFinished(status);
+
+/// handles a pause coming up from the player
+void onSystemPaused(AudioSession session) => session._onSystemPaused();
+
+/// handles a resume coming up from the player
+void onSystemResumed(AudioSession session) => session._onSystemResumed();
+
+/// handles a skip forward coming up from the player
+void onSystemSkipForward(AudioSession session) =>
+    session._onSystemSkipForward();
+
+/// handles a skip forward coming up from the player
+void onSystemSkipBackward(AudioSession session) =>
+    session._onSystemSkipBackward();
