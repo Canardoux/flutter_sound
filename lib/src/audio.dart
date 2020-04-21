@@ -67,13 +67,13 @@ class Audio {
     // iOS doesn't support opus so we must convert to a file so we
     /// remux it.
     if (_dataBuffer != null &&
-        (Platform.isAndroid || Platform.isIOS && codec == Codec.opus)) {
+        (Platform.isAndroid || Platform.isIOS && codec == Codec.opusOGG)) {
       _writeToDisk();
     }
 
     // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We use FFmpeg for that task.
-    if (Platform.isIOS && codec == Codec.opus) {
+    if (Platform.isIOS && codec == Codec.opusOGG) {
       var tempMediaFile =
           TempMediaFile(await CodecConversions.opusToCafOpus(path));
       _tempMediaFiles.add(tempMediaFile);

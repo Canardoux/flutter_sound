@@ -93,7 +93,7 @@ class _DropdownsState extends State<Dropdowns> {
           child: Text('OGG/Opus'),
         ),
         DropdownMenuItem<Codec>(
-          value: Codec.opusCAF,
+          value: Codec.cafOpus,
           child: Text('CAF/Opus'),
         ),
         DropdownMenuItem<Codec>(

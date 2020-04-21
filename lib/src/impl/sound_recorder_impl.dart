@@ -133,7 +133,7 @@ class SoundRecorderImpl {
     // For encoding ogg/opus on ios, we need to support two steps :
     // - encode CAF/OPPUS (with native Apple AVFoundation)
     // - remux CAF file format to OPUS file format (with ffmpeg)
-    if ((codec == Codec.opus) && (Platform.isIOS)) {
+    if ((codec == Codec.opusOGG) && (Platform.isIOS)) {
       codec = Codec.cafOpus;
     }
 
@@ -151,7 +151,7 @@ class SoundRecorderImpl {
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
-    Codec codec = Codec.aac,
+    Codec codec = Codec.aacADTS,
     AndroidEncoder androidEncoder = AndroidEncoder.aacCodec,
     AndroidAudioSource androidAudioSource = AndroidAudioSource.mic,
     AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.defaultFormat,
@@ -193,7 +193,7 @@ class SoundRecorderImpl {
     // We use FFmpeg for that task.
     // The remux occurs when we call stopRecorder
     if ((Platform.isIOS) &&
-        ((codec == Codec.opus) || (fileExtension(path) == '.opus'))) {
+        ((codec == Codec.opusOGG) || (fileExtension(path) == '.opus'))) {
       _isOggOpus = true;
       codec = Codec.cafOpus;
 

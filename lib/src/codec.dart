@@ -18,19 +18,12 @@ import 'package:path/path.dart';
 /// this enum MUST be synchronized with fluttersound/AudioInterface.java
 /// and ios/Classes/FlutterSoundPlugin.h
 enum Codec {
-
   /// This is the default codec. If used
   /// Flutter Sound will use the files extension to guess the codec.
   /// If the file extension doesn't match a known codec then
   /// Flutter Sound will throw an exception in which case you need
   /// pass one of the know codec.
   fromExtension,
-
-  ///
-  aacADTS,
-
-  ///
-  opusOGG,
 
   /// AAC codec in an ADTS container
   aacADTS,
@@ -42,7 +35,7 @@ enum Codec {
   /// .caf instead of a regular ogg/opus (.opus).
   /// This is completely stupid, this is Apple.
   cafOpus,
-  
+
   /// For those who really insist about supporting MP3. Shame on you !
   mp3,
 
@@ -108,5 +101,4 @@ class CodecNotSupportedException implements Exception {
   CodecNotSupportedException(this._message);
 
   String toString() => _message;
-
 }

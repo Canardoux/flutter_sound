@@ -37,7 +37,7 @@ class _MainBodyState extends State<MainBody> {
       await PlayerState().init();
       await RecorderState().init();
       ActiveCodec().recorderModule = RecorderState().recorderModule;
-      await ActiveCodec().setCodec(_useOSUI, Codec.aac);
+      await ActiveCodec().setCodec(_useOSUI, Codec.aacADTS);
       await initializeDateFormatting();
 
       initialised = true;

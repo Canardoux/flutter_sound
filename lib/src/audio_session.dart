@@ -458,7 +458,7 @@ class AudioSession {
     // For decoding ogg/opus on ios, we need to support two steps :
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
-    if ((codec == Codec.opus) && (Platform.isIOS)) {
+    if ((codec == Codec.opusOGG) && (Platform.isIOS)) {
       codec = Codec.cafOpus;
     }
     result = await _plugin.isSupported(this, codec);
