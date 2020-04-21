@@ -17,22 +17,22 @@ The key classes are:
 
 ## Api classes
 
-SoundPlayer - plays audio either using the OS' audio UI or headless.
+SoundPlayer - plays audio either using the OSs' audio UI or headless.
 
 SoundRecorder - records audio.
 
 Track - Defines a track including artist and a link to the media.
 
-Album - play a collection of tracks via the OS' audio UI.
+Album - play a collection of tracks via the OSs' audio UI.
 
-AudioSession - low level api for detailed control over your audio streams. You can choose to have the session attached to the OS' audio UI or not.
+AudioSession - low level api for detailed control over your audio streams. You can choose to have the session attached to the OSs' audio UI or not.
 
 
 ## Wdigets
 
-Playbar - displays an HTML 5 style audio controller
+SoundPlayerUI - displays an HTML 5 style audio controller widget.
 
-Recorder - displays a recording interface.
+SoundRecorderUI - displays a recording widget.
 
 Note: there are some limitations on the supported codecs. See the [codec] section below.
 
@@ -71,8 +71,7 @@ You must also delete the line ```ext.flutterFFmpegPackage = 'audio-lts'``` from 
 and the special line ```pod name+'/audio-lts', :path => File.join(symlink, 'ios')``` in your Podfile.
 If you do not do that, you will have duplicates modules during your App building.
 
-```flutter_ffmpeg audio-lts``` is now embedding inside flutter_sound. If your App needs to use FFmpeg, you must use the embedded version inside flutter_sound
-instead of adding a new dependency in your pubspec.yaml.
+```flutter_ffmpeg audio-lts``` is now embedding inside flutter_sound. If your App needs to use FFmpeg, you must use the embedded version inside flutter_sound instead of adding a new dependency in your pubspec.yaml.
 
 
 ## Post Installation
@@ -100,18 +99,23 @@ instead of adding a new dependency in your pubspec.yaml.
 To migrate to `3.0.0` you must migrate your Android app to Android X by following the [Migrating to AndroidX Guide](https://developer.android.com/jetpack/androidx/migrate).
 
 # SoundPlayer
-The SoundPlayer class is primarly design to play back audio without display any UI.
+The SoundPlayer class provides the simplest means of playing audio.
 
-If you need a UI to allow your user to control playback you have three options:
+If you just want to play an audio file then this is the place to start.
 
-1) use the showOSUI parameter on the SoundPlayer constructor. 
-This will display the OS specific Audio player.
+By default the SoundPlayer doesn't display any UI, it simply plays the audio until it completes.
 
-2) Use Flutter Sound's Playbar which provide a HTML5 like audio player UI
+If you need a UI to allow your user to control playback then you have three options:
 
-3) Use the SoundPlayer's apis to roll your own widget. You can start with the Playbar code as an example of how to do this.
+1) Pass a `AudioSession.withUI()` as the `session` argument to SoundPlayer (see the examples below).
+This will display the OSs' audio player allowing the user to control playback.
 
-The API is documented at [pub.dev](https://pub.dev/documentation/flutter_sound/latest/)
+2) Use Flutter Sound's SoundPlayerUI widget which provide a HTML5 like audio player.
+
+3) Directly use `AudioSession.noUI()` to roll your own widget. You can start with the SoundPlayerUI code as an example of how to do this.
+
+The API is documented in detail at [pub.dev](https://pub.dev/documentation/flutter_sound/latest/)
+
 
 ## Play audio from an asset
 
@@ -142,6 +146,10 @@ SoundPlayer uses the passed filename extension to determine the correct codec to
 
 See the [codec](https://pub.dev/documentation/flutter_sound/latest/codec/codec-library.html) documentation
 for details on the supported codecs.
+
+## Specify a codec
+
+If you audio file doesn't have an appropriate file extension then you can explicitly pass a codec.
 
 ```dart
 var player = SoundPlayer.fromPath('sample.blit', codec: Codec.mp3);
@@ -177,9 +185,9 @@ player.onFinish = player.release;
 player.play();
 ```
 
-## Play audio allowing the user to control playback via OS' UI
+## Play audio allowing the user to control playback via OSs' UI
 
-If you want to play the audio and have the OS Audio player displayed so the user can control the playback then use:
+SoundPlayer can display the OSs' Audio player UI allowing the user to control playback.
 
 ```dart
 var player = SoundPlayer.fromPath('sample.aac', session: AudioSession.withUI());
@@ -187,22 +195,45 @@ player.onFinish = track.release;
 player.play();
 ```
 
-You can also have the OS' audio player display artist details by 
-providing using Track.
+## Control the OSs' UI
+
+The OSs' media player has three buttons, skip forward, skip backwards and pause.
+By default the skip buttons are disabled and the pause button enabled.
+
+You can modify the the state of these buttons to disable the pause button.
+Whilst you could enable the skip buttons it makes no sense to do so when using
+SoundPlayer. Look at `Album` if you want to play multiple `Track`s.
+
+```dart
+var player = SoundPlayer.fromPath('sample.aac', session: AudioSession.withUI(canPause: false));
+player.onFinish = track.release;
+player.play();
+```
+
+## Display artist details
+You can also have the OSs' audio player display artist details by 
+using a `Track`.
 
 ```dart
 var track = Track.fromPath('sample.aac');
-track.trackTitle = 'Reckless';
-track.trackAuthor = 'Flutter Sound';
+track.title = 'Reckless';
+track.author = 'Flutter Sound';
 track.albumArtUrl = 'http://some image url';
 
 SoundPlayer.fromTrack(track, session: AudioSession.withUI());
 track.onFinish = track.release;
 track.play();
 ```
-The artist, author and album art will be displayed on the OS Audio Player.
+The artist, author and album art will be displayed on the OSs' Audio Player.
 
-## Playing an album via the OS's UI
+# Albums
+Flutter Sound supports the concept of Albums which are, as you would expect, a collection of `Track`s which can be played in order.
+
+The `Album` uses the OSs Media Player to display the tracks as they are played. 
+
+A user can use the skip back, forward and pause buttons to navigate the album.
+
+## Playing an Album
 
 If you want to play a collection of tracks then you can create an Album with a static set of Tracks or a virtual set of Tracks.
 
@@ -216,8 +247,8 @@ var album = Album.fromTracks([
 album.onFinish = album.release;
 album.play();
 ```
-By default an Ablum displays the OS' audio UI.
-You can suppress the UI via by passing in AudioSession.noUI()
+By default an Ablum displays the OSs' audio UI.
+You can suppress the UI via by passing in AudioSession.noUI() to the Album.
 
 
 ```dart
@@ -256,7 +287,7 @@ The `SoundPlayer` provides basic methods to allow you to control playback such a
 * stop()
 * seekTo(duration)
 
-If you need more detailed control then you need to use an `AudioSession`
+If you need more detailed control then you need to use an `AudioSession`.
 
 
 # AudioSession
@@ -264,8 +295,9 @@ If you need more detailed control then you need to use an `AudioSession`
 An AudioSession provides finer grained control over how the audio is played as well as been able to monitor playback and respond to user events.
 
 The `AudioSession` also allows you to play multiple audio files using the same session. 
-Maintaining the same session is important if you are using the OS' audio UI for user control. 
-If you don't use a single `AudioSession` then the user will experience flicker between tracks as the OS' audio player is destroyed and recreated between each track.
+
+Maintaining the same session is important if you are using the OSs' audio UI for user control. 
+If you don't use a single `AudioSession` then the user will experience flicker between tracks as the OSs' audio player is destroyed and recreated between each track.
 
 The `Album` class provides an easy to use method of utilising a single session without the complications of an `AudioSession`.
 
@@ -274,6 +306,7 @@ The `Album` class provides an easy to use method of utilising a single session w
 var session = AudioSession.withUI();
 
 var track = Track.fromPath('sample.aac');
+track.title = 'Corona Virus Rock';
 session.onStarted => print('started');
 session.onStopped => print('stopped');
 session.onPause => print('paused');
@@ -287,13 +320,16 @@ session.play(track);
 ## Monitor playback position
 If you are building your own widget you might want to display a progress bar that displays the current playback position.
 
-The easiest way to do this is via the Playbar but if you want to write your own then you will want to user the `dispositionStream` with a StreamBuilder.
+The easiest way to do this is via the SoundPlayerUI widget but if you want to write your own then you will want to use the `dispositionStream` with a StreamBuilder.
+
 To use a `dispositionStream` you need to create an `AudioSession`.
 
 ```dart
 class MyWidgetState
 {
+	/// use .noUI() as you are going to build your own UI.
 	var session = AudioSession().noUI();
+
 	void initState()
 	{
 		super.initState();
@@ -346,81 +382,122 @@ The following codecs are supported by flutter_sound:
 
 This table will be updated as codecs are added.
 
-## FlutterSoundRecorder Usage
+## SoundRecorder Usage
+The `SoundRecorder` class provides an api for recording audio.
 
-#### Creating instance.
+The `SoundRecorder` does not have a UI so you must either build your own or you can use Flutter Sound's `SoundRecorderUI` widget.
 
-In your view/page/dialog widget's State class, create an instance of FlutterSoundRecorder.
-Before acessing the FlutterSoundRecorder API, you must initialize it with initialize().
-When finished with this FlutterSoundRecorder instance, you must release it with release().
+
+#### Recording
+
+When you have finished with your `SoundRecorder` you MUST call `SoundRecorder.release()`.
 
 ```dart
-FlutterSoundRecorder flutterSoundRecorder = new FlutterSoundRecorder().initialize();
-
-...
-...
-
-flutterSoundRecorder.release();
+SoundRecorder recorder = SoundRecorder.toPath('path to store recording');
+recorder.onStopped = () {
+	recorder.release();
+ 	var player = SoundPlayer.fromPath(recorder.path)
+	player.onFinished => player.release();
+	player.play();
+});
+recorder.start();
 ```
+### recording to a temporary file
 
-#### Starting recorder with listener.
+SoundRecoder can also create a temporary file to record into. After recording completes you can access the temporary file
+via `SoundRecorder.path`.
+
+Deleting the temporary file is your responsiblity!
 
 ```dart
-Future<String> result = await flutterSoundRecorder.startRecorder(codec: t_CODEC.CODEC_AAC,);
+SoundRecorder recorder = SoundRecorder.toTempPath();
 
-result.then(path) {
-	print('startRecorder: $path');
-
-	_recorderSubscription = flutterSoundRecorder.onRecorderStateChanged.listen((e) {
-	DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
-	String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
+recorder.onStopped = () {
+	recorder.release();
+	/// recorder.path contains the path of the temp file
+	var player = SoundPlayer.fromPath(recorder.path)
+	player.onFinished = () { 
+		player.release();
+		File(recorder.path).deleteSync();
 	});
-}
+	player.play();
+});
+
+recorder.start();
+
 ```
 
-The recorded file will be stored in a temporary directory. If you want to take your own path specify it like below. We are using [path_provider](https://pub.dev/packages/path_provider) in below so you may have to install it.
+SoundRecorder requests the necessary permissions (microphone and storage) when you call `SoundRecorder.start()`.
 
-```
-Directory tempDir = await getTemporaryDirectory();
-File outputFile = await File ('${tempDir.path}/flutter_sound-tmp.aac');
-String path = await flutterSoundRecorder.startRecorder(outputFile.path, codec: t_CODEC.CODEC_AAC,);
-```
+If you want to control the permissions yourself you need to set `SoundRecorder.requestPermission = false`.
 
-If the App does nothing special, ```startRecorder()``` will take care of controlling the permissions, and request itself the permission
-for Recording, if necessary. If the Application wants to control itself the permissions, without any help from flutter_sound,
-it must specify :
-```
-myFlutterSoundModule.requestPermission = false;
-await myFlutterSoundModule.startRecorder(...);
+
+```dart
+var recorder = SoundRecorder.tempPath();
+recorder.requestPermission = false;
+recorder.start();
 ```
 
-Actually on iOS, you can choose from four encoders :
+### Listen to duration and dbLevel updates
+
+SoundRecorder provides a stream that you can listen to to get live updates as the recording progresses.
+
+The stream of `RecordingDisposition` events contain the duration of the recording and the instantanous dB level.
+
+The dbLevel is in the range of 0-120dB.
+
+```dart
+SoundRecorder recorder = SoundRecorder.toPath('path to store recording', codec: Codec.aac,);
+recorder.dispositionStream().listen((disposition) {
+	Duration duration = dispostion.duration;
+	double dbLevel = disposition.dbLevel;
+	print('The recording has grown to: $duration');
+	print('At this very moment the the audio is $dbLevel loud');
+});
+
+recorder.onStopped(() {
+	recorder.release()
+	/// Now play the recording back.
+	SoundPlayer.fromPath(recorder.path).play();
+});
+
+recorder.start();
+```
+
+### Supported Codecs
+
+Currently a limited set of Codecs are supported by `SoundRecorder`.
+
+#### iOS
 
 - AAC (this is the default)
 - CAF/OPUS
 - OGG/OPUS
 - PCM
 
+#### Android
+
+- AAC (this is the default)
+
+
 For example, to encode with OPUS you do the following :
 
 ```dart
-await flutterSoundRecorder.startRecorder(foot.path, codec: t_CODEC.CODEC_OPUS,)
+var recorder = SoundRecorder.toTemp(codec: Codec.opus);
+recorder.start();
 ```
 
-Note : On Android the OPUS codec and the PCM are not yet supported by flutter_sound Recorder. (But Player is OK on Android)
-
 #### Stop recorder
+You can programatically stop the recorder by calling `SoundRecorder.stop()`.
 
 ```dart
-Future<String> result = await flutterSoundRecorder.stopRecorder();
+var recorder = SoundRecorder.toTemp(codec: Codec.opus);
+recorder.start();
 
-result.then(value) {
-	print('stopRecorder: $value');
-
-	if (_recorderSubscription != null) {
-		_recorderSubscription.cancel();
-		_recorderSubscription = null;
-	}
+/// some widget event
+void onTap()
+{
+	recorder.stop();
 }
 ```
 
@@ -430,7 +507,7 @@ Overload your widget's dispose() method to stop the recorder when your widget is
 ```dart
 @override
 void dispose() {
-	flutterSoundRecorder.release();
+	recorder.release();
 	super.dispose();
 }
 ```
@@ -440,7 +517,7 @@ void dispose() {
 On Android this API verb needs al least SDK-24.
 
 ```dart
-Future<String> result = await flutterSoundRecorder.pauseRecorder();
+await recorder.pause();
 ```
 
 #### Resume recorder
@@ -448,209 +525,55 @@ Future<String> result = await flutterSoundRecorder.pauseRecorder();
 On Android this API verb needs al least SDK-24.
 
 ```dart
-Future<String> result = await flutterSoundRecorder.resumeRecorder();
+await recoder.resume();
 ```
 
-#### Using the amplitude meter
 
-The amplitude meter allows displaying a basic representation of the input sound.
-When enabled, it returns values ranging 0-120dB.
+#### iosSetCategory(), androidFocusRequest(), requestFocus() and abandonFocus()  - (optional)
 
-```dart
-//// By default this option is disabled, you can enable it by calling
-setDbLevelEnabled(true);
-```
+Those three functions are optional. If you do not control the audio focus with the function `requestFocus()`, flutter_sound will request the audio focus each time the function `SoundPlayer.play()` is called and will release it when the sound is finished or when you call the function `SoundPlayer().stop()`.
 
-```dart
-//// You can tweak the frequency of updates by calling this function (unit is seconds)
-updateDbPeakProgress(0.8);
-```
 
-```dart
-//// You need to subscribe in order to receive the value updates
-_dbPeakSubscription = flutterSoundRecorder.onRecorderDbPeakChanged.listen((value) {
-  setState(() {
-    this._dbLevel = value;
-  });
-});
-```
-
-## FlutterSoundPlayer Usage
-
-#### Creating instance.
-
-In your view/page/dialog widget's State class, create an instance of FlutterSoundPlayer.
-Before acessing the FlutterSoundPlayer API, you must initialize it with initialize().
-When finished with this FlutterSoundPlayer instance, you must release it with release().
-
-```dart
-FlutterSoundPlayer flutterSoundPlayer = new FlutterSoundPlayer().initialize();
-
-...
-...
-
-flutterSoundPlayer.release();
-```
-
-#### Start player
-
-- To start playback of a record from a URL call startPlayer.
-- To start playback of a record from a memory buffer call startPlayerFromBuffer
-
-You can use both `startPlayer` or `startPlayerFromBuffer` to play a sound. The former takes in a URI that points to the file to play, while the latter takes in a buffer containing the file to play and the codec to decode that buffer.
-
-Those two functions can have an optional parameter `whenFinished:()` for specifying what to do when the playback will be finished.
-
-```dart
-// An example audio file
-final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
-
-String result = await flutterSoundPlayer.startPlayer
-	(
-		fileUri,
-		whenFinished: ()
-		{
-			 print( 'I hope you enjoyed listening to this song' );
-		},
-	);
-```
-
-```dart
-// Load a local audio file and get it as a buffer
-Uint8List buffer = (await rootBundle.load('samples/audio.mp3'))
-    	.buffer
-    	.asUint8List();
-
-Future<String> result = await flutterSoundPlayer.startPlayerFromBuffer
-	(
-		buffer,
-		whenFinished: ()
-		{
-			 print( 'I hope you enjoyed listening to this song' );
-		},
-	);
-
-```
-
-You must wait for the return value to complete before attempting to add any listeners
-to ensure that the player has fully initialised.
-
-```dart
-Directory tempDir = await getTemporaryDirectory();
-File fin = await File ('${tempDir.path}/flutter_sound-tmp.aac');
-Future<String> result = await flutterSoundPlayer.startPlayer(fin.path);
-
-result.then(path) {
-	print('startPlayer: $path');
-
-	_playerSubscription = flutterSoundPlayer.onPlayerStateChanged.listen((e) {
-		if (e != null) {
-			DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
-			String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
-			this.setState(() {
-				this._isPlaying = true;
-				this._playerTxt = txt.substring(0, 8);
-			});
-		}
-	});
-}
-```
-
-#### Start player from buffer
-
-For playing data from a memory buffer instead of a file, you can do the following :
-
-```dart
-Uint8List buffer =  (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
-String result = await flutterSoundPlayer.startPlayerFromBuffer
-	(
-		buffer,
-		codec: t_CODEC.CODEC_AAC,
-		whenFinished: ()
-		{
-			 print( 'I hope you enjoyed listening to this song' );
-		},
-	);
-```
-
-#### Stop player
-
-```dart
-Future<String> result = await flutterSoundPlayer.stopPlayer();
-
-result.then(value) {
-	print('stopPlayer: $result');
-	if (_playerSubscription != null) {
-		_playerSubscription.cancel();
-		_playerSubscription = null;
-	}
-}
-```
-
-You MUST ensure that the player has been stopped when your widget is detached from the ui.
-Overload your widget's dispose() method to stop the player when your widget is disposed.
-
-```dart
-@override
-void dispose() {
-	flutterSoundPlayer.release();
-	super.dispose();
-}
-```
-
-#### Pause player
-
-```dart
-Future<String> result = await flutterSoundPlayer.pausePlayer();
-```
-
-#### Resume player
-
-```dart
-Future<String> result = await flutterSoundPlayer.resumePlayer();
-```
-
-#### iosSetCategory(), androidAudioFocusRequest() and setActive() - (optional)
-
-Those three functions are optional. If you do not control the audio focus with the function `setActive()`, flutter_sound will require the audio focus each time the function `startPlayer()` is called and will release it when the sound is finished or when you call the function `stopPlayer()`.
-
-Before controling the focus with `setActive()` you must call `iosSetCategory()` on iOS or `androidAudioFocusRequest()` on Android. `setActive()` and `androidAudioFocusRequest()` are useful if you want to `duck others`.
+## TODO this section needs reviewing as I don't think it is correct.
+## The android documentation stats that requestFocus should be called on the play() callback which we do by default.
+Before controlling the focus with `requestFocs()` you must call `iosSetCategory()` on iOS or `androidAudioFocusRequest()` on Android. `requesFocus()` and `androidAudioFocusRequest()` are useful if you want to `hush others` (in android terminology duck others).
 Those functions are probably called just once when the app starts.
-After calling this function, the caller is responsible for using correctly `setActive()`
-probably before startRecorder or startPlayer, and stopPlayer and stopRecorder.
+After calling this function, the caller is calling `requestFocus()/abandonFocus() as required`.
+
 
 You can refer to [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosession/1771734-setcategory) to understand the parameters needed for `iosSetCategory()` and to the [Android documentation](https://developer.android.com/reference/android/media/AudioFocusRequest) to understand the parameter needed for `androidAudioFocusRequest()`.
 
-Remark : those three functions does work on Android before SDK 26.
+Remark : those three functions do NOT work on Android before SDK 26.
 
 ```dart
-if (_duckOthers)
+if (_hushOthers)
 {
 	if (Platform.isIOS)
-		await flutterSoundPlayer.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DUCK_OTHERS |  IOS_DEFAULT_TO_SPEAKER );
+		await player.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DUCK_OTHERS |  IOS_DEFAULT_TO_SPEAKER );
 	else if (Platform.isAndroid)
-		await flutterSoundPlayer.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK );
+		await player.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK );
 } else
 {
 	if (Platform.isIOS)
-		await flutterSoundPlayer.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DEFAULT_TO_SPEAKER );
+		await player.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DEFAULT_TO_SPEAKER );
 	else if (Platform.isAndroid)
-		await flutterSoundPlayer.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN );
+		await player.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN );
 }
 ...
 ...
-flutterSoundPlayer.setActive(true); // Get the audio focus
-flutterSoundPlayer.startPlayer(aSound);
-flutterSoundPlayer.startPlayer(anotherSong);
-flutterSoundPlayer.setActive(false); // Release the audio focus
+session.requestFocus(); // Get the audio focus
+session.play(track);
+// wait
+session.play(track2);
+session.abandonFocus(); // Release the audio focus
 ```
 
 #### Seek player
 
-To seek to a new location the player must already be playing.
+When using SoundPlayer you can seek to a specific position in the audio stream before or whilst playing the audio.
 
 ```dart
-String Future<result> = await flutterSoundPlayer.seekToPlayer(miliSecs);
+await player.seekTo(Duration(seconds: 1));
 ```
 
 #### Setting subscription duration (Optional). 0.010 is default value when not set.
