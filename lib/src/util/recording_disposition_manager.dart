@@ -18,13 +18,13 @@ import 'dart:async';
 import 'dart:convert';
 
 import '../recording_disposition.dart';
-import 'sound_recorder_impl.dart';
+import '../sound_recorder.dart';
 
 /// An internal class which manages the RecordingDisposition stream.
 /// Its main job is aggreate events coming up from the plugin
 /// into a single stream.
 class RecordingDispositionManager {
-  final SoundRecorderImpl _recorder;
+  final SoundRecorder _recorder;
   StreamController<RecordingDisposition> _dispositionController;
 
   /// tracks the last time we sent an update
