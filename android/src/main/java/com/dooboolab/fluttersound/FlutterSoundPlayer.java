@@ -95,7 +95,7 @@ class FlautoPlayerPlugin
 
 	void invokeMethod ( String methodName, Map dic )
 	{
-		Log.d(TAG, "FlutterAutoPlugin: invokeMethod " + methodName);
+		Log.d(TAG, "FlutterSoundPlayer: invokeMethod " + methodName);
 		channel.invokeMethod ( methodName, dic );
 	}
 
@@ -341,12 +341,12 @@ public class FlutterSoundPlayer
 	void initializeFlautoPlayer ( final MethodCall call, final Result result )
 	{
 		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
-		result.success ( "Flauto Player Initialized" );
+		result.success ( "Flutter Player Initialized" );
 	}
 
 	void releaseFlautoPlayer ( final MethodCall call, final Result result )
 	{
-		result.success ( "Flauto Recorder Released" );
+		result.success ( "Flutter Recorder Released" );
 	}
 
 
