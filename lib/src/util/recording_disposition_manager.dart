@@ -53,7 +53,7 @@ class RecordingDispositionManager {
   /// frequent.
   /// Updates will stop if the recorder is paused.
   Stream<RecordingDisposition> stream({Duration interval}) {
-    this.interval = interval;
+    this.interval = interval ?? this.interval;
 
     _dispositionController ??= StreamController.broadcast();
     _recorder.setSubscriptionDuration(interval);
