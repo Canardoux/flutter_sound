@@ -23,12 +23,13 @@ import 'codec.dart';
 import 'sound_player.dart';
 import 'track.dart';
 
-/// Provides the ability to playback audio from
-/// a variety of sources including:
-/// File
-/// Buffer
-/// Assets
-/// URL.
+/// Provides the ability to playback a single
+/// audio file from a variety of sources.
+///  - Track
+///  - File
+///  - Buffer
+///  - Assets
+///  - URL.
 class QuickPlay {
   SoundPlayer _player;
   Track _track;
