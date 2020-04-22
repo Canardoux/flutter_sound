@@ -6,34 +6,11 @@ import 'codec.dart';
 import 'util/audio.dart';
 
 typedef TrackAction = void Function(Track current);
-
-/// Should we abstract a track from how it gets played.
-/// I've never liked the hard link between a track
-/// and the OS playback mechanism.
 ///
-/// So what I want is for:
-/// QuickPlay - just plays audio no UI.
-///  - able to send events so you can implement your own audio.
+/// The [Track] class lets you define an audio track
+/// either from a path (uri) or a databuffer.
 ///
-/// Track - allows you to define additional info such as artist
-///   but you can also provide a UI manager
-///   - the problem is that the plugin architecture is awkard for this
-///     as it encapsulates play back and the UI.
-///
-/// SoundPlayer - we pass this around to create a coherent
-/// player.
-/// A QuickPlay gets a player when it is initialised unless
-/// one is passed to it.
-/// An album creates a player and passes it to a Track/QuickPlay
-///
-
-///
-/// The [Track] class lets you define an audio track.
-///
-/// An implementation has been used to hide a number of api
-/// calls that need to be visible to other classes but which
-/// are not part of our public api.
-///
+//
 class Track {
   /// The title of this track
   String title;
