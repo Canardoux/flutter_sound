@@ -124,97 +124,103 @@ class FlautoPlayerPlugin
 		}
 
 		FlutterSoundPlayer aPlayer = slots.get ( slotNo );
-		switch ( call.method )
+		try
 		{
-
-			case "initializeMediaPlayer":
+			switch ( call.method )
 			{
-				assert ( slots.get ( slotNo ) == null );
-				aPlayer = new FlutterSoundPlayer ( slotNo );
-				slots.set ( slotNo, aPlayer );
-				aPlayer.initializeFlautoPlayer ( call, result );
 
-			}
-			break;
+				case "initializeMediaPlayer":
+				{
+					assert ( slots.get ( slotNo ) == null );
+					aPlayer = new FlutterSoundPlayer ( slotNo );
+					slots.set ( slotNo, aPlayer );
+					aPlayer.initializeFlautoPlayer ( call, result );
 
-			case "releaseMediaPlayer":
-			{
-				aPlayer.releaseFlautoPlayer ( call, result );
-				slots.set ( slotNo, null );
-			}
-			break;
+				}
+				break;
 
-			case "isDecoderSupported":
-			{
-				aPlayer.isDecoderSupported ( call, result );
-			}
-			break;
+				case "releaseMediaPlayer":
+				{
+					aPlayer.releaseFlautoPlayer ( call, result );
+					slots.set ( slotNo, null );
+				}
+				break;
 
-			case "startPlayer":
-			{
-				aPlayer.startPlayer ( call, result );
-			}
-			break;
+				case "isDecoderSupported":
+				{
+					aPlayer.isDecoderSupported ( call, result );
+				}
+				break;
 
-			case "startPlayerFromBuffer":
-			{
-				aPlayer.startPlayerFromBuffer ( call, result );
-			}
-			break;
+				case "startPlayer":
+				{
+					aPlayer.startPlayer ( call, result );
+				}
+				break;
 
-			case "stopPlayer":
-			{
-				aPlayer.stopPlayer ( call, result );
-			}
-			break;
+				case "startPlayerFromBuffer":
+				{
+					aPlayer.startPlayerFromBuffer ( call, result );
+				}
+				break;
 
-			case "pausePlayer":
-			{
-				aPlayer.pausePlayer ( call, result );
-			}
-			break;
+				case "stopPlayer":
+				{
+					aPlayer.stopPlayer ( call, result );
+				}
+				break;
 
-			case "resumePlayer":
-			{
-				aPlayer.resumePlayer ( call, result );
-			}
-			break;
+				case "pausePlayer":
+				{
+					aPlayer.pausePlayer ( call, result );
+				}
+				break;
 
-			case "seekToPlayer":
-			{
-				aPlayer.seekToPlayer ( call, result );
-			}
-			break;
+				case "resumePlayer":
+				{
+					aPlayer.resumePlayer ( call, result );
+				}
+				break;
 
-			case "setVolume":
-			{
-				aPlayer.setVolume ( call, result );
-			}
-			break;
+				case "seekToPlayer":
+				{
+					aPlayer.seekToPlayer ( call, result );
+				}
+				break;
 
-			case "setSubscriptionDuration":
-			{
-				aPlayer.setSubscriptionDuration ( call, result );
-			}
-			break;
+				case "setVolume":
+				{
+					aPlayer.setVolume ( call, result );
+				}
+				break;
 
-			case "androidAudioFocusRequest":
-			{
-				aPlayer.androidAudioFocusRequest ( call, result );
-			}
-			break;
+				case "setSubscriptionDuration":
+				{
+					aPlayer.setSubscriptionDuration ( call, result );
+				}
+				break;
 
-			case "setActive":
-			{
-				aPlayer.setActive ( call, result );
-			}
-			break;
+				case "androidAudioFocusRequest":
+				{
+					aPlayer.androidAudioFocusRequest ( call, result );
+				}
+				break;
 
-			default:
-			{
-				result.notImplemented ();
+				case "setActive":
+				{
+					aPlayer.setActive ( call, result );
+				}
+				break;
+
+				default:
+				{
+					result.notImplemented ();
+				}
+				break;
 			}
-			break;
+		} catch (MediaControllerTimeoutException e) {
+			result.error(FlutterSoundPlayer.ERR_ON_CONNECT_TIMEOUT, 
+					FlutterSoundPlayer.ERR_ON_CONNECT_TIMEOUT, "Timeout waiting for MediaController onConnect");
 		}
 	}
 
@@ -318,6 +324,7 @@ public class FlutterSoundPlayer
 	static final String ERR_UNKNOWN           = "ERR_UNKNOWN";
 	static final String ERR_PLAYER_IS_NULL    = "ERR_PLAYER_IS_NULL";
 	static final String ERR_PLAYER_IS_PLAYING = "ERR_PLAYER_IS_PLAYING";
+	static final String ERR_ON_CONNECT_TIMEOUT = "ERR_ON_CONNECT_TIMEOUT";
 
 	FlutterSoundPlayer ( int aSlotNo )
 	{
@@ -609,7 +616,7 @@ public class FlutterSoundPlayer
 		}
 	}
 
-	public void seekToPlayer ( final MethodCall call, final Result result )
+	public void seekToPlayer(final MethodCall call, final Result result) throws MediaControllerTimeoutException
 	{
 		int millis = call.argument ( "sec" ) ;
 

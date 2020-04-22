@@ -47,10 +47,16 @@ public class MediaBrowserHelper
 
 	//private BackgroundAudioService backgroundAudioService ;
 
-	public waitForConnection()
+	public void waitForConnection() throws MediaControllerTimeoutException
 	{
+		try
+		{
 		if (!connectLatch.await(2, TimeUnit.MINUTES)){
-			throw MediaControllerTimeoutException();
+			throw new MediaControllerTimeoutException();
+		}
+		} catch (InterruptedException e)
+		{
+			throw new MediaControllerTimeoutException();
 		}
 	}
 
@@ -167,25 +173,25 @@ public class MediaBrowserHelper
 		mMediaBrowserCompat.disconnect();
 	}
 
-	void playPlayback()
+	void playPlayback() throws MediaControllerTimeoutException
 	{
 		waitForConnection();
 		mediaControllerCompat.getTransportControls().play();
 	}
 
-	void pausePlayback()
+	void pausePlayback() throws MediaControllerTimeoutException
 	{
 		waitForConnection();
 		mediaControllerCompat.getTransportControls().pause();
 	}
 
-	void seekTo( long newPosition )
+	void seekTo( long newPosition ) throws MediaControllerTimeoutException
 	{
 		waitForConnection();
 		mediaControllerCompat.getTransportControls().seekTo( newPosition );
 	}
 
-	void stop()
+	void stop() throws MediaControllerTimeoutException
 	{
 		waitForConnection();
 		mediaControllerCompat.getTransportControls().stop();
@@ -259,10 +265,10 @@ public class MediaBrowserHelper
 	}
 
 
-	// This class is thrown if we get a timeout waiting for the
-	// media controller to connect.
-	class MediaControllerTimeoutException extends Exception
-	{
-		static final long serialVersionUID = 1;
-	}
+}
+
+// This class is thrown if we get a timeout waiting for the
+// media controller to connect.
+class MediaControllerTimeoutException extends Exception {
+	static final long serialVersionUID = 1;
 }
