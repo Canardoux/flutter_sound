@@ -11,7 +11,6 @@ import 'common.dart';
 import 'drop_downs.dart';
 import 'main.dart';
 import 'media_path.dart';
-import 'player_state.dart';
 import 'recorder_controls.dart';
 import 'recorder_state.dart';
 import 'track_switched.dart';
@@ -34,7 +33,6 @@ class _MainBodyState extends State<MainBody> {
 
   Future<bool> init() async {
     if (!initialised) {
-      await PlayerState().init();
       await RecorderState().init();
       ActiveCodec().recorderModule = RecorderState().recorderModule;
       await ActiveCodec().setCodec(_useOSUI, Codec.aacADTS);
@@ -82,7 +80,6 @@ class _MainBodyState extends State<MainBody> {
 
   void switchPlayer({bool useOSUI}) async {
     try {
-      PlayerState().release();
       _useOSUI = useOSUI;
       await _switchModes(useOSUI);
       setState(() {});
@@ -180,10 +177,7 @@ class _MainBodyState extends State<MainBody> {
           (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
               .buffer
               .asUint8List();
-
-      PlayerState()
-          .playerModule_2
-          .play(Track.fromBuffer(dataBuffer, codec: ActiveCodec().codec));
+      QuickPlay.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
     }
   }
 
