@@ -25,6 +25,7 @@ import 'ios/ios_session_category_option.dart';
 import 'ios/ios_session_mode.dart';
 import 'playback_disposition.dart';
 import 'plugins/base_plugin.dart';
+import 'plugins/player_base_plugin.dart';
 import 'plugins/sound_player_plugin.dart';
 import 'plugins/sound_player_track_plugin.dart';
 import 'track.dart' as t;
@@ -43,7 +44,7 @@ import 'track.dart' as t;
 /// Once you have finished using a [SoundPlayer] you MUST call
 /// [SoundPlayer.release] to free up any resources.
 ///
-class SoundPlayer {
+class SoundPlayer implements SlotEntry {
   PlayerEvent _onSkipForward;
   PlayerEvent _onSkipBackward;
   PlayerEvent _onFinished;
@@ -68,7 +69,7 @@ class SoundPlayer {
   /// then we apply the seek offset.
   Duration _seekTo;
 
-  final BasePlugin _plugin;
+  final PlayerBasePlugin _plugin;
 
   /// The track that we are currently playing.
   t.Track _track;

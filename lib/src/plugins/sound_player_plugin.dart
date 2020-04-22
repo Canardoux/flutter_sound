@@ -16,14 +16,13 @@
 
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import '../sound_player.dart';
 
 import '../track.dart';
-import 'base_plugin.dart';
+import 'player_base_plugin.dart';
 
 ///
-class SoundPlayerPlugin extends BasePlugin {
+class SoundPlayerPlugin extends PlayerBasePlugin {
   static SoundPlayerPlugin _self;
 
   /// Factory
@@ -44,41 +43,5 @@ class SoundPlayerPlugin extends BasePlugin {
     await invokeMethod(player, 'startPlayer', args);
   }
 
-  ///
-  Future<dynamic> onMethodCallback(SoundPlayer audioSession, MethodCall call) {
-    switch (call.method) {
-      case "updateProgress":
-        {
-          var arguments = call.arguments['arg'] as String;
-          updateProgress(
-              audioSession, BasePlugin.dispositionFromJSON(arguments));
-        }
-        break;
-
-      case "audioPlayerFinishedPlaying":
-        {
-          var arguments = call.arguments['arg'] as String;
-
-          audioPlayerFinished(
-              audioSession, BasePlugin.dispositionFromJSON(arguments));
-        }
-        break;
-
-      case 'pause':
-        {
-          onSystemPaused(audioSession);
-        }
-        break;
-
-      case 'resume':
-        {
-          onSystemResumed(audioSession);
-        }
-        break;
-
-      default:
-        throw ArgumentError('Unknown method ${call.method}');
-    }
-    return null;
-  }
+  
 }

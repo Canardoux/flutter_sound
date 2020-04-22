@@ -20,10 +20,10 @@ import 'package:flutter/services.dart';
 
 import '../sound_player.dart';
 import '../track.dart';
-import 'base_plugin.dart';
+import 'player_base_plugin.dart';
 
 ///
-class SoundPlayerTrackPlugin extends BasePlugin {
+class SoundPlayerTrackPlugin extends PlayerBasePlugin {
   static SoundPlayerTrackPlugin _self;
 
   /// Factory
@@ -68,23 +68,6 @@ class SoundPlayerTrackPlugin extends BasePlugin {
   Future<dynamic> onMethodCallback(
       covariant SoundPlayer player, MethodCall call) {
     switch (call.method) {
-      case "updateProgress":
-        var arguments = call.arguments['arg'] as String;
-        updateProgress(player, BasePlugin.dispositionFromJSON(arguments));
-        break;
-
-      case "audioPlayerFinishedPlaying":
-        var arguments = call.arguments['arg'] as String;
-        audioPlayerFinished(player, BasePlugin.dispositionFromJSON(arguments));
-        break;
-
-      case 'pause':
-        onSystemPaused(player);
-        break;
-
-      case 'resume':
-        onSystemResumed(player);
-        break;
 
       /// track specific methods
       case 'skipForward':
@@ -96,7 +79,7 @@ class SoundPlayerTrackPlugin extends BasePlugin {
         break;
 
       default:
-        throw ArgumentError('Unknown method ${call.method}');
+        super.onMethodCallback(player, call);
     }
     return null;
   }
