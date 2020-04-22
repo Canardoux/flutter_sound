@@ -87,24 +87,22 @@ class SoundRecorderPlugin extends BasePlugin {
       'iosQuality': iosQuality?.value
     };
 
-    await invokeMethod(recorder, 'startRecorder', param) as String;
+    await invokeMethod(recorder, 'startRecorder', param);
   }
 
   ///
   Future<void> stop(SoundRecorder recorder) async {
-    await invokeMethod(recorder, 'stopRecorder', <String, dynamic>{}) as String;
+    await invokeMethod(recorder, 'stopRecorder', <String, dynamic>{});
   }
 
   ///
   Future<void> pause(SoundRecorder recorder) async {
-    await invokeMethod(recorder, 'pauseRecorder', <String, dynamic>{})
-        as String;
+    await invokeMethod(recorder, 'pauseRecorder', <String, dynamic>{});
   }
 
   ///
   Future<void> resume(SoundRecorder recorder) async {
-    await invokeMethod(recorder, 'resumeRecorder', <String, dynamic>{})
-        as String;
+    await invokeMethod(recorder, 'resumeRecorder', <String, dynamic>{});
   }
 
   ///
