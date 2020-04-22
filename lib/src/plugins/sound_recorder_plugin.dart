@@ -111,7 +111,8 @@ class SoundRecorderPlugin extends BasePlugin {
   Future<void> setSubscriptionDuration(
       SoundRecorder recorder, Duration interval) async {
     await invokeMethod(recorder, 'setSubscriptionDuration', <String, dynamic>{
-      'sec': interval.inSeconds.toDouble(),
+      // we must convert to milli to stop rounding down
+      'sec': interval.inMilliseconds.toDouble() / 1000.0,
     });
   }
 
@@ -119,7 +120,8 @@ class SoundRecorderPlugin extends BasePlugin {
   Future<void> setDbPeakLevelUpdate(
       SoundRecorder recorder, Duration interval) async {
     await invokeMethod(recorder, 'setDbPeakLevelUpdate', <String, dynamic>{
-      'sec': interval.inSeconds.toDouble(),
+      // we must convert to milli to stop rounding down
+      'sec': interval.inMilliseconds.toDouble() / 1000.0,
     });
   }
 

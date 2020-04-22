@@ -653,7 +653,7 @@ public class FlutterSoundRecorder
 
 	public void setDbPeakLevelUpdate ( final MethodCall call, final Result result )
 	{
-		double intervalInSecs = call.argument ( "intervalInSecs" );
+		double intervalInSecs = call.argument ( "sec" );
 		this.model.peakLevelUpdateMillis = ( long ) ( intervalInSecs * 1000 );
 		result.success ( "setDbPeakLevelUpdate: " + this.model.peakLevelUpdateMillis );
 	}
