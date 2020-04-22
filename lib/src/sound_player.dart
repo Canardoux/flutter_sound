@@ -148,6 +148,7 @@ class SoundPlayer implements SlotEntry {
   ///
   Future<void> play(t.Track track) async {
     _initialize();
+    _track = track;
 
     if (!isStopped) {
       throw PlayerInvalidStateException("The player must not be running.");
@@ -163,7 +164,7 @@ class SoundPlayer implements SlotEntry {
     t.prepareStream(track);
 
     _applyHush();
-    await _plugin.play(this, _track);
+    await _plugin.play(this, track);
     playerState = PlayerState.isPlaying;
 
     /// If the user called seekTo before starting the player
