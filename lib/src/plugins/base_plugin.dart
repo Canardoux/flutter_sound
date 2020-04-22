@@ -26,7 +26,7 @@ class SlotEntry {}
 /// PluginInterfaces to talk to the underlying
 /// Platform specific plugin.
 abstract class BasePlugin {
-  final List<SlotEntry> _slots = [];
+  List<SlotEntry> _slots;
 
   ///
   @protected
@@ -37,7 +37,7 @@ abstract class BasePlugin {
 
   /// Pass in the [_registeredName] which is the registered
   /// name of the plugin.
-  BasePlugin(this._registeredName) {
+  BasePlugin(this._registeredName, this._slots) {
     channel = MethodChannel(_registeredName);
     channel.setMethodCallHandler(_onMethodCallback);
   }
@@ -48,9 +48,9 @@ abstract class BasePlugin {
 
   Future<dynamic> _onMethodCallback(MethodCall call) {
     var slotNo = call.arguments['slotNo'] as int;
-    var audioSession = _slots[slotNo];
+    var slotEntry = _slots[slotNo];
 
-    return onMethodCallback(audioSession, call);
+    return onMethodCallback(slotEntry, call);
   }
 
   /// Invokes a method in the platform specific plugin for the

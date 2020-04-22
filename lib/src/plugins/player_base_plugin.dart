@@ -15,9 +15,15 @@ import 'base_plugin.dart';
 
 /// base for all plugins that provide Plaback services.
 abstract class PlayerBasePlugin extends BasePlugin {
+  /// The java TrackPlayer and FlutterSoundPlayer share a static
+  /// array of slots. As such so must we.
+  /// TODO: get the java/swift code so that each plugin has its own
+  /// slots.
+  static var _slots = <SlotEntry>[];
+
   /// Pass in the [_registeredName] which is the registered
   /// name of the plugin.
-  PlayerBasePlugin(String registeredName) : super(registeredName);
+  PlayerBasePlugin(String registeredName) : super(registeredName, _slots);
 
   /// Over load this method to play audio.
   Future<void> play(SoundPlayer player, Track track);

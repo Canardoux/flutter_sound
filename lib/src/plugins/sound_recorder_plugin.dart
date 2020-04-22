@@ -30,6 +30,8 @@ import 'base_plugin.dart';
 /// Provides communications with the platform
 /// specific plugin.
 class SoundRecorderPlugin extends BasePlugin {
+  static var _slots = <SlotEntry>[];
+
   static SoundRecorderPlugin _self;
 
   /// Factory
@@ -38,7 +40,7 @@ class SoundRecorderPlugin extends BasePlugin {
     return _self;
   }
   SoundRecorderPlugin._internal()
-      : super('com.dooboolab.flutter_sound_recorder');
+      : super('com.dooboolab.flutter_sound_recorder', _slots);
 
   ///
   void initialise(covariant SoundRecorder recorder) async {
