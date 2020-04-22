@@ -30,19 +30,42 @@ import 'track.dart';
 ///  - Buffer
 ///  - Assets
 ///  - URL.
+///
+/// The audio file plays to completion and then
+/// resources are automatically cleanedup.
+/// You have no control over the audio once it starts playing.
+/// This is intended for playing short audio files.
+///
+/// ```dart
+/// QuickPlay.fromPath('path to file);
+///
+/// QuickPlay.fromTrack(track, volume: 1.0, withUI: true);
+
 class QuickPlay {
   SoundPlayer _player;
   Track _track;
 
-  /// Creates a QuickPlay from a Track.
-  /// Use the [play] method to play the track
-  /// The [player] controls how the track is played.
-  /// By default the player is created to play without a UI.
-  /// Pass [SoundPlayer.withUI] to [player] to play the
-  /// audio using the OS' audio player.
-  /// see [Playbar] to present the user with a Widget based UI.
-  QuickPlay.fromTrack(this._track, {SoundPlayer player}) {
-    _player = player ?? SoundPlayer.noUI();
+  /// Creates a QuickPlay from a Track and immediately plays it.
+  /// By default no UI is displayed.
+  /// If you pass [withUI]=true then the OSs' media player is displayed
+  /// but all of the UI controls are disabled.
+  /// You can control the playback [volume]. The valid range is 0.0 to 1.0
+  /// and the default is 0.5.
+  QuickPlay.fromTrack(this._track, {double volume, bool withUI = false}) {
+    QuickPlay._internal(volume, withUI);
+  }
+
+  QuickPlay._internal(double volume, bool withUI) {
+    if (withUI) {
+      _player = SoundPlayer.withUI(
+          canPause: false, canSkipBackward: false, canSkipForward: false);
+    } else {
+      _player = SoundPlayer.noUI();
+    }
+
+    volume ??= 0.5;
+
+    _play(volume);
   }
 
   /// The [uri] of the file to download and playback
@@ -53,145 +76,37 @@ class QuickPlay {
   /// If the file extension doesn't match a known codec then
   /// [QuickPlay] will throw an [CodecNotSupportedException] in which
   /// case you need pass one of the known codecs.
-  ///
+  /// By default no UI is displayed.
+  /// If you pass [withUI]=true then the OSs' media player is displayed
+  /// but all of the UI controls are disabled.
+  /// The [volume] must be in the range 0.0 to 1.0. Defaults to 0.5
   QuickPlay.fromPath(String uri,
-      {Codec codec = Codec.fromExtension, SoundPlayer player}) {
-    _player = player ?? SoundPlayer.noUI();
-
+      {double volume, Codec codec = Codec.fromExtension, bool withUI = false}) {
     _track = Track.fromPath(uri, codec: codec);
+    QuickPlay._internal(volume, withUI);
   }
 
   /// Create a audio play from an in memory buffer.
   /// The [dataBuffer] contains the media to be played.
   /// The [codec] of the file the [dataBuffer] points to.
   /// You MUST pass a codec.
+  /// By default no UI is displayed.
+  /// If you pass [withUI]=true then the OSs' media player is displayed
+  /// but all of the UI controls are disabled.
+  /// The [volume] must be in the range 0.0 to 1.0. Defaults to 0.5
   QuickPlay.fromBuffer(Uint8List dataBuffer,
-      {@required Codec codec, SoundPlayer player}) {
-    _player = player ?? SoundPlayer.noUI();
+      {double volume, @required Codec codec, bool withUI = false}) {
     _track = Track.fromBuffer(dataBuffer, codec: codec);
+    QuickPlay._internal(volume, withUI);
   }
-
-  /// call this method once you are down with the player
-  /// so that it can release all of the attached resources.
-  Future<void> release() async => _player.release();
 
   /// Starts playback.
 
-  Future<void> play() async => _player.play(_track);
-
-  /// Stops playback.
-  Future<void> stop() async => _player.stop();
-
-  /// Pauses playback.
-  /// If you call this and the audio is not playing
-  /// a [PlayerInvalidStateException] will be thrown.
-  Future<void> pause() async => _player.pause();
-
-  /// Resumes playback.
-  /// If you call this when audio is not paused
-  /// then a [PlayerInvalidStateException] will be thrown.
-  Future<void> resume() async => _player.resume();
-
-  /// Moves the current playback position to the given offset in the
-  /// recording.
-  /// [position] is the position in the recording to set the playback
-  /// location from.
-  /// You may call this before [play] or whilst the audio is playing.
-  /// If you call [seekTo] before calling [play] then when you call
-  /// [play] we will start playing the recording from the [position]
-  /// passed to [seekTo].
-  Future<void> seekTo(Duration position) async => _player.seekTo(position);
-
-  /// Sets the playback volume
-  /// The [volume] must be in the range 0.0 to 1.0.
-  Future<void> setVolume(double volume) async => _player.setVolume(volume);
-
-  /// [true] if the player is currently playing audio
-  bool get isPlaying => _player.isPlaying;
-
-  /// [true] if the player is playing but the audio is paused
-  bool get isPaused => _player.isPaused;
-
-  /// [true] if the player is stopped.
-  bool get isStopped => _player.isStopped;
-
-  /// Instructs the OS to reduce the volume of other audio
-  /// whilst we play this audio file.
-  /// The exact effect of this is OS dependant.
-  /// The effect is only applied when we start the audio play.
-  /// Changing this value whilst audio is play will have no affect.
-  bool get hushOthers => _player.hushOthers;
-
-  /// Instructs the OS to reduce the volume of other audio
-  /// whilst we play this audio file.
-  /// The exact effect of this is OS dependant.
-  /// The effect is only applied when we start the audio play.
-  /// Changing this value whilst audio is play will have no affect.
-  set hushOthers(bool hushOthers) {
-    _player.hushOthers = hushOthers;
-  }
-
-  /// Pass a callback if you want to be notified when
-  /// a track finishes to completion.
-  /// see [onStopped] for events when the user or system stops playback.
-  // ignore: avoid_setters_without_getters
-  set onFinished(PlayerEvent onFinished) {
-    _player.onFinished = onFinished;
-  }
-
-  ///
-  /// Pass a callback if you want to be notified when
-  /// playback is paused.
-  /// The [wasUser] argument in the callback will
-  /// be true if the user clicked the pause button
-  /// on the OS UI.
-  ///
-  /// [wasUser] will be false if you paused the audio
-  /// via a call to [pause].
-  // ignore: avoid_setters_without_getters
-  set onPaused(PlayerEventWithCause onPaused) {
-    _player.onPaused = onPaused;
-  }
-
-  ///
-  /// Pass a callback if you want to be notified when
-  /// playback is resumed.
-  /// The [wasUser] argument in the callback will
-  /// be true if the user clicked the resume button
-  /// on the OS UI.
-  ///
-  /// [wasUser] will be false if you resumed the audio
-  /// via a call to [resume].
-  // ignore: avoid_setters_without_getters
-  set onResumed(PlayerEventWithCause onResumed) {
-    _player.onResumed = onResumed;
-  }
-
-  /// Pass a callback if you want to be notified
-  /// that audio has started playing.
-  ///
-  /// If the player has to download or transcribe
-  /// the audio then this method won't return
-  /// util the audio actually starts to play.
-  ///
-  /// This can occur if you called [play]
-  /// or the user click the start button on the
-  /// OS UI.
-  // ignore: avoid_setters_without_getters
-  set onStarted(PlayerEventWithCause onStarted) {
-    _player.onStarted = onStarted;
-  }
-
-  /// Pass a callback if you want to be notified
-  /// that audio has stopped playing.
-  /// This is different from [onFinished] which
-  /// is called when the auido plays to completion.
-  ///
-  /// [onStoppped]  can occur if you called [stop]
-  /// or the user click the stop button on the
-
-  // ignore: avoid_setters_without_getters
-  set onStopped(PlayerEventWithCause onStopped) {
-    _player.onStopped = onStopped;
+  Future<void> _play(double volume) async {
+    _player.setVolume(volume);
+    _player.hushOthers = true;
+    _player.onFinished = () => _player.release();
+    _player.onStopped = ({wasUser}) => _player.release();
+    return _player.play(_track);
   }
 }
