@@ -181,13 +181,9 @@ class _MainBodyState extends State<MainBody> {
               .buffer
               .asUint8List();
 
-      PlayerState().playerModule_2 =
-          QuickPlay.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
-
-      PlayerState().playerModule_2.onFinished =
-          () => print('Secondary Play finished');
-
-      await PlayerState().playerModule_2.play();
+      PlayerState()
+          .playerModule_2
+          .play(Track.fromBuffer(dataBuffer, codec: ActiveCodec().codec));
     }
   }
 

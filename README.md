@@ -17,7 +17,7 @@ The key classes are:
 
 ## Api classes
 
-QuickPlay - plays audio either using the OSs' audio UI or headless.
+QuickPlay - instantly play audio either using the OSs' audio UI or headless.
 
 Track - Defines a track including artist and a link to the media.
 
@@ -30,7 +30,7 @@ SoundRecorder - records audio.
 
 ## Wdigets
 
-QuickPlayUI - displays an HTML 5 style audio controller widget.
+SoundPlayerUI - displays an HTML 5 style audio controller widget.
 
 SoundRecorderUI - displays a recording widget.
 
@@ -38,10 +38,102 @@ Note: there are some limitations on the supported codecs. See the [codec] sectio
 
 ![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
 
-## Migration Guide
+# Migration Guide
 
-To migrate to `4.0.0`from 3.x.x you must do some minor changes in your configurations files.
+## `3.x.x` to `4.0.0`.
+
+To migrate to  you must do some minor changes in your configurations files.
 Please refer to the **FFmpeg** section below.
+
+## `4.0.0` to `5.0.0`
+The Flutter Sound team has made a number of breaking changes to the api with the intent of providing a solid and flexible foundation for moving forward.
+
+### Players
+
+In `5.0.0` the `TrackPlayer` and `FlutterSoundPlayer` has been merged into a single class `SoundPlayer`.
+
+`SoundPlayer` now has two constructors:
+
+Code that previously used `TrackPlayer` should now call the `SoundPlayer.withUI()` constructor.
+
+Code that used the old `FlutterSoundPlayer` should now call the `SoundPlayer.noUI()` constructor.
+
+The equivalent method names on the `SoundPlayer` class have also been shortend.
+
+Example changes:
+
+`FlutterSoundPlayer.startPlayer()` -> `SoundPlayer.play()`
+`FlutterSoundPlayer.pausePlayer()` -> `SoundPlayer.pause()`
+`FlutterSoundPlayer.stopPlayer()` ->  `SoundPlayer.stop()`
+
+The new `play` methods replaces both `startPlayer(uri)` and `startPlayerFromBuffer()` and 
+now takes a `Track`.
+
+### Track
+
+The Track class has two constructors:
+`Track.fromPath` and `Track.fromBuffer`.
+
+So to play a track from a path use:
+```dart
+var player SoundPlayer.withUI();
+player.onFinish = () => player.release();
+player.seekTo(Duration(seconds: 5)); // yes, you can call seek before play.
+player.play(Track.fromPath(uri));
+```
+
+To play a track from a buffer use:
+
+```dart
+var player SoundPlayer.withUI();
+player.onFinish = () => player.release();
+player.seekTo(Duration(seconds: 5)); 
+player.play(Track.fromBuffer(buffer));
+```
+
+The Track class constructors have been simplified to take just the path (or buffer) and a codec.
+
+The Track details are now set via properties:
+
+```dart
+var track = Track.fromPath('path to media');
+track.title = 'Quarantine Jig';
+track.author = 'The Jiggy Kids';
+var player = SoundPlayer.withUI();
+player.onFinish = () => player.release();
+player.play(track);
+```
+
+### Monitoring
+
+The `SoundPlayer` subscription model is now been unified into a single stream via 
+`SoundPlayer.dispositionStream(interval)`.
+
+The result is a stream of `PlaybackDisposition`s which include but the audios duration (length)
+and current position.
+
+The `SoundRecorder` uses the same stream model unifying the dbLevel and duration (length) into a single stream of `RecorderDisposition`s.
+You can now use a StreamBuilder widget which simplifies UI development.
+
+### Types
+Types and enums now consistently use camelCase.
+
+e.g. 
+`t_PLAYER_STATE.IS_STOPPED -> PlayerState.isStopped`
+
+### New classes
+`5.0.0` introduces a number of new convenience classes:
+
+`QuickPlay` plays a single audio file immediatley (there is no `play` method).
+
+This is ideal for small audio files.
+
+```dart
+QuickPlay.fromPath('path to file');
+```
+
+`Album` allows you to create an album of Track (statically or dynamically) and play them sequentiall via the OSs' UI.
+
 
 ## Free Read
 
@@ -115,24 +207,41 @@ If you do not do that, you will have duplicates modules during your App building
   ```
 
 
-# QuickPlay
+# Using Flutter Sound
+
+## QuickPlay
 The QuickPlay class provides the simplest means of playing audio.
 
 If you just want to play an audio file then this is the place to start.
 
 By default the QuickPlay doesn't display any UI, it simply plays the audio until it completes.
 
+You have no control over the audio once it starts but you don't have to do any cleanup once it completes.
+
+```dart
+QuickPlay.fromPath('path to file');
+```
+
+QuickPlay provides a number of constructors that allow you play audio from different sources.
+
+You set the volume and display the OSs' audio player if you choose.
+
+```dart
+QuickPlay.fromBuffer(databuffer, codec: Codec.aac, volume: 1.0, withUI: true);
+```
+
+## Displaying a UI
+
 If you need a UI to allow your user to control playback then you have three options:
 
-1) Pass a `SoundPlayer.withUI()` as the `session` argument to QuickPlay (see the examples below).
+1) Use `SoundPlayer.withUI()` 
 This will display the OSs' audio player allowing the user to control playback.
 
-2) Use Flutter Sound's QuickPlayUI widget which provide a HTML5 like audio player.
+2) Use Flutter Sound's SoundPlayerUI widget which provide a HTML5 like audio player.
 
-3) Directly use `SoundPlayer.noUI()` to roll your own widget. You can start with the QuickPlayUI code as an example of how to do this.
+3) Directly use `SoundPlayer.noUI()` to roll your own widget. You can start with the SoundPlayerUI code as an example of how to do this.
 
 The API is documented in detail at [pub.dev](https://pub.dev/documentation/flutter_sound/latest/)
-
 
 ## Play audio from an asset
 
@@ -151,15 +260,25 @@ flutter:
 Now play the file.
 
 ```dart
-var player = QuickPlay.fromPath('sample.aac');
-player.onFinish = player.release;
-player.play();
+/// play the audio with no control
+QuickPlay.fromPath('beep.acc');
+
+/// If you need to control/monitor the playback
+var player = SoundPlayer.noUI();
+
+// If you stop the playback onFinish will not be called so you
+// must call release via another method.
+player.onFinish = player.release();
+player.play(Track.fromPath('sample.aac'));
 ```
 
-You must be certain to release the player once you have finished playing the audio.
-You can reuse a `QuickPlay` as many times as you want as long as you call `QuickPlay.release()` once you are done with it.
+CRITICAL: 
 
-QuickPlay uses the passed filename extension to determine the correct codec to play. If you need to play a file with an extension that doesn't match one of the known file extensions then you MUST pass in the codec.
+You must be certain to release the player once you have finished playing the audio.
+
+You can reuse a `SoundPlayer` as many times as you want as long as you call `SoundPlayer.release()` once you are done with it.
+
+Track.fromPath uses the passed filename extension to determine the correct codec to play. If you need to play a file with an extension that doesn't match one of the known file extensions then you MUST pass in the codec.
 
 See the [codec](https://pub.dev/documentation/flutter_sound/latest/codec/codec-library.html) documentation
 for details on the supported codecs.
@@ -169,9 +288,9 @@ for details on the supported codecs.
 If you audio file doesn't have an appropriate file extension then you can explicitly pass a codec.
 
 ```dart
-var player = QuickPlay.fromPath('sample.blit', codec: Codec.mp3);
+var player = SoundPlayer.noUI();
 player.onFinish = player.release;
-player.play();
+player.play(Track.fromPath('sample.blit', codec: Codec.mp3));
 ```
 
 ## Play audio from an external URL
@@ -182,10 +301,10 @@ See the [codec](https://pub.dev/documentation/flutter_sound/latest/codec/codec-l
 for details on the supported codecs.
 
 ```dart
-var player = QuickPlay.fromPath('https://some audio file'
-	, codec:Codec.mp3);
+
+var player = SoundPlayer.noUI();
 player.onFinish = player.release;
-player.play();
+player.play(Track.fromPath('https://some audio file', codec: Codec.mp3););
 ```
 
 ## Play audio from an in memory buffer 
@@ -197,19 +316,19 @@ for details on the supported codecs.
 
 ```dart
 Uint8List buffer = ....
-var player = QuickPlay.fromBuffer(buffer, codec:Codec.mp3);
+var player = SoundPlayer.noUI();
 player.onFinish = player.release;
-player.play();
+player.play(Track.fromBuffer(buffer, codec: Codec.mp3););
 ```
 
 ## Play audio allowing the user to control playback via OSs' UI
 
-QuickPlay can display the OSs' Audio player UI allowing the user to control playback.
+SoundPlayer can display the OSs' Audio player UI allowing the user to control playback.
 
 ```dart
-var player = QuickPlay.fromPath('sample.aac', session: SoundPlayer.withUI());
-player.onFinish = track.release;
-player.play();
+var player = SoundPlayer.withUI();
+player.onFinish = player.release;
+player.play(Track.fromPath('sample.blit', codec: Codec.mp3));
 ```
 
 ## Control the OSs' UI
@@ -217,14 +336,13 @@ player.play();
 The OSs' media player has three buttons, skip forward, skip backwards and pause.
 By default the skip buttons are disabled and the pause button enabled.
 
-You can modify the the state of these buttons to disable the pause button.
-Whilst you could enable the skip buttons it makes no sense to do so when using
-QuickPlay. Look at `Album` if you want to play multiple `Track`s.
+You can modify the the state of these buttons with the `SoundPlaye.withUI` constructor.
 
 ```dart
-var player = QuickPlay.fromPath('sample.aac', session: SoundPlayer.withUI(canPause: false));
-player.onFinish = track.release;
-player.play();
+var player = SoundPlayer.withUI(canPause:true, canSkipBackward:false
+	, canSkipForward: true);
+player.onFinish = player.release;
+player.play(Track.fromPath('sample.blit', codec: Codec.mp3));
 ```
 
 ## Display artist details
@@ -237,9 +355,9 @@ track.title = 'Reckless';
 track.author = 'Flutter Sound';
 track.albumArtUrl = 'http://some image url';
 
-QuickPlay.fromTrack(track, session: SoundPlayer.withUI());
+var player = SoundPlayer.withUI()
 track.onFinish = track.release;
-track.play();
+player.fromTrack(track);
 ```
 The artist, author and album art will be displayed on the OSs' Audio Player.
 
@@ -284,10 +402,12 @@ Virtual tracks allow you to create an album of infinite size which
 could be useful if you are pulling audio from an external source.
 
 If you create a virtual album you MUST implement the `onSkipForward` 
-and `onSkipBackwards` methods to supply the album with Tracks on demand.
+, `onSkipBackwards` and `onFirstTrack` methods to supply the album with Tracks on demand.
 
 ```dart
  var album = Album.virtual();
+ album.onFirstTrack = (int currentTrackIndex, Track current) 
+		=> Track('http://random/xxxx');
 album.onSkipForward = (int currentTrackIndex, Track current) 
 		=> Track('http://random/xxxx');
 album.onSkipBackwards = (int currentTrackIndex, Track current) 
@@ -298,18 +418,7 @@ album.play();
 ```
 
 ## Controlling Playback
-The `QuickPlay` provides basic methods to allow you to control playback such as:
-* pause()
-* resume()
-* stop()
-* seekTo(duration)
-
-If you need more detailed control then you need to use an `SoundPlayer`.
-
-
-# SoundPlayer
-
-An SoundPlayer provides finer grained control over how the audio is played as well as been able to monitor playback and respond to user events.
+An SoundPlayer provides fined grained control over how the audio is played as well as been able to monitor playback and respond to user events.
 
 Importantly `SoundPlayer` also allows you to play multiple audio files using the same session. 
 
@@ -320,16 +429,20 @@ The `Album` class provides an easy to use method of utilising a single session w
 
 
 ```dart
-var session = SoundPlayer.withUI();
+var player = SoundPlayer.withUI();
 
 var track = Track.fromPath('sample.aac');
 track.title = 'Corona Virus Rock';
-session.onStarted => print('started');
-session.onStopped => print('stopped');
-session.onPause => print('paused');
-session.onResume => print('resumed');
-session.onFinished => print('finished');
-session.play(track);
+player.onStarted => print('started');
+player.onStopped => print('stopped');
+player.onPause => print('paused');
+player.onResume => print('resumed');
+player.onFinished => print('finished');
+player.play(track);
+
+...
+
+player.release();
 
 ```
 
@@ -337,7 +450,7 @@ session.play(track);
 ## Monitor playback position
 If you are building your own widget you might want to display a progress bar that displays the current playback position.
 
-The easiest way to do this is via the QuickPlayUI widget but if you want to write your own then you will want to use the `dispositionStream` with a StreamBuilder.
+The easiest way to do this is via the SoundPlayerUI widget but if you want to write your own then you will want to use the `dispositionStream` with a StreamBuilder.
 
 To use a `dispositionStream` you need to create an `SoundPlayer`.
 
@@ -345,17 +458,17 @@ To use a `dispositionStream` you need to create an `SoundPlayer`.
 class MyWidgetState
 {
 	/// use .noUI() as you are going to build your own UI.
-	var session = SoundPlayer().noUI();
+	var player = SoundPlayer().noUI();
 
 	void initState()
 	{
 		super.initState();
-		session.play(Track.fromPath('sample.aac'));
+		
 	}
 
 	void dispose()
 	{
-		session.release();
+		player.release();
 		super.dispose();
 	}
 
@@ -363,7 +476,7 @@ class MyWidgetState
     	 return Row(children:
 		 	[Button('Play' onTap: onPlay)
 		 		, StreamBuilder<PlaybackDisposition>(
-					stream: session.dispositionStream,
+					stream: player.dispositionStream,
 					initialData: PlaybackDisposition.zero(),
 					builder: (context, snapshot) {
 					var disposition = snapshot.data;
@@ -379,9 +492,22 @@ class MyWidgetState
       },
     ));
   
-  voi onPlay()
+  /// you would wire this to a button
+  void onPlay()
   {
-	  player.play();
+	  player.play(Track.fromPath('sample.aac'));
+  }
+
+   /// you would wire this to a pause button
+  void onPause()
+  {
+	  player.pause();
+  }
+
+   /// you would wire this to a button
+  void onResume()
+  {
+	  player.resume();
   }
 }
 ```  

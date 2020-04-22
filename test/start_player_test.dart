@@ -8,9 +8,7 @@ void main() {
 
   final log = <MethodCall>[];
 
-  var player = QuickPlay.fromPath('example/asset/samples/sample.acc');
-  player.onFinished = player.release;
-  player.play();
+  QuickPlay.fromPath('example/asset/samples/sample.acc');
 
 // SoundRecorder recorder = SoundRecorder.toPath('path to store recording');
 // recorder.start();

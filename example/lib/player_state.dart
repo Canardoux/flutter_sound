@@ -14,10 +14,11 @@ class PlayerState {
   // StreamSubscription _playbackStateSubscription;
 
   /// the primary player
-  QuickPlay playerModule;
+  SoundPlayer playerModule = SoundPlayer.noUI();
 
   /// secondary player used to demo two audio streams playing.
-  QuickPlay playerModule_2; // Used if REENTRANCE_CONCURENCY
+  SoundPlayer playerModule_2 =
+      SoundPlayer.noUI(); // Used if REENTRANCE_CONCURENCY
 
   final StreamController<PlaybackDisposition> _playStatusController =
       StreamController<PlaybackDisposition>.broadcast();
@@ -53,7 +54,15 @@ class PlayerState {
   bool get isPaused => playerModule != null && playerModule.isPaused;
 
   /// initialise the player.
-  void init() async {}
+  void init() async {
+    PlayerState().playerModule.onFinished = () {
+      print('Primary Play finished');
+    };
+
+    PlayerState().playerModule_2.onFinished = () {
+      print('Secondary Play finished');
+    };
+  }
 
   /// cancel all subscriptions.
   void cancelPlayerSubscriptions() {
