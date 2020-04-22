@@ -97,14 +97,14 @@ class SoundPlayerUI extends StatefulWidget {
 }
 
 class _SoundPlayerUIState extends State<SoundPlayerUI> {
-  final SoundPlayer _player = SoundPlayer.noUI();
+  final SoundPlayer _player;
 
   SliderPosition sliderPosition = SliderPosition();
 
   /// we keep our own local stream as the players come and go.
   /// This lets our StreamBuilder work with it worrying about
   /// the player's stream changing under it.
-  final _localController = StreamController<PlaybackDisposition>.broadcast();
+  final StreamController<PlaybackDisposition> _localController;
 
   // we are current play (but may be paused)
   PlayState _playState = PlayState.stopped;
@@ -131,11 +131,9 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
 
   Slider slider;
 
-  _SoundPlayerUIState(this._track, this._onLoad) {
-    _SoundPlayerUIState._internal();
-  }
-
-  _SoundPlayerUIState._internal() {
+  _SoundPlayerUIState(this._track, this._onLoad)
+      : _player = SoundPlayer.noUI(),
+        _localController = StreamController<PlaybackDisposition>.broadcast() {
     sliderPosition.position = Duration(seconds: 0);
     sliderPosition.maxPosition = Duration(seconds: 0);
 
@@ -168,15 +166,17 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     /// TODO
     /// should we chain these events incase the user of our api
     /// also wants to see these events?
-    if (_track != null) {
-      _player.onStarted = ({wasUser}) => _loading = false;
-      _player.onStopped = ({wasUser}) => playState = PlayState.stopped;
-      _player.onFinished = () => setState(() => playState = PlayState.stopped);
+    _player.onStarted = ({wasUser}) => _loading = false;
+    _player.onStopped = ({wasUser}) => playState = PlayState.stopped;
+    _player.onFinished = _onFinished;
 
-      /// pipe the new sound players stream to our local controller.
-      _player.dispositionStream().listen(_localController.add);
-    }
+    /// pipe the new sound players stream to our local controller.
+    _player.dispositionStream().listen((disposition) {
+      return _localController.add(disposition);
+    });
   }
+
+  void _onFinished() => setState(() => playState = PlayState.stopped);
 
   @override
   void dispose() {
@@ -303,7 +303,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
       setState(() {
         _transitioning = false;
         _loading = false;
-        Log.w("No Player provided by _onLoad. Call to start has been ignored");
+        Log.w("No Track provided by _onLoad. Call to start has been ignored");
       });
     }
   }
