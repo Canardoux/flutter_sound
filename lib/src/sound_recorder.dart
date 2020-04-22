@@ -98,17 +98,12 @@ class SoundRecorder implements SlotEntry {
     return _dispositionManager.stream(interval: interval);
   }
 
-  Future<dynamic> _invokeMethod(String methodName, Map<String, dynamic> args) {
-    return getPlugin().invokeMethod(this, methodName, args);
-  }
-
   /// internal method.
   Future<SoundRecorder> initialize() async {
     if (!_isInited) {
       _isInited = true;
       _dispositionManager = RecordingDispositionManager(this);
-      getPlugin().register(this);
-      await _invokeMethod('initializeFlautoRecorder', <String, dynamic>{});
+      getPlugin().initialise(this);
     }
     return this;
   }
@@ -119,7 +114,6 @@ class SoundRecorder implements SlotEntry {
     if (_isInited) {
       _isInited = false;
       await stop();
-      await _invokeMethod('releaseFlautoRecorder', <String, dynamic>{});
       getPlugin().release(this);
     }
   }
@@ -128,7 +122,6 @@ class SoundRecorder implements SlotEntry {
   /// flutter_sound on this platform
   Future<bool> isSupported(Codec codec) async {
     await initialize();
-    bool result;
     // For encoding ogg/opus on ios, we need to support two steps :
     // - encode CAF/OPPUS (with native Apple AVFoundation)
     // - remux CAF file format to OPUS file format (with ffmpeg)
@@ -136,10 +129,7 @@ class SoundRecorder implements SlotEntry {
       codec = Codec.cafOpus;
     }
 
-    result = await _invokeMethod(
-        'isEncoderSupported', <String, dynamic>{'codec': codec.index}) as bool;
-
-    return result;
+    return await getPlugin().isSupported(this, codec);
   }
 
   /// Starts the recorder, recording audio to the passed in [path]
@@ -202,25 +192,21 @@ class SoundRecorder implements SlotEntry {
       _isOggOpus = false;
     }
 
-    try {
-      var param = <String, dynamic>{
-        'path': _recordingToPath,
-        'sampleRate': sampleRate,
-        'numChannels': numChannels,
-        'bitRate': bitRate,
-        'codec': codec.index,
-        'androidEncoder': androidEncoder?.value,
-        'androidAudioSource': androidAudioSource?.value,
-        'androidOutputFormat': androidOutputFormat?.value,
-        'iosQuality': iosQuality?.value
-      };
+    if (exists(_recordingToPath)) delete(_recordingToPath);
 
-      if (exists(_recordingToPath)) delete(_recordingToPath);
-      await _invokeMethod('startRecorder', param) as String;
-      _recorderState = _RecorderState.isRecording;
-    } on Object catch (err) {
-      throw Exception(err);
-    }
+    await getPlugin().start(
+        this,
+        _recordingToPath,
+        sampleRate,
+        numChannels,
+        bitRate,
+        codec,
+        androidEncoder,
+        androidAudioSource,
+        androidOutputFormat,
+        iosQuality);
+
+    _recorderState = _RecorderState.isRecording;
   }
 
   /// Stops the current recording.
@@ -230,7 +216,7 @@ class SoundRecorder implements SlotEntry {
   /// for some codecs which aren't natively support. Dependindig on the
   /// size of the file this could take a few moments to a few minutes.
   Future<void> stop() async {
-    await _invokeMethod('stopRecorder', <String, dynamic>{}) as String;
+    await getPlugin().stop(this);
 
     _recorderState = _RecorderState.isStopped;
 
@@ -253,7 +239,7 @@ class SoundRecorder implements SlotEntry {
           "You cannot pause recording when the recorder is not running.");
     }
 
-    await _invokeMethod('pauseRecorder', <String, dynamic>{}) as String;
+    await getPlugin().pause(this);
     _pauseStarted = DateTime.now();
     _recorderState = _RecorderState.isPaused;
   }
@@ -269,7 +255,7 @@ class SoundRecorder implements SlotEntry {
     _timePaused += (DateTime.now().difference(_pauseStarted));
 
     try {
-      await _invokeMethod('resumeRecorder', <String, dynamic>{}) as bool;
+      await getPlugin().resume(this);
     } on Object catch (e) {
       print("Exception throw trying to resume the recorder $e");
       await stop();
@@ -281,31 +267,22 @@ class SoundRecorder implements SlotEntry {
   /// Sets the frequency at which duration updates are sent to
   /// duration listeners.
   /// The default is every 10 milliseconds.
-  Future<String> setSubscriptionDuration(Duration interval) async {
+  Future<void> setSubscriptionDuration(Duration interval) async {
     await initialize();
-    var r = await _invokeMethod('setSubscriptionDuration', <String, dynamic>{
-      'sec': interval.inSeconds.toDouble(),
-    }) as String;
-    return r;
+    await getPlugin().setSubscriptionDuration(this, interval);
   }
 
   /// Defines the interval at which the peak level should be updated.
   /// Default is 0.8 seconds
-  Future<String> setDbPeakLevelUpdate(Duration interval) async {
+  Future<void> setDbPeakLevelUpdate(Duration interval) async {
     await initialize();
-    var r = await _invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
-      'intervalInSecs': interval.inSeconds.toDouble(),
-    }) as String;
-    return r;
+    await getPlugin().setDbPeakLevelUpdate(this, interval);
   }
 
   /// Enables or disables processing the Peak level in db's. Default is disabled
-  Future<String> setDbLevelEnabled({bool enabled}) async {
+  Future<void> setDbLevelEnabled({bool enabled}) async {
     await initialize();
-    var r = await _invokeMethod('setDbLevelEnabled', <String, dynamic>{
-      'enabled': enabled,
-    }) as String;
-    return r;
+    await getPlugin().setDbLevelEnabled(this, enabled: enabled);
   }
 
   /// Call by the plugin to notify us that the duration of the recording

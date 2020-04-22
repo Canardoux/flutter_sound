@@ -18,6 +18,12 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
+import '../android/android_audio_source.dart';
+import '../android/android_encoder.dart';
+import '../android/android_output_format.dart';
+import '../codec.dart';
+import '../ios/ios_quality.dart';
+
 import '../sound_recorder.dart';
 import 'base_plugin.dart';
 
@@ -34,19 +40,109 @@ class SoundRecorderPlugin extends BasePlugin {
   SoundRecorderPlugin._internal()
       : super('com.dooboolab.flutter_sound_recorder');
 
+  ///
+  void initialise(covariant SoundRecorder recorder) async {
+    register(recorder);
+    await invokeMethod(
+        recorder, 'initializeFlautoRecorder', <String, dynamic>{});
+  }
+
+  /// Releases the slot used by the connector.
+  /// To use a plugin you start by calling [register]
+  /// and finish by calling [release].
+  void release(covariant SoundRecorder recorder) async {
+    await invokeMethod(recorder, 'releaseFlautoRecorder', <String, dynamic>{});
+    super.release(recorder);
+  }
+
+  /// Returns true if the specified encoder is supported by
+  /// flutter_sound on this platform
+  Future<bool> isSupported(SoundRecorder recorder, Codec codec) async {
+    return await invokeMethod(recorder, 'isEncoderSupported',
+        <String, dynamic>{'codec': codec.index}) as bool;
+  }
+
+  ///
+  Future<void> start(
+    SoundRecorder recorder,
+    String path,
+    int sampleRate,
+    int numChannels,
+    int bitRate,
+    Codec codec,
+    AndroidEncoder androidEncoder,
+    AndroidAudioSource androidAudioSource,
+    AndroidOutputFormat androidOutputFormat,
+    IosQuality iosQuality,
+  ) async {
+    var param = <String, dynamic>{
+      'path': path,
+      'sampleRate': sampleRate,
+      'numChannels': numChannels,
+      'bitRate': bitRate,
+      'codec': codec.index,
+      'androidEncoder': androidEncoder?.value,
+      'androidAudioSource': androidAudioSource?.value,
+      'androidOutputFormat': androidOutputFormat?.value,
+      'iosQuality': iosQuality?.value
+    };
+
+    await invokeMethod(recorder, 'startRecorder', param) as String;
+  }
+
+  ///
+  Future<void> stop(SoundRecorder recorder) async {
+    await invokeMethod(recorder, 'stopRecorder', <String, dynamic>{}) as String;
+  }
+
+  ///
+  Future<void> pause(SoundRecorder recorder) async {
+    await invokeMethod(recorder, 'pauseRecorder', <String, dynamic>{})
+        as String;
+  }
+
+  ///
+  Future<void> resume(SoundRecorder recorder) async {
+    await invokeMethod(recorder, 'resumeRecorder', <String, dynamic>{})
+        as String;
+  }
+
+  ///
+  Future<void> setSubscriptionDuration(
+      SoundRecorder recorder, Duration interval) async {
+    await invokeMethod(recorder, 'setSubscriptionDuration', <String, dynamic>{
+      'sec': interval.inSeconds.toDouble(),
+    });
+  }
+
+  ///
+  Future<void> setDbPeakLevelUpdate(
+      SoundRecorder recorder, Duration interval) async {
+    await invokeMethod(recorder, 'setDbPeakLevelUpdate', <String, dynamic>{
+      'sec': interval.inSeconds.toDouble(),
+    });
+  }
+
+  /// Enables or disables processing the Peak level in db's. Default is disabled
+  Future<void> setDbLevelEnabled(SoundRecorder recorder, {bool enabled}) async {
+    await invokeMethod(recorder, 'setDbLevelEnabled', <String, dynamic>{
+      'enabled': enabled,
+    });
+  }
+
   Future<dynamic> onMethodCallback(
-      covariant SoundRecorder connector, MethodCall call) {
+      covariant SoundRecorder recorder, MethodCall call) {
     switch (call.method) {
       case "updateRecorderProgress":
         {
-          connector.updateDurationDisposition(
+          recorder.updateDurationDisposition(
               call.arguments as Map<dynamic, dynamic>);
         }
         break;
 
       case "updateDbPeakProgress":
         {
-          connector
+          recorder
               .updateDbPeakDispostion(call.arguments as Map<dynamic, dynamic>);
         }
         break;

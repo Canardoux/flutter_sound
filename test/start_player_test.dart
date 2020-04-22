@@ -1,12 +1,12 @@
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_test/flutter_test.dart';
+// import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final log = <MethodCall>[];
+  // final log = <MethodCall>[];
 
   QuickPlay.fromPath('example/asset/samples/sample.acc');
 
@@ -21,7 +21,7 @@ void main() {
 //   var player = QuickPlay.fromPath(recorder.path)
 // 	..onFinished => player.release();
 // 	..play();
-
+/*
   var isInitialised = false;
   var isReleased = false;
   double subscriptionDuration;
@@ -86,6 +86,7 @@ void main() {
     });
   });
 
+*/
   // test('startPlayer', () {
   //   var player = QuickPlay();
 

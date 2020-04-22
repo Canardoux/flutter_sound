@@ -22,47 +22,6 @@ abstract class PlayerBasePlugin extends BasePlugin {
   /// Over load this method to play audio.
   Future<void> play(SoundPlayer player, Track track);
 
-  /// overload this method to add callbacks from the underlying
-  /// platform specific plugin
-  /// The below methods are shared by all the playback plugis.
-  Future<dynamic> onMethodCallback(
-      covariant SoundPlayer player, MethodCall call) {
-    switch (call.method) {
-      case "updateProgress":
-        {
-          var arguments = call.arguments['arg'] as String;
-          updateProgress(
-              player, PlayerBasePlugin.dispositionFromJSON(arguments));
-        }
-        break;
-
-      case "audioPlayerFinishedPlaying":
-        {
-          var arguments = call.arguments['arg'] as String;
-
-          audioPlayerFinished(
-              player, PlayerBasePlugin.dispositionFromJSON(arguments));
-        }
-        break;
-
-      case 'pause':
-        {
-          onSystemPaused(player);
-        }
-        break;
-
-      case 'resume':
-        {
-          onSystemResumed(player);
-        }
-        break;
-
-      default:
-        throw ArgumentError('Unknown method ${call.method}');
-    }
-    return null;
-  }
-
   /// Releases the slot used by the connector.
   /// To use a plugin you start by calling [register]
   /// and finish by calling [release].
@@ -73,6 +32,7 @@ abstract class PlayerBasePlugin extends BasePlugin {
 
   ///
   void initialise(SlotEntry player) async {
+    register(player);
     await invokeMethod(player, 'initializeMediaPlayer', <String, dynamic>{});
   }
 
@@ -184,5 +144,46 @@ abstract class PlayerBasePlugin extends BasePlugin {
       duration = position;
     }
     return PlaybackDisposition(position, duration);
+  }
+
+  /// overload this method to add callbacks from the underlying
+  /// platform specific plugin
+  /// The below methods are shared by all the playback plugis.
+  Future<dynamic> onMethodCallback(
+      covariant SoundPlayer player, MethodCall call) {
+    switch (call.method) {
+      case "updateProgress":
+        {
+          var arguments = call.arguments['arg'] as String;
+          updateProgress(
+              player, PlayerBasePlugin.dispositionFromJSON(arguments));
+        }
+        break;
+
+      case "audioPlayerFinishedPlaying":
+        {
+          var arguments = call.arguments['arg'] as String;
+
+          audioPlayerFinished(
+              player, PlayerBasePlugin.dispositionFromJSON(arguments));
+        }
+        break;
+
+      case 'pause':
+        {
+          onSystemPaused(player);
+        }
+        break;
+
+      case 'resume':
+        {
+          onSystemResumed(player);
+        }
+        break;
+
+      default:
+        throw ArgumentError('Unknown method ${call.method}');
+    }
+    return null;
   }
 }
