@@ -14,12 +14,9 @@
  *   along with Flutter-Sound (Flauto).  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import 'main_body.dart';
-import 'player_state.dart';
 
 /// Boolean to specify if we want to test the Rentrance/Concurency feature.
 /// If true, we start two instances of FlautoPlayer when
@@ -62,17 +59,5 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     super.dispose();
-    PlayerState().cancelPlayerSubscriptions();
-    releaseFlauto();
-  }
-
-  Future<void> releaseFlauto() async {
-    try {
-      await PlayerState().release();
-    } on Object catch (e) {
-      print('Released unsuccessful');
-      print(e);
-      rethrow;
-    }
   }
 }

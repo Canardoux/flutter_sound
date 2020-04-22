@@ -8,7 +8,6 @@ import 'active_codec.dart';
 import 'common.dart';
 import 'main.dart';
 import 'media_path.dart';
-import 'player_state.dart';
 import 'util/temp_file.dart';
 
 /// Tracks the Recoder UI's state.
@@ -68,7 +67,6 @@ class RecorderState {
       await recorderModule.stop();
       if (renetranceConcurrency) {
         await recorderModule_2.stop();
-        await PlayerState().stopPlayer();
       }
     } on Object catch (err) {
       print('stopRecorder error: $err');
@@ -79,7 +77,8 @@ class RecorderState {
   /// starts the recorder.
   void startRecorder(BuildContext context) async {
     try {
-      await PlayerState().stopPlayer();
+      /// TODO put this back iin
+      /// await PlayerState().stopPlayer();
 
       var path = await tempFile();
       await recorderModule.start(
@@ -96,9 +95,7 @@ class RecorderState {
                   .buffer
                   .asUint8List();
 
-          await PlayerState()
-              .playerModule_2
-              .play(Track.fromBuffer(dataBuffer, codec: ActiveCodec().codec));
+          QuickPlay.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
         } on Object catch (e) {
           print('startRecorder error: $e');
           rethrow;

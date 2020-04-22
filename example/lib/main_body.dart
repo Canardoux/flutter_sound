@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_demo/player_state.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'active_codec.dart';
@@ -89,8 +90,8 @@ class _MainBodyState extends State<MainBody> {
     }
   }
 
-  /// Callback for the PlayBar so we can dynamically load a QuickPlay after
-  /// validating that all othe settings are correct.
+  /// Callback for the PlayBar so we can dynamically load a Track after
+  /// validating that all other settings are correct.
   Future<Track> onLoad() async {
     Track track;
     var canPlay = true;
@@ -118,6 +119,15 @@ class _MainBodyState extends State<MainBody> {
 
     if (canPlay) {
       track = await createTrack();
+      if (_useOSUI) {
+        /// need to disable the player when we switch to built in
+        /// as it creates its own player
+        var player = SoundPlayer.withUI();
+        player.onFinished = () => player.release();
+        player.onStopped = ({wasUser}) => player.release();
+        player.play(track);
+        track = null;
+      }
       setState(() {});
     }
     return track;
