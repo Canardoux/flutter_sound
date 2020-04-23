@@ -49,19 +49,24 @@ public class MediaBrowserHelper
 
 	public void waitForConnection() throws MediaControllerTimeoutException
 	{
-		try
-		{
-		if (!connectLatch.await(2, TimeUnit.MINUTES)){
-			throw new MediaControllerTimeoutException();
-		}
-		} catch (InterruptedException e)
-		{
-			throw new MediaControllerTimeoutException();
-		}
+		// try
+		// {
+		// 	Log.w("ConnectLatch", "Waiting");
+		//  if (!connectLatch.await(5, TimeUnit.SECONDS)){
+		// 	 	Log.w("ConnectLatch", "Throwing Timeout");
+		//  	throw new MediaControllerTimeoutException();
+		//  }
+		//  	Log.w("ConnectLatch", "Complete");
+		// } catch (InterruptedException e)
+		// {
+		// 	Log.w("ConnectLatch", "InterruptedException");
+		// 	throw new MediaControllerTimeoutException();
+		// }
 	}
 
 	private MediaBrowserCompat.ConnectionCallback mMediaBrowserCompatConnectionCallback = new MediaBrowserCompat.ConnectionCallback()
 	{
+		
 		@Override
 		public void onConnected()
 		{
@@ -75,6 +80,9 @@ public class MediaBrowserHelper
 				assert(Flauto.androidActivity != null);
 				mediaControllerCompat = new MediaControllerCompat( Flauto.androidActivity, mMediaBrowserCompat.getSessionToken() );
 				MediaControllerCompat.setMediaController( Flauto.androidActivity, mediaControllerCompat );
+
+				Log.w("MediaBrowserHelper",
+						"onConnect = Success");
 				connectLatch.countDown();
 
 				// Start the audio playback
@@ -106,7 +114,9 @@ public class MediaBrowserHelper
 		@Override
 		public void onConnectionFailed()
 		{
+			Log.e("MediaBrowserHelper", "onConnection Failed");
 			super.onConnectionFailed();
+
 			connectLatch.countDown();
 
 			// Call the unsuccessful connection callback if it was provided
@@ -170,12 +180,13 @@ public class MediaBrowserHelper
 	 */
 	void releaseMediaBrowser()
 	{
+		Log.w("MediaBrowserHelper", "release called");
 		mMediaBrowserCompat.disconnect();
 	}
 
 	void playPlayback() throws MediaControllerTimeoutException
 	{
-		waitForConnection();
+		// waitForConnection();
 		mediaControllerCompat.getTransportControls().play();
 	}
 

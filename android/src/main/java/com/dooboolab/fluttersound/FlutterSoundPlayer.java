@@ -475,7 +475,6 @@ public class FlutterSoundPlayer
 					mainHandler.post(new Runnable() {
 						@Override
 						public void run() {
-							// Log.d(TAG, "Invoking updateProgress: " + json.toString());
 							invokeMethodWithString("updateProgress", json.toString());
 						}
 					});
