@@ -484,6 +484,7 @@ public class BackgroundAudioService
 
 	private void initMediaPlayer()
 	{
+		Log.w("BackgroundAudioServce", "initMediaPlayer");
 		// Initialize the media player
 		mMediaPlayer = new MediaPlayer();
 		// Request the partial wake lock permission
@@ -518,33 +519,33 @@ public class BackgroundAudioService
                                                                 }
                                                                 catch ( IOException e )
                                                                 {
-                                                                }
-                                                            } else  if ( currentTrack.getAlbumArtFile() != null )
-			                                    {
-				                                    try
-				                                    {
-					                                    File            file            = new File( currentTrack.getAlbumArtFile());
-					                                    FileInputStream istr = new FileInputStream( file);
-					                                    albumArt = BitmapFactory.decodeStream( istr );
+																}
+															} else  if ( currentTrack.getAlbumArtFile() != null ) 
+															{
+																try 
+																{
+																	File            file            = new File( currentTrack.getAlbumArtFile());
+																	FileInputStream istr = new FileInputStream( file);
+																	albumArt = BitmapFactory.decodeStream( istr );
+																
+																} 
+																catch ( IOException e ) 
+																{
+																}
+															} else 
+															{
+																try 
+																{
+																	AssetManager assetManager = getApplicationContext().getAssets();
+																	InputStream  istr         = assetManager.open( "AppIcon.png");
+																	albumArt = BitmapFactory.decodeStream( istr );
 
-				                                    }
-				                                    catch ( IOException e )
-				                                    {
-				                                    }
-			                                    } else
-			                                    {
-				                                    try
-				                                    {
-					                                    AssetManager assetManager = getApplicationContext().getAssets();
-					                                    InputStream  istr         = assetManager.open( "AppIcon.png");
-					                                    albumArt = BitmapFactory.decodeStream( istr );
+																} 
+																catch ( IOException e ) 
+																{
+																}
 
-				                                    }
-				                                    catch ( IOException e )
-				                                    {
-				                                    }
-
-			                                    }
+                                                            }
 			                                    initMediaSessionMetadata( albumArt );
 
 			                                    // Call the callback
@@ -631,6 +632,7 @@ public class BackgroundAudioService
 
 	private void resetMediaPlayer()
 	{
+		Log.w("BackgroundAudioServce", "resetMediaPlayer- called");
 		// Exit the method if the media player has already been reset
             if ( mMediaPlayer == null )
             {
@@ -641,6 +643,8 @@ public class BackgroundAudioService
 		mMediaPlayer.reset();
 		mMediaPlayer.release();
 		mMediaPlayer = null;
+
+		Log.w("BackgroundAudioServce", "resetMediaPlayer-completed");
 	}
 
 	/**

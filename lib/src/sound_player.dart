@@ -62,8 +62,6 @@ class SoundPlayer implements SlotEntry {
   ///
   bool canSkipBackward;
 
-  bool _initialized = false;
-
   /// If the user calls seekTo before starting the track
   /// we cache the value until we start the player and
   /// then we apply the seek offset.
@@ -85,7 +83,9 @@ class SoundPlayer implements SlotEntry {
     this.canPause = true,
     this.canSkipBackward = false,
     this.canSkipForward = false,
-  }) : _plugin = SoundPlayerTrackPlugin();
+  }) : _plugin = SoundPlayerTrackPlugin() {
+    _initialise();
+  }
 
   /// Create an [SoundPlayer] that does not have a UI.
   /// You can use this version to simply playback audio without
@@ -94,45 +94,56 @@ class SoundPlayer implements SlotEntry {
     canPause = false;
     canSkipBackward = false;
     canSkipForward = false;
+    _initialise();
+
+    /// hack until we implement onConnect in the player.
+    onConnected(result: true);
   }
 
-  /// Create a audio play from an in memory buffer.
-  /// The [dataBuffer] contains the media to be played.
-  /// The [codec] of the file the [dataBuffer] points to.
-  /// You MUST pass a codec.
-  // SoundPlayer.fromBuffer(Uint8List dataBuffer, {@required Codec codec})
-  //     : _dataBuffer = dataBuffer {
-  //   if (codec == null) {
-  //     throw CodecNotSupportedException('You must pass in a codec.');
-  //   }
-  //   _codec = codec;
-  // }
+  /// Used to wait for the plugin to connect us to an OS MediaPlayer
+  Future<bool> _initialised;
+  final Completer<bool> _connected = Completer<bool>();
 
-  /// internal method implements lazy initialisation.
-  /// This allows us to delay selecting the plugin
-  /// until the users try to start playing.
-  /// This helps with the [Track] implementation
-  /// which wraps a SoundPlayer.
-  Future _initialize() async {
-    if (!_initialized) {
-      _initialized = true;
+  void _initialise() {
+    _plugin.onConnected = onConnected;
 
-      _plugin.initialise(this);
-    }
+    /// we allow five seconds for the connect to complete or
+    /// we timeout returning false.
+    _initialised = _connected.future
+        .timeout(Duration(seconds: 5), onTimeout: () => Future.value(false));
+
+    _plugin.initialisePlayer(this);
   }
 
-  /// call this method once you are down with the player
+  /// Future indicating if initialisation has completed.
+  Future<bool> get initialised {
+    assert(_initialised != null, 'You must call initialise() first.');
+
+    return _initialised;
+  }
+
+  /// callback occurs when the OS MediaPlayer successfully connects:
+  /// TODO: implement the onConnected event from iOS.
+  /// [result] true if the connection succeeded.
+  void onConnected({bool result}) {
+    _connected.complete(result);
+  }
+
+  /// call this method once you are done with the player
   /// so that it can release all of the attached resources.
   Future<void> release() async {
-    if (_initialized) {
-      _initialized = false;
-      // Stop the player playback before releasing
-      await stop();
-      closeDispositionStream(); // playerController is closed by this function
+    initialised.then<void>((result) async {
+      if (result == true) {
+        // Stop the player playback before releasing
+        await stop();
+        closeDispositionStream(); // playerController is closed by this function
 
-      await t.trackRelease(_track);
-      await _plugin.release(this);
-    }
+        if (_track != null) {
+          await t.trackRelease(_track);
+        }
+        await _plugin.release(this);
+      }
+    });
   }
 
   /// Starts playback.
@@ -147,83 +158,114 @@ class SoundPlayer implements SlotEntry {
   ///
   ///
   Future<void> play(t.Track track) async {
-    _initialize();
-    _track = track;
+    var started = Completer<void>();
+    initialised.then<void>((result) async {
+      if (result == true) {
+        _track = track;
 
-    if (!isStopped) {
-      throw PlayerInvalidStateException("The player must not be running.");
-    }
+        if (!isStopped) {
+          throw PlayerInvalidStateException("The player must not be running.");
+        }
 
-    // Check the current codec is supported on this platform
-    if (!await isSupported(track.codec)) {
-      throw PlayerInvalidStateException(
-          'The selected codec is not supported on '
-          'this platform.');
-    }
+        // Check the current codec is supported on this platform
+        if (!await isSupported(track.codec)) {
+          throw PlayerInvalidStateException(
+              'The selected codec is not supported on '
+              'this platform.');
+        }
 
-    t.prepareStream(track);
+        t.prepareStream(track);
 
-    _applyHush();
-    await _plugin.play(this, track);
-    playerState = PlayerState.isPlaying;
+        _applyHush();
 
-    /// If the user called seekTo before starting the player
-    /// we immediate do a seek.
-    /// TODO: does this cause any audio glitch (i.e starts playing)
-    /// and then seeks.
-    /// If so we may need to modify the plugin so we pass in a seekTo
-    /// argument.
-    if (_seekTo != null) {
-      await seekTo(_seekTo);
-      _seekTo = null;
-    }
+        // Not awaiting this may cause issues if someone immediately tries
+        // to stop.
+        // I think we need a completer to control transitions.
+        _plugin.play(this, track).then<void>((_) {
+          /// If the user called seekTo before starting the player
+          /// we immediate do a seek.
+          /// TODO: does this cause any audio glitch (i.e starts playing)
+          /// and then seeks.
+          /// If so we may need to modify the plugin so we pass in a seekTo
+          /// argument.
+          if (_seekTo != null) {
+            seekTo(_seekTo);
+            _seekTo = null;
+          }
 
-    playerState = PlayerState.isPlaying;
-    if (_onStarted != null) _onStarted(wasUser: false);
+          playerState = PlayerState.isPlaying;
+          started.complete();
+          if (_onStarted != null) _onStarted(wasUser: false);
+        });
+      } else {
+        started.completeError(
+            PlayerInvalidStateException('Player initialisation failed'));
+      }
+    });
+    return started.future;
   }
 
   /// Stops playback.
   Future<void> stop() async {
-    if (isStopped) {
-      print("stop() was called when the player wasn't playing. Ignored");
-    } else {
-      try {
-        closeDispositionStream(); // playerController is closed by this function
-        await _plugin.stop(this);
-        playerState = PlayerState.isStopped;
-        if (_onStopped != null) _onStopped(wasUser: false);
-      } on Object catch (e) {
-        print(e);
-        rethrow;
+    initialised.then<void>((result) async {
+      if (result == true) {
+        if (isStopped) {
+          print("stop() was called when the player wasn't playing. Ignored");
+        } else {
+          try {
+            // playerController is closed by this function
+            closeDispositionStream();
+            await _plugin.stop(this);
+            playerState = PlayerState.isStopped;
+            if (_onStopped != null) _onStopped(wasUser: false);
+          } on Object catch (e) {
+            print(e);
+            rethrow;
+          }
+        }
+      } else {
+        throw PlayerInvalidStateException('Player initialisation failed');
       }
-    }
+    });
   }
 
   /// Pauses playback.
   /// If you call this and the audio is not playing
   /// a [PlayerInvalidStateException] will be thrown.
   Future<void> pause() async {
-    if (playerState != PlayerState.isPlaying) {
-      throw PlayerInvalidStateException('Player is not playing.');
-    }
-    playerState = PlayerState.isPaused;
-    await _plugin.pause(this);
+    initialised.then<void>((result) async {
+      if (result == true) {
+        if (playerState != PlayerState.isPlaying) {
+          throw PlayerInvalidStateException('Player is not playing.');
+        }
+        playerState = PlayerState.isPaused;
+        await _plugin.pause(this);
 
-    if (_onPaused != null) _onPaused(wasUser: false);
+        if (_onPaused != null) _onPaused(wasUser: false);
+      } else {
+        throw PlayerInvalidStateException('Player initialisation failed');
+      }
+    });
   }
 
   /// Resumes playback.
   /// If you call this when audio is not paused
   /// then a [PlayerInvalidStateException] will be thrown.
   Future<void> resume() async {
-    if (playerState != PlayerState.isPaused) {
-      throw PlayerInvalidStateException('Player is not paused.');
-    }
-    playerState = PlayerState.isPlaying;
+    initialised.then<void>((result) async {
+      if (result == true) {
+        if (playerState != PlayerState.isPaused) {
+          throw PlayerInvalidStateException('Player is not paused.');
+        }
+        playerState = PlayerState.isPlaying;
 
-    await _plugin.resume(this);
+        await _plugin.resume(this);
 
-    if (_onResumed != null) _onResumed(wasUser: false);
+        if (_onResumed != null) _onResumed(wasUser: false);
+      } else {
+        throw PlayerInvalidStateException('Player initialisation failed');
+      }
+    });
   }
 
   /// Moves the current playback position to the given offset in the
@@ -235,19 +277,29 @@ class SoundPlayer implements SlotEntry {
   /// [play] we will start playing the recording from the [position]
   /// passed to [seekTo].
   Future<void> seekTo(Duration position) async {
-    if (!isPlaying) {
-      _seekTo = position;
-    } else {
-      await _initialize();
-      await _plugin.seekToPlayer(this, position);
-    }
+    initialised.then<void>((result) async {
+      if (result == true) {
+        if (!isPlaying) {
+          _seekTo = position;
+        } else {
+          await _plugin.seekToPlayer(this, position);
+        }
+      } else {
+        throw PlayerInvalidStateException('Player initialisation failed');
+      }
+    });
   }
 
   /// Sets the playback volume
   /// The [volume] must be in the range 0.0 to 1.0.
   Future<void> setVolume(double volume) async {
-    await _initialize();
-    await _plugin.setVolume(this, volume);
+    initialised.then<void>((result) async {
+      if (result == true) {
+        await _plugin.setVolume(this, volume);
+      } else {
+        throw PlayerInvalidStateException('Player initialisation failed');
+      }
+    });
   }
 
   /// TODO does this need to be exposed?
@@ -261,9 +313,14 @@ class SoundPlayer implements SlotEntry {
   }
 
   Future<void> _setSubscriptionDuration(Duration interval) async {
-    assert(interval.inMilliseconds > 0);
-    await _initialize();
-    await _plugin.setSubscriptionDuration(this, interval);
+    initialised.then<void>((result) async {
+      if (result == true) {
+        assert(interval.inMilliseconds > 0);
+        await _plugin.setSubscriptionDuration(this, interval);
+      } else {
+        throw PlayerInvalidStateException('Player initialisation failed');
+      }
+    });
   }
 
   /// Provides a stream of dispositions which
@@ -462,16 +519,21 @@ class SoundPlayer implements SlotEntry {
   /// Returns true if the specified decoder is supported
   ///  by flutter_sound on this platform
   Future<bool> isSupported(Codec codec) async {
-    bool result;
-    await _initialize();
-    // For decoding ogg/opus on ios, we need to support two steps :
-    // - remux OGG file format to CAF file format (with ffmpeg)
-    // - decode CAF/OPPUS (with native Apple AVFoundation)
-    if ((codec == Codec.opusOGG) && (Platform.isIOS)) {
-      codec = Codec.cafOpus;
-    }
-    result = await _plugin.isSupported(this, codec);
-    return result;
+    return initialised.then<bool>((result) async {
+      if (result == true) {
+        bool result;
+        // For decoding ogg/opus on ios, we need to support two steps :
+        // - remux OGG file format to CAF file format (with ffmpeg)
+        // - decode CAF/OPPUS (with native Apple AVFoundation)
+        if ((codec == Codec.opusOGG) && (Platform.isIOS)) {
+          codec = Codec.cafOpus;
+        }
+        result = await _plugin.isSupported(this, codec);
+        return result;
+      } else {
+        throw PlayerInvalidStateException('Player initialisation failed');
+      }
+    });
   }
 
   /// For iOS only.
@@ -495,8 +557,13 @@ class SoundPlayer implements SlotEntry {
   /// up global options?
   Future<bool> iosSetCategory(
       IOSSessionCategory category, IOSSessionMode mode, int options) async {
-    await _initialize();
-    return await _plugin.iosSetCategory(this, category, mode, options);
+    return initialised.then<bool>((result) async {
+      if (result == true) {
+        return await _plugin.iosSetCategory(this, category, mode, options);
+      } else {
+        throw PlayerInvalidStateException('Player initialisation failed');
+      }
+    });
   }
 
   /// Reliquences the foreground audio.
@@ -504,16 +571,26 @@ class SoundPlayer implements SlotEntry {
   /// Depending on your configuration this will either make
   /// this player the loudest stream or it will silence all other stream.
   Future<void> abandonAudioFocus({bool enabled}) async {
-    await _initialize();
-    await _plugin.abandonAudioFocus(this);
+    initialised.then<void>((result) async {
+      if (result == true) {
+        await _plugin.abandonAudioFocus(this);
+      } else {
+        throw PlayerInvalidStateException('Player initialisation failed');
+      }
+    });
   }
 
   ///  The caller can manage his audio focus with this function
   /// Depending on your configuration this will either make
   /// this player the loudest stream or it will silence all other stream.
   Future<void> requestAudioFocus() async {
-    await _initialize();
-    await _plugin.requestAudioFocus(this);
+    initialised.then<void>((result) async {
+      if (result == true) {
+        await _plugin.requestAudioFocus(this);
+      } else {
+        throw PlayerInvalidStateException('Player initialisation failed');
+      }
+    });
   }
 
   /// For Android only.
@@ -530,8 +607,13 @@ class SoundPlayer implements SlotEntry {
   ///
 
   Future<bool> androidFocusRequest(int focusGain) async {
-    await _initialize();
-    return await _plugin.androidFocusRequest(this, focusGain);
+    return initialised.then<bool>((result) async {
+      if (result == true) {
+        return await _plugin.androidFocusRequest(this, focusGain);
+      } else {
+        throw PlayerInvalidStateException('Player initialisation failed');
+      }
+    });
   }
 }
 

@@ -13,33 +13,42 @@ import '../sound_player.dart';
 import '../track.dart';
 import 'base_plugin.dart';
 
+typedef ConnectedCallback = void Function({bool result});
+
 /// base for all plugins that provide Plaback services.
 abstract class PlayerBasePlugin extends BasePlugin {
   /// The java TrackPlayer and FlutterSoundPlayer share a static
   /// array of slots. As such so must we.
   /// TODO: get the java/swift code so that each plugin has its own
   /// slots.
+  /// ignore: prefer_final_fields
   static var _slots = <SlotEntry>[];
 
   /// Pass in the [_registeredName] which is the registered
   /// name of the plugin.
   PlayerBasePlugin(String registeredName) : super(registeredName, _slots);
 
+  ConnectedCallback _onConnected;
+
+  /// Allows you to register for connection events.
+  /// ignore: avoid_setters_without_getters
+  set onConnected(ConnectedCallback callback) => _onConnected = callback;
+
   /// Over load this method to play audio.
   Future<void> play(SoundPlayer player, Track track);
+
+  /// Each Player must be initialised and registered.
+  void initialisePlayer(SlotEntry player) async {
+    register(player);
+    await invokeMethod(player, 'initializeMediaPlayer', <String, dynamic>{});
+  }
 
   /// Releases the slot used by the connector.
   /// To use a plugin you start by calling [register]
   /// and finish by calling [release].
-  void release(SlotEntry slotEntry) async {
+  void releasePlayer(SlotEntry slotEntry) async {
     await invokeMethod(slotEntry, 'releaseMediaPlayer', <String, dynamic>{});
     super.release(slotEntry);
-  }
-
-  ///
-  void initialise(SlotEntry player) async {
-    register(player);
-    await invokeMethod(player, 'initializeMediaPlayer', <String, dynamic>{});
   }
 
   ///
@@ -152,12 +161,21 @@ abstract class PlayerBasePlugin extends BasePlugin {
     return PlaybackDisposition(position, duration);
   }
 
-  /// overload this method to add callbacks from the underlying
-  /// platform specific plugin
-  /// The below methods are shared by all the playback plugis.
+  /// Handles callbacks from the platform specific plugin
+  /// The below methods are shared by all the playback plugins.
   Future<dynamic> onMethodCallback(
       covariant SoundPlayer player, MethodCall call) {
     switch (call.method) {
+
+      ///TODO implement in the OS code for each player.
+      case "onConnected":
+        {
+          var result = call.arguments['arg'] as bool;
+          print('onConnected $result');
+          if (_onConnected != null) _onConnected(result: result);
+        }
+        break;
+
       case "updateProgress":
         {
           var arguments = call.arguments['arg'] as String;

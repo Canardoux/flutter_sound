@@ -119,7 +119,7 @@ class TrackPlayerPlugin
 
 
 	@Override
-	public void onMethodCall( final MethodCall call, final Result result )
+	public void onMethodCall( final MethodCall call, final Result result ) 
 	{
 		int slotNo = call.argument ( "slotNo" );
 		assert ( ( slotNo >= 0 ) && ( slotNo <= slots.size () ) );
@@ -130,63 +130,59 @@ class TrackPlayerPlugin
 		}
 
 		TrackPlayer aPlayer = (TrackPlayer)slots.get ( slotNo );
-		try {
-			switch ( call.method )
+		switch ( call.method )
+		{
+			case "initializeMediaPlayer":
 			{
-
-				case "initializeMediaPlayer":
-				{
-					assert ( slots.get ( slotNo ) == null );
-					aPlayer = new TrackPlayer ( slotNo );
-					slots.set ( slotNo, aPlayer );
-					aPlayer.initializeFlautoPlayer ( call, result );
-				}
-				break;
-
-				case "releaseMediaPlayer":
-				{
-					aPlayer.releaseFlautoPlayer( call, result );
-				}
-				break;
-
-				case "startPlayerFromTrack":
-					aPlayer.startPlayerFromTrack( call, result );
-					break;
-
-
-				case "stopPlayer":
-					aPlayer.stopPlayer(call,  result );
-					break;
-				case "pausePlayer":
-					aPlayer.pausePlayer(call,  result );
-					break;
-				case "resumePlayer":
-					aPlayer.resumePlayer( call, result );
-					break;
-				case "seekToPlayer":
-					aPlayer.seekToPlayer( call, result );
-					break;
-				case "setVolume":
-					aPlayer.setVolume( call, result );
-					break;
-				case "setSubscriptionDuration":
-					if ( call.argument( "sec" ) == null )
-					{
-						return;
-					}
-					aPlayer.setSubscriptionDuration( call, result );
-					break;
-
-				default:
-					super.onMethodCall( call, result );
-					break;
+				assert ( slots.get ( slotNo ) == null );
+				aPlayer = new TrackPlayer ( slotNo );
+				slots.set ( slotNo, aPlayer );
+				aPlayer.initializeFlautoPlayer ( call, result );
+				Log.d("TrackPlayer", "************* initialize called");
 			}
-		} catch (MediaControllerTimeoutException e) {
-			result.error(FlutterSoundPlayer.ERR_ON_CONNECT_TIMEOUT,FlutterSoundPlayer.ERR_ON_CONNECT_TIMEOUT
-			,"Timeout waiting for MediaController onConnect");
+			break;
 
-		}
+			case "releaseMediaPlayer":
+			{
+				aPlayer.releaseFlautoPlayer( call, result );
+				Log.d("TrackPlayer", "************* release called");
+			}
+			break;
+
+			case "startPlayerFromTrack":
+				aPlayer.startPlayerFromTrack( call, result );
+				break;
+
+
+			case "stopPlayer":
+				aPlayer.stopPlayer(call,  result );
+				break;
+			case "pausePlayer":
+				aPlayer.pausePlayer(call,  result );
+				break;
+			case "resumePlayer":
+				aPlayer.resumePlayer( call, result );
+				break;
+			case "seekToPlayer":
+				aPlayer.seekToPlayer( call, result );
+				break;
+			case "setVolume":
+				aPlayer.setVolume( call, result );
+				break;
+			case "setSubscriptionDuration":
+				if ( call.argument( "sec" ) == null )
+				{
+					return;
+				}
+				aPlayer.setSubscriptionDuration( call, result );
+				break;
+
+			default:
+				super.onMethodCall( call, result );
+				break;
+			}
 	}
+
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------
@@ -212,7 +208,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 
 
 	@Override
-	void initializeFlautoPlayer( final MethodCall call, final Result result )
+	void initializeFlautoPlayer( final MethodCall call, final Result result ) 
 	{
 		//super.initializeFlautoPlayer( call, result );
 		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
@@ -253,8 +249,15 @@ public class TrackPlayer extends FlutterSoundPlayer
 	}
 
 
-	public void startPlayerFromTrack( final MethodCall call, final Result result ) 
-			throws MediaControllerTimeoutException
+	void invokeMethodWithBool(String methodName, boolean arg) {
+		Map<String, Object> dic = new HashMap<String, Object>();
+		dic.put("slotNo", slotNo);
+		dic.put("arg", arg);
+		getPlugin().invokeMethod(methodName, dic);
+	}
+
+
+	public void startPlayerFromTrack( final MethodCall call, final Result result )
 	{
 		final HashMap<String, Object> trackMap = call.argument( "track" );
 		final Track track = new Track( trackMap );
@@ -324,7 +327,6 @@ public class TrackPlayer extends FlutterSoundPlayer
 		mMediaBrowserHelper.setMediaPlayerOnPreparedListener( new MediaPlayerOnPreparedListener( result, path ) );
 		mMediaBrowserHelper.setMediaPlayerOnCompletionListener( new MediaPlayerOnCompletionListener() );
 
-		mMediaBrowserHelper.waitForConnection();
 		// Check whether a path to an audio file was given
 		if ( path == null )
 		{
@@ -437,7 +439,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 	}
 
 	@Override
-	public void seekToPlayer(final MethodCall call, Result result) throws MediaControllerTimeoutException
+	public void seekToPlayer(final MethodCall call, Result result )
 	{
 		int millis = call.argument ( "sec" ) ;
 
@@ -526,8 +528,10 @@ public class TrackPlayer extends FlutterSoundPlayer
 			if ( mIsSuccessfulCallback )
 			{
 				//mResult.success( "The media player has been successfully initialized" );
+				invokeMethodWithBool("onConnected", true);
 			} else
 			{
+				invokeMethodWithBool("onConnected", false);
 				//mResult.error( TAG, "An error occurred while initializing the media player", null );
 			}
 			return null;
@@ -566,7 +570,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 	}
 
 
-		/**
+	/**
 	 * The callable instance to call when the media player is prepared.
 	 */
 	private class MediaPlayerOnPreparedListener

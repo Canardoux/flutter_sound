@@ -25,6 +25,10 @@ class SlotEntry {}
 /// provides a set of common methods used by
 /// PluginInterfaces to talk to the underlying
 /// Platform specific plugin.
+///
+/// Each derived Plugin is a singleton via which
+/// Players and Recorders register to talk
+/// to the OS dependant plugins.
 abstract class BasePlugin {
   /// ignore: prefer_final_fields
   List<SlotEntry> _slots;

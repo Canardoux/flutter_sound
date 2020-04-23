@@ -42,35 +42,16 @@ public class MediaBrowserHelper
 	// to the service.
 	private Callable<Void>     mServiceConnectionUnsuccessfulCallback;
 
-	// Used to force calls to wait until the onConnect completes.
-	private CountDownLatch connectLatch = new CountDownLatch(1);
-
 	//private BackgroundAudioService backgroundAudioService ;
 
-	public void waitForConnection() throws MediaControllerTimeoutException
-	{
-		// try
-		// {
-		// 	Log.w("ConnectLatch", "Waiting");
-		//  if (!connectLatch.await(5, TimeUnit.SECONDS)){
-		// 	 	Log.w("ConnectLatch", "Throwing Timeout");
-		//  	throw new MediaControllerTimeoutException();
-		//  }
-		//  	Log.w("ConnectLatch", "Complete");
-		// } catch (InterruptedException e)
-		// {
-		// 	Log.w("ConnectLatch", "InterruptedException");
-		// 	throw new MediaControllerTimeoutException();
-		// }
-	}
 
 	private MediaBrowserCompat.ConnectionCallback mMediaBrowserCompatConnectionCallback = new MediaBrowserCompat.ConnectionCallback()
 	{
-		
 		@Override
 		public void onConnected()
 		{
 			super.onConnected();
+			Log.d("MediaBrowserHelper", "onConnected");
 			// A new MediaBrowserCompat object is created and connected. Then, initialize a
 			// MediaControllerCompat object and associate it with MediaSessionCompat. Once
 			// completed,
@@ -81,9 +62,7 @@ public class MediaBrowserHelper
 				mediaControllerCompat = new MediaControllerCompat( Flauto.androidActivity, mMediaBrowserCompat.getSessionToken() );
 				MediaControllerCompat.setMediaController( Flauto.androidActivity, mediaControllerCompat );
 
-				Log.w("MediaBrowserHelper",
-						"onConnect = Success");
-				connectLatch.countDown();
+				Log.w("MediaBrowserHelper", "onConnect = Success");
 
 				// Start the audio playback
 				// MediaControllerCompat.getMediaController(mActivity).getTransportControls().playFromMediaId("http://path-to-audio-file.com",
@@ -114,10 +93,8 @@ public class MediaBrowserHelper
 		@Override
 		public void onConnectionFailed()
 		{
-			Log.e("MediaBrowserHelper", "onConnection Failed");
 			super.onConnectionFailed();
-
-			connectLatch.countDown();
+			Log.d("MediaBrowserHelper", "onConnected");
 
 			// Call the unsuccessful connection callback if it was provided
 			if ( mServiceConnectionUnsuccessfulCallback != null )
@@ -180,31 +157,26 @@ public class MediaBrowserHelper
 	 */
 	void releaseMediaBrowser()
 	{
-		Log.w("MediaBrowserHelper", "release called");
 		mMediaBrowserCompat.disconnect();
 	}
 
-	void playPlayback() throws MediaControllerTimeoutException
+	void playPlayback()
 	{
-		// waitForConnection();
 		mediaControllerCompat.getTransportControls().play();
 	}
 
-	void pausePlayback() throws MediaControllerTimeoutException
+	void pausePlayback()
 	{
-		waitForConnection();
 		mediaControllerCompat.getTransportControls().pause();
 	}
 
-	void seekTo( long newPosition ) throws MediaControllerTimeoutException
+	void seekTo( long newPosition )
 	{
-		waitForConnection();
 		mediaControllerCompat.getTransportControls().seekTo( newPosition );
 	}
 
-	void stop() throws MediaControllerTimeoutException
+	void stop()
 	{
-		waitForConnection();
 		mediaControllerCompat.getTransportControls().stop();
 	}
 
@@ -274,12 +246,4 @@ public class MediaBrowserHelper
 	{
 		BackgroundAudioService.playbackStateUpdater = playbackStateUpdater;
 	}
-
-
-}
-
-// This class is thrown if we get a timeout waiting for the
-// media controller to connect.
-class MediaControllerTimeoutException extends Exception {
-	static final long serialVersionUID = 1;
 }
