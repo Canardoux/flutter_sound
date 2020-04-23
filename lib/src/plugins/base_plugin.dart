@@ -26,6 +26,7 @@ class SlotEntry {}
 /// PluginInterfaces to talk to the underlying
 /// Platform specific plugin.
 abstract class BasePlugin {
+  /// ignore: prefer_final_fields
   List<SlotEntry> _slots;
 
   ///
