@@ -6,6 +6,7 @@ import 'codec.dart';
 import 'util/audio.dart';
 
 typedef TrackAction = void Function(Track current);
+
 ///
 /// The [Track] class lets you define an audio track
 /// either from a path (uri) or a databuffer.
@@ -51,8 +52,8 @@ class Track {
   /// Used to prepare a audio stream for playing.
   /// You should NOT call this method as it is managed
   /// internally.
-  void _prepareStream() {
-    _audio.prepareStream();
+  void _prepareStream() async {
+    await _audio.prepareStream();
   }
 }
 
