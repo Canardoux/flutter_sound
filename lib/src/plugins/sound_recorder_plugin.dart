@@ -30,6 +30,7 @@ import 'base_plugin.dart';
 /// Provides communications with the platform
 /// specific plugin.
 class SoundRecorderPlugin extends BasePlugin {
+  /// ignore: prefer_final_fields
   static var _slots = <SlotEntry>[];
 
   static SoundRecorderPlugin _self;
