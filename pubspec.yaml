@@ -4,8 +4,9 @@ description: Flutter plugin that relates to sound like audio and recorder.
 #author: dooboolab<dooboolab@gmail.com>
 homepage: https://github.com/dooboolab/flutter_sound
 environment:
-    sdk: ">=1.19.0 <3.0.0"
-    flutter: ">=1.12.0 <2.0.0"
+    # Brett updated min version to support plugin tests.
+    sdk: ">=2.0.0 <3.0.0"
+    flutter: ">=1.12.13+hotfix.6 <2.0.0"
 dependencies:
   flutter:
     sdk: flutter
@@ -24,6 +25,11 @@ dev_dependencies:
   effective_dart: ^1.0.0
   pedantic: ^1.8.0+1
   lint: ^1.1.1
+
+  # Brett added flutter driver for plugin integration tests
+  e2e: ^0.2.1
+  flutter_driver:
+    sdk: flutter
 
 
 
