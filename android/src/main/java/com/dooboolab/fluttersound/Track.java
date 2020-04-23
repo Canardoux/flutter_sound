@@ -84,7 +84,7 @@ public class Track {
         return albumArtFile;
     }
 
-    public void setAlbumArtFile(String albumArtAsset) {
+    public void setAlbumArtFile(String albumArtFile) {
         this.albumArtFile = albumArtFile;
     }
 
