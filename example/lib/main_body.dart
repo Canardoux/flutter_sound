@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_sound_demo/player_state.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'active_codec.dart';
@@ -34,10 +33,10 @@ class _MainBodyState extends State<MainBody> {
 
   Future<bool> init() async {
     if (!initialised) {
+      await initializeDateFormatting();
       await RecorderState().init();
       ActiveCodec().recorderModule = RecorderState().recorderModule;
       await ActiveCodec().setCodec(_useOSUI, Codec.aacADTS);
-      await initializeDateFormatting();
 
       initialised = true;
     }
