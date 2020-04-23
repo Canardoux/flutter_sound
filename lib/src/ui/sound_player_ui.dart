@@ -30,6 +30,7 @@ import 'grayed_out.dart';
 import 'local_context.dart';
 import 'slider.dart';
 import 'slider_position.dart';
+import 'tick_builder.dart';
 
 typedef OnLoad = Future<Track> Function();
 
@@ -123,7 +124,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
   /// returns a non null [Track]
   Track _track;
 
-  OnLoad _onLoad;
+  final OnLoad _onLoad;
 
   StreamSubscription _playerSubscription;
 
@@ -153,6 +154,8 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
       trackRelease(_track);
       _track = null;
     }
+    print('Hot reload releasing plugin');
+    _player.release();
   }
 
   @override
@@ -171,9 +174,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     _player.onFinished = _onFinished;
 
     /// pipe the new sound players stream to our local controller.
-    _player.dispositionStream().listen((disposition) {
-      return _localController.add(disposition);
-    });
+    _player.dispositionStream().listen(_localController.add);
   }
 
   void _onFinished() => setState(() => playState = PlayState.stopped);
@@ -294,7 +295,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
       _track = await _onLoad();
     }
 
-    /// no player than just silently ignore the start action.
+    /// no track then just silently ignore the start action.
     /// This means that _onLoad returned null and the user
     /// can display appropriate errors.
     if (_track != null) {
@@ -324,6 +325,8 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
       _loading = false;
       _transitioning = false;
     });
+
+    print('**************** progress passed play');
   }
 
   /// Call [stop] to stop the audio playing.
@@ -385,10 +388,20 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     // Log.d("buildPlayButton loading: ${loading} state: ${playState}");
     if (_loading == true) {
       button = Container(
-        margin: const EdgeInsets.only(top: 5.0, bottom: 5),
-        child: SpinKitRing(
-            color: Colors.purple, size: SoundPlayerUI._barHeight * 0.6),
-      );
+          margin: const EdgeInsets.only(top: 5.0, bottom: 5),
+          child: TickBuilder(
+              interval: Duration(milliseconds: 100),
+              limit: 5,
+              builder: (context, index) {
+                print('Tick: $index');
+                if (index > 1) {
+                  return SpinKitRing(
+                      color: Colors.purple,
+                      size: SoundPlayerUI._barHeight * 0.6);
+                } else {
+                  return Container(width: 24, height: 24);
+                }
+              }));
     } else {
       button = _buildPlayButtonIcon(button);
     }
