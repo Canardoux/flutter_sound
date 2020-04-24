@@ -191,6 +191,14 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 
+
+- (void)invokeMethod: (NSString*)methodName boolArg: (Boolean)boolArg
+{
+        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": [NSNumber numberWithBool: boolArg]};
+        [[self getPlugin] invokeMethod: methodName arguments: dic ];
+}
+
+
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result
 {
          NSDictionary* trackDict = (NSDictionary*) call.arguments[@"track"];
@@ -434,17 +442,14 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                         if (b)
                         {
                                 if (canPause)
-                                        [self invokeMethod:@"pause" stringArg:@""];
+                                        [self invokeMethod:@"pause" boolArg:true];
                                 else
                                         [self pause];
                         } else
                         {
                                 if (canPause)
                                 {
-                                        if (isPaused)
-                                                [self invokeMethod:@"resume" stringArg:@""];
-                                        else
-                                                [self invokeMethod:@"pause" stringArg:@""]; // Patch : ios, maybe a pause during the timer instruction
+                                        [self invokeMethod:@"pause" boolArg:false];
 
                                 } else
                                         [self resume];

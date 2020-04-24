@@ -447,6 +447,12 @@ class _MyAppState extends State<MyApp> {
             stopPlayer();
             startPlayer();
           },
+          onPaused: (bool b) {
+            if (b)
+              playerModule.pausePlayer();
+            else
+              playerModule.resumePlayer();
+          }
         );
       } else {
         if (audioFilePath != null) {

@@ -91,7 +91,7 @@ const int IOS_ALLOW_AIR_PLAY = 0x40;
 const int IOS_DEFAULT_TO_SPEAKER = 0x8;
 
 typedef void TWhenFinished();
-typedef void TwhenPaused(bool paused);
+typedef void TonPaused(bool paused);
 typedef void TonSkip();
 typedef void TupdateProgress(int current, int max);
 
@@ -184,7 +184,7 @@ class FlutterSoundPlayer {
   t_PLAYER_STATE playerState = t_PLAYER_STATE.IS_STOPPED;
   StreamController<PlayStatus> playerController;
   TWhenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
-  TwhenPaused whenPause; // User callback "whenPaused:"
+  TonPaused whenPause; // User callback "whenPaused:"
   TupdateProgress onUpdateProgress;
   int slotNo;
 

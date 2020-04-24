@@ -83,14 +83,22 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
            aTrackPlayer.audioPlayerFinished(call.arguments as Map);
         }
         break;
+
       case 'skipForward':
         {
           aTrackPlayer.skipForward(call.arguments as Map);
         }
         break;
+
       case 'skipBackward':
         {
           aTrackPlayer.skipBackward(call.arguments as Map);
+        }
+        break;
+
+      case 'pause':
+        {
+          aTrackPlayer.pause(call.arguments as Map);
         }
         break;
 
@@ -103,8 +111,9 @@ class TrackPlayerPlugin extends FlautoPlayerPlugin {
 }
 
 class TrackPlayer extends FlutterSoundPlayer {
-  TonSkip onSkipForward; // User callback "whenPaused:"
-  TonSkip onSkipBackward; // User callback "whenPaused:"
+  TonSkip onSkipForward; // User callback "onPaused:"
+  TonSkip onSkipBackward; // User callback "onPaused:"
+  TonPaused onPaused; // user callback "whenPause:"
 
   @override
   TrackPlayer();
@@ -148,6 +157,7 @@ class TrackPlayer extends FlutterSoundPlayer {
         await invokeMethod('initializeMediaPlayer', <String, dynamic>{});
         onSkipBackward = null;
         onSkipForward = null;
+        onPaused = null;
 
         // Add the method call handler
         //getChannel( ).setMethodCallHandler( channelMethodCallHandler );
@@ -174,6 +184,7 @@ class TrackPlayer extends FlutterSoundPlayer {
 
         onSkipBackward = null;
         onSkipForward = null;
+        onPaused = null;
       } catch (err) {
         print('err: $err');
         rethrow;
@@ -189,6 +200,18 @@ class TrackPlayer extends FlutterSoundPlayer {
 
   void skipBackward(Map call) {
     if (onSkipBackward != null) onSkipBackward();
+  }
+
+  void pause(Map call) {
+    bool b = call['arg'] as bool;
+    if (onPaused != null) { // Probably always true
+      onPaused( b );
+    } else {
+      if (b)
+        pausePlayer();
+      else
+        resumePlayer();
+    }
   }
 
   void audioPlayerFinished(Map call) {
@@ -213,8 +236,8 @@ class TrackPlayer extends FlutterSoundPlayer {
     _removePlayerCallback(); // playerController is closed by this function
   }
 
-  /// Plays the given [track]. [canSkipForward] and [canSkipBackward] must be
-  /// passed to provide information on whether the user can skip to the next
+  /// Plays the given [track]. [onPaused], [canSkipForward] and [canSkipBackward] must be
+  /// passed to provide information on whether the user can handle the pause button, skip to the next
   /// or to the previous song in the lock screen controls.
   ///
   /// This method should only be used if the   player has been initialize
@@ -223,9 +246,10 @@ class TrackPlayer extends FlutterSoundPlayer {
     Track track, {
     t_CODEC codec,
     TWhenFinished whenFinished,
-    TwhenPaused whenPaused,
+    TonPaused onPaused,
     TonSkip onSkipForward,
     TonSkip onSkipBackward,
+    //TonSkip onPause,
   }) async {
     // Check the current codec is not supported on this platform
     if (!await isDecoderSupported(track.codec)) {
@@ -239,7 +263,7 @@ class TrackPlayer extends FlutterSoundPlayer {
     final trackMap = await track.toMap();
 
     audioPlayerFinishedPlaying = whenFinished;
-    this.whenPause = whenPaused;
+    this.onPaused = onPaused;
     this.onSkipForward = onSkipForward;
     this.onSkipBackward = onSkipBackward;
     this.onUpdateProgress = onUpdateProgress;
@@ -247,7 +271,7 @@ class TrackPlayer extends FlutterSoundPlayer {
     String result =
         await invokeMethod('startPlayerFromTrack', <String, dynamic>{
       'track': trackMap,
-      'canPause': whenPaused != null,
+      'canPause': onPaused != null,
       'canSkipForward': onSkipForward != null,
       'canSkipBackward': onSkipBackward != null,
     }) as String;

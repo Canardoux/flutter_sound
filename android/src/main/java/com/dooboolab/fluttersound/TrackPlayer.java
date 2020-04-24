@@ -249,6 +249,14 @@ public class TrackPlayer extends FlutterSoundPlayer
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
 
+	void invokeMethodWithBoolean ( String methodName, Boolean arg )
+	{
+		Map<String, Object> dic = new HashMap<String, Object> ();
+		dic.put ( "slotNo", slotNo );
+		dic.put ( "arg", arg );
+		getPlugin ().invokeMethod ( methodName, dic );
+	}
+
 
 	public void startPlayerFromTrack( final MethodCall call, final Result result )
 	{
@@ -257,6 +265,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 
 		boolean canSkipForward = call.argument( "canSkipForward" );
 		boolean canSkipBackward = call.argument( "canSkipBackward" );
+		boolean canPause = call.argument( "canPause" );
 
 		// Exit the method if a media browser helper was not initialized
 		if ( !wasMediaPlayerInitialized( result ) )
@@ -306,6 +315,15 @@ public class TrackPlayer extends FlutterSoundPlayer
 		{
 			mMediaBrowserHelper.removeSkipTrackBackwardHandler();
 		}
+
+		if ( canPause )
+		{
+			mMediaBrowserHelper.setPauseHandler( new PauseHandler(  ) );
+		} else
+		{
+			mMediaBrowserHelper.removePauseHandler();
+		}
+
 
 		if ( setActiveDone == t_SET_CATEGORY_DONE.NOT_SET )
 		{
@@ -419,7 +437,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 		try
 		{
 			// Resume the player
-			mMediaBrowserHelper.playPlayback();
+			mMediaBrowserHelper.resumePlayback();
 
 			// Seek the player to the last position and resume it
 			result.success( "resumed player." );
@@ -559,6 +577,32 @@ public class TrackPlayer extends FlutterSoundPlayer
 			return null;
 		}
 	}
+
+	/**
+	 * A listener that is triggered when the pause buttons in the notification are
+	 * clicked.
+	 */
+	private class PauseHandler
+		implements Callable<Void>
+	{
+		private boolean mIsSkippingForward;
+
+		PauseHandler(  )
+		{
+		}
+
+		@Override
+		public Void call()
+			throws
+			Exception
+		{
+			PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
+			invokeMethodWithBoolean( "pause", playbackState.getState() == PlaybackStateCompat.STATE_PLAYING  );
+
+			return null;
+		}
+	}
+
 
 
 	/**

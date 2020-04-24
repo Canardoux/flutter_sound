@@ -5,7 +5,7 @@
 <p align="left">
   <a href="https://pub.dartlang.org/packages/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square"></a>
 </p>
-This plugin provides simple recorder and player functionalities for both `android` and `ios` platforms. This only supports default file extension for each platform.
+This plugin provides simple recorder and player functionalities for both `android` and `ios` platforms.
 This plugin handles file from remote url.
 This plugin can handle playback stream from native (To sync exact time with bridging).
 
@@ -33,24 +33,22 @@ The big difference between the two flavors is that the **LITE** flavor does not 
 There is a huge impact on the memory used, but the **LITE** flavor will not be able to do some codecs :
 - Playback OGG/OPUS on iOS
 - Record OGG_OPUS on iOS
+And will not be able to offer some helping functions, like `FlutterSoundHelper.FFmpegGetMediaInformation()` or `FlutterSoundHelper.duration()`
 
-Add `flutter_sound` or `flutter_sound_lite` as a dependency in pubspec.yaml. The actual versions are `^flutter_sound: 4.0.0-beta.3` and `^flutter_sound_lite: 4.0.0-beta.3`
-Be aware that **it is not released version**, and probably not good to use it in a released App.
-The API is actually not stabilized and will change very soon.
-The actual released App is `flutter_sound: ^3.1.10`
+Add `flutter_sound` or `flutter_sound_lite` as a dependency in pubspec.yaml. The actual versions are `^flutter_sound: 4.0.0` and `^flutter_sound_lite: 4.0.0`
 
 ```
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sound: ^4.0.0-beta.3
+  flutter_sound: ^4.0.0
 ```
 or
 ```
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sound_lite: ^4.0.0-beta.3
+  flutter_sound_lite: ^4.0.0
 ```
 
 The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
@@ -480,12 +478,20 @@ Using TrackPlayer is very simple : just use the TrackPlayer constructor instead 
 trackPlayer = TrackPlayer();
 ```
 
-You call `startPlayerFromTrack` to play a sound. This function takes in 1 required argument and 3 optional arguments:
+You call `startPlayerFromTrack` to play a sound. This function takes in 1 required argument and 4 optional arguments:
 
 - a `Track`, which is the track that the player is going to play;
 - `whenFinished:()` : A call back function for specifying what to do when the song is finished
+- `onPaused: (boolean)` : A call back function for specifying what to do when the user press the `pause/resume` button on the lock screen.
 - `onSkipBackward:()`, A call back function for specifying what to do when the user press the skip-backward button on the lock screen
 - `onSkipForward:()`, A call back function for specifying what to do when the user press the skip-forward button on the lock screen
+
+If `onSkipBackward:()` is not specified then the button is not shown on the lock screen.
+If `onSkipForward:()` is not specified, then the  button is not shown on the lock screen.
+If `onPaused: (boolean)` is not specified, then flutter_sound will handle itself the pause/resume function.
+There is actually no way to hide the pause button on the lock screen.
+
+If `onPaused: (boolean)` is specified, then flutter_sound will not handle itself the pause/resume function and it will be the App responsability to handle correctly this function. The boolean argument is `true` if the playback is playing (and probably must me paused). The boolean argument is `false` if the playback is in 'pause' state (and probably must be resumed).
 
 ```dart
 path = await trackPlayer.startPlayerFromTrack
@@ -508,6 +514,14 @@ path = await trackPlayer.startPlayerFromTrack
 		stopPlayer( );
 		startPlayer( );
 	},
+        onPaused: ( boolean mustBePaused)
+        {
+                if( mustBePaused )
+                        trackPlayer.pause();
+                else
+                        trackPlayer.resume();
+        },
+
 
 );
 

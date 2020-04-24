@@ -145,7 +145,7 @@ class Flauto extends FlutterSound {
     Track track, {
     t_CODEC codec,
     TWhenFinished whenFinished,
-    TwhenPaused whenPaused,
+    TonPaused whenPaused,
     TonSkip onSkipForward,
     TonSkip onSkipBackward,
   }) async {
