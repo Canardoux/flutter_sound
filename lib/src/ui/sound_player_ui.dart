@@ -392,7 +392,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     Log.d("buildPlayButton loading: $_loading state: $playState");
     if (_loading == true) {
       button = Container(
-          margin: const EdgeInsets.only(top: 5.0, bottom: 5),
+          // margin: const EdgeInsets.only(top: 5.0, bottom: 5),
 
           /// use a tick builder so we don't show the spinkit unless
           /// at least 100ms has passed. This stops a little flicker
@@ -410,17 +410,21 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     } else {
       button = _buildPlayButtonIcon(button);
     }
-    return Padding(
-        padding: EdgeInsets.only(left: 10, right: 10),
-        child: LocalContext(builder: (localContext) {
-          return InkWell(
-              onTap: ((sliderPosition.maxPosition.inMicroseconds == 0 &&
-                          _onLoad == null) ||
-                      __transitioning)
-                  ? null
-                  : () => onPlay(localContext),
-              child: button);
-        }));
+    return Container(
+      width: 50,
+      height: 50,
+      child: Padding(
+          padding: EdgeInsets.only(left: 0, right: 0),
+          child: LocalContext(builder: (localContext) {
+            return InkWell(
+                onTap: ((sliderPosition.maxPosition.inMicroseconds == 0 &&
+                            _onLoad == null) ||
+                        __transitioning)
+                    ? null
+                    : () => onPlay(localContext),
+                child: button);
+          })),
+    );
   }
 
   Widget _buildPlayButtonIcon(Widget widget) {
