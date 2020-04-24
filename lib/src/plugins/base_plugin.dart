@@ -18,6 +18,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import '../util/log.dart';
 
 /// Used to describe any class that can be placed into a slot.
 class SlotEntry {}
@@ -62,11 +63,14 @@ abstract class BasePlugin {
   /// given [slotEntry]. The connector is a link either
   /// a specific SoundRecorder or QuickPlay instance.
   Future<dynamic> invokeMethod(
-      SlotEntry slotEntry, String methodName, Map<String, dynamic> call) {
+      SlotEntry slotEntry, String methodName, Map<String, dynamic> call) async {
     /// allocate a slot for this call.
     var slotNo = findSlot(slotEntry);
     call['slotNo'] = slotNo;
-    return getChannel().invokeMethod<dynamic>(methodName, call);
+    var result = getChannel().invokeMethod<dynamic>(methodName, call);
+
+    Log.d('invokeMethod returned for $methodName');
+    return result;
   }
 
   ///
@@ -90,7 +94,7 @@ abstract class BasePlugin {
     if (!inserted) {
       _slots.add(slotEntry);
     }
-    print('registered SlotEntry to slot: ${_slots.length - 1}');
+    Log.d('registered SlotEntry to slot: ${_slots.length - 1}');
   }
 
   ///
@@ -115,7 +119,7 @@ abstract class BasePlugin {
       }
     }
     if (slot == -1) {
-      throw SlotEntryNotRegisteredException('The Slotable was not found.');
+      throw SlotEntryNotRegisteredException('The SlotEntry was not found.');
     }
     return slot;
   }
