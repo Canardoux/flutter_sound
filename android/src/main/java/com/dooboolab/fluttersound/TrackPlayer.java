@@ -220,6 +220,9 @@ public class TrackPlayer extends FlutterSoundPlayer
 			// If the initialization will be successful, result.success will
 			// be called, otherwise result.error will be called.
 			mMediaBrowserHelper = new MediaBrowserHelper( new MediaPlayerConnectionListener( result, true ), new MediaPlayerConnectionListener( result, false ) );
+			// Pass the playback state updater to the media browser
+			mMediaBrowserHelper.setPlaybackStateUpdater(new PlaybackStateUpdater());
+
 		}
 		result.success( "The player had already been initialized." );
 	}
@@ -569,7 +572,17 @@ public class TrackPlayer extends FlutterSoundPlayer
 		}
 	}
 
-
+	/**
+	 * A function that triggers a function in the Dart code to update the playback
+	 * state.
+	 */
+	private class PlaybackStateUpdater implements Function<BackgroundAudioService.SystemPlaybackState, Void> {
+		@Override
+		public Void apply(BackgroundAudioService.SystemPlaybackState newState) {
+			invokeMethodWithInteger("updatePlaybackState", newState.stateNo);
+			return null;
+		}
+	}
 	/**
 	 * The callable instance to call when the media player is prepared.
 	 */

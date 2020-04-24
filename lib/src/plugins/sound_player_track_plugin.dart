@@ -78,9 +78,35 @@ class SoundPlayerTrackPlugin extends PlayerBasePlugin {
         onSystemSkipBackward(player);
         break;
 
+      /// notifications from the os when the OS Media Player
+      /// changes state.
+      case 'updatePlaybackState':
+        var stateNo = call.arguments['arg'] as int;
+
+        var playbackState = SystemPlaybackState.values[stateNo];
+
+        onSystemUpdatePlaybackState(player, playbackState);
+        break;
+
       default:
         super.onMethodCallback(player, call);
     }
     return null;
   }
+}
+
+/// This enum reflects an enum of the same name
+/// in BackgroundAudioServices.java
+/// and the two enums MUST be kept in sync.
+///
+/// The order of these enums is CRITICAL!
+enum SystemPlaybackState {
+  /// The OS Media Player has started playing
+  playing,
+
+  /// The OS Media Player has been paused
+  paused,
+
+  /// The OS Media Player has been stopped
+  stopped
 }

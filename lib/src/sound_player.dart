@@ -48,6 +48,7 @@ class SoundPlayer implements SlotEntry {
   PlayerEvent _onSkipForward;
   PlayerEvent _onSkipBackward;
   PlayerEvent _onFinished;
+  OSPlayerStateEvent _onUpdatePlaybackState;
   PlayerEventWithCause _onPaused;
   PlayerEventWithCause _onResumed;
   PlayerEventWithCause _onStarted;
@@ -193,7 +194,9 @@ class SoundPlayer implements SlotEntry {
             _seekTo = null;
           }
 
+          // we should wait for the os to notify us that the start has happend.
           playerState = PlayerState.isPlaying;
+
           started.complete();
           if (_onStarted != null) _onStarted(wasUser: false);
         });
@@ -420,6 +423,38 @@ class SoundPlayer implements SlotEntry {
     if (_onSkipBackward != null) _onSkipBackward();
   }
 
+  void _onSystemUpdatePlaybackState(SystemPlaybackState systemPlaybackState) {
+    /// I have concerns about how these state changes interact with
+    /// the SoundPlayer's own state management.
+    /// Really we need a consistent source of 'state' and this should come
+    /// up from the OS. The problem is that whilst TrackPlayer.java provides
+    /// these state changes the FlutterSoundPlayer does not.
+    /// I'm also not certain how to get a 'start' event out of android's
+    /// MediaPlayer it will emmit an onPrepared event but I don't know
+    /// if this happens in association with a start or whether it can happen
+    /// but no start happens.
+    /// Also need to find out if the call to MediaPlayer.start is async or
+    /// sync as the doco is unclear.
+    switch (systemPlaybackState) {
+      case SystemPlaybackState.playing:
+        playerState = PlayerState.isPlaying;
+        if (_onStarted != null) _onStarted(wasUser: false);
+        break;
+      case SystemPlaybackState.paused:
+        playerState = PlayerState.isPaused;
+        if (_onPaused != null) _onPaused(wasUser: false);
+        break;
+      case SystemPlaybackState.stopped:
+        playerState = PlayerState.isStopped;
+        if (_onStopped != null) _onStopped(wasUser: false);
+        break;
+    }
+
+    if (_onUpdatePlaybackState != null) {
+      _onUpdatePlaybackState(systemPlaybackState);
+    }
+  }
+
   /// Pass a callback if you want to be notified
   /// when the user attempts to skip forward to the
   /// next track.
@@ -446,6 +481,13 @@ class SoundPlayer implements SlotEntry {
   // ignore: avoid_setters_without_getters
   set onSkipBackward(PlayerEvent onSkipBackward) {
     _onSkipBackward = onSkipBackward;
+  }
+
+  /// Pass a callback if you want to be notified
+  /// when the OS Media Player changs state.
+  // ignore: avoid_setters_without_getters
+  set onUpdatePlaybackState(OSPlayerStateEvent onUpdatePlaybackState) {
+    _onUpdatePlaybackState = onUpdatePlaybackState;
   }
 
   /// Pass a callback if you want to be notified when
@@ -630,6 +672,7 @@ enum PlayerState {
 }
 
 typedef PlayerEvent = void Function();
+typedef OSPlayerStateEvent = void Function(SystemPlaybackState);
 
 /// TODO should we be passing an object that contains
 /// information such as the position in the track when
@@ -680,3 +723,8 @@ void onSystemSkipForward(SoundPlayer player) => player._onSystemSkipForward();
 
 /// handles a skip forward coming up from the player
 void onSystemSkipBackward(SoundPlayer player) => player._onSystemSkipBackward();
+
+/// Handles playback state changes coming up from the OS Media Player
+void onSystemUpdatePlaybackState(
+        SoundPlayer player, SystemPlaybackState playbackState) =>
+    player._onSystemUpdatePlaybackState(playbackState);

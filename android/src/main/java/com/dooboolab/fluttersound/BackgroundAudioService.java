@@ -84,9 +84,24 @@ public class BackgroundAudioService
 	// public static boolean includeAudioPlayerFeatures;
 	//public static Activity activity;
 
-	public final static int PLAYING_STATE = 0;
-	public final static int PAUSED_STATE  = 1;
-	public final static int STOPPED_STATE = 2;
+	/// Used to track the playback state
+	/// which we send to the dart package
+	// via calls to the 'updatePlaybackState' method.
+	// This enum reflects an enum of the same name
+	// in sound_player_track_plugin.dart
+	// and the two enums MUST be kept in sync.
+	enum SystemPlaybackState
+	{
+		PLAYING(0),
+	 	PAUSED(1),
+	 	STOPPED(2);
+
+		int stateNo;
+		SystemPlaybackState(int stateNo)
+		{
+			this.stateNo = stateNo;
+		}
+	}
 
 	/**
 	 * The track that we're currently playing
@@ -165,7 +180,7 @@ public class BackgroundAudioService
 				stopBackgroundAudioService( false );
 
 				// Update the playback state
-				playbackStateUpdater.apply( PAUSED_STATE );
+				playbackStateUpdater.apply( SystemPlaybackState.PAUSED );
 			}
 		}
 
@@ -227,7 +242,7 @@ public class BackgroundAudioService
 			stopBackgroundAudioService( true );
 
 			// Update the playback state
-			playbackStateUpdater.apply( STOPPED_STATE );
+			playbackStateUpdater.apply( SystemPlaybackState.STOPPED );
 		}
 
 		@Override
@@ -295,7 +310,7 @@ public class BackgroundAudioService
 		startService( new Intent( Flauto.androidActivity, BackgroundAudioService.class ) );
 
 		// Update the playback state
-		playbackStateUpdater.apply( PLAYING_STATE );
+		playbackStateUpdater.apply(SystemPlaybackState.PLAYING);
 		return true;
 	}
 
