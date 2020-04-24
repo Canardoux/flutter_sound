@@ -285,6 +285,8 @@ public class TrackPlayer extends FlutterSoundPlayer
 		{
 			// The audio file is stored by a buffer, then save it as a file and get the path
 			// to that file.
+			//
+			// NOTE: this code is no longer used. The Dart code will ALWAYS pass a file
 			try
 			{
 				File             f   = File.createTempFile( "flutter_sound", extentionArray[ track.getBufferCodecIndex() ] );
