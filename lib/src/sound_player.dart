@@ -171,17 +171,20 @@ class SoundPlayer implements SlotEntry {
         // Check the current codec is supported on this platform
         if (!await isSupported(track.codec)) {
           throw PlayerInvalidStateException(
-              'The selected codec is not supported on '
+              'The selected codec ${track.codec} is not supported on '
               'this platform.');
         }
 
+        Log.d('calling prepare stream');
         t.prepareStream(track);
 
+        Log.d('calling hush');
         _applyHush();
 
         // Not awaiting this may cause issues if someone immediately tries
         // to stop.
         // I think we need a completer to control transitions.
+        Log.d('calling _plugin.play');
         _plugin.play(this, track).then<void>((_) {
           /// If the user called seekTo before starting the player
           /// we immediate do a seek.
@@ -189,6 +192,7 @@ class SoundPlayer implements SlotEntry {
           /// and then seeks.
           /// If so we may need to modify the plugin so we pass in a seekTo
           /// argument.
+          Log.d('calling seek');
           if (_seekTo != null) {
             seekTo(_seekTo);
             _seekTo = null;
@@ -197,6 +201,7 @@ class SoundPlayer implements SlotEntry {
           // we should wait for the os to notify us that the start has happend.
           playerState = PlayerState.isPlaying;
 
+          Log.d('calling complete');
           started.complete();
           if (_onStarted != null) _onStarted(wasUser: false);
         });
@@ -205,6 +210,7 @@ class SoundPlayer implements SlotEntry {
             PlayerInvalidStateException('Player initialisation failed'));
       }
     });
+    Log.d('*************play returning');
     return started.future;
   }
 
@@ -213,7 +219,7 @@ class SoundPlayer implements SlotEntry {
     initialised.then<void>((result) async {
       if (result == true) {
         if (isStopped) {
-          print("stop() was called when the player wasn't playing. Ignored");
+          Log.d("stop() was called when the player wasn't playing. Ignored");
         } else {
           try {
             // playerController is closed by this function
@@ -222,7 +228,7 @@ class SoundPlayer implements SlotEntry {
             playerState = PlayerState.isStopped;
             if (_onStopped != null) _onStopped(wasUser: false);
           } on Object catch (e) {
-            print(e);
+            Log.d(e);
             rethrow;
           }
         }

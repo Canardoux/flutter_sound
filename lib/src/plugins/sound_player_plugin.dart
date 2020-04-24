@@ -40,8 +40,7 @@ class SoundPlayerPlugin extends PlayerBasePlugin {
     // Flutter cannot transfer an enum to a native plugin.
     // We use an integer instead
     args['codec'] = track.codec.index;
-    await invokeMethod(player, 'startPlayer', args);
+    Log.d('calling invoke startPlayer');
+    return invokeMethod(player, 'startPlayer', args);
   }
-
-  
 }

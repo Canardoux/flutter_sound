@@ -84,7 +84,7 @@ class _MainBodyState extends State<MainBody> {
       await _switchModes(useOSUI);
       setState(() {});
     } on Object catch (err) {
-      print(err);
+      Log.d(err);
       rethrow;
     }
   }
@@ -173,7 +173,7 @@ class _MainBodyState extends State<MainBody> {
         await _startConcurrentPlayer(track);
       }
     } on Object catch (err) {
-      print('error: $err');
+      Log.d('error: $err');
       rethrow;
     }
 

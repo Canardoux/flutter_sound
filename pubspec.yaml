@@ -13,9 +13,11 @@ dependencies:
   permission_handler: ">=5.0.0 <6.0.0"
   flutter_spinkit: ^4.0.0
   intl: ^0.16.0
+  logger: ^0.7.0+2
   path_provider: ">=1.0.0 <2.0.0"
   path: ">=1.0.0 <2.0.0"
   provider: ^3.0.0+1
+  recase: ^2.0.1
   uuid: ^2.0.4
 
 dev_dependencies:

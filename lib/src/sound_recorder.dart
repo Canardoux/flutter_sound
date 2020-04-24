@@ -257,7 +257,7 @@ class SoundRecorder implements SlotEntry {
     try {
       await getPlugin().resume(this);
     } on Object catch (e) {
-      print("Exception throw trying to resume the recorder $e");
+      Log.d("Exception throw trying to resume the recorder $e");
       await stop();
       rethrow;
     }

@@ -69,7 +69,7 @@ class RecorderState {
         await recorderModule_2.stop();
       }
     } on Object catch (err) {
-      print('stopRecorder error: $err');
+      Log.d('stopRecorder error: $err');
       rethrow;
     }
   }
@@ -86,7 +86,7 @@ class RecorderState {
         codec: ActiveCodec().codec,
       );
 
-      print('startRecorder: $path');
+      Log.d('startRecorder: $path');
 
       if (renetranceConcurrency) {
         try {
@@ -97,7 +97,7 @@ class RecorderState {
 
           QuickPlay.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
         } on Object catch (e) {
-          print('startRecorder error: $e');
+          Log.d('startRecorder error: $e');
           rethrow;
         }
         var secondaryPath = await tempFile();
@@ -105,12 +105,12 @@ class RecorderState {
           path: secondaryPath,
           codec: Codec.aacADTS,
         );
-        print("Secondary record is '$secondaryPath'");
+        Log.d("Secondary record is '$secondaryPath'");
       }
 
       MediaPath().setCodecPath(ActiveCodec().codec, path);
     } on RecorderException catch (err) {
-      print('startRecorder error: $err');
+      Log.d('startRecorder error: $err');
 
       var error = SnackBar(
           backgroundColor: Colors.red,

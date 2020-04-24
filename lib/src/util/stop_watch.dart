@@ -46,7 +46,7 @@ class StopWatch {
     _stopWatch.stop();
     _description ??= "";
     if (log) {
-      print(
+      Log.d(
         "Elapsed ${_stopWatch.elapsedMilliseconds} ms for $_description",
       );
     }

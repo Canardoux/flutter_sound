@@ -98,9 +98,9 @@ void main() {
 
   //   try {
   //     player.startPlayer('example/asset/samples/sample.acc',
-  //         whenFinished: () => print('finished'));
+  //         whenFinished: () => Log.d('finished'));
   //   } catch (e) {
-  //     print(e);
+  //     Log.d(e);
   //   }
   // }, skip: false);
 }
