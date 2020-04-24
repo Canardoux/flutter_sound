@@ -190,15 +190,17 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
 
   Widget _buildPlayBar() {
     var rows = <Widget>[];
-    rows.add(
-        Row(children: [_buildPlayButton(), _buildDuration(), _buildSlider()]));
+    rows.add(Row(children: [_buildDuration(), _buildSlider()]));
     if (widget._showTitle && _track != null) rows.add(_buildTitle());
 
     return Container(
         decoration: BoxDecoration(
             color: Colors.grey,
             borderRadius: BorderRadius.circular(SoundPlayerUI._barHeight / 2)),
-        child: Column(children: rows));
+        child: Row(children: [
+          _buildPlayButton(),
+          Expanded(child: Column(children: rows))
+        ]));
   }
 
   /// Returns the players current state.
@@ -391,17 +393,18 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     if (_loading == true) {
       button = Container(
           margin: const EdgeInsets.only(top: 5.0, bottom: 5),
+
+          /// use a tick builder so we don't show the spinkit unless
+          /// at least 100ms has passed. This stops a little flicker
+          /// of the spiner caused by the default loading state.
           child: TickBuilder(
               interval: Duration(milliseconds: 100),
-              limit: 5,
+              // limit: 5,
               builder: (context, index) {
-                Log.d('Tick: $index');
                 if (index > 1) {
-                  return SpinKitRing(
-                      color: Colors.purple,
-                      size: SoundPlayerUI._barHeight * 0.6);
+                  return SpinKitRing(color: Colors.purple, size: 32);
                 } else {
-                  return Container(width: 24, height: 24);
+                  return Container(width: 32, height: 32);
                 }
               }));
     } else {
@@ -479,7 +482,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
       columns.add(Text(_track.author));
     }
     return Container(
-      margin: EdgeInsets.only(left: 45, bottom: 5),
+      margin: EdgeInsets.only(bottom: 5),
       child: Row(children: columns),
     );
   }
