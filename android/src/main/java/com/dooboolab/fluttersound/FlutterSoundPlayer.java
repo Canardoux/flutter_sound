@@ -370,6 +370,7 @@ public class FlutterSoundPlayer
 	{
 		if ( this.model.getMediaPlayer () != null )
 		{
+			/// re-start after media has been paused
 			Boolean isPaused = !this.model.getMediaPlayer ().isPlaying () && this.model.getMediaPlayer ().getCurrentPosition () > 1;
 
 			if ( isPaused )
@@ -382,10 +383,10 @@ public class FlutterSoundPlayer
 			Log.e ( TAG, "Player is already running. Stop it first." );
 			result.success ( "player is already running." );
 			return;
-		} else
-		{
-			this.model.setMediaPlayer ( new MediaPlayer () );
-		}
+		} 
+		
+		this.model.setMediaPlayer ( new MediaPlayer () );
+		
 		mTimer = new Timer ();
 
 		try
@@ -481,7 +482,7 @@ public class FlutterSoundPlayer
 				                                                       mp.release ();
 				                                                       model.setMediaPlayer ( null );
 			                                                       } );
-			this.model.getMediaPlayer ().prepare ();
+			this.model.getMediaPlayer ().prepareAsync ();
 		}
 		catch ( Exception e )
 		{
@@ -490,6 +491,8 @@ public class FlutterSoundPlayer
 		}
 	}
 
+
+	/// This method is no longer used as we create the file in the dart code.
 	public void startPlayerFromBuffer ( final MethodCall call, final Result result )
 	{
 		Integer _codec     = call.argument ( "codec" );
