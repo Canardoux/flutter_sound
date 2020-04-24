@@ -138,22 +138,22 @@ class MyLogPrinter extends LogPrinter {
       }
     }
 
-    Log.d(color(
+    print(color(
         event.level,
         "$formattedDate ${EnumHelper.getName(event.level)} "
         "${StackTraceImpl(skipFrames: depth).formatStackTrace(methodCount: 1)} "
         "::: ${event.message}"));
 
     if (event.error != null) {
-      Log.d(color(event.level, "${event.error}"));
+      print(color(event.level, "${event.error}"));
     }
 
     if (event.stackTrace != null) {
       if (event.stackTrace.runtimeType == StackTraceImpl) {
         var st = event.stackTrace as StackTraceImpl;
-        Log.d(color(event.level, "$st"));
+        print(color(event.level, "$st"));
       } else {
-        Log.d(color(event.level, "${event.stackTrace}"));
+        print(color(event.level, "${event.stackTrace}"));
       }
     }
   }

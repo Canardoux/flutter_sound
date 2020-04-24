@@ -182,7 +182,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
 
   @override
   void dispose() {
-    Log.d("stopping Player on dispose");
+    print("stopping Player on dispose");
     _stop(supressState: true);
     _player.release();
     super.dispose();
@@ -277,13 +277,13 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     setState(() {
       _transitioning = true;
       _loading = true;
-      Log.d("Loading starting");
+      print("Loading starting");
     });
 
-    Log.d("Calling startPlayer");
+    print("Calling startPlayer");
 
     if (_track != null && _player.isPlaying) {
-      Log.d("startPlay called whilst player running. Stopping Player first.");
+      print("startPlay called whilst player running. Stopping Player first.");
       await _stop();
     }
 
