@@ -5,6 +5,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:intl/intl.dart';
 
 import 'media_path.dart';
+import 'util/log.dart';
 
 /// Describes how the media is stored.
 enum MediaStorage {
@@ -83,10 +84,10 @@ Future<Uint8List> makeBuffer(String path) async {
     var file = File(path);
     file.openRead();
     var contents = await file.readAsBytes();
-    print('The file is ${contents.length} bytes long.');
+    Log.d('The file is ${contents.length} bytes long.');
     return contents;
   } on Object catch (e) {
-    print(e);
+    Log.d(e.toString());
     return null;
   }
 }

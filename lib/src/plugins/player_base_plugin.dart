@@ -11,6 +11,7 @@ import '../playback_disposition.dart';
 
 import '../sound_player.dart';
 import '../track.dart';
+import '../util/log.dart';
 import 'base_plugin.dart';
 
 typedef ConnectedCallback = void Function({bool result});
@@ -155,7 +156,7 @@ abstract class PlayerBasePlugin extends BasePlugin {
     /// when playing an mp3 I've seen occurances where the position is after
     /// the duration. So I've added this protection.
     if (position > duration) {
-      print('Fixed position > duration $position $duration');
+      Log.d('Fixed position > duration $position $duration');
       duration = position;
     }
     return PlaybackDisposition(position, duration);
@@ -171,7 +172,7 @@ abstract class PlayerBasePlugin extends BasePlugin {
       case "onConnected":
         {
           var result = call.arguments['arg'] as bool;
-          print('onConnected $result');
+          Log.d('onConnected $result');
           if (_onConnected != null) _onConnected(result: result);
         }
         break;

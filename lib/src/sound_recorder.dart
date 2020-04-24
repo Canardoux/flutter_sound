@@ -34,6 +34,7 @@ import 'plugins/sound_recorder_plugin.dart';
 import 'recording_disposition.dart';
 import 'util/codec_conversions.dart';
 import 'util/file_management.dart';
+import 'util/log.dart';
 import 'util/recording_disposition_manager.dart';
 
 enum _RecorderState {
@@ -257,7 +258,7 @@ class SoundRecorder implements SlotEntry {
     try {
       await getPlugin().resume(this);
     } on Object catch (e) {
-      print("Exception throw trying to resume the recorder $e");
+      Log.d("Exception throw trying to resume the recorder $e");
       await stop();
       rethrow;
     }

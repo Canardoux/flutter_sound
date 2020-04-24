@@ -17,6 +17,8 @@
 import 'dart:core' hide Stopwatch;
 import 'dart:core' as core show Stopwatch;
 
+import 'log.dart';
+
 ///
 /// [StopWatch] is designed to provide profiling information
 /// by tracking the time between two lines of code.
@@ -46,7 +48,7 @@ class StopWatch {
     _stopWatch.stop();
     _description ??= "";
     if (log) {
-      print(
+      Log.d(
         "Elapsed ${_stopWatch.elapsedMilliseconds} ms for $_description",
       );
     }

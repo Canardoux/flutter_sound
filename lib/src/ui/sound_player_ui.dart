@@ -25,6 +25,7 @@ import '../../flutter_sound.dart';
 import '../codec.dart';
 import '../track.dart';
 import '../util/format.dart';
+import '../util/log.dart';
 import '../util/stop_watch.dart';
 import 'grayed_out.dart';
 import 'local_context.dart';
@@ -154,8 +155,8 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
       trackRelease(_track);
       _track = null;
     }
-    print('Hot reload releasing plugin');
-    _player.release();
+    //print('Hot reload releasing plugin');
+    //_player.release();
   }
 
   @override
@@ -181,7 +182,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
 
   @override
   void dispose() {
-    Log.d("stopping Player on dispose");
+    print("stopping Player on dispose");
     _stop(supressState: true);
     _player.release();
     super.dispose();
@@ -276,13 +277,13 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     setState(() {
       _transitioning = true;
       _loading = true;
-      Log.d("Loading starting");
+      print("Loading starting");
     });
 
-    Log.d("Calling startPlayer");
+    print("Calling startPlayer");
 
     if (_track != null && _player.isPlaying) {
-      Log.d("startPlay called whilst player running. Stopping Player first.");
+      print("startPlay called whilst player running. Stopping Player first.");
       await _stop();
     }
 
@@ -315,8 +316,8 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     var watch = StopWatch('start');
     _player.play(_track).then((_) {
       playState = PlayState.playing;
-      watch.end();
-      Log.d("StartPlayer returned");
+
+      print("StartPlayer returned");
     }).catchError((dynamic e) {
       Log.w("Error calling startPlayer ${e.toString()}");
       playState = PlayState.stopped;
@@ -325,6 +326,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
       _loading = false;
       _transitioning = false;
     });
+    watch.end();
 
     print('**************** progress passed play');
   }
@@ -385,7 +387,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
   Widget _buildPlayButton() {
     Widget button;
 
-    // Log.d("buildPlayButton loading: ${loading} state: ${playState}");
+    print("buildPlayButton loading: $_loading state: $playState");
     if (_loading == true) {
       button = Container(
           margin: const EdgeInsets.only(top: 5.0, bottom: 5),
@@ -405,7 +407,6 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     } else {
       button = _buildPlayButtonIcon(button);
     }
-
     return Padding(
         padding: EdgeInsets.only(left: 10, right: 10),
         child: LocalContext(builder: (localContext) {
@@ -482,18 +483,6 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
       child: Row(children: columns),
     );
   }
-}
-
-///
-class Log {
-  ///
-  static void d(String message) => print(message);
-
-  ///
-  static void w(String message) => print(message);
-
-  ///
-  static void e(String message) => print(message);
 }
 
 /// Describes the state of the playbar.
