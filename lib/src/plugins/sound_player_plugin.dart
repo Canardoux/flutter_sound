@@ -19,6 +19,7 @@ import 'dart:async';
 import '../sound_player.dart';
 
 import '../track.dart';
+import '../util/log.dart';
 import 'player_base_plugin.dart';
 
 ///

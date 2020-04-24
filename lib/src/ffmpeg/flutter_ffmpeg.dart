@@ -20,6 +20,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import '../util/log.dart';
 
 ///
 class FlutterFFmpegConfig {

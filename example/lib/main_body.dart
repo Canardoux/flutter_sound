@@ -14,6 +14,7 @@ import 'media_path.dart';
 import 'recorder_controls.dart';
 import 'recorder_state.dart';
 import 'track_switched.dart';
+import 'util/log.dart';
 
 ///
 class MainBody extends StatefulWidget {
@@ -84,7 +85,7 @@ class _MainBodyState extends State<MainBody> {
       await _switchModes(useOSUI);
       setState(() {});
     } on Object catch (err) {
-      Log.d(err);
+      Log.d(err.toString());
       rethrow;
     }
   }

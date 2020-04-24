@@ -11,6 +11,7 @@ import '../playback_disposition.dart';
 
 import '../sound_player.dart';
 import '../track.dart';
+import '../util/log.dart';
 import 'base_plugin.dart';
 
 typedef ConnectedCallback = void Function({bool result});

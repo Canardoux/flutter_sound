@@ -29,6 +29,7 @@ import 'plugins/player_base_plugin.dart';
 import 'plugins/sound_player_plugin.dart';
 import 'plugins/sound_player_track_plugin.dart';
 import 'track.dart' as t;
+import 'util/log.dart';
 
 /// An api for playing audio.
 ///
@@ -228,7 +229,7 @@ class SoundPlayer implements SlotEntry {
             playerState = PlayerState.isStopped;
             if (_onStopped != null) _onStopped(wasUser: false);
           } on Object catch (e) {
-            Log.d(e);
+            Log.d(e.toString());
             rethrow;
           }
         }

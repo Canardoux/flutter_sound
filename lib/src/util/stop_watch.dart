@@ -17,6 +17,8 @@
 import 'dart:core' hide Stopwatch;
 import 'dart:core' as core show Stopwatch;
 
+import 'log.dart';
+
 ///
 /// [StopWatch] is designed to provide profiling information
 /// by tracking the time between two lines of code.

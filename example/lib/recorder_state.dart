@@ -8,6 +8,7 @@ import 'active_codec.dart';
 import 'common.dart';
 import 'main.dart';
 import 'media_path.dart';
+import 'util/log.dart';
 import 'util/temp_file.dart';
 
 /// Tracks the Recoder UI's state.
