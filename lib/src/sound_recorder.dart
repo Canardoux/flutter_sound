@@ -85,7 +85,7 @@ class SoundRecorder implements SlotEntry {
   bool get isPaused => (_recorderState == _RecorderState.isPaused);
 
   ///
-  SoundRecorderPlugin getPlugin() => SoundRecorderPlugin();
+  SoundRecorderPlugin _getPlugin() => SoundRecorderPlugin();
 
   /// Returns a stream of [RecordingDisposition] which
   /// provides live updates as the recording proceeds.
@@ -100,11 +100,11 @@ class SoundRecorder implements SlotEntry {
   }
 
   /// internal method.
-  Future<SoundRecorder> initialize() async {
+  Future<SoundRecorder> _initialize() async {
     if (!_isInited) {
       _isInited = true;
       _dispositionManager = RecordingDispositionManager(this);
-      getPlugin().initialise(this);
+      _getPlugin().initialise(this);
     }
     return this;
   }
@@ -115,14 +115,14 @@ class SoundRecorder implements SlotEntry {
     if (_isInited) {
       _isInited = false;
       await stop();
-      getPlugin().release(this);
+      _getPlugin().release(this);
     }
   }
 
   /// Returns true if the specified encoder is supported by
   /// flutter_sound on this platform
   Future<bool> isSupported(Codec codec) async {
-    await initialize();
+    await _initialize();
     // For encoding ogg/opus on ios, we need to support two steps :
     // - encode CAF/OPPUS (with native Apple AVFoundation)
     // - remux CAF file format to OPUS file format (with ffmpeg)
@@ -130,7 +130,7 @@ class SoundRecorder implements SlotEntry {
       codec = Codec.cafOpus;
     }
 
-    return await getPlugin().isSupported(this, codec);
+    return await _getPlugin().isSupported(this, codec);
   }
 
   /// Starts the recorder, recording audio to the passed in [path]
@@ -148,7 +148,7 @@ class SoundRecorder implements SlotEntry {
     IosQuality iosQuality = IosQuality.low,
     bool requestPermission = true,
   }) async {
-    await initialize();
+    await _initialize();
 
     _recordingToOriginalPath = path;
     _recordingToPath = path;
@@ -195,7 +195,7 @@ class SoundRecorder implements SlotEntry {
 
     if (exists(_recordingToPath)) delete(_recordingToPath);
 
-    await getPlugin().start(
+    await _getPlugin().start(
         this,
         _recordingToPath,
         sampleRate,
@@ -217,7 +217,7 @@ class SoundRecorder implements SlotEntry {
   /// for some codecs which aren't natively support. Dependindig on the
   /// size of the file this could take a few moments to a few minutes.
   Future<void> stop() async {
-    await getPlugin().stop(this);
+    await _getPlugin().stop(this);
 
     _recorderState = _RecorderState.isStopped;
 
@@ -240,7 +240,7 @@ class SoundRecorder implements SlotEntry {
           "You cannot pause recording when the recorder is not running.");
     }
 
-    await getPlugin().pause(this);
+    await _getPlugin().pause(this);
     _pauseStarted = DateTime.now();
     _recorderState = _RecorderState.isPaused;
   }
@@ -256,7 +256,7 @@ class SoundRecorder implements SlotEntry {
     _timePaused += (DateTime.now().difference(_pauseStarted));
 
     try {
-      await getPlugin().resume(this);
+      await _getPlugin().resume(this);
     } on Object catch (e) {
       Log.d("Exception throw trying to resume the recorder $e");
       await stop();
@@ -268,36 +268,76 @@ class SoundRecorder implements SlotEntry {
   /// Sets the frequency at which duration updates are sent to
   /// duration listeners.
   /// The default is every 10 milliseconds.
-  Future<void> setSubscriptionDuration(Duration interval) async {
-    await initialize();
-    await getPlugin().setSubscriptionDuration(this, interval);
-  }
-
-  /// Defines the interval at which the peak level should be updated.
-  /// Default is 0.8 seconds
-  Future<void> setDbPeakLevelUpdate(Duration interval) async {
-    await initialize();
-    await getPlugin().setDbPeakLevelUpdate(this, interval);
-  }
-
-  /// Enables or disables processing the Peak level in db's. Default is disabled
-  Future<void> setDbLevelEnabled({bool enabled}) async {
-    await initialize();
-    await getPlugin().setDbLevelEnabled(this, enabled: enabled);
+  Future<void> _setSubscriptionInterval(Duration interval) async {
+    await _initialize();
+    await _getPlugin().setSubscriptionDuration(this, interval);
   }
 
   /// Call by the plugin to notify us that the duration of the recording
   /// has changed.
-  void updateDurationDisposition(Map arguments) {
-    _dispositionManager.updateDurationDisposition(arguments, _timePaused);
+  void _updateDuration(Duration duration) {
+    _dispositionManager.updateDurationDisposition(duration, _timePaused);
+  }
+
+  /// Defines the interval at which the peak level should be updated.
+  /// Default is 0.8 seconds
+  Future<void> _setDbPeakLevelUpdateInterval(Duration interval) async {
+    await _initialize();
+    await _getPlugin().setDbPeakLevelUpdate(this, interval);
+  }
+
+  /// Enables or disables processing the Peak level in db's. Default is disabled
+  Future<void> _setDbLevelEnabled({bool enabled}) async {
+    await _initialize();
+    await _getPlugin().setDbLevelEnabled(this, enabled: enabled);
   }
 
   /// Called by the plugin to notify us of the current Db Level of the
   /// recording.
-  void updateDbPeakDispostion(Map arguments) {
-    _dispositionManager.updateDbPeakDispostion(arguments);
+  void _updateDbPeakDispostion(double decibels) {
+    _dispositionManager.updateDbPeakDispostion(decibels);
   }
 }
+
+/// INTERNAL APIS
+/// function to assist with hiding the internal api.
+///
+///
+
+///
+/// Duration monitoring
+///
+
+/// Sets the frequency at which duration updates are sent to
+/// duration listeners.
+void recorderSetSubscriptionInterval(
+        SoundRecorder recorder, Duration interval) =>
+    recorder._setSubscriptionInterval(interval);
+
+///
+void recorderUpdateDuration(SoundRecorder recorder, Duration duration) =>
+    recorder._updateDuration(duration);
+
+///
+/// decibel monitoring
+///
+
+///
+void recorderSetDbPeakLevelUpdate(SoundRecorder recorder, Duration interval) =>
+    recorder._setDbPeakLevelUpdateInterval(interval);
+
+/// enable db monitoring.
+void recorderSetDbLevelEnabled(SoundRecorder recorder,
+        {@required bool enabled}) =>
+    recorder._setDbLevelEnabled(enabled: enabled);
+
+/// called by the plugin when the db level changes
+void recorderUpdateDbPeakDispostion(SoundRecorder recorder, double decibels) =>
+    recorder._updateDbPeakDispostion(decibels);
+
+///
+/// Execeptions
+///
 
 /// Base class for all exeception throw via
 /// the recorder.

@@ -15,6 +15,7 @@
  */
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/services.dart';
 
@@ -137,22 +138,28 @@ class SoundRecorderPlugin extends BasePlugin {
       covariant SoundRecorder recorder, MethodCall call) {
     switch (call.method) {
       case "updateRecorderProgress":
-        {
-          recorder.updateDurationDisposition(
-              call.arguments as Map<dynamic, dynamic>);
-        }
+        _updateRecorderProgress(call, recorder);
         break;
 
       case "updateDbPeakProgress":
-        {
-          recorder
-              .updateDbPeakDispostion(call.arguments as Map<dynamic, dynamic>);
-        }
+        var decibels = call.arguments['arg'] as double;
+        recorderUpdateDbPeakDispostion(recorder, decibels);
         break;
 
       default:
         throw ArgumentError('Unknown method ${call.method}');
     }
     return null;
+  }
+
+  void _updateRecorderProgress(MethodCall call, SoundRecorder recorder) {
+    var result =
+        json.decode(call.arguments['arg'] as String) as Map<String, dynamic>;
+
+    var duration = Duration(
+        milliseconds:
+            double.parse(result['current_position'] as String).toInt());
+
+    recorderUpdateDuration(recorder, duration);
   }
 }

@@ -15,7 +15,6 @@
  */
 
 import 'dart:async';
-import 'dart:convert';
 
 import '../recording_disposition.dart';
 import '../sound_recorder.dart';
@@ -56,16 +55,16 @@ class RecordingDispositionManager {
     this.interval = interval ?? this.interval;
 
     _dispositionController ??= StreamController.broadcast();
-    _recorder.setSubscriptionDuration(interval);
-    _recorder.setDbLevelEnabled(enabled: true);
-    _recorder.setDbPeakLevelUpdate(interval);
+    recorderSetSubscriptionInterval(_recorder, interval);
+    recorderSetDbLevelEnabled(_recorder, enabled: true);
+    recorderSetDbPeakLevelUpdate(_recorder, interval);
     return _dispositionController.stream;
   }
 
   /// Internal classes calls this method to notify a change
   /// in the db level.
-  void updateDbPeakDispostion(Map<dynamic, dynamic> call) {
-    _lastDispositionDecibels = call['arg'] as double;
+  void updateDbPeakDispostion(double decibels) {
+    _lastDispositionDecibels = decibels;
 
     _trySendDisposition();
   }
@@ -73,13 +72,8 @@ class RecordingDispositionManager {
   /// [timePaused] The raw duration from the android/ios subsystem
   /// ignores pauses so we need to subtract any pause time from the
   /// duratin.
-  void updateDurationDisposition(Map call, Duration timePaused) {
-    var result = json.decode(call['arg'] as String) as Map<String, dynamic>;
-
-    _lastDispositionDuration = Duration(
-            milliseconds:
-                double.parse(result['current_position'] as String).toInt()) -
-        timePaused;
+  void updateDurationDisposition(Duration duration, Duration timePaused) {
+    _lastDispositionDuration = duration - timePaused;
 
     _trySendDisposition();
   }
