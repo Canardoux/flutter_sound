@@ -46,7 +46,19 @@ To migrate to  you must do some minor changes in your configurations files.
 Please refer to the **FFmpeg** section below.
 
 ## `4.0.0` to `5.0.0`
-The Flutter Sound team has made a number of breaking changes to the api with the intent of providing a solid and flexible foundation for moving forward.
+The Flutter Sound team have undertaken a major re-architecture of the api in order to provide a solid and flexible foundation moving forward.
+
+The aims of 5.0.0 were:
+
+* Make the api simplier to use.
+* Improve documentation
+* Deliver 'out of the box' widgets for recording and playback.
+* Resolve architecual issues which have caused a number of hard to resolve race conditions resulting in crashes.
+* Hide internal apis from the public api.
+* Provide a consistent error handling mechanisim via exceptions.
+* Remove duplicated code.
+* Bring the code in line with Google's recommended best practices.
+
 
 ### Players
 
@@ -66,15 +78,15 @@ Example changes:
 `FlutterSoundPlayer.pausePlayer()` -> `SoundPlayer.pause()`
 `FlutterSoundPlayer.stopPlayer()` ->  `SoundPlayer.stop()`
 
-The new `play` methods replaces both `startPlayer(uri)` and `startPlayerFromBuffer()` and 
-now takes a `Track`.
+The new `play` methods replaces both `startPlayer(uri)` and `startPlayerFromBuffer()` and can
+now take a `Track`.
 
 ### Track
 
 The Track class has two constructors:
 `Track.fromPath` and `Track.fromBuffer`.
 
-So to play a track from a path use:
+To play a track from a path use:
 ```dart
 var player SoundPlayer.withUI();
 player.onFinish = () => player.release();
@@ -106,14 +118,41 @@ player.play(track);
 
 ### Monitoring
 
-The `SoundPlayer` subscription model is now been unified into a single stream via 
-`SoundPlayer.dispositionStream(interval)`.
+Flutter sounds now uses streams to allow you to monitor both recording and playback progress.
 
-The result is a stream of `PlaybackDisposition`s which include but the audios duration (length)
-and current position.
+You can now use a StreamBuilder which will greatly simplify the construction of UI components (or you can use one of the new Flutter Sound UI widgets).
 
-The `SoundRecorder` uses the same stream model unifying the dbLevel and duration (length) into a single stream of `RecorderDisposition`s.
-You can now use a StreamBuilder widget which simplifies UI development.
+#### SoundPlayer
+
+The `SoundPlayer` subscription model is now been unified into a single stream via:
+
+```dart 
+var Stream<PlaybackDisposition> = SoundPlayer.noUI().dispositionStream(interval);
+```
+
+The result is a stream of `PlaybackDisposition`s which includes both the audio's duration (length) and current position.
+
+The following methods have been replaced by `dispositionStream`:
+* setSubscriptionDuration
+* setPlayerCallback
+
+#### SoundRecorder
+The `SoundRecorder` subscription model is now been unified into a single stream via:
+
+```dart 
+var Stream<RecordingDisposition> 
+  = SoundRecorder(). dispositionStream(interval);
+```
+
+The `RecordingDisposition` contains both the duration of the recording and the decibels (previously DbPeak).
+
+```dart
+class RecordingDisposition {
+  final Duration duration;
+
+  final double decibels;
+```  
+
 
 ### Types
 Types and enums now consistently use camelCase.
@@ -126,13 +165,16 @@ e.g.
 
 `QuickPlay` plays a single audio file immediatley (there is no `play` method).
 
-This is ideal for small audio files.
+This is ideal for small audio files and has the benefit that it frees its own resources.
 
 ```dart
-QuickPlay.fromPath('path to file');
+QuickPlay.fromPath('path to file', volume: 0.5);
+QuickPlay.fromTrack(Track.fromPath('path to file'), volume: 0.5);
 ```
 
 `Album` allows you to create an album of Track (statically or dynamically) and play them sequentiall via the OSs' UI.
+
+
 
 
 ## Free Read
