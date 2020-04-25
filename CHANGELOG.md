@@ -1,4 +1,8 @@
 
+## 4.0.1+1
+
+- "s.static_framework = true" in flutter_sound.podspec
+
 ## 4.0.0
 
 - Adds pedantic lints and major refactoring of example with bug fixes. [#279](https://github.com/dooboolab/flutter_sound/pull/279)
