@@ -138,7 +138,7 @@ class SoundPlayer implements SlotEntry {
       if (result == true) {
         // Stop the player playback before releasing
         await stop();
-        closeDispositionStream(); // playerController is closed by this function
+        _closeDispositionStream();
 
         if (_track != null) {
           await t.trackRelease(_track);
@@ -224,7 +224,7 @@ class SoundPlayer implements SlotEntry {
         } else {
           try {
             // playerController is closed by this function
-            closeDispositionStream();
+            _closeDispositionStream();
             await _plugin.stop(this);
             playerState = PlayerState.isStopped;
             if (_onStopped != null) _onStopped(wasUser: false);
@@ -315,7 +315,7 @@ class SoundPlayer implements SlotEntry {
   /// TODO does this need to be exposed?
   /// The simple action of stopping the playback may be sufficient
   /// Given the user has to call stop
-  void closeDispositionStream() {
+  void _closeDispositionStream() {
     if (_playerController != null) {
       _playerController.close();
       _playerController = null;
