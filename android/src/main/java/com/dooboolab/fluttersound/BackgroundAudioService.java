@@ -80,6 +80,7 @@ public class BackgroundAudioService
 	public        static Callable mediaPlayerOnCompletionListener;
 	public        static Callable skipTrackForwardHandler;
 	public        static Callable skipTrackBackwardHandler;
+	public        static Callable pauseHandler;
 	public        static Function playbackStateUpdater;
 	// public static boolean includeAudioPlayerFeatures;
 	//public static Activity activity;
@@ -107,6 +108,8 @@ public class BackgroundAudioService
 	 * The track that we're currently playing
 	 */
 	public static Track currentTrack;
+	public static boolean pauseResumeCalledByApp = false;
+
 
 	private boolean            mIsNoisyReceiverRegistered;
 	private MediaPlayer        mMediaPlayer;
@@ -151,6 +154,22 @@ public class BackgroundAudioService
 			 *
 			 */
 
+			if ( (pauseHandler != null ) && (! pauseResumeCalledByApp) )
+			{
+				try
+				{
+					pauseHandler.call();
+					return;
+				}
+				catch ( Exception e )
+				{
+					e.printStackTrace();
+				}
+			} else
+			{
+				pauseResumeCalledByApp = false;
+			}
+
 			startPlayerPlayback();
 		}
 
@@ -163,6 +182,25 @@ public class BackgroundAudioService
 		{
 			super.onPause();
 			// Someone requested to pause the playback, then pause it
+
+
+			// Call the handler to pause, when given
+			if ( (pauseHandler != null ) && (! pauseResumeCalledByApp) )
+			{
+				try
+				{
+					pauseHandler.call();
+					return;
+				}
+				catch ( Exception e )
+				{
+					e.printStackTrace();
+				}
+			} else
+			{
+				pauseResumeCalledByApp = false;
+			}
+
 
 			// Check whether the media player is playing
 			if ( mMediaPlayer.isPlaying() )
@@ -534,33 +572,33 @@ public class BackgroundAudioService
                                                                 }
                                                                 catch ( IOException e )
                                                                 {
-																}
-															} else  if ( currentTrack.getAlbumArtFile() != null ) 
-															{
-																try 
-																{
-																	File            file            = new File( currentTrack.getAlbumArtFile());
-																	FileInputStream istr = new FileInputStream( file);
-																	albumArt = BitmapFactory.decodeStream( istr );
-																
-																} 
-																catch ( IOException e ) 
-																{
-																}
-															} else 
-															{
-																try 
-																{
-																	AssetManager assetManager = getApplicationContext().getAssets();
-																	InputStream  istr         = assetManager.open( "AppIcon.png");
-																	albumArt = BitmapFactory.decodeStream( istr );
+								}
+							     } else  if ( currentTrack.getAlbumArtFile() != null )
+							     {
+									try
+									{
+										File            file            = new File( currentTrack.getAlbumArtFile());
+										FileInputStream istr = new FileInputStream( file);
+										albumArt = BitmapFactory.decodeStream( istr );
 
-																} 
-																catch ( IOException e ) 
-																{
-																}
+									}
+									catch ( IOException e )
+									{
+									}
+								} else
+								{
+									try
+									{
+										AssetManager assetManager = getApplicationContext().getAssets();
+										InputStream  istr         = assetManager.open( "AppIcon.png");
+										albumArt = BitmapFactory.decodeStream( istr );
 
-                                                            }
+									}
+									catch ( IOException e )
+									{
+									}
+
+                                                                }
 			                                    initMediaSessionMetadata( albumArt );
 
 			                                    // Call the callback
@@ -863,6 +901,24 @@ public class BackgroundAudioService
 			initMediaSessionMetadata( bitmap );
 
 			super.onPostExecute( bitmap );
+
+			// Call the handler to pause, when given
+			if ( (pauseHandler != null ) && (! pauseResumeCalledByApp) )
+			{
+				try
+				{
+					pauseHandler.call();
+					return;
+				}
+				catch ( Exception e )
+				{
+					e.printStackTrace();
+				}
+			} else
+			{
+				pauseResumeCalledByApp = false;
+			}
+
 		}
 	}
 }

@@ -28,7 +28,7 @@ SoundPlayer - low level api for detailed control over your audio streams. You ca
 SoundRecorder - records audio.
 
 
-## Wdigets
+## Widgets
 
 SoundPlayerUI - displays an HTML 5 style audio controller widget.
 
@@ -99,7 +99,7 @@ To play a track from a buffer use:
 ```dart
 var player SoundPlayer.withUI();
 player.onFinish = () => player.release();
-player.seekTo(Duration(seconds: 5)); 
+player.seekTo(Duration(seconds: 5));
 player.play(Track.fromBuffer(buffer));
 ```
 
@@ -126,7 +126,7 @@ You can now use a StreamBuilder which will greatly simplify the construction of 
 
 The `SoundPlayer` subscription model is now been unified into a single stream via:
 
-```dart 
+```dart
 var Stream<PlaybackDisposition> = SoundPlayer.noUI().dispositionStream(interval);
 ```
 
@@ -139,8 +139,8 @@ The following methods have been replaced by `dispositionStream`:
 #### SoundRecorder
 The `SoundRecorder` subscription model is now been unified into a single stream via:
 
-```dart 
-var Stream<RecordingDisposition> 
+```dart
+var Stream<RecordingDisposition>
   = SoundRecorder(). dispositionStream(interval);
 ```
 
@@ -151,13 +151,13 @@ class RecordingDisposition {
   final Duration duration;
 
   final double decibels;
-```  
+```
 
 
 ### Types
 Types and enums now consistently use camelCase.
 
-e.g. 
+e.g.
 `t_PLAYER_STATE.IS_STOPPED -> PlayerState.isStopped`
 
 ### New classes
@@ -195,23 +195,23 @@ There is a huge impact on the memory used, but the **LITE** flavor will not be a
 - Playback OGG/OPUS on iOS
 - Record OGG_OPUS on iOS
 
-Add `flutter_sound` or `flutter_sound_lite` as a dependency in pubspec.yaml. The actual versions are `^flutter_sound: 4.0.0-beta.3` and `^flutter_sound_lite: 4.0.0-beta.3`
+Add `flutter_sound` or `flutter_sound_lite` as a dependency in pubspec.yaml. The actual versions are `^flutter_sound: 5.0.0-beta.1` and `^flutter_sound_lite: 5.0.0-beta.1`
 Be aware that **it is not released version**, and probably not good to use it in a released App.
 The API is actually not stabilized and will change very soon.
-The actual released App is `flutter_sound: ^3.1.10`
+The actual released App is `flutter_sound: ^4.0.0`
 
 ```
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sound: ^4.0.0-beta.3
+  flutter_sound: ^5.0.0-beta.1
 ```
 or
 ```
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sound_lite: ^4.0.0-beta.3
+  flutter_sound_lite: ^5.0.0-beta.1
 ```
 
 The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
@@ -276,7 +276,7 @@ QuickPlay.fromBuffer(databuffer, codec: Codec.aac, volume: 1.0, withUI: true);
 
 If you need a UI to allow your user to control playback then you have three options:
 
-1) Use `SoundPlayer.withUI()` 
+1) Use `SoundPlayer.withUI()`
 This will display the OSs' audio player allowing the user to control playback.
 
 2) Use Flutter Sound's SoundPlayerUI widget which provide a HTML5 like audio player.
@@ -314,7 +314,7 @@ player.onFinish = player.release();
 player.play(Track.fromPath('sample.aac'));
 ```
 
-CRITICAL: 
+CRITICAL:
 
 You must be certain to release the player once you have finished playing the audio.
 
@@ -349,7 +349,7 @@ player.onFinish = player.release;
 player.play(Track.fromPath('https://some audio file', codec: Codec.mp3););
 ```
 
-## Play audio from an in memory buffer 
+## Play audio from an in memory buffer
 When playing a audio file from a buffer you MUST provide the codec.
 
 
@@ -388,7 +388,7 @@ player.play(Track.fromPath('sample.blit', codec: Codec.mp3));
 ```
 
 ## Display artist details
-You can also have the OSs' audio player display artist details by 
+You can also have the OSs' audio player display artist details by
 using a `Track`.
 
 ```dart
@@ -406,7 +406,7 @@ The artist, author and album art will be displayed on the OSs' Audio Player.
 # Albums
 Flutter Sound supports the concept of Albums which are, as you would expect, a collection of `Track`s which can be played in order.
 
-The `Album` uses the OSs Media Player to display the tracks as they are played. 
+The `Album` uses the OSs Media Player to display the tracks as they are played.
 
 A user can use the skip back, forward and pause buttons to navigate the album.
 
@@ -443,18 +443,18 @@ album.play();
 Virtual tracks allow you to create an album of infinite size which
 could be useful if you are pulling audio from an external source.
 
-If you create a virtual album you MUST implement the `onSkipForward` 
+If you create a virtual album you MUST implement the `onSkipForward`
 , `onSkipBackwards` and `onFirstTrack` methods to supply the album with Tracks on demand.
 
 ```dart
  var album = Album.virtual();
- album.onFirstTrack = (int currentTrackIndex, Track current) 
+ album.onFirstTrack = (int currentTrackIndex, Track current)
 		=> Track('http://random/xxxx');
-album.onSkipForward = (int currentTrackIndex, Track current) 
+album.onSkipForward = (int currentTrackIndex, Track current)
 		=> Track('http://random/xxxx');
-album.onSkipBackwards = (int currentTrackIndex, Track current) 
+album.onSkipBackwards = (int currentTrackIndex, Track current)
 		=> Track('http://random/xxxx');
-album.onFinish = album.release;		
+album.onFinish = album.release;
 album.play();
 
 ```
@@ -462,9 +462,9 @@ album.play();
 ## Controlling Playback
 An SoundPlayer provides fined grained control over how the audio is played as well as been able to monitor playback and respond to user events.
 
-Importantly `SoundPlayer` also allows you to play multiple audio files using the same session. 
+Importantly `SoundPlayer` also allows you to play multiple audio files using the same session.
 
-Maintaining the same session is important if you are using the OSs' audio UI for user control. 
+Maintaining the same session is important if you are using the OSs' audio UI for user control.
 If you don't use a single `SoundPlayer` then the user will experience flicker between tracks as the OSs' audio player is destroyed and recreated between each track.
 
 The `Album` class provides an easy to use method of utilising a single session without the complications of an `SoundPlayer`.
@@ -505,7 +505,7 @@ class MyWidgetState
 	void initState()
 	{
 		super.initState();
-		
+
 	}
 
 	void dispose()
@@ -533,7 +533,7 @@ class MyWidgetState
 			]);
       },
     ));
-  
+
   /// you would wire this to a button
   void onPlay()
   {
@@ -552,7 +552,7 @@ class MyWidgetState
 	  player.resume();
   }
 }
-```  
+```
 
 ## Codec compatibility
 
@@ -601,7 +601,7 @@ recorder.onStopped = () {
 	recorder.release();
 	/// recorder.path contains the path of the temp file
 	var player = QuickPlay.fromPath(recorder.path)
-	player.onFinished = () { 
+	player.onFinished = () {
 		player.release();
 		File(recorder.path).deleteSync();
 	});
@@ -800,12 +800,21 @@ Using TrackPlayer is very simple : just use the TrackPlayer constructor instead 
 trackPlayer = TrackPlayer();
 ```
 
-You call `startPlayerFromTrack` to play a sound. This function takes in 1 required argument and 3 optional arguments:
+You call `startPlayerFromTrack` to play a sound. This function takes in 1 required argument and 4 optional arguments:
 
 - a `Track`, which is the track that the player is going to play;
-- `whenFinished:()` : A call back function for specifying what to do when the song is finished
+- `onFinished:()` : A call back function for specifying what to do when the song is finished
+- `onPaused: (boolean)` : A call back function for specifying what to do when the user press the `pause/resume` button on the lock screen.
 - `onSkipBackward:()`, A call back function for specifying what to do when the user press the skip-backward button on the lock screen
 - `onSkipForward:()`, A call back function for specifying what to do when the user press the skip-forward button on the lock screen
+
+
+If `onSkipBackward:()` is not specified then the button is not shown on the lock screen.
+If `onSkipForward:()` is not specified, then the  button is not shown on the lock screen.
+If `onPaused: (boolean)` is not specified, then flutter_sound will handle itself the pause/resume function.
+There is actually no way to hide the pause button on the lock screen.
+
+If `onPaused: (boolean)` is specified, then flutter_sound will not handle itself the pause/resume function and it will be the App responsability to handle correctly this function. The boolean argument is `true` if the playback is playing (and probably must me paused). The boolean argument is `false` if the playback is in 'pause' state (and probably must be resumed).
 
 ```dart
 path = await trackPlayer.startPlayerFromTrack
@@ -815,7 +824,13 @@ path = await trackPlayer.startPlayerFromTrack
 	{
 		print( 'I hope you enjoyed listening to this song' );
 	},
-
+  onPaused: ( boolean mustBePaused)
+  {
+    if( mustBePaused )
+            trackPlayer.pause();
+    else
+            trackPlayer.resume();
+  },
 	onSkipBackward: ( )
 	{
 		print( 'Skip backward' );

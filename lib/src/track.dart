@@ -25,6 +25,11 @@ class Track {
   /// The asset that points to the album art of the track
   String albumArtAsset;
 
+
+  /// The file that points to the album art of the track
+  String albumArtFile;
+
+
   ///
   Audio _audio;
 

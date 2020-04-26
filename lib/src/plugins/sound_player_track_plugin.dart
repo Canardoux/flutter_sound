@@ -69,7 +69,21 @@ class SoundPlayerTrackPlugin extends PlayerBasePlugin {
       covariant SoundPlayer player, MethodCall call) {
     switch (call.method) {
 
-      /// track specific methods
+      case 'pause':
+        bool b = call.arguments['arg'] as bool;
+        //if (onPaused != null) { // Probably always true
+          //onPaused( b );
+        //} else {
+          if (b)
+          {
+            onSystemPaused( player );
+          } else {
+            onSystemResumed( player );
+          }
+        //}
+        break;
+
+    /// track specific methods
       case 'skipForward':
         onSystemSkipForward(player);
         break;
