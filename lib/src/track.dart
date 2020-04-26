@@ -34,13 +34,24 @@ class Track {
   Audio _audio;
 
   ///
-  Track.fromPath(String uri, {Codec codec}) {
+  Track.fromPath(String uri, {Codec codec, String title = null, String author = null, String albumArtUrl = null, String albumArtAsset = null, String albumArtFile = null,}) {
     _audio = Audio.fromPath(uri, codec);
+    this.title = title;
+    this.author = author;
+    this.albumArtUrl = albumArtUrl;
+    this.albumArtAsset = albumArtAsset;
+    this.albumArtFile = albumArtFile;
   }
 
   ///
-  Track.fromBuffer(Uint8List dataBuffer, {@required Codec codec}) {
+  Track.fromBuffer(Uint8List dataBuffer, {@required Codec codec, String title = null, String author = null, String albumArtUrl = null, String albumArtAsset = null, String albumArtFile = null,}) {
     _audio = Audio.fromBuffer(dataBuffer, codec);
+    this.title = title;
+    this.author = author;
+    this.albumArtUrl = albumArtUrl;
+    this.albumArtAsset = albumArtAsset;
+    this.albumArtFile = albumArtFile;
+
   }
 
   ///
