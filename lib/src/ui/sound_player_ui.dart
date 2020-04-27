@@ -33,7 +33,7 @@ import 'slider.dart';
 import 'slider_position.dart';
 import 'tick_builder.dart';
 
-typedef OnLoad = Future<Track> Function();
+typedef OnLoad = Future<Track> Function(BuildContext context);
 
 /// A HTML 5 style audio play bar.
 /// Allows you to play/pause/resume and seek an audio track.
@@ -109,7 +109,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
   final StreamController<PlaybackDisposition> _localController;
 
   // we are current play (but may be paused)
-  PlayState _playState = PlayState.stopped;
+  PlayState __playState = PlayState.stopped;
 
   // Indicates that we have start a transition (play to pause etc)
   // and we should block user interaction until the transition completes.
@@ -149,7 +149,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
   void reassemble() async {
     super.reassemble();
     if (_track != null) {
-      if (playState != PlayState.stopped) {
+      if (_playState != PlayState.stopped) {
         await stop();
       }
       trackRelease(_track);
@@ -171,14 +171,14 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     /// should we chain these events incase the user of our api
     /// also wants to see these events?
     _player.onStarted = ({wasUser}) => _loading = false;
-    _player.onStopped = ({wasUser}) => playState = PlayState.stopped;
+    _player.onStopped = ({wasUser}) => _playState = PlayState.stopped;
     _player.onFinished = _onFinished;
 
     /// pipe the new sound players stream to our local controller.
     _player.dispositionStream().listen(_localController.add);
   }
 
-  void _onFinished() => setState(() => playState = PlayState.stopped);
+  void _onFinished() => setState(() => _playState = PlayState.stopped);
 
   @override
   void dispose() {
@@ -204,12 +204,12 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
   }
 
   /// Returns the players current state.
-  PlayState get playState {
-    return _playState;
+  PlayState get _playState {
+    return __playState;
   }
 
-  set playState(PlayState state) {
-    setState(() => _playState = state);
+  set _playState(PlayState state) {
+    setState(() => __playState = state);
   }
 
   /// Called when the user clicks  the Play/Pause button.
@@ -217,12 +217,12 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
   /// playing.
   /// If the audio is playing it will be paused.
   ///
-  /// see [start] for the method to programmitcally start
+  /// see [play] for the method to programmitcally start
   /// the audio playing.
-  void onPlay(BuildContext localContext) {
-    switch (playState) {
+  void _onPlay(BuildContext localContext) {
+    switch (_playState) {
       case PlayState.stopped:
-        start();
+        play();
         break;
 
       case PlayState.playing:
@@ -245,7 +245,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
   void resume() {
     setState(() {
       _transitioning = true;
-      playState = PlayState.playing;
+      _playState = PlayState.playing;
     });
 
     _player
@@ -263,31 +263,33 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     // pause the player
     setState(() {
       _transitioning = true;
-      playState = PlayState.paused;
+      _playState = PlayState.paused;
     });
 
     _player.pause().then((_) => _transitioning = false).catchError((dynamic e) {
       Log.w("Error calling startPlayer ${e.toString()}");
-      playState = PlayState.playing;
+      _playState = PlayState.playing;
       return null;
     }).whenComplete(() => _transitioning = false);
     ;
   }
 
   /// start playback.
-  void start() async {
+  void play() async {
     setState(() {
       _transitioning = true;
       _loading = true;
-      print("Loading starting");
+      Log.d("Loading starting");
     });
 
-    print("Calling startPlayer");
+    Log.d("Calling startPlayer");
 
     if (_track != null && _player.isPlaying) {
-      print("startPlay called whilst player running. Stopping Player first.");
+      Log.d("play called whilst player running. Stopping Player first.");
       await _stop();
     }
+
+    Future<Track> newTrack;
 
     if (_onLoad != null) {
       if (_track != null) {
@@ -295,14 +297,25 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
       }
 
       /// dynamically load the player.
-      _track = await _onLoad();
+      newTrack = _onLoad(context);
+    } else {
+      newTrack = Future.value(_track);
     }
 
     /// no track then just silently ignore the start action.
     /// This means that _onLoad returned null and the user
     /// can display appropriate errors.
-    if (_track != null) {
-      _start();
+    if (newTrack != null) {
+      newTrack.then((track) {
+        _track = track;
+        _start();
+      }).catchError((dynamic exception) {
+        // errors throw by _onLoad are captured here in the .then
+        // handler for newTrack.
+        _transitioning = false;
+        _loading = false;
+        Log.e("Error occured loading the track: ${exception.toString()}");
+      });
     } else {
       setState(() {
         _transitioning = false;
@@ -314,23 +327,21 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
 
   /// internal start method.
   void _start() async {
-    // _soundPlayer.seekTo(sliderPosition.position);
-    var watch = StopWatch('start');
+    var watch = StopWatch('play');
     _player.play(_track).then((_) {
-      playState = PlayState.playing;
+      _playState = PlayState.playing;
 
       Log.d("StartPlayer returned");
     }).catchError((dynamic e) {
-      Log.w("Error calling startPlayer ${e.toString()}");
-      playState = PlayState.stopped;
+      Log.w("Error calling play() ${e.toString()}");
+      _playState = PlayState.stopped;
+
       return null;
     }).whenComplete(() {
       _loading = false;
       _transitioning = false;
     });
     watch.end();
-
-    Log.d('**************** progress passed play');
   }
 
   /// Call [stop] to stop the audio playing.
@@ -354,11 +365,11 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
 
     // if called via dispose we can't trigger setState.
     if (supressState) {
-      _playState = PlayState.stopped;
+      __playState = PlayState.stopped;
       __transitioning = false;
       __loading = false;
     } else {
-      playState = PlayState.stopped;
+      _playState = PlayState.stopped;
       _transitioning = false;
       _loading = false;
     }
@@ -389,7 +400,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
   Widget _buildPlayButton() {
     Widget button;
 
-    Log.d("buildPlayButton loading: $_loading state: $playState");
+    Log.d("buildPlayButton loading: $_loading state: $_playState");
     if (_loading == true) {
       button = Container(
           // margin: const EdgeInsets.only(top: 5.0, bottom: 5),
@@ -421,14 +432,14 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
                             _onLoad == null) ||
                         __transitioning)
                     ? null
-                    : () => onPlay(localContext),
+                    : () => _onPlay(localContext),
                 child: button);
           })),
     );
   }
 
   Widget _buildPlayButtonIcon(Widget widget) {
-    switch (playState) {
+    switch (_playState) {
       case PlayState.playing:
         widget = Icon(Icons.pause, color: Colors.black);
         break;
