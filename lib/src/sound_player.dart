@@ -55,14 +55,30 @@ class SoundPlayer implements SlotEntry {
   PlayerEventWithCause _onStarted;
   PlayerEventWithCause _onStopped;
 
-  ///
+  /// When the [withUI] ctor is called this field
+  /// controls whether the OSs' UI displays the pause button.
+  /// If you change this value it won't take affect until the
+  /// next call to [play].
   bool canPause;
 
-  ///
+  /// When the [withUI] ctor is called this field
+  /// controls whether the OSs' UI displays the skip Forward button.
+  /// If you change this value it won't take affect until the
+  /// next call to [play].
   bool canSkipForward;
 
-  ///
+  /// When the [withUI] ctor is called this field
+  /// controls whether the OSs' UI displays the skip back button.
+  /// If you change this value it won't take affect until the
+  /// next call to [play].
   bool canSkipBackward;
+
+  /// If true then the media is being played in the background
+  /// and will continue playing even if our app is paused.
+  /// If false the audio will automatically be paused if
+  /// the audio is placed into the back ground and resumed
+  /// when your app becomes the foreground app.
+  final bool playInBackground;
 
   /// If the user calls seekTo before starting the track
   /// we cache the value until we start the player and
@@ -77,29 +93,75 @@ class SoundPlayer implements SlotEntry {
   ///
   PlayerState playerState = PlayerState.isStopped;
 
+  ///
+  /// Disposition stream components
+  ///
+
+  /// The stream source
   StreamController<PlaybackDisposition> _playerController =
       StreamController<PlaybackDisposition>();
 
+  /// last time we sent an update via the stream.
+  DateTime _lastPositionDispositionUpdate = DateTime.now();
+
+  /// The user requested interval of updates.
+  Duration _positionDispostionInterval;
+
+  /// The current playback position
+  Duration _currentPosition;
+
   /// Create a [SoundPlayer] that displays the OS' audio UI.
+  ///
+  /// if [canPause] is true than the user will be able to pause the track
+  /// via the OSs' UI. Defaults to true.
+  ///
+  /// If [canSkipBackward] is true then the user will be able to click the skip
+  /// back button on the OSs' UI. Given the [SoundPlayer] only deals with a
+  /// single track at
+  /// a time you will need to implement [onSkipBackward] for this action to
+  /// have any affect. The [Album] class has the ability to manage mulitple
+  /// tracks.
+  ///
+  /// If [canSkipForward] is true then the user will be able to click the skip
+  /// forward button on the OSs' UI. Given the [SoundPlayer] only deals with a
+  /// single track at a time you will need to implement [onSkipBackward] for
+  /// this action to have any affect. The [Album] class has the ability to
+  /// manage mulitple tracks.
+  ///
+  /// If [playInBackground] is true then the audio will play in the background
+  /// which means that it will keep playing even if the app is sent to the
+  /// background.
+  ///
+  /// Once you have finished with the [SoundPlayer] you MUST
+  /// call [SoundPlayer.release].
+  ///
   SoundPlayer.withUI({
     this.canPause = true,
     this.canSkipBackward = false,
     this.canSkipForward = false,
+    this.playInBackground = false,
   }) : _plugin = SoundPlayerTrackPlugin() {
     _initialise();
+
+    if (Platform.isIOS) {
+      /// hack until we implement onConnect in the IOS plugin
+      _onConnected(result: true);
+    }
   }
 
-  /// Create an [SoundPlayer] that does not have a UI.
+  /// Create a [SoundPlayer] that does not have a UI.
+  ///
   /// You can use this version to simply playback audio without
   /// a UI or to build your own UI as [Playbar] does.
-  SoundPlayer.noUI() : _plugin = SoundPlayerPlugin() {
+  SoundPlayer.noUI({this.playInBackground = false})
+      : _plugin = SoundPlayerPlugin() {
     canPause = false;
     canSkipBackward = false;
     canSkipForward = false;
     _initialise();
 
     /// hack until we implement onConnect in the player.
-    onConnected(result: true);
+    _onConnected(result: true);
   }
 
   /// Used to wait for the plugin to connect us to an OS MediaPlayer
@@ -107,12 +169,19 @@ class SoundPlayer implements SlotEntry {
   final Completer<bool> _connected = Completer<bool>();
 
   void _initialise() {
-    _plugin.onConnected = onConnected;
+    _plugin.onConnected = _onConnected;
 
     /// we allow five seconds for the connect to complete or
     /// we timeout returning false.
     _initialised = _connected.future
         .timeout(Duration(seconds: 5), onTimeout: () => Future.value(false));
+
+    /// track the current position
+    _currentPosition = Duration.zero;
+    _playerController.stream.listen((playbackDisposition) {
+      _currentPosition = playbackDisposition.position;
+    });
+    _setSubscriptionDuration(Duration(microseconds: 100));
 
     _plugin.initialisePlayer(this);
   }
@@ -124,15 +193,11 @@ class SoundPlayer implements SlotEntry {
     return _initialised;
   }
 
-  /// callback occurs when the OS MediaPlayer successfully connects:
-  /// TODO: implement the onConnected event from iOS.
-  /// [result] true if the connection succeeded.
-  void onConnected({bool result}) {
-    _connected.complete(result);
-  }
-
   /// call this method once you are done with the player
   /// so that it can release all of the attached resources.
+  ///
+  /// Note:
+  ///
   Future<void> release() async {
     initialised.then<void>((result) async {
       if (result == true) {
@@ -146,6 +211,13 @@ class SoundPlayer implements SlotEntry {
         await _plugin.release(this);
       }
     });
+  }
+
+  /// callback occurs when the OS MediaPlayer successfully connects:
+  /// TODO: implement the onConnected event from iOS.
+  /// [result] true if the connection succeeded.
+  void _onConnected({bool result}) {
+    _connected.complete(result);
   }
 
   /// Starts playback.
@@ -223,9 +295,11 @@ class SoundPlayer implements SlotEntry {
           Log.d("stop() was called when the player wasn't playing. Ignored");
         } else {
           try {
-            // playerController is closed by this function
-            _closeDispositionStream();
             await _plugin.stop(this);
+
+            /// if we don't release system resources other
+            /// players may not be able to start.
+            await _plugin.release(this);
             playerState = PlayerState.isStopped;
             if (_onStopped != null) _onStopped(wasUser: false);
           } on Object catch (e) {
@@ -300,6 +374,15 @@ class SoundPlayer implements SlotEntry {
     });
   }
 
+  /// Rewinds the current track by the given interval
+  Future<void> rewind(Duration interval) {
+    _currentPosition -= interval;
+
+    /// There may be a chance of a race condition if the underlying
+    /// os code is in the middle of sending us a position update.
+    return seekTo(_currentPosition);
+  }
+
   /// Sets the playback volume
   /// The [volume] must be in the range 0.0 to 1.0.
   Future<void> setVolume(double volume) async {
@@ -312,6 +395,41 @@ class SoundPlayer implements SlotEntry {
     });
   }
 
+  /// [true] if the player is currently playing audio
+  bool get isPlaying => playerState == PlayerState.isPlaying;
+
+  /// [true] if the player is playing but the audio is paused
+  bool get isPaused => playerState == PlayerState.isPaused;
+
+  /// [true] if the player is stopped.
+  bool get isStopped => playerState == PlayerState.isStopped;
+
+  /// Provides a stream of dispositions which
+  /// provide updated position and duration
+  /// as the audio is played.
+  /// The duration may start out as zero until the
+  /// media becomes available.
+  /// The [interval] dictates the minimum interval between events
+  /// being sent to the stream.
+  ///
+  /// The minimum interval supported is 100ms.
+  ///
+  /// Note: the underlying stream has a minimum frequency of 100ms
+  /// so multiples of 100ms will give you the most consistent timing
+  /// source.
+  ///
+  /// Note: all calls to [dispositionStream] agains this player will
+  /// share a single interval which will controlled by the last
+  /// call to this method.
+  ///
+  /// If you pause the audio then no updates will be sent to the
+  /// stream.
+  Stream<PlaybackDisposition> dispositionStream(
+      {Duration interval = const Duration(milliseconds: 100)}) {
+    _positionDispostionInterval = interval;
+    return _playerController.stream;
+  }
+
   /// TODO does this need to be exposed?
   /// The simple action of stopping the playback may be sufficient
   /// Given the user has to call stop
@@ -319,6 +437,21 @@ class SoundPlayer implements SlotEntry {
     if (_playerController != null) {
       _playerController.close();
       _playerController = null;
+    }
+  }
+
+  /// Stream updates to users of [dispositionStream]
+  /// We have a fixed frequency of 100ms coming up from the
+  /// plugin so we need to modify the frequency based on what
+  /// the user requested in the call to [dispositionStream].
+  void _updateProgress(PlaybackDisposition disposition) {
+    // we only send dispositions whilst playing.
+    if (isPlaying) {
+      if (DateTime.now().difference(_lastPositionDispositionUpdate) >
+          _positionDispostionInterval) {
+        _playerController?.add(disposition);
+        _lastPositionDispositionUpdate = DateTime.now();
+      }
     }
   }
 
@@ -331,39 +464,6 @@ class SoundPlayer implements SlotEntry {
         throw PlayerInvalidStateException('Player initialisation failed');
       }
     });
-  }
-
-  /// Provides a stream of dispositions which
-  /// provide updated position and duration
-  /// as the audio is played.
-  /// The duration may start out as zero until the
-  /// media becomes available.
-  /// The [interval] dictates the minimum interval between events
-  /// been sent to the stream.
-  /// In most case the interval will be adheared to fairly closely.
-  /// If you pause the audio then no updates will be sent to the
-  /// stream.
-  Stream<PlaybackDisposition> dispositionStream(
-      {Duration interval = const Duration(milliseconds: 100)}) {
-    _setSubscriptionDuration(interval);
-    return _playerController != null ? _playerController.stream : null;
-  }
-
-  /// [true] if the player is currently playing audio
-  bool get isPlaying => playerState == PlayerState.isPlaying;
-
-  /// [true] if the player is playing but the audio is paused
-  bool get isPaused => playerState == PlayerState.isPaused;
-
-  /// [true] if the player is stopped.
-  bool get isStopped => playerState == PlayerState.isStopped;
-
-  ///
-  void _updateProgress(PlaybackDisposition disposition) {
-    // we only send dispositions whilst playing.
-    if (isPlaying) {
-      _playerController?.add(disposition);
-    }
   }
 
   /// internal method.
@@ -418,6 +518,23 @@ class SoundPlayer implements SlotEntry {
   /// handles a resume coming up from the player
   void _onSystemResumed() {
     if (_onResumed != null) _onResumed(wasUser: true);
+  }
+
+  /// System event telling us that the app has been paused.
+  /// Unless we are playing in the background then
+  /// we need to stop playback so as to release the media player
+  void _onSystemAppPaused() {
+    if (!playInBackground) stop();
+  }
+
+  /// System event telling us that our app has been resumed.
+  /// If we had previously stopped then we resuming playing
+  /// from the last position - 1 second.
+  void _onSystemAppResumed() {
+    if (!playInBackground && _track != null) {
+      rewind(Duration(seconds: 1));
+      play(_track);
+    }
   }
 
   /// handles a skip forward coming up from the player
@@ -604,6 +721,11 @@ class SoundPlayer implements SlotEntry {
   /// Is this in the correct spot if it is only called once?
   /// Should we have a configuration object that sets
   /// up global options?
+  ///
+  /// I think this really needs to be abstracted out via our api.
+  /// We should try to avoid any OS specific api's being exposed as
+  /// part of the public api.
+  ///
   Future<bool> iosSetCategory(
       IOSSessionCategory category, IOSSessionMode mode, int options) async {
     return initialised.then<bool>((result) async {
@@ -724,6 +846,12 @@ void onSystemPaused(SoundPlayer player) => player._onSystemPaused();
 
 /// handles a resume coming up from the player
 void onSystemResumed(SoundPlayer player) => player._onSystemResumed();
+
+/// System event notification that the app has paused
+void onSystemAppPaused(SoundPlayer player) => player._onSystemAppPaused();
+
+/// System event notification that the app has resumed
+void onSystemAppResumed(SoundPlayer player) => player._onSystemAppResumed();
 
 /// handles a skip forward coming up from the player
 void onSystemSkipForward(SoundPlayer player) => player._onSystemSkipForward();
