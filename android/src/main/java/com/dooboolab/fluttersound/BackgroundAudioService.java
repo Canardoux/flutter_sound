@@ -80,6 +80,7 @@ public class BackgroundAudioService
 	public        static Callable mediaPlayerOnCompletionListener;
 	public        static Callable skipTrackForwardHandler;
 	public        static Callable skipTrackBackwardHandler;
+	public        static Callable pauseHandler;
 	public        static Function playbackStateUpdater;
 	// public static boolean includeAudioPlayerFeatures;
 	//public static Activity activity;
@@ -107,6 +108,7 @@ public class BackgroundAudioService
 	 * The track that we're currently playing
 	 */
 	public static Track currentTrack;
+	public static boolean pauseResumeCalledByApp = false;
 
 	private boolean            mIsNoisyReceiverRegistered;
 	private MediaPlayer        mMediaPlayer;
@@ -128,7 +130,7 @@ public class BackgroundAudioService
 	};
 
 
-   	private MediaSessionCompat.Callback mMediaSessionCallback = new MediaSessionCompat.Callback()
+	private MediaSessionCompat.Callback mMediaSessionCallback = new MediaSessionCompat.Callback()
 	{
 
 		/**
@@ -150,6 +152,21 @@ public class BackgroundAudioService
 			 * return; }
 			 *
 			 */
+			if ( (pauseHandler != null ) && (! pauseResumeCalledByApp) )
+			{
+				try
+				{
+					pauseHandler.call();
+					return;
+				}
+				catch ( Exception e )
+				{
+					e.printStackTrace();
+				}
+			} else
+			{
+				pauseResumeCalledByApp = false;
+			}
 
 			startPlayerPlayback();
 		}
@@ -161,8 +178,26 @@ public class BackgroundAudioService
 		@SuppressWarnings ( "unchecked" )
 		public void onPause()
 		{
-			super.onPause();
 			// Someone requested to pause the playback, then pause it
+			super.onPause();
+
+
+			// Call the handler to pause, when given
+			if ( (pauseHandler != null ) && (! pauseResumeCalledByApp) )
+			{
+				try
+				{
+					pauseHandler.call();
+					return;
+				}
+				catch ( Exception e )
+				{
+					e.printStackTrace();
+				}
+			} else
+			{
+				pauseResumeCalledByApp = false;
+			}
 
 			// Check whether the media player is playing
 			if ( mMediaPlayer.isPlaying() )
@@ -859,10 +894,20 @@ public class BackgroundAudioService
 		@Override
 		protected void onPostExecute( Bitmap bitmap )
 		{
+			super.onPostExecute( bitmap );
 			// Reinitialize the metadata when the image has been downloaded
 			initMediaSessionMetadata( bitmap );
+			//NotificationCompat.Action actionPlay = new NotificationCompat.Action( R.drawable.ic_play_arrow, "Play", MediaButtonReceiver.buildMediaButtonPendingIntent( getApplicationContext(), PlaybackStateCompat.ACTION_PLAY_PAUSE ) );
+			//displayNotification( getApplicationContext(), actionPlay );
 
-			super.onPostExecute( bitmap );
+			if (! mMediaPlayer.isPlaying() )
+			{
+				// Show a notification to handle the media playback
+				showPausedNotification();
+			} else
+			{
+				showPlayingNotification();
+			}
 		}
 	}
 }
