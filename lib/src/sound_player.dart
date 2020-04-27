@@ -232,20 +232,27 @@ class SoundPlayer implements SlotEntry {
   ///
   ///
   Future<void> play(t.Track track) async {
+    assert(track != null);
     var started = Completer<void>();
     initialised.then<void>((result) async {
       if (result == true) {
         _track = track;
 
         if (!isStopped) {
-          throw PlayerInvalidStateException("The player must not be running.");
+          started.complete();
+          var exception =
+              PlayerInvalidStateException("The player must not be running.");
+          started.completeError(exception);
+          throw exception;
         }
 
         // Check the current codec is supported on this platform
         if (!await isSupported(track.codec)) {
-          throw PlayerInvalidStateException(
+          var exception = PlayerInvalidStateException(
               'The selected codec ${track.codec} is not supported on '
               'this platform.');
+          started.completeError(exception);
+          throw exception;
         }
 
         Log.d('calling prepare stream');
@@ -279,8 +286,10 @@ class SoundPlayer implements SlotEntry {
           if (_onStarted != null) _onStarted(wasUser: false);
         });
       } else {
-        started.completeError(
-            PlayerInvalidStateException('Player initialisation failed'));
+        var exception =
+            PlayerInvalidStateException('Player initialisation failed');
+        started.completeError(exception);
+        throw exception;
       }
     });
     Log.d('*************play returning');
