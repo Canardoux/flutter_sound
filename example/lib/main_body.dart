@@ -1,18 +1,16 @@
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'active_codec.dart';
-import 'common.dart';
+import 'asset_player.dart';
 import 'drop_downs.dart';
-import 'main.dart';
-import 'media_path.dart';
 import 'recorder_controls.dart';
 import 'recorder_state.dart';
+import 'recording_player.dart';
+import 'remote_player.dart';
 import 'track_switched.dart';
 import 'util/log.dart';
 
@@ -70,8 +68,8 @@ class _MainBodyState extends State<MainBody> {
             return ListView(
               children: <Widget>[
                 recorderControls,
-                buildPlayBar(),
                 dropdowns,
+                buildPlayBars(),
                 trackSwitch,
               ],
             );
@@ -90,161 +88,39 @@ class _MainBodyState extends State<MainBody> {
     }
   }
 
-  /// Callback for the PlayBar so we can dynamically load a Track after
-  /// validating that all other settings are correct.
-  Future<Track> onLoad() async {
-    Track track;
-    var canPlay = true;
-
-    // validate codec for example file
-    if (MediaPath().isExampleFile) {
-      if (ActiveCodec().codec != Codec.mp3) {
-        canPlay = false;
-        var error = SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('You must set the Codec to MP3 to '
-                'play the "Remote Example File"'));
-        Scaffold.of(context).showSnackBar(error);
-      }
-    }
-
-    /// validate codec if using asset.
-    else if (!MediaPath().isAsset && !MediaPath().exists(ActiveCodec().codec)) {
-      canPlay = false;
-      var error = SnackBar(
-          content: Text("Record a message first or select "
-              "'Remote Example File' or 'Asset' from Media"));
-      Scaffold.of(context).showSnackBar(error);
-    }
-
-    if (canPlay) {
-      track = await createTrack();
-      if (_useOSUI) {
-        /// need to disable the player when we switch to built in
-        /// as it creates its own player
-        var player = SoundPlayer.withUI();
-        player.onFinished = () => player.release();
-        player.onStopped = ({wasUser}) => player.release();
-        player.play(track);
-        track = null;
-      }
-      setState(() {});
-    }
-    return track;
-  }
-
-  Future<Track> createTrack() async {
-    Track track;
-    try {
-      /// build player from asset
-      if (MediaPath().isAsset) {
-        track = await createAssetTrack();
-      }
-
-      /// build player from file
-      else if (MediaPath().isFile) {
-        // Do we want to play from buffer or from file ?
-        track = await _createPathTrack();
-      }
-
-      /// build player from buffer.
-      else if (MediaPath().isBuffer) {
-        // Do we want to play from buffer or from file ?
-        track = await _createBufferTrack();
-      }
-
-      /// build player from example URL
-      else if (MediaPath().isExampleFile) {
-        // We have to play an example audio file loaded via a URL
-        track = await _createRemoteTrack();
-      }
-      if (track != null) {
-        track.title = "Flutter at first Sight.";
-        track.author = "By flutter_sound";
-
-        if (MediaPath().isExampleFile) {
-          track.albumArtUrl = albumArtPath;
-        } else {
-          if (Platform.isIOS) {
-            track.albumArtAsset = 'AppIcon';
-          } else if (Platform.isAndroid) {
-            track.albumArtAsset = 'AppIcon.png';
-          }
-        }
-        await _startConcurrentPlayer(track);
-      }
-    } on Object catch (err) {
-      Log.d('error: $err');
-      rethrow;
-    }
-
-    return track;
-  }
-
-  Future _startConcurrentPlayer(Track track) async {
-    if (renetranceConcurrency && !MediaPath().isExampleFile) {
-      var dataBuffer =
-          (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
-              .buffer
-              .asUint8List();
-      QuickPlay.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
-    }
-  }
-
-  Future<Track> _createRemoteTrack() async {
-    // We have to play an example audio file loaded via a URL
-    return Track.fromPath(exampleAudioFilePath, codec: ActiveCodec().codec);
-  }
-
-  Future<Track> _createBufferTrack() async {
-    Track track;
-    // Do we want to play from buffer or from file ?
-    if (fileExists(MediaPath().pathForCodec(ActiveCodec().codec))) {
-      var dataBuffer =
-          await makeBuffer(MediaPath().pathForCodec(ActiveCodec().codec));
-      if (dataBuffer == null) {
-        throw Exception('Unable to create the buffer');
-      }
-      track = Track.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
-    }
-    return track;
-  }
-
-  Future<Track> _createPathTrack() async {
-    Track track;
-    // Do we want to play from buffer or from file ?
-    if (fileExists(MediaPath().pathForCodec(ActiveCodec().codec))) {
-      var audioFilePath = MediaPath().pathForCodec(ActiveCodec().codec);
-      track = Track.fromPath(audioFilePath, codec: ActiveCodec().codec);
-    }
-    return track;
-  }
-
-  Future<Track> createAssetTrack() async {
-    Track track;
-    var dataBuffer =
-        (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
-            .buffer
-            .asUint8List();
-    track = Track.fromBuffer(
-      dataBuffer,
-      codec: ActiveCodec().codec,
-    );
-    return track;
-  }
-
   /// Allows us to switch the player module
   Future<void> _switchModes(bool useTracks) async {
     RecorderState().reset();
   }
 
-  Widget buildPlayBar() {
+  Widget buildPlayBars() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SoundPlayerUI.fromLoader(
-        onLoad,
-        showTitle: true,
-      ),
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Left("Recording Playback"),
+            RecordingPlayer(),
+            Left("Asset Playback"),
+            AssetPlayer(),
+            Left("Remote Track Playback"),
+            RemotePlayer(),
+          ],
+        ));
+  }
+}
+
+class Left extends StatelessWidget {
+  final String label;
+
+  Left(this.label);
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0, bottom: 4, left: 8),
+      child: Container(
+          alignment: Alignment.centerLeft,
+          child: Text(label, style: TextStyle(fontWeight: FontWeight.bold))),
     );
   }
 }
