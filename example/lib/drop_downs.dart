@@ -3,7 +3,6 @@ import 'package:flutter_sound/flutter_sound.dart';
 
 import 'active_codec.dart';
 import 'common.dart';
-import 'main.dart';
 import 'media_path.dart';
 
 /// Widget containing the set of drop downs used in the UI
@@ -34,7 +33,7 @@ class _DropdownsState extends State<Dropdowns> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
-          child: Text('Media:'),
+          child: Text('Record To:'),
         ),
         buildMediaDropdown(),
       ],
@@ -54,14 +53,10 @@ class _DropdownsState extends State<Dropdowns> {
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            child: mediaDropdown,
-          ),
+          mediaDropdown,
           codecDropdown,
         ],
       ),
@@ -84,7 +79,6 @@ class _DropdownsState extends State<Dropdowns> {
       },
       items: <DropdownMenuItem<Codec>>[
         DropdownMenuItem<Codec>(
-
           value: Codec.aacADTS,
           child: Text('AAC'),
         ),
@@ -102,7 +96,6 @@ class _DropdownsState extends State<Dropdowns> {
         ),
         DropdownMenuItem<Codec>(
           value: Codec.vorbisOGG,
-
           child: Text('OGG/Vorbis'),
         ),
         DropdownMenuItem<Codec>(
@@ -117,10 +110,6 @@ class _DropdownsState extends State<Dropdowns> {
     return DropdownButton<MediaStorage>(
       value: MediaPath().media,
       onChanged: (newMedia) {
-        if (newMedia == MediaStorage.remoteExampleFile) {
-          ActiveCodec().setCodec(false, Codec.mp3);
-          MediaPath().setCodecPath(ActiveCodec().codec, exampleAudioFilePath);
-        } // Actually this is the only example we use in this example
         MediaPath().media = newMedia;
 
         setState(() {});
@@ -133,14 +122,6 @@ class _DropdownsState extends State<Dropdowns> {
         DropdownMenuItem<MediaStorage>(
           value: MediaStorage.buffer,
           child: Text('Buffer'),
-        ),
-        DropdownMenuItem<MediaStorage>(
-          value: MediaStorage.asset,
-          child: Text('Asset'),
-        ),
-        DropdownMenuItem<MediaStorage>(
-          value: MediaStorage.remoteExampleFile,
-          child: Text('Remote Example File'),
         ),
       ],
     );
