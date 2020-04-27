@@ -99,7 +99,7 @@ class SoundPlayer implements SlotEntry {
 
   /// The stream source
   StreamController<PlaybackDisposition> _playerController =
-      StreamController<PlaybackDisposition>();
+      StreamController<PlaybackDisposition>.broadcast();
 
   /// last time we sent an update via the stream.
   DateTime _lastPositionDispositionUpdate = DateTime.now();
@@ -181,7 +181,7 @@ class SoundPlayer implements SlotEntry {
     _playerController.stream.listen((playbackDisposition) {
       _currentPosition = playbackDisposition.position;
     });
-    _setSubscriptionDuration(Duration(microseconds: 100));
+    _setSubscriptionDuration(Duration(milliseconds: 100));
 
     _plugin.initialisePlayer(this);
   }
