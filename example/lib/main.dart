@@ -25,13 +25,7 @@ import 'main_body.dart';
 /// FlautoPlayer when the user hit the Record button
 const renetranceConcurrency = false;
 
-/// path to remote auido file.
-const String exampleAudioFilePath =
-    "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
 
-/// path to remote auido file artwork.
-final String albumArtPath =
-    "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_500kB.png";
 
 void main() {
   runApp(MyApp());
