@@ -135,6 +135,13 @@ class SoundPlayer implements SlotEntry {
   /// Once you have finished with the [SoundPlayer] you MUST
   /// call [SoundPlayer.release].
   ///
+  /// ```dart
+  /// var player = SoundPlayer.noUI();
+  /// player.onFinished = () => player.release();
+  /// player.onStop = () => player.release();
+  /// player.play(track);
+  /// ```
+  /// The above example guarentees that the player will be released.
   SoundPlayer.withUI({
     this.canPause = true,
     this.canSkipBackward = false,
@@ -153,6 +160,20 @@ class SoundPlayer implements SlotEntry {
   ///
   /// You can use this version to simply playback audio without
   /// a UI or to build your own UI as [Playbar] does.
+  ///
+  /// If [playInBackground] is true then the audio will play in the background
+  /// which means that it will keep playing even if the app is sent to the
+  /// background.
+  ///
+  /// Once you have finished with the [SoundPlayer] you MUST
+  /// call [SoundPlayer.release].
+  /// ```dart
+  /// var player = SoundPlayer.noUI();
+  /// player.onFinished = () => player.release();
+  /// player.onStop = () => player.release();
+  /// player.play(track);
+  /// ```
+  /// The above example guarentees that the player will be released.
   SoundPlayer.noUI({this.playInBackground = false})
       : _plugin = SoundPlayerPlugin() {
     canPause = false;
@@ -229,6 +250,7 @@ class SoundPlayer implements SlotEntry {
   /// If the file extension doesn't match a known codec then
   /// [QuickPlay] will throw an [CodecNotSupportedException] in which
   /// case you need pass one of the known codecs.
+  ///
   ///
   ///
   Future<void> play(t.Track track) async {
