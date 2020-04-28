@@ -60,7 +60,6 @@ class Audio {
   /// This method can be called multiple times and will only
   /// do the conversions once.
   void prepareStream() async {
-    var path = uri;
 
     // android doesn't support data buffers so we must convert
     // to a file.
@@ -70,6 +69,7 @@ class Audio {
         (Platform.isAndroid || Platform.isIOS && codec == Codec.opusOGG)) {
       _writeToDisk();
     }
+    var path = uri;
 
     // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We use FFmpeg for that task.
@@ -82,7 +82,7 @@ class Audio {
       codec = Codec.cafOpus;
 
       /// update the path to the new file.
-      path = tempMediaFile.path;
+      uri = tempMediaFile.path;
     }
   }
 

@@ -177,7 +177,7 @@ class SoundPlayer implements SlotEntry {
         }
 
         Log.d('calling prepare stream');
-        t.prepareStream(track);
+        await t.prepareStream(track);
 
         Log.d('calling hush');
         _applyHush();

@@ -160,7 +160,7 @@ class _MyAppState extends State<MyApp> {
 
   void cancelRecorderSubscriptions() {
     if (recorderStreamSubscription != null) {
-      //ecorderStreamSubscription.cancel();
+      //recorderStreamSubscription.cancel();
       recorderStreamSubscription = null;
     }
     //if (_dbPeakSubscription != null) {
@@ -267,9 +267,9 @@ class _MyAppState extends State<MyApp> {
       // );
       Directory tempDir = await getTemporaryDirectory();
       int slotNo = 0; // TODO
-
+      String path = '${tempDir.path}/${slotNo}-${paths[_codec.index]}';
       await recorderModule.start(
-        path:  '${tempDir.path}/${slotNo}-${paths[_codec.index]}',
+        path:  path,
         codec: _codec,
       );
 
@@ -295,7 +295,7 @@ class _MyAppState extends State<MyApp> {
 
       this.setState(() {
         this._isRecording = true;
-        //this._path[_codec.index] = path;
+        this._path[_codec.index] = path;
       });
     } catch (err) {
       print('startRecorder error: $err');
@@ -373,14 +373,15 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> startPlayer() async {
     try {
-      String path;
+      //String path;
       Uint8List dataBuffer;
       String audioFilePath;
       if (_media == Media.Asset) {
         dataBuffer = (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
       } else if (_media == Media.File) {
         // Do we want to play from buffer or from file ?
-        if (await fileExists(_path[_codec.index])) audioFilePath = this._path[_codec.index];
+        if (await fileExists(_path[_codec.index]))
+          audioFilePath = this._path[_codec.index];
       } else if (_media == Media.Buffer) {
         // Do we want to play from buffer or from file ?
         if (await fileExists(_path[_codec.index])) {
@@ -427,7 +428,7 @@ class _MyAppState extends State<MyApp> {
                   albumArtFile: albumArtFile,
                 );
         else
-          track = Track.fromPath(path,
+          track = Track.fromPath(audioFilePath,
                                      //trackPath: audioFilePath,
                                      //dataBuffer: dataBuffer,
                                      codec: _codec,
@@ -437,7 +438,10 @@ class _MyAppState extends State<MyApp> {
                                      albumArtAsset: albumArtAsset,
                                      albumArtFile: albumArtFile,
                                    );
-
+      playerModule.onFinished = () {
+        print('I hope you enjoyed listening to this song');
+        setState(() {});
+      };
 
          await playerModule.play(
           track,
@@ -483,7 +487,7 @@ class _MyAppState extends State<MyApp> {
           */
       _addListeners();
 
-      print('startPlayer: $path');
+      print('startPlayer: $audioFilePath');
       // await flutterSoundModule.setVolume(1.0);
     } catch (e)
     {
