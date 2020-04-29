@@ -17,6 +17,7 @@
 import 'dart:async';
 import 'dart:io';
 
+
 import 'android/android_audio_focus_gain.dart';
 
 import 'codec.dart';
@@ -104,11 +105,18 @@ class SoundPlayer implements SlotEntry {
   /// last time we sent an update via the stream.
   DateTime _lastPositionDispositionUpdate = DateTime.now();
 
-  /// The user requested interval of updates.
+  /// The user requested interval of stream updates.
   Duration _positionDispostionInterval;
 
-  /// The current playback position
-  Duration _currentPosition;
+  /// The current playback position as last sent on the stream.
+  Duration _currentPosition = Duration.zero;
+
+  /// Used to wait for the plugin to connect us to an OS MediaPlayer
+  Future<bool> _initialised;
+  Completer<bool> _connected = Completer<bool>();
+
+  /// hack until we implement onConnect in the all the plugins.
+  final bool _fakeOnConnect;
 
   /// Create a [SoundPlayer] that displays the OS' audio UI.
   ///
@@ -132,6 +140,7 @@ class SoundPlayer implements SlotEntry {
   /// which means that it will keep playing even if the app is sent to the
   /// background.
   ///
+  /// {@tool sample}
   /// Once you have finished with the [SoundPlayer] you MUST
   /// call [SoundPlayer.release].
   ///
@@ -142,18 +151,17 @@ class SoundPlayer implements SlotEntry {
   /// player.play(track);
   /// ```
   /// The above example guarentees that the player will be released.
+  /// {@end-tool}
   SoundPlayer.withUI({
     this.canPause = true,
     this.canSkipBackward = false,
     this.canSkipForward = false,
     this.playInBackground = false,
-  }) : _plugin = SoundPlayerTrackPlugin() {
-    _initialise();
+  })  : _fakeOnConnect = Platform.isIOS,
+        _plugin = SoundPlayerTrackPlugin() {
+    _commonInit();
 
-    if (Platform.isIOS) {
-      /// hack until we implement onConnect in the IOS plugin
-      _onConnected(result: true);
-    }
+    _initialisePlugin();
   }
 
   /// Create a [SoundPlayer] that does not have a UI.
@@ -165,6 +173,7 @@ class SoundPlayer implements SlotEntry {
   /// which means that it will keep playing even if the app is sent to the
   /// background.
   ///
+  /// {@tool sample}
   /// Once you have finished with the [SoundPlayer] you MUST
   /// call [SoundPlayer.release].
   /// ```dart
@@ -174,65 +183,99 @@ class SoundPlayer implements SlotEntry {
   /// player.play(track);
   /// ```
   /// The above example guarentees that the player will be released.
+  /// {@end-tool}
   SoundPlayer.noUI({this.playInBackground = false})
-      : _plugin = SoundPlayerPlugin() {
+      : _fakeOnConnect = true,
+        _plugin = SoundPlayerPlugin() {
     canPause = false;
     canSkipBackward = false;
     canSkipForward = false;
-    _initialise();
-
-    /// hack until we implement onConnect in the player.
-    _onConnected(result: true);
+    _commonInit();
+    _initialisePlugin();
   }
 
-  /// Used to wait for the plugin to connect us to an OS MediaPlayer
-  Future<bool> _initialised;
-  final Completer<bool> _connected = Completer<bool>();
+  bool _initRequired = true;
 
-  void _initialise() {
+  /// once off initialisation used by call ctors.
+  void _commonInit() {
     _plugin.onConnected = _onConnected;
 
-    /// we allow five seconds for the connect to complete or
-    /// we timeout returning false.
-    _initialised = _connected.future
-        .timeout(Duration(seconds: 5), onTimeout: () => Future.value(false));
+    // place _initialised into a non-completed state.
+    _connected = Completer<bool>();
+    _initialised = _connected.future;
 
     /// track the current position
-    _currentPosition = Duration.zero;
     _playerController.stream.listen((playbackDisposition) {
       _currentPosition = playbackDisposition.position;
     });
-    _setSubscriptionDuration(Duration(milliseconds: 100));
-
-    _plugin.initialisePlayer(this);
   }
 
-  /// Future indicating if initialisation has completed.
-  Future<bool> get initialised {
-    assert(_initialised != null, 'You must call initialise() first.');
+  /// Initialises the plugin
+  ///
+  /// This will be called multiple times in the life cycle
+  /// of a [SoundPlayer] as we release the plugin
+  /// each time we stop the player.
+  ///
+  void _initialisePlugin() {
+    if (_initRequired) {
+      _initRequired = false;
 
-    return _initialised;
+      /// we allow five seconds for the connect to complete or
+      /// we timeout returning false.
+      _initialised = _connected.future
+          .timeout(Duration(seconds: 5), onTimeout: () => Future.value(false));
+
+      /// The plugin will call [onConnected] which completes
+      /// the intialisation.
+      _plugin.initialisePlayer(this);
+
+      _setSubscriptionDuration(Duration(milliseconds: 100));
+
+      /// hack until we implement onConnect in the all the plugins.
+      if (_fakeOnConnect) _onConnected(result: true);
+    }
   }
 
   /// call this method once you are done with the player
   /// so that it can release all of the attached resources.
   ///
-  /// Note:
-  ///
   Future<void> release() async {
     initialised.then<void>((result) async {
       if (result == true) {
-        // Stop the player playback before releasing
-        await stop();
         _closeDispositionStream();
-
-        if (_track != null) {
-          await t.trackRelease(_track);
-        }
-        await _plugin.release(this);
+        _softRelease();
       }
     });
   }
+
+  /// If the player is pushed into the
+  /// background we want to release the plugin and
+  /// any other temporary resources.
+  /// The exception is if we are configured to continue
+  /// playing in the backgroudn in which case
+  /// this method won't be called.
+  void _softRelease() async {
+    // Stop the player playback before releasing
+
+    await _plugin.stop(this);
+
+    /// if we don't release system resources other
+    /// players may not be able to start.
+    await _plugin.release(this);
+
+    if (_track != null) {
+      await t.trackRelease(_track);
+    }
+
+    // put _initilaised into a non completed
+    // state so everyone will wait on it again.
+    _connected = Completer<bool>();
+    _initialised = _connected.future;
+    _initRequired = true;
+  }
+
+  /// Future indicating if initialisation has completed.
+  Future<bool> get initialised => _initialised;
 
   /// callback occurs when the OS MediaPlayer successfully connects:
   /// TODO: implement the onConnected event from iOS.
@@ -242,20 +285,16 @@ class SoundPlayer implements SlotEntry {
   }
 
   /// Starts playback.
-  /// The [uri] of the file to download and playback
-  /// The [codec] of the file the [uri] points to. The default
-  /// value is [Codec.fromExtension].
-  /// If the default [Codec.fromExtension] is used then
-  /// [QuickPlay] will use the files extension to guess the codec.
-  /// If the file extension doesn't match a known codec then
-  /// [QuickPlay] will throw an [CodecNotSupportedException] in which
-  /// case you need pass one of the known codecs.
-  ///
-  ///
-  ///
+  /// The [track] to play.
   Future<void> play(t.Track track) async {
     assert(track != null);
     var started = Completer<void>();
+
+    _currentPosition = Duration.zero;
+
+    /// after stop is called the plugin will be released
+    /// to save resources so we potentially need to re-initialise
+    _initialisePlugin();
     initialised.then<void>((result) async {
       if (result == true) {
         _track = track;
@@ -326,11 +365,6 @@ class SoundPlayer implements SlotEntry {
           Log.d("stop() was called when the player wasn't playing. Ignored");
         } else {
           try {
-            await _plugin.stop(this);
-
-            /// if we don't release system resources other
-            /// players may not be able to start.
-            await _plugin.release(this);
             playerState = PlayerState.isStopped;
             if (_onStopped != null) _onStopped(wasUser: false);
           } on Object catch (e) {
@@ -348,6 +382,7 @@ class SoundPlayer implements SlotEntry {
   /// If you call this and the audio is not playing
   /// a [PlayerInvalidStateException] will be thrown.
   Future<void> pause() async {
+    _initialisePlugin();
     initialised.then<void>((result) async {
       if (result == true) {
         if (playerState != PlayerState.isPlaying) {
@@ -367,6 +402,8 @@ class SoundPlayer implements SlotEntry {
   /// If you call this when audio is not paused
   /// then a [PlayerInvalidStateException] will be thrown.
   Future<void> resume() async {
+    var canResume = await initialised;
+    _initialisePlugin();
     initialised.then<void>((result) async {
       if (result == true) {
         if (playerState != PlayerState.isPaused) {
@@ -374,6 +411,15 @@ class SoundPlayer implements SlotEntry {
         }
         playerState = PlayerState.isPlaying;
 
+        /// if the app has been sent to the background we will have
+        /// released the plugin in which case a simple resume
+        /// won't work.
+        if (!canResume) {
+          seekTo(_currentPosition);
+          // given we have been pushed to the background
+          // a little duplication of the audio is probably called for.
+          rewind(Duration(seconds: 1));
+        }
         await _plugin.resume(this);
 
         if (_onResumed != null) _onResumed(wasUser: false);
@@ -553,9 +599,12 @@ class SoundPlayer implements SlotEntry {
 
   /// System event telling us that the app has been paused.
   /// Unless we are playing in the background then
-  /// we need to stop playback so as to release the media player
+  /// we need to stop playback and release resources.
   void _onSystemAppPaused() {
-    if (!playInBackground) stop();
+    if (!playInBackground) {
+      stop();
+      _softRelease();
+    }
   }
 
   /// System event telling us that our app has been resumed.
