@@ -9,7 +9,7 @@ import '../ios/ios_session_category.dart';
 import '../ios/ios_session_mode.dart';
 import '../playback_disposition.dart';
 
-import '../sound_player.dart';
+import '../audio_player.dart';
 import '../track.dart';
 import '../util/log.dart';
 import 'base_plugin.dart';
@@ -36,7 +36,7 @@ abstract class PlayerBasePlugin extends BasePlugin {
   set onConnected(ConnectedCallback callback) => _onConnected = callback;
 
   /// Over load this method to play audio.
-  Future<void> play(SoundPlayer player, Track track);
+  Future<void> play(AudioPlayer player, Track track);
 
   /// Each Player must be initialised and registered.
   void initialisePlayer(SlotEntry player) async {
@@ -165,7 +165,7 @@ abstract class PlayerBasePlugin extends BasePlugin {
   /// Handles callbacks from the platform specific plugin
   /// The below methods are shared by all the playback plugins.
   Future<dynamic> onMethodCallback(
-      covariant SoundPlayer player, MethodCall call) {
+      covariant AudioPlayer player, MethodCall call) {
     switch (call.method) {
 
       ///TODO implement in the OS code for each player.

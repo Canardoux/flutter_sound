@@ -18,7 +18,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
-import '../sound_player.dart';
+import '../audio_player.dart';
 import '../track.dart';
 import 'player_base_plugin.dart';
 
@@ -40,7 +40,7 @@ class SoundPlayerTrackPlugin extends PlayerBasePlugin {
   ///
   /// This method should only be used if the player has been initialize
   /// with the audio player specific features.
-  Future<void> play(SoundPlayer player, Track track) async {
+  Future<void> play(AudioPlayer player, Track track) async {
     final trackMap = <String, dynamic>{
       "title": track.title,
       "author": track.author,
@@ -66,7 +66,7 @@ class SoundPlayerTrackPlugin extends PlayerBasePlugin {
 
   ///
   Future<dynamic> onMethodCallback(
-      covariant SoundPlayer player, MethodCall call) {
+      covariant AudioPlayer player, MethodCall call) {
     switch (call.method) {
 
       /// track specific methods

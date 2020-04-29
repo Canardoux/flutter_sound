@@ -106,7 +106,7 @@ class SoundPlayerUI extends StatefulWidget {
 
 /// internal state.
 class SoundPlayerUIState extends State<SoundPlayerUI> {
-  final SoundPlayer _player;
+  final AudioPlayer _player;
 
   final _sliderPosition = SliderPosition();
 
@@ -140,7 +140,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
 
   ///
   SoundPlayerUIState(this._track, this._onLoad, {bool enabled})
-      : _player = SoundPlayer.noUI(),
+      : _player = AudioPlayer.noUI(),
         _enabled = enabled,
         _localController = StreamController<PlaybackDisposition>.broadcast() {
     _sliderPosition.position = Duration(seconds: 0);

@@ -27,8 +27,8 @@ export 'src/playback_disposition.dart' show PlaybackDisposition;
 
 export 'src/quick_play.dart' show QuickPlay;
 export 'src/recording_disposition.dart' show RecordingDisposition;
-export 'src/sound_player.dart'
-    show SoundPlayer
+export 'src/audio_player.dart'
+    show AudioPlayer
     hide
         updateProgress,
         audioPlayerFinished,

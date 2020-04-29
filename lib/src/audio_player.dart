@@ -17,7 +17,6 @@
 import 'dart:async';
 import 'dart:io';
 
-
 import 'android/android_audio_focus_gain.dart';
 
 import 'codec.dart';
@@ -34,19 +33,19 @@ import 'util/log.dart';
 
 /// An api for playing audio.
 ///
-/// A [SoundPlayer] establishes an audio session and allows
+/// A [AudioPlayer] establishes an audio session and allows
 /// you to play multiple audio files within the session.
 ///
-/// [SoundPlayer] can either be used headless ([SoundPlayer.noUI] or
-/// use the OSs' built in Media Player [SoundPlayer.withIU].
+/// [AudioPlayer] can either be used headless ([AudioPlayer.noUI] or
+/// use the OSs' built in Media Player [AudioPlayer.withIU].
 ///
 /// You can use the headless mode to build you own UI for playing sound
 /// or use Flutter Sounds own [SoundPlayerUI] widget.
 ///
-/// Once you have finished using a [SoundPlayer] you MUST call
-/// [SoundPlayer.release] to free up any resources.
+/// Once you have finished using a [AudioPlayer] you MUST call
+/// [AudioPlayer.release] to free up any resources.
 ///
-class SoundPlayer implements SlotEntry {
+class AudioPlayer implements SlotEntry {
   PlayerEvent _onSkipForward;
   PlayerEvent _onSkipBackward;
   PlayerEvent _onFinished;
@@ -118,20 +117,20 @@ class SoundPlayer implements SlotEntry {
   /// hack until we implement onConnect in the all the plugins.
   final bool _fakeOnConnect;
 
-  /// Create a [SoundPlayer] that displays the OS' audio UI.
+  /// Create a [AudioPlayer] that displays the OS' audio UI.
   ///
   /// if [canPause] is true than the user will be able to pause the track
   /// via the OSs' UI. Defaults to true.
   ///
   /// If [canSkipBackward] is true then the user will be able to click the skip
-  /// back button on the OSs' UI. Given the [SoundPlayer] only deals with a
+  /// back button on the OSs' UI. Given the [AudioPlayer] only deals with a
   /// single track at
   /// a time you will need to implement [onSkipBackward] for this action to
   /// have any affect. The [Album] class has the ability to manage mulitple
   /// tracks.
   ///
   /// If [canSkipForward] is true then the user will be able to click the skip
-  /// forward button on the OSs' UI. Given the [SoundPlayer] only deals with a
+  /// forward button on the OSs' UI. Given the [AudioPlayer] only deals with a
   /// single track at a time you will need to implement [onSkipBackward] for
   /// this action to have any affect. The [Album] class has the ability to
   /// manage mulitple tracks.
@@ -141,8 +140,8 @@ class SoundPlayer implements SlotEntry {
   /// background.
   ///
   /// {@tool sample}
-  /// Once you have finished with the [SoundPlayer] you MUST
-  /// call [SoundPlayer.release].
+  /// Once you have finished with the [AudioPlayer] you MUST
+  /// call [AudioPlayer.release].
   ///
   /// ```dart
   /// var player = SoundPlayer.noUI();
@@ -152,7 +151,7 @@ class SoundPlayer implements SlotEntry {
   /// ```
   /// The above example guarentees that the player will be released.
   /// {@end-tool}
-  SoundPlayer.withUI({
+  AudioPlayer.withUI({
     this.canPause = true,
     this.canSkipBackward = false,
     this.canSkipForward = false,
@@ -164,7 +163,7 @@ class SoundPlayer implements SlotEntry {
     _initialisePlugin();
   }
 
-  /// Create a [SoundPlayer] that does not have a UI.
+  /// Create a [AudioPlayer] that does not have a UI.
   ///
   /// You can use this version to simply playback audio without
   /// a UI or to build your own UI as [Playbar] does.
@@ -174,8 +173,8 @@ class SoundPlayer implements SlotEntry {
   /// background.
   ///
   /// {@tool sample}
-  /// Once you have finished with the [SoundPlayer] you MUST
-  /// call [SoundPlayer.release].
+  /// Once you have finished with the [AudioPlayer] you MUST
+  /// call [AudioPlayer.release].
   /// ```dart
   /// var player = SoundPlayer.noUI();
   /// player.onFinished = () => player.release();
@@ -184,7 +183,7 @@ class SoundPlayer implements SlotEntry {
   /// ```
   /// The above example guarentees that the player will be released.
   /// {@end-tool}
-  SoundPlayer.noUI({this.playInBackground = false})
+  AudioPlayer.noUI({this.playInBackground = false})
       : _fakeOnConnect = true,
         _plugin = SoundPlayerPlugin() {
     canPause = false;
@@ -213,7 +212,7 @@ class SoundPlayer implements SlotEntry {
   /// Initialises the plugin
   ///
   /// This will be called multiple times in the life cycle
-  /// of a [SoundPlayer] as we release the plugin
+  /// of a [AudioPlayer] as we release the plugin
   /// each time we stop the player.
   ///
   void _initialisePlugin() {
@@ -663,7 +662,7 @@ class SoundPlayer implements SlotEntry {
   /// when the user attempts to skip forward to the
   /// next track.
   /// This is only meaningful if you have used
-  /// [SoundPlayer.withUI] which has a 'skip' button.
+  /// [AudioPlayer.withUI] which has a 'skip' button.
   ///
   /// It is up to you to create a new SoundPlayer with the
   /// next track and start it playing.
@@ -708,7 +707,7 @@ class SoundPlayer implements SlotEntry {
   /// The [wasUser] argument in the callback will
   /// be true if the user clicked the pause button
   /// on the OS UI.  To show the OS UI you must have called
-  /// [SoundPlayer.withUI].
+  /// [AudioPlayer.withUI].
   ///
   /// [wasUser] will be false if you paused the audio
   /// via a call to [pause].
@@ -723,7 +722,7 @@ class SoundPlayer implements SlotEntry {
   /// The [wasUser] argument in the callback will
   /// be true if the user clicked the resume button
   /// on the OS UI.  To show the OS UI you must have called
-  /// [SoundPlayer.withUI].
+  /// [AudioPlayer.withUI].
   ///
   /// [wasUser] will be false if you resumed the audio
   /// via a call to [resume].
@@ -742,7 +741,7 @@ class SoundPlayer implements SlotEntry {
   /// This can occur if you called [play]
   /// or the user click the start button on the
   /// OS UI. To show the OS UI you must have called
-  /// [SoundPlayer.withUI].
+  /// [AudioPlayer.withUI].
   // ignore: avoid_setters_without_getters
   set onStarted(PlayerEventWithCause onStarted) {
     _onStarted = onStarted;
@@ -756,7 +755,7 @@ class SoundPlayer implements SlotEntry {
   /// [onStoppped]  can occur if you called [stop]
   /// or the user click the stop button on the
   /// OSs' UI. To show the OS UI you must have called
-  /// [SoundPlayer.withUI].
+  /// [AudioPlayer.withUI].
   // ignore: avoid_setters_without_getters
   set onStopped(PlayerEventWithCause onStopped) {
     _onStopped = onStopped;
@@ -914,32 +913,32 @@ class NotImplementedException implements Exception {
 
 /// Forwarders so we can hide methods from the public api.
 
-void updateProgress(SoundPlayer player, PlaybackDisposition disposition) =>
+void updateProgress(AudioPlayer player, PlaybackDisposition disposition) =>
     player._updateProgress(disposition);
 
 ///
-void audioPlayerFinished(SoundPlayer player, PlaybackDisposition status) =>
+void audioPlayerFinished(AudioPlayer player, PlaybackDisposition status) =>
     player._audioPlayerFinished(status);
 
 /// handles a pause coming up from the player
-void onSystemPaused(SoundPlayer player) => player._onSystemPaused();
+void onSystemPaused(AudioPlayer player) => player._onSystemPaused();
 
 /// handles a resume coming up from the player
-void onSystemResumed(SoundPlayer player) => player._onSystemResumed();
+void onSystemResumed(AudioPlayer player) => player._onSystemResumed();
 
 /// System event notification that the app has paused
-void onSystemAppPaused(SoundPlayer player) => player._onSystemAppPaused();
+void onSystemAppPaused(AudioPlayer player) => player._onSystemAppPaused();
 
 /// System event notification that the app has resumed
-void onSystemAppResumed(SoundPlayer player) => player._onSystemAppResumed();
+void onSystemAppResumed(AudioPlayer player) => player._onSystemAppResumed();
 
 /// handles a skip forward coming up from the player
-void onSystemSkipForward(SoundPlayer player) => player._onSystemSkipForward();
+void onSystemSkipForward(AudioPlayer player) => player._onSystemSkipForward();
 
 /// handles a skip forward coming up from the player
-void onSystemSkipBackward(SoundPlayer player) => player._onSystemSkipBackward();
+void onSystemSkipBackward(AudioPlayer player) => player._onSystemSkipBackward();
 
 /// Handles playback state changes coming up from the OS Media Player
 void onSystemUpdatePlaybackState(
-        SoundPlayer player, SystemPlaybackState playbackState) =>
+        AudioPlayer player, SystemPlaybackState playbackState) =>
     player._onSystemUpdatePlaybackState(playbackState);
