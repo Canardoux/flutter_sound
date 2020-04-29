@@ -188,6 +188,7 @@ class SoundRecorder implements SlotEntry {
     if (_isInited) {
       _isInited = false;
       await stop();
+      _dispositionManager.release();
       _getPlugin().release(this);
     }
   }
@@ -217,8 +218,6 @@ class SoundRecorder implements SlotEntry {
     await _getPlugin().stop(this);
 
     _recorderState = _RecorderState.isStopped;
-
-    _dispositionManager.release();
 
     // If requried, transcribe from the native codec to the requested codec.
     _recordingTrack.recode();
