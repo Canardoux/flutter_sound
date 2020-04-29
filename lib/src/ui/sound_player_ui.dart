@@ -24,11 +24,12 @@ import 'package:provider/provider.dart';
 import '../../flutter_sound.dart';
 import '../codec.dart';
 import '../track.dart';
+import '../util/ansi_color.dart';
 import '../util/format.dart';
 import '../util/log.dart';
 import '../util/stop_watch.dart';
 import 'grayed_out.dart';
-import 'local_context.dart';
+import 'recorder_playback_controller.dart';
 import 'slider.dart';
 import 'slider_position.dart';
 import 'tick_builder.dart';
@@ -57,6 +58,8 @@ class SoundPlayerUI extends StatefulWidget {
   final Track _track;
   final bool _showTitle;
 
+  final bool _enabled;
+
   /// [SoundPlayerUI.fromLoader] allows you to dynamically provide
   /// a [Track] when the user clicks the play
   /// button.
@@ -74,7 +77,8 @@ class SoundPlayerUI extends StatefulWidget {
       {bool showTitle = false, bool enabled = true})
       : _onLoad = onLoad,
         _showTitle = showTitle,
-        _track = null;
+        _track = null,
+        _enabled = enabled;
 
   ///
   /// [SoundPlayerUI.fromTrack] Constructs a Playbar with a Track.
@@ -87,24 +91,27 @@ class SoundPlayerUI extends StatefulWidget {
   /// If [enabled] is true (the default) then the Player will be enabled.
   /// If [enabled] is false then the player will be disabled and the user
   /// will not be able to click the play button.
-  SoundPlayerUI.fromTrack(Track track, {bool showTitle = false})
+  SoundPlayerUI.fromTrack(Track track,
+      {bool showTitle = false, bool enabled = true})
       : _track = track,
         _showTitle = showTitle,
-        _onLoad = null;
+        _onLoad = null,
+        _enabled = enabled;
 
   @override
   State<StatefulWidget> createState() {
-    return _SoundPlayerUIState(_track, _onLoad);
+    return SoundPlayerUIState(_track, _onLoad, enabled: _enabled);
   }
 }
 
-class _SoundPlayerUIState extends State<SoundPlayerUI> {
+/// internal state.
+class SoundPlayerUIState extends State<SoundPlayerUI> {
   final SoundPlayer _player;
 
-  SliderPosition sliderPosition = SliderPosition();
+  final _sliderPosition = SliderPosition();
 
   /// we keep our own local stream as the players come and go.
-  /// This lets our StreamBuilder work with it worrying about
+  /// This lets our StreamBuilder work without  worrying about
   /// the player's stream changing under it.
   final StreamController<PlaybackDisposition> _localController;
 
@@ -127,19 +134,29 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
 
   final OnLoad _onLoad;
 
+  final bool _enabled;
+
   StreamSubscription _playerSubscription;
 
-  UniqueKey sliderKey = UniqueKey();
-
-  Slider slider;
-
-  _SoundPlayerUIState(this._track, this._onLoad)
+  ///
+  SoundPlayerUIState(this._track, this._onLoad, {bool enabled})
       : _player = SoundPlayer.noUI(),
+        _enabled = enabled,
         _localController = StreamController<PlaybackDisposition>.broadcast() {
-    sliderPosition.position = Duration(seconds: 0);
-    sliderPosition.maxPosition = Duration(seconds: 0);
+    _sliderPosition.position = Duration(seconds: 0);
+    _sliderPosition.maxPosition = Duration(seconds: 0);
+    if (!_enabled) {
+      __playState = PlayState.disabled;
+    }
 
     _setCallbacks();
+  }
+
+  /// We can play if we have a non-zero duration or we are dynamically
+  /// loading tracks via _onLoad.
+  Future<bool> get canPlay async {
+    return _onLoad != null ||
+        (_track != null && (await _track.duration).inMilliseconds > 0);
   }
 
   /// detect hot reloads when debugging and stop the player.
@@ -153,7 +170,6 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
         await stop();
       }
       trackRelease(_track);
-      _track = null;
     }
     //Log.d('Hot reload releasing plugin');
     //_player.release();
@@ -161,9 +177,9 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
 
   @override
   Widget build(BuildContext context) {
-    // AudioController.of(context).registerPlayer(this);
+    registerPlayer(context, this);
     return ChangeNotifierProvider<SliderPosition>(
-        create: (_) => sliderPosition, child: _buildPlayBar());
+        create: (_) => _sliderPosition, child: _buildPlayBar());
   }
 
   void _setCallbacks() {
@@ -176,6 +192,24 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
 
     /// pipe the new sound players stream to our local controller.
     _player.dispositionStream().listen(_localController.add);
+  }
+
+  /// This method is used by the [RecorderPlaybackController] to attached
+  /// the localController to the [SoundRecordUI]'s stream.
+  /// This is only done when this player is attached to a
+  /// [RecorderPlaybackController].
+  ///
+  /// When recording starts we are attached to the recorderStream.
+  /// When recording finishes this method is called with a null and we
+  /// revert to the [_player]'s stream.
+  ///
+  void _connectRecorderStream(Stream<PlaybackDisposition> recorderStream) {
+    if (recorderStream != null) {
+      recorderStream.listen(_localController.add);
+    } else {
+      /// revert to piping the player
+      _player.dispositionStream().listen(_localController.add);
+    }
   }
 
   void _onFinished() => setState(() => _playState = PlayState.stopped);
@@ -210,6 +244,18 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
 
   set _playState(PlayState state) {
     setState(() => __playState = state);
+  }
+
+  /// Controls whether the Play button is enabled or not.
+  void playbackEnabled({@required bool enabled}) {
+    setState(() {
+      if (enabled == true) {
+        __playState = PlayState.stopped;
+      } else if (enabled == false) {
+        stop();
+        __playState = PlayState.disabled;
+      }
+    });
   }
 
   /// Called when the user clicks  the Play/Pause button.
@@ -252,7 +298,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
         .resume()
         .then((_) => _transitioning = false)
         .catchError((dynamic e) {
-      Log.w("Error calling startPlayer ${e.toString()}");
+      Log.w("Error calling resume ${e.toString()}");
 
       return null;
     }).whenComplete(() => _transitioning = false);
@@ -267,7 +313,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     });
 
     _player.pause().then((_) => _transitioning = false).catchError((dynamic e) {
-      Log.w("Error calling startPlayer ${e.toString()}");
+      Log.w("Error calling pause ${e.toString()}");
       _playState = PlayState.playing;
       return null;
     }).whenComplete(() => _transitioning = false);
@@ -276,13 +322,12 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
 
   /// start playback.
   void play() async {
-    setState(() {
-      _transitioning = true;
-      _loading = true;
-      Log.d("Loading starting");
-    });
+    _transitioning = true;
+    Log.d(green('Transitioning = true'));
+    _loading = true;
+    Log.d("Loading starting");
 
-    Log.d("Calling startPlayer");
+    Log.d("Calling play");
 
     if (_track != null && _player.isPlaying) {
       Log.d("play called whilst player running. Stopping Player first.");
@@ -313,15 +358,15 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
         // errors throw by _onLoad are captured here in the .then
         // handler for newTrack.
         _transitioning = false;
+        Log.d(green('Transitioning = false'));
         _loading = false;
         Log.e("Error occured loading the track: ${exception.toString()}");
       });
     } else {
-      setState(() {
-        _transitioning = false;
-        _loading = false;
-        Log.w("No Track provided by _onLoad. Call to start has been ignored");
-      });
+      _transitioning = false;
+      Log.d(green('Transitioning = false'));
+      _loading = false;
+      Log.w("No Track provided by _onLoad. Call to start has been ignored");
     }
   }
 
@@ -331,7 +376,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     _player.play(_track).then((_) {
       _playState = PlayState.playing;
 
-      Log.d("StartPlayer returned");
+      Log.d("play returned");
     }).catchError((dynamic e) {
       Log.w("Error calling play() ${e.toString()}");
       _playState = PlayState.stopped;
@@ -340,6 +385,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     }).whenComplete(() {
       _loading = false;
       _transitioning = false;
+      Log.d(green('Transitioning = false'));
     });
     watch.end();
   }
@@ -366,7 +412,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
     // if called via dispose we can't trigger setState.
     if (supressState) {
       __playState = PlayState.stopped;
-      __transitioning = false;
+      _transitioning = false;
       __loading = false;
     } else {
       _playState = PlayState.stopped;
@@ -374,7 +420,7 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
       _loading = false;
     }
 
-    sliderPosition.position = Duration.zero;
+    _sliderPosition.position = Duration.zero;
   }
 
   /// put the ui into a 'loading' state which
@@ -389,9 +435,11 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
   }
 
   /// When we are moving between states we mark
-  /// ourselves as 'transition'.
+  /// ourselves as 'transition' to block other
+  /// transitions.
   // ignore: avoid_setters_without_getters
   set _transitioning(bool value) {
+    Log.d(green('Transitioning = $value'));
     setState(() => __transitioning = value);
   }
 
@@ -422,20 +470,22 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
       button = _buildPlayButtonIcon(button);
     }
     return Container(
-      width: 50,
-      height: 50,
-      child: Padding(
-          padding: EdgeInsets.only(left: 0, right: 0),
-          child: LocalContext(builder: (localContext) {
-            return InkWell(
-                onTap: ((sliderPosition.maxPosition.inMicroseconds == 0 &&
-                            _onLoad == null) ||
-                        __transitioning)
-                    ? null
-                    : () => _onPlay(localContext),
-                child: button);
-          })),
-    );
+        width: 50,
+        height: 50,
+        child: Padding(
+            padding: EdgeInsets.only(left: 0, right: 0),
+            child: FutureBuilder<bool>(
+                future: canPlay,
+                builder: (context, asyncData) {
+                  var _canPlay = false;
+                  if (asyncData.connectionState == ConnectionState.done) {
+                    _canPlay = asyncData.data && !__transitioning;
+                  }
+
+                  return InkWell(
+                      onTap: _canPlay ? () => _onPlay(context) : null,
+                      child: button);
+                })));
   }
 
   Widget _buildPlayButtonIcon(Widget widget) {
@@ -445,11 +495,16 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
         break;
       case PlayState.stopped:
       case PlayState.paused:
-        widget = Icon(Icons.play_arrow,
-            color: (sliderPosition.maxPosition.inMicroseconds == 0 &&
-                    _onLoad == null
-                ? Colors.blueGrey
-                : Colors.black));
+        widget = FutureBuilder<bool>(
+            future: canPlay,
+            builder: (context, asyncData) {
+              var canPlay = false;
+              if (asyncData.connectionState == ConnectionState.done) {
+                canPlay = asyncData.data;
+              }
+              return Icon(Icons.play_arrow,
+                  color: canPlay ? Colors.black : Colors.blueGrey);
+            });
         break;
       case PlayState.disabled:
         GrayedOut(
@@ -473,12 +528,26 @@ class _SoundPlayerUIState extends State<SoundPlayerUI> {
         });
   }
 
+  /// Specialised method that allows the [RecorderPlaybackController]
+  /// to update our duration as a recording occurs.
+  ///
+  /// This method should be used for no other purposes.
+  ///
+  /// During normal playback the [StreamBuilder] used
+  /// in [_buildDuration] is responsible for updating the duration.
+  // void _updateDuration(Duration duration) {
+  //   /// push the update to the next build cycle as this can
+  //   /// be called during a build cycle which flutter won't allow.
+  //   Future.delayed(Duration.zero,
+  //       () => setState(() => _sliderPosition.maxPosition = duration));
+  // }
+
   Widget _buildSlider() {
     return Expanded(
         child: PlaybarSlider(
       _localController.stream,
       (position) {
-        sliderPosition.position = position;
+        _sliderPosition.position = position;
         _player.seekTo(position);
       },
     ));
@@ -516,4 +585,16 @@ enum PlayState {
 
   ///
   disabled
+}
+
+///
+/// Functions used to hide internal implementation details
+///
+// void updatePlayerDuration(SoundPlayerUIState playerState
+// , Duration duration) =>
+//     playerState?._updateDuration(duration);
+
+void connectPlayerToRecorderStream(SoundPlayerUIState playerState,
+    Stream<PlaybackDisposition> recorderStream) {
+  playerState._connectRecorderStream(recorderStream);
 }
