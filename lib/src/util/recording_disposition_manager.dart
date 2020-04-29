@@ -43,6 +43,10 @@ class RecordingDispositionManager {
   /// ctor
   RecordingDispositionManager(this._recorder);
 
+  /// returns the most recent duration that we have from
+  /// the OS.
+  Duration get lastDuration => _lastDispositionDuration;
+
   /// Returns a stream of RecordingDispositions
   /// The stream is a broad cast stream and can be called
   /// multiple times however the [interval] is shared between
@@ -63,7 +67,7 @@ class RecordingDispositionManager {
 
   /// Internal classes calls this method to notify a change
   /// in the db level.
-  void updateDbPeakDispostion(double decibels) {
+  void updateDbPeakDisposition(double decibels) {
     _lastDispositionDecibels = decibels;
 
     _trySendDisposition();
@@ -72,8 +76,8 @@ class RecordingDispositionManager {
   /// [timePaused] The raw duration from the android/ios subsystem
   /// ignores pauses so we need to subtract any pause time from the
   /// duratin.
-  void updateDurationDisposition(Duration duration, Duration timePaused) {
-    _lastDispositionDuration = duration - timePaused;
+  void updateDurationDisposition(Duration duration) {
+    _lastDispositionDuration = duration;
 
     _trySendDisposition();
   }
