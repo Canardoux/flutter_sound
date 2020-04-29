@@ -37,7 +37,7 @@ class SoundPlayerPlugin extends PlayerBasePlugin {
     /// sound player plugin does yet support in memory audio.
     trackForceToDisk(track);
     var args = <String, dynamic>{};
-    args['path'] = trackUri(track);
+    args['path'] = trackStoragePath(track);
     // Flutter cannot transfer an enum to a native plugin.
     // We use an integer instead
     args['codec'] = track.codec.index;
