@@ -16,8 +16,9 @@
 
 import 'package:flutter/material.dart';
 
-import 'main_body.dart';
+import 'example2_body.dart';
 
+/// Demonstrates using multiple players in one ui.
 void main() {
   runApp(MyApp());
 }

@@ -6,7 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'active_codec.dart';
 import 'asset_player.dart';
-import 'drop_downs.dart';
+import 'example_drop_downs.dart';
 import 'recorder_controls.dart';
 import 'recorder_state.dart';
 import 'recording_player.dart';

@@ -16,17 +16,9 @@
 
 import 'package:flutter/material.dart';
 
-import 'main_body.dart';
+import 'example3_body.dart';
 
-/// Boolean to specify if we want to test the Rentrance/Concurency feature.
-/// If true, we start two instances of FlautoPlayer when
-/// the user hit the "Play" button.
-/// If true, we start two instances of FlautoRecorder and one instance of
-/// FlautoPlayer when the user hit the Record button
-const renetranceConcurrency = false;
-
-
-
+/// demonstrates the recording widget linked to a playback widget.
 void main() {
   runApp(MyApp());
 }
