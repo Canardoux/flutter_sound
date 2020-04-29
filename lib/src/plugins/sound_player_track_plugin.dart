@@ -50,8 +50,8 @@ class SoundPlayerTrackPlugin extends PlayerBasePlugin {
       "bufferCodecIndex": track.codec?.index,
     };
 
-    if (track.isURI) {
-      trackMap["path"] = trackUri(track);
+    if (track.isURL) {
+      trackMap["path"] = trackStoragePath(track);
     } else {
       trackMap["dataBuffer"] = trackBuffer(track);
     }
