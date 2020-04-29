@@ -517,7 +517,7 @@ public class FlutterSoundRecorder
 							                              db = 0.0;
 						                              }
 
-						                              Log.d ( TAG, "rawAmplitude: " + maxAmplitude + " Base DB: " + db );
+						                              // Log.d ( TAG, "rawAmplitude: " + maxAmplitude + " Base DB: " + db );
 
 						                              invokeMethodWithDouble (  "updateDbPeakProgress", db );
 						                              dbPeakLevelHandler.postDelayed ( model.getDbLevelTicker (), ( model.peakLevelUpdateMillis ) );
