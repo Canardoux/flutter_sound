@@ -1,12 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
 import 'active_codec.dart';
-import 'common.dart';
-import 'main.dart';
 import 'media_path.dart';
 import 'util/log.dart';
 import 'util/temp_file.dart';
@@ -29,10 +26,6 @@ class RecorderState {
 
   RecorderState._internal() {
     recorderModule = SoundRecorder();
-
-    if (renetranceConcurrency) {
-      recorderModule_2 = SoundRecorder();
-    }
   }
 
   /// [true] if we are currently recording.
@@ -66,9 +59,6 @@ class RecorderState {
   void stopRecorder() async {
     try {
       await recorderModule.stop();
-      if (renetranceConcurrency) {
-        await recorderModule_2.stop();
-      }
     } on Object catch (err) {
       Log.d('stopRecorder error: $err');
       rethrow;
@@ -81,35 +71,12 @@ class RecorderState {
       /// TODO put this back iin
       /// await PlayerState().stopPlayer();
 
-      var path = await tempFile();
-      await recorderModule.start(
-        path: path,
-        codec: ActiveCodec().codec,
-      );
+      var track = Track.fromPath(await tempFile(), codec: ActiveCodec().codec);
+      await recorderModule.record(track);
 
-      Log.d('startRecorder: $path');
+      Log.d('startRecorder: $track');
 
-      if (renetranceConcurrency) {
-        try {
-          var dataBuffer =
-              (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
-                  .buffer
-                  .asUint8List();
-
-          QuickPlay.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
-        } on Object catch (e) {
-          Log.d('startRecorder error: $e');
-          rethrow;
-        }
-        var secondaryPath = await tempFile();
-        await recorderModule_2.start(
-          path: secondaryPath,
-          codec: Codec.aacADTS,
-        );
-        Log.d("Secondary record is '$secondaryPath'");
-      }
-
-      MediaPath().setCodecPath(ActiveCodec().codec, path);
+      MediaPath().setCodecPath(ActiveCodec().codec, track.url);
     } on RecorderException catch (err) {
       Log.d('startRecorder error: $err');
 
@@ -128,15 +95,9 @@ class RecorderState {
     if (recorderModule.isPaused) {
       {
         recorderModule.resume();
-        if (renetranceConcurrency) {
-          recorderModule_2.resume();
-        }
       }
     } else {
       recorderModule.pause();
-      if (renetranceConcurrency) {
-        recorderModule_2.pause();
-      }
     }
   }
 }
