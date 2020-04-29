@@ -2,7 +2,7 @@
 name: Help wanted
 about: Does someone can answer?
 title: "[HELP]"
-labels: ''
+labels: help wanted
 assignees: ''
 
 ---

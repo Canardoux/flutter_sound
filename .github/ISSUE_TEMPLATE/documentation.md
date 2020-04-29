@@ -2,7 +2,7 @@
 name: Documentation
 about: Documentation update requested
 title: ''
-labels: ''
+labels: doc
 assignees: ''
 
 ---
