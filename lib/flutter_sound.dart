@@ -41,4 +41,7 @@ export 'src/sound_recorder.dart'
     show SoundRecorder, RecorderException, RecorderRunningException;
 
 export 'src/track.dart' show Track;
+export 'src/ui/recorder_playback_controller.dart'
+    show RecorderPlaybackController;
 export 'src/ui/sound_player_ui.dart' show SoundPlayerUI;
+export 'src/ui/sound_recorder_ui.dart' show SoundRecorderUI;
