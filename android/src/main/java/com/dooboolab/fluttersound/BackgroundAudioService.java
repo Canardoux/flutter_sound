@@ -900,28 +900,21 @@ public class BackgroundAudioService
 		@Override
 		protected void onPostExecute( Bitmap bitmap )
 		{
-			// Reinitialize the metadata when the image has been downloaded
-			initMediaSessionMetadata( bitmap );
 
 			super.onPostExecute( bitmap );
+			// Reinitialize the metadata when the image has been downloaded
+			initMediaSessionMetadata( bitmap );
+			//NotificationCompat.Action actionPlay = new NotificationCompat.Action( R.drawable.ic_play_arrow, "Play", MediaButtonReceiver.buildMediaButtonPendingIntent( getApplicationContext(), PlaybackStateCompat.ACTION_PLAY_PAUSE ) );
+			//displayNotification( getApplicationContext(), actionPlay );
 
-			// Call the handler to pause, when given
-			if ( (pauseHandler != null ) && (! pauseResumeCalledByApp) )
+			if (! mMediaPlayer.isPlaying() )
 			{
-				try
-				{
-					pauseHandler.call();
-					return;
-				}
-				catch ( Exception e )
-				{
-					e.printStackTrace();
-				}
+				// Show a notification to handle the media playback
+				showPausedNotification();
 			} else
 			{
-				pauseResumeCalledByApp = false;
+				showPlayingNotification();
 			}
-
 		}
 	}
 }

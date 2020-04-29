@@ -224,7 +224,7 @@ class SoundPlayer implements SlotEntry {
         } else {
           try {
             // playerController is closed by this function
-            _closeDispositionStream();
+            //_closeDispositionStream();
             await _plugin.stop(this);
             playerState = PlayerState.isStopped;
             if (_onStopped != null) _onStopped(wasUser: false);

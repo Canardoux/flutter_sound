@@ -59,12 +59,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isRecording = false;
   List<String> _path = [null, null, null, null, null, null, null];
-  //StreamSubscription _recorderSubscription;
-  //StreamSubscription _dbPeakSubscription;
-  //StreamSubscription _playerSubscription;
-  //StreamSubscription _playbackStateSubscription;
-  Stream<PlaybackDisposition> playerStreamSubscription;
-  Stream<RecordingDisposition> recorderStreamSubscription;
+
+   //Stream<PlaybackDisposition> _playbackDispositionStream;
+   //Stream<PlaybackDisposition> _playbackDispositionStream2;
+   //Stream<RecordingDisposition> _recorderDispositionStream;
 
   SoundPlayer playerModule;
   SoundRecorder recorderModule;
@@ -106,24 +104,22 @@ class _MyAppState extends State<MyApp> {
     } else {
           playerModule = SoundPlayer.noUI();
     }
+    //_playbackDispositionStream = playbackDispositionStream(interval:Duration(milliseconds:100));
+    //_playbackDispositionStream2 = playbackDispositionStream(interval:Duration(milliseconds:100));
 
-    //await module.initialize();
-    //await playerModule.setSubscriptionDuration(0.01);
-    //await recorderModule.setSubscriptionDuration(0.01);
-    playerStreamSubscription = playerModule.dispositionStream(interval:Duration(milliseconds:100));
-    //recorderStreamSubscription = recorderModule.dispositionStream(interval:Duration(milliseconds:100));
+
+
     initializeDateFormatting();
     setCodec(_codec);
     setDuck();
   }
 
   Future<void> init() async {
-    //playerModule = await SoundPlayer().initialize();
-    recorderModule = await SoundRecorder();
+    recorderModule = await SoundRecorder().initialize();
+    //_recorderDispositionStream = recorderDispositionStream(interval:Duration(milliseconds:100));
+
     await _initializeExample();
 
-    //await recorderModule.setDbPeakLevelUpdate(0.8);
-    //await recorderModule.setDbLevelEnabled(true);
     if (Platform.isAndroid) {
       copyAssets();
     }
@@ -145,6 +141,21 @@ class _MyAppState extends State<MyApp> {
     init();
   }
 
+  // Returns a stream of [RecordingDisposition] so you can
+  /// display db and duration of the recording as it records.
+  /// Use this with a StreamBuilder
+  Stream<RecordingDisposition> recorderDispositionStream(
+              {Duration interval = const Duration(milliseconds: 10)}) {
+    return recorderModule.dispositionStream(interval: interval);
+  }
+
+
+  // Returns a stream of [PlaybackDisposition] so you can
+  /// Use this with a StreamBuilder
+  Stream<PlaybackDisposition> playbackDispositionStream(
+              {Duration interval = const Duration(milliseconds: 10)}) {
+    return playerModule.dispositionStream(interval: interval);
+  }
 
   AudioState get audioState {
     if (playerModule != null) {
@@ -159,10 +170,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   void cancelRecorderSubscriptions() {
-    if (recorderStreamSubscription != null) {
+    //if (recorderStreamSubscription != null) {
       //recorderStreamSubscription.cancel();
-      recorderStreamSubscription = null;
-    }
+      //recorderStreamSubscription = null;
+    //}
     //if (_dbPeakSubscription != null) {
       //_dbPeakSubscription.cancel();
       //_dbPeakSubscription = null;
@@ -170,10 +181,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   void cancelPlayerSubscriptions() {
-    if (playerStreamSubscription != null) {
+    //if (playerStreamSubscription != null) {
       //playerStreamSubscription.cancel();
-      playerStreamSubscription = null;
-    }
+     // playerStreamSubscription = null;
+    //}
 
     //if (_playbackStateSubscription != null) {
       //_playbackStateSubscription.cancel();
@@ -536,6 +547,94 @@ class _MyAppState extends State<MyApp> {
     return  playerModule.seekTo(Duration(milliseconds: milliSecs));
   }
 
+  /// formats a duration for printing.
+  ///  mm:ss
+  String formatDuration(Duration duration) {
+    var date =
+    DateTime.fromMillisecondsSinceEpoch(duration.inMilliseconds, isUtc: true);
+    return DateFormat('mm:ss', 'en_GB').format(date);
+  }
+
+  Widget buildDBIndicator() {
+    return (audioState == AudioState.isRecording)
+           ? StreamBuilder<RecordingDisposition>(
+                stream: recorderDispositionStream(interval: Duration(milliseconds: 10)),
+                initialData: RecordingDisposition.zero(),
+                builder: (context, snapshot) {
+                  var recordingDisposition = snapshot.data;
+                  var dbLevel = recordingDisposition.decibels;
+                  return LinearProgressIndicator(
+                              value: 100.0 / 160.0 * (dbLevel ?? 1) / 100,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                              backgroundColor: Colors.red);
+                })
+           : Container();
+  }
+
+
+  Widget buildDurationText() {
+    return StreamBuilder<RecordingDisposition>(
+                stream: recorderDispositionStream(interval: Duration(milliseconds: 10)),
+                initialData: RecordingDisposition.zero(),
+                builder: (context, snapshot) {
+                  var disposition = snapshot.data;
+                  var txt = formatDuration(disposition.duration);
+
+                  return Container(
+                    margin: EdgeInsets.only(top: 12.0, bottom: 16.0),
+                    child: Text(
+                      txt,
+                      style: TextStyle(
+                        fontSize: 35.0,
+                        color: Colors.black,
+                        ),
+                      ),
+                    );
+                });
+  }
+
+
+  Widget buildPlaybackDurationText() {
+    return StreamBuilder<PlaybackDisposition>(
+                stream: playbackDispositionStream(interval: Duration(milliseconds: 10)),
+                initialData: PlaybackDisposition.zero(),
+                builder: (context, snapshot) {
+                  var disposition = snapshot.data;
+                  var txt = formatDuration(disposition.position);
+
+                  return Container(
+                    margin: EdgeInsets.only(top: 12.0, bottom: 16.0),
+                    child: Text(
+                      txt,
+                      style: TextStyle(
+                        fontSize: 35.0,
+                        color: Colors.black,
+                        ),
+                      ),
+                    );
+                });
+  }
+
+
+  Widget buildPlaybackProgressBar() {
+    return (audioState == AudioState.isPlaying)
+           ? StreamBuilder<PlaybackDisposition>(
+                stream: playbackDispositionStream(interval: Duration(milliseconds: 10)),
+                initialData: PlaybackDisposition.zero(),
+                builder: (context, snapshot) {
+                  var playbackDisposition = snapshot.data;
+                  double pos = playbackDisposition.position.inMilliseconds.toDouble();
+                  double max = playbackDisposition.duration.inMilliseconds.toDouble();
+                  return LinearProgressIndicator(
+                              value:pos / max,
+
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                              backgroundColor: Colors.grey);
+                })
+           : Container();
+  }
+
+
   Widget makeDropdowns(BuildContext context) {
     final mediaDropdown = Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -746,63 +845,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final recorderProgressIndicator = _isRecording
-        ? LinearProgressIndicator(
-            value: 100.0 / 160.0 * (this._dbLevel ?? 1) / 100,
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-            backgroundColor: Colors.red,
-          )
-        : Container();
-    final playerControls = Row(
-      children: <Widget>[
-        Container(
-          width: 56.0,
-          height: 56.0,
-          child: ClipOval(
-            child: FlatButton(
-              onPressed: onStartPlayerPressed(),
-              padding: EdgeInsets.all(8.0),
-              child: Image(
-                image: AssetImage(onStartPlayerPressed() != null ? 'res/icons/ic_play.png' : 'res/icons/ic_play_disabled.png'),
-              ),
-            ),
-          ),
-        ),
-        Container(
-          width: 56.0,
-          height: 56.0,
-          child: ClipOval(
-            child: FlatButton(
-              onPressed: onPauseResumePlayerPressed(),
-              padding: EdgeInsets.all(8.0),
-              child: Image(
-                width: 36.0,
-                height: 36.0,
-                image: AssetImage(onPauseResumePlayerPressed() != null ? 'res/icons/ic_pause.png' : 'res/icons/ic_pause_disabled.png'),
-              ),
-            ),
-          ),
-        ),
-        Container(
-          width: 56.0,
-          height: 56.0,
-          child: ClipOval(
-            child: FlatButton(
-              onPressed: onStopPlayerPressed(),
-              padding: EdgeInsets.all(8.0),
-              child: Image(
-                width: 28.0,
-                height: 28.0,
-                image: AssetImage(onStopPlayerPressed() != null ? 'res/icons/ic_stop.png' : 'res/icons/ic_stop_disabled.png'),
-              ),
-            ),
-          ),
-        ),
-      ],
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-    );
-    final playerSlider = Container(
+      final playerSlider = Container(
         height: 56.0,
         child: Slider(
             value: min(sliderCurrentPosition, maxDuration),
@@ -841,15 +884,10 @@ class _MyAppState extends State<MyApp> {
     Widget recorderSection = Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
       Container(
         margin: EdgeInsets.only(top: 12.0, bottom: 16.0),
-        child: Text(
-          this._recorderTxt,
-          style: TextStyle(
-            fontSize: 35.0,
-            color: Colors.black,
-          ),
-        ),
+        child: buildDurationText(),
       ),
-      _isRecording ? LinearProgressIndicator(value: 100.0 / 160.0 * (this._dbLevel ?? 1) / 100, valueColor: AlwaysStoppedAnimation<Color>(Colors.green), backgroundColor: Colors.red) : Container(),
+      _isRecording ? buildDBIndicator(): Container(),
+      //LinearProgressIndicator(value: 100.0 / 160.0 * (this._dbLevel ?? 1) / 100, valueColor: AlwaysStoppedAnimation<Color>(Colors.green), backgroundColor: Colors.red) : Container(),
       Row(
         children: <Widget>[
           Container(
@@ -893,13 +931,7 @@ class _MyAppState extends State<MyApp> {
       children: <Widget>[
         Container(
           margin: EdgeInsets.only(top: 12.0, bottom: 16.0),
-          child: Text(
-            this._playerTxt,
-            style: TextStyle(
-              fontSize: 35.0,
-              color: Colors.black,
-            ),
-          ),
+          child: buildPlaybackDurationText(),
         ),
         Row(
           children: <Widget>[
@@ -955,14 +987,8 @@ class _MyAppState extends State<MyApp> {
         ),
         Container(
             height: 30.0,
-            child: Slider(
-                value: min(sliderCurrentPosition, maxDuration),
-                min: 0.0,
-                max: maxDuration,
-                onChanged: (double value) async {
-                  await playerModule.seekTo(Duration(milliseconds:value.toInt()));
-                },
-                divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt())),
+            child: buildPlaybackProgressBar(),
+            ),
         Container(
           height: 30.0,
           child: Text(_duration != null ? "Duration: $_duration sec." : ''),
