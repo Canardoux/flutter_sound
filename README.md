@@ -313,7 +313,7 @@ flutter:
 Now play the file.
 
 ```dart
-/// play the audio with no control
+/// play the audio with no controls
 QuickPlay.fromPath('beep.acc');
 
 /// If you need to control/monitor the playback
@@ -371,7 +371,8 @@ for details on the supported codecs.
 Uint8List buffer = ....
 var player = SoundPlayer.noUI();
 player.onFinish = player.release;
-player.play(Track.fromBuffer(buffer, codec: Codec.mp3););
+player.onStop = player.release;
+player.play(Track.fromBuffer(buffer, codec: Codec.mp3));
 ```
 
 ## Play audio allowing the user to control playback via OSs' UI
@@ -589,14 +590,14 @@ The `SoundRecorder` does not have a UI so you must either build your own or you 
 When you have finished with your `SoundRecorder` you MUST call `SoundRecorder.release()`.
 
 ```dart
-SoundRecorder recorder = SoundRecorder.toPath('path to store recording');
+var track = Track.fromPath('fred.aac');
+var recorder = SoundRecorder();
 recorder.onStopped = () {
 	recorder.release();
- 	var player = QuickPlay.fromPath(recorder.path)
-	player.onFinished => player.release();
-	player.play();
+	// quick play will release the track resources!
+ 	QuickPlay.fromTrack(track);
 });
-recorder.start();
+recorder.record(track);
 ```
 ### recording to a temporary file
 
@@ -684,7 +685,7 @@ recorder.start();
 ```
 
 #### Stop recorder
-You can programatically stop the recorder by calling `SoundRecorder.stop()`.
+You can programatically stop the recorder by calling  `stop()`.
 
 ```dart
 var recorder = SoundRecorder.toTemp(codec: Codec.opus);
@@ -724,10 +725,27 @@ On Android this API verb needs al least SDK-24.
 await recoder.resume();
 ```
 
+## SoundRecorderUI
+Flutter Sounds contains a standard SoundRecorderUI widget that allows you to record.
+
+```dart
+
+void build(BuildContext build)
+{
+	Track track = Track.fromPath('path to file to record into');
+	SoundRecorderUI recorderUI =  SoundRecorderUI(track.
+		onStart:  () => onStart(),
+		onStop:  () => onStop());
+
+	return recorderUI;
+}
+
+```
 
 #### iosSetCategory(), androidFocusRequest(), requestFocus() and abandonFocus()  - (optional)
 
-Those three functions are optional. If you do not control the audio focus with the function `requestFocus()`, flutter_sound will request the audio focus each time the function `QuickPlay.play()` is called and will release it when the sound is finished or when you call the function `QuickPlay().stop()`.
+Those three functions are optional. If you do not control the audio focus with the function `requestFocus()`, flutter_sound will request the audio focus each time you call 'play()' on either the `SoundPlayer` or `QuickPlay`.
+The focus will be automatically release it when playback is finished or when you call the `stop()` method on the `SoundPlayer`.
 
 
 ## TODO this section needs reviewing as I don't think it is correct.
@@ -757,35 +775,32 @@ if (_hushOthers)
 }
 ...
 ...
-session.requestFocus(); // Get the audio focus
-session.play(track);
+player.requestFocus(); // Get the audio focus
+player.play(track);
 // wait
-session.play(track2);
-session.abandonFocus(); // Release the audio focus
+player.play(track2);
+player.abandonFocus(); // Release the audio focus
 ```
 
 #### Seek player
 
-When using QuickPlay you can seek to a specific position in the audio stream before or whilst playing the audio.
+When using the `SoundPlayer` you can seek to a specific position in the audio stream before or whilst playing the audio.
 
 ```dart
 await player.seekTo(Duration(seconds: 1));
 ```
 
-#### Setting subscription duration (Optional). 0.010 is default value when not set.
-
-```dart
-/// 0.01 is default
-flutterQuickPlay.setSubscriptionDuration(0.01);
-```
 
 #### Setting volume.
 
 ```dart
 /// 1.0 is default
-/// Currently, volume can be changed when player is running. Try manage this right after player starts.
-String path = await flutterQuickPlay.startPlayer(fileUri);
-await flutterQuickPlay.setVolume(0.1);
+/// Currently, volume can be changed when the player is running. 
+/// You must ensure that the play method has completed before calling
+/// setVolume.
+var player = SoundPlayer.noUI();
+await player.play(fileUri);
+player.setVolume(0.1);
 ```
 
 #### Release the player
@@ -797,7 +812,7 @@ In this way you will reset the player and clean up the device resources, but the
 ```dart
 @override
 void dispose() {
-	flutterQuickPlay.release();
+	player.release();
 	super.dispose();
 }
 ```
