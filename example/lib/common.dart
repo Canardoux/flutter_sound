@@ -26,13 +26,12 @@ enum MediaStorage {
 }
 
 /// get the duration for the media with the given codec.
-Future<double> getDuration(Codec codec) async {
-  Future<double> duration;
+Future<Duration> getDuration(Codec codec) async {
+  Future<Duration> duration;
   switch (MediaPath().media) {
     case MediaStorage.file:
     case MediaStorage.buffer:
-      var d = await FFMpegUtil().duration(MediaPath().pathForCodec(codec));
-      duration = Future.value(d != null ? d / 1000.0 : null);
+      duration = FFMpegUtil().duration(MediaPath().pathForCodec(codec));
       break;
     case MediaStorage.asset:
       duration = null;
