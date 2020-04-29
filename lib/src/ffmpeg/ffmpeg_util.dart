@@ -17,6 +17,8 @@
 import 'dart:async';
 import 'dart:core';
 
+import '../util/file_management.dart';
+
 import 'flutter_ffmpeg.dart';
 
 /// Utility class for Flutter Sound.
@@ -89,11 +91,13 @@ class FFMpegUtil {
   }
 
   /// Determines the duration of the passed uri.
-  Future<int> duration(String uri) async {
+  Future<Duration> duration(String uri) async {
     if (uri == null) return null;
+
+    assert(exists(uri));
     var info = await _ffMpegGetMediaInformation(uri);
     if (info == null) return null;
-    var duration = info['duration'] as int;
+    var duration = Duration(milliseconds: info['duration'] as int);
     return duration;
   }
 }
