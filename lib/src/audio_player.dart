@@ -909,7 +909,8 @@ class NotImplementedException implements Exception {
 void updateProgress(AudioPlayer player, PlaybackDisposition disposition) =>
     player._updateProgress(disposition);
 
-///
+/// Called if the audio has reached the end of the audio source
+/// or if we or the os stopped the playback prematurely.
 void audioPlayerFinished(AudioPlayer player, PlaybackDisposition status) =>
     player._audioPlayerFinished(status);
 
