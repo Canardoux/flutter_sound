@@ -41,6 +41,9 @@ class RecorderPlaybackController extends InheritedWidget {
     return true;
   }
 
+  /// stops both the player and the recorder.
+  void stop() => _state.stop();
+
   /// of - find the nearest RecorderPlaybackController in the parent widget
   /// tree.
   static RecorderPlaybackController of(BuildContext context) =>
@@ -58,7 +61,7 @@ class _RecordPlaybackControllerState {
       StreamController<PlaybackDisposition>.broadcast();
 
   /// Stops both the player and the recorder.
-  void stop(BuildContext context, Duration duration) {
+  void stop() {
     _playerState?.stop();
     _recorderState?.stop();
   }
