@@ -123,6 +123,8 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   Stream<RecordingDisposition> get dispositionStream =>
       _recorder.dispositionStream();
 
+  static const minDbCircle = 0; // 55;
+
   Widget _buildMicrophone() {
     return SizedBox(
         height: 120,
@@ -132,16 +134,18 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
             initialData: RecordingDisposition.zero(), // was START_DECIBELS
             builder: (_, streamData) {
               var disposition = streamData.data;
+              var min = minDbCircle;
+              if (disposition.decibels == 0) min = 0;
               //      onRecorderProgress(context, this, disposition.duration);
               return Stack(alignment: Alignment.center, children: [
                 AnimatedContainer(
                   duration: Duration(milliseconds: 20),
-                  // + 30 so the animated circle is always a reasonable
-                  // size (db ranges is typically 45 - 80db)
-                  width: disposition.decibels + 30,
-                  height: disposition.decibels + 30,
-                  constraints:
-                      BoxConstraints(maxHeight: 80.0 + 30, maxWidth: 80.0 + 30),
+                  // + MIN_DB_CIRCLE so the animated circle is always a
+                  // reasonable size (db ranges is typically 45 - 80db)
+                  width: disposition.decibels + min,
+                  height: disposition.decibels + min,
+                  constraints: BoxConstraints(
+                      maxHeight: 80.0 + min, maxWidth: 80.0 + min),
                   decoration:
                       BoxDecoration(shape: BoxShape.circle, color: Colors.red),
                 ),
