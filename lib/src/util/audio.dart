@@ -193,8 +193,10 @@ class Audio {
   /// You MUST call release once you have finished with an [Audio]
   /// otherwise you will leak temp files.
   void release() {
-    _onDisk = false;
-    _deleteTempFiles();
+    if (_tempMediaFiles.isNotEmpty) {
+      _onDisk = false;
+      _deleteTempFiles();
+    }
   }
 
   /// The SoundPlayerPlugin doesn't support passing a databuffer
