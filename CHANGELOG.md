@@ -1,3 +1,7 @@
+## 4.0.2+1
+
+- Fix a crash that we had when accessing the global variable AndroidActivity from `BackGroundAudioSerice.java` [#317](https://github.com/dooboolab/flutter_sound/issues/317)
+
 ## 4.0.1+1
 
 - "s.static_framework = true" in flutter_sound.podspec
