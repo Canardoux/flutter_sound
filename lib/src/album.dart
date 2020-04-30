@@ -1,4 +1,4 @@
-import 'sound_player.dart';
+import 'audio_player.dart';
 
 import 'track.dart';
 
@@ -8,7 +8,7 @@ typedef TrackChange = Track Function(int currentTrackIndex, Track current);
 /// the OS's builtin audio UI.
 ///
 class Album {
-  SoundPlayer _player;
+  AudioPlayer _player;
 
   final bool _virtualAlbum;
 
@@ -45,7 +45,7 @@ class Album {
   /// By default the Album displays on the OS' audio player.
   /// To suppress the OS' audio player pass [SoundPlayer.noUI()]
   /// to [player].
-  Album.fromTracks(this._tracks, SoundPlayer player) : _virtualAlbum = false {
+  Album.fromTracks(this._tracks, AudioPlayer player) : _virtualAlbum = false {
     Album._internal(player, _virtualAlbum);
 
     if (_tracks.isEmpty) {
@@ -53,9 +53,9 @@ class Album {
     }
   }
 
-  Album._internal(SoundPlayer player, bool virtualAlbum)
+  Album._internal(AudioPlayer player, bool virtualAlbum)
       : _virtualAlbum = virtualAlbum {
-    _player = player ?? SoundPlayer.withUI();
+    _player = player ?? AudioPlayer.withUI();
 
     _player.onSkipBackward = _skipBackward;
     _player.onSkipForward = _skipForward;
@@ -74,7 +74,7 @@ class Album {
   /// The Album will not allow the user to skip back past the first
   /// track you supplied so there is no looping back over the start
   /// of an album.
-  Album.virtual(SoundPlayer player) : _virtualAlbum = true {
+  Album.virtual(AudioPlayer player) : _virtualAlbum = true {
     Album._internal(player, _virtualAlbum);
   }
 

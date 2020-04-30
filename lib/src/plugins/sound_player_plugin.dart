@@ -16,7 +16,7 @@
 
 import 'dart:async';
 
-import '../sound_player.dart';
+import '../audio_player.dart';
 
 import '../track.dart';
 import '../util/log.dart';
@@ -33,11 +33,11 @@ class SoundPlayerPlugin extends PlayerBasePlugin {
   }
   SoundPlayerPlugin._internal() : super('com.dooboolab.flutter_sound_player');
 
-  Future<void> play(SoundPlayer player, Track track) async {
+  Future<void> play(AudioPlayer player, Track track) async {
     /// sound player plugin does yet support in memory audio.
     trackForceToDisk(track);
     var args = <String, dynamic>{};
-    args['path'] = trackUri(track);
+    args['path'] = trackStoragePath(track);
     // Flutter cannot transfer an enum to a native plugin.
     // We use an integer instead
     args['codec'] = track.codec.index;

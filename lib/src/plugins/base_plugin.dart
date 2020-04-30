@@ -18,6 +18,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import '../util/ansi_color.dart';
 import '../util/log.dart';
 
 /// Used to describe any class that can be placed into a slot.
@@ -94,12 +95,13 @@ abstract class BasePlugin {
     if (!inserted) {
       _slots.add(slotEntry);
     }
-    Log.d('registered SlotEntry to slot: ${_slots.length - 1}');
+    Log.d(red('registered SlotEntry to slot: ${_slots.length - 1}'));
   }
 
   ///
   void release(SlotEntry slotEntry) {
     var slot = findSlot(slotEntry);
+    Log.d(red('releasing slot $slot'));
     if (slot != -1) {
       _slots[slot] = null;
     } else {

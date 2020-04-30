@@ -251,13 +251,14 @@ public class TrackPlayer extends FlutterSoundPlayer
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
 
-
-	void invokeMethodWithBool(String methodName, boolean arg) {
-		Map<String, Object> dic = new HashMap<String, Object>();
-		dic.put("slotNo", slotNo);
-		dic.put("arg", arg);
-		getPlugin().invokeMethod(methodName, dic);
+	void invokeMethodWithBoolean ( String methodName, Boolean arg )
+	{
+		Map<String, Object> dic = new HashMap<String, Object> ();
+		dic.put ( "slotNo", slotNo );
+		dic.put ( "arg", arg );
+		getPlugin ().invokeMethod ( methodName, dic );
 	}
+
 
 
 	public void startPlayerFromTrack( final MethodCall call, final Result result )
@@ -328,6 +329,15 @@ public class TrackPlayer extends FlutterSoundPlayer
 		{
 			mMediaBrowserHelper.removeSkipTrackBackwardHandler();
 		}
+
+		if ( canPause )
+		{
+			mMediaBrowserHelper.setPauseHandler( new PauseHandler(  ) );
+		} else
+		{
+			mMediaBrowserHelper.removePauseHandler();
+		}
+
 
 		if ( setActiveDone == t_SET_CATEGORY_DONE.NOT_SET )
 		{
@@ -543,10 +553,10 @@ public class TrackPlayer extends FlutterSoundPlayer
 			if ( mIsSuccessfulCallback )
 			{
 				//mResult.success( "The media player has been successfully initialized" );
-				invokeMethodWithBool("onConnected", true);
+				invokeMethodWithBoolean("onConnected", true);
 			} else
 			{
-				invokeMethodWithBool("onConnected", false);
+				invokeMethodWithBoolean("onConnected", false);
 				//mResult.error( TAG, "An error occurred while initializing the media player", null );
 			}
 			return null;
@@ -572,7 +582,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 			Exception
 		{
 			PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
-			invokeMethodWithBool( "pause", playbackState.getState() == PlaybackStateCompat.STATE_PLAYING  );
+			invokeMethodWithBoolean( "pause", playbackState.getState() == PlaybackStateCompat.STATE_PLAYING  );
 
 			return null;
 		}
@@ -611,6 +621,9 @@ public class TrackPlayer extends FlutterSoundPlayer
 			return null;
 		}
 	}
+
+	
+
 
 	/**
 	 * A function that triggers a function in the Dart code to update the playback

@@ -16,6 +16,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/services.dart';
 
@@ -143,6 +144,14 @@ class SoundRecorderPlugin extends BasePlugin {
 
       case "updateDbPeakProgress":
         var decibels = call.arguments['arg'] as double;
+        // We use max to ensure that we always report a +ve db.
+        // We have seen -ve db come up from the OS which is not
+        // valid (i.e. silence is 0 db).
+        decibels = max(0, decibels);
+
+        /// sanity check. 194 is the theoretical upper limit on undistorted
+        ///  sound in air. (above this its a shock wave)
+        decibels = min(194, decibels);
         recorderUpdateDbPeakDispostion(recorder, decibels);
         break;
 

@@ -21,9 +21,9 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
 
-import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../flutter_sound.dart';
 import 'android/android_audio_source.dart';
 import 'android/android_encoder.dart';
 import 'android/android_output_format.dart';
@@ -32,10 +32,10 @@ import 'ios/ios_quality.dart';
 import 'plugins/base_plugin.dart';
 import 'plugins/sound_recorder_plugin.dart';
 import 'recording_disposition.dart';
-import 'util/codec_conversions.dart';
-import 'util/file_management.dart';
+import 'track.dart';
 import 'util/log.dart';
 import 'util/recording_disposition_manager.dart';
+import 'util/recording_track.dart';
 
 enum _RecorderState {
   isStopped,
@@ -50,28 +50,99 @@ class SoundRecorder implements SlotEntry {
 
   RecordingDispositionManager _dispositionManager;
 
-// Set by startRecorder when the user wants to record an ogg/opus
-  bool _isOggOpus = false;
-  // Used by startRecorder/stopRecorder to keep the caller wanted uri
-  String _recordingToOriginalPath;
-
-  /// The path we will be recording to.
-  /// This is often the same as [_recordingToOriginalPath] unless
-  /// we need to record to a different codec and then remux
-  /// the file after recording finishes.
-  String _recordingToPath;
-
   /// track the total time we hav been paused during
   /// the current recording player.
   var _timePaused = Duration(seconds: 0);
 
-  /// I fwe have paused during the current recording player this
+  /// If we have paused during the current recording player this
   /// will be the time
   /// the most recent pause commenced.
   DateTime _pauseStarted;
 
+  /// The track we are recording to.
+  RecordingTrack _recordingTrack;
+
   /// Create a [SoundRecorder] to record audio.
-  SoundRecorder();
+  SoundRecorder() {
+    _dispositionManager = RecordingDispositionManager(this);
+  }
+
+  /// Returns the duration of the recording
+  Duration get duration => _dispositionManager.lastDuration;
+
+  /// Starts the recorder recording to the
+  /// passed in [Track].
+  /// At this point the track MUST have been created via
+  /// the [Track.fromPath] constructor.
+  ///
+  /// Support of recording to a databuffer is planned for a later
+  /// release.
+  ///
+  /// The [track]s file will be truncated and over-written.
+  ///
+  ///```dart
+  /// var track = Track.fromPath('fred.mpeg');
+  ///
+  /// var recorder = SoundRecorder();
+  /// recorder.onStopped = () {
+  ///   recorder.release();
+  ///   // playback the recording we just made.
+  ///   QuickPlay.fromTrack(track);
+  /// });
+  /// recorder.record(track);
+  /// ```
+  Future<void> record(
+    Track track, {
+    int sampleRate = 16000,
+    int numChannels = 1,
+    int bitRate = 16000,
+    AndroidEncoder androidEncoder = AndroidEncoder.aacCodec,
+    AndroidAudioSource androidAudioSource = AndroidAudioSource.mic,
+    AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.defaultFormat,
+    IosQuality iosQuality = IosQuality.low,
+    bool requestPermission = true,
+  }) async {
+    await _initialize();
+
+    _recordingTrack = RecordingTrack(track);
+
+    /// Throws an exception if the path isn't valid.
+    _recordingTrack.validatePath();
+
+    // Request Microphone permission if needed
+    if (requestPermission) {
+      var status = await Permission.microphone.request();
+      if (status != PermissionStatus.granted) {
+        throw RecordingPermissionException("Microphone permission not granted");
+      }
+    }
+
+    /// We must not already be recording.
+    if (_recorderState != null && _recorderState != _RecorderState.isStopped) {
+      throw RecorderRunningException('Recorder is not stopped.');
+    }
+
+    /// the codec must be supported.
+    if (!await isSupported(_recordingTrack.nativeCodec)) {
+      throw CodecNotSupportedException('Codec not supported.');
+    }
+
+    _timePaused = Duration(seconds: 0);
+
+    await _getPlugin().start(
+        this,
+        _recordingTrack.recordingPath,
+        sampleRate,
+        numChannels,
+        bitRate,
+        _recordingTrack.nativeCodec,
+        androidEncoder,
+        androidAudioSource,
+        androidOutputFormat,
+        iosQuality);
+
+    _recorderState = _RecorderState.isRecording;
+  }
 
   /// Initialize a fresh new SoundRecorder
   Future <SoundRecorder> initialize()  =>_initialize();
@@ -106,7 +177,9 @@ class SoundRecorder implements SlotEntry {
   Future<SoundRecorder> _initialize() async {
     if (!_isInited) {
       _isInited = true;
-      _dispositionManager = RecordingDispositionManager(this);
+
+      // TODO: do we need to wait until this completes before allowing
+      // any further interactions with the recording subsystem.
       _getPlugin().initialise(this);
     }
     return this;
@@ -118,6 +191,7 @@ class SoundRecorder implements SlotEntry {
     if (_isInited) {
       _isInited = false;
       await stop();
+      _dispositionManager.release();
       _getPlugin().release(this);
     }
   }
@@ -136,108 +210,27 @@ class SoundRecorder implements SlotEntry {
     return await _getPlugin().isSupported(this, codec);
   }
 
-  /// Starts the recorder, recording audio to the passed in [path]
-  /// using the settings given.
-  /// The file at [path] will be overwritten.
-  Future<void> start({
-    @required String path,
-    int sampleRate = 16000,
-    int numChannels = 1,
-    int bitRate = 16000,
-    Codec codec = Codec.aacADTS,
-    AndroidEncoder androidEncoder = AndroidEncoder.aacCodec,
-    AndroidAudioSource androidAudioSource = AndroidAudioSource.mic,
-    AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.defaultFormat,
-    IosQuality iosQuality = IosQuality.low,
-    bool requestPermission = true,
-  }) async {
-    await _initialize();
-
-    _recordingToOriginalPath = path;
-    _recordingToPath = path;
-
-    /// the directory where we are recording to MUST exist.
-    if (!directoryExists(dirname(path))) {
-      throw DirectoryNotFoundException(
-          'The directory ${dirname(path)} must exists');
-    }
-
-    // Request Microphone permission if needed
-    if (requestPermission) {
-      var status = await Permission.microphone.request();
-      if (status != PermissionStatus.granted) {
-        throw RecordingPermissionException("Microphone permission not granted");
-      }
-    }
-
-    /// We must not be recording.
-    if (_recorderState != null && _recorderState != _RecorderState.isStopped) {
-      throw RecorderRunningException('Recorder is not stopped.');
-    }
-
-    /// the codec must be supported.
-    if (!await isSupported(codec)) {
-      throw CodecNotSupportedException('Codec not supported.');
-    }
-
-    _timePaused = Duration(seconds: 0);
-
-    // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
-    // We use FFmpeg for that task.
-    // The remux occurs when we call stopRecorder
-    if ((Platform.isIOS) &&
-        ((codec == Codec.opusOGG) || (fileExtension(path) == '.opus'))) {
-      _isOggOpus = true;
-      codec = Codec.cafOpus;
-
-      /// temp file to record CAF/OPUS file to
-      _recordingToPath = tempFile(suffix: '.caf');
-    } else {
-      _isOggOpus = false;
-    }
-
-    if (exists(_recordingToPath)) delete(_recordingToPath);
-
-    await _getPlugin().start(
-        this,
-        _recordingToPath,
-        sampleRate,
-        numChannels,
-        bitRate,
-        codec,
-        androidEncoder,
-        androidAudioSource,
-        androidOutputFormat,
-        iosQuality);
-
-    _recorderState = _RecorderState.isRecording;
-  }
-
   /// Stops the current recording.
   /// An exception is thrown if the recording can't be stopped.
   ///
-  /// [stopRecording] is also responsible for remux'ing the recording
+  /// [stopRecording] is also responsible for recode'ing the recording
   /// for some codecs which aren't natively support. Dependindig on the
   /// size of the file this could take a few moments to a few minutes.
   Future<void> stop() async {
+    await _initialize();
     await _getPlugin().stop(this);
 
     _recorderState = _RecorderState.isStopped;
 
-    _dispositionManager.release();
-
-    if (_isOggOpus) {
-      CodecConversions.cafOpusToOpus(
-          _recordingToPath, _recordingToOriginalPath);
-
-      return _recordingToOriginalPath;
-    }
+    // If requried, transcribe from the native codec to the requested codec.
+    _recordingTrack.recode();
   }
 
   /// Pause recording.
   /// The recording must be recording when this method is called
   /// otherwise an [RecorderNotRunningException]
   Future<void> pause() async {
+    await _initialize();
     if (!isRecording) {
       throw RecorderNotRunningException(
           "You cannot pause recording when the recorder is not running.");
@@ -252,6 +245,7 @@ class SoundRecorder implements SlotEntry {
   /// The recording must be paused when this method is called
   /// otherwise a [RecorderNotPausedException] will be thrown.
   Future<void> resume() async {
+    await _initialize();
     if (!isPaused) {
       throw RecorderNotPausedException(
           "You cannot resume recording when the recorder is not paused.");
@@ -278,8 +272,16 @@ class SoundRecorder implements SlotEntry {
 
   /// Call by the plugin to notify us that the duration of the recording
   /// has changed.
-  void _updateDuration(Duration duration) {
-    _dispositionManager.updateDurationDisposition(duration, _timePaused);
+  /// The plugin ignores pauses so it just gives us the time
+  /// elapsed since the recording first started.
+  ///
+  /// We subtract the time we have spent paused to get the actual
+  /// duration of the recording.
+  ///
+  void _updateDuration(Duration elapsedDuration) {
+    var duration = elapsedDuration - _timePaused;
+    _dispositionManager.updateDurationDisposition(duration);
+    _recordingTrack.duration = duration;
   }
 
   /// Defines the interval at which the peak level should be updated.
@@ -297,14 +299,14 @@ class SoundRecorder implements SlotEntry {
 
   /// Called by the plugin to notify us of the current Db Level of the
   /// recording.
-  void _updateDbPeakDispostion(double decibels) {
-    _dispositionManager.updateDbPeakDispostion(decibels);
+  void _updateDbPeakDisposition(double decibels) async {
+    await _initialize();
+    _dispositionManager.updateDbPeakDisposition(decibels);
   }
 }
 
 /// INTERNAL APIS
-/// function to assist with hiding the internal api.
-///
+/// functions to assist with hiding the internal api.
 ///
 
 ///
@@ -336,7 +338,7 @@ void recorderSetDbLevelEnabled(SoundRecorder recorder,
 
 /// called by the plugin when the db level changes
 void recorderUpdateDbPeakDispostion(SoundRecorder recorder, double decibels) =>
-    recorder._updateDbPeakDispostion(decibels);
+    recorder._updateDbPeakDisposition(decibels);
 
 ///
 /// Execeptions

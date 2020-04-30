@@ -19,8 +19,9 @@ import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/foundation.dart';
 
+import 'audio_focus_mode.dart';
+import 'audio_player.dart';
 import 'codec.dart';
-import 'sound_player.dart';
 import 'track.dart';
 
 /// Provides the ability to playback a single
@@ -34,6 +35,7 @@ import 'track.dart';
 /// The audio file plays to completion and then
 /// resources are automatically cleanedup.
 /// You have no control over the audio once it starts playing.
+///
 /// This is intended for playing short audio files.
 ///
 /// ```dart
@@ -42,7 +44,7 @@ import 'track.dart';
 /// QuickPlay.fromTrack(track, volume: 1.0, withUI: true);
 
 class QuickPlay {
-  SoundPlayer _player;
+  AudioPlayer _player;
   Track _track;
 
   /// Creates a QuickPlay from a Track and immediately plays it.
@@ -57,10 +59,10 @@ class QuickPlay {
 
   QuickPlay._internal(double volume, bool withUI) {
     if (withUI) {
-      _player = SoundPlayer.withUI(
+      _player = AudioPlayer.withUI(
           canPause: false, canSkipBackward: false, canSkipForward: false);
     } else {
-      _player = SoundPlayer.noUI();
+      _player = AudioPlayer.noUI();
     }
 
     volume ??= 0.5;
@@ -68,8 +70,38 @@ class QuickPlay {
     _play(volume);
   }
 
-  /// The [uri] of the file to download and playback
-  /// The [codec] of the file the [uri] points to. The default
+  /// Plays audio from a local file path such as an asset.
+  ///
+  /// The [path] of the file to play.
+  ///
+  /// An [TrackFileMustExistException] exception will be thrown
+  /// if the file doesn't exist.
+  ///
+  /// The [codec] of the file the [path] points to. The default
+  /// value is [Codec.fromExtension].
+  /// If the default [Codec.fromExtension] is used then
+  /// [QuickPlay] will use the files extension to guess the codec.
+  /// If the file extension doesn't match a known codec then
+  /// [QuickPlay] will throw an [CodecNotSupportedException] in which
+  /// case you need pass one of the known codecs.
+  ///
+  /// By default no UI is displayed.
+  ///
+  /// If you pass [withUI]=true then the OSs' media player is displayed
+  /// but all of the UI controls are disabled.
+  ///
+  /// The [volume] must be in the range 0.0 to 1.0. Defaults to 0.5
+  QuickPlay.fromPath(String path,
+      {double volume, Codec codec = Codec.fromExtension, bool withUI = false}) {
+    _track = Track.fromPath(path, codec: codec);
+    QuickPlay._internal(volume, withUI);
+  }
+
+  /// Allows you to play an audio file stored at a givenURL.
+  ///  Both HTTP and HTTPS are supported.
+  /// The [url] of the file to download and playback
+  ///
+  /// The [codec] of the file the [url] points to. The default
   /// value is [Codec.fromExtension].
   /// If the default [Codec.fromExtension] is used then
   /// [QuickPlay] will use the files extension to guess the codec.
@@ -77,12 +109,14 @@ class QuickPlay {
   /// [QuickPlay] will throw an [CodecNotSupportedException] in which
   /// case you need pass one of the known codecs.
   /// By default no UI is displayed.
+  ///
   /// If you pass [withUI]=true then the OSs' media player is displayed
   /// but all of the UI controls are disabled.
+  ///
   /// The [volume] must be in the range 0.0 to 1.0. Defaults to 0.5
-  QuickPlay.fromPath(String uri,
+  QuickPlay.fromURL(String url,
       {double volume, Codec codec = Codec.fromExtension, bool withUI = false}) {
-    _track = Track.fromPath(uri, codec: codec);
+    _track = Track.fromURL(url, codec: codec);
     QuickPlay._internal(volume, withUI);
   }
 
@@ -104,7 +138,7 @@ class QuickPlay {
 
   Future<void> _play(double volume) async {
     _player.setVolume(volume);
-    _player.hushOthers = true;
+    _player.audioFocus(AudioFocusMode.focusAndDuckOthers);
     _player.onFinished = () => _player.release();
     _player.onStopped = ({wasUser}) => _player.release();
     return _player.play(_track);

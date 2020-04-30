@@ -199,7 +199,6 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 }
 
 
-
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result
 {
          NSDictionary* trackDict = (NSDictionary*) call.arguments[@"track"];

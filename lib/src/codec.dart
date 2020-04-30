@@ -71,12 +71,27 @@ class CodecHelper {
   /// the codec those files use.
   static const extensionToCodecMap = <String, Codec>{
     '.aac': Codec.aacADTS,
-    '.wav': Codec.pcm,
     '.opus': Codec.opusOGG,
     '.caf': Codec.cafOpus,
     '.mp3': Codec.mp3,
     '.ogg': Codec.vorbisOGG,
-    '.pcm': Codec.pcm,
+    '.wav': Codec.pcm,
+    '.flac': Codec.flac,
+  };
+
+  /// Maps codecs to common file extensions.
+  static const codecToExtensionMap = <Codec, String>{
+    Codec.aacADTS: '.aac',
+    Codec.opusOGG: '.opus',
+    Codec.cafOpus: '.caf',
+    Codec.mp3: '.mp3',
+    Codec.vorbisOGG: '.ogg',
+    Codec.pcm: '.wav',
+    Codec.aacLC: '.aac',
+    Codec.aac3GP: '.aac',
+    Codec.aacMP4: '.aac',
+    Codec.wav: '.wav',
+    Codec.flac: '.flac',
   };
 
   /// Returns the codec for the given [path]

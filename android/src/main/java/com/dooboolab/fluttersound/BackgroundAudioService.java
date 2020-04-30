@@ -110,7 +110,6 @@ public class BackgroundAudioService
 	public static Track currentTrack;
 	public static boolean pauseResumeCalledByApp = false;
 
-
 	private boolean            mIsNoisyReceiverRegistered;
 	private MediaPlayer        mMediaPlayer;
 	private MediaSessionCompat mMediaSessionCompat;
@@ -153,6 +152,21 @@ public class BackgroundAudioService
 			 * return; }
 			 *
 			 */
+			if ( (pauseHandler != null ) && (! pauseResumeCalledByApp) )
+			{
+				try
+				{
+					pauseHandler.call();
+					return;
+				}
+				catch ( Exception e )
+				{
+					e.printStackTrace();
+				}
+			} else
+			{
+				pauseResumeCalledByApp = false;
+			}
 
 			if ( (pauseHandler != null ) && (! pauseResumeCalledByApp) )
 			{
@@ -200,7 +214,6 @@ public class BackgroundAudioService
 			{
 				pauseResumeCalledByApp = false;
 			}
-
 
 			// Check whether the media player is playing
 			if ( mMediaPlayer.isPlaying() )
@@ -900,7 +913,6 @@ public class BackgroundAudioService
 		@Override
 		protected void onPostExecute( Bitmap bitmap )
 		{
-
 			super.onPostExecute( bitmap );
 			// Reinitialize the metadata when the image has been downloaded
 			initMediaSessionMetadata( bitmap );

@@ -4,12 +4,12 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
+import '../audio_player.dart';
 import '../codec.dart';
 import '../ios/ios_session_category.dart';
 import '../ios/ios_session_mode.dart';
 import '../playback_disposition.dart';
 
-import '../sound_player.dart';
 import '../track.dart';
 import '../util/log.dart';
 import 'base_plugin.dart';
@@ -36,7 +36,7 @@ abstract class PlayerBasePlugin extends BasePlugin {
   set onConnected(ConnectedCallback callback) => _onConnected = callback;
 
   /// Over load this method to play audio.
-  Future<void> play(SoundPlayer player, Track track);
+  Future<void> play(AudioPlayer player, Track track);
 
   /// Each Player must be initialised and registered.
   void initialisePlayer(SlotEntry player) async {
@@ -122,20 +122,12 @@ abstract class PlayerBasePlugin extends BasePlugin {
     });
   }
 
-  ///  The caller can manage his audio focus with this function
-  /// Depending on your configuration this will either make
-  /// this slotEntry the loudest stream or it will silence all other stream.
-  Future<void> requestAudioFocus(SlotEntry slotEntry) async {
+  /// The caller can manage the audio focus with this function
+  /// If [request] is true then we request the focus
+  /// If [request] is false then we abandon the focus.
+  Future<void> audioFocus(SlotEntry slotEntry, {bool request}) async {
     await invokeMethod(
-        slotEntry, 'setActive', <String, dynamic>{'enabled': true});
-  }
-
-  ///  The caller can manage his audio focus with this function
-  /// Depending on your configuration this will either make
-  /// this slotEntry the loudest stream or it will silence all other stream.
-  Future<void> abandonAudioFocus(SlotEntry slotEntry) async {
-    await invokeMethod(
-        slotEntry, 'setActive', <String, dynamic>{'enabled': false});
+        slotEntry, 'setActive', <String, dynamic>{'enabled': request});
   }
 
   /// Contrucsts a PlaybackDisposition from a json object.
@@ -165,7 +157,7 @@ abstract class PlayerBasePlugin extends BasePlugin {
   /// Handles callbacks from the platform specific plugin
   /// The below methods are shared by all the playback plugins.
   Future<dynamic> onMethodCallback(
-      covariant SoundPlayer player, MethodCall call) {
+      covariant AudioPlayer player, MethodCall call) {
     switch (call.method) {
 
       ///TODO implement in the OS code for each player.

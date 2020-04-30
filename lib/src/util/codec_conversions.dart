@@ -27,11 +27,11 @@ class CodecConversions {
   /// opus encoded audio file and remux's it
   /// into a Apple CAF envelope so we can play
   /// an Opus file on IOS.
-  static Future<String> opusToCafOpus(String path) async {
-    var remuxPath = tempFile(suffix: '.caf');
-    if (exists(remuxPath)) {
+  static Future<String> opusToCafOpus({String fromPath}) async {
+    var toPath = tempFile(suffix: '.caf');
+    if (exists(toPath)) {
       // delete the old temporary file if it exists
-      delete(remuxPath);
+      delete(toPath);
     }
     // The following ffmpeg instruction
     // does not decode and re-encode the file.
@@ -46,17 +46,17 @@ class CodecConversions {
       'error',
       '-y',
       '-i',
-      path,
+      fromPath,
       '-c:a',
       'copy',
-      remuxPath,
+      toPath,
     ]); // remux OGG to CAF
 
     if (rc != 0) {
       throw RemuxFailedException(
-          'Conversion.opusToCafOpus of $remuxPath failed. Returned $rc');
+          'Conversion.opusToCafOpus of $toPath failed. Returned $rc');
     }
-    return remuxPath;
+    return toPath;
   }
 
   /// Converts a Caf Opus encoded file to Opus (ogg).

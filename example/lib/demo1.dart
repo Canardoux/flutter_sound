@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
   /// the player's stream changing under it.
    StreamController<PlaybackDisposition> _localController;
 
-  SoundPlayer playerModule;
+  AudioPlayer playerModule;
   SoundRecorder recorderModule;
 
   String _recorderTxt = '00:00:00';
@@ -101,9 +101,9 @@ class _MyAppState extends State<MyApp> {
     if (playerModule != null)
       playerModule.release();
     if (_isAudioPlayer) {
-        playerModule = SoundPlayer.withUI();
+        playerModule = AudioPlayer.withUI();
     } else {
-          playerModule = SoundPlayer.noUI();
+          playerModule = AudioPlayer.noUI();
     }
     playerModule.dispositionStream().listen(_localController.add);
 
@@ -278,10 +278,8 @@ class _MyAppState extends State<MyApp> {
       Directory tempDir = await getTemporaryDirectory();
       int slotNo = 0; // TODO
       String path = '${tempDir.path}/${slotNo}-${paths[_codec.index]}';
-      await recorderModule.start(
-        path:  path,
-        codec: _codec,
-      );
+      Track track = Track.fromPath(path, codec: _codec);
+      await recorderModule.record(track);
 
       /* TODO
       _recorderSubscription = recorderModule.onRecorderStateChanged.listen((e) {
@@ -431,22 +429,23 @@ class _MyAppState extends State<MyApp> {
                   //trackPath: audioFilePath,
                   //dataBuffer: dataBuffer,
                   codec: _codec,
-                  title: "This is a record",
-                  author: "from flutter_sound",
-                  albumArtUrl: albumArtUrl,
-                  albumArtAsset: albumArtAsset,
-                  albumArtFile: albumArtFile,
+
+                  //title: "This is a record",
+                  //author: "from flutter_sound",
+                  //albumArtUrl: albumArtUrl,
+                  //albumArtAsset: albumArtAsset,
+                  //albumArtFile: albumArtFile,
                 );
         else
           track = Track.fromPath(audioFilePath,
                                      //trackPath: audioFilePath,
                                      //dataBuffer: dataBuffer,
                                      codec: _codec,
-                                     title: "This is a record",
-                                     author: "from flutter_sound",
-                                     albumArtUrl: albumArtUrl,
-                                     albumArtAsset: albumArtAsset,
-                                     albumArtFile: albumArtFile,
+                                     //title: "This is a record",
+                                     //author: "from flutter_sound",
+                                     //albumArtUrl: albumArtUrl,
+                                     //albumArtAsset: albumArtAsset,
+                                     //albumArtFile: albumArtFile,
                                    );
       playerModule.onFinished = () {
         print('I hope you enjoyed listening to this song');

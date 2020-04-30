@@ -31,7 +31,9 @@ String tempFile({String suffix}) {
     suffix = '.$suffix';
   }
   var uuid = Uuid();
-  return '${join(Directory.systemTemp.path, uuid.v4())}$suffix';
+  var path = '${join(Directory.systemTemp.path, uuid.v4())}$suffix';
+  touch(path);
+  return path;
 }
 
 /// Return the file extension for the given path.
@@ -55,4 +57,36 @@ bool directoryExists(String path) {
 void delete(String path) {
   var fout = File(path);
   fout.deleteSync();
+}
+
+/// Truncates the file to zero bytes in length.
+void truncate(String path) {
+  RandomAccessFile raf;
+
+  try {
+    var file = File(path);
+    raf = file.openSync(mode: FileMode.write);
+    raf.truncateSync(0);
+  } finally {
+    if (raf != null) raf.closeSync();
+  }
+}
+
+/// If the file doesn't exist then create it.
+/// If a file is created it will be zero length.
+void touch(String path) {
+  final file = File(path);
+  file.createSync();
+}
+
+/// Returns true if the given [path] is a file (as apposed to a directory or
+/// a symlink).
+bool isFile(String path) {
+  var fromType = FileSystemEntity.typeSync(path);
+  return (fromType == FileSystemEntityType.file);
+}
+
+/// Returns the length of the file located at [path].
+int fileLength(String path) {
+  return File(path).lengthSync();
 }
