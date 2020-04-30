@@ -145,10 +145,16 @@ class TrackPlayer extends FlutterSoundPlayer {
   /// Media player and recorder controls should be displayed only after this
   /// method has finished executing.
   Future<TrackPlayer> initialize() async {
-    if (!isInited) {
-      isInited = true;
+    if (isInited == t_INITIALIZED.FULLY_INITIALIZED) {
+      return this;
+    }
+    if (isInited == t_INITIALIZED.INITIALIZATION_IN_PROGRESS) {
+      throw(InitializationInProgress());
+    }
 
-      if (trackPlayerPlugin == null) {
+    isInited = t_INITIALIZED.INITIALIZATION_IN_PROGRESS;
+
+    if (trackPlayerPlugin == null) {
         trackPlayerPlugin = TrackPlayerPlugin(); // The lazy singleton
       }
       slotNo = getPlugin().lookupEmptyTrackPlayerSlot(this);
@@ -164,16 +170,21 @@ class TrackPlayer extends FlutterSoundPlayer {
       } catch (err) {
         rethrow;
       }
-    }
+    isInited = t_INITIALIZED.FULLY_INITIALIZED;
     return this;
   }
 
   /// Resets the media player and cleans up the device resources. This must be
   /// called when the player is no longer needed.
   Future<void> release() async {
-    if (isInited) {
-      try {
-        isInited = false;
+    if (isInited == t_INITIALIZED.NOT_INITIALIZED) {
+      return this;
+    }
+    if (isInited == t_INITIALIZED.INITIALIZATION_IN_PROGRESS) {
+      throw(InitializationInProgress());
+    }
+    isInited = t_INITIALIZED.INITIALIZATION_IN_PROGRESS;
+    try {
         // Stop the player playback before releasing
         await stopPlayer();
         await invokeMethod('releaseMediaPlayer', <String, dynamic>{});
@@ -191,7 +202,7 @@ class TrackPlayer extends FlutterSoundPlayer {
       }
       getPlugin().freeSlot(slotNo);
       slotNo = null;
-    }
+    isInited = t_INITIALIZED.NOT_INITIALIZED;
   }
 
   void skipForward(Map call) {
@@ -252,11 +263,11 @@ class TrackPlayer extends FlutterSoundPlayer {
     //TonSkip onPause,
   }) async {
     // Check the current codec is not supported on this platform
+    await initialize();
     if (!await isDecoderSupported(track.codec)) {
       throw PlayerRunningException('The selected codec is not supported on '
           'this platform.');
     }
-    await initialize();
 
     await track._adaptOggToIos();
 
