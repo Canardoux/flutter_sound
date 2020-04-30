@@ -10,7 +10,7 @@ import '../track.dart';
 import '../util/ansi_color.dart';
 import '../util/log.dart';
 import '../util/recorded_audio.dart';
-import 'recorder_playback_controller.dart';
+import 'recorder_playback_controller.dart' as controller;
 
 typedef OnStart = void Function();
 typedef OnProgress = void Function(RecordedAudio media);
@@ -24,7 +24,7 @@ typedef InformUser = Future<bool> Function(
 /// A UI for recording audio.
 class SoundRecorderUI extends StatefulWidget {
   /// Callback to be notified when the recording stops
-  final OnStop onStop;
+  final OnStop onStopped;
 
   /// Callback to be notified when the recording starts.
   final OnStart onStart;
@@ -76,7 +76,7 @@ class SoundRecorderUI extends StatefulWidget {
   SoundRecorderUI(
     Track track, {
     this.onStart,
-    this.onStop,
+    this.onStopped,
     this.informUser,
     Key key,
   })  : audio = RecordedAudio.toTrack(track),
@@ -106,7 +106,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
 
   @override
   Widget build(BuildContext context) {
-    registerRecorder(context, this);
+    controller.registerRecorder(context, this);
     return _buildButtons();
   }
 
@@ -185,13 +185,13 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
           widget.onStart();
         }
 
-        recorderPlaybackControllerOf(context).start(widget.audio);
+        controller.onRecordingStarted(context);
       });
     }
   }
 
   /// The [stop] methods stops the recording and calls
-  /// the onStop callback.
+  /// the [onStopped] callback.
   ///
   void stop() {
     setState(() {});
@@ -202,11 +202,11 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
         setState(() {
           _updateDuration(_recorder.duration);
 
-          if (widget.onStop != null) {
-            widget.onStop(widget.audio);
+          if (widget.onStopped != null) {
+            widget.onStopped(widget.audio);
           }
 
-          onRecordingStopped(context, _recorder.duration);
+          controller.onRecordingStopped(context, _recorder.duration);
         });
       });
     }
