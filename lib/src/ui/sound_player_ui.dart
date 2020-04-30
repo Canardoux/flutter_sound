@@ -212,7 +212,19 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     }
   }
 
-  void _onFinished() => setState(() => _playState = PlayState.stopped);
+  void _onFinished() => setState(() {
+    /// we can get a race condition when we stop the playback
+    /// We have disabled the button and called stop.
+    /// The OS then sends an onFinished call which tries
+    /// to put the state into a stopped state overriding
+    /// the disabled state.
+    /// TODO: onFinished should only be called if the player
+    /// naturally finishes. It appears it gets called
+    /// if we prematually stop the recording.
+        if (_playState != PlayState.disabled) {
+          _playState = PlayState.stopped;
+        }
+      });
 
   @override
   void dispose() {
@@ -247,12 +259,13 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   }
 
   /// Controls whether the Play button is enabled or not.
+  /// Can not toggle this whilst the player is playing or paused.
   void playbackEnabled({@required bool enabled}) {
+    assert(__playState != PlayState.playing && __playState != PlayState.paused);
     setState(() {
       if (enabled == true) {
         __playState = PlayState.stopped;
       } else if (enabled == false) {
-        stop();
         __playState = PlayState.disabled;
       }
     });
@@ -393,7 +406,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   /// Call [stop] to stop the audio playing.
   ///
   Future<void> stop() async {
-    await _stop();
+    _stop();
   }
 
   ///
@@ -412,7 +425,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     // if called via dispose we can't trigger setState.
     if (supressState) {
       __playState = PlayState.stopped;
-      _transitioning = false;
+      __transitioning = false;
       __loading = false;
     } else {
       _playState = PlayState.stopped;
