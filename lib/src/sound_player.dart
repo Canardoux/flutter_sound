@@ -349,6 +349,9 @@ class SoundPlayer implements SlotEntry {
     return _playerController != null ? _playerController.stream : null;
   }
 
+
+
+
   /// [true] if the player is currently playing audio
   bool get isPlaying => playerState == PlayerState.isPlaying;
 

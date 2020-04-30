@@ -60,9 +60,10 @@ class _MyAppState extends State<MyApp> {
   bool _isRecording = false;
   List<String> _path = [null, null, null, null, null, null, null];
 
-   //Stream<PlaybackDisposition> _playbackDispositionStream;
-   //Stream<PlaybackDisposition> _playbackDispositionStream2;
-   //Stream<RecordingDisposition> _recorderDispositionStream;
+  /// we keep our own local stream as the players come and go.
+  /// This lets our StreamBuilder work with it worrying about
+  /// the player's stream changing under it.
+   StreamController<PlaybackDisposition> _localController;
 
   SoundPlayer playerModule;
   SoundRecorder recorderModule;
@@ -104,10 +105,7 @@ class _MyAppState extends State<MyApp> {
     } else {
           playerModule = SoundPlayer.noUI();
     }
-    //_playbackDispositionStream = playbackDispositionStream(interval:Duration(milliseconds:100));
-    //_playbackDispositionStream2 = playbackDispositionStream(interval:Duration(milliseconds:100));
-
-
+    playerModule.dispositionStream().listen(_localController.add);
 
     initializeDateFormatting();
     setCodec(_codec);
@@ -115,8 +113,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> init() async {
-    recorderModule = await SoundRecorder().initialize();
-    //_recorderDispositionStream = recorderDispositionStream(interval:Duration(milliseconds:100));
+    recorderModule =  SoundRecorder();
+    _localController = StreamController<PlaybackDisposition>.broadcast();
+    await recorderModule.initialize();
 
     await _initializeExample();
 
@@ -552,7 +551,7 @@ class _MyAppState extends State<MyApp> {
   String formatDuration(Duration duration) {
     var date =
     DateTime.fromMillisecondsSinceEpoch(duration.inMilliseconds, isUtc: true);
-    return DateFormat('mm:ss', 'en_GB').format(date);
+    return DateFormat('mm:ss:SS', 'en_GB').format(date);
   }
 
   Widget buildDBIndicator() {
@@ -596,41 +595,52 @@ class _MyAppState extends State<MyApp> {
 
   Widget buildPlaybackDurationText() {
     return StreamBuilder<PlaybackDisposition>(
-                stream: playbackDispositionStream(interval: Duration(milliseconds: 10)),
+                stream: _localController.stream,
                 initialData: PlaybackDisposition.zero(),
                 builder: (context, snapshot) {
                   var disposition = snapshot.data;
-                  var txt = formatDuration(disposition.position);
+                  return Text
+                    (
+                              formatDuration(disposition.position),
+                              style: TextStyle
+                              (
+                                fontSize: 35.0,
+                                color: Colors.black,
+                              ),
 
-                  return Container(
-                    margin: EdgeInsets.only(top: 12.0, bottom: 16.0),
-                    child: Text(
-                      txt,
-                      style: TextStyle(
-                        fontSize: 35.0,
-                        color: Colors.black,
-                        ),
-                      ),
                     );
                 });
   }
 
 
+
   Widget buildPlaybackProgressBar() {
     return (audioState == AudioState.isPlaying)
            ? StreamBuilder<PlaybackDisposition>(
-                stream: playbackDispositionStream(interval: Duration(milliseconds: 10)),
+                stream:  _localController.stream,
                 initialData: PlaybackDisposition.zero(),
-                builder: (context, snapshot) {
+                builder: (context, snapshot)
+                {
                   var playbackDisposition = snapshot.data;
-                  double pos = playbackDisposition.position.inMilliseconds.toDouble();
-                  double max = playbackDisposition.duration.inMilliseconds.toDouble();
-                  return LinearProgressIndicator(
-                              value:pos / max,
+                  double pos = playbackDisposition.position.inMilliseconds.toDouble( );
+                  double max = playbackDisposition.duration.inMilliseconds.toDouble( );
+                  if (max == 0) {
+                      pos = 0;
+                      max = 1;
+                  }
+                  return Slider(
 
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                              backgroundColor: Colors.grey);
-                })
+                    value: pos / max,
+                    max: 1.0,
+                    min: 0.0,
+                    onChanged: ( double value )
+                    async {
+                      await playerModule.seekTo( Duration( milliseconds: (value*max).round() ) );
+                    },
+
+                  );
+                }
+           )
            : Container();
   }
 
