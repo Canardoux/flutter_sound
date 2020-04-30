@@ -1,3 +1,4 @@
+
 /*
  * This file is part of Flutter-Sound (Flauto).
  *
@@ -19,6 +20,7 @@ import 'dart:io';
 
 import 'android/android_audio_focus_gain.dart';
 
+import 'audio_focus_mode.dart';
 import 'codec.dart';
 import 'ios/ios_session_category.dart';
 import 'ios/ios_session_category_option.dart';
@@ -318,9 +320,6 @@ class AudioPlayer implements SlotEntry {
         Log.d('calling prepare stream');
         t.prepareStream(track);
 
-        Log.d('calling hush');
-        _applyHush();
-
         // Not awaiting this may cause issues if someone immediately tries
         // to stop.
         // I think we need a completer to control transitions.
@@ -555,37 +554,6 @@ class AudioPlayer implements SlotEntry {
     if (_onFinished != null) _onFinished();
   }
 
-  /// Instructs the OS to reduce the volume of other audio
-  /// whilst we play this audio file.
-  /// The exact effect of this is OS dependant.
-  /// The effect is only applied when we start the audio play.
-  /// Changing this value whilst audio is play will have no affect.
-  bool hushOthers = false;
-
-  /// Apply/Remoe the hush other setting.
-  void _applyHush() async {
-    if (hushOthers) {
-      if (Platform.isIOS) {
-        await iosSetCategory(
-            IOSSessionCategory.playAndRecord,
-            IOSSessionMode.defaultMode,
-            IOSSessionCategoryOption.iosDuckOthers |
-                IOSSessionCategoryOption.iosDefaultToSpeaker);
-      } else if (Platform.isAndroid) {
-        await androidFocusRequest(AndroidAudioFocusGain.transientMayDuck);
-      }
-    } else {
-      if (Platform.isIOS) {
-        await iosSetCategory(
-            IOSSessionCategory.playAndRecord,
-            IOSSessionMode.defaultMode,
-            IOSSessionCategoryOption.iosDefaultToSpeaker);
-      } else if (Platform.isAndroid) {
-        await androidFocusRequest(AndroidAudioFocusGain.defaultGain);
-      }
-    }
-  }
-
   /// handles a pause coming up from the player
   void _onSystemPaused() {
     if (_onPaused != null) _onPaused(wasUser: true);
@@ -791,7 +759,7 @@ class AudioPlayer implements SlotEntry {
   /// playing audio which from my reading appears to be correct.
   ///
   /// After calling this function,
-  /// the caller is responsible for using [requestAudioFocus]
+  /// the caller is responsible for using [audioFocus]
   /// and [abandonAudioFocus]
   ///    probably before startRecorder or startPlayer
   /// and stopPlayer and stopRecorder
@@ -816,31 +784,57 @@ class AudioPlayer implements SlotEntry {
     });
   }
 
-  /// Reliquences the foreground audio.
   ///  The caller can manage his audio focus with this function
   /// Depending on your configuration this will either make
   /// this player the loudest stream or it will silence all other stream.
-  Future<void> abandonAudioFocus({bool enabled}) async {
+  Future<void> audioFocus(AudioFocusMode mode) async {
     initialised.then<void>((result) async {
       if (result == true) {
-        await _plugin.abandonAudioFocus(this);
+        switch (mode) {
+          case AudioFocusMode.focusAndKeepOthers:
+            await _plugin.audioFocus(this, request: true);
+            _setHush(hushOthers: false);
+            break;
+          case AudioFocusMode.focusAndStopOthers:
+            await _plugin.audioFocus(this, request: true);
+            // TODO: how do you stop other players?
+            break;
+          case AudioFocusMode.focusAndDuckOthers:
+            await _plugin.audioFocus(this, request: true);
+            _setHush(hushOthers: true);
+            break;
+          case AudioFocusMode.abandonFocus:
+            await _plugin.audioFocus(this, request: false);
+            break;
+        }
       } else {
         throw PlayerInvalidStateException('Player initialisation failed');
       }
     });
   }
 
-  ///  The caller can manage his audio focus with this function
-  /// Depending on your configuration this will either make
-  /// this player the loudest stream or it will silence all other stream.
-  Future<void> requestAudioFocus() async {
-    initialised.then<void>((result) async {
-      if (result == true) {
-        await _plugin.requestAudioFocus(this);
-      } else {
-        throw PlayerInvalidStateException('Player initialisation failed');
+  /// Apply/Remoe the hush other setting.
+  void _setHush({bool hushOthers}) async {
+    if (hushOthers) {
+      if (Platform.isIOS) {
+        await iosSetCategory(
+            IOSSessionCategory.playAndRecord,
+            IOSSessionMode.defaultMode,
+            IOSSessionCategoryOption.iosDuckOthers |
+                IOSSessionCategoryOption.iosDefaultToSpeaker);
+      } else if (Platform.isAndroid) {
+        await _androidFocusRequest(AndroidAudioFocusGain.transientMayDuck);
       }
-    });
+    } else {
+      if (Platform.isIOS) {
+        await iosSetCategory(
+            IOSSessionCategory.playAndRecord,
+            IOSSessionMode.defaultMode,
+            IOSSessionCategoryOption.iosDefaultToSpeaker);
+      } else if (Platform.isAndroid) {
+        await _androidFocusRequest(AndroidAudioFocusGain.defaultGain);
+      }
+    }
   }
 
   /// For Android only.
@@ -856,7 +850,7 @@ class AudioPlayer implements SlotEntry {
   /// Unlike [requestFocus] this method allows us to set the gain.
   ///
 
-  Future<bool> androidFocusRequest(int focusGain) async {
+  Future<bool> _androidFocusRequest(int focusGain) async {
     return initialised.then<bool>((result) async {
       if (result == true) {
         return await _plugin.androidFocusRequest(this, focusGain);
@@ -942,3 +936,5 @@ void onSystemSkipBackward(AudioPlayer player) => player._onSystemSkipBackward();
 void onSystemUpdatePlaybackState(
         AudioPlayer player, SystemPlaybackState playbackState) =>
     player._onSystemUpdatePlaybackState(playbackState);
+
+
