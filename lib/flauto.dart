@@ -35,6 +35,13 @@ enum t_CODEC {
   CODEC_PCM,
 }
 
+enum t_INITIALIZED
+{
+  NOT_INITIALIZED,
+  FULLY_INITIALIZED,
+  INITIALIZATION_IN_PROGRESS,
+}
+
 FlutterSoundHelper flutterSoundHelper = FlutterSoundHelper(); // Singleton
 
 class FlutterSoundHelper {

@@ -147,6 +147,7 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 {
         setCategoryDone = NOT_SET;
         setActiveDone = NOT_SET;
+        result(@"The player has been successfully initialized");
 }
 
 - (void)releaseTrackPlayer:(FlutterMethodCall *)call result:(FlutterResult)result

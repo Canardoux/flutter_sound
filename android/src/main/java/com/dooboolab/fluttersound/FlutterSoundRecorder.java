@@ -322,6 +322,8 @@ public class FlutterSoundRecorder
 	int    slotNo;
 	private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor ();
 	private Handler mainHandler = new Handler();
+	long mPauseTime = 0;
+	long mStartPauseTime = -1;
 
 	FlutterSoundRecorder ( int aSlotNo )
 	{
@@ -460,6 +462,8 @@ public class FlutterSoundRecorder
 				mediaRecorder.setAudioEncodingBitRate ( bitRate );
 			}
 
+			mPauseTime = 0;
+			mStartPauseTime = -1;
 			mediaRecorder.prepare ();
 			mediaRecorder.start ();
 
@@ -469,7 +473,7 @@ public class FlutterSoundRecorder
 			this.model.setRecorderTicker ( () ->
 			                               {
 
-				                               long time = SystemClock.elapsedRealtime () - systemTime;
+				                               long time = SystemClock.elapsedRealtime () - systemTime - mPauseTime;
 				                               // Log.d(TAG, "elapsedTime: " + SystemClock.elapsedRealtime());
 				                               // Log.d(TAG, "time: " + time);
 
@@ -625,6 +629,7 @@ public class FlutterSoundRecorder
 			recordHandler.removeCallbacksAndMessages ( null );
 			dbPeakLevelHandler.removeCallbacksAndMessages ( null );
 			this.model.getMediaRecorder().pause();
+			mStartPauseTime = SystemClock.elapsedRealtime ();
 			result.success( "Recorder is paused");
 		}
 	}
@@ -645,6 +650,10 @@ public class FlutterSoundRecorder
 		{
 			recordHandler.post ( this.model.getRecorderTicker () );
 			this.model.getMediaRecorder().resume();
+			if (mStartPauseTime >= 0)
+				mPauseTime += SystemClock.elapsedRealtime () - mStartPauseTime;
+			mStartPauseTime = -1;
+
 			result.success( true);
 		}
 	}

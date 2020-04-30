@@ -180,7 +180,7 @@ String fileExtension(String path) {
 }
 
 class FlutterSoundPlayer {
-  bool isInited = false;
+  t_INITIALIZED isInited = t_INITIALIZED.NOT_INITIALIZED;
   t_PLAYER_STATE playerState = t_PLAYER_STATE.IS_STOPPED;
   StreamController<PlayStatus> playerController;
   TWhenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
@@ -208,21 +208,33 @@ class FlutterSoundPlayer {
   }
 
   Future<FlutterSoundPlayer> initialize() async {
-    if (!isInited) {
-      isInited = true;
+    if (isInited == t_INITIALIZED.FULLY_INITIALIZED) {
+      return this;
+    }
+    if (isInited == t_INITIALIZED.INITIALIZATION_IN_PROGRESS) {
+      throw(InitializationInProgress());
+    }
+
+      isInited = t_INITIALIZED.INITIALIZATION_IN_PROGRESS;
 
       if (flautoPlayerPlugin == null) {
         flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton
       }
       slotNo = getPlugin()._lookupEmptySlot(this);
       await invokeMethod('initializeMediaPlayer', <String, dynamic>{});
-    }
+    isInited = t_INITIALIZED.FULLY_INITIALIZED;
     return this;
   }
 
   Future<void> release() async {
-    if (isInited) {
-      isInited = false;
+    if (isInited == t_INITIALIZED.NOT_INITIALIZED) {
+      return this;
+    }
+    if (isInited == t_INITIALIZED.INITIALIZATION_IN_PROGRESS) {
+      throw(InitializationInProgress());
+    }
+    isInited = t_INITIALIZED.INITIALIZATION_IN_PROGRESS;
+
       await stopPlayer();
       _removePlayerCallback(); // playerController is closed by this function
       await invokeMethod('releaseMediaPlayer', <String, dynamic>{});
@@ -230,7 +242,7 @@ class FlutterSoundPlayer {
 
       getPlugin().freeSlot(slotNo);
       slotNo = null;
-    }
+      isInited = t_INITIALIZED.NOT_INITIALIZED;
   }
 
   void _updateProgress(Map call) {
@@ -577,4 +589,13 @@ class PlayerRunningException implements Exception {
   final String message;
 
   PlayerRunningException(this.message);
+}
+
+
+class InitializationInProgress implements Exception {
+
+  InitializationInProgress()
+  {
+    print('An initialization is currently already in progress.');
+  }
 }

@@ -107,7 +107,7 @@ final List<String> defaultPaths = [
 ];
 
 class FlutterSoundRecorder {
-  bool isInited = false;
+  t_INITIALIZED isInited = t_INITIALIZED.NOT_INITIALIZED;
   t_RECORDER_STATE recorderState = t_RECORDER_STATE.IS_STOPPED;
   StreamController<RecordStatus> _recorderController;
   StreamController<double> _dbPeakController;
@@ -143,27 +143,40 @@ class FlutterSoundRecorder {
   }
 
   Future<FlutterSoundRecorder> initialize() async {
-    if (!isInited) {
-      isInited = true;
-      if (flautoRecorderPlugin == null) {
+    if (isInited == t_INITIALIZED.FULLY_INITIALIZED) {
+      return this;
+    }
+    if (isInited == t_INITIALIZED.INITIALIZATION_IN_PROGRESS) {
+      throw(InitializationInProgress());
+    }
+
+    isInited = t_INITIALIZED.INITIALIZATION_IN_PROGRESS;
+
+    if (flautoRecorderPlugin == null) {
         flautoRecorderPlugin = FlautoRecorderPlugin();
       } // The lazy singleton
       slotNo = getPlugin().lookupEmptySlot(this);
       await invokeMethod('initializeFlautoRecorder', <String, dynamic>{});
-    }
+    isInited = t_INITIALIZED.FULLY_INITIALIZED;
     return this;
   }
 
   Future<void> release() async {
-    if (isInited) {
-      isInited = false;
-      await stopRecorder();
+    if (isInited == t_INITIALIZED.NOT_INITIALIZED) {
+      return this;
+    }
+    if (isInited == t_INITIALIZED.INITIALIZATION_IN_PROGRESS) {
+      throw(InitializationInProgress());
+    }
+    isInited = t_INITIALIZED.INITIALIZATION_IN_PROGRESS;
+
+    await stopRecorder();
       _removeRecorderCallback(); // _recorderController will be closed by this function
       _removeDbPeakCallback(); // _dbPeakController will be closed by this function
       await invokeMethod('releaseFlautoRecorder', <String, dynamic>{});
       getPlugin().freeSlot(slotNo);
       slotNo = null;
-    }
+    isInited = t_INITIALIZED.NOT_INITIALIZED;
   }
 
   void updateRecorderProgress(Map call) {
@@ -425,4 +438,13 @@ class CodecNotSupportedException extends RecorderException {
 
 class RecordingPermissionException extends RecorderException {
   RecordingPermissionException(String message) : super(message);
+}
+
+
+class InitializationInProgress implements Exception {
+
+  InitializationInProgress()
+  {
+    print('An initialization is currently already in progress.');
+  }
 }
