@@ -1,4 +1,3 @@
-
 ## 4.0.1+1
 
 - "s.static_framework = true" in flutter_sound.podspec
@@ -11,7 +10,6 @@
 - A new flutter plugin is born : `flutter_sound_lite` [#291](https://github.com/dooboolab/flutter_sound/issues/291)
 - Adds a new parameter `whenPaused:` to the `startPlayerFromTrack()` function. [#314](https://github.com/dooboolab/flutter_sound/issues/314)
 - Fix bug for displaying a remote albumArt on Android. [#290](https://github.com/dooboolab/flutter_sound/issues/290)
-
 
 ##3.1.10
 

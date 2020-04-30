@@ -168,6 +168,22 @@ public class BackgroundAudioService
 				pauseResumeCalledByApp = false;
 			}
 
+			if ( (pauseHandler != null ) && (! pauseResumeCalledByApp) )
+			{
+				try
+				{
+					pauseHandler.call();
+					return;
+				}
+				catch ( Exception e )
+				{
+					e.printStackTrace();
+				}
+			} else
+			{
+				pauseResumeCalledByApp = false;
+			}
+
 			startPlayerPlayback();
 		}
 
@@ -325,10 +341,10 @@ public class BackgroundAudioService
 	@SuppressWarnings ( "unchecked" )
 	private boolean startPlayerPlayback()
 	{
-		if (Flauto.androidActivity == null)
+		//if (Flauto.androidActivity == null)
 		{
-			Log.e( TAG, "BackgroundAudioService.startPlayerPlayback() : Flauto.androidActivity == null. THIS IS BAD !!!");
-			return false;
+			//Log.e( TAG, "BackgroundAudioService.startPlayerPlayback() : Flauto.androidActivity == null. THIS IS BAD !!!");
+			//return false;
 		}
 		// Activate the MediaSessionCompat and give it the playing state
 		mMediaSessionCompat.setActive( true );
@@ -341,8 +357,9 @@ public class BackgroundAudioService
 		mMediaPlayer.start();
 
 		// Start the service
-		assert (Flauto.androidActivity != null);
-		startService( new Intent( Flauto.androidActivity, BackgroundAudioService.class ) );
+		// The two following instructions probably do no work
+		//assert (Flauto.androidActivity != null);
+		//startService( new Intent( Flauto.androidActivity, BackgroundAudioService.class ) );
 
 		// Update the playback state
 		playbackStateUpdater.apply(SystemPlaybackState.PLAYING);
@@ -569,33 +586,33 @@ public class BackgroundAudioService
                                                                 }
                                                                 catch ( IOException e )
                                                                 {
-																}
-															} else  if ( currentTrack.getAlbumArtFile() != null ) 
-															{
-																try 
-																{
-																	File            file            = new File( currentTrack.getAlbumArtFile());
-																	FileInputStream istr = new FileInputStream( file);
-																	albumArt = BitmapFactory.decodeStream( istr );
-																
-																} 
-																catch ( IOException e ) 
-																{
-																}
-															} else 
-															{
-																try 
-																{
-																	AssetManager assetManager = getApplicationContext().getAssets();
-																	InputStream  istr         = assetManager.open( "AppIcon.png");
-																	albumArt = BitmapFactory.decodeStream( istr );
+                                                                }
+                                                            } else  if ( currentTrack.getAlbumArtFile() != null )
+			                                    {
+				                                    try
+				                                    {
+					                                    File            file            = new File( currentTrack.getAlbumArtFile());
+					                                    FileInputStream istr = new FileInputStream( file);
+					                                    albumArt = BitmapFactory.decodeStream( istr );
 
-																} 
-																catch ( IOException e ) 
-																{
-																}
+				                                    }
+				                                    catch ( IOException e )
+				                                    {
+				                                    }
+			                                    } else
+			                                    {
+				                                    try
+				                                    {
+					                                    AssetManager assetManager = getApplicationContext().getAssets();
+					                                    InputStream  istr         = assetManager.open( "AppIcon.png");
+					                                    albumArt = BitmapFactory.decodeStream( istr );
 
-                                                            }
+				                                    }
+				                                    catch ( IOException e )
+				                                    {
+				                                    }
+
+			                                    }
 			                                    initMediaSessionMetadata( albumArt );
 
 			                                    // Call the callback
@@ -638,11 +655,13 @@ public class BackgroundAudioService
 		mMediaSessionCompat.setMediaButtonReceiver( pendingIntent );
 
 		// Set the session activity
-		assert(Flauto.androidActivity != null);
-		Context       context       = getApplicationContext();
-		Intent        intent        = new Intent( context, Flauto.androidActivity.getClass() );
-		PendingIntent pendingIntent2 = PendingIntent.getActivity( context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT );
-		mMediaSessionCompat.setSessionActivity( pendingIntent2 );
+		// The five following instructions do not work when Flauto.androidActivity is NULL
+		// This can happen when this module is directly instanciated by the OS, without initializing TrackPlayer first.
+		//assert(Flauto.androidActivity != null);
+		//Context       context       = getApplicationContext();
+		//Intent        intent        = new Intent( context, Flauto.androidActivity.getClass() );
+		//PendingIntent pendingIntent2 = PendingIntent.getActivity( context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT );
+		//mMediaSessionCompat.setSessionActivity( pendingIntent2 );
 		// Pass the media session token to this service
 		setSessionToken( mMediaSessionCompat.getSessionToken() );
 	}

@@ -144,6 +144,9 @@ class SoundRecorder implements SlotEntry {
     _recorderState = _RecorderState.isRecording;
   }
 
+  /// Initialize a fresh new SoundRecorder
+  Future <SoundRecorder> initialize()  =>_initialize();
+
   /// returns true if we are recording.
   bool get isRecording => (_recorderState ==
       _RecorderState

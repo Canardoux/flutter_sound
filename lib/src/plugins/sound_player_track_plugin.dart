@@ -68,6 +68,15 @@ class SoundPlayerTrackPlugin extends PlayerBasePlugin {
   Future<dynamic> onMethodCallback(
       covariant AudioPlayer player, MethodCall call) {
     switch (call.method) {
+      case 'pause':
+        var b = call.arguments['arg'] as bool;
+        if (b) {
+          onSystemPaused(player);
+        } else {
+          onSystemResumed(player);
+        }
+        //}
+        break;
 
       /// track specific methods
       case 'skipForward':

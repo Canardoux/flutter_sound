@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/src/util/log.dart';
+
 import '../playback_disposition.dart';
+import '../util/log.dart';
 
 import 'sound_player_ui.dart';
 import 'sound_recorder_ui.dart';

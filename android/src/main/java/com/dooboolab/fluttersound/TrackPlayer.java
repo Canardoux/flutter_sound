@@ -119,7 +119,7 @@ class TrackPlayerPlugin
 
 
 	@Override
-	public void onMethodCall( final MethodCall call, final Result result ) 
+	public void onMethodCall( final MethodCall call, final Result result )
 	{
 		int slotNo = call.argument ( "slotNo" );
 		assert ( ( slotNo >= 0 ) && ( slotNo <= slots.size () ) );
@@ -208,7 +208,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 
 
 	@Override
-	void initializeFlautoPlayer( final MethodCall call, final Result result ) 
+	void initializeFlautoPlayer( final MethodCall call, final Result result )
 	{
 		//super.initializeFlautoPlayer( call, result );
 		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
@@ -304,6 +304,15 @@ public class TrackPlayer extends FlutterSoundPlayer
 		}
 
 		mTimer = new Timer();
+
+		if ( canPause )
+		{
+			mMediaBrowserHelper.setPauseHandler( new PauseHandler(  ) );
+		} else
+		{
+			mMediaBrowserHelper.removePauseHandler();
+		}
+
 
 		// Add or remove the handlers for when the user tries to skip the current track
 		if ( canSkipForward )
@@ -553,6 +562,34 @@ public class TrackPlayer extends FlutterSoundPlayer
 			return null;
 		}
 	}
+
+	/**
+	 * A listener that is triggered when the pause buttons in the notification are
+	 * clicked.
+	 */
+	private class PauseHandler
+		implements Callable<Void>
+	{
+		private boolean mIsSkippingForward;
+
+		PauseHandler(  )
+		{
+		}
+
+		@Override
+		public Void call()
+			throws
+			Exception
+		{
+			PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
+			invokeMethodWithBool( "pause", playbackState.getState() == PlaybackStateCompat.STATE_PLAYING  );
+
+			return null;
+		}
+	}
+
+
+
 
 	/**
 	 * A listener that is triggered when the skip buttons in the notification are

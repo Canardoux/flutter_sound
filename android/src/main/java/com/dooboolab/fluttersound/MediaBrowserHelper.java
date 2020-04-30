@@ -178,7 +178,6 @@ public class MediaBrowserHelper
 		mediaControllerCompat.getTransportControls().play();
 	}
 
-
 	void seekTo( long newPosition )
 	{
 		mediaControllerCompat.getTransportControls().seekTo( newPosition );
@@ -244,6 +243,19 @@ public class MediaBrowserHelper
 	void removeSkipTrackBackwardHandler()
 	{
 		BackgroundAudioService.skipTrackBackwardHandler = null;
+	}
+
+	/**
+	 * Add a handler for when the user taps the button to pause/resume.
+	 */
+	void setPauseHandler( Callable<Void> handler )
+	{
+		BackgroundAudioService.pauseHandler = handler;
+	}
+
+	void removePauseHandler(  )
+	{
+		BackgroundAudioService.pauseHandler = null;
 	}
 
 	/**

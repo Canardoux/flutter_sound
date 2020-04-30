@@ -123,7 +123,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   Stream<RecordingDisposition> get dispositionStream =>
       _recorder.dispositionStream();
 
-  static const minDbCircle = 0; // 55;
+  static const _minDbCircle = 55;
 
   Widget _buildMicrophone() {
     return SizedBox(
@@ -134,7 +134,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
             initialData: RecordingDisposition.zero(), // was START_DECIBELS
             builder: (_, streamData) {
               var disposition = streamData.data;
-              var min = minDbCircle;
+              var min = _minDbCircle;
               if (disposition.decibels == 0) min = 0;
               //      onRecorderProgress(context, this, disposition.duration);
               return Stack(alignment: Alignment.center, children: [
