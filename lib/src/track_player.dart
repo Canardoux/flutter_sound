@@ -33,8 +33,8 @@ class TrackPlayer {
   ///
   Future<bool> get initialised => _player.initialised;
 
+  ///
   void showPauseButton(PauseButtonMode mode) {
-
     /// TODO: I don't know how to control the pause button.
   }
 
@@ -195,10 +195,20 @@ class TrackPlayer {
   }
 }
 
+///
 enum PauseButtonMode {
+  ///
   hidden,
+
+  ///
   disabled,
+
+  ///
   paused,
+
+  ///
   playing,
+
+  ///
   auto,
 }
