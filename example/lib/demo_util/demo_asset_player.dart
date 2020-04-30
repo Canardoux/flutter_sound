@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
-import 'active_codec.dart';
-import 'common.dart';
+import 'demo_active_codec.dart';
+import 'demo_common.dart';
 
 class AssetPlayer extends StatelessWidget {
   @override

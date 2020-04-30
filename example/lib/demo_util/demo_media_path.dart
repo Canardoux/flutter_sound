@@ -1,6 +1,6 @@
 import 'package:flutter_sound/flutter_sound.dart';
 
-import 'common.dart';
+import 'demo_common.dart';
 
 /// Paths for example media files.
 class MediaPath {

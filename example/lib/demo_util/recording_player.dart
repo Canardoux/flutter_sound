@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
-import 'active_codec.dart';
-import 'common.dart';
-import 'media_path.dart';
-import 'util/log.dart';
+import 'demo_active_codec.dart';
+import 'demo_common.dart';
+import 'demo_media_path.dart';
+import '../util/log.dart';
 
 class RecordingPlayer extends StatelessWidget {
   @override

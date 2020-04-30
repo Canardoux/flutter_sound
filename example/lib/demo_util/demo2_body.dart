@@ -1,17 +1,18 @@
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import 'active_codec.dart';
-import 'asset_player.dart';
-import 'example_drop_downs.dart';
+import 'demo_active_codec.dart';
+import 'demo_asset_player.dart';
+import 'demo_drop_downs.dart';
+import 'recorder_controls.dart';
 import 'recorder_state.dart';
+import 'recording_player.dart';
 import 'remote_player.dart';
 import 'track_switched.dart';
-import 'util/log.dart';
+import '../util/log.dart';
 
 ///
 class MainBody extends StatefulWidget {
@@ -29,18 +30,6 @@ class _MainBodyState extends State<MainBody> {
 
   bool initialised = false;
 
-  String recordingFile;
-  Track track;
-
-  @override
-  void initState() {
-    super.initState();
-    recordingFile = Track.tempFile(Codec.aacADTS);
-
-    track = Track.fromPath(recordingFile);
-    track.author = 'Brett';
-  }
-
   Future<bool> init() async {
     if (!initialised) {
       await initializeDateFormatting();
@@ -51,13 +40,6 @@ class _MainBodyState extends State<MainBody> {
       initialised = true;
     }
     return initialised;
-  }
-
-  void dispose() {
-    if (recordingFile != null) {
-      File(recordingFile).delete();
-    }
-    super.dispose();
   }
 
   @override
@@ -81,11 +63,13 @@ class _MainBodyState extends State<MainBody> {
               switchPlayer: (allow) => switchPlayer(useOSUI: allow),
             );
 
+            Widget recorderControls = RecorderControls();
+
             return ListView(
               children: <Widget>[
-                _buildRecorder(track),
+                recorderControls,
                 dropdowns,
-                // buildPlayBars(),
+                buildPlayBars(),
                 trackSwitch,
               ],
             );
@@ -114,28 +98,14 @@ class _MainBodyState extends State<MainBody> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
+            Left("Recording Playback"),
+            RecordingPlayer(),
             Left("Asset Playback"),
             AssetPlayer(),
             Left("Remote Track Playback"),
             RemotePlayer(),
           ],
         ));
-  }
-
-  Widget _buildRecorder(Track track) {
-    return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: RecorderPlaybackController(
-            child: Column(
-          children: [
-            SoundRecorderUI(track),
-            Left("Recording Playback"),
-            SoundPlayerUI.fromTrack(
-              track,
-              showTitle: true,
-            ),
-          ],
-        )));
   }
 }
 

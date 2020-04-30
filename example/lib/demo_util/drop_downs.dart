@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
-import 'active_codec.dart';
-import 'common.dart';
-import 'media_path.dart';
+import 'demo_active_codec.dart';
+import 'demo_common.dart';
+import 'demo_media_path.dart';
 
 /// Widget containing the set of drop downs used in the UI
 /// Media

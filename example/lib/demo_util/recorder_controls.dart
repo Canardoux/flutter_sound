@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
-import 'audio_state.dart';
-import 'common.dart';
-import 'grayed_out.dart';
-import 'media_path.dart';
+import 'demo_audio_state.dart';
+import 'demo_common.dart';
+import '../util/grayed_out.dart';
+import 'demo_media_path.dart';
 import 'recorder_state.dart';
 
 /// UI for the Recorder example controls

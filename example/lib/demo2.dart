@@ -16,9 +16,9 @@
 
 import 'package:flutter/material.dart';
 
-import 'example3_body.dart';
+import 'demo_util/demo2_body.dart';
 
-/// demonstrates the recording widget linked to a playback widget.
+/// Demonstrates using multiple players in one ui.
 void main() {
   runApp(MyApp());
 }

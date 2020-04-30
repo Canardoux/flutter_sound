@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'player_state.dart';
+import 'demo_player_state.dart';
 
 /// UI widget from the TrackPlayer specific settings
 /// Allow Tracks and Hush Others
