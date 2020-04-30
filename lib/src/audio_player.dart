@@ -301,7 +301,6 @@ class AudioPlayer implements SlotEntry {
         _track = track;
 
         if (!isStopped) {
-          started.complete();
           var exception =
               PlayerInvalidStateException("The player must not be running.");
           started.completeError(exception);
