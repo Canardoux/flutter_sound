@@ -40,6 +40,11 @@ class RecorderPlaybackController extends InheritedWidget {
   bool updateShouldNotify(InheritedWidget oldWidget) {
     return true;
   }
+
+  /// of - find the nearest RecorderPlaybackController in the parent widget
+  /// tree.
+  static RecorderPlaybackController of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<RecorderPlaybackController>();
 }
 
 class _RecordPlaybackControllerState {
@@ -51,6 +56,12 @@ class _RecordPlaybackControllerState {
   /// recorded duration increases.
   final StreamController<PlaybackDisposition> _localController =
       StreamController<PlaybackDisposition>.broadcast();
+
+  /// Stops both the player and the recorder.
+  void stop(BuildContext context, Duration duration) {
+    _playerState?.stop();
+    _recorderState?.stop();
+  }
 
   void _onRecorderStarted() {
     Log.d('_onRecorderStarted');
@@ -95,28 +106,23 @@ class _RecordPlaybackControllerState {
 
 ///
 void registerRecorder(BuildContext context, SoundRecorderUIState recorder) {
-  recorderPlaybackControllerOf(context)?._state?.registerRecorder(recorder);
+  RecorderPlaybackController.of(context)?._state?.registerRecorder(recorder);
 }
 
 ///
 void registerPlayer(BuildContext context, SoundPlayerUIState player) {
-  recorderPlaybackControllerOf(context)?._state?._playerState = player;
+  RecorderPlaybackController.of(context)?._state?._playerState = player;
 }
 
 ///
 void onRecordingStarted(BuildContext context) {
-  recorderPlaybackControllerOf(context)._state._onRecorderStarted();
+  RecorderPlaybackController.of(context)._state._onRecorderStarted();
 }
 
 ///
 void onRecordingStopped(BuildContext context, Duration duration) {
-  recorderPlaybackControllerOf(context)._state._onRecorderStopped(duration);
+  RecorderPlaybackController.of(context)._state._onRecorderStopped(duration);
 }
-
-/// of - find the nearest RecorderPlaybackController in the parent widget
-/// tree.
-RecorderPlaybackController recorderPlaybackControllerOf(BuildContext context) =>
-    context.dependOnInheritedWidgetOfExactType<RecorderPlaybackController>();
 
 // ///
 // void onRecorderProgress(
