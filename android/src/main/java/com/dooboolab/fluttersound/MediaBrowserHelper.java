@@ -245,18 +245,6 @@ public class MediaBrowserHelper
 		BackgroundAudioService.skipTrackBackwardHandler = null;
 	}
 
-	/**
-	 * Add a handler for when the user taps the button to pause/resume.
-	 */
-	void setPauseHandler( Callable<Void> handler )
-	{
-		BackgroundAudioService.pauseHandler = handler;
-	}
-
-	void removePauseHandler(  )
-	{
-		BackgroundAudioService.pauseHandler = null;
-	}
 
 	/**
 	 * Passes the currently playing track to the media browser, in order to show the

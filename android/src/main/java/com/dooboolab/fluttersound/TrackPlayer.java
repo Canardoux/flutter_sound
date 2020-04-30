@@ -582,7 +582,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 			Exception
 		{
 			PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
-			invokeMethodWithBool( "pause", playbackState.getState() == PlaybackStateCompat.STATE_PLAYING  );
+			invokeMethodWithBoolean( "pause", playbackState.getState() == PlaybackStateCompat.STATE_PLAYING  );
 
 			return null;
 		}
@@ -622,31 +622,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 		}
 	}
 
-	/**
-	 * A listener that is triggered when the pause buttons in the notification are
-	 * clicked.
-	 */
-	private class PauseHandler
-		implements Callable<Void>
-	{
-		private boolean mIsSkippingForward;
-
-		PauseHandler(  )
-		{
-		}
-
-		@Override
-		public Void call()
-			throws
-			Exception
-		{
-			PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
-			invokeMethodWithBoolean( "pause", playbackState.getState() == PlaybackStateCompat.STATE_PLAYING  );
-
-			return null;
-		}
-	}
-
+	
 
 
 	/**
