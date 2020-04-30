@@ -23,5 +23,5 @@ example/.flutter-plugins*
 flutter_export_environment*
 
 example/ios/Flutter/.last_build_id
-.last_build_id
+*.last_build_id
 Podfile.lock
