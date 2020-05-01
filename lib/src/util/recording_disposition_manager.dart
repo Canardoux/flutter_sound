@@ -56,12 +56,24 @@ class RecordingDispositionManager {
   /// frequent.
   /// Updates will stop if the recorder is paused.
   Stream<RecordingDisposition> stream({Duration interval}) {
+    var subscriptionRequired = false;
+    if (_dispositionController == null) {
+      _dispositionController = StreamController.broadcast();
+      recorderSetDbLevelEnabled(_recorder, enabled: true);
+      subscriptionRequired = true;
+    }
+
+    /// If the interval has changed then we need to resubscribe.
+    if (interval != null && this.interval != interval) {
+      subscriptionRequired = true;
+    }
     this.interval = interval ?? this.interval;
 
-    _dispositionController ??= StreamController.broadcast();
-    recorderSetSubscriptionInterval(_recorder, interval);
-    recorderSetDbLevelEnabled(_recorder, enabled: true);
-    recorderSetDbPeakLevelUpdate(_recorder, interval);
+    // interval has changed or this is the first time througn
+    if (subscriptionRequired) {
+      recorderSetSubscriptionInterval(_recorder, interval);
+      recorderSetDbPeakLevelUpdate(_recorder, interval);
+    }
     return _dispositionController.stream;
   }
 
