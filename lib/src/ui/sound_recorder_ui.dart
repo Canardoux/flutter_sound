@@ -18,8 +18,9 @@ typedef OnStop = void Function(RecordedAudio media);
 
 /// The [informUser] callback allows you to provide an
 /// UI informing the user that we are about to ask for a permission.
+///
 typedef InformUser = Future<bool> Function(
-    BuildContext context, List<Permission> permissions);
+    BuildContext context, bool requestingMicrophone, bool requestingStorage);
 
 /// A UI for recording audio.
 class SoundRecorderUI extends StatefulWidget {
@@ -73,6 +74,20 @@ class SoundRecorderUI extends StatefulWidget {
   /// This gives you a chance to explain to the user why we are asking
   /// for permission before we show the OSs permission UI.
   ///
+  /// ```dart
+  ///   SoundRecorderIU(track,
+  ///       informUser: (context, requestingMicrophone, requestingStorage)
+  ///           {
+  ///               // psuedo code
+  ///               String reason;
+  ///               if (requestingMicrophone)
+  ///                 reason += 'please allow microphone';
+  ///               if (requestingStorage)
+  ///                 reason += 'please allow storage';
+  ///               return Dialog.show(reason) == Dialog.OK;
+  ///           });
+  ///
+  /// ```
   SoundRecorderUI(
     Track track, {
     this.onStart,
@@ -165,7 +180,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   }
 
   void dispose() {
-    stop();
+    _stop();
     super.dispose();
   }
 
@@ -198,7 +213,11 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   /// the [onStopped] callback.
   ///
   void stop() {
+    _stop();
     setState(() {});
+  }
+
+  void _stop() {
     if (_recorder.isRecording) {
       _isRecording = false;
       _recorder.stop().then<void>((_) async {
@@ -242,7 +261,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
       /// ask the user before we actually ask the OS so
       /// the dev has a chance to inform the user as to why we need
       /// permissions.
-      inform = widget.informUser(context, permissionRequests);
+      inform = widget.informUser(context, !microphoneAllowed, !storageAllowed);
     } else {
       inform = Future.value(true);
     }
@@ -255,15 +274,25 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
       if (!storageAllowed) {
         permissionRequests.add(Permission.storage);
       }
+      if (permissionRequests.isNotEmpty) {
+        await permissionRequests.request().then((results) {
+          var accepted = true;
+          // check that each permission was granted.
+          results.forEach((permission, status) => accepted &= status.isGranted);
 
-      var results = await permissionRequests.request();
-
-      var accepted = true;
-      // check that each permission was granted.
-      results.forEach((permission, status) => accepted &= status.isGranted);
-
-      requesting.complete(accepted);
+          requesting.complete(accepted);
+        }).catchError((Object error) {
+          Log.e("Error occured requesting permissions: $error");
+          requesting.completeError(error);
+        }).whenComplete(() => Log.d('request permission completed'));
+      } else {
+        requesting.complete(true);
+      }
+    }).catchError((Object error) {
+      Log.e("Error occured requesting permissions: $error");
+      requesting.completeError(error);
     });
+
     return requesting.future;
   }
 }
