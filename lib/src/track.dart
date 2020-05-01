@@ -16,6 +16,8 @@ typedef TrackAction = void Function(Track current);
 ///
 //
 class Track {
+  _TrackStorageType _storageType;
+
   /// The title of this track
   String title;
 
@@ -37,6 +39,10 @@ class Track {
   /// Creates a Track from a local file or asset.
   /// Other classes that use fromPath should also be reviewed.
   Track.fromPath(String path, {Codec codec}) {
+    if (path == null) {
+      throw TrackPathException('The path MUST not be null.');
+    }
+
     if (!exists(path)) {
       throw TrackPathException('The given path $path does not exist.');
     }
@@ -44,17 +50,35 @@ class Track {
     if (!isFile(path)) {
       throw TrackPathException('The given path $path is not a file.');
     }
+    _storageType = _TrackStorageType.path;
+
     _audio = Audio.fromPath(path, codec);
   }
 
-  /// TODO: consider change this to fromURI.
-  /// Other classes that use fromPath should also be reviewed.
+  /// Creates a track from a remote URL.
+  /// HTTP and HTTPS are supported
   Track.fromURL(String url, {Codec codec}) {
+    if (url == null) {
+      throw TrackPathException('The url MUST not be null.');
+    }
+
+    _storageType = _TrackStorageType.url;
+
     _audio = Audio.fromURL(url, codec);
   }
 
+  /// Creates a track from a buffer.
+  /// You may pass null for the [dataBuffer] in which case an
+  /// empty databuffer will be created.
+  /// This is useful if you need to record into a track
+  /// backed by a buffer.
   ///
   Track.fromBuffer(Uint8List dataBuffer, {@required Codec codec}) {
+    if (dataBuffer == null) {
+      dataBuffer = Uint8List(0);
+    }
+
+    _storageType = _TrackStorageType.buffer;
     _audio = Audio.fromBuffer(dataBuffer, codec);
   }
 
@@ -62,10 +86,13 @@ class Track {
   Codec get codec => _audio.codec;
 
   /// true if the track is a url to the audio data.
-  bool get isURL => _audio.isURL;
+  bool get isURL => _storageType == _TrackStorageType.url;
 
   /// True if the track is a local file path
-  bool get isPath => _audio.isPath;
+  bool get isPath => _storageType == _TrackStorageType.path;
+
+  /// True if the [Track] media is stored in buffer.
+  bool get isBuffer => _storageType == _TrackStorageType.buffer;
 
   /// If the [Track] was created via [Track.fromURL]
   /// then this will be the passed url.
@@ -146,7 +173,11 @@ void prepareStream(Track track) => track._prepareStream();
 /// the databuffer had to be converted to a file.
 String trackStoragePath(Track track) => track._audio.storagePath;
 
-/// Retursn the databuffer.
+/// Returns the databuffer which holds the audio.
+/// If this Track was created via [fromBuffer].
+///
+/// This may not be the same buffer you passed in if we had
+/// to re-encode the buffer or if you recorded into the track.
 Uint8List trackBuffer(Track track) => track._audio.buffer;
 
 /// The SoundPlayerPlugin doesn't support passing a databuffer
@@ -163,3 +194,5 @@ class TrackPathException implements Exception {
 
   String toString() => message;
 }
+
+enum _TrackStorageType { buffer, path, url }
