@@ -104,6 +104,11 @@ class SoundRecorder implements SlotEntry {
   }) async {
     await _initialize();
 
+    if (!track.isPath) {
+      throw RecorderException(
+          "Only file based track are supported. Used Track.fromPath.");
+    }
+
     _recordingTrack = RecordingTrack(track);
 
     /// Throws an exception if the path isn't valid.
@@ -145,7 +150,7 @@ class SoundRecorder implements SlotEntry {
   }
 
   /// Initialize a fresh new SoundRecorder
-  Future <SoundRecorder> initialize()  =>_initialize();
+  Future<SoundRecorder> initialize() => _initialize();
 
   /// returns true if we are recording.
   bool get isRecording => (_recorderState ==
@@ -280,6 +285,7 @@ class SoundRecorder implements SlotEntry {
   ///
   void _updateDuration(Duration elapsedDuration) {
     var duration = elapsedDuration - _timePaused;
+    // Log.d('update duration called: $elapsedDuration');
     _dispositionManager.updateDurationDisposition(duration);
     _recordingTrack.duration = duration;
   }
