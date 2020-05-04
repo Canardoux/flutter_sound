@@ -471,34 +471,22 @@ public class FlutterSoundRecorder
 	{
 		recordHandler.removeCallbacksAndMessages ( null );
 		dbPeakLevelHandler.removeCallbacksAndMessages ( null );
-		boolean b = recorder.pauseRecorder( );
-		if (b)
-		{
-			result.success( "Recorder is paused");
-		} else
-		{
-			result.error ( TAG, "Cannot pause recorder", "Cannot pause recorder" );
-			return ;
-		}
+		recorder.pauseRecorder( );
 		mStartPauseTime = SystemClock.elapsedRealtime ();
+		result.success( "Recorder is paused");
 		//return true;
 	}
 
 	public void resumeRecorder( final MethodCall call, final MethodChannel.Result result )
 	{
 		recordHandler.post ( this.model.getRecorderTicker () );
-		boolean b = recorder.resumeRecorder();
-		if (b)
-		{
-			result.success( "Recorder has resumed");
-		} else
-		{
-			result.error ( TAG, "Cannot resume recorder", "Cannot resume recorder" );
-			return;
+		recorder.resumeRecorder();
+	
 		}
 		if (mStartPauseTime >= 0)
 			mPauseTime += SystemClock.elapsedRealtime () - mStartPauseTime;
 		mStartPauseTime = -1;
+		result.success( "Recorder is resumed");
 
 	}
 

@@ -6,11 +6,15 @@
 - Remove the authorization request from startRecorder()
 - Remove the NULL posted when the player or the recorder is closed.
 
+## 4.0.4+1
+
+- Fix a bug in `resumeRecorder()` on Android : the dbPeak Stream was not restored after a resume()
+- Fix a bug in `resumeRecorder()` : the returned value was sometimes a boolean instead of a String.
+
 ## 4.0.3+1
 
 - Check the Initialization Status, before accessing Flutter Sound Modules [#307](https://github.com/dooboolab/flutter_sound/issues/307)
 - Fixes : Pausing a recording doesn't 'pause' the duration. [#278](https://github.com/dooboolab/flutter_sound/issues/278)
-
 - Fix a crash that we had when accessing the global variable AndroidActivity from `BackGroundAudioSerice.java` [#317](https://github.com/dooboolab/flutter_sound/issues/317)
 
 ## 4.0.1+1
