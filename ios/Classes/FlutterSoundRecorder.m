@@ -439,7 +439,6 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
 - (void)pauseRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
 {
         [audioRecorder pause];
-
         [self stopDbPeakTimer];
         [self stopRecorderTimer];
         result(@"Recorder is Paused");
