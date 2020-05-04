@@ -397,14 +397,10 @@ class FlutterSoundRecorder {
     return result;
   }
 
-  Future<bool> resumeRecorder() async {
-    bool b = await invokeMethod('resumeRecorder', <String, dynamic>{}) as bool;
-    if (!b) {
-      await stopRecorder();
-      return false;
-    }
+  Future<String> resumeRecorder() async {
+    String result = await invokeMethod('resumeRecorder', <String, dynamic>{}) as String;
     recorderState = t_RECORDER_STATE.IS_RECORDING;
-    return true;
+    return result;
   }
 }
 

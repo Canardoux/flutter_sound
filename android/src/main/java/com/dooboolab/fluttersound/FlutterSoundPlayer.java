@@ -95,7 +95,7 @@ class FlautoPlayerPlugin
 
 	void invokeMethod ( String methodName, Map dic )
 	{
-		Log.d(TAG, "FlutterAutoPlugin: invokeMethod" + methodName);
+		//Log.d(TAG, "FlutterAutoPlugin: invokeMethod" + methodName);
 		channel.invokeMethod ( methodName, dic );
 	}
 
@@ -393,7 +393,7 @@ public class FlutterSoundPlayer
 			if ( path == null )
 			{
 				this.model.getMediaPlayer ().setDataSource ( PlayerAudioModel.DEFAULT_FILE_LOCATION );
-			} 
+			}
 			else
 			{
 				this.model.getMediaPlayer ().setDataSource ( path );
@@ -464,7 +464,7 @@ public class FlutterSoundPlayer
 				// long time = mp.getCurrentPosition();
 				// DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
 				// final String displayTime = format.format(time);
-				Log.d(TAG, "Running updateProgress");
+				//Log.d(TAG, "Running updateProgress");
 				try {
 					JSONObject json = new JSONObject();
 					json.put("duration", String.valueOf(mp.getDuration()));
@@ -472,7 +472,7 @@ public class FlutterSoundPlayer
 					mainHandler.post(new Runnable() {
 						@Override
 						public void run() {
-							Log.d(TAG, "Invoking updateProgress: " + json.toString());
+							//Log.d(TAG, "Invoking updateProgress: " + json.toString());
 							invokeMethodWithString("updateProgress", json.toString());
 						}
 					});
@@ -487,7 +487,7 @@ public class FlutterSoundPlayer
 		String resolvedPath = (path == null) ? PlayerAudioModel.DEFAULT_FILE_LOCATION : path;
 		result.success((resolvedPath));
 	}
-	
+
 
 	public void startPlayerFromBuffer ( final MethodCall call, final Result result )
 	{

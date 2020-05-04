@@ -41,7 +41,6 @@ enum t_MEDIA {
 /// Boolean to specify if we want to test the Rentrance/Concurency feature.
 /// If true, we start two instances of FlautoPlayer when the user hit the "Play" button.
 /// If true, we start two instances of FlautoRecorder and one instance of FlautoPlayer when the user hit the Record button
-const bool REENTRANCE_CONCURENCY = false;
 final exampleAudioFilePath = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
 final albumArtPath = "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_500kB.png";
 
@@ -64,8 +63,6 @@ class _MyAppState extends State<MyApp> {
 
   FlutterSoundPlayer playerModule;
   FlutterSoundRecorder recorderModule;
-  FlutterSoundPlayer playerModule_2; // Used if REENTRANCE_CONCURENCY
-  FlutterSoundRecorder recorderModule_2; // Used if REENTRANCE_CONCURENCY
 
   String _recorderTxt = '00:00:00';
   String _playerTxt = '00:00:00';
@@ -107,17 +104,6 @@ class _MyAppState extends State<MyApp> {
     if (Platform.isAndroid) {
       copyAssets();
     }
-
-    if (REENTRANCE_CONCURENCY) {
-      playerModule_2 = await FlutterSoundPlayer().initialize();
-      await playerModule_2.setSubscriptionDuration(0.01);
-      await playerModule_2.setSubscriptionDuration(0.01);
-
-      recorderModule_2 = await FlutterSoundRecorder().initialize();
-      await recorderModule_2.setSubscriptionDuration(0.01);
-      await recorderModule_2.setDbPeakLevelUpdate(0.8);
-      await recorderModule_2.setDbLevelEnabled(true);
-    }
   }
 
   Future<void>copyAssets() async {
@@ -133,18 +119,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     init();
-  }
-
-  t_AUDIO_STATE get audioState {
-    if (playerModule != null) {
-      if (playerModule.isPlaying) return t_AUDIO_STATE.IS_PLAYING;
-      if (playerModule.isPaused) return t_AUDIO_STATE.IS_PAUSED;
-    }
-    if (recorderModule != null) {
-      if (recorderModule.isPaused) return t_AUDIO_STATE.IS_RECORDING_PAUSED;
-      if (recorderModule.isRecording) return t_AUDIO_STATE.IS_RECORDING;
-    }
-    return t_AUDIO_STATE.IS_STOPPED;
   }
 
   void cancelRecorderSubscriptions() {
@@ -194,8 +168,6 @@ class _MyAppState extends State<MyApp> {
     try {
       await playerModule.release();
       await recorderModule.release();
-      await playerModule_2.release();
-      await recorderModule_2.release();
     } catch (e) {
       print('Released unsuccessful');
       print(e);
@@ -247,24 +219,6 @@ class _MyAppState extends State<MyApp> {
           this._dbLevel = value;
         });
       });
-      if (REENTRANCE_CONCURENCY) {
-        try
-        {
-          Uint8List dataBuffer = (await rootBundle.load( assetSample[_codec.index] )).buffer.asUint8List( );
-          await playerModule_2.startPlayerFromBuffer( dataBuffer, codec: _codec, whenFinished: ( )
-          {
-            //await playerModule_2.startPlayer(exampleAudioFilePath, codec: t_CODEC.CODEC_MP3, whenFinished: () {
-            print( 'Secondary Play finished' );
-          } );
-        } catch(e) {
-          print('startRecorder error: $e');
-        }
-        await recorderModule_2.startRecorder(
-          uri: '${tempDir.path}/flutter_sound_recorder2.aac',
-          codec: t_CODEC.CODEC_AAC,
-        );
-        print("Secondary record is '${tempDir.path}/flutter_sound_recorder2.aac'");
-      }
 
       this.setState(() {
         this._isRecording = true;
@@ -309,10 +263,7 @@ class _MyAppState extends State<MyApp> {
       String result = await recorderModule.stopRecorder();
       print('stopRecorder: $result');
       cancelRecorderSubscriptions();
-      if (REENTRANCE_CONCURENCY) {
-        await recorderModule_2.stopRecorder();
-        await playerModule_2.stopPlayer();
-      }
+
       getDuration();
     } catch (err) {
       print('stopRecorder error: $err');
@@ -473,14 +424,6 @@ class _MyAppState extends State<MyApp> {
         }
       }
       _addListeners();
-      if (REENTRANCE_CONCURENCY && _media != t_MEDIA.REMOTE_EXAMPLE_FILE) {
-          Uint8List dataBuffer = (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
-          await playerModule_2.startPlayerFromBuffer(dataBuffer, codec: _codec, whenFinished: () {
-
-          //playerModule_2.startPlayer(exampleAudioFilePath, codec: t_CODEC.CODEC_MP3, whenFinished: () {
-          print('Secondary Play finished');
-        });
-      }
 
       print('startPlayer: $path');
       // await flutterSoundModule.setVolume(1.0);
@@ -502,47 +445,28 @@ class _MyAppState extends State<MyApp> {
     } catch (err) {
       print('error: $err');
     }
-    if (REENTRANCE_CONCURENCY) {
-      try {
-        String result = await playerModule_2.stopPlayer();
-        print('stopPlayer_2: $result');
-      } catch (err) {
-        print('error: $err');
-      }
-    }
+
 
     this.setState(() {
       //this._isPlaying = false;
     });
   }
 
-  pauseResumePlayer() {
+  void pauseResumePlayer() {
     if (playerModule.isPlaying) {
       playerModule.pausePlayer();
-      if (REENTRANCE_CONCURENCY) {
-        playerModule_2.pausePlayer();
-      }
     } else {
       playerModule.resumePlayer();
-      if (REENTRANCE_CONCURENCY) {
-        playerModule_2.resumePlayer();
-      }
     }
   }
 
-  pauseResumeRecorder() {
+  void pauseResumeRecorder() {
     if (recorderModule.isPaused) {
       {
         recorderModule.resumeRecorder();
-        if (REENTRANCE_CONCURENCY) {
-          recorderModule_2.resumeRecorder();
-        }
       }
     } else {
       recorderModule.pauseRecorder();
-      if (REENTRANCE_CONCURENCY) {
-        recorderModule_2.pauseRecorder();
-      }
     }
   }
 
@@ -652,51 +576,33 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  onPauseResumePlayerPressed() {
-    switch (audioState) {
-      case t_AUDIO_STATE.IS_PAUSED:
+  void Function() onPauseResumePlayerPressed() {
+    if (playerModule == null)
+      return null;
+    if (playerModule.isPaused || playerModule.isPlaying) {
         return pauseResumePlayer;
-        break;
-      case t_AUDIO_STATE.IS_PLAYING:
-        return pauseResumePlayer;
-        break;
-      case t_AUDIO_STATE.IS_STOPPED:
-        return null;
-        break;
-      case t_AUDIO_STATE.IS_RECORDING:
-        return null;
-        break;
-      case t_AUDIO_STATE.IS_RECORDING_PAUSED:
-        return null;
-        break;
+      }
+      return null;
+  }
+
+  void Function() onPauseResumeRecorderPressed() {
+    if (recorderModule == null)
+      return null;
+    if (recorderModule.isPaused || recorderModule.isRecording) {
+      return pauseResumeRecorder;
     }
+    return null;
   }
 
-  onPauseResumeRecorderPressed() {
-    switch (audioState) {
-      case t_AUDIO_STATE.IS_PAUSED:
-        return null;
-        break;
-      case t_AUDIO_STATE.IS_PLAYING:
-        return null;
-        break;
-      case t_AUDIO_STATE.IS_STOPPED:
-        return null;
-        break;
-      case t_AUDIO_STATE.IS_RECORDING:
-        return pauseResumeRecorder;
-        break;
-      case t_AUDIO_STATE.IS_RECORDING_PAUSED:
-        return pauseResumeRecorder;
-        break;
-    }
+  void Function() onStopPlayerPressed() {
+    if (playerModule == null)
+      return null;
+    return (playerModule.isPlaying || playerModule.isPaused) ? stopPlayer : null;
   }
 
-  onStopPlayerPressed() {
-    return audioState == t_AUDIO_STATE.IS_PLAYING || audioState == t_AUDIO_STATE.IS_PAUSED ? stopPlayer : null;
-  }
-
-  onStartPlayerPressed() {
+  void Function() onStartPlayerPressed() {
+    if (playerModule == null)
+      return null;
     if (_media == t_MEDIA.FILE || _media == t_MEDIA.BUFFER) // A file must be already recorded to play it
     {
       if (_path[_codec.index] == null) return null;
@@ -706,32 +612,30 @@ class _MyAppState extends State<MyApp> {
 
     // Disable the button if the selected codec is not supported
     if (!_decoderSupported) return null;
-    return (isStopped()) ? startPlayer : null;
+    return (playerModule.isStopped) ? startPlayer : null;
   }
 
-  void startStopRecorder() {
+  void Function()  startStopRecorder() {
     if (recorderModule.isRecording || recorderModule.isPaused)
       stopRecorder();
     else
       startRecorder();
   }
 
-  onStartRecorderPressed() {
-    if (_media == t_MEDIA.ASSET || _media == t_MEDIA.BUFFER || _media == t_MEDIA.REMOTE_EXAMPLE_FILE) return null;
+  void Function() onStartRecorderPressed() {
+    //if (_media == t_MEDIA.ASSET || _media == t_MEDIA.BUFFER || _media == t_MEDIA.REMOTE_EXAMPLE_FILE) return null;
     // Disable the button if the selected codec is not supported
-    if (!_encoderSupported) return null;
-    if (audioState != t_AUDIO_STATE.IS_RECORDING && audioState != t_AUDIO_STATE.IS_RECORDING_PAUSED && audioState != t_AUDIO_STATE.IS_STOPPED) return null;
+    if (recorderModule == null || !_encoderSupported) return null;
     return startStopRecorder;
   }
 
-  bool isStopped() => (audioState == t_AUDIO_STATE.IS_STOPPED);
 
   AssetImage recorderAssetImage() {
     if (onStartRecorderPressed() == null) return AssetImage('res/icons/ic_mic_disabled.png');
-    return audioState == t_AUDIO_STATE.IS_STOPPED ? AssetImage('res/icons/ic_mic.png') : AssetImage('res/icons/ic_stop.png');
+    return (recorderModule.isStopped)? AssetImage('res/icons/ic_mic.png') : AssetImage('res/icons/ic_stop.png');
   }
 
-  setCodec(t_CODEC codec) async {
+  void setCodec(t_CODEC codec) async {
     _encoderSupported = await recorderModule.isEncoderSupported(codec);
     _decoderSupported = await playerModule.isDecoderSupported(codec);
 
@@ -740,8 +644,12 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  audioPlayerSwitchChanged() {
-    if (!isStopped()) return null;
+  void Function(bool) audioPlayerSwitchChanged() {
+    if (playerModule == null)
+      return null;
+
+    if ( (!playerModule.isStopped) || (recorderModule.isStopped) )
+      return null;
     return ((newVal) async {
       try {
         if (playerModule != null) await playerModule.release();
@@ -759,7 +667,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  duckOthersSwitchChanged() {
+  void Function(bool) duckOthersSwitchChanged() {
     return ((newVal) async {
       _duckOthers = newVal;
 
@@ -848,7 +756,7 @@ class _MyAppState extends State<MyApp> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 4),
-            child: Text('"Flauto":'),
+            child: Text('Track Player:'),
           ),
           Switch(
             value: _isAudioPlayer,

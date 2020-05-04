@@ -125,7 +125,7 @@ class FlutterSound {
 
   Future<String> stopRecorder() => soundRecorder.stopRecorder();
   Future<String> pauseRecorder() => soundRecorder.pauseRecorder();
-  Future<bool> resumeRecorder() => soundRecorder.resumeRecorder();
+  Future<String> resumeRecorder() => soundRecorder.resumeRecorder();
 
   Stream<PlayStatus> get onPlayerStateChanged =>
       soundPlayer.onPlayerStateChanged;

@@ -649,12 +649,12 @@ public class FlutterSoundRecorder
 		} else
 		{
 			recordHandler.post ( this.model.getRecorderTicker () );
+			dbPeakLevelHandler.post ( model.getDbLevelTicker () );
 			this.model.getMediaRecorder().resume();
 			if (mStartPauseTime >= 0)
 				mPauseTime += SystemClock.elapsedRealtime () - mStartPauseTime;
 			mStartPauseTime = -1;
-
-			result.success( true);
+			result.success( "Recorder is resumed");
 		}
 	}
 

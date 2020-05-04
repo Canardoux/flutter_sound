@@ -447,10 +447,10 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
 
 - (void)resumeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
 {
-        bool b = [audioRecorder record];
+        [audioRecorder record];
         [self startDbTimer];
         [self startRecorderTimer];
-        result([NSNumber numberWithBool: b]);
+        result(@"Recorder is Resumed");
 }
 
 
