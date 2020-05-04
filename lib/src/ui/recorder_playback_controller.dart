@@ -114,7 +114,10 @@ void registerRecorder(BuildContext context, SoundRecorderUIState recorder) {
 
 ///
 void registerPlayer(BuildContext context, SoundPlayerUIState player) {
-  RecorderPlaybackController.of(context)?._state?._playerState = player;
+  var controller = RecorderPlaybackController.of(context)?._state;
+  if (controller != null) {
+    controller._playerState = player;
+  }
 }
 
 ///
