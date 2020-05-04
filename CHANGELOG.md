@@ -4,6 +4,7 @@
 - Remove the OS dependant parameters from startRecorder()
 - Support of new codecs, both for Android and iOS
 - Remove the authorization request from startRecorder()
+- Remove the NULL posted when the player or the recorder is closed.
 
 ## 4.0.3+1
 

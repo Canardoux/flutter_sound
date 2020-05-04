@@ -412,7 +412,7 @@ class FlutterSoundPlayer {
   void _removePlayerCallback() {
     if (playerController != null) {
       playerController
-        ..add(null)
+        //..add(null)
         ..close();
       playerController = null;
     }

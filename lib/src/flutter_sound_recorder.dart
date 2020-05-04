@@ -25,7 +25,6 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 enum RecorderState {
   isStopped,
@@ -222,7 +221,7 @@ class FlutterSoundRecorder {
   void _removeRecorderCallback() {
     if (_recorderController != null) {
       _recorderController
-        ..add(null) // We keep that strange line for backward compatibility
+        //..add(null) // We keep that strange line for backward compatibility
         ..close();
       _recorderController = null;
     }
@@ -291,13 +290,14 @@ class FlutterSoundRecorder {
   }) async {
     await initialize();
     // Request Microphone permission if needed
+    /*
     if (requestPermission) {
       PermissionStatus status = await Permission.microphone.request();
       if (status != PermissionStatus.granted) {
         throw RecordingPermissionException("Microphone permission not granted");
       }
     }
-
+    */
     if (recorderState != null && recorderState != RecorderState.isStopped) {
       throw RecorderRunningException('Recorder is not stopped.');
     }
