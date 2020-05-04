@@ -308,7 +308,7 @@ public class FlutterSoundPlayer
 	final static  String           TAG         = "FlutterSoundPlugin";
 	final         PlayerAudioModel model       = new PlayerAudioModel ();
 	private       Timer            mTimer      = new Timer ();
-	final private Handler          mainHandler = new Handler ();
+	final private Handler           tickHandler = new Handler ();
 	t_SET_CATEGORY_DONE setActiveDone     = t_SET_CATEGORY_DONE.NOT_SET;
 	AudioFocusRequest   audioFocusRequest = null;
 	AudioManager        audioManager;
@@ -409,85 +409,84 @@ public class FlutterSoundPlayer
 			                                                     {
 				                                                     Log.d ( TAG, "mediaPlayer prepared and start" );
 				                                                     mp.start ();
-
-				                                                     /*
-				                                                      * Set timer task to send event to RN.
-				                                                      */
-				                                                     TimerTask mTask = new TimerTask ()
-				                                                     {
-					                                                     @Override
-					                                                     public void run ()
-					                                                     {
-						                                                     // long time = mp.getCurrentPosition();
-						                                                     // DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
-						                                                     // final String displayTime = format.format(time);
-						                                                     try
-						                                                     {
-							                                                     JSONObject json = new JSONObject ();
-							                                                     json.put ( "duration", String.valueOf ( mp.getDuration () ) );
-							                                                     json.put ( "current_position", String.valueOf ( mp.getCurrentPosition () ) );
-							                                                     mainHandler.post ( new Runnable ()
-							                                                     {
-								                                                     @Override
-								                                                     public void run ()
-								                                                     {
-									                                                     invokeMethodWithString ( "updateProgress", json.toString () );
-								                                                     }
-							                                                     } );
-
-						                                                     }
-						                                                     catch ( Exception e )
-						                                                     {
-							                                                     Log.d ( TAG, "Exception: " + e.toString () );
-						                                                     }
-					                                                     }
-				                                                     };
-
-				                                                     mTimer.schedule ( mTask, 0, model.subsDurationMillis );
-				                                                     String resolvedPath = ( path == null ) ? PlayerAudioModel.DEFAULT_FILE_LOCATION : path;
-				                                                     result.success ( ( resolvedPath ) );
+				                                                     startTickerUpdates(mp);
+				                                                     result.success ( "" );
 			                                                     } );
 			/*
 			 * Detect when finish playing.
 			 */
-			this.model.getMediaPlayer ().setOnCompletionListener ( mp ->
-			                                                       {
-				                                                       /*
-				                                                        * Reset player.
-				                                                        */
-				                                                       Log.d ( TAG, "Plays completed." );
-				                                                       try
-				                                                       {
-					                                                       JSONObject json = new JSONObject ();
-					                                                       json.put ( "duration", String.valueOf ( mp.getDuration () ) );
-					                                                       json.put ( "current_position", String.valueOf ( mp.getCurrentPosition () ) );
-					                                                       invokeMethodWithString ( "audioPlayerFinishedPlaying", json.toString () );
-				                                                       }
-				                                                       catch ( Exception e )
-				                                                       {
-					                                                       Log.d ( TAG, "Json Exception: " + e.toString () );
-				                                                       }
-				                                                       mTimer.cancel ();
-				                                                       if ( mp.isPlaying () )
-				                                                       {
-					                                                       mp.stop ();
-				                                                       }
-				                                                       if ( ( setActiveDone != t_SET_CATEGORY_DONE.BY_USER ) && ( setActiveDone != t_SET_CATEGORY_DONE.NOT_SET ) )
-				                                                       {
-
-					                                                       setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
-					                                                       abandonFocus ();
-				                                                       }
-				                                                       mp.reset ();
-				                                                       mp.release ();
-				                                                       model.setMediaPlayer ( null );
-			                                                       } );
+			this.model.getMediaPlayer ().setOnCompletionListener ( mp -> completeListener(mp));
 			this.model.getMediaPlayer ().prepareAsync ();
 		}
 		catch ( Exception e )
 		{
 			Log.e ( TAG, "startPlayer() exception" );
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
+		}
+	}
+
+	// Called when the audio stops, this can be due
+	// the natural completion of the audio track or because
+	// the playback was stopped.
+	private void completeListener(MediaPlayer mp)
+	{
+		/*
+		 * Reset player.
+		 */
+		Log.d ( TAG, "Plays completed." );
+		try
+		{
+			JSONObject json = new JSONObject ();
+			json.put ( "duration", String.valueOf ( mp.getDuration () ) );
+			json.put ( "current_position", String.valueOf ( mp.getCurrentPosition () ) );
+			invokeMethodWithString ( "audioPlayerFinishedPlaying", json.toString () );
+		}
+		catch ( Exception e )
+		{
+			Log.d ( TAG, "Json Exception: " + e.toString () );
+		}
+		mTimer.cancel ();
+		if ( mp.isPlaying () )
+		{
+			mp.stop ();
+		}
+		if ( ( setActiveDone != t_SET_CATEGORY_DONE.BY_USER ) && ( setActiveDone != t_SET_CATEGORY_DONE.NOT_SET ) )
+		{
+
+			setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
+			abandonFocus ();
+		}
+		mp.reset ();
+		mp.release ();
+		model.setMediaPlayer ( null );
+	}
+
+	private void startTickerUpdates(MediaPlayer mp) {
+		// make certain no tickers are currently running.
+		stopTickerUpdates();
+
+		tickHandler.post ( () -> sendUpdateProgress(mp) );
+	}
+
+	private void stopTickerUpdates() {
+		tickHandler.removeCallbacksAndMessages ( null );
+	}
+
+	private void sendUpdateProgress(MediaPlayer mp)
+	{
+		try
+		{
+			JSONObject json = new JSONObject ();
+			json.put ( "duration", String.valueOf ( mp.getDuration () ) );
+			json.put ( "current_position", String.valueOf ( mp.getCurrentPosition ()  ));
+			invokeMethodWithString ( "updateProgress", json.toString () );
+
+			// reschedule ourselves.
+			tickHandler.postDelayed ( () ->  sendUpdateProgress(mp), ( model.subsDurationMillis ) );
+		}
+		catch ( Exception e )
+		{
+			Log.d ( TAG, "Exception: " + e.toString () );
 		}
 	}
 
@@ -529,6 +528,7 @@ public class FlutterSoundPlayer
 
 		try
 		{
+			stopTickerUpdates();
 			this.model.getMediaPlayer ().stop ();
 			this.model.getMediaPlayer ().reset ();
 			this.model.getMediaPlayer ().release ();
@@ -573,6 +573,7 @@ public class FlutterSoundPlayer
 
 		try
 		{
+			stopTickerUpdates();
 			this.model.getMediaPlayer ().pause ();
 			result.success ( "paused player." );
 		}
@@ -606,8 +607,9 @@ public class FlutterSoundPlayer
 
 		try
 		{
-			this.model.getMediaPlayer ().seekTo ( this.model.getMediaPlayer ().getCurrentPosition () );
-			this.model.getMediaPlayer ().start ();
+			startTickerUpdates(this.model.getMediaPlayer());
+			this.model.getMediaPlayer().seekTo( this.model.getMediaPlayer ().getCurrentPosition () );
+			this.model.getMediaPlayer().start();
 			result.success ( "resumed player." );
 		}
 		catch ( Exception e )
