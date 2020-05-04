@@ -1,17 +1,17 @@
 /*
- * This file is part of Flutter-Sound (Flauto).
+ * This file is part of Flutter-Sound.
  *
- *   Flutter-Sound (Flauto) is free software: you can redistribute it and/or modify
+ *   Flutter-Sound is free software: you can redistribute it and/or modify
  *   it under the terms of the Lesser GNU General Public License
- *   version 3 (LGPL3) as published by the Free Software Foundation.
+ *   version 3 (LGPL-3) as published by the Free Software Foundation.
  *
- *   Flutter-Sound (Flauto) is distributed in the hope that it will be useful,
+ *   Flutter-Sound is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the Lesser GNU General Public License
- *   along with Flutter-Sound (Flauto).  If not, see <https://www.gnu.org/licenses/>.
+ *   along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 import 'dart:async';
@@ -21,18 +21,16 @@ import 'dart:io';
 import 'dart:io' show Platform;
 
 import 'package:flutter/services.dart';
-import 'android_encoder.dart';
-import 'ios_quality.dart';
-import 'flauto.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-enum t_RECORDER_STATE {
-  IS_STOPPED,
-  IS_PAUSED,
-  IS_RECORDING,
+enum RecorderState {
+  isStopped,
+  isPaused,
+  isRecording,
 }
 
 FlautoRecorderPlugin flautoRecorderPlugin; // Singleton, lazy initialized
@@ -96,19 +94,18 @@ class FlautoRecorderPlugin {
   }
 }
 
-final List<String> defaultPaths = [
-  'flauto.aac', // DEFAULT
-  'flauto.aac', // CODEC_AAC
-  'flauto.opus', // CODEC_OPUS
-  'flauto.caf', // CODEC_CAF_OPUS
-  'flauto.mp3', // CODEC_MP3
-  'flauto.ogg', // CODEC_VORBIS
-  'flauto.wav', // CODEC_PCM
-];
+
+enum _Initialized
+{
+  notInitialized,
+  fullyInitialized,
+  initializationInProgress,
+}
+
 
 class FlutterSoundRecorder {
-  t_INITIALIZED isInited = t_INITIALIZED.NOT_INITIALIZED;
-  t_RECORDER_STATE recorderState = t_RECORDER_STATE.IS_STOPPED;
+  _Initialized isInited = _Initialized.notInitialized;
+  RecorderState recorderState = RecorderState.isStopped;
   StreamController<RecordStatus> _recorderController;
   StreamController<double> _dbPeakController;
   int slotNo;
@@ -121,12 +118,12 @@ class FlutterSoundRecorder {
       tmpUri; // Used by startRecorder/stopRecorder to keep the temporary uri to record CAF
 
   bool get isRecording => (recorderState ==
-      t_RECORDER_STATE
-          .IS_RECORDING); //|| recorderState == t_RECORDER_STATE.IS_PAUSED);
+      RecorderState
+          .isRecording); //|| recorderState == t_RECORDER_STATE.IS_PAUSED);
 
-  bool get isStopped => (recorderState == t_RECORDER_STATE.IS_STOPPED);
+  bool get isStopped => (recorderState == RecorderState.isStopped);
 
-  bool get isPaused => (recorderState == t_RECORDER_STATE.IS_PAUSED);
+  bool get isPaused => (recorderState == RecorderState.isPaused);
 
   Stream<RecordStatus> get onRecorderStateChanged => _recorderController.stream;
 
@@ -143,32 +140,32 @@ class FlutterSoundRecorder {
   }
 
   Future<FlutterSoundRecorder> initialize() async {
-    if (isInited == t_INITIALIZED.FULLY_INITIALIZED) {
+    if (isInited == _Initialized.fullyInitialized) {
       return this;
     }
-    if (isInited == t_INITIALIZED.INITIALIZATION_IN_PROGRESS) {
-      throw(InitializationInProgress());
+    if (isInited == _Initialized.initializationInProgress) {
+      throw(_InitializationInProgress());
     }
 
-    isInited = t_INITIALIZED.INITIALIZATION_IN_PROGRESS;
+    isInited = _Initialized.initializationInProgress;
 
     if (flautoRecorderPlugin == null) {
         flautoRecorderPlugin = FlautoRecorderPlugin();
       } // The lazy singleton
       slotNo = getPlugin().lookupEmptySlot(this);
       await invokeMethod('initializeFlautoRecorder', <String, dynamic>{});
-    isInited = t_INITIALIZED.FULLY_INITIALIZED;
+    isInited = _Initialized.fullyInitialized;
     return this;
   }
 
   Future<void> release() async {
-    if (isInited == t_INITIALIZED.NOT_INITIALIZED) {
+    if (isInited == _Initialized.notInitialized) {
       return this;
     }
-    if (isInited == t_INITIALIZED.INITIALIZATION_IN_PROGRESS) {
-      throw(InitializationInProgress());
+    if (isInited == _Initialized.initializationInProgress) {
+      throw(_InitializationInProgress());
     }
-    isInited = t_INITIALIZED.INITIALIZATION_IN_PROGRESS;
+    isInited = _Initialized.initializationInProgress;
 
     await stopRecorder();
       _removeRecorderCallback(); // _recorderController will be closed by this function
@@ -176,7 +173,7 @@ class FlutterSoundRecorder {
       await invokeMethod('releaseFlautoRecorder', <String, dynamic>{});
       getPlugin().freeSlot(slotNo);
       slotNo = null;
-    isInited = t_INITIALIZED.NOT_INITIALIZED;
+    isInited = _Initialized.notInitialized;
   }
 
   void updateRecorderProgress(Map call) {
@@ -192,19 +189,19 @@ class FlutterSoundRecorder {
   }
 
   /// Returns true if the specified encoder is supported by flutter_sound on this platform
-  Future<bool> isEncoderSupported(t_CODEC codec) async {
+  Future<bool> isEncoderSupported(FlutterSoundCodec codec) async {
     await initialize();
     bool result;
     // For encoding ogg/opus on ios, we need to support two steps :
     // - encode CAF/OPPUS (with native Apple AVFoundation)
     // - remux CAF file format to OPUS file format (with ffmpeg)
 
-    if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS)) {
+    if ((codec == FlutterSoundCodec.opusOGG) && (Platform.isIOS)) {
       //if (!await isFFmpegSupported( ))
       //result = false;
       //else
       result = await invokeMethod('isEncoderSupported',
-          <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index}) as bool;
+          <String, dynamic>{'codec': FlutterSoundCodec.opusCAF.index}) as bool;
     } else {
       result = await invokeMethod(
               'isEncoderSupported', <String, dynamic>{'codec': codec.index})
@@ -278,9 +275,9 @@ class FlutterSoundRecorder {
     return r;
   }
 
-  Future<String> defaultPath(t_CODEC codec) async {
+  Future<String> defaultPath(FlutterSoundCodec codec) async {
     var tempDir = await getTemporaryDirectory();
-    var fout = File('${tempDir.path}/${defaultPaths[codec.index]}');
+    var fout = File('${tempDir.path}/flutter_sound${ext[codec.index]}');
     return fout.path;
   }
 
@@ -289,11 +286,7 @@ class FlutterSoundRecorder {
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
-    t_CODEC codec = t_CODEC.CODEC_AAC,
-    AndroidEncoder androidEncoder = AndroidEncoder.AAC,
-    AndroidAudioSource androidAudioSource = AndroidAudioSource.MIC,
-    AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.DEFAULT,
-    IosQuality iosQuality = IosQuality.LOW,
+    FlutterSoundCodec codec = FlutterSoundCodec.aacADTS,
     bool requestPermission = true,
   }) async {
     await initialize();
@@ -305,7 +298,7 @@ class FlutterSoundRecorder {
       }
     }
 
-    if (recorderState != null && recorderState != t_RECORDER_STATE.IS_STOPPED) {
+    if (recorderState != null && recorderState != RecorderState.isStopped) {
       throw RecorderRunningException('Recorder is not stopped.');
     }
     if (!await isEncoderSupported(codec)) {
@@ -317,10 +310,10 @@ class FlutterSoundRecorder {
     // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
     // We use FFmpeg for that task.
     if ((Platform.isIOS) &&
-        ((codec == t_CODEC.CODEC_OPUS) || (fileExtension(uri) == '.opus'))) {
+        ((codec == FlutterSoundCodec.opusOGG) || (fileExtension(uri) == '.opus'))) {
       savedUri = uri;
       isOggOpus = true;
-      codec = t_CODEC.CODEC_CAF_OPUS;
+      codec = FlutterSoundCodec.opusCAF;
       var tempDir = await getTemporaryDirectory();
       var fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
       uri = fout.path;
@@ -336,16 +329,12 @@ class FlutterSoundRecorder {
         'numChannels': numChannels,
         'bitRate': bitRate,
         'codec': codec.index,
-        'androidEncoder': androidEncoder?.value,
-        'androidAudioSource': androidAudioSource?.value,
-        'androidOutputFormat': androidOutputFormat?.value,
-        'iosQuality': iosQuality?.value
       };
 
       String result = await invokeMethod('startRecorder', param) as String;
 
       await _setRecorderCallback();
-      recorderState = t_RECORDER_STATE.IS_RECORDING;
+      recorderState = RecorderState.isRecording;
       // if the caller wants OGG/OPUS we must remux the temporary file
       if ((result != null) && isOggOpus) {
         return savedUri;
@@ -360,7 +349,7 @@ class FlutterSoundRecorder {
     String result =
         await invokeMethod('stopRecorder', <String, dynamic>{}) as String;
 
-    recorderState = t_RECORDER_STATE.IS_STOPPED;
+    recorderState = RecorderState.isStopped;
 
     _removeRecorderCallback();
     _removeDbPeakCallback();
@@ -393,18 +382,14 @@ class FlutterSoundRecorder {
   Future<String> pauseRecorder() async {
     String result =
         await invokeMethod('pauseRecorder', <String, dynamic>{}) as String;
-    recorderState = t_RECORDER_STATE.IS_PAUSED;
+    recorderState = RecorderState.isPaused;
     return result;
   }
 
-  Future<bool> resumeRecorder() async {
-    bool b = await invokeMethod('resumeRecorder', <String, dynamic>{}) as bool;
-    if (!b) {
-      await stopRecorder();
-      return false;
-    }
-    recorderState = t_RECORDER_STATE.IS_RECORDING;
-    return true;
+  Future<String> resumeRecorder() async {
+    String result  = await invokeMethod('resumeRecorder', <String, dynamic>{}) as String;
+    recorderState = RecorderState.isRecording;
+    return result;
   }
 }
 
@@ -441,9 +426,9 @@ class RecordingPermissionException extends RecorderException {
 }
 
 
-class InitializationInProgress implements Exception {
+class _InitializationInProgress implements Exception {
 
-  InitializationInProgress()
+  _InitializationInProgress()
   {
     print('An initialization is currently already in progress.');
   }

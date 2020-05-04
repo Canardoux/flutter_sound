@@ -27,13 +27,18 @@ NSMutableArray* flautoPlayerSlots;
 
 static bool _isIosDecoderSupported [] =
 {
-    true, // DEFAULT
-    true, // AAC
-    false, // OGG/OPUS
-    true, // CAF/OPUS
-    true, // MP3
-    false, // OGG/VORBIS
-    true, // WAV/PCM
+		true, // DEFAULT
+		true, // aacADTS
+		true, // opusOGG
+		true, // opusCAF
+		true, // MP3
+		false, // vorbisOGG
+		false, // pcm16
+		true, // pcm16WAV
+		true, // pcm16AIFF
+		true, // pcm16CAF
+		true, // flac
+		true, // aacMP4
 };
 
 

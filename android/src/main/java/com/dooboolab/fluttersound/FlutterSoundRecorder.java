@@ -16,58 +16,28 @@ package com.dooboolab.fluttersound;
  */
 
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.media.AudioManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
-
-import androidx.annotation.NonNull;
-import androidx.arch.core.util.Function;
-import androidx.core.app.ActivityCompat;
-
-import android.media.AudioFocusRequest;
-
-import java.io.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import io.flutter.embedding.engine.plugins.FlutterPlugin;
-import io.flutter.embedding.engine.plugins.activity.ActivityAware;
-import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-
-import java.util.concurrent.Callable;
-
-import io.flutter.plugin.common.PluginRegistry;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 
 class FlautoRecorderPlugin
@@ -207,6 +177,7 @@ class FlautoRecorderPlugin
 }
 
 
+
 class RecorderAudioModel
 {
 	final public static String  DEFAULT_FILE_LOCATION = Environment.getDataDirectory ().getPath () + "/default.aac"; // SDK
@@ -214,22 +185,22 @@ class RecorderAudioModel
 	public              long    peakLevelUpdateMillis = 800;
 	public              boolean shouldProcessDbLevel  = true;
 
-	private      MediaRecorder mediaRecorder;
+	//private      MediaRecorder mediaRecorder;
 	private      Runnable      recorderTicker;
 	private      Runnable      dbLevelTicker;
 	private      long          recordTime   = 0;
 	public final double        micLevelBase = 2700;
 
 
-	public MediaRecorder getMediaRecorder ()
-	{
-		return mediaRecorder;
-	}
+	//public MediaRecorder getMediaRecorder ()
+	//{
+		//return mediaRecorder;
+	//}
 
-	public void setMediaRecorder ( MediaRecorder mediaRecorder )
-	{
-		this.mediaRecorder = mediaRecorder;
-	}
+	//public void setMediaRecorder ( MediaRecorder mediaRecorder )
+	//{
+		//this.mediaRecorder = mediaRecorder;
+	//}
 
 	public Runnable getRecorderTicker ()
 	{
@@ -268,54 +239,30 @@ public class FlutterSoundRecorder
 {
 	static boolean _isAndroidEncoderSupported[] = {
 		true, // DEFAULT
-		true, // AAC
-		false, // OGG/OPUS
-		false, // CAF/OPUS
+		true, // aacADTS
+		false, // opusOGG
+		false, // opusCAF
 		false, // MP3
-		false, // OGG/VORBIS
-		false, //PCM
+		false, // vorbisOGG
+		true, // pcm16
+		true, // pcm16WAV
+		false, // pcm16AIFF
+		false, // pcm16CAF
+		false, // flac
+		false, // aacMP4
 	};
 
 	final static int CODEC_OPUS   = 2;
 	final static int CODEC_VORBIS = 5;
 
 
-	static int codecArray[] = {
-		0 // DEFAULT
-		, MediaRecorder.AudioEncoder.AAC,
-		sdkCompat.AUDIO_ENCODER_OPUS,
-		0, // CODEC_CAF_OPUS (specific Apple)
-		0,// CODEC_MP3 (not implemented)
-		sdkCompat.AUDIO_ENCODER_VORBIS,
-		7 // MediaRecorder.AudioEncoder.DEFAULT // CODEC_PCM (not implemented)
-	};
-
-
-	static int formatsArray[] = {
-		MediaRecorder.OutputFormat.AAC_ADTS // DEFAULT
-		, MediaRecorder.OutputFormat.AAC_ADTS // CODEC_AAC
-		, sdkCompat.OUTPUT_FORMAT_OGG // CODEC_OPUS
-		, 0 // CODEC_CAF_OPUS (this is apple specific)
-		, 0 // CODEC_MP3
-		, sdkCompat.OUTPUT_FORMAT_OGG // CODEC_VORBIS
-		, sdkCompat.ENCODING_PCM_16BIT// CODEC_PCM
-	};
-
-	static       String pathArray[]               = {
-		"sound.aac" // DEFAULT
-		, "sound.aac" // CODEC_AAC
-		, "sound.opus" // CODEC_OPUS
-		, "sound.caf" // CODEC_CAF_OPUS (this is apple specific)
-		, "sound.mp3" // CODEC_MP3
-		, "sound.ogg" // CODEC_VORBIS
-		, "sound.pcm" // CODEC_PCM
-	};
 	static final String ERR_RECORDER_IS_NULL      = "ERR_RECORDER_IS_NULL";
 	static final String ERR_RECORDER_IS_RECORDING = "ERR_RECORDER_IS_RECORDING";
 
 
-	final static String             TAG                = "FlutterSoundPlugin";
+	final static String             TAG                = "FlutterSoundRecorder";
 	final        RecorderAudioModel model              = new RecorderAudioModel ();
+	RecorderInterface recorder;
 	final public Handler            recordHandler      = new Handler ();
 	final public Handler            dbPeakLevelHandler = new Handler ();
 	String finalPath;
@@ -361,14 +308,6 @@ public class FlutterSoundRecorder
 		result.success ( b );
 	}
 
-/*
-	MethodChannel getChannel ()
-	{
-		return FlautoRecorderPlugin.channel;
-	}
-
- */
-
 	void invokeMethodWithString ( String methodName, String arg )
 	{
 		Map<String, Object> dic = new HashMap<String, Object> ();
@@ -385,91 +324,56 @@ public class FlutterSoundRecorder
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
 
+	static boolean _isAudioRecorder[] = {
+		false, // DEFAULT
+		false, // aacADTS
+		true, // opusOGG
+		true, // opusCAF
+		true, // MP3
+		true, // vorbisOGG
+		true, // pcm16
+		true, // pcm16WAV
+		true, // pcm16AIFF
+		true, // pcm16CAF
+		true, // flac
+		true, // aacMP4
+	};
+
+
 	public void startRecorder ( final MethodCall call, final Result result )
 	{
 		//taskScheduler.submit ( () ->
 		{
-			Integer      sampleRate          = call.argument ( "sampleRate" );
-			Integer      numChannels         = call.argument ( "numChannels" );
-			Integer      bitRate             = call.argument ( "bitRate" );
-			int          androidEncoder      = call.argument ( "androidEncoder" );
-			int          _codec              = call.argument ( "codec" );
-			t_CODEC      codec               = t_CODEC.values ()[ _codec ];
-			int          androidAudioSource  = call.argument ( "androidAudioSource" );
-			int          androidOutputFormat = call.argument ( "androidOutputFormat" );
-			final String path                = call.argument ( "path" );
-			_startRecorder ( numChannels, sampleRate, bitRate, codec, androidEncoder, androidAudioSource, androidOutputFormat, path, result );
-		}
-		//);
-
-	}
-
-	public void _startRecorder (
-		Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result
-	                           )
-	{
-		final int v = Build.VERSION.SDK_INT;
-		// The caller must be allowed to specify its path. We must not change it here
-		// path = PathUtils.getDataDirectory(reg.context()) + "/" + path; // SDK 29 :
-		// you may not write in getExternalStorageDirectory()
-		MediaRecorder mediaRecorder = model.getMediaRecorder ();
-
-		if ( mediaRecorder != null )
-		{
-			mediaRecorder.reset ();
-			//mediaRecorder.release();
-		} else
-		{
-			mediaRecorder = new MediaRecorder ();
-			model.setMediaRecorder (mediaRecorder );
-		}
-
-
-		try
-		{
-			if ( codecArray[ codec.ordinal () ] == 0 )
-			{
-				//result.error ( TAG, "UNSUPPORTED", "Unsupported encoder" );
-				//return;
-			}
-			mediaRecorder.reset();
-			mediaRecorder.setAudioSource ( androidAudioSource );
-			androidEncoder      = codecArray[ codec.ordinal () ];
-			androidOutputFormat = formatsArray[ codec.ordinal () ];
-			mediaRecorder.setOutputFormat ( androidOutputFormat );
-
-			if ( path == null )
-			{
-				path = pathArray[ codec.ordinal () ];
-			}
-
-			mediaRecorder.setOutputFile ( path );
-			mediaRecorder.setAudioEncoder ( androidEncoder );
-
-			if ( numChannels != null )
-			{
-				mediaRecorder.setAudioChannels ( numChannels );
-			}
-
-			if ( sampleRate != null )
-			{
-				mediaRecorder.setAudioSamplingRate ( sampleRate );
-			}
-
-			// If bitrate is defined, then use it, otherwise use the OS default
-			if ( bitRate != null )
-			{
-				mediaRecorder.setAudioEncodingBitRate ( bitRate );
-			}
-
+			Integer           sampleRate          = call.argument ( "sampleRate" );
+			Integer           numChannels         = call.argument ( "numChannels" );
+			Integer           bitRate             = call.argument ( "bitRate" );
+			int               _codec              = call.argument ( "codec" );
+			FlutterSoundCodec codec               = FlutterSoundCodec.values()[ _codec ];
+			final String      path                = call.argument ( "path" );
 			mPauseTime = 0;
 			mStartPauseTime = -1;
-			mediaRecorder.prepare ();
-			mediaRecorder.start ();
-
+			if (recorder != null)
+			{
+				recorder._stopRecorder (  );
+			}
+			if (_isAudioRecorder[codec.ordinal()])
+			{
+				recorder = new FlutterSoundAudioRecorder();
+			} else
+			{
+				recorder = new FlutterSoundMediaRecorder();
+			}
+			try
+			{
+				recorder._startRecorder( numChannels, sampleRate, bitRate, codec, path );
+			} catch ( Exception e )
+			{
+				result.error( TAG, "Error starting recorder", e.getMessage() );
+				return;
+			}
 			// Remove all pending runnables, this is just for safety (should never happen)
 			recordHandler.removeCallbacksAndMessages ( null );
-			final long systemTime = SystemClock.elapsedRealtime ();
+			final long systemTime = SystemClock.elapsedRealtime();
 			this.model.setRecorderTicker ( () ->
 			                               {
 
@@ -489,7 +393,7 @@ public class FlutterSoundRecorder
 				                               }
 				                               catch ( JSONException je )
 				                               {
-					                               Log.d ( TAG, "Json Exception: " + je.toString () );
+					                               Log.d( TAG, "Json Exception: " + je.toString() );
 				                               }
 			                               } );
 			recordHandler.post ( this.model.getRecorderTicker () );
@@ -500,7 +404,6 @@ public class FlutterSoundRecorder
 				this.model.setDbLevelTicker ( () ->
 				                              {
 
-					                              MediaRecorder recorder = model.getMediaRecorder ();
 					                              if ( recorder != null )
 					                              {
 						                              double maxAmplitude = recorder.getMaxAmplitude ();
@@ -531,136 +434,76 @@ public class FlutterSoundRecorder
 			}
 
 			finalPath = path;
-			mainHandler.post ( new Runnable ()
-			{
-				@Override
-				public void run ()
-				{
-					result.success ( finalPath );
-				}
-			}
-			);
-		}
-		catch ( Exception e )
-		{
-			Log.e ( TAG, "Exception: ", e );
-			result.error( TAG, "Error starting recorder", e.getMessage() );
-			try
-			{
-				boolean b = _stopRecorder( );
+			//mainHandler.post ( new Runnable ()
+			                   //{
+				                   //@Override
+				                   //public void run ()
+				                   //{
+					                   result.success ( finalPath );
+				                   //}
+			                   //}
+			                 //);
 
-			} catch (Exception e2)
-			{
-
-			}
 		}
+		//);
+
 	}
 
 	public void stopRecorder ( final MethodCall call, final Result result )
 	{
-		//taskScheduler.submit ( () -> _stopRecorder ( result ) );
-		boolean b = _stopRecorder (  );
-		if (b)
-			result.success ( "Media Recorder is closed" );
-		else
-			result.success ( " Cannot close Recorder");
-	}
-
-	public boolean _stopRecorder (  )
-	{
-		// This remove all pending runnables
 		recordHandler.removeCallbacksAndMessages ( null );
 		dbPeakLevelHandler.removeCallbacksAndMessages ( null );
-
-		if ( this.model.getMediaRecorder () == null )
-		{
-			Log.d ( TAG, "mediaRecorder is null" );
-
-			return true;
-		}
-		try
-		{
-			if ( Build.VERSION.SDK_INT >= 24 )
-			{
-
-				try
-				{
-					this.model.getMediaRecorder().resume(); // This is stupid, but cannot reset() if Pause Mode !
-				}
-				catch ( Exception e )
-				{
-				}
-			}
-			this.model.getMediaRecorder().stop();
-			this.model.getMediaRecorder().reset();
-			this.model.getMediaRecorder().release();
-			this.model.setMediaRecorder( null );
-		} catch  ( Exception e )
-		{
-			Log.d ( TAG, "Error Stop Recorder" );
-			return false;
-
-		}
+		recorder._stopRecorder (  );
+		recorder = null;
+		result.success ( "Media Recorder is closed" );
 		mainHandler.post ( new Runnable ()
-		{
-			@Override
-			public void run ()
-			{
+		                   {
+			                   @Override
+			                   public void run ()
+			                   {
 
-			}
-		}
-		);
-		return true;
+			                   }
+		                   }
+		                 );
 	}
 
-	public void pauseRecorder ( final MethodCall call, final Result result )
+	public void pauseRecorder( final MethodCall call, final MethodChannel.Result result )
 	{
-		if ( this.model.getMediaRecorder () == null )
+		recordHandler.removeCallbacksAndMessages ( null );
+		dbPeakLevelHandler.removeCallbacksAndMessages ( null );
+		boolean b = recorder.pauseRecorder( );
+		if (b)
 		{
-			Log.d ( TAG, "mediaRecorder is null" );
-			result.error ( TAG, "Recorder is closed", "\"Recorder is closed\"" );
-			return;
-		}
-		if ( Build.VERSION.SDK_INT < 24 )
-		{
-			result.error ( TAG, "Bad Android API level", "\"Pause/Resume needs at least Android API 24\"" );
-		} else
-		{
-			recordHandler.removeCallbacksAndMessages ( null );
-			dbPeakLevelHandler.removeCallbacksAndMessages ( null );
-			this.model.getMediaRecorder().pause();
-			mStartPauseTime = SystemClock.elapsedRealtime ();
 			result.success( "Recorder is paused");
-		}
-	}
-
-
-	public void resumeRecorder ( final MethodCall call, final Result result )
-	{
-		if ( this.model.getMediaRecorder () == null )
-		{
-			Log.d ( TAG, "mediaRecorder is null" );
-			result.error ( TAG, "Recorder is closed", "\"Recorder is closed\"" );
-			return;
-		}
-		if ( Build.VERSION.SDK_INT < 24 )
-		{
-			result.error ( TAG, "Bad Android API level", "\"Pause/Resume needs at least Android API 24\"" );
 		} else
 		{
-			recordHandler.post ( this.model.getRecorderTicker () );
-			this.model.getMediaRecorder().resume();
-			if (mStartPauseTime >= 0)
-				mPauseTime += SystemClock.elapsedRealtime () - mStartPauseTime;
-			mStartPauseTime = -1;
-
-			result.success( true);
+			result.error ( TAG, "Cannot pause recorder", "Cannot pause recorder" );
+			return ;
 		}
+		mStartPauseTime = SystemClock.elapsedRealtime ();
+		//return true;
+	}
+
+	public void resumeRecorder( final MethodCall call, final MethodChannel.Result result )
+	{
+		recordHandler.post ( this.model.getRecorderTicker () );
+		boolean b = recorder.resumeRecorder();
+		if (b)
+		{
+			result.success( "Recorder has resumed");
+		} else
+		{
+			result.error ( TAG, "Cannot resume recorder", "Cannot resume recorder" );
+			return;
+		}
+		if (mStartPauseTime >= 0)
+			mPauseTime += SystemClock.elapsedRealtime () - mStartPauseTime;
+		mStartPauseTime = -1;
+
 	}
 
 
-
-	public void setDbPeakLevelUpdate ( final MethodCall call, final Result result )
+		public void setDbPeakLevelUpdate ( final MethodCall call, final Result result )
 	{
 		double intervalInSecs = call.argument ( "intervalInSecs" );
 		this.model.peakLevelUpdateMillis = ( long ) ( intervalInSecs * 1000 );

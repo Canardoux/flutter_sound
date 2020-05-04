@@ -30,15 +30,20 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 
 // this enum MUST be synchronized with lib/flutter_sound.dart and ios/Classes/FlutterSoundPlugin.h
-enum t_CODEC
+enum FlutterSoundCodec
 {
-  	  DEFAULT
-  	, AAC
-  	, OPUS
-  	, CODEC_CAF_OPUS // Apple encapsulates its bits in its own special envelope : .caf instead of a regular ogg/opus (.opus). This is completely stupid, this is Apple.
-  	, MP3
-  	, VORBIS
-  	, PCM
+	defaultCodec,
+	aacADTS,
+	opusOGG,
+  	opusCAF, // Apple encapsulates its bits in its own special envelope : .caf instead of a regular ogg/opus (.opus). This is completely stupid, this is Apple.
+  	mp3,
+	vorbisOGG,
+	pcm16,
+	pcm16WAV,
+	pcm16AIFF,
+	pcm16CAF,
+	flac,
+	aacMP4
 }
 
 public class Flauto

@@ -1,17 +1,17 @@
 /*
- * This file is part of Flutter-Sound (Flauto).
+ * This file is part of Flutter-Sound.
  *
- *   Flutter-Sound (Flauto) is free software: you can redistribute it and/or modify
+ *   Flutter-Sound is free software: you can redistribute it and/or modify
  *   it under the terms of the Lesser GNU General Public License
- *   version 3 (LGPL3) as published by the Free Software Foundation.
+ *   version 3 (LGPL-3) as published by the Free Software Foundation.
  *
- *   Flutter-Sound (Flauto) is distributed in the hope that it will be useful,
+ *   Flutter-Sound is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the Lesser GNU General Public License
- *   along with Flutter-Sound (Flauto).  If not, see <https://www.gnu.org/licenses/>.
+ *   along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 import 'dart:async';
@@ -25,21 +25,22 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 import 'package:flutter/services.dart';
-import 'flauto.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 
-enum t_PLAYER_STATE {
-  IS_STOPPED, /// Player is stopped
-  IS_PLAYING,
-  IS_PAUSED,
+
+enum PlayerState {
+  isStopped, /// Player is stopped
+  isPlaying,
+  isPaused,
 }
 
-enum t_IOS_SESSION_CATEGORY {
-  AMBIENT,
-  MULTI_ROUTE,
-  PLAY_AND_RECORD,
-  PLAYBACK,
-  RECORD,
-  SOLO_AMBIENT,
+enum SessionCategory {
+  ambient,
+  multiRoute,
+  playAndRecord,
+  playback,
+  record,
+  soloAmbient,
 }
 
 final List<String> iosSessionCategory = [
@@ -51,16 +52,16 @@ final List<String> iosSessionCategory = [
   'AVAudioSessionCategorySoloAmbient',
 ];
 
-enum t_IOS_SESSION_MODE {
-  DEFAULT,
-  GAME_CHAT,
-  MEASUREMENT,
-  MOVIE_PLAYBACK,
-  SPOKEN_AUDIO,
-  VIDEO_CHAT,
-  VIDEO_RECORDING,
-  VOICE_CHAT,
-  VOICE_PROMPT,
+enum SessionMode {
+  defaultSessionMode,
+  gameChat,
+  measurement,
+  moviePlayback,
+  spokenAudio,
+  videoChat,
+  videoRecording,
+  voiceChat,
+  voicePrompt,
 }
 
 final List<String> iosSessionMode = [
@@ -76,19 +77,22 @@ final List<String> iosSessionMode = [
 ];
 
 // Values for AUDIO_FOCUS_GAIN on Android
-const int ANDROID_AUDIOFOCUS_GAIN = 1;
-const int ANDROID_AUDIOFOCUS_GAIN_TRANSIENT = 2;
-const int ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK = 3;
-const int ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE = 4;
+enum AndroidFocusGain {
+  defaultFocusGain,
+  audioFocusGain,
+  audioFocusGainTransient,
+  audioFocusGainTransientMayDuck,
+  audioFocusGainTransientExclusive,
+}
 
 // Options for setSessionCategory on iOS
-const int IOS_MIX_WITH_OTHERS = 0x1;
-const int IOS_DUCK_OTHERS = 0x2;
-const int IOS_INTERRUPT_SPOKEN_AUDIO_AND_MIX_WITH_OTHERS = 0x11;
-const int IOS_ALLOW_BLUETOOTH = 0x4;
-const int IOS_ALLOW_BLUETOOTH_A2DP = 0x20;
-const int IOS_ALLOW_AIR_PLAY = 0x40;
-const int IOS_DEFAULT_TO_SPEAKER = 0x8;
+const int iosMixWithOthers = 0x1;
+const int iosDuckOthers = 0x2;
+const int iosInterruptSpokenAudioAndMixWithOthers = 0x11;
+const int iosAllowBluetooth = 0x4;
+const int iosAllowBluetoothA2DP = 0x20;
+const int iosAllowAirplay = 0x40;
+const int iosDefaultToSpeaker = 0x8;
 
 typedef void TWhenFinished();
 typedef void TonPaused(bool paused);
@@ -179,9 +183,52 @@ String fileExtension(String path) {
   return r;
 }
 
+enum Initialized {
+  notInitialized,
+  initializationInProgress,
+  fullyInitialized,
+}
+
 class FlutterSoundPlayer {
-  t_INITIALIZED isInited = t_INITIALIZED.NOT_INITIALIZED;
-  t_PLAYER_STATE playerState = t_PLAYER_STATE.IS_STOPPED;
+
+
+  static const List<FlutterSoundCodec>  tabAndroidConvert =
+  [
+    FlutterSoundCodec.defaultCodec, // defaultCodec
+    FlutterSoundCodec.defaultCodec, // aacADTS
+    FlutterSoundCodec.defaultCodec, // opusOGG
+    FlutterSoundCodec.opusOGG, // opusCAF
+    FlutterSoundCodec.defaultCodec, // mp3
+    FlutterSoundCodec.defaultCodec, // vorbisOGG
+    FlutterSoundCodec.defaultCodec, // pcm16
+    FlutterSoundCodec.defaultCodec, // pcm16WAV
+    FlutterSoundCodec.pcm16WAV, // pcm16AIFF
+    FlutterSoundCodec.pcm16WAV, // pcm16CAF
+    FlutterSoundCodec.defaultCodec, // flac
+    FlutterSoundCodec.defaultCodec, // aacMP4
+
+  ];
+
+  static const List<FlutterSoundCodec>  tabIosConvert =
+  [
+    FlutterSoundCodec.defaultCodec, // defaultCodec
+    FlutterSoundCodec.defaultCodec, // aacADTS
+    FlutterSoundCodec.opusCAF, // opusOGG
+    FlutterSoundCodec.defaultCodec, // opusCAF
+    FlutterSoundCodec.defaultCodec, // mp3
+    FlutterSoundCodec.defaultCodec, // vorbisOGG
+    FlutterSoundCodec.defaultCodec, // pcm16
+    FlutterSoundCodec.defaultCodec, // pcm16WAV
+    FlutterSoundCodec.defaultCodec, // pcm16AIFF
+    FlutterSoundCodec.defaultCodec, // pcm16CAF
+    FlutterSoundCodec.defaultCodec, // flac
+    FlutterSoundCodec.defaultCodec, // aacMP4
+
+  ];
+
+
+  Initialized isInited = Initialized.notInitialized;
+  PlayerState playerState = PlayerState.isStopped;
   StreamController<PlayStatus> playerController;
   TWhenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
   TonPaused whenPause; // User callback "whenPaused:"
@@ -191,11 +238,11 @@ class FlutterSoundPlayer {
   Stream<PlayStatus> get onPlayerStateChanged =>
       playerController != null ? playerController.stream : null;
 
-  bool get isPlaying => playerState == t_PLAYER_STATE.IS_PLAYING;
+  bool get isPlaying => playerState == PlayerState.isPlaying;
 
-  bool get isPaused => playerState == t_PLAYER_STATE.IS_PAUSED;
+  bool get isPaused => playerState == PlayerState.isPaused;
 
-  bool get isStopped => playerState == t_PLAYER_STATE.IS_STOPPED;
+  bool get isStopped => playerState == PlayerState.isStopped;
 
   FlutterSoundPlayer();
 
@@ -208,32 +255,32 @@ class FlutterSoundPlayer {
   }
 
   Future<FlutterSoundPlayer> initialize() async {
-    if (isInited == t_INITIALIZED.FULLY_INITIALIZED) {
+    if (isInited == Initialized.fullyInitialized) {
       return this;
     }
-    if (isInited == t_INITIALIZED.INITIALIZATION_IN_PROGRESS) {
-      throw(InitializationInProgress());
+    if (isInited == Initialized.initializationInProgress) {
+      throw(_InitializationInProgress());
     }
 
-      isInited = t_INITIALIZED.INITIALIZATION_IN_PROGRESS;
+      isInited = Initialized.initializationInProgress;
 
       if (flautoPlayerPlugin == null) {
         flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton
       }
       slotNo = getPlugin()._lookupEmptySlot(this);
       await invokeMethod('initializeMediaPlayer', <String, dynamic>{});
-    isInited = t_INITIALIZED.FULLY_INITIALIZED;
+    isInited = Initialized.fullyInitialized;
     return this;
   }
 
   Future<void> release() async {
-    if (isInited == t_INITIALIZED.NOT_INITIALIZED) {
+    if (isInited == Initialized.notInitialized) {
       return this;
     }
-    if (isInited == t_INITIALIZED.INITIALIZATION_IN_PROGRESS) {
-      throw(InitializationInProgress());
+    if (isInited == Initialized.initializationInProgress) {
+      throw(_InitializationInProgress());
     }
-    isInited = t_INITIALIZED.INITIALIZATION_IN_PROGRESS;
+    isInited = Initialized.initializationInProgress;
 
       await stopPlayer();
       _removePlayerCallback(); // playerController is closed by this function
@@ -242,7 +289,7 @@ class FlutterSoundPlayer {
 
       getPlugin().freeSlot(slotNo);
       slotNo = null;
-      isInited = t_INITIALIZED.NOT_INITIALIZED;
+      isInited = Initialized.notInitialized;
   }
 
   void _updateProgress(Map call) {
@@ -264,7 +311,7 @@ class FlutterSoundPlayer {
     }
     if (playerController != null) playerController.add(status);
 
-    playerState = t_PLAYER_STATE.IS_STOPPED;
+    playerState = PlayerState.isStopped;
     _removePlayerCallback();
 
     if (audioPlayerFinishedPlaying != null) audioPlayerFinishedPlaying();
@@ -278,23 +325,28 @@ class FlutterSoundPlayer {
     if (whenPause != null) whenPause(false);
   }
 
+  bool needToConvert(FlutterSoundCodec codec) {
+    if (codec == null)
+      return false;
+    FlutterSoundCodec convert = (Platform.isIOS) ? tabIosConvert[codec.index] : tabAndroidConvert[codec.index];
+    return (convert != FlutterSoundCodec.defaultCodec);
+  }
+
   /// Returns true if the specified decoder is supported by flutter_sound on this platform
-  Future<bool> isDecoderSupported(t_CODEC codec) async {
+  Future<bool> isDecoderSupported(FlutterSoundCodec codec) async {
     bool result;
     await initialize();
     // For decoding ogg/opus on ios, we need to support two steps :
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
-    if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS)) {
-      //if (!await isFFmpegSupported( ))
-      //result = false;
-      //else
-      result = await invokeMethod('isDecoderSupported',
-          <String, dynamic>{'codec': t_CODEC.CODEC_CAF_OPUS.index}) as bool;
+
+    if (needToConvert(codec)) {
+       if (!await flutterSoundHelper.isFFmpegAvailable( ) )
+          return false;
+       FlutterSoundCodec convert = (Platform.isIOS) ? tabIosConvert[codec.index] : tabAndroidConvert[codec.index];
+       result = await invokeMethod('isDecoderSupported', <String, dynamic>{'codec': convert.index}) as bool;
     } else {
-      result = await invokeMethod(
-              'isDecoderSupported', <String, dynamic>{'codec': codec.index})
-          as bool;
+      result = await invokeMethod( 'isDecoderSupported', <String, dynamic>{'codec': codec.index}) as bool;
     }
     return result;
   }
@@ -307,8 +359,8 @@ class FlutterSoundPlayer {
   /// After calling this function,
   /// the caller is responsible for using correctly setActive
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
-  Future<bool> iosSetCategory(t_IOS_SESSION_CATEGORY category,
-      t_IOS_SESSION_MODE mode, int options) async {
+  Future<bool> iosSetCategory(SessionCategory category,
+      SessionMode mode, int options) async {
     await initialize();
     if (!Platform.isIOS) return false;
     var r = await invokeMethod('iosSetCategory', <String, dynamic>{
@@ -366,64 +418,51 @@ class FlutterSoundPlayer {
     }
   }
 
+
+  Future<String> _convertAudio( Map<String, dynamic> what) async
+  {
+    // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
+    // We use FFmpeg for that task.
+      var tempDir = await getTemporaryDirectory( );
+      FlutterSoundCodec codec = what['codec'] as FlutterSoundCodec;
+      FlutterSoundCodec convert = (Platform.isIOS) ? tabIosConvert[codec.index] : tabAndroidConvert[codec.index];
+      String fout = '${tempDir.path}/$slotNo-flutter_sound-tmp2${ext[convert.index]}' ;
+      String path = what['path'] as String;
+      await flutterSoundHelper.convertFile(path, codec, fout,  convert);
+
+      // Now we can play Apple CAF/OPUS
+
+
+      what['path'] = fout;
+      what['codec'] = convert;
+  }
+
+
   Future<String> _startPlayer(String method, Map<String, dynamic> what) async {
     String result;
     await stopPlayer(); // Just in case
     try {
-      t_CODEC codec = what['codec'] as t_CODEC;
+      FlutterSoundCodec codec = what['codec'] as FlutterSoundCodec;
+      if (needToConvert(codec)) {
+        await _convertAudio(what);
+      }
       String path = what['path'] as String; // can be null
+      codec = what['codec'] as FlutterSoundCodec; // Could have been modified by convertAudio()
+
       // Flutter cannot transfer an enum to a native plugin.
       // We use an integer instead
       if (codec != null) {
         what['codec'] = codec.index;
       }
-
-      // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
-      // We use FFmpeg for that task.
-      if ((Platform.isIOS) &&
-          ((codec == t_CODEC.CODEC_OPUS) || (fileExtension(path) == '.opus'))) {
-        var tempDir = await getTemporaryDirectory();
-        var fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
-        if (fout.existsSync()) {
-          // delete the old temporary file if it exists
-          await fout.delete();
-        }
-        // The following ffmpeg instruction
-        // does not decode and re-encode the file.
-        // It just remux the OPUS data into an Apple CAF envelope.
-        // It is probably very fast
-        // and the user will not notice any delay,
-        // even with a very large data.
-        // This is the price to pay for the Apple stupidity.
-        var rc = await flutterSoundHelper.executeFFmpegWithArguments([
-          '-loglevel',
-          'error',
-          '-y',
-          '-i',
-          path,
-          '-c:a',
-          'copy',
-          fout.path,
-        ]); // remux OGG to CAF
-        if (rc != 0) return null;
-        // Now we can play Apple CAF/OPUS
-        audioPlayerFinishedPlaying = what['whenFinished'] as void Function();
-        what['whenFinished'] =
-            null; // We must remove this parameter because _channel.invokeMethod() does not like it
-        result = await invokeMethod(
-            'startPlayer', <String, dynamic>{'path': fout.path}) as String;
-      } else {
-        audioPlayerFinishedPlaying = what['whenFinished'] as void Function();
-        what['whenFinished'] =
-            null; // We must remove this parameter because _channel.invokeMethod() does not like it
-        result = await invokeMethod(method, what) as String;
-      }
+      audioPlayerFinishedPlaying = what['whenFinished'] as void Function();
+      what['whenFinished'] = null; // We must remove this parameter because _channel.invokeMethod() does not like it
+      result = await invokeMethod(method, what) as String;
 
       if (result != null) {
         print('startPlayer result: $result');
         setPlayerCallback();
 
-        playerState = t_PLAYER_STATE.IS_PLAYING;
+        playerState = PlayerState.isPlaying;
       }
 
       return result;
@@ -433,31 +472,34 @@ class FlutterSoundPlayer {
     }
   }
 
+
+
   Future<String> startPlayer(
     String uri, {
-    t_CODEC codec,
+      FlutterSoundCodec codec,
     TWhenFinished whenFinished,
   }) async {
      await initialize();
-   	 return await _startPlayer('startPlayer', <String, dynamic>{
-       'path': uri,
-      'codec': codec,
-      'whenFinished': whenFinished,
+     return await _startPlayer('startPlayer', <String, dynamic> {
+   	    'path': uri,
+            'codec': codec,
+            'whenFinished': whenFinished,
     });
   }
 
+
   Future<String> startPlayerFromBuffer(
     Uint8List dataBuffer, {
-    t_CODEC codec,
+    FlutterSoundCodec codec,
     TWhenFinished whenFinished,
   }) async {
     await initialize();
     // If we want to play OGG/OPUS on iOS, we need to remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We write the data in a temporary file before calling ffmpeg.
-    if ((codec == t_CODEC.CODEC_OPUS) && (Platform.isIOS)) {
+    if (needToConvert(codec)) {
       await stopPlayer();
       var tempDir = await getTemporaryDirectory();
-      File inputFile = File('${tempDir.path}/$slotNo-flutter_sound-tmp.opus');
+      File inputFile = File('${tempDir.path}/$slotNo-flutter_sound-tmp');
 
       if (inputFile.existsSync()) {
         await inputFile.delete();
@@ -481,7 +523,7 @@ class FlutterSoundPlayer {
   }
 
   Future<String> stopPlayer() async {
-    playerState = t_PLAYER_STATE.IS_STOPPED;
+    playerState = PlayerState.isStopped;
     audioPlayerFinishedPlaying = null;
 
     try {
@@ -505,24 +547,24 @@ class FlutterSoundPlayer {
   }
 
   Future<String> pausePlayer() async {
-    if (playerState != t_PLAYER_STATE.IS_PLAYING) {
+    if (playerState != PlayerState.isPlaying) {
       await _stopPlayerwithCallback(); // To recover a clean state
       throw PlayerRunningException(
           'Player is not playing.'); // I am not sure that it is good to throw an exception here
     }
-    playerState = t_PLAYER_STATE.IS_PAUSED;
+    playerState = PlayerState.isPaused;
 
     String r = await invokeMethod('pausePlayer', <String, dynamic>{}) as String;
     return r;
   }
 
   Future<String> resumePlayer() async {
-    if (playerState != t_PLAYER_STATE.IS_PAUSED) {
+    if (playerState != PlayerState.isPaused) {
       await _stopPlayerwithCallback(); // To recover a clean state
       throw PlayerRunningException(
           'Player is not paused.'); // I am not sure that it is good to throw an exception here
     }
-    playerState = t_PLAYER_STATE.IS_PLAYING;
+    playerState = PlayerState.isPlaying;
     String r =
         await invokeMethod('resumePlayer', <String, dynamic>{}) as String;
     return r;
@@ -592,9 +634,9 @@ class PlayerRunningException implements Exception {
 }
 
 
-class InitializationInProgress implements Exception {
+class _InitializationInProgress implements Exception {
 
-  InitializationInProgress()
+  _InitializationInProgress()
   {
     print('An initialization is currently already in progress.');
   }

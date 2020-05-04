@@ -16,30 +16,16 @@ package com.dooboolab.fluttersound;
  */
 
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.SystemClock;
-import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
-
-import androidx.annotation.NonNull;
-import androidx.arch.core.util.Function;
-import androidx.core.app.ActivityCompat;
 
 import android.media.AudioFocusRequest;
 
-import java.io.*;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -50,23 +36,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import io.flutter.embedding.engine.plugins.FlutterPlugin;
-import io.flutter.embedding.engine.plugins.activity.ActivityAware;
-import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-
-import java.util.concurrent.Callable;
-
-import io.flutter.plugin.common.PluginRegistry;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 class FlautoPlayerPlugin
 	implements MethodCallHandler
@@ -267,7 +242,7 @@ class PlayerAudioModel
 //-------------------------------------------------------------------------------------------------------------
 
 
-public class FlutterSoundPlayer
+public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 {
 
 
@@ -285,12 +260,17 @@ public class FlutterSoundPlayer
 
 	static boolean _isAndroidDecoderSupported[] = {
 		true, // DEFAULT
-		true, // AAC
-		true, // OGG/OPUS
-		false, // CAF/OPUS
+		true, // aacADTS
+		true, // opusOGG
+		true, // opusCAF
 		true, // MP3
-		true, // OGG/VORBIS
-		true, // WAV/PCM
+		true, // vorbisOGG
+		false, // pcm16
+		true, // pcm16WAV
+		false, // pcm16AIFF
+		false, // pcm16CAF
+		true, // flac
+		true, // aacMP4
 	};
 
 
@@ -298,10 +278,15 @@ public class FlutterSoundPlayer
 		".aac" // DEFAULT
 		, ".aac" // CODEC_AAC
 		, ".opus" // CODEC_OPUS
-		, ".caf" // CODEC_CAF_OPUS (this is apple specific)
+		, "_opus.caf" // CODEC_CAF_OPUS (this is apple specific)
 		, ".mp3" // CODEC_MP3
 		, ".ogg" // CODEC_VORBIS
-		, ".wav" // CODEC_PCM
+		, ".pcm" // CODEC_PCM
+		, ".wav"
+		, ".aiff"
+		, "._pcm.caf"
+		, ".flac"
+		, ".mp4"
 	};
 
 
@@ -393,10 +378,10 @@ public class FlutterSoundPlayer
 			if ( path == null )
 			{
 				this.model.getMediaPlayer ().setDataSource ( PlayerAudioModel.DEFAULT_FILE_LOCATION );
-			} 
+			}
 			else
 			{
-				this.model.getMediaPlayer ().setDataSource ( path );
+				this.model.getMediaPlayer ().setDataSource (  path );
 			}
 			if ( setActiveDone == t_SET_CATEGORY_DONE.NOT_SET )
 			{
@@ -410,6 +395,8 @@ public class FlutterSoundPlayer
 			 */
 			this.model.getMediaPlayer ().setOnCompletionListener ( mp -> onCompletion(mp)
 			                                                      );
+			this.model.getMediaPlayer ().setOnErrorListener(this);
+
 			this.model.getMediaPlayer ().prepare ();
 		}
 		catch ( Exception e )
@@ -417,6 +404,12 @@ public class FlutterSoundPlayer
 			Log.e ( TAG, "startPlayer() exception" );
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 		}
+	}
+
+	public boolean onError(MediaPlayer mp, int what, int extra) {
+		// ... react appropriately ...
+		// The MediaPlayer has moved to the Error state, must be reset!
+		return false;
 	}
 
 
@@ -487,13 +480,13 @@ public class FlutterSoundPlayer
 		String resolvedPath = (path == null) ? PlayerAudioModel.DEFAULT_FILE_LOCATION : path;
 		result.success((resolvedPath));
 	}
-	
+
 
 	public void startPlayerFromBuffer ( final MethodCall call, final Result result )
 	{
-		Integer _codec     = call.argument ( "codec" );
-		t_CODEC codec      = t_CODEC.values ()[ ( _codec != null ) ? _codec : 0 ];
-		byte[]  dataBuffer = call.argument ( "dataBuffer" );
+		Integer           _codec     = call.argument ( "codec" );
+		FlutterSoundCodec codec      = FlutterSoundCodec.values()[ ( _codec != null ) ? _codec : 0 ];
+		byte[]            dataBuffer = call.argument ( "dataBuffer" );
 		try
 		{
 			File             f   = File.createTempFile ( "flutter_sound_buffer-" + Integer.toString(slotNo), extentionArray[ codec.ordinal () ] );

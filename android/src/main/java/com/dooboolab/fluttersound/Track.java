@@ -97,8 +97,8 @@ public class Track {
         return bufferCodecIndex;
     }
 
-    public t_CODEC getBufferCodec() {
-        return t_CODEC.values()[bufferCodecIndex != null ? bufferCodecIndex : 0];
+    public FlutterSoundCodec getBufferCodec() {
+        return FlutterSoundCodec.values()[bufferCodecIndex != null ? bufferCodecIndex : 0];
     }
 
     /**

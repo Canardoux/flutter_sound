@@ -1,3 +1,10 @@
+## 5.0.0+1
+
+- Changed the global enums names to CamelCase, to be conform with Google recommandations
+- Remove the OS dependant parameters from startRecorder()
+- Support of new codecs, both for Android and iOS
+- Remove the authorization request from startRecorder()
+
 ## 4.0.3+1
 
 - Check the Initialization Status, before accessing Flutter Sound Modules [#307](https://github.com/dooboolab/flutter_sound/issues/307)

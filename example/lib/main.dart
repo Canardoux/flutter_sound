@@ -1,17 +1,17 @@
 /*
- * This file is part of Flutter-Sound (Flauto).
+ * This file is part of Flutter-Sound.
  *
- *   Flutter-Sound (Flauto) is free software: you can redistribute it and/or modify
+ *   Flutter-Sound is free software: you can redistribute it and/or modify
  *   it under the terms of the Lesser GNU General Public License
- *   version 3 (LGPL3) as published by the Free Software Foundation.
+ *   version 3 (LGPL-3) as published by the Free Software Foundation.
  *
- *   Flutter-Sound (Flauto) is distributed in the hope that it will be useful,
+ *   Flutter-Sound is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the Lesser GNU General Public License
- *   along with Flutter-Sound (Flauto).  If not, see <https://www.gnu.org/licenses/>.
+ *   along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 import 'dart:async';
@@ -24,24 +24,26 @@ import 'package:path_provider/path_provider.dart' ;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart' show DateFormat;
-import 'package:flutter_sound/flauto.dart';
-import 'package:flutter_sound/flutter_sound_player.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_sound/track_player.dart';
-import 'package:flutter_sound/flutter_sound_recorder.dart';
 
-enum t_MEDIA {
-  FILE,
-  BUFFER,
-  ASSET,
-  STREAM,
-  REMOTE_EXAMPLE_FILE,
+enum Media {
+  file,
+  buffer,
+  asset,
+  stream,
+  remoteExampleFile,
+}
+enum AudioState {
+  isPlaying,
+  isPaused,
+  isStopped,
+  isRecording,
+  isRecordingPaused,
 }
 
 /// Boolean to specify if we want to test the Rentrance/Concurency feature.
 /// If true, we start two instances of FlautoPlayer when the user hit the "Play" button.
 /// If true, we start two instances of FlautoRecorder and one instance of FlautoPlayer when the user hit the Record button
-const bool REENTRANCE_CONCURENCY = false;
 final exampleAudioFilePath = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
 final albumArtPath = "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_500kB.png";
 
@@ -56,7 +58,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _isRecording = false;
-  List<String> _path = [null, null, null, null, null, null, null];
+  List<String> _path = [null, null, null, null, null, null, null, null, null, null, null, null,];
   StreamSubscription _recorderSubscription;
   StreamSubscription _dbPeakSubscription;
   StreamSubscription _playerSubscription;
@@ -64,8 +66,6 @@ class _MyAppState extends State<MyApp> {
 
   FlutterSoundPlayer playerModule;
   FlutterSoundRecorder recorderModule;
-  FlutterSoundPlayer playerModule_2; // Used if REENTRANCE_CONCURENCY
-  FlutterSoundRecorder recorderModule_2; // Used if REENTRANCE_CONCURENCY
 
   String _recorderTxt = '00:00:00';
   String _playerTxt = '00:00:00';
@@ -73,8 +73,8 @@ class _MyAppState extends State<MyApp> {
 
   double sliderCurrentPosition = 0.0;
   double maxDuration = 1.0;
-  t_MEDIA _media = t_MEDIA.FILE;
-  t_CODEC _codec = t_CODEC.CODEC_AAC;
+  Media _media = Media.file;
+  FlutterSoundCodec _codec = FlutterSoundCodec.aacADTS;
 
   bool _encoderSupported = true; // Optimist
   bool _decoderSupported = true; // Optimist
@@ -108,16 +108,7 @@ class _MyAppState extends State<MyApp> {
       copyAssets();
     }
 
-    if (REENTRANCE_CONCURENCY) {
-      playerModule_2 = await FlutterSoundPlayer().initialize();
-      await playerModule_2.setSubscriptionDuration(0.01);
-      await playerModule_2.setSubscriptionDuration(0.01);
 
-      recorderModule_2 = await FlutterSoundRecorder().initialize();
-      await recorderModule_2.setSubscriptionDuration(0.01);
-      await recorderModule_2.setDbPeakLevelUpdate(0.8);
-      await recorderModule_2.setDbLevelEnabled(true);
-    }
   }
 
   Future<void>copyAssets() async {
@@ -135,16 +126,16 @@ class _MyAppState extends State<MyApp> {
     init();
   }
 
-  t_AUDIO_STATE get audioState {
+  AudioState get audioState {
     if (playerModule != null) {
-      if (playerModule.isPlaying) return t_AUDIO_STATE.IS_PLAYING;
-      if (playerModule.isPaused) return t_AUDIO_STATE.IS_PAUSED;
+      if (playerModule.isPlaying) return AudioState.isPlaying;
+      if (playerModule.isPaused) return AudioState.isPaused;
     }
     if (recorderModule != null) {
-      if (recorderModule.isPaused) return t_AUDIO_STATE.IS_RECORDING_PAUSED;
-      if (recorderModule.isRecording) return t_AUDIO_STATE.IS_RECORDING;
+      if (recorderModule.isPaused) return AudioState.isRecordingPaused;
+      if (recorderModule.isRecording) return AudioState.isRecording;
     }
-    return t_AUDIO_STATE.IS_STOPPED;
+    return AudioState.isStopped;
   }
 
   void cancelRecorderSubscriptions() {
@@ -181,12 +172,12 @@ class _MyAppState extends State<MyApp> {
   Future<void> setDuck() async {
     if (_duckOthers) {
       if (Platform.isIOS)
-        await playerModule.iosSetCategory(t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DUCK_OTHERS | IOS_DEFAULT_TO_SPEAKER);
-      else if (Platform.isAndroid) await playerModule.androidAudioFocusRequest(ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+        await playerModule.iosSetCategory(SessionCategory.playAndRecord, SessionMode.defaultSessionMode, iosDuckOthers | iosDefaultToSpeaker);
+      else if (Platform.isAndroid) await playerModule.androidAudioFocusRequest(AndroidFocusGain.audioFocusGainTransientMayDuck.index);
     } else {
       if (Platform.isIOS)
-        await playerModule.iosSetCategory(t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DEFAULT_TO_SPEAKER);
-      else if (Platform.isAndroid) await playerModule.androidAudioFocusRequest(ANDROID_AUDIOFOCUS_GAIN);
+        await playerModule.iosSetCategory(SessionCategory.playAndRecord, SessionMode.defaultSessionMode, iosDefaultToSpeaker);
+      else if (Platform.isAndroid) await playerModule.androidAudioFocusRequest(AndroidFocusGain.audioFocusGain.index);
     }
   }
 
@@ -194,23 +185,14 @@ class _MyAppState extends State<MyApp> {
     try {
       await playerModule.release();
       await recorderModule.release();
-      await playerModule_2.release();
-      await recorderModule_2.release();
     } catch (e) {
       print('Released unsuccessful');
       print(e);
     }
   }
 
-  static const List<String> paths = [
-    'flutter_sound_example.aac', // DEFAULT
-    'flutter_sound_example.aac', // CODEC_AAC
-    'flutter_sound_example.opus', // CODEC_OPUS
-    'flutter_sound_example.caf', // CODEC_CAF_OPUS
-    'flutter_sound_example.mp3', // CODEC_MP3
-    'flutter_sound_example.ogg', // CODEC_VORBIS
-    'flutter_sound_example.pcm', // CODEC_PCM
-  ];
+
+
 
   void startRecorder() async {
     try {
@@ -226,7 +208,7 @@ class _MyAppState extends State<MyApp> {
       Directory tempDir = await getTemporaryDirectory();
 
       String path = await recorderModule.startRecorder(
-        uri: '${tempDir.path}/${recorderModule.slotNo}-${paths[_codec.index]}',
+        uri: '${tempDir.path}/${recorderModule.slotNo}-flutter_sound${ext[_codec.index]}',
         codec: _codec,
       );
       print('startRecorder: $path');
@@ -247,24 +229,6 @@ class _MyAppState extends State<MyApp> {
           this._dbLevel = value;
         });
       });
-      if (REENTRANCE_CONCURENCY) {
-        try
-        {
-          Uint8List dataBuffer = (await rootBundle.load( assetSample[_codec.index] )).buffer.asUint8List( );
-          await playerModule_2.startPlayerFromBuffer( dataBuffer, codec: _codec, whenFinished: ( )
-          {
-            //await playerModule_2.startPlayer(exampleAudioFilePath, codec: t_CODEC.CODEC_MP3, whenFinished: () {
-            print( 'Secondary Play finished' );
-          } );
-        } catch(e) {
-          print('startRecorder error: $e');
-        }
-        await recorderModule_2.startRecorder(
-          uri: '${tempDir.path}/flutter_sound_recorder2.aac',
-          codec: t_CODEC.CODEC_AAC,
-        );
-        print("Secondary record is '${tempDir.path}/flutter_sound_recorder2.aac'");
-      }
 
       this.setState(() {
         this._isRecording = true;
@@ -289,15 +253,15 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> getDuration() async {
     switch (_media) {
-      case t_MEDIA.FILE:
-      case t_MEDIA.BUFFER:
+      case Media.file:
+      case Media.buffer:
         int d = await flutterSoundHelper.duration(this._path[_codec.index]);
         _duration = d != null ? d / 1000.0 : null;
         break;
-      case t_MEDIA.ASSET:
+      case Media.asset:
         _duration = null;
         break;
-      case t_MEDIA.REMOTE_EXAMPLE_FILE:
+      case Media.remoteExampleFile:
         _duration = null;
         break;
     }
@@ -309,10 +273,6 @@ class _MyAppState extends State<MyApp> {
       String result = await recorderModule.stopRecorder();
       print('stopRecorder: $result');
       cancelRecorderSubscriptions();
-      if (REENTRANCE_CONCURENCY) {
-        await recorderModule_2.stopRecorder();
-        await playerModule_2.stopPlayer();
-      }
       getDuration();
     } catch (err) {
       print('stopRecorder error: $err');
@@ -345,11 +305,19 @@ class _MyAppState extends State<MyApp> {
     'assets/samples/sample.aac',
     'assets/samples/sample.aac',
     'assets/samples/sample.opus',
-    'assets/samples/sample.caf',
+    'assets/samples/sample_opus.caf',
     'assets/samples/sample.mp3',
     'assets/samples/sample.ogg',
     'assets/samples/sample.pcm',
+    'assets/samples/sample.wav',
+    'assets/samples/sample.aiff',
+    'assets/samples/sample_pcm.caf',
+    'assets/samples/sample.flac',
+    'assets/samples/sample.mp4',
+    'assets/samples/sample.3gp',
   ];
+
+
 
   void _addListeners() {
     cancelPlayerSubscriptions();
@@ -378,12 +346,12 @@ class _MyAppState extends State<MyApp> {
       String path;
       Uint8List dataBuffer;
       String audioFilePath;
-      if (_media == t_MEDIA.ASSET) {
+      if (_media == Media.asset) {
         dataBuffer = (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
-      } else if (_media == t_MEDIA.FILE) {
+      } else if (_media == Media.file) {
         // Do we want to play from buffer or from file ?
         if (await fileExists(_path[_codec.index])) audioFilePath = this._path[_codec.index];
-      } else if (_media == t_MEDIA.BUFFER) {
+      } else if (_media == Media.buffer) {
         // Do we want to play from buffer or from file ?
         if (await fileExists(_path[_codec.index])) {
           dataBuffer = await makeBuffer(this._path[_codec.index]);
@@ -391,7 +359,7 @@ class _MyAppState extends State<MyApp> {
             throw Exception('Unable to create the buffer');
           }
         }
-      } else if (_media == t_MEDIA.REMOTE_EXAMPLE_FILE) {
+      } else if (_media == Media.remoteExampleFile) {
         // We have to play an example audio file loaded via a URL
         audioFilePath = exampleAudioFilePath;
       }
@@ -401,7 +369,7 @@ class _MyAppState extends State<MyApp> {
         String albumArtUrl;
         String albumArtAsset;
         String albumArtFile;
-        if (_media == t_MEDIA.REMOTE_EXAMPLE_FILE)
+        if (_media == Media.remoteExampleFile)
           albumArtUrl = albumArtPath;
         else {
 
@@ -473,16 +441,7 @@ class _MyAppState extends State<MyApp> {
         }
       }
       _addListeners();
-      if (REENTRANCE_CONCURENCY && _media != t_MEDIA.REMOTE_EXAMPLE_FILE) {
-          Uint8List dataBuffer = (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
-          await playerModule_2.startPlayerFromBuffer(dataBuffer, codec: _codec, whenFinished: () {
-
-          //playerModule_2.startPlayer(exampleAudioFilePath, codec: t_CODEC.CODEC_MP3, whenFinished: () {
-          print('Secondary Play finished');
-        });
-      }
-
-      print('startPlayer: $path');
+       print('startPlayer: $path');
       // await flutterSoundModule.setVolume(1.0);
     } catch (err) {
       print('error: $err');
@@ -502,48 +461,28 @@ class _MyAppState extends State<MyApp> {
     } catch (err) {
       print('error: $err');
     }
-    if (REENTRANCE_CONCURENCY) {
-      try {
-        String result = await playerModule_2.stopPlayer();
-        print('stopPlayer_2: $result');
-      } catch (err) {
-        print('error: $err');
-      }
-    }
 
     this.setState(() {
       //this._isPlaying = false;
     });
   }
 
-  pauseResumePlayer() {
+  void pauseResumePlayer() {
     if (playerModule.isPlaying) {
       playerModule.pausePlayer();
-      if (REENTRANCE_CONCURENCY) {
-        playerModule_2.pausePlayer();
-      }
-    } else {
+     } else {
       playerModule.resumePlayer();
-      if (REENTRANCE_CONCURENCY) {
-        playerModule_2.resumePlayer();
-      }
-    }
+     }
   }
 
-  pauseResumeRecorder() {
+  void pauseResumeRecorder() {
     if (recorderModule.isPaused) {
       {
         recorderModule.resumeRecorder();
-        if (REENTRANCE_CONCURENCY) {
-          recorderModule_2.resumeRecorder();
-        }
-      }
+       }
     } else {
       recorderModule.pauseRecorder();
-      if (REENTRANCE_CONCURENCY) {
-        recorderModule_2.pauseRecorder();
-      }
-    }
+     }
   }
 
   void seekToPlayer(int milliSecs) async {
@@ -560,29 +499,29 @@ class _MyAppState extends State<MyApp> {
           padding: const EdgeInsets.only(right: 16.0),
           child: Text('Media:'),
         ),
-        DropdownButton<t_MEDIA>(
+        DropdownButton<Media>(
           value: _media,
           onChanged: (newMedia) {
-            if (newMedia == t_MEDIA.REMOTE_EXAMPLE_FILE) _codec = t_CODEC.CODEC_MP3; // Actually this is the only example we use in this example
+            if (newMedia == Media.remoteExampleFile) _codec = FlutterSoundCodec.mp3; // Actually this is the only example we use in this example
             _media = newMedia;
             getDuration();
             setState(() {});
           },
-          items: <DropdownMenuItem<t_MEDIA>>[
-            DropdownMenuItem<t_MEDIA>(
-              value: t_MEDIA.FILE,
+          items: <DropdownMenuItem<Media>>[
+            DropdownMenuItem<Media>(
+              value: Media.file,
               child: Text('File'),
             ),
-            DropdownMenuItem<t_MEDIA>(
-              value: t_MEDIA.BUFFER,
+            DropdownMenuItem<Media>(
+              value: Media.buffer,
               child: Text('Buffer'),
             ),
-            DropdownMenuItem<t_MEDIA>(
-              value: t_MEDIA.ASSET,
+            DropdownMenuItem<Media>(
+              value: Media.asset,
               child: Text('Asset'),
             ),
-            DropdownMenuItem<t_MEDIA>(
-              value: t_MEDIA.REMOTE_EXAMPLE_FILE,
+            DropdownMenuItem<Media>(
+              value: Media.remoteExampleFile,
               child: Text('Remote Example File'),
             ),
           ],
@@ -598,7 +537,7 @@ class _MyAppState extends State<MyApp> {
           padding: const EdgeInsets.only(right: 16.0),
           child: Text('Codec:'),
         ),
-        DropdownButton<t_CODEC>(
+        DropdownButton<FlutterSoundCodec>(
           value: _codec,
           onChanged: (newCodec) {
             setCodec(newCodec);
@@ -606,30 +545,51 @@ class _MyAppState extends State<MyApp> {
             getDuration();
             setState(() {});
           },
-          items: <DropdownMenuItem<t_CODEC>>[
-            DropdownMenuItem<t_CODEC>(
-              value: t_CODEC.CODEC_AAC,
-              child: Text('AAC'),
+
+          items: <DropdownMenuItem<FlutterSoundCodec>>[
+            DropdownMenuItem<FlutterSoundCodec>(
+              value: FlutterSoundCodec.aacADTS,
+              child: Text('AAC/ADTS'),
             ),
-            DropdownMenuItem<t_CODEC>(
-              value: t_CODEC.CODEC_OPUS,
-              child: Text('OGG/Opus'),
+            DropdownMenuItem<FlutterSoundCodec>(
+              value: FlutterSoundCodec.opusOGG,
+              child: Text('Opus/OGG'),
             ),
-            DropdownMenuItem<t_CODEC>(
-              value: t_CODEC.CODEC_CAF_OPUS,
-              child: Text('CAF/Opus'),
+            DropdownMenuItem<FlutterSoundCodec>(
+              value: FlutterSoundCodec.opusCAF,
+              child: Text('Opus/CAF'),
             ),
-            DropdownMenuItem<t_CODEC>(
-              value: t_CODEC.CODEC_MP3,
+            DropdownMenuItem<FlutterSoundCodec>(
+              value: FlutterSoundCodec.mp3,
               child: Text('MP3'),
             ),
-            DropdownMenuItem<t_CODEC>(
-              value: t_CODEC.CODEC_VORBIS,
-              child: Text('OGG/Vorbis'),
+            DropdownMenuItem<FlutterSoundCodec>(
+              value: FlutterSoundCodec.vorbisOGG,
+              child: Text('Vorbis/OGG'),
             ),
-            DropdownMenuItem<t_CODEC>(
-              value: t_CODEC.CODEC_PCM,
-              child: Text('PCM'),
+            DropdownMenuItem<FlutterSoundCodec>(
+              value: FlutterSoundCodec.pcm16,
+              child: Text('PCM16'),
+            ),
+            DropdownMenuItem<FlutterSoundCodec>(
+              value: FlutterSoundCodec.pcm16WAV,
+              child: Text('PCM16/WAV'),
+            ),
+            DropdownMenuItem<FlutterSoundCodec>(
+              value: FlutterSoundCodec.pcm16AIFF,
+              child: Text('PCM16/AIFF'),
+            ),
+            DropdownMenuItem<FlutterSoundCodec>(
+              value: FlutterSoundCodec.pcm16CAF,
+              child: Text('PCM16/CAF'),
+            ),
+            DropdownMenuItem<FlutterSoundCodec>(
+              value: FlutterSoundCodec.flac,
+              child: Text('FLAC'),
+            ),
+            DropdownMenuItem<FlutterSoundCodec>(
+              value: FlutterSoundCodec.aacMP4,
+              child: Text('AAC/MP4'),
             ),
           ],
         ),
@@ -652,56 +612,56 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  onPauseResumePlayerPressed() {
+ void Function()  onPauseResumePlayerPressed() {
     switch (audioState) {
-      case t_AUDIO_STATE.IS_PAUSED:
+      case AudioState.isPaused:
         return pauseResumePlayer;
         break;
-      case t_AUDIO_STATE.IS_PLAYING:
+      case AudioState.isPlaying:
         return pauseResumePlayer;
         break;
-      case t_AUDIO_STATE.IS_STOPPED:
+      case AudioState.isStopped:
         return null;
         break;
-      case t_AUDIO_STATE.IS_RECORDING:
+      case AudioState.isRecording:
         return null;
         break;
-      case t_AUDIO_STATE.IS_RECORDING_PAUSED:
+      case AudioState.isRecordingPaused:
         return null;
         break;
     }
   }
 
-  onPauseResumeRecorderPressed() {
+ void Function() onPauseResumeRecorderPressed() {
     switch (audioState) {
-      case t_AUDIO_STATE.IS_PAUSED:
+      case AudioState.isPaused:
         return null;
         break;
-      case t_AUDIO_STATE.IS_PLAYING:
+      case AudioState.isPlaying:
         return null;
         break;
-      case t_AUDIO_STATE.IS_STOPPED:
+      case AudioState.isStopped:
         return null;
         break;
-      case t_AUDIO_STATE.IS_RECORDING:
+      case AudioState.isRecording:
         return pauseResumeRecorder;
         break;
-      case t_AUDIO_STATE.IS_RECORDING_PAUSED:
+      case AudioState.isRecordingPaused:
         return pauseResumeRecorder;
         break;
     }
   }
 
-  onStopPlayerPressed() {
-    return audioState == t_AUDIO_STATE.IS_PLAYING || audioState == t_AUDIO_STATE.IS_PAUSED ? stopPlayer : null;
+ void Function()  onStopPlayerPressed() {
+    return audioState == AudioState.isPlaying || audioState == AudioState.isPaused ? stopPlayer : null;
   }
 
-  onStartPlayerPressed() {
-    if (_media == t_MEDIA.FILE || _media == t_MEDIA.BUFFER) // A file must be already recorded to play it
+  void Function() onStartPlayerPressed() {
+    if (_media == Media.file || _media == Media.buffer) // A file must be already recorded to play it
     {
       if (_path[_codec.index] == null) return null;
     }
-    if (_media == t_MEDIA.REMOTE_EXAMPLE_FILE && _codec != t_CODEC.CODEC_MP3) // in this example we use just a remote mp3 file
+    if (_media == Media.remoteExampleFile && _codec != FlutterSoundCodec.mp3) // in this example we use just a remote mp3 file
       return null;
 
     // Disable the button if the selected codec is not supported
@@ -716,22 +676,22 @@ class _MyAppState extends State<MyApp> {
       startRecorder();
   }
 
-  onStartRecorderPressed() {
-    if (_media == t_MEDIA.ASSET || _media == t_MEDIA.BUFFER || _media == t_MEDIA.REMOTE_EXAMPLE_FILE) return null;
+  void Function() onStartRecorderPressed() {
+    if (_media == Media.asset || _media == Media.buffer || _media == Media.remoteExampleFile) return null;
     // Disable the button if the selected codec is not supported
     if (!_encoderSupported) return null;
-    if (audioState != t_AUDIO_STATE.IS_RECORDING && audioState != t_AUDIO_STATE.IS_RECORDING_PAUSED && audioState != t_AUDIO_STATE.IS_STOPPED) return null;
+    if (audioState != AudioState.isRecording && audioState != AudioState.isRecordingPaused && audioState != AudioState.isStopped) return null;
     return startStopRecorder;
   }
 
-  bool isStopped() => (audioState == t_AUDIO_STATE.IS_STOPPED);
+  bool isStopped() => (audioState == AudioState.isStopped);
 
   AssetImage recorderAssetImage() {
     if (onStartRecorderPressed() == null) return AssetImage('res/icons/ic_mic_disabled.png');
-    return audioState == t_AUDIO_STATE.IS_STOPPED ? AssetImage('res/icons/ic_mic.png') : AssetImage('res/icons/ic_stop.png');
+    return audioState == AudioState.isStopped ? AssetImage('res/icons/ic_mic.png') : AssetImage('res/icons/ic_stop.png');
   }
 
-  setCodec(t_CODEC codec) async {
+  void setCodec(FlutterSoundCodec codec) async {
     _encoderSupported = await recorderModule.isEncoderSupported(codec);
     _decoderSupported = await playerModule.isDecoderSupported(codec);
 
@@ -740,9 +700,9 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  audioPlayerSwitchChanged() {
+ void Function(bool) audioPlayerSwitchChanged() {
     if (!isStopped()) return null;
-    return ((newVal) async {
+    return ((bool newVal) async {
       try {
         if (playerModule != null) await playerModule.release();
 
@@ -759,8 +719,8 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  duckOthersSwitchChanged() {
-    return ((newVal) async {
+ void Function(bool) duckOthersSwitchChanged() {
+    return ((bool newVal) async {
       _duckOthers = newVal;
 
       try {
