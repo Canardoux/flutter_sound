@@ -223,12 +223,17 @@ class SoundRecorder implements SlotEntry {
   /// size of the file this could take a few moments to a few minutes.
   Future<void> stop() async {
     await _initialize();
-    await _getPlugin().stop(this);
+    if (isRecording) {
+      await _getPlugin().stop(this);
 
-    _recorderState = _RecorderState.isStopped;
+      _recorderState = _RecorderState.isStopped;
 
-    // If requried, transcribe from the native codec to the requested codec.
-    _recordingTrack.recode();
+      // If requried, transcribe from the native codec to the requested codec.
+      _recordingTrack.recode();
+    } else {
+      throw RecorderNotRunningException(
+          "You cannot stop recording when the recorder is not running.");
+    }
   }
 
   /// Pause recording.

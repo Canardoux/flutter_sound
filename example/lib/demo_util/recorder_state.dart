@@ -44,7 +44,7 @@ class RecorderState {
   /// Stops the recorder and cause the recording UI to refesh and update with
   /// any state changes.
   void reset() async {
-    await RecorderState().stopRecorder();
+    if (RecorderState().isRecording) await RecorderState().stopRecorder();
   }
 
   /// Returns a stream of [RecordingDisposition] so you can
