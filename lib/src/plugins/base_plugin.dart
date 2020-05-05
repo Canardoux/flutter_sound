@@ -37,7 +37,7 @@ abstract class BasePlugin {
 
   ///
   @protected
-  MethodChannel channel;
+  MethodChannel _channel;
 
   /// The registered name of the plugin.
   final String _registeredName;
@@ -45,8 +45,9 @@ abstract class BasePlugin {
   /// Pass in the [_registeredName] which is the registered
   /// name of the plugin.
   BasePlugin(this._registeredName, this._slots) {
-    channel = MethodChannel(_registeredName);
-    channel.setMethodCallHandler(_onMethodCallback);
+    Log.d('registering plugin: $_registeredName');
+    _channel = MethodChannel(_registeredName);
+    _channel.setMethodCallHandler(_onMethodCallback);
   }
 
   /// overload this method to handle callbacks from the underlying
@@ -68,15 +69,11 @@ abstract class BasePlugin {
     /// allocate a slot for this call.
     var slotNo = findSlot(slotEntry);
     call['slotNo'] = slotNo;
-    var result = getChannel().invokeMethod<dynamic>(methodName, call);
+    var result = _channel.invokeMethod<dynamic>(methodName, call);
 
     Log.d('invokeMethod returned for $methodName');
     return result;
   }
-
-  ///
-  @protected
-  MethodChannel getChannel() => channel;
 
   /// Allows you to register a connector with the plugin.
   /// Registering a connector allocates a slot for communicating
