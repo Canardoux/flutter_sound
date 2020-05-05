@@ -41,14 +41,14 @@ This plugin provides simple recorder and player functionalities for both `androi
 
 Flutter Sound is composed with 4 modules :
 
-- [FlutterSoundPlayer](player.md), wich deal with everythin about playbacks
-- [FlutterSoudRecorder](recorder.md), which deal with everything about recording
-- [TrackPlayer](track_player.md), which deal about controling the App audio session from the lock screen or from an Apple watch
-- [FlutterSoundHelper](flutter_sound_helper), which offer some convenients tools
+- [FlutterSoundPlayer](doc/player.md), wich deal with everythin about playbacks
+- [FlutterSoudRecorder](doc/recorder.md), which deal with everything about recording
+- [TrackPlayer](doc/track_player.md), which deal about controling the App audio session from the lock screen or from an Apple watch
+- [FlutterSoundHelper](doc/flutter_sound_helper), which offer some convenients tools
 
 To use Flutter Sound you just do :
 ```
-import import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 ```
 
 `import 'package:flutter_sound/flutter_sound.dart'` will export all the necessaries dart interfaces.
