@@ -1,4 +1,3 @@
-
 /*
  * This file is part of Flutter-Sound (Flauto).
  *
@@ -567,8 +566,11 @@ class AudioPlayer implements SlotEntry {
   /// Unless we are playing in the background then
   /// we need to stop playback and release resources.
   void _onSystemAppPaused() {
+    Log.d('onSystemAppPaused playInBackground=$playInBackground');
     if (!playInBackground) {
-      stop();
+      if (isPlaying) {
+        stop();
+      }
       _softRelease();
     }
   }
@@ -577,6 +579,8 @@ class AudioPlayer implements SlotEntry {
   /// If we had previously stopped then we resuming playing
   /// from the last position - 1 second.
   void _onSystemAppResumed() {
+    Log.d(
+        'onSystemAppPaused playInBackground=$playInBackground _track=$_track');
     if (!playInBackground && _track != null) {
       rewind(Duration(seconds: 1));
       play(_track);
@@ -936,5 +940,3 @@ void onSystemSkipBackward(AudioPlayer player) => player._onSystemSkipBackward();
 void onSystemUpdatePlaybackState(
         AudioPlayer player, SystemPlaybackState playbackState) =>
     player._onSystemUpdatePlaybackState(playbackState);
-
-
