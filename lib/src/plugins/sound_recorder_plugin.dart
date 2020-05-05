@@ -27,6 +27,7 @@ import '../codec.dart';
 import '../ios/ios_quality.dart';
 
 import '../sound_recorder.dart';
+import '../util/log.dart';
 import 'base_plugin.dart';
 
 /// Provides communications with the platform
@@ -137,6 +138,7 @@ class SoundRecorderPlugin extends BasePlugin {
 
   Future<dynamic> onMethodCallback(
       covariant SoundRecorder recorder, MethodCall call) {
+    Log.d('Dart received ${call.method}');
     switch (call.method) {
       case "updateRecorderProgress":
         _updateRecorderProgress(call, recorder);
