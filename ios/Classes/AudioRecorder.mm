@@ -26,7 +26,21 @@
 //#import "AudioRecorderEngine.h"
 
 #import "FlutterSoundRecorder.h"
-#import "AudioRecInterface.h"
+
+
+class AudioRecInterface
+{
+public:
+        virtual ~AudioRecInterface(){};
+        virtual void stopRecorder() = 0;
+        virtual void startRecorder( FlutterSoundRecorder* rec, bool shouldProcessDbLevel) = 0;
+        virtual void resumeRecorder() = 0;
+        virtual void pauseRecorder() = 0;
+        virtual NSString* recorderProgress() = 0;
+        virtual NSNumber* dbPeakProgress() = 0;
+        double maxAmplitude = 0;
+};
+
 
 
 class AudioRecorderEngine : public AudioRecInterface
@@ -40,51 +54,58 @@ private:
         AVAudioOutputNode* outputNode;
         AVAudioFormat* inputFormat;
 public:
-        /* ctor */ AudioRecorderEngine(NSString* path, NSMutableDictionary *audioSettings)
+        /* ctor */ AudioRecorderEngine(t_CODEC coder, NSString* path, NSMutableDictionary* audioSettings)
         {
                 engine = [[AVAudioEngine alloc] init];
                 mixerNode = [engine mainMixerNode];
                 inputNode = [engine inputNode];
                 outputNode = [engine outputNode];
                 inputFormat = [inputNode inputFormatForBus: 0];
-                //[engine attachNode: mixerNode];
                 [engine connect:inputNode to: mixerNode format: inputFormat];
                 [engine disconnectNodeInput:outputNode];
                 NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:path];
                 tapFormat = [mixerNode outputFormatForBus: 0];
-                audioFile = [[AVAudioFile alloc] initForWriting:fileURL settings: [tapFormat settings] error:nil];
+                NSDictionary* settings = [tapFormat settings];
+                NSNumber* floatKey =  settings[@"AVLinearPCMIsFloatKey"] ;
+                BOOL isFloat = ([floatKey intValue] == 1);
+                
+                
+                //[settings setValue: [NSNumber numberWithInt: kAudioFormatLinearPCM] forKey:@"AVFormatIDKey"];
+                
+                //[settings setValue: audioSettings[ @"AVSampleRateKey"] forKey:@"AVSampleRateKey"];
+                //[settings setValue: audioSettings[ @"AVNumberOfChannelsKey"] forKey:@"AVNumberOfChannelsKey"];
+                //AVAudioCommonFormat* outputFormat =   [ AVAudioCommonFormat   initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate:[AVAudioSession sharedInstance].sampleRate channels:AVAudioChannelCount(1) interleaved:false];
+                //NSMutableDictionary *audioSettings2 = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                         //[NSNumber numberWithFloat: [AVAudioSession sharedInstance].sampleRate],AVSampleRateKey,
+                                         //[NSNumber numberWithInt: kAudioFormatLinearPCM ],AVFormatIDKey,
+                                         //[NSNumber numberWithInt: 1 ],AVNumberOfChannelsKey,
+                                         //[NSNumber numberWithInt: ],AVEncoderAudioQualityKey,
+                                         //nil];
+               //AVAudioPCMBuffer* buffer = [[AVAudioPCMBuffer alloc]initWithPCMFormat:inputFormat frameCapacity: engine.manualRenderingMaximumFrameCount ];
                  
-                [mixerNode installTapOnBus:0 bufferSize:2048 format: tapFormat block:
+                
+                
+                
+                audioFile = [[AVAudioFile alloc] initForWriting:fileURL settings: settings/*audioSettings2*/ error:nil];
+                         
+                [mixerNode installTapOnBus:0 bufferSize:4096 format: tapFormat block:
                         ^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when)
                         {
                                 //NSLog(@"writing");
                                 [audioFile writeFromBuffer: buffer error:nil];
+                                if (isFloat)
+                                {
+                                        float*  _Nonnull  pt = *[buffer floatChannelData];
+                                        for (int i = 0; i < [buffer frameLength]; ++pt, ++i)
+                                        {
+                                                double v = (double)(*pt);
+                                                if (v > maxAmplitude)
+                                                        maxAmplitude = v;
+                                        }
+                                }
                         }
                 ];
-                 
-                
-                //AVAudioOutputNode* outputNode = [engine outputNode];
-                /*
-                NSMutableDictionary *audioSettings2 = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                         [NSNumber numberWithFloat: [AVAudioSession sharedInstance].sampleRate],AVSampleRateKey,
-                                         [NSNumber numberWithInt: kAudioFormatLinearPCM ],AVFormatIDKey,
-                                         [NSNumber numberWithInt: 1 ],AVNumberOfChannelsKey,
-                                         //[NSNumber numberWithInt: ],AVEncoderAudioQualityKey,
-                                         nil];
-                                         
-  
-                 //[engine attachNode:inputNode];
-                //AVAudioFormat* format = [[AVAudioFormat alloc] initWithSettings: audioSettings3];
-                AVAudioCommonFormat outputFormat =   [ AVAudioCommonFormat   initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate:[AVAudioSession sharedInstance].sampleRate channels:AVAudioChannelCount(1) interleaved:false];
-                */
-                //NSMutableDictionary *audioSettings4 = [inputFormat settings];
-                
-                //[engine enableManualRenderingMode:AVAudioEngineManualRenderingModeRealtime format: inputFormat maximumFrameCount:4096 error: nil];
-                //AVAudioPCMBuffer* buffer = [[AVAudioPCMBuffer alloc]initWithPCMFormat:inputFormat frameCapacity: engine.manualRenderingMaximumFrameCount ];
-                //[engine connect:inputNode to: [engine mainMixerNode] format: inputFormat];
-   
-                //[engine connect: inputNode to: outputNode format: inputFormat];
-     }
+           }
         
         /* dtor */virtual ~AudioRecorderEngine()
         {
@@ -93,38 +114,26 @@ public:
 
           virtual void startRecorder(FlutterSoundRecorder* rec, bool shouldProcessDbLevel)
         {
-        
-        
                 [engine startAndReturnError: nil];
-                /*
-                AVAudioMixerNode* mixer = [engine mainMixerNode];
-                AVAudioFormat* format = [mixer outputFormatForBus: 0];
-
-                [inputNode installTapOnBus:0 bufferSize:2048 format: format block:
-                        ^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when)
-                        {
-
-                                NSLog(@"writing");
-                                [file writeFromBuffer:buffer error:nil];
-                        }
-                ];
-                */
         }
         
         virtual void stopRecorder()
         {
-              [engine stop];
+                [engine stop];
+                audioFile = nil;
+                engine = nil;
         }
         
         virtual void resumeRecorder()
         {
-             [engine startAndReturnError: nil];
+                [engine startAndReturnError: nil];
          
         }
         
         virtual void pauseRecorder()
         {
-             [engine stop];
+                //[engine stop];
+                [engine pause];
          
         }
         
@@ -135,7 +144,10 @@ public:
         
         virtual NSNumber* dbPeakProgress()
         {
-                return 0;
+                double r = 100*maxAmplitude;
+		maxAmplitude = 0;
+		return [NSNumber numberWithDouble: r];
+
         }
 
 };
@@ -181,7 +193,7 @@ public:
         
         void resumeRecorder()
         {
-                bool b = [audioRecorder record];
+                [audioRecorder record];
         }
         
         void pauseRecorder()
@@ -214,7 +226,7 @@ static bool _isIosEncoderSupported [] =
 		true, // opusCAF
 		false, // MP3
 		false, // vorbisOGG
-		true, // pcm16
+		false, // pcm16
 		true, // pcm16WAV
 		false, // pcm16AIFF
 		true, // pcm16CAF
@@ -244,16 +256,16 @@ static AudioFormatID formats [] =
 {
           kAudioFormatMPEG4AAC        // CODEC_DEFAULT
         , kAudioFormatMPEG4AAC        // CODEC_AAC
-        , kAudioFormatOpus                        // CODEC_OPUS
+        , 0                        // CODEC_OPUS
         , kAudioFormatOpus        // CODEC_CAF_OPUS
         , 0                       // CODEC_MP3
         , 0                        // CODEC_OGG_vorbis
         , 0    // pcm16
-        , 0    // pcm16WAV
+        , kAudioFormatLinearPCM   // pcm16WAV
         , 0    // pcm16AIFF
-        , kAudioFormatLinearPCM
-        , kAudioFormatFLAC
-        , kAudioFormatMPEG4AAC
+        , kAudioFormatLinearPCM  // pcm16CAF
+        , kAudioFormatFLAC // flac
+        , kAudioFormatMPEG4AAC // aacMP4
 
 };
 
@@ -393,7 +405,7 @@ AudioRecInterface* audioRec;
           
           if(formats[coder] == 0)
           {
-                audioRec = new AudioRecorderEngine(path, audioSettings);
+                audioRec = new AudioRecorderEngine(coder, path, audioSettings);
           } else
           {
                 audioRec = new avAudioRec( path, audioSettings);

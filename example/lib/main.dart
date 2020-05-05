@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
   double sliderCurrentPosition = 0.0;
   double maxDuration = 1.0;
   Media _media = Media.file;
-  FlutterSoundCodec _codec = FlutterSoundCodec.aacADTS;
+  Codec _codec = Codec.aacADTS;
 
   bool _encoderSupported = true; // Optimist
   bool _decoderSupported = true; // Optimist
@@ -466,7 +466,7 @@ class _MyAppState extends State<MyApp> {
     } else {
       recorderModule.pauseRecorder();
       }
- 
+
   }
 
   void seekToPlayer(int milliSecs) async {
@@ -486,7 +486,7 @@ class _MyAppState extends State<MyApp> {
         DropdownButton<Media>(
           value: _media,
           onChanged: (newMedia) {
-            if (newMedia == Media.remoteExampleFile) _codec = FlutterSoundCodec.mp3; // Actually this is the only example we use in this example
+            if (newMedia == Media.remoteExampleFile) _codec = Codec.mp3; // Actually this is the only example we use in this example
             _media = newMedia;
             getDuration();
             setState(() {});
@@ -521,7 +521,7 @@ class _MyAppState extends State<MyApp> {
           padding: const EdgeInsets.only(right: 16.0),
           child: Text('Codec:'),
         ),
-        DropdownButton<FlutterSoundCodec>(
+        DropdownButton<Codec>(
           value: _codec,
           onChanged: (newCodec) {
             setCodec(newCodec);
@@ -530,49 +530,49 @@ class _MyAppState extends State<MyApp> {
             setState(() {});
           },
 
-          items: <DropdownMenuItem<FlutterSoundCodec>>[
-            DropdownMenuItem<FlutterSoundCodec>(
-              value: FlutterSoundCodec.aacADTS,
+          items: <DropdownMenuItem<Codec>>[
+            DropdownMenuItem<Codec>(
+              value: Codec.aacADTS,
               child: Text('AAC/ADTS'),
             ),
-            DropdownMenuItem<FlutterSoundCodec>(
-              value: FlutterSoundCodec.opusOGG,
+            DropdownMenuItem<Codec>(
+              value: Codec.opusOGG,
               child: Text('Opus/OGG'),
             ),
-            DropdownMenuItem<FlutterSoundCodec>(
-              value: FlutterSoundCodec.opusCAF,
+            DropdownMenuItem<Codec>(
+              value: Codec.opusCAF,
               child: Text('Opus/CAF'),
             ),
-            DropdownMenuItem<FlutterSoundCodec>(
-              value: FlutterSoundCodec.mp3,
+            DropdownMenuItem<Codec>(
+              value: Codec.mp3,
               child: Text('MP3'),
             ),
-            DropdownMenuItem<FlutterSoundCodec>(
-              value: FlutterSoundCodec.vorbisOGG,
+            DropdownMenuItem<Codec>(
+              value: Codec.vorbisOGG,
               child: Text('Vorbis/OGG'),
             ),
-            DropdownMenuItem<FlutterSoundCodec>(
-              value: FlutterSoundCodec.pcm16,
+            DropdownMenuItem<Codec>(
+              value: Codec.pcm16,
               child: Text('PCM16'),
             ),
-            DropdownMenuItem<FlutterSoundCodec>(
-              value: FlutterSoundCodec.pcm16WAV,
+            DropdownMenuItem<Codec>(
+              value: Codec.pcm16WAV,
               child: Text('PCM16/WAV'),
             ),
-            DropdownMenuItem<FlutterSoundCodec>(
-              value: FlutterSoundCodec.pcm16AIFF,
+            DropdownMenuItem<Codec>(
+              value: Codec.pcm16AIFF,
               child: Text('PCM16/AIFF'),
             ),
-            DropdownMenuItem<FlutterSoundCodec>(
-              value: FlutterSoundCodec.pcm16CAF,
+            DropdownMenuItem<Codec>(
+              value: Codec.pcm16CAF,
               child: Text('PCM16/CAF'),
             ),
-            DropdownMenuItem<FlutterSoundCodec>(
-              value: FlutterSoundCodec.flac,
+            DropdownMenuItem<Codec>(
+              value: Codec.flac,
               child: Text('FLAC'),
             ),
-            DropdownMenuItem<FlutterSoundCodec>(
-              value: FlutterSoundCodec.aacMP4,
+            DropdownMenuItem<Codec>(
+              value: Codec.aacMP4,
               child: Text('AAC/MP4'),
             ),
           ],
@@ -610,7 +610,7 @@ class _MyAppState extends State<MyApp> {
       return null;
     if (recorderModule.isPaused || recorderModule.isRecording) {
       return pauseResumeRecorder;
->    }
+    }
     return null;
   }
 
@@ -624,11 +624,11 @@ class _MyAppState extends State<MyApp> {
   void Function() onStartPlayerPressed() {
     if (playerModule == null)
       return null;
-    if (_media == t_MEDIA.FILE || _media == t_MEDIA.BUFFER) // A file must be already recorded to play it
+    if (_media == Media.file || _media == Media.buffer) // A file must be already recorded to play it
     {
       if (_path[_codec.index] == null) return null;
     }
-    if (_media == Media.remoteExampleFile && _codec != FlutterSoundCodec.mp3) // in this example we use just a remote mp3 file
+    if (_media == Media.remoteExampleFile && _codec != Codec.mp3) // in this example we use just a remote mp3 file
       return null;
 
     // Disable the button if the selected codec is not supported
@@ -656,7 +656,7 @@ class _MyAppState extends State<MyApp> {
     return (recorderModule.isStopped)? AssetImage('res/icons/ic_mic.png') : AssetImage('res/icons/ic_stop.png');
   }
 
-  void setCodec(t_CODEC codec) async {
+  void setCodec(Codec codec) async {
     _encoderSupported = await recorderModule.isEncoderSupported(codec);
     _decoderSupported = await playerModule.isDecoderSupported(codec);
 

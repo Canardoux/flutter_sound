@@ -17,8 +17,8 @@ public class FlutterSoundAudioRecorder
 	private Thread recordingThread = null;
 	private boolean isRecording = false;
 	private double maxAmplitude = 0;
-	int BufferElements2Rec = 1024; // want to play 2048 (2K) since 2 bytes we use only 1024
-	int BytesPerElement = 2; // 2 bytes in 16bit format
+	//int BufferElements2Rec = 1024; // want to play 2048 (2K) since 2 bytes we use only 1024
+	//int BytesPerElement = 2; // 2 bytes in 16bit format
 
 
 	//private static final int CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_MONO;

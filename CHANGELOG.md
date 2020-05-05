@@ -5,6 +5,7 @@
 - Support of new codecs, both for Android and iOS
 - Remove the authorization request from startRecorder()
 - Remove the NULL posted when the player or the recorder is closed.
+- Path parameter for `startRecorder()` is now mandatory
 
 ## 4.0.4+1
 
@@ -31,7 +32,7 @@
 - Fix bug for displaying a remote albumArt on Android. [#290](https://github.com/dooboolab/flutter_sound/issues/290)
 
 
-##3.1.10
+## 3.1.10
 
 - Trying to catch Android crash during a dirty Timer. [#289](https://github.com/dooboolab/flutter_sound/issues/289)
 

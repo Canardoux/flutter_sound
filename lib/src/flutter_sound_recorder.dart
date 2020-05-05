@@ -93,14 +93,11 @@ class FlautoRecorderPlugin {
   }
 }
 
-
-enum _Initialized
-{
+enum _Initialized {
   notInitialized,
   fullyInitialized,
   initializationInProgress,
 }
-
 
 class FlutterSoundRecorder {
   _Initialized isInited = _Initialized.notInitialized;
@@ -143,16 +140,16 @@ class FlutterSoundRecorder {
       return this;
     }
     if (isInited == _Initialized.initializationInProgress) {
-      throw(_InitializationInProgress());
+      throw (_InitializationInProgress());
     }
 
     isInited = _Initialized.initializationInProgress;
 
     if (flautoRecorderPlugin == null) {
-        flautoRecorderPlugin = FlautoRecorderPlugin();
-      } // The lazy singleton
-      slotNo = getPlugin().lookupEmptySlot(this);
-      await invokeMethod('initializeFlautoRecorder', <String, dynamic>{});
+      flautoRecorderPlugin = FlautoRecorderPlugin();
+    } // The lazy singleton
+    slotNo = getPlugin().lookupEmptySlot(this);
+    await invokeMethod('initializeFlautoRecorder', <String, dynamic>{});
     isInited = _Initialized.fullyInitialized;
     return this;
   }
@@ -162,16 +159,16 @@ class FlutterSoundRecorder {
       return this;
     }
     if (isInited == _Initialized.initializationInProgress) {
-      throw(_InitializationInProgress());
+      throw (_InitializationInProgress());
     }
     isInited = _Initialized.initializationInProgress;
 
     await stopRecorder();
-      _removeRecorderCallback(); // _recorderController will be closed by this function
-      _removeDbPeakCallback(); // _dbPeakController will be closed by this function
-      await invokeMethod('releaseFlautoRecorder', <String, dynamic>{});
-      getPlugin().freeSlot(slotNo);
-      slotNo = null;
+    _removeRecorderCallback(); // _recorderController will be closed by this function
+    _removeDbPeakCallback(); // _dbPeakController will be closed by this function
+    await invokeMethod('releaseFlautoRecorder', <String, dynamic>{});
+    getPlugin().freeSlot(slotNo);
+    slotNo = null;
     isInited = _Initialized.notInitialized;
   }
 
@@ -188,19 +185,19 @@ class FlutterSoundRecorder {
   }
 
   /// Returns true if the specified encoder is supported by flutter_sound on this platform
-  Future<bool> isEncoderSupported(FlutterSoundCodec codec) async {
+  Future<bool> isEncoderSupported(Codec codec) async {
     await initialize();
     bool result;
     // For encoding ogg/opus on ios, we need to support two steps :
     // - encode CAF/OPPUS (with native Apple AVFoundation)
     // - remux CAF file format to OPUS file format (with ffmpeg)
 
-    if ((codec == FlutterSoundCodec.opusOGG) && (Platform.isIOS)) {
+    if ((codec == Codec.opusOGG) && (Platform.isIOS)) {
       //if (!await isFFmpegSupported( ))
       //result = false;
       //else
       result = await invokeMethod('isEncoderSupported',
-          <String, dynamic>{'codec': FlutterSoundCodec.opusCAF.index}) as bool;
+          <String, dynamic>{'codec': Codec.opusCAF.index}) as bool;
     } else {
       result = await invokeMethod(
               'isEncoderSupported', <String, dynamic>{'codec': codec.index})
@@ -230,7 +227,7 @@ class FlutterSoundRecorder {
   void _removeDbPeakCallback() {
     if (_dbPeakController != null) {
       _dbPeakController
-        ..add(null)
+        //..add(null)
         ..close();
       _dbPeakController = null;
     }
@@ -274,7 +271,7 @@ class FlutterSoundRecorder {
     return r;
   }
 
-  Future<String> defaultPath(FlutterSoundCodec codec) async {
+  Future<String> defaultPath(Codec codec) async {
     var tempDir = await getTemporaryDirectory();
     var fout = File('${tempDir.path}/flutter_sound${ext[codec.index]}');
     return fout.path;
@@ -285,7 +282,7 @@ class FlutterSoundRecorder {
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
-    FlutterSoundCodec codec = FlutterSoundCodec.aacADTS,
+    Codec codec = Codec.aacADTS,
     bool requestPermission = true,
   }) async {
     await initialize();
@@ -310,10 +307,10 @@ class FlutterSoundRecorder {
     // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
     // We use FFmpeg for that task.
     if ((Platform.isIOS) &&
-        ((codec == FlutterSoundCodec.opusOGG) || (fileExtension(uri) == '.opus'))) {
+        ((codec == Codec.opusOGG) || (fileExtension(uri) == '.opus'))) {
       savedUri = uri;
       isOggOpus = true;
-      codec = FlutterSoundCodec.opusCAF;
+      codec = Codec.opusCAF;
       var tempDir = await getTemporaryDirectory();
       var fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
       uri = fout.path;
@@ -387,9 +384,10 @@ class FlutterSoundRecorder {
   }
 
   Future<String> resumeRecorder() async {
-    String result  = await invokeMethod('resumeRecorder', <String, dynamic>{}) as String;
+    String result =
+        await invokeMethod('resumeRecorder', <String, dynamic>{}) as String;
     recorderState = RecorderState.isRecording;
-=    return result;
+    return result;
   }
 }
 
@@ -425,11 +423,8 @@ class RecordingPermissionException extends RecorderException {
   RecordingPermissionException(String message) : super(message);
 }
 
-
 class _InitializationInProgress implements Exception {
-
-  _InitializationInProgress()
-  {
+  _InitializationInProgress() {
     print('An initialization is currently already in progress.');
   }
 }

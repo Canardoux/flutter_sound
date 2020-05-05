@@ -265,7 +265,7 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 		true, // opusCAF
 		true, // MP3
 		true, // vorbisOGG
-		false, // pcm16
+		true, // pcm16 // Really ???
 		true, // pcm16WAV
 		false, // pcm16AIFF
 		false, // pcm16CAF

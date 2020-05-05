@@ -480,9 +480,8 @@ public class FlutterSoundRecorder
 	public void resumeRecorder( final MethodCall call, final MethodChannel.Result result )
 	{
 		recordHandler.post ( this.model.getRecorderTicker () );
+		dbPeakLevelHandler.post ( model.getDbLevelTicker () );
 		recorder.resumeRecorder();
-	
-		}
 		if (mStartPauseTime >= 0)
 			mPauseTime += SystemClock.elapsedRealtime () - mStartPauseTime;
 		mStartPauseTime = -1;

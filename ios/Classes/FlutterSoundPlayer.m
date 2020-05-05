@@ -33,7 +33,7 @@ static bool _isIosDecoderSupported [] =
 		true, // opusCAF
 		true, // MP3
 		false, // vorbisOGG
-		false, // pcm16
+		true, // pcm16 // Really ????
 		true, // pcm16WAV
 		true, // pcm16AIFF
 		true, // pcm16CAF

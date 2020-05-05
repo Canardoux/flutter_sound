@@ -6,10 +6,17 @@
   <a href="https://pub.dartlang.org/packages/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square"></a>
 </p>
 This plugin provides simple recorder and player functionalities for both `android` and `ios` platforms.
-This plugin handles file from remote url.
-This plugin can handle playback stream from native (To sync exact time with bridging).
+
+<br/><br/>
 
 ![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
+
+## Features
+
+- Play and Record sounds or music with various codecs. (See [the supported codecs here](doc/codec.md))
+- Play local or remote files specified by their URL.
+- The App playback can be controled from the device lock screen or from an Apple watch
+- Handle playback stream from native (To sync exact time with bridging).
 
 ## Migration Guide
 
@@ -119,18 +126,6 @@ instead of adding a new dependency in your pubspec.yaml.
 
 When uri path is not set during the `function call` in `startRecorder` or `startPlayer`, records are saved/read to/from a temporary directory depending on the platform.
 
-## Codec compatibility
-
-Actually, the following codecs are supported by flutter_sound:
-
-|                 | AAC | OGG/Opus | CAF/Opus | MP3 | OGG/Vorbis | PCM |
-| :-------------- | :-: | :------: | :------- | :-- | :--------- | :-- |
-| iOS encoder     | Yes |   Yes    | Yes      | No  | No         | Yes |
-| iOS decoder     | Yes |   Yes    | Yes      | Yes | No         | Yes |
-| Android encoder | Yes |    No    | No       | No  | No         | No  |
-| Android decoder | Yes |   Yes    | No       | Yes | Yes        | Yes |
-
-This table will eventually be upgrated when more codecs will be added.
 
 ## FlutterSoundRecorder Usage
 

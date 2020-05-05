@@ -14,7 +14,6 @@
  *   along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 export 'src/flutter_ffmpeg.dart';
 export 'src/flutter_sound_player.dart';
 export 'src/flutter_sound_recorder.dart';
@@ -36,7 +35,7 @@ const List<String> ext = [
   '.mp4', // aacMP4
 ];
 
-enum FlutterSoundCodec {
+enum Codec {
   // this enum MUST be synchronized with fluttersound/AudioInterface.java
   // and ios/Classes/FlutterSoundPlugin.h
 
@@ -70,7 +69,6 @@ enum FlutterSoundCodec {
   /// Linear 16 PCM, which is a Wave file.
   pcm16WAV,
 
-
   /// Linear 16 PCM, which is a AIFF file
   pcm16AIFF,
 
@@ -82,7 +80,4 @@ enum FlutterSoundCodec {
 
   /// AAC in a MPEG4 container
   aacMP4,
-
 }
-
-
