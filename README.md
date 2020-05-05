@@ -16,7 +16,7 @@ This plugin provides simple recorder and player functionalities for both `androi
 - Play and Record sounds or music with various codecs. (See [the supported codecs here](doc/codec.md#actually-the-following-codecs-are-supported-by-flutter_sound))
 - Play local or remote files specified by their URL.
 - The App playback can be controled from the device lock screen or from an Apple watch
-- Handle playback stream from native (To sync exact time with bridging).
+- Handle playback stream from native (To sync exact time with bridging). [*Not sure to understand what it means!*]
 
 ## Migration Guides
 
@@ -25,68 +25,16 @@ This plugin provides simple recorder and player functionalities for both `androi
 
 ## Free Read
 
-[Medium Blog](https://medium.com/@dooboolab/flutter-sound-plugin-audio-recorder-player-e5a455a8beaf)
+[Medium Blog](https://medium.com/@dooboolab/flutter-sound-plugin-audio-recorder-player-e5a455a8beaf). [*This link is probably obsolete!*]
 
+## SDK requirements
 
-## Install
+- Flutter Sound requires an iOS 9.3 SDK (or later)
+- Flutter Sound requires an Android 16 (or later)
 
-For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).
+## Installation
 
-Flutter Sound comes in two flavors :
-- the **FULL** flavor : flutter_sound
-- the **LITE** flavor : flutter_sound_lite
-
-The big difference between the two flavors is that the **LITE** flavor does not have `mobile_ffmpeg` embedded inside.
-There is a huge impact on the memory used, but the **LITE** flavor will not be able to do some codecs :
-- Playback OGG/OPUS on iOS
-- Record OGG_OPUS on iOS
-And will not be able to offer some helping functions, like `FlutterSoundHelper.FFmpegGetMediaInformation()` or `FlutterSoundHelper.duration()`
-
-Add `flutter_sound` or `flutter_sound_lite` as a dependency in pubspec.yaml. The actual versions are `^flutter_sound: 4.0.0` and `^flutter_sound_lite: 4.0.0`
-
-```
-dependencies:
-  flutter:
-    sdk: flutter
-  flutter_sound: ^5.0.0
-```
-or
-```
-dependencies:
-  flutter:
-    sdk: flutter
-  flutter_sound_lite: ^5.0.0
-```
-
-The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
-
-### FFmpeg
-
-flutter_sound FULL flavor makes use of flutter_ffmpeg. In contrary to Flutter Sound Version 3.x.x, in Version 4.0.x your App can be built without any Flutter-FFmpeg dependency.
-
-```flutter_ffmpeg audio-lts``` is now embedding inside `FULL` flutter_sound. If your App needs to use FFmpeg, you must use the embedded version inside flutter_sound
-instead of adding a new dependency in your pubspec.yaml.
-
-
-## Post Installation
-
-- On _iOS_ you need to add a usage description to `info.plist`:
-
-  ```xml
-  <key>NSMicrophoneUsageDescription</key>
-    <string>This sample uses the microphone to record your speech and convert it to text.</string>
-  <key>UIBackgroundModes</key>
-  <array>
-  	<string>audio</string>
-  </array>
-  ```
-
-- On _Android_ you need to add a permission to `AndroidManifest.xml`:
-
-  ```xml
-  <uses-permission android:name="android.permission.RECORD_AUDIO" />
-  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-  ```
+[Here is a guide](doc/install.md) for Flutter Sound installation
 
 
 ## Methods

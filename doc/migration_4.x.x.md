@@ -15,3 +15,7 @@ If you do not do that, you will have duplicates modules during your App building
 
 ```flutter_ffmpeg audio-lts``` is now embedding inside the `FULL` flavor of Flutter Sound. If your App needs to use FFmpeg, you must use the embedded version inside flutter_sound
 instead of adding a new dependency in your pubspec.yaml.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+[Back to the README](../README.md#migration-guides)
