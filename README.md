@@ -44,7 +44,7 @@ Flutter Sound is composed with 4 modules :
 - [FlutterSoundPlayer](doc/player.md), wich deal with everythin about playbacks
 - [FlutterSoudRecorder](doc/recorder.md), which deal with everything about recording
 - [TrackPlayer](doc/track_player.md), which deal about controling the App audio session from the lock screen or from an Apple watch
-- [FlutterSoundHelper](doc/flutter_sound_helper), which offer some convenients tools
+- [FlutterSoundHelper](doc/helper.md), which offer some convenients tools
 
 To use Flutter Sound you just do :
 ```

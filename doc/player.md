@@ -1,20 +1,84 @@
+# Flutter Sound Player API
 
-## FlutterSoundPlayer Usage
+The verbs offered by the Flutter Sound Player module are :
 
-#### Creating instance.
+- `initialize()` and `release()` to open or close and audio session
+- `startPlayer()` to play an audio file
+- `startPlayerFromBuffer()` to play data from an App buffer
+- `stopPlayer()` to stop a current playback
+- `pausePlayer()` to pause the current playback
+- `resumePlayer()` to resume a paused playback
+- `seekPlayer()` to position directely inside the current playback
+- `setVolume()` to adjust the ouput volume
+- `playerState`, `isPlaying`, `isPaused`, `isStopped` to know the current player status
+- `iosSetCategory()`, `androidAudioFocusRequest()` and `setActive()` to parameter the Session Audio Focus
 
-In your view/page/dialog widget's State class, create an instance of FlutterSoundPlayer.
-Before acessing the FlutterSoundPlayer API, you must initialize it with initialize().
-When finished with this FlutterSoundPlayer instance, you must release it with release().
+-------------------------------------------------------------------------------------------------------------------
 
+## Creating the `Player` instance.
+```FlutterSoundPlayer()```
+
+This is the first thing to do, if you want to deal with playbacks. The instanciation of a new player does not do many thing. You are safe if you put this instanciation inside a global or instance variable initialization.
+
+<u>Example:</u>
 ```dart
-FlutterSoundPlayer flutterSoundPlayer = new FlutterSoundPlayer().initialize();
-
-...
-...
-
-flutterSoundPlayer.release();
+myPlayer = FlutterSoundPlayer();
 ```
+
+--------------------------------------------------------------------------------------------------------------------
+
+## `initialize()` and `release()`
+```Future<FlutterSoundPlayer> initialize()``` and ```Future<void> release()```
+
+A player must be *initialized* before used. A player correspond to an Audio Session. With other words, you must *open* the Audio Session before using it.
+When you have finished with a Player, you must release it. With other words, you must close your Audio Session.
+Initializing a player takes resources inside the OS. Those resources are freed with the verb `release()`.
+
+You maynot initialize many players without releasing them.
+You will be very bad if you try something like :
+```dart
+    while (aCondtion)
+    {
+        FlutterSoundPlayer().initialize(); // *DO'NT DO THAT*
+    }
+```
+
+`initialize()` and `release()` return Futures. You may not use your Player before the end of the initialization. So probably you will `await` the result of `initialize()`. This result is the Player itself, so that you can collapse instanciation and initialization together with `player = await FlutterSoundPlayer().initialize();`
+
+<u>Example</u>
+```
+myPlayer = await FlutterSoundPlayer().initialize();
+
+...
+(do something with myPlayer)
+...
+
+myPlayer.release();
+myPlayer = null;
+```
+
+-----------------------------------------------------------------------------------------------------------------
+## `startPlayer()`
+
+## `startPlayerFromBuffer()`
+
+## `stopPlayer()`
+
+## `pausePlayer()`
+
+## `resumePlayer()`
+
+## `seekPlayer()`
+
+## `setVolume()`
+
+## `playerState`, `isPlaying`, `isPaused`, `isStopped`
+
+## `iosSetCategory()`, `androidAudioFocusRequest()` and `setActive()` - (optional)
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+
 
 #### Start player
 
