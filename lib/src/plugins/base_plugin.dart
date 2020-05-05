@@ -122,6 +122,15 @@ abstract class BasePlugin {
     }
     return slot;
   }
+
+  void forEachSlot(void Function(SlotEntry) action) {
+    for (var i = 0; i < _slots.length; ++i) {
+      var entry = _slots[i];
+      if (entry != null) {
+        action(entry);
+      }
+    }
+  }
 }
 
 /// Thrown if you try to release or access a connector that isn't
