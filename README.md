@@ -20,8 +20,8 @@ This plugin provides simple recorder and player functionalities for both `androi
 
 ## Migration Guides
 
-- To migrate [to 4.x.x from 3.x.x](doc/migration_4.x.x.md) you must do some minor changes in your configurations files.
-- To migrate [to 5.x.x from 4.x.x](doc/migration_5.x.x.md) you must do a few changes in your App.
+- To migrate [to 4.x.x from 3.x.x](doc/migration_4.x.x.md#migration-from-3xx-to-4xx) you must do some minor changes in your configurations files.
+- To migrate [to 5.x.x from 4.x.x](doc/migration_5.x.x.md#migration-form-4xx-to-5xx) you must do a few changes in your App.
 
 ## Free Read
 

@@ -13,7 +13,6 @@ This file is just a list of "exports" from the various dart files present in the
 Global enums are renamed to be compliant with the Google CamelCase recommandations :
 
 - `t_CODECS` is renamed `Codec`.
-
 The `Codec` values are LowerCase, followed by the File Format in Uppercase when there is ambiguity :
    - aacADTS
    - opusOGG
@@ -44,6 +43,7 @@ Now this is the App responsability to request the Recording permission if needed
 - This is not Flutter Sound role to do UI interface
 
 The parameter `requestPermission` is removed from the `startRecorder()` parameters.
+The permission_handler dependency is removed from Flutter Sound pubspec.yaml
 
 
 ## The StartRecorder() **"path"** parameter is now mandatory
@@ -64,5 +64,8 @@ We removed OS specific parameters passed during `startRecorder()` :
 
 ## Flutter Sound does not post `NULL` to Player and Recorder subscriptions.
 
-This `NULL` parameter was ugly, and caused many bugs to some Apps.
+This `NULL` parameter sent when the Recorder or the Player was closed was ugly, and caused many bugs to some Apps.
 
+-----------------------------------------------------------------------------------------------------------------------------
+
+[Back to the README](../README.md#migration-guides)
