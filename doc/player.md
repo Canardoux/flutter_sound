@@ -20,7 +20,7 @@ The verbs offered by the Flutter Sound Player module are :
 <p style="text-decoration: underline;">Example:</p>
 This is the first thing to do, if you want to deal with playbacks. The instanciation of a new player does not do many thing. You are safe if you put this instanciation inside a global or instance variable initialization.
 
-<p style="text-decoration: underline;">Example:</p><u>Example:</u>
+<span style="text-decoration: underline;">Example:</span><u>Example:</u>
 ```dart
 myPlayer = FlutterSoundPlayer();
 ```
