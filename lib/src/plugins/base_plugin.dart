@@ -123,6 +123,7 @@ abstract class BasePlugin {
     return slot;
   }
 
+  /// calls the [action] for each slot.
   void forEachSlot(void Function(SlotEntry) action) {
     for (var i = 0; i < _slots.length; ++i) {
       var entry = _slots[i];
