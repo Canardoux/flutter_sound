@@ -31,13 +31,27 @@ class Audio {
   Uint8List _dataBuffer;
 
   /// During process of an audio file it may need to pass
-  /// through multiple processes
-  /// to a temporary file for processing.
-  /// If that occurs this path points that temporary file.
+  /// through multiple temporary files for processing.
+  /// If that occurs this path points the final temporary file.
+  /// [_storagePath] will have a value of [_onDisk] is true.
   String _storagePath;
 
-  /// Indicates if the audio media is stored on disk.
+  /// Indicates if the audio media is stored on disk
   bool _onDisk = false;
+
+  @override
+  String toString() {
+    var desc = 'Codec: $codec';
+    if (_onDisk) {
+      desc += _storagePath;
+    }
+
+    if (url != null) desc += ' url: $url';
+    if (path != null) desc += ' path: $path';
+    if (_dataBuffer != null) desc += 'buffer len: ${_dataBuffer.length}';
+
+    return desc;
+  }
 
   /// Returns the location of the audio media on disk.
   String get storagePath {

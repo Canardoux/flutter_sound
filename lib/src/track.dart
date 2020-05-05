@@ -36,6 +36,11 @@ class Track {
   ///
   Audio _audio;
 
+  @override
+  String toString() {
+    return '${title ?? ""} ${author ?? ""} audio: $_audio';
+  }
+
   /// Creates a Track from a local file or asset.
   /// Other classes that use fromPath should also be reviewed.
   Track.fromPath(String path, {Codec codec}) {
