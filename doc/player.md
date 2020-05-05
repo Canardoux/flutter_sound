@@ -17,10 +17,10 @@ The verbs offered by the Flutter Sound Player module are :
 
 ## Creating the `Player` instance.
 ```FlutterSoundPlayer()```
-
+<p style="text-decoration: underline;">Example:</p>
 This is the first thing to do, if you want to deal with playbacks. The instanciation of a new player does not do many thing. You are safe if you put this instanciation inside a global or instance variable initialization.
 
-<u>Example:</u>
+<p style="text-decoration: underline;">Example:</p><u>Example:</u>
 ```dart
 myPlayer = FlutterSoundPlayer();
 ```
@@ -45,7 +45,7 @@ You will be very bad if you try something like :
 
 `initialize()` and `release()` return Futures. You may not use your Player before the end of the initialization. So probably you will `await` the result of `initialize()`. This result is the Player itself, so that you can collapse instanciation and initialization together with `player = await FlutterSoundPlayer().initialize();`
 
-<u>Example</u>
+<p style="text-decoration: underline;">Example:</p><u>Example:</u>
 ```
 myPlayer = await FlutterSoundPlayer().initialize();
 
