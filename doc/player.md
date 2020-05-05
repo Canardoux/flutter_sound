@@ -2,8 +2,9 @@
 
 The verbs offered by the Flutter Sound Player module are :
 
-- `initialize()` and `release()` to open or close and audio session
-- `startPlayer()` to play an audio file
+- [Default constructor](player.md#creating-the-player-instance)
+- [initialize() and release()](player.md#creating-the-player-instance) to open or close and audio session
+- [startPlayer()]() to play an audio file
 - `startPlayerFromBuffer()` to play data from an App buffer
 - `stopPlayer()` to stop a current playback
 - `pausePlayer()` to pause the current playback
@@ -17,7 +18,6 @@ The verbs offered by the Flutter Sound Player module are :
 
 ## Creating the `Player` instance.
 ```FlutterSoundPlayer()```
-<p style="text-decoration: underline;">Example:</p>
 This is the first thing to do, if you want to deal with playbacks. The instanciation of a new player does not do many thing. You are safe if you put this instanciation inside a global or instance variable initialization.
 
 <span style="text-decoration: underline;">Example:</span><u>Example:</u>
@@ -34,56 +34,43 @@ A player must be *initialized* before used. A player correspond to an Audio Sess
 When you have finished with a Player, you must release it. With other words, you must close your Audio Session.
 Initializing a player takes resources inside the OS. Those resources are freed with the verb `release()`.
 
+You MUST ensure that the player has been released when your widget is detached from the ui.
+Overload your widget's `dispose()` method to release the player when your widget is disposed.
+In this way you will reset the player and clean up the device resources, but the player will be no longer usable.
+
+```dart
+@override
+void dispose() {
+        flutterSoundPlayer.release();
+        super.dispose();
+}
+```
+
 You maynot initialize many players without releasing them.
 You will be very bad if you try something like :
 ```dart
     while (aCondtion)
     {
-        FlutterSoundPlayer().initialize(); // *DO'NT DO THAT*
+            FlutterSoundPlayer().initialize(); // *DO'NT DO THAT*
     }
 ```
 
 `initialize()` and `release()` return Futures. You may not use your Player before the end of the initialization. So probably you will `await` the result of `initialize()`. This result is the Player itself, so that you can collapse instanciation and initialization together with `player = await FlutterSoundPlayer().initialize();`
 
-<p style="text-decoration: underline;">Example:</p><u>Example:</u>
-```
-myPlayer = await FlutterSoundPlayer().initialize();
+Example:
+```dart
+    myPlayer = await FlutterSoundPlayer().initialize();
 
-...
-(do something with myPlayer)
-...
+    ...
+    (do something with myPlayer)
+    ...
 
-myPlayer.release();
-myPlayer = null;
+    myPlayer.release();
+    myPlayer = null;
 ```
 
 -----------------------------------------------------------------------------------------------------------------
 ## `startPlayer()`
-
-## `startPlayerFromBuffer()`
-
-## `stopPlayer()`
-
-## `pausePlayer()`
-
-## `resumePlayer()`
-
-## `seekPlayer()`
-
-## `setVolume()`
-
-## `playerState`, `isPlaying`, `isPaused`, `isStopped`
-
-## `iosSetCategory()`, `androidAudioFocusRequest()` and `setActive()` - (optional)
-
----------------------------------------------------------------------------------------------------------------------------------
-
-
-
-#### Start player
-
-- To start playback of a record from a URL call startPlayer.
-- To start playback of a record from a memory buffer call startPlayerFromBuffer
 
 You can use both `startPlayer` or `startPlayerFromBuffer` to play a sound. The former takes in a URI that points to the file to play, while the latter takes in a buffer containing the file to play and the codec to decode that buffer.
 
@@ -144,7 +131,9 @@ result.then(path) {
 }
 ```
 
-#### Start player from buffer
+-----------------------------------------------------------------------------------------------------------------------------------
+
+## `startPlayerFromBuffer()`
 
 For playing data from a memory buffer instead of a file, you can do the following :
 
@@ -161,7 +150,9 @@ String result = await flutterSoundPlayer.startPlayerFromBuffer
         );
 ```
 
-#### Stop player
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `stopPlayer()`
 
 ```dart
 Future<String> result = await flutterSoundPlayer.stopPlayer();
@@ -186,19 +177,50 @@ void dispose() {
 }
 ```
 
-#### Pause player
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `pausePlayer()`
 
 ```dart
 Future<String> result = await flutterSoundPlayer.pausePlayer();
 ```
 
-#### Resume player
+--------------------------------------------------------------------------------------------------------------------------------
+
+## `resumePlayer()`
 
 ```dart
 Future<String> result = await flutterSoundPlayer.resumePlayer();
 ```
 
-#### iosSetCategory(), androidAudioFocusRequest() and setActive() - (optional)
+-------------------------------------------------------------------------------------------------------------------------------
+## `seekPlayer()`
+
+
+To seek to a new location the player must already be playing.
+
+```dart
+String Future<result> = await flutterSoundPlayer.seekToPlayer(miliSecs);
+```
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+## `setVolume()`
+
+```dart
+/// 1.0 is default
+/// Currently, volume can be changed when player is running. Try manage this right after player starts.
+String path = await flutterSoundPlayer.startPlayer(fileUri);
+await flutterSoundPlayer.setVolume(0.1);
+```
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `playerState`, `isPlaying`, `isPaused`, `isStopped`
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+## `iosSetCategory()`, `androidAudioFocusRequest()` and `setActive()` - (optional)
 
 Those three functions are optional. If you do not control the audio focus with the function `setActive()`, flutter_sound will require the audio focus each time the function `startPlayer()` is called and will release it when the sound is finished or when you call the function `stopPlayer()`.
 
@@ -233,40 +255,14 @@ flutterSoundPlayer.startPlayer(anotherSong);
 flutterSoundPlayer.setActive(false); // Release the audio focus
 ```
 
-#### Seek player
+---------------------------------------------------------------------------------------------------------------------------------
 
-To seek to a new location the player must already be playing.
-
-```dart
-String Future<result> = await flutterSoundPlayer.seekToPlayer(miliSecs);
-```
-
-#### Setting subscription duration (Optional). 0.010 is default value when not set.
+## Setting subscription duration (Optional). 0.010 is default value when not set.
 
 ```dart
 /// 0.01 is default
 flutterSoundPlayer.setSubscriptionDuration(0.01);
 ```
 
-#### Setting volume.
+---------------------------------------------------------------------------------------------------------------------------------
 
-```dart
-/// 1.0 is default
-/// Currently, volume can be changed when player is running. Try manage this right after player starts.
-String path = await flutterSoundPlayer.startPlayer(fileUri);
-await flutterSoundPlayer.setVolume(0.1);
-```
-
-#### Release the player
-
-You MUST ensure that the player has been released when your widget is detached from the ui.
-Overload your widget's `dispose()` method to release the player when your widget is disposed.
-In this way you will reset the player and clean up the device resources, but the player will be no longer usable.
-
-```dart
-@override
-void dispose() {
-        flutterSoundPlayer.release();
-        super.dispose();
-}
-```
