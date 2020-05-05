@@ -53,16 +53,14 @@ flutterSoundRecorder.release();
 #### Starting recorder with listener.
 
 ```dart
-String result = await flutterSoundRecorder.startRecorder(codec: t_CODEC.CODEC_AAC,);
+String path = await flutterSoundRecorder.startRecorder(codec: t_CODEC.CODEC_AAC,);
 
-result.then(path) {
-        print('startRecorder: $path');
+print('startRecorder: $path');
 
-        _recorderSubscription = flutterSoundRecorder.onRecorderStateChanged.listen((e) {
+_recorderSubscription = flutterSoundRecorder.onRecorderStateChanged.listen((e) {
         DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
         String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
-        });
-}
+});
 ```
 
 The recorded file will be stored in a temporary directory. If you want to take your own path specify it like below. We are using [path_provider](https://pub.dev/packages/path_provider) in below so you may have to install it.
@@ -101,13 +99,11 @@ Note : On Android the OPUS codec and the PCM are not yet supported by flutter_so
 ```dart
 String result = await flutterSoundRecorder.stopRecorder();
 
-result.then(value) {
-        print('stopRecorder: $value');
+print('stopRecorder: $result');
 
-        if (_recorderSubscription != null) {
-                _recorderSubscription.cancel();
-                _recorderSubscription = null;
-        }
+if (_recorderSubscription != null) {
+        _recorderSubscription.cancel();
+        _recorderSubscription = null;
 }
 ```
 
