@@ -213,14 +213,14 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   }
 
   void _onFinished() => setState(() {
-    /// we can get a race condition when we stop the playback
-    /// We have disabled the button and called stop.
-    /// The OS then sends an onFinished call which tries
-    /// to put the state into a stopped state overriding
-    /// the disabled state.
-    /// TODO: onFinished should only be called if the player
-    /// naturally finishes. It appears it gets called
-    /// if we prematually stop the recording.
+        /// we can get a race condition when we stop the playback
+        /// We have disabled the button and called stop.
+        /// The OS then sends an onFinished call which tries
+        /// to put the state into a stopped state overriding
+        /// the disabled state.
+        /// TODO: onFinished should only be called if the player
+        /// naturally finishes. It appears it gets called
+        /// if we prematually stop the recording.
         if (_playState != PlayState.disabled) {
           _playState = PlayState.stopped;
         }
@@ -461,7 +461,6 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   Widget _buildPlayButton() {
     Widget button;
 
-    Log.d("buildPlayButton loading: $_loading state: $_playState");
     if (_loading == true) {
       button = Container(
           // margin: const EdgeInsets.only(top: 5.0, bottom: 5),
