@@ -41,7 +41,8 @@ Before acessing the FlutterSoundRecorder API, you must initialize it with initia
 When finished with this FlutterSoundRecorder instance, you must release it with release().
 
 ```dart
-FlutterSoundRecorder flutterSoundRecorder = new FlutterSoundRecorder().initialize();
+FlutterSoundRecorder flutterSoundRecorder = new FlutterSoundRecorder();
+await flutterSoundRecorder.initialize();
 
 ...
 ...
@@ -52,7 +53,7 @@ flutterSoundRecorder.release();
 #### Starting recorder with listener.
 
 ```dart
-Future<String> result = await flutterSoundRecorder.startRecorder(codec: t_CODEC.CODEC_AAC,);
+String result = await flutterSoundRecorder.startRecorder(codec: t_CODEC.CODEC_AAC,);
 
 result.then(path) {
         print('startRecorder: $path');
@@ -69,7 +70,7 @@ The recorded file will be stored in a temporary directory. If you want to take y
 ```
 Directory tempDir = await getTemporaryDirectory();
 File outputFile = await File ('${tempDir.path}/flutter_sound-tmp.aac');
-String path = await flutterSoundRecorder.startRecorder(outputFile.path, codec: t_CODEC.CODEC_AAC,);
+String path = await flutterSoundRecorder.startRecorder(uri: outputFile.path, codec: t_CODEC.CODEC_AAC,);
 ```
 
 If the App does nothing special, ```startRecorder()``` will take care of controlling the permissions, and request itself the permission
@@ -90,7 +91,7 @@ Actually on iOS, you can choose from four encoders :
 For example, to encode with OPUS you do the following :
 
 ```dart
-await flutterSoundRecorder.startRecorder(foot.path, codec: t_CODEC.CODEC_OPUS,)
+await flutterSoundRecorder.startRecorder(uri: foot.path, codec: t_CODEC.CODEC_OPUS,)
 ```
 
 Note : On Android the OPUS codec and the PCM are not yet supported by flutter_sound Recorder. (But Player is OK on Android)
@@ -98,7 +99,7 @@ Note : On Android the OPUS codec and the PCM are not yet supported by flutter_so
 #### Stop recorder
 
 ```dart
-Future<String> result = await flutterSoundRecorder.stopRecorder();
+String result = await flutterSoundRecorder.stopRecorder();
 
 result.then(value) {
         print('stopRecorder: $value');
@@ -126,7 +127,7 @@ void dispose() {
 On Android this API verb needs al least SDK-24.
 
 ```dart
-Future<String> result = await flutterSoundRecorder.pauseRecorder();
+String result = await flutterSoundRecorder.pauseRecorder();
 ```
 
 #### Resume recorder
@@ -134,7 +135,7 @@ Future<String> result = await flutterSoundRecorder.pauseRecorder();
 On Android this API verb needs al least SDK-24.
 
 ```dart
-Future<String> result = await flutterSoundRecorder.resumeRecorder();
+String result = await flutterSoundRecorder.resumeRecorder();
 ```
 
 #### Using the amplitude meter
