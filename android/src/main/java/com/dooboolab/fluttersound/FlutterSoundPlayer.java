@@ -32,6 +32,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
 import androidx.arch.core.util.Function;
 import androidx.core.app.ActivityCompat;
 
@@ -472,6 +473,7 @@ public class FlutterSoundPlayer
 		tickHandler.removeCallbacksAndMessages ( null );
 	}
 
+	@UiThread
 	private void sendUpdateProgress(MediaPlayer mp)
 	{
 		try

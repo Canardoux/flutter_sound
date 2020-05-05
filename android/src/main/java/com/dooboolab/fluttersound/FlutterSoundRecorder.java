@@ -24,6 +24,8 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 
+import androidx.annotation.UiThread;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -49,12 +51,12 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 class FlautoRecorderPlugin
 	implements MethodCallHandler
 {
-	public static MethodChannel        channel;
+	public static final String CHANNEL_NAME = "com.dooboolab.flutter_sound_recorder";
+	private static MethodChannel        channel;
 	public static List<FlutterSoundRecorder> slots;
 
 	static Context              androidContext;
 	static FlautoRecorderPlugin flautoRecorderPlugin; // singleton
-
 
 	static final String TAG 					  = "FlutterSoundRecorder";
 	static final String ERR_UNKNOWN               = "ERR_UNKNOWN";
@@ -68,8 +70,9 @@ class FlautoRecorderPlugin
 		flautoRecorderPlugin = new FlautoRecorderPlugin ();
 		assert ( slots == null );
 		slots   = new ArrayList<FlutterSoundRecorder> ();
-		channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_recorder" );
+		channel = new MethodChannel ( messenger, CHANNEL_NAME);
 		channel.setMethodCallHandler ( flautoRecorderPlugin );
+		Log.d(TAG,"Registering channel: " + CHANNEL_NAME);
 		androidContext = ctx;
 	}
 
@@ -474,6 +477,7 @@ public class FlutterSoundRecorder
 
 	// Sends an Db Level update to the dart code and then
 	// reschedule ourselves to do it again.
+	@UiThread
 	private void sendDBLevelUpdate()
 	{
 		MediaRecorder recorder = model.getMediaRecorder ();
@@ -498,7 +502,6 @@ public class FlutterSoundRecorder
 			}
 
 			// Log.d ( TAG, "rawAmplitude: " + maxAmplitude + " Base DB: " + db );
-
 			invokeMethodWithDouble (  "updateDbPeakProgress", db );
 
 			// schedule the next update.
@@ -508,6 +511,7 @@ public class FlutterSoundRecorder
 
 	// Sends a duration progress update to the dart code.
 	// This method then re-queues itself.
+	@UiThread
 	private void sendProgressUpdate()
 	{
 		long time = SystemClock.elapsedRealtime () - model.startTime;
