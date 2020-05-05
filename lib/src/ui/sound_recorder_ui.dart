@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 
 import '../android/android_encoder.dart';
@@ -16,11 +15,11 @@ typedef OnStart = void Function();
 typedef OnProgress = void Function(RecordedAudio media);
 typedef OnStop = void Function(RecordedAudio media);
 
-/// The [informUser] callback allows you to provide an
+/// The [requestPermissions] callback allows you to provide an
 /// UI informing the user that we are about to ask for a permission.
 ///
-typedef InformUser = Future<bool> Function(
-    BuildContext context, bool requestingMicrophone, bool requestingStorage);
+typedef UIRequestPermission = Future<bool> Function(
+    BuildContext context, Track track);
 
 /// A UI for recording audio.
 class SoundRecorderUI extends StatefulWidget {
@@ -33,23 +32,28 @@ class SoundRecorderUI extends StatefulWidget {
   /// Stores and Tracks the recorded audio.
   final RecordedAudio audio;
 
-  /// The [informUser] callback allows you to provide an
-  /// UI informing the user that we are about to ask for a permission.
+  /// The [requestPermissions] callback allows you to request
+  /// the necessary permissions to record a track.
+  ///
+  /// If [requestPermissions] is null then no permission checks
+  /// will be performed.
   ///
   /// It is sometimes useful to explain to the user why we are asking
   /// for permission before showing the OSs permission request.
+  /// This callback gives you the opportunity to display a suitable
+  /// notice and then request permissions.
   ///
-  /// This callback allows you to do just that.
+  /// Return [true] to indicate that the user has given permission
+  /// to record and that you have made the necessary calls to
+  /// grant those permissions.
   ///
-  /// Return [true] to indicate that the user has given permission for
-  /// us to ask for permission.
+  /// If [true] is returned the recording will proceed.
+  /// If [false] is returned then recording will not start.
   ///
-  /// If [true] is returned then we will show the OSs permission UI.
+  /// This method will be called even if we have the necessary permissions
+  /// as we make no checks.
   ///
-  /// This method will not be called if we already have the necessary
-  /// permissions.
-  ///
-  final InformUser informUser;
+  final UIRequestPermission requestPermissions;
 
   ///
   /// Records audio from the users microphone into the given media file.
@@ -69,22 +73,32 @@ class SoundRecorderUI extends StatefulWidget {
   /// method will be each time the user clicks the 'stop' button. It can
   /// also be called if the [stop] method is called.
   ///
-  /// The [informUser] callback allows you to provide an
-  /// UI informing the user that we are about to ask for a permission.
-  /// This gives you a chance to explain to the user why we are asking
-  /// for permission before we show the OSs permission UI.
+  /// The [requestPermissions] callback allows you to request
+  /// permissions just before they are required and if desired
+  /// display your own dialog explaining why the permissions are required.
+  ///
+  /// If you do not provide [requestPermissions] then you must ensure
+  /// that all required permissions are granted before the
+  /// [SoundRecorderUI] widgets starts recording.
+  ///
   ///
   /// ```dart
   ///   SoundRecorderIU(track,
-  ///       informUser: (context, requestingMicrophone, requestingStorage)
+  ///       informUser: (context, track)
   ///           {
   ///               // psuedo code
   ///               String reason;
-  ///               if (requestingMicrophone)
+  ///               if (!microphonePermission.granted)
   ///                 reason += 'please allow microphone';
-  ///               if (requestingStorage)
+  ///               if (!requestingStoragePermission.granted)
   ///                 reason += 'please allow storage';
-  ///               return Dialog.show(reason) == Dialog.OK;
+  ///               if (Dialog.show(reason) == Dialog.OK)
+  ///               {
+  ///                 microphonePermission.request == granted;
+  ///                 storagePermission.request == granted;
+  ///                 return true;
+  ///               }
+  ///
   ///           });
   ///
   /// ```
@@ -92,7 +106,7 @@ class SoundRecorderUI extends StatefulWidget {
     Track track, {
     this.onStart,
     this.onStopped,
-    this.informUser,
+    this.requestPermissions,
     Key key,
   })  : audio = RecordedAudio.toTrack(track),
         super(key: key);
@@ -186,25 +200,27 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
 
   void _onRecord() {
     if (!_isRecording) {
-      _requestPermission(context).then((accepted) async {
-        Log.e(green('started Recording to: '
-            '${await (await widget.audio).track.identity})'));
-        await _recorder.record(widget.audio.track,
-            androidEncoder: AndroidEncoder.amrWbCodec);
+      _requestPermission(context, widget.audio.track).then((accepted) async {
+        if (accepted) {
+          Log.e(green('started Recording to: '
+              '${await (await widget.audio).track.identity})'));
+          await _recorder.record(widget.audio.track,
+              androidEncoder: AndroidEncoder.amrWbCodec);
 
-        Log.d(widget.audio.track.identity);
+          Log.d(widget.audio.track.identity);
 
-        _isRecording = true;
-        setState(() {});
+          _isRecording = true;
+          setState(() {});
 
-        Log.d(green('started Recording to: '
-            '${await (await widget.audio).track.identity})'));
+          Log.d(green('started Recording to: '
+              '${await (await widget.audio).track.identity})'));
 
-        if (widget.onStart != null) {
-          widget.onStart();
+          if (widget.onStart != null) {
+            widget.onStart();
+          }
+
+          controller.onRecordingStarted(context);
         }
-
-        controller.onRecordingStarted(context);
       });
     }
   }
@@ -243,51 +259,22 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   /// If requried displays the OSs permission UI to request
   /// permissions required for recording.
   ///
-  Future<bool> _requestPermission(BuildContext context) async {
+  Future<bool> _requestPermission(BuildContext context, Track track) async {
     var requesting = Completer<bool>();
 
-    var storagePermission = await Permission.storage.status;
+    Future<bool> request;
 
-    var microphonePermission = await Permission.microphone.status;
-
-    var storageAllowed = storagePermission.isGranted;
-    var microphoneAllowed = microphonePermission.isGranted;
-
-    var permissionRequests = <Permission>[];
-
-    Future<bool> inform;
-
-    if (widget.informUser != null) {
+    if (widget.requestPermissions != null) {
       /// ask the user before we actually ask the OS so
       /// the dev has a chance to inform the user as to why we need
       /// permissions.
-      inform = widget.informUser(context, !microphoneAllowed, !storageAllowed);
+      request = widget.requestPermissions(context, track);
     } else {
-      inform = Future.value(true);
+      request = Future.value(true);
     }
 
-    inform.then((inform) async {
-      /// only request what we don't have.
-      if (!microphoneAllowed) {
-        permissionRequests.add(Permission.microphone);
-      }
-      if (!storageAllowed) {
-        permissionRequests.add(Permission.storage);
-      }
-      if (permissionRequests.isNotEmpty) {
-        await permissionRequests.request().then((results) {
-          var accepted = true;
-          // check that each permission was granted.
-          results.forEach((permission, status) => accepted &= status.isGranted);
-
-          requesting.complete(accepted);
-        }).catchError((Object error) {
-          Log.e("Error occured requesting permissions: $error");
-          requesting.completeError(error);
-        }).whenComplete(() => Log.d('request permission completed'));
-      } else {
-        requesting.complete(true);
-      }
+    request.then((granted) async {
+      requesting.complete(granted);
     }).catchError((Object error) {
       Log.e("Error occured requesting permissions: $error");
       requesting.completeError(error);

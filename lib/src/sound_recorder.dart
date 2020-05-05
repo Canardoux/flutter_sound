@@ -20,8 +20,7 @@ import 'dart:io';
 import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
-
-import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/widgets.dart';
 
 import '../flutter_sound.dart';
 import 'android/android_audio_source.dart';
@@ -43,12 +42,41 @@ enum _RecorderState {
   isRecording,
 }
 
+/// The [requestPermissions] callback allows you to provide an
+/// UI informing the user that we are about to ask for a permission.
+///
+typedef RequestPermission = Future<bool> Function(Track track);
+
 /// Provide an API for recording audio.
 class SoundRecorder implements SlotEntry {
   bool _isInited = false;
   _RecorderState _recorderState = _RecorderState.isStopped;
 
   RecordingDispositionManager _dispositionManager;
+
+  /// [SoundRecorder] calls the [onRequestPermissions] callback
+  /// to give you a chance to grant the necessary permissions.
+  ///
+  /// The [onRequestPermissions] method is called just before recording
+  /// starts (just after you call [record]).
+  ///
+  /// You may also want to pop a dialog
+  /// explaining to the user why the permissions are being requested.
+  ///
+  /// If the required permissions are not in place then the recording will fail
+  /// and an exception will be thrown.
+  ///
+  /// Return true if the app has the permissions and you want recording to
+  /// continue.
+  ///
+  /// Return [false] if the app does not have the desired permissions.
+  /// The recording will not be started if you return false and no
+  /// error/exception will be returned from the [record] call.
+  ///
+  /// At a minimum SoundRecorder requires access to the microphone
+  /// and possible external storage if the recording is to be placed
+  /// on external storage.
+  RequestPermission onRequestPermissions;
 
   /// track the total time we hav been paused during
   /// the current recording player.
@@ -72,8 +100,16 @@ class SoundRecorder implements SlotEntry {
 
   /// Starts the recorder recording to the
   /// passed in [Track].
+  ///
   /// At this point the track MUST have been created via
   /// the [Track.fromPath] constructor.
+  ///
+  /// You must have permission to write to the path
+  /// indicated by the Track and permissions to
+  /// access the microphone.
+  ///
+  /// see: [onRequestPermissions] to get a callback
+  /// as the recording is about to start.
   ///
   /// Support of recording to a databuffer is planned for a later
   /// release.
@@ -100,27 +136,18 @@ class SoundRecorder implements SlotEntry {
     AndroidAudioSource androidAudioSource = AndroidAudioSource.mic,
     AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.defaultFormat,
     IosQuality iosQuality = IosQuality.low,
-    bool requestPermission = true,
   }) async {
     await _initialize();
 
     if (!track.isPath) {
       throw RecorderException(
-          "Only file based track are supported. Used Track.fromPath.");
+          "Only file based tracks are supported. Used Track.fromPath().");
     }
 
     _recordingTrack = RecordingTrack(track);
 
     /// Throws an exception if the path isn't valid.
     _recordingTrack.validatePath();
-
-    // Request Microphone permission if needed
-    if (requestPermission) {
-      var status = await Permission.microphone.request();
-      if (status != PermissionStatus.granted) {
-        throw RecordingPermissionException("Microphone permission not granted");
-      }
-    }
 
     /// We must not already be recording.
     if (_recorderState != null && _recorderState != _RecorderState.isStopped) {
@@ -132,21 +159,33 @@ class SoundRecorder implements SlotEntry {
       throw CodecNotSupportedException('Codec not supported.');
     }
 
-    _timePaused = Duration(seconds: 0);
+    // we assume that we have all necessary permissions
+    var hasPermissions = true;
 
-    await _getPlugin().start(
-        this,
-        _recordingTrack.recordingPath,
-        sampleRate,
-        numChannels,
-        bitRate,
-        _recordingTrack.nativeCodec,
-        androidEncoder,
-        androidAudioSource,
-        androidOutputFormat,
-        iosQuality);
+    if (onRequestPermissions != null) {
+      hasPermissions = await onRequestPermissions(track);
+    }
 
-    _recorderState = _RecorderState.isRecording;
+    if (hasPermissions) {
+      _timePaused = Duration(seconds: 0);
+
+      await _getPlugin().start(
+          this,
+          _recordingTrack.recordingPath,
+          sampleRate,
+          numChannels,
+          bitRate,
+          _recordingTrack.nativeCodec,
+          androidEncoder,
+          androidAudioSource,
+          androidOutputFormat,
+          iosQuality);
+
+      _recorderState = _RecorderState.isRecording;
+    } else {
+      Log.d('Call to SoundRecorder.record() failed as '
+          'onRequestPermissions() returned false');
+    }
   }
 
   /// Initialize a fresh new SoundRecorder
