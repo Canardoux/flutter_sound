@@ -13,15 +13,15 @@ This plugin provides simple recorder and player functionalities for both `androi
 
 ## Features
 
-- Play and Record sounds or music with various codecs. (See [the supported codecs here](doc/codec.md))
+- Play and Record sounds or music with various codecs. (See [the supported codecs here](doc/codec.md#actually-the-following-codecs-are-supported-by-flutter_sound))
 - Play local or remote files specified by their URL.
 - The App playback can be controled from the device lock screen or from an Apple watch
 - Handle playback stream from native (To sync exact time with bridging).
 
-## Migration Guide
+## Migration Guides
 
-To migrate to `4.0.0`from 3.x.x you must do some minor changes in your configurations files.
-Please refer to the **FFmpeg** section below.
+- To migrate [to 4.x.x from 3.x.x](doc/migration_4.x.x.md) you must do some minor changes in your configurations files.
+- To migrate [to 5.x.x from 4.x.x](doc/migration_5.x.x.md) you must do a few changes in your App.
 
 ## Free Read
 
@@ -48,28 +48,23 @@ Add `flutter_sound` or `flutter_sound_lite` as a dependency in pubspec.yaml. The
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sound: ^4.0.0
+  flutter_sound: ^5.0.0
 ```
 or
 ```
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sound_lite: ^4.0.0
+  flutter_sound_lite: ^5.0.0
 ```
 
 The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
 
 ### FFmpeg
 
-flutter_sound makes use of flutter_ffmpeg. In contrary to Flutter Sound Version 3.x.x, in Version 4.0.x your App can be built without any Flutter-FFmpeg dependency.
+flutter_sound FULL flavor makes use of flutter_ffmpeg. In contrary to Flutter Sound Version 3.x.x, in Version 4.0.x your App can be built without any Flutter-FFmpeg dependency.
 
-If you come from Flutter Sound Version 3.x.x, you must remove this dependency from your ```pubspec.yaml```.
-You must also delete the line ```ext.flutterFFmpegPackage = 'audio-lts'``` from your ```android/build.gradle```
-and the special line ```pod name+'/audio-lts', :path => File.join(symlink, 'ios')``` in your Podfile.
-If you do not do that, you will have duplicates modules during your App building.
-
-```flutter_ffmpeg audio-lts``` is now embedding inside flutter_sound. If your App needs to use FFmpeg, you must use the embedded version inside flutter_sound
+```flutter_ffmpeg audio-lts``` is now embedding inside `FULL` flutter_sound. If your App needs to use FFmpeg, you must use the embedded version inside flutter_sound
 instead of adding a new dependency in your pubspec.yaml.
 
 
