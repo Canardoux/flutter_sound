@@ -130,8 +130,8 @@ You can use both `startPlayer` or `startPlayerFromBuffer` to play a sound. The f
 
 Those two functions can have two optional parameters :
 
-- `whenFinished:()` : A lambda function for specifying what to do when the playback will be finished.
 - `codec:` for specifying the audio and file format of the file.
+- `whenFinished:()` : A lambda function for specifying what to do when the playback will be finished.
 
 Very often, the `codec:` parameter is not useful. Flutter Sound will adapt itself depending on the real format of the file provided.
 But this parameter is necessary when Flutter Sound must do format conversion (for example to play opusOGG on iOS)
@@ -154,8 +154,8 @@ to ensure that the player has fully initialised.
 
 *Example:*
 ```dart
-// An example audio file
-final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
+    // An example audio file
+    final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
 
     await flutterSoundPlayer.startPlayer
     (
@@ -168,10 +168,23 @@ final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_examp
     );
 ```
 
+-----------------------------------------------------------------------------------------------------------------------------------
+
+## `startPlayerFromBuffer()`
+
+*Dart definition (prototype) :*
+```
+Future<void> startPlayer( Uint8List dataBuffer, {Codec codec, TWhenFinished whenFinished} )
+```
+
+For playing data from a memory buffer instead of a file, you use the `startPlayerFromBuffer()` verb.
+`startPlayerFromBuffer()` is very similar to `startPlayer()` (see above).
+The only real distinction is that the parameter is an `Uint8List` data buffer instead of an Uri to a file.
+
 *Example:*
 ```dart
-// Load a local audio file and get it as a buffer
-Uint8List buffer = (await rootBundle.load('samples/audio.mp3'))
+        // Load a local audio file and get it as a buffer
+        Uint8List buffer = (await rootBundle.load('samples/audio.mp3'))
         .buffer
         .asUint8List();
 
@@ -185,25 +198,6 @@ Uint8List buffer = (await rootBundle.load('samples/audio.mp3'))
                 },
         );
 
-```
-
------------------------------------------------------------------------------------------------------------------------------------
-
-## `startPlayerFromBuffer()`
-
-For playing data from a memory buffer instead of a file, you can do the following :
-
-```dart
-Uint8List buffer =  (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
-String result = await flutterSoundPlayer.startPlayerFromBuffer
-        (
-                buffer,
-                codec: t_CODEC.CODEC_AAC,
-                whenFinished: ()
-                {
-                         print( 'I hope you enjoyed listening to this song' );
-                },
-        );
 ```
 
 ---------------------------------------------------------------------------------------------------------------------------------
