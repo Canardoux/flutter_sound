@@ -89,10 +89,10 @@ class Audio {
     return _duration;
   }
 
+  //ignore: use_setters_to_change_properties
   /// This method should ONLY be used by the SoundRecorder
   /// to update a tracks duration as we record into the track.
   /// The duration is normally calculated when the [duration] getter is called.
-  //ignore: use_setters_to_change_properties
   void setDuration(Duration duration) {
     _duration = duration;
   }

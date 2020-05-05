@@ -25,6 +25,7 @@ import '../util/log.dart';
 import 'player_base_plugin.dart';
 
 ///
+// ignore: prefer_mixin
 class SoundPlayerPlugin extends PlayerBasePlugin with WidgetsBindingObserver {
   static SoundPlayerPlugin _self;
 
