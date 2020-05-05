@@ -23,13 +23,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 import '../flutter_sound.dart';
-import 'android/android_audio_source.dart';
-import 'android/android_encoder.dart';
-import 'android/android_output_format.dart';
+import 'audio_source.dart';
 import 'codec.dart';
-import 'ios/ios_quality.dart';
+
 import 'plugins/base_plugin.dart';
 import 'plugins/sound_recorder_plugin.dart';
+import 'quality.dart';
 import 'recording_disposition.dart';
 import 'track.dart';
 import 'util/log.dart';
@@ -127,15 +126,16 @@ class SoundRecorder implements SlotEntry {
   /// });
   /// recorder.record(track);
   /// ```
+  /// The [audioSource] is currently only supported on android.
+  /// For iOS the source is always the microphone.
+  /// The [quality] is currently only supported on iOS.
   Future<void> record(
     Track track, {
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
-    AndroidEncoder androidEncoder = AndroidEncoder.aacCodec,
-    AndroidAudioSource androidAudioSource = AndroidAudioSource.mic,
-    AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.defaultFormat,
-    IosQuality iosQuality = IosQuality.low,
+    AudioSource audioSource = AudioSource.mic,
+    Quality quality = Quality.low,
   }) async {
     await _initialize();
 
@@ -176,10 +176,8 @@ class SoundRecorder implements SlotEntry {
           numChannels,
           bitRate,
           _recordingTrack.nativeCodec,
-          androidEncoder,
-          androidAudioSource,
-          androidOutputFormat,
-          iosQuality);
+          audioSource,
+          quality);
 
       _recorderState = _RecorderState.isRecording;
     } else {

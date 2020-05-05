@@ -355,20 +355,18 @@ public class FlutterSoundRecorder
 			Integer      sampleRate          = call.argument ( "sampleRate" );
 			Integer      numChannels         = call.argument ( "numChannels" );
 			Integer      bitRate             = call.argument ( "bitRate" );
-			int          androidEncoder      = call.argument ( "androidEncoder" );
 			int          _codec              = call.argument ( "codec" );
 			t_CODEC      codec               = t_CODEC.values ()[ _codec ];
-			int          androidAudioSource  = call.argument ( "androidAudioSource" );
-			int          androidOutputFormat = call.argument ( "androidOutputFormat" );
+			int          audioSource 		 = call.argument ( "audioSource" );
 			final String path                = call.argument ( "path" );
-			_startRecorder ( numChannels, sampleRate, bitRate, codec, androidEncoder, androidAudioSource, androidOutputFormat, path, result );
+			_startRecorder ( numChannels, sampleRate, bitRate, codec, audioSource, path, result );
 		}
 		//);
 
 	}
 
 	public void _startRecorder (
-		Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result
+		Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int audioSource, String path, final Result result
 	                           )
 	{
 		final int v = Build.VERSION.SDK_INT;
@@ -395,10 +393,10 @@ public class FlutterSoundRecorder
 				//return;
 			}
 			mediaRecorder.reset();
-			mediaRecorder.setAudioSource ( androidAudioSource );
-			androidEncoder      = codecArray[ codec.ordinal () ];
-			androidOutputFormat = formatsArray[ codec.ordinal () ];
-			mediaRecorder.setOutputFormat ( androidOutputFormat );
+			mediaRecorder.setAudioSource ( audioSource );
+			int encoder      = codecArray[ codec.ordinal () ];
+			int outputFormat = formatsArray[ codec.ordinal () ];
+			mediaRecorder.setOutputFormat ( outputFormat );
 
 			if ( path == null )
 			{
@@ -406,7 +404,7 @@ public class FlutterSoundRecorder
 			}
 
 			mediaRecorder.setOutputFile ( path );
-			mediaRecorder.setAudioEncoder ( androidEncoder );
+			mediaRecorder.setAudioEncoder ( encoder );
 
 			if ( numChannels != null )
 			{

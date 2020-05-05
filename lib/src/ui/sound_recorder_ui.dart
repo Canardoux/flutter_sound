@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../android/android_encoder.dart';
 import '../recording_disposition.dart';
 import '../sound_recorder.dart';
 import '../track.dart';
@@ -204,8 +203,9 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
         if (accepted) {
           Log.e(green('started Recording to: '
               '${await (await widget.audio).track.identity})'));
-          await _recorder.record(widget.audio.track,
-              androidEncoder: AndroidEncoder.amrWbCodec);
+          await _recorder.record(
+            widget.audio.track,
+          );
 
           Log.d(widget.audio.track.identity);
 
@@ -258,7 +258,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
 
   /// If requried displays the OSs permission UI to request
   /// permissions required for recording.
-  ///
+  /// ignore: avoid_types_on_closure_parameters
   Future<bool> _requestPermission(BuildContext context, Track track) async {
     var requesting = Completer<bool>();
 
@@ -275,6 +275,8 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
 
     request.then((granted) async {
       requesting.complete(granted);
+
+      /// ignore: avoid_types_on_closure_parameters
     }).catchError((Object error) {
       Log.e("Error occured requesting permissions: $error");
       requesting.completeError(error);

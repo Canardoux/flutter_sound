@@ -227,39 +227,10 @@ class _MyAppState extends State<MyApp> {
 
   void startRecorder() async {
     try {
-      // String path = await flutterSoundModule.startRecorder
-      // (
-      //   paths[_codec.index],
-      //   codec: _codec,
-      //   sampleRate: 16000,
-      //   bitRate: 16000,
-      //   numChannels: 1,
-      //   androidAudioSource: AndroidAudioSource.MIC,
-      // );
       Directory tempDir = await getTemporaryDirectory();
       int slotNo = 0; // TODO
       String path = '${tempDir.path}/${slotNo}-${paths[_codec.index]}';
       await recorder.record(Track.fromPath(path, codec: _codec));
-
-      /* TODO
-      _recorderSubscription = recorderModule.onRecorderStateChanged.listen((e) {
-        if (e != null && e.currentPosition != null) {
-          DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt(), isUtc: true);
-          String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
-
-          this.setState(() {
-            this._recorderTxt = txt.substring(0, 8);
-          });
-        }
-      });
-      _dbPeakSubscription = recorderModule.onRecorderDbPeakChanged.listen((value) {
-        print("got update -> $value");
-        setState(() {
-          this._dbLevel = value;
-        });
-      });
-
-       */
 
       this.setState(() {
         this._isRecording = true;

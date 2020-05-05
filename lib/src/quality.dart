@@ -14,11 +14,11 @@
  *   along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 /// Used to control the audio quality.
-class IosQuality {
+///  Currently it only applies to iOS.
+class Quality {
   final int _value;
-  const IosQuality._internal(this._value);
+  const Quality._internal(this._value);
   String toString() => 'IOSQuality.$_value';
 
   /// returns the quality which is a bit mask
@@ -26,17 +26,17 @@ class IosQuality {
   int get value => _value;
 
   /// minimum quality
-  static const min = IosQuality._internal(0);
+  static const min = Quality._internal(0);
 
   /// low quality
-  static const low = IosQuality._internal(0x20);
+  static const low = Quality._internal(0x20);
 
   /// medium quality
-  static const medium = IosQuality._internal(0x40);
+  static const medium = Quality._internal(0x40);
 
   /// high quality
-  static const high = IosQuality._internal(0x60);
+  static const high = Quality._internal(0x60);
 
   /// max available quality.
-  static const max = IosQuality._internal(0x7F);
+  static const max = Quality._internal(0x7F);
 }

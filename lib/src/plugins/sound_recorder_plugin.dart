@@ -20,11 +20,9 @@ import 'dart:math';
 
 import 'package:flutter/services.dart';
 
-import '../android/android_audio_source.dart';
-import '../android/android_encoder.dart';
-import '../android/android_output_format.dart';
+import '../audio_source.dart';
 import '../codec.dart';
-import '../ios/ios_quality.dart';
+import '../quality.dart';
 
 import '../sound_recorder.dart';
 import '../util/log.dart';
@@ -76,10 +74,8 @@ class SoundRecorderPlugin extends BasePlugin {
     int numChannels,
     int bitRate,
     Codec codec,
-    AndroidEncoder androidEncoder,
-    AndroidAudioSource androidAudioSource,
-    AndroidOutputFormat androidOutputFormat,
-    IosQuality iosQuality,
+    AudioSource audioSource,
+    Quality iosQuality,
   ) async {
     var param = <String, dynamic>{
       'path': path,
@@ -87,9 +83,7 @@ class SoundRecorderPlugin extends BasePlugin {
       'numChannels': numChannels,
       'bitRate': bitRate,
       'codec': codec.index,
-      'androidEncoder': androidEncoder?.value,
-      'androidAudioSource': androidAudioSource?.value,
-      'androidOutputFormat': androidOutputFormat?.value,
+      'audioSource': audioSource?.value,
       'iosQuality': iosQuality?.value
     };
 
