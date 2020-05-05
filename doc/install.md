@@ -36,12 +36,17 @@ dependencies:
 
 The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
 
+There is actually two branches :
+- V4. This is the stable branch which is maintained under the version 4.x.x
+- master. This is the branch currently developed and is probably not as stable than the V4 branch.
+
 If you want to generate your App from the sources with a `FULL` flavor:
 
 ```sh
 cd some/where
 git clone https://github.com/dooboolab/flutter_sound
 cd some/where/flutter_sound
+git checkout V4
 bin/flavor FULL
 ```
 
@@ -61,6 +66,7 @@ If you prefer to link your App with the `LITE` flavor :
 cd some/where
 git clone https://github.com/dooboolab/flutter_sound
 cd some/where/flutter_sound
+git checkout V4
 bin/flavor LITE
 ```
 

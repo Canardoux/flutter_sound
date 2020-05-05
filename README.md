@@ -41,10 +41,10 @@ This plugin provides simple recorder and player functionalities for both `androi
 
 Flutter Sound is composed with 4 modules :
 
-- [FlutterSoundPlayer](doc/player.md), wich deal with everythin about playbacks
+- [FlutterSoundPlayer](doc/player.md), wich deal with everything about playbacks
 - [FlutterSoudRecorder](doc/recorder.md), which deal with everything about recording
-- [TrackPlayer](doc/track_player.md), which deal about controling the App audio session from the lock screen or from an Apple watch
-- [FlutterSoundHelper](doc/helper.md), which offer some convenients tools
+- [TrackPlayer](doc/track_player.md), which deal about controling the App Audio Session from the lock screen or from an Apple watch
+- [FlutterSoundHelper](doc/helper.md), which offers some convenients tools
 
 To use Flutter Sound you just do :
 ```
@@ -54,8 +54,13 @@ import 'package:flutter_sound/flutter_sound.dart';
 `import 'package:flutter_sound/flutter_sound.dart'` will export all the necessaries dart interfaces.
 
 ## Example (Demo App)
+
 Our [Demo App](https://github.com/dooboolab/flutter_sound/blob/master/example/lib/main.dart) is a small demonstration of what we can do with Flutter Sound.
 This Demo App is a kind of exerciser which try to implement the major Flutter Sound features
+
+## License
+
+Flutter Sound is released with a *copyleft* clause, the LGPL-V3 license. This means that you may include Flutter Sound inside a proprietary/private product. But if you do modifications inside the Flutter Sound code, *you will have* to publish your modifications under the *LGPL-V3 license*.
 
 ## Contributions
 
@@ -67,21 +72,24 @@ Pull Requests are welcome and will be considered very carefully
 
 We use [Github](https://github.com/dooboolab/flutter_sound/issues) actively.
 
-When you fill an issue, we try to answer something in less than 48h. Of course, this will not mean that your issue will be fixed in 48h. But you will know that we confirm (or not) your issue and what answer you can expect. Maintenance is our priority. We want it perfect.
+When you fill an issue, we try to answer something in less than 48h. Of course, this will not mean that your issue will be fixed in 48h. But you will know that we confirm (or not) your issue and what answer you can expect. Maintenance is our priority. We try to make it perfect.
 
 
 ## TODO
 
 - [X] Record PCM on Android
+- [ ] Rewrite the documentation
+- [ ] Small examples, smaller than the actual Example.app
 - [ ] Record OPUS on Android
 - [ ] Streaming records to Speech to Text
 - [ ] More support for the Apple Watch
+- [ ] Tests unit to avoid any regression
 - [ ] Web App support (!!!actually just a dream!!!)
 
 
 ## Help Maintenance
 
-Hyo has been maintaining quite many repos these days and he is burning out slowly. If you could help him cheer up, buy him a cup of coffee will make my life really happy and get much energy out of it. As a side effect, we will know that Flutter Sound is important for you, that you appreciate our job and that you can show it with a little money.
+My friend Hyo has been maintaining quite many repos these days and he is burning out slowly. If you could help him cheer up, buy him a cup of coffee will make his life really happy and get much energy out of it. As a side effect, we will know that Flutter Sound is important for you, that you appreciate our job and that you can show it with a little money.
 <br/>
 <a href="https://www.buymeacoffee.com/dooboolab" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/purple_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
 [![Paypal](https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png)](https://paypal.me/dooboolab)

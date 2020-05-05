@@ -66,6 +66,12 @@ We removed OS specific parameters passed during `startRecorder()` :
 
 This `NULL` parameter sent when the Recorder or the Player was closed was ugly, and caused many bugs to some Apps.
 
+##  The Audio Focus is not automaticaly abandoned between two startPlayer() or two startRecorder()
+
+The Audio Focus is abandoned automaticaly when the App does a ```release()```
+
+## The ancient verb `setActive` is now replaced by `setAudioFocus`
+
 -----------------------------------------------------------------------------------------------------------------------------
 
 [Back to the README](../README.md#migration-guides)
