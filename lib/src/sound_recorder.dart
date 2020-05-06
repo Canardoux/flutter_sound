@@ -510,7 +510,7 @@ class SoundRecorder implements SlotEntry {
   /// This could be a problem with some apps if they want to
   /// record in the background.
   void _onSystemAppPaused() {
-    Log.d(red('onSystemAppPaused  track=${_recordingTrack.track}'));
+    Log.d(red('onSystemAppPaused  track=${_recordingTrack?.track}'));
     if (isRecording && !_playInBackground) {
       /// CONSIDER: this could be expensive as we do a [recode]
       /// when we stop. We might need to look at doing a lazy
@@ -524,7 +524,7 @@ class SoundRecorder implements SlotEntry {
   /// We take no action when resuming. This is a place holder
   /// in case we change our mind.
   void _onSystemAppResumed() {
-    Log.d(red('onSystemAppResumed track=${_recordingTrack.track}'));
+    Log.d(red('onSystemAppResumed track=${_recordingTrack?.track}'));
   }
 }
 
