@@ -46,7 +46,8 @@ If you want to generate your App from the sources with a `FULL` flavor:
 cd some/where
 git clone https://github.com/dooboolab/flutter_sound
 cd some/where/flutter_sound
-git checkout V4
+git fetch origin
+git checkout -b V4 origin/V4
 bin/flavor FULL
 ```
 
@@ -66,7 +67,8 @@ If you prefer to link your App with the `LITE` flavor :
 cd some/where
 git clone https://github.com/dooboolab/flutter_sound
 cd some/where/flutter_sound
-git checkout V4
+git fetch origin
+git checkout -b V4 origin/V4
 bin/flavor LITE
 ```
 

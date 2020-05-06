@@ -57,6 +57,7 @@ Flutter Sound Version 5.x.x does not try any more to store files in a temporary 
 ## StartRecorder() OS specific parameters are removed
 
 We removed OS specific parameters passed during `startRecorder()` :
+
 - AndroidEncoder
 - AndroidAudioSource
 - AndroidOutputFormat
@@ -68,7 +69,7 @@ This `NULL` parameter sent when the Recorder or the Player was closed was ugly, 
 
 ##  The Audio Focus is not automaticaly abandoned between two startPlayer() or two startRecorder()
 
-The Audio Focus is abandoned automaticaly when the App does a ```release()```
+The Audio Focus is just abandoned automaticaly when the App does a ```release()```
 
 ## The ancient verb `setActive` is now replaced by `setAudioFocus`
 
