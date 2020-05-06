@@ -88,7 +88,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> _initializeExample(FlutterSoundPlayer module) async {
     playerModule = module;
 
-    await module.initialize();
+    await module.openAudioSession();
     await playerModule.setSubscriptionDuration(0.01);
     await recorderModule.setSubscriptionDuration(0.01);
     initializeDateFormatting();
@@ -97,7 +97,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> init() async {
-    playerModule = await FlutterSoundPlayer().initialize();
+    playerModule = await FlutterSoundPlayer().openAudioSession();
     recorderModule = await FlutterSoundRecorder().initialize();
     await _initializeExample(playerModule);
 
@@ -169,7 +169,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> releaseFlauto() async {
     try {
-      await playerModule.release();
+      await playerModule.closeAudioSession();
       await recorderModule.release();
     } catch (e) {
       print('Released unsuccessful');
@@ -307,7 +307,7 @@ class _MyAppState extends State<MyApp> {
 
   void _addListeners() {
     cancelPlayerSubscriptions();
-    _playerSubscription = playerModule.onPlayerStateChanged.listen((e) {
+    _playerSubscription = playerModule.onProgress.listen((e) {
       if (e != null) {
         maxDuration = e.duration;
         if (maxDuration <= 0) maxDuration = 0.0;
@@ -673,7 +673,7 @@ class _MyAppState extends State<MyApp> {
       return null;
     return ((newVal) async {
       try {
-        if (playerModule != null) await playerModule.release();
+        if (playerModule != null) await playerModule.closeAudioSession();
 
         _isAudioPlayer = newVal;
         if (!newVal) {

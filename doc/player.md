@@ -18,6 +18,7 @@ The verbs offered by the Flutter Sound Player module are :
 - [setVolume()](player.md#setvolume) to adjust the ouput volume
 - [playerState, isPlaying, isPaused, isStopped](player.md#playerstate-isplaying-ispaused-isstopped) to know the current player status
 - [isDecoderSupported()](player.md#isdecodersupported) to know if a specific codec is supported on the current platform.
+- [onProgress]() to subscribe to a Stream of the Progress events
 - [setSubscriptionDuration()](player.md#setting-subscription-duration---optional) to specify the frequence of your subscription
 - [iosSetCategory(), androidAudioFocusRequest()](player.md#iossetcategory-androidaudiofocusrequest---optional) to parameter the Session Audio Focus
 
@@ -333,7 +334,7 @@ This four verbs is used when the app wants to get the current Audio State of the
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
-## isDecoderSupported()
+## `isDecoderSupported()`
 
 *Dart definition (prototype) :*
 ```
@@ -350,19 +351,39 @@ Return a Future<bool>.
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
-## Setting subscription duration - (Optional)
+## `onProgress`
+
+*Dart definition (prototype) :*
+```
+Stream<PlayStatus> get onProgress => playerController != null ? playerController.stream : null;
+```
+
+The attribut `onProgress` is a stream on which FlutterSound will post the player progression.
+You may listen to this Stream to have feedback on the current playback.
+
+*Example:*
+```dart
+        _playerSubscription = flutterSoundPlayer.onProgress.listen((e)
+        {
+                double maxDuration = e.duration;
+                ...
+        }
+```
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `setSubscriptionDuration` - (Optional)
 
 *Dart definition (prototype) :*
 ```
 
-Future<String> setSubscriptionDuration(double sec)
+Future<void> setSubscriptionDuration(double sec)
 ```
 
 This verb is used to change the default interval between two post on the "Update Progress" stream. (The default interval is 10ms)
 
 *Example:*
 ```dart
-/// 0.010s. is default
+// 0.010s. is default
 flutterSoundPlayer.setSubscriptionDuration(0.01);
 ```
 

@@ -230,7 +230,7 @@ class FlutterSoundPlayer {
   TupdateProgress onUpdateProgress;
   int slotNo;
 
-  Stream<PlayStatus> get onPlayerStateChanged =>
+  Stream<PlayStatus> get onProgress =>
       playerController != null ? playerController.stream : null;
 
   bool get isPlaying => playerState == PlayerState.isPlaying;
@@ -249,7 +249,7 @@ class FlutterSoundPlayer {
     return getPlugin().invokeMethod(methodName, call);
   }
 
-  Future<FlutterSoundPlayer> initialize() async {
+  Future<FlutterSoundPlayer> openAudioSession() async {
     if (isInited == Initialized.fullyInitialized) {
       return this;
     }
@@ -268,7 +268,7 @@ class FlutterSoundPlayer {
     return this;
   }
 
-  Future<void> release() async {
+  Future<void> closeAudioSession() async {
     if (isInited == Initialized.notInitialized) {
       return this;
     }
@@ -330,7 +330,7 @@ class FlutterSoundPlayer {
   /// Returns true if the specified decoder is supported by flutter_sound on this platform
   Future<bool> isDecoderSupported(Codec codec) async {
     bool result;
-    await initialize();
+    await openAudioSession();
     // For decoding ogg/opus on ios, we need to support two steps :
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
@@ -361,7 +361,7 @@ class FlutterSoundPlayer {
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
   Future<bool> iosSetCategory(
       SessionCategory category, SessionMode mode, int options) async {
-    await initialize();
+    await openAudioSession();
     if (!Platform.isIOS) return false;
     var r = await invokeMethod('iosSetCategory', <String, dynamic>{
       'category': iosSessionCategory[category.index],
@@ -378,7 +378,7 @@ class FlutterSoundPlayer {
   /// After calling this function, the caller is responsible for using correctly setActive
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
   Future<bool> androidAudioFocusRequest(int focusGain) async {
-    await initialize();
+    await openAudioSession();
     if (!Platform.isAndroid) return false;
     var r = await invokeMethod('androidAudioFocusRequest',
         <String, dynamic>{'focusGain': focusGain}) as bool;
@@ -387,8 +387,8 @@ class FlutterSoundPlayer {
   }
 
   ///  The caller can manage his audio focus with this function
-  Future<bool> setActive(bool enabled) async {
-    await initialize();
+  Future<bool> setAudioFocus(bool enabled) async {
+    await openAudioSession();
     var r =
         await invokeMethod('setActive', <String, dynamic>{'enabled': enabled})
             as bool;
@@ -396,7 +396,7 @@ class FlutterSoundPlayer {
   }
 
   Future<String> setSubscriptionDuration(double sec) async {
-    await initialize();
+    await openAudioSession();
     String r = await invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'sec': sec,
     }) as String;
@@ -478,7 +478,7 @@ class FlutterSoundPlayer {
     Codec codec,
     TWhenFinished whenFinished,
   }) async {
-    await initialize();
+    await openAudioSession();
     return await _startPlayer('startPlayer', <String, dynamic>{
       'path': uri,
       'codec': codec,
@@ -491,7 +491,7 @@ class FlutterSoundPlayer {
     Codec codec,
     TWhenFinished whenFinished,
   }) async {
-    await initialize();
+    await openAudioSession();
     // If we want to play OGG/OPUS on iOS, we need to remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We write the data in a temporary file before calling ffmpeg.
     if (needToConvert(codec)) {
@@ -569,7 +569,7 @@ class FlutterSoundPlayer {
   }
 
   Future<String> seekToPlayer(int milliSecs) async {
-    await initialize();
+    await openAudioSession();
     String r = await invokeMethod('seekToPlayer', <String, dynamic>{
       'sec': milliSecs,
     }) as String;
@@ -577,7 +577,7 @@ class FlutterSoundPlayer {
   }
 
   Future<String> setVolume(double volume) async {
-    await initialize();
+    await openAudioSession();
     var indexedVolume = Platform.isIOS ? volume * 100 : volume;
     if (volume < 0.0 || volume > 1.0) {
       throw RangeError('Value of volume should be between 0.0 and 1.0.');

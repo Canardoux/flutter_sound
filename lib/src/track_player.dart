@@ -144,7 +144,7 @@ class TrackPlayer extends FlutterSoundPlayer {
   ///
   /// Media player and recorder controls should be displayed only after this
   /// method has finished executing.
-  Future<TrackPlayer> initialize() async {
+  Future<TrackPlayer> openAudioSession() async {
     if (isInited == Initialized.fullyInitialized) {
       return this;
     }
@@ -176,7 +176,7 @@ class TrackPlayer extends FlutterSoundPlayer {
 
   /// Resets the media player and cleans up the device resources. This must be
   /// called when the player is no longer needed.
-  Future<void> release() async {
+  Future<void> closeAudioSession() async {
     if (isInited == Initialized.notInitialized) {
       return this;
     }
@@ -263,7 +263,7 @@ class TrackPlayer extends FlutterSoundPlayer {
     //TonSkip onPause,
   }) async {
     // Check the current codec is not supported on this platform
-    await initialize();
+    await openAudioSession();
     if (!await isDecoderSupported(track.codec)) {
       throw PlayerRunningException('The selected codec is not supported on '
           'this platform.');
@@ -302,7 +302,7 @@ class TrackPlayer extends FlutterSoundPlayer {
     Codec codec,
     TWhenFinished whenFinished,
   }) async {
-    await initialize();
+    await openAudioSession();
     final track = Track(trackPath: fileUri, codec: codec);
     return await startPlayerFromTrack(track, whenFinished: whenFinished);
   }
@@ -313,7 +313,7 @@ class TrackPlayer extends FlutterSoundPlayer {
     Codec codec,
     TWhenFinished whenFinished,
   }) async {
-    await initialize();
+    await openAudioSession();
     final track = Track(dataBuffer: dataBuffer, codec: codec);
     return await startPlayerFromTrack(track, whenFinished: whenFinished);
   }
