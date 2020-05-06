@@ -40,7 +40,7 @@ export 'src/quick_play.dart' show QuickPlay;
 export 'src/recording_disposition.dart' show RecordingDisposition;
 
 export 'src/sound_recorder.dart'
-    show SoundRecorder, RecorderException, RecorderRunningException;
+    show SoundRecorder, RecorderException, RecorderInvalidStateException;
 
 export 'src/track.dart' show Track;
 export 'src/ui/recorder_playback_controller.dart'

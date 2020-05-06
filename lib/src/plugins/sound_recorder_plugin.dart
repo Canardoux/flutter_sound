@@ -24,7 +24,7 @@ import '../audio_source.dart';
 import '../codec.dart';
 import '../quality.dart';
 
-import '../sound_recorder.dart';
+import '../sound_recorder.dart' as sound_recorder;
 import '../util/log.dart';
 import 'base_plugin.dart';
 
@@ -45,8 +45,8 @@ class SoundRecorderPlugin extends BasePlugin {
       : super('com.dooboolab.flutter_sound_recorder', _slots);
 
   ///
-  void initialise(covariant SoundRecorder recorder) async {
-    register(recorder);
+  void initialiseRecorder(
+      covariant sound_recorder.SoundRecorder recorder) async {
     await invokeMethod(
         recorder, 'initializeFlautoRecorder', <String, dynamic>{});
   }
@@ -54,21 +54,21 @@ class SoundRecorderPlugin extends BasePlugin {
   /// Releases the slot used by the connector.
   /// To use a plugin you start by calling [register]
   /// and finish by calling [release].
-  void release(covariant SoundRecorder recorder) async {
+  void releaseRecorder(sound_recorder.SoundRecorder recorder) async {
     await invokeMethod(recorder, 'releaseFlautoRecorder', <String, dynamic>{});
-    super.release(recorder);
   }
 
   /// Returns true if the specified encoder is supported by
   /// flutter_sound on this platform
-  Future<bool> isSupported(SoundRecorder recorder, Codec codec) async {
+  Future<bool> isSupported(
+      sound_recorder.SoundRecorder recorder, Codec codec) async {
     return await invokeMethod(recorder, 'isEncoderSupported',
         <String, dynamic>{'codec': codec.index}) as bool;
   }
 
   ///
   Future<void> start(
-    SoundRecorder recorder,
+    sound_recorder.SoundRecorder recorder,
     String path,
     int sampleRate,
     int numChannels,
@@ -91,23 +91,23 @@ class SoundRecorderPlugin extends BasePlugin {
   }
 
   ///
-  Future<void> stop(SoundRecorder recorder) async {
+  Future<void> stop(sound_recorder.SoundRecorder recorder) async {
     await invokeMethod(recorder, 'stopRecorder', <String, dynamic>{});
   }
 
   ///
-  Future<void> pause(SoundRecorder recorder) async {
+  Future<void> pause(sound_recorder.SoundRecorder recorder) async {
     await invokeMethod(recorder, 'pauseRecorder', <String, dynamic>{});
   }
 
   ///
-  Future<void> resume(SoundRecorder recorder) async {
+  Future<void> resume(sound_recorder.SoundRecorder recorder) async {
     await invokeMethod(recorder, 'resumeRecorder', <String, dynamic>{});
   }
 
   ///
   Future<void> setSubscriptionDuration(
-      SoundRecorder recorder, Duration interval) async {
+      sound_recorder.SoundRecorder recorder, Duration interval) async {
     await invokeMethod(recorder, 'setSubscriptionDuration', <String, dynamic>{
       // we must convert to milli to stop rounding down
       'sec': interval.inMilliseconds.toDouble() / 1000.0,
@@ -116,7 +116,7 @@ class SoundRecorderPlugin extends BasePlugin {
 
   ///
   Future<void> setDbPeakLevelUpdate(
-      SoundRecorder recorder, Duration interval) async {
+      sound_recorder.SoundRecorder recorder, Duration interval) async {
     await invokeMethod(recorder, 'setDbPeakLevelUpdate', <String, dynamic>{
       // we must convert to milli to stop rounding down
       'sec': interval.inMilliseconds.toDouble() / 1000.0,
@@ -124,14 +124,15 @@ class SoundRecorderPlugin extends BasePlugin {
   }
 
   /// Enables or disables processing the Peak level in db's. Default is disabled
-  Future<void> setDbLevelEnabled(SoundRecorder recorder, {bool enabled}) async {
+  Future<void> setDbLevelEnabled(sound_recorder.SoundRecorder recorder,
+      {bool enabled}) async {
     await invokeMethod(recorder, 'setDbLevelEnabled', <String, dynamic>{
       'enabled': enabled,
     });
   }
 
   Future<dynamic> onMethodCallback(
-      covariant SoundRecorder recorder, MethodCall call) {
+      covariant sound_recorder.SoundRecorder recorder, MethodCall call) {
     Log.d('Dart received ${call.method}');
     switch (call.method) {
       case "updateRecorderProgress":
@@ -148,7 +149,7 @@ class SoundRecorderPlugin extends BasePlugin {
         /// sanity check. 194 is the theoretical upper limit on undistorted
         ///  sound in air. (above this its a shock wave)
         decibels = min(194, decibels);
-        recorderUpdateDbPeakDispostion(recorder, decibels);
+        sound_recorder.recorderUpdateDbPeakDispostion(recorder, decibels);
         break;
 
       default:
@@ -157,7 +158,8 @@ class SoundRecorderPlugin extends BasePlugin {
     return null;
   }
 
-  void _updateRecorderProgress(MethodCall call, SoundRecorder recorder) {
+  void _updateRecorderProgress(
+      MethodCall call, sound_recorder.SoundRecorder recorder) {
     var result =
         json.decode(call.arguments['arg'] as String) as Map<String, dynamic>;
 
@@ -165,6 +167,28 @@ class SoundRecorderPlugin extends BasePlugin {
         milliseconds:
             double.parse(result['current_position'] as String).toInt());
 
-    recorderUpdateDuration(recorder, duration);
+    sound_recorder.recorderUpdateDuration(recorder, duration);
+  }
+
+  /// Called when the OS resumes our app.
+  /// We need to broadcast this to all player SlotEntries.
+  void onSystemAppResumed() {
+    forEachSlot((entry) {
+      /// knowledge of the AudioPlayer at this level is a little
+      /// ugly but I'm trying to keep the public api that
+      /// AudioPlayer exposes clean.
+      sound_recorder.onSystemAppResumed(entry as sound_recorder.SoundRecorder);
+    });
+  }
+
+  /// Called when the OS resumes our app.
+  /// We need to broadcast this to all player SlotEntries.
+  void onSystemAppPaused() {
+    forEachSlot((entry) {
+      /// knowledge of the AudioPlayer at this level is a little
+      /// ugly but I'm trying to keep the public api that
+      /// AudioPlayer exposes clean.
+      sound_recorder.onSystemAppPaused(entry as sound_recorder.SoundRecorder);
+    });
   }
 }

@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> init() async {
-    recorder = await SoundRecorder().initialize();
+    recorder = SoundRecorder();
     //_recorderDispositionStream = recorderDispositionStream(interval:Duration(milliseconds:100));
 
     await _initializeExample();

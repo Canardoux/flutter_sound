@@ -18,7 +18,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
-import '../audio_player.dart';
+import '../audio_player.dart' ;
 import '../track.dart';
 import 'player_base_plugin.dart';
 
@@ -102,6 +102,8 @@ class SoundPlayerTrackPlugin extends PlayerBasePlugin {
     }
     return null;
   }
+
+  
 }
 
 /// This enum reflects an enum of the same name

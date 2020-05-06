@@ -18,6 +18,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import '../util/ansi_color.dart';
 import '../util/log.dart';
 
@@ -31,7 +32,8 @@ class SlotEntry {}
 /// Each derived Plugin is a singleton via which
 /// Players and Recorders register to talk
 /// to the OS dependant plugins.
-abstract class BasePlugin {
+// ignore: prefer_mixin
+abstract class BasePlugin with WidgetsBindingObserver {
   /// ignore: prefer_final_fields
   List<SlotEntry> _slots;
 
@@ -48,6 +50,35 @@ abstract class BasePlugin {
     Log.d('registering plugin: $_registeredName');
     _channel = MethodChannel(_registeredName);
     _channel.setMethodCallHandler(_onMethodCallback);
+
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  /// This method is currently not used as we are a singleton
+  /// which has the same lifecycle as the app so there
+  /// is no point in freeing this resource as we need
+  /// these events until the app stops in which case it will
+  /// be freed automatically.
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        onSystemAppResumed();
+        break;
+      case AppLifecycleState.inactive:
+        Log.d('Ignoring: $state');
+        break;
+      case AppLifecycleState.paused:
+        onSystemAppPaused();
+        break;
+      case AppLifecycleState.detached:
+        Log.d('Ignoring: $state');
+        break;
+    }
   }
 
   /// overload this method to handle callbacks from the underlying
@@ -132,6 +163,12 @@ abstract class BasePlugin {
       }
     }
   }
+
+  /// Overload this method to receive notifications when the app is paused.
+  void onSystemAppPaused();
+
+  /// Overload this method to receive notifications when the app is resumed.
+  void onSystemAppResumed();
 }
 
 /// Thrown if you try to release or access a connector that isn't

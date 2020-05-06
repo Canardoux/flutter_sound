@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
-import '../audio_player.dart';
+import '../audio_player.dart' as audio_player;
 import '../codec.dart';
 import '../ios/ios_session_category.dart';
 import '../ios/ios_session_mode.dart';
@@ -29,14 +29,14 @@ abstract class PlayerBasePlugin extends BasePlugin {
   /// name of the plugin.
   PlayerBasePlugin(String registeredName) : super(registeredName, _slots);
 
-  ConnectedCallback _onConnected;
+  ConnectedCallback _onPlayerReady;
 
   /// Allows you to register for connection events.
   /// ignore: avoid_setters_without_getters
-  set onConnected(ConnectedCallback callback) => _onConnected = callback;
+  set onPlayerReady(ConnectedCallback callback) => _onPlayerReady = callback;
 
   /// Over load this method to play audio.
-  Future<void> play(AudioPlayer player, Track track);
+  Future<void> play(audio_player.AudioPlayer player, Track track);
 
   /// Each Player must be initialised and registered.
   void initialisePlayer(SlotEntry player) async {
@@ -155,22 +155,22 @@ abstract class PlayerBasePlugin extends BasePlugin {
   /// Handles callbacks from the platform specific plugin
   /// The below methods are shared by all the playback plugins.
   Future<dynamic> onMethodCallback(
-      covariant AudioPlayer player, MethodCall call) {
+      covariant audio_player.AudioPlayer player, MethodCall call) {
     switch (call.method) {
 
       ///TODO implement in the OS code for each player.
-      case "onConnected":
+      case "onPlayerReady":
         {
           var result = call.arguments['arg'] as bool;
-          Log.d('onConnected $result');
-          if (_onConnected != null) _onConnected(result: result);
+          Log.d('onPlayerReady $result');
+          if (_onPlayerReady != null) _onPlayerReady(result: result);
         }
         break;
 
       case "updateProgress":
         {
           var arguments = call.arguments['arg'] as String;
-          updateProgress(
+          audio_player.updateProgress(
               player, PlayerBasePlugin.dispositionFromJSON(arguments));
         }
         break;
@@ -179,20 +179,20 @@ abstract class PlayerBasePlugin extends BasePlugin {
         {
           var arguments = call.arguments['arg'] as String;
 
-          audioPlayerFinished(
+          audio_player.audioPlayerFinished(
               player, PlayerBasePlugin.dispositionFromJSON(arguments));
         }
         break;
 
       case 'pause':
         {
-          onSystemPaused(player);
+          audio_player.onSystemPaused(player);
         }
         break;
 
       case 'resume':
         {
-          onSystemResumed(player);
+          audio_player.onSystemResumed(player);
         }
         break;
 
@@ -200,5 +200,27 @@ abstract class PlayerBasePlugin extends BasePlugin {
         throw ArgumentError('Unknown method ${call.method}');
     }
     return null;
+  }
+
+  /// Called when the OS resumes our app.
+  /// We need to broadcast this to all player SlotEntries.
+  void onSystemAppResumed() {
+    forEachSlot((entry) {
+      /// knowledge of the AudioPlayer at this level is a little
+      /// ugly but I'm trying to keep the public api that
+      /// AudioPlayer exposes clean.
+      audio_player.onSystemAppResumed(entry as audio_player.AudioPlayer);
+    });
+  }
+
+  /// Called when the OS resumes our app.
+  /// We need to broadcast this to all player SlotEntries.
+  void onSystemAppPaused() {
+    forEachSlot((entry) {
+      /// knowledge of the AudioPlayer at this level is a little
+      /// ugly but I'm trying to keep the public api that
+      /// AudioPlayer exposes clean.
+      audio_player.onSystemAppPaused(entry as audio_player.AudioPlayer);
+    });
   }
 }

@@ -15,15 +15,19 @@ class SoundPlayer {
     _player = AudioPlayer.noUI(playInBackground: playInBackground);
   }
 
+  /// initialise the SoundPlayer.
+  /// You do not need to call this as the player auto initialises itself
+  /// and in fact has to re-initialise its self after an app pause.
+  void initialise() {
+    // NOOP - as its not required but apparently wanted.
+  }
+
   /// call this method once you are done with the player
   /// so that it can release all of the attached resources.
   ///
   Future<void> release() async {
     return _player.release();
   }
-
-  ///
-  Future<bool> get initialised => _player.initialised;
 
   /// Starts playback.
   /// The [track] to play.

@@ -91,4 +91,11 @@ class RecordingTrack {
           'The directory ${dirname(track.path)} must exists');
     }
   }
+
+  /// Release all system resources for the track.
+  void release() {
+    if (track != null) {
+      trackRelease(track);
+    }
+  }
 }

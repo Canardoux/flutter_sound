@@ -14,6 +14,11 @@ typedef OnStart = void Function();
 typedef OnProgress = void Function(RecordedAudio media);
 typedef OnStop = void Function(RecordedAudio media);
 
+enum _RecorderState {
+  isStopped,
+  isRecording,
+}
+
 /// The [requestPermissions] callback allows you to provide an
 /// UI informing the user that we are about to ask for a permission.
 ///
@@ -118,13 +123,15 @@ class SoundRecorderUI extends StatefulWidget {
 
 ///
 class SoundRecorderUIState extends State<SoundRecorderUI> {
-  bool _isRecording = false;
+  _RecorderState _state = _RecorderState.isStopped;
 
   SoundRecorder _recorder;
 
   ///
   SoundRecorderUIState() {
     _recorder = SoundRecorder();
+    _recorder.onStarted = _onStarted;
+    _recorder.onStopped = _onStopped;
   }
 
   @override
@@ -142,7 +149,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
     return Column(
       children: <Widget>[
         _buildMicrophone(),
-        _buildStopButton(),
+        _buildStartStopButton(),
       ],
     );
   }
@@ -182,15 +189,25 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
             }));
   }
 
-  Widget _buildStopButton() {
+  Widget _buildStartStopButton() {
     return InkWell(
-        onTap: _recorder.isRecording ? stop : _onRecord,
+        onTap: _onTapStartStop,
         child: Icon(
-          _recorder.isRecording ? Icons.stop : Icons.play_circle_filled,
+          _isRecording ? Icons.stop : Icons.play_circle_filled,
           size: 60,
           color: Colors.red,
         ));
   }
+
+  void _onTapStartStop() {
+    if (_isRecording) {
+      stop();
+    } else {
+      _onRecord();
+    }
+  }
+
+  bool get _isRecording => _state == _RecorderState.isRecording;
 
   void dispose() {
     _stop();
@@ -208,18 +225,6 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
           );
 
           Log.d(widget.audio.track.identity);
-
-          _isRecording = true;
-          setState(() {});
-
-          Log.d(green('started Recording to: '
-              '${await (await widget.audio).track.identity})'));
-
-          if (widget.onStart != null) {
-            widget.onStart();
-          }
-
-          controller.onRecordingStarted(context);
         }
       });
     }
@@ -230,24 +235,11 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   ///
   void stop() {
     _stop();
-    setState(() {});
   }
 
   void _stop() {
     if (_recorder.isRecording) {
-      _isRecording = false;
-      _recorder.stop().then<void>((_) async {
-        // cause the  player to pick up the newly recorded file.
-        setState(() {
-          _updateDuration(_recorder.duration);
-
-          if (widget.onStopped != null) {
-            widget.onStopped(widget.audio);
-          }
-
-          controller.onRecordingStopped(context, _recorder.duration);
-        });
-      });
+      _recorder.stop();
     }
   }
 
@@ -283,5 +275,33 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
     });
 
     return requesting.future;
+  }
+
+  void _onStarted({bool wasUser}) async {
+    Log.d(green('started Recording to: '
+        '${await (await widget.audio).track.identity})'));
+
+    setState(() {
+      _state = _RecorderState.isRecording;
+
+      if (widget.onStart != null) {
+        widget.onStart();
+      }
+
+      controller.onRecordingStarted(context);
+    });
+  }
+
+  void _onStopped({bool wasUser}) {
+    setState(() {
+      _updateDuration(_recorder.duration);
+      _state = _RecorderState.isStopped;
+
+      if (widget.onStopped != null) {
+        widget.onStopped(widget.audio);
+      }
+
+      controller.onRecordingStopped(context, _recorder.duration);
+    });
   }
 }
