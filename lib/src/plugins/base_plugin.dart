@@ -71,7 +71,7 @@ abstract class BasePlugin {
     call['slotNo'] = slotNo;
     var result = _channel.invokeMethod<dynamic>(methodName, call);
 
-    Log.d('invokeMethod returned for $methodName');
+    Log.d('invokeMethod returned for $methodName slot: $slotNo');
     return result;
   }
 

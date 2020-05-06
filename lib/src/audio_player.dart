@@ -30,6 +30,7 @@ import 'plugins/player_base_plugin.dart';
 import 'plugins/sound_player_plugin.dart';
 import 'plugins/sound_player_track_plugin.dart';
 import 'track.dart' as t;
+import 'util/ansi_color.dart';
 import 'util/log.dart';
 
 /// An api for playing audio.
@@ -113,6 +114,12 @@ class AudioPlayer implements SlotEntry {
 
   /// Used to wait for the plugin to connect us to an OS MediaPlayer
   Future<bool> _initialised;
+
+  /// When we do a [softRelease] we need to flag that the plugin
+  /// needs to be initialised so we set this to true.
+  /// Its also true on construction to force the initial initialisation.
+  bool _pluginInitRequired = true;
+
   Completer<bool> _connected = Completer<bool>();
 
   /// hack until we implement onConnect in the all the plugins.
@@ -160,7 +167,6 @@ class AudioPlayer implements SlotEntry {
   })  : _fakeOnConnect = Platform.isIOS,
         _plugin = SoundPlayerTrackPlugin() {
     _commonInit();
-
     _initialisePlugin();
   }
 
@@ -194,10 +200,9 @@ class AudioPlayer implements SlotEntry {
     _initialisePlugin();
   }
 
-  bool _initRequired = true;
-
   /// once off initialisation used by call ctors.
   void _commonInit() {
+    _plugin.register(this);
     _plugin.onConnected = _onConnected;
 
     // place _initialised into a non-completed state.
@@ -217,8 +222,8 @@ class AudioPlayer implements SlotEntry {
   /// each time we stop the player.
   ///
   void _initialisePlugin() {
-    if (_initRequired) {
-      _initRequired = false;
+    if (_pluginInitRequired) {
+      _pluginInitRequired = false;
 
       /// we allow five seconds for the connect to complete or
       /// we timeout returning false.
@@ -236,16 +241,19 @@ class AudioPlayer implements SlotEntry {
     }
   }
 
-  /// call this method once you are done with the player
+  /// Call this method once you are done with the player
   /// so that it can release all of the attached resources.
-  ///
+  /// await the [release] to ensure that all resources are released before
+  /// you take future action.
   Future<void> release() async {
+    var done = Completer<void>();
     initialised.then<void>((result) async {
       if (result == true) {
         _closeDispositionStream();
-        _softRelease();
+        await _softRelease();
+        await _plugin.release(this);
       }
-    });
+    }).whenComplete(() => done.complete());
   }
 
   /// If the player is pushed into the
@@ -257,11 +265,21 @@ class AudioPlayer implements SlotEntry {
   void _softRelease() async {
     // Stop the player playback before releasing
 
-    await _plugin.stop(this);
+    if (isPlaying) {
+      await _plugin.stop(this);
+    }
 
-    /// if we don't release system resources other
-    /// players may not be able to start.
-    await _plugin.release(this);
+    // release the android/ios resources but
+    // leave the slot intact so we can resume.
+    if (!_pluginInitRequired) {
+      /// looks like this method is re-entrant when app is pausing
+      /// so we need to protect ourselves from being called twice.
+      _pluginInitRequired = true;
+
+      /// the plugin is in an initialised state
+      /// so we need to release it.
+      await _plugin.releasePlayer(this);
+    }
 
     if (_track != null) {
       await t.trackRelease(_track);
@@ -271,7 +289,6 @@ class AudioPlayer implements SlotEntry {
     // state so everyone will wait on it again.
     _connected = Completer<bool>();
     _initialised = _connected.future;
-    _initRequired = true;
   }
 
   /// Future indicating if initialisation has completed.
@@ -335,7 +352,8 @@ class AudioPlayer implements SlotEntry {
             _seekTo = null;
           }
 
-          // we should wait for the os to notify us that the start has happend.
+          // TODO: we should wait for the os to notify us that the start
+          // has happened.
           playerState = PlayerState.isPlaying;
 
           Log.d('calling complete');
@@ -566,7 +584,7 @@ class AudioPlayer implements SlotEntry {
   /// Unless we are playing in the background then
   /// we need to stop playback and release resources.
   void _onSystemAppPaused() {
-    Log.d('onSystemAppPaused playInBackground=$playInBackground');
+    Log.d(red('onSystemAppPaused playInBackground=$playInBackground'));
     if (!playInBackground) {
       if (isPlaying) {
         stop();
@@ -579,9 +597,12 @@ class AudioPlayer implements SlotEntry {
   /// If we had previously stopped then we resuming playing
   /// from the last position - 1 second.
   void _onSystemAppResumed() {
-    Log.d(
-        'onSystemAppPaused playInBackground=$playInBackground _track=$_track');
-    if (!playInBackground && _track != null) {
+    Log.d(red(
+        'onSystemAppResumed playInBackground=$playInBackground track=$_track'));
+
+    /// Looks like we can get multiple resume events so we
+    /// check isPlaying to protect ourselves.
+    if (!playInBackground && _track != null && !isPlaying) {
       rewind(Duration(seconds: 1));
       play(_track);
     }

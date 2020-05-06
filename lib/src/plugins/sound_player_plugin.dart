@@ -40,6 +40,15 @@ class SoundPlayerPlugin extends PlayerBasePlugin with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
   }
 
+  /// This method is currently not used as we are a singleton
+  /// which has the same lifecycle as the app so there
+  /// is no point in freeing this resource as we need 
+  /// these events until the app stops in which case it will
+  /// be freed automatically.
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
@@ -47,13 +56,13 @@ class SoundPlayerPlugin extends PlayerBasePlugin with WidgetsBindingObserver {
         onSystemAppResumed();
         break;
       case AppLifecycleState.inactive:
-        Log.w("Ignoreing AppLifecycleState.inactive");
+        Log.d('Ignoring: $state');
         break;
       case AppLifecycleState.paused:
         onSystemAppPaused();
         break;
       case AppLifecycleState.detached:
-        Log.w("Ignoreing AppLifecycleState.detached");
+        Log.d('Ignoring: $state');
         break;
     }
   }

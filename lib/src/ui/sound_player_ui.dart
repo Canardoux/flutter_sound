@@ -186,7 +186,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     /// TODO
     /// should we chain these events incase the user of our api
     /// also wants to see these events?
-    _player.onStarted = ({wasUser}) => _loading = false;
+    _player.onStarted = ({wasUser}) => _onStarted();
     _player.onStopped = ({wasUser}) => _playState = PlayState.stopped;
     _player.onFinished = _onFinished;
 
@@ -194,8 +194,33 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     _player.dispositionStream().listen(_localController.add);
   }
 
+  /// This can occur:
+  /// When the user clicks play and the [AudioPlayer] sends
+  /// an event to indicate the player is up.
+  /// When the app is paused/resume by the user switching away.
+  void _onStarted() {
+    _loading = false;
+    _playState = PlayState.playing;
+  }
+
+  void _onFinished() {
+    setState(() {
+      /// we can get a race condition when we stop the playback
+      /// We have disabled the button and called stop.
+      /// The OS then sends an onFinished call which tries
+      /// to put the state into a stopped state overriding
+      /// the disabled state.
+      /// TODO: onFinished should only be called if the player
+      /// naturally finishes. It appears it gets called
+      /// if we prematually stop the recording.
+      if (_playState != PlayState.disabled) {
+        _playState = PlayState.stopped;
+      }
+    });
+  }
+
   /// This method is used by the [RecorderPlaybackController] to attached
-  /// the localController to the [SoundRecordUI]'s stream.
+  /// the [_localController] to the [SoundRecordUI]'s stream.
   /// This is only done when this player is attached to a
   /// [RecorderPlaybackController].
   ///
@@ -211,20 +236,6 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       _player.dispositionStream().listen(_localController.add);
     }
   }
-
-  void _onFinished() => setState(() {
-        /// we can get a race condition when we stop the playback
-        /// We have disabled the button and called stop.
-        /// The OS then sends an onFinished call which tries
-        /// to put the state into a stopped state overriding
-        /// the disabled state.
-        /// TODO: onFinished should only be called if the player
-        /// naturally finishes. It appears it gets called
-        /// if we prematually stop the recording.
-        if (_playState != PlayState.disabled) {
-          _playState = PlayState.stopped;
-        }
-      });
 
   @override
   void dispose() {

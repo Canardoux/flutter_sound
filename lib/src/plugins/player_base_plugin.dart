@@ -40,7 +40,6 @@ abstract class PlayerBasePlugin extends BasePlugin {
 
   /// Each Player must be initialised and registered.
   void initialisePlayer(SlotEntry player) async {
-    register(player);
     await invokeMethod(player, 'initializeMediaPlayer', <String, dynamic>{});
   }
 
@@ -49,7 +48,6 @@ abstract class PlayerBasePlugin extends BasePlugin {
   /// and finish by calling [release].
   void releasePlayer(SlotEntry slotEntry) async {
     await invokeMethod(slotEntry, 'releaseMediaPlayer', <String, dynamic>{});
-    super.release(slotEntry);
   }
 
   ///
