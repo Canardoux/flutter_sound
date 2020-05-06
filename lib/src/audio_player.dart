@@ -561,7 +561,7 @@ class AudioPlayer implements SlotEntry {
 
     if (_inSystemPause && !_playInBackground && _track != null) {
       _inSystemPause = false;
-      rewind(Duration(seconds: 1));
+      seekTo(_currentPosition);
       play(_track);
     }
   }
