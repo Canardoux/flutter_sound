@@ -18,8 +18,8 @@ The verbs offered by the Flutter Sound Player module are :
 - [setVolume()](player.md#setvolume) to adjust the ouput volume
 - [playerState, isPlaying, isPaused, isStopped](player.md#playerstate-isplaying-ispaused-isstopped) to know the current player status
 - [isDecoderSupported()](player.md#isdecodersupported) to know if a specific codec is supported on the current platform.
-- [onProgress]() to subscribe to a Stream of the Progress events
-- [setSubscriptionDuration()](player.md#setting-subscription-duration---optional) to specify the frequence of your subscription
+- [onProgress()](player.md#onprogress) to subscribe to a Stream of the Progress events
+- [setSubscriptionDuration()](player.md#player.md#setsubscriptionduration---optional) to specify the frequence of your subscription
 - [iosSetCategory(), androidAudioFocusRequest()](player.md#iossetcategory-androidaudiofocusrequest---optional) to parameter the Session Audio Focus
 
 -------------------------------------------------------------------------------------------------------------------
@@ -371,7 +371,7 @@ You may listen to this Stream to have feedback on the current playback.
 ```
 ---------------------------------------------------------------------------------------------------------------------------------
 
-## `setSubscriptionDuration` - (Optional)
+## `setSubscriptionDuration()` - (Optional)
 
 *Dart definition (prototype) :*
 ```
