@@ -1,21 +1,25 @@
+[Back to the README](../README.md#flutter-sound-api)
+
+-----------------------------------------------------------------------------------------------------------------------
+
 # Flutter Sound Player API
 
 The verbs offered by the Flutter Sound Player module are :
 
 - [Default constructor](player.md#creating-the-player-instance)
 - [openAudioSession() and closeAudioSession()](player.md#openAudioSession-and-closeAudioSession) to open or close and audio session
-- [setAudioFocus()](player.md#openAudioSession-and-closeAudioSession) to manage the session Audio Focus
+- [setAudioFocus()](player.md#setaudiofocus) to manage the session Audio Focus
 - [startPlayer()](player.md#startplayer) to play an audio file
 - [startPlayerFromBuffer](player.md#startplayerfrombuffer) to play data from an App buffer
 - [stopPlayer()](player.md#stopplayer) to stop a current playback
-- `pausePlayer()` to pause the current playback
-- `resumePlayer()` to resume a paused playback
-- `seekPlayer()` to position directely inside the current playback
-- `setVolume()` to adjust the ouput volume
-- `playerState`, `isPlaying`, `isPaused`, `isStopped` to know the current player status
-- isDecoderSupported() to know if a specific codec is supported on the current platform.
-- `iosSetCategory()`, `androidAudioFocusRequest()` and `setActive()` to parameter the Session Audio Focus
-- setSubscriptionDuration to specify the frequence of your subscription
+- [pausePlayer()](player.md#pauseplayer) to pause the current playback
+- [resumePlayer()](player.md#resumeplayer) to resume a paused playback
+- [seekPlayer()](player.md#seekplayer) to position directely inside the current playback
+- [setVolume()](player.md#setvolume) to adjust the ouput volume
+- [playerState, isPlaying, isPaused, isStopped](player.md#playerstate-isplaying-ispaused-isstopped) to know the current player status
+- [isDecoderSupported()](player.md#isdecodersupported) to know if a specific codec is supported on the current platform.
+- [setSubscriptionDuration()](player.md#setting-subscription-duration---optional) to specify the frequence of your subscription
+- [iosSetCategory(), androidAudioFocusRequest()](player.md#iossetcategory-androidaudiofocusrequest---optional) to parameter the Session Audio Focus
 
 -------------------------------------------------------------------------------------------------------------------
 
@@ -346,7 +350,7 @@ Return a Future<bool>.
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
-## Setting subscription duration (Optional). 0.010 is default value when not set.
+## Setting subscription duration - (Optional)
 
 *Dart definition (prototype) :*
 ```
@@ -372,7 +376,7 @@ Future<bool> iosSetCategory( SessionCategory category, SessionMode mode, int opt
 Future<bool> androidAudioFocusRequest(int focusGain)
 ```
 
-Those two verbs are OS specific. They are used if your App need to have fine control on the OS.
+Those two verbs are OS specific. They are used if your App needs to have fine control on the OS.
 
 You can refer to [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosession/1771734-setcategory) to understand the parameters needed for `iosSetCategory()` and to the [Android documentation](https://developer.android.com/reference/android/media/AudioFocusRequest) to understand the parameter needed for `androidAudioFocusRequest()`.
 
@@ -397,3 +401,4 @@ if (_duckOthers)
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
+[Back to the README](../README.md#flutter-sound-api)

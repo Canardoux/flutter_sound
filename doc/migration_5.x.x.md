@@ -1,3 +1,7 @@
+[Back to the README](../README.md#migration-guides)
+
+-----------------------------------------------------------------------------------------------------------------------
+
 # Migration form 4.x.x to 5.x.x
 
 Several changes are necessary to migrate from 4.x.x :
