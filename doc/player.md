@@ -3,8 +3,8 @@
 The verbs offered by the Flutter Sound Player module are :
 
 - [Default constructor](player.md#creating-the-player-instance)
-- [initialize() and release()](player.md#initialize-and-release) to open or close and audio session
-- [setAudioFocus()](player.md#initialize-and-release) to manage the session Audio Focus
+- [openAudioSession() and closeAudioSession()](player.md#openAudioSession-and-closeAudioSession) to open or close and audio session
+- [setAudioFocus()](player.md#openAudioSession-and-closeAudioSession) to manage the session Audio Focus
 - [startPlayer()](player.md#startplayer) to play an audio file
 - [startPlayerFromBuffer](player.md#startplayerfrombuffer) to play data from an App buffer
 - [stopPlayer()](player.md#stopplayer) to stop a current playback
@@ -13,6 +13,7 @@ The verbs offered by the Flutter Sound Player module are :
 - `seekPlayer()` to position directely inside the current playback
 - `setVolume()` to adjust the ouput volume
 - `playerState`, `isPlaying`, `isPaused`, `isStopped` to know the current player status
+- isDecoderSupported() to know if a specific codec is supported on the current platform.
 - `iosSetCategory()`, `androidAudioFocusRequest()` and `setActive()` to parameter the Session Audio Focus
 - setSubscriptionDuration to specify the frequence of your subscription
 
@@ -34,29 +35,29 @@ myPlayer = FlutterSoundPlayer();
 
 --------------------------------------------------------------------------------------------------------------------
 
-## `initialize()` and `release()`
+## `openAudioSession()` and `closeAudioSession()`
 
 *Dart definition (prototype) :*
 ```
-Future<FlutterSoundPlayer> initialize({Focus focus})
-Future<void> release()
+Future<FlutterSoundPlayer> openAudioSession({Focus focus})
+Future<void> closeAudioSession()
 ```
 
-A player must be *initialized* before used. A player correspond to an Audio Session. With other words, you must *open* the Audio Session before using it.
-When you have finished with a Player, you must release it. With other words, you must close your Audio Session.
-Initializing a player takes resources inside the OS. Those resources are freed with the verb `release()`.
+A player must be opened before used. A player correspond to an Audio Session. With other words, you must *open* the Audio Session before using it.
+When you have finished with a Player, you must close it. With other words, you must close your Audio Session.
+Initializing a player takes resources inside the OS. Those resources are freed with the verb `closeAudioSession()`.
 
-An optional parameter can be specified during the initialization : the Audio Focus.
+An optional parameter can be specified during the opening : the Audio Focus.
 This parameter can have the following values :
 - Focus.requestFocusAndStopOthers (your app will have **exclusive use** of the output audio)
 - Focus.requestFocusAndDuckOthers (if another App like Spotify use the output audio, its volume will be **lowered**)
 - Focus.requestFocusAndKeepOthers (your App will play sound **above** others App)
 - Focus.doNotRequestFocus (useful if you want to mangage yourself the Audio Focus with the verb ```setAudioFocus()```)
 
-The Audio Focus is abandoned when you `release()` your player. If your App must play several sounds, you will probably initialize your player just once, and release it when you have finished the last one. If you close and reopen an Audio Session for each sound, you will probably get unpleasant things for the ears with the Audio Focus.
+The Audio Focus is abandoned when you `closeAudioSession()` your player. If your App must play several sounds, you will probably openAudioSession() your player just once, and closeAudioSession() it when you have finished the last sound. If you close and reopen an Audio Session for each sound, you will probably get unpleasant things for the ears with the Audio Focus.
 
-You MUST ensure that the player has been released when your widget is detached from the ui.
-Overload your widget's `dispose()` method to release the player when your widget is disposed.
+You MUST ensure that the player has been closeAudioSessiond() when your widget is detached from the ui.
+Overload your widget's `dispose()` method to closeAudioSession the player when your widget is disposed.
 In this way you will reset the player and clean up the device resources, but the player will be no longer usable.
 
 ```dart
@@ -65,34 +66,34 @@ void dispose()
 {
         if (myPlayer != null)
         {
-            myPlayer.release();
+            myPlayer.closeAudioSession();
             myPlayer = null;
         }
         super.dispose();
 }
 ```
 
-You maynot initialize many players without releasing them.
+You maynot openAudioSession many players without releasing them.
 You will be very bad if you try something like :
 ```dart
     while (aCondition)  // *DO'NT DO THAT*
     {
-            flutterSound = FlutterSoundPlayer().initialize(); // A **new** Flutter Sound instance is created and initialize
+            flutterSound = FlutterSoundPlayer().openAudioSession(); // A **new** Flutter Sound instance is created and openAudioSession
             flutterSound.startPlayer(bipSound);
     }
 ```
 
-`initialize()` and `release()` return Futures. You may not use your Player before the end of the initialization. So probably you will `await` the result of `initialize()`. This result is the Player itself, so that you can collapse instanciation and initialization together with `player = await FlutterSoundPlayer().initialize();`
+`openAudioSession()` and `closeAudioSession()` return Futures. You may not use your Player before the end of the initialization. So probably you will `await` the result of `openAudioSession()`. This result is the Player itself, so that you can collapse instanciation and initialization together with `player = await FlutterSoundPlayer().openAudioSession();`
 
 *Example:*
 ```dart
-    myPlayer = await FlutterSoundPlayer().initialize(focus: Focus.requestFocusAndDuckOthers);
+    myPlayer = await FlutterSoundPlayer().openAudioSession(focus: Focus.requestFocusAndDuckOthers);
 
     ...
     (do something with myPlayer)
     ...
 
-    myPlayer.release();
+    myPlayer.closeAudioSession();
     myPlayer = null;
 ```
 
@@ -130,7 +131,7 @@ You can use both `startPlayer` or `startPlayerFromBuffer` to play a sound. The f
 
 Those two functions can have two optional parameters :
 
-- `codec:` for specifying the audio and file format of the file.
+- `codec:` for specifying the audio and file format of the file. Please refer tohe [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
 - `whenFinished:()` : A lambda function for specifying what to do when the playback will be finished.
 
 Very often, the `codec:` parameter is not useful. Flutter Sound will adapt itself depending on the real format of the file provided.
@@ -154,7 +155,6 @@ to ensure that the player has fully initialised.
 
 *Example:*
 ```dart
-    // An example audio file
     final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
 
     await flutterSoundPlayer.startPlayer
@@ -204,63 +204,87 @@ The only real distinction is that the parameter is an `Uint8List` data buffer in
 
 ## `stopPlayer()`
 
-```dart
-Future<String> result = await flutterSoundPlayer.stopPlayer();
+*Dart definition (prototype) :*
+```
+Future<void> stopPlayer( )
+```
 
-result.then(value) {
-        print('stopPlayer: $result');
+Use this verb to stop a playback. This verb never throw any exception. It is safe to call it everywhere,
+for example when the App is not sure of the current Audio State and want to recover a clean reset state.
+
+
+*Example:*
+```dart
+        await flutterSoundPlayer.stopPlayer();
         if (_playerSubscription != null) {
                 _playerSubscription.cancel();
                 _playerSubscription = null;
         }
-}
 ```
 
-You MUST ensure that the player has been stopped when your widget is detached from the ui.
-Overload your widget's dispose() method to stop the player when your widget is disposed.
 
-```dart
-@override
-void dispose() {
-        flutterSoundPlayer.release();
-        super.dispose();
-}
-```
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
 ## `pausePlayer()`
 
+*Dart definition (prototype) :*
+```
+Future<void> pausePlayer( )
+```
+
+Use this verbe to pause the current playback. An exception is thrown if the player is not in the "playing" state.
+
+*Example:*
 ```dart
-Future<String> result = await flutterSoundPlayer.pausePlayer();
+await flutterSoundPlayer.pausePlayer();
 ```
 
 --------------------------------------------------------------------------------------------------------------------------------
 
 ## `resumePlayer()`
 
+*Dart definition (prototype) :*
+```
+Future<void> resumePlayer( )
+```
+
+Use this verbe to resume the current playback. An exception is thrown if the player is not in the "paused" state.
+
+*Example:*
 ```dart
-Future<String> result = await flutterSoundPlayer.resumePlayer();
+await flutterSoundPlayer.resumePlayer();
 ```
 
 -------------------------------------------------------------------------------------------------------------------------------
 ## `seekPlayer()`
 
+*Dart definition (prototype) :*
+```
+Future<void> seekPlayer( int milisec )
+```
 
-To seek to a new location the player must already be playing.
+To seek to a new location. The player must already be playing. If not, an exception is thrown.
 
+*Example:*
 ```dart
-String Future<result> = await flutterSoundPlayer.seekToPlayer(miliSecs);
+await flutterSoundPlayer.seekToPlayer(miliSecs);
 ```
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
 ## `setVolume()`
 
+*Dart definition (prototype) :*
+```
+Future<void> setVolume( double volume )
+```
+
+The parameter is a floating point number between 0 and 1.
+Volume can be changed when player is running. Try manage this right after player starts.
+
+*Example:*
 ```dart
-/// 1.0 is default
-/// Currently, volume can be changed when player is running. Try manage this right after player starts.
-String path = await flutterSoundPlayer.startPlayer(fileUri);
 await flutterSoundPlayer.setVolume(0.1);
 ```
 
@@ -268,50 +292,107 @@ await flutterSoundPlayer.setVolume(0.1);
 
 ## `playerState`, `isPlaying`, `isPaused`, `isStopped`
 
--------------------------------------------------------------------------------------------------------------------------------
+*Dart definition (prototype) :*
+```
+    PlayerState playerState;
+    bool get isPlaying => playerState == PlayerState.isPlaying;
+    bool get isPaused => playerState == PlayerState.isPaused;
+    bool get isStopped => playerState == PlayerState.isStopped;
+```
 
-## `iosSetCategory()`, `androidAudioFocusRequest()` and `setActive()` - (optional)
+This four verbs is used when the app wants to get the current Audio State of the player.
 
-Those three functions are optional. If you do not control the audio focus with the function `setActive()`, flutter_sound will require the audio focus each time the function `startPlayer()` is called and will release it when the sound is finished or when you call the function `stopPlayer()`.
+`playerState` is an attribut which can have the following values :
 
-Before controling the focus with `setActive()` you must call `iosSetCategory()` on iOS or `androidAudioFocusRequest()` on Android. `setActive()` and `androidAudioFocusRequest()` are useful if you want to `duck others`.
-Those functions are probably called just once when the app starts.
-After calling this function, the caller is responsible for using correctly `setActive()`
-probably before startRecorder or startPlayer, and stopPlayer and stopRecorder.
+  - isStopped   /// Player is stopped
+  - isPlaying   /// Player is playing
+  - isPaused    /// Player is paused
 
-You can refer to [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosession/1771734-setcategory) to understand the parameters needed for `iosSetCategory()` and to the [Android documentation](https://developer.android.com/reference/android/media/AudioFocusRequest) to understand the parameter needed for `androidAudioFocusRequest()`.
+- isPlaying is a boolean attribut which is `true` when the player is in the "Playing" mode.
+- isPaused is a boolean atrribut which  is `true` when the player is in the "Paused" mode.
+- isStopped is a boolean atrribut which  is `true` when the player is in the "Stopped" mode.
 
-Remark : those three functions does work on Android before SDK 26.
-
+*Example:*
 ```dart
-if (_duckOthers)
-{
-        if (Platform.isIOS)
-                await flutterSoundPlayer.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DUCK_OTHERS |  IOS_DEFAULT_TO_SPEAKER );
-        else if (Platform.isAndroid)
-                await flutterSoundPlayer.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK );
-} else
-{
-        if (Platform.isIOS)
-                await flutterSoundPlayer.iosSetCategory( t_IOS_SESSION_CATEGORY.PLAY_AND_RECORD, t_IOS_SESSION_MODE.DEFAULT, IOS_DEFAULT_TO_SPEAKER );
-        else if (Platform.isAndroid)
-                await flutterSoundPlayer.androidAudioFocusRequest( ANDROID_AUDIOFOCUS_GAIN );
-}
-...
-...
-flutterSoundPlayer.setActive(true); // Get the audio focus
-flutterSoundPlayer.startPlayer(aSound);
-flutterSoundPlayer.startPlayer(anotherSong);
-flutterSoundPlayer.setActive(false); // Release the audio focus
+        swtich(flutterSoundPlayer.playerState)
+        {
+                case PlayerState.isPlaying: doSomething; break;
+                case PlayerState.isStopped: doSomething; break;
+                case PlayerState.isPaused: doSomething; break;
+        }
+        ...
+        if (flutterSoundPlayer.isStopped) doSomething;
+        if (flutterSoundPlayer.isPlaying) doSomething;
+        if (flutterSoundPlayer.isPaused) doSomething;
+
+```
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+## isDecoderSupported()
+
+*Dart definition (prototype) :*
+```
+ Future<bool> isDecoderSupported(Codec codec)
+```
+
+This verb is useful to know if a particular codec is supported on the current platform;
+Return a Future<bool>.
+
+*Example:*
+```dart
+        if ( await flutterSoundPlayer.isDecoderSupported(Codec.opusOGG) ) doSomething;
 ```
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
 ## Setting subscription duration (Optional). 0.010 is default value when not set.
 
+*Dart definition (prototype) :*
+```
+
+Future<String> setSubscriptionDuration(double sec)
+```
+
+This verb is used to change the default interval between two post on the "Update Progress" stream. (The default interval is 10ms)
+
+*Example:*
 ```dart
-/// 0.01 is default
+/// 0.010s. is default
 flutterSoundPlayer.setSubscriptionDuration(0.01);
+```
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+## `iosSetCategory()`, `androidAudioFocusRequest()` - (optional)
+
+*Dart definition (prototype) :*
+```
+Future<bool> iosSetCategory( SessionCategory category, SessionMode mode, int options )
+Future<bool> androidAudioFocusRequest(int focusGain)
+```
+
+Those two verbs are OS specific. They are used if your App need to have fine control on the OS.
+
+You can refer to [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosession/1771734-setcategory) to understand the parameters needed for `iosSetCategory()` and to the [Android documentation](https://developer.android.com/reference/android/media/AudioFocusRequest) to understand the parameter needed for `androidAudioFocusRequest()`.
+
+Remark : `androidAudioFocusRequest` does work on Android before SDK 26.
+
+*Example:*
+```dart
+if (_duckOthers)
+{
+        if (Platform.isIOS)
+                await flutterSoundPlayer.iosSetCategory( SessionCategory.playAndRecord, SessionMode.defaultSessionMode, iosDuckOthers |  iosDefaultToSpeaker );
+        else if (Platform.isAndroid)
+                await flutterSoundPlayer.androidAudioFocusRequest( audioFocusGainTransientMayDuck );
+} else
+{
+        if (Platform.isIOS)
+                await flutterSoundPlayer.iosSetCategory( SessionCategory.playAndRecord, SessionMode.defaultSessionMode, iosDefaultToSpeaker );
+        else if (Platform.isAndroid)
+                await flutterSoundPlayer.androidAudioFocusRequest( audioFocusGain );
+}
 ```
 
 ---------------------------------------------------------------------------------------------------------------------------------

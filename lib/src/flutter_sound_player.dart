@@ -28,10 +28,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
 enum PlayerState {
-  isStopped,
-
   /// Player is stopped
+  isStopped,
+  /// Player is playing
   isPlaying,
+  /// Player is paused
   isPaused,
 }
 

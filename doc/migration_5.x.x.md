@@ -71,7 +71,10 @@ This `NULL` parameter sent when the Recorder or the Player was closed was ugly, 
 
 The Audio Focus is just abandoned automaticaly when the App does a ```release()```
 
-## The ancient verb `setActive` is now replaced by `setAudioFocus`
+## Some verbs are renamed :
+
+- The ancient verb `setActive` is now replaced by `setAudioFocus`
+- `initialized()` and `release()` are rename `openAudioSession()` and `closeAudioSession()`)
 
 -----------------------------------------------------------------------------------------------------------------------------
 
