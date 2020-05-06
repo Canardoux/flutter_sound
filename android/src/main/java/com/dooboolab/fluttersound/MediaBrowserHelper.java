@@ -120,7 +120,6 @@ public class MediaBrowserHelper
 	{
 		mServiceConnectionSuccessCallback      = serviceSuccessConnectionCallback;
 		mServiceConnectionUnsuccessfulCallback = serviceUnsuccConnectionCallback;
-		//////backgroundAudioService = new BackgroundAudioService ();
 		initMediaBrowser();
 	}
 

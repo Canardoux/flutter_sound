@@ -648,7 +648,7 @@ class _MyAppState extends State<MyApp> {
     if (playerModule == null)
       return null;
 
-    if ( (!playerModule.isStopped) || (recorderModule.isStopped) )
+    if ( (!playerModule.isStopped) || (!recorderModule.isStopped) )
       return null;
     return ((newVal) async {
       try {
