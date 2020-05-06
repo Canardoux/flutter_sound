@@ -553,10 +553,10 @@ public class TrackPlayer extends FlutterSoundPlayer
 			if ( mIsSuccessfulCallback )
 			{
 				//mResult.success( "The media player has been successfully initialized" );
-				invokeMethodWithBoolean("onConnected", true);
+				invokeMethodWithBoolean("onPlayerReady", true);
 			} else
 			{
-				invokeMethodWithBoolean("onConnected", false);
+				invokeMethodWithBoolean("onPlayerReady", false);
 				//mResult.error( TAG, "An error occurred while initializing the media player", null );
 			}
 			return null;
