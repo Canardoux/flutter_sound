@@ -43,12 +43,12 @@ class Audio {
   String toString() {
     var desc = 'Codec: $codec';
     if (_onDisk) {
-      desc += _storagePath;
+      desc += 'storage: $_storagePath';
     }
 
     if (url != null) desc += ' url: $url';
     if (path != null) desc += ' path: $path';
-    if (_dataBuffer != null) desc += 'buffer len: ${_dataBuffer.length}';
+    if (_dataBuffer != null) desc += ' buffer len: ${_dataBuffer.length}';
 
     return desc;
   }
