@@ -23,10 +23,10 @@ class TrackPlayer {
         playInBackground: playInBackground);
   }
 
-  /// initialise the TrackPlayer.
-  /// You do not need to call this as the player auto initialises itself
-  /// and in fact has to re-initialise its self after an app pause.
-  void initialise() {
+  /// initialize the TrackPlayer.
+  /// You do not need to call this as the player auto initializes itself
+  /// and in fact has to re-initialize its self after an app pause.
+  void initialize() {
     // NOOP - as its not required but apparently wanted.
   }
 

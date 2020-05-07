@@ -121,7 +121,7 @@ class AudioPlayer implements SlotEntry {
   Future<bool> _playerReady;
 
   /// When we do a [_softRelease] we need to flag that the plugin
-  /// needs to be re-initialised so we set this to true.
+  /// needs to be re-initialized so we set this to true.
   /// Its also true on construction to force the initial initialisation.
   bool _pluginInitRequired = true;
 
@@ -218,13 +218,13 @@ class AudioPlayer implements SlotEntry {
     });
   }
 
-  /// Initialises the plugin
+  /// initializes the plugin
   ///
   /// This will be called multiple times in the life cycle
   /// of a [AudioPlayer] as we release the plugin
   /// each time we stop the player.
   ///
-  Future<R> _initialiseAndRun<R>(Future<R> Function() run) async {
+  Future<R> _initializeAndRun<R>(Future<R> Function() run) async {
     if (_pluginInitRequired) {
       _pluginInitRequired = false;
 
@@ -237,7 +237,7 @@ class AudioPlayer implements SlotEntry {
 
       /// The plugin will call [onPlayerReady] which completes
       /// the intialisation.
-      await _plugin.initialisePlayer(this);
+      await _plugin.initializePlayer(this);
 
       _setSubscriptionDuration(Duration(milliseconds: 100));
 
@@ -263,7 +263,7 @@ class AudioPlayer implements SlotEntry {
       throw PlayerInvalidStateException(
           "The player is no longer registered. Did you call release() twice?");
     }
-    return _initialiseAndRun(() async {
+    return _initializeAndRun(() async {
       _closeDispositionStream();
       await _softRelease();
       await _plugin.release(this);
@@ -292,7 +292,7 @@ class AudioPlayer implements SlotEntry {
 
       _playerReady = null;
 
-      /// the plugin is in an initialised state
+      /// the plugin is in an initialized state
       /// so we need to release it.
       await _plugin.releasePlayer(this);
     }
@@ -322,7 +322,7 @@ class AudioPlayer implements SlotEntry {
 
     _currentPosition = Duration.zero;
 
-    return _initialiseAndRun<void>(() async {
+    return _initializeAndRun<void>(() async {
       _track = track;
 
       // Check the current codec is supported on this platform
@@ -374,7 +374,7 @@ class AudioPlayer implements SlotEntry {
       throw PlayerInvalidStateException('Player is not playing.');
     }
 
-    return _initialiseAndRun(() async {
+    return _initializeAndRun(() async {
       try {
         playerState = PlayerState.isStopped;
         if (_onStopped != null) _onStopped(wasUser: false);
@@ -393,7 +393,7 @@ class AudioPlayer implements SlotEntry {
       throw PlayerInvalidStateException('Player is not playing.');
     }
 
-    return _initialiseAndRun(() async {
+    return _initializeAndRun(() async {
       playerState = PlayerState.isPaused;
       await _plugin.pause(this);
       if (_onPaused != null) _onPaused(wasUser: false);
@@ -408,7 +408,7 @@ class AudioPlayer implements SlotEntry {
       throw PlayerInvalidStateException('Player is not paused.');
     }
 
-    return _initialiseAndRun(() async {
+    return _initializeAndRun(() async {
       playerState = PlayerState.isPlaying;
       await _plugin.resume(this);
       if (_onResumed != null) _onResumed(wasUser: false);
@@ -424,7 +424,7 @@ class AudioPlayer implements SlotEntry {
   /// [play] we will start playing the recording from the [position]
   /// passed to [seekTo].
   Future<void> seekTo(Duration position) async {
-    return _initialiseAndRun(() async {
+    return _initializeAndRun(() async {
       if (!isPlaying) {
         _seekTo = position;
       } else {
@@ -445,7 +445,7 @@ class AudioPlayer implements SlotEntry {
   /// Sets the playback volume
   /// The [volume] must be in the range 0.0 to 1.0.
   Future<void> setVolume(double volume) async {
-    return _initialiseAndRun(() async {
+    return _initializeAndRun(() async {
       await _plugin.setVolume(this, volume);
     });
   }
@@ -511,7 +511,7 @@ class AudioPlayer implements SlotEntry {
   }
 
   Future<void> _setSubscriptionDuration(Duration interval) async {
-    return _initialiseAndRun(() async {
+    return _initializeAndRun(() async {
       assert(interval.inMilliseconds > 0);
       await _plugin.setSubscriptionDuration(this, interval);
     });
@@ -718,7 +718,7 @@ class AudioPlayer implements SlotEntry {
   /// Returns true if the specified decoder is supported
   ///  by flutter_sound on this platform
   Future<bool> isSupported(Codec codec) async {
-    return _initialiseAndRun<bool>(() async {
+    return _initializeAndRun<bool>(() async {
       // For decoding ogg/opus on ios, we need to support two steps :
       // - remux OGG file format to CAF file format (with ffmpeg)
       // - decode CAF/OPPUS (with native Apple AVFoundation)
@@ -755,7 +755,7 @@ class AudioPlayer implements SlotEntry {
   ///
   Future<bool> iosSetCategory(
       IOSSessionCategory category, IOSSessionMode mode, int options) async {
-    return _initialiseAndRun<bool>(() async {
+    return _initializeAndRun<bool>(() async {
       return await _plugin.iosSetCategory(this, category, mode, options);
     });
   }
@@ -764,7 +764,7 @@ class AudioPlayer implements SlotEntry {
   /// Depending on your configuration this will either make
   /// this player the loudest stream or it will silence all other stream.
   Future<void> audioFocus(AudioFocus mode) async {
-    return _initialiseAndRun(() async {
+    return _initializeAndRun(() async {
       switch (mode) {
         case AudioFocus.focusAndKeepOthers:
           await _plugin.audioFocus(this, request: true);
@@ -823,7 +823,7 @@ class AudioPlayer implements SlotEntry {
   ///
 
   Future<bool> _androidFocusRequest(int focusGain) async {
-    return _initialiseAndRun<bool>(() async {
+    return _initializeAndRun<bool>(() async {
       return await _plugin.androidFocusRequest(this, focusGain);
     });
   }

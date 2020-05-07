@@ -38,8 +38,8 @@ abstract class PlayerBasePlugin extends BasePlugin {
   /// Over load this method to play audio.
   Future<void> play(audio_player.AudioPlayer player, Track track);
 
-  /// Each Player must be initialised and registered.
-  void initialisePlayer(SlotEntry player) async {
+  /// Each Player must be initialized and registered.
+  void initializePlayer(SlotEntry player) async {
     await invokeMethod(player, 'initializeMediaPlayer', <String, dynamic>{});
   }
 

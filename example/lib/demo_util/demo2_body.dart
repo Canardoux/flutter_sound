@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -28,18 +27,18 @@ class MainBody extends StatefulWidget {
 class _MainBodyState extends State<MainBody> {
   bool _useOSUI = false;
 
-  bool initialised = false;
+  bool initialized = false;
 
   Future<bool> init() async {
-    if (!initialised) {
+    if (!initialized) {
       await initializeDateFormatting();
       await RecorderState().init();
       ActiveCodec().recorderModule = RecorderState().recorderModule;
       await ActiveCodec().setCodec(_useOSUI, Codec.aacADTS);
 
-      initialised = true;
+      initialized = true;
     }
-    return initialised;
+    return initialized;
   }
 
   @override

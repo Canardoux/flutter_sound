@@ -22,7 +22,7 @@ void main() {
 // 	..onFinished => player.release();
 // 	..play();
 /*
-  var isInitialised = false;
+  var isinitialized = false;
   var isReleased = false;
   double subscriptionDuration;
   double volume;
@@ -34,7 +34,7 @@ void main() {
       log.add(methodCall);
       switch (methodCall.method) {
         case 'initializeMediaPlayer':
-          isInitialised = true;
+          isinitialized = true;
           return "Flauto Player Initialized";
 
         case 'releaseMediaPlayer':
@@ -54,7 +54,7 @@ void main() {
           break;
 
         case "resumePlayer":
-          if (!isInitialised) {
+          if (!isinitialized) {
             // result.error(
             //     "ERR_PLAYER_IS_NULL", "resumePlayer", ERR_PLAYER_IS_NULL);
           }

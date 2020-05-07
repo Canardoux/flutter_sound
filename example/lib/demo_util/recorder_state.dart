@@ -34,7 +34,7 @@ class RecorderState {
   /// [true] if we are recording but currently paused.
   bool get isPaused => recorderModule != null && recorderModule.isPaused;
 
-  /// required to initialise the recording subsystem.
+  /// required to initialize the recording subsystem.
   void init() async {
     ActiveCodec().recorderModule = recorderModule;
   }

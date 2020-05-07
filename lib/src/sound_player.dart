@@ -15,10 +15,10 @@ class SoundPlayer {
     _player = AudioPlayer.noUI(playInBackground: playInBackground);
   }
 
-  /// initialise the SoundPlayer.
-  /// You do not need to call this as the player auto initialises itself
-  /// and in fact has to re-initialise its self after an app pause.
-  void initialise() {
+  /// initialize the SoundPlayer.
+  /// You do not need to call this as the player auto initializes itself
+  /// and in fact has to re-initialize its self after an app pause.
+  void initialize() {
     // NOOP - as its not required but apparently wanted.
   }
 
@@ -82,9 +82,6 @@ class SoundPlayer {
   Future<void> audioFocus(AudioFocus mode) async {
     return _player.audioFocus(mode);
   }
-
-
-
 
   /// [true] if the player is currently playing audio
   bool get isPlaying => _player.isPlaying;

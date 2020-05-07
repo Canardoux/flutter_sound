@@ -45,7 +45,7 @@ class SoundRecorderPlugin extends BasePlugin {
       : super('com.dooboolab.flutter_sound_recorder', _slots);
 
   ///
-  void initialiseRecorder(
+  void initializeRecorder(
       covariant sound_recorder.SoundRecorder recorder) async {
     await invokeMethod(
         recorder, 'initializeFlautoRecorder', <String, dynamic>{});

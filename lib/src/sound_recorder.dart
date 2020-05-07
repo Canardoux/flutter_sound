@@ -107,7 +107,7 @@ class SoundRecorder implements SlotEntry {
   Future<bool> _recorderReady;
 
   /// When we do a [_softRelease] we need to flag that the plugin
-  /// needs to be re-initialised so we set this to true.
+  /// needs to be re-initialized so we set this to true.
   /// Its also true on construction to force the initial initialisation.
   bool _pluginInitRequired = true;
 
@@ -129,10 +129,10 @@ class SoundRecorder implements SlotEntry {
     _commonInit();
   }
 
-  /// initialise the SoundRecorder
-  /// You do not need to call this as the recorder auto initialises itself
-  /// and in fact has to re-initialise its self after an app pause.
-  void initialise() {
+  /// initialize the SoundRecorder
+  /// You do not need to call this as the recorder auto initializes itself
+  /// and in fact has to re-initialize its self after an app pause.
+  void initialize() {
     // NOOP - as its not required but apparently wanted.
   }
 
@@ -145,7 +145,7 @@ class SoundRecorder implements SlotEntry {
     _recorderReady = _recorderReadyCompletion.future;
   }
 
-  Future<R> _initialiseAndRun<R>(Future<R> Function() run) async {
+  Future<R> _initializeAndRun<R>(Future<R> Function() run) async {
     if (_pluginInitRequired) {
       _pluginInitRequired = false;
 
@@ -156,7 +156,7 @@ class SoundRecorder implements SlotEntry {
       _recorderReady = _recorderReadyCompletion.future
           .timeout(Duration(seconds: 5), onTimeout: () => Future.value(false));
 
-      await _plugin.initialiseRecorder(this);
+      await _plugin.initializeRecorder(this);
 
       /// This is a fake invocation of onRecorderReady until
       /// we can change the OS native code to send us an
@@ -183,7 +183,7 @@ class SoundRecorder implements SlotEntry {
           'The recorder is no longer registered. '
           'Did you call release() twice?');
     }
-    return _initialiseAndRun(() async {
+    return _initializeAndRun(() async {
       _dispositionManager.release();
       await _softRelease();
       _recordingTrack.release();
@@ -207,14 +207,14 @@ class SoundRecorder implements SlotEntry {
 
       _recorderReady = null;
 
-      /// the plugin is in an initialised state
+      /// the plugin is in an initialized state
       /// so we need to release it.
       await _plugin.releaseRecorder(this);
     }
   }
 
   /// Future indicating if initialisation has completed.
-  Future<bool> get initialised => _recorderReady;
+  Future<bool> get initialized => _recorderReady;
 
   /// callback occurs when the OS Recorder completes initialisatin.
   /// TODO: implement the _onRecorderReady event from
@@ -283,7 +283,7 @@ class SoundRecorder implements SlotEntry {
       throw exception;
     }
 
-    _initialiseAndRun(() async {
+    _initializeAndRun(() async {
       _recordingTrack = RecordingTrack(track);
 
       /// Throws an exception if the path isn't valid.
@@ -345,14 +345,14 @@ class SoundRecorder implements SlotEntry {
   /// Set the [interval] to control the time between each
   /// event. [interval] defaults to 10ms.
   Stream<RecordingDisposition> dispositionStream(
-              {Duration interval = const Duration(milliseconds: 10)}) {
+      {Duration interval = const Duration(milliseconds: 10)}) {
     return _dispositionManager.stream(interval: interval);
   }
 
   /// Returns true if the specified encoder is supported by
   /// flutter_sound on this platform
   Future<bool> isSupported(Codec codec) async {
-    return _initialiseAndRun<bool>(() async {
+    return _initializeAndRun<bool>(() async {
       // For encoding ogg/opus on ios, we need to support two steps :
       // - encode CAF/OPPUS (with native Apple AVFoundation)
       // - remux CAF file format to OPUS file format (with ffmpeg)
@@ -376,7 +376,7 @@ class SoundRecorder implements SlotEntry {
           "You cannot stop recording when the recorder is not running.");
     }
 
-    await _initialiseAndRun(() async {
+    await _initializeAndRun(() async {
       await _plugin.stop(this);
 
       _recorderState = _RecorderState.isStopped;
@@ -396,7 +396,7 @@ class SoundRecorder implements SlotEntry {
           "You cannot pause recording when the recorder is not running.");
     }
 
-    _initialiseAndRun(() async {
+    _initializeAndRun(() async {
       await _plugin.pause(this);
       _pauseStarted = DateTime.now();
       _recorderState = _RecorderState.isPaused;
@@ -413,7 +413,7 @@ class SoundRecorder implements SlotEntry {
           "You cannot resume recording when the recorder is not paused.");
     }
 
-    await _initialiseAndRun(() async {
+    await _initializeAndRun(() async {
       _timePaused += (DateTime.now().difference(_pauseStarted));
 
       try {
@@ -432,7 +432,7 @@ class SoundRecorder implements SlotEntry {
   /// duration listeners.
   /// The default is every 10 milliseconds.
   Future<void> _setSubscriptionInterval(Duration interval) async {
-    await _initialiseAndRun(() async {
+    await _initializeAndRun(() async {
       await _plugin.setSubscriptionDuration(this, interval);
     });
   }
@@ -455,14 +455,14 @@ class SoundRecorder implements SlotEntry {
   /// Defines the interval at which the peak level should be updated.
   /// Default is 0.8 seconds
   Future<void> _setDbPeakLevelUpdateInterval(Duration interval) async {
-    await _initialiseAndRun(() async {
+    await _initializeAndRun(() async {
       await _plugin.setDbPeakLevelUpdate(this, interval);
     });
   }
 
   /// Enables or disables processing the Peak level in db's. Default is disabled
   Future<void> _setDbLevelEnabled({bool enabled}) async {
-    await _initialiseAndRun(() async {
+    await _initializeAndRun(() async {
       await _plugin.setDbLevelEnabled(this, enabled: enabled);
     });
   }
@@ -470,7 +470,7 @@ class SoundRecorder implements SlotEntry {
   /// Called by the plugin to notify us of the current Db Level of the
   /// recording.
   void _updateDbPeakDisposition(double decibels) async {
-    await _initialiseAndRun(() async {
+    await _initializeAndRun(() async {
       _dispositionManager.updateDbPeakDisposition(decibels);
     });
   }

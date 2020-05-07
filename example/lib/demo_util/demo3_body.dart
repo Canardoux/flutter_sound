@@ -24,7 +24,7 @@ class MainBody extends StatefulWidget {
 }
 
 class _MainBodyState extends State<MainBody> {
-  bool initialised = false;
+  bool initialized = false;
 
   String recordingFile;
   Track track;
@@ -39,15 +39,15 @@ class _MainBodyState extends State<MainBody> {
   }
 
   Future<bool> init() async {
-    if (!initialised) {
+    if (!initialized) {
       await initializeDateFormatting();
       await RecorderState().init();
       ActiveCodec().recorderModule = RecorderState().recorderModule;
       await ActiveCodec().setCodec(false, Codec.aacADTS);
 
-      initialised = true;
+      initialized = true;
     }
-    return initialised;
+    return initialized;
   }
 
   void dispose() {
