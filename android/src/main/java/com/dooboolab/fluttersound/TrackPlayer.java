@@ -91,6 +91,7 @@ class TrackPlayerPlugin
 	public static void attachTrackPlayer( Context ctx, BinaryMessenger messenger )
 	{
 		assert ( flautoPlayerPlugin == null );
+		
 		trackPlayerPlugin = new TrackPlayerPlugin();
 		assert ( slots == null );
 		slots   = new ArrayList<FlutterSoundPlayer>();
@@ -122,11 +123,17 @@ class TrackPlayerPlugin
 	public void onMethodCall( final MethodCall call, final Result result )
 	{
 		int slotNo = call.argument ( "slotNo" );
-		assert ( ( slotNo >= 0 ) && ( slotNo <= slots.size () ) );
-
-		if ( slotNo == slots.size () )
-		{
-			slots.add ( slotNo, null );
+		Log.d(TAG, "onMethodCall called: " + call.method + " for slot: " + slotNo);
+		
+		// The dart code supports lazy initialization of players.
+		// This means that players can be registered (and slots allocated)
+		// on the client side in a different order to which the players
+		// are initialised.
+		// As such we need to grow the slot array upto the
+		// requested slot no. even if we haven't seen initialisation
+		// for the lower numbered slots.
+		while (slotNo >= slots.size()) {
+			slots.add(null);
 		}
 
 		TrackPlayer aPlayer = (TrackPlayer)slots.get ( slotNo );
@@ -298,6 +305,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 			}
 			catch ( Exception e )
 			{
+				Log.e(TAG, e.getMessage(), e);
 				result.error( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage() );
 				return;
 			}
