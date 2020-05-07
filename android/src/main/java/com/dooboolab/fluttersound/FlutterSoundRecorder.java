@@ -79,9 +79,9 @@ class FlautoRecorderPlugin
 
 	void invokeMethod ( String methodName, Map dic )
 	{
-		Log.d(TAG, "calling dart " + methodName + dic.toString());
+		// Log.d(TAG, "calling dart " + methodName + dic.toString());
 		channel.invokeMethod ( methodName, dic );
-		Log.d(TAG, "invokeMethod succeeded");
+		// Log.d(TAG, "invokeMethod succeeded");
 	}
 
 	void freeSlot ( int slotNo )
@@ -523,7 +523,7 @@ public class FlutterSoundRecorder
 			JSONObject json = new JSONObject ();
 			json.put ( "current_position", String.valueOf ( time ) );
 			invokeMethodWithString ( "updateRecorderProgress", json.toString () );
-			Log.d(TAG,  "updateRecorderProgress: " +  json.toString());
+			// Log.d(TAG,  "updateRecorderProgress: " +  json.toString());
 
 			// re-queue ourselves based on the desired subscription interval.
 			boolean queued = progressTickHandler.postDelayed ( () ->sendProgressUpdate(), this.model.subsDurationMillis );

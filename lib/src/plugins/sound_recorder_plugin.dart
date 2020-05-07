@@ -25,7 +25,6 @@ import '../codec.dart';
 import '../quality.dart';
 
 import '../sound_recorder.dart' as sound_recorder;
-import '../util/log.dart';
 import 'base_plugin.dart';
 
 /// Provides communications with the platform
