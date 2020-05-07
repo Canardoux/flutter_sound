@@ -126,7 +126,7 @@ class AudioPlayer implements SlotEntry {
   bool _pluginInitRequired = true;
 
   /// hack until we implement onConnect in the all the plugins.
-  final bool _fakeOnConnect;
+  final bool _fakePlayerReady;
 
   /// Used to track when we have been paused when the app is paused.
   /// We should only resume playing if we wer playing when paused.
@@ -171,7 +171,7 @@ class AudioPlayer implements SlotEntry {
     this.canSkipBackward = false,
     this.canSkipForward = false,
     bool playInBackground = false,
-  })  : _fakeOnConnect = Platform.isIOS,
+  })  : _fakePlayerReady = Platform.isIOS,
         _playInBackground = playInBackground,
         _plugin = SoundPlayerTrackPlugin() {
     _commonInit();
@@ -198,7 +198,7 @@ class AudioPlayer implements SlotEntry {
   /// The above example guarentees that the player will be released.
   /// {@end-tool}
   AudioPlayer.noUI({bool playInBackground = false})
-      : _fakeOnConnect = true,
+      : _fakePlayerReady = true,
         _playInBackground = playInBackground,
         _plugin = SoundPlayerPlugin() {
     canPause = false;
@@ -243,7 +243,7 @@ class AudioPlayer implements SlotEntry {
 
       /// hack until we implement [onPlayerReady] in the all the OS
       /// native plugins.
-      if (_fakeOnConnect) _onPlayerReady(result: true);
+      if (_fakePlayerReady) _onPlayerReady(result: true);
     }
     return _playerReady.then((ready) {
       if (ready) {
@@ -259,6 +259,10 @@ class AudioPlayer implements SlotEntry {
   /// await the [release] to ensure that all resources are released before
   /// you take future action.
   Future<void> release() async {
+    if (!_plugin.isRegistered(this)) {
+      throw PlayerInvalidStateException(
+          "The player is no longer registered. Did you call release() twice?");
+    }
     return _initialiseAndRun(() async {
       _closeDispositionStream();
       await _softRelease();
