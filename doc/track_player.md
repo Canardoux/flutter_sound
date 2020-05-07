@@ -1,4 +1,5 @@
 
+- [TrackPlayer](doc/track_player.md), which deal about controling the App Audio Session from the lock screen or from an Apple watch
 ## TrackPlayer
 
 TrackPlayer is a new flutter_sound module which is able to show controls on the lock screen.
@@ -51,8 +52,6 @@ path = await trackPlayer.startPlayerFromTrack
                 else
                         trackPlayer.resume();
         },
-
-
 );
 
 ```

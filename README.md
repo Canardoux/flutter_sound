@@ -18,6 +18,20 @@ This plugin provides simple recorder and player functionalities for both `androi
 - The App playback can be controled from the device lock screen or from an Apple watch
 - Handle playback stream from native (To sync exact time with bridging). [*Not sure to understand what it means!*]
 
+## Flutter Sound branches
+
+We actually maintain two branches for Flutter Sound :
+
+- The V4 branch (the version ^4.0.0)
+- The master branch (actually the version ^5.0.0)
+
+We do not expect that everybody will switch today from 4.x.x to 5.x.x.
+
+V4 is our stable branch, and will be maintained as long as everybody will not have switch to V5 :
+in other words V4 is our LTS version (Long Time Support).
+
+To the side of those two versions, we are working on an experimental branch. This branch is not to be used in production. This branch is even not a BETA branch. But we will love you if you try it and tell us some feedback. And even more if you contribute actively to its developement.
+
 ## Migration Guides
 
 - To migrate [to 4.x.x from 3.x.x](doc/migration_4.x.x.md#migration-from-3xx-to-4xx) you must do some minor changes in your configurations files.
@@ -30,7 +44,7 @@ This plugin provides simple recorder and player functionalities for both `androi
 ## SDK requirements
 
 - Flutter Sound requires an iOS 9.3 SDK (or later)
-- Flutter Sound requires an Android 16 (or later)
+- Flutter Sound requires an Android 24 (or later)
 
 ## Installation
 
@@ -39,11 +53,10 @@ This plugin provides simple recorder and player functionalities for both `androi
 
 ## Flutter Sound API
 
-Flutter Sound is composed with 4 modules :
+Flutter Sound is composed with 3 modules :
 
 - [FlutterSoundPlayer](doc/player.md), wich deal with everything about playbacks
 - [FlutterSoudRecorder](doc/recorder.md), which deal with everything about recording
-- [TrackPlayer](doc/track_player.md), which deal about controling the App Audio Session from the lock screen or from an Apple watch
 - [FlutterSoundHelper](doc/helper.md), which offers some convenients tools
 
 To use Flutter Sound you just do :

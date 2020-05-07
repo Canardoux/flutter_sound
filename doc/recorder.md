@@ -7,122 +7,177 @@
 
 The verbs offered by the Flutter Sound Player module are :
 
+- [Default constructor](recorder.md#creating-the-player-instance)
+- [openAudioSession() and closeAudioSession()](recorder.md#openAudioSession-and-closeAudioSession) to open or close and audio session
+- [startRecorder()]() to start your recorder
+- [stopRecorder()]() to stop your current record.
+- [pauseRecorder()]() to pause the current record
+- [resumeRecorder()] to resume a paused record
+- [recordState, isRecording, isPaused, isStopped]() to know the current recorder status
+- [isEncoderSupported()] to know if a specific codec is supported on the current platform.
+- [onProgress()](recorder.md#onprogress) to subscribe to a Stream of the Progress events
+- [setSubscriptionDuration()](recorder.md#setsubscriptionduration---optional) to specify the frequence of your subscription
+- [onRecorderDbPeakChanged()]() to subscribe to a Stream of the DB peaks events
+- [setDbPeakLevelUpdate()]()  to specify the frequence of your subscription
+- [setDbLevelEnabled()]() to enable or disable the DB peak stream
 
-## Subscriptions
+-------------------------------------------------------------------------------------------------------------------
 
-| Subscription           |      Return      |                     Description                      |
-| :--------------------- | :--------------: | :--------------------------------------------------: |
-| onRecorderStateChanged | `<RecordStatus>` | Able to listen to subscription when recorder starts. |
-| onPlayerStateChanged   |  `<PlayStatus>`  |  Able to listen to subscription when player starts.  |
+## Creating the `Recorder` instance.
 
-## Default uri path
-
-When uri path is not set during the `function call` in `startRecorder` or `startPlayer`, records are saved/read to/from a temporary directory depending on the platform.
-
-
-## FlutterSoundRecorder Usage
-
-#### Creating instance.
-
-In your view/page/dialog widget's State class, create an instance of FlutterSoundRecorder.
-Before acessing the FlutterSoundRecorder API, you must initialize it with initialize().
-When finished with this FlutterSoundRecorder instance, you must release it with release().
-
-```dart
-FlutterSoundRecorder flutterSoundRecorder = new FlutterSoundRecorder().initialize();
-
-...
-...
-
-flutterSoundRecorder.release();
+*Dart definition (prototype) :*
+```
+/* ctor */ FlutterSoundRecorder()
 ```
 
-#### Starting recorder with listener.
+This is the first thing to do, if you want to deal with recording. The instanciation of a new recorder does not do many thing. You are safe if you put this instanciation inside a global or instance variable initialization.
+
+*Example:*
+```dart
+myPlayer = FlutterSoundRecorder();
+```
+
+--------------------------------------------------------------------------------------------------------------------
+
+## `openAudioSession()` and `closeAudioSession()`
+
+*Dart definition (prototype) :*
+```
+Future<FlutterSoundPlayer> openAudioSession()
+Future<void> closeAudioSession()
+```
+
+A recorder must be opened before used. A recorder correspond to an Audio Session. With other words, you must *open* the Audio Session before using it.
+When you have finished with a Recorder, you must close it. With other words, you must close your Audio Session.
+Opening a recorder takes resources inside the OS. Those resources are freed with the verb `closeAudioSession()`.
+
+You MUST ensure that the recorder has been closed when your widget is detached from the UI.
+Overload your widget's `dispose()` method to close the recorder when your widget is disposed.
+In this way you will reset the player and clean up the device resources, but the recorder will be no longer usable.
 
 ```dart
-Future<String> result = await flutterSoundRecorder.startRecorder(codec: t_CODEC.CODEC_AAC,);
-
-result.then(path) {
-        print('startRecorder: $path');
-
-        _recorderSubscription = flutterSoundRecorder.onRecorderStateChanged.listen((e) {
-        DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
-        String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
-        });
+@override
+void dispose()
+{
+        if (myRecorder != null)
+        {
+            myRecorder.closeAudioSession();
+            myPlayer = null;
+        }
+        super.dispose();
 }
 ```
 
-The recorded file will be stored in a temporary directory. If you want to take your own path specify it like below. We are using [path_provider](https://pub.dev/packages/path_provider) in below so you may have to install it.
-
-```
-Directory tempDir = await getTemporaryDirectory();
-File outputFile = await File ('${tempDir.path}/flutter_sound-tmp.aac');
-String path = await flutterSoundRecorder.startRecorder(outputFile.path, codec: t_CODEC.CODEC_AAC,);
-```
-
-If the App does nothing special, ```startRecorder()``` will take care of controlling the permissions, and request itself the permission
-for Recording, if necessary. If the Application wants to control itself the permissions, without any help from flutter_sound,
-it must specify :
-```
-myFlutterSoundModule.requestPermission = false;
-await myFlutterSoundModule.startRecorder(...);
-```
-
-Actually on iOS, you can choose from four encoders :
-
-- AAC (this is the default)
-- CAF/OPUS
-- OGG/OPUS
-- PCM
-
-For example, to encode with OPUS you do the following :
-
+You maynot openAudioSession many recorders without releasing them.
+You will be very bad if you try something like :
 ```dart
-await flutterSoundRecorder.startRecorder(foot.path, codec: t_CODEC.CODEC_OPUS,)
+    while (aCondition)  // *DO'NT DO THAT*
+    {
+            flutterSound = FlutterSoundRecorder().openAudioSession(); // A **new** Flutter Sound instance is created and opened
+            ...
+    }
 ```
 
-Note : On Android the OPUS codec and the PCM are not yet supported by flutter_sound Recorder. (But Player is OK on Android)
+`openAudioSession()` and `closeAudioSession()` return Futures. You may not use your Recorder before the end of the initialization. So probably you will `await` the result of `openAudioSession()`. This result is the Recorder itself, so that you can collapse instanciation and initialization together with `myRecorder = await FlutterSoundPlayer().openAudioSession();`
 
-#### Stop recorder
-
+*Example:*
 ```dart
-Future<String> result = await flutterSoundRecorder.stopRecorder();
+    myRecorder = await FlutterSoundRecorder().openAudioSession();
 
-result.then(value) {
-        print('stopRecorder: $value');
+    ...
+    (do something with myRecorder)
+    ...
 
-        if (_recorderSubscription != null) {
+    myRecorder.closeAudioSession();
+    myRecorder = null;
+```
+
+-----------------------------------------------------------------------------------------------------------------
+
+## `startRecorder()`
+
+*Dart definition (prototype) :*
+```
+    Future<void> startRecorder( String path,
+        {
+                Codec codec = Codec.aacADTS,
+                int sampleRate = 16000,
+                int numChannels = 1,
+                int bitRate = 16000,
+        })
+```
+
+You use `startRecorder()` to start recording in an open session. `startRecorder()` has the destination file path as parameter.
+It has also 4 optional parameters to specify :
+- The codec to be used. Please refer to the [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
+- The sample rate in Hertz
+- The number of channels (1=monophony, 2=stereophony)
+- The bit rate in Hertz
+
+[path_provider](https://pub.dev/packages/path_provider) can be useful if you want to get access to some directories on your device.
+
+Flutter Sound does not take care of the recording permission. It is the App responsability to check or require the Recording permission.
+[Permission_handler](https://pub.dev/packages/permission_handler) is probably useful to do that.
+
+*Example:*
+```dart
+    // Request Microphone permission if needed
+    PermissionStatus status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted)
+            throw RecordingPermissionException("Microphone permission not granted");
+
+    Directory tempDir = await getTemporaryDirectory();
+    File outputFile = await File ('${tempDir.path}/flutter_sound-tmp.aac');
+    await myRecorder.startRecorder(outputFile.path, codec: t_CODEC.CODEC_AAC,);
+```
+
+----------------------------------------------------------------------------------------------------------------------
+
+## `StopRecorder()`
+
+*Dart definition (prototype) :*
+```
+Future<void> stopRecorder( )
+```
+
+Use this verb to stop a record. This verb never throw any exception. It is safe to call it everywhere,
+for example when the App is not sure of the current Audio State and want to recover a clean reset state.
+
+*Example:*
+```dart
+        await myRecorder.stopRecorder();
+        if (_recorderSubscription != null)
+        {
                 _recorderSubscription.cancel();
                 _recorderSubscription = null;
         }
 }
 ```
 
-You MUST ensure that the recorder has been stopped when your widget is detached from the ui.
-Overload your widget's dispose() method to stop the recorder when your widget is disposed.
+------------------------------------------------------------------------------------------------------------------------
 
-```dart
-@override
-void dispose() {
-        flutterSoundRecorder.release();
-        super.dispose();
-}
+## Pause recorder
+
+*Dart definition (prototype) :*
 ```
-
-#### Pause recorder
+Future<void> pauseRecorder( )
+```
 
 On Android this API verb needs al least SDK-24.
 
+*Example:*
 ```dart
-Future<String> result = await flutterSoundRecorder.pauseRecorder();
+await myRecorder.pauseRecorder();
 ```
+
+--------------------------------------------------------------------------------------------------------------------------
 
 #### Resume recorder
 
 On Android this API verb needs al least SDK-24.
 
 ```dart
-Future<String> result = await flutterSoundRecorder.resumeRecorder();
+Future<String> result = await myRecorder.resumeRecorder();
 ```
 
 #### Using the amplitude meter
@@ -142,7 +197,7 @@ updateDbPeakProgress(0.8);
 
 ```dart
 //// You need to subscribe in order to receive the value updates
-_dbPeakSubscription = flutterSoundRecorder.onRecorderDbPeakChanged.listen((value) {
+_dbPeakSubscription = myRecorder.onRecorderDbPeakChanged.listen((value) {
   setState(() {
     this._dbLevel = value;
   });

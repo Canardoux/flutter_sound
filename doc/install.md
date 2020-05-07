@@ -19,7 +19,16 @@ There is a huge impact on the memory used, but the **LITE** flavor will not be a
 
 ## Linking your App directly from `pub.dev`
 
-Add `flutter_sound` or `flutter_sound_lite` as a dependency in pubspec.yaml. The actual versions are `^flutter_sound: 5.0.0` and `^flutter_sound_lite: 5.0.0`
+Add `flutter_sound` or `flutter_sound_lite` as a dependency in pubspec.yaml.
+
+The actual versions are :
+- flutter_sound_lite: ^4.0.0  (the LTS version without FFmpeg)
+- flutter_sound: ^4.0.0       (the LTS version with FFmpeg embedded)
+
+- flutter_sound_lite: ^5.0.0  (the current version without FFmpeg)
+- flutter_sound: ^5.0.0       (the current version with FFmpeg)
+
+- flutter_sound: ^5.0.0-experimental.1  (an experimental work which is not to be used in production)
 
 ```
 dependencies:
@@ -41,7 +50,9 @@ The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound)
 
 There is actually two branches :
 - V4. This is the stable branch which is maintained under the version 4.x.x
-- master. This is the branch currently developed and is probably not as stable than the V4 branch.
+- master. This is the branch currently developed and could be not as stable than the V4 branch.
+
+To the side of those two maintained branches, we are working on an experimental branch. This branch is not to be used if you do not want an electro-choc. ;-) (But we will love you if you try it and give us some feedback. Or even better if you contribute actively to its developement).
 
 If you want to generate your App from the sources with a `FULL` flavor:
 

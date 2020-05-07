@@ -10,7 +10,8 @@ The verbs offered by the Flutter Sound Player module are :
 - [openAudioSession() and closeAudioSession()](player.md#openAudioSession-and-closeAudioSession) to open or close and audio session
 - [setAudioFocus()](player.md#setaudiofocus) to manage the session Audio Focus
 - [startPlayer()](player.md#startplayer) to play an audio file
-- [startPlayerFromBuffer](player.md#startplayerfrombuffer) to play data from an App buffer
+- [startPlayerFromBuffer()](player.md#startplayerfrombuffer) to play data from an App buffer
+- [startPlayerFromTrack]() to play data from a track specification and display controls on the lock screen or an Apple Watch
 - [stopPlayer()](player.md#stopplayer) to stop a current playback
 - [pausePlayer()](player.md#pauseplayer) to pause the current playback
 - [resumePlayer()](player.md#resumeplayer) to resume a paused playback
@@ -19,7 +20,8 @@ The verbs offered by the Flutter Sound Player module are :
 - [playerState, isPlaying, isPaused, isStopped](player.md#playerstate-isplaying-ispaused-isstopped) to know the current player status
 - [isDecoderSupported()](player.md#isdecodersupported) to know if a specific codec is supported on the current platform.
 - [onProgress()](player.md#onprogress) to subscribe to a Stream of the Progress events
-- [setSubscriptionDuration()](player.md#player.md#setsubscriptionduration---optional) to specify the frequence of your subscription
+- [setSubscriptionDuration()](player.md#setsubscriptionduration---optional) to specify the frequence of your subscription
+- [displayTrack()]() To display controls on the lock screen or an Apple Watch without playing songs
 - [iosSetCategory(), androidAudioFocusRequest()](player.md#iossetcategory-androidaudiofocusrequest---optional) to parameter the Session Audio Focus
 
 -------------------------------------------------------------------------------------------------------------------
@@ -44,24 +46,30 @@ myPlayer = FlutterSoundPlayer();
 
 *Dart definition (prototype) :*
 ```
-Future<FlutterSoundPlayer> openAudioSession({Focus focus})
+Future<FlutterSoundPlayer> openAudioSession({Focus focus, bool withUI})
 Future<void> closeAudioSession()
 ```
 
 A player must be opened before used. A player correspond to an Audio Session. With other words, you must *open* the Audio Session before using it.
 When you have finished with a Player, you must close it. With other words, you must close your Audio Session.
-Initializing a player takes resources inside the OS. Those resources are freed with the verb `closeAudioSession()`.
+Opening a player takes resources inside the OS. Those resources are freed with the verb `closeAudioSession()`.
 
-An optional parameter can be specified during the opening : the Audio Focus.
+### `focus` parameter
+
+`focus` is an optional parameter can be specified during the opening : the Audio Focus.
 This parameter can have the following values :
 - Focus.requestFocusAndStopOthers (your app will have **exclusive use** of the output audio)
 - Focus.requestFocusAndDuckOthers (if another App like Spotify use the output audio, its volume will be **lowered**)
 - Focus.requestFocusAndKeepOthers (your App will play sound **above** others App)
 - Focus.doNotRequestFocus (useful if you want to mangage yourself the Audio Focus with the verb ```setAudioFocus()```)
 
-The Audio Focus is abandoned when you `closeAudioSession()` your player. If your App must play several sounds, you will probably openAudioSession() your player just once, and closeAudioSession() it when you have finished the last sound. If you close and reopen an Audio Session for each sound, you will probably get unpleasant things for the ears with the Audio Focus.
+The Audio Focus is abandoned when you close your player. If your App must play several sounds, you will probably open  your player just once, and close it when you have finished with the last sound. If you close and reopen an Audio Session for each sound, you will probably get unpleasant things for the ears with the Audio Focus.
 
-You MUST ensure that the player has been closeAudioSessiond() when your widget is detached from the ui.
+###`withUI` parameter
+
+`withUI` is an optional boolean parameter to specify if the Audio Session will be able to be controlled from the lock screen or an Apple Watch. This parameter must be true if you plan to use the verbs [startPlayerFromTrack()]() or [displayTrack()]()
+
+You MUST ensure that the player has been closed when your widget is detached from the UI.
 Overload your widget's `dispose()` method to closeAudioSession the player when your widget is disposed.
 In this way you will reset the player and clean up the device resources, but the player will be no longer usable.
 
@@ -83,12 +91,12 @@ You will be very bad if you try something like :
 ```dart
     while (aCondition)  // *DO'NT DO THAT*
     {
-            flutterSound = FlutterSoundPlayer().openAudioSession(); // A **new** Flutter Sound instance is created and openAudioSession
+            flutterSound = FlutterSoundPlayer().openAudioSession(); // A **new** Flutter Sound instance is created and opened
             flutterSound.startPlayer(bipSound);
     }
 ```
 
-`openAudioSession()` and `closeAudioSession()` return Futures. You may not use your Player before the end of the initialization. So probably you will `await` the result of `openAudioSession()`. This result is the Player itself, so that you can collapse instanciation and initialization together with `player = await FlutterSoundPlayer().openAudioSession();`
+`openAudioSession()` and `closeAudioSession()` return Futures. You may not use your Player before the end of the initialization. So probably you will `await` the result of `openAudioSession()`. This result is the Player itself, so that you can collapse instanciation and initialization together with `myPlayer = await FlutterSoundPlayer().openAudioSession();`
 
 *Example:*
 ```dart
@@ -136,7 +144,7 @@ You can use both `startPlayer` or `startPlayerFromBuffer` to play a sound. The f
 
 Those two functions can have two optional parameters :
 
-- `codec:` for specifying the audio and file format of the file. Please refer tohe [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
+- `codec:` for specifying the audio and file format of the file. Please refer to the [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
 - `whenFinished:()` : A lambda function for specifying what to do when the playback will be finished.
 
 Very often, the `codec:` parameter is not useful. Flutter Sound will adapt itself depending on the real format of the file provided.
@@ -145,13 +153,16 @@ But this parameter is necessary when Flutter Sound must do format conversion (fo
 `startPlayer()` returns a Future. You must wait for this return value to complete before attempting to add any listeners
 to ensure that the player has fully initialised.
 
+[path_provider](https://pub.dev/packages/path_provider) can be useful if you want to get access to some directories on your device.
+
+
 *Example:*
 ```dart
         Directory tempDir = await getTemporaryDirectory();
         File fin = await File ('${tempDir.path}/flutter_sound-tmp.aac');
-        await flutterSoundPlayer.startPlayer(fin.path, codec: Codec.aacADTS);
+        await myPlayer.startPlayer(fin.path, codec: Codec.aacADTS);
 
-        _playerSubscription = flutterSoundPlayer.onPlayerStateChanged.listen((e)
+        _playerSubscription = myPlayer.onPlayerStateChanged.listen((e)
         {
                 // ...
         });
@@ -162,7 +173,7 @@ to ensure that the player has fully initialised.
 ```dart
     final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
 
-    await flutterSoundPlayer.startPlayer
+    await myPlayer.startPlayer
     (
                 fileUri,
                 codec: Codec.mp3,
@@ -193,7 +204,7 @@ The only real distinction is that the parameter is an `Uint8List` data buffer in
         .buffer
         .asUint8List();
 
-        await flutterSoundPlayer.startPlayerFromBuffer
+        await myPlayer.startPlayerFromBuffer
         (
                 buffer,
                 codec: Codec.mp3,
@@ -205,7 +216,15 @@ The only real distinction is that the parameter is an `Uint8List` data buffer in
 
 ```
 
----------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------
+
+## `startPlayerFromTrack()`
+
+To play data from a track specification and display controls on the lock screen or an Apple Watch
+
+[TODO]
+
+[---------------------------------------------------------------------------------------------------------------------------------
 
 ## `stopPlayer()`
 
@@ -217,11 +236,11 @@ Future<void> stopPlayer( )
 Use this verb to stop a playback. This verb never throw any exception. It is safe to call it everywhere,
 for example when the App is not sure of the current Audio State and want to recover a clean reset state.
 
-
 *Example:*
 ```dart
-        await flutterSoundPlayer.stopPlayer();
-        if (_playerSubscription != null) {
+        await myPlayer.stopPlayer();
+        if (_playerSubscription != null)
+        {
                 _playerSubscription.cancel();
                 _playerSubscription = null;
         }
@@ -242,7 +261,7 @@ Use this verbe to pause the current playback. An exception is thrown if the play
 
 *Example:*
 ```dart
-await flutterSoundPlayer.pausePlayer();
+await myPlayer.pausePlayer();
 ```
 
 --------------------------------------------------------------------------------------------------------------------------------
@@ -258,7 +277,7 @@ Use this verbe to resume the current playback. An exception is thrown if the pla
 
 *Example:*
 ```dart
-await flutterSoundPlayer.resumePlayer();
+await myPlayer.resumePlayer();
 ```
 
 -------------------------------------------------------------------------------------------------------------------------------
@@ -273,7 +292,7 @@ To seek to a new location. The player must already be playing. If not, an except
 
 *Example:*
 ```dart
-await flutterSoundPlayer.seekToPlayer(miliSecs);
+await myPlayer.seekToPlayer(miliSecs);
 ```
 
 ----------------------------------------------------------------------------------------------------------------------------------
@@ -290,7 +309,7 @@ Volume can be changed when player is running. Try manage this right after player
 
 *Example:*
 ```dart
-await flutterSoundPlayer.setVolume(0.1);
+await myPlayer.setVolume(0.1);
 ```
 
 ---------------------------------------------------------------------------------------------------------------------------------
@@ -319,16 +338,16 @@ This four verbs is used when the app wants to get the current Audio State of the
 
 *Example:*
 ```dart
-        swtich(flutterSoundPlayer.playerState)
+        swtich(myPlayer.playerState)
         {
                 case PlayerState.isPlaying: doSomething; break;
                 case PlayerState.isStopped: doSomething; break;
                 case PlayerState.isPaused: doSomething; break;
         }
         ...
-        if (flutterSoundPlayer.isStopped) doSomething;
-        if (flutterSoundPlayer.isPlaying) doSomething;
-        if (flutterSoundPlayer.isPaused) doSomething;
+        if (myPlayer.isStopped) doSomething;
+        if (myPlayer.isPlaying) doSomething;
+        if (myPlayer.isPaused) doSomething;
 
 ```
 
@@ -346,7 +365,7 @@ Return a Future<bool>.
 
 *Example:*
 ```dart
-        if ( await flutterSoundPlayer.isDecoderSupported(Codec.opusOGG) ) doSomething;
+        if ( await myPlayer.isDecoderSupported(Codec.opusOGG) ) doSomething;
 ```
 
 ---------------------------------------------------------------------------------------------------------------------------------
@@ -363,19 +382,19 @@ You may listen to this Stream to have feedback on the current playback.
 
 *Example:*
 ```dart
-        _playerSubscription = flutterSoundPlayer.onProgress.listen((e)
+        _playerSubscription = myPlayer.onProgress.listen((e)
         {
                 double maxDuration = e.duration;
                 ...
         }
 ```
+
 ---------------------------------------------------------------------------------------------------------------------------------
 
-## `setSubscriptionDuration()` - (Optional)
+## `setSubscriptionDuration()`
 
 *Dart definition (prototype) :*
 ```
-
 Future<void> setSubscriptionDuration(double sec)
 ```
 
@@ -384,8 +403,15 @@ This verb is used to change the default interval between two post on the "Update
 *Example:*
 ```dart
 // 0.010s. is default
-flutterSoundPlayer.setSubscriptionDuration(0.01);
+myPlayer.setSubscriptionDuration(0.010);
 ```
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+##  `displayTrack()`
+
+ To display controls on the lock screen or an Apple Watch without playing songs
+ [TODO]
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -408,15 +434,15 @@ Remark : `androidAudioFocusRequest` does work on Android before SDK 26.
 if (_duckOthers)
 {
         if (Platform.isIOS)
-                await flutterSoundPlayer.iosSetCategory( SessionCategory.playAndRecord, SessionMode.defaultSessionMode, iosDuckOthers |  iosDefaultToSpeaker );
+                await myPlayer.iosSetCategory( SessionCategory.playAndRecord, SessionMode.defaultSessionMode, iosDuckOthers |  iosDefaultToSpeaker );
         else if (Platform.isAndroid)
-                await flutterSoundPlayer.androidAudioFocusRequest( audioFocusGainTransientMayDuck );
+                await myPlayer.androidAudioFocusRequest( audioFocusGainTransientMayDuck );
 } else
 {
         if (Platform.isIOS)
-                await flutterSoundPlayer.iosSetCategory( SessionCategory.playAndRecord, SessionMode.defaultSessionMode, iosDefaultToSpeaker );
+                await myPlayer.iosSetCategory( SessionCategory.playAndRecord, SessionMode.defaultSessionMode, iosDefaultToSpeaker );
         else if (Platform.isAndroid)
-                await flutterSoundPlayer.androidAudioFocusRequest( audioFocusGain );
+                await myPlayer.androidAudioFocusRequest( audioFocusGain );
 }
 ```
 

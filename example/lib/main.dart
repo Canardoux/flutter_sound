@@ -199,7 +199,7 @@ class _MyAppState extends State<MyApp> {
       );
       print('startRecorder: $path');
 
-      _recorderSubscription = recorderModule.onRecorderStateChanged.listen((e) {
+      _recorderSubscription = recorderModule.onProgress.listen((e) {
         if (e != null && e.currentPosition != null) {
           DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt(), isUtc: true);
           String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);

@@ -121,7 +121,7 @@ class FlutterSoundRecorder {
 
   bool get isPaused => (recorderState == RecorderState.isPaused);
 
-  Stream<RecordStatus> get onRecorderStateChanged => _recorderController.stream;
+  Stream<RecordStatus> get onProgress => _recorderController.stream;
 
   /// Value ranges from 0 to 120
   Stream<double> get onRecorderDbPeakChanged => _dbPeakController.stream;
@@ -277,13 +277,11 @@ class FlutterSoundRecorder {
     return fout.path;
   }
 
-  Future<String> startRecorder({
-    String uri,
+  Future<String> startRecorder( String uri, {
+    Codec codec = Codec.aacADTS,
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
-    Codec codec = Codec.aacADTS,
-    bool requestPermission = true,
   }) async {
     await initialize();
     // Request Microphone permission if needed
