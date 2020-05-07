@@ -99,6 +99,11 @@ abstract class BasePlugin with WidgetsBindingObserver {
       SlotEntry slotEntry, String methodName, Map<String, dynamic> call) async {
     /// allocate a slot for this call.
     var slotNo = findSlot(slotEntry);
+    if (slotNo == -1) {
+      throw SlotEntryNotRegisteredException(
+          'The SlotEntry for ${slotEntry.runtimeType} was not found.');
+    }
+
     call['slotNo'] = slotNo;
     var result = _channel.invokeMethod<dynamic>(methodName, call);
 
@@ -127,15 +132,19 @@ abstract class BasePlugin with WidgetsBindingObserver {
         'registered ${slotEntry.runtimeType} to slot: ${_slots.length - 1}'));
   }
 
+  /// Checks if the given slot is registered.
+  bool isRegistered(SlotEntry slotEntry) => findSlot(slotEntry) != -1;
+
   ///
   void release(SlotEntry slotEntry) {
     var slot = findSlot(slotEntry);
-    Log.d(red('releasing slot $slot'));
+    Log.d(red('releasing slot ${slotEntry.runtimeType} from $slot'));
     if (slot != -1) {
       _slots[slot] = null;
     } else {
       throw SlotEntryNotRegisteredException(
-          'The Slotable was not found when releasing the player.');
+          'The SlotEntry was not found when releasing '
+          'the ${slotEntry.runtimeType}.');
     }
   }
 
@@ -148,9 +157,6 @@ abstract class BasePlugin with WidgetsBindingObserver {
         slot = i;
         break;
       }
-    }
-    if (slot == -1) {
-      throw SlotEntryNotRegisteredException('The SlotEntry was not found.');
     }
     return slot;
   }

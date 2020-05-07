@@ -178,6 +178,11 @@ class SoundRecorder implements SlotEntry {
   /// Call this method when you have finished with the recorder
   /// and want to release any resources the recorder has attached.
   Future<void> release() async {
+    if (!_plugin.isRegistered(this)) {
+      throw RecorderInvalidStateException(
+          'The recorder is no longer registered. '
+          'Did you call release() twice?');
+    }
     return _initialiseAndRun(() async {
       _dispositionManager.release();
       await _softRelease();
