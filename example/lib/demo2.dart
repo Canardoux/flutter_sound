@@ -74,7 +74,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _initializeExample() async {
-    if (playerModule != null) playerModule.release();
+    if (playerModule != null) {
+      playerModule.release();
+      playerModule = null;
+    }
     if (_isAudioPlayer) {
       playerModule = AudioPlayer.withUI();
     } else {
@@ -174,6 +177,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> releaseFlauto() async {
     try {
       await playerModule.release();
+      playerModule = null;
       await recorder.release();
     } catch (e) {
       print('Released unsuccessful');
@@ -755,7 +759,10 @@ class _MyAppState extends State<MyApp> {
     if (!isStopped()) return null;
     return ((bool newVal) async {
       try {
-        if (playerModule != null) await playerModule.release();
+        if (playerModule != null) {
+          await playerModule.release();
+          playerModule = null;
+        }
 
         _isAudioPlayer = newVal;
         await _initializeExample();
