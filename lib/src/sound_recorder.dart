@@ -345,7 +345,7 @@ class SoundRecorder implements SlotEntry {
   /// Set the [interval] to control the time between each
   /// event. [interval] defaults to 10ms.
   Stream<RecordingDisposition> dispositionStream(
-      {Duration interval = const Duration(milliseconds: 10)}) {
+              {Duration interval = const Duration(milliseconds: 10)}) {
     return _dispositionManager.stream(interval: interval);
   }
 

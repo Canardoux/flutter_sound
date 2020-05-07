@@ -83,6 +83,9 @@ class SoundPlayer {
     return _player.audioFocus(mode);
   }
 
+
+
+
   /// [true] if the player is currently playing audio
   bool get isPlaying => _player.isPlaying;
 
