@@ -170,7 +170,9 @@ class SoundRecorder implements SlotEntry {
       if (ready) {
         return run();
       } else {
-        throw RecorderInvalidStateException("Recorder initialisation failed");
+        /// This can happen if you have a breakpoint in you code and
+        /// you don't let the initialisation logic complete.
+        throw RecorderInvalidStateException("Recorder initialisation timeout");
       }
     });
   }
@@ -327,9 +329,7 @@ class SoundRecorder implements SlotEntry {
   }
 
   /// returns true if we are recording.
-  bool get isRecording => (_recorderState ==
-      _RecorderState
-          .isRecording); //|| recorderState == t_RECORDER_STATE.IS_PAUSED);
+  bool get isRecording => (_recorderState == _RecorderState.isRecording);
 
   /// returns true if the record is stopped.
   bool get isStopped => (_recorderState == _RecorderState.isStopped);

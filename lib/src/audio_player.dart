@@ -249,7 +249,10 @@ class AudioPlayer implements SlotEntry {
       if (ready) {
         return run();
       } else {
-        throw PlayerInvalidStateException("Recorder initialisation failed");
+        /// This can happen if you have a breakpoint in you code and
+        /// you don't let the initialisation logic complete.
+        throw PlayerInvalidStateException(
+            "AudioPlayer initialisation timeout.");
       }
     });
   }
