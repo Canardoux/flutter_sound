@@ -100,11 +100,16 @@ class FlautoRecorderPlugin
 	public void onMethodCall ( final MethodCall call, final Result result )
 	{
 		int slotNo = call.argument ( "slotNo" );
-		assert ( ( slotNo >= 0 ) && ( slotNo <= slots.size () ) );
 
-		if ( slotNo == slots.size () )
-		{
-			slots.add ( slotNo, null );
+		// The dart code supports lazy initialization of the recorder.
+		// This means that recorders can be registered (and slots allocated)
+		// on the client side in a different order to which the recorders
+		// are initialised.
+		// As such we need to grow the slot array upto the
+		// requested slot no. even if we haven't seen initialisation
+		// for the lower numbered slots.
+		while (slotNo >= slots.size()) {
+			slots.add(null);
 		}
 
 		FlutterSoundRecorder aRecorder = slots.get ( slotNo );

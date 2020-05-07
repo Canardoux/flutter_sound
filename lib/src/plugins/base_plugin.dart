@@ -123,7 +123,8 @@ abstract class BasePlugin with WidgetsBindingObserver {
     if (!inserted) {
       _slots.add(slotEntry);
     }
-    Log.d(red('registered SlotEntry to slot: ${_slots.length - 1}'));
+    Log.d(red(
+        'registered ${slotEntry.runtimeType} to slot: ${_slots.length - 1}'));
   }
 
   ///

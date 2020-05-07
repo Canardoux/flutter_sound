@@ -117,11 +117,17 @@ class FlautoPlayerPlugin
 	                         )
 	{
 		int slotNo = call.argument ( "slotNo" );
-		assert ( ( slotNo >= 0 ) && ( slotNo <= slots.size () ) );
 
-		if ( slotNo == slots.size () )
+		// The dart code supports lazy initialization of players.
+		// This means that players can be registered (and slots allocated)
+		// on the client side in a different order to which the players
+		// are initialised.
+		// As such we need to grow the slot array upto the 
+		// requested slot no. even if we haven't seen initialisation
+		// for the lower numbered slots.
+		while ( slotNo >= slots.size () )
 		{
-			slots.add ( slotNo, null );
+			slots.add ( null );
 		}
 
 		FlutterSoundPlayer aPlayer = slots.get ( slotNo );
