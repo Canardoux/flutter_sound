@@ -55,10 +55,23 @@ class Log extends Logger {
     return _self;
   }
 
+  static Map<String, DateTime> _recentLogs;
+
   ///
-  factory Log.d(String message, {dynamic error, StackTrace stackTrace}) {
+  factory Log.d(String message,
+      {dynamic error, StackTrace stackTrace, bool supressDuplicates = false}) {
     autoInit();
-    _self.d(message, error, stackTrace);
+    var suppress = false;
+
+    if (supressDuplicates) {
+      var lastLogged = _recentLogs[message];
+      if (lastLogged != null &&
+          lastLogged.add(Duration(milliseconds: 100)).isAfter(DateTime.now())) {
+        suppress = true;
+      }
+      _recentLogs[message] = DateTime.now();
+    }
+    if (suppress) _self.d(message, error, stackTrace);
     return _self;
   }
 

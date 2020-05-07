@@ -133,7 +133,6 @@ class SoundRecorderPlugin extends BasePlugin {
 
   Future<dynamic> onMethodCallback(
       covariant sound_recorder.SoundRecorder recorder, MethodCall call) {
-    Log.d('Dart received ${call.method}');
     switch (call.method) {
       case "updateRecorderProgress":
         _updateRecorderProgress(call, recorder);
