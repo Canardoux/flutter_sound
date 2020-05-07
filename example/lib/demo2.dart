@@ -85,6 +85,12 @@ class _MyAppState extends State<MyApp> {
       playerModule = AudioPlayer.noUI();
     }
 
+    // update the ui when we change state.
+    playerModule.onPaused = ({wasUser}) => setState(() {});
+    playerModule.onResumed = ({wasUser}) => setState(() {
+          // audioState = AudioState.isPaused;
+        });
+
     playerModule.dispositionStream().listen(_localController.add);
 
     initializeDateFormatting();
@@ -94,6 +100,10 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> init() async {
     recorder = SoundRecorder();
+    // update the ui when we change state.
+    // this also handles app pause/resume transitions.
+    recorder.onStarted = ({wasUser}) => setState(() {});
+    recorder.onStopped = ({wasUser}) => setState(() {});
     _localController = StreamController<PlaybackDisposition>.broadcast();
     await recorder.initialize();
 
@@ -122,13 +132,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   AudioState get audioState {
-    if (playerModule != null) {
-      if (playerModule.isPlaying) return AudioState.isPlaying;
-      if (playerModule.isPaused) return AudioState.isPaused;
-    }
     if (recorder != null) {
       if (recorder.isPaused) return AudioState.isRecordingPaused;
       if (recorder.isRecording) return AudioState.isRecording;
+    }
+    if (playerModule != null) {
+      if (playerModule.isPlaying) return AudioState.isPlaying;
+      if (playerModule.isPaused) return AudioState.isPaused;
     }
     return AudioState.isStopped;
   }
@@ -181,6 +191,7 @@ class _MyAppState extends State<MyApp> {
       await playerModule.release();
       playerModule = null;
       await recorder.release();
+      recorder = null;
     } catch (e) {
       print('Released unsuccessful');
       print(e);
