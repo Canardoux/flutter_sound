@@ -19,7 +19,7 @@ import 'dart:io';
 
 import 'android/android_audio_focus_gain.dart';
 
-import 'audio_focus_mode.dart';
+import 'audio_focus.dart';
 import 'codec.dart';
 import 'ios/ios_session_category.dart';
 import 'ios/ios_session_category_option.dart';
@@ -756,32 +756,32 @@ class AudioPlayer implements SlotEntry {
     });
   }
 
-  ///  The caller can manage his audio focus with this function
+  ///  The caller can manage the audio focus with this function.
   /// Depending on your configuration this will either make
   /// this player the loudest stream or it will silence all other stream.
-  Future<void> audioFocus(AudioFocusMode mode) async {
+  Future<void> audioFocus(AudioFocus mode) async {
     return _initialiseAndRun(() async {
       switch (mode) {
-        case AudioFocusMode.focusAndKeepOthers:
+        case AudioFocus.focusAndKeepOthers:
           await _plugin.audioFocus(this, request: true);
           _setHush(hushOthers: false);
           break;
-        case AudioFocusMode.focusAndStopOthers:
+        case AudioFocus.focusAndStopOthers:
           await _plugin.audioFocus(this, request: true);
           // TODO: how do you stop other players?
           break;
-        case AudioFocusMode.focusAndDuckOthers:
+        case AudioFocus.focusAndHushOthers:
           await _plugin.audioFocus(this, request: true);
           _setHush(hushOthers: true);
           break;
-        case AudioFocusMode.abandonFocus:
+        case AudioFocus.abandonFocus:
           await _plugin.audioFocus(this, request: false);
           break;
       }
     });
   }
 
-  /// Apply/Remoe the hush other setting.
+  /// Apply/Remove the hush other setting.
   void _setHush({bool hushOthers}) async {
     if (hushOthers) {
       if (Platform.isIOS) {

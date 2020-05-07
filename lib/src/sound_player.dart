@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'audio_focus_mode.dart';
+import 'audio_focus.dart';
 import 'audio_player.dart';
 import 'codec.dart';
 import 'playback_disposition.dart';
@@ -79,7 +79,7 @@ class SoundPlayer {
   ///  The caller can manage his audio focus with this function
   /// Depending on your configuration this will either make
   /// this player the loudest stream or it will silence all other stream.
-  Future<void> audioFocus(AudioFocusMode mode) async {
+  Future<void> audioFocus(AudioFocus mode) async {
     return _player.audioFocus(mode);
   }
 

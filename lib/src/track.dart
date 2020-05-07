@@ -176,7 +176,14 @@ void prepareStream(Track track) => track._prepareStream();
 /// Returns the uri this track was constructed
 /// with assuming the [fromPath] ctor or
 /// the databuffer had to be converted to a file.
-String trackStoragePath(Track track) => track._audio.storagePath;
+String trackStoragePath(Track track) {
+  if (track._audio.onDisk) {
+    return track._audio.storagePath;
+  } else {
+    assert(track.isURL);
+    return track.url;
+  }
+}
 
 /// Returns the databuffer which holds the audio.
 /// If this Track was created via [fromBuffer].

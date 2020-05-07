@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
 import 'demo_active_codec.dart';
+import 'demo_player_state.dart';
 
 /// path to remote auido file.
 const String exampleAudioFilePath =
@@ -20,6 +21,9 @@ class RemotePlayer extends StatelessWidget {
     return SoundPlayerUI.fromLoader(
       (context) => _createRemoteTrack(context),
       showTitle: true,
+      audioFocus: PlayerState().hushOthers
+          ? AudioFocus.focusAndHushOthers
+          : AudioFocus.focusAndKeepOthers,
     );
   }
 
@@ -34,7 +38,7 @@ class RemotePlayer extends StatelessWidget {
       Scaffold.of(context).showSnackBar(error);
     } else {
       // We have to play an example audio file loaded via a URL
-      track = Track.fromPath(exampleAudioFilePath, codec: ActiveCodec().codec);
+      track = Track.fromURL(exampleAudioFilePath, codec: ActiveCodec().codec);
 
       track.title = "Remote mpeg playback.";
       track.author = "By flutter_sound";

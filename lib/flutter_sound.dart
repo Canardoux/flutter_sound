@@ -16,7 +16,7 @@
 
 export 'src/album.dart';
 export 'src/android/android_audio_focus_gain.dart';
-export 'src/audio_focus_mode.dart';
+export 'src/audio_focus.dart';
 export 'src/audio_player.dart'
     show AudioPlayer
     hide

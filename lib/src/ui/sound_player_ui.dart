@@ -27,7 +27,6 @@ import '../track.dart';
 import '../util/ansi_color.dart';
 import '../util/format.dart';
 import '../util/log.dart';
-import '../util/stop_watch.dart';
 import 'grayed_out.dart';
 import 'recorder_playback_controller.dart';
 import 'slider.dart';
@@ -73,8 +72,14 @@ class SoundPlayerUI extends StatefulWidget {
   /// If [enabled] is true (the default) then the Player will be enabled.
   /// If [enabled] is false then the player will be disabled and the user
   /// will not be able to click the play button.
+  /// The [audioFocus] allows you to control what happens to other
+  /// media that is playing when our player starts.
+  /// By default we use [AudioFocus.focusAndHushOthers] which will
+  /// reduce the volume of any other players.
   SoundPlayerUI.fromLoader(OnLoad onLoad,
-      {bool showTitle = false, bool enabled = true})
+      {bool showTitle = false,
+      bool enabled = true,
+      AudioFocus audioFocus = AudioFocus.focusAndHushOthers})
       : _onLoad = onLoad,
         _showTitle = showTitle,
         _track = null,
@@ -91,8 +96,14 @@ class SoundPlayerUI extends StatefulWidget {
   /// If [enabled] is true (the default) then the Player will be enabled.
   /// If [enabled] is false then the player will be disabled and the user
   /// will not be able to click the play button.
+  /// The [audioFocus] allows you to control what happens to other
+  /// media that is playing when our player starts.
+  /// By default we use [AudioFocus.focusAndHushOthers] which will
+  /// reduce the volume of any other players.
   SoundPlayerUI.fromTrack(Track track,
-      {bool showTitle = false, bool enabled = true})
+      {bool showTitle = false,
+      bool enabled = true,
+      AudioFocus audioFocus = AudioFocus.focusAndHushOthers})
       : _track = track,
         _showTitle = showTitle,
         _onLoad = null,
@@ -396,11 +407,8 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
 
   /// internal start method.
   void _start() async {
-    var watch = StopWatch('play');
     _player.play(_track).then((_) {
       _playState = PlayState.playing;
-
-      Log.d("play returned");
     }).catchError((dynamic e) {
       Log.w("Error calling play() ${e.toString()}");
       _playState = PlayState.stopped;
@@ -411,7 +419,6 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       _transitioning = false;
       Log.d(green('Transitioning = false'));
     });
-    watch.end();
   }
 
   /// Call [stop] to stop the audio playing.

@@ -6,6 +6,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 
 import 'demo_active_codec.dart';
 import 'demo_common.dart';
+import 'demo_player_state.dart';
 
 class AssetPlayer extends StatelessWidget {
   @override
@@ -13,6 +14,9 @@ class AssetPlayer extends StatelessWidget {
     return SoundPlayerUI.fromLoader(
       (_) => createAssetTrack(),
       showTitle: true,
+      audioFocus: PlayerState().hushOthers
+          ? AudioFocus.focusAndHushOthers
+          : AudioFocus.focusAndKeepOthers,
     );
   }
 

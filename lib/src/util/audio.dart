@@ -39,6 +39,13 @@ class Audio {
   /// Indicates if the audio media is stored on disk
   bool _onDisk = false;
 
+  /// [true] if the audio is stored in the file system.
+  /// This can be because it was passed as a path
+  /// or because we had to force it to disk for code conversion
+  /// or similar operations.
+  /// Currently buffered data is always forced to disk.
+  bool get onDisk => _onDisk;
+
   @override
   String toString() {
     var desc = 'Codec: $codec';

@@ -8,10 +8,9 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'demo_active_codec.dart';
 import 'demo_asset_player.dart';
 import 'demo_drop_downs.dart';
+import 'demo_player_state.dart';
 import 'recorder_state.dart';
 import 'remote_player.dart';
-import 'track_switched.dart';
-import '../util/log.dart';
 
 ///
 class MainBody extends StatefulWidget {
@@ -25,8 +24,6 @@ class MainBody extends StatefulWidget {
 }
 
 class _MainBodyState extends State<MainBody> {
-  bool _useOSUI = false;
-
   bool initialised = false;
 
   String recordingFile;
@@ -46,7 +43,7 @@ class _MainBodyState extends State<MainBody> {
       await initializeDateFormatting();
       await RecorderState().init();
       ActiveCodec().recorderModule = RecorderState().recorderModule;
-      await ActiveCodec().setCodec(_useOSUI, Codec.aacADTS);
+      await ActiveCodec().setCodec(false, Codec.aacADTS);
 
       initialised = true;
     }
@@ -75,38 +72,18 @@ class _MainBodyState extends State<MainBody> {
           } else {
             final dropdowns = Dropdowns(
                 onCodecChanged: (codec) =>
-                    ActiveCodec().setCodec(_useOSUI, codec));
-            final trackSwitch = TrackSwitch(
-              isAudioPlayer: _useOSUI,
-              switchPlayer: (allow) => switchPlayer(useOSUI: allow),
-            );
+                    ActiveCodec().setCodec(false, codec));
 
             return ListView(
               children: <Widget>[
                 _buildRecorder(track),
                 dropdowns,
-                // buildPlayBars(),
-                trackSwitch,
+                buildPlayBars(),
+                buildHushOthers(),
               ],
             );
           }
         });
-  }
-
-  void switchPlayer({bool useOSUI}) async {
-    try {
-      _useOSUI = useOSUI;
-      await _switchModes(useOSUI);
-      setState(() {});
-    } on Object catch (err) {
-      Log.d(err.toString());
-      rethrow;
-    }
-  }
-
-  /// Allows us to switch the player module
-  Future<void> _switchModes(bool useTracks) async {
-    RecorderState().reset();
   }
 
   Widget buildPlayBars() {
@@ -133,9 +110,35 @@ class _MainBodyState extends State<MainBody> {
             SoundPlayerUI.fromTrack(
               track,
               showTitle: true,
+              audioFocus: PlayerState().hushOthers
+                  ? AudioFocus.focusAndHushOthers
+                  : AudioFocus.focusAndKeepOthers,
             ),
           ],
         )));
+  }
+
+  Widget buildHushOthers() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 4.0),
+            child: Text('Hush Others:'),
+          ),
+          Switch(
+            value: PlayerState().hushOthers,
+            onChanged: (hushOthers) =>
+                hushOthersSwitchChanged(hushOthers: hushOthers),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void hushOthersSwitchChanged({bool hushOthers}) {
+    PlayerState().setHush(hushOthers: hushOthers);
   }
 }
 
