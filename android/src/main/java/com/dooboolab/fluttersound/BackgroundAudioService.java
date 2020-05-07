@@ -194,22 +194,6 @@ public class BackgroundAudioService
 				pauseResumeCalledByApp = false;
 			}
 
-			if ( (pauseHandler != null ) && (! pauseResumeCalledByApp) )
-			{
-				try
-				{
-					pauseHandler.call();
-					return;
-				}
-				catch ( Exception e )
-				{
-					e.printStackTrace();
-				}
-			} else
-			{
-				pauseResumeCalledByApp = false;
-			}
-
 			startPlayerPlayback();
 		}
 
