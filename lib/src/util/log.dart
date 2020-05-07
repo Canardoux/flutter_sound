@@ -55,7 +55,7 @@ class Log extends Logger {
     return _self;
   }
 
-  static Map<String, DateTime> _recentLogs;
+  static final _recentLogs = <String, DateTime>{};
 
   ///
   factory Log.d(String message,
