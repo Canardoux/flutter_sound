@@ -66,6 +66,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
+
 
 public class BackgroundAudioService
 	extends MediaBrowserServiceCompat
@@ -130,6 +132,26 @@ public class BackgroundAudioService
 	};
 
 
+	boolean flautoInitialised(String action) 
+	{
+		boolean initialised = false;
+		try
+		{
+			initialised = Flauto.initialised.await(0, TimeUnit.SECONDS);
+		}
+		catch (InterruptedException e)
+		{
+			// NOOP. Will probably never happen and we can't re-throw it anyway
+			Log.d(TAG, "That was unexpected.", e);
+		}
+		if (!initialised)
+		{
+			Log.d(TAG, action + " called before Flauto initialised. Ignored");
+		}
+		return initialised;
+	}
+
+
 	private MediaSessionCompat.Callback mMediaSessionCallback = new MediaSessionCompat.Callback()
 	{
 
@@ -141,6 +163,10 @@ public class BackgroundAudioService
 		public void onPlay()
 		{
 			super.onPlay();
+
+			if (!flautoInitialised("onPlay"))
+				return;
+
 			// Someone asked to start the playback, then start it
 
 			// Request the audio focus and check if it was granted
@@ -197,6 +223,9 @@ public class BackgroundAudioService
 			// Someone requested to pause the playback, then pause it
 			super.onPause();
 
+			if (!flautoInitialised("onPause"))
+				return;
+
 
 			// Call the handler to pause, when given
 			if ( (pauseHandler != null ) && (! pauseResumeCalledByApp) )
@@ -242,6 +271,10 @@ public class BackgroundAudioService
 		public void onPlayFromMediaId( String mediaId, Bundle extras )
 		{
 			super.onPlayFromMediaId( mediaId, extras );
+
+			if (!flautoInitialised("onPlayFromMediaId"))
+				return;
+
 			// Change audio track
 
 			try
@@ -267,6 +300,11 @@ public class BackgroundAudioService
 		public void onSeekTo( long pos )
 		{
 			super.onSeekTo( pos );
+
+
+			if (!flautoInitialised("onSeekTo"))
+				return;
+
 			// Seek the playback to the given position
 			mMediaPlayer.seekTo( ( int ) pos );
 		}
@@ -279,6 +317,9 @@ public class BackgroundAudioService
 		public void onStop()
 		{
 			super.onStop();
+
+			if (!flautoInitialised("onStop"))
+				return;
 
 			// Stop the media player
 			mMediaPlayer.stop();
@@ -299,6 +340,9 @@ public class BackgroundAudioService
 		@Override
 		public void onSkipToNext()
 		{
+			if (!flautoInitialised("onSkipToNext"))
+				return;
+
 			// Call the handler to skip forward, when given
 			if ( skipTrackForwardHandler != null )
 			{
@@ -318,6 +362,9 @@ public class BackgroundAudioService
 		@Override
 		public void onSkipToPrevious()
 		{
+			if (!flautoInitialised("onSkipToPrevious"))
+				return;
+
 			// Call the handler to skip backward, when given
 			if ( skipTrackBackwardHandler != null )
 			{
@@ -562,72 +609,58 @@ public class BackgroundAudioService
 		// Set the onCompletion listener
 		mMediaPlayer.setOnCompletionListener( this );
 		// Set the onPreparedListener
-		mMediaPlayer.setOnPreparedListener( mp ->
-		                                    {
-			                                    // Start retrieving the album art if the audio player features should be
-			                                    // included
-			                                    // if(includeAudioPlayerFeatures) {
-			                                    Bitmap albumArt = null;
-			                                    if ( currentTrack.getAlbumArtUrl() != null )
-			                                    {
-				                                    new AlbumArtDownloader().execute( currentTrack.getAlbumArtUrl() );
-				                                    // }
+		mMediaPlayer.setOnPreparedListener( mp -> onPreparedListener(mp) );
+	}
 
-				                                    // Pass the audio file metadata to the media session
+	private void onPreparedListener(MediaPlayer mp)
+	{
+			// Start retrieving the album art if the audio player features should be
+			// included
+			// if(includeAudioPlayerFeatures) {
+			Bitmap albumArt = null;
+			if (currentTrack.getAlbumArtUrl() != null) {
+				new AlbumArtDownloader().execute(currentTrack.getAlbumArtUrl());
+				// }
 
-			                                    } else if ( currentTrack.getAlbumArtAsset() != null )
-                                                            {
-                                                                try
-                                                                {
-                                                                    AssetManager assetManager = getApplicationContext().getAssets();
-                                                                    InputStream  istr         = assetManager.open( currentTrack.getAlbumArtAsset() );
-                                                                    albumArt = BitmapFactory.decodeStream( istr );
+				// Pass the audio file metadata to the media session
 
-                                                                }
-                                                                catch ( IOException e )
-                                                                {
-                                                                }
-                                                            } else  if ( currentTrack.getAlbumArtFile() != null )
-			                                    {
-				                                    try
-				                                    {
-					                                    File            file            = new File( currentTrack.getAlbumArtFile());
-					                                    FileInputStream istr = new FileInputStream( file);
-					                                    albumArt = BitmapFactory.decodeStream( istr );
+			} else if (currentTrack.getAlbumArtAsset() != null) {
+				try {
+					AssetManager assetManager = getApplicationContext().getAssets();
+					InputStream istr = assetManager.open(currentTrack.getAlbumArtAsset());
+					albumArt = BitmapFactory.decodeStream(istr);
 
-				                                    }
-				                                    catch ( IOException e )
-				                                    {
-				                                    }
-			                                    } else
-			                                    {
-				                                    try
-				                                    {
-					                                    AssetManager assetManager = getApplicationContext().getAssets();
-					                                    InputStream  istr         = assetManager.open( "AppIcon.png");
-					                                    albumArt = BitmapFactory.decodeStream( istr );
+				} catch (IOException e) {
+				}
+			} else if (currentTrack.getAlbumArtFile() != null) {
+				try {
+					File file = new File(currentTrack.getAlbumArtFile());
+					FileInputStream istr = new FileInputStream(file);
+					albumArt = BitmapFactory.decodeStream(istr);
 
-				                                    }
-				                                    catch ( IOException e )
-				                                    {
-				                                    }
+				} catch (IOException e) {
+				}
+			} else {
+				try {
+					AssetManager assetManager = getApplicationContext().getAssets();
+					InputStream istr = assetManager.open("AppIcon.png");
+					albumArt = BitmapFactory.decodeStream(istr);
 
-			                                    }
-			                                    initMediaSessionMetadata( albumArt );
+				} catch (IOException e) {
+				}
 
-			                                    // Call the callback
-			                                    if ( mediaPlayerOnPreparedListener != null )
-			                                    {
-				                                    try
-				                                    {
-					                                    mediaPlayerOnPreparedListener.call();
-				                                    }
-				                                    catch ( Exception e )
-				                                    {
-					                                    Log.e( TAG, "The following error occurred while executing the onPrepared callback.", e );
-				                                    }
-			                                    }
-		                                    } );
+			}
+			initMediaSessionMetadata(albumArt);
+
+			// Call the callback
+			if (mediaPlayerOnPreparedListener != null) {
+				try {
+					mediaPlayerOnPreparedListener.call();
+				} catch (Exception e) {
+					Log.e(TAG, "The following error occurred while executing the onPrepared callback.", e);
+				}
+			}
+		
 	}
 
 	private void initMediaSession()
