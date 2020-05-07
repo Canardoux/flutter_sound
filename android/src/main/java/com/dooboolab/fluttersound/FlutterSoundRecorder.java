@@ -284,7 +284,7 @@ public class FlutterSoundRecorder
 	static final String ERR_RECORDER_IS_RECORDING = "ERR_RECORDER_IS_RECORDING";
 
 
-	final static String             TAG                = "FlutterSoundPlugin";
+	final static String             TAG                = "FlutterSoundRecorder";
 	final        RecorderAudioModel model              = new RecorderAudioModel ();
 	final public Handler            progressTickHandler      = new Handler ();
 	final public Handler            dbPeakLevelTickHandler = new Handler ();

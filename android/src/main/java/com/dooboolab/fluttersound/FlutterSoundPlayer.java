@@ -116,113 +116,122 @@ class FlautoPlayerPlugin
 		final MethodCall call, final Result result
 	                         )
 	{
-		int slotNo = call.argument ( "slotNo" );
-
-		// The dart code supports lazy initialization of players.
-		// This means that players can be registered (and slots allocated)
-		// on the client side in a different order to which the players
-		// are initialised.
-		// As such we need to grow the slot array upto the 
-		// requested slot no. even if we haven't seen initialisation
-		// for the lower numbered slots.
-		while ( slotNo >= slots.size () )
+		try
 		{
-			slots.add ( null );
+			int slotNo = call.argument ( "slotNo" );
+
+			// The dart code supports lazy initialization of players.
+			// This means that players can be registered (and slots allocated)
+			// on the client side in a different order to which the players
+			// are initialised.
+			// As such we need to grow the slot array upto the 
+			// requested slot no. even if we haven't seen initialisation
+			// for the lower numbered slots.
+			while ( slotNo >= slots.size () )
+			{
+				slots.add ( null );
+			}
+
+			FlutterSoundPlayer aPlayer = slots.get ( slotNo );
+			switch ( call.method )
+			{
+				case "initializeMediaPlayer":
+				{
+					assert ( slots.get ( slotNo ) == null );
+					aPlayer = new FlutterSoundPlayer ( slotNo );
+					slots.set ( slotNo, aPlayer );
+					aPlayer.initializeFlautoPlayer ( call, result );
+
+				}
+				break;
+
+				case "releaseMediaPlayer":
+				{
+					aPlayer.releaseFlautoPlayer ( call, result );
+					Log.d("FlutterSoundPlayer", "************* release called");
+					slots.set ( slotNo, null );
+				}
+				break;
+
+				case "isDecoderSupported":
+				{
+					aPlayer.isDecoderSupported ( call, result );
+				}
+				break;
+
+				case "startPlayer":
+				{
+					aPlayer.startPlayer ( call, result );
+				}
+				break;
+
+				case "startPlayerFromBuffer":
+				{
+					aPlayer.startPlayerFromBuffer ( call, result );
+				}
+				break;
+
+				case "stopPlayer":
+				{
+					aPlayer.stopPlayer ( call, result );
+				}
+				break;
+
+				case "pausePlayer":
+				{
+					aPlayer.pausePlayer ( call, result );
+				}
+				break;
+
+				case "resumePlayer":
+				{
+					aPlayer.resumePlayer ( call, result );
+				}
+				break;
+
+				case "seekToPlayer":
+				{
+					aPlayer.seekToPlayer ( call, result );
+				}
+				break;
+
+				case "setVolume":
+				{
+					aPlayer.setVolume ( call, result );
+				}
+				break;
+
+				case "setSubscriptionDuration":
+				{
+					aPlayer.setSubscriptionDuration ( call, result );
+				}
+				break;
+
+				case "androidAudioFocusRequest":
+				{
+					aPlayer.androidAudioFocusRequest ( call, result );
+				}
+				break;
+
+				case "setActive":
+				{
+					aPlayer.setActive ( call, result );
+				}
+				break;
+
+				default:
+				{
+					result.notImplemented ();
+				}
+				break;
+			}
+		}
+		catch (Throwable e)
+		{
+			Log.e(TAG, "Error in onMethodCall " + call.method, e);
+			throw e;
 		}
 
-		FlutterSoundPlayer aPlayer = slots.get ( slotNo );
-		switch ( call.method )
-		{
-			case "initializeMediaPlayer":
-			{
-				assert ( slots.get ( slotNo ) == null );
-				aPlayer = new FlutterSoundPlayer ( slotNo );
-				slots.set ( slotNo, aPlayer );
-				aPlayer.initializeFlautoPlayer ( call, result );
-
-			}
-			break;
-
-			case "releaseMediaPlayer":
-			{
-				aPlayer.releaseFlautoPlayer ( call, result );
-				Log.d("FlutterSoundPlayer", "************* release called");
-				slots.set ( slotNo, null );
-			}
-			break;
-
-			case "isDecoderSupported":
-			{
-				aPlayer.isDecoderSupported ( call, result );
-			}
-			break;
-
-			case "startPlayer":
-			{
-				aPlayer.startPlayer ( call, result );
-			}
-			break;
-
-			case "startPlayerFromBuffer":
-			{
-				aPlayer.startPlayerFromBuffer ( call, result );
-			}
-			break;
-
-			case "stopPlayer":
-			{
-				aPlayer.stopPlayer ( call, result );
-			}
-			break;
-
-			case "pausePlayer":
-			{
-				aPlayer.pausePlayer ( call, result );
-			}
-			break;
-
-			case "resumePlayer":
-			{
-				aPlayer.resumePlayer ( call, result );
-			}
-			break;
-
-			case "seekToPlayer":
-			{
-				aPlayer.seekToPlayer ( call, result );
-			}
-			break;
-
-			case "setVolume":
-			{
-				aPlayer.setVolume ( call, result );
-			}
-			break;
-
-			case "setSubscriptionDuration":
-			{
-				aPlayer.setSubscriptionDuration ( call, result );
-			}
-			break;
-
-			case "androidAudioFocusRequest":
-			{
-				aPlayer.androidAudioFocusRequest ( call, result );
-			}
-			break;
-
-			case "setActive":
-			{
-				aPlayer.setActive ( call, result );
-			}
-			break;
-
-			default:
-			{
-				result.notImplemented ();
-			}
-			break;
-		}
 	}
 
 }
@@ -312,7 +321,7 @@ public class FlutterSoundPlayer
 	};
 
 
-	final static  String           TAG         = "FlutterSoundPlugin";
+	final static  String           TAG         = "FlutterSoundPlayer";
 	final         PlayerAudioModel model       = new PlayerAudioModel ();
 	private       Timer            mTimer      = new Timer ();
 	final private Handler           tickHandler = new Handler ();
@@ -427,7 +436,7 @@ public class FlutterSoundPlayer
 		}
 		catch ( Exception e )
 		{
-			Log.e ( TAG, "startPlayer() exception" );
+			Log.e ( TAG, "startPlayer() exception", e );
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 		}
 	}
