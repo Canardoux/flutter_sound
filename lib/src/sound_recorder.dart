@@ -188,7 +188,7 @@ class SoundRecorder implements SlotEntry {
     return _initializeAndRun(() async {
       _dispositionManager.release();
       await _softRelease();
-      _recordingTrack.release();
+      _recordingTrack?.release();
       _plugin.release(this);
     });
   }

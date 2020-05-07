@@ -211,6 +211,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
 
   void dispose() {
     _stop();
+    _recorder.release();
     super.dispose();
   }
 
