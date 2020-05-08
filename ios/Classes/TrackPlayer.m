@@ -448,6 +448,7 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                         } else
                         {
                                 if (canPause)
+                                
                                         [self invokeMethod:@"pause" boolArg:false];
                                 else
                                         [self resume];
