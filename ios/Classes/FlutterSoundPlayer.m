@@ -339,7 +339,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                         if (!b)
                         {
                                 [self stopPlayer];
-                                ([FlutterError
+                                result([FlutterError
                                 errorWithCode:@"Audio Player"
                                 message:@"Play failure"
                                 details:nil]);
@@ -361,7 +361,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 if (!b)
                 {
                         [self stopPlayer];
-                        ([FlutterError
+                        result([FlutterError
                                 errorWithCode:@"Audio Player"
                                 message:@"Play failure"
                                 details:nil]);
@@ -398,7 +398,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         if (!b)
         {
                 [self stopPlayer];
-                ([FlutterError
+                result([FlutterError
                         errorWithCode:@"Audio Player"
                         message:@"Play failure"
                         details:nil]);
