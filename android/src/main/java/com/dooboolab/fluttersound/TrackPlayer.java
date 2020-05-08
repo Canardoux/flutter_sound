@@ -590,7 +590,10 @@ public class TrackPlayer extends FlutterSoundPlayer
 			Exception
 		{
 			PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
-			invokeMethodWithBoolean( "pause", playbackState.getState() == PlaybackStateCompat.STATE_PLAYING  );
+			if (playbackState.getState() == PlaybackStateCompat.STATE_PLAYING)
+				invokeMethodWithBoolean("pause", true);
+			else
+				invokeMethodWithBoolean("resume", true);
 
 			return null;
 		}
