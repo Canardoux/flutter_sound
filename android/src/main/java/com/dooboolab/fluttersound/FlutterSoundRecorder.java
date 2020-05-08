@@ -392,11 +392,11 @@ public class FlutterSoundRecorder
 			Integer      sampleRate          = call.argument ( "sampleRate" );
 			Integer      numChannels         = call.argument ( "numChannels" );
 			Integer      bitRate             = call.argument ( "bitRate" );
-			int          androidEncoder      = call.argument ( "androidEncoder" );
+			Integer      androidEncoder      = call.argument ( "androidEncoder" );
 			int          _codec              = call.argument ( "codec" );
 			t_CODEC      codec               = t_CODEC.values ()[ _codec ];
 			int          androidAudioSource  = call.argument ( "androidAudioSource" );
-			int          androidOutputFormat = call.argument ( "androidOutputFormat" );
+			Integer      androidOutputFormat = call.argument ( "androidOutputFormat" );
 			final String path                = call.argument ( "path" );
 			_startRecorder ( numChannels, sampleRate, bitRate, codec, androidEncoder, androidAudioSource, androidOutputFormat, path, result );
 		}
@@ -405,7 +405,7 @@ public class FlutterSoundRecorder
 	}
 
 	public void _startRecorder (
-		Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result
+		Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, Integer androidEncoder, int androidAudioSource, Integer androidOutputFormat, String path, final Result result
 	                           )
 	{
 		final int v = Build.VERSION.SDK_INT;
@@ -434,8 +434,17 @@ public class FlutterSoundRecorder
 			}
 			mediaRecorder.reset();
 			mediaRecorder.setAudioSource ( androidAudioSource );
-			androidEncoder      = codecArray[ codec.ordinal () ];
-			androidOutputFormat = formatsArray[ codec.ordinal () ];
+
+			// If encoder is defined, then use it, otherwise use the auto detection by codec
+			if (androidEncoder == null) {
+				androidEncoder      = codecArray[ codec.ordinal () ];
+			}
+
+			// If output format is defined, then use it, otherwise use the auto detection by codec
+			if (androidOutputFormat == null) {
+				androidOutputFormat = formatsArray[codec.ordinal()];
+			}
+
 			mediaRecorder.setOutputFormat ( androidOutputFormat );
 
 			if ( path == null )

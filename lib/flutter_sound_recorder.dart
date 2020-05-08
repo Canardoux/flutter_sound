@@ -284,15 +284,19 @@ class FlutterSoundRecorder {
     return fout.path;
   }
 
+  /// Starts record.
+  /// 
+  /// If [androidOutputFormat] is null (default) - it will be auto detected by [codec].
+  /// If [androidEncoder] is null (default) - it will be auto detected by [codec].
   Future<String> startRecorder({
     String uri,
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
     t_CODEC codec = t_CODEC.CODEC_AAC,
-    AndroidEncoder androidEncoder = AndroidEncoder.AAC,
+    AndroidEncoder androidEncoder,
     AndroidAudioSource androidAudioSource = AndroidAudioSource.MIC,
-    AndroidOutputFormat androidOutputFormat = AndroidOutputFormat.DEFAULT,
+    AndroidOutputFormat androidOutputFormat,
     IosQuality iosQuality = IosQuality.LOW,
     bool requestPermission = true,
   }) async {
