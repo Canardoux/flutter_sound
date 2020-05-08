@@ -32,6 +32,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
 import androidx.arch.core.util.Function;
 import androidx.core.app.ActivityCompat;
 
@@ -95,7 +96,7 @@ class FlautoPlayerPlugin
 
 	void invokeMethod ( String methodName, Map dic )
 	{
-		Log.d(TAG, "FlutterAutoPlugin: invokeMethod" + methodName);
+		Log.d(TAG, "FlutterSoundPlayer: invokeMethod " + methodName);
 		channel.invokeMethod ( methodName, dic );
 	}
 
@@ -115,107 +116,122 @@ class FlautoPlayerPlugin
 		final MethodCall call, final Result result
 	                         )
 	{
-		int slotNo = call.argument ( "slotNo" );
-		assert ( ( slotNo >= 0 ) && ( slotNo <= slots.size () ) );
-
-		if ( slotNo == slots.size () )
+		try
 		{
-			slots.add ( slotNo, null );
+			int slotNo = call.argument ( "slotNo" );
+
+			// The dart code supports lazy initialization of players.
+			// This means that players can be registered (and slots allocated)
+			// on the client side in a different order to which the players
+			// are initialised.
+			// As such we need to grow the slot array upto the 
+			// requested slot no. even if we haven't seen initialisation
+			// for the lower numbered slots.
+			while ( slotNo >= slots.size () )
+			{
+				slots.add ( null );
+			}
+
+			FlutterSoundPlayer aPlayer = slots.get ( slotNo );
+			switch ( call.method )
+			{
+				case "initializeMediaPlayer":
+				{
+					assert ( slots.get ( slotNo ) == null );
+					aPlayer = new FlutterSoundPlayer ( slotNo );
+					slots.set ( slotNo, aPlayer );
+					aPlayer.initializeFlautoPlayer ( call, result );
+
+				}
+				break;
+
+				case "releaseMediaPlayer":
+				{
+					aPlayer.releaseFlautoPlayer ( call, result );
+					Log.d("FlutterSoundPlayer", "************* release called");
+					slots.set ( slotNo, null );
+				}
+				break;
+
+				case "isDecoderSupported":
+				{
+					aPlayer.isDecoderSupported ( call, result );
+				}
+				break;
+
+				case "startPlayer":
+				{
+					aPlayer.startPlayer ( call, result );
+				}
+				break;
+
+				case "startPlayerFromBuffer":
+				{
+					aPlayer.startPlayerFromBuffer ( call, result );
+				}
+				break;
+
+				case "stopPlayer":
+				{
+					aPlayer.stopPlayer ( call, result );
+				}
+				break;
+
+				case "pausePlayer":
+				{
+					aPlayer.pausePlayer ( call, result );
+				}
+				break;
+
+				case "resumePlayer":
+				{
+					aPlayer.resumePlayer ( call, result );
+				}
+				break;
+
+				case "seekToPlayer":
+				{
+					aPlayer.seekToPlayer ( call, result );
+				}
+				break;
+
+				case "setVolume":
+				{
+					aPlayer.setVolume ( call, result );
+				}
+				break;
+
+				case "setSubscriptionDuration":
+				{
+					aPlayer.setSubscriptionDuration ( call, result );
+				}
+				break;
+
+				case "androidAudioFocusRequest":
+				{
+					aPlayer.androidAudioFocusRequest ( call, result );
+				}
+				break;
+
+				case "setActive":
+				{
+					aPlayer.setActive ( call, result );
+				}
+				break;
+
+				default:
+				{
+					result.notImplemented ();
+				}
+				break;
+			}
+		}
+		catch (Throwable e)
+		{
+			Log.e(TAG, "Error in onMethodCall " + call.method, e);
+			throw e;
 		}
 
-		FlutterSoundPlayer aPlayer = slots.get ( slotNo );
-		switch ( call.method )
-		{
-
-			case "initializeMediaPlayer":
-			{
-				assert ( slots.get ( slotNo ) == null );
-				aPlayer = new FlutterSoundPlayer ( slotNo );
-				slots.set ( slotNo, aPlayer );
-				aPlayer.initializeFlautoPlayer ( call, result );
-
-			}
-			break;
-
-			case "releaseMediaPlayer":
-			{
-				aPlayer.releaseFlautoPlayer ( call, result );
-				slots.set ( slotNo, null );
-			}
-			break;
-
-			case "isDecoderSupported":
-			{
-				aPlayer.isDecoderSupported ( call, result );
-			}
-			break;
-
-			case "startPlayer":
-			{
-				aPlayer.startPlayer ( call, result );
-			}
-			break;
-
-			case "startPlayerFromBuffer":
-			{
-				aPlayer.startPlayerFromBuffer ( call, result );
-			}
-			break;
-
-			case "stopPlayer":
-			{
-				aPlayer.stopPlayer ( call, result );
-			}
-			break;
-
-			case "pausePlayer":
-			{
-				aPlayer.pausePlayer ( call, result );
-			}
-			break;
-
-			case "resumePlayer":
-			{
-				aPlayer.resumePlayer ( call, result );
-			}
-			break;
-
-			case "seekToPlayer":
-			{
-				aPlayer.seekToPlayer ( call, result );
-			}
-			break;
-
-			case "setVolume":
-			{
-				aPlayer.setVolume ( call, result );
-			}
-			break;
-
-			case "setSubscriptionDuration":
-			{
-				aPlayer.setSubscriptionDuration ( call, result );
-			}
-			break;
-
-			case "androidAudioFocusRequest":
-			{
-				aPlayer.androidAudioFocusRequest ( call, result );
-			}
-			break;
-
-			case "setActive":
-			{
-				aPlayer.setActive ( call, result );
-			}
-			break;
-
-			default:
-			{
-				result.notImplemented ();
-			}
-			break;
-		}
 	}
 
 }
@@ -305,10 +321,10 @@ public class FlutterSoundPlayer
 	};
 
 
-	final static  String           TAG         = "FlutterSoundPlugin";
+	final static  String           TAG         = "FlutterSoundPlayer";
 	final         PlayerAudioModel model       = new PlayerAudioModel ();
 	private       Timer            mTimer      = new Timer ();
-	final private Handler          mainHandler = new Handler ();
+	final private Handler           tickHandler = new Handler ();
 	t_SET_CATEGORY_DONE setActiveDone     = t_SET_CATEGORY_DONE.NOT_SET;
 	AudioFocusRequest   audioFocusRequest = null;
 	AudioManager        audioManager;
@@ -334,12 +350,12 @@ public class FlutterSoundPlayer
 	void initializeFlautoPlayer ( final MethodCall call, final Result result )
 	{
 		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
-		result.success ( "Flauto Player Initialized" );
+		result.success ( "Flutter Player Initialized" );
 	}
 
 	void releaseFlautoPlayer ( final MethodCall call, final Result result )
 	{
-		result.success ( "Flauto Recorder Released" );
+		result.success ( "Flutter Recorder Released" );
 	}
 
 
@@ -370,6 +386,7 @@ public class FlutterSoundPlayer
 	{
 		if ( this.model.getMediaPlayer () != null )
 		{
+			/// re-start after media has been paused
 			Boolean isPaused = !this.model.getMediaPlayer ().isPlaying () && this.model.getMediaPlayer ().getCurrentPosition () > 1;
 
 			if ( isPaused )
@@ -382,10 +399,12 @@ public class FlutterSoundPlayer
 			Log.e ( TAG, "Player is already running. Stop it first." );
 			result.success ( "player is already running." );
 			return;
-		} else
-		{
-			this.model.setMediaPlayer ( new MediaPlayer () );
-		}
+		} 
+
+		/// This causes an IllegalStateException to by throw by the MediaPlayer.
+		/// Looks to be a minor bug in the android MediaPlayer so we can ignore it.
+		this.model.setMediaPlayer ( new MediaPlayer () );
+		
 		mTimer = new Timer ();
 
 		try
@@ -404,91 +423,102 @@ public class FlutterSoundPlayer
 				requestFocus ();
 			}
 
-			this.model.getMediaPlayer ().setOnPreparedListener ( mp -> onPrepared(mp, path, result)	);
+			this.model.getMediaPlayer ().setOnPreparedListener ( mp ->
+			                                                     {
+				                                                     Log.d ( TAG, "mediaPlayer prepared and start" );
+				                                                     mp.start ();
+				                                                     startTickerUpdates(mp);
+				                                                     result.success ( "" );
+			                                                     } );
 			/*
 			 * Detect when finish playing.
 			 */
-			this.model.getMediaPlayer ().setOnCompletionListener ( mp -> onCompletion(mp)
-			                                                      );
-			this.model.getMediaPlayer ().prepare ();
+			this.model.getMediaPlayer ().setOnCompletionListener ( mp -> completeListener(mp));
+			this.model.getMediaPlayer ().prepareAsync ();
 		}
 		catch ( Exception e )
 		{
-			Log.e ( TAG, "startPlayer() exception" );
+			Log.e ( TAG, "startPlayer() exception", e );
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 		}
 	}
 
-
-	// listener called when media player has completed playing.
-	private void onCompletion(MediaPlayer mp)
+	// Called when the audio stops, this can be due
+	// the natural completion of the audio track or because
+	// the playback was stopped.
+	private void completeListener(MediaPlayer mp)
 	{
-			/*
-			 * Reset player.
-			 */
-			Log.d(TAG, "Playback completed.");
-			try {
-				JSONObject json = new JSONObject();
-				json.put("duration", String.valueOf(mp.getDuration()));
-				json.put("current_position", String.valueOf(mp.getCurrentPosition()));
-				invokeMethodWithString("audioPlayerFinishedPlaying", json.toString());
-			} catch (Exception e) {
-				Log.d(TAG, "Json Exception: " + e.toString());
-			}
-			mTimer.cancel();
-			if (mp.isPlaying()) {
-				mp.stop();
-			}
-			if ((setActiveDone != t_SET_CATEGORY_DONE.BY_USER) && (setActiveDone != t_SET_CATEGORY_DONE.NOT_SET)) {
-
-				setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
-				abandonFocus();
-			}
-			mp.reset();
-			mp.release();
-			model.setMediaPlayer(null);
-	}
-
-	// Listener called when media player has completed preparation.
-	private void onPrepared(MediaPlayer mp, String path, final Result result)
-	{
-		Log.d(TAG, "mediaPlayer prepared and start");
-		mp.start();
-
+		stopTickerUpdates(mp, true);
 		/*
-		 * Set timer task to send event to RN.
+		 * Reset player.
 		 */
-		TimerTask mTask = new TimerTask() {
-			@Override
-			public void run() {
-				// long time = mp.getCurrentPosition();
-				// DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
-				// final String displayTime = format.format(time);
-				Log.d(TAG, "Running updateProgress");
-				try {
-					JSONObject json = new JSONObject();
-					json.put("duration", String.valueOf(mp.getDuration()));
-					json.put("current_position", String.valueOf(mp.getCurrentPosition()));
-					mainHandler.post(new Runnable() {
-						@Override
-						public void run() {
-							Log.d(TAG, "Invoking updateProgress: " + json.toString());
-							invokeMethodWithString("updateProgress", json.toString());
-						}
-					});
+		Log.d ( TAG, "Plays completed." );
+		try
+		{
+			JSONObject json = new JSONObject ();
+			json.put ( "duration", String.valueOf ( mp.getDuration () ) );
+			json.put ( "current_position", String.valueOf ( mp.getCurrentPosition () ) );
+			invokeMethodWithString ( "audioPlayerFinishedPlaying", json.toString () );
+		}
+		catch ( Exception e )
+		{
+			Log.d ( TAG, "Json Exception: " + e.toString () );
+		}
+		mTimer.cancel ();
+		if ( mp.isPlaying () )
+		{
+			mp.stop ();
+		}
+		if ( ( setActiveDone != t_SET_CATEGORY_DONE.BY_USER ) && ( setActiveDone != t_SET_CATEGORY_DONE.NOT_SET ) )
+		{
 
-				} catch (Exception e) {
-					Log.d(TAG, "Exception: " + e.toString());
-				}
-			}
-		};
+			setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
+			abandonFocus ();
+		}
 
-		mTimer.schedule(mTask, 0, model.subsDurationMillis);
-		String resolvedPath = (path == null) ? PlayerAudioModel.DEFAULT_FILE_LOCATION : path;
-		result.success((resolvedPath));
+		mp.reset ();
+		mp.release ();
+		model.setMediaPlayer ( null );
 	}
-	
 
+	private void startTickerUpdates(MediaPlayer mp) {
+		// make certain no tickers are currently running.
+		stopTickerUpdates(mp, false);
+
+		tickHandler.post ( () -> sendUpdateProgress(mp) );
+	}
+
+	private void stopTickerUpdates(MediaPlayer mp, boolean sendFinal) {
+		/// send a final update before we stop the ticker
+		/// so dart sees the last position we reached.
+		if (sendFinal)
+		{
+			sendUpdateProgress(mp);
+		}
+		tickHandler.removeCallbacksAndMessages ( null );
+	}
+
+	@UiThread
+	private void sendUpdateProgress(MediaPlayer mp)
+	{
+		try
+		{
+			JSONObject json = new JSONObject();
+			json.put("duration", String.valueOf(mp.getDuration()));
+			json.put("current_position", String.valueOf(mp.getCurrentPosition()));
+			invokeMethodWithString("updateProgress", json.toString());
+
+			// reschedule ourselves.
+			tickHandler.postDelayed(() -> sendUpdateProgress(mp), (model.subsDurationMillis));
+		}
+		catch ( Exception e )
+		{
+			Log.d ( TAG, "Exception: " + e.toString () );
+		}
+	}
+
+
+	/// This method is no longer used as we create the file in the dart code.
 	public void startPlayerFromBuffer ( final MethodCall call, final Result result )
 	{
 		Integer _codec     = call.argument ( "codec" );
@@ -511,7 +541,9 @@ public class FlutterSoundPlayer
 	{
 		mTimer.cancel ();
 
-		if ( this.model.getMediaPlayer () == null )
+		MediaPlayer mp = this.model.getMediaPlayer();
+
+		if ( mp == null )
 		{
 			result.success ( "Player already Closed");
 			return;
@@ -525,9 +557,10 @@ public class FlutterSoundPlayer
 
 		try
 		{
-			this.model.getMediaPlayer ().stop ();
-			this.model.getMediaPlayer ().reset ();
-			this.model.getMediaPlayer ().release ();
+			stopTickerUpdates(mp, true);
+			mp.stop ();
+			mp.reset ();
+			mp.release ();
 			this.model.setMediaPlayer ( null );
 			result.success ( "stopped player." );
 		}
@@ -555,21 +588,22 @@ public class FlutterSoundPlayer
 
 	public void pausePlayer ( final MethodCall call, final Result result )
 	{
-		if ( this.model.getMediaPlayer () == null )
+		MediaPlayer mp = this.model.getMediaPlayer ();
+		if ( mp == null )
 		{
 			result.error ( ERR_PLAYER_IS_NULL, "pausePlayer()", ERR_PLAYER_IS_NULL );
 			return;
 		}
 		if ( ( setActiveDone != t_SET_CATEGORY_DONE.BY_USER ) && ( setActiveDone != t_SET_CATEGORY_DONE.NOT_SET ) )
 		{
-
 			setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
 			abandonFocus ();
 		}
 
 		try
 		{
-			this.model.getMediaPlayer ().pause ();
+			stopTickerUpdates(mp, true);
+			mp.pause ();
 			result.success ( "paused player." );
 		}
 		catch ( Exception e )
@@ -582,28 +616,30 @@ public class FlutterSoundPlayer
 
 	public void resumePlayer ( final MethodCall call, final Result result )
 	{
-		if ( this.model.getMediaPlayer () == null )
+		MediaPlayer mp = this.model.getMediaPlayer ();
+
+		if ( mp == null )
 		{
 			result.error ( ERR_PLAYER_IS_NULL, "resumePlayer", ERR_PLAYER_IS_NULL );
 			return;
 		}
 
-		if ( this.model.getMediaPlayer ().isPlaying () )
+		if ( mp.isPlaying () )
 		{
 			result.error ( ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING );
 			return;
 		}
 		if ( setActiveDone == t_SET_CATEGORY_DONE.NOT_SET )
 		{
-
 			setActiveDone = t_SET_CATEGORY_DONE.FOR_PLAYING;
 			requestFocus ();
 		}
 
 		try
 		{
-			this.model.getMediaPlayer ().seekTo ( this.model.getMediaPlayer ().getCurrentPosition () );
-			this.model.getMediaPlayer ().start ();
+			startTickerUpdates(mp);
+			mp.seekTo( mp.getCurrentPosition () );
+			mp.start();
 			result.success ( "resumed player." );
 		}
 		catch ( Exception e )
@@ -613,38 +649,42 @@ public class FlutterSoundPlayer
 		}
 	}
 
-	public void seekToPlayer ( final MethodCall call, final Result result )
+	public void seekToPlayer (final MethodCall call, final Result result)
 	{
+		MediaPlayer mp = this.model.getMediaPlayer ();
+
 		int millis = call.argument ( "sec" ) ;
 
-		if ( this.model.getMediaPlayer () == null )
+		if ( mp == null )
 		{
 			result.error ( ERR_PLAYER_IS_NULL, "seekToPlayer()", ERR_PLAYER_IS_NULL );
 			return;
 		}
 
-		int currentMillis = this.model.getMediaPlayer ().getCurrentPosition ();
+		int currentMillis = mp.getCurrentPosition ();
 		Log.d ( TAG, "currentMillis: " + currentMillis );
 		// millis += currentMillis; [This was the problem for me]
 
 		Log.d ( TAG, "seekTo: " + millis );
 
-		this.model.getMediaPlayer ().seekTo ( millis );
+		mp.seekTo ( millis );
 		result.success ( String.valueOf ( millis ) );
 	}
 
 	public void setVolume ( final MethodCall call, final Result result )
 	{
+		MediaPlayer mp = this.model.getMediaPlayer ();
+
 		double volume = call.argument ( "volume" );
 
-		if ( this.model.getMediaPlayer () == null )
+		if ( mp == null )
 		{
 			result.error ( ERR_PLAYER_IS_NULL, "setVolume()", ERR_PLAYER_IS_NULL );
 			return;
 		}
 
 		float mVolume = ( float ) volume;
-		this.model.getMediaPlayer ().setVolume ( mVolume, mVolume );
+		mp.setVolume ( mVolume, mVolume );
 		result.success ( "Set volume" );
 	}
 

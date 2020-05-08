@@ -156,7 +156,7 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
         
         if ([@"setDbPeakLevelUpdate" isEqualToString:call.method])
         {
-                NSNumber* intervalInSecs = (NSNumber*)call.arguments[@"intervalInSecs"];
+                NSNumber* intervalInSecs = (NSNumber*)call.arguments[@"sec"];
                 [aFlautoRecorder setDbPeakLevelUpdate:[intervalInSecs doubleValue] result:result];
         } else
         

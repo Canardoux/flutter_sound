@@ -16,42 +16,22 @@ package com.dooboolab.fluttersound;
  */
 
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.media.AudioManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.arch.core.util.Function;
-import androidx.core.app.ActivityCompat;
+import androidx.annotation.UiThread;
 
-import android.media.AudioFocusRequest;
-
-import java.io.*;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -64,8 +44,6 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
-import java.util.concurrent.Callable;
-
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
@@ -73,13 +51,14 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 class FlautoRecorderPlugin
 	implements MethodCallHandler
 {
-	public static MethodChannel        channel;
+	public static final String CHANNEL_NAME = "com.dooboolab.flutter_sound_recorder";
+	private static MethodChannel        channel;
 	public static List<FlutterSoundRecorder> slots;
 
 	static Context              androidContext;
 	static FlautoRecorderPlugin flautoRecorderPlugin; // singleton
 
-
+	static final String TAG 					  = "FlutterSoundRecorder";
 	static final String ERR_UNKNOWN               = "ERR_UNKNOWN";
 	static final String ERR_RECORDER_IS_NULL      = "ERR_RECORDER_IS_NULL";
 	static final String ERR_RECORDER_IS_RECORDING = "ERR_RECORDER_IS_RECORDING";
@@ -91,15 +70,18 @@ class FlautoRecorderPlugin
 		flautoRecorderPlugin = new FlautoRecorderPlugin ();
 		assert ( slots == null );
 		slots   = new ArrayList<FlutterSoundRecorder> ();
-		channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_recorder" );
+		channel = new MethodChannel ( messenger, CHANNEL_NAME);
 		channel.setMethodCallHandler ( flautoRecorderPlugin );
+		Log.d(TAG,"Registering channel: " + CHANNEL_NAME);
 		androidContext = ctx;
 	}
 
 
 	void invokeMethod ( String methodName, Map dic )
 	{
+		// Log.d(TAG, "calling dart " + methodName + dic.toString());
 		channel.invokeMethod ( methodName, dic );
+		// Log.d(TAG, "invokeMethod succeeded");
 	}
 
 	void freeSlot ( int slotNo )
@@ -118,11 +100,16 @@ class FlautoRecorderPlugin
 	public void onMethodCall ( final MethodCall call, final Result result )
 	{
 		int slotNo = call.argument ( "slotNo" );
-		assert ( ( slotNo >= 0 ) && ( slotNo <= slots.size () ) );
 
-		if ( slotNo == slots.size () )
-		{
-			slots.add ( slotNo, null );
+		// The dart code supports lazy initialization of the recorder.
+		// This means that recorders can be registered (and slots allocated)
+		// on the client side in a different order to which the recorders
+		// are initialised.
+		// As such we need to grow the slot array upto the
+		// requested slot no. even if we haven't seen initialisation
+		// for the lower numbered slots.
+		while (slotNo >= slots.size()) {
+			slots.add(null);
 		}
 
 		FlutterSoundRecorder aRecorder = slots.get ( slotNo );
@@ -152,6 +139,7 @@ class FlautoRecorderPlugin
 			case "startRecorder":
 			{
 				aRecorder.startRecorder ( call, result );
+				Log.d(TAG, "startRecorder: " + call.toString());
 			}
 			break;
 
@@ -179,6 +167,7 @@ class FlautoRecorderPlugin
 			case "setSubscriptionDuration":
 			{
 				aRecorder.setSubscriptionDuration ( call, result );
+				Log.d(TAG, "setSubscriptionDuration: " + call.toString());
 			}
 			break;
 
@@ -215,8 +204,9 @@ class RecorderAudioModel
 	public              boolean shouldProcessDbLevel  = true;
 
 	private      MediaRecorder mediaRecorder;
-	private      Runnable      recorderTicker;
-	private      Runnable      dbLevelTicker;
+
+	// The time at which  the current recording was started.
+	public       long          startTime;
 	private      long          recordTime   = 0;
 	public final double        micLevelBase = 2700;
 
@@ -229,26 +219,6 @@ class RecorderAudioModel
 	public void setMediaRecorder ( MediaRecorder mediaRecorder )
 	{
 		this.mediaRecorder = mediaRecorder;
-	}
-
-	public Runnable getRecorderTicker ()
-	{
-		return recorderTicker;
-	}
-
-	public void setRecorderTicker ( Runnable recorderTicker )
-	{
-		this.recorderTicker = recorderTicker;
-	}
-
-	public Runnable getDbLevelTicker ()
-	{
-		return dbLevelTicker;
-	}
-
-	public void setDbLevelTicker ( Runnable ticker )
-	{
-		this.dbLevelTicker = ticker;
 	}
 
 	public long getRecordTime ()
@@ -314,10 +284,10 @@ public class FlutterSoundRecorder
 	static final String ERR_RECORDER_IS_RECORDING = "ERR_RECORDER_IS_RECORDING";
 
 
-	final static String             TAG                = "FlutterSoundPlugin";
+	final static String             TAG                = "FlutterSoundRecorder";
 	final        RecorderAudioModel model              = new RecorderAudioModel ();
-	final public Handler            recordHandler      = new Handler ();
-	final public Handler            dbPeakLevelHandler = new Handler ();
+	final public Handler            progressTickHandler      = new Handler ();
+	final public Handler            dbPeakLevelTickHandler = new Handler ();
 	String finalPath;
 	int    slotNo;
 	private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor ();
@@ -390,20 +360,18 @@ public class FlutterSoundRecorder
 			Integer      sampleRate          = call.argument ( "sampleRate" );
 			Integer      numChannels         = call.argument ( "numChannels" );
 			Integer      bitRate             = call.argument ( "bitRate" );
-			int          androidEncoder      = call.argument ( "androidEncoder" );
 			int          _codec              = call.argument ( "codec" );
 			t_CODEC      codec               = t_CODEC.values ()[ _codec ];
-			int          androidAudioSource  = call.argument ( "androidAudioSource" );
-			int          androidOutputFormat = call.argument ( "androidOutputFormat" );
+			int          audioSource 		 = call.argument ( "audioSource" );
 			final String path                = call.argument ( "path" );
-			_startRecorder ( numChannels, sampleRate, bitRate, codec, androidEncoder, androidAudioSource, androidOutputFormat, path, result );
+			_startRecorder ( numChannels, sampleRate, bitRate, codec, audioSource, path, result );
 		}
 		//);
 
 	}
 
 	public void _startRecorder (
-		Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int androidEncoder, int androidAudioSource, int androidOutputFormat, String path, final Result result
+		Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int audioSource, String path, final Result result
 	                           )
 	{
 		final int v = Build.VERSION.SDK_INT;
@@ -422,7 +390,6 @@ public class FlutterSoundRecorder
 			model.setMediaRecorder (mediaRecorder );
 		}
 
-
 		try
 		{
 			if ( codecArray[ codec.ordinal () ] == 0 )
@@ -431,10 +398,10 @@ public class FlutterSoundRecorder
 				//return;
 			}
 			mediaRecorder.reset();
-			mediaRecorder.setAudioSource ( androidAudioSource );
-			androidEncoder      = codecArray[ codec.ordinal () ];
-			androidOutputFormat = formatsArray[ codec.ordinal () ];
-			mediaRecorder.setOutputFormat ( androidOutputFormat );
+			mediaRecorder.setAudioSource ( audioSource );
+			int encoder      = codecArray[ codec.ordinal () ];
+			int outputFormat = formatsArray[ codec.ordinal () ];
+			mediaRecorder.setOutputFormat ( outputFormat );
 
 			if ( path == null )
 			{
@@ -442,7 +409,7 @@ public class FlutterSoundRecorder
 			}
 
 			mediaRecorder.setOutputFile ( path );
-			mediaRecorder.setAudioEncoder ( androidEncoder );
+			mediaRecorder.setAudioEncoder ( encoder );
 
 			if ( numChannels != null )
 			{
@@ -463,68 +430,8 @@ public class FlutterSoundRecorder
 			mediaRecorder.prepare ();
 			mediaRecorder.start ();
 
-			// Remove all pending runnables, this is just for safety (should never happen)
-			recordHandler.removeCallbacksAndMessages ( null );
-			final long systemTime = SystemClock.elapsedRealtime ();
-			this.model.setRecorderTicker ( () ->
-			                               {
-
-				                               long time = SystemClock.elapsedRealtime () - systemTime;
-				                               // Log.d(TAG, "elapsedTime: " + SystemClock.elapsedRealtime());
-				                               // Log.d(TAG, "time: " + time);
-
-				                               // DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
-				                               // String displayTime = format.format(time);
-				                               // model.setRecordTime(time);
-				                               try
-				                               {
-					                               JSONObject json = new JSONObject ();
-					                               json.put ( "current_position", String.valueOf ( time ) );
-					                               invokeMethodWithString ( "updateRecorderProgress", json.toString () );
-					                               recordHandler.postDelayed ( model.getRecorderTicker (), model.subsDurationMillis );
-				                               }
-				                               catch ( JSONException je )
-				                               {
-					                               Log.d ( TAG, "Json Exception: " + je.toString () );
-				                               }
-			                               } );
-			recordHandler.post ( this.model.getRecorderTicker () );
-
-			if ( this.model.shouldProcessDbLevel )
-			{
-				dbPeakLevelHandler.removeCallbacksAndMessages ( null );
-				this.model.setDbLevelTicker ( () ->
-				                              {
-
-					                              MediaRecorder recorder = model.getMediaRecorder ();
-					                              if ( recorder != null )
-					                              {
-						                              double maxAmplitude = recorder.getMaxAmplitude ();
-
-						                              // Calculate db based on the following article.
-						                              // https://stackoverflow.com/questions/10655703/what-does-androids-getmaxamplitude-function-for-the-mediarecorder-actually-gi
-						                              //
-						                              double ref_pressure = 51805.5336;
-						                              double p            = maxAmplitude / ref_pressure;
-						                              double p0           = 0.0002;
-
-						                              double db = 20.0 * Math.log10 ( p / p0 );
-
-						                              // if the microphone is off we get 0 for the amplitude which causes
-						                              // db to be infinite.
-						                              if ( Double.isInfinite ( db ) )
-						                              {
-							                              db = 0.0;
-						                              }
-
-						                              Log.d ( TAG, "rawAmplitude: " + maxAmplitude + " Base DB: " + db );
-
-						                              invokeMethodWithDouble (  "updateDbPeakProgress", db );
-						                              dbPeakLevelHandler.postDelayed ( model.getDbLevelTicker (), ( model.peakLevelUpdateMillis ) );
-					                              }
-				                              } );
-				dbPeakLevelHandler.post ( model.getDbLevelTicker () );
-			}
+			this.model.startTime = SystemClock.elapsedRealtime ();
+			startTickerUpdates();
 
 			finalPath = path;
 			mainHandler.post ( new Runnable ()
@@ -552,6 +459,82 @@ public class FlutterSoundRecorder
 		}
 	}
 
+	// Starts the progress and Db level tickers if required.
+	private void startTickerUpdates()
+	{
+		// make certain no tickers are currently running.
+		stopTickerUpdates();
+		progressTickHandler.post ( () -> sendProgressUpdate() );
+
+		if ( this.model.shouldProcessDbLevel ) {
+			dbPeakLevelTickHandler.post (() -> sendDBLevelUpdate() );
+		}
+	}
+
+	// stops the progress and Db level tickers.
+	private void stopTickerUpdates()
+	{
+		progressTickHandler.removeCallbacksAndMessages ( null );
+		dbPeakLevelTickHandler.removeCallbacksAndMessages(null);
+	}
+
+	// Sends an Db Level update to the dart code and then
+	// reschedule ourselves to do it again.
+	@UiThread
+	private void sendDBLevelUpdate()
+	{
+		MediaRecorder recorder = model.getMediaRecorder ();
+		if ( recorder != null )
+		{
+			double maxAmplitude = recorder.getMaxAmplitude ();
+
+			// Calculate db based on the following article.
+			// https://stackoverflow.com/questions/10655703/what-does-androids-getmaxamplitude-function-for-the-mediarecorder-actually-gi
+			//
+			double ref_pressure = 51805.5336;
+			double p            = maxAmplitude / ref_pressure;
+			double p0           = 0.0002;
+
+			double db = 20.0 * Math.log10 ( p / p0 );
+
+			// if the microphone is off we get 0 for the amplitude which causes
+			// db to be infinite.
+			if ( Double.isInfinite ( db ) )
+			{
+				db = 0.0;
+			}
+
+			// Log.d ( TAG, "rawAmplitude: " + maxAmplitude + " Base DB: " + db );
+			invokeMethodWithDouble (  "updateDbPeakProgress", db );
+
+			// schedule the next update.
+			dbPeakLevelTickHandler.postDelayed ( () ->  sendDBLevelUpdate(), ( model.peakLevelUpdateMillis ) );
+		}
+	}
+
+	// Sends a duration progress update to the dart code.
+	// This method then re-queues itself.
+	@UiThread
+	private void sendProgressUpdate()
+	{
+		long time = SystemClock.elapsedRealtime () - model.startTime;
+		try
+		{
+			JSONObject json = new JSONObject ();
+			json.put ( "current_position", String.valueOf ( time ) );
+			invokeMethodWithString ( "updateRecorderProgress", json.toString () );
+			// Log.d(TAG,  "updateRecorderProgress: " +  json.toString());
+
+			// re-queue ourselves based on the desired subscription interval.
+			boolean queued = progressTickHandler.postDelayed ( () ->sendProgressUpdate(), this.model.subsDurationMillis );
+			Log.d(TAG, "progress posted=" + queued + " delay:" + this.model.subsDurationMillis);
+		}
+		catch ( Exception je )
+		{
+			Log.d ( TAG, "Exception calling updateRecorderProgress: " + je.toString () );
+		}
+	}
+
 	public void stopRecorder ( final MethodCall call, final Result result )
 	{
 		//taskScheduler.submit ( () -> _stopRecorder ( result ) );
@@ -565,8 +548,7 @@ public class FlutterSoundRecorder
 	public boolean _stopRecorder (  )
 	{
 		// This remove all pending runnables
-		recordHandler.removeCallbacksAndMessages ( null );
-		dbPeakLevelHandler.removeCallbacksAndMessages ( null );
+		stopTickerUpdates();
 
 		if ( this.model.getMediaRecorder () == null )
 		{
@@ -622,8 +604,7 @@ public class FlutterSoundRecorder
 			result.error ( TAG, "Bad Android API level", "\"Pause/Resume needs at least Android API 24\"" );
 		} else
 		{
-			recordHandler.removeCallbacksAndMessages ( null );
-			dbPeakLevelHandler.removeCallbacksAndMessages ( null );
+			stopTickerUpdates();
 			this.model.getMediaRecorder().pause();
 			result.success( "Recorder is paused");
 		}
@@ -643,7 +624,8 @@ public class FlutterSoundRecorder
 			result.error ( TAG, "Bad Android API level", "\"Pause/Resume needs at least Android API 24\"" );
 		} else
 		{
-			recordHandler.post ( this.model.getRecorderTicker () );
+			// restart tickers.
+			startTickerUpdates();
 			this.model.getMediaRecorder().resume();
 			result.success( true);
 		}
@@ -653,7 +635,7 @@ public class FlutterSoundRecorder
 
 	public void setDbPeakLevelUpdate ( final MethodCall call, final Result result )
 	{
-		double intervalInSecs = call.argument ( "intervalInSecs" );
+		double intervalInSecs = call.argument ( "sec" );
 		this.model.peakLevelUpdateMillis = ( long ) ( intervalInSecs * 1000 );
 		result.success ( "setDbPeakLevelUpdate: " + this.model.peakLevelUpdateMillis );
 	}

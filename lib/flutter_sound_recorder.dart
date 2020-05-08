@@ -243,7 +243,7 @@ class FlutterSoundRecorder {
   Future<String> setDbPeakLevelUpdate(double intervalInSecs) async {
     await initialize();
     String r = await invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
-      'intervalInSecs': intervalInSecs,
+      'sec': intervalInSecs,
     }) as String;
     return r;
   }
@@ -324,7 +324,7 @@ class FlutterSoundRecorder {
         'bitRate': bitRate,
         'codec': codec.index,
         'androidEncoder': androidEncoder?.value,
-        'androidAudioSource': androidAudioSource?.value,
+        'audioSource': androidAudioSource?.value,
         'androidOutputFormat': androidOutputFormat?.value,
         'iosQuality': iosQuality?.value
       };

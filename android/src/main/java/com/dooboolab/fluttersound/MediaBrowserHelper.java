@@ -28,6 +28,8 @@ import android.util.Log;
 import androidx.arch.core.util.Function;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class MediaBrowserHelper
 {
@@ -42,12 +44,14 @@ public class MediaBrowserHelper
 
 	//private BackgroundAudioService backgroundAudioService ;
 
+
 	private MediaBrowserCompat.ConnectionCallback mMediaBrowserCompatConnectionCallback = new MediaBrowserCompat.ConnectionCallback()
 	{
 		@Override
 		public void onConnected()
 		{
 			super.onConnected();
+			Log.d("MediaBrowserHelper", "onConnected");
 			// A new MediaBrowserCompat object is created and connected. Then, initialize a
 			// MediaControllerCompat object and associate it with MediaSessionCompat. Once
 			// completed,
@@ -57,6 +61,8 @@ public class MediaBrowserHelper
 				assert(Flauto.androidActivity != null);
 				mediaControllerCompat = new MediaControllerCompat( Flauto.androidActivity, mMediaBrowserCompat.getSessionToken() );
 				MediaControllerCompat.setMediaController( Flauto.androidActivity, mediaControllerCompat );
+
+				Log.w("MediaBrowserHelper", "onConnect = Success");
 
 				// Start the audio playback
 				// MediaControllerCompat.getMediaController(mActivity).getTransportControls().playFromMediaId("http://path-to-audio-file.com",
@@ -88,6 +94,7 @@ public class MediaBrowserHelper
 		public void onConnectionFailed()
 		{
 			super.onConnectionFailed();
+			Log.d("MediaBrowserHelper", "onConnected");
 
 			// Call the unsuccessful connection callback if it was provided
 			if ( mServiceConnectionUnsuccessfulCallback != null )
@@ -171,7 +178,6 @@ public class MediaBrowserHelper
 		mediaControllerCompat.getTransportControls().play();
 	}
 
-
 	void seekTo( long newPosition )
 	{
 		mediaControllerCompat.getTransportControls().seekTo( newPosition );
@@ -238,6 +244,7 @@ public class MediaBrowserHelper
 	{
 		BackgroundAudioService.skipTrackBackwardHandler = null;
 	}
+
 
 	/**
 	 * Passes the currently playing track to the media browser, in order to show the

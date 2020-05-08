@@ -91,6 +91,7 @@ class TrackPlayerPlugin
 	public static void attachTrackPlayer( Context ctx, BinaryMessenger messenger )
 	{
 		assert ( flautoPlayerPlugin == null );
+		
 		trackPlayerPlugin = new TrackPlayerPlugin();
 		assert ( slots == null );
 		slots   = new ArrayList<FlutterSoundPlayer>();
@@ -122,29 +123,36 @@ class TrackPlayerPlugin
 	public void onMethodCall( final MethodCall call, final Result result )
 	{
 		int slotNo = call.argument ( "slotNo" );
-		assert ( ( slotNo >= 0 ) && ( slotNo <= slots.size () ) );
-
-		if ( slotNo == slots.size () )
-		{
-			slots.add ( slotNo, null );
+		Log.d(TAG, "onMethodCall called: " + call.method + " for slot: " + slotNo);
+		
+		// The dart code supports lazy initialization of players.
+		// This means that players can be registered (and slots allocated)
+		// on the client side in a different order to which the players
+		// are initialised.
+		// As such we need to grow the slot array upto the
+		// requested slot no. even if we haven't seen initialisation
+		// for the lower numbered slots.
+		while (slotNo >= slots.size()) {
+			slots.add(null);
 		}
 
 		TrackPlayer aPlayer = (TrackPlayer)slots.get ( slotNo );
 		switch ( call.method )
 		{
-
 			case "initializeMediaPlayer":
 			{
 				assert ( slots.get ( slotNo ) == null );
 				aPlayer = new TrackPlayer ( slotNo );
 				slots.set ( slotNo, aPlayer );
 				aPlayer.initializeFlautoPlayer ( call, result );
+				Log.d("TrackPlayer", "************* initialize called");
 			}
 			break;
 
 			case "releaseMediaPlayer":
 			{
 				aPlayer.releaseFlautoPlayer( call, result );
+				Log.d("TrackPlayer", "************* release called");
 			}
 			break;
 
@@ -179,7 +187,7 @@ class TrackPlayerPlugin
 			default:
 				super.onMethodCall( call, result );
 				break;
-		}
+			}
 	}
 
 }
@@ -220,7 +228,8 @@ public class TrackPlayer extends FlutterSoundPlayer
 			// be called, otherwise result.error will be called.
 			mMediaBrowserHelper = new MediaBrowserHelper( new MediaPlayerConnectionListener( result, true ), new MediaPlayerConnectionListener( result, false ) );
 			// Pass the playback state updater to the media browser
-			mMediaBrowserHelper.setPlaybackStateUpdater( new PlaybackStateUpdater() );
+			mMediaBrowserHelper.setPlaybackStateUpdater(new PlaybackStateUpdater());
+
 		}
 		result.success( "The player had already been initialized." );
 	}
@@ -258,6 +267,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 	}
 
 
+
 	public void startPlayerFromTrack( final MethodCall call, final Result result )
 	{
 		final HashMap<String, Object> trackMap = call.argument( "track" );
@@ -284,6 +294,8 @@ public class TrackPlayer extends FlutterSoundPlayer
 		{
 			// The audio file is stored by a buffer, then save it as a file and get the path
 			// to that file.
+			//
+			// NOTE: this code is no longer used. The Dart code will ALWAYS pass a file
 			try
 			{
 				File             f   = File.createTempFile( "flutter_sound", extentionArray[ track.getBufferCodecIndex() ] );
@@ -293,12 +305,22 @@ public class TrackPlayer extends FlutterSoundPlayer
 			}
 			catch ( Exception e )
 			{
+				Log.e(TAG, e.getMessage(), e);
 				result.error( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage() );
 				return;
 			}
 		}
 
 		mTimer = new Timer();
+
+		if ( canPause )
+		{
+			mMediaBrowserHelper.setPauseHandler( new PauseHandler(  ) );
+		} else
+		{
+			mMediaBrowserHelper.removePauseHandler();
+		}
+
 
 		// Add or remove the handlers for when the user tries to skip the current track
 		if ( canSkipForward )
@@ -450,7 +472,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 	}
 
 	@Override
-	public void seekToPlayer(final MethodCall call,Result result )
+	public void seekToPlayer(final MethodCall call, Result result )
 	{
 		int millis = call.argument ( "sec" ) ;
 
@@ -539,13 +561,43 @@ public class TrackPlayer extends FlutterSoundPlayer
 			if ( mIsSuccessfulCallback )
 			{
 				//mResult.success( "The media player has been successfully initialized" );
+				invokeMethodWithBoolean("onPlayerReady", true);
 			} else
 			{
+				invokeMethodWithBoolean("onPlayerReady", false);
 				//mResult.error( TAG, "An error occurred while initializing the media player", null );
 			}
 			return null;
 		}
 	}
+
+	/**
+	 * A listener that is triggered when the pause buttons in the notification are
+	 * clicked.
+	 */
+	private class PauseHandler
+		implements Callable<Void>
+	{
+		private boolean mIsSkippingForward;
+
+		PauseHandler(  )
+		{
+		}
+
+		@Override
+		public Void call()
+			throws
+			Exception
+		{
+			PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
+			invokeMethodWithBoolean( "pause", playbackState.getState() == PlaybackStateCompat.STATE_PLAYING  );
+
+			return null;
+		}
+	}
+
+
+
 
 	/**
 	 * A listener that is triggered when the skip buttons in the notification are
@@ -578,49 +630,20 @@ public class TrackPlayer extends FlutterSoundPlayer
 		}
 	}
 
-	/**
-	 * A listener that is triggered when the pause buttons in the notification are
-	 * clicked.
-	 */
-	private class PauseHandler
-		implements Callable<Void>
-	{
-		private boolean mIsSkippingForward;
-
-		PauseHandler(  )
-		{
-		}
-
-		@Override
-		public Void call()
-			throws
-			Exception
-		{
-			PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
-			invokeMethodWithBoolean( "pause", playbackState.getState() == PlaybackStateCompat.STATE_PLAYING  );
-
-			return null;
-		}
-	}
-
+	
 
 
 	/**
 	 * A function that triggers a function in the Dart code to update the playback
 	 * state.
 	 */
-	private class PlaybackStateUpdater
-		implements Function<Integer, Void>
-	{
+	private class PlaybackStateUpdater implements Function<BackgroundAudioService.SystemPlaybackState, Void> {
 		@Override
-		public Void apply( Integer newState )
-		{
-			invokeMethodWithInteger( "updatePlaybackState", newState );
+		public Void apply(BackgroundAudioService.SystemPlaybackState newState) {
+			invokeMethodWithInteger("updatePlaybackState", newState.stateNo);
 			return null;
 		}
 	}
-
-
 	/**
 	 * The callable instance to call when the media player is prepared.
 	 */

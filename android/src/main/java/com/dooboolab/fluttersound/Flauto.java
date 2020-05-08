@@ -1,4 +1,6 @@
 package com.dooboolab.fluttersound;
+import java.util.concurrent.CountDownLatch;
+
 import com.dooboolab.ffmpeg.FlutterFFmpegPlugin;
 /*
  * This file is part of Flutter-Sound (Flauto).
@@ -50,13 +52,25 @@ public class Flauto
 	static Registrar reg;
 	static Activity androidActivity;
 
+	/// latch to control access until we have been full initialised.
+	/// This class supports v1 and v2 of the flutter embedding so there
+	/// are two ways we can be initialised. 
+	/// Both paths drop the latch.
+	static CountDownLatch initialised = new CountDownLatch(1);
+	
 
+	/**
+	 * v2 Plugin registration.
+	 * 
+	 * Only called on new systems
+	 * 
+	 * see:
+	 * https://flutter.dev/docs/development/packages-and-plugins/plugin-api-migration
+	 */
 	@Override
 	public void onAttachedToEngine ( FlutterPlugin.FlutterPluginBinding binding )
 	{
 		ctx = binding.getApplicationContext ();
-
-		//androidActivity = ???
 
 		FlautoPlayerPlugin.attachFlautoPlayer ( ctx, binding.getBinaryMessenger () );
 		FlautoRecorderPlugin.attachFlautoRecorder ( ctx, binding.getBinaryMessenger () );
@@ -66,7 +80,9 @@ public class Flauto
 
 
 	/**
-	 * Plugin registration.
+	 *  v1 Plugin registration.
+	 * 
+	 *  Only called on older systems.
 	 */
 	public static void registerWith ( Registrar registrar )
 	{
@@ -77,7 +93,10 @@ public class Flauto
 		FlautoPlayerPlugin.attachFlautoPlayer ( ctx, registrar.messenger () );
 		FlautoRecorderPlugin.attachFlautoRecorder ( ctx, registrar.messenger ()  );
 		TrackPlayerPlugin.attachTrackPlayer ( ctx, registrar.messenger ()  );
-        if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin(ctx,registrar.messenger ()  );}
+		if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin(ctx,registrar.messenger ()  );}
+		
+		/// We are fully initialised for v1 embedding
+		initialised.countDown();
 
 	}
 
@@ -114,7 +133,8 @@ public class Flauto
 	                                 )
 	{
 		androidActivity = binding.getActivity ();
+
+		/// We are fully initialised for v2 embedding
+		initialised.countDown();
 	}
-
-
 }
