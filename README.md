@@ -109,7 +109,7 @@ The Track class has two constructors:
 To play a track from a path use:
 ```dart
 var player AudioPlayer.withUI();
-player.onFinish = () => player.release();
+player.onStopped = ({wasUser}) => player.release();
 player.seekTo(Duration(seconds: 5)); // yes, you can call seek before play.
 player.play(Track.fromPath(uri));
 ```
@@ -118,7 +118,7 @@ To play a track from a buffer use:
 
 ```dart
 var player AudioPlayer.withUI();
-player.onFinish = () => player.release();
+player.onStopped = ({wasUser}) => player.release();
 player.seekTo(Duration(seconds: 5));
 player.play(Track.fromBuffer(buffer));
 ```
@@ -132,7 +132,7 @@ var track = Track.fromPath('path to media');
 track.title = 'Quarantine Jig';
 track.author = 'The Jiggy Kids';
 var player = AudioPlayer.withUI();
-player.onFinish = () => player.release();
+player.onStopped = ({wasUser}) => player.release();
 player.play(track);
 ```
 
@@ -328,10 +328,7 @@ QuickPlay.fromPath('beep.acc');
 
 /// If you need to control/monitor the playback
 var player = AudioPlayer.noUI();
-
-// If you stop the playback onFinish will not be called so you
-// must call release via another method.
-player.onFinish = player.release();
+player.onStopped = ({wasUser}) => player.release();
 player.play(Track.fromPath('sample.aac'));
 ```
 
@@ -352,7 +349,7 @@ If you audio file doesn't have an appropriate file extension then you can explic
 
 ```dart
 var player = AudioPlayer.noUI();
-player.onFinish = player.release;
+player.onStopped = ({wasUser}) => player.release();
 player.play(Track.fromPath('sample.blit', codec: Codec.mp3));
 ```
 
@@ -366,7 +363,7 @@ for details on the supported codecs.
 ```dart
 
 var player = AudioPlayer.noUI();
-player.onFinish = player.release;
+player.onStopped = ({wasUser}) => player.release();
 player.play(Track.fromPath('https://some audio file', codec: Codec.mp3););
 ```
 
@@ -380,8 +377,7 @@ for details on the supported codecs.
 ```dart
 Uint8List buffer = ....
 var player = AudioPlayer.noUI();
-player.onFinish = player.release;
-player.onStop = player.release;
+player.onStopped = ({wasUser}) => player.release();
 player.play(Track.fromBuffer(buffer, codec: Codec.mp3));
 ```
 
@@ -391,7 +387,7 @@ AudioPlayer can display the OSs' Audio player UI allowing the user to control pl
 
 ```dart
 var player = AudioPlayer.withUI();
-player.onFinish = player.release;
+player.onStopped = ({wasUser}) => player.release();
 player.play(Track.fromPath('sample.blit', codec: Codec.mp3));
 ```
 
@@ -405,7 +401,7 @@ You can modify the the state of these buttons with the `SoundPlaye.withUI` const
 ```dart
 var player = AudioPlayer.withUI(canPause:true, canSkipBackward:false
 	, canSkipForward: true);
-player.onFinish = player.release;
+player.onStopped =  ({wasUser}) => player.release();
 player.play(Track.fromPath('sample.blit', codec: Codec.mp3));
 ```
 
@@ -420,7 +416,7 @@ track.author = 'Flutter Sound';
 track.albumArtUrl = 'http://some image url';
 
 var player = AudioPlayer.withUI()
-track.onFinish = track.release;
+player.onStopped = ({wasUser}) => player.release();
 player.fromTrack(track);
 ```
 The artist, author and album art will be displayed on the OSs' Audio Player.
@@ -443,7 +439,7 @@ var album = Album.fromTracks([
 	Track.fromPath('sample.acc'),
 	Track.fromPath('http://fqdn/sample.mp3'),
 ]);
-album.onFinish = album.release;
+player.onStopped = ({wasUser}) => player.release();
 album.play();
 ```
 By default an Ablum displays the OSs' audio UI.
@@ -456,7 +452,7 @@ var album = Album.fromTracks([
 	Track.fromPath('http://fqdn/sample.mp3'),
 ]
 , session: AudioPlayer.noUI());
-album.onFinish = album.release;
+player.onStopped = ({wasUser}) => player.release();
 album.play();
 ```
 
@@ -476,7 +472,7 @@ album.onSkipForward = (int currentTrackIndex, Track current)
 		=> Track('http://random/xxxx');
 album.onSkipBackwards = (int currentTrackIndex, Track current)
 		=> Track('http://random/xxxx');
-album.onFinish = album.release;
+player.onStopped = ({wasUser}) => player.release();
 album.play();
 
 ```
@@ -498,10 +494,9 @@ var player = AudioPlayer.withUI();
 var track = Track.fromPath('sample.aac');
 track.title = 'Corona Virus Rock';
 player.onStarted => print('started');
-player.onStopped => print('stopped');
+player.onStopped = ({wasUser}) =>  print('stopped');
 player.onPause => print('paused');
 player.onResume => print('resumed');
-player.onFinished => print('finished');
 player.play(track);
 
 ...
@@ -602,7 +597,7 @@ When you have finished with your `SoundRecorder` you MUST call `SoundRecorder.re
 ```dart
 var track = Track.fromPath('fred.aac');
 var recorder = SoundRecorder();
-recorder.onStopped = () {
+recorder.onStopped = ({wasUser}) {
 	recorder.release();
 	// quick play will release the track resources!
  	QuickPlay.fromTrack(track);
@@ -617,17 +612,14 @@ via `SoundRecorder.path`.
 Deleting the temporary file is your responsiblity!
 
 ```dart
-SoundRecorder recorder = SoundRecorder.toTempPath();
+var tmpFile = Track.tempFile(Codec.aac);
+Track track = Track.fromPath(tmpFile);
+SoundRecorder recorder = SoundRecorder(track)
 
-recorder.onStopped = () {
+recorder.onStopped = ({wasUser}) {
 	recorder.release();
-	/// recorder.path contains the path of the temp file
-	var player = QuickPlay.fromPath(recorder.path)
-	player.onFinished = () {
-		player.release();
-		File(recorder.path).deleteSync();
-	});
-	player.play();
+	// now play the track back.
+	var player = QuickPlay.fromTrack(track)
 });
 
 recorder.start();
@@ -662,7 +654,7 @@ recorder.dispositionStream().listen((disposition) {
 	print('At this very moment the the audio is $dbLevel loud');
 });
 
-recorder.onStopped(() {
+recorder.onStopped(({wasUser}) {
 	recorder.release()
 	/// Now play the recording back.
 	QuickPlay.fromPath(recorder.path).play();
@@ -745,7 +737,7 @@ void build(BuildContext build)
 	Track track = Track.fromPath('path to file to record into');
 	SoundRecorderUI recorderUI =  SoundRecorderUI(track.
 		onStart:  () => onStart(),
-		onStop:  () => onStop());
+		onStopped:  ({wasUser}) => onStop());
 
 	return recorderUI;
 }

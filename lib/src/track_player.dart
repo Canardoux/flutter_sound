@@ -114,7 +114,7 @@ class TrackPlayer {
   ///
   // ignore: avoid_setters_without_getters
   set onSkipBackward(PlayerEvent onSkipBackward) {
-    _player.onFinished = onSkipBackward;
+    _player.onSkipBackward = onSkipBackward;
   }
 
   ///
@@ -128,14 +128,6 @@ class TrackPlayer {
   // ignore: avoid_setters_without_getters
   set onUpdatePlaybackState(OSPlayerStateEvent onUpdatePlaybackState) {
     _player.onUpdatePlaybackState = onUpdatePlaybackState;
-  }
-
-  /// Pass a callback if you want to be notified when
-  /// a track finishes to completion.
-  /// see [onStopped] for events when the user or system stops playback.
-  // ignore: avoid_setters_without_getters
-  set onFinished(PlayerEvent onFinished) {
-    _player.onFinished = onFinished;
   }
 
   ///
@@ -186,13 +178,9 @@ class TrackPlayer {
 
   /// Pass a callback if you want to be notified
   /// that audio has stopped playing.
-  /// This is different from [onFinished] which
-  /// is called when the auido plays to completion.
-  ///
   /// [onStoppped]  can occur if you called [stop]
-  /// or the user click the stop button on the
-  /// OSs' UI. To show the OS UI you must have called
-  /// [AudioPlayer.withUI].
+  /// or the user click the stop button (widget or OS UI).
+  /// 
   // ignore: avoid_setters_without_getters
   set onStopped(PlayerEventWithCause onStopped) {
     _player.onStopped = onStopped;

@@ -14,7 +14,7 @@ void main() {
     var released = false;
     var finished = Completer<bool>();
 
-    player.onFinished = () => finished.complete(true);
+    player.onStopped = ({wasUser}) => finished.complete(true);
     Future.delayed(Duration(seconds: 10), () => finished.complete(false));
 
     player.play(Track.fromPath('assets/sample.acc'));

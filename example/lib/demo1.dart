@@ -442,7 +442,7 @@ class _MyAppState extends State<MyApp> {
           //albumArtAsset: albumArtAsset,
           //albumArtFile: albumArtFile,
         );
-      playerModule.onFinished = () {
+      playerModule.onStopped = ({wasUser}) {
         print('I hope you enjoyed listening to this song');
         setState(() {});
       };

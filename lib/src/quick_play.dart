@@ -139,7 +139,6 @@ class QuickPlay {
   Future<void> _play(double volume) async {
     _player.setVolume(volume);
     _player.audioFocus(AudioFocus.focusAndHushOthers);
-    _player.onFinished = () => _player.release();
     _player.onStopped = ({wasUser}) => _player.release();
     return _player.play(_track);
   }

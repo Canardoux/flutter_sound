@@ -198,8 +198,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     /// should we chain these events incase the user of our api
     /// also wants to see these events?
     _player.onStarted = ({wasUser}) => _onStarted();
-    _player.onStopped = ({wasUser}) => _playState = PlayState.stopped;
-    _player.onFinished = _onFinished;
+    _player.onStopped = ({wasUser}) => _onStopped();
 
     /// pipe the new sound players stream to our local controller.
     _player.dispositionStream().listen(_localController.add);
@@ -214,16 +213,13 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     _playState = PlayState.playing;
   }
 
-  void _onFinished() {
+  void _onStopped() {
     setState(() {
       /// we can get a race condition when we stop the playback
       /// We have disabled the button and called stop.
-      /// The OS then sends an onFinished call which tries
+      /// The OS then sends an onStopped call which tries
       /// to put the state into a stopped state overriding
       /// the disabled state.
-      /// TODO: onFinished should only be called if the player
-      /// naturally finishes. It appears it gets called
-      /// if we prematually stop the recording.
       if (_playState != PlayState.disabled) {
         _playState = PlayState.stopped;
       }

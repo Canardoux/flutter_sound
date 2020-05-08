@@ -52,7 +52,6 @@ class AudioPlayer implements SlotEntry {
 
   PlayerEvent _onSkipForward;
   PlayerEvent _onSkipBackward;
-  PlayerEvent _onFinished;
   OSPlayerStateEvent _onUpdatePlaybackState;
   PlayerEventWithCause _onPaused;
   PlayerEventWithCause _onResumed;
@@ -160,8 +159,7 @@ class AudioPlayer implements SlotEntry {
   ///
   /// ```dart
   /// var player = SoundPlayer.noUI();
-  /// player.onFinished = () => player.release();
-  /// player.onStop = () => player.release();
+  /// player.onStopped = () => player.release();
   /// player.play(track);
   /// ```
   /// The above example guarentees that the player will be released.
@@ -191,8 +189,7 @@ class AudioPlayer implements SlotEntry {
   /// call [AudioPlayer.release].
   /// ```dart
   /// var player = SoundPlayer.noUI();
-  /// player.onFinished = () => player.release();
-  /// player.onStop = () => player.release();
+  /// player.onStopped = () => player.release();
   /// player.play(track);
   /// ```
   /// The above example guarentees that the player will be released.
@@ -530,7 +527,7 @@ class AudioPlayer implements SlotEntry {
     _playerController?.add(finalPosition);
 
     playerState = PlayerState.isStopped;
-    if (_onFinished != null) _onFinished();
+    if (_onStopped != null) _onStopped();
   }
 
   /// handles a pause coming up from the player
@@ -650,14 +647,6 @@ class AudioPlayer implements SlotEntry {
     _onUpdatePlaybackState = onUpdatePlaybackState;
   }
 
-  /// Pass a callback if you want to be notified when
-  /// a track finishes to completion.
-  /// see [onStopped] for events when the user or system stops playback.
-  // ignore: avoid_setters_without_getters
-  set onFinished(PlayerEvent onFinished) {
-    _onFinished = onFinished;
-  }
-
   ///
   /// Pass a callback if you want to be notified when
   /// playback is paused.
@@ -706,12 +695,14 @@ class AudioPlayer implements SlotEntry {
 
   /// Pass a callback if you want to be notified
   /// that audio has stopped playing.
-  /// This is different from [onFinished] which
-  /// is called when the auido plays to completion.
+  /// This can happen as the result of a user
+  /// action (clicking the stop button) an api
+  /// call [stop] or the audio naturally completes.
   ///
   /// [onStoppped]  can occur if you called [stop]
-  /// or the user click the stop button on the
-  /// OSs' UI. To show the OS UI you must have called
+  /// or the user click the stop button (widget or OS)
+  /// or the audio naturally completes.
+  ///
   /// [AudioPlayer.withUI].
   // ignore: avoid_setters_without_getters
   set onStopped(PlayerEventWithCause onStopped) {

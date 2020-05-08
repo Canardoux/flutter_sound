@@ -15,11 +15,11 @@ void main() {
 
 // recorder.onStopped = () => recorder.release();
 //   var player2 = QuickPlay.fromPath(recorder.path)
-// 	player2.onFinished = () => player2.release();
+// 	player2.onStopped = () => player2.release();
 // 	player2.play();
 
 //   var player = QuickPlay.fromPath(recorder.path)
-// 	..onFinished => player.release();
+// 	..onStopped => player.release();
 // 	..play();
 /*
   var isinitialized = false;

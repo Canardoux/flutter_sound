@@ -59,7 +59,7 @@ class Album {
 
     _player.onSkipBackward = _skipBackward;
     _player.onSkipForward = _skipForward;
-    _player.onFinished = _onFinished;
+    _player.onStopped = _onStopped;
   }
 
   /// Creates a virtual album which will be played
@@ -78,7 +78,7 @@ class Album {
     Album._internal(player, _virtualAlbum);
   }
 
-  void _onFinished() {}
+  void _onStopped({bool wasUser}) {}
   void _skipBackward() {
     if (_currentTrackIndex > 1) {
       stop();

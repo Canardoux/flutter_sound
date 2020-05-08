@@ -388,7 +388,7 @@ class _MyAppState extends State<MyApp> {
       track.albumArtUrl = albumArtUrl;
       track.albumArtAsset = albumArtAsset;
       track.albumArtFile = albumArtFile;
-      playerModule.onFinished = () {
+      playerModule.onStopped = ({wasUser}) {
         print('I hope you enjoyed listening to this song');
         setState(() {});
       };
