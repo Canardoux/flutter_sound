@@ -15,6 +15,9 @@ assignees: ''
 
 - **FULL** or **LITE** flavor ?
 
+- flutter pub deps | grep flutter_sound
+(very important)
+
 ----------------------------------------------------------
 
 ## Severity
@@ -45,14 +48,6 @@ assignees: ''
 
 ## Logs
 (This is very important. Most of the time we cannot do anything if we do not have information on your bug)
-
------------------------------------------------
-
-## flutter doctor :
-
------------------------------------------------
-
-## flutter pub deps :
 
 ------------------------------------------------
 
