@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
   /// the player's stream changing under it.
   StreamController<PlaybackDisposition> _localController;
 
-  AudioPlayer playerModule;
+  SoundPlayer playerModule;
   SoundRecorder recorder;
 
   double sliderCurrentPosition = 0.0;
@@ -80,9 +80,9 @@ class _MyAppState extends State<MyApp> {
       playerModule = null;
     }
     if (_isAudioPlayer) {
-      playerModule = AudioPlayer.withUI();
+      playerModule = SoundPlayer.withUI();
     } else {
-      playerModule = AudioPlayer.noUI();
+      playerModule = SoundPlayer.noUI();
     }
 
     // update the ui when we change state.
@@ -384,7 +384,7 @@ class _MyAppState extends State<MyApp> {
         );
 
       track.title = "This is a record";
-      track.author = "from flutter_sound";
+      track.artist = "from flutter_sound";
       track.albumArtUrl = albumArtUrl;
       track.albumArtAsset = albumArtAsset;
       track.albumArtFile = albumArtFile;

@@ -4,12 +4,11 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
-import '../audio_player.dart' as audio_player;
 import '../codec.dart';
 import '../ios/ios_session_category.dart';
 import '../ios/ios_session_mode.dart';
 import '../playback_disposition.dart';
-
+import '../sound_player.dart' as audio_player;
 import '../track.dart';
 import '../util/log.dart';
 import 'base_plugin.dart';
@@ -36,7 +35,7 @@ abstract class PlayerBasePlugin extends BasePlugin {
   set onPlayerReady(ConnectedCallback callback) => _onPlayerReady = callback;
 
   /// Over load this method to play audio.
-  Future<void> play(audio_player.AudioPlayer player, Track track);
+  Future<void> play(audio_player.SoundPlayer player, Track track);
 
   /// Each Player must be initialized and registered.
   void initializePlayer(SlotEntry player) async {
@@ -155,7 +154,7 @@ abstract class PlayerBasePlugin extends BasePlugin {
   /// Handles callbacks from the platform specific plugin
   /// The below methods are shared by all the playback plugins.
   Future<dynamic> onMethodCallback(
-      covariant audio_player.AudioPlayer player, MethodCall call) {
+      covariant audio_player.SoundPlayer player, MethodCall call) {
     switch (call.method) {
 
       ///TODO implement in the OS code for each player.
@@ -209,7 +208,7 @@ abstract class PlayerBasePlugin extends BasePlugin {
       /// knowledge of the AudioPlayer at this level is a little
       /// ugly but I'm trying to keep the public api that
       /// AudioPlayer exposes clean.
-      audio_player.onSystemAppResumed(entry as audio_player.AudioPlayer);
+      audio_player.onSystemAppResumed(entry as audio_player.SoundPlayer);
     });
   }
 
@@ -220,7 +219,7 @@ abstract class PlayerBasePlugin extends BasePlugin {
       /// knowledge of the AudioPlayer at this level is a little
       /// ugly but I'm trying to keep the public api that
       /// AudioPlayer exposes clean.
-      audio_player.onSystemAppPaused(entry as audio_player.AudioPlayer);
+      audio_player.onSystemAppPaused(entry as audio_player.SoundPlayer);
     });
   }
 }

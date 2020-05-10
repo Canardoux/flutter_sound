@@ -17,15 +17,6 @@
 export 'src/album.dart';
 export 'src/android/android_audio_focus_gain.dart';
 export 'src/audio_focus.dart';
-export 'src/audio_player.dart'
-    show AudioPlayer
-    hide
-        updateProgress,
-        audioPlayerFinished,
-        onSystemPaused,
-        onSystemResumed,
-        onSystemSkipForward,
-        onSystemSkipBackward;
 
 export 'src/codec.dart' show Codec, CodecNotSupportedException;
 
@@ -38,6 +29,15 @@ export 'src/playback_disposition.dart' show PlaybackDisposition;
 
 export 'src/quick_play.dart' show QuickPlay;
 export 'src/recording_disposition.dart' show RecordingDisposition;
+export 'src/sound_player.dart'
+    show SoundPlayer
+    hide
+        updateProgress,
+        audioPlayerFinished,
+        onSystemPaused,
+        onSystemResumed,
+        onSystemSkipForward,
+        onSystemSkipBackward;
 
 export 'src/sound_recorder.dart'
     show SoundRecorder, RecorderException, RecorderInvalidStateException;

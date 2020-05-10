@@ -117,7 +117,7 @@ class SoundPlayerUI extends StatefulWidget {
 
 /// internal state.
 class SoundPlayerUIState extends State<SoundPlayerUI> {
-  final AudioPlayer _player;
+  final SoundPlayer _player;
 
   final _sliderPosition = SliderPosition();
 
@@ -151,7 +151,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
 
   ///
   SoundPlayerUIState(this._track, this._onLoad, {bool enabled})
-      : _player = AudioPlayer.noUI(),
+      : _player = SoundPlayer.noUI(),
         _enabled = enabled,
         _localController = StreamController<PlaybackDisposition>.broadcast() {
     _sliderPosition.position = Duration(seconds: 0);
@@ -205,7 +205,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   }
 
   /// This can occur:
-  /// When the user clicks play and the [AudioPlayer] sends
+  /// When the user clicks play and the [SoundPlayer] sends
   /// an event to indicate the player is up.
   /// When the app is paused/resume by the user switching away.
   void _onStarted() {

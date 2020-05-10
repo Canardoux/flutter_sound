@@ -32,7 +32,7 @@ class AssetPlayer extends StatelessWidget {
     );
 
     track.title = "Asset playback.";
-    track.author = "By flutter_sound";
+    track.artist = "By flutter_sound";
 
     if (Platform.isIOS) {
       track.albumArtAsset = 'AppIcon';

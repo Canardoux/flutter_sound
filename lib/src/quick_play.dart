@@ -20,8 +20,8 @@ import 'dart:typed_data' show Uint8List;
 import 'package:flutter/foundation.dart';
 
 import 'audio_focus.dart';
-import 'audio_player.dart';
 import 'codec.dart';
+import 'sound_player.dart';
 import 'track.dart';
 
 /// Provides the ability to playback a single
@@ -44,7 +44,7 @@ import 'track.dart';
 /// QuickPlay.fromTrack(track, volume: 1.0, withUI: true);
 
 class QuickPlay {
-  AudioPlayer _player;
+  SoundPlayer _player;
   Track _track;
 
   /// Creates a QuickPlay from a Track and immediately plays it.
@@ -59,10 +59,10 @@ class QuickPlay {
 
   QuickPlay._internal(double volume, bool withUI) {
     if (withUI) {
-      _player = AudioPlayer.withUI(
+      _player = SoundPlayer.withUI(
           canPause: false, canSkipBackward: false, canSkipForward: false);
     } else {
-      _player = AudioPlayer.noUI();
+      _player = SoundPlayer.noUI();
     }
 
     volume ??= 0.5;

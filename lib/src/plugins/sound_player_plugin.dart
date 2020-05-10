@@ -16,7 +16,7 @@
 
 import 'dart:async';
 
-import '../audio_player.dart' as player;
+import '../sound_player.dart' as player;
 
 import '../track.dart';
 import '../util/log.dart';
@@ -34,7 +34,7 @@ class SoundPlayerPlugin extends PlayerBasePlugin {
   }
   SoundPlayerPlugin._internal() : super('com.dooboolab.flutter_sound_player');
 
-  Future<void> play(player.AudioPlayer player, Track track) async {
+  Future<void> play(player.SoundPlayer player, Track track) async {
     /// sound player plugin does yet support in memory audio.
     trackForceToDisk(track);
     var args = <String, dynamic>{};

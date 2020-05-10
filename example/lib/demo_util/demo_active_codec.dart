@@ -20,11 +20,11 @@ class ActiveCodec {
   /// Set the active code for the the recording and player modules.
   void setCodec(bool withUI, Codec codec) async {
     _encoderSupported = await recorderModule.isSupported(codec);
-    AudioPlayer player;
+    SoundPlayer player;
     if (withUI)
-      player = AudioPlayer.withUI();
+      player = SoundPlayer.withUI();
     else
-      player = AudioPlayer.noUI();
+      player = SoundPlayer.noUI();
 
     _decoderSupported = await player.isSupported(codec);
 

@@ -8,7 +8,7 @@ void main() {
   E2EWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('Can get battery level', (tester) async {
-    final player = AudioPlayer.noUI();
+    final player = SoundPlayer.noUI();
     expect(player, isNotNull);
 
     var released = false;

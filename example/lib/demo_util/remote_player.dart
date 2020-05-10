@@ -41,7 +41,7 @@ class RemotePlayer extends StatelessWidget {
       track = Track.fromURL(exampleAudioFilePath, codec: ActiveCodec().codec);
 
       track.title = "Remote mpeg playback.";
-      track.author = "By flutter_sound";
+      track.artist = "By flutter_sound";
       track.albumArtUrl = albumArtPath;
 
       if (Platform.isIOS) {

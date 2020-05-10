@@ -110,8 +110,6 @@ class Track {
   /// then this will be the passed url.
   String get path => _audio.path;
 
-  
-
   /// returns a unique id for the [Track].
   /// If the [Track] is a path then the path is returned.
   /// If the [Track] is a url then the url.

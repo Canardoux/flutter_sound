@@ -40,7 +40,7 @@ class RecordingPlayer extends StatelessWidget {
 
         if (track != null) {
           track.title = title;
-          track.author = "By flutter_sound";
+          track.artist = "By flutter_sound";
 
           if (Platform.isIOS) {
             track.albumArtAsset = 'AppIcon';

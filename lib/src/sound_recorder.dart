@@ -116,7 +116,7 @@ class SoundRecorder implements SlotEntry {
   ///
   /// If false the recording will stop if the app is pushed
   /// to the background.
-  /// Unlike the [AudioPlayer] the [SoundRecorder] will NOT
+  /// Unlike the [SoundPlayer] the [SoundRecorder] will NOT
   /// resume recording when the app is resumed.
   final bool _playInBackground;
 

@@ -35,7 +35,7 @@ class _MainBodyState extends State<MainBody> {
     recordingFile = Track.tempFile(Codec.aacADTS);
 
     track = Track.fromPath(recordingFile);
-    track.author = 'Brett';
+    track.artist = 'Brett';
   }
 
   Future<bool> init() async {

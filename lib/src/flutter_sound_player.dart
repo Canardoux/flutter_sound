@@ -7,24 +7,16 @@ import 'playback_disposition.dart';
 import 'sound_player.dart';
 import 'track.dart';
 
-/// @deprecated use [SoundPlayer.withUI()]
-class TrackPlayer {
+/// @deprecated use [SoundPlayer.noUI()]
+class FlutterSoundPlayer {
   SoundPlayer _player;
 
   ///
-  TrackPlayer(
-      {bool canPause = true,
-      bool canSkipBackward = false,
-      bool canSkipForward = false,
-      bool playInBackground = false}) {
-    _player = SoundPlayer.withUI(
-        canPause: canPause,
-        canSkipBackward: canSkipBackward,
-        canSkipForward: canSkipForward,
-        playInBackground: playInBackground);
+  FlutterSoundPlayer({bool playInBackground = false}) {
+    _player = SoundPlayer.noUI(playInBackground: playInBackground);
   }
 
-  /// initialize the TrackPlayer.
+  /// initialize the SoundPlayer.
   /// You do not need to call this as the player auto initializes itself
   /// and in fact has to re-initialize its self after an app pause.
   void initialize() {
@@ -36,11 +28,6 @@ class TrackPlayer {
   ///
   Future<void> release() async {
     return _player.release();
-  }
-
-  ///
-  void showPauseButton(PauseButtonMode mode) {
-    /// TODO: I don't know how to control the pause button.
   }
 
   /// Starts playback.
@@ -112,18 +99,6 @@ class TrackPlayer {
     return _player.dispositionStream(interval: interval);
   }
 
-  ///
-  // ignore: avoid_setters_without_getters
-  set onSkipBackward(PlayerEvent onSkipBackward) {
-    _player.onSkipBackward = onSkipBackward;
-  }
-
-  ///
-  // ignore: avoid_setters_without_getters
-  set onSkipForward(PlayerEvent onSkipForward) {
-    _player.onSkipForward = onSkipForward;
-  }
-
   /// Pass a callback if you want to be notified
   /// when the OS Media Player changs state.
   // ignore: avoid_setters_without_getters
@@ -179,29 +154,15 @@ class TrackPlayer {
 
   /// Pass a callback if you want to be notified
   /// that audio has stopped playing.
-  /// [onStoppped]  can occur if you called [stop]
-  /// or the user click the stop button (widget or OS UI).
   ///
+  /// [onStoppped]  can occur if you called [stop]
+  /// or the user click the stop button (widget or OS UI)
+  /// or the audio completed naturally.
+  ///
+  /// To show the OS UI you must have called
+  /// [SoundPlayer.withUI].
   // ignore: avoid_setters_without_getters
   set onStopped(PlayerEventWithCause onStopped) {
     _player.onStopped = onStopped;
   }
-}
-
-///
-enum PauseButtonMode {
-  ///
-  hidden,
-
-  ///
-  disabled,
-
-  ///
-  paused,
-
-  ///
-  playing,
-
-  ///
-  auto,
 }
