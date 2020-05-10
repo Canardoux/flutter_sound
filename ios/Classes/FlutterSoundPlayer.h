@@ -1,18 +1,21 @@
 /*
- * This file is part of Flutter-Sound (Flauto).
+ * Copyright 2018, 2019, 2020 Dooboolab.
  *
- *   Flutter-Sound (Flauto) is free software: you can redistribute it and/or modify
- *   it under the terms of the Lesser GNU General Public License
- *   version 3 (LGPL3) as published by the Free Software Foundation.
+ * This file is part of Flutter-Sound.
  *
- *   Flutter-Sound (Flauto) is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * Flutter-Sound is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 3, as published by
+ * the Free Software Foundation.
  *
- *   You should have received a copy of the Lesser GNU General Public License
- *   along with Flutter-Sound (Flauto).  If not, see <https://www.gnu.org/licenses/>.
+ * Flutter-Sound is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
+
 
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>

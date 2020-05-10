@@ -28,9 +28,7 @@ We actually maintain two branches for Flutter Sound :
 We do not expect that everybody will switch today from 4.x.x to 5.x.x.
 
 V4 is our stable branch, and will be maintained as long as everybody will not have switch to V5 :
-in other words V4 is our LTS version (Long Time Support).
-
-To the side of those two versions, we are working on an experimental branch. This branch is not to be used in production. This branch is even not a BETA branch. But we will love you if you try it and tell us some feedback. And even more if you contribute actively to its developement.
+in other words V4 is our LTS version (Long Term Support).
 
 ## Migration Guides
 
@@ -73,7 +71,8 @@ This Demo App is a kind of exerciser which try to implement the major Flutter So
 
 ## License
 
-Flutter Sound is released with a *copyleft* clause, the LGPL-V3 license. This means that you may include Flutter Sound inside a proprietary/private product. But if you do modifications inside the Flutter Sound code, *you will have* to publish your modifications under the *LGPL-V3 license*.
+- Flutter Sound V5.x is released with a *copyleft* clause, the GPL-V3 license. This means that if your App uses part of Flutter Sound V5.x, your App must be published under the GPL license too.
+- Flutter Sound V4.x is released with a *copyleft* clause, the LGPL-V3 license. This means that if your App uses part of Flutter Sound V4.x, your App must be published under the LGPL license too.
 
 ## Contributions
 

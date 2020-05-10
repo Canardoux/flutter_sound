@@ -28,8 +28,6 @@ The actual versions are :
 - flutter_sound_lite: ^5.0.0  (the current version without FFmpeg)
 - flutter_sound: ^5.0.0       (the current version with FFmpeg)
 
-- flutter_sound: ^5.0.0-experimental.1  (an experimental work which is not to be used in production)
-
 ```
 dependencies:
   flutter:
@@ -49,10 +47,8 @@ dependencies:
 The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
 
 There is actually two branches :
-- V4. This is the stable branch which is maintained under the version 4.x.x
-- master. This is the branch currently developed and could be not as stable than the V4 branch.
-
-To the side of those two maintained branches, we are working on an experimental branch. This branch is not to be used if you do not want an electro-choc. ;-) (But we will love you if you try it and give us some feedback. Or even better if you contribute actively to its developement).
+- V4. This is the Long Term Support (LTS) branch which is maintained under the version 4.x.x
+- master. This is the branch currently developed and will be the version 5.x.x.
 
 If you want to generate your App from the sources with a `FULL` flavor:
 

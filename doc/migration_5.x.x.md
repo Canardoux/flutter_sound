@@ -80,9 +80,9 @@ The Audio Focus is just abandoned automaticaly when the App does a ```release()`
 - The ancient verb `setActive` is now replaced by `setAudioFocus`
 - `initialized()` and `release()` are rename `openAudioSession()` and `closeAudioSession()`)
 
-## withUI
+## openAudioSessionWithUI
 
-`withUI` is a new parameter in `openSession()` to specify if the App wants to be controlled from the lock-screen. This replace the module `TrackPlayer` which does not exists anymore.
+`openAudioSessionWithUI` is a new verb to open an Audio Session if the App wants to be controlled from the lock-screen. This replace the module `TrackPlayer` which does not exists anymore.
 
 -----------------------------------------------------------------------------------------------------------------------------
 

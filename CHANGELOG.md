@@ -1,5 +1,6 @@
 ## 5.0.0+1
 
+- Flutter Sound V5 is published under the GPL-V3 license. Flutter Sound V4 (LTS) is still published under the LGPL license.
 - Changed the global enums names to CamelCase, to be conform with Google recommandations
 - Remove the OS dependant parameters from startRecorder()
 - Add a new parameter to startPlayer() : the Audio Focus requested
