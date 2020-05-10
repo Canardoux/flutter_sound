@@ -16,7 +16,6 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/material.dart';
@@ -65,7 +64,7 @@ class _MyAppState extends State<MyApp> {
   /// the player's stream changing under it.
   StreamController<PlaybackDisposition> _localController;
 
-  AudioPlayer playerModule;
+  SoundPlayer playerModule;
   SoundRecorder recorderModule;
 
   double sliderCurrentPosition = 0.0;
@@ -94,9 +93,9 @@ class _MyAppState extends State<MyApp> {
   Future<void> _initializeExample() async {
     if (playerModule != null) playerModule.release();
     if (_isAudioPlayer) {
-      playerModule = AudioPlayer.withUI();
+      playerModule = SoundPlayer.withUI();
     } else {
-      playerModule = AudioPlayer.noUI();
+      playerModule = SoundPlayer.noUI();
     }
     playerModule.dispositionStream().listen(_localController.add);
 
@@ -425,7 +424,7 @@ class _MyAppState extends State<MyApp> {
           codec: _codec,
 
           //title: "This is a record",
-          //author: "from flutter_sound",
+          //artist: "from flutter_sound",
           //albumArtUrl: albumArtUrl,
           //albumArtAsset: albumArtAsset,
           //albumArtFile: albumArtFile,
@@ -437,7 +436,7 @@ class _MyAppState extends State<MyApp> {
           //dataBuffer: dataBuffer,
           codec: _codec,
           //title: "This is a record",
-          //author: "from flutter_sound",
+          //artist: "from flutter_sound",
           //albumArtUrl: albumArtUrl,
           //albumArtAsset: albumArtAsset,
           //albumArtFile: albumArtFile,
@@ -446,6 +445,10 @@ class _MyAppState extends State<MyApp> {
         print('I hope you enjoyed listening to this song');
         setState(() {});
       };
+
+      track.albumArtAsset = albumArtAsset;
+      track.albumArtFile = albumArtFile;
+      track.albumArtUrl = albumArtUrl;
 
       await playerModule.play(
         track,
@@ -844,16 +847,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final playerSlider = Container(
-        height: 56.0,
-        child: Slider(
-            value: min(sliderCurrentPosition, maxDuration),
-            min: 0.0,
-            max: maxDuration,
-            onChanged: (double value) async {
-              await playerModule.seekTo(Duration(milliseconds: value.toInt()));
-            },
-            divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt()));
+    // final playerSlider = Container(
+    //     height: 56.0,
+    //     child: Slider(
+    //         value: min(sliderCurrentPosition, maxDuration),
+    //         min: 0.0,
+    //         max: maxDuration,
+    //         onChanged: (double value) async {
+    //           await playerModule.seekTo(Duration(milliseconds: value.toInt()));
+    //         },
+    //         divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt()));
 
     final dropdowns = makeDropdowns(context);
     final trackSwitch = Padding(
