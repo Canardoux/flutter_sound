@@ -43,7 +43,7 @@ class SoundPlayerTrackPlugin extends PlayerBasePlugin {
   Future<void> play(AudioPlayer player, Track track) async {
     final trackMap = <String, dynamic>{
       "title": track.title,
-      "author": track.author,
+      "artist": track.artist,
       "albumArtUrl": track.albumArtUrl,
       "albumArtAsset": track.albumArtAsset,
       // TODO is this necessary if we aren't passing a buffer?

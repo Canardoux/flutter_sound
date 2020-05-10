@@ -21,7 +21,7 @@ import java.util.HashMap;
 public class Track {
     private String path;
     private String title;
-    private String author;
+    private String artist;
     private String albumArtUrl;
     private String albumArtAsset;
     private String albumArtFile;
@@ -31,7 +31,7 @@ public class Track {
 
     Track(HashMap<String, Object> map) {
         this.path = (String) map.get("path");
-        this.author = (String) map.get("author");
+        this.artist = (String) map.get("artist");
         this.title = (String) map.get("title");
         this.albumArtUrl = (String) map.get("albumArtUrl");
         this.albumArtAsset = (String) map.get("albumArtAsset");
@@ -48,12 +48,12 @@ public class Track {
         this.path = path;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getArtist() {
+        return artist;
     }
 
-    public void setAuthor(String author) {
-            this.author = author;
+    public void getArtist(String artist) {
+            this.artist = artist;
     }
 
     public String getTitle() {

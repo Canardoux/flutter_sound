@@ -21,8 +21,11 @@ class Track {
   /// The title of this track
   String title;
 
-  /// The name of the author of this track
-  String author;
+  /// The name of the artist of this track
+  String artist;
+
+  /// The album the track belongs.
+  String album;
 
   /// The URL that points to the album art of the track
   String albumArtUrl;
@@ -38,7 +41,7 @@ class Track {
 
   @override
   String toString() {
-    return '${title ?? ""} ${author ?? ""} audio: $_audio';
+    return '${title ?? ""} ${artist ?? ""} audio: $_audio';
   }
 
   /// Creates a Track from a local file or asset.
@@ -106,6 +109,8 @@ class Track {
   /// If the [Track] was created via [Track.fromPath]
   /// then this will be the passed url.
   String get path => _audio.path;
+
+  
 
   /// returns a unique id for the [Track].
   /// If the [Track] is a path then the path is returned.

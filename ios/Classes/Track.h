@@ -20,7 +20,7 @@
 {
     NSString *path;
     NSString *title;
-    NSString *author;
+    NSString *artist;
     NSString *albumArtUrl;
     NSString *albumArtAsset;
     FlutterStandardTypedData *dataBuffer;
@@ -28,7 +28,7 @@
 
 @property(nonatomic, retain) NSString *path;
 @property(nonatomic, retain) NSString *title;
-@property(nonatomic, retain) NSString *author;
+@property(nonatomic, retain) NSString *artist;
 @property(nonatomic, retain) NSString *albumArtUrl;
 @property(nonatomic, retain) NSString *albumArtAsset;
 @property(nonatomic, retain) NSString *albumArtFile;

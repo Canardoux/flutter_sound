@@ -585,11 +585,11 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     if (_track.title != null) {
       columns.add(Text(_track.title));
     }
-    if (_track.title != null && _track.author != null) {
+    if (_track.title != null && _track.artist != null) {
       columns.add(Text(' / '));
     }
-    if (_track.author != null) {
-      columns.add(Text(_track.author));
+    if (_track.artist != null) {
+      columns.add(Text(_track.artist));
     }
     return Container(
       margin: EdgeInsets.only(bottom: 5),

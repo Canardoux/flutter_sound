@@ -36,11 +36,9 @@ Track - Defines a track including artist and a link to the media.
 
 Album - play a collection of tracks via the OSs' audio UI.
 
-TrackPlayer - provides migration path from 3.0 TrackPlayer
+SoundPlayer - provides migration path from 3.0 FlutterTrackPlayer
 
-SoundPlayer - provides migration path from 3.0 SoundPlayer
-
-AudioPlayer - api for detailed control over your audio streams. You can choose to have the session attached to the OSs' audio UI or not.
+SoundPlayer - provides migration path from 3.0 FlutterSoundPlayer
 
 SoundRecorder -  api to records audio.
 
@@ -81,21 +79,21 @@ The aims of 5.0.0 were:
 
 ### Players
 
-In `5.0.0` the `TrackPlayer` and `FlutterSoundPlayer` has been merged into a single class `AudioPlayer`.
+In `5.0.0` the `FlutterTrackPlayer` and `FlutterSoundPlayer` have been depreacted in favor of a single class `SoundPlayer`.
 
-`AudioPlayer` now has two constructors:
+`SoundPlayer` now has two constructors:
 
-Code that previously used `TrackPlayer` should now call the `AudioPlayer.withUI()` constructor.
+Code that previously used `TrackPlayer` should now call the `SoundPlayer.withUI()` constructor.
 
-Code that used the old `FlutterSoundPlayer` should now call the `AudioPlayer.noUI()` constructor.
+Code that used the old `FlutterSoundPlayer` should now call the `SoundPlayer.noUI()` constructor.
 
-The equivalent method names on the `AudioPlayer` class have also been shortend.
+The equivalent method names on the `SoundPlayer` class have also been shortend.
 
 Example changes:
 
-`FlutterSoundPlayer.startPlayer()` -> `AudioPlayer.play()`
-`FlutterSoundPlayer.pausePlayer()` -> `AudioPlayer.pause()`
-`FlutterSoundPlayer.stopPlayer()` ->  `AudioPlayer.stop()`
+`FlutterSoundPlayer.startPlayer()` -> `SoundPlayer.play()`
+`FlutterSoundPlayer.pausePlayer()` -> `SoundPlayer.pause()`
+`FlutterSoundPlayer.stopPlayer()` ->  `SoundPlayer.stop()`
 
 The new `play` methods replaces both `startPlayer(uri)` and `startPlayerFromBuffer()` and can
 now take a `Track`.
@@ -108,7 +106,7 @@ The Track class has two constructors:
 
 To play a track from a path use:
 ```dart
-var player AudioPlayer.withUI();
+var player SoundPlayer.withUI();
 player.onStopped = ({wasUser}) => player.release();
 player.seekTo(Duration(seconds: 5)); // yes, you can call seek before play.
 player.play(Track.fromPath(uri));
@@ -117,7 +115,7 @@ player.play(Track.fromPath(uri));
 To play a track from a buffer use:
 
 ```dart
-var player AudioPlayer.withUI();
+var player SoundPlayer.withUI();
 player.onStopped = ({wasUser}) => player.release();
 player.seekTo(Duration(seconds: 5));
 player.play(Track.fromBuffer(buffer));
@@ -130,8 +128,8 @@ The Track details are now set via properties:
 ```dart
 var track = Track.fromPath('path to media');
 track.title = 'Quarantine Jig';
-track.author = 'The Jiggy Kids';
-var player = AudioPlayer.withUI();
+track.artist = 'The Jiggy Kids';
+var player = SoundPlayer.withUI();
 player.onStopped = ({wasUser}) => player.release();
 player.play(track);
 ```
@@ -142,12 +140,12 @@ Flutter sounds now uses streams to allow you to monitor both recording and playb
 
 You can now use a StreamBuilder which will greatly simplify the construction of UI components (or you can use one of the new Flutter Sound UI widgets).
 
-#### AudioPlayer
+#### SoundPlayer
 
-In the AudioPlayer the original `SoundPlayer` subscription model is now been unified into a single stream via:
+In the SoundPlayer the original `SoundPlayer` subscription model is now been unified into a single stream via:
 
 ```dart 
-var Stream<PlaybackDisposition> = AudioPlayer.noUI().dispositionStream(interval);
+var Stream<PlaybackDisposition> = SoundPlayer.noUI().dispositionStream(interval);
 ```
 
 The result is a stream of `PlaybackDisposition`s which includes both the audio's duration (length) and current position.
@@ -297,12 +295,12 @@ QuickPlay.fromBuffer(databuffer, codec: Codec.aac, volume: 1.0, withUI: true);
 
 If you need a UI to allow your user to control playback then you have three options:
 
-1) Use `AudioPlayer.withUI()` 
+1) Use `SoundPlayer.withUI()` 
 This will display the OSs' audio player allowing the user to control playback.
 
 2) Use Flutter Sound's SoundPlayerUI widget which provide a HTML5 like audio player.
 
-3) Directly use `AudioPlayer.noUI()` to roll your own widget. You can start with the SoundPlayerUI code as an example of how to do this.
+3) Directly use `SoundPlayer.noUI()` to roll your own widget. You can start with the SoundPlayerUI code as an example of how to do this.
 
 The API is documented in detail at [pub.dev](https://pub.dev/documentation/flutter_sound/latest/)
 
@@ -327,7 +325,7 @@ Now play the file.
 QuickPlay.fromPath('beep.acc');
 
 /// If you need to control/monitor the playback
-var player = AudioPlayer.noUI();
+var player = SoundPlayer.noUI();
 player.onStopped = ({wasUser}) => player.release();
 player.play(Track.fromPath('sample.aac'));
 ```
@@ -336,7 +334,7 @@ CRITICAL:
 
 You must be certain to release the player once you have finished playing the audio.
 
-You can reuse a `AudioPlayer` as many times as you want as long as you call `AudioPlayer.release()` once you are done with it.
+You can reuse a `SoundPlayer` as many times as you want as long as you call `SoundPlayer.release()` once you are done with it.
 
 Track.fromPath uses the passed filename extension to determine the correct codec to play. If you need to play a file with an extension that doesn't match one of the known file extensions then you MUST pass in the codec.
 
@@ -348,7 +346,7 @@ for details on the supported codecs.
 If you audio file doesn't have an appropriate file extension then you can explicitly pass a codec.
 
 ```dart
-var player = AudioPlayer.noUI();
+var player = SoundPlayer.noUI();
 player.onStopped = ({wasUser}) => player.release();
 player.play(Track.fromPath('sample.blit', codec: Codec.mp3));
 ```
@@ -362,7 +360,7 @@ for details on the supported codecs.
 
 ```dart
 
-var player = AudioPlayer.noUI();
+var player = SoundPlayer.noUI();
 player.onStopped = ({wasUser}) => player.release();
 player.play(Track.fromPath('https://some audio file', codec: Codec.mp3););
 ```
@@ -376,17 +374,17 @@ for details on the supported codecs.
 
 ```dart
 Uint8List buffer = ....
-var player = AudioPlayer.noUI();
+var player = SoundPlayer.noUI();
 player.onStopped = ({wasUser}) => player.release();
 player.play(Track.fromBuffer(buffer, codec: Codec.mp3));
 ```
 
 ## Play audio allowing the user to control playback via OSs' UI
 
-AudioPlayer can display the OSs' Audio player UI allowing the user to control playback.
+SoundPlayer can display the OSs' Audio player UI allowing the user to control playback.
 
 ```dart
-var player = AudioPlayer.withUI();
+var player = SoundPlayer.withUI();
 player.onStopped = ({wasUser}) => player.release();
 player.play(Track.fromPath('sample.blit', codec: Codec.mp3));
 ```
@@ -399,7 +397,7 @@ By default the skip buttons are disabled and the pause button enabled.
 You can modify the the state of these buttons with the `SoundPlaye.withUI` constructor.
 
 ```dart
-var player = AudioPlayer.withUI(canPause:true, canSkipBackward:false
+var player = SoundPlayer.withUI(canPause:true, canSkipBackward:false
 	, canSkipForward: true);
 player.onStopped =  ({wasUser}) => player.release();
 player.play(Track.fromPath('sample.blit', codec: Codec.mp3));
@@ -412,14 +410,14 @@ using a `Track`.
 ```dart
 var track = Track.fromPath('sample.aac');
 track.title = 'Reckless';
-track.author = 'Flutter Sound';
+track.artist = 'Flutter Sound';
 track.albumArtUrl = 'http://some image url';
 
-var player = AudioPlayer.withUI()
+var player = SoundPlayer.withUI()
 player.onStopped = ({wasUser}) => player.release();
 player.fromTrack(track);
 ```
-The artist, author and album art will be displayed on the OSs' Audio Player.
+The title, artist and album art will be displayed on the OSs' Audio Player.
 
 # Albums
 Flutter Sound supports the concept of Albums which are, as you would expect, a collection of `Track`s which can be played in order.
@@ -443,7 +441,7 @@ player.onStopped = ({wasUser}) => player.release();
 album.play();
 ```
 By default an Ablum displays the OSs' audio UI.
-You can suppress the UI via by passing in AudioPlayer.noUI() to the Album.
+You can suppress the UI via by passing in SoundPlayer.noUI() to the Album.
 
 
 ```dart
@@ -451,7 +449,7 @@ var album = Album.fromTracks([
 	Track.fromPath('sample.acc'),
 	Track.fromPath('http://fqdn/sample.mp3'),
 ]
-, session: AudioPlayer.noUI());
+, session: SoundPlayer.noUI());
 player.onStopped = ({wasUser}) => player.release();
 album.play();
 ```
@@ -478,18 +476,18 @@ album.play();
 ```
 
 ## Controlling Playback
-An AudioPlayer provides fined grained control over how the audio is played as well as been able to monitor playback and respond to user events.
+An SoundPlayer provides fined grained control over how the audio is played as well as been able to monitor playback and respond to user events.
 
-Importantly `AudioPlayer` also allows you to play multiple audio files using the same session. 
+Importantly `SoundPlayer` also allows you to play multiple audio files using the same session. 
 
 Maintaining the same session is important if you are using the OSs' audio UI for user control. 
-If you don't use a single `AudioPlayer` then the user will experience flicker between tracks as the OSs' audio player is destroyed and recreated between each track.
+If you don't use a single `SoundPlayer` then the user will experience flicker between tracks as the OSs' audio player is destroyed and recreated between each track.
 
-The `Album` class provides an easy to use method of utilising a single session without the complications of an `AudioPlayer`.
+The `Album` class provides an easy to use method of utilising a single session without the complications of an `SoundPlayer`.
 
 
 ```dart
-var player = AudioPlayer.withUI();
+var player = SoundPlayer.withUI();
 
 var track = Track.fromPath('sample.aac');
 track.title = 'Corona Virus Rock';
@@ -511,13 +509,13 @@ If you are building your own widget you might want to display a progress bar tha
 
 The easiest way to do this is via the SoundPlayerUI widget but if you want to write your own then you will want to use the `dispositionStream` with a StreamBuilder.
 
-To use a `dispositionStream` you need to create an `AudioPlayer`.
+To use a `dispositionStream` you need to create an `SoundPlayer`.
 
 ```dart
 class MyWidgetState
 {
 	/// use .noUI() as you are going to build your own UI.
-	var player = AudioPlayer().noUI();
+	var player = SoundPlayer().noUI();
 
 	void initState()
 	{
@@ -746,8 +744,8 @@ void build(BuildContext build)
 
 #### iosSetCategory(), androidFocusRequest(), requestFocus() and abandonFocus()  - (optional)
 
-Those three functions are optional. If you do not control the audio focus with the function `requestFocus()`, flutter_sound will request the audio focus each time you call 'play()' on either the `AudioPlayer` or `QuickPlay`.
-The focus will be automatically release it when playback is finished or when you call the `stop()` method on the `AudioPlayer`.
+Those three functions are optional. If you do not control the audio focus with the function `requestFocus()`, flutter_sound will request the audio focus each time you call 'play()' on either the `SoundPlayer` or `QuickPlay`.
+The focus will be automatically release it when playback is finished or when you call the `stop()` method on the `SoundPlayer`.
 
 
 ## TODO this section needs reviewing as I don't think it is correct.
@@ -786,7 +784,7 @@ player.abandonFocus(); // Release the audio focus
 
 #### Seek player
 
-When using the `AudioPlayer` you can seek to a specific position in the audio stream before or whilst playing the audio.
+When using the `SoundPlayer` you can seek to a specific position in the audio stream before or whilst playing the audio.
 
 ```dart
 await player.seekTo(Duration(seconds: 1));
@@ -800,7 +798,7 @@ await player.seekTo(Duration(seconds: 1));
 /// Currently, volume can be changed when the player is running. 
 /// You must ensure that the play method has completed before calling
 /// setVolume.
-var player = AudioPlayer.noUI();
+var player = SoundPlayer.noUI();
 await player.play(fileUri);
 player.setVolume(0.1);
 ```
@@ -887,23 +885,34 @@ path = await trackPlayer.startPlayerFromTrack
 
 In order to play a sound when you initialized the player with the audio player features, you must create a `Track` object to pass to `startPlayerFromTrack`.
 
-The `Track` class is provided by the flutter_sound package. Its constructor takes in 1 required argument and 3 optional arguments:
+The `Track` class is provided by the flutter_sound package. It has a number of constructors which support
+each of the different audio sources.
 
-- `trackPath` (required): a `String` representing the path that points to the audio file to play. This must be provided if `dataBuffer` is null, but you cannot provide both;
-- `dataBuffer` (required): a `Uint8List`, a buffer that contains an audio file. This must be provided if `trackPath` is null, but you cannot provide both;
-- `trackTitle`: the `String` to display in the notification as the title of the track;
-- `trackAuthor` the `String` to display in the notification as the name of the author of the track;
+```dart
+Track.fromPath(path);
+Track.fromURL(url);
+Track.fromBuffer(buffer);
+```
+
+- `Track.fromPath` (required): a `String` representing the path that points to the audio file to play.
+- `Track.fromURL` (required): a `String` representing a URL that points to the audio file to play.
+- `Track.fromBuffer` (required): a `Uint8List`, a buffer that contains an audio file. 
+
+The Track class also has a number of properties that you can set.
+
+- `title`: the `String` to display in the notification as the title of the track;
+- `artist` the `String` to display in the notification as the name of the artist of the track;
+- `album` the `String to display in the notification as the name of the album for this track.
 - `albumArtUrl` a `String` representing the URL that points to the image to display in the notification as album art.
 - `albumArtFile`  a `String` representing a local file that points to the image to display in the notification as album art.
 - or `albumArtAsset` : the name of an asset to show in the nofitication
 
 ```dart
 // Create with the path to the audio file
-Track track = new Track(
-	trackPath: "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3", // An example audio file
-        trackTitle: "Track Title",
-        trackAuthor: "Track Author",
-        albumArtUrl: "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_1MB.png", // An example image
+Track track = new Track.fromPath("https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3"); // An example audio file
+track.title =  "Track Title";
+track.artist: "Track Artist";
+track.albumArtUrl: "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_1MB.png", // An example image
 );
 
 // Load a local audio file and get it as a buffer
@@ -911,11 +920,10 @@ Uint8List buffer = (await rootBundle.load('samples/audio.mp3'))
     	.buffer
     	.asUint8List();
 // Create with the buffer
-Track track = new Track(
-	dataBuffer: buffer,
-        trackTitle: "Track Title",
-        trackAuthor: "Track Author",
-        albumArtUrl: "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_1MB.png", // An example image
+Track track = new Track.fromBuffer(dataBuffer: buffer);
+track.title =  "Track Title";
+track.artist: "Track Artist";
+track.albumArtUrl: "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_1MB.png", // An example image
 );
 ```
 

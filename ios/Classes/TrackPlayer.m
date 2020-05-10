@@ -386,7 +386,7 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         NSNumber *duration = [NSNumber numberWithDouble: audioPlayer.duration];
 
         [songInfo setObject:track.title forKey:MPMediaItemPropertyTitle];
-        [songInfo setObject:track.author forKey:MPMediaItemPropertyArtist];
+        [songInfo setObject:track.artist forKey:MPMediaItemPropertyArtist];
         [songInfo setObject:progress forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
         [songInfo setObject:duration forKey:MPMediaItemPropertyPlaybackDuration];
         bool b = [audioPlayer isPlaying];

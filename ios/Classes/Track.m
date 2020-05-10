@@ -21,7 +21,7 @@
 
 @synthesize path;
 @synthesize title;
-@synthesize author;
+@synthesize artist;
 @synthesize albumArtUrl;
 @synthesize albumArtAsset;
 @synthesize albumArtFile;
@@ -49,8 +49,8 @@
         NSString *titleString = [responseObj objectForKey:@"title"];
         title = titleString;
 
-        NSString *authorString = [responseObj objectForKey:@"author"];
-        author = authorString;
+        NSString *artistString = [responseObj objectForKey:@"artist"];
+        artist = artistString;
 
         NSString *albumArtUrlString = [responseObj objectForKey:@"albumArtUrl"];
         albumArtUrl = albumArtUrlString;
@@ -79,8 +79,8 @@
     NSString *titleString = [jsonData objectForKey:@"title"];
     title = titleString;
 
-    NSString *authorString = [jsonData objectForKey:@"author"];
-    author = authorString;
+    NSString *artistString = [jsonData objectForKey:@"artist"];
+    artist = artistString;
 
     NSString *albumArtUrlString = [jsonData objectForKey:@"albumArtUrl"];
     albumArtUrl = albumArtUrlString;
