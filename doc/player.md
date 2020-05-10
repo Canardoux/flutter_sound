@@ -7,10 +7,10 @@
 The verbs offered by the Flutter Sound Player module are :
 
 - [Default constructor](player.md#creating-the-player-instance)
-- [openAudioSession() and closeAudioSession()](player.md#openAudioSession-and-closeAudioSession) to open or close and audio session
+- [openAudioSession]() and closeAudioSession()](player.md#openAudioSession-and-closeAudioSession) to open or close an audio session
+- [openAudioSessionWithUI()]() to open an audio session with control from the Lock Screen or an Apple Watch
 - [setAudioFocus()](player.md#setaudiofocus) to manage the session Audio Focus
-- [startPlayer()](player.md#startplayer) to play an audio file
-- [startPlayerFromBuffer()](player.md#startplayerfrombuffer) to play data from an App buffer
+- [startPlayer()](player.md#startplayer) to play an audio file or  a buffer.
 - [startPlayerFromTrack]() to play data from a track specification and display controls on the lock screen or an Apple Watch
 - [stopPlayer()](player.md#stopplayer) to stop a current playback
 - [pausePlayer()](player.md#pauseplayer) to pause the current playback
@@ -21,7 +21,6 @@ The verbs offered by the Flutter Sound Player module are :
 - [isDecoderSupported()](player.md#isdecodersupported) to know if a specific codec is supported on the current platform.
 - [onProgress()](player.md#onprogress) to subscribe to a Stream of the Progress events
 - [setSubscriptionDuration()](player.md#setsubscriptionduration---optional) to specify the frequence of your subscription
-- [displayTrack()]() To display controls on the lock screen or an Apple Watch without playing songs
 - [iosSetCategory(), androidAudioFocusRequest()](player.md#iossetcategory-androidaudiofocusrequest---optional) to parameter the Session Audio Focus
 
 -------------------------------------------------------------------------------------------------------------------
@@ -46,7 +45,7 @@ myPlayer = FlutterSoundPlayer();
 
 *Dart definition (prototype) :*
 ```
-Future<FlutterSoundPlayer> openAudioSession({Focus focus, bool withUI})
+Future<FlutterSoundPlayer> openAudioSession({Focus focus, Set<AudioFlags> audioFlags})
 Future<void> closeAudioSession()
 ```
 
@@ -54,7 +53,7 @@ A player must be opened before used. A player correspond to an Audio Session. Wi
 When you have finished with a Player, you must close it. With other words, you must close your Audio Session.
 Opening a player takes resources inside the OS. Those resources are freed with the verb `closeAudioSession()`.
 
-### `focus` parameter
+### `focus:` parameter
 
 `focus` is an optional parameter can be specified during the opening : the Audio Focus.
 This parameter can have the following values :
@@ -65,9 +64,15 @@ This parameter can have the following values :
 
 The Audio Focus is abandoned when you close your player. If your App must play several sounds, you will probably open  your player just once, and close it when you have finished with the last sound. If you close and reopen an Audio Session for each sound, you will probably get unpleasant things for the ears with the Audio Focus.
 
-###`withUI` parameter
+### `AudioFlags` are a set of optional flags :
 
-`withUI` is an optional boolean parameter to specify if the Audio Session will be able to be controlled from the lock screen or an Apple Watch. This parameter must be true if you plan to use the verbs [startPlayerFromTrack()]() or [displayTrack()]()
+- speaker
+- allowHeadset
+- allowEarPiece
+- allowBlueTooth
+- allowAirPlay
+
+Note: you must use the verb `OpenAudioSessionWithUI()` instead of `openAudioSession()` if you plasn to use [startPlayerFromTrack()]() or [displayTrack()]() during your Audio Session. (See under).
 
 You MUST ensure that the player has been closed when your widget is detached from the UI.
 Overload your widget's `dispose()` method to closeAudioSession the player when your widget is disposed.
@@ -86,7 +91,7 @@ void dispose()
 }
 ```
 
-You maynot openAudioSession many players without releasing them.
+You maynot open many Audio Sessions without closing them.
 You will be very bad if you try something like :
 ```dart
     while (aCondition)  // *DO'NT DO THAT*
@@ -100,7 +105,7 @@ You will be very bad if you try something like :
 
 *Example:*
 ```dart
-    myPlayer = await FlutterSoundPlayer().openAudioSession(focus: Focus.requestFocusAndDuckOthers);
+    myPlayer = await FlutterSoundPlayer().openAudioSession(focus: Focus.requestFocusAndDuckOthers, [AudioFlags.defaultToSpeaker]);
 
     ...
     (do something with myPlayer)
@@ -112,6 +117,27 @@ You will be very bad if you try something like :
 
 -----------------------------------------------------------------------------------------------------------------
 
+## `OpenAudioSessionWithUI()`
+
+*Dart definition (prototype) :*
+```
+Future<FlutterSoundPlayer> OpenAudioSessionWithUI({Focus focus, Set<AudioFlags> audioFlags})
+```
+
+Use this verb instead of [openAudioSession()]() if the Audio Session will be able to be controlled from the lock screen or an Apple Watch. This verb must be used if you plan to use the verbs [startPlayerFromTrack()]() or [displayTrack()]() during your Audio Session. Please refer to [openAudioSession()]() above for the syntax parameters.
+
+*Example:*
+```dart
+    myPlayer = await FlutterSoundPlayer().openAudioSessionWithUI(focus: Focus.requestFocusAndDuckOthers);
+
+    ...
+    await myPlayer.startPlayerFromTrack(aTrack);
+    ...
+
+    myPlayer.closeAudioSession();
+    myPlayer = null;
+```
+
 ## `setAudioFocus`
 
 *Dart definition (prototype) :*
@@ -119,12 +145,21 @@ You will be very bad if you try something like :
 Future<void> setAudioFocus(Focus focus)
 ```
 
-The possible values for the parameter are :
+### `focus:` parameter possible values are
 - Focus.requestFocus (request focus, but do not do anything special with others App)
 - Focus.requestFocusAndStopOthers (your app will have **exclusive use** of the output audio)
 - Focus.requestFocusAndDuckOthers (if another App like Spotify use the output audio, its volume will be **lowered**)
 - Focus.requestFocusAndKeepOthers (your App will play sound **above** others App)
 - Focus.abandonFocus (Your App will not have anymore the audio focus)
+
+### `AudioFlags` are a set of optional flags :
+
+- speaker
+- allowHeadset
+- allowEarPiece
+- allowBlueTooth
+- allowAirPlay
+
 
 *Example:*
 ```dart
@@ -137,14 +172,15 @@ The possible values for the parameter are :
 
 *Dart definition (prototype) :*
 ```
-Future<void> startPlayer( String uri, {Codec codec, TWhenFinished whenFinished} )
+Future<void> startPlayer( { String fromUri, Uint8List fromDataBuffer, Codec codec, TWhenFinished whenFinished} )
 ```
 
-You can use both `startPlayer` or `startPlayerFromBuffer` to play a sound. The former takes in a URI that points to the file to play, while the later takes in a buffer containing the file to play and the codec to decode that buffer.
+You can use both `startPlayer` to play a sound.
 
-Those two functions can have two optional parameters :
+- `startPlayer()` has two optional parameters : `uri:` and `dataBuffer:`. You must specify one or the other parameter, but not both.The former takes in a URI that points to the file to play, while the later takes in a buffer containing the file to play .
 
-- `codec:` for specifying the audio and file format of the file. Please refer to the [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
+- You use the optional parameter`codec:` for specifying the audio and file format of the file. Please refer to the [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
+
 - `whenFinished:()` : A lambda function for specifying what to do when the playback will be finished.
 
 Very often, the `codec:` parameter is not useful. Flutter Sound will adapt itself depending on the real format of the file provided.
@@ -184,43 +220,42 @@ to ensure that the player has fully initialised.
     );
 ```
 
------------------------------------------------------------------------------------------------------------------------------------
-
-## `startPlayerFromBuffer()`
-
-*Dart definition (prototype) :*
-```
-Future<void> startPlayer( Uint8List dataBuffer, {Codec codec, TWhenFinished whenFinished} )
-```
-
-For playing data from a memory buffer instead of a file, you use the `startPlayerFromBuffer()` verb.
-`startPlayerFromBuffer()` is very similar to `startPlayer()` (see above).
-The only real distinction is that the parameter is an `Uint8List` data buffer instead of an Uri to a file.
-
-*Example:*
-```dart
-        // Load a local audio file and get it as a buffer
-        Uint8List buffer = (await rootBundle.load('samples/audio.mp3'))
-        .buffer
-        .asUint8List();
-
-        await myPlayer.startPlayerFromBuffer
-        (
-                buffer,
-                codec: Codec.mp3,
-                whenFinished: ()
-                {
-                         print( 'I hope you enjoyed listening to this song' );
-                },
-        );
-
-```
-
 --------------------------------------------------------------------------------------------------------------------------------
 
 ## `startPlayerFromTrack()`
 
-To play data from a track specification and display controls on the lock screen or an Apple Watch
+*Dart definition (prototype) :*
+```
+Future<String> startPlayerFromTrack(
+    Track track,
+    {
+    TWhenFinished whenFinished,
+    TonPaused onPaused,
+    TonSkip onSkipForward,
+    TonSkip onSkipBackward,
+    })
+
+Use this verb to play data from a track specification and display controls on the lock screen or an Apple Watch. The Audio Session must have been open with the verb [OpenAudioSessionWithUI]().
+
+- `track` parameter is a simple structure which describe the sound to play. Please see [here the Track structure specification]()
+
+- `whenFinished:()` : A lambda function for specifying what to do when the playback will be finished.
+
+- `onPaused:()` : this parameter can be :
+   - a call back function to call when the user hit the Skip Pause button on the lock screen
+   - 'TonPaused.disabled'
+   - `TonPaused.hide`
+
+- `onSkipForward:()` : this parameter can be :
+   - a call back function to call when the user hit the Skip Forward button on the lock screen
+   - 'TonSkip.disabled'
+   - `TonSkip.hide`
+
+- `onSkipBackward:()` : this parameter can be :
+   - a call back function to call when the user hit the Skip Backward button on the lock screen
+   - 'TonSkip.disabled'
+   - `TonSkip.hide`
+
 
 [TODO]
 
@@ -405,13 +440,6 @@ This verb is used to change the default interval between two post on the "Update
 // 0.010s. is default
 myPlayer.setSubscriptionDuration(0.010);
 ```
-
--------------------------------------------------------------------------------------------------------------------------------
-
-##  `displayTrack()`
-
- To display controls on the lock screen or an Apple Watch without playing songs
- [TODO]
 
 -------------------------------------------------------------------------------------------------------------------------------
 

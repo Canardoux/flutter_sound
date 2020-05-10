@@ -1,14 +1,15 @@
 ## 5.0.0+1
 
 - Flutter Sound V5 is published under the GPL-V3 license. Flutter Sound V4 (LTS) is still published under the LGPL license.
+- New API documentation
 - Changed the global enums names to CamelCase, to be conform with Google recommandations
 - Remove the OS dependant parameters from startRecorder()
 - Add a new parameter to startPlayer() : the Audio Focus requested
 - Support of new codecs, both for Android and iOS
 - Remove the authorization request from startRecorder()
 - Remove the NULL posted when the player or the recorder is closed.
-- `Path` parameter for `startRecorder()` is now mandatory
-- The Audio Focus is not automaticaly abandoned between two startPlayer() or two startRecorder()
+- `toFile:` or `tStream:` parameter for `startRecorder()`
+- The Audio Focus is **NOT** automaticaly abandoned between two startPlayer() or two startRecorder()
 
 ## 4.0.4+1
 

@@ -98,21 +98,30 @@ You will be very bad if you try something like :
 
 *Dart definition (prototype) :*
 ```
-    Future<void> startRecorder( String path,
+    Future<void> startRecorder(
         {
                 Codec codec = Codec.aacADTS,
+                String toFile,
+                Stream toStream,
                 int sampleRate = 16000,
                 int numChannels = 1,
                 int bitRate = 16000,
+                AudioSource audioSource = DefaultSource,
         })
 ```
 
 You use `startRecorder()` to start recording in an open session. `startRecorder()` has the destination file path as parameter.
-It has also 4 optional parameters to specify :
-- The codec to be used. Please refer to the [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
-- The sample rate in Hertz
-- The number of channels (1=monophony, 2=stereophony)
-- The bit rate in Hertz
+It has also 7 optional parameters to specify :
+- codec: The codec to be used. Please refer to the [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
+- toFile: a path to the file being recorded
+- toStream: if you want to record to a Dart Stream (actually only on Android and with a raw PCM codec. This will be improved int the future)
+- sampleRate: The sample rate in Hertz
+- numChannels: The number of channels (1=monophony, 2=stereophony)
+- bitRate: The bit rate in Hertz
+- audioSource : possible value is :
+   - defaultSource
+   - microphone
+   - voiceDownlink *(if someone can explain me what it is, I will be grateful ;-) )*
 
 [path_provider](https://pub.dev/packages/path_provider) can be useful if you want to get access to some directories on your device.
 
@@ -156,7 +165,7 @@ for example when the App is not sure of the current Audio State and want to reco
 
 ------------------------------------------------------------------------------------------------------------------------
 
-## Pause recorder
+## PauseRecorder()
 
 *Dart definition (prototype) :*
 ```
@@ -164,6 +173,7 @@ Future<void> pauseRecorder( )
 ```
 
 On Android this API verb needs al least SDK-24.
+An exception is thrown if the Recorder is not currently recording.
 
 *Example:*
 ```dart
@@ -172,13 +182,127 @@ await myRecorder.pauseRecorder();
 
 --------------------------------------------------------------------------------------------------------------------------
 
-#### Resume recorder
+## ResumeRecorder()
+
+
+*Dart definition (prototype) :*
+```
+Future<void> resumeRecorder( )
+```
 
 On Android this API verb needs al least SDK-24.
+An exception is thrown if the Recorder is not currently paused.
 
+*Example:*
 ```dart
-Future<String> result = await myRecorder.resumeRecorder();
+await myRecorder.resumeRecorder();
 ```
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `recorderState`, `isRecording`, `isPaused`, `isStopped`
+
+*Dart definition (prototype) :*
+```
+    RecorderState recorderState;
+    bool get isrecording => recorderState == RecorderState.isRecording;
+    bool get isPaused => recorderState == RecorderState.isPaused;
+    bool get isStopped => recorderState == RecorderState.isStopped;
+```
+
+This four verbs is used when the app wants to get the current Audio State of the recorder.
+
+`recorderState` is an attribut which can have the following values :
+
+  - isStopped   /// Recorder is stopped
+  - isRecording   /// Recorder is recording
+  - isPaused    /// Recorder is paused
+
+- isRecording is a boolean attribut which is `true` when the recorder is in the "Recording" mode.
+- isPaused is a boolean atrribut which  is `true` when the recorder is in the "Paused" mode.
+- isStopped is a boolean atrribut which  is `true` when the recorder is in the "Stopped" mode.
+
+*Example:*
+```dart
+        swtich(myRecorder.recorderState)
+        {
+                case RecorderState.isRecording: doSomething; break;
+                case RecorderState.isStopped: doSomething; break;
+                case RecorderState.isPaused: doSomething; break;
+        }
+        ...
+        if (myRecorder.isStopped) doSomething;
+        if (myRecorder.isRecording) doSomething;
+        if (myRecorder.isPaused) doSomething;
+
+```
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `isEncoderSupported()`
+
+*Dart definition (prototype) :*
+```
+ Future<bool> isEncoderSupported(Codec codec)
+```
+
+This verb is useful to know if a particular codec is supported on the current platform;
+Return a Future<bool>.
+
+*Example:*
+```dart
+        if ( await myRecorder.isEncoderSupported(Codec.opusOGG) ) doSomething;
+```
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `onProgress`
+
+*Dart definition (prototype) :*
+```
+Stream<RecorderStatus> get onProgress => recorderController != null ? recorderController.stream : null;
+```
+
+The attribut `onProgress` is a stream on which FlutterSound will post the recorder progression.
+You may listen to this Stream to have feedback on the current recording.
+
+*Example:*
+```dart
+        _recorderSubscription = myrecorder.onProgress.listen((e)
+        {
+                double maxDuration = e.duration;
+                ...
+        }
+```
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `setSubscriptionDuration()`
+
+*Dart definition (prototype) :*
+```
+Future<void> setSubscriptionDuration(double sec)
+```
+
+This verb is used to change the default interval between two post on the "Update Progress" stream. (The default interval is 10ms)
+
+*Example:*
+```dart
+// 0.010s. is default
+myRecorder.setSubscriptionDuration(0.010);
+```
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `onRecorderDbPeakChanged`
+
+*Dart definition (prototype) :*
+```
+Stream<DbPeakValue> get onRecorderDbPeakChanged => dbPeakController != null ? dbPeakController.stream : null;
+```
+
+The attribut `onRecorderDbPeakChanged` is a stream on which FlutterSound will post the Db Peak Values.
+You may listen to this Stream to have feedback on the current recording.
 
 #### Using the amplitude meter
 
@@ -203,3 +327,51 @@ _dbPeakSubscription = myRecorder.onRecorderDbPeakChanged.listen((value) {
   });
 });
 ```
+
+
+*Example:*
+```dart
+        _dbPeakSubscription = myrecorder.onRecorderDbPeakChanged.listen((e)
+        {
+                double dbPeakValue = e.dbPeakValue;
+                ...
+        }
+```
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `setDbPeakLevelUpdate()`
+
+*Dart definition (prototype) :*
+```
+Future<void> setDbPeakLevelUpdate(double sec)
+```
+
+This verb is used to change the default interval between two post on the "onRecorderDbPeakChanged" stream. (The default interval is 10ms)
+
+*Example:*
+```dart
+// 0.010s. is default
+myPlayer.setDbPeakLevelUpdate(0.010);
+```
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `setDbLevelEnabled()`
+
+*Dart definition (prototype) :*
+```
+void setDbLevelEnabled(boolean isEnabled)
+```
+
+This verb allow to enable or disable the Stream to `onRecorderDbPeakChanged`.
+
+*Example:*
+```dart
+myPlayer.setDbLevelEnabled(true);
+```
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+[Back to the README](../README.md#flutter-sound-api)
+

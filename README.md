@@ -51,11 +51,12 @@ in other words V4 is our LTS version (Long Term Support).
 
 ## Flutter Sound API
 
-Flutter Sound is composed with 3 modules :
+Flutter Sound is composed with 4 modules :
 
 - [FlutterSoundPlayer](doc/player.md), wich deal with everything about playbacks
 - [FlutterSoudRecorder](doc/recorder.md), which deal with everything about recording
 - [FlutterSoundHelper](doc/helper.md), which offers some convenients tools
+- [FlutterSoundUI](), which offer some Widget ready to be used out of the box
 
 To use Flutter Sound you just do :
 ```
@@ -76,8 +77,14 @@ This Demo App is a kind of exerciser which try to implement the major Flutter So
 
 ## Contributions
 
-Flutter Sound is a free and Open Source project. We really need your contributions.
-Pull Requests are welcome and will be considered very carefully
+Flutter Sound is a free and Open Source project. Several contributors have already contributed to Flutter Sound. Specially :
+- @hyochan who is the Flutter Sound father
+- @salvatore373 who wrote the Track Player
+- @bsutton who wrote the UI Widgets
+- @larpoux who add several codec supports
+
+**We really need your contributions.**
+Pull Requests are welcome and will be considered very carefully.
 
 
 ## Bugs, Features Requests, documentation inaccurate, help needed, ...
