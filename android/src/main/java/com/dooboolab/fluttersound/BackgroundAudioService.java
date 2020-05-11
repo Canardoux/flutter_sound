@@ -700,7 +700,7 @@ public class BackgroundAudioService
 			// lock screen icon for pre lollipop
 			metadataBuilder.putBitmap( MediaMetadataCompat.METADATA_KEY_ART, albumArt );
 			metadataBuilder.putString( MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, currentTrack.getTitle() );
-			metadataBuilder.putString( MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, currentTrack.getAuthor() );
+			metadataBuilder.putString( MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, currentTrack.getArtist() );
 			// metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, 1);
 			// metadataBuilder.putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, 1);
 		}
