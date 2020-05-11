@@ -22,17 +22,6 @@
 #import "Flauto.h"
 
 
-/*
-
-typedef enum
-{
-        IS_STOPPED,
-        IS_PLAYING,
-        IS_PAUSED,
-        IS_RECORDING,
-} t_AUDIO_STATE;
-*/
-
 extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 extern NSMutableArray* flautoPlayerSlots;
 
@@ -51,8 +40,6 @@ extern NSMutableArray* flautoPlayerSlots;
 {
         AVAudioPlayer *audioPlayer;
         bool isPaused ;
-        t_SET_CATEGORY_DONE setCategoryDone;
-        t_SET_CATEGORY_DONE setActiveDone;
 }
 
 - (FlautoPlayerManager*) getPlugin;
@@ -77,6 +64,9 @@ extern NSMutableArray* flautoPlayerSlots;
 - (void)setActive:(BOOL)enabled result:(FlutterResult)result;
 - (void)initializeFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)releaseFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result;
+
+
 @end
 
 

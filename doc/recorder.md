@@ -106,7 +106,7 @@ You will be very bad if you try something like :
                 int sampleRate = 16000,
                 int numChannels = 1,
                 int bitRate = 16000,
-                AudioSource audioSource = DefaultSource,
+                AudioSource audioSource = AudioSource.DefaultSource,
         })
 ```
 

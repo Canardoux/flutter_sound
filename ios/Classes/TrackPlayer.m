@@ -31,96 +31,7 @@
 
 
 
-static FlutterMethodChannel* _channel;
 
-//---------------------------------------------------------------------------------------------
-
-
-@implementation TrackPlayerManager
-{
-        //NSMutableArray* trackPlayerSlots;
-}
-static TrackPlayerManager* trackPlayerManager; // Singleton
-
-
-
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
-{
-        _channel = [FlutterMethodChannel methodChannelWithName:@"com.dooboolab.flutter_sound_track_player"
-                                        binaryMessenger:[registrar messenger]];
-        trackPlayerManager = [[TrackPlayerManager alloc] init]; // In super class
-        [registrar addMethodCallDelegate:trackPlayerManager channel:_channel];
-}
-
-- (TrackPlayerManager*)init
-{
-        self = [super init];
-        flautoPlayerSlots = [[NSMutableArray alloc] init];
-        return self;
-}
-
-extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
-{
-        [TrackPlayerManager registerWithRegistrar: registrar];
-}
-
-- (void)invokeMethod: (NSString*)methodName arguments: (NSDictionary*)call
-{
-        [_channel invokeMethod: methodName arguments: call ];
-}
-
-
-- (void)freeSlot: (int)slotNo
-{
-        flautoPlayerSlots[slotNo] = [NSNull null];
-}
-
-- (FlautoPlayerManager*)getManager
-{
-        return trackPlayerManager;
-}
-
-- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result
-{
-        int slotNo = [call.arguments[@"slotNo"] intValue];
-        assert ( (slotNo >= 0) && (slotNo <= [flautoPlayerSlots count]));
-        if (slotNo == [flautoPlayerSlots count])
-        {
-               [flautoPlayerSlots addObject:  [NSNull null] ];
-        }
-        //assert ( trackPlayerSlots[slotNo] != nil );
-
-        TrackPlayer* aTrackPlayer = flautoPlayerSlots[slotNo];
-        
-        if ([@"initializeMediaPlayer" isEqualToString:call.method])
-        {
-                 assert (flautoPlayerSlots[slotNo] ==  [NSNull null] );
-                 aTrackPlayer = [[TrackPlayer alloc] init: slotNo];
-                 flautoPlayerSlots[slotNo] = aTrackPlayer;
-
-                 [aTrackPlayer initializeTrackPlayer: call result:result];
-        } else
-        
-        if ([@"releaseMediaPlayer" isEqualToString:call.method])
-        {
-                [aTrackPlayer releaseTrackPlayer: call  result: result];
-                flautoPlayerSlots[slotNo] = [NSNull null];
-                slotNo = -1;
-                
-        } else
-        
-        if ([@"startPlayerFromTrack" isEqualToString:call.method])
-        {
-                 [aTrackPlayer startPlayerFromTrack: call result:result];
-        } else
-
-        {
-                [super handleMethodCall: call  result: result];
-        }
-}
-
-
-@end
 
 
 
@@ -134,8 +45,6 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
        id forwardTarget;
        id backwardTarget;
        id pauseTarget;
-       t_SET_CATEGORY_DONE setCategoryDone;
-       t_SET_CATEGORY_DONE setActiveDone;
        int slotNo;
 
 }
@@ -146,12 +55,6 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         return self;
 }
 
-- (void)initializeTrackPlayer:(FlutterMethodCall *)call result:(FlutterResult)result
-{
-        setCategoryDone = NOT_SET;
-        setActiveDone = NOT_SET;
-        result(@"The player has been successfully initialized");
-}
 
 - (void)releaseTrackPlayer:(FlutterMethodCall *)call result:(FlutterResult)result
 {
@@ -182,11 +85,6 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
 }
 
-
-- (FlautoPlayerManager*) getPlugin
-{
-        return trackPlayerManager;
-}
 
 
 - (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg
@@ -250,23 +148,7 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                         }
                 }
 
-                // Able to play in silent mode
-                if (setCategoryDone == NOT_SET)
-                {
-                        [[AVAudioSession sharedInstance]
-                        setCategory: AVAudioSessionCategoryPlayback
-                        error: nil];
-                        setCategoryDone = FOR_PLAYING;
-                }
-
-                // Able to play in background
-                if (setActiveDone == NOT_SET)
-                {
-                        [[AVAudioSession sharedInstance] setActive: YES error: nil];
-                        setActiveDone = FOR_PLAYING;
-                }
-
-                isPaused = false;
+                 isPaused = false;
 
                 // Check whether the file path points to a remote or local file
                 if (isRemote)
@@ -494,12 +376,7 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 //audioPlayer = nil;
           }
           // ????  [self cleanTarget:false canSkipForward:false canSkipBackward:false];
-          if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) )
-          {
-                [self cleanTarget:false canSkipForward:false canSkipBackward:false]; // ???
-                [[AVAudioSession sharedInstance] setActive: NO error: nil];
-                setActiveDone = NOT_SET;
-          }
+        [self cleanTarget:false canSkipForward:false canSkipBackward:false]; // ???
 }
 
 

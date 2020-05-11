@@ -20,6 +20,7 @@
 
 
 #import "FlutterSoundPlayer.h"
+#import "TrackPlayer.h"
 #import <AVFoundation/AVFoundation.h>
 
 
@@ -45,13 +46,51 @@ static bool _isIosDecoderSupported [] =
 };
 
 
+/// Used by [AudioPlayer.audioFocus]
+/// to control the focus mode.
+enum AudioFocus {
+  requestFocus,
+
+  /// request focus and allow other audio
+  /// to continue playing at their current volume.
+  requestFocusAndKeepOthers,
+
+  /// request focus and stop other audio playing
+  requestFocusAndStopOthers,
+
+  /// request focus and reduce the volume of other players
+  /// In the Android world this is know as 'Duck Others'.
+  requestFocusAndDuckOthers,
+  
+  requestFocusAndInterruptSpokenAudioAndMixWithOthers,
+  
+  requestFocusTransient,
+  requestFocusTransientExclusive,
+
+
+  /// relinquish the audio focus.
+  abandonFocus,
+
+  doNotRequestFocus,
+};
+
+// Audio Flags
+// -----------
+const int outputToSpeaker = 1;
+const int allowHeadset = 2;
+const int allowEarPiece = 4;
+const int allowBlueTooth = 8;
+const int allowAirPlay = 16;
+const int allowBlueToothA2DP = 32;
+
+
 //--------------------------------------------------------------------------------------------
 
 
 
 @implementation FlautoPlayerManager
 {
- }
+}
 
 static FlautoPlayerManager* flautoPlayerManager; // Singleton
 
@@ -115,12 +154,26 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [aFlautoPlayer initializeFlautoPlayer: call result:result];
         } else
         
+        if ([@"initializeMediaPlayerWithUI" isEqualToString:call.method])
+        {
+                assert (flautoPlayerSlots[slotNo] ==  [NSNull null] );
+                aFlautoPlayer = [[TrackPlayer alloc] init: slotNo];
+                flautoPlayerSlots[slotNo] = aFlautoPlayer;
+                [aFlautoPlayer initializeFlautoPlayer: call result:result];
+        } else
+ 
         if ([@"releaseMediaPlayer" isEqualToString:call.method])
         {
                 [aFlautoPlayer releaseFlautoPlayer: call result:result];
                 [flautoPlayerSlots replaceObjectAtIndex:slotNo withObject:[NSNull null]];
                 flautoPlayerSlots[slotNo] = [NSNull null];
         } else
+        
+        if ([@"setFocus" isEqualToString:call.method])
+        {
+                [aFlautoPlayer setAudioFocus: call result:result];
+        } else
+
         
         if ([@"isDecoderSupported" isEqualToString:call.method])
         {
@@ -211,12 +264,14 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         NSTimer *timer;
         double subscriptionDuration;
         int slotNo;
+        BOOL hasFocus;
 }
 
 
 - (FlutterSoundPlayer*)init: (int)aSlotNo
 {
         slotNo = aSlotNo;
+        hasFocus = FALSE;
         return self;
 }
 
@@ -244,11 +299,56 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 - (void)initializeFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
         isPaused = false;
-        result([NSNumber numberWithBool: YES]);
+        [self setAudioFocus:call result:result];
 }
+
+- (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result
+{
+        BOOL r = TRUE;
+        enum AudioFocus audioFocus = (enum AudioFocus) [call.arguments[@"focus"] intValue];
+        if ( audioFocus != abandonFocus && audioFocus != doNotRequestFocus && audioFocus != requestFocus)
+        {
+                int flags =  [call.arguments[@"audioFlags"] intValue];
+                int sessionCategoryOption = 0;
+                switch (audioFocus)
+                {
+                        case requestFocusAndDuckOthers: sessionCategoryOption |= AVAudioSessionCategoryOptionDuckOthers; break;
+                        case requestFocusAndKeepOthers: sessionCategoryOption |= AVAudioSessionCategoryOptionMixWithOthers; break;
+                        case requestFocusAndInterruptSpokenAudioAndMixWithOthers: sessionCategoryOption |= AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers; break;
+                        case requestFocusTransient:
+                        case requestFocusTransientExclusive:
+                        case requestFocusAndStopOthers: sessionCategoryOption |= 0; break;
+                }
+                if (flags & outputToSpeaker)
+                        sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker;
+                if (flags & allowAirPlay)
+                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay;
+                 if (flags & allowBlueTooth)
+                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetooth;
+                if (flags & allowBlueToothA2DP)
+                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
+                r = [[AVAudioSession sharedInstance]
+                setCategory:  AVAudioSessionCategoryPlayAndRecord // AVAudioSessionCategoryPlayback
+                        mode: AVAudioSessionModeDefault
+                        options: sessionCategoryOption
+                        error: nil
+                ];
+        }
+        
+        if (audioFocus != doNotRequestFocus)
+        {
+                hasFocus = (audioFocus != abandonFocus);
+                r = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
+        }
+        result([NSNumber numberWithBool: r]);
+}
+
 
 - (void)releaseFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
+        if (hasFocus)
+                [[AVAudioSession sharedInstance]  setActive: FALSE error:nil] ;
+ 
         [[self getPlugin]freeSlot: slotNo];
         result(@"The player has been successfully released");
 
@@ -262,33 +362,12 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 mode: mode
                 options: options
                 error: nil];
-        setCategoryDone = BY_USER;
-        setActiveDone = NOT_SET;
         NSNumber* r = [NSNumber numberWithBool: b];
         result(r);
 }
 
 - (void)setActive:(BOOL)enabled result:(FlutterResult)result
 {
-        if (enabled)
-        {
-                if (setActiveDone != NOT_SET)
-                { // Already activated. Nothing todo;
-                        setActiveDone = BY_USER;
-                        result(0);
-                        return;
-                }
-                setActiveDone = BY_USER;
-
-        } else
-        {
-                if (setActiveDone == NOT_SET)
-                { // Already desactivated
-                        result(0);
-                        return;
-                }
-                setActiveDone = NOT_SET;
-        }
         BOOL b = [[AVAudioSession sharedInstance]  setActive:enabled error:nil] ;
         NSNumber* r = [NSNumber numberWithBool: b];
         result(r);
@@ -314,22 +393,14 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                         audioFileURL = [NSURL URLWithString:path];
                 }
           }
-          // Able to play in silent mode
-          if (setCategoryDone == NOT_SET)
-          {
-                  [[AVAudioSession sharedInstance]
-                      setCategory: AVAudioSessionCategoryPlayback
-                      error: nil];
-                   setCategoryDone = FOR_PLAYING;
-          }
-          // Able to play in background
-          if (setActiveDone == NOT_SET)
-          {
-                  [[AVAudioSession sharedInstance] setActive: YES error: nil];
-                  setActiveDone = FOR_PLAYING;
-          }
 
           isPaused = false;
+        //if (!hasFocus) // We always acquire the Audio Focus (It could have been released by another session)
+        {
+                hasFocus = TRUE;
+                BOOL r = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
+        }
+ 
 
           if (isRemote)
           {
@@ -361,10 +432,8 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [downloadTask resume];
         } else
         {
-                // if (!audioPlayer) { // Fix sound distoring when playing recorded audio again.
                 audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:nil];
                 audioPlayer.delegate = self;
-                // }
                 bool b = [audioPlayer play];
                 if (!b)
                 {
@@ -388,19 +457,6 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         audioPlayer = [[AVAudioPlayer alloc] initWithData: [dataBuffer data] error: nil];
         audioPlayer.delegate = self;
         // Able to play in silent mode
-        if (setCategoryDone == NOT_SET)
-        {
-                [[AVAudioSession sharedInstance]
-                setCategory: AVAudioSessionCategoryPlayback
-                error: nil];
-                setCategoryDone = FOR_PLAYING;
-        }
-        // Able to play in background
-        if (setActiveDone == NOT_SET)
-        {
-                [[AVAudioSession sharedInstance] setActive: YES error: nil];
-                setActiveDone = FOR_PLAYING;
-        }
         isPaused = false;
         bool b = [audioPlayer play];
         if (!b)
@@ -428,11 +484,6 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [audioPlayer stop];
                 audioPlayer = nil;
         }
-        if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) )
-        {
-                [[AVAudioSession sharedInstance] setActive: NO error: nil];
-                setActiveDone = NOT_SET;
-        }
 }
 
 - (void)pause
@@ -444,11 +495,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
               [timer invalidate];
               timer = nil;
           }
-          if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) ) {
-              [[AVAudioSession sharedInstance] setActive: NO error: nil];
-              setActiveDone = NOT_SET;
-          }
-}
+ }
 
 - (bool)resume
 {
@@ -464,10 +511,6 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 if (b)
                 {
                         [self startTimer];
-                        if (setActiveDone == NOT_SET) {
-                                [[AVAudioSession sharedInstance] setActive: YES error: nil];
-                                setActiveDone = FOR_PLAYING;
-                        }
                 } else
                 {
                         printf("resume : resume failed!\n");
@@ -639,11 +682,6 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
         NSLog(@"audioPlayerDidFinishPlaying");
-        if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) )
-        {
-                [[AVAudioSession sharedInstance] setActive: NO error: nil];
-                setActiveDone = NOT_SET;
-        }
 
         NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
         NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];

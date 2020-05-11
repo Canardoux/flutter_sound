@@ -39,6 +39,44 @@ enum PlayerState {
   isPaused,
 }
 
+/// Used by [AudioPlayer.audioFocus]
+/// to control the focus mode.
+enum AudioFocus {
+  requestFocus,
+
+  /// request focus and allow other audio
+  /// to continue playing at their current volume.
+  requestFocusAndKeepOthers,
+
+  /// request focus and stop other audio playing
+  requestFocusAndStopOthers,
+
+  /// request focus and reduce the volume of other players
+  /// In the Android world this is know as 'Duck Others'.
+  requestFocusAndDuckOthers,
+
+  requestFocusAndInterruptSpokenAudioAndMixWithOthers,
+
+  requestFocusTransient,
+  requestFocusTransientExclusive,
+
+
+  /// relinquish the audio focus.
+  abandonFocus,
+
+  doNotRequestFocus,
+}
+
+// Audio Flags
+// -----------
+const outputToSpeaker = 1;
+const allowHeadset = 2;
+const allowEarPiece = 4;
+const allowBlueTooth = 8;
+const allowAirPlay = 16;
+const allowBlueToothA2DP = 32;
+
+
 enum SessionCategory {
   ambient,
   multiRoute,
@@ -161,17 +199,24 @@ class FlautoPlayerPlugin {
         }
         break;
 
-      case 'pause':
+      case 'pause': // Pause/Resume
         {
           aPlayer.pause(call.arguments as Map);
         }
         break;
 
-      case 'resume':
+      case 'skipForward':
         {
-          aPlayer.resume(call.arguments as Map);
+          aPlayer.skipForward(call.arguments as Map);
         }
         break;
+
+      case 'skipBackward':
+        {
+          aPlayer.skipBackward(call.arguments as Map);
+        }
+        break;
+
 
       default:
         throw ArgumentError('Unknown method ${call.method}');
@@ -192,9 +237,14 @@ enum Initialized {
   notInitialized,
   initializationInProgress,
   fullyInitialized,
+  FullyInitializedWithUI,
 }
 
 class FlutterSoundPlayer {
+  TonSkip onSkipForward; // User callback "onPaused:"
+  TonSkip onSkipBackward; // User callback "onPaused:"
+  TonPaused onPaused; // user callback "whenPause:"
+
   static const List<Codec> tabAndroidConvert = [
     Codec.defaultCodec, // defaultCodec
     Codec.defaultCodec, // aacADTS
@@ -227,13 +277,13 @@ class FlutterSoundPlayer {
 
   Initialized isInited = Initialized.notInitialized;
   PlayerState playerState = PlayerState.isStopped;
-  StreamController<PlayStatus> playerController;
+  StreamController<PlaybackDisposition> playerController;
   TWhenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
-  TonPaused whenPause; // User callback "whenPaused:"
+  //TonPaused whenPause; // User callback "whenPaused:"
   TupdateProgress onUpdateProgress;
   int slotNo;
 
-  Stream<PlayStatus> get onProgress =>
+  Stream<PlaybackDisposition> get onProgress =>
       playerController != null ? playerController.stream : null;
 
   bool get isPlaying => playerState == PlayerState.isPlaying;
@@ -252,7 +302,7 @@ class FlutterSoundPlayer {
     return getPlugin().invokeMethod(methodName, call);
   }
 
-  Future<FlutterSoundPlayer> openAudioSession() async {
+  Future<FlutterSoundPlayer> openAudioSession( { AudioFocus focus = AudioFocus.requestFocusAndStopOthers, int audioFlags = outputToSpeaker}) async {
     if (isInited == Initialized.fullyInitialized) {
       return this;
     }
@@ -266,10 +316,45 @@ class FlutterSoundPlayer {
       flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton
     }
     slotNo = getPlugin()._lookupEmptySlot(this);
-    await invokeMethod('initializeMediaPlayer', <String, dynamic>{});
+
+    await invokeMethod('initializeMediaPlayer', <String, dynamic>{'focus': focus.index, 'audioFlags': audioFlags,});
     isInited = Initialized.fullyInitialized;
     return this;
   }
+
+  Future<FlutterSoundPlayer> openAudioSessionWithUI( { AudioFocus focus = AudioFocus.requestFocusAndStopOthers, int audioFlags = outputToSpeaker}) async {
+    if (isInited == Initialized.fullyInitialized) {
+      return this;
+    }
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+
+    isInited = Initialized.initializationInProgress;
+
+    if (flautoPlayerPlugin == null) {
+      flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton
+    }
+    slotNo = getPlugin()._lookupEmptySlot(this);
+
+    try {
+      await invokeMethod('initializeMediaPlayerWithUI', <String, dynamic>{'focus': focus.index, 'audioFlags': audioFlags,});
+
+      // Add the method call handler
+      //getChannel( ).setMethodCallHandler( channelMethodCallHandler );
+    } catch (err) {
+      rethrow;
+    }
+    isInited = Initialized.FullyInitializedWithUI;
+    return this;
+  }
+
+  Future<void> setAudioFocus( { AudioFocus focus = AudioFocus.requestFocusAndStopOthers, int audioFlags = outputToSpeaker}) async {
+    await openAudioSession(focus:focus, audioFlags: audioFlags);
+    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus, 'audioFlags':audioFlags});
+  }
+
+
 
   Future<void> closeAudioSession() async {
     if (isInited == Initialized.notInitialized) {
@@ -291,22 +376,22 @@ class FlutterSoundPlayer {
   }
 
   void _updateProgress(Map call) {
-    String arg = call['arg'] as String;
-    Map<String, dynamic> result = jsonDecode(arg) as Map<String, dynamic>;
-    if (playerController != null) {
-      playerController.add(PlayStatus.fromJSON(result));
-    }
+    //String arg = call['arg'] as String;
+    //Map<String, dynamic> result = jsonDecode(arg) as Map<String, dynamic>;
+    //if (playerController != null) {
+      //playerController.add(PlayStatus.fromJSON(result));
+   // }
   }
 
   void audioPlayerFinished(Map call) {
     String args = call['arg'] as String;
-    Map<String, dynamic> result = jsonDecode(args) as Map<String, dynamic>;
-    PlayStatus status = PlayStatus.fromJSON(result);
+    //Map<String, dynamic> result = jsonDecode(args) as Map<String, dynamic>;
+    //PlayStatus status = PlayStatus.fromJSON(result);
 
-    if (status.currentPosition != status.duration) {
-      status.currentPosition = status.duration;
-    }
-    if (playerController != null) playerController.add(status);
+    //if (status.currentPosition != status.duration) {
+      //status.currentPosition = status.duration;
+    //}
+    //if (playerController != null) playerController.add(status);
 
     playerState = PlayerState.isStopped;
     _removePlayerCallback();
@@ -314,12 +399,27 @@ class FlutterSoundPlayer {
     if (audioPlayerFinishedPlaying != null) audioPlayerFinishedPlaying();
   }
 
-  void pause(Map call) {
-    if (whenPause != null) whenPause(true);
+
+
+  void skipForward(Map call) {
+    if (onSkipForward != null) onSkipForward();
   }
 
-  void resume(Map call) {
-    if (whenPause != null) whenPause(false);
+  void skipBackward(Map call) {
+    if (onSkipBackward != null) onSkipBackward();
+  }
+
+  void pause(Map call) {
+    bool b = call['arg'] as bool;
+    if (onPaused != null) {
+      // Probably always true
+      onPaused(b);
+    } else {
+      if (b)
+        pausePlayer();
+      else
+        resumePlayer();
+    }
   }
 
   bool needToConvert(Codec codec) {
@@ -386,15 +486,6 @@ class FlutterSoundPlayer {
     var r = await invokeMethod('androidAudioFocusRequest',
         <String, dynamic>{'focusGain': focusGain}) as bool;
 
-    return r;
-  }
-
-  ///  The caller can manage his audio focus with this function
-  Future<bool> setAudioFocus(bool enabled) async {
-    await openAudioSession();
-    var r =
-        await invokeMethod('setActive', <String, dynamic>{'enabled': enabled})
-            as bool;
     return r;
   }
 
@@ -603,6 +694,7 @@ class FlutterSoundPlayer {
   }
 }
 
+/*
 class PlayStatus {
   final double duration;
   double currentPosition;
@@ -624,6 +716,35 @@ class PlayStatus {
         'currentPosition: $currentPosition';
   }
 }
+*/
+
+/// Used to stream data about the position of the
+/// playback as playback proceeds.
+class PlaybackDisposition {
+  /// The duration of the media.
+  final Duration duration;
+
+  /// The current position within the media
+  /// that we are playing.
+  final Duration position;
+
+  /// A convenience ctor. If you are using a stream builder
+  /// you can use this to set initialData with both duration
+  /// and postion as 0.
+  PlaybackDisposition.zero()
+              : position = Duration(seconds: 0),
+                duration = Duration(seconds: 0);
+
+  ///
+  PlaybackDisposition(this.position, this.duration);
+
+  @override
+  String toString() {
+    return 'duration: $duration, '
+                'position: $position';
+  }
+}
+
 
 class PlayerRunningException implements Exception {
   final String message;
@@ -634,5 +755,73 @@ class PlayerRunningException implements Exception {
 class _InitializationInProgress implements Exception {
   _InitializationInProgress() {
     print('An initialization is currently already in progress.');
+  }
+}
+
+
+/// The track to play in the audio player
+class Track {
+  /// The title of this track
+  final String trackTitle;
+
+  /// The buffer containing the audio file to play
+  Uint8List dataBuffer;
+
+  /// The name of the author of this track
+  final String trackAuthor;
+
+  /// The path that points to the track audio file
+  String trackPath;
+
+  /// The URL that points to the album art of the track
+  final String albumArtUrl;
+
+  /// The asset that points to the album art of the track
+  final String albumArtAsset;
+
+  /// The file that points to the album art of the track
+  final String albumArtFile;
+
+  /// The image that points to the album art of the track
+  //final String albumArtImage;
+
+  /// The codec of the audio file to play. If this parameter's value is null
+  /// it will be set to [t_CODEC.DEFAULT].
+  Codec codec;
+
+  Track({
+          this.trackPath,
+          this.dataBuffer,
+          this.trackTitle,
+          this.trackAuthor,
+          this.albumArtUrl,
+          this.albumArtAsset,
+          this.albumArtFile,
+          this.codec = Codec.defaultCodec,
+        }) {
+    codec = codec == null ? Codec.defaultCodec : codec;
+    assert(trackPath != null || dataBuffer != null,
+    'You should provide a path or a buffer for the audio content to play.');
+    assert(
+    (trackPath != null && dataBuffer == null) ||
+    (trackPath == null && dataBuffer != null),
+    'You cannot provide both a path and a buffer.');
+  }
+
+  /// Convert this object to a [Map] containing the properties of this object
+  /// as values.
+  Map<String, dynamic> toMap() {
+    final map = {
+      "path": trackPath,
+      "dataBuffer": dataBuffer,
+      "title": trackTitle,
+      "author": trackAuthor,
+      "albumArtUrl": albumArtUrl,
+      "albumArtAsset": albumArtAsset,
+      "albumArtFile": albumArtFile,
+      "bufferCodecIndex": codec?.index,
+    };
+
+    return map;
   }
 }

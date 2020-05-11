@@ -77,16 +77,6 @@ typedef enum
   aacMP4,
 } t_CODEC;
 
-typedef enum
-{
-        NOT_SET,
-        FOR_PLAYING,   // Flutter_sound did it during startPlayer()
-        FOR_RECORDING, // Flutter_sound did it during startRecorder()
-        BY_USER        // The caller did it himself : flutterSound must not change that)
-} t_SET_CATEGORY_DONE;
-
-
-
 @interface Flauto : NSObject <FlutterPlugin, AVAudioPlayerDelegate>
 {
 }

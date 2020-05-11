@@ -83,6 +83,7 @@ class FlautoPlayerPlugin
 	}
 
 
+
 	FlautoPlayerPlugin getManager ()
 	{
 		return flautoPlayerPlugin;
@@ -121,6 +122,22 @@ class FlautoPlayerPlugin
 				slots.set ( slotNo, null );
 			}
 			break;
+
+			case "initializeMediaPlayerWithUI":
+			{
+				assert ( slots.get ( slotNo ) == null );
+				aPlayer = new TrackPlayer ( slotNo );
+				slots.set ( slotNo, aPlayer );
+				aPlayer.initializeFlautoPlayer ( call, result );
+			}
+			break;
+
+			case "setFocus":
+			{
+				aPlayer.setFocus ( call, result );
+			}
+			break;
+
 
 			case "isDecoderSupported":
 			{
@@ -248,15 +265,32 @@ class PlayerAudioModel
 public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 {
 
+/// to control the focus mode.
+	enum AudioFocus {
+		requestFocus,
 
-	enum t_SET_CATEGORY_DONE
-	{
-		NOT_SET,
-		FOR_PLAYING, // Flutter_sound did it during startPlayer()
-		BY_USER // The caller did it himself : flutterSound must not change that)
+		/// request focus and allow other audio
+		/// to continue playing at their current volume.
+		requestFocusAndKeepOthers,
+
+		/// request focus and stop other audio playing
+		requestFocusAndStopOthers,
+
+		/// request focus and reduce the volume of other players
+		/// In the Android world this is know as 'Duck Others'.
+		requestFocusAndDuckOthers,
+
+		requestFocusAndInterruptSpokenAudioAndMixWithOthers,
+
+		requestFocusTransient,
+		requestFocusTransientExclusive,
+
+		/// relinquish the audio focus.
+		abandonFocus,
+
+		doNotRequestFocus,
 	}
 
-	;
 
 	final static int CODEC_OPUS   = 2;
 	final static int CODEC_VORBIS = 5;
@@ -297,10 +331,10 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 	final         PlayerAudioModel model       = new PlayerAudioModel ();
 	private       Timer            mTimer      = new Timer ();
 	final private Handler          mainHandler = new Handler ();
-	t_SET_CATEGORY_DONE setActiveDone     = t_SET_CATEGORY_DONE.NOT_SET;
 	AudioFocusRequest   audioFocusRequest = null;
 	AudioManager        audioManager;
 	int                 slotNo;
+	boolean hasFocus = false;
 
 
 	static final String ERR_UNKNOWN           = "ERR_UNKNOWN";
@@ -319,14 +353,74 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 	}
 
 
+	boolean prepareFocus( final MethodCall call)
+	{
+		boolean r = true;
+		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
+		AudioFocus focus = AudioFocus.values()[(int)call.argument ( "focus" )];
+
+		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
+		{
+			if ( focus != AudioFocus.abandonFocus && focus != AudioFocus.doNotRequestFocus && focus != AudioFocus.requestFocus )
+			{
+				int audioFlags = call.argument( "audioFlags" );
+				int focusGain = AudioManager.AUDIOFOCUS_GAIN;
+
+				switch (focus)
+				{
+					case requestFocusAndDuckOthers: focusGain = AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK; ; break;
+					case requestFocusAndKeepOthers: focusGain = AudioManager.AUDIOFOCUS_GAIN; ; break;
+					case requestFocusTransient: focusGain = AudioManager.AUDIOFOCUS_GAIN_TRANSIENT; break;
+					case requestFocusTransientExclusive: focusGain = AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE; break;
+					case requestFocusAndInterruptSpokenAudioAndMixWithOthers: focusGain = AudioManager.AUDIOFOCUS_GAIN; break;
+					case requestFocusAndStopOthers: focusGain = AudioManager.AUDIOFOCUS_GAIN; break;
+				}
+				audioFocusRequest = new AudioFocusRequest.Builder( focusGain )
+					// .setAudioAttributes(mPlaybackAttributes)
+					.build();
+
+				/*
+				if (flags & outputToSpeaker)
+					sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker;
+				if (flags & allowAirPlay)
+					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay;
+				if (flags & allowBlueTooth)
+					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetooth;
+				if (flags & allowBlueToothA2DP)
+					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
+				 */
+			}
+
+			if (focus != AudioFocus.doNotRequestFocus)
+			{
+				hasFocus = (focus != AudioFocus.abandonFocus);
+				//r = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
+				if (hasFocus)
+					audioManager.requestAudioFocus ( audioFocusRequest );
+				else
+					audioManager.abandonAudioFocusRequest ( audioFocusRequest );
+			}
+		}
+		return r;
+	}
+
+	void setFocus ( final MethodCall call, final Result result )
+	{
+		boolean r = prepareFocus(call);
+
+	}
+
 	void initializeFlautoPlayer ( final MethodCall call, final Result result )
 	{
 		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
-		result.success ( "Flauto Player Initialized" );
+		boolean r = prepareFocus(call);
+		result.success ( r);
 	}
 
-	void releaseFlautoPlayer ( final MethodCall call, final Result result )
+		void releaseFlautoPlayer ( final MethodCall call, final Result result )
 	{
+		if (hasFocus)
+			abandonFocus();
 		result.success ( "Flauto Recorder Released" );
 	}
 
@@ -386,9 +480,8 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 			{
 				this.model.getMediaPlayer ().setDataSource (  path );
 			}
-			if ( setActiveDone == t_SET_CATEGORY_DONE.NOT_SET )
+			//if ( ! hasFocus ) // We always require focus because it could have been abandoned by another Session
 			{
-				setActiveDone = t_SET_CATEGORY_DONE.FOR_PLAYING;
 				requestFocus ();
 			}
 
@@ -434,11 +527,6 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 			mTimer.cancel();
 			if (mp.isPlaying()) {
 				mp.stop();
-			}
-			if ((setActiveDone != t_SET_CATEGORY_DONE.BY_USER) && (setActiveDone != t_SET_CATEGORY_DONE.NOT_SET)) {
-
-				setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
-				abandonFocus();
 			}
 			mp.reset();
 			mp.release();
@@ -512,12 +600,6 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 			result.success ( "Player already Closed");
 			return;
 		}
-		if ( ( setActiveDone != t_SET_CATEGORY_DONE.BY_USER ) && ( setActiveDone != t_SET_CATEGORY_DONE.NOT_SET ) )
-		{
-
-			setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
-			abandonFocus ();
-		}
 
 		try
 		{
@@ -556,13 +638,6 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 			result.error ( ERR_PLAYER_IS_NULL, "pausePlayer()", ERR_PLAYER_IS_NULL );
 			return;
 		}
-		if ( ( setActiveDone != t_SET_CATEGORY_DONE.BY_USER ) && ( setActiveDone != t_SET_CATEGORY_DONE.NOT_SET ) )
-		{
-
-			setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
-			abandonFocus ();
-		}
-
 		try
 		{
 			this.model.getMediaPlayer ().pause ();
@@ -588,12 +663,6 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 		{
 			result.error ( ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING );
 			return;
-		}
-		if ( setActiveDone == t_SET_CATEGORY_DONE.NOT_SET )
-		{
-
-			setActiveDone = t_SET_CATEGORY_DONE.FOR_PLAYING;
-			requestFocus ();
 		}
 
 		try
@@ -670,7 +739,6 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 				// .setOnAudioFocusChangeListener(this, mMyHandler)
 				.build ();
 			Boolean b = true;
-			setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
 
 			result.success ( b );
 		} else
@@ -693,6 +761,7 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 					//.setOnAudioFocusChangeListener(this, mMyHandler)
 					.build ();
 			}
+			hasFocus = true;
 			return ( audioManager.requestAudioFocus ( audioFocusRequest ) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED );
 		} else
 		{
@@ -713,6 +782,7 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 					//.setOnAudioFocusChangeListener(this, mMyHandler)
 					.build ();
 			}
+			hasFocus = false;
 			return ( audioManager.abandonAudioFocusRequest ( audioFocusRequest ) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED );
 		} else
 		{
@@ -730,23 +800,10 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 		{
 			if ( enabled )
 			{
-				if ( setActiveDone != t_SET_CATEGORY_DONE.NOT_SET )
-				{ // Already activated. Nothing todo;
-					setActiveDone = t_SET_CATEGORY_DONE.BY_USER;
-					result.success ( b );
-					return;
-				}
-				setActiveDone = t_SET_CATEGORY_DONE.BY_USER;
-				b             = requestFocus ();
+				b  = requestFocus ();
 			} else
 			{
-				if ( setActiveDone == t_SET_CATEGORY_DONE.NOT_SET )
-				{ // Already desactivated
-					result.success ( b );
-					return;
-				}
 
-				setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
 				b             = abandonFocus ();
 			}
 		}

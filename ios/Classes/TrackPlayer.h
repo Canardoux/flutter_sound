@@ -24,16 +24,6 @@
 #import <Flutter/Flutter.h>
 #import "FlutterSoundPlayer.h"
 
-extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
-
-
-
-@interface TrackPlayerManager : FlautoPlayerManager
-{
-}
-
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar;
-@end
 
 
 @interface TrackPlayer : FlutterSoundPlayer
@@ -42,7 +32,8 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 }
 - (TrackPlayer*)init: (int)aSlotNo;
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result;
-- (void)initializeTrackPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
+//- (void)initializeTrackPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
+//- (void)initializeFlautoPlayerWithUI: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)releaseTrackPlayer:(FlutterMethodCall *)call result:(FlutterResult)result;
 - (void)freeSlot: (int)slotNo;
 

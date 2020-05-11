@@ -27,7 +27,7 @@
 
 #import "FlutterSoundRecorder.h"
 #import "AudioRecorder.h"
-#import "flauto.h" // Just to register it
+//#import "Flauto.h" // Just to register it
 #import <AVFoundation/AVFoundation.h>
 
 

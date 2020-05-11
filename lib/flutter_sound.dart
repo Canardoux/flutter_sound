@@ -20,8 +20,16 @@
 export 'src/flutter_ffmpeg.dart';
 export 'src/flutter_sound_player.dart';
 export 'src/flutter_sound_recorder.dart';
-export 'src/track_player.dart';
+//export 'src/track_player.dart';
 export 'src/flutter_sound_helper.dart';
+export 'src/util/log.dart';
+export 'src/util/ansi_color.dart';
+
+export 'src/ui/recorder_playback_controller.dart'
+            show RecorderPlaybackController;
+export 'src/ui/sound_player_ui.dart' show SoundPlayerUI;
+export 'src/ui/sound_recorder_ui.dart' show SoundRecorderUI;
+
 
 const List<String> ext = [
   '.aac', // defaultCodec

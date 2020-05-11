@@ -81,111 +81,6 @@ import com.dooboolab.fluttersound.MediaBrowserHelper;
 import com.dooboolab.fluttersound.Track;
 
 
-class TrackPlayerPlugin
-	extends FlautoPlayerPlugin
-	implements MethodCallHandler
-{
-	public static MethodChannel     channel;
-	static        Context           androidContext;
-	static        TrackPlayerPlugin trackPlayerPlugin; // singleton
-
-
-	public static void attachTrackPlayer( Context ctx, BinaryMessenger messenger )
-	{
-		assert ( flautoPlayerPlugin == null );
-		trackPlayerPlugin = new TrackPlayerPlugin();
-		assert ( slots == null );
-		slots   = new ArrayList<FlutterSoundPlayer>();
-		channel           = new MethodChannel( messenger, "com.dooboolab.flutter_sound_track_player" );
-		channel.setMethodCallHandler( trackPlayerPlugin );
-		androidContext = ctx;
-
-	}
-
-	void invokeMethod( String methodName, Map dic )
-	{
-		channel.invokeMethod ( methodName, dic );
-	}
-
-	void freeSlot ( int slotNo )
-	{
-		slots.set ( slotNo, null );
-	}
-
-
-	FlautoPlayerPlugin getManager ()
-	{
-		return flautoPlayerPlugin;
-	}
-
-
-
-	@Override
-	public void onMethodCall( final MethodCall call, final Result result )
-	{
-		int slotNo = call.argument ( "slotNo" );
-		assert ( ( slotNo >= 0 ) && ( slotNo <= slots.size () ) );
-
-		if ( slotNo == slots.size () )
-		{
-			slots.add ( slotNo, null );
-		}
-
-		TrackPlayer aPlayer = (TrackPlayer)slots.get ( slotNo );
-		switch ( call.method )
-		{
-
-			case "initializeMediaPlayer":
-			{
-				assert ( slots.get ( slotNo ) == null );
-				aPlayer = new TrackPlayer ( slotNo );
-				slots.set ( slotNo, aPlayer );
-				aPlayer.initializeFlautoPlayer ( call, result );
-			}
-			break;
-
-			case "releaseMediaPlayer":
-			{
-				aPlayer.releaseFlautoPlayer( call, result );
-			}
-			break;
-
-			case "startPlayerFromTrack":
-				aPlayer.startPlayerFromTrack( call, result );
-				break;
-
-
-			case "stopPlayer":
-				aPlayer.stopPlayer(call,  result );
-				break;
-			case "pausePlayer":
-				aPlayer.pausePlayer(call,  result );
-				break;
-			case "resumePlayer":
-				aPlayer.resumePlayer( call, result );
-				break;
-			case "seekToPlayer":
-				aPlayer.seekToPlayer( call, result );
-				break;
-			case "setVolume":
-				aPlayer.setVolume( call, result );
-				break;
-			case "setSubscriptionDuration":
-				if ( call.argument( "sec" ) == null )
-				{
-					return;
-				}
-				aPlayer.setSubscriptionDuration( call, result );
-				break;
-
-			default:
-				super.onMethodCall( call, result );
-				break;
-		}
-	}
-
-}
-
 //-----------------------------------------------------------------------------------------------------------------------------
 
 
@@ -201,11 +96,6 @@ public class TrackPlayer extends FlutterSoundPlayer
 		//slotNo = aSlotNo;
 	}
 
-
-	FlautoPlayerPlugin getPlugin ()
-	{
-		return TrackPlayerPlugin.trackPlayerPlugin;
-	}
 
 
 	@Override
@@ -240,6 +130,8 @@ public class TrackPlayer extends FlutterSoundPlayer
 		// Release the media browser
 		mMediaBrowserHelper.releaseMediaBrowser();
 		mMediaBrowserHelper = null;
+		if (hasFocus)
+			abandonFocus();
 		result.success( "The player has been successfully released" );
 	}
 
@@ -326,12 +218,9 @@ public class TrackPlayer extends FlutterSoundPlayer
 			mMediaBrowserHelper.removePauseHandler();
 		}
 
+		boolean r = prepareFocus(call);
 
-		if ( setActiveDone == t_SET_CATEGORY_DONE.NOT_SET )
-		{
-			requestFocus();
-			setActiveDone = t_SET_CATEGORY_DONE.FOR_PLAYING;
-		}
+		requestFocus();
 
 		// Pass to the media browser the metadata to use in the notification
 		mMediaBrowserHelper.setNotificationMetadata( track );
@@ -350,7 +239,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 			// A path was given, then send it to the media player
 			mMediaBrowserHelper.mediaControllerCompat.getTransportControls().playFromMediaId( path, null );
 		}
-
+		//result.success ( r);
 		// The media player is started in the on prepared callback
 	}
 
@@ -361,11 +250,6 @@ public class TrackPlayer extends FlutterSoundPlayer
 		mTimer.cancel();
 		if ( mMediaBrowserHelper == null )
 			return false;
-		if ( ( setActiveDone != t_SET_CATEGORY_DONE.BY_USER ) && ( setActiveDone != t_SET_CATEGORY_DONE.NOT_SET ) )
-		{
-			abandonFocus();
-			setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
-		}
 		try
 		{
 			// Stop the playback
@@ -392,12 +276,6 @@ public class TrackPlayer extends FlutterSoundPlayer
 		if ( !wasMediaPlayerInitialized( result ) )
 		{
 			return;
-		}
-
-		if ( ( setActiveDone != t_SET_CATEGORY_DONE.BY_USER ) && ( setActiveDone != t_SET_CATEGORY_DONE.NOT_SET ) )
-		{
-			abandonFocus();
-			setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
 		}
 
 		try
@@ -429,11 +307,6 @@ public class TrackPlayer extends FlutterSoundPlayer
 		{
 			result.error( ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING );
 			return;
-		}
-		if ( setActiveDone == t_SET_CATEGORY_DONE.NOT_SET )
-		{
-			requestFocus();
-			setActiveDone = t_SET_CATEGORY_DONE.FOR_PLAYING;
 		}
 
 		try
@@ -739,11 +612,6 @@ public class TrackPlayer extends FlutterSoundPlayer
 				json.put( "duration", String.valueOf( trackDuration ) );
 				json.put( "current_position", String.valueOf( currentPosition ) );
 				invokeMethodWithString( "audioPlayerFinishedPlaying", json.toString() );
-				if ( ( setActiveDone != t_SET_CATEGORY_DONE.BY_USER ) && ( setActiveDone != t_SET_CATEGORY_DONE.NOT_SET ) )
-				{
-					abandonFocus();
-					setActiveDone = t_SET_CATEGORY_DONE.NOT_SET;
-				}
 			}
 			catch ( JSONException je )
 			{

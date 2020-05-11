@@ -43,7 +43,6 @@
 {
         FlautoPlayerReg(registrar);
         FlautoRecorderReg(registrar);
-        TrackPlayerReg(registrar);
         #ifdef FULL_FLAVOR
                 FfmpegReg(registrar);
         #endif

@@ -45,7 +45,7 @@ myPlayer = FlutterSoundPlayer();
 
 *Dart definition (prototype) :*
 ```
-Future<FlutterSoundPlayer> openAudioSession({Focus focus, Set<AudioFlags> audioFlags})
+Future<FlutterSoundPlayer> openAudioSession({AudioFocus focus, Set<AudioFlags> audioFlags})
 Future<void> closeAudioSession()
 ```
 
@@ -57,20 +57,22 @@ Opening a player takes resources inside the OS. Those resources are freed with t
 
 `focus` is an optional parameter can be specified during the opening : the Audio Focus.
 This parameter can have the following values :
-- Focus.requestFocusAndStopOthers (your app will have **exclusive use** of the output audio)
-- Focus.requestFocusAndDuckOthers (if another App like Spotify use the output audio, its volume will be **lowered**)
-- Focus.requestFocusAndKeepOthers (your App will play sound **above** others App)
-- Focus.doNotRequestFocus (useful if you want to mangage yourself the Audio Focus with the verb ```setAudioFocus()```)
+- AudioFocus.requestFocusAndStopOthers (your app will have **exclusive use** of the output audio)
+- AudioFocus.requestFocusAndDuckOthers (if another App like Spotify use the output audio, its volume will be **lowered**)
+- AudioFocus.requestFocusAndKeepOthers (your App will play sound **above** others App)
+- AudioFocus.requestFocusAndInterruptSpokenAudioAndMixWithOthers
+- AudioFocus.doNotRequestFocus (useful if you want to mangage yourself the Audio Focus with the verb ```setAudioFocus()```)
 
 The Audio Focus is abandoned when you close your player. If your App must play several sounds, you will probably open  your player just once, and close it when you have finished with the last sound. If you close and reopen an Audio Session for each sound, you will probably get unpleasant things for the ears with the Audio Focus.
 
 ### `AudioFlags` are a set of optional flags :
 
-- speaker
+- outputToSpeaker
 - allowHeadset
 - allowEarPiece
 - allowBlueTooth
 - allowAirPlay
+- allowBlueToothA2DP
 
 Note: you must use the verb `OpenAudioSessionWithUI()` instead of `openAudioSession()` if you plasn to use [startPlayerFromTrack()]() or [displayTrack()]() during your Audio Session. (See under).
 
@@ -105,7 +107,7 @@ You will be very bad if you try something like :
 
 *Example:*
 ```dart
-    myPlayer = await FlutterSoundPlayer().openAudioSession(focus: Focus.requestFocusAndDuckOthers, [AudioFlags.defaultToSpeaker]);
+    myPlayer = await FlutterSoundPlayer().openAudioSession(focus: Focus.requestFocusAndDuckOthers, outputToSpeaker | allowBlueTooth);
 
     ...
     (do something with myPlayer)
@@ -142,15 +144,16 @@ Use this verb instead of [openAudioSession()]() if the Audio Session will be abl
 
 *Dart definition (prototype) :*
 ```
-Future<void> setAudioFocus(Focus focus)
+Future<void> setAudioFocus({AudioFocus focus, Set<AudioFlags> audioFlags})
 ```
 
 ### `focus:` parameter possible values are
-- Focus.requestFocus (request focus, but do not do anything special with others App)
-- Focus.requestFocusAndStopOthers (your app will have **exclusive use** of the output audio)
-- Focus.requestFocusAndDuckOthers (if another App like Spotify use the output audio, its volume will be **lowered**)
-- Focus.requestFocusAndKeepOthers (your App will play sound **above** others App)
-- Focus.abandonFocus (Your App will not have anymore the audio focus)
+- AudioFocus.requestFocus (request focus, but do not do anything special with others App)
+- AudioFocus.requestFocusAndStopOthers (your app will have **exclusive use** of the output audio)
+- AudioFocus.requestFocusAndDuckOthers (if another App like Spotify use the output audio, its volume will be **lowered**)
+- AudioFocus.requestFocusAndKeepOthers (your App will play sound **above** others App)
+- AudioFocus.requestFocusAndInterruptSpokenAudioAndMixWithOthers
+- AudioFocus.abandonFocus (Your App will not have anymore the audio focus)
 
 ### `AudioFlags` are a set of optional flags :
 
@@ -159,11 +162,13 @@ Future<void> setAudioFocus(Focus focus)
 - allowEarPiece
 - allowBlueTooth
 - allowAirPlay
+- allowBlueToothA2DP
+
 
 
 *Example:*
 ```dart
-        myPlayer.setAudioFocus(Focus.requestFocusAndDuckOthers);
+        myPlayer.setAudioFocus(focus: AudioFocus.requestFocusAndDuckOthers);
 ```
 
 -----------------------------------------------------------------------------------------------------------------

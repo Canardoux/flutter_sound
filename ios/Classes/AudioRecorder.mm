@@ -280,8 +280,6 @@ AudioRecInterface* audioRec;
         //NSURL *audioFileURL;
         NSTimer* dbPeakTimer;
         NSTimer* recorderTimer;
-        t_SET_CATEGORY_DONE setCategoryDone;
-        t_SET_CATEGORY_DONE setActiveDone;
         double dbPeakInterval;
         bool shouldProcessDbLevel;
         double subscriptionDuration;
@@ -385,14 +383,7 @@ AudioRecInterface* audioRec;
                             forKey:AVEncoderBitRateKey];
             }
 
-          // Setup audio session
-          if ((setCategoryDone == NOT_SET) || (setCategoryDone == FOR_PLAYING) )
-          {
-                AVAudioSession *session = [AVAudioSession sharedInstance];
-                [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-                setCategoryDone = FOR_RECORDING;
-          }
-
+  
           // set volume default to speaker
           UInt32 doChangeDefaultRoute = 1;
           AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(doChangeDefaultRoute), &doChangeDefaultRoute);

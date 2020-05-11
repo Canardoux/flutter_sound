@@ -101,7 +101,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> init() async {
-    playerModule = await FlutterSoundPlayer().openAudioSession();
+    //playerModule = await FlutterSoundPlayer().openAudioSession();
     recorderModule.openAudioSession();
     await _initializeExample(false);
 
@@ -158,20 +158,6 @@ class _MyAppState extends State<MyApp> {
     cancelRecorderSubscriptions();
     releaseFlauto();
   }
-/*
-  Future<void> setDuck() async {
-    if (_duckOthers) {
-      if (Platform.isIOS)
-        await playerModule.iosSetCategory(SessionCategory.playAndRecord, SessionMode.defaultSessionMode, iosDuckOthers | iosDefaultToSpeaker);
-      else if (Platform.isAndroid) await playerModule.androidAudioFocusRequest(AndroidFocusGain.audioFocusGainTransientMayDuck.index);
-    } else {
-      if (Platform.isIOS)
-        await playerModule.iosSetCategory(SessionCategory.playAndRecord, SessionMode.defaultSessionMode, iosDefaultToSpeaker);
-      else if (Platform.isAndroid) await playerModule.androidAudioFocusRequest(AndroidFocusGain.audioFocusGain.index);
-    }
-  }
-
- */
 
   Future<void> releaseFlauto() async {
     try {

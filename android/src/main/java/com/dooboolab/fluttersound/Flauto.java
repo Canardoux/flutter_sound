@@ -65,7 +65,7 @@ public class Flauto
 
 		FlautoPlayerPlugin.attachFlautoPlayer ( ctx, binding.getBinaryMessenger () );
 		FlautoRecorderPlugin.attachFlautoRecorder ( ctx, binding.getBinaryMessenger () );
-		TrackPlayerPlugin.attachTrackPlayer ( ctx, binding.getBinaryMessenger () );
+		//TrackPlayerPlugin.attachTrackPlayer ( ctx, binding.getBinaryMessenger () );
         if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin( ctx, binding.getBinaryMessenger() );}
 	}
 
@@ -81,7 +81,7 @@ public class Flauto
 
 		FlautoPlayerPlugin.attachFlautoPlayer ( ctx, registrar.messenger () );
 		FlautoRecorderPlugin.attachFlautoRecorder ( ctx, registrar.messenger ()  );
-		TrackPlayerPlugin.attachTrackPlayer ( ctx, registrar.messenger ()  );
+		//TrackPlayerPlugin.attachTrackPlayer ( ctx, registrar.messenger ()  );
         if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin(ctx,registrar.messenger ()  );}
 
 	}

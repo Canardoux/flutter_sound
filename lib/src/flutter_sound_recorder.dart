@@ -35,6 +35,12 @@ enum RecorderState {
   isRecording,
 }
 
+enum AudioSource {
+  defaultSource,
+  microphone,
+  voiceDownlink, // (if someone can explain me what it is, I will be grateful ;-) )
+}
+
 FlautoRecorderPlugin flautoRecorderPlugin; // Singleton, lazy initialized
 
 class FlautoRecorderPlugin {
@@ -105,7 +111,7 @@ enum _Initialized {
 class FlutterSoundRecorder {
   _Initialized isInited = _Initialized.notInitialized;
   RecorderState recorderState = RecorderState.isStopped;
-  StreamController<RecordStatus> _recorderController;
+  StreamController<RecordingDisposition> _recorderController;
   StreamController<double> _dbPeakController;
   int slotNo;
 
@@ -124,7 +130,7 @@ class FlutterSoundRecorder {
 
   bool get isPaused => (recorderState == RecorderState.isPaused);
 
-  Stream<RecordStatus> get onProgress => _recorderController.stream;
+  Stream<RecordingDisposition> get onProgress => _recorderController.stream;
 
   /// Value ranges from 0 to 120
   Stream<double> get onRecorderDbPeakChanged => _dbPeakController.stream;
@@ -138,7 +144,7 @@ class FlutterSoundRecorder {
     return getPlugin().invokeMethod(methodName, call);
   }
 
-  Future<FlutterSoundRecorder> initialize() async {
+  Future<FlutterSoundRecorder> openAudioSession() async {
     if (isInited == _Initialized.fullyInitialized) {
       return this;
     }
@@ -157,7 +163,7 @@ class FlutterSoundRecorder {
     return this;
   }
 
-  Future<void> release() async {
+  Future<void> closeAudioSession() async {
     if (isInited == _Initialized.notInitialized) {
       return this;
     }
@@ -178,9 +184,9 @@ class FlutterSoundRecorder {
   void updateRecorderProgress(Map call) {
     Map<String, dynamic> result =
         json.decode(call['arg'] as String) as Map<String, dynamic>;
-    if (_recorderController != null) {
-      _recorderController.add(RecordStatus.fromJSON(result));
-    }
+    //if (_recorderController != null) {
+      //_recorderController.add(RecordStatus.fromJSON(result)); TODO
+    //}
   }
 
   void updateDbPeakProgress(Map<dynamic, dynamic> call) {
@@ -189,7 +195,7 @@ class FlutterSoundRecorder {
 
   /// Returns true if the specified encoder is supported by flutter_sound on this platform
   Future<bool> isEncoderSupported(Codec codec) async {
-    await initialize();
+    await openAudioSession();
     bool result;
     // For encoding ogg/opus on ios, we need to support two steps :
     // - encode CAF/OPPUS (with native Apple AVFoundation)
@@ -240,7 +246,7 @@ class FlutterSoundRecorder {
   /// duration listeners.
   /// The default is every 10 milliseconds.
   Future<String> setSubscriptionDuration(double sec) async {
-    await initialize();
+    await openAudioSession();
     String r = await invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'sec': sec,
     }) as String;
@@ -250,7 +256,7 @@ class FlutterSoundRecorder {
   /// Defines the interval at which the peak level should be updated.
   /// Default is 0.8 seconds
   Future<String> setDbPeakLevelUpdate(double intervalInSecs) async {
-    await initialize();
+    await openAudioSession();
     String r = await invokeMethod('setDbPeakLevelUpdate', <String, dynamic>{
       'intervalInSecs': intervalInSecs,
     }) as String;
@@ -259,7 +265,7 @@ class FlutterSoundRecorder {
 
   /// Enables or disables processing the Peak level in db's. Default is disabled
   Future<String> setDbLevelEnabled(bool enabled) async {
-    await initialize();
+    await openAudioSession();
     String r = await invokeMethod('setDbLevelEnabled', <String, dynamic>{
       'enabled': enabled,
     }) as String;
@@ -280,13 +286,16 @@ class FlutterSoundRecorder {
     return fout.path;
   }
 
-  Future<String> startRecorder( String uri, {
+  Future<String> startRecorder( {
     Codec codec = Codec.aacADTS,
+    String toFile = null,
+    Stream toStream = null,
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
+    AudioSource audioSource = AudioSource.defaultSource,
   }) async {
-    await initialize();
+    await openAudioSession();
     // Request Microphone permission if needed
     /*
     if (requestPermission) {
@@ -303,26 +312,26 @@ class FlutterSoundRecorder {
       throw CodecNotSupportedException('Codec not supported.');
     }
 
-    if (uri == null) uri = await defaultPath(codec);
+    if (toFile == null) toFile = await defaultPath(codec);
 
     // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
     // We use FFmpeg for that task.
     if ((Platform.isIOS) &&
-        ((codec == Codec.opusOGG) || (fileExtension(uri) == '.opus'))) {
-      savedUri = uri;
+        ((codec == Codec.opusOGG) || (fileExtension(toFile) == '.opus'))) {
+      savedUri = toFile;
       isOggOpus = true;
       codec = Codec.opusCAF;
       var tempDir = await getTemporaryDirectory();
       var fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
-      uri = fout.path;
-      tmpUri = uri;
+      toFile = fout.path;
+      tmpUri = toFile;
     } else {
       isOggOpus = false;
     }
 
     try {
       var param = <String, dynamic>{
-        'path': uri,
+        'path': toFile,
         'sampleRate': sampleRate,
         'numChannels': numChannels,
         'bitRate': bitRate,
@@ -392,17 +401,34 @@ class FlutterSoundRecorder {
   }
 }
 
-class RecordStatus {
-  final double currentPosition;
+/// Holds point in time details of the recording disposition
+/// including the current duration and decibels.
+/// Use the [dispositionStream] method to subscribe to a stream
+/// of [RecordingDisposition] will be emmited whilst recording.
+class RecordingDisposition {
+  /// The total duration of the recording at this point in time.
+  final Duration duration;
 
-  RecordStatus.fromJSON(Map<String, dynamic> json)
-      : currentPosition = double.parse(json['current_position'] as String);
+  /// The volume of the audio being captured
+  /// at this point in time.
+  /// Value ranges from 0 to 120
+  final double decibels;
+
+  /// ctor
+  RecordingDisposition(this.duration, this.decibels);
+
+  /// use this ctor to as the initial value when building
+  /// a [StreamBuilder]
+  RecordingDisposition.zero()
+              : duration = Duration(seconds: 0),
+                decibels = 0;
 
   @override
   String toString() {
-    return 'currentPosition: $currentPosition';
+    return 'duration: $duration decibels: $decibels';
   }
 }
+
 
 class RecorderException implements Exception {
   final String _message;
