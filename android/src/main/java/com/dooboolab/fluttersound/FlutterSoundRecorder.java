@@ -139,7 +139,7 @@ class FlautoRecorderPlugin
 			case "startRecorder":
 			{
 				aRecorder.startRecorder ( call, result );
-				Log.d(TAG, "startRecorder: " + call.toString());
+				
 			}
 			break;
 
@@ -167,7 +167,6 @@ class FlautoRecorderPlugin
 			case "setSubscriptionDuration":
 			{
 				aRecorder.setSubscriptionDuration ( call, result );
-				Log.d(TAG, "setSubscriptionDuration: " + call.toString());
 			}
 			break;
 
@@ -355,6 +354,7 @@ public class FlutterSoundRecorder
 
 	public void startRecorder ( final MethodCall call, final Result result )
 	{
+		Log.d(TAG, "startRecorder: " + call.argument("path"));
 		//taskScheduler.submit ( () ->
 		{
 			Integer      sampleRate          = call.argument ( "sampleRate" );
@@ -527,7 +527,7 @@ public class FlutterSoundRecorder
 
 			// re-queue ourselves based on the desired subscription interval.
 			boolean queued = progressTickHandler.postDelayed ( () ->sendProgressUpdate(), this.model.subsDurationMillis );
-			Log.d(TAG, "progress posted=" + queued + " delay:" + this.model.subsDurationMillis);
+			// Log.d(TAG, "progress posted=" + queued + " delay:" + this.model.subsDurationMillis);
 		}
 		catch ( Exception je )
 		{
@@ -649,6 +649,7 @@ public class FlutterSoundRecorder
 
 	public void setSubscriptionDuration ( final MethodCall call, final Result result )
 	{
+		Log.d(TAG, "setSubscriptionDuration: " + call.argument("sec"));
 		if ( call.argument ( "sec" ) == null )
 		{
 			return;
