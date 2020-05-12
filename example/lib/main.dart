@@ -101,7 +101,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> init() async {
-    playerModule = await FlutterSoundPlayer().openAudioSession();
+    //playerModule = await FlutterSoundPlayer().openAudioSession();
     recorderModule.openAudioSession();
     await _initializeExample(false);
 
@@ -158,20 +158,6 @@ class _MyAppState extends State<MyApp> {
     cancelRecorderSubscriptions();
     releaseFlauto();
   }
-/*
-  Future<void> setDuck() async {
-    if (_duckOthers) {
-      if (Platform.isIOS)
-        await playerModule.iosSetCategory(SessionCategory.playAndRecord, SessionMode.defaultSessionMode, iosDuckOthers | iosDefaultToSpeaker);
-      else if (Platform.isAndroid) await playerModule.androidAudioFocusRequest(AndroidFocusGain.audioFocusGainTransientMayDuck.index);
-    } else {
-      if (Platform.isIOS)
-        await playerModule.iosSetCategory(SessionCategory.playAndRecord, SessionMode.defaultSessionMode, iosDefaultToSpeaker);
-      else if (Platform.isAndroid) await playerModule.androidAudioFocusRequest(AndroidFocusGain.audioFocusGain.index);
-    }
-  }
-
- */
 
   Future<void> releaseFlauto() async {
     try {
@@ -335,7 +321,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> startPlayer() async {
     try {
-      String path;
+      //String path;
       Uint8List dataBuffer;
       String audioFilePath;
       if (_media == Media.asset) {
@@ -365,33 +351,23 @@ class _MyAppState extends State<MyApp> {
           albumArtUrl = albumArtPath;
         else {
 
-          if (true) {
             albumArtFile = await playerModule.getResourcePath() + "/assets/canardo.png";
             print(albumArtFile);
-          } else {
-
-            if (Platform.isIOS) {
-              albumArtAsset = 'AppIcon';
-            } else if (Platform.isAndroid) {
-              albumArtAsset = 'AppIcon.png';
-            }
-          }
-        }
+         }
 
         final track = Track(
           trackPath: audioFilePath,
           dataBuffer: dataBuffer,
-          codec: _codec,
+
           trackTitle: "This is a record",
           trackAuthor: "from flutter_sound",
           albumArtUrl: albumArtUrl,
           albumArtAsset: albumArtAsset,
           albumArtFile: albumArtFile,
         );
-/*
-        TrackPlayer f = playerModule as TrackPlayer;
-        path = await f.startPlayerFromTrack(
+        await playerModule.startPlayerFromTrack(
           track,
+          codec: _codec,
           /*canSkipForward:true, canSkipBackward:true,*/
           whenFinished: () {
             print('I hope you enjoyed listening to this song');
@@ -415,27 +391,22 @@ class _MyAppState extends State<MyApp> {
           }
         );
 
- */
       } else {
         if (audioFilePath != null) {
-          path = await playerModule.startPlayer(audioFilePath, codec: _codec, whenFinished: () {
+          await playerModule.startPlayer(fromURI: audioFilePath, codec: _codec, whenFinished: () {
             print('Play finished');
             setState(() {});
           });
         } else if (dataBuffer != null) {
-          path = await playerModule.startPlayerFromBuffer(dataBuffer, codec: _codec, whenFinished: () {
+          await playerModule.startPlayer(fromDataBuffer: dataBuffer, codec: _codec, whenFinished: () {
             print('Play finished');
             setState(() {});
           });
         }
 
-        if (path == null) {
-          print('Error starting player');
-          return;
-        }
       }
       _addListeners();
-       print('startPlayer: $path');
+       print('startPlayer');
       // await flutterSoundModule.setVolume(1.0);
     } catch (err) {
       print('error: $err');

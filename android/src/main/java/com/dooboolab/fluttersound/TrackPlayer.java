@@ -217,11 +217,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 		{
 			mMediaBrowserHelper.removePauseHandler();
 		}
-
-		boolean r = prepareFocus(call);
-
 		requestFocus();
-
 		// Pass to the media browser the metadata to use in the notification
 		mMediaBrowserHelper.setNotificationMetadata( track );
 

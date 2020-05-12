@@ -183,16 +183,14 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         
         if ([@"startPlayer" isEqualToString:call.method])
         {
-                NSString* path = (NSString*)call.arguments[@"path"];
-                [aFlautoPlayer startPlayer:path result:result];
+                [aFlautoPlayer startPlayer: call result:result];
         } else
         
-        if ([@"startPlayerFromBuffer" isEqualToString:call.method])
+        if ([@"startPlayerFromTrack" isEqualToString:call.method])
         {
-                FlutterStandardTypedData* dataBuffer = (FlutterStandardTypedData*)call.arguments[@"dataBuffer"];
-                [aFlautoPlayer startPlayerFromBuffer:dataBuffer result:result];
+                 [aFlautoPlayer startPlayerFromTrack: call result:result];
         } else
-        
+
         if ([@"stopPlayer" isEqualToString:call.method])
         {
                 [aFlautoPlayer stopPlayer];
@@ -259,7 +257,6 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
 @implementation FlutterSoundPlayer
 {
-        NSURL *audioFileURL;
         //AVAudioPlayer* audioPlayer; // In the interface
         NSTimer *timer;
         double subscriptionDuration;
@@ -299,7 +296,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 - (void)initializeFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
         isPaused = false;
-        [self setAudioFocus:call result:result];
+        [self setAudioFocus: call result: result];
 }
 
 - (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result
@@ -375,32 +372,60 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
 
 
-- (void)startPlayer:(NSString*)path result: (FlutterResult)result
+- (void)startPlayer:(FlutterMethodCall*)call result: (FlutterResult)result
 {
-        bool isRemote = false;
-        if ([path class] == [NSNull class])
-        {
-                audioFileURL = [NSURL fileURLWithPath:[ [self GetDirectoryOfType_FlutterSound:NSCachesDirectory] stringByAppendingString:@"sound.aac"]];
-        } else
-        {
-                NSURL *remoteUrl = [NSURL URLWithString:path];
-                if(remoteUrl && remoteUrl.scheme && remoteUrl.host)
-                {
-                        audioFileURL = remoteUrl;
-                        isRemote = true;
-                } else
-                {
-                        audioFileURL = [NSURL URLWithString:path];
-                }
-          }
-
-          isPaused = false;
+        bool b = FALSE;
+        isPaused = false;
         //if (!hasFocus) // We always acquire the Audio Focus (It could have been released by another session)
         {
                 hasFocus = TRUE;
-                BOOL r = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
+                b = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
         }
  
+
+        NSString* path = (NSString*)call.arguments[@"fromURI"];
+        FlutterStandardTypedData* dataBuffer = (FlutterStandardTypedData*)call.arguments[@"fromDataBuffer"];
+        if ([dataBuffer class] != [NSNull class])
+        {
+                audioPlayer = [[AVAudioPlayer alloc] initWithData: [dataBuffer data] error: nil];
+                audioPlayer.delegate = self;
+                isPaused = false;
+                b = [audioPlayer play];
+                if (!b)
+                {
+                        [self stopPlayer];
+                        ([FlutterError
+                                errorWithCode:@"Audio Player"
+                                message:@"Play failure"
+                                details:nil]);
+                } else
+                {
+                        [self startTimer];
+                }
+                result([NSNumber numberWithBool: b]);
+                return;
+        }
+        
+        bool isRemote = false;
+        if ([path class] == [NSNull class])
+        {
+                [self stopPlayer];
+                ([FlutterError
+                errorWithCode:@"Audio Player"
+                message:@"Play failure"
+                details:nil]);
+                result([NSNumber numberWithBool: FALSE]);
+                return;
+
+        }
+        NSURL *remoteUrl = [NSURL URLWithString: path];
+        NSURL *audioFileURL = [NSURL URLWithString:path];
+
+        if (remoteUrl && remoteUrl.scheme && remoteUrl.host)
+        {
+                audioFileURL = remoteUrl;
+                isRemote = true;
+        }
 
           if (isRemote)
           {
@@ -414,7 +439,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
                         [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 
-                        bool b = [self->audioPlayer play];
+                        BOOL b = [self ->audioPlayer play];
                         if (!b)
                         {
                                 [self stopPlayer];
@@ -427,8 +452,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 }];
 
                 [self startTimer];
-                NSString *filePath = self->audioFileURL.absoluteString;
-                result(filePath);
+                NSString *filePath = audioFileURL.absoluteString;
                 [downloadTask resume];
         } else
         {
@@ -449,31 +473,18 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                         result(filePath);
                 }
         }
+        result([NSNumber numberWithBool: b]);
 }
 
 
-- (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result
+- (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result
 {
-        audioPlayer = [[AVAudioPlayer alloc] initWithData: [dataBuffer data] error: nil];
-        audioPlayer.delegate = self;
-        // Able to play in silent mode
-        isPaused = false;
-        bool b = [audioPlayer play];
-        if (!b)
-        {
-                [self stopPlayer];
-                ([FlutterError
-                        errorWithCode:@"Audio Player"
-                        message:@"Play failure"
-                        details:nil]);
-        } else
-        {
-                [self startTimer];
-                result(@"Playing from buffer");
-        }
+                       ([FlutterError
+                                errorWithCode:@"Audio Player"
+                                message:@"Start Player From Track failure"
+                                details:nil]);
+                        result([NSNumber numberWithBool: FALSE]);
 }
-
-
 
 - (void)stopPlayer
 {
@@ -576,8 +587,8 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         bool b = [self resume];
         if (b)
         {
-                NSString *filePath = audioFileURL.absoluteString;
-                result(filePath);
+                //NSString *filePath = audioFileURL.absoluteString;
+                result(@"toto");
         } else
         {
                 result([FlutterError

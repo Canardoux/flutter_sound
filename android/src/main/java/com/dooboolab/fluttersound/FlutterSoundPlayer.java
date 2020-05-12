@@ -151,11 +151,12 @@ class FlautoPlayerPlugin
 			}
 			break;
 
-			case "startPlayerFromBuffer":
+			case "startPlayerFromTrack":
 			{
-				aPlayer.startPlayerFromBuffer ( call, result );
+				aPlayer.startPlayerFromTrack ( call, result );
 			}
 			break;
+
 
 			case "stopPlayer":
 			{
@@ -444,12 +445,29 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 
 	public void startPlayer ( final MethodCall call, final Result result )
 	{
-		final String path = call.argument ( "path" );
-		_startPlayer(path, result);
-	}
+		Integer           _codec     = call.argument ( "codec" );
+		FlutterSoundCodec codec      = FlutterSoundCodec.values()[ ( _codec != null ) ? _codec : 0 ];
+		byte[]            dataBuffer = call.argument ( "fromDataBuffer" );
+		String path = call.argument("fromURI");
+		//if ( ! hasFocus ) // We always require focus because it could have been abandoned by another Session
+		{
+			requestFocus ();
+		}
+		if (dataBuffer != null)
+		{
+			try
+			{
+				File             f   = File.createTempFile ( "flutter_sound_buffer-" + Integer.toString(slotNo), extentionArray[ codec.ordinal () ] );
+				FileOutputStream fos = new FileOutputStream ( f );
+				fos.write ( dataBuffer );
+				path = f.getPath();
+			}
+			catch ( Exception e )
+			{
+				result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
+			}
 
-	public void _startPlayer ( String path, final Result result )
-	{
+		}
 		if ( this.model.getMediaPlayer () != null )
 		{
 			Boolean isPaused = !this.model.getMediaPlayer ().isPlaying () && this.model.getMediaPlayer ().getCurrentPosition () > 1;
@@ -457,12 +475,12 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 			if ( isPaused )
 			{
 				this.model.getMediaPlayer ().start ();
-				result.success ( "player resumed." );
+				result.success ( true );
 				return;
 			}
 
 			Log.e ( TAG, "Player is already running. Stop it first." );
-			result.success ( "player is already running." );
+			result.success ( false );
 			return;
 		} else
 		{
@@ -480,12 +498,8 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 			{
 				this.model.getMediaPlayer ().setDataSource (  path );
 			}
-			//if ( ! hasFocus ) // We always require focus because it could have been abandoned by another Session
-			{
-				requestFocus ();
-			}
-
-			this.model.getMediaPlayer ().setOnPreparedListener ( mp -> onPrepared(mp, path, result)	);
+			final String pathFile = path;
+			this.model.getMediaPlayer ().setOnPreparedListener ( mp -> onPrepared(mp, pathFile, result)	);
 			/*
 			 * Detect when finish playing.
 			 */
@@ -500,9 +514,15 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 			Log.e ( TAG, "startPlayer() exception" );
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 		}
+		result.success ( true );
 	}
 
-	public boolean onError(MediaPlayer mp, int what, int extra) {
+	public void startPlayerFromTrack ( final MethodCall call, final Result result )
+	{
+		result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Must be initialized With UI" );
+	}
+
+		public boolean onError(MediaPlayer mp, int what, int extra) {
 		// ... react appropriately ...
 		// The MediaPlayer has moved to the Error state, must be reset!
 		return false;
@@ -569,27 +589,9 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 
 		mTimer.schedule(mTask, 0, model.subsDurationMillis);
 		String resolvedPath = (path == null) ? PlayerAudioModel.DEFAULT_FILE_LOCATION : path;
-		result.success((resolvedPath));
+		//result.success((resolvedPath));
 	}
 
-
-	public void startPlayerFromBuffer ( final MethodCall call, final Result result )
-	{
-		Integer           _codec     = call.argument ( "codec" );
-		FlutterSoundCodec codec      = FlutterSoundCodec.values()[ ( _codec != null ) ? _codec : 0 ];
-		byte[]            dataBuffer = call.argument ( "dataBuffer" );
-		try
-		{
-			File             f   = File.createTempFile ( "flutter_sound_buffer-" + Integer.toString(slotNo), extentionArray[ codec.ordinal () ] );
-			FileOutputStream fos = new FileOutputStream ( f );
-			fos.write ( dataBuffer );
-			_startPlayer ( f.getAbsolutePath (), result );
-		}
-		catch ( Exception e )
-		{
-			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
-		}
-	}
 
 	public void stopPlayer ( final MethodCall call, final Result result )
 	{

@@ -103,6 +103,7 @@
 
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result
 {
+         bool r = FALSE;
          NSDictionary* trackDict = (NSDictionary*) call.arguments[@"track"];
          track = [[Track alloc] initFromDictionary:trackDict];
          BOOL canPause  = [call.arguments[@"canPause"] boolValue];
@@ -115,6 +116,7 @@
                 result([FlutterError errorWithCode:@"UNAVAILABLE"
                                    message:@"The track passed to startPlayer is not valid."
                                    details:nil]);
+                return;
         }
 
 
@@ -171,9 +173,6 @@
 
                         [downloadTask resume];
                         [self startTimer];
-                        NSString *filePath = self->audioFileURL.absoluteString;
-                        result(filePath);
-
                 } else
                 {
                         // Initialize the audio player with the file that the given path points to,
@@ -190,10 +189,8 @@
                                 [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
                         });
 
-                        [audioPlayer play];
+                        r = [audioPlayer play];
                         [self startTimer];
-                        NSString *filePath = audioFileURL.absoluteString;
-                        result(filePath);
                 }
         } else
         {
@@ -206,15 +203,16 @@
                 ^{
                         [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
                 });
-                [audioPlayer play];
+                r = [audioPlayer play];
                 [self startTimer];
-                result(@"Playing from buffer");
         }
         //[ self invokeMethod:@"updatePlaybackState" arguments:playingState];
 
         // Display the notification with the media controls
         [self setupRemoteCommandCenter:canPause canSkipForward:canSkipForward   canSkipBackward:canSkipBackward result:result];
         [self setupNowPlaying];
+        result([NSNumber numberWithBool: r]);
+
 
 }
 

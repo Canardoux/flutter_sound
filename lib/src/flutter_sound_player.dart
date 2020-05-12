@@ -237,7 +237,7 @@ enum Initialized {
   notInitialized,
   initializationInProgress,
   fullyInitialized,
-  FullyInitializedWithUI,
+  fullyInitializedWithUI,
 }
 
 class FlutterSoundPlayer {
@@ -303,7 +303,7 @@ class FlutterSoundPlayer {
   }
 
   Future<FlutterSoundPlayer> openAudioSession( { AudioFocus focus = AudioFocus.requestFocusAndStopOthers, int audioFlags = outputToSpeaker}) async {
-    if (isInited == Initialized.fullyInitialized) {
+    if (isInited == Initialized.fullyInitialized || isInited == Initialized.fullyInitializedWithUI) {
       return this;
     }
     if (isInited == Initialized.initializationInProgress) {
@@ -323,10 +323,10 @@ class FlutterSoundPlayer {
   }
 
   Future<FlutterSoundPlayer> openAudioSessionWithUI( { AudioFocus focus = AudioFocus.requestFocusAndStopOthers, int audioFlags = outputToSpeaker}) async {
-    if (isInited == Initialized.fullyInitialized) {
+    if (isInited == Initialized.fullyInitializedWithUI) {
       return this;
     }
-    if (isInited == Initialized.initializationInProgress) {
+    if (isInited == Initialized.initializationInProgress || isInited == Initialized.fullyInitialized) {
       throw (_InitializationInProgress());
     }
 
@@ -345,7 +345,7 @@ class FlutterSoundPlayer {
     } catch (err) {
       rethrow;
     }
-    isInited = Initialized.FullyInitializedWithUI;
+    isInited = Initialized.fullyInitializedWithUI;
     return this;
   }
 
@@ -531,90 +531,89 @@ class FlutterSoundPlayer {
     what['codec'] = convert;
   }
 
-  Future<String> _startPlayer(String method, Map<String, dynamic> what) async {
-    String result;
+
+  Future<void> startPlayer(
+   {
+     String fromURI = null,
+     Uint8List fromDataBuffer = null,
+     Codec codec = Codec.aacADTS,
+     TWhenFinished whenFinished = null,
+  }) async {
+    await openAudioSession();
+    if (isInited != Initialized.fullyInitialized)
+      throw(Exception('Not initialized'));
     await stopPlayer(); // Just in case
+    bool result = true;
     try {
-      Codec codec = what['codec'] as Codec;
       if (needToConvert(codec)) {
+
+        if (fromDataBuffer != null) {
+          var tempDir = await getTemporaryDirectory();
+          File inputFile = File('${tempDir.path}/$slotNo-flutter_sound-tmp');
+
+          if (inputFile.existsSync()) {
+            await inputFile.delete();
+          }
+          inputFile.writeAsBytesSync(
+                      fromDataBuffer); // Write the user buffer into the temporary file
+          fromDataBuffer = null;
+          fromURI = inputFile.path;
+        }
+        Map<String, dynamic> what = {'codec': codec, 'path': fromURI, 'fromDataBuffer': fromDataBuffer,} as Map<String, dynamic>;
         await _convertAudio(what);
+        codec = what['codec'] as Codec;
+        fromURI =  what['path'] as String;
+        //fromDataBuffer = what['fromDataBuffer'] as Uint8List;
       }
-      //String path = what['path'] as String; // can be null
-      codec =
-          what['codec'] as Codec; // Could have been modified by convertAudio()
 
-      // Flutter cannot transfer an enum to a native plugin.
-      // We use an integer instead
-      if (codec != null) {
-        what['codec'] = codec.index;
-      }
-      audioPlayerFinishedPlaying = what['whenFinished'] as void Function();
-      what['whenFinished'] =
-          null; // We must remove this parameter because _channel.invokeMethod() does not like it
-      result = await invokeMethod(method, what) as String;
+      audioPlayerFinishedPlaying = whenFinished;
+      result = await invokeMethod('startPlayer', {'codec':codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI,} as Map<String, dynamic>) as bool;
 
-      if (result != null) {
-        print('startPlayer result: $result');
+      if (result ) {
         setPlayerCallback();
 
         playerState = PlayerState.isPlaying;
       }
 
-      return result;
     } catch (err) {
       audioPlayerFinishedPlaying = null;
       throw Exception(err);
     }
+    return result;
   }
 
-  Future<String> startPlayer(
-    String uri, {
-    Codec codec,
-    TWhenFinished whenFinished,
-  }) async {
-    await openAudioSession();
-    return await _startPlayer('startPlayer', <String, dynamic>{
-      'path': uri,
-      'codec': codec,
-      'whenFinished': whenFinished,
-    });
+
+  Future<void> startPlayerFromTrack( Track track,
+              {
+                Codec codec = Codec.aacADTS,
+                TonSkip onSkipForward,
+                TonSkip onSkipBackward,
+                TonPaused onPaused,
+                TWhenFinished whenFinished = null,
+              }) async {
+    await openAudioSessionWithUI();
+    if (isInited != Initialized.fullyInitializedWithUI)
+      throw(Exception('Not initialized'));
+
+    await stopPlayer(); // Just in case
+    bool result = true;
+    audioPlayerFinishedPlaying = whenFinished;
+    this.onSkipForward = onSkipForward;
+    this.onSkipBackward = onSkipBackward;
+    this.onPaused = onPaused;
+    Map<String, dynamic> trackDico = track.toMap();
+    result = await invokeMethod('startPlayerFromTrack', {
+          'codec': codec.index,
+          'track': trackDico,
+          'canPause': onPaused != null,
+          'canSkipForward': onSkipForward != null,
+          'canSkipBackward': onSkipBackward != null,
+    } as Map<String, dynamic>) as bool;
+
   }
 
-  Future<String> startPlayerFromBuffer(
-    Uint8List dataBuffer, {
-    Codec codec,
-    TWhenFinished whenFinished,
-  }) async {
-    await openAudioSession();
-    // If we want to play OGG/OPUS on iOS, we need to remux the OGG file format to a specific Apple CAF envelope before starting the player.
-    // We write the data in a temporary file before calling ffmpeg.
-    if (needToConvert(codec)) {
-      await stopPlayer();
-      var tempDir = await getTemporaryDirectory();
-      File inputFile = File('${tempDir.path}/$slotNo-flutter_sound-tmp');
 
-      if (inputFile.existsSync()) {
-        await inputFile.delete();
-      }
-      inputFile.writeAsBytesSync(
-          dataBuffer); // Write the user buffer into the temporary file
-
-      // Now we can play the temporary file
-      return await _startPlayer('startPlayer', <String, dynamic>{
-        'path': inputFile.path,
-        'codec': codec,
-        'whenFinished': whenFinished,
-      }); // And play something that Apple will be happy with.
-    } else {
-      return await _startPlayer('startPlayerFromBuffer', <String, dynamic>{
-        'dataBuffer': dataBuffer,
-        'codec': codec,
-        'whenFinished': whenFinished,
-      });
-    }
-  }
-
-  Future<String> stopPlayer() async {
+    Future<String> stopPlayer() async {
     playerState = PlayerState.isStopped;
     audioPlayerFinishedPlaying = null;
 
@@ -634,7 +633,6 @@ class FlutterSoundPlayer {
       audioPlayerFinishedPlaying();
       audioPlayerFinishedPlaying = null;
     }
-
     return stopPlayer();
   }
 
@@ -799,7 +797,7 @@ class Track {
           this.albumArtFile,
           this.codec = Codec.defaultCodec,
         }) {
-    codec = codec == null ? Codec.defaultCodec : codec;
+    //codec = codec == null ? Codec.defaultCodec : codec;
     assert(trackPath != null || dataBuffer != null,
     'You should provide a path or a buffer for the audio content to play.');
     assert(
