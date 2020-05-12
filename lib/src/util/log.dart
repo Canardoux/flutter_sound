@@ -71,7 +71,7 @@ class Log extends Logger {
       }
       _recentLogs[message] = DateTime.now();
     }
-    if (suppress) _self.d(message, error, stackTrace);
+    if (!suppress) _self.d(message, error, stackTrace);
     return _self;
   }
 
