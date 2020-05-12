@@ -79,18 +79,18 @@ class Track {
   }
 
   /// Creates a track from a buffer.
-  /// You may pass null for the [dataBuffer] in which case an
+  /// You may pass null for the [buffer] in which case an
   /// empty databuffer will be created.
   /// This is useful if you need to record into a track
   /// backed by a buffer.
   ///
-  Track.fromBuffer(Uint8List dataBuffer, {@required Codec codec}) {
-    if (dataBuffer == null) {
-      dataBuffer = Uint8List(0);
+  Track.fromBuffer(Uint8List buffer, {@required Codec codec}) {
+    if (buffer == null) {
+      buffer = Uint8List(0);
     }
 
     _storageType = _TrackStorageType.buffer;
-    _audio = Audio.fromBuffer(dataBuffer, codec);
+    _audio = Audio.fromBuffer(buffer, codec);
   }
 
   ///
@@ -113,6 +113,20 @@ class Track {
   /// then this will be the passed path.
   String get path => _audio.path;
 
+  /// If the [Track] was created via [Track.fromBuffer]
+  /// then this will return the buffer.
+  /// This may not be the same buffer you passed in if
+  /// we have had to transcode data or you recorded into
+  /// the track.
+  Uint8List get buffer => _audio.buffer;
+
+  /// Converts the audio into a buffer
+  /// and returns that buffer.
+  /// If the audio is already stored in a buffer then
+  /// it will be returned.
+  Future<Uint8List> get asBuffer => _audio.asBuffer;
+
+  
   /// returns a unique id for the [Track].
   /// If the [Track] is a path then the path is returned.
   /// If the [Track] is a url then the url.
