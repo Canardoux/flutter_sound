@@ -80,7 +80,7 @@ class RecordingPlayer extends StatelessWidget {
   Future<Track> _createPathTrack() async {
     Track track;
     var audioFilePath = MediaPath().pathForCodec(ActiveCodec().codec);
-    track = Track.fromPath(audioFilePath, codec: ActiveCodec().codec);
+    track = Track.fromFile(audioFilePath, codec: ActiveCodec().codec);
     return track;
   }
 
