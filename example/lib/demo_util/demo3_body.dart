@@ -43,7 +43,7 @@ class _MainBodyState extends State<MainBody> {
       await initializeDateFormatting();
       await RecorderState().init();
       ActiveCodec().recorderModule = RecorderState().recorderModule;
-      await ActiveCodec().setCodec(false, Codec.aacADTS);
+      await ActiveCodec().setCodec(withUI: false, codec: Codec.aacADTS);
 
       initialized = true;
     }
@@ -72,7 +72,7 @@ class _MainBodyState extends State<MainBody> {
           } else {
             final dropdowns = Dropdowns(
                 onCodecChanged: (codec) =>
-                    ActiveCodec().setCodec(false, codec));
+                    ActiveCodec().setCodec(withUI: false, codec: codec));
 
             return ListView(
               children: <Widget>[
@@ -142,9 +142,12 @@ class _MainBodyState extends State<MainBody> {
   }
 }
 
+///
 class Left extends StatelessWidget {
+  ///
   final String label;
 
+  ///
   Left(this.label);
   @override
   Widget build(BuildContext context) {

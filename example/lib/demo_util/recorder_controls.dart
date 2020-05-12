@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
+import '../util/grayed_out.dart';
 import 'demo_audio_state.dart';
 import 'demo_common.dart';
-import '../util/grayed_out.dart';
+
 import 'demo_media_path.dart';
 import 'recorder_state.dart';
 
@@ -144,7 +145,7 @@ class _RecorderControlsState extends State<RecorderControls> {
   }
 
   bool checkPreconditions() {
-    bool passed = true;
+    var passed = true;
     if (MediaPath().isAsset ||
         // MediaPath().isBuffer ||
         MediaPath().isExampleFile) {

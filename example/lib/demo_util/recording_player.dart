@@ -4,20 +4,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
+import '../util/log.dart';
 import 'demo_active_codec.dart';
 import 'demo_common.dart';
 import 'demo_media_path.dart';
-import '../util/log.dart';
 
+///
 class RecordingPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SoundPlayerUI.fromLoader(
-      (context) => createTrack(context),
+      createTrack,
       showTitle: true,
     );
   }
 
+  ///
   Future<Track> createTrack(BuildContext context) async {
     Track track;
 
@@ -51,8 +53,8 @@ class RecordingPlayer extends StatelessWidget {
       } else {
         var error = SnackBar(
             backgroundColor: Colors.red,
-            content: Text(
-                'You must make a recording first with the selected codec first.'));
+            content: Text('You must make a recording first with the '
+                'selected codec first.'));
         Scaffold.of(context).showSnackBar(error);
       }
     } on Object catch (err) {

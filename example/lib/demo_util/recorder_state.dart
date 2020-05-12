@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
-import 'demo_active_codec.dart';
-import 'demo_media_path.dart';
 import '../util/log.dart';
 import '../util/temp_file.dart';
+import 'demo_active_codec.dart';
+import 'demo_media_path.dart';
 
 /// Tracks the Recoder UI's state.
 class RecorderState {

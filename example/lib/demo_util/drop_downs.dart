@@ -71,7 +71,7 @@ class _DropdownsState extends State<Dropdowns> {
 
         /// this is hacky as we should be passing the actually
         /// useOSUI flag.
-        ActiveCodec().setCodec(false, newCodec);
+        ActiveCodec().setCodec(withUI: false, codec: newCodec);
 
         setState(() {
           getDuration(ActiveCodec().codec);

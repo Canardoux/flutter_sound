@@ -15,11 +15,12 @@ const String exampleAudioFilePath =
 final String albumArtPath =
     "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_500kB.png";
 
+///
 class RemotePlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SoundPlayerUI.fromLoader(
-      (context) => _createRemoteTrack(context),
+      _createRemoteTrack,
       showTitle: true,
       audioFocus: PlayerState().hushOthers
           ? AudioFocus.focusAndHushOthers

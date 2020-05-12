@@ -4,6 +4,7 @@ import 'dart:io';
 import '../playback_disposition.dart';
 import 'log.dart';
 
+/// Provides methods for downloading files.
 class Downloader {
   /// Downloads the [url] to [saveToPath] emmiting progress
   /// updates as the download progresses.

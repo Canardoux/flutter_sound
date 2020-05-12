@@ -8,6 +8,7 @@ import 'demo_active_codec.dart';
 import 'demo_common.dart';
 import 'demo_player_state.dart';
 
+///
 class AssetPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class AssetPlayer extends StatelessWidget {
     );
   }
 
+  ///
   Future<Track> createAssetTrack() async {
     Track track;
     var dataBuffer =

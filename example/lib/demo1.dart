@@ -25,39 +25,63 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter_sound/flutter_sound.dart';
 
+///
 enum Media {
-  File,
-  Buffer,
-  Asset,
-  Stream,
-  RemoteExampleFile,
+  ///
+  file,
+
+  ///
+  buffer,
+
+  ///
+  asset,
+
+  ///
+  stream,
+
+  ///
+  remoteExampleFile,
 }
 
+///
 enum AudioState {
+  ///
   isPlaying,
+
+  ///
   isStopped,
+
+  ///
   isRecording,
+
+  ///
   playerIsPaused,
+
+  ///
   recorderIsPaused,
 }
 
-final exampleAudioFilePath =
+///
+final String exampleAudioFilePath =
     "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
-final albumArtPath =
+
+///
+final String albumArtPath =
     "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_500kB.png";
 
 void main() {
-  runApp(new MyApp());
+  runApp(MyApp());
 }
 
+///
 class MyApp extends StatefulWidget {
   @override
-  _MyAppState createState() => new _MyAppState();
+  _MyAppState createState() =>  _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
   bool _isRecording = false;
-  List<String> _path = [null, null, null, null, null, null, null];
+  final List<String> _path = [null, null, null, null, null, null, null];
 
   /// we keep our own local stream as the players come and go.
   /// This lets our StreamBuilder work with it worrying about
@@ -69,7 +93,7 @@ class _MyAppState extends State<MyApp> {
 
   double sliderCurrentPosition = 0.0;
   double maxDuration = 1.0;
-  Media _media = Media.File;
+  Media _media = Media.file;
   Codec _codec = Codec.aacADTS;
 
   bool _encoderSupported = true; // Optimist
@@ -79,7 +103,7 @@ class _MyAppState extends State<MyApp> {
   bool _isAudioPlayer = false;
   bool _duckOthers = false;
 
-  double _duration = null;
+  double _duration;
 
   void setCodec(Codec codec) async {
     _encoderSupported = await recorderModule.isSupported(codec);
@@ -193,12 +217,17 @@ class _MyAppState extends State<MyApp> {
   Future<void> setDuck() async {
     if (_duckOthers) {
       //if (Platform.isIOS)
-      //await playerModule.iosSetCategory(IOSSessionCategory.playAndRecord, IOSSessionMode.defaultMode, IOS_DUCK_OTHERS | IOS_DEFAULT_TO_SPEAKER);
-      //else if (Platform.isAndroid) await playerModule.androidAudioFocusRequest(ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+      //await playerModule.iosSetCategory(IOSSessionCategory.playAndRecord
+      // , IOSSessionMode.defaultMode
+      // , IOS_DUCK_OTHERS | IOS_DEFAULT_TO_SPEAKER);
+      //else if (Platform.isAndroid) await playerModule
+      //.androidAudioFocusRequest(ANDROID_AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
     } else {
       //if (Platform.isIOS)
-      //await playerModule.iosSetCategory(IOSSessionCategory.playAndRecord, IOSSessionMode.defaultMode, IOS_DEFAULT_TO_SPEAKER);
-      //else if (Platform.isAndroid) await playerModule.androidAudioFocusRequest(ANDROID_AUDIOFOCUS_GAIN);
+      //await playerModule.iosSetCategory(IOSSessionCategory.playAndRecord
+      //, IOSSessionMode.defaultMode, IOS_DEFAULT_TO_SPEAKER);
+      //else if (Platform.isAndroid) await playerModule
+      // .androidAudioFocusRequest(ANDROID_AUDIOFOCUS_GAIN);
     }
   }
 
@@ -206,7 +235,9 @@ class _MyAppState extends State<MyApp> {
     try {
       await playerModule.release();
       await recorderModule.release();
-    } catch (e) {
+    } 
+    // ignore: avoid_catches_without_on_clauses
+    catch (e) {
       print('Released unsuccessful');
       print(e);
     }
@@ -224,18 +255,18 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> getDuration() async {
     switch (_media) {
-      case Media.File:
-      case Media.Buffer:
+      case Media.file:
+      case Media.buffer:
         //int d = await flutterSoundHelper.duration(this._path[_codec.index]);
         //_duration = d != null ? d / 1000.0 : null;
         break;
-      case Media.Asset:
+      case Media.asset:
         _duration = null;
         break;
-      case Media.RemoteExampleFile:
+      case Media.remoteExampleFile:
         _duration = null;
         break;
-      case Media.Stream:
+      case Media.stream:
         _duration = null;
         break;
     }
@@ -247,11 +278,13 @@ class _MyAppState extends State<MyApp> {
       await recorderModule.stop();
       cancelRecorderSubscriptions();
       getDuration();
-    } catch (err) {
+    } 
+    // ignore: avoid_catches_without_on_clauses
+    catch (err) {
       print('stopRecorder error: $err');
     }
-    this.setState(() {
-      this._isRecording = false;
+    setState(() {
+      _isRecording = false;
     });
   }
 
@@ -266,16 +299,17 @@ class _MyAppState extends State<MyApp> {
       //   numChannels: 1,
       //   androidAudioSource: AndroidAudioSource.MIC,
       // );
-      Directory tempDir = await getTemporaryDirectory();
-      int slotNo = 0; // TODO
-      String path = '${tempDir.path}/${slotNo}-${paths[_codec.index]}';
-      Track track = Track.fromFile(path, codec: _codec);
+      var tempDir = await getTemporaryDirectory();
+      var slotNo = 0; // TODO
+      var path = '${tempDir.path}/$slotNo-${paths[_codec.index]}';
+      var track = Track.fromFile(path, codec: _codec);
       await recorderModule.record(track);
 
       /* TODO
       _recorderSubscription = recorderModule.onRecorderStateChanged.listen((e) {
         if (e != null && e.currentPosition != null) {
-          DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt(), isUtc: true);
+          DateTime date = new DateTime.fromMillisecondsSinceEpoch(
+            e.currentPosition.toInt(), isUtc: true);
           String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
 
           this.setState(() {
@@ -283,7 +317,8 @@ class _MyAppState extends State<MyApp> {
           });
         }
       });
-      _dbPeakSubscription = recorderModule.onRecorderDbPeakChanged.listen((value) {
+      _dbPeakSubscription = recorderModule.onRecorderDbPeakChanged
+      .listen((value) {
         print("got update -> $value");
         setState(() {
           this._dbLevel = value;
@@ -292,15 +327,17 @@ class _MyAppState extends State<MyApp> {
 
        */
 
-      this.setState(() {
-        this._isRecording = true;
-        this._path[_codec.index] = path;
+      setState(() {
+        _isRecording = true;
+        _path[_codec.index] = path;
       });
-    } catch (err) {
+    } 
+    // ignore: avoid_catches_without_on_clauses
+    catch (err) {
       print('startRecorder error: $err');
       setState(() {
         stopRecorder();
-        this._isRecording = false;
+        _isRecording = false;
         /*
         if (_recorderSubscription != null) {
           _recorderSubscription.cancel();
@@ -320,16 +357,19 @@ class _MyAppState extends State<MyApp> {
     return await File(path).exists();
   }
 
-  // In this simple example, we just load a file in memory.This is stupid but just for demonstration  of startPlayerFromBuffer()
+  // In this simple example, we just load a file in memory.
+  // This is stupid but just for demonstration  of startPlayerFromBuffer()
   Future<Uint8List> makeBuffer(String path) async {
     try {
       if (!await fileExists(path)) return null;
-      File file = File(path);
+      var file = File(path);
       file.openRead();
       var contents = await file.readAsBytes();
       print('The file is ${contents.length} bytes long.');
       return contents;
-    } catch (e) {
+    } 
+    // ignore: avoid_catches_without_on_clauses
+    catch (e) {
       print(e);
       return null;
     }
@@ -358,7 +398,8 @@ class _MyAppState extends State<MyApp> {
           sliderCurrentPosition = 0.0;
         }
 
-        DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt(), isUtc: true);
+        DateTime date = new DateTime.fromMillisecondsSinceEpoch(
+          e.currentPosition.toInt(), isUtc: true);
         String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
         this.setState(() {
           //this._isPlaying = true;
@@ -374,23 +415,24 @@ class _MyAppState extends State<MyApp> {
       //String path;
       Uint8List dataBuffer;
       String audioFilePath;
-      if (_media == Media.Asset) {
+      if (_media == Media.asset) {
         dataBuffer = (await rootBundle.load(assetSample[_codec.index]))
             .buffer
             .asUint8List();
-      } else if (_media == Media.File) {
-        // Do we want to play from buffer or from file ?
-        if (await fileExists(_path[_codec.index]))
-          audioFilePath = this._path[_codec.index];
-      } else if (_media == Media.Buffer) {
+      } else if (_media == Media.file) {
         // Do we want to play from buffer or from file ?
         if (await fileExists(_path[_codec.index])) {
-          dataBuffer = await makeBuffer(this._path[_codec.index]);
+          audioFilePath = _path[_codec.index];
+        }
+      } else if (_media == Media.buffer) {
+        // Do we want to play from buffer or from file ?
+        if (await fileExists(_path[_codec.index])) {
+          dataBuffer = await makeBuffer(_path[_codec.index]);
           if (dataBuffer == null) {
             throw Exception('Unable to create the buffer');
           }
         }
-      } else if (_media == Media.RemoteExampleFile) {
+      } else if (_media == Media.remoteExampleFile) {
         // We have to play an example audio file loaded via a URL
         audioFilePath = exampleAudioFilePath;
       }
@@ -399,9 +441,9 @@ class _MyAppState extends State<MyApp> {
       String albumArtUrl;
       String albumArtAsset;
       String albumArtFile;
-      if (_media == Media.RemoteExampleFile)
+      if (_media == Media.remoteExampleFile) {
         albumArtUrl = albumArtPath;
-      else {
+      } else {
 // TODO
         //if (true) {
         //albumArtFile = await playerModule.getResourcePath() + "/assets/canardo.png";
@@ -416,7 +458,7 @@ class _MyAppState extends State<MyApp> {
         //}
       }
       Track track;
-      if (dataBuffer != null)
+      if (dataBuffer != null) {
         track = Track.fromBuffer(
           dataBuffer,
           //trackPath: audioFilePath,
@@ -429,7 +471,7 @@ class _MyAppState extends State<MyApp> {
           //albumArtAsset: albumArtAsset,
           //albumArtFile: albumArtFile,
         );
-      else
+      } else {
         track = Track.fromFile(
           audioFilePath,
           //trackPath: audioFilePath,
@@ -441,6 +483,7 @@ class _MyAppState extends State<MyApp> {
           //albumArtAsset: albumArtAsset,
           //albumArtFile: albumArtFile,
         );
+      }
       playerModule.onStopped = ({wasUser}) {
         print('I hope you enjoyed listening to this song');
         setState(() {});
@@ -479,12 +522,14 @@ class _MyAppState extends State<MyApp> {
       /*
       } else {
         if (audioFilePath != null) {
-          path = await playerModule.startPlayer(audioFilePath, codec: _codec, whenFinished: () {
+          path = await playerModule.startPlayer(audioFilePath, codec: 
+          _codec, whenFinished: () {
             print('Play finished');
             setState(() {});
           });
         } else if (dataBuffer != null) {
-          path = await playerModule.startPlayerFromBuffer(dataBuffer, codec: _codec, whenFinished: () {
+          path = await playerModule.startPlayerFromBuffer(dataBuffer, codec: 
+          _codec, whenFinished: () {
             print('Play finished');
             setState(() {});
           });
@@ -496,7 +541,9 @@ class _MyAppState extends State<MyApp> {
 
       print('startPlayer: $audioFilePath');
       // await flutterSoundModule.setVolume(1.0);
-    } catch (e) {
+    } 
+    // ignore: avoid_catches_without_on_clauses
+    catch (e) {
       print('error: $e');
     }
     setState(() {});
@@ -510,11 +557,13 @@ class _MyAppState extends State<MyApp> {
       // _playerSubscription = null;
       //}
       sliderCurrentPosition = 0.0;
-    } catch (err) {
+    }
+    // ignore: avoid_catches_without_on_clauses
+    catch (err) {
       print('error: $err');
     }
 
-    this.setState(() {
+    setState(() {
       //this._isPlaying = false;
     });
   }
@@ -610,10 +659,8 @@ class _MyAppState extends State<MyApp> {
             initialData: PlaybackDisposition.zero(),
             builder: (context, snapshot) {
               var playbackDisposition = snapshot.data;
-              double pos =
-                  playbackDisposition.position.inMilliseconds.toDouble();
-              double max =
-                  playbackDisposition.duration.inMilliseconds.toDouble();
+              var pos = playbackDisposition.position.inMilliseconds.toDouble();
+              var max = playbackDisposition.duration.inMilliseconds.toDouble();
               if (max == 0) {
                 pos = 0;
                 max = 1;
@@ -622,7 +669,7 @@ class _MyAppState extends State<MyApp> {
                 value: pos / max,
                 max: 1.0,
                 min: 0.0,
-                onChanged: (double value) async {
+                onChanged: (value) async {
                   await playerModule
                       .seekTo(Duration(milliseconds: (value * max).round()));
                 },
@@ -643,28 +690,28 @@ class _MyAppState extends State<MyApp> {
         DropdownButton<Media>(
           value: _media,
           onChanged: (newMedia) {
-            if (newMedia == Media.RemoteExampleFile)
-              _codec = Codec
-                  .mp3; // Actually this is the only example we use in this example
+            if (newMedia == Media.remoteExampleFile) {
+              _codec = Codec.mp3;
+            } // Actually this is the only example we use
             _media = newMedia;
             getDuration();
             setState(() {});
           },
           items: <DropdownMenuItem<Media>>[
             DropdownMenuItem<Media>(
-              value: Media.File,
+              value: Media.file,
               child: Text('File'),
             ),
             DropdownMenuItem<Media>(
-              value: Media.Buffer,
+              value: Media.buffer,
               child: Text('Buffer'),
             ),
             DropdownMenuItem<Media>(
-              value: Media.Asset,
+              value: Media.asset,
               child: Text('Asset'),
             ),
             DropdownMenuItem<Media>(
-              value: Media.RemoteExampleFile,
+              value: Media.remoteExampleFile,
               child: Text('Remote Example File'),
             ),
           ],
@@ -774,14 +821,14 @@ class _MyAppState extends State<MyApp> {
   }
 
   void Function() onStartPlayerPressed() {
-    if (_media == Media.File ||
-        _media == Media.Buffer) // A file must be already recorded to play it
+    if (_media == Media.file ||
+        _media == Media.buffer) // A file must be already recorded to play it
     {
       if (_path[_codec.index] == null) return null;
     }
-    if (_media == Media.RemoteExampleFile &&
-        _codec != Codec.mp3) // in this example we use just a remote mp3 file
+    if (_media == Media.remoteExampleFile && _codec != Codec.mp3) {
       return null;
+    }
 
     // Disable the button if the selected codec is not supported
     if (!_decoderSupported) return null;
@@ -789,16 +836,17 @@ class _MyAppState extends State<MyApp> {
   }
 
   void startStopRecorder() {
-    if (recorderModule.isRecording || recorderModule.isPaused)
+    if (recorderModule.isRecording || recorderModule.isPaused) {
       stopRecorder();
-    else
+    } else {
       startRecorder();
+    }
   }
 
   void Function() onStartRecorderPressed() {
-    if (_media == Media.Asset ||
-        _media == Media.Buffer ||
-        _media == Media.RemoteExampleFile) return null;
+    if (_media == Media.asset ||
+        _media == Media.buffer ||
+        _media == Media.remoteExampleFile) return null;
     // Disable the button if the selected codec is not supported
     if (!_encoderSupported) return null;
     if (audioState != AudioState.isRecording &&
@@ -810,8 +858,9 @@ class _MyAppState extends State<MyApp> {
   bool isStopped() => (audioState == AudioState.isStopped);
 
   AssetImage recorderAssetImage() {
-    if (onStartRecorderPressed() == null)
+    if (onStartRecorderPressed() == null) {
       return AssetImage('res/icons/ic_mic_disabled.png');
+    }
     return audioState == AudioState.isStopped
         ? AssetImage('res/icons/ic_mic.png')
         : AssetImage('res/icons/ic_stop.png');
@@ -819,27 +868,31 @@ class _MyAppState extends State<MyApp> {
 
   void Function(bool) audioPlayerSwitchChanged() {
     if (!isStopped()) return null;
-    return ((bool newVal) async {
+    return ((newVal) async {
       try {
         if (playerModule != null) await playerModule.release();
 
         _isAudioPlayer = newVal;
         await _initializeExample();
         setState(() {});
-      } catch (err) {
+      }
+      // ignore: avoid_catches_without_on_clauses
+      catch (err) {
         print(err);
       }
     });
   }
 
   void Function(bool) duckOthersSwitchChanged() {
-    return ((bool newVal) {
+    return ((newVal) {
       _duckOthers = newVal;
 
       try {
         setDuck();
         setState(() {});
-      } catch (err) {
+      }
+      // ignore: avoid_catches_without_on_clauses
+      catch (err) {
         print(err);
       }
     });
@@ -854,7 +907,8 @@ class _MyAppState extends State<MyApp> {
     //         min: 0.0,
     //         max: maxDuration,
     //         onChanged: (double value) async {
-    //           await playerModule.seekTo(Duration(milliseconds: value.toInt()));
+    //           await playerModule.seekTo(Duration(milliseconds:
+    //           value.toInt()));
     //         },
     //         divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt()));
 
