@@ -89,10 +89,10 @@ abstract class BasePlugin with WidgetsBindingObserver {
     var slotNo = call.arguments['slotNo'] as int;
     var slotEntry = _slots[slotNo];
 
-    Log.d(
-        'Dart received ${call.method} on slotNo $slotNo for '
-        '${slotEntry?.runtimeType}',
-        supressDuplicates: true);
+    // Log.d(
+    //     'Dart received ${call.method} on slotNo $slotNo for '
+    //     '${slotEntry?.runtimeType}',
+    //     supressDuplicates: true);
 
     return onMethodCallback(slotEntry, call);
   }
