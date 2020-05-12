@@ -384,6 +384,7 @@ public class FlutterSoundPlayer
 
 	public void _startPlayer ( String path, final Result result )
 	{
+		assert(path != null);
 		if ( this.model.getMediaPlayer () != null )
 		{
 			/// re-start after media has been paused
@@ -401,7 +402,7 @@ public class FlutterSoundPlayer
 			return;
 		} 
 
-		/// This causes an IllegalStateException to by throw by the MediaPlayer.
+		/// This causes an IllegalStateException to be throw by the MediaPlayer.
 		/// Looks to be a minor bug in the android MediaPlayer so we can ignore it.
 		this.model.setMediaPlayer ( new MediaPlayer () );
 		
@@ -409,21 +410,19 @@ public class FlutterSoundPlayer
 
 		try
 		{
-			if ( path == null )
-			{
-				this.model.getMediaPlayer ().setDataSource ( PlayerAudioModel.DEFAULT_FILE_LOCATION );
-			} 
-			else
-			{
-				this.model.getMediaPlayer ().setDataSource ( path );
-			}
+			this.model.getMediaPlayer ().setDataSource ( path );
 			if ( setActiveDone == t_SET_CATEGORY_DONE.NOT_SET )
 			{
 				setActiveDone = t_SET_CATEGORY_DONE.FOR_PLAYING;
 				requestFocus ();
 			}
 
-			this.model.getMediaPlayer ().setOnPreparedListener ( mp ->
+			this.model.getMediaPlayer().setOnErrorListener((mp,  what,  extra) -> {
+				result.error(ERR_UNKNOWN, ERR_UNKNOWN, "MediaPlayer error: what: " + what + " extra: " + extra);
+				/// we handled the error by stopping the play.
+				return true;
+			});
+			this.model.getMediaPlayer().setOnPreparedListener ( mp ->
 			                                                     {
 				                                                     Log.d ( TAG, "mediaPlayer prepared and start" );
 				                                                     mp.start ();
