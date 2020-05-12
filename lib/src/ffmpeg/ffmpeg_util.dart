@@ -91,13 +91,18 @@ class FFMpegUtil {
   }
 
   /// Determines the duration of the passed uri.
-  Future<Duration> duration(String uri) async {
-    if (uri == null) return null;
-
-    assert(exists(uri));
-    var info = await _ffMpegGetMediaInformation(uri);
-    if (info == null) return null;
-    var duration = Duration(milliseconds: info['duration'] as int);
+  Future<Duration> duration(String path) async {
+    Duration duration;
+    if (path != null) {
+      assert(exists(path));
+      var info = await _ffMpegGetMediaInformation(path);
+      if (info != null) {
+        var sduration = info['duration'] as String;
+        if (sduration != null) {
+          duration = Duration(milliseconds: sduration as int);
+        }
+      }
+    }
     return duration;
   }
 }
