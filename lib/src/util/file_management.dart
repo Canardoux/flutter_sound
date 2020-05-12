@@ -14,7 +14,9 @@
  *   along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
@@ -89,4 +91,10 @@ bool isFile(String path) {
 /// Returns the length of the file located at [path].
 int fileLength(String path) {
   return File(path).lengthSync();
+}
+
+/// Reads the file located at [path] into a buffer.
+/// Be careful we could run out of memory.
+Future<Uint8List> readIntoBuffer(String path) {
+  return File(path).readAsBytes();
 }
