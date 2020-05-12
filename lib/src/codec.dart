@@ -13,7 +13,11 @@
  *   You should have received a copy of the Lesser GNU General Public License
  *   along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
+import 'dart:async';
+
 import 'package:path/path.dart';
+
+import 'ffmpeg/ffmpeg_util.dart';
 
 /// Describes the set of possible codecs.
 /// Not all codecs are support on all OSs nor all actions.
@@ -105,6 +109,17 @@ class CodecHelper {
     var codec = extensionToCodecMap[ext];
 
     return codec;
+  }
+
+  /// Determines the duration of the audio file located at [path]
+  /// based on the files codec.
+  static Future<Duration> duration(Codec codec, String path) async {
+    var duration = Future<Duration>.value(Duration.zero);
+
+    /// supports a large range of file formats.
+    duration = FFMpegUtil().duration(path);
+
+    return duration;
   }
 }
 
