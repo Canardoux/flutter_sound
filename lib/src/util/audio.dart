@@ -61,18 +61,33 @@ class Audio {
     return 0;
   }
 
-  @override
-  String toString() {
-    var desc = 'Codec: $codec';
-    if (_onDisk) {
-      desc += 'storage: $_storagePath';
+  /// Converts the underlying storage into a buffer.
+  /// This may take a significant amount of time if the
+  /// storage is a remote url.
+  /// Once called the audio will be cached so subsequent calls
+  /// will return immediately.
+  Future<Uint8List> get asBuffer async {
+    if (isBuffer || _dataBuffer != null) {
+      return _dataBuffer;
     }
 
-    if (url != null) desc += ' url: $url';
-    if (path != null) desc += ' path: $path';
-    if (_dataBuffer != null) desc += ' buffer len: ${_dataBuffer.length}';
+    if (isFile) {
+      _dataBuffer = await readIntoBuffer(_storagePath);
+    }
 
-    return desc;
+    if (isURL) {
+      TempMediaFile tempMediaFile;
+      try {
+        var tempMediaFile = TempMediaFile.empty();
+
+        await Downloader().download(url, tempMediaFile.path, (disposition) {});
+
+        _dataBuffer = await readIntoBuffer(tempMediaFile.path);
+      } finally {
+        tempMediaFile?.delete();
+      }
+    }
+    return _dataBuffer;
   }
 
   /// Returns the location of the audio media on disk.
@@ -297,5 +312,19 @@ class Audio {
     if (!rewritten) {
       loadingProgress(disposition);
     }
+  }
+
+  @override
+  String toString() {
+    var desc = 'Codec: $codec';
+    if (_onDisk) {
+      desc += 'storage: $_storagePath';
+    }
+
+    if (url != null) desc += ' url: $url';
+    if (path != null) desc += ' path: $path';
+    if (_dataBuffer != null) desc += ' buffer len: ${_dataBuffer.length}';
+
+    return desc;
   }
 }
