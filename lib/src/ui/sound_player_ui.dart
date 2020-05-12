@@ -18,11 +18,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import '../../flutter_sound.dart';
 import '../codec.dart';
+import '../playback_disposition.dart';
 import '../track.dart';
 import '../util/ansi_color.dart';
 import '../util/format.dart';
@@ -166,8 +166,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   /// We can play if we have a non-zero duration or we are dynamically
   /// loading tracks via _onLoad.
   Future<bool> get canPlay async {
-    return _onLoad != null ||
-        (_track != null && (await _track.duration).inMilliseconds > 0);
+    return _onLoad != null || (_track != null && (_track.length > 0));
   }
 
   /// detect hot reloads when debugging and stop the player.
@@ -354,7 +353,6 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   /// start playback.
   void play() async {
     _transitioning = true;
-    Log.d(green('Transitioning = true'));
     _loading = true;
     Log.d("Loading starting");
 
@@ -384,19 +382,24 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     if (newTrack != null) {
       newTrack.then((track) {
         _track = track;
-        _start();
+        if (_track != null) {
+          _start();
+        } else {
+          _loading = false;
+          _transitioning = false;
+        }
       }).catchError((dynamic exception) {
         // errors throw by _onLoad are captured here in the .then
         // handler for newTrack.
-        _transitioning = false;
         Log.d(green('Transitioning = false'));
         _loading = false;
+        _transitioning = false;
         Log.e("Error occured loading the track: ${exception.toString()}");
       });
     } else {
-      _transitioning = false;
       Log.d(green('Transitioning = false'));
       _loading = false;
+      _transitioning = false;
       Log.w("No Track provided by _onLoad. Call to start has been ignored");
     }
   }
@@ -487,7 +490,37 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
               // limit: 5,
               builder: (context, index) {
                 if (index > 1) {
-                  return SpinKitRing(color: Colors.purple, size: 32);
+                  // return SpinKitRing(color: Colors.purple, size: 32);
+                  return StreamBuilder<PlaybackDisposition>(
+                      stream: _localController.stream,
+                      initialData: PlaybackDisposition(
+                          PlaybackDispositionState.init,
+                          progress: 0.0,
+                          position: Duration.zero),
+                      builder: (context, asyncData) {
+                        var disposition = asyncData.data;
+                        // Log.e(yellow('state ${disposition.state} '
+                        //     'progress: ${disposition.progress}'));
+                        var progress = 0.0;
+                        switch (disposition.state) {
+                          case PlaybackDispositionState.preload:
+                            progress = null; // indeterminate
+                            break;
+                          case PlaybackDispositionState.loading:
+                            progress = disposition.progress;
+                            break;
+                          default:
+                            progress = null;
+                            break;
+                        }
+                        // Log.e(yellow('state ${disposition.state} '
+                        //     'progress: $progress'));
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CircularProgressIndicator(
+                              strokeWidth: 5, value: progress),
+                        );
+                      });
                 } else {
                   return Container(width: 32, height: 32);
                 }

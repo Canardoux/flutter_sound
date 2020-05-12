@@ -18,6 +18,7 @@ import 'dart:async';
 
 import '../ffmpeg/ffmpeg_util.dart';
 
+import '../playback_disposition.dart';
 import 'file_management.dart';
 
 /// Provides some codec conversions.
@@ -27,7 +28,8 @@ class CodecConversions {
   /// opus encoded audio file and remux's it
   /// into a Apple CAF envelope so we can play
   /// an Opus file on IOS.
-  static Future<String> opusToCafOpus({String fromPath}) async {
+  static Future<String> opusToCafOpus(
+      {String fromPath, LoadingProgress progress}) async {
     var toPath = tempFile(suffix: '.caf');
     if (exists(toPath)) {
       // delete the old temporary file if it exists

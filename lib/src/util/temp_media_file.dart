@@ -17,7 +17,9 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import '../playback_disposition.dart';
 import 'file_management.dart' as fm;
+import 'log.dart';
 
 /// Used to track temporary media files
 /// that need to be deleted once they
@@ -43,15 +45,51 @@ class TempMediaFile {
     _deleted = true;
   }
 
-  /// Writes [dataBuffer] to a temporary file
-  /// and returns the path to that file.
-  TempMediaFile.fromBuffer(Uint8List dataBuffer) {
+  /// creates a temporary media file which can be written to.
+  TempMediaFile.empty() {
     path = fm.tempFile();
 
     if (fm.exists(path)) {
       fm.delete(path);
     }
-    File(path).writeAsBytesSync(dataBuffer); // Write
+  }
+
+  /// Writes [dataBuffer] to a temporary file
+  /// and returns the path to that file.
+  TempMediaFile.fromBuffer(
+      Uint8List dataBuffer, LoadingProgress loadingProgress) {
+    path = fm.tempFile();
+
+    if (fm.exists(path)) {
+      fm.delete(path);
+    }
+
+    var bytesWritten = 0;
+
+    /// write out the buffer in 4K chucks so we can report
+    /// the progress as we go.
+    const packetSize = 4096;
+    var file = File(path);
+    var length = dataBuffer.length;
+    var parts = length ~/ packetSize;
+    var increment = 1.0 / parts;
+    for (var i = 0; i < parts; i++) {
+      var start = i * packetSize;
+      var end = start + packetSize;
+      file.writeAsBytesSync(dataBuffer.sublist(start, end),
+          mode: FileMode.append); // Write
+      bytesWritten += packetSize;
+      var progress = i * increment;
+      Log.e("Progress: $progress");
+      loadingProgress(PlaybackDisposition.loading(progress: progress));
+    }
+    // write final packet if there is a partial packet left
+    if (bytesWritten != length) {
+      dataBuffer.sublist(parts * packetSize, length);
+      bytesWritten += length - (parts * packetSize);
+    }
+    assert(bytesWritten == length);
+    loadingProgress(PlaybackDisposition.loaded());
   }
 }
 

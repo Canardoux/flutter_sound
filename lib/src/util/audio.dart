@@ -3,9 +3,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import '../codec.dart';
-import '../ffmpeg/ffmpeg_util.dart';
+import '../playback_disposition.dart';
 import '../util/codec_conversions.dart';
 import '../util/temp_media_file.dart';
+import 'downloader.dart';
 import 'file_management.dart';
 
 /// Provide a set of tools to manage audio data.
@@ -17,7 +18,7 @@ class Audio {
   ///
   Codec codec;
 
-  /// An Audio instance can be created as on of :
+  /// An Audio instance can be created as one of :
   ///  * url
   ///  * path
   ///  * data buffer.
@@ -39,12 +40,26 @@ class Audio {
   /// Indicates if the audio media is stored on disk
   bool _onDisk = false;
 
+  /// Indicates that [prepareStream] has been called and the stream
+  /// is ready to play. Used to stop unnecessary calls to [prepareStream].
+  bool _prepared = false;
+
   /// [true] if the audio is stored in the file system.
   /// This can be because it was passed as a path
   /// or because we had to force it to disk for code conversion
   /// or similar operations.
   /// Currently buffered data is always forced to disk.
   bool get onDisk => _onDisk;
+
+  /// returns the length of the audio in bytes
+  int get length {
+    if (_onDisk) return File(_storagePath).lengthSync();
+    if (isBuffer) return _dataBuffer.length;
+    if (isFile) return File(path).lengthSync();
+
+    // if its a URL and its not [_onDisk] then we don't know its length.
+    return 0;
+  }
 
   @override
   String toString() {
@@ -74,7 +89,7 @@ class Audio {
   ///
   /// The first time this is called it can be quite an expensive
   /// operation as we have to process the audio to determine its
-  /// duruation.
+  /// duration.
   ///
   /// If the audio was passed via a call to [fromBuffer] then we
   /// have to first write the buffer to a file before we can
@@ -85,12 +100,13 @@ class Audio {
   //ignore: avoid_setters_without_getters
   Future<Duration> get duration async {
     if (_duration == null) {
+      _duration = Duration.zero;
+
       /// will write to disk if its a databuffer.
-      _writeBufferToDisk();
-      if (fileLength(_storagePath) > 0) {
-        _duration = await FFMpegUtil().duration(_storagePath);
-      } else {
-        _duration = Duration.zero;
+      _writeBufferToDisk((disposition) {});
+
+      if (_onDisk && fileLength(_storagePath) > 0) {
+        _duration = await CodecHelper.duration(codec, _storagePath);
       }
     }
     return _duration;
@@ -105,7 +121,7 @@ class Audio {
   }
 
   ///
-  Audio.fromPath(this.path, Codec codec) {
+  Audio.fromFile(this.path, Codec codec) {
     _storagePath = path;
     _onDisk = true;
     this.codec = determineCodec(path, codec);
@@ -125,7 +141,7 @@ class Audio {
 
   /// returns true if the Audio's media is located in via
   /// a file Path.
-  bool get isPath => path != null;
+  bool get isFile => path != null;
 
   /// returns true if the Audio's media is located in via
   /// a URL
@@ -159,9 +175,26 @@ class Audio {
   ///
   /// This method can be called multiple times and will only
   /// do the conversions once.
-  void prepareStream() async {
+  Future prepareStream(LoadingProgress loadingProgress) async {
+    if (_prepared) {
+      return;
+    }
+    // each stage reports a progress value between 0.0 and 1.0.
+    // If we are running multiple stages we need to divide that value
+    // by the no. of stages so progress is spread across all of the
+    // stages.
+    var stages = 1;
+    var stage = 1;
+
+    if (Platform.isIOS && codec == Codec.opusOGG) stages++;
+
     /// we can do no preparation for the url.
-    if (isURL) return;
+    if (isURL) {
+      await _downloadURL((disposition) {
+        _forwardStagedProgress(loadingProgress, disposition, stage, stages);
+      });
+      stage++;
+    }
 
     // android doesn't support data buffers so we must convert
     // to a file.
@@ -169,14 +202,21 @@ class Audio {
     /// remux it.
     if (isBuffer &&
         (Platform.isAndroid || Platform.isIOS && codec == Codec.opusOGG)) {
-      _writeBufferToDisk();
+      await _writeBufferToDisk((disposition) {
+        _forwardStagedProgress(loadingProgress, disposition, stage, stages);
+      });
+      stage++;
     }
 
     // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We use FFmpeg for that task.
     if (Platform.isIOS && codec == Codec.opusOGG) {
-      var tempMediaFile = TempMediaFile(
-          await CodecConversions.opusToCafOpus(fromPath: _storagePath));
+      var tempMediaFile = TempMediaFile(await CodecConversions.opusToCafOpus(
+          fromPath: _storagePath,
+          progress: (disposition) {
+            _forwardStagedProgress(loadingProgress, disposition, stage, stages);
+          }));
+      stage++;
       _tempMediaFiles.add(tempMediaFile);
 
       // update the codec so we won't reencode again.
@@ -186,15 +226,25 @@ class Audio {
       _storagePath = tempMediaFile.path;
       _onDisk = true;
     }
+    _prepared = true;
+  }
+
+  Future<void> _downloadURL(LoadingProgress progress) async {
+    var saveToFile = TempMediaFile.empty();
+    _tempMediaFiles.add(saveToFile);
+    await Downloader().download(url, saveToFile.path, progress);
+    _storagePath = saveToFile.path;
+    _onDisk = true;
   }
 
   /// Only writes the audio to disk if we have a databuffer and we haven't
   /// already written it to disk.
   ///
   /// Returns the path where the current version of the audio is stored.
-  void _writeBufferToDisk() {
+  void _writeBufferToDisk(LoadingProgress progress) {
+    assert(progress != null);
     if (!_onDisk && isBuffer) {
-      var tempMediaFile = TempMediaFile.fromBuffer(_dataBuffer);
+      var tempMediaFile = TempMediaFile.fromBuffer(_dataBuffer, progress);
       _tempMediaFiles.add(tempMediaFile);
 
       /// update the path to the new file.
@@ -220,9 +270,32 @@ class Audio {
     }
   }
 
-  /// The SoundPlayerPlugin doesn't support passing a databuffer
-  /// so we need to force the file to disk.
-  void forceToDisk() {
-    _writeBufferToDisk();
+  /// Adjust the loading progress as we have multiple stages we go
+  /// through when preparing a stream.
+  void _forwardStagedProgress(LoadingProgress loadingProgress,
+      PlaybackDisposition disposition, int stage, int stages) {
+    var rewritten = false;
+
+    if (disposition.state == PlaybackDispositionState.loading) {
+      // if we have 3 stages then a progress of 1.0 becomes progress
+      /// 0.3.
+      var progress = disposition.progress / stages;
+      // offset the progress based on which stage we are in.
+      progress += 1.0 / stages * (stage - 1);
+      loadingProgress(PlaybackDisposition.loading(progress: progress));
+      rewritten = true;
+    }
+
+    if (disposition.state == PlaybackDispositionState.loaded) {
+      if (stage != stages) {
+        /// if we are not the last stage change 'loaded' into loading.
+        loadingProgress(
+            PlaybackDisposition.loading(progress: stage * (1.0 / stages)));
+        rewritten = true;
+      }
+    }
+    if (!rewritten) {
+      loadingProgress(disposition);
+    }
   }
 }

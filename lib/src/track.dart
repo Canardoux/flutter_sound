@@ -4,9 +4,9 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 
 import 'codec.dart';
+import 'playback_disposition.dart';
 import 'util/audio.dart';
 import 'util/file_management.dart' as fm;
-import 'util/file_management.dart';
 
 typedef TrackAction = void Function(Track current);
 
@@ -39,28 +39,31 @@ class Track {
   ///
   Audio _audio;
 
+  /// Returns the length of the audio in bytes.
+  int get length => _audio.length;
+
   @override
   String toString() {
     return '${title ?? ""} ${artist ?? ""} audio: $_audio';
   }
 
   /// Creates a Track from a local file or asset.
-  /// Other classes that use fromPath should also be reviewed.
-  Track.fromPath(String path, {Codec codec}) {
+  /// Other classes that use fromFile should also be reviewed.
+  Track.fromFile(String path, {Codec codec}) {
     if (path == null) {
       throw TrackPathException('The path MUST not be null.');
     }
 
-    if (!exists(path)) {
+    if (!fm.exists(path)) {
       throw TrackPathException('The given path $path does not exist.');
     }
 
-    if (!isFile(path)) {
+    if (!fm.isFile(path)) {
       throw TrackPathException('The given path $path is not a file.');
     }
     _storageType = _TrackStorageType.path;
 
-    _audio = Audio.fromPath(path, codec);
+    _audio = Audio.fromFile(path, codec);
   }
 
   /// Creates a track from a remote URL.
@@ -97,7 +100,7 @@ class Track {
   bool get isURL => _storageType == _TrackStorageType.url;
 
   /// True if the track is a local file path
-  bool get isPath => _storageType == _TrackStorageType.path;
+  bool get isFile => _storageType == _TrackStorageType.path;
 
   /// True if the [Track] media is stored in buffer.
   bool get isBuffer => _storageType == _TrackStorageType.buffer;
@@ -106,8 +109,8 @@ class Track {
   /// then this will be the passed url.
   String get url => _audio.url;
 
-  /// If the [Track] was created via [Track.fromPath]
-  /// then this will be the passed url.
+  /// If the [Track] was created via [Track.fromFile]
+  /// then this will be the passed path.
   String get path => _audio.path;
 
   /// returns a unique id for the [Track].
@@ -115,7 +118,7 @@ class Track {
   /// If the [Track] is a url then the url.
   /// If the [Track] is a databuffer then its dart hashCode.
   String get identity {
-    if (isPath) return path;
+    if (isFile) return path;
     if (isURL) return url;
 
     return '${_audio.buffer.hashCode}';
@@ -129,9 +132,8 @@ class Track {
   /// Used to prepare a audio stream for playing.
   /// You should NOT call this method as it is managed
   /// internally.
-  void _prepareStream() async {
-    await _audio.prepareStream();
-  }
+  Future _prepareStream(LoadingProgress progress) async =>
+      _audio.prepareStream(progress);
 
   /// Returns the duration of the track.
   ///
@@ -174,15 +176,16 @@ void setTrackDuration(Track track, Duration duration) =>
     track._audio.setDuration(duration);
 
 ///
-void prepareStream(Track track) => track._prepareStream();
+Future prepareStream(Track track, LoadingProgress progress) =>
+    track._prepareStream(progress);
 
-/// Returns the uri this track was constructed
-/// with assuming the [fromPath] ctor or
-/// the databuffer had to be converted to a file.
+/// Returns the uri where this track is currently stored.
+///
 String trackStoragePath(Track track) {
   if (track._audio.onDisk) {
     return track._audio.storagePath;
   } else {
+    // this should no longer fire as we are now downloading the track
     assert(track.isURL);
     return track.url;
   }
@@ -194,10 +197,6 @@ String trackStoragePath(Track track) {
 /// This may not be the same buffer you passed in if we had
 /// to re-encode the buffer or if you recorded into the track.
 Uint8List trackBuffer(Track track) => track._audio.buffer;
-
-/// The SoundPlayerPlugin doesn't support passing a databuffer
-/// so we need to force the file to disk.
-void trackForceToDisk(Track track) => track._audio.forceToDisk();
 
 /// Exception throw in a file path passed to a Track isn't valid.
 class TrackPathException implements Exception {

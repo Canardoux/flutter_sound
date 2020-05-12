@@ -148,7 +148,8 @@ abstract class PlayerBasePlugin extends BasePlugin {
       Log.d('Fixed position > duration $position $duration');
       duration = position;
     }
-    return PlaybackDisposition(position, duration);
+    return PlaybackDisposition(PlaybackDispositionState.playing,
+        progress: 0, position: position, duration: duration);
   }
 
   /// Handles callbacks from the platform specific plugin

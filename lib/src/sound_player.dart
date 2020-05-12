@@ -335,7 +335,8 @@ class SoundPlayer implements SlotEntry {
       }
 
       Log.d('calling prepare stream');
-      t.prepareStream(track);
+      await t.prepareStream(
+          track, (disposition) => _playerController.add(disposition));
 
       // Not awaiting this may cause issues if someone immediately tries
       // to stop.
@@ -522,7 +523,8 @@ class SoundPlayer implements SlotEntry {
   /// audio has finished playing to the end.
   void _audioPlayerFinished(PlaybackDisposition status) {
     // if we have finished then position should be at the end.
-    var finalPosition = PlaybackDisposition(status.duration, status.duration);
+    var finalPosition = PlaybackDisposition(PlaybackDispositionState.stopped,
+        position: status.duration, duration: status.duration);
 
     _playerController?.add(finalPosition);
 
