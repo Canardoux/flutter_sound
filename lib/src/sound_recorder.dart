@@ -233,7 +233,7 @@ class SoundRecorder implements SlotEntry {
   /// passed in [Track].
   ///
   /// At this point the track MUST have been created via
-  /// the [Track.fromPath] constructor.
+  /// the [Track.fromFile] constructor.
   ///
   /// You must have permission to write to the path
   /// indicated by the Track and permissions to
@@ -248,7 +248,7 @@ class SoundRecorder implements SlotEntry {
   /// The [track]s file will be truncated and over-written.
   ///
   ///```dart
-  /// var track = Track.fromPath('fred.mpeg');
+  /// var track = Track.fromFile('fred.mpeg');
   ///
   /// var recorder = SoundRecorder();
   /// recorder.onStopped = () {
@@ -278,9 +278,9 @@ class SoundRecorder implements SlotEntry {
       throw exception;
     }
 
-    if (!track.isPath) {
+    if (!track.isFile) {
       var exception = RecorderException(
-          "Only file based tracks are supported. Used Track.fromPath().");
+          "Only file based tracks are supported. Used Track.fromFile().");
       started.completeError(exception);
       throw exception;
     }

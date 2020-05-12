@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:core';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../lib/flutter_sound.dart';
 
 void main() {
   var recordingPath = Track.tempFile(Codec.aacADTS);
@@ -15,7 +15,7 @@ class SoundExampleApp extends StatelessWidget {
 
   //
   SoundExampleApp._internal(String recordingPath)
-      : _track = Track.fromPath(recordingPath, codec: Codec.aacADTS);
+      : _track = Track.fromFile(recordingPath, codec: Codec.aacADTS);
 
   @override
   Widget build(BuildContext context) {
@@ -57,22 +57,23 @@ class SoundExampleApp extends StatelessWidget {
   /// Callback for when the recorder needs permissions to record
   /// to the [track].
   Future<bool> requestPermissions(BuildContext context, Track track) async {
-    bool granted = false;
+    var granted = false;
 
-    /// change this to true if the track doesn't use external storage on android.
-    bool usingExternalStorage = false;
+    /// change this to true if the track doesn't use
+    /// external storage on android.
+    var usingExternalStorage = false;
 
     // Request Microphone permission if needed
     print('storage: ${await Permission.microphone.status}');
     var microphoneRequired = !await Permission.microphone.isGranted;
 
-    bool storageRequired = false;
+    var storageRequired = false;
 
     if (usingExternalStorage) {
       /// only required if track is on external storage
       if (Permission.storage.status == PermissionStatus.undetermined) {
-        print(
-            'You are probably missing the storage permission in your manifest.');
+        print('You are probably missing the storage permission '
+            'in your manifest.');
       }
 
       storageRequired =
@@ -127,8 +128,9 @@ class SoundExampleApp extends StatelessWidget {
         granted = false;
         grantFailed(context);
       }
-    } else
+    } else {
       granted = true;
+    }
 
     // we already have the required permissions.
     return granted;
@@ -137,8 +139,8 @@ class SoundExampleApp extends StatelessWidget {
   /// Display a snackbar saying that we can't record due to lack of permissions.
   void grantFailed(BuildContext context) {
     var snackBar = SnackBar(
-        content: Text(
-            'Recording cannot start as you did not allow the required permissions'));
+        content: Text('Recording cannot start as you did not allow '
+            'the required permissions'));
 
     // Find the Scaffold in the widget tree and use it to show a SnackBar.
     Scaffold.of(context).showSnackBar(snackBar);

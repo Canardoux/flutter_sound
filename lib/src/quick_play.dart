@@ -39,7 +39,7 @@ import 'track.dart';
 /// This is intended for playing short audio files.
 ///
 /// ```dart
-/// QuickPlay.fromPath('path to file);
+/// QuickPlay.fromFile('path to file);
 ///
 /// QuickPlay.fromTrack(track, volume: 1.0, withUI: true);
 
@@ -91,9 +91,9 @@ class QuickPlay {
   /// but all of the UI controls are disabled.
   ///
   /// The [volume] must be in the range 0.0 to 1.0. Defaults to 0.5
-  QuickPlay.fromPath(String path,
+  QuickPlay.fromFile(String path,
       {double volume, Codec codec = Codec.fromExtension, bool withUI = false}) {
-    _track = Track.fromPath(path, codec: codec);
+    _track = Track.fromFile(path, codec: codec);
     QuickPlay._internal(volume, withUI);
   }
 

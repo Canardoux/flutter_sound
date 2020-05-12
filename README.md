@@ -101,15 +101,18 @@ now take a `Track`.
 ### Track
 A Track now holds track information as well as the audio media.
 
-The Track class has two constructors:
-`Track.fromPath` and `Track.fromBuffer`.
+The Track class has the following constructors:
+* `Track.fromFile`
+* `Track.fromBuffer`
+* `Track.fromURL`
+
 
 To play a track from a path use:
 ```dart
 var player SoundPlayer.withUI();
 player.onStopped = ({wasUser}) => player.release();
 player.seekTo(Duration(seconds: 5)); // yes, you can call seek before play.
-player.play(Track.fromPath(uri));
+player.play(Track.fromURL(uri));
 ```
 
 To play a track from a buffer use:
@@ -126,7 +129,7 @@ The Track class constructors have been simplified to take just the path (or buff
 The Track details are now set via properties:
 
 ```dart
-var track = Track.fromPath('path to media');
+var track = Track.fromFile('path to media');
 track.title = 'Quarantine Jig';
 track.artist = 'The Jiggy Kids';
 var player = SoundPlayer.withUI();
@@ -186,8 +189,8 @@ e.g.
 This is ideal for small audio files and has the benefit that it frees its own resources.
 
 ```dart
-QuickPlay.fromPath('path to file', volume: 0.5);
-QuickPlay.fromTrack(Track.fromPath('path to file'), volume: 0.5);
+QuickPlay.fromFile('path to file', volume: 0.5);
+QuickPlay.fromTrack(Track.fromFile('path to file'), volume: 0.5);
 ```
 
 `Album` allows you to create an album of Track (statically or dynamically) and play them sequentiall via the OSs' UI.
@@ -280,7 +283,7 @@ By default the QuickPlay doesn't display any UI, it simply plays the audio until
 You have no control over the audio once it starts but you don't have to do any cleanup once it completes.
 
 ```dart
-QuickPlay.fromPath('path to file');
+QuickPlay.fromFile('path to file');
 ```
 
 QuickPlay provides a number of constructors that allow you play audio from different sources.
@@ -322,12 +325,12 @@ Now play the file.
 
 ```dart
 /// play the audio with no controls
-QuickPlay.fromPath('beep.acc');
+QuickPlay.fromFile('beep.acc');
 
 /// If you need to control/monitor the playback
 var player = SoundPlayer.noUI();
 player.onStopped = ({wasUser}) => player.release();
-player.play(Track.fromPath('sample.aac'));
+player.play(Track.fromFile('sample.aac'));
 ```
 
 CRITICAL:
@@ -336,7 +339,7 @@ You must be certain to release the player once you have finished playing the aud
 
 You can reuse a `SoundPlayer` as many times as you want as long as you call `SoundPlayer.release()` once you are done with it.
 
-Track.fromPath uses the passed filename extension to determine the correct codec to play. If you need to play a file with an extension that doesn't match one of the known file extensions then you MUST pass in the codec.
+Track.fromFile uses the passed filename extension to determine the correct codec to play. If you need to play a file with an extension that doesn't match one of the known file extensions then you MUST pass in the codec.
 
 See the [codec](https://pub.dev/documentation/flutter_sound/latest/codec/codec-library.html) documentation
 for details on the supported codecs.
@@ -348,7 +351,7 @@ If you audio file doesn't have an appropriate file extension then you can explic
 ```dart
 var player = SoundPlayer.noUI();
 player.onStopped = ({wasUser}) => player.release();
-player.play(Track.fromPath('sample.blit', codec: Codec.mp3));
+player.play(Track.fromFile('sample.blit', codec: Codec.mp3));
 ```
 
 ## Play audio from an external URL
@@ -362,7 +365,7 @@ for details on the supported codecs.
 
 var player = SoundPlayer.noUI();
 player.onStopped = ({wasUser}) => player.release();
-player.play(Track.fromPath('https://some audio file', codec: Codec.mp3););
+player.play(Track.fromURL('https://some audio file', codec: Codec.mp3););
 ```
 
 ## Play audio from an in memory buffer
@@ -386,7 +389,7 @@ SoundPlayer can display the OSs' Audio player UI allowing the user to control pl
 ```dart
 var player = SoundPlayer.withUI();
 player.onStopped = ({wasUser}) => player.release();
-player.play(Track.fromPath('sample.blit', codec: Codec.mp3));
+player.play(Track.fromFile('sample.blit', codec: Codec.mp3));
 ```
 
 ## Control the OSs' UI
@@ -400,7 +403,7 @@ You can modify the the state of these buttons with the `SoundPlaye.withUI` const
 var player = SoundPlayer.withUI(canPause:true, canSkipBackward:false
 	, canSkipForward: true);
 player.onStopped =  ({wasUser}) => player.release();
-player.play(Track.fromPath('sample.blit', codec: Codec.mp3));
+player.play(Track.fromFile('sample.blit', codec: Codec.mp3));
 ```
 
 ## Display artist details
@@ -408,7 +411,7 @@ You can also have the OSs' audio player display artist details by
 using a `Track`.
 
 ```dart
-var track = Track.fromPath('sample.aac');
+var track = Track.fromFile('sample.aac');
 track.title = 'Reckless';
 track.artist = 'Flutter Sound';
 track.albumArtUrl = 'http://some image url';
@@ -434,8 +437,8 @@ If you want to play a collection of tracks then you can create an Album with a s
 
 ```dart
 var album = Album.fromTracks([
-	Track.fromPath('sample.acc'),
-	Track.fromPath('http://fqdn/sample.mp3'),
+	Track.fromFile('sample.acc'),
+	Track.fromURL('http://fqdn/sample.mp3'),
 ]);
 player.onStopped = ({wasUser}) => player.release();
 album.play();
@@ -446,8 +449,8 @@ You can suppress the UI via by passing in SoundPlayer.noUI() to the Album.
 
 ```dart
 var album = Album.fromTracks([
-	Track.fromPath('sample.acc'),
-	Track.fromPath('http://fqdn/sample.mp3'),
+	Track.fromFile('sample.acc'),
+	Track.fromURL('http://fqdn/sample.mp3'),
 ]
 , session: SoundPlayer.noUI());
 player.onStopped = ({wasUser}) => player.release();
@@ -489,7 +492,7 @@ The `Album` class provides an easy to use method of utilising a single session w
 ```dart
 var player = SoundPlayer.withUI();
 
-var track = Track.fromPath('sample.aac');
+var track = Track.fromFile('sample.aac');
 track.title = 'Corona Virus Rock';
 player.onStarted => print('started');
 player.onStopped = ({wasUser}) =>  print('stopped');
@@ -552,7 +555,7 @@ class MyWidgetState
   /// you would wire this to a button
   void onPlay()
   {
-	  player.play(Track.fromPath('sample.aac'));
+	  player.play(Track.fromFile('sample.aac'));
   }
 
    /// you would wire this to a pause button
@@ -593,7 +596,7 @@ The `SoundRecorder` does not have a UI so you must either build your own or you 
 When you have finished with your `SoundRecorder` you MUST call `SoundRecorder.release()`.
 
 ```dart
-var track = Track.fromPath('fred.aac');
+var track = Track.fromFile('fred.aac');
 var recorder = SoundRecorder();
 recorder.onStopped = ({wasUser}) {
 	recorder.release();
@@ -610,8 +613,8 @@ via `SoundRecorder.path`.
 Deleting the temporary file is your responsiblity!
 
 ```dart
-var tmpFile = Track.tempFile(Codec.aac);
-Track track = Track.fromPath(tmpFile);
+var tmpFile = Track.fromFile(Codec.aac);
+Track track = Track.fromFile(tmpFile);
 SoundRecorder recorder = SoundRecorder(track)
 
 recorder.onStopped = ({wasUser}) {
@@ -655,7 +658,7 @@ recorder.dispositionStream().listen((disposition) {
 recorder.onStopped(({wasUser}) {
 	recorder.release()
 	/// Now play the recording back.
-	QuickPlay.fromPath(recorder.path).play();
+	QuickPlay.fromFile(recorder.path).play();
 });
 
 recorder.start();
@@ -732,7 +735,7 @@ Flutter Sounds contains a standard SoundRecorderUI widget that allows you to rec
 
 void build(BuildContext build)
 {
-	Track track = Track.fromPath('path to file to record into');
+	Track track = Track.fromFile('path to file to record into');
 	SoundRecorderUI recorderUI =  SoundRecorderUI(track.
 		onStart:  () => onStart(),
 		onStopped:  ({wasUser}) => onStop());
@@ -889,12 +892,12 @@ The `Track` class is provided by the flutter_sound package. It has a number of c
 each of the different audio sources.
 
 ```dart
-Track.fromPath(path);
+Track.fromFile(path);
 Track.fromURL(url);
 Track.fromBuffer(buffer);
 ```
 
-- `Track.fromPath` (required): a `String` representing the path that points to the audio file to play.
+- `Track.fromFile` (required): a `String` representing the path that points to the audio file to play.
 - `Track.fromURL` (required): a `String` representing a URL that points to the audio file to play.
 - `Track.fromBuffer` (required): a `Uint8List`, a buffer that contains an audio file. 
 
@@ -909,7 +912,7 @@ The Track class also has a number of properties that you can set.
 
 ```dart
 // Create with the path to the audio file
-Track track = new Track.fromPath("https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3"); // An example audio file
+Track track = new Track.fromURL("https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3"); // An example audio file
 track.title =  "Track Title";
 track.artist: "Track Artist";
 track.albumArtUrl: "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_1MB.png", // An example image

@@ -71,7 +71,7 @@ class RecorderState {
       /// TODO put this back iin
       /// await PlayerState().stopPlayer();
 
-      var track = Track.fromPath(await tempFile(), codec: ActiveCodec().codec);
+      var track = Track.fromFile(await tempFile(), codec: ActiveCodec().codec);
       await recorderModule.record(track);
 
       Log.d('startRecorder: $track');

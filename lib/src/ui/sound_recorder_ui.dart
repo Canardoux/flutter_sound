@@ -67,7 +67,7 @@ class SoundRecorderUI extends StatefulWidget {
   ///  progresses.
   ///
   /// The [track] specifies the file we are recording to.
-  /// At the moment the [track] must be constructued using [Track.fromPath] as
+  /// At the moment the [track] must be constructued using [Track.fromFile] as
   /// recording to a databuffer is not currently supported.
   ///
   /// The [onStart] callback is called user starts recording. This method will

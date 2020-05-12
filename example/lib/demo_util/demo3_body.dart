@@ -34,7 +34,7 @@ class _MainBodyState extends State<MainBody> {
     super.initState();
     recordingFile = Track.tempFile(Codec.aacADTS);
 
-    track = Track.fromPath(recordingFile);
+    track = Track.fromFile(recordingFile);
     track.artist = 'Brett';
   }
 

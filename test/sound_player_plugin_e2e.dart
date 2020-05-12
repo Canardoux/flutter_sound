@@ -17,7 +17,7 @@ void main() {
     player.onStopped = ({wasUser}) => finished.complete(true);
     Future.delayed(Duration(seconds: 10), () => finished.complete(false));
 
-    player.play(Track.fromPath('assets/sample.acc'));
+    player.play(Track.fromFile('assets/sample.acc'));
 
     finished.future.then<bool>((release) => released = release);
 

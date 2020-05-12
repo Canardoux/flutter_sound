@@ -38,7 +38,7 @@ class RecordingTrack {
   /// supported by the OS then remix just returns.
   ///
   RecordingTrack(this.track) {
-    assert(track.isPath);
+    assert(track.isFile);
     // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
     // We use FFmpeg for that task.
     // The remux occurs when we call stopRecorder

@@ -247,7 +247,7 @@ class _MyAppState extends State<MyApp> {
       Directory tempDir = await getTemporaryDirectory();
       int slotNo = 0; // TODO
       String path = '${tempDir.path}/${slotNo}-${paths[_codec.index]}';
-      await recorder.record(Track.fromPath(path, codec: _codec));
+      await recorder.record(Track.fromFile(path, codec: _codec));
 
       this.setState(() {
         this._isRecording = true;
@@ -379,7 +379,7 @@ class _MyAppState extends State<MyApp> {
           codec: _codec,
         );
       else
-        track = Track.fromPath(
+        track = Track.fromFile(
           audioFilePath,
         );
 

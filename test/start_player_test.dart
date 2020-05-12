@@ -8,17 +8,17 @@ void main() {
 
   // final log = <MethodCall>[];
 
-  QuickPlay.fromPath('example/asset/samples/sample.acc');
+  QuickPlay.fromFile('example/asset/samples/sample.acc');
 
 // SoundRecorder recorder = SoundRecorder.toPath('path to store recording');
 // recorder.start();
 
 // recorder.onStopped = () => recorder.release();
-//   var player2 = QuickPlay.fromPath(recorder.path)
+//   var player2 = QuickPlay.fromFile(recorder.path)
 // 	player2.onStopped = () => player2.release();
 // 	player2.play();
 
-//   var player = QuickPlay.fromPath(recorder.path)
+//   var player = QuickPlay.fromFile(recorder.path)
 // 	..onStopped => player.release();
 // 	..play();
 /*
