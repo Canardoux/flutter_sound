@@ -362,9 +362,13 @@ class SoundPlayer implements SlotEntry {
         Log.d('calling complete');
         started.complete();
         if (_onStarted != null) _onStarted(wasUser: false);
+      })
+          // ignore: avoid_types_on_closure_parameters
+          .catchError((Object error, StackTrace st) {
+        Log.e('_plugin.play threw an error', error: error, stackTrace: st);
+        started.completeError(error, st);
       });
 
-      Log.d('*************play returning');
       return started.future;
     });
   }

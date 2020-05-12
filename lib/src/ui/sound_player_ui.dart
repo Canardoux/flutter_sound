@@ -164,7 +164,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     _setCallbacks();
   }
 
-  /// We can play if we have a non-zero duration or we are dynamically
+  /// We can play if we have a non-zero track length or we are dynamically
   /// loading tracks via _onLoad.
   Future<bool> get canPlay async {
     return _onLoad != null || (_track != null && (_track.length > 0));
@@ -173,6 +173,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   /// detect hot reloads when debugging and stop the player.
   /// If we don't the platform specific code keeps running
   /// and sending methodCalls to a slot that no longe exists.
+  /// I'm not certain this is working as advertised.
   @override
   void reassemble() async {
     super.reassemble();
@@ -205,9 +206,9 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   }
 
   /// This can occur:
-  /// When the user clicks play and the [SoundPlayer] sends
-  /// an event to indicate the player is up.
-  /// When the app is paused/resume by the user switching away.
+  /// * When the user clicks play and the [SoundPlayer] sends
+  ///     an event to indicate the player is up.
+  /// * When the app is paused/resume by the user switching away.
   void _onStarted() {
     _loading = false;
     _playState = PlayState.playing;
@@ -216,7 +217,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   void _onStopped() {
     setState(() {
       /// we can get a race condition when we stop the playback
-      /// We have disabled the button and called stop.
+      /// We have disabled the play button and called stop.
       /// The OS then sends an onStopped call which tries
       /// to put the state into a stopped state overriding
       /// the disabled state.
@@ -364,15 +365,16 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
 
     Future<Track> newTrack;
 
-    if (_onLoad != null) {
+    if (_onLoad == null) {
+      newTrack = Future.value(_track);
+    } else {
+      /// release the prior track we played.
       if (_track != null) {
         trackRelease(_track);
       }
 
-      /// dynamically load the player.
+      /// dynamically load the track.
       newTrack = _onLoad(context);
-    } else {
-      newTrack = Future.value(_track);
     }
 
     /// no track then just silently ignore the start action.
@@ -387,13 +389,19 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
           _loading = false;
           _transitioning = false;
         }
-      }).catchError((dynamic exception) {
+      })
+          // ignore: avoid_types_on_closure_parameters
+          .catchError((Object exception, StackTrace st) {
         // errors throw by _onLoad are captured here in the .then
         // handler for newTrack.
         Log.d(green('Transitioning = false'));
         _loading = false;
         _transitioning = false;
-        Log.e("Error occured loading the track: ${exception.toString()}");
+        Log.e(
+          "Error occured loading the track: ${exception.toString()}",
+          error: exception,
+          stackTrace: st,
+        );
       });
     } else {
       Log.d(green('Transitioning = false'));
@@ -407,11 +415,11 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   void _start() async {
     _player.play(_track).then((_) {
       _playState = PlayState.playing;
-    }).catchError((dynamic e) {
-      Log.w("Error calling play() ${e.toString()}");
+    })
+        // ignore: avoid_types_on_closure_parameters
+        .catchError((Object e, StackTrace st) {
+      Log.e("Error calling play() ${e.toString()}", error: e, stackTrace: st);
       _playState = PlayState.stopped;
-
-      return null;
     }).whenComplete(() {
       _loading = false;
       _transitioning = false;
