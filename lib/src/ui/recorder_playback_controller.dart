@@ -98,9 +98,7 @@ class _RecordPlaybackControllerState {
 
     // wire our local stream to take events from the recording.
     _recorderState.dispositionStream.listen((recorderDisposition) =>
-        _localController.add(PlaybackDisposition(
-            PlaybackDispositionState.recording,
-            position: Duration.zero,
+        _localController.add(PlaybackDisposition.recording(
             duration: recorderDisposition.duration)));
   }
 }

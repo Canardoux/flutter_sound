@@ -62,6 +62,13 @@ class PlaybackDisposition {
     this.duration = Duration.zero,
   });
 
+  /// Creates a disposition in the [init] state.
+  PlaybackDisposition.init()
+      : state = PlaybackDispositionState.init,
+        progress = 0.0,
+        position = Duration.zero,
+        duration = Duration.zero;
+
   /// Creates a disposition in the [preload] state.
   PlaybackDisposition.preload()
       : state = PlaybackDispositionState.preload,
@@ -88,6 +95,12 @@ class PlaybackDisposition {
         progress = 1.0,
         position = Duration.zero,
         duration = Duration.zero;
+
+  /// Creates a disposition in the [recording] state.
+  PlaybackDisposition.recording({@required this.duration})
+      : state = PlaybackDispositionState.recording,
+        progress = 1.0,
+        position = Duration.zero;
 
   @override
   String toString() {
