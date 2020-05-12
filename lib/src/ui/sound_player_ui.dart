@@ -49,9 +49,6 @@ class SoundPlayerUI extends StatefulWidget {
   static const Codec standardCodec = Codec.aacADTS;
   static const int _barHeight = 60;
 
-  /// provides a Duration of 0 seconds.
-  static const zero = Duration(seconds: 0);
-
   final OnLoad _onLoad;
 
   final Track _track;
@@ -77,13 +74,15 @@ class SoundPlayerUI extends StatefulWidget {
   /// By default we use [AudioFocus.focusAndHushOthers] which will
   /// reduce the volume of any other players.
   SoundPlayerUI.fromLoader(OnLoad onLoad,
-      {bool showTitle = false,
+      {Key key,
+      bool showTitle = false,
       bool enabled = true,
       AudioFocus audioFocus = AudioFocus.focusAndHushOthers})
       : _onLoad = onLoad,
         _showTitle = showTitle,
         _track = null,
-        _enabled = enabled;
+        _enabled = enabled,
+        super(key: key);
 
   ///
   /// [SoundPlayerUI.fromTrack] Constructs a Playbar with a Track.
@@ -101,13 +100,15 @@ class SoundPlayerUI extends StatefulWidget {
   /// By default we use [AudioFocus.focusAndHushOthers] which will
   /// reduce the volume of any other players.
   SoundPlayerUI.fromTrack(Track track,
-      {bool showTitle = false,
+      {Key key,
+      bool showTitle = false,
       bool enabled = true,
       AudioFocus audioFocus = AudioFocus.focusAndHushOthers})
       : _track = track,
         _showTitle = showTitle,
         _onLoad = null,
-        _enabled = enabled;
+        _enabled = enabled,
+        super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -356,8 +357,6 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     _loading = true;
     Log.d("Loading starting");
 
-    Log.d("Calling play");
-
     if (_track != null && _player.isPlaying) {
       Log.d("play called whilst player running. Stopping Player first.");
       await _stop();
@@ -480,23 +479,17 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
 
     if (_loading == true) {
       button = Container(
-          // margin: const EdgeInsets.only(top: 5.0, bottom: 5),
 
           /// use a tick builder so we don't show the spinkit unless
           /// at least 100ms has passed. This stops a little flicker
           /// of the spiner caused by the default loading state.
           child: TickBuilder(
               interval: Duration(milliseconds: 100),
-              // limit: 5,
               builder: (context, index) {
                 if (index > 1) {
-                  // return SpinKitRing(color: Colors.purple, size: 32);
                   return StreamBuilder<PlaybackDisposition>(
                       stream: _localController.stream,
-                      initialData: PlaybackDisposition(
-                          PlaybackDispositionState.init,
-                          progress: 0.0,
-                          position: Duration.zero),
+                      initialData: PlaybackDisposition.init(),
                       builder: (context, asyncData) {
                         var disposition = asyncData.data;
                         // Log.e(yellow('state ${disposition.state} '
@@ -513,8 +506,6 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
                             progress = null;
                             break;
                         }
-                        // Log.e(yellow('state ${disposition.state} '
-                        //     'progress: $progress'));
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: CircularProgressIndicator(
@@ -586,20 +577,6 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
               '${Format.duration(disposition.duration)}');
         });
   }
-
-  /// Specialised method that allows the [RecorderPlaybackController]
-  /// to update our duration as a recording occurs.
-  ///
-  /// This method should be used for no other purposes.
-  ///
-  /// During normal playback the [StreamBuilder] used
-  /// in [_buildDuration] is responsible for updating the duration.
-  // void _updateDuration(Duration duration) {
-  //   /// push the update to the next build cycle as this can
-  //   /// be called during a build cycle which flutter won't allow.
-  //   Future.delayed(Duration.zero,
-  //       () => setState(() => _sliderPosition.maxPosition = duration));
-  // }
 
   Widget _buildSlider() {
     return Expanded(
