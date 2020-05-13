@@ -415,7 +415,11 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 	{
 		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
 		boolean r = prepareFocus(call);
-		result.success ( r);
+		if (r)
+		        result.success ( r);
+		else
+			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Failure to open session");
+
 	}
 
 		void releaseFlautoPlayer ( final MethodCall call, final Result result )
@@ -443,6 +447,14 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
 
+	void invokeMethodWithMap ( String methodName, Map<String, Object>  dic )
+	{
+		dic.put ( "slotNo", slotNo );
+		getPlugin ().invokeMethod ( methodName, dic );
+	}
+
+
+
 	public void startPlayer ( final MethodCall call, final Result result )
 	{
 		Integer           _codec     = call.argument ( "codec" );
@@ -465,6 +477,7 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 			catch ( Exception e )
 			{
 				result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
+				return;
 			}
 
 		}
@@ -499,7 +512,7 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 				this.model.getMediaPlayer ().setDataSource (  path );
 			}
 			final String pathFile = path;
-			this.model.getMediaPlayer ().setOnPreparedListener ( mp -> onPrepared(mp, pathFile, result)	);
+			this.model.getMediaPlayer ().setOnPreparedListener ( mp -> onPrepared(mp, pathFile)	);
 			/*
 			 * Detect when finish playing.
 			 */
@@ -513,6 +526,7 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 		{
 			Log.e ( TAG, "startPlayer() exception" );
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
+			return;
 		}
 		result.success ( true );
 	}
@@ -522,10 +536,10 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 		result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Must be initialized With UI" );
 	}
 
-		public boolean onError(MediaPlayer mp, int what, int extra) {
-		// ... react appropriately ...
-		// The MediaPlayer has moved to the Error state, must be reset!
-		return false;
+	public boolean onError(MediaPlayer mp, int what, int extra) {
+	// ... react appropriately ...
+	// The MediaPlayer has moved to the Error state, must be reset!
+	return false;
 	}
 
 
@@ -536,14 +550,7 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 			 * Reset player.
 			 */
 			Log.d(TAG, "Playback completed.");
-			try {
-				JSONObject json = new JSONObject();
-				json.put("duration", String.valueOf(mp.getDuration()));
-				json.put("current_position", String.valueOf(mp.getCurrentPosition()));
-				invokeMethodWithString("audioPlayerFinishedPlaying", json.toString());
-			} catch (Exception e) {
-				Log.d(TAG, "Json Exception: " + e.toString());
-			}
+				invokeMethodWithString("audioPlayerFinishedPlaying", null);
 			mTimer.cancel();
 			if (mp.isPlaying()) {
 				mp.stop();
@@ -554,7 +561,7 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 	}
 
 	// Listener called when media player has completed preparation.
-	private void onPrepared(MediaPlayer mp, String path, final Result result)
+	private void onPrepared(MediaPlayer mp, String path)
 	{
 		Log.d(TAG, "mediaPlayer prepared and start");
 		mp.start();
@@ -565,21 +572,20 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 		TimerTask mTask = new TimerTask() {
 			@Override
 			public void run() {
-				// long time = mp.getCurrentPosition();
-				// DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
-				// final String displayTime = format.format(time);
-				//Log.d(TAG, "Running updateProgress");
 				try {
-					JSONObject json = new JSONObject();
-					json.put("duration", String.valueOf(mp.getDuration()));
-					json.put("current_position", String.valueOf(mp.getCurrentPosition()));
+					long position = mp.getCurrentPosition();
+					long duration = mp.getDuration();
+					Map<String, Object> dic = new HashMap<String, Object> ();
+					dic.put ( "position", position );
+					dic.put ( "duration", duration );
+
 					mainHandler.post(new Runnable() {
 						@Override
 						public void run() {
-							//Log.d(TAG, "Invoking updateProgress: " + json.toString());
-							invokeMethodWithString("updateProgress", json.toString());
+							invokeMethodWithMap("updateProgress", dic);
 						}
 					});
+
 
 				} catch (Exception e) {
 					Log.d(TAG, "Exception: " + e.toString());
@@ -718,13 +724,13 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 
 	public void setSubscriptionDuration ( final MethodCall call, Result result )
 	{
-		if ( call.argument ( "sec" ) == null )
+		if ( call.argument ( "milliSec" ) == null )
 		{
 			return;
 		}
-		double duration = call.argument ( "sec" );
+		int duration = call.argument ( "milliSec" );
 
-		this.model.subsDurationMillis = ( int ) ( duration * 1000 );
+		this.model.subsDurationMillis = duration;
 		result.success ( "setSubscriptionDuration: " + this.model.subsDurationMillis );
 	}
 

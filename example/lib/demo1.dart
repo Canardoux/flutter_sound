@@ -94,7 +94,7 @@ class _MyAppState extends State<MyApp> {
     } else {
       await playerModule.openAudioSession( );
     }
-    await playerModule.setSubscriptionDuration(0.01);
+    await playerModule.setSubscriptionDuration(Duration(milliseconds: 10));
     await recorderModule.setSubscriptionDuration(0.01);
     initializeDateFormatting();
     setCodec(_codec);
@@ -301,19 +301,18 @@ class _MyAppState extends State<MyApp> {
     cancelPlayerSubscriptions();
     _playerSubscription = playerModule.onProgress.listen((e) {
       if (e != null) {
-        //maxDuration = e.duration.inMilliseconds;
+        maxDuration = e.duration.inMilliseconds.toDouble();
         if (maxDuration <= 0) maxDuration = 0.0;
 
-        //sliderCurrentPosition = min(e.currentPosition, maxDuration);
+        sliderCurrentPosition = min( e.position.inMilliseconds.toDouble(), maxDuration);
         if (sliderCurrentPosition < 0.0) {
           sliderCurrentPosition = 0.0;
         }
 
-        //DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt(), isUtc: true);
-        //String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
+        DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.position.inMilliseconds, isUtc: true);
+        String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
         this.setState(() {
-          //this._isPlaying = true;
-          //this._playerTxt = txt.substring(0, 8);
+          this._playerTxt = txt.substring(0, 8);
         });
       }
     });
@@ -367,7 +366,6 @@ class _MyAppState extends State<MyApp> {
         );
         await playerModule.startPlayerFromTrack(
           track,
-          codec: _codec,
           /*canSkipForward:true, canSkipBackward:true,*/
           whenFinished: () {
             print('I hope you enjoyed listening to this song');
@@ -416,8 +414,8 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> stopPlayer() async {
     try {
-      String result = await playerModule.stopPlayer();
-      print('stopPlayer: $result');
+      await playerModule.stopPlayer();
+      print('stopPlayer');
       if (_playerSubscription != null) {
         _playerSubscription.cancel();
         _playerSubscription = null;
@@ -449,8 +447,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   void seekToPlayer(int milliSecs) async {
-    String result = await playerModule.seekToPlayer(milliSecs);
-    print('seekToPlayer: $result');
+    await playerModule.seekToPlayer(milliSecs);
+    print('seekToPlayer');
   }
 
   Widget makeDropdowns(BuildContext context) {

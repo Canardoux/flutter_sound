@@ -114,7 +114,8 @@ public class TrackPlayer extends FlutterSoundPlayer
 			// Pass the playback state updater to the media browser
 			mMediaBrowserHelper.setPlaybackStateUpdater( new PlaybackStateUpdater() );
 		}
-		result.success( "The player had already been initialized." );
+		//result.success( true );
+		super.initializeFlautoPlayer( call, result);
 	}
 
 	@Override
@@ -164,6 +165,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 		// Exit the method if a media browser helper was not initialized
 		if ( !wasMediaPlayerInitialized( result ) )
 		{
+			result.error( ERR_UNKNOWN, ERR_UNKNOWN, "Track player not initialized" );
 			return;
 		}
 
@@ -222,7 +224,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 		mMediaBrowserHelper.setNotificationMetadata( track );
 
 		// Add the listeners for the onPrepared and onCompletion events
-		mMediaBrowserHelper.setMediaPlayerOnPreparedListener( new MediaPlayerOnPreparedListener( result, path ) );
+		mMediaBrowserHelper.setMediaPlayerOnPreparedListener( new MediaPlayerOnPreparedListener(  path ) );
 		mMediaBrowserHelper.setMediaPlayerOnCompletionListener( new MediaPlayerOnCompletionListener() );
 
 		// Check whether a path to an audio file was given
@@ -235,7 +237,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 			// A path was given, then send it to the media player
 			mMediaBrowserHelper.mediaControllerCompat.getTransportControls().playFromMediaId( path, null );
 		}
-		//result.success ( r);
+		result.success ( true );
 		// The media player is started in the on prepared callback
 	}
 
@@ -498,14 +500,14 @@ public class TrackPlayer extends FlutterSoundPlayer
 	private class MediaPlayerOnPreparedListener
 		implements Callable<Void>
 	{
-		private Result mResult;
+		//private Result mResult;
 		private String mPath;
 
 		private MediaPlayerOnPreparedListener(
-			Result result, String path
+			String path
 		                                     )
 		{
-			mResult = result;
+			//mResult = result;
 			mPath   = path;
 		}
 
@@ -529,8 +531,6 @@ public class TrackPlayer extends FlutterSoundPlayer
 					// DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
 					// final String displayTime = format.format(time);
 
-					try
-					{
 						if ((mMediaBrowserHelper == null) || (mMediaBrowserHelper.mediaControllerCompat == null))
 						{
 							Log.e( TAG, "MediaPlayerOnPreparedListener timer: mMediaBrowserHelper.mediaControllerCompat is NULL. This is BAD !!!"  );
@@ -541,7 +541,6 @@ public class TrackPlayer extends FlutterSoundPlayer
 							mMediaBrowserHelper = null;
 							return;
 						}
-						JSONObject          json          = new JSONObject();
 						PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
 
 						if ( playbackState == null )
@@ -549,31 +548,27 @@ public class TrackPlayer extends FlutterSoundPlayer
 							return;
 						}
 
-						long currentPosition = playbackState.getPosition();
+						long position = playbackState.getPosition();
+						long duration = trackDuration;
+						Map<String, Object> dic = new HashMap<String, Object> ();
+						dic.put ( "position", position );
+						dic.put ( "duration", duration );
 
-						json.put( "duration", String.valueOf( trackDuration ) );
-						json.put( "current_position", String.valueOf( currentPosition ) );
+
 						mainHandler.post( new Runnable()
 						{
 							@Override
 							public void run()
 							{
-								invokeMethodWithString( "updateProgress", json.toString() );
+								invokeMethodWithMap( "updateProgress",dic);
 							}
 						} );
 
-					}
-					catch ( JSONException je )
-					{
-						Log.d( TAG, "Json Exception: " + je.toString() );
-					}
 				}
 			};
 
 			mTimer.schedule( mTask, 0, model.subsDurationMillis );
 			String resolvedPath = mPath == null ? PlayerAudioModel.DEFAULT_FILE_LOCATION : mPath;
-			mResult.success( ( resolvedPath ) );
-
 			return null;
 		}
 	}
@@ -599,21 +594,8 @@ public class TrackPlayer extends FlutterSoundPlayer
 			mTimer.cancel();
 			long trackDuration = mMediaBrowserHelper.mediaControllerCompat.getMetadata().getLong( MediaMetadataCompat.METADATA_KEY_DURATION );
 
-			Log.d( TAG, "Plays completed." );
-			try
-			{
-				JSONObject json            = new JSONObject();
-				long       currentPosition = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState().getPosition();
-
-				json.put( "duration", String.valueOf( trackDuration ) );
-				json.put( "current_position", String.valueOf( currentPosition ) );
-				invokeMethodWithString( "audioPlayerFinishedPlaying", json.toString() );
-			}
-			catch ( JSONException je )
-			{
-				Log.d( TAG, "Json Exception: " + je.toString() );
-			}
-
+			Log.d( TAG, "Play completed." );
+			invokeMethodWithString( "audioPlayerFinishedPlaying", "done" );
 			return null;
 		}
 	}

@@ -59,7 +59,7 @@ extern NSMutableArray* flautoPlayerSlots;
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result;
 - (void)seekToPlayer:(nonnull NSNumber*) time result: (FlutterResult)result;
-- (void)setSubscriptionDuration:(double)duration result: (FlutterResult)result;
+- (void)setSubscriptionDuration:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)setVolume:(double) volume result: (FlutterResult)result;
 - (void)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options result:(FlutterResult)result;
 - (void)setActive:(BOOL)enabled result:(FlutterResult)result;

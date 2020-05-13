@@ -215,8 +215,8 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         
         if ([@"setSubscriptionDuration" isEqualToString:call.method])
         {
-                NSNumber* sec = (NSNumber*)call.arguments[@"sec"];
-                [aFlautoPlayer setSubscriptionDuration:[sec doubleValue] result:result];
+                //NSNumber* sec = (NSNumber*)call.arguments[@"sec"];
+                [aFlautoPlayer setSubscriptionDuration:call result:result];
         } else
         
         if ([@"setVolume" isEqualToString:call.method])
@@ -293,6 +293,13 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 }
 
 
+- (void)invokeMethod: (NSString*)methodName dico: (NSDictionary*)dico
+{
+        //[dico setObject:[NSNumber numberWithInt: slotNo] forKey:@"slotNo"];
+        [[self getPlugin] invokeMethod: methodName arguments: dico ];
+}
+
+
 - (void)initializeFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
         isPaused = false;
@@ -337,7 +344,13 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 hasFocus = (audioFocus != abandonFocus);
                 r = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
         }
-        result([NSNumber numberWithBool: r]);
+        if (r)
+                result([NSNumber numberWithBool: r]);
+        else
+                [FlutterError
+                                errorWithCode:@"Audio Player"
+                                message:@"Open session failure"
+                                details:nil];
 }
 
 
@@ -347,7 +360,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [[AVAudioSession sharedInstance]  setActive: FALSE error:nil] ;
  
         [[self getPlugin]freeSlot: slotNo];
-        result(@"The player has been successfully released");
+        result([NSNumber numberWithBool: TRUE]);
 
 }
 
@@ -394,10 +407,10 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 if (!b)
                 {
                         [self stopPlayer];
-                        ([FlutterError
+                        [FlutterError
                                 errorWithCode:@"Audio Player"
                                 message:@"Play failure"
-                                details:nil]);
+                                details:nil];
                 } else
                 {
                         [self startTimer];
@@ -414,7 +427,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 errorWithCode:@"Audio Player"
                 message:@"Play failure"
                 details:nil]);
-                result([NSNumber numberWithBool: FALSE]);
+                //result([NSNumber numberWithBool: FALSE]);
                 return;
 
         }
@@ -473,7 +486,17 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                         result(filePath);
                 }
         }
-        result([NSNumber numberWithBool: b]);
+        if (b)
+                result([NSNumber numberWithBool: b]);
+       else
+       {
+                             [self stopPlayer];
+  
+                [FlutterError
+                                errorWithCode:@"Audio Player"
+                                message:@"Play failure"
+                                details:nil];
+        }
 }
 
 
@@ -483,7 +506,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                                 errorWithCode:@"Audio Player"
                                 message:@"Start Player From Track failure"
                                 details:nil]);
-                        result([NSNumber numberWithBool: FALSE]);
+                        //result([NSNumber numberWithBool: FALSE]);
 }
 
 - (void)stopPlayer
@@ -642,8 +665,8 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
 - (void)updateProgress:(NSTimer*) atimer
 {
-        NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
-        NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
+        NSNumber *duration = [NSNumber numberWithLong: (long)(audioPlayer.duration * 1000)];
+        NSNumber *position = [NSNumber numberWithLong: (long)(audioPlayer.currentTime * 1000)];
 
         // [LARPOUX] I do not understand why ...
         // if ([duration intValue] == 0 && timer != nil) {
@@ -651,8 +674,9 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         //   return;
         // }
 
-        NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue],                         [currentTime stringValue]];
-        [self invokeMethod:@"updateProgress" stringArg:status];
+        //NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue],                         [currentTime stringValue]];
+        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"position": position, @"duration": duration};
+        [self invokeMethod:@"updateProgress" dico: dico];
 //        if (![audioPlayer isPlaying] )
 //        {
 //                  [self stopPlayer];
@@ -675,9 +699,10 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 }
 
 
-- (void)setSubscriptionDuration:(double)duration result: (FlutterResult)result
+- (void)setSubscriptionDuration:(FlutterMethodCall*)call  result: (FlutterResult)result
 {
-        subscriptionDuration = duration;
+        NSNumber* milliSec = (NSNumber*)call.arguments[@"milliSec"];
+        subscriptionDuration = [milliSec doubleValue]/1000;
         result(@"setSubscriptionDuration");
 }
 
@@ -694,12 +719,14 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 {
         NSLog(@"audioPlayerDidFinishPlaying");
 
+        /*
         NSNumber *duration = [NSNumber numberWithDouble:audioPlayer.duration * 1000];
         NSNumber *currentTime = [NSNumber numberWithDouble:audioPlayer.currentTime * 1000];
 
         NSString* status = [NSString stringWithFormat:@"{\"duration\": \"%@\", \"current_position\": \"%@\"}", [duration stringValue], [currentTime stringValue]];
+        */
 
-        [self invokeMethod:@"audioPlayerFinishedPlaying" stringArg: status];
+        [self invokeMethod:@"audioPlayerFinishedPlaying" stringArg: @"done"];
         isPaused = false;
         [self stopTimer];
 }

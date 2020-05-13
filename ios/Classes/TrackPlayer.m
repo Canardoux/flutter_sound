@@ -170,7 +170,7 @@
 
                                                       [audioPlayer play];
                                                    }];
-
+                        r = true; // ??? not sure
                         [downloadTask resume];
                         [self startTimer];
                 } else
@@ -211,10 +211,28 @@
         // Display the notification with the media controls
         [self setupRemoteCommandCenter:canPause canSkipForward:canSkipForward   canSkipBackward:canSkipBackward result:result];
         [self setupNowPlaying];
-        result([NSNumber numberWithBool: r]);
-
-
+        if (r)
+                result([NSNumber numberWithBool: r]);
+        else
+             result([FlutterError errorWithCode:@"FAILED"
+                                   message:@"startPlayerFromTrack()"
+                                   details:nil]);
 }
+
+
+- (void)updateProgress:(NSTimer*) atimer
+{
+        NSNumber *duration = [NSNumber numberWithLong: (long)(audioPlayer.duration * 1000)];
+        NSNumber *position = [NSNumber numberWithLong: (long)(audioPlayer.currentTime * 1000)];
+        NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
+        [songInfo setObject:position forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+        [songInfo setObject:duration forKey:MPMediaItemPropertyPlaybackDuration];
+        MPNowPlayingInfoCenter *playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
+        [playingInfoCenter setNowPlayingInfo:songInfo];
+        [super updateProgress: atimer];
+}
+
+
 
 // Give the system information about what the audio player
 // is currently playing. Takes in the image to display in the

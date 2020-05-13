@@ -414,7 +414,7 @@ Return a Future<bool>.
 
 *Dart definition (prototype) :*
 ```
-Stream<PlayStatus> get onProgress => playerController != null ? playerController.stream : null;
+Stream<PlaybackDisposition> get onProgress => playerController != null ? playerController.stream : null;
 ```
 
 The attribut `onProgress` is a stream on which FlutterSound will post the player progression.
@@ -424,7 +424,8 @@ You may listen to this Stream to have feedback on the current playback.
 ```dart
         _playerSubscription = myPlayer.onProgress.listen((e)
         {
-                double maxDuration = e.duration;
+                Duration maxDuration = e.duration;
+                Duration position = e.position;
                 ...
         }
 ```
@@ -435,7 +436,7 @@ You may listen to this Stream to have feedback on the current playback.
 
 *Dart definition (prototype) :*
 ```
-Future<void> setSubscriptionDuration(double sec)
+Future<void> setSubscriptionDuration(Duration duration)
 ```
 
 This verb is used to change the default interval between two post on the "Update Progress" stream. (The default interval is 10ms)
@@ -443,7 +444,7 @@ This verb is used to change the default interval between two post on the "Update
 *Example:*
 ```dart
 // 0.010s. is default
-myPlayer.setSubscriptionDuration(0.010);
+myPlayer.setSubscriptionDuration(Duration(milliseconds: 20));
 ```
 
 -------------------------------------------------------------------------------------------------------------------------------
