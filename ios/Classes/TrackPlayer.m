@@ -18,12 +18,6 @@
 
 
 
-/*
- * flauto is a flutter_sound module.
- * Its purpose is to offer higher level functionnalities, using MediaService/MediaBrowser.
- * This module may use flutter_sound module, but flutter_sound module may not depends on this module.
- */
-
 #import "TrackPlayer.h"
 #import "Track.h"
 #import <AVFoundation/AVFoundation.h>
@@ -49,14 +43,13 @@
 
 }
 
-- (TrackPlayer*)init: (int)aSlotNo
+- (TrackPlayer*)init: (FlutterMethodCall*)call
 {
-        slotNo = aSlotNo;
-        return self;
+        return [super init: call];
 }
 
 
-- (void)releaseTrackPlayer:(FlutterMethodCall *)call result:(FlutterResult)result
+- (void)releaseTrackPlayer:(FlutterMethodCall*)call result:(FlutterResult)result
 {
         // The code used to release all the media player resources is the same of the one needed
          // to stop the media playback. Then, use that one.
@@ -80,25 +73,12 @@
                  backwardTarget = nil;
          }
 
-        [[self getPlugin] freeSlot: slotNo];
+        [super releaseSession];
         result(@"The player has been successfully released");
 
 }
 
 
-
-- (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg
-{
-        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": stringArg};
-        [[self getPlugin] invokeMethod: methodName arguments: dic ];
-}
-
-
-- (void)invokeMethod: (NSString*)methodName boolArg: (Boolean)boolArg
-{
-        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": [NSNumber numberWithBool: boolArg]};
-        [[self getPlugin] invokeMethod: methodName arguments: dic ];
-}
 
 
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result
@@ -151,6 +131,13 @@
                 }
 
                  isPaused = false;
+                if (!hasFocus) // We always acquire the Audio Focus (It could have been released by another session)
+                {
+                        hasFocus = TRUE;
+                        r = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
+                }
+         
+
 
                 // Check whether the file path points to a remote or local file
                 if (isRemote)

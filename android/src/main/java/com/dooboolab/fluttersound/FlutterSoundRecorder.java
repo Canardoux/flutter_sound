@@ -43,11 +43,9 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
 
-class FlautoRecorderPlugin
+class FlautoRecorderPlugin  extends AudioSessionManager
 	implements MethodCallHandler
 {
-	public static MethodChannel        channel;
-	public static List<FlutterSoundRecorder> slots;
 
 	static Context              androidContext;
 	static FlautoRecorderPlugin flautoRecorderPlugin; // singleton
@@ -62,23 +60,12 @@ class FlautoRecorderPlugin
 	{
 		assert ( flautoRecorderPlugin == null );
 		flautoRecorderPlugin = new FlautoRecorderPlugin ();
-		assert ( slots == null );
-		slots   = new ArrayList<FlutterSoundRecorder> ();
-		channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_recorder" );
+		MethodChannel channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_recorder" );
+		flautoRecorderPlugin.init( channel);
 		channel.setMethodCallHandler ( flautoRecorderPlugin );
 		androidContext = ctx;
 	}
 
-
-	void invokeMethod ( String methodName, Map dic )
-	{
-		channel.invokeMethod ( methodName, dic );
-	}
-
-	void freeSlot ( int slotNo )
-	{
-		slots.set ( slotNo, null );
-	}
 
 
 	FlautoRecorderPlugin getManager ()
@@ -90,22 +77,14 @@ class FlautoRecorderPlugin
 	@Override
 	public void onMethodCall ( final MethodCall call, final Result result )
 	{
-		int slotNo = call.argument ( "slotNo" );
-		assert ( ( slotNo >= 0 ) && ( slotNo <= slots.size () ) );
 
-		if ( slotNo == slots.size () )
-		{
-			slots.add ( slotNo, null );
-		}
-
-		FlutterSoundRecorder aRecorder = slots.get ( slotNo );
+		FlutterSoundRecorder aRecorder = (FlutterSoundRecorder) getSession( call);
 		switch ( call.method )
 		{
 			case "initializeFlautoRecorder":
 			{
-				assert ( slots.get ( slotNo ) == null );
-				aRecorder = new FlutterSoundRecorder ( slotNo );
-				slots.set ( slotNo, aRecorder );
+				aRecorder = new FlutterSoundRecorder (  );
+				initSession( call, aRecorder );
 				aRecorder.initializeFlautoRecorder ( call, result );
 			}
 			break;
@@ -113,7 +92,6 @@ class FlautoRecorderPlugin
 			case "releaseFlautoRecorder":
 			{
 				aRecorder.releaseFlautoRecorder ( call, result );
-				slots.set ( slotNo, null );
 			}
 			break;
 
@@ -134,20 +112,6 @@ class FlautoRecorderPlugin
 			}
 			break;
 
-
-			case "setDbPeakLevelUpdate":
-			{
-
-				aRecorder.setDbPeakLevelUpdate ( call, result );
-			}
-			break;
-
-			case "setDbLevelEnabled":
-			{
-
-				aRecorder.setDbLevelEnabled ( call, result );
-			}
-			break;
 
 			case "setSubscriptionDuration":
 			{
@@ -185,12 +149,8 @@ class RecorderAudioModel
 {
 	final public static String  DEFAULT_FILE_LOCATION = Environment.getDataDirectory ().getPath () + "/default.aac"; // SDK
 	public              int     subsDurationMillis    = 10;
-	public              long    peakLevelUpdateMillis = 800;
-	public              boolean shouldProcessDbLevel  = true;
 
-	//private      MediaRecorder mediaRecorder;
 	private      Runnable      recorderTicker;
-	private      Runnable      dbLevelTicker;
 	private      long          recordTime   = 0;
 	public final double        micLevelBase = 2700;
 
@@ -215,15 +175,6 @@ class RecorderAudioModel
 		this.recorderTicker = recorderTicker;
 	}
 
-	public Runnable getDbLevelTicker ()
-	{
-		return dbLevelTicker;
-	}
-
-	public void setDbLevelTicker ( Runnable ticker )
-	{
-		this.dbLevelTicker = ticker;
-	}
 
 	public long getRecordTime ()
 	{
@@ -238,7 +189,7 @@ class RecorderAudioModel
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------
 
-public class FlutterSoundRecorder
+public class FlutterSoundRecorder extends Session
 {
 	static boolean _isAndroidEncoderSupported[] = {
 		true, // DEFAULT
@@ -257,6 +208,7 @@ public class FlutterSoundRecorder
 
 	final static int CODEC_OPUS   = 2;
 	final static int CODEC_VORBIS = 5;
+	static final String ERR_UNKNOWN           = "ERR_UNKNOWN";
 
 
 	static final String ERR_RECORDER_IS_NULL      = "ERR_RECORDER_IS_NULL";
@@ -267,17 +219,13 @@ public class FlutterSoundRecorder
 	final        RecorderAudioModel model              = new RecorderAudioModel ();
 	RecorderInterface recorder;
 	final public Handler            recordHandler      = new Handler ();
-	final public Handler            dbPeakLevelHandler = new Handler ();
-	String finalPath;
-	int    slotNo;
+	//String finalPath;
 	private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor ();
-	private Handler mainHandler = new Handler();
 	long mPauseTime = 0;
 	long mStartPauseTime = -1;
 
-	FlutterSoundRecorder ( int aSlotNo )
+	FlutterSoundRecorder (  )
 	{
-		slotNo = aSlotNo;
 	}
 
 
@@ -287,15 +235,27 @@ public class FlutterSoundRecorder
 	}
 
 
+
+
 	void initializeFlautoRecorder ( final MethodCall call, final Result result )
 	{
-		result.success ( "Flauto Recorder Initialized" );
+		boolean r = prepareFocus(call);
+		if (r)
+			result.success ( r);
+		else
+			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Failure to open session");
+
 	}
 
 	void releaseFlautoRecorder ( final MethodCall call, final Result result )
 	{
+		if (hasFocus)
+			abandonFocus();
+		releaseSession();
 		result.success ( "Flauto Recorder Released" );
 	}
+
+
 
 	void isEncoderSupported ( final MethodCall call, final Result result )
 	{
@@ -389,63 +349,22 @@ public class FlutterSoundRecorder
 				                               // model.setRecordTime(time);
 				                               try
 				                               {
-					                               JSONObject json = new JSONObject ();
-					                               json.put ( "current_position", String.valueOf ( time ) );
-					                               invokeMethodWithString ( "updateRecorderProgress", json.toString () );
+					                               Map<String, Object> dic = new HashMap<String, Object> ();
+					                               dic.put ( "slotNo", slotNo );
+					                               dic.put ( "duration", time );
+					                               dic.put ( "dbPeakLevel", 0.0 );
+					                               invokeMethodWithMap ( "updateRecorderProgress", dic );
 					                               recordHandler.postDelayed ( model.getRecorderTicker (), model.subsDurationMillis );
 				                               }
-				                               catch ( JSONException je )
+				                               catch (Exception e )
 				                               {
-					                               Log.d( TAG, "Json Exception: " + je.toString() );
+					                               Log.d( TAG, " Exception: " + e.toString() );
 				                               }
 			                               } );
 			recordHandler.post ( this.model.getRecorderTicker () );
 
-			if ( this.model.shouldProcessDbLevel )
-			{
-				dbPeakLevelHandler.removeCallbacksAndMessages ( null );
-				this.model.setDbLevelTicker ( () ->
-				                              {
-
-					                              if ( recorder != null )
-					                              {
-						                              double maxAmplitude = recorder.getMaxAmplitude ();
-
-						                              // Calculate db based on the following article.
-						                              // https://stackoverflow.com/questions/10655703/what-does-androids-getmaxamplitude-function-for-the-mediarecorder-actually-gi
-						                              //
-						                              double ref_pressure = 51805.5336;
-						                              double p            = maxAmplitude / ref_pressure;
-						                              double p0           = 0.0002;
-
-						                              double db = 20.0 * Math.log10 ( p / p0 );
-
-						                              // if the microphone is off we get 0 for the amplitude which causes
-						                              // db to be infinite.
-						                              if ( Double.isInfinite ( db ) )
-						                              {
-							                              db = 0.0;
-						                              }
-
-						                              Log.d ( TAG, "rawAmplitude: " + maxAmplitude + " Base DB: " + db );
-
-						                              invokeMethodWithDouble (  "updateDbPeakProgress", db );
-						                              dbPeakLevelHandler.postDelayed ( model.getDbLevelTicker (), ( model.peakLevelUpdateMillis ) );
-					                              }
-				                              } );
-				dbPeakLevelHandler.post ( model.getDbLevelTicker () );
-			}
-
-			finalPath = path;
-			//mainHandler.post ( new Runnable ()
-			                   //{
-				                   //@Override
-				                   //public void run ()
-				                   //{
-					                   result.success ( finalPath );
-				                   //}
-			                   //}
-			                 //);
+			//finalPath = path;
+			result.success ( "Media Recorder is started" );
 
 		}
 		//);
@@ -455,25 +374,14 @@ public class FlutterSoundRecorder
 	public void stopRecorder ( final MethodCall call, final Result result )
 	{
 		recordHandler.removeCallbacksAndMessages ( null );
-		dbPeakLevelHandler.removeCallbacksAndMessages ( null );
 		recorder._stopRecorder (  );
 		recorder = null;
 		result.success ( "Media Recorder is closed" );
-		mainHandler.post ( new Runnable ()
-		                   {
-			                   @Override
-			                   public void run ()
-			                   {
-
-			                   }
-		                   }
-		                 );
 	}
 
 	public void pauseRecorder( final MethodCall call, final MethodChannel.Result result )
 	{
 		recordHandler.removeCallbacksAndMessages ( null );
-		dbPeakLevelHandler.removeCallbacksAndMessages ( null );
 		recorder.pauseRecorder( );
 		mStartPauseTime = SystemClock.elapsedRealtime ();
 		result.success( "Recorder is paused");
@@ -483,7 +391,6 @@ public class FlutterSoundRecorder
 	public void resumeRecorder( final MethodCall call, final MethodChannel.Result result )
 	{
 		recordHandler.post ( this.model.getRecorderTicker () );
-		dbPeakLevelHandler.post ( model.getDbLevelTicker () );
 		recorder.resumeRecorder();
 		if (mStartPauseTime >= 0)
 			mPauseTime += SystemClock.elapsedRealtime () - mStartPauseTime;
@@ -492,30 +399,16 @@ public class FlutterSoundRecorder
 
 	}
 
-
-		public void setDbPeakLevelUpdate ( final MethodCall call, final Result result )
+public void setSubscriptionDuration ( final MethodCall call, final Result result )
 	{
-		double intervalInSecs = call.argument ( "intervalInSecs" );
-		this.model.peakLevelUpdateMillis = ( long ) ( intervalInSecs * 1000 );
-		result.success ( "setDbPeakLevelUpdate: " + this.model.peakLevelUpdateMillis );
-	}
-
-	public void setDbLevelEnabled ( final MethodCall call, final Result result )
-	{
-		boolean enabled = call.argument ( "enabled" );
-		this.model.shouldProcessDbLevel = enabled;
-		result.success ( "setDbLevelEnabled: " + this.model.shouldProcessDbLevel );
-	}
-
-	public void setSubscriptionDuration ( final MethodCall call, final Result result )
-	{
-		if ( call.argument ( "sec" ) == null )
+		if ( call.argument ( "duration" ) == null )
 		{
 			return;
 		}
-		double duration = call.argument ( "sec" );
+		int duration = call.argument ( "duration" );
+		//double intervalInSecs = call.argument ( "intervalInSecs" );
 
-		this.model.subsDurationMillis = ( int ) ( duration * 1000 );
+		this.model.subsDurationMillis = duration;
 		result.success ( "setSubscriptionDuration: " + this.model.subsDurationMillis );
 	}
 

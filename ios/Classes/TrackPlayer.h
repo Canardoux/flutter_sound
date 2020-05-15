@@ -30,7 +30,7 @@
 {
 
 }
-- (TrackPlayer*)init: (int)aSlotNo;
+- (TrackPlayer*)init: (FlutterMethodCall*)call;
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result;
 //- (void)initializeTrackPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
 //- (void)initializeFlautoPlayerWithUI: (FlutterMethodCall*)call result: (FlutterResult)result;

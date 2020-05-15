@@ -30,12 +30,16 @@
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
 #import "Flauto.h"
+#import "FlautoManager.h"
+#import "FlutterSoundRecorder.h"
 
-@interface FlutterSoundRecorder : NSObject <AVAudioRecorderDelegate>
+
+@interface FlutterSoundRecorder  : Session
 {
 }
 
-- (FlutterSoundRecorder*)init: (int)aSlotNo;
+- (FlautoRecorderManager*) getPlugin;
+- (Session*) init: (FlutterMethodCall*)call;
 
 - (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result;
 - (void)startRecorder :(FlutterMethodCall*)call result:(FlutterResult)result;
@@ -44,7 +48,8 @@
 - (void)setDbLevelEnabled:(BOOL)enabled result: (FlutterResult)result;
 - (void)initializeFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)releaseFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
-- (void)setSubscriptionDuration:(double)duration result: (FlutterResult)result;
+- (void)setSubscriptionDuration:(FlutterMethodCall*)call result: (FlutterResult)result;
+
 - (void)pauseRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)resumeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 

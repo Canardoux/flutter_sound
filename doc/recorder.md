@@ -137,7 +137,7 @@ Flutter Sound does not take care of the recording permission. It is the App resp
 
     Directory tempDir = await getTemporaryDirectory();
     File outputFile = await File ('${tempDir.path}/flutter_sound-tmp.aac');
-    await myRecorder.startRecorder(outputFile.path, codec: t_CODEC.CODEC_AAC,);
+    await myRecorder.startRecorder(toFile: outputFile.path, codec: t_CODEC.CODEC_AAC,);
 ```
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -270,7 +270,8 @@ You may listen to this Stream to have feedback on the current recording.
 ```dart
         _recorderSubscription = myrecorder.onProgress.listen((e)
         {
-                double maxDuration = e.duration;
+                Duration maxDuration = e.duration;
+                double decibels = e.decibels
                 ...
         }
 ```
@@ -290,85 +291,6 @@ This verb is used to change the default interval between two post on the "Update
 ```dart
 // 0.010s. is default
 myRecorder.setSubscriptionDuration(0.010);
-```
-
----------------------------------------------------------------------------------------------------------------------------------
-
-## `onRecorderDbPeakChanged`
-
-*Dart definition (prototype) :*
-```
-Stream<DbPeakValue> get onRecorderDbPeakChanged => dbPeakController != null ? dbPeakController.stream : null;
-```
-
-The attribut `onRecorderDbPeakChanged` is a stream on which FlutterSound will post the Db Peak Values.
-You may listen to this Stream to have feedback on the current recording.
-
-#### Using the amplitude meter
-
-The amplitude meter allows displaying a basic representation of the input sound.
-When enabled, it returns values ranging 0-120dB.
-
-```dart
-//// By default this option is disabled, you can enable it by calling
-setDbLevelEnabled(true);
-```
-
-```dart
-//// You can tweak the frequency of updates by calling this function (unit is seconds)
-updateDbPeakProgress(0.8);
-```
-
-```dart
-//// You need to subscribe in order to receive the value updates
-_dbPeakSubscription = myRecorder.onRecorderDbPeakChanged.listen((value) {
-  setState(() {
-    this._dbLevel = value;
-  });
-});
-```
-
-
-*Example:*
-```dart
-        _dbPeakSubscription = myrecorder.onRecorderDbPeakChanged.listen((e)
-        {
-                double dbPeakValue = e.dbPeakValue;
-                ...
-        }
-```
-
----------------------------------------------------------------------------------------------------------------------------------
-
-## `setDbPeakLevelUpdate()`
-
-*Dart definition (prototype) :*
-```
-Future<void> setDbPeakLevelUpdate(double sec)
-```
-
-This verb is used to change the default interval between two post on the "onRecorderDbPeakChanged" stream. (The default interval is 10ms)
-
-*Example:*
-```dart
-// 0.010s. is default
-myPlayer.setDbPeakLevelUpdate(0.010);
-```
-
----------------------------------------------------------------------------------------------------------------------------------
-
-## `setDbLevelEnabled()`
-
-*Dart definition (prototype) :*
-```
-void setDbLevelEnabled(boolean isEnabled)
-```
-
-This verb allow to enable or disable the Stream to `onRecorderDbPeakChanged`.
-
-*Example:*
-```dart
-myPlayer.setDbLevelEnabled(true);
 ```
 
 ---------------------------------------------------------------------------------------------------------------------------------

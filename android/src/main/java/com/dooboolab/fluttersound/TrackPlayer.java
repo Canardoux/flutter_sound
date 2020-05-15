@@ -90,12 +90,6 @@ public class TrackPlayer extends FlutterSoundPlayer
 	private       Timer              mTimer      = new Timer();
 	final private Handler            mainHandler = new Handler();
 
-	TrackPlayer ( int aSlotNo )
-	{
-		super(aSlotNo);
-		//slotNo = aSlotNo;
-	}
-
 
 
 	@Override
@@ -133,6 +127,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 		mMediaBrowserHelper = null;
 		if (hasFocus)
 			abandonFocus();
+		releaseSession();
 		result.success( "The player has been successfully released" );
 	}
 
@@ -365,11 +360,11 @@ public class TrackPlayer extends FlutterSoundPlayer
 
 	public void setSubscriptionDuration( final MethodCall call, Result result )
 	{
-		if (call.argument("sec") == null)
+		if (call.argument("milliSec") == null)
 			return;
-		double duration = call.argument("sec");
+		int duration = call.argument("milliSec");
 
-		this.model.subsDurationMillis = ( int ) ( duration * 1000 );
+		this.model.subsDurationMillis = duration;
 		result.success( "setSubscriptionDuration: " + this.model.subsDurationMillis );
 	}
 

@@ -30,11 +30,12 @@
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
 #import "Flauto.h"
+#import "FlautoManager.h"
 
 extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar);
 
 
-@interface FlautoRecorderManager : NSObject
+@interface FlautoRecorderManager : FlautoManager
 {
 }
 
@@ -45,6 +46,5 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar);
 @end
 
 extern FlautoRecorderManager* flautoRecorderManager; // Singleton
-
 
 #endif /* FlautoRecorder_h */

@@ -29,6 +29,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound/src/session.dart';
 
 enum PlayerState {
   /// Player is stopped
@@ -143,10 +144,8 @@ typedef void TonSkip();
 typedef void TupdateProgress(int current, int max);
 
 FlautoPlayerPlugin flautoPlayerPlugin; // Singleton, lazy initialized
-List<FlutterSoundPlayer> slots = [];
 
-class FlautoPlayerPlugin {
-  MethodChannel channel;
+class FlautoPlayerPlugin extends FlautoPlugin{
 
   FlautoPlayerPlugin() {
     setCallback();
@@ -161,30 +160,10 @@ class FlautoPlayerPlugin {
     });
   }
 
-  int _lookupEmptySlot(FlutterSoundPlayer aPlayer) {
-    for (var i = 0; i < slots.length; ++i) {
-      if (slots[i] == null) {
-        slots[i] = aPlayer;
-        return i;
-      }
-    }
-    slots.add(aPlayer);
-    return slots.length - 1;
-  }
 
-  void freeSlot(int slotNo) {
-    slots[slotNo] = null;
-  }
-
-  MethodChannel getChannel() => channel;
-
-  Future<dynamic> invokeMethod(String methodName, Map<String, dynamic> call) {
-    return getChannel().invokeMethod<dynamic>(methodName, call);
-  }
 
   Future<dynamic> channelMethodCallHandler(MethodCall call) {
-    int slotNo = call.arguments['slotNo'] as int;
-    var aPlayer = slots[slotNo];
+    FlutterSoundPlayer aPlayer = getSession (call) as FlutterSoundPlayer;
 
     switch (call.method) {
       case "updateProgress":
@@ -232,15 +211,7 @@ String fileExtension(String path) {
   var r = p.extension(path);
   return r;
 }
-
-enum Initialized {
-  notInitialized,
-  initializationInProgress,
-  fullyInitialized,
-  fullyInitializedWithUI,
-}
-
-class FlutterSoundPlayer {
+class FlutterSoundPlayer extends Session {
   TonSkip onSkipForward; // User callback "onPaused:"
   TonSkip onSkipBackward; // User callback "onPaused:"
   TonPaused onPaused; // user callback "whenPause:"
@@ -275,7 +246,6 @@ class FlutterSoundPlayer {
     Codec.defaultCodec, // aacMP4
   ];
 
-  Initialized isInited = Initialized.notInitialized;
   PlayerState playerState = PlayerState.isStopped;
   //StreamController<PlaybackDisposition> playerController;
   // The stream source
@@ -292,7 +262,6 @@ class FlutterSoundPlayer {
   TWhenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
   //TonPaused whenPause; // User callback "whenPaused:"
   TupdateProgress onUpdateProgress;
-  int slotNo;
 
   Stream<PlaybackDisposition> get onProgress =>
               _playerController != null ? _playerController.stream : null;
@@ -305,13 +274,7 @@ class FlutterSoundPlayer {
 
   FlutterSoundPlayer();
 
-  FlautoPlayerPlugin getPlugin() => flautoPlayerPlugin;
-
-  Future<dynamic> invokeMethod(
-      String methodName, Map<String, dynamic> call) async {
-    call['slotNo'] = slotNo;
-    return getPlugin().invokeMethod(methodName, call);
-  }
+  FlautoPlugin getPlugin() => flautoPlayerPlugin;
 
   Future<FlutterSoundPlayer> openAudioSession( { AudioFocus focus = AudioFocus.requestFocusAndStopOthers, int audioFlags = outputToSpeaker}) async {
     if (isInited == Initialized.fullyInitialized || isInited == Initialized.fullyInitializedWithUI) {
@@ -326,7 +289,8 @@ class FlutterSoundPlayer {
     if (flautoPlayerPlugin == null) {
       flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton
     }
-    slotNo = getPlugin()._lookupEmptySlot(this);
+
+    openSession();
 
     await invokeMethod('initializeMediaPlayer', <String, dynamic>{'focus': focus.index, 'audioFlags': audioFlags,});
     isInited = Initialized.fullyInitialized;
@@ -346,7 +310,7 @@ class FlutterSoundPlayer {
     if (flautoPlayerPlugin == null) {
       flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton
     }
-    slotNo = getPlugin()._lookupEmptySlot(this);
+    openSession();
 
     try {
       await invokeMethod('initializeMediaPlayerWithUI', <String, dynamic>{'focus': focus.index, 'audioFlags': audioFlags,});
@@ -380,18 +344,11 @@ class FlutterSoundPlayer {
     _removePlayerCallback(); // playerController is closed by this function
     await invokeMethod('releaseMediaPlayer', <String, dynamic>{});
     await _playerController?.close();
-
-    getPlugin().freeSlot(slotNo);
-    slotNo = null;
+    closeSession();
     isInited = Initialized.notInitialized;
   }
 
   void _updateProgress(Map call) {
-    //String arg = call['arg'] as String;
-    //Map<String, dynamic> result = jsonDecode(arg) as Map<String, dynamic>;
-    //if (playerController != null) {
-      //playerController.add(PlayStatus.fromJSON(result));
-   // }
     int duration = call['duration'] as int;
     int position = call['position'] as int;
     //print('position=$position');
@@ -504,12 +461,11 @@ class FlutterSoundPlayer {
     return r;
   }
 
-  Future<String> setSubscriptionDuration(Duration duration) async {
+  Future<void> setSubscriptionDuration(Duration duration) async {
     await openAudioSession();
-    String r = await invokeMethod('setSubscriptionDuration', <String, dynamic>{
+    await invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'milliSec': duration.inMilliseconds,
-    }) as String;
-    return r;
+    }) ;
   }
 
   void setPlayerCallback() {
@@ -586,8 +542,7 @@ class FlutterSoundPlayer {
       }
 
       audioPlayerFinishedPlaying = whenFinished;
-      await invokeMethod('startPlayer', {'codec':codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI,} as Map<String, dynamic>) as bool;
-
+      await invokeMethod('startPlayer', {'codec':codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI,} as Map<String, dynamic>);
       setPlayerCallback();
 
       playerState = PlayerState.isPlaying;

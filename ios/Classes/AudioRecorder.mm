@@ -36,11 +36,12 @@ class AudioRecInterface
 public:
         virtual ~AudioRecInterface(){};
         virtual void stopRecorder() = 0;
-        virtual void startRecorder( FlutterSoundRecorder* rec, bool shouldProcessDbLevel) = 0;
+        virtual void startRecorder( FlutterSoundRecorder* rec) = 0;
         virtual void resumeRecorder() = 0;
         virtual void pauseRecorder() = 0;
-        virtual NSString* recorderProgress() = 0;
+        virtual NSNumber* recorderProgress() = 0;
         virtual NSNumber* dbPeakProgress() = 0;
+
         double maxAmplitude = 0;
 };
 
@@ -115,7 +116,7 @@ public:
         
         }
 
-          virtual void startRecorder(FlutterSoundRecorder* rec, bool shouldProcessDbLevel)
+        virtual void startRecorder(FlutterSoundRecorder* rec)
         {
                 [engine startAndReturnError: nil];
         }
@@ -140,11 +141,10 @@ public:
          
         }
         
-        virtual NSString* recorderProgress()
+        NSNumber* recorderProgress()
         {
                 return 0;
         }
-        
         virtual NSNumber* dbPeakProgress()
         {
                 double r = 100*maxAmplitude;
@@ -152,6 +152,7 @@ public:
 		return [NSNumber numberWithDouble: r];
 
         }
+
 
 };
 
@@ -181,12 +182,11 @@ public:
                 [audioRecorder stop];
         }
         
-        void startRecorder(FlutterSoundRecorder* rec, bool shouldProcessDbLevel)
+        void startRecorder(FlutterSoundRecorder* rec)
         {
                   [audioRecorder setDelegate: rec];
                   [audioRecorder record];
-                  [audioRecorder setMeteringEnabled:shouldProcessDbLevel];
-                  [audioRecorder setMeteringEnabled: (shouldProcessDbLevel == YES)];
+                  [audioRecorder setMeteringEnabled: YES];
         }
         
         void stopRecorder()
@@ -205,19 +205,21 @@ public:
 
         }
         
-        NSString* recorderProgress()
+        NSNumber* recorderProgress()
         {
-                NSNumber *currentTime = [NSNumber numberWithDouble:audioRecorder.currentTime * 1000];
+                NSNumber* duration =    [NSNumber numberWithLong: (long)(audioRecorder.currentTime * 1000 )];
+
+                
                 [audioRecorder updateMeters];
-                NSString* status = [NSString stringWithFormat:@"{\"current_position\": \"%@\"}", [currentTime stringValue]];
-                return status;
+                return duration;
         }
-        
-        NSNumber* dbPeakProgress()
+        virtual NSNumber* dbPeakProgress()
         {
                 NSNumber* normalizedPeakLevel = [NSNumber numberWithDouble:MIN(pow(10.0, [audioRecorder peakPowerForChannel:0] / 20.0) * 160.0, 160.0)];
-                return normalizedPeakLevel;
+		return normalizedPeakLevel;
+
         }
+
 };
 
 
@@ -280,60 +282,31 @@ AudioRecInterface* audioRec;
         //NSURL *audioFileURL;
         NSTimer* dbPeakTimer;
         NSTimer* recorderTimer;
-        double dbPeakInterval;
-        bool shouldProcessDbLevel;
         double subscriptionDuration;
-        int slotNo;
         NSString* path;
 }
 
 
-- (FlutterSoundRecorder*)init: (int)aSlotNo
+- (FlutterSoundRecorder*)init: (FlutterMethodCall*)call
 {
-        slotNo = aSlotNo;
-        return self;
+        return [super init: call];
 }
-
 
 -(FlautoRecorderManager*) getPlugin
 {
         return flautoRecorderManager;
 }
 
-- (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg
-{
-        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": stringArg};
-        [[self getPlugin] invokeMethod: methodName arguments: dic ];
-}
-
-
-- (void)invokeMethod: (NSString*)methodName numberArg: (NSNumber*)arg
-{
-        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": arg};
-        [[self getPlugin] invokeMethod: methodName arguments: dic ];
-}
-
-
 - (void)initializeFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
 {
-        dbPeakInterval = 0.8;
-        shouldProcessDbLevel = false;
-        result([NSNumber numberWithBool: YES]);
-}
+        [self setAudioFocus: call result: result];}
 
 - (void)releaseFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
 {
-        [[self getPlugin] freeSlot: slotNo];
-        slotNo = -1;
+        [super releaseSession];
         result([NSNumber numberWithBool: YES]);
 }
 
-/*
-- (FlutterMethodChannel*) getChannel
-{
-        return _channel;
-}
-*/
 - (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result
 {
         NSNumber* b = [NSNumber numberWithBool: _isIosEncoderSupported[codec] ];
@@ -404,40 +377,28 @@ AudioRecInterface* audioRec;
           {
                 audioRec = new avAudioRec( path, audioSettings);
           }
-          audioRec ->startRecorder(self, shouldProcessDbLevel);
-           [self startRecorderTimer];
+          audioRec ->startRecorder(self);
+          [self startRecorderTimer];
 
-          if(shouldProcessDbLevel == true)
-          {
-                [self startDbTimer];
-          }
-
-          //NSString *filePath = self->audioFileURL.path;
-          result(path);
+           result(path);
 }
 
 
 - (void)stopRecorder:(FlutterResult)result
 {
-          audioRec -> stopRecorder();
-
-          [self stopDbPeakTimer];
+ 
           [self stopRecorderTimer];
-          delete audioRec;
+          if (audioRec != nil)
+          {
+                audioRec -> stopRecorder();
+                delete audioRec;
+
+          }
 
           //AVAudioSession *audioSession = [AVAudioSession sharedInstance];
 
           //NSString *filePath = audioFileURL.absoluteString;
           result(path);
-}
-
-- (void) stopDbPeakTimer
-{
-        if (self -> dbPeakTimer != nil)
-        {
-               [dbPeakTimer invalidate];
-               self -> dbPeakTimer = nil;
-        }
 }
 
 
@@ -455,38 +416,11 @@ AudioRecInterface* audioRec;
 
 
 
-- (void)setDbPeakLevelUpdate:(double)intervalInSecs result: (FlutterResult)result
-{
-        dbPeakInterval = intervalInSecs;
-        result(@"setDbPeakLevelUpdate");
-}
-
-- (void)setDbLevelEnabled:(BOOL)enabled result: (FlutterResult)result
-{
-        shouldProcessDbLevel = (enabled == YES);
-        result(@"setDbLevelEnabled");
-}
-
-
 // post fix with _FlutterSound to avoid conflicts with common libs including path_provider
 - (NSString*) GetDirectoryOfType_FlutterSound: (NSSearchPathDirectory) dir
 {
         NSArray* paths = NSSearchPathForDirectoriesInDomains(dir, NSUserDomainMask, YES);
         return [paths.firstObject stringByAppendingString:@"/"];
-}
-
-
-- (void)startDbTimer
-{
-        // Stop Db Timer
-        [self stopDbPeakTimer];
-        //dispatch_async(dispatch_get_main_queue(), ^{
-        self -> dbPeakTimer = [NSTimer scheduledTimerWithTimeInterval:dbPeakInterval
-                                                        target:self
-                                                        selector:@selector(updateDbPeakProgress:)
-                                                        userInfo:nil
-                                                        repeats:YES];
-        //});
 }
 
 
@@ -498,16 +432,16 @@ AudioRecInterface* audioRec;
 }
 
 
-- (void)setSubscriptionDuration:(double)duration result: (FlutterResult)result
+- (void)setSubscriptionDuration:(FlutterMethodCall*)call result: (FlutterResult)result
 {
-        subscriptionDuration = duration;
+        NSNumber* milliSec = (NSNumber*)call.arguments[@"duration"];
+        subscriptionDuration = [milliSec doubleValue]/1000;
         result(@"setSubscriptionDuration");
 }
 
 - (void)pauseRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
 {
         audioRec ->pauseRecorder();
-        [self stopDbPeakTimer];
         [self stopRecorderTimer];
         result(@"Recorder is Paused");
 }
@@ -515,7 +449,6 @@ AudioRecInterface* audioRec;
 - (void)resumeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
 {
         audioRec ->resumeRecorder();
-        [self startDbTimer];
         [self startRecorderTimer];
         result(@"Recorder is Resumed");
 }
@@ -525,19 +458,14 @@ AudioRecInterface* audioRec;
 - (void)updateRecorderProgress:(NSTimer*) atimer
 {
         assert (recorderTimer == atimer);
-        NSString* status = audioRec ->recorderProgress();
-        if (status != nil) // Temporary !!!!
-                [self invokeMethod:@"updateRecorderProgress" stringArg: status];
-}
+        NSNumber* duration = audioRec ->recorderProgress();
 
-
-- (void)updateDbPeakProgress:(NSTimer*) atimer
-{
-        assert (dbPeakTimer == atimer);
         NSNumber * normalizedPeakLevel = audioRec ->dbPeakProgress();
-        if (normalizedPeakLevel != nil) // Temporary !!!
-                [self invokeMethod:@"updateDbPeakProgress" numberArg: normalizedPeakLevel];
+        
+        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"dbPeakLevel": normalizedPeakLevel, @"duration": duration};
+        [self invokeMethod:@"updateRecorderProgress" dico: dico];
 }
+ 
 
 
 @end

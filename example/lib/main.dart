@@ -22,7 +22,7 @@ import 'dart:math';
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart' ;
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -60,11 +60,22 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _isRecording = false;
-  List<String> _path = [null, null, null, null, null, null, null, null, null, null, null, null,];
+  List<String> _path = [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+  ];
   StreamSubscription _recorderSubscription;
-  StreamSubscription _dbPeakSubscription;
   StreamSubscription _playerSubscription;
-  StreamSubscription _playbackStateSubscription;
 
   FlutterSoundPlayer playerModule = FlutterSoundPlayer();
   FlutterSoundRecorder recorderModule = FlutterSoundRecorder();
@@ -90,12 +101,12 @@ class _MyAppState extends State<MyApp> {
     await playerModule.closeAudioSession();
     _isAudioPlayer = withUI;
     if (withUI) {
-      await playerModule.openAudioSessionWithUI( );
+      await playerModule.openAudioSessionWithUI();
     } else {
-      await playerModule.openAudioSession( );
+      await playerModule.openAudioSession();
     }
     await playerModule.setSubscriptionDuration(Duration(milliseconds: 10));
-    await recorderModule.setSubscriptionDuration(0.01);
+    await recorderModule.setSubscriptionDuration(Duration(milliseconds: 10));
     initializeDateFormatting();
     setCodec(_codec);
   }
@@ -105,16 +116,13 @@ class _MyAppState extends State<MyApp> {
     recorderModule.openAudioSession();
     await _initializeExample(false);
 
-    await recorderModule.setDbPeakLevelUpdate(0.8);
-    await recorderModule.setDbLevelEnabled(true);
-    await recorderModule.setDbLevelEnabled(true);
     if (Platform.isAndroid) {
       copyAssets();
     }
   }
 
-  Future<void>copyAssets() async {
-    Uint8List dataBuffer = (await rootBundle.load("assets/canardo.png" )).buffer.asUint8List( );
+  Future<void> copyAssets() async {
+    Uint8List dataBuffer = (await rootBundle.load("assets/canardo.png")).buffer.asUint8List();
     String path = await playerModule.getResourcePath() + "/assets";
     if (!await Directory(path).exists()) {
       await Directory(path).create(recursive: true);
@@ -133,21 +141,12 @@ class _MyAppState extends State<MyApp> {
       _recorderSubscription.cancel();
       _recorderSubscription = null;
     }
-    if (_dbPeakSubscription != null) {
-      _dbPeakSubscription.cancel();
-      _dbPeakSubscription = null;
-    }
-  }
+     }
 
   void cancelPlayerSubscriptions() {
     if (_playerSubscription != null) {
       _playerSubscription.cancel();
       _playerSubscription = null;
-    }
-
-    if (_playbackStateSubscription != null) {
-      _playbackStateSubscription.cancel();
-      _playbackStateSubscription = null;
     }
   }
 
@@ -169,9 +168,6 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-
-
-
   void startRecorder() async {
     try {
       // String path = await flutterSoundModule.startRecorder
@@ -184,28 +180,23 @@ class _MyAppState extends State<MyApp> {
       //   androidAudioSource: AndroidAudioSource.MIC,
       // );
       Directory tempDir = await getTemporaryDirectory();
-
-      String path = await recorderModule.startRecorder(
-        toFile: '${tempDir.path}/${recorderModule.slotNo}-flutter_sound${ext[_codec.index]}',
+      String path = '${tempDir.path}/${recorderModule.slotNo}-flutter_sound${ext[_codec.index]}';
+      await recorderModule.startRecorder(
+        toFile: path,
         codec: _codec,
       );
-      print('startRecorder: $path');
+      print('startRecorder');
 
       _recorderSubscription = recorderModule.onProgress.listen((e) {
         if (e != null && e.duration != null) {
-         // DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.duration, isUtc: true);
-          //String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
+          DateTime date = new DateTime.fromMillisecondsSinceEpoch(e.duration.inMilliseconds, isUtc: true);
+          String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
 
           this.setState(() {
-            //this._recorderTxt = txt.substring(0, 8);
+            _recorderTxt = txt.substring(0, 8);
+            _dbLevel = e.decibels;
           });
         }
-      });
-      _dbPeakSubscription = recorderModule.onRecorderDbPeakChanged.listen((value) {
-        print("got update -> $value");
-        setState(() {
-          this._dbLevel = value;
-        });
       });
 
       this.setState(() {
@@ -221,11 +212,7 @@ class _MyAppState extends State<MyApp> {
           _recorderSubscription.cancel();
           _recorderSubscription = null;
         }
-        if (_dbPeakSubscription != null) {
-          _dbPeakSubscription.cancel();
-          _dbPeakSubscription = null;
-        }
-      });
+        });
     }
   }
 
@@ -248,8 +235,8 @@ class _MyAppState extends State<MyApp> {
 
   void stopRecorder() async {
     try {
-      String result = await recorderModule.stopRecorder();
-      print('stopRecorder: $result');
+      await recorderModule.stopRecorder();
+      print('stopRecorder');
       cancelRecorderSubscriptions();
       getDuration();
     } catch (err) {
@@ -295,8 +282,6 @@ class _MyAppState extends State<MyApp> {
     'assets/samples/sample.3gp',
   ];
 
-
-
   void _addListeners() {
     cancelPlayerSubscriptions();
     _playerSubscription = playerModule.onProgress.listen((e) {
@@ -304,7 +289,7 @@ class _MyAppState extends State<MyApp> {
         maxDuration = e.duration.inMilliseconds.toDouble();
         if (maxDuration <= 0) maxDuration = 0.0;
 
-        sliderCurrentPosition = min( e.position.inMilliseconds.toDouble(), maxDuration);
+        sliderCurrentPosition = min(e.position.inMilliseconds.toDouble(), maxDuration);
         if (sliderCurrentPosition < 0.0) {
           sliderCurrentPosition = 0.0;
         }
@@ -349,62 +334,59 @@ class _MyAppState extends State<MyApp> {
         if (_media == Media.remoteExampleFile)
           albumArtUrl = albumArtPath;
         else {
-
-            albumArtFile = await playerModule.getResourcePath() + "/assets/canardo.png";
-            print(albumArtFile);
-         }
+          albumArtFile = await playerModule.getResourcePath() + "/assets/canardo.png";
+          print(albumArtFile);
+        }
 
         final track = Track(
           trackPath: audioFilePath,
           dataBuffer: dataBuffer,
-
           trackTitle: "This is a record",
           trackAuthor: "from flutter_sound",
           albumArtUrl: albumArtUrl,
           albumArtAsset: albumArtAsset,
           albumArtFile: albumArtFile,
         );
-        await playerModule.startPlayerFromTrack(
-          track,
-          /*canSkipForward:true, canSkipBackward:true,*/
-          whenFinished: () {
-            print('I hope you enjoyed listening to this song');
-            setState(() {});
-          },
-          onSkipBackward: () {
-            print('Skip backward');
-            stopPlayer();
-            startPlayer();
-          },
-          onSkipForward: () {
-            print('Skip forward');
-            stopPlayer();
-            startPlayer();
-          },
-          onPaused: (bool b) {
-            if (b)
-              playerModule.pausePlayer();
-            else
-              playerModule.resumePlayer();
-          }
-        );
-
+        await playerModule.startPlayerFromTrack(track,
+            /*canSkipForward:true, canSkipBackward:true,*/
+            whenFinished: () {
+          print('I hope you enjoyed listening to this song');
+          setState(() {});
+        }, onSkipBackward: () {
+          print('Skip backward');
+          stopPlayer();
+          startPlayer();
+        }, onSkipForward: () {
+          print('Skip forward');
+          stopPlayer();
+          startPlayer();
+        }, onPaused: (bool b) {
+          if (b)
+            playerModule.pausePlayer();
+          else
+            playerModule.resumePlayer();
+        });
       } else {
         if (audioFilePath != null) {
-          await playerModule.startPlayer(fromURI: audioFilePath, codec: _codec, whenFinished: () {
-            print('Play finished');
-            setState(() {});
-          });
+          await playerModule.startPlayer(
+              fromURI: audioFilePath,
+              codec: _codec,
+              whenFinished: () {
+                print('Play finished');
+                setState(() {});
+              });
         } else if (dataBuffer != null) {
-          await playerModule.startPlayer(fromDataBuffer: dataBuffer, codec: _codec, whenFinished: () {
-            print('Play finished');
-            setState(() {});
-          });
+          await playerModule.startPlayer(
+              fromDataBuffer: dataBuffer,
+              codec: _codec,
+              whenFinished: () {
+                print('Play finished');
+                setState(() {});
+              });
         }
-
       }
       _addListeners();
-       print('startPlayer');
+      print('startPlayer');
       // await flutterSoundModule.setVolume(1.0);
     } catch (err) {
       print('error: $err');
@@ -432,18 +414,17 @@ class _MyAppState extends State<MyApp> {
   void pauseResumePlayer() {
     if (playerModule.isPlaying) {
       playerModule.pausePlayer();
-     } else {
+    } else {
       playerModule.resumePlayer();
-     }
+    }
   }
 
   void pauseResumeRecorder() {
     if (recorderModule.isPaused) {
-        recorderModule.resumeRecorder();
+      recorderModule.resumeRecorder();
     } else {
       recorderModule.pauseRecorder();
-      }
-
+    }
   }
 
   void seekToPlayer(int milliSecs) async {
@@ -506,7 +487,6 @@ class _MyAppState extends State<MyApp> {
             getDuration();
             setState(() {});
           },
-
           items: <DropdownMenuItem<Codec>>[
             DropdownMenuItem<Codec>(
               value: Codec.aacADTS,
@@ -574,33 +554,28 @@ class _MyAppState extends State<MyApp> {
   }
 
   void Function() onPauseResumePlayerPressed() {
-    if (playerModule == null)
-      return null;
+    if (playerModule == null) return null;
     if (playerModule.isPaused || playerModule.isPlaying) {
-        return pauseResumePlayer;
-      }
-      return null;
+      return pauseResumePlayer;
+    }
+    return null;
   }
 
   void Function() onPauseResumeRecorderPressed() {
-    if (recorderModule == null)
-      return null;
+    if (recorderModule == null) return null;
     if (recorderModule.isPaused || recorderModule.isRecording) {
       return pauseResumeRecorder;
     }
     return null;
   }
 
-
   void Function() onStopPlayerPressed() {
-    if (playerModule == null)
-      return null;
+    if (playerModule == null) return null;
     return (playerModule.isPlaying || playerModule.isPaused) ? stopPlayer : null;
   }
 
   void Function() onStartPlayerPressed() {
-    if (playerModule == null)
-      return null;
+    if (playerModule == null) return null;
     if (_media == Media.file || _media == Media.buffer) // A file must be already recorded to play it
     {
       if (_path[_codec.index] == null) return null;
@@ -613,7 +588,7 @@ class _MyAppState extends State<MyApp> {
     return (playerModule.isStopped) ? startPlayer : null;
   }
 
-  void Function()  startStopRecorder() {
+  void Function() startStopRecorder() {
     if (recorderModule.isRecording || recorderModule.isPaused)
       stopRecorder();
     else
@@ -627,10 +602,9 @@ class _MyAppState extends State<MyApp> {
     return startStopRecorder;
   }
 
-
   AssetImage recorderAssetImage() {
     if (onStartRecorderPressed() == null) return AssetImage('res/icons/ic_mic_disabled.png');
-    return (recorderModule.isStopped)? AssetImage('res/icons/ic_mic.png') : AssetImage('res/icons/ic_stop.png');
+    return (recorderModule.isStopped) ? AssetImage('res/icons/ic_mic.png') : AssetImage('res/icons/ic_stop.png');
   }
 
   void setCodec(Codec codec) async {
@@ -643,11 +617,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   void Function(bool) audioPlayerSwitchChanged() {
-    if ( (!playerModule.isStopped) || (!recorderModule.isStopped) )
-      return null;
+    if ((!playerModule.isStopped) || (!recorderModule.isStopped)) return null;
     return ((newVal) async {
       try {
-          _initializeExample(newVal);
+        await _initializeExample(newVal);
         setState(() {});
       } catch (err) {
         print(err);
@@ -727,21 +700,19 @@ class _MyAppState extends State<MyApp> {
     final dropdowns = makeDropdowns(context);
     final trackSwitch = Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 4),
-            child: Text('Track Player:'),
-          ),
-          Switch(
-            value: _isAudioPlayer,
-            onChanged: audioPlayerSwitchChanged(),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 4.0),
-          )
-        ]
-      ),
+      child: Row(children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(right: 4),
+          child: Text('Track Player:'),
+        ),
+        Switch(
+          value: _isAudioPlayer,
+          onChanged: audioPlayerSwitchChanged(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 4.0),
+        )
+      ]),
     );
 
     Widget recorderSection = Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[

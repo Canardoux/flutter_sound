@@ -25,8 +25,6 @@
 
 
 
-static FlutterMethodChannel* _channel;
-NSMutableArray* flautoPlayerSlots;
 
 
 static bool _isIosDecoderSupported [] =
@@ -46,44 +44,6 @@ static bool _isIosDecoderSupported [] =
 };
 
 
-/// Used by [AudioPlayer.audioFocus]
-/// to control the focus mode.
-enum AudioFocus {
-  requestFocus,
-
-  /// request focus and allow other audio
-  /// to continue playing at their current volume.
-  requestFocusAndKeepOthers,
-
-  /// request focus and stop other audio playing
-  requestFocusAndStopOthers,
-
-  /// request focus and reduce the volume of other players
-  /// In the Android world this is know as 'Duck Others'.
-  requestFocusAndDuckOthers,
-  
-  requestFocusAndInterruptSpokenAudioAndMixWithOthers,
-  
-  requestFocusTransient,
-  requestFocusTransientExclusive,
-
-
-  /// relinquish the audio focus.
-  abandonFocus,
-
-  doNotRequestFocus,
-};
-
-// Audio Flags
-// -----------
-const int outputToSpeaker = 1;
-const int allowHeadset = 2;
-const int allowEarPiece = 4;
-const int allowBlueTooth = 8;
-const int allowAirPlay = 16;
-const int allowBlueToothA2DP = 32;
-
-
 //--------------------------------------------------------------------------------------------
 
 
@@ -97,18 +57,18 @@ static FlautoPlayerManager* flautoPlayerManager; // Singleton
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
 {
-        _channel = [FlutterMethodChannel methodChannelWithName:@"com.dooboolab.flutter_sound_player"
+        FlutterMethodChannel* aChannel = [FlutterMethodChannel methodChannelWithName:@"com.dooboolab.flutter_sound_player"
                                         binaryMessenger:[registrar messenger]];
         assert (flautoPlayerManager == nil);
         flautoPlayerManager = [[FlautoPlayerManager alloc] init];
-        [registrar addMethodCallDelegate:flautoPlayerManager channel:_channel];
+        flautoPlayerManager ->channel = aChannel;
+        [registrar addMethodCallDelegate:flautoPlayerManager channel: aChannel];
 }
 
 
 - (FlautoPlayerManager*)init
 {
         self = [super init];
-        flautoPlayerSlots = [[NSMutableArray alloc] init];
         return self;
 }
 
@@ -116,17 +76,6 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 {
         [FlautoPlayerManager registerWithRegistrar: registrar];
 }
-
-- (void)invokeMethod: (NSString*)methodName arguments: (NSDictionary*)call
-{
-        [_channel invokeMethod: methodName arguments: call ];
-}
-
-- (void)freeSlot: (int)slotNo
-{
-        flautoPlayerSlots[slotNo] = [NSNull null];
-}
-
 
 - (FlautoPlayerManager*)getManager
 {
@@ -136,38 +85,24 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result
 {
-        int slotNo = [call.arguments[@"slotNo"] intValue];
-        assert ( (slotNo >= 0) && (slotNo <= [flautoPlayerSlots count]));
-        
-        if (slotNo == [flautoPlayerSlots count])
-        {
-               [flautoPlayerSlots addObject: [NSNull null]];
-        }
-
-        FlutterSoundPlayer* aFlautoPlayer = flautoPlayerSlots[slotNo];
+         FlutterSoundPlayer* aFlautoPlayer = (FlutterSoundPlayer*)[ self getSession: call];
         
         if ([@"initializeMediaPlayer" isEqualToString:call.method])
         {
-                assert (flautoPlayerSlots[slotNo] ==  [NSNull null] );
-                aFlautoPlayer = [[FlutterSoundPlayer alloc] init: slotNo];
-                flautoPlayerSlots[slotNo] = aFlautoPlayer;
+                aFlautoPlayer = [[FlutterSoundPlayer alloc] init: call];
                 [aFlautoPlayer initializeFlautoPlayer: call result:result];
         } else
         
         if ([@"initializeMediaPlayerWithUI" isEqualToString:call.method])
         {
-                assert (flautoPlayerSlots[slotNo] ==  [NSNull null] );
-                aFlautoPlayer = [[TrackPlayer alloc] init: slotNo];
-                flautoPlayerSlots[slotNo] = aFlautoPlayer;
+                aFlautoPlayer = [[TrackPlayer alloc] init: call];
                 [aFlautoPlayer initializeFlautoPlayer: call result:result];
         } else
  
         if ([@"releaseMediaPlayer" isEqualToString:call.method])
         {
                 [aFlautoPlayer releaseFlautoPlayer: call result:result];
-                [flautoPlayerSlots replaceObjectAtIndex:slotNo withObject:[NSNull null]];
-                flautoPlayerSlots[slotNo] = [NSNull null];
-        } else
+         } else
         
         if ([@"setFocus" isEqualToString:call.method])
         {
@@ -260,16 +195,12 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         //AVAudioPlayer* audioPlayer; // In the interface
         NSTimer *timer;
         double subscriptionDuration;
-        int slotNo;
-        BOOL hasFocus;
 }
 
 
-- (FlutterSoundPlayer*)init: (int)aSlotNo
+- (FlutterSoundPlayer*)init: (FlutterMethodCall*)call
 {
-        slotNo = aSlotNo;
-        hasFocus = FALSE;
-        return self;
+        return [super init: call];
 }
 
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result
@@ -286,82 +217,18 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 }
 
 
-- (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg
-{
-        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": stringArg};
-        [[self getPlugin] invokeMethod: methodName arguments: dic ];
-}
-
-
-- (void)invokeMethod: (NSString*)methodName dico: (NSDictionary*)dico
-{
-        //[dico setObject:[NSNumber numberWithInt: slotNo] forKey:@"slotNo"];
-        [[self getPlugin] invokeMethod: methodName arguments: dico ];
-}
-
-
 - (void)initializeFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
         isPaused = false;
         [self setAudioFocus: call result: result];
 }
 
-- (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result
-{
-        BOOL r = TRUE;
-        enum AudioFocus audioFocus = (enum AudioFocus) [call.arguments[@"focus"] intValue];
-        if ( audioFocus != abandonFocus && audioFocus != doNotRequestFocus && audioFocus != requestFocus)
-        {
-                int flags =  [call.arguments[@"audioFlags"] intValue];
-                int sessionCategoryOption = 0;
-                switch (audioFocus)
-                {
-                        case requestFocusAndDuckOthers: sessionCategoryOption |= AVAudioSessionCategoryOptionDuckOthers; break;
-                        case requestFocusAndKeepOthers: sessionCategoryOption |= AVAudioSessionCategoryOptionMixWithOthers; break;
-                        case requestFocusAndInterruptSpokenAudioAndMixWithOthers: sessionCategoryOption |= AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers; break;
-                        case requestFocusTransient:
-                        case requestFocusTransientExclusive:
-                        case requestFocusAndStopOthers: sessionCategoryOption |= 0; break;
-                }
-                if (flags & outputToSpeaker)
-                        sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker;
-                if (flags & allowAirPlay)
-                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay;
-                 if (flags & allowBlueTooth)
-                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetooth;
-                if (flags & allowBlueToothA2DP)
-                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
-                r = [[AVAudioSession sharedInstance]
-                setCategory:  AVAudioSessionCategoryPlayAndRecord // AVAudioSessionCategoryPlayback
-                        mode: AVAudioSessionModeDefault
-                        options: sessionCategoryOption
-                        error: nil
-                ];
-        }
-        
-        if (audioFocus != doNotRequestFocus)
-        {
-                hasFocus = (audioFocus != abandonFocus);
-                r = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
-        }
-        if (r)
-                result([NSNumber numberWithBool: r]);
-        else
-                [FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"Open session failure"
-                                details:nil];
-}
-
-
 - (void)releaseFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
-        if (hasFocus)
-                [[AVAudioSession sharedInstance]  setActive: FALSE error:nil] ;
  
-        [[self getPlugin]freeSlot: slotNo];
+      
         result([NSNumber numberWithBool: TRUE]);
-
+        [super releaseSession];
 }
 
 - (void)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options result:(FlutterResult)result
@@ -389,7 +256,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 {
         bool b = FALSE;
         isPaused = false;
-        //if (!hasFocus) // We always acquire the Audio Focus (It could have been released by another session)
+        if (!hasFocus) // We always acquire the Audio Focus (It could have been released by another session)
         {
                 hasFocus = TRUE;
                 b = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
@@ -464,35 +331,23 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                         }
                 }];
 
-                [self startTimer];
-                NSString *filePath = audioFileURL.absoluteString;
+                 NSString *filePath = audioFileURL.absoluteString;
                 [downloadTask resume];
         } else
         {
                 audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:nil];
                 audioPlayer.delegate = self;
-                bool b = [audioPlayer play];
-                if (!b)
-                {
-                        [self stopPlayer];
-                        ([FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"Play failure"
-                                details:nil]);
-                } else
-                {
-                        [self startTimer];
-                        NSString *filePath = audioFileURL.absoluteString;
-                        result(filePath);
-                }
+                b = [audioPlayer play];
         }
         if (b)
+        {
+                [self startTimer];
                 result([NSNumber numberWithBool: b]);
-       else
-       {
-                             [self stopPlayer];
+        } else
+        {
+                        [self stopPlayer];
   
-                [FlutterError
+                        [FlutterError
                                 errorWithCode:@"Audio Player"
                                 message:@"Play failure"
                                 details:nil];

@@ -46,12 +46,10 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
-class FlautoPlayerPlugin
+class FlautoPlayerPlugin extends AudioSessionManager
 	implements MethodCallHandler
 {
 	final static String TAG = "FlutterPlayerPlugin";
-	public static MethodChannel      channel;
-	public static List<FlutterSoundPlayer> slots;
 	static        Context            androidContext;
 	static        FlautoPlayerPlugin flautoPlayerPlugin; // singleton
 
@@ -62,24 +60,12 @@ class FlautoPlayerPlugin
 	{
 		assert ( flautoPlayerPlugin == null );
 		flautoPlayerPlugin = new FlautoPlayerPlugin ();
-		assert ( slots == null );
-		slots   = new ArrayList<FlutterSoundPlayer> ();
-		channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_player" );
+		MethodChannel channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_player" );
+		flautoPlayerPlugin.init(channel);
 		channel.setMethodCallHandler ( flautoPlayerPlugin );
+
 		androidContext = ctx;
 
-	}
-
-
-	void invokeMethod ( String methodName, Map dic )
-	{
-		//Log.d(TAG, "FlutterAutoPlugin: invokeMethod" + methodName);
-		channel.invokeMethod ( methodName, dic );
-	}
-
-	void freeSlot ( int slotNo )
-	{
-		slots.set ( slotNo, null );
 	}
 
 
@@ -90,27 +76,18 @@ class FlautoPlayerPlugin
 	}
 
 	@Override
-	public void onMethodCall (
-		final MethodCall call, final Result result
-	                         )
+	public void onMethodCall ( final MethodCall call, final Result result )
 	{
-		int slotNo = call.argument ( "slotNo" );
-		assert ( ( slotNo >= 0 ) && ( slotNo <= slots.size () ) );
 
-		if ( slotNo == slots.size () )
-		{
-			slots.add ( slotNo, null );
-		}
 
-		FlutterSoundPlayer aPlayer = slots.get ( slotNo );
+		FlutterSoundPlayer aPlayer = (FlutterSoundPlayer)getSession(call);
 		switch ( call.method )
 		{
 
 			case "initializeMediaPlayer":
 			{
-				assert ( slots.get ( slotNo ) == null );
-				aPlayer = new FlutterSoundPlayer ( slotNo );
-				slots.set ( slotNo, aPlayer );
+				aPlayer = new FlutterSoundPlayer();
+				initSession( call, aPlayer);
 				aPlayer.initializeFlautoPlayer ( call, result );
 
 			}
@@ -119,15 +96,14 @@ class FlautoPlayerPlugin
 			case "releaseMediaPlayer":
 			{
 				aPlayer.releaseFlautoPlayer ( call, result );
-				slots.set ( slotNo, null );
+				//slots.set ( slotNo, null );
 			}
 			break;
 
 			case "initializeMediaPlayerWithUI":
 			{
-				assert ( slots.get ( slotNo ) == null );
-				aPlayer = new TrackPlayer ( slotNo );
-				slots.set ( slotNo, aPlayer );
+				aPlayer = new TrackPlayer (  );
+				initSession( call, aPlayer);
 				aPlayer.initializeFlautoPlayer ( call, result );
 			}
 			break;
@@ -263,38 +239,8 @@ class PlayerAudioModel
 //-------------------------------------------------------------------------------------------------------------
 
 
-public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
+public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorListener
 {
-
-/// to control the focus mode.
-	enum AudioFocus {
-		requestFocus,
-
-		/// request focus and allow other audio
-		/// to continue playing at their current volume.
-		requestFocusAndKeepOthers,
-
-		/// request focus and stop other audio playing
-		requestFocusAndStopOthers,
-
-		/// request focus and reduce the volume of other players
-		/// In the Android world this is know as 'Duck Others'.
-		requestFocusAndDuckOthers,
-
-		requestFocusAndInterruptSpokenAudioAndMixWithOthers,
-
-		requestFocusTransient,
-		requestFocusTransientExclusive,
-
-		/// relinquish the audio focus.
-		abandonFocus,
-
-		doNotRequestFocus,
-	}
-
-
-	final static int CODEC_OPUS   = 2;
-	final static int CODEC_VORBIS = 5;
 
 	static boolean _isAndroidDecoderSupported[] = {
 		true, // DEFAULT
@@ -332,88 +278,21 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 	final         PlayerAudioModel model       = new PlayerAudioModel ();
 	private       Timer            mTimer      = new Timer ();
 	final private Handler          mainHandler = new Handler ();
-	AudioFocusRequest   audioFocusRequest = null;
-	AudioManager        audioManager;
-	int                 slotNo;
-	boolean hasFocus = false;
 
 
 	static final String ERR_UNKNOWN           = "ERR_UNKNOWN";
 	static final String ERR_PLAYER_IS_NULL    = "ERR_PLAYER_IS_NULL";
 	static final String ERR_PLAYER_IS_PLAYING = "ERR_PLAYER_IS_PLAYING";
 
-	FlutterSoundPlayer ( int aSlotNo )
-	{
-		slotNo = aSlotNo;
-	}
 
-
-	FlautoPlayerPlugin getPlugin ()
+	AudioSessionManager  getPlugin ()
 	{
 		return FlautoPlayerPlugin.flautoPlayerPlugin;
 	}
 
 
-	boolean prepareFocus( final MethodCall call)
-	{
-		boolean r = true;
-		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
-		AudioFocus focus = AudioFocus.values()[(int)call.argument ( "focus" )];
-
-		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
-		{
-			if ( focus != AudioFocus.abandonFocus && focus != AudioFocus.doNotRequestFocus && focus != AudioFocus.requestFocus )
-			{
-				int audioFlags = call.argument( "audioFlags" );
-				int focusGain = AudioManager.AUDIOFOCUS_GAIN;
-
-				switch (focus)
-				{
-					case requestFocusAndDuckOthers: focusGain = AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK; ; break;
-					case requestFocusAndKeepOthers: focusGain = AudioManager.AUDIOFOCUS_GAIN; ; break;
-					case requestFocusTransient: focusGain = AudioManager.AUDIOFOCUS_GAIN_TRANSIENT; break;
-					case requestFocusTransientExclusive: focusGain = AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE; break;
-					case requestFocusAndInterruptSpokenAudioAndMixWithOthers: focusGain = AudioManager.AUDIOFOCUS_GAIN; break;
-					case requestFocusAndStopOthers: focusGain = AudioManager.AUDIOFOCUS_GAIN; break;
-				}
-				audioFocusRequest = new AudioFocusRequest.Builder( focusGain )
-					// .setAudioAttributes(mPlaybackAttributes)
-					.build();
-
-				/*
-				if (flags & outputToSpeaker)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker;
-				if (flags & allowAirPlay)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay;
-				if (flags & allowBlueTooth)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetooth;
-				if (flags & allowBlueToothA2DP)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
-				 */
-			}
-
-			if (focus != AudioFocus.doNotRequestFocus)
-			{
-				hasFocus = (focus != AudioFocus.abandonFocus);
-				//r = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
-				if (hasFocus)
-					audioManager.requestAudioFocus ( audioFocusRequest );
-				else
-					audioManager.abandonAudioFocusRequest ( audioFocusRequest );
-			}
-		}
-		return r;
-	}
-
-	void setFocus ( final MethodCall call, final Result result )
-	{
-		boolean r = prepareFocus(call);
-
-	}
-
 	void initializeFlautoPlayer ( final MethodCall call, final Result result )
 	{
-		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
 		boolean r = prepareFocus(call);
 		if (r)
 		        result.success ( r);
@@ -422,36 +301,14 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 
 	}
 
-		void releaseFlautoPlayer ( final MethodCall call, final Result result )
+	void releaseFlautoPlayer ( final MethodCall call, final Result result )
 	{
 		if (hasFocus)
 			abandonFocus();
+		releaseSession();
 		result.success ( "Flauto Recorder Released" );
 	}
 
-
-
-	void invokeMethodWithString ( String methodName, String arg )
-	{
-		Map<String, Object> dic = new HashMap<String, Object> ();
-		dic.put ( "slotNo", slotNo );
-		dic.put ( "arg", arg );
-		getPlugin ().invokeMethod ( methodName, dic );
-	}
-
-	void invokeMethodWithDouble ( String methodName, double arg )
-	{
-		Map<String, Object> dic = new HashMap<String, Object> ();
-		dic.put ( "slotNo", slotNo );
-		dic.put ( "arg", arg );
-		getPlugin ().invokeMethod ( methodName, dic );
-	}
-
-	void invokeMethodWithMap ( String methodName, Map<String, Object>  dic )
-	{
-		dic.put ( "slotNo", slotNo );
-		getPlugin ().invokeMethod ( methodName, dic );
-	}
 
 
 
@@ -755,50 +612,6 @@ public class FlutterSoundPlayer implements MediaPlayer.OnErrorListener
 			result.success ( b );
 		}
 	}
-
-	boolean requestFocus ()
-	{
-		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
-		{
-			if ( audioFocusRequest == null )
-			{
-				audioFocusRequest = new AudioFocusRequest.Builder ( AudioManager.AUDIOFOCUS_GAIN )
-					//.setAudioAttributes(mPlaybackAttributes)
-					//.setAcceptsDelayedFocusGain(true)
-					//.setWillPauseWhenDucked(true)
-					//.setOnAudioFocusChangeListener(this, mMyHandler)
-					.build ();
-			}
-			hasFocus = true;
-			return ( audioManager.requestAudioFocus ( audioFocusRequest ) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED );
-		} else
-		{
-			return false;
-		}
-	}
-
-	boolean abandonFocus ()
-	{
-		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
-		{
-			if ( audioFocusRequest == null )
-			{
-				audioFocusRequest = new AudioFocusRequest.Builder ( AudioManager.AUDIOFOCUS_GAIN )
-					//.setAudioAttributes(mPlaybackAttributes)
-					//.setAcceptsDelayedFocusGain(true)
-					//.setWillPauseWhenDucked(true)
-					//.setOnAudioFocusChangeListener(this, mMyHandler)
-					.build ();
-			}
-			hasFocus = false;
-			return ( audioManager.abandonAudioFocusRequest ( audioFocusRequest ) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED );
-		} else
-		{
-			return false;
-		}
-
-	}
-
 	void setActive ( final MethodCall call, final Result result )
 	{
 		Boolean enabled = call.argument ( "enabled" );
