@@ -1,38 +1,20 @@
-/*
- * Copyright 2018, 2019, 2020 Dooboolab.
- *
- * This file is part of Flutter-Sound.
- *
- * Flutter-Sound is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3, as published by
- * the Free Software Foundation.
- *
- * Flutter-Sound is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 
 //import '../recording_disposition.dart';
 import '../flutter_sound_recorder.dart';
+import '../flutter_sound_player.dart';
 //import '../track.dart';
 import '../util/ansi_color.dart';
 import '../util/log.dart';
-//import '../util/recorded_audio.dart';
+import '../util/recorded_audio.dart';
 import 'recorder_playback_controller.dart' as controller;
-import '../flutter_sound_player.dart';
-import '../flutter_sound_recorder.dart';
 
 typedef OnStart = void Function();
-typedef OnProgress = void Function(/*RecordedAudio media*/); // TODO
-typedef OnStop = void Function(/* RecordedAudio media*/); // TODO
+typedef OnProgress = void Function(RecordedAudio media);
+typedef OnStop = void Function(RecordedAudio media);
 
 enum _RecorderState {
   isStopped,
@@ -54,7 +36,7 @@ class SoundRecorderUI extends StatefulWidget {
   final OnStart onStart;
 
   /// Stores and Tracks the recorded audio.
-  //final RecordedAudio audio; TODO
+  final RecordedAudio audio;
 
   /// The [requestPermissions] callback allows you to request
   /// the necessary permissions to record a track.
@@ -87,7 +69,7 @@ class SoundRecorderUI extends StatefulWidget {
   ///  progresses.
   ///
   /// The [track] specifies the file we are recording to.
-  /// At the moment the [track] must be constructued using [Track.fromPath] as
+  /// At the moment the [track] must be constructued using [Track.fromFile] as
   /// recording to a databuffer is not currently supported.
   ///
   /// The [onStart] callback is called user starts recording. This method will
@@ -132,7 +114,7 @@ class SoundRecorderUI extends StatefulWidget {
     this.onStopped,
     this.requestPermissions,
     Key key,
-  })  : //audio = RecordedAudio.toTrack(track), TODO
+  })  : audio = RecordedAudio.toTrack(track),
         super(key: key);
 
   @override
@@ -149,19 +131,20 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
 
   ///
   SoundRecorderUIState() {
-    _recorder = FlutterSoundRecorder();
-    // TODO _recorder.onStarted = _onStarted;
-    // TODO _recorder.onStopped = _onStopped;
+     //_recorder.openAudioSession();
+    //_recorder.onStarted = _onStarted;
+    //_recorder.onStopped = _onStopped;
   }
 
   @override
   void initState() {
+    _recorder =  FlutterSoundRecorder();
+    _recorder.openAudioSession(focus: AudioFocus.requestFocusAndDuckOthers).then((toto){controller.registerRecorder(context, this);});
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    // TODO controller.registerRecorder(context, this);
+  Widget build(BuildContext context)  {
     return _buildButtons();
   }
 
@@ -176,7 +159,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
 
   ///
   Stream<RecordingDisposition> get dispositionStream =>
-      null;// TODO _recorder.dispositionStream();
+      _recorder.dispositionStream();
 
   static const _minDbCircle = 55;
 
@@ -185,7 +168,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
         height: 120,
         width: 120,
         child: StreamBuilder<RecordingDisposition>(
-            // TODO stream: _recorder.dispositionStream(),
+            stream: _recorder.dispositionStream(),
             initialData: RecordingDisposition.zero(), // was START_DECIBELS
             builder: (_, streamData) {
               var disposition = streamData.data;
@@ -236,22 +219,20 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   }
 
   void _onRecord() {
-    /* TODO
     if (!_isRecording) {
       _requestPermission(context, widget.audio.track).then((accepted) async {
         if (accepted) {
-          Log.e(green('started Recording to: '
-              '${await (await widget.audio).track.identity})'));
-          await _recorder.record(
-            widget.audio.track,
+          //Log.e(green('started Recording to: '
+              //'${await (await widget.audio).track.identity})'));
+          _recorder.startRecorder(toFile: widget.audio.track.trackPath
+            //widget.audio.track,
           );
+          _onStarted(wasUser: true);
 
-          Log.d(widget.audio.track.identity);
+          //Log.d(widget.audio.track.identity);
         }
       });
     }
-
-     */
   }
 
   /// The [stop] methods stops the recording and calls
@@ -264,6 +245,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   void _stop() {
     if (_recorder.isRecording) {
       _recorder.stopRecorder();
+      _onStopped(wasUser: true);
     }
   }
 
@@ -302,8 +284,8 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   }
 
   void _onStarted({bool wasUser}) async {
-    // TODO Log.d(green('started Recording to: '
-        // TODO'${await (await widget.audio).track.identity})'));
+    //Log.d(green('started Recording to: '
+        //'${await (await widget.audio).track.identity})'));
 
     setState(() {
       _state = _RecorderState.isRecording;
@@ -312,7 +294,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
         widget.onStart();
       }
 
-      // TODO controller.onRecordingStarted(context);
+      controller.onRecordingStarted(context);
     });
   }
 
@@ -322,10 +304,10 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
       _state = _RecorderState.isStopped;
 
       if (widget.onStopped != null) {
-        // TODO widget.onStopped(widget.audio);
+        widget.onStopped(widget.audio);
       }
 
-      // TODO controller.onRecordingStopped(context, _recorder.duration);
+      controller.onRecordingStopped(context, Duration(milliseconds: 2000)); // TODO
     });
   }
 }

@@ -1,21 +1,3 @@
-/*
- * Copyright 2018, 2019, 2020 Dooboolab.
- *
- * This file is part of Flutter-Sound.
- *
- * Flutter-Sound is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3, as published by
- * the Free Software Foundation.
- *
- * Flutter-Sound is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
@@ -89,7 +71,7 @@ class _DropdownsState extends State<Dropdowns> {
 
         /// this is hacky as we should be passing the actually
         /// useOSUI flag.
-        ActiveCodec().setCodec(false, newCodec);
+        ActiveCodec().setCodec(withUI: false, codec: newCodec);
 
         setState(() {
           getDuration(ActiveCodec().codec);

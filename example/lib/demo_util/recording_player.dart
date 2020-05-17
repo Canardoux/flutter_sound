@@ -1,41 +1,25 @@
-/*
- * Copyright 2018, 2019, 2020 Dooboolab.
- *
- * This file is part of Flutter-Sound.
- *
- * Flutter-Sound is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3, as published by
- * the Free Software Foundation.
- *
- * Flutter-Sound is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
+import '../util/log.dart';
 import 'demo_active_codec.dart';
 import 'demo_common.dart';
 import 'demo_media_path.dart';
-import '../util/log.dart';
 
+///
 class RecordingPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SoundPlayerUI.fromLoader(
-      (context) => createTrack(context),
+      createTrack,
       showTitle: true,
     );
   }
 
+  ///
   Future<Track> createTrack(BuildContext context) async {
     Track track;
 
@@ -58,7 +42,7 @@ class RecordingPlayer extends StatelessWidget {
 
         if (track != null) {
           track.title = title;
-          track.author = "By flutter_sound";
+          track.artist = "By flutter_sound";
 
           if (Platform.isIOS) {
             track.albumArtAsset = 'AppIcon';
@@ -69,8 +53,8 @@ class RecordingPlayer extends StatelessWidget {
       } else {
         var error = SnackBar(
             backgroundColor: Colors.red,
-            content: Text(
-                'You must make a recording first with the selected codec first.'));
+            content: Text('You must make a recording first with the '
+                'selected codec first.'));
         Scaffold.of(context).showSnackBar(error);
       }
     } on Object catch (err) {
@@ -98,7 +82,7 @@ class RecordingPlayer extends StatelessWidget {
   Future<Track> _createPathTrack() async {
     Track track;
     var audioFilePath = MediaPath().pathForCodec(ActiveCodec().codec);
-    track = Track.fromPath(audioFilePath, codec: ActiveCodec().codec);
+    track = Track.fromFile(audioFilePath, codec: ActiveCodec().codec);
     return track;
   }
 

@@ -228,8 +228,8 @@ class _MyAppState extends State<MyApp> {
     switch (_media) {
       case Media.file:
       case Media.buffer:
-        int d = await flutterSoundHelper.duration(this._path[_codec.index]);
-        _duration = d != null ? d / 1000.0 : null;
+        Duration d = await flutterSoundHelper.duration(this._path[_codec.index]);
+        _duration = d != null ? d.inMilliseconds / 1000.0 : null;
         break;
       case Media.asset:
         _duration = null;

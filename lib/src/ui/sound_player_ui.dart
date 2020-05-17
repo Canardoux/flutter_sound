@@ -1,35 +1,29 @@
 /*
- * Copyright 2018, 2019, 2020 Dooboolab.
- *
  * This file is part of Flutter-Sound.
  *
- * Flutter-Sound is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3, as published by
- * the Free Software Foundation.
+ *   Flutter-Sound is free software: you can redistribute it and/or modify
+ *   it under the terms of the Lesser GNU General Public License
+ *   version 3 (LGPL3) as published by the Free Software Foundation.
  *
- * Flutter-Sound is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *   Flutter-Sound is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ *   You should have received a copy of the Lesser GNU General Public License
+ *   along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-//import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../flutter_sound.dart';
-//import '../codec.dart';
-//import '../track.dart';
-//import '../util/ansi_color.dart';
+import '../util/ansi_color.dart';
 import '../util/format.dart';
-//import '../util/log.dart';
-import '../flutter_sound_player.dart';
+import '../util/log.dart';
 import 'grayed_out.dart';
 import 'recorder_playback_controller.dart';
 import 'slider.dart';
@@ -77,7 +71,7 @@ class SoundPlayerUI extends StatefulWidget {
   /// will not be able to click the play button.
   /// The [audioFocus] allows you to control what happens to other
   /// media that is playing when our player starts.
-  /// By default we use [AudioFocus.focusAndHushOthers] which will
+  /// By default we use [AudioFocus.requestFocusAndDuckOthers] which will
   /// reduce the volume of any other players.
   SoundPlayerUI.fromLoader(OnLoad onLoad,
       {bool showTitle = false,
@@ -154,7 +148,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
 
   ///
   SoundPlayerUIState(this._track, this._onLoad, {bool enabled})
-      : _player = FlutterSoundPlayer(),
+      : _player =  FlutterSoundPlayer(),
         _enabled = enabled,
         _localController = StreamController<PlaybackDisposition>.broadcast() {
     _sliderPosition.position = Duration(seconds: 0);
@@ -162,20 +156,18 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     if (!_enabled) {
       __playState = PlayState.disabled;
     }
-
-    _setCallbacks();
+    _player.openAudioSessionWithUI(focus: AudioFocus.requestFocusAndDuckOthers).then( (_){_setCallbacks();});
   }
 
   /// We can play if we have a non-zero duration or we are dynamically
   /// loading tracks via _onLoad.
   Future<bool> get canPlay async {
-    return _onLoad != null ||
-        (_track != null /*&& (await _track.duration).inMilliseconds > 0*/);//TODO
+    return _onLoad != null || (_track != null /* && TODO (_track.length > 0)*/);
   }
 
   /// detect hot reloads when debugging and stop the player.
   /// If we don't the platform specific code keeps running
-  /// and sending methodCalls to a slot that no longe exists.
+  /// and sending methodCalls to a slot that no longer exists.
   @override
   void reassemble() async {
     super.reassemble();
@@ -183,7 +175,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       if (_playState != PlayState.stopped) {
         await stop();
       }
-      //trackRelease(_track);
+      // TODO ! trackRelease(_track);
     }
     //Log.d('Hot reload releasing plugin');
     //_player.release();
@@ -191,27 +183,25 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
 
   @override
   Widget build(BuildContext context) {
-    /*
     registerPlayer(context, this);
     return ChangeNotifierProvider<SliderPosition>(
         create: (_) => _sliderPosition, child: _buildPlayBar());
 
-     TODO */
   }
 
   void _setCallbacks() {
     /// TODO
-    /// should we chain these events incase the user of our api
+    /// should we chain these events in case the user of our api
     /// also wants to see these events?
-    // TODO _player.onStarted = ({wasUser}) => _onStarted();
-    // TODO _player.onStopped = ({wasUser}) => _onStopped();
+    //_player.onStarted = ({wasUser}) => _onStarted();
+    //_player.onStopped = ({wasUser}) => _onStopped();
 
     /// pipe the new sound players stream to our local controller.
-   // TODO _player.dispositionStream().listen(_localController.add);
+    _player.dispositionStream().listen(_localController.add);
   }
 
   /// This can occur:
-  /// When the user clicks play and the [AudioPlayer] sends
+  /// When the user clicks play and the [SoundPlayer] sends
   /// an event to indicate the player is up.
   /// When the app is paused/resume by the user switching away.
   void _onStarted() {
@@ -246,7 +236,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       recorderStream.listen(_localController.add);
     } else {
       /// revert to piping the player
-      // TODO _player.dispositionStream().listen(_localController.add);
+      _player.dispositionStream().listen(_localController.add);
     }
   }
 
@@ -254,7 +244,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   void dispose() {
     print("stopping Player on dispose");
     _stop(supressState: true);
-    // TODO _player.release();
+    _player.closeAudioSession();
     super.dispose();
   }
 
@@ -332,11 +322,12 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     });
 
     _player
-        .resumePlayer(  )
+        .resumePlayer()
         .then((_) => _transitioning = false)
         .catchError((dynamic e) {
       Log.w("Error calling resume ${e.toString()}");
-
+      _playState = PlayState.stopped;
+      _player.stopPlayer();
       return null;
     }).whenComplete(() => _transitioning = false);
   }
@@ -352,6 +343,8 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     _player.pausePlayer().then((_) => _transitioning = false).catchError((dynamic e) {
       Log.w("Error calling pause ${e.toString()}");
       _playState = PlayState.playing;
+      _playState = PlayState.stopped;
+      _player.stopPlayer();
       return null;
     }).whenComplete(() => _transitioning = false);
     ;
@@ -360,7 +353,6 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   /// start playback.
   void play() async {
     _transitioning = true;
-    Log.d(green('Transitioning = true'));
     _loading = true;
     Log.d("Loading starting");
 
@@ -375,7 +367,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
 
     if (_onLoad != null) {
       if (_track != null) {
-        // TODOtrackRelease(_track);
+        // TODO trackRelease(_track);
       }
 
       /// dynamically load the player.
@@ -390,26 +382,31 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     if (newTrack != null) {
       newTrack.then((track) {
         _track = track;
-        _start();
+        if (_track != null) {
+          _start();
+        } else {
+          _loading = false;
+          _transitioning = false;
+        }
       }).catchError((dynamic exception) {
         // errors throw by _onLoad are captured here in the .then
         // handler for newTrack.
-        _transitioning = false;
         Log.d(green('Transitioning = false'));
         _loading = false;
+        _transitioning = false;
         Log.e("Error occured loading the track: ${exception.toString()}");
       });
     } else {
-      _transitioning = false;
       Log.d(green('Transitioning = false'));
       _loading = false;
+      _transitioning = false;
       Log.w("No Track provided by _onLoad. Call to start has been ignored");
     }
   }
 
   /// internal start method.
   void _start() async {
-    /* TODO _player.play(_track).then((_){
+    _player.startPlayerFromTrack(_track, whenFinished: _onStopped).then((_) {
       _playState = PlayState.playing;
     }).catchError((dynamic e) {
       Log.w("Error calling play() ${e.toString()}");
@@ -421,8 +418,6 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       _transitioning = false;
       Log.d(green('Transitioning = false'));
     });
-
-     */
   }
 
   /// Call [stop] to stop the audio playing.
@@ -495,7 +490,40 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
               // limit: 5,
               builder: (context, index) {
                 if (index > 1) {
-                  return SpinKitRing(color: Colors.purple, size: 32);
+                  // return SpinKitRing(color: Colors.purple, size: 32);
+                  return StreamBuilder<PlaybackDisposition>(
+                      stream: _localController.stream,
+                      initialData: PlaybackDisposition(
+
+                          duration: Duration.zero,
+                          position: Duration.zero),
+                      builder: (context, asyncData) {
+                        var disposition = asyncData.data;
+                        // Log.e(yellow('state ${disposition.state} '
+                        //     'progress: ${disposition.progress}'));
+                        var progress = 0.0;
+                        /* TODO
+                        switch (disposition.state) {
+                          case PlaybackDispositionState.preload:
+                            progress = null; // indeterminate
+                            break;
+                          case PlaybackDispositionState.loading:
+                            progress = disposition.progress;
+                            break;
+                          default:
+                            progress = null;
+                            break;
+
+                        }
+                         */
+                        // Log.e(yellow('state ${disposition.state} '
+                        //     'progress: $progress'));
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CircularProgressIndicator(
+                              strokeWidth: 5, value: 0.0),
+                        );
+                      });
                 } else {
                   return Container(width: 32, height: 32);
                 }
@@ -582,31 +610,27 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       _localController.stream,
       (position) {
         _sliderPosition.position = position;
-        _player.seekToPlayer(position.inMilliseconds);
+        _player.seekToPlayer(position);
       },
     ));
   }
 
-  Widget _buildTitle()
-  {
-    /* TODO
+  Widget _buildTitle() {
     var columns = <Widget>[];
 
-    if (_track.title != null) {
-      columns.add(Text(_track.title));
+    if (_track.trackTitle != null) {
+      columns.add(Text(_track.trackTitle));
     }
-    if (_track.title != null && _track.author != null) {
+    if (_track.trackTitle != null && _track.trackAuthor != null) {
       columns.add(Text(' / '));
     }
-    if (_track.author != null) {
-      columns.add(Text(_track.author));
+    if (_track.trackAuthor != null) {
+      columns.add(Text(_track.trackAuthor));
     }
     return Container(
       margin: EdgeInsets.only(bottom: 5),
       child: Row(children: columns),
     );
-  }
-  */
   }
 }
 

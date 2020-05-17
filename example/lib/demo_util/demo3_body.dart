@@ -1,32 +1,14 @@
-/*
- * Copyright 2018, 2019, 2020 Dooboolab.
- *
- * This file is part of Flutter-Sound.
- *
- * Flutter-Sound is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3, as published by
- * the Free Software Foundation.
- *
- * Flutter-Sound is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_sound/src/util/temp_file.dart';
 
 import 'demo_active_codec.dart';
 import 'demo_asset_player.dart';
 import 'demo_drop_downs.dart';
-import 'demo_player_state.dart';
 import 'recorder_state.dart';
 import 'remote_player.dart';
 
@@ -50,18 +32,23 @@ class _MainBodyState extends State<MainBody> {
   @override
   void initState() {
     super.initState();
-    recordingFile = Track.tempFile(Codec.aacADTS);
+     tempFile(suffix: '.aac').then( (path){
+       recordingFile = path;
+       track = Track(trackPath: recordingFile);
+       track.trackAuthor = 'Brett';
+       setState(() {
+       });
+     });
 
-    track = Track.fromPath(recordingFile);
-    track.author = 'Brett';
+
   }
 
-  Future<bool> init() async {
+  Future<bool> init()  async {
     if (!initialized) {
-      await initializeDateFormatting();
-      await RecorderState().init();
-      ActiveCodec().recorderModule = RecorderState().recorderModule;
-      await ActiveCodec().setCodec(false, Codec.aacADTS);
+      initializeDateFormatting();
+      await UtilRecorder().init();
+      ActiveCodec().recorderModule = UtilRecorder().recorderModule;
+      ActiveCodec().setCodec(withUI: false, codec: Codec.aacADTS);
 
       initialized = true;
     }
@@ -90,14 +77,13 @@ class _MainBodyState extends State<MainBody> {
           } else {
             final dropdowns = Dropdowns(
                 onCodecChanged: (codec) =>
-                    ActiveCodec().setCodec(false, codec));
+                    ActiveCodec().setCodec(withUI: false, codec: codec));
 
             return ListView(
               children: <Widget>[
                 _buildRecorder(track),
                 dropdowns,
                 buildPlayBars(),
-                buildHushOthers(),
               ],
             );
           }
@@ -128,45 +114,25 @@ class _MainBodyState extends State<MainBody> {
             SoundPlayerUI.fromTrack(
               track,
               showTitle: true,
-              audioFocus: PlayerState().hushOthers
-                  ? AudioFocus.focusAndHushOthers
-                  : AudioFocus.focusAndKeepOthers,
+              audioFocus: true
+                  ? AudioFocus.requestFocusAndDuckOthers
+                  : AudioFocus.requestFocusAndDuckOthers,
             ),
           ],
         )));
   }
 
-  Widget buildHushOthers() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 4.0),
-            child: Text('Hush Others:'),
-          ),
-          Switch(
-            value: PlayerState().hushOthers,
-            onChanged: (hushOthers) =>
-                hushOthersSwitchChanged(hushOthers: hushOthers),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void hushOthersSwitchChanged({bool hushOthers}) {
-    PlayerState().setHush(hushOthers: hushOthers);
-  }
 }
 
+///
 class Left extends StatelessWidget {
+  ///
   final String label;
 
+  ///
   Left(this.label);
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Padding(
       padding: const EdgeInsets.only(top: 16.0, bottom: 4, left: 8),
       child: Container(

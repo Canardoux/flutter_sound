@@ -320,7 +320,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 	@Override
 	public void seekToPlayer(final MethodCall call,Result result )
 	{
-		int millis = call.argument ( "sec" ) ;
+		int millis = call.argument ( "duration" ) ;
 
 		// Exit the method if a media browser helper was not initialized
 		if ( !wasMediaPlayerInitialized( result ) )

@@ -81,30 +81,17 @@ class FlutterSoundHelper {
     }
   }
 
-  Future<int> duration(String uri) async {
+  Future<Duration> duration(String uri) async {
     if (uri == null) return null;
     Map<dynamic, dynamic> info = await FFmpegGetMediaInformation(uri);
     if (info == null) return null;
     int duration = info['duration'] as int;
-    return duration;
+    return Duration(milliseconds: duration);
   }
 
   Future<bool> convertFile(
       String infile, Codec codecin, String outfile, Codec codecout) async {
-    //File fout = File(outfile);
-    //if (fout.existsSync( ))
-    //{
-      // delete the old temporary file if it exists
-      //await fout.delete( );
-    //}
-    // The following ffmpeg instruction
-    // does not decode and re-encode the file.
-    // It just remux the OPUS data into an Apple CAF envelope.
-    // It is probably very fast
-    // and the user will not notice any delay,
-    // even with a very large data.
-    // This is the price to pay for the Apple stupidity.
-    int rc;
+      int rc;
     if (codecin == Codec.opusOGG &&
         codecout == Codec.opusCAF) // Do not need to re-encode. Just remux
       rc = await flutterSoundHelper.executeFFmpegWithArguments([

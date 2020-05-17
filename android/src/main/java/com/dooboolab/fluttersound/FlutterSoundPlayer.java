@@ -545,7 +545,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 	public void seekToPlayer ( final MethodCall call, final Result result )
 	{
-		int millis = call.argument ( "sec" ) ;
+		int millis = call.argument ( "duration" ) ;
 
 		if ( this.model.getMediaPlayer () == null )
 		{

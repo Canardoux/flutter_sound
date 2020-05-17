@@ -14,36 +14,24 @@
  *   along with Flutter-Sound (Flauto).  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-import 'demo_util/demo3_body.dart';
+import 'package:path/path.dart';
+import 'package:uuid/uuid.dart';
+import 'package:path_provider/path_provider.dart';
 
-/// demonstrates the recording widget linked to a playback widget.
-void main() {
-  runApp(MyApp());
-}
+/// Creates an path to a temporary file.
+Future<String> tempFile({String suffix}) async {
+  suffix ??= 'tmp';
 
-/// Example app.
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Flutter Sound'),
-        ),
-        body: MainBody(),
-      ),
-    );
+  if (!suffix.startsWith('.')) {
+    suffix = '.$suffix';
   }
+  var uuid = Uuid();
+  var tmpDir = await getTemporaryDirectory();
+  var path = '${join(tmpDir.path, uuid.v4())}$suffix';
+  var parent = dirname(path);
+  Directory(parent).createSync(recursive: true);
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  return path;
 }

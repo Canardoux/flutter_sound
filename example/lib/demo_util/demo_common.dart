@@ -1,29 +1,11 @@
-/*
- * Copyright 2018, 2019, 2020 Dooboolab.
- *
- * This file is part of Flutter-Sound.
- *
- * Flutter-Sound is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3, as published by
- * the Free Software Foundation.
- *
- * Flutter-Sound is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:intl/intl.dart';
 
+import 'package:flutter_sound/src/util/log.dart';
 import 'demo_media_path.dart';
-import '../util/log.dart';
 
 /// Describes how the media is stored.
 enum MediaStorage {
@@ -49,7 +31,7 @@ Future<Duration> getDuration(Codec codec) async {
   switch (MediaPath().media) {
     case MediaStorage.file:
     case MediaStorage.buffer:
-      duration = FFMpegUtil().duration(MediaPath().pathForCodec(codec));
+      duration = flutterSoundHelper.duration(MediaPath().pathForCodec(codec));
       break;
     case MediaStorage.asset:
       duration = null;

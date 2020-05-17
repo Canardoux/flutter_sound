@@ -80,6 +80,15 @@ class FlutterSoundRecorder extends Session {
   RecorderState recorderState = RecorderState.isStopped;
   StreamController<RecordingDisposition> _recorderController;
 
+
+  ///
+  Stream<RecordingDisposition> dispositionStream() {
+    return (_recorderController != null) ? _recorderController.stream : null;
+  }
+  Stream<RecordingDisposition> get onProgress => (_recorderController != null) ? _recorderController.stream : null;
+
+
+
   bool isOggOpus =
       false; // Set by startRecorder when the user wants to record an ogg/opus
   String
@@ -93,7 +102,6 @@ class FlutterSoundRecorder extends Session {
 
   bool get isPaused => (recorderState == RecorderState.isPaused);
 
-  Stream<RecordingDisposition> get onProgress => _recorderController.stream;
 
 
   //FlutterSoundRecorder() {}
@@ -113,6 +121,7 @@ class FlutterSoundRecorder extends Session {
     if (flautoRecorderPlugin == null) {
       flautoRecorderPlugin = FlautoRecorderPlugin();
     } // The lazy singleton
+    _setRecorderCallback();
     openSession();
     await invokeMethod('initializeFlautoRecorder', <String, dynamic>{'focus': focus.index, 'audioFlags': audioFlags,});
 
@@ -145,7 +154,13 @@ class FlutterSoundRecorder extends Session {
 
   /// Returns true if the specified encoder is supported by flutter_sound on this platform
   Future<bool> isEncoderSupported(Codec codec) async {
-    await openAudioSession();
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
+
     bool result;
     // For encoding ogg/opus on ios, we need to support two steps :
     // - encode CAF/OPPUS (with native Apple AVFoundation)
@@ -188,7 +203,12 @@ class FlutterSoundRecorder extends Session {
   /// duration listeners.
   /// The default is every 10 milliseconds.
   Future<void> setSubscriptionDuration(Duration duration) async {
-    await openAudioSession();
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
     await invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'duration': duration.inMilliseconds,
     }) ;
@@ -218,7 +238,12 @@ class FlutterSoundRecorder extends Session {
     int bitRate = 16000,
     AudioSource audioSource = AudioSource.defaultSource,
   }) async {
-    await openAudioSession();
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
     // Request Microphone permission if needed
     /*
     if (requestPermission) {
@@ -265,7 +290,7 @@ class FlutterSoundRecorder extends Session {
 
       await invokeMethod('startRecorder', param);
 
-       _setRecorderCallback();
+       //_setRecorderCallback();
       recorderState = RecorderState.isRecording;
       // if the caller wants OGG/OPUS we must remux the temporary file
       if ( isOggOpus) {
@@ -277,11 +302,17 @@ class FlutterSoundRecorder extends Session {
   }
 
   Future<void> stopRecorder() async {
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
     await invokeMethod('stopRecorder', <String, dynamic>{}) as String;
 
     recorderState = RecorderState.isStopped;
 
-    _removeRecorderCallback();
+    //_removeRecorderCallback();
     if (isOggOpus) {
       // delete the target if it exists
       // (ffmpeg gives an error if the output file already exists)
@@ -308,17 +339,34 @@ class FlutterSoundRecorder extends Session {
 
 
   Future<void> setAudioFocus( { AudioFocus focus = AudioFocus.requestFocusAndStopOthers, int audioFlags = outputToSpeaker}) async {
-    await openAudioSession(focus:focus, audioFlags: audioFlags);
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
     await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus, 'audioFlags':audioFlags});
   }
 
 
   Future<void> pauseRecorder() async {
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
     await invokeMethod('pauseRecorder', <String, dynamic>{}) as String;
     recorderState = RecorderState.isPaused;
   }
 
   Future<void> resumeRecorder() async {
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
     await invokeMethod('resumeRecorder', <String, dynamic>{}) as String;
     recorderState = RecorderState.isRecording;
   }
@@ -376,5 +424,12 @@ class RecordingPermissionException extends RecorderException {
 class _InitializationInProgress implements Exception {
   _InitializationInProgress() {
     print('An initialization is currently already in progress.');
+  }
+}
+
+
+class _notOpen implements Exception {
+  _notOpen() {
+    print('Audio session is not open');
   }
 }

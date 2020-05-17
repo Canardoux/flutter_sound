@@ -11,6 +11,8 @@ dependencies:
   logger: ^0.7.0+2
   intl: ^0.16.1
   recase: ^2.0.1
+  uuid: ^2.0.4
+  provider: ^4.1.0
   flutter_spinkit: ^4.0.0
   path: ">=1.0.0 <2.0.0"
   flutter:

@@ -252,19 +252,37 @@ class FlutterSoundPlayer extends Session {
   StreamController<PlaybackDisposition> _playerController ;//= StreamController<PlaybackDisposition>.broadcast();
 
 
+  Stream<PlaybackDisposition> get onProgress =>
+              _playerController != null ? _playerController.stream : null;
 
+  /// Provides a stream of dispositions which
+  /// provide updated position and duration
+  /// as the audio is played.
+  /// The duration may start out as zero until the
+  /// media becomes available.
+  /// The [interval] dictates the minimum interval between events
+  /// being sent to the stream.
   ///
-  Stream<PlaybackDisposition> dispositionStream(
-              {Duration interval = const Duration(milliseconds: 100)}) {
-    return dispositionStream(interval: interval);
+  /// The minimum interval supported is 100ms.
+  ///
+  /// Note: the underlying stream has a minimum frequency of 100ms
+  /// so multiples of 100ms will give you the most consistent timing
+  /// source.
+  ///
+  /// Note: all calls to [dispositionStream] agains this player will
+  /// share a single interval which will controlled by the last
+  /// call to this method.
+  ///
+  /// If you pause the audio then no updates will be sent to the
+  /// stream.
+  Stream<PlaybackDisposition> dispositionStream() {
+    return _playerController != null ? _playerController.stream : null;
   }
 
   TWhenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
   //TonPaused whenPause; // User callback "whenPaused:"
   TupdateProgress onUpdateProgress;
 
-  Stream<PlaybackDisposition> get onProgress =>
-              _playerController != null ? _playerController.stream : null;
 
   bool get isPlaying => playerState == PlayerState.isPlaying;
 
@@ -278,7 +296,7 @@ class FlutterSoundPlayer extends Session {
 
   Future<FlutterSoundPlayer> openAudioSession( { AudioFocus focus = AudioFocus.requestFocusAndStopOthers, int audioFlags = outputToSpeaker}) async {
     if (isInited == Initialized.fullyInitialized || isInited == Initialized.fullyInitializedWithUI) {
-      return this;
+      await closeAudioSession();
     }
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
@@ -291,17 +309,18 @@ class FlutterSoundPlayer extends Session {
     }
 
     openSession();
+    setPlayerCallback();
 
     await invokeMethod('initializeMediaPlayer', <String, dynamic>{'focus': focus.index, 'audioFlags': audioFlags,});
     isInited = Initialized.fullyInitialized;
     return this;
   }
 
-  Future<FlutterSoundPlayer> openAudioSessionWithUI( { AudioFocus focus = AudioFocus.requestFocusAndStopOthers, int audioFlags = outputToSpeaker}) async {
-    if (isInited == Initialized.fullyInitializedWithUI) {
-      return this;
+  Future<FlutterSoundPlayer> openAudioSessionWithUI( { AudioFocus focus = AudioFocus.requestFocusAndDuckOthers, int audioFlags = outputToSpeaker}) async {
+    if (isInited == Initialized.fullyInitializedWithUI || isInited == Initialized.fullyInitialized) {
+      await closeAudioSession();
     }
-    if (isInited == Initialized.initializationInProgress || isInited == Initialized.fullyInitialized) {
+    if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
     }
 
@@ -311,6 +330,7 @@ class FlutterSoundPlayer extends Session {
       flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton
     }
     openSession();
+    setPlayerCallback();
 
     try {
       await invokeMethod('initializeMediaPlayerWithUI', <String, dynamic>{'focus': focus.index, 'audioFlags': audioFlags,});
@@ -324,8 +344,17 @@ class FlutterSoundPlayer extends Session {
     return this;
   }
 
+
+
   Future<void> setAudioFocus( { AudioFocus focus = AudioFocus.requestFocusAndStopOthers, int audioFlags = outputToSpeaker}) async {
-    await openAudioSession(focus:focus, audioFlags: audioFlags);
+
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
+
     await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus, 'audioFlags':audioFlags});
   }
 
@@ -341,7 +370,7 @@ class FlutterSoundPlayer extends Session {
     isInited = Initialized.initializationInProgress;
 
     await stopPlayer();
-    _removePlayerCallback(); // playerController is closed by this function
+    //_removePlayerCallback(); // playerController is closed by this function
     await invokeMethod('releaseMediaPlayer', <String, dynamic>{});
     await _playerController?.close();
     closeSession();
@@ -352,7 +381,7 @@ class FlutterSoundPlayer extends Session {
     int duration = call['duration'] as int;
     int position = call['position'] as int;
     //print('position=$position');
-    _playerController.add(PlaybackDisposition( Duration(milliseconds: position), Duration(milliseconds: duration),) );
+    _playerController.add(PlaybackDisposition(position: Duration(milliseconds: position), duration: Duration(milliseconds: duration),) );
   }
 
   void audioPlayerFinished(Map call) {
@@ -366,7 +395,7 @@ class FlutterSoundPlayer extends Session {
     //if (playerController != null) playerController.add(status);
 
     playerState = PlayerState.isStopped;
-    _removePlayerCallback();
+    //_removePlayerCallback();
 
     if (audioPlayerFinishedPlaying != null) audioPlayerFinishedPlaying();
   }
@@ -405,7 +434,13 @@ class FlutterSoundPlayer extends Session {
   /// Returns true if the specified decoder is supported by flutter_sound on this platform
   Future<bool> isDecoderSupported(Codec codec) async {
     bool result;
-    await openAudioSession();
+
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
     // For decoding ogg/opus on ios, we need to support two steps :
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
@@ -436,7 +471,13 @@ class FlutterSoundPlayer extends Session {
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
   Future<bool> iosSetCategory(
       SessionCategory category, SessionMode mode, int options) async {
-    await openAudioSession();
+
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
     if (!Platform.isIOS) return false;
     var r = await invokeMethod('iosSetCategory', <String, dynamic>{
       'category': iosSessionCategory[category.index],
@@ -453,7 +494,13 @@ class FlutterSoundPlayer extends Session {
   /// After calling this function, the caller is responsible for using correctly setActive
   ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
   Future<bool> androidAudioFocusRequest(int focusGain) async {
-    await openAudioSession();
+
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
     if (!Platform.isAndroid) return false;
     var r = await invokeMethod('androidAudioFocusRequest',
         <String, dynamic>{'focusGain': focusGain}) as bool;
@@ -462,7 +509,13 @@ class FlutterSoundPlayer extends Session {
   }
 
   Future<void> setSubscriptionDuration(Duration duration) async {
-    await openAudioSession();
+
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
     await invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'milliSec': duration.inMilliseconds,
     }) ;
@@ -470,7 +523,7 @@ class FlutterSoundPlayer extends Session {
 
   void setPlayerCallback() {
     if (_playerController == null) {
-      _playerController = StreamController.broadcast();
+      _playerController = StreamController<PlaybackDisposition>.broadcast();
     }
   }
 
@@ -514,9 +567,13 @@ class FlutterSoundPlayer extends Session {
       final track = Track(trackPath: fromURI, dataBuffer: fromDataBuffer, codec: codec);
       return startPlayerFromTrack(track, whenFinished: whenFinished);
     }
-    await openAudioSession();
-    if (isInited != Initialized.fullyInitialized)
-      throw(Exception('Not initialized'));
+
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
     await stopPlayer(); // Just in case
     //bool result = true;
     try {
@@ -543,7 +600,7 @@ class FlutterSoundPlayer extends Session {
 
       audioPlayerFinishedPlaying = whenFinished;
       await invokeMethod('startPlayer', {'codec':codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI,} as Map<String, dynamic>);
-      setPlayerCallback();
+      //setPlayerCallback();
 
       playerState = PlayerState.isPlaying;
 
@@ -561,9 +618,13 @@ class FlutterSoundPlayer extends Session {
                 TonPaused onPaused,
                 TWhenFinished whenFinished = null,
               }) async {
-    await openAudioSessionWithUI();
-    if (isInited != Initialized.fullyInitializedWithUI)
-      throw(Exception('Not initialized'));
+
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitializedWithUI ) {
+      throw (_notOpen());
+    }
 
     await stopPlayer(); // Just in case
     audioPlayerFinishedPlaying = whenFinished;
@@ -577,17 +638,24 @@ class FlutterSoundPlayer extends Session {
           'canSkipForward': onSkipForward != null,
           'canSkipBackward': onSkipBackward != null,
     } );
-    setPlayerCallback();
+    //setPlayerCallback();
     playerState = PlayerState.isPlaying;
   }
 
 
     Future<void> stopPlayer() async {
-    playerState = PlayerState.isStopped;
+      if (isInited == Initialized.initializationInProgress) {
+        throw (_InitializationInProgress());
+      }
+      if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
+        throw (_notOpen());
+      }
+      playerState = PlayerState.isStopped;
+
     audioPlayerFinishedPlaying = null;
 
     try {
-      _removePlayerCallback(); // playerController is closed by this function
+      //_removePlayerCallback(); // playerController is closed by this function
       await invokeMethod('stopPlayer', <String, dynamic>{}) as String;
     } catch (e) {
       print(e);
@@ -603,6 +671,13 @@ class FlutterSoundPlayer extends Session {
   }
 
   Future<void> pausePlayer() async {
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
+
     if (playerState != PlayerState.isPlaying) {
       await _stopPlayerwithCallback(); // To recover a clean state
       throw PlayerRunningException(
@@ -614,6 +689,13 @@ class FlutterSoundPlayer extends Session {
   }
 
   Future<void> resumePlayer() async {
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
+
     if (playerState != PlayerState.isPaused) {
       await _stopPlayerwithCallback(); // To recover a clean state
       throw PlayerRunningException(
@@ -623,15 +705,27 @@ class FlutterSoundPlayer extends Session {
     await invokeMethod('resumePlayer', <String, dynamic>{}) as String;
   }
 
-  Future<void> seekToPlayer(int milliSecs) async {
-    await openAudioSession();
+  Future<void> seekToPlayer(Duration duration) async {
+
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
     await invokeMethod('seekToPlayer', <String, dynamic>{
-      'sec': milliSecs,
+      'duration': duration.inMilliseconds,
     });
   }
 
   Future<void> setVolume(double volume) async {
-    await openAudioSession();
+
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
     var indexedVolume = Platform.isIOS ? volume * 100 : volume;
     if (volume < 0.0 || volume > 1.0) {
       throw RangeError('Value of volume should be between 0.0 and 1.0.');
@@ -653,30 +747,6 @@ class FlutterSoundPlayer extends Session {
   }
 }
 
-/*
-class PlayStatus {
-  final double duration;
-  double currentPosition;
-
-  /// A convenience ctor. If you are using a stream builder
-  /// you can use this to set initialData with both duration
-  /// and postion as 0.
-  PlayStatus.zero()
-      : duration = 0,
-        currentPosition = 0;
-
-  PlayStatus.fromJSON(Map<String, dynamic> json)
-      : duration = double.parse(json['duration'] as String),
-        currentPosition = double.parse(json['current_position'] as String);
-
-  @override
-  String toString() {
-    return 'duration: $duration, '
-        'currentPosition: $currentPosition';
-  }
-}
-*/
-
 /// Used to stream data about the position of the
 /// playback as playback proceeds.
 class PlaybackDisposition {
@@ -695,7 +765,16 @@ class PlaybackDisposition {
                 duration = Duration(seconds: 0);
 
   ///
-  PlaybackDisposition(this.position, this.duration);
+  //PlaybackDisposition(this.position, this.duration);
+
+  ///
+  PlaybackDisposition(
+               {
+                this.position = Duration.zero,
+                this.duration = Duration.zero,
+              });
+
+
 
   @override
   String toString() {
@@ -713,7 +792,13 @@ class PlayerRunningException implements Exception {
 
 class _InitializationInProgress implements Exception {
   _InitializationInProgress() {
-    print('An initialization is currently already in progress.');
+    print('An initialization of this audio session is currently already in progress.');
+  }
+}
+
+class _notOpen implements Exception {
+  _notOpen() {
+    print('Audio session is not open');
   }
 }
 
@@ -721,25 +806,25 @@ class _InitializationInProgress implements Exception {
 /// The track to play in the audio player
 class Track {
   /// The title of this track
-  final String trackTitle;
+   String trackTitle;
 
   /// The buffer containing the audio file to play
   Uint8List dataBuffer;
 
   /// The name of the author of this track
-  final String trackAuthor;
+   String trackAuthor;
 
   /// The path that points to the track audio file
   String trackPath;
 
   /// The URL that points to the album art of the track
-  final String albumArtUrl;
+   String albumArtUrl;
 
   /// The asset that points to the album art of the track
-  final String albumArtAsset;
+   String albumArtAsset;
 
   /// The file that points to the album art of the track
-  final String albumArtFile;
+   String albumArtFile;
 
   /// The image that points to the album art of the track
   //final String albumArtImage;

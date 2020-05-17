@@ -1,19 +1,17 @@
 /*
- * Copyright 2018, 2019, 2020 Dooboolab.
+ * This file is part of Flutter-Sound (Flauto).
  *
- * This file is part of Flutter-Sound.
+ *   Flutter-Sound (Flauto) is free software: you can redistribute it and/or modify
+ *   it under the terms of the Lesser GNU General Public License
+ *   version 3 (LGPL3) as published by the Free Software Foundation.
  *
- * Flutter-Sound is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3, as published by
- * the Free Software Foundation.
+ *   Flutter-Sound (Flauto) is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
  *
- * Flutter-Sound is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ *   You should have received a copy of the Lesser GNU General Public License
+ *   along with Flutter-Sound (Flauto).  If not, see <https://www.gnu.org/licenses/>.
  */
 
 import 'dart:async';
@@ -21,29 +19,29 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
+import 'package:flutter_sound/src/util/log.dart';
+import 'package:flutter_sound/src/util/temp_file.dart';
 import 'demo_active_codec.dart';
 import 'demo_media_path.dart';
-import '../util/log.dart';
-import '../util/temp_file.dart';
 
 /// Tracks the Recoder UI's state.
-class RecorderState {
-  static final RecorderState _self = RecorderState._internal();
+class UtilRecorder {
+  static final UtilRecorder _self = UtilRecorder._internal();
 
   /// primary recording moduel
-  SoundRecorder recorderModule;
+  FlutterSoundRecorder recorderModule;
 
   /// secondary recording modue used to show that two recordings can occur
   /// concurrently.
-  SoundRecorder recorderModule_2; // Used if REENTRANCE_CONCURENCY
+  FlutterSoundRecorder recorderModule_2; // Used if REENTRANCE_CONCURENCY
 
   /// Factory ctor
-  factory RecorderState() {
+  factory UtilRecorder() {
     return _self;
   }
 
-  RecorderState._internal() {
-    recorderModule = SoundRecorder();
+  UtilRecorder._internal()  {
+    recorderModule = FlutterSoundRecorder();
   }
 
   /// [true] if we are currently recording.
@@ -54,6 +52,7 @@ class RecorderState {
 
   /// required to initialize the recording subsystem.
   void init() async {
+    await recorderModule.openAudioSession(focus: AudioFocus.requestFocusAndDuckOthers);
     ActiveCodec().recorderModule = recorderModule;
   }
 
@@ -62,7 +61,7 @@ class RecorderState {
   /// Stops the recorder and cause the recording UI to refesh and update with
   /// any state changes.
   void reset() async {
-    if (RecorderState().isRecording) await RecorderState().stopRecorder();
+    if (UtilRecorder().isRecording) await UtilRecorder().stopRecorder();
   }
 
   /// Returns a stream of [RecordingDisposition] so you can
@@ -70,13 +69,13 @@ class RecorderState {
   /// Use this with a StreamBuilder
   Stream<RecordingDisposition> dispositionStream(
       {Duration interval = const Duration(milliseconds: 10)}) {
-    return recorderModule.dispositionStream(interval: interval);
+    return recorderModule.dispositionStream(/* TODO interval: interval*/);
   }
 
   /// stops the recorder.
   void stopRecorder() async {
     try {
-      await recorderModule.stop();
+      await recorderModule.stopRecorder();
     } on Object catch (err) {
       Log.d('stopRecorder error: $err');
       rethrow;
@@ -89,12 +88,12 @@ class RecorderState {
       /// TODO put this back iin
       /// await PlayerState().stopPlayer();
 
-      var track = Track.fromPath(await tempFile(), codec: ActiveCodec().codec);
-      await recorderModule.record(track);
+      var track = Track(trackPath: await tempFile(), codec: ActiveCodec().codec);
+      await recorderModule.startRecorder(toFile: track.trackPath);
 
       Log.d('startRecorder: $track');
 
-      MediaPath().setCodecPath(ActiveCodec().codec, track.url);
+      MediaPath().setCodecPath(ActiveCodec().codec, track.trackPath);
     } on RecorderException catch (err) {
       Log.d('startRecorder error: $err');
 
@@ -112,10 +111,10 @@ class RecorderState {
     assert(recorderModule.isRecording || recorderModule.isPaused);
     if (recorderModule.isPaused) {
       {
-        recorderModule.resume();
+        recorderModule.resumeRecorder();
       }
     } else {
-      recorderModule.pause();
+      recorderModule.pauseRecorder();
     }
   }
 }

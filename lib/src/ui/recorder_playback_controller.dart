@@ -1,28 +1,25 @@
 /*
- * Copyright 2018, 2019, 2020 Dooboolab.
+ * This file is part of Flutter-Sound (Flauto).
  *
- * This file is part of Flutter-Sound.
+ *   Flutter-Sound (Flauto) is free software: you can redistribute it and/or modify
+ *   it under the terms of the Lesser GNU General Public License
+ *   version 3 (LGPL3) as published by the Free Software Foundation.
  *
- * Flutter-Sound is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3, as published by
- * the Free Software Foundation.
+ *   Flutter-Sound (Flauto) is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
  *
- * Flutter-Sound is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ *   You should have received a copy of the Lesser GNU General Public License
+ *   along with Flutter-Sound (Flauto).  If not, see <https://www.gnu.org/licenses/>.
  */
 
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
-//import '../playback_disposition.dart';
-//import '../util/log.dart';
 import '../flutter_sound_recorder.dart';
+import '../flutter_sound_player.dart';
+import '../util/log.dart';
 
 import 'sound_player_ui.dart';
 import 'sound_recorder_ui.dart';
@@ -69,115 +66,93 @@ class RecorderPlaybackController extends InheritedWidget {
       context.dependOnInheritedWidgetOfExactType<RecorderPlaybackController>();
 }
 
-class _RecordPlaybackControllerState
-{
+class _RecordPlaybackControllerState {
   SoundRecorderUIState _recorderState;
   SoundPlayerUIState _playerState;
 
   /// Proxies recording events into playback events.
   /// So we can have the SoundPlayerUI update as the
   /// recorded duration increases.
-  final StreamController<RecordingDisposition> _localController =
-  StreamController<RecordingDisposition>.broadcast( );
+  final StreamController<PlaybackDisposition> _localController =
+      StreamController<PlaybackDisposition>.broadcast();
 
   /// Stops both the player and the recorder.
-  void stop( )
-  {
-    _playerState?.stop( );
-    _recorderState?.stop( );
+  void stop() {
+    _playerState?.stop();
+    _recorderState?.stop();
   }
 
-  void _onRecorderStarted( )
-  {
-    //Log.d( '_onRecorderStarted' );
-    if (_playerState != null)
-    {
-      _playerState.stop( ).then( ( _ )
-                                 {
-                                   _playerState.playbackEnabled( enabled: false );
+  void _onRecorderStarted() {
+    Log.d('_onRecorderStarted');
+    if (_playerState != null) {
+      _playerState.stop().then((_) {
+        _playerState.playbackEnabled(enabled: false);
 
-                                   // attach the player to the recorder stream so it can
-                                   // show the duration updating
-                                   // connectPlayerToRecorderStream( _playerState, _localController.stream ); TODO
-                                   // reset the duration and position of the player
-                                   _localController.add( RecordingDisposition.zero( ) );
-                                 } );
+        // attach the player to the recorder stream so it can
+        // show the duration updating
+        connectPlayerToRecorderStream(_playerState, _localController.stream);
+        // reset the duration and position of the player
+        _localController.add(PlaybackDisposition.zero());
+      });
     }
   }
 
-  void _onRecorderStopped( Duration duration )
-  {
-    //Log.d( '_onRecorderStopped' );
-    if (_playerState != null)
-    {
-      _playerState.playbackEnabled( enabled: true );
+  void _onRecorderStopped(Duration duration) {
+    Log.d('_onRecorderStopped');
+    if (_playerState != null) {
+      _playerState.playbackEnabled(enabled: true);
 
       /// detach the player stream from the recorder stream.
       /// The player will now re-attached to the AudioPlayer stream
       /// so that it can show playback progress.
-      connectPlayerToRecorderStream( _playerState, null );
+      connectPlayerToRecorderStream(_playerState, null);
     }
   }
 
-  /*
   void registerRecorder(SoundRecorderUIState recorderState) {
     _recorderState = recorderState;
 
     // wire our local stream to take events from the recording.
-    _recorderState.dispositionStream.listen((recorderDisposition) =>
-        _localController.add(
-            PlaybackDisposition(Duration.zero, recorderDisposition.duration)));
+    _recorderState.dispositionStream.listen
+    ((recorderDisposition) =>
+        _localController.add(PlaybackDisposition(
+            // TODO ? PlaybackDispositionState.recording,
+            position: Duration.zero,
+            duration: recorderDisposition.duration)
+                             )
+    );
   }
 }
 
-   */
+///
+/// functions to hide internal api methods.
+///
 
-  ///
-  /// functions to hide internal api methods.
-  ///
+///
+void registerRecorder(BuildContext context, SoundRecorderUIState recorder) {
+  RecorderPlaybackController.of(context)?._state?.registerRecorder(recorder);
+}
 
-  ///
-  void registerRecorder( BuildContext context, SoundRecorderUIState recorder )
-  {
-    RecorderPlaybackController
-                .of( context )
-                ?._state
-                ?.registerRecorder( context, recorder );
+///
+void registerPlayer(BuildContext context, SoundPlayerUIState player) {
+  var controller = RecorderPlaybackController.of(context)?._state;
+  if (controller != null) {
+    controller._playerState = player;
   }
+}
 
-  ///
-  void registerPlayer( BuildContext context, SoundPlayerUIState player )
-  {
-    var controller = RecorderPlaybackController
-                .of( context )
-                ?._state;
-    if (controller != null)
-    {
-      controller._playerState = player;
-    }
-  }
+///
+void onRecordingStarted(BuildContext context) {
+  RecorderPlaybackController.of(context)._state._onRecorderStarted();
+}
 
-  ///
-  void onRecordingStarted( BuildContext context )
-  {
-    RecorderPlaybackController
-                .of( context )
-                ._state
-                ._onRecorderStarted( );
-  }
-
-  ///
-  void onRecordingStopped( BuildContext context, Duration duration )
-  {
-    RecorderPlaybackController
-                .of( context )
-                ._state
-                ._onRecorderStopped( duration );
-  }
+///
+void onRecordingStopped(BuildContext context, Duration duration) {
+  RecorderPlaybackController.of(context)._state._onRecorderStopped(duration);
+}
 
 // ///
 // void onRecorderProgress(
 //     BuildContext context, SoundRecorderUIState recorder, Duration duration) {
 //   recorderPlaybackControllerOf(context)?._state?._onProgress(duration);
 // }
-}

@@ -20,6 +20,7 @@ package com.dooboolab.fluttersound;
 
 
 import android.content.Context;
+import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
@@ -349,10 +350,35 @@ public class FlutterSoundRecorder extends Session
 				                               // model.setRecordTime(time);
 				                               try
 				                               {
+					                               double db = 0.0;
+					                               if ( recorder != null )
+					                               {
+						                               double maxAmplitude = recorder.getMaxAmplitude ();
+
+						                               // Calculate db based on the following article.
+						                               // https://stackoverflow.com/questions/10655703/what-does-androids-getmaxamplitude-function-for-the-mediarecorder-actually-gi
+						                               //
+						                               double ref_pressure = 51805.5336;
+						                               double p            = maxAmplitude / ref_pressure;
+						                               double p0           = 0.0002;
+
+						                               db = 20.0 * Math.log10 ( p / p0 );
+
+						                               // if the microphone is off we get 0 for the amplitude which causes
+						                               // db to be infinite.
+						                               if ( Double.isInfinite ( db ) )
+						                               {
+							                               db = 0.0;
+						                               }
+
+					                               }
+
+
+
 					                               Map<String, Object> dic = new HashMap<String, Object> ();
 					                               dic.put ( "slotNo", slotNo );
 					                               dic.put ( "duration", time );
-					                               dic.put ( "dbPeakLevel", 0.0 );
+					                               dic.put ( "dbPeakLevel", db );
 					                               invokeMethodWithMap ( "updateRecorderProgress", dic );
 					                               recordHandler.postDelayed ( model.getRecorderTicker (), model.subsDurationMillis );
 				                               }

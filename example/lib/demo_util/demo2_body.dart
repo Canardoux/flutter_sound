@@ -1,26 +1,9 @@
-/*
- * Copyright 2018, 2019, 2020 Dooboolab.
- *
- * This file is part of Flutter-Sound.
- *
- * Flutter-Sound is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3, as published by
- * the Free Software Foundation.
- *
- * Flutter-Sound is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
+import '../util/log.dart';
 import 'demo_active_codec.dart';
 import 'demo_asset_player.dart';
 import 'demo_drop_downs.dart';
@@ -29,7 +12,7 @@ import 'recorder_state.dart';
 import 'recording_player.dart';
 import 'remote_player.dart';
 import 'track_switched.dart';
-import '../util/log.dart';
+
 
 ///
 class MainBody extends StatefulWidget {
@@ -52,7 +35,7 @@ class _MainBodyState extends State<MainBody> {
       await initializeDateFormatting();
       await RecorderState().init();
       ActiveCodec().recorderModule = RecorderState().recorderModule;
-      await ActiveCodec().setCodec(_useOSUI, Codec.aacADTS);
+      await ActiveCodec().setCodec(withUI: _useOSUI, codec: Codec.aacADTS);
 
       initialized = true;
     }
@@ -74,7 +57,7 @@ class _MainBodyState extends State<MainBody> {
           } else {
             final dropdowns = Dropdowns(
                 onCodecChanged: (codec) =>
-                    ActiveCodec().setCodec(_useOSUI, codec));
+                    ActiveCodec().setCodec(withUI: _useOSUI, codec: codec));
             final trackSwitch = TrackSwitch(
               isAudioPlayer: _useOSUI,
               switchPlayer: (allow) => switchPlayer(useOSUI: allow),
@@ -126,9 +109,12 @@ class _MainBodyState extends State<MainBody> {
   }
 }
 
+/// Left aligss text
 class Left extends StatelessWidget {
+  ///
   final String label;
 
+  ///
   Left(this.label);
   @override
   Widget build(BuildContext context) {
