@@ -1,11 +1,11 @@
 ## Actually, the following codecs are supported by flutter_sound:
 
-|                 | AAC ADS | Opus OGG | Opus CAF | MP3 | Vorbis OGG | PCM raw| PCM WAV | PCM AIFF | PCM CAF | FLAC | AAC MP4 |
-| :-------------- | :-----: | :------: | :------: | :-- | :--------- | :--    | :-----: | :------: | :-----: | :--: | :-----: |
-| iOS encoder     | Yes     |   Yes(*) | Yes      | No  | No         | No     | Yes     | No       | Yes     | Yes  | Yes     |
-| iOS decoder     | Yes     |   Yes(*) | Yes      | Yes | No         | No     | Yes     | Yes      | Yes     | Yes  | Yes     |
-| Android encoder | Yes     |   No     | No       | No  | No         | Yes    | Yes     | No       | No      | No   | No      |
-| Android decoder | Yes     |   Yes    | Yes(*)   | Yes | Yes        | Yes    | Yes     | Yes(*)   | Yes(*)  | Yes  | Yes     |
+|                 | AAC ADS | Opus OGG | Opus CAF | MP3 | Vorbis OGG | PCM raw| PCM WAV | PCM AIFF | PCM CAF | FLAC | AAC MP4 | AMR-NB | AMR-WB |
+| :-------------- | :-----: | :------: | :------: | :-- | :--------- | :--    | :-----: | :------: | :-----: | :--: | :-----: | :----: | :----: |
+| iOS encoder     | Yes     |   Yes(*) | Yes      | No  | No         | No     | Yes     | No       | Yes     | Yes  | Yes     | NO     | NO     |
+| iOS decoder     | Yes     |   Yes(*) | Yes      | Yes | No         | No     | Yes     | Yes      | Yes     | Yes  | Yes     | NO     | NO     |
+| Android encoder | Yes     |   No     | No       | No  | No         | Yes    | Yes     | No       | No      | No   | No      | YES    | YES    |
+| Android decoder | Yes     |   Yes    | Yes(*)   | Yes | Yes        | Yes    | Yes     | Yes(*)   | Yes(*)  | Yes  | Yes     | YES    | YES    |
 
 This table will eventually be upgrated when more codecs will be added.
 

@@ -44,6 +44,8 @@ const List<String> ext = [
   '_pcm.caf', // pcm16CAF
   '.flac', // flac
   '.mp4', // aacMP4
+  '.amr', // AMR-NB
+  '.amr', // amr-WB
 ];
 
 enum Codec {
@@ -91,4 +93,11 @@ enum Codec {
 
   /// AAC in a MPEG4 container
   aacMP4,
+
+  /// AMR-NB
+  amrNB,
+
+  /// AMR-WB
+  amrWB,
+
 }

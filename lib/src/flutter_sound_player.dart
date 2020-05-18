@@ -229,6 +229,8 @@ class FlutterSoundPlayer extends Session {
     Codec.pcm16WAV, // pcm16CAF
     Codec.defaultCodec, // flac
     Codec.defaultCodec, // aacMP4
+    Codec.defaultCodec, // amrNB
+    Codec.defaultCodec, // amrWB
   ];
 
   static const List<Codec> tabIosConvert = [
@@ -244,6 +246,8 @@ class FlutterSoundPlayer extends Session {
     Codec.defaultCodec, // pcm16CAF
     Codec.defaultCodec, // flac
     Codec.defaultCodec, // aacMP4
+    Codec.defaultCodec, // amrNB
+    Codec.defaultCodec, // amrWB
   ];
 
   PlayerState playerState = PlayerState.isStopped;

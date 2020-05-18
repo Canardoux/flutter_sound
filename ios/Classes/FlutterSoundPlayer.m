@@ -35,12 +35,14 @@ static bool _isIosDecoderSupported [] =
 		true, // opusCAF
 		true, // MP3
 		false, // vorbisOGG
-		true, // pcm16 // Really ????
+		false, // pcm16 
 		true, // pcm16WAV
 		true, // pcm16AIFF
 		true, // pcm16CAF
 		true, // flac
 		true, // aacMP4
+                false, // amrNB
+                false, // amrWB
 };
 
 

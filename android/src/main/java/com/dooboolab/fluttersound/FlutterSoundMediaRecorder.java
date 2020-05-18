@@ -36,8 +36,15 @@ public class FlutterSoundMediaRecorder
 		0, // CODEC_CAF_OPUS (specific Apple)
 		0,// CODEC_MP3 (not implemented)
 		sdkCompat.AUDIO_ENCODER_VORBIS,
-		7 // MediaRecorder.AudioEncoder.DEFAULT // CODEC_PCM (not implemented)
+		7, // MediaRecorder.AudioEncoder.DEFAULT // CODEC_PCM (not implemented)
+		0, // wav
+		0, // aiff
+		0, // pcmCAF
+		0, // flac
+		0, // aacMP4
+		MediaRecorder.AudioEncoder.AMR_NB,
 	};
+
 
 
 	static int formatsArray[] = {
@@ -48,6 +55,12 @@ public class FlutterSoundMediaRecorder
 		, 0 // CODEC_MP3
 		, sdkCompat.OUTPUT_FORMAT_OGG // CODEC_VORBIS
 		, sdkCompat.ENCODING_PCM_16BIT// CODEC_PCM
+		, 0 // wav
+		, 0 // aiff
+		, 0 // pcmCAF
+		, 0 // flac
+		, 0 // aacMP4
+		, MediaRecorder.OutputFormat.AMR_NB
 	};
 
 	static       String pathArray[]               = {
@@ -63,6 +76,7 @@ public class FlutterSoundMediaRecorder
 		, "sound_pcm.caf" // pcm16CAF
 		, "sound.flac" // flac
 		, "sound.mp4" // aacMP4
+		, "sound.amr" // amr
 
 	};
 

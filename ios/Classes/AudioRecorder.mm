@@ -237,6 +237,8 @@ static bool _isIosEncoderSupported [] =
 		true, // pcm16CAF
 		true, // flac
 		true, // aacMP4
+                false, // amrNB
+                false, // amrWB
 
 };
 
@@ -254,6 +256,8 @@ static NSString* defaultExtensions [] =
           @"sound_pcm.caf", // pcm16CAF
           @"sound.flac", // flac
           @"sound.mp4", // aacMP4
+          @"sound.amr", // amrNB
+          @"sound.amr", // amrWB
 
 };
 
@@ -271,7 +275,8 @@ static AudioFormatID formats [] =
         , kAudioFormatLinearPCM  // pcm16CAF
         , kAudioFormatFLAC // flac
         , kAudioFormatMPEG4AAC // aacMP4
-
+        , kAudioFormatAMR // amrNB
+        , kAudioFormatAMR_WB // amrWB
 };
 
 
@@ -349,7 +354,7 @@ AudioRecInterface* audioRec;
                                          //[NSNumber numberWithInt: [iosQuality intValue]],AVEncoderAudioQualityKey,
                                          nil];
 
-            // If bitrate is defined, the use it, otherwise use the OS default
+            // If bitrate is defined, we use it, otherwise use the OS default
             if(![bitRate isEqual:[NSNull null]])
             {
                         [audioSettings setValue:[NSNumber numberWithInt: [bitRate intValue]]

@@ -255,6 +255,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		false, // pcm16CAF
 		true, // flac
 		true, // aacMP4
+		true, // amr
 	};
 
 
@@ -271,6 +272,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		, "._pcm.caf"
 		, ".flac"
 		, ".mp4"
+		, ".amr"
 	};
 
 

@@ -43,7 +43,9 @@ enum FlutterSoundCodec
 	pcm16AIFF,
 	pcm16CAF,
 	flac,
-	aacMP4
+	aacMP4,
+	amrNB,
+	amrWB,
 }
 
 public class Flauto

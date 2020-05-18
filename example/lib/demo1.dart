@@ -75,6 +75,8 @@ class _MyAppState extends State<MyApp> {
     null,
     null,
     null,
+    null,
+    null,
   ];
   StreamSubscription _recorderSubscription;
   StreamSubscription _playerSubscription;
@@ -192,6 +194,8 @@ class _MyAppState extends State<MyApp> {
       await recorderModule.startRecorder(
         toFile: path,
         codec: _codec,
+        bitRate: 8000,
+        sampleRate: 8000,
       );
       print('startRecorder');
 
@@ -287,7 +291,8 @@ class _MyAppState extends State<MyApp> {
     'assets/samples/sample_pcm.caf',
     'assets/samples/sample.flac',
     'assets/samples/sample.mp4',
-    'assets/samples/sample.3gp',
+    'assets/samples/sample.amr', // amrNB
+    'assets/samples/sample.amr', // amrWB
   ];
 
   void _addListeners() {
@@ -436,7 +441,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void seekToPlayer(int milliSecs) async {
-    await playerModule.seekToPlayer(milliSecs);
+    await playerModule.seekToPlayer(Duration(milliseconds: milliSecs));
     print('seekToPlayer');
   }
 
@@ -540,6 +545,15 @@ class _MyAppState extends State<MyApp> {
               value: Codec.aacMP4,
               child: Text('AAC/MP4'),
             ),
+            DropdownMenuItem<Codec>(
+              value: Codec.amrNB,
+              child: Text('AMR-NB'),
+            ),
+            DropdownMenuItem<Codec>(
+              value: Codec.amrWB,
+              child: Text('AMR-WB'),
+            ),
+
           ],
         ),
       ],
@@ -701,7 +715,7 @@ class _MyAppState extends State<MyApp> {
             min: 0.0,
             max: maxDuration,
             onChanged: (double value) async {
-              await playerModule.seekToPlayer(value.toInt());
+              await playerModule.seekToPlayer(Duration(milliseconds: value.toInt() ));
             },
             divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt()));
 
@@ -845,7 +859,7 @@ class _MyAppState extends State<MyApp> {
                 min: 0.0,
                 max: maxDuration,
                 onChanged: (double value) async {
-                  await playerModule.seekToPlayer(value.toInt());
+                  await playerModule.seekToPlayer(Duration(milliseconds: value.toInt()));
                 },
                 divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt())),
         Container(

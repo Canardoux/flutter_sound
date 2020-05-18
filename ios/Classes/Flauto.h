@@ -75,6 +75,8 @@ typedef enum
 
   /// AAC in a MPEG4 container
   aacMP4,
+  
+  amr,
 } t_CODEC;
 
 @interface Flauto : NSObject <FlutterPlugin, AVAudioPlayerDelegate>

@@ -205,6 +205,7 @@ public class FlutterSoundRecorder extends Session
 		false, // pcm16CAF
 		false, // flac
 		false, // aacMP4
+		true, // amr
 	};
 
 	final static int CODEC_OPUS   = 2;
@@ -291,16 +292,17 @@ public class FlutterSoundRecorder extends Session
 	static boolean _isAudioRecorder[] = {
 		false, // DEFAULT
 		false, // aacADTS
-		true, // opusOGG
-		true, // opusCAF
-		true, // MP3
-		true, // vorbisOGG
+		false, // opusOGG
+		false, // opusCAF
+		false , // MP3
+		false, // vorbisOGG
 		true, // pcm16
 		true, // pcm16WAV
-		true, // pcm16AIFF
-		true, // pcm16CAF
-		true, // flac
-		true, // aacMP4
+		false, // pcm16AIFF
+		false, // pcm16CAF
+		false, // flac
+		false, // aacMP4
+		false, // amr
 	};
 
 
