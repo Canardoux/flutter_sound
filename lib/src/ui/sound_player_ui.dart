@@ -437,7 +437,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   /// interal stop method.
   ///
   Future<void> _stop({bool supressState = false}) async {
-    if (_player.isPlaying) {
+    if (!_player.isStopped) {
       _player.stop().then<void>((_) {
         if (_playerSubscription != null) {
           _playerSubscription.cancel;
