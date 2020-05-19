@@ -18,7 +18,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import '../playback_disposition.dart';
-import 'file_management.dart' as fm;
+import 'file_util.dart' as fm;
 import 'log.dart';
 
 /// Used to track temporary media files
@@ -41,16 +41,16 @@ class TempMediaFile {
       throw TempMediaFileAlreadyDeletedException(
           "The file $path has already been deleted");
     }
-    if (fm.exists(path)) fm.delete(path);
+    if (fm.FileUtil().exists(path)) fm.FileUtil().delete(path);
     _deleted = true;
   }
 
   /// creates a temporary media file which can be written to.
   TempMediaFile.empty() {
-    path = fm.tempFile();
+    path = fm.FileUtil().tempFile();
 
-    if (fm.exists(path)) {
-      fm.delete(path);
+    if (fm.FileUtil().exists(path)) {
+      fm.FileUtil().delete(path);
     }
   }
 
@@ -58,10 +58,10 @@ class TempMediaFile {
   /// and returns the path to that file.
   TempMediaFile.fromBuffer(
       Uint8List dataBuffer, LoadingProgress loadingProgress) {
-    path = fm.tempFile();
+    path = fm.FileUtil().tempFile();
 
-    if (fm.exists(path)) {
-      fm.delete(path);
+    if (fm.FileUtil().exists(path)) {
+      fm.FileUtil().delete(path);
     }
 
     var bytesWritten = 0;

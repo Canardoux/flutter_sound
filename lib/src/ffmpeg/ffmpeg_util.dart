@@ -17,7 +17,7 @@
 import 'dart:async';
 import 'dart:core';
 
-import '../util/file_management.dart';
+import '../util/file_util.dart';
 
 import 'flutter_ffmpeg.dart';
 
@@ -94,7 +94,7 @@ class FFMpegUtil {
   Future<Duration> duration(String path) async {
     Duration duration;
     if (path != null) {
-      assert(exists(path));
+      assert(FileUtil().exists(path));
       var info = await _ffMpegGetMediaInformation(path);
       if (info != null) {
         var sduration = info['duration'] as String;

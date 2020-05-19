@@ -7,7 +7,7 @@ import '../codec.dart';
 import '../sound_recorder.dart';
 import '../track.dart';
 
-import '../util/file_management.dart' as fm;
+import '../util/file_util.dart' as fm;
 import 'codec_conversions.dart';
 
 /// a track.
@@ -46,13 +46,15 @@ class RecordingTrack {
       nativeCodec = Codec.cafOpus;
 
       /// temp file to record CAF/OPUS file to
-      recordingPath = fm.tempFile(suffix: '.caf');
+      recordingPath = fm.FileUtil().tempFile(suffix: '.caf');
     } else {
       nativeCodec = track.codec;
       recordingPath = track.path;
     }
 
-    if (fm.exists(recordingPath)) fm.truncate(recordingPath);
+    if (fm.FileUtil().exists(recordingPath)) {
+      fm.FileUtil().truncate(recordingPath);
+    }
   }
 
   /// Used by the [SoundRecorder] to update the [Track]'s duration
@@ -86,7 +88,7 @@ class RecordingTrack {
   /// Check that the target recording path is valid
   void validatePath() {
     /// the directory where we are recording to MUST exist.
-    if (!fm.directoryExists(dirname(track.path))) {
+    if (!fm.FileUtil().directoryExists(dirname(track.path))) {
       throw DirectoryNotFoundException(
           'The directory ${dirname(track.path)} must exists');
     }

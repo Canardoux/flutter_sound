@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'codec.dart';
 import 'playback_disposition.dart';
 import 'util/audio.dart';
-import 'util/file_management.dart' as fm;
+import 'util/file_util.dart' as fm;
 
 typedef TrackAction = void Function(Track current);
 
@@ -54,11 +54,11 @@ class Track {
       throw TrackPathException('The path MUST not be null.');
     }
 
-    if (!fm.exists(path)) {
+    if (!fm.FileUtil().exists(path)) {
       throw TrackPathException('The given path $path does not exist.');
     }
 
-    if (!fm.isFile(path)) {
+    if (!fm.FileUtil().isFile(path)) {
       throw TrackPathException('The given path $path is not a file.');
     }
     _storageType = _TrackStorageType.path;
@@ -126,7 +126,6 @@ class Track {
   /// it will be returned.
   Future<Uint8List> get asBuffer => _audio.asBuffer;
 
-  
   /// returns a unique id for the [Track].
   /// If the [Track] is a path then the path is returned.
   /// If the [Track] is a url then the url.
@@ -167,6 +166,11 @@ class Track {
   ///
   /// The temp file name will be <uuid>.<codec>.
   ///
+  /// The [codec] has no affect on this file except to set the file's extension.
+  ///
+  /// You could still be really stupid and save data in some other format
+  /// into this file. But you're not that stupid are you :)
+  ///
   /// ```dart
   /// var file = tempfile(Codec.mp3)
   ///
@@ -174,7 +178,8 @@ class Track {
   /// > 1230811273109.mp3
   ///
   static String tempFile(Codec codec) {
-    return fm.tempFile(suffix: CodecHelper.codecToExtensionMap[codec]);
+    return fm.FileUtil()
+        .tempFile(suffix: CodecHelper.codecToExtensionMap[codec]);
   }
 }
 

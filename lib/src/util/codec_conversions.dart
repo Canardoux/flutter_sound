@@ -19,7 +19,7 @@ import 'dart:async';
 import '../ffmpeg/ffmpeg_util.dart';
 
 import '../playback_disposition.dart';
-import 'file_management.dart';
+import 'file_util.dart';
 
 /// Provides some codec conversions.
 class CodecConversions {
@@ -30,10 +30,10 @@ class CodecConversions {
   /// an Opus file on IOS.
   static Future<String> opusToCafOpus(
       {String fromPath, LoadingProgress progress}) async {
-    var toPath = tempFile(suffix: '.caf');
-    if (exists(toPath)) {
+    var toPath = FileUtil().tempFile(suffix: '.caf');
+    if (FileUtil().exists(toPath)) {
       // delete the old temporary file if it exists
-      delete(toPath);
+      FileUtil().delete(toPath);
     }
     // The following ffmpeg instruction
     // does not decode and re-encode the file.
@@ -66,7 +66,7 @@ class CodecConversions {
     /// we have to remux the file to get it into the required codec.
     // delete the target if it exists
     // (ffmpeg gives an error if the output file already exists)
-    if (exists(toPath)) delete(toPath);
+    if (FileUtil().exists(toPath)) FileUtil().delete(toPath);
     // The following ffmpeg instruction re-encode the Apple CAF to OPUS.
     // Unfortunately we cannot just remix the OPUS data,
     // because Apple does not set the "extradata" in its private OPUS format.

@@ -7,7 +7,7 @@ import '../playback_disposition.dart';
 import '../util/codec_conversions.dart';
 import '../util/temp_media_file.dart';
 import 'downloader.dart';
-import 'file_management.dart';
+import 'file_util.dart';
 
 /// Provide a set of tools to manage audio data.
 /// Used for Tracks and Recording.
@@ -72,7 +72,7 @@ class Audio {
     }
 
     if (isFile) {
-      _dataBuffer = await readIntoBuffer(_storagePath);
+      _dataBuffer = await FileUtil().readIntoBuffer(_storagePath);
     }
 
     if (isURL) {
@@ -82,7 +82,7 @@ class Audio {
 
         await Downloader().download(url, tempMediaFile.path, (disposition) {});
 
-        _dataBuffer = await readIntoBuffer(tempMediaFile.path);
+        _dataBuffer = await FileUtil().readIntoBuffer(tempMediaFile.path);
       } finally {
         tempMediaFile?.delete();
       }
@@ -120,7 +120,7 @@ class Audio {
       /// will write to disk if its a databuffer.
       _writeBufferToDisk((disposition) {});
 
-      if (_onDisk && fileLength(_storagePath) > 0) {
+      if (_onDisk && FileUtil().fileLength(_storagePath) > 0) {
         _duration = await CodecHelper.duration(codec, _storagePath);
       }
     }
