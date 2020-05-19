@@ -63,9 +63,9 @@ To use Flutter Sound you just do :
 import 'package:flutter_sound/flutter_sound.dart';
 ```
 
-Thius will export all the necessaries dart interfaces.
+This will export all the necessaries dart interfaces.
 
-## Example (Demo App)
+## Examples (Demo Apps)
 
 Flutter Sound comes with two Demo/Examples :
 - [Demo1 app](example/README.md) is a small demonstration of what we can do with Flutter Sound.
