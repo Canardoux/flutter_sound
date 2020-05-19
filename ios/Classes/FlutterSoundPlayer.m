@@ -310,7 +310,9 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
           if (setCategoryDone == NOT_SET)
           {
                   [[AVAudioSession sharedInstance]
-                      setCategory: AVAudioSessionCategoryPlayback
+                      setCategory: AVAudioSessionCategoryPlayAndRecord
+                      mode:AVAudioSessionModeDefault
+                      options: AVAudioSessionCategoryOptionDefaultToSpeaker
                       error: nil];
                    setCategoryDone = FOR_PLAYING;
           }
@@ -383,8 +385,10 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         if (setCategoryDone == NOT_SET)
         {
                 [[AVAudioSession sharedInstance]
-                setCategory: AVAudioSessionCategoryPlayback
-                error: nil];
+                setCategory: AVAudioSessionCategoryPlayAndRecord
+                        mode:AVAudioSessionModeDefault
+                        options: AVAudioSessionCategoryOptionDefaultToSpeaker
+                        error: nil];
                 setCategoryDone = FOR_PLAYING;
         }
         // Able to play in background
@@ -420,10 +424,10 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [audioPlayer stop];
                 audioPlayer = nil;
         }
-        if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) )
+        //if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) )
         {
-                [[AVAudioSession sharedInstance] setActive: NO error: nil];
-                setActiveDone = NOT_SET;
+                //[[AVAudioSession sharedInstance] setActive: NO error: nil];
+                //setActiveDone = NOT_SET;
         }
 }
 

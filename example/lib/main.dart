@@ -196,7 +196,15 @@ class _MyAppState extends State<MyApp> {
       //   androidAudioSource: AndroidAudioSource.MIC,
       // );
       Directory tempDir = await getTemporaryDirectory();
-
+      /*
+      String fileUri =  '${tempDir.path}/${recorderModule.slotNo}-${paths[_codec.index]}';
+      var fout = File(fileUri);
+      if (fout.existsSync()) {
+        //delete the old temporary file if it exists
+        await fout.delete();
+      }
+      assert(!fout.existsSync());
+      */
       String path = await recorderModule.startRecorder(
         uri: '${tempDir.path}/${recorderModule.slotNo}-${paths[_codec.index]}',
         codec: _codec,

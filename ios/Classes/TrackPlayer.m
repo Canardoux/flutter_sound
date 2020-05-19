@@ -216,6 +216,23 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                                    details:nil]);
         }
 
+      // Able to play in silent mode
+        if (setCategoryDone == NOT_SET)
+        {
+                [[AVAudioSession sharedInstance]
+                setCategory: AVAudioSessionCategoryPlayAndRecord
+                        mode:AVAudioSessionModeDefault
+                        options: AVAudioSessionCategoryOptionDefaultToSpeaker
+                        error: nil];
+                setCategoryDone = FOR_PLAYING;
+        }
+
+        // Able to play in background
+        if (setActiveDone == NOT_SET)
+        {
+                [[AVAudioSession sharedInstance] setActive: YES error: nil];
+                setActiveDone = FOR_PLAYING;
+        }
 
         // Check whether the audio file is stored as a path to a file or a buffer
         if([track isUsingPath])
@@ -247,22 +264,7 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                         }
                 }
 
-                // Able to play in silent mode
-                if (setCategoryDone == NOT_SET)
-                {
-                        [[AVAudioSession sharedInstance]
-                        setCategory: AVAudioSessionCategoryPlayback
-                        error: nil];
-                        setCategoryDone = FOR_PLAYING;
-                }
-
-                // Able to play in background
-                if (setActiveDone == NOT_SET)
-                {
-                        [[AVAudioSession sharedInstance] setActive: YES error: nil];
-                        setActiveDone = FOR_PLAYING;
-                }
-
+  
                 isPaused = false;
 
                 // Check whether the file path points to a remote or local file
@@ -491,11 +493,11 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 //audioPlayer = nil;
           }
           // ????  [self cleanTarget:false canSkipForward:false canSkipBackward:false];
-          if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) )
+          //if ( (setActiveDone != BY_USER) && (setActiveDone != NOT_SET) )
           {
                 [self cleanTarget:false canSkipForward:false canSkipBackward:false]; // ???
-                [[AVAudioSession sharedInstance] setActive: NO error: nil];
-                setActiveDone = NOT_SET;
+                //////[[AVAudioSession sharedInstance] setActive: NO error: nil];
+                //////setActiveDone = NOT_SET;
           }
 }
 

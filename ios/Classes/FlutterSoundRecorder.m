@@ -317,10 +317,22 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
           if ((setCategoryDone == NOT_SET) || (setCategoryDone == FOR_PLAYING) )
           {
                 AVAudioSession *session = [AVAudioSession sharedInstance];
-                [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+                [session
+                        setCategory:AVAudioSessionCategoryPlayAndRecord
+                        mode:AVAudioSessionModeDefault
+                        options: AVAudioSessionCategoryOptionDefaultToSpeaker
+                        error:nil];
                 setCategoryDone = FOR_RECORDING;
           }
 
+         // Able to play in background
+        if (setActiveDone == NOT_SET)
+        {
+                [[AVAudioSession sharedInstance] setActive: YES error: nil];
+                setActiveDone = FOR_RECORDING;
+        }
+
+    
           // set volume default to speaker
           UInt32 doChangeDefaultRoute = 1;
           AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(doChangeDefaultRoute), &doChangeDefaultRoute);
