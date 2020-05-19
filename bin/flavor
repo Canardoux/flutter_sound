@@ -497,6 +497,42 @@ then
 		fi
 	done
 
+  for f in lib/src/*.dart
+  do
+    check_import $f
+    if [ $? != 0 ] ; then
+      R=-1
+    fi
+  done
+
+
+  for f in lib/src/ui/*.dart
+  do
+    check_import $f
+    if [ $? != 0 ] ; then
+      R=-1
+    fi
+  done
+
+
+  for f in lib/src/util/*.dart
+  do
+    check_import $f
+    if [ $? != 0 ] ; then
+      R=-1
+    fi
+  done
+
+
+  for f in example/lib/demo_util/*.dart
+  do
+    check_import $f
+    if [ $? != 0 ] ; then
+      R=-1
+    fi
+  done
+
+
 	for f in example/lib/*.dart
 	do
 		check_import $f
@@ -540,15 +576,37 @@ FULL)
 		gsed -i  "/^end$/i \ \ s.dependency 'mobile-ffmpeg-audio', '4.3.1.LTS'" ios/flutter_sound.podspec
 		gsed -i  "/^ *#define *[A-Z]*_FLAVOR/d"   ios/Classes/FlutterFFmpegPlugin.h
 		gsed -i  "/^ *#ifdef *[A-Z]*_FLAVOR/i #define FULL_FLAVOR" ios/Classes/FlutterFFmpegPlugin.h
+
 		for f in lib/*.dart
 		do
 			process_dart_file $f FULL
 		done
 
+    for f in lib/src/*.dart
+    do
+      process_dart_file $f FULL
+    done
+
+    for f in lib/src/ui/*.dart
+    do
+      process_dart_file $f FULL
+    done
+
+    for f in lib/src/util/*.dart
+    do
+      process_dart_file $f FULL
+    done
+
 		for f in example/lib/*.dart
 		do
 			process_dart_file $f FULL
 		done
+
+    for f in example/lib/demo_util/*.dart
+    do
+      process_dart_file $f FULL
+    done
+
 		mv "android/src/main/ffmpeg.park" "android/src/main/java/com/dooboolab/ffmpeg" 2>/dev/null
 
 		gsed -i  "/ext.flutterFFmpegPackage *= *'audio-lts'$/d"   android/build.gradle
@@ -582,15 +640,37 @@ LITE)
 		gsed -i  "/^end$/i \ \ #s.dependency 'mobile-ffmpeg-audio', '4.3.1.LTS'" ios/flutter_sound_lite.podspec
 		gsed -i  "/^ *#define *[A-Z]*_FLAVOR/d"   ios/Classes/FlutterFFmpegPlugin.h
 		gsed -i  "/^ *#ifdef *[A-Z]*_FLAVOR/i #define LITE_FLAVOR" ios/Classes/FlutterFFmpegPlugin.h
-		for f in lib/*.dart
-		do
-			process_dart_file $f LITE
-		done
 
-		for f in example/lib/*.dart
-		do
-			process_dart_file $f LITE
-		done
+    for f in lib/*.dart
+    do
+      process_dart_file $f LITE
+    done
+
+    for f in lib/src/*.dart
+    do
+      process_dart_file $f LITE
+    done
+
+    for f in lib/src/ui/*.dart
+    do
+      process_dart_file $f LITE
+    done
+
+    for f in lib/src/util/*.dart
+    do
+      process_dart_file $f LITE
+    done
+
+    for f in example/lib/*.dart
+    do
+      process_dart_file $f LITE
+    done
+
+    for f in example/lib/demo_util/*.dart
+    do
+      process_dart_file $f LITE
+    done
+
 		mv "android/src/main/java/com/dooboolab/ffmpeg" "android/src/main/ffmpeg.park" 2>/dev/null
 
 		gsed -i  "/ext.flutterFFmpegPackage *= *'audio-lts'$/d"   android/build.gradle

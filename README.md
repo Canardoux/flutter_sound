@@ -5,7 +5,7 @@
 <p align="left">
   <a href="https://pub.dartlang.org/packages/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square"></a>
 </p>
-This plugin provides simple recorder and player functionalities for both `android` and `ios` platforms.
+This plugin provides simple recorder and player functionalities for both Android and iOS platforms.
 
 <br/><br/>
 
