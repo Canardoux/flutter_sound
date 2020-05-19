@@ -108,7 +108,11 @@ class FlutterSoundRecorder extends Session {
 
   FlautoPlugin getPlugin() => flautoRecorderPlugin;
 
-  Future<FlutterSoundRecorder> openAudioSession( { AudioFocus focus = AudioFocus.requestFocusAndStopOthers, int audioFlags = outputToSpeaker}) async {
+  Future<FlutterSoundRecorder> openAudioSession( {
+                                                   AudioFocus focus = AudioFocus.requestFocusTransient,
+                                                   SessionCategory category = SessionCategory.playAndRecord,
+                                                   SessionMode mode = SessionMode.modeDefault,
+                                                   int audioFlags = outputToSpeaker}) async {
     if (isInited == Initialized.fullyInitialized) {
       return this;
     }
@@ -123,7 +127,7 @@ class FlutterSoundRecorder extends Session {
     } // The lazy singleton
     _setRecorderCallback();
     openSession();
-    await invokeMethod('initializeFlautoRecorder', <String, dynamic>{'focus': focus.index, 'audioFlags': audioFlags,});
+    await invokeMethod('initializeFlautoRecorder', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags,});
 
     isInited = Initialized.fullyInitialized;
     return this;
@@ -136,9 +140,8 @@ class FlutterSoundRecorder extends Session {
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
     }
-    isInited = Initialized.initializationInProgress;
-
     await stopRecorder();
+    isInited = Initialized.initializationInProgress;
     _removeRecorderCallback(); // _recorderController will be closed by this function
     await invokeMethod('releaseFlautoRecorder', <String, dynamic>{});
     closeSession();
@@ -290,7 +293,6 @@ class FlutterSoundRecorder extends Session {
 
       await invokeMethod('startRecorder', param);
 
-       //_setRecorderCallback();
       recorderState = RecorderState.isRecording;
       // if the caller wants OGG/OPUS we must remux the temporary file
       if ( isOggOpus) {
@@ -312,7 +314,6 @@ class FlutterSoundRecorder extends Session {
 
     recorderState = RecorderState.isStopped;
 
-    //_removeRecorderCallback();
     if (isOggOpus) {
       // delete the target if it exists
       // (ffmpeg gives an error if the output file already exists)
@@ -338,14 +339,18 @@ class FlutterSoundRecorder extends Session {
   }
 
 
-  Future<void> setAudioFocus( { AudioFocus focus = AudioFocus.requestFocusAndStopOthers, int audioFlags = outputToSpeaker}) async {
+  Future<void> setAudioFocus( {
+                                AudioFocus focus = AudioFocus.requestFocusTransient,
+                                SessionCategory category = SessionCategory.playAndRecord,
+                                SessionMode mode = SessionMode.modeDefault,
+                                int audioFlags = outputToSpeaker}) async {
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus, 'audioFlags':audioFlags});
+    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus, 'category': category, 'mode': mode.index, 'audioFlags':audioFlags});
   }
 
 

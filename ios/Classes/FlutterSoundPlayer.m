@@ -146,8 +146,8 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
           
         if ([@"seekToPlayer" isEqualToString:call.method])
         {
-                NSNumber* sec = (NSNumber*)call.arguments[@"sec"];
-                [aFlautoPlayer seekToPlayer:sec result:result];
+                //NSNumber* sec = (NSNumber*)call.arguments[@"sec"];
+                [aFlautoPlayer seekToPlayer:call result:result];
         } else
         
         if ([@"setSubscriptionDuration" isEqualToString:call.method])
@@ -319,7 +319,6 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                         audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
                         audioPlayer.delegate = self;
 
-                        [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 
                         BOOL b = [self ->audioPlayer play];
                         if (!b)
@@ -333,8 +332,10 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                         }
                 }];
 
-                 NSString *filePath = audioFileURL.absoluteString;
+                [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+                NSString *filePath = audioFileURL.absoluteString;
                 [downloadTask resume];
+                b = true;
         } else
         {
                 audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:nil];
@@ -479,13 +480,15 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
    }
 }
 
-- (void)seekToPlayer:(nonnull NSNumber*) time result: (FlutterResult)result
+- (void)seekToPlayer:(FlutterMethodCall*)call result: (FlutterResult)result
 {
         if (audioPlayer)
         {
-                audioPlayer.currentTime = [time doubleValue] / 1000;
+                NSNumber* milli = (NSNumber*)call.arguments[@"duration"];
+                double t = [milli doubleValue];
+                audioPlayer.currentTime = t / 1000.0;
                 [self updateProgress:nil];
-                result([time stringValue]);
+                result([milli stringValue]);
         } else
         {
                 result([FlutterError

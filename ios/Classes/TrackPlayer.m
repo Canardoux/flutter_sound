@@ -211,11 +211,13 @@
 {
         NSNumber *duration = [NSNumber numberWithLong: (long)(audioPlayer.duration * 1000)];
         NSNumber *position = [NSNumber numberWithLong: (long)(audioPlayer.currentTime * 1000)];
+        /*
         NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
         [songInfo setObject:position forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
         [songInfo setObject:duration forKey:MPMediaItemPropertyPlaybackDuration];
         MPNowPlayingInfoCenter *playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
         [playingInfoCenter setNowPlayingInfo:songInfo];
+        */
         [super updateProgress: atimer];
 }
 
@@ -228,19 +230,19 @@
 {
         // Initialize the MPNowPlayingInfoCenter
 
-        MPNowPlayingInfoCenter *playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
-        NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
+        MPNowPlayingInfoCenter* playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
+        NSMutableDictionary* songInfo = [[NSMutableDictionary alloc] init];
         // The caller specify an asset to be used.
         // Probably good in the future to allow the caller to specify the image itself, and not a resource.
         if ((track.albumArtUrl != nil) && ([track.albumArtUrl class] != [NSNull class])   )         // The albumArt is accessed in a URL
         {
                 // Retrieve the album art for the
                 // current track .
-                NSURL *url = [NSURL URLWithString:self->track.albumArtUrl];
-                UIImage *artworkImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+                NSURL* url = [NSURL URLWithString:self->track.albumArtUrl];
+                UIImage* artworkImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
                 if(artworkImage)
                 {
-                        MPMediaItemArtwork *albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
+                        MPMediaItemArtwork* albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
                         [songInfo setObject:albumArt forKey:MPMediaItemPropertyArtwork];
                 }
         } else
@@ -271,15 +273,15 @@
                 }
         }
 
-        NSNumber *progress = [NSNumber numberWithDouble: audioPlayer.currentTime];
-        NSNumber *duration = [NSNumber numberWithDouble: audioPlayer.duration];
+        NSNumber* progress = [NSNumber numberWithDouble: audioPlayer.currentTime];
+        NSNumber* duration = [NSNumber numberWithDouble: audioPlayer.duration];
 
         [songInfo setObject:track.title forKey:MPMediaItemPropertyTitle];
         [songInfo setObject:track.author forKey:MPMediaItemPropertyArtist];
         [songInfo setObject:progress forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
         [songInfo setObject:duration forKey:MPMediaItemPropertyPlaybackDuration];
         bool b = [audioPlayer isPlaying];
-        [songInfo setObject:[NSNumber numberWithDouble:(b ? 1.0f : 0.0f)] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+        [songInfo setObject:[NSNumber numberWithDouble:(b ? 1.0f : 1.0f)] forKey:MPNowPlayingInfoPropertyPlaybackRate];
 
         [playingInfoCenter setNowPlayingInfo:songInfo];
 }

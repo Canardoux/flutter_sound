@@ -105,9 +105,9 @@ class _MyAppState extends State<MyApp> {
     await playerModule.closeAudioSession();
     _isAudioPlayer = withUI;
     if (withUI) {
-      await playerModule.openAudioSessionWithUI();
+      await playerModule.openAudioSessionWithUI(focus: AudioFocus.requestFocusTransient, category: SessionCategory.playAndRecord, mode: SessionMode.modeDefault, audioFlags: outputToSpeaker);
     } else {
-      await playerModule.openAudioSession();
+      await playerModule.openAudioSession( focus: AudioFocus.requestFocusTransient, category: SessionCategory.playAndRecord, mode: SessionMode.modeDefault, audioFlags: outputToSpeaker);
     }
     await playerModule.setSubscriptionDuration(Duration(milliseconds: 10));
     await recorderModule.setSubscriptionDuration(Duration(milliseconds: 10));
@@ -117,7 +117,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> init() async {
     //playerModule = await FlutterSoundPlayer().openAudioSession();
-    recorderModule.openAudioSession();
+    recorderModule.openAudioSession(focus: AudioFocus.requestFocusTransient, category: SessionCategory.playAndRecord, mode: SessionMode.modeDefault, audioFlags: outputToSpeaker);
     await _initializeExample(false);
 
     if (Platform.isAndroid) {

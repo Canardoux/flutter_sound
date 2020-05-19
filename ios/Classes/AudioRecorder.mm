@@ -263,20 +263,20 @@ static NSString* defaultExtensions [] =
 
 static AudioFormatID formats [] =
 {
-          kAudioFormatMPEG4AAC        // CODEC_DEFAULT
-        , kAudioFormatMPEG4AAC        // CODEC_AAC
-        , 0                        // CODEC_OPUS
-        , kAudioFormatOpus        // CODEC_CAF_OPUS
-        , 0                       // CODEC_MP3
-        , 0                        // CODEC_OGG_vorbis
-        , 0    // pcm16
-        , kAudioFormatLinearPCM   // pcm16WAV
-        , 0    // pcm16AIFF
-        , kAudioFormatLinearPCM  // pcm16CAF
-        , kAudioFormatFLAC // flac
-        , kAudioFormatMPEG4AAC // aacMP4
-        , kAudioFormatAMR // amrNB
-        , kAudioFormatAMR_WB // amrWB
+          kAudioFormatMPEG4AAC          // CODEC_DEFAULT
+        , kAudioFormatMPEG4AAC          // CODEC_AAC
+        , 0                             // CODEC_OPUS
+        , kAudioFormatOpus              // CODEC_CAF_OPUS
+        , 0                             // CODEC_MP3
+        , 0                             // CODEC_OGG_vorbis
+        , 0                             // pcm16
+        , kAudioFormatLinearPCM         // pcm16WAV
+        , 0                             // pcm16AIFF
+        , kAudioFormatLinearPCM         // pcm16CAF
+        , kAudioFormatFLAC              // flac
+        , kAudioFormatMPEG4AAC          // aacMP4
+        , kAudioFormatAMR               // amrNB
+        , kAudioFormatAMR_WB            // amrWB
 };
 
 
@@ -395,14 +395,13 @@ AudioRecInterface* audioRec;
           [self stopRecorderTimer];
           if (audioRec != nil)
           {
-                audioRec -> stopRecorder();
+                try {
+                        audioRec -> stopRecorder();
+                } catch ( NSException* e) {
+                }
                 delete audioRec;
-
+                audioRec = nil;
           }
-
-          //AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-
-          //NSString *filePath = audioFileURL.absoluteString;
           result(path);
 }
 

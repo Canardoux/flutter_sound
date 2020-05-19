@@ -40,104 +40,6 @@ enum PlayerState {
   isPaused,
 }
 
-/// Used by [AudioPlayer.audioFocus]
-/// to control the focus mode.
-enum AudioFocus {
-  requestFocus,
-
-  /// request focus and allow other audio
-  /// to continue playing at their current volume.
-  requestFocusAndKeepOthers,
-
-  /// request focus and stop other audio playing
-  requestFocusAndStopOthers,
-
-  /// request focus and reduce the volume of other players
-  /// In the Android world this is know as 'Duck Others'.
-  requestFocusAndDuckOthers,
-
-  requestFocusAndInterruptSpokenAudioAndMixWithOthers,
-
-  requestFocusTransient,
-  requestFocusTransientExclusive,
-
-
-  /// relinquish the audio focus.
-  abandonFocus,
-
-  doNotRequestFocus,
-}
-
-// Audio Flags
-// -----------
-const outputToSpeaker = 1;
-const allowHeadset = 2;
-const allowEarPiece = 4;
-const allowBlueTooth = 8;
-const allowAirPlay = 16;
-const allowBlueToothA2DP = 32;
-
-
-enum SessionCategory {
-  ambient,
-  multiRoute,
-  playAndRecord,
-  playback,
-  record,
-  soloAmbient,
-}
-
-final List<String> iosSessionCategory = [
-  'AVAudioSessionCategoryAmbient',
-  'AVAudioSessionCategoryMultiRoute',
-  'AVAudioSessionCategoryPlayAndRecord',
-  'AVAudioSessionCategoryPlayback',
-  'AVAudioSessionCategoryRecord',
-  'AVAudioSessionCategorySoloAmbient',
-];
-
-enum SessionMode {
-  defaultSessionMode,
-  gameChat,
-  measurement,
-  moviePlayback,
-  spokenAudio,
-  videoChat,
-  videoRecording,
-  voiceChat,
-  voicePrompt,
-}
-
-final List<String> iosSessionMode = [
-  'AVAudioSessionModeDefault',
-  'AVAudioSessionModeGameChat',
-  'AVAudioSessionModeMeasurement',
-  'AVAudioSessionModeMoviePlayback',
-  'AVAudioSessionModeSpokenAudio',
-  'AVAudioSessionModeVideoChat',
-  'AVAudioSessionModeVideoRecording',
-  'AVAudioSessionModeVoiceChat',
-  'AVAudioSessionModeVoicePrompt',
-];
-
-// Values for AUDIO_FOCUS_GAIN on Android
-enum AndroidFocusGain {
-  defaultFocusGain,
-  audioFocusGain,
-  audioFocusGainTransient,
-  audioFocusGainTransientMayDuck,
-  audioFocusGainTransientExclusive,
-}
-
-// Options for setSessionCategory on iOS
-const int iosMixWithOthers = 0x1;
-const int iosDuckOthers = 0x2;
-const int iosInterruptSpokenAudioAndMixWithOthers = 0x11;
-const int iosAllowBluetooth = 0x4;
-const int iosAllowBluetoothA2DP = 0x20;
-const int iosAllowAirplay = 0x40;
-const int iosDefaultToSpeaker = 0x8;
-
 typedef void TWhenFinished();
 typedef void TonPaused(bool paused);
 typedef void TonSkip();
@@ -298,7 +200,11 @@ class FlutterSoundPlayer extends Session {
 
   FlautoPlugin getPlugin() => flautoPlayerPlugin;
 
-  Future<FlutterSoundPlayer> openAudioSession( { AudioFocus focus = AudioFocus.requestFocusAndStopOthers, int audioFlags = outputToSpeaker}) async {
+  Future<FlutterSoundPlayer> openAudioSession( {
+                                                 AudioFocus focus = AudioFocus.requestFocusTransient,
+                                                 SessionCategory category = SessionCategory.playAndRecord,
+                                                 SessionMode mode = SessionMode.modeDefault,
+                                                 int audioFlags = outputToSpeaker}) async {
     if (isInited == Initialized.fullyInitialized || isInited == Initialized.fullyInitializedWithUI) {
       await closeAudioSession();
     }
@@ -315,12 +221,16 @@ class FlutterSoundPlayer extends Session {
     openSession();
     setPlayerCallback();
 
-    await invokeMethod('initializeMediaPlayer', <String, dynamic>{'focus': focus.index, 'audioFlags': audioFlags,});
+    await invokeMethod('initializeMediaPlayer', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags,});
     isInited = Initialized.fullyInitialized;
     return this;
   }
 
-  Future<FlutterSoundPlayer> openAudioSessionWithUI( { AudioFocus focus = AudioFocus.requestFocusAndDuckOthers, int audioFlags = outputToSpeaker}) async {
+  Future<FlutterSoundPlayer> openAudioSessionWithUI( {
+                                                       AudioFocus focus = AudioFocus.requestFocusTransient,
+                                                       SessionCategory category = SessionCategory.playAndRecord,
+                                                       SessionMode mode = SessionMode.modeDefault,
+                                                       int audioFlags = outputToSpeaker}) async {
     if (isInited == Initialized.fullyInitializedWithUI || isInited == Initialized.fullyInitialized) {
       await closeAudioSession();
     }
@@ -337,7 +247,7 @@ class FlutterSoundPlayer extends Session {
     setPlayerCallback();
 
     try {
-      await invokeMethod('initializeMediaPlayerWithUI', <String, dynamic>{'focus': focus.index, 'audioFlags': audioFlags,});
+      await invokeMethod('initializeMediaPlayerWithUI', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags,});
 
       // Add the method call handler
       //getChannel( ).setMethodCallHandler( channelMethodCallHandler );
@@ -350,7 +260,11 @@ class FlutterSoundPlayer extends Session {
 
 
 
-  Future<void> setAudioFocus( { AudioFocus focus = AudioFocus.requestFocusAndStopOthers, int audioFlags = outputToSpeaker}) async {
+  Future<void> setAudioFocus( {
+                                AudioFocus focus = AudioFocus.requestFocusTransient,
+                                SessionCategory category = SessionCategory.playAndRecord,
+                                SessionMode mode = SessionMode.modeDefault,
+                                int audioFlags = outputToSpeaker}) async {
 
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
@@ -359,7 +273,7 @@ class FlutterSoundPlayer extends Session {
       throw (_notOpen());
     }
 
-    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus, 'audioFlags':audioFlags});
+    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus, 'category': category.index, 'mode': mode.index, 'audioFlags':audioFlags});
   }
 
 
@@ -371,12 +285,13 @@ class FlutterSoundPlayer extends Session {
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
     }
-    isInited = Initialized.initializationInProgress;
 
     await stopPlayer();
+    isInited = Initialized.initializationInProgress;
+
     //_removePlayerCallback(); // playerController is closed by this function
     await invokeMethod('releaseMediaPlayer', <String, dynamic>{});
-    await _playerController?.close();
+    _removePlayerCallback();
     closeSession();
     isInited = Initialized.notInitialized;
   }
@@ -463,33 +378,6 @@ class FlutterSoundPlayer extends Session {
           as bool;
     }
     return result;
-  }
-
-  /// For iOS only.
-  /// If this function is not called,
-  /// everything is managed by default by flutter_sound.
-  /// If this function is called,
-  /// it is probably called just once when the app starts.
-  /// After calling this function,
-  /// the caller is responsible for using correctly setActive
-  ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
-  Future<bool> iosSetCategory(
-      SessionCategory category, SessionMode mode, int options) async {
-
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
-    if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
-    }
-    if (!Platform.isIOS) return false;
-    var r = await invokeMethod('iosSetCategory', <String, dynamic>{
-      'category': iosSessionCategory[category.index],
-      'mode': iosSessionMode[mode.index],
-      'options': options
-    }) as bool;
-
-    return r;
   }
 
   /// For Android only.

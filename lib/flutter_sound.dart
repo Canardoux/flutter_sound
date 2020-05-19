@@ -101,3 +101,96 @@ enum Codec {
   amrWB,
 
 }
+
+
+enum SessionCategory {
+  ambient,
+  multiRoute,
+  playAndRecord,
+  playback,
+  record,
+  soloAmbient,
+  audioProcessing,
+}
+
+
+enum SessionMode
+{
+  modeDefault, // 'AVAudioSessionModeDefault',
+  modeGameChat, //'AVAudioSessionModeGameChat',
+  modeMeasurement, //'AVAudioSessionModeMeasurement',
+  modeMoviePlayback, //'AVAudioSessionModeMoviePlayback',
+  modeSpokenAudio, //'AVAudioSessionModeSpokenAudio',
+  modeVideoChat, //'AVAudioSessionModeVideoChat',
+  modeVideoRecording, // 'AVAudioSessionModeVideoRecording',
+  modeVoiceChat, // 'AVAudioSessionModeVoiceChat',
+  modeVoicePrompt, // 'AVAudioSessionModeVoicePrompt',
+}
+
+/// Used by [AudioPlayer.audioFocus]
+/// to control the focus mode.
+enum AudioFocus {
+  requestFocus,
+
+  /// request focus and allow other audio
+  /// to continue playing at their current volume.
+  requestFocusAndKeepOthers,
+
+  /// request focus and stop other audio playing
+  requestFocusAndStopOthers,
+
+  /// request focus and reduce the volume of other players
+  /// In the Android world this is know as 'Duck Others'.
+  requestFocusAndDuckOthers,
+
+  requestFocusAndInterruptSpokenAudioAndMixWithOthers,
+
+  requestFocusTransient,
+  requestFocusTransientExclusive,
+
+
+  /// relinquish the audio focus.
+  abandonFocus,
+
+  doNotRequestFocus,
+}
+
+
+// Audio Flags
+// -----------
+const outputToSpeaker = 1;
+const allowHeadset = 2;
+const allowEarPiece = 4;
+const allowBlueTooth = 8;
+const allowAirPlay = 16;
+const allowBlueToothA2DP = 32;
+
+/*
+final List<String> iosSessionCategory = [
+  'AVAudioSessionCategoryAmbient',
+  'AVAudioSessionCategoryMultiRoute',
+  'AVAudioSessionCategoryPlayAndRecord',
+  'AVAudioSessionCategoryPlayback',
+  'AVAudioSessionCategoryRecord',
+  'AVAudioSessionCategorySoloAmbient',
+];
+
+ */
+
+// Values for AUDIO_FOCUS_GAIN on Android
+enum AndroidFocusGain {
+  defaultFocusGain,
+  audioFocusGain,
+  audioFocusGainTransient,
+  audioFocusGainTransientMayDuck,
+  audioFocusGainTransientExclusive,
+}
+
+// Options for setSessionCategory on iOS
+const int iosMixWithOthers = 0x1;
+const int iosDuckOthers = 0x2;
+const int iosInterruptSpokenAudioAndMixWithOthers = 0x11;
+const int iosAllowBluetooth = 0x4;
+const int iosAllowBluetoothA2DP = 0x20;
+const int iosAllowAirplay = 0x40;
+const int iosDefaultToSpeaker = 0x8;

@@ -56,6 +56,33 @@ enum AudioFocus {
   doNotRequestFocus,
 };
 
+
+
+enum SessionCategory {
+  ambient,
+  multiRoute,
+  playAndRecord,
+  playback,
+  record,
+  soloAmbient,
+  audioProcessing,
+};
+
+
+enum SessionMode
+{
+  modeDefault, // 'AVAudioSessionModeDefault',
+  modeGameChat, //'AVAudioSessionModeGameChat',
+  modeMeasurement, //'AVAudioSessionModeMeasurement',
+  modeMoviePlayback, //'AVAudioSessionModeMoviePlayback',
+  modeSpokenAudio, //'AVAudioSessionModeSpokenAudio',
+  modeVideoChat, //'AVAudioSessionModeVideoChat',
+  modeVideoRecording, // 'AVAudioSessionModeVideoRecording',
+  modeVoiceChat, // 'AVAudioSessionModeVoiceChat',
+  modeVoicePrompt, // 'AVAudioSessionModeVoicePrompt',
+};
+
+
 // Audio Flags
 // -----------
 const int outputToSpeaker = 1;
@@ -177,12 +204,43 @@ const int allowBlueToothA2DP = 32;
 
 - (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result
 {
+
+
+        NSString* tabCategory[] =
+        {
+                AVAudioSessionCategoryAmbient,
+                AVAudioSessionCategoryMultiRoute,
+                AVAudioSessionCategoryPlayAndRecord,
+                AVAudioSessionCategoryPlayback,
+                AVAudioSessionCategoryRecord,
+                AVAudioSessionCategorySoloAmbient,
+                AVAudioSessionCategoryAudioProcessing
+        };
+        
+        
+        NSString*  tabSessionMode[] =
+        {
+                AVAudioSessionModeDefault,
+                AVAudioSessionModeGameChat,
+                AVAudioSessionModeMeasurement,
+                AVAudioSessionModeMoviePlayback,
+                AVAudioSessionModeSpokenAudio,
+                AVAudioSessionModeVideoChat,
+                AVAudioSessionModeVideoRecording,
+                AVAudioSessionModeVoiceChat,
+                AVAudioSessionModeVoicePrompt,
+        };
+
+
+
         BOOL r = TRUE;
         enum AudioFocus audioFocus = (enum AudioFocus) [call.arguments[@"focus"] intValue];
+        enum SessionCategory category = (enum SessionCategory)[call.arguments[@"category"] intValue];
+        enum SessionMode mode = (enum SessionMode)[call.arguments[@"mode"] intValue];
         if ( audioFocus != abandonFocus && audioFocus != doNotRequestFocus && audioFocus != requestFocus)
         {
                 int flags =  [call.arguments[@"audioFlags"] intValue];
-                int sessionCategoryOption = 0;
+                NSUInteger sessionCategoryOption = 0;
                 switch (audioFocus)
                 {
                         case requestFocusAndDuckOthers: sessionCategoryOption |= AVAudioSessionCategoryOptionDuckOthers; break;
@@ -190,7 +248,7 @@ const int allowBlueToothA2DP = 32;
                         case requestFocusAndInterruptSpokenAudioAndMixWithOthers: sessionCategoryOption |= AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers; break;
                         case requestFocusTransient:
                         case requestFocusTransientExclusive:
-                        case requestFocusAndStopOthers: sessionCategoryOption |= 0; break;
+                        case requestFocusAndStopOthers: sessionCategoryOption |= 0; break; // NOOP
                 }
                 if (flags & outputToSpeaker)
                         sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker;
@@ -201,8 +259,8 @@ const int allowBlueToothA2DP = 32;
                 if (flags & allowBlueToothA2DP)
                         sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
                 r = [[AVAudioSession sharedInstance]
-                setCategory:  AVAudioSessionCategoryPlayAndRecord // AVAudioSessionCategoryPlayback
-                        mode: AVAudioSessionModeDefault
+                        setCategory:  tabCategory[category] // AVAudioSessionCategoryPlayback
+                        mode: tabSessionMode[mode]
                         options: sessionCategoryOption
                         error: nil
                 ];
