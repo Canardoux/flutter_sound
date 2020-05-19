@@ -1,16 +1,16 @@
-# example
+# examples/Demo
 
-A new Flutter project.
+Flutter Sound comes with two Demo/Examples :
+- [Demo1 app](example/README.md) is a small demonstration of what we can do with Flutter Sound.
+This Demo App is a kind of exerciser which try to implement the major Flutter Sound features. This Demo does not use the Flutter Sound UI Widgets
+- [Demo2 app](example/README.md) is an example of what can be done using the Flutter Sound UI Widgets
 
-## Getting Started
+--------------------------------------------------------------------------------------------------------------------------------------------------
 
-This project is a starting point for a Flutter application.
+## Demo1
 
-A few resources to get you started if this is your first Flutter project:
+--------------------------------------------------------------------------------------------------------------------------------------------------
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Demo2
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+--------------------------------------------------------------------------------------------------------------------------------------------------

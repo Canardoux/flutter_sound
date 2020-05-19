@@ -1,4 +1,4 @@
-Back to the README](../README.md#flutter-sound-api)
+[Back to the README](../README.md#flutter-sound-api)
 
 -----------------------------------------------------------------------------------------------------------------------
 
@@ -6,13 +6,14 @@ Back to the README](../README.md#flutter-sound-api)
 
 Flutter Sound offers some tools that can be convenient to work with sound :
 
-- [Module instanciation]()
-- [convertFile()]() to convert an audio file to another format
-- [duration()]() to know the appoximate duration of a sound
-- [isFFmpegAvailable()]() to know if the current App is linked with FFmpeg
-- [executeFFmpegWithArguments()]() to execute an FFmpeg command
-- [getLastFFmpegReturnCode()]() to get the return code of an FFmpeg command
-- [getLastFFmpegCommandOutput()]() to get ouput of the last FFmpeg command
+- [Module instanciation](#module-instanciation)
+- [convertFile()](#convertfile) to convert an audio file to another format
+- [duration()](#duration) to know the appoximate duration of a sound
+- [isFFmpegAvailable()](#isffmpegavailable) to know if the current App is linked with FFmpeg
+- [executeFFmpegWithArguments()](#executeffmpegwitharguments) to execute an FFmpeg command
+- [getLastFFmpegReturnCode()](#getlastffmpegreturncode) to get the return code of an FFmpeg command
+- [getLastFFmpegCommandOutput()](#getlastffmpegcommandoutput) to get ouput of the last FFmpeg command
+- [FFmpegGetMediaInformation()](#ffmpeggetmediainformation--informations-on-a-record) to get various informations on a sound file
 
 -----------------------------------------------------------------------------------------------------------------------
 
@@ -183,4 +184,4 @@ Map<dynamic, dynamic> info = await flutterSoundHelper.FFmpegGetMediaInformation(
 
 -----------------------------------------------------------------------------------------------------------------------
 
-Back to the README](../README.md#flutter-sound-api)
+[Back to the README](../README.md#flutter-sound-api)

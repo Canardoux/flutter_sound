@@ -67,12 +67,14 @@ Thius will export all the necessaries dart interfaces.
 
 ## Example (Demo App)
 
-Our [Demo App](https://github.com/dooboolab/flutter_sound/blob/master/example/lib/main.dart) is a small demonstration of what we can do with Flutter Sound.
-This Demo App is a kind of exerciser which try to implement the major Flutter Sound features
+Flutter Sound comes with two Demo/Examples :
+- [Demo1 app](example/README.md) is a small demonstration of what we can do with Flutter Sound.
+This Demo App is a kind of exerciser which try to implement the major Flutter Sound features. This Demo does not use the Flutter Sound UI Widgets
+- [Demo2 app](example/README.md) is an example of what can be done using the Flutter Sound UI Widgets
 
 ## License
 
-- Flutter Sound V5.x is released with a *copyleft* clause, the [GPL-V3 license](LICENSE). This means that if your App uses part of Flutter Sound V5.x, your App must be published under the GPL license, too. license too.
+- Flutter Sound V5.x is released with a *copyleft* clause, the [GPL-V3 license](LICENSE). This means that if your App uses part of Flutter Sound V5.x, your App must be published under the GPL license, too.
 - Flutter Sound V4.x is released with a *copyleft* clause, the LGPL-V3 license. This means that if your App uses part of Flutter Sound V4.x, your App must be published under the LGPL license too.
 
 ## Contributions
