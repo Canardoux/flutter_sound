@@ -15,6 +15,9 @@ assignees: ''
 
 - **FULL** or **LITE** flavor ?
 
+- Result of the command **"flutter pub deps | grep flutter_sound"**
+(important)
+
 ----------------------------------------------------------
 
 ## Severity
