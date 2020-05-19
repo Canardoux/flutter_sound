@@ -8,7 +8,7 @@ The verbs offered by the Flutter Sound Player module are :
 
 - [Default constructor](player.md#creating-the-player-instance)
 - [openAudioSession](player.md#openaudiosession-and-closeaudiosession) and [closeAudioSession()](player.md#openAudioSession-and-closeAudioSession) to open or close an audio session
-- [openAudioSessionWithUI()]() to open an audio session with control from the Lock Screen or an Apple Watch
+- [openAudioSessionWithUI()](player.md#openaudiosessionwithui) to open an audio session with control from the Lock Screen or an Apple Watch
 - [setAudioFocus()](player.md#setaudiofocus) to manage the session Audio Focus
 - [startPlayer()](player.md#startplayer) to play an audio file or  a buffer.
 - [startPlayerFromTrack]() to play data from a track specification and display controls on the lock screen or an Apple Watch
@@ -151,7 +151,7 @@ You will be very bad if you try something like :
     (do something with myPlayer)
     ...
 
-    myPlayer.closeAudioSession();
+    await myPlayer.closeAudioSession();
     myPlayer = null;
 ```
 
@@ -203,17 +203,13 @@ Future<void> setAudioFocus
 - AudioFocus.requestFocusAndDuckOthers (if another App like Spotify use the output audio, its volume will be **lowered**)
 - AudioFocus.requestFocusAndKeepOthers (your App will play sound **above** others App)
 - AudioFocus.requestFocusAndInterruptSpokenAudioAndMixWithOthers
+- AudioFocus.requestFocusTransient (for Android)
+- AudioFocus.requestFocusTransientExclusive (for Android)
 - AudioFocus.abandonFocus (Your App will not have anymore the audio focus)
 
-### `AudioFlags` are a set of optional flags :
+### Other parameters :
 
-- speaker
-- allowHeadset
-- allowEarPiece
-- allowBlueTooth
-- allowAirPlay
-- allowBlueToothA2DP
-
+Please look to [openAudioSession()](player.md#openaudiosession-and-closeaudiosession) to understand the meaning of the other parameters
 
 
 *Example:*
@@ -227,12 +223,24 @@ Future<void> setAudioFocus
 
 *Dart definition (prototype) :*
 ```
-Future<void> startPlayer( { String fromUri, Uint8List fromDataBuffer, Codec codec, TWhenFinished whenFinished} )
+Future<void> startPlayer
+({
+        String fromUri,
+        Uint8List fromDataBuffer,
+        Stream fromStream,
+        Codec codec,
+        TWhenFinished whenFinished
+})
 ```
 
-You can use both `startPlayer` to play a sound.
+You can use `startPlayer` to play a sound.
 
-- `startPlayer()` has two optional parameters : `uri:` and `dataBuffer:`. You must specify one or the other parameter, but not both.The former takes in a URI that points to the file to play, while the later takes in a buffer containing the file to play .
+- `startPlayer()` has three optional parameters, depending on your sound source :
+   - `fromUri:`  (if you want to play a file or a remote URI)
+   - `fromDataBuffer:` (if you want to play from a data buffer)
+   - `fromStream` **(not yet implemented)**
+
+You must specify one or those three parameters.
 
 - You use the optional parameter`codec:` for specifying the audio and file format of the file. Please refer to the [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
 
@@ -241,8 +249,7 @@ You can use both `startPlayer` to play a sound.
 Very often, the `codec:` parameter is not useful. Flutter Sound will adapt itself depending on the real format of the file provided.
 But this parameter is necessary when Flutter Sound must do format conversion (for example to play opusOGG on iOS)
 
-`startPlayer()` returns a Future. You must wait for this return value to complete before attempting to add any listeners
-to ensure that the player has fully initialised.
+`startPlayer()` returns a Future.
 
 [path_provider](https://pub.dev/packages/path_provider) can be useful if you want to get access to some directories on your device.
 
@@ -253,7 +260,7 @@ to ensure that the player has fully initialised.
         File fin = await File ('${tempDir.path}/flutter_sound-tmp.aac');
         await myPlayer.startPlayer(fin.path, codec: Codec.aacADTS);
 
-        _playerSubscription = myPlayer.onPlayerStateChanged.listen((e)
+        _playerSubscription = myPlayer.onProgress.listen((e)
         {
                 // ...
         });
@@ -292,29 +299,24 @@ Future<String> startPlayerFromTrack(
 
 Use this verb to play data from a track specification and display controls on the lock screen or an Apple Watch. The Audio Session must have been open with the verb [OpenAudioSessionWithUI]().
 
-- `track` parameter is a simple structure which describe the sound to play. Please see [here the Track structure specification]()
+- `track` parameter is a simple structure which describe the sound to play. Please see [here the Track structure specification](track.md)
 
 - `whenFinished:()` : A lambda function for specifying what to do when the playback will be finished.
 
 - `onPaused:()` : this parameter can be :
    - a call back function to call when the user hit the Skip Pause button on the lock screen
-   - 'TonPaused.disabled'
-   - `TonPaused.hide`
+   - 'TonPaused.disabled' **(not yet implemented)**
+   - <null> : The pause button will be handled by Flutter Sound internal
 
 - `onSkipForward:()` : this parameter can be :
    - a call back function to call when the user hit the Skip Forward button on the lock screen
-   - 'TonSkip.disabled'
-   - `TonSkip.hide`
+   - <null> : The Skip Forward button will be disabled
 
 - `onSkipBackward:()` : this parameter can be :
    - a call back function to call when the user hit the Skip Backward button on the lock screen
-   - 'TonSkip.disabled'
-   - `TonSkip.hide`
+   - <null> : The Skip Backwqrd button will be disabled
 
-
-[TODO]
-
-[---------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------
 
 ## `stopPlayer()`
 
