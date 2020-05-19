@@ -7,16 +7,16 @@
 
 The verbs offered by the Flutter Sound Player module are :
 
-- [Default constructor](recorder.md#creating-the-player-instance)
-- [openAudioSession() and closeAudioSession()](recorder.md#openAudioSession-and-closeAudioSession) to open or close and audio session
-- [startRecorder()](recorder.md#startrecorder) to start your recorder
-- [stopRecorder()](recorder.md#stoprecorder) to stop your current record.
-- [pauseRecorder()](recorder.md#pauserecorder) to pause the current record
-- [resumeRecorder()](recorder.md#resumerecorder) to resume a paused record
-- [recordState, isRecording, isPaused, isStopped](recorder.md#recorderstate-isrecording-ispaused-isstopped) to know the current recorder status
-- [isEncoderSupported()](recorder.md#isencodersupported) to know if a specific codec is supported on the current platform.
+- [Default constructor](#creating-the-player-instance)
+- [openAudioSession() and closeAudioSession()](#openAudioSession-and-closeAudioSession) to open or close and audio session
+- [startRecorder()](#startrecorder) to start your recorder
+- [stopRecorder()](#stoprecorder) to stop your current record.
+- [pauseRecorder()](#pauserecorder) to pause the current record
+- [resumeRecorder()](#resumerecorder) to resume a paused record
+- [recordState, isRecording, isPaused, isStopped](#recorderstate-isrecording-ispaused-isstopped) to know the current recorder status
+- [isEncoderSupported()](#isencodersupported) to know if a specific codec is supported on the current platform.
 - [onProgress()](#onprogress) to subscribe to a Stream of the Progress events
-- [setSubscriptionDuration()](recorder.md#setsubscriptionduration) to specify the frequence of your subscription
+- [setSubscriptionDuration()](#setsubscriptionduration) to specify the frequence of your subscription
 
 -------------------------------------------------------------------------------------------------------------------
 

@@ -6,21 +6,21 @@
 
 The verbs offered by the Flutter Sound Player module are :
 
-- [Default constructor](player.md#creating-the-player-instance)
-- [openAudioSession](player.md#openaudiosession-and-closeaudiosession) and [closeAudioSession()](player.md#openAudioSession-and-closeAudioSession) to open or close an audio session
-- [openAudioSessionWithUI()](player.md#openaudiosessionwithui) to open an audio session with control from the Lock Screen or an Apple Watch
-- [setAudioFocus()](player.md#setaudiofocus) to manage the session Audio Focus
-- [startPlayer()](player.md#startplayer) to play an audio file or  a buffer.
-- [startPlayerFromTrack]() to play data from a track specification and display controls on the lock screen or an Apple Watch
-- [stopPlayer()](player.md#stopplayer) to stop a current playback
-- [pausePlayer()](player.md#pauseplayer) to pause the current playback
-- [resumePlayer()](player.md#resumeplayer) to resume a paused playback
-- [seekPlayer()](player.md#seekplayer) to position directely inside the current playback
-- [setVolume()](player.md#setvolume) to adjust the ouput volume
-- [playerState, isPlaying, isPaused, isStopped](player.md#playerstate-isplaying-ispaused-isstopped) to know the current player status
-- [isDecoderSupported()](player.md#isdecodersupported) to know if a specific codec is supported on the current platform.
-- [onProgress()](player.md#onprogress) to subscribe to a Stream of the Progress events
-- [setSubscriptionDuration()](player.md#setsubscriptionduration---optional) to specify the frequence of your subscription
+- [Default constructor](#creating-the-player-instance)
+- [openAudioSession](#openaudiosession-and-closeaudiosession) and [closeAudioSession()](#openAudioSession-and-closeAudioSession) to open or close an audio session
+- [openAudioSessionWithUI()](#openaudiosessionwithui) to open an audio session with control from the Lock Screen or an Apple Watch
+- [setAudioFocus()](#setaudiofocus) to manage the session Audio Focus
+- [startPlayer()](#startplayer) to play an audio file or  a buffer.
+- [startPlayerFromTrack](#startplayerfromtrack) to play data from a track specification and display controls on the lock screen or an Apple Watch
+- [stopPlayer()](#stopplayer) to stop a current playback
+- [pausePlayer()](#pauseplayer) to pause the current playback
+- [resumePlayer()](#resumeplayer) to resume a paused playback
+- [seekPlayer()](#seekplayer) to position directely inside the current playback
+- [setVolume()](#setvolume) to adjust the ouput volume
+- [playerState, isPlaying, isPaused, isStopped](#playerstate-isplaying-ispaused-isstopped) to know the current player status
+- [isDecoderSupported()](#isdecodersupported) to know if a specific codec is supported on the current platform.
+- [onProgress()](#onprogress) to subscribe to a Stream of the Progress events
+- [setSubscriptionDuration()](#setsubscriptionduration) to specify the frequence of your subscription
 
 -------------------------------------------------------------------------------------------------------------------
 
