@@ -1,3 +1,7 @@
+## 4.0.5
+
+- Fix as bug in the Focus gain, on iOS [#324](https://github.com/dooboolab/flutter_sound/issues/324#issuecomment-630970336)
+
 ## 4.0.4+1
 
 - Fix a bug in `resumeRecorder()` on Android : the dbPeak Stream was not restored after a resume()
