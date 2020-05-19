@@ -49,14 +49,6 @@ assignees: ''
 ## Logs
 (This is very important. Most of the time we cannot do anything if we do not have information on your bug)
 
------------------------------------------------
-
-## flutter doctor :
-
------------------------------------------------
-
-## flutter pub deps :
-
 ------------------------------------------------
 
 ##  Screenshots
