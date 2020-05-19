@@ -238,7 +238,7 @@ You can use `startPlayer` to play a sound.
 - `startPlayer()` has three optional parameters, depending on your sound source :
    - `fromUri:`  (if you want to play a file or a remote URI)
    - `fromDataBuffer:` (if you want to play from a data buffer)
-   - `fromStream` **(not yet implemented)**
+   - `fromStream` *(not yet implemented)*
 
 You must specify one or those three parameters.
 
@@ -296,6 +296,7 @@ Future<String> startPlayerFromTrack(
     TonSkip onSkipForward,
     TonSkip onSkipBackward,
     })
+```
 
 Use this verb to play data from a track specification and display controls on the lock screen or an Apple Watch. The Audio Session must have been open with the verb [OpenAudioSessionWithUI]().
 
@@ -305,7 +306,7 @@ Use this verb to play data from a track specification and display controls on th
 
 - `onPaused:()` : this parameter can be :
    - a call back function to call when the user hit the Skip Pause button on the lock screen
-   - 'TonPaused.disabled' **(not yet implemented)**
+   - 'TonPaused.disabled' *(not yet implemented)*
    - <null> : The pause button will be handled by Flutter Sound internal
 
 - `onSkipForward:()` : this parameter can be :
