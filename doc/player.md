@@ -317,6 +317,20 @@ Use this verb to play data from a track specification and display controls on th
    - a call back function to call when the user hit the Skip Backward button on the lock screen
    - <null> : The Skip Backwqrd button will be disabled
 
+*Example:*
+```dart
+    final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
+
+    await myPlayer.startPlayerFromTrack
+    (
+                track,
+                whenFinished: ()
+                {
+                         print( 'I hope you enjoyed listening to this song' );
+                },
+    );
+```
+
 ---------------------------------------------------------------------------------------------------------------------------------
 
 ## `stopPlayer()`
@@ -378,14 +392,14 @@ await myPlayer.resumePlayer();
 
 *Dart definition (prototype) :*
 ```
-Future<void> seekPlayer( int milisec )
+Future<void> seekPlayer( Duration duration )
 ```
 
-To seek to a new location. The player must already be playing. If not, an exception is thrown.
+To seek to a new location. The player must already be playing or paused. If not, an exception is thrown.
 
 *Example:*
 ```dart
-await myPlayer.seekToPlayer(miliSecs);
+await myPlayer.seekToPlayer(Duration(milliseconds: milliSecs));
 ```
 
 ----------------------------------------------------------------------------------------------------------------------------------
@@ -398,7 +412,7 @@ Future<void> setVolume( double volume )
 ```
 
 The parameter is a floating point number between 0 and 1.
-Volume can be changed when player is running. Try manage this right after player starts.
+Volume can be changed when player is running. Manage this after player starts.
 
 *Example:*
 ```dart
@@ -453,8 +467,8 @@ This four verbs is used when the app wants to get the current Audio State of the
  Future<bool> isDecoderSupported(Codec codec)
 ```
 
-This verb is useful to know if a particular codec is supported on the current platform;
-Return a Future<bool>.
+This verb is useful to know if a particular codec is supported on the current platform.
+Returns a Future<bool>.
 
 *Example:*
 ```dart

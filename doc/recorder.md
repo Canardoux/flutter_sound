@@ -9,17 +9,14 @@ The verbs offered by the Flutter Sound Player module are :
 
 - [Default constructor](recorder.md#creating-the-player-instance)
 - [openAudioSession() and closeAudioSession()](recorder.md#openAudioSession-and-closeAudioSession) to open or close and audio session
-- [startRecorder()]() to start your recorder
-- [stopRecorder()]() to stop your current record.
-- [pauseRecorder()]() to pause the current record
-- [resumeRecorder()] to resume a paused record
-- [recordState, isRecording, isPaused, isStopped]() to know the current recorder status
-- [isEncoderSupported()] to know if a specific codec is supported on the current platform.
-- [onProgress()](recorder.md#onprogress) to subscribe to a Stream of the Progress events
-- [setSubscriptionDuration()](recorder.md#setsubscriptionduration---optional) to specify the frequence of your subscription
-- [onRecorderDbPeakChanged()]() to subscribe to a Stream of the DB peaks events
-- [setDbPeakLevelUpdate()]()  to specify the frequence of your subscription
-- [setDbLevelEnabled()]() to enable or disable the DB peak stream
+- [startRecorder()](recorder.md#startrecorder) to start your recorder
+- [stopRecorder()](recorder.md#stoprecorder) to stop your current record.
+- [pauseRecorder()](recorder.md#pauserecorder) to pause the current record
+- [resumeRecorder()](recorder.md#resumerecorder) to resume a paused record
+- [recordState, isRecording, isPaused, isStopped](recorder.md#recorderstate-isrecording-ispaused-isstopped) to know the current recorder status
+- [isEncoderSupported()](recorder.md#isencodersupported) to know if a specific codec is supported on the current platform.
+- [onProgress()](#onprogress) to subscribe to a Stream of the Progress events
+- [setSubscriptionDuration()](recorder.md#setsubscriptionduration) to specify the frequence of your subscription
 
 -------------------------------------------------------------------------------------------------------------------
 
@@ -43,7 +40,14 @@ myPlayer = FlutterSoundRecorder();
 
 *Dart definition (prototype) :*
 ```
-Future<FlutterSoundPlayer> openAudioSession()
+Future<FlutterSoundRecorder> openAudioSession
+({
+        AudioFocus focus = AudioFocus.requestFocusTransient,
+        SessionCategory category = SessionCategory.playAndRecord,
+        SessionMode mode = SessionMode.modeDefault,
+        int audioFlags = outputToSpeaker
+})
+
 Future<void> closeAudioSession()
 ```
 
@@ -80,6 +84,8 @@ You will be very bad if you try something like :
 
 `openAudioSession()` and `closeAudioSession()` return Futures. You may not use your Recorder before the end of the initialization. So probably you will `await` the result of `openAudioSession()`. This result is the Recorder itself, so that you can collapse instanciation and initialization together with `myRecorder = await FlutterSoundPlayer().openAudioSession();`
 
+The four optional parameters are used if you want to control the Audio Focus. Please look to [FlutterSoundPlayer openAudioSession()](player.md#openaudiosession-and-closeaudiosession) to understand the meaning of those parameters
+
 *Example:*
 ```dart
     myRecorder = await FlutterSoundRecorder().openAudioSession();
@@ -114,7 +120,7 @@ You use `startRecorder()` to start recording in an open session. `startRecorder(
 It has also 7 optional parameters to specify :
 - codec: The codec to be used. Please refer to the [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
 - toFile: a path to the file being recorded
-- toStream: if you want to record to a Dart Stream (actually only on Android and with a raw PCM codec. This will be improved int the future)
+- toStream: if you want to record to a Dart Stream *(not yet implemented)*
 - sampleRate: The sample rate in Hertz
 - numChannels: The number of channels (1=monophony, 2=stereophony)
 - bitRate: The bit rate in Hertz
@@ -149,7 +155,7 @@ Flutter Sound does not take care of the recording permission. It is the App resp
 Future<void> stopRecorder( )
 ```
 
-Use this verb to stop a record. This verb never throw any exception. It is safe to call it everywhere,
+Use this verb to stop a record. This verb never throws any exception. It is safe to call it everywhere,
 for example when the App is not sure of the current Audio State and want to recover a clean reset state.
 
 *Example:*
