@@ -7,7 +7,7 @@
 The verbs offered by the Flutter Sound Player module are :
 
 - [Default constructor](player.md#creating-the-player-instance)
-- [openAudioSession]() and closeAudioSession()](player.md#openAudioSession-and-closeAudioSession) to open or close an audio session
+- [openAudioSession](player.md#openaudiosession-and-closeaudiosession) and [closeAudioSession()](player.md#openAudioSession-and-closeAudioSession) to open or close an audio session
 - [openAudioSessionWithUI()]() to open an audio session with control from the Lock Screen or an Apple Watch
 - [setAudioFocus()](player.md#setaudiofocus) to manage the session Audio Focus
 - [startPlayer()](player.md#startplayer) to play an audio file or  a buffer.
@@ -21,7 +21,6 @@ The verbs offered by the Flutter Sound Player module are :
 - [isDecoderSupported()](player.md#isdecodersupported) to know if a specific codec is supported on the current platform.
 - [onProgress()](player.md#onprogress) to subscribe to a Stream of the Progress events
 - [setSubscriptionDuration()](player.md#setsubscriptionduration---optional) to specify the frequence of your subscription
-- [iosSetCategory(), androidAudioFocusRequest()](player.md#iossetcategory-androidaudiofocusrequest---optional) to parameter the Session Audio Focus
 
 -------------------------------------------------------------------------------------------------------------------
 
@@ -36,7 +35,7 @@ This is the first thing to do, if you want to deal with playbacks. The instancia
 
 *Example:*
 ```dart
-myPlayer = FlutterSoundPlayer();
+FlutterSoundPlayer myPlayer = FlutterSoundPlayer();
 ```
 
 --------------------------------------------------------------------------------------------------------------------
@@ -45,7 +44,14 @@ myPlayer = FlutterSoundPlayer();
 
 *Dart definition (prototype) :*
 ```
-Future<FlutterSoundPlayer> openAudioSession({AudioFocus focus, Set<AudioFlags> audioFlags})
+Future<FlutterSoundPlayer> openAudioSession
+({
+        AudioFocus focus = AudioFocus.requestFocusTransient,
+        SessionCategory category = SessionCategory.playAndRecord,
+        SessionMode mode = SessionMode.modeDefault,
+        int audioFlags = outputToSpeaker
+})
+
 Future<void> closeAudioSession()
 ```
 
@@ -60,10 +66,42 @@ This parameter can have the following values :
 - AudioFocus.requestFocusAndStopOthers (your app will have **exclusive use** of the output audio)
 - AudioFocus.requestFocusAndDuckOthers (if another App like Spotify use the output audio, its volume will be **lowered**)
 - AudioFocus.requestFocusAndKeepOthers (your App will play sound **above** others App)
-- AudioFocus.requestFocusAndInterruptSpokenAudioAndMixWithOthers
+- AudioFocus.requestFocusAndInterruptSpokenAudioAndMixWithOthers (for Android)
+- AudioFocus.requestFocusTransient (for Android)
+- AudioFocus.requestFocusTransientExclusive (for Android)
 - AudioFocus.doNotRequestFocus (useful if you want to mangage yourself the Audio Focus with the verb ```setAudioFocus()```)
 
 The Audio Focus is abandoned when you close your player. If your App must play several sounds, you will probably open  your player just once, and close it when you have finished with the last sound. If you close and reopen an Audio Session for each sound, you will probably get unpleasant things for the ears with the Audio Focus.
+
+### `category`
+
+`category` is an optional parameter used only on iOS.
+This parameter can have the following values :
+- ambient
+- multiRoute
+- playAndRecord
+- playback
+- record
+- soloAmbient
+- audioProcessing
+
+See [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosessioncategory?language=objc) to understand the meaning of this parameter.
+
+### `mode`
+
+`mode` is an optional parameter used only on iOS.
+This parameter can have the following values :
+- modeDefault
+- modeGameChat
+- modeMeasurement
+- modeMoviePlayback
+- modeSpokenAudio
+- modeVideoChat
+- modeVideoRecording
+- modeVoiceChat
+- modeVoicePrompt
+
+See [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosessionmode?language=objc) to understand the meaning of this parameter.
 
 ### `AudioFlags` are a set of optional flags :
 
@@ -74,7 +112,7 @@ The Audio Focus is abandoned when you close your player. If your App must play s
 - allowAirPlay
 - allowBlueToothA2DP
 
-Note: you must use the verb `OpenAudioSessionWithUI()` instead of `openAudioSession()` if you plasn to use [startPlayerFromTrack()]() or [displayTrack()]() during your Audio Session. (See under).
+Note: you must use the verb [OpenAudioSessionWithUI()](player.md#openaudiosessionwithui) instead of `openAudioSession()` if you plan to use [startPlayerFromTrack()](player.md#startplayerfromtrack) during your Audio Session. (See under).
 
 You MUST ensure that the player has been closed when your widget is detached from the UI.
 Overload your widget's `dispose()` method to closeAudioSession the player when your widget is disposed.
@@ -93,7 +131,7 @@ void dispose()
 }
 ```
 
-You maynot open many Audio Sessions without closing them.
+You may not open many Audio Sessions without closing them.
 You will be very bad if you try something like :
 ```dart
     while (aCondition)  // *DO'NT DO THAT*
@@ -123,10 +161,16 @@ You will be very bad if you try something like :
 
 *Dart definition (prototype) :*
 ```
-Future<FlutterSoundPlayer> OpenAudioSessionWithUI({Focus focus, Set<AudioFlags> audioFlags})
+Future<FlutterSoundPlayer> OpenAudioSessionWithUI
+({
+        AudioFocus focus = AudioFocus.requestFocusTransient,
+        SessionCategory category = SessionCategory.playAndRecord,
+        SessionMode mode = SessionMode.modeDefault,
+        int audioFlags = outputToSpeaker,
+})
 ```
 
-Use this verb instead of [openAudioSession()]() if the Audio Session will be able to be controlled from the lock screen or an Apple Watch. This verb must be used if you plan to use the verbs [startPlayerFromTrack()]() or [displayTrack()]() during your Audio Session. Please refer to [openAudioSession()]() above for the syntax parameters.
+Use this verb instead of [openAudioSession()]() if you want to control the Audio Session from the lock screen or an Apple Watch. This verb must be used if you plan to use the verbs [startPlayerFromTrack()]() or [displayTrack()]() during your Audio Session. Please refer to [openAudioSession()](player.md#openaudiosession-and-closeaudiosession) above for the syntax parameters.
 
 *Example:*
 ```dart
@@ -144,7 +188,13 @@ Use this verb instead of [openAudioSession()]() if the Audio Session will be abl
 
 *Dart definition (prototype) :*
 ```
-Future<void> setAudioFocus({AudioFocus focus, Set<AudioFlags> audioFlags})
+Future<void> setAudioFocus
+({
+        AudioFocus focus = AudioFocus.requestFocusTransient,
+        SessionCategory category = SessionCategory.playAndRecord,
+        SessionMode mode = SessionMode.modeDefault,
+        int audioFlags = outputToSpeaker,
+})
 ```
 
 ### `focus:` parameter possible values are
@@ -445,39 +495,6 @@ This verb is used to change the default interval between two post on the "Update
 ```dart
 // 0.010s. is default
 myPlayer.setSubscriptionDuration(Duration(milliseconds: 20));
-```
-
--------------------------------------------------------------------------------------------------------------------------------
-
-## `iosSetCategory()`, `androidAudioFocusRequest()` - (optional)
-
-*Dart definition (prototype) :*
-```
-Future<bool> iosSetCategory( SessionCategory category, SessionMode mode, int options )
-Future<bool> androidAudioFocusRequest(int focusGain)
-```
-
-Those two verbs are OS specific. They are used if your App needs to have fine control on the OS.
-
-You can refer to [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosession/1771734-setcategory) to understand the parameters needed for `iosSetCategory()` and to the [Android documentation](https://developer.android.com/reference/android/media/AudioFocusRequest) to understand the parameter needed for `androidAudioFocusRequest()`.
-
-Remark : `androidAudioFocusRequest` does work on Android before SDK 26.
-
-*Example:*
-```dart
-if (_duckOthers)
-{
-        if (Platform.isIOS)
-                await myPlayer.iosSetCategory( SessionCategory.playAndRecord, SessionMode.defaultSessionMode, iosDuckOthers |  iosDefaultToSpeaker );
-        else if (Platform.isAndroid)
-                await myPlayer.androidAudioFocusRequest( audioFocusGainTransientMayDuck );
-} else
-{
-        if (Platform.isIOS)
-                await myPlayer.iosSetCategory( SessionCategory.playAndRecord, SessionMode.defaultSessionMode, iosDefaultToSpeaker );
-        else if (Platform.isAndroid)
-                await myPlayer.androidAudioFocusRequest( audioFocusGain );
-}
 ```
 
 ---------------------------------------------------------------------------------------------------------------------------------

@@ -72,7 +72,7 @@ This Demo App is a kind of exerciser which try to implement the major Flutter So
 
 ## License
 
-- Flutter Sound V5.x is released with a *copyleft* clause, the [GPL-V3 license](LICENSE). This means that if your App uses part of Flutter Sound V5.x, your App must be published under the GPL too. license too.
+- Flutter Sound V5.x is released with a *copyleft* clause, the [GPL-V3 license](LICENSE). This means that if your App uses part of Flutter Sound V5.x, your App must be published under the GPL license, too. license too.
 - Flutter Sound V4.x is released with a *copyleft* clause, the LGPL-V3 license. This means that if your App uses part of Flutter Sound V4.x, your App must be published under the LGPL license too.
 
 ## Contributions
