@@ -48,7 +48,6 @@ in other words V4 is our LTS version (Long Term Support).
 
 [Here is a guide](doc/install.md#install) for Flutter Sound installation
 
-
 ## Flutter Sound API
 
 Flutter Sound is composed with 4 modules :
@@ -68,12 +67,13 @@ This will export all the necessaries dart interfaces.
 ## Examples (Demo Apps)
 
 Flutter Sound comes with two Demo/Examples :
-- [Demo1 app](example/README.md) is a small demonstration of what we can do with Flutter Sound.
+- [Demo1 app](example/README.md#demo1) is a small demonstration of what we can do with Flutter Sound.
 This Demo App is a kind of exerciser which try to implement the major Flutter Sound features. This Demo does not use the Flutter Sound UI Widgets
-- [Demo2 app](example/README.md) is an example of what can be done using the Flutter Sound UI Widgets
+- [Demo2 app](example/README.md#demo2) is an example of what can be done using the Flutter Sound UI Widgets
 
 ## License
 
+Flutter Sound is copyrighted by Dooboolab (2018, 2019, 2020)
 - Flutter Sound V5.x is released with a *copyleft* clause, the [GPL-V3 license](LICENSE). This means that if your App uses part of Flutter Sound V5.x, your App must be published under the GPL license, too.
 - Flutter Sound V4.x is released with a *copyleft* clause, the LGPL-V3 license. This means that if your App uses part of Flutter Sound V4.x, your App must be published under the LGPL license too.
 
