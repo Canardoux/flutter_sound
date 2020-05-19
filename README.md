@@ -53,17 +53,17 @@ in other words V4 is our LTS version (Long Term Support).
 
 Flutter Sound is composed with 4 modules :
 
-- [FlutterSoundPlayer](doc/player.md), wich deal with everything about playbacks
-- [FlutterSoudRecorder](doc/recorder.md), which deal with everything about recording
+- [FlutterSoundPlayer](doc/player.md#flutter-sound-player-api), wich deal with everything about playbacks
+- [FlutterSoudRecorder](doc/recorder.md#flutter-sound-recorder-api), which deal with everything about recording
 - [FlutterSoundHelper](doc/helper.md), which offers some convenients tools
-- [FlutterSoundUI](), which offer some Widget ready to be used out of the box
+- [FlutterSoundUI](doc/ui_widget.md), which offer some Widget ready to be used out of the box
 
 To use Flutter Sound you just do :
 ```
 import 'package:flutter_sound/flutter_sound.dart';
 ```
 
-`import 'package:flutter_sound/flutter_sound.dart'` will export all the necessaries dart interfaces.
+Thius will export all the necessaries dart interfaces.
 
 ## Example (Demo App)
 
@@ -72,7 +72,7 @@ This Demo App is a kind of exerciser which try to implement the major Flutter So
 
 ## License
 
-- Flutter Sound V5.x is released with a *copyleft* clause, the GPL-V3 license. This means that if your App uses part of Flutter Sound V5.x, your App must be published under the GPL license too.
+- Flutter Sound V5.x is released with a *copyleft* clause, the [GPL-V3 license](LICENSE). This means that if your App uses part of Flutter Sound V5.x, your App must be published under the GPL too. license too.
 - Flutter Sound V4.x is released with a *copyleft* clause, the LGPL-V3 license. This means that if your App uses part of Flutter Sound V4.x, your App must be published under the LGPL license too.
 
 ## Contributions
@@ -97,8 +97,8 @@ When you fill an issue, we try to answer something in less than 48h. Of course, 
 ## TODO
 
 - [X] Record PCM on Android
-- [ ] Rewrite the documentation
-- [ ] Small examples, smaller than the actual Example.app
+- [X] Rewrite the documentation
+- [ ] Small examples, smaller than the actual demox.app
 - [ ] Record OPUS on Android
 - [ ] Streaming records to Speech to Text
 - [ ] More support for the Apple Watch
