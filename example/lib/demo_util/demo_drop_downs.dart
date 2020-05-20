@@ -66,16 +66,15 @@ class _DropdownsState extends State<Dropdowns> {
   DropdownButton<Codec> buildCodecDropdown() {
     return DropdownButton<Codec>(
       value: ActiveCodec().codec,
-      onChanged: (newCodec) {
+      onChanged: (newCodec) async {
         widget._onCodecChanged(newCodec);
 
-        /// this is hacky as we should be passing the actually
+        /// this is hacky as we should be passing the actual
         /// useOSUI flag.
-        ActiveCodec().setCodec(withUI: false, codec: newCodec);
+        await ActiveCodec().setCodec(withUI: false, codec: newCodec);
 
-        setState(() {
-          getDuration(ActiveCodec().codec);
-        });
+        await getDuration(ActiveCodec().codec);
+        setState(() {});
       },
       items: <DropdownMenuItem<Codec>>[
         DropdownMenuItem<Codec>(
