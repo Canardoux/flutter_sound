@@ -827,6 +827,19 @@ class SoundPlayer implements SlotEntry {
       return await _plugin.androidFocusRequest(this, focusGain);
     });
   }
+
+  /// Callback for when a system error occured in the OS player.
+  /// The OS Player will have been stopped so we try to reflect
+  /// its state.
+  void _onSystemError(String description) {
+    try {
+      playerState = PlayerState.isStopped;
+      if (_onStopped != null) _onStopped(wasUser: false);
+    } on Object catch (e) {
+      Log.d(e.toString());
+      rethrow;
+    }
+  }
 }
 
 ///
@@ -905,3 +918,7 @@ void onSystemSkipBackward(SoundPlayer player) => player._onSystemSkipBackward();
 void onSystemUpdatePlaybackState(
         SoundPlayer player, SystemPlaybackState playbackState) =>
     player._onSystemUpdatePlaybackState(playbackState);
+
+/// Called when a system error occured when trying to play audio.
+void onSystemError(SoundPlayer player, String description) =>
+    player._onSystemError(description);

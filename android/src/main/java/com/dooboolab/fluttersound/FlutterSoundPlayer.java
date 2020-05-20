@@ -323,7 +323,6 @@ public class FlutterSoundPlayer
 
 	final static  String           TAG         = "FlutterSoundPlayer";
 	final         PlayerAudioModel model       = new PlayerAudioModel ();
-	private       Timer            mTimer      = new Timer ();
 	final private Handler           tickHandler = new Handler ();
 	t_SET_CATEGORY_DONE setActiveDone     = t_SET_CATEGORY_DONE.NOT_SET;
 	AudioFocusRequest   audioFocusRequest = null;
@@ -406,8 +405,6 @@ public class FlutterSoundPlayer
 		/// Looks to be a minor bug in the android MediaPlayer so we can ignore it.
 		this.model.setMediaPlayer ( new MediaPlayer () );
 		
-		mTimer = new Timer ();
-
 		try
 		{
 			this.model.getMediaPlayer ().setDataSource ( path );
@@ -417,22 +414,12 @@ public class FlutterSoundPlayer
 				requestFocus ();
 			}
 
-			this.model.getMediaPlayer().setOnErrorListener((mp,  what,  extra) -> {
-				result.error(ERR_UNKNOWN, ERR_UNKNOWN, "MediaPlayer error: what: " + what + " extra: " + extra);
-				/// we handled the error by stopping the play.
-				return true;
-			});
-			this.model.getMediaPlayer().setOnPreparedListener ( mp ->
-			                                                     {
-				                                                     Log.d ( TAG, "mediaPlayer prepared and start" );
-				                                                     mp.start ();
-				                                                     startTickerUpdates(mp);
-				                                                     result.success ( "" );
-			                                                     } );
-			/*
-			 * Detect when finish playing.
-			 */
+			/// set up the listeners before we start.
+			this.model.getMediaPlayer().setOnPreparedListener(mp -> onPreparedListener(mp, result));
+			// Detect when finish playing.
 			this.model.getMediaPlayer ().setOnCompletionListener ( mp -> completeListener(mp));
+			this.model.getMediaPlayer().setOnErrorListener((mp, what, extra) -> onError(mp, what, extra));
+
 			this.model.getMediaPlayer ().prepareAsync ();
 		}
 		catch ( Exception e )
@@ -440,6 +427,40 @@ public class FlutterSoundPlayer
 			Log.e ( TAG, "startPlayer() exception", e );
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 		}
+	}
+
+	// listener for the MediaPlayer 
+	// Called when the MediaPlayer has finished preparing the media for playback.
+	private void onPreparedListener(MediaPlayer mp, final Result result)
+	{
+		Log.d(TAG, "mediaPlayer prepared and start");
+		mp.start();
+		startTickerUpdates(mp);
+		result.success("");
+	}
+						
+	// Called by the media player if an error occurs during playback.
+	private boolean onError(MediaPlayer mp, int what, int extra)
+	{
+		String description = translateErrorCodes(extra);
+		Log.e(TAG, "MediaPlayer error: " + description + " what: " + what + " extra: " + extra);
+
+		stopTickerUpdates(mp, false);
+		/// reset the player.
+		mp.reset();
+		mp.release ();
+		this.model.setMediaPlayer(null);
+
+		try {
+			JSONObject json = new JSONObject();
+			json.put("description", description);
+			json.put("android_what",  what);
+			json.put("android_extra",  extra);
+			invokeMethodWithString("onError", json.toString());
+		} catch (JSONException e) {
+			Log.e(TAG, "Error encoding json message for onError: what=" + what + " extra=" + extra);
+		}
+		return true;
 	}
 
 	// Called when the audio stops, this can be due
@@ -463,7 +484,6 @@ public class FlutterSoundPlayer
 		{
 			Log.d ( TAG, "Json Exception: " + e.toString () );
 		}
-		mTimer.cancel ();
 		if ( mp.isPlaying () )
 		{
 			mp.stop ();
@@ -538,8 +558,6 @@ public class FlutterSoundPlayer
 
 	public void stopPlayer ( final MethodCall call, final Result result )
 	{
-		mTimer.cancel ();
-
 		MediaPlayer mp = this.model.getMediaPlayer();
 
 		if ( mp == null )
@@ -800,6 +818,39 @@ public class FlutterSoundPlayer
 		result.success ( b );
 	}
 
+	/// Attempts to translate Android media errors into general error strings.
+	/// These strings need to match equavalent error generated from iOS.
+	String translateErrorCodes(int what)
+	{
+		String error;
+		if (what == MediaPlayer.MEDIA_ERROR_IO)
+		{
+			error = "File or Network Error";
+		}
+		else if (what == MediaPlayer.MEDIA_ERROR_MALFORMED)
+		{
+			error = "Malformed audio. Does not match the expected codec";
+		}
+		else if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED)
+		{
+			error = "Media server stopped";
+		}
+		else if (what == MediaPlayer.MEDIA_ERROR_TIMED_OUT)
+		{
+			error = "Timeout";
+		}
+		else if (what == MediaPlayer.MEDIA_ERROR_UNKNOWN) {
+			error = "An unknown error occured";
+		}
+		else if (what == MediaPlayer.MEDIA_ERROR_UNSUPPORTED) {
+			error = "Unsupported codec";
+		}
+		else 
+		{
+			error = "Unknown error code: " + what;
+		}
+		return error;
+	}
 
 }
 

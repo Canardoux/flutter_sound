@@ -145,7 +145,7 @@ abstract class PlayerBasePlugin extends BasePlugin {
     /// when playing an mp3 I've seen occurances where the position is after
     /// the duration. So I've added this protection.
     if (position > duration) {
-      Log.d('Fixed position > duration $position $duration');
+      // Log.d('Fixed position > duration,  $position > $duration');
       duration = position;
     }
     return PlaybackDisposition(PlaybackDispositionState.playing,
@@ -193,6 +193,25 @@ abstract class PlayerBasePlugin extends BasePlugin {
       case 'resume':
         {
           audio_player.onSystemResumed(player);
+        }
+        break;
+
+      /// the OS media player encounted an error
+      case 'onError':
+        {
+          var json = jsonDecode(call.arguments['arg'] as String)
+              as Map<String, dynamic>;
+
+          var description = json['description'] as String;
+          if (Platform.isAndroid) {
+            var androidWhat = json['android_what'] as int;
+            var androidExtra = json['android_extra'] as int;
+            Log.e('onError: $description android_what $androidWhat '
+                'android_extra: $androidExtra');
+          } else {
+            Log.e('onError: $description');
+          }
+          audio_player.onSystemError(player, description);
         }
         break;
 
