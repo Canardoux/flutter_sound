@@ -287,7 +287,7 @@ public class FlutterSoundRecorder
 	final        RecorderAudioModel model              = new RecorderAudioModel ();
 	final public Handler            progressTickHandler      = new Handler ();
 	final public Handler            dbPeakLevelTickHandler = new Handler ();
-	String finalPath;
+	
 	int    slotNo;
 	private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor ();
 	private Handler mainHandler = new Handler();
@@ -374,17 +374,11 @@ public class FlutterSoundRecorder
 		Integer numChannels, Integer sampleRate, Integer bitRate, t_CODEC codec, int audioSource, String path, final Result result
 	                           )
 	{
+		assert(path != null);
 		final int v = Build.VERSION.SDK_INT;
-		// The caller must be allowed to specify its path. We must not change it here
-		// path = PathUtils.getDataDirectory(reg.context()) + "/" + path; // SDK 29 :
-		// you may not write in getExternalStorageDirectory()
 		MediaRecorder mediaRecorder = model.getMediaRecorder ();
 
-		if ( mediaRecorder != null )
-		{
-			mediaRecorder.reset ();
-			//mediaRecorder.release();
-		} else
+		if ( mediaRecorder == null )
 		{
 			mediaRecorder = new MediaRecorder ();
 			model.setMediaRecorder (mediaRecorder );
@@ -394,19 +388,27 @@ public class FlutterSoundRecorder
 		{
 			if ( codecArray[ codec.ordinal () ] == 0 )
 			{
-				//result.error ( TAG, "UNSUPPORTED", "Unsupported encoder" );
-				//return;
+				result.error ( TAG, "Unsupported", "Unsupported encoder" );
+				return;
 			}
+			if (path == null) {
+				result.error(TAG, "InvalidArgument", "path must NOT be null.");
+				return;
+			}
+
 			mediaRecorder.reset();
-			mediaRecorder.setAudioSource ( audioSource );
+			try
+			{
+				mediaRecorder.setAudioSource ( audioSource );
+			}
+			catch (RuntimeException e)
+			{
+				result.error(TAG, "Permissions", "Error setting the AudioSource. Check that you have permission to use the microphone.");
+				return;
+			}
 			int encoder      = codecArray[ codec.ordinal () ];
 			int outputFormat = formatsArray[ codec.ordinal () ];
 			mediaRecorder.setOutputFormat ( outputFormat );
-
-			if ( path == null )
-			{
-				path = pathArray[ codec.ordinal () ];
-			}
 
 			mediaRecorder.setOutputFile ( path );
 			mediaRecorder.setAudioEncoder ( encoder );
@@ -433,16 +435,7 @@ public class FlutterSoundRecorder
 			this.model.startTime = SystemClock.elapsedRealtime ();
 			startTickerUpdates();
 
-			finalPath = path;
-			mainHandler.post ( new Runnable ()
-			{
-				@Override
-				public void run ()
-				{
-					result.success ( finalPath );
-				}
-			}
-			);
+			result.success("Success");
 		}
 		catch ( Exception e )
 		{
