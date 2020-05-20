@@ -97,9 +97,9 @@ class FFMpegUtil {
       assert(FileUtil().exists(path));
       var info = await _ffMpegGetMediaInformation(path);
       if (info != null) {
-        var sduration = info['duration'] as String;
-        if (sduration != null) {
-          duration = Duration(milliseconds: sduration as int);
+        var iduration = info['duration'] as int;
+        if (iduration != null) {
+          duration = Duration(milliseconds: iduration);
         }
       }
     }
