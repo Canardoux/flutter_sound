@@ -169,18 +169,18 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
             initialData: RecordingDisposition.zero(), // was START_DECIBELS
             builder: (_, streamData) {
               var disposition = streamData.data;
-              var min = _minDbCircle;
-              if (disposition.decibels == 0) min = 0;
+              print(disposition.decibels);
               //      onRecorderProgress(context, this, disposition.duration);
               return Stack(alignment: Alignment.center, children: [
                 AnimatedContainer(
-                  duration: Duration(milliseconds: 20),
+                  duration: Duration(milliseconds: 100),
                   // + MIN_DB_CIRCLE so the animated circle is always a
                   // reasonable size (db ranges is typically 45 - 80db)
-                  width: disposition.decibels + min,
-                  height: disposition.decibels + min,
+                  width: disposition.decibels * 2 + _minDbCircle,
+                  height: disposition.decibels * 2 + _minDbCircle,
                   constraints: BoxConstraints(
-                      maxHeight: 80.0 + min, maxWidth: 80.0 + min),
+                      maxHeight: 80.0 + _minDbCircle,
+                      maxWidth: 80.0 + _minDbCircle),
                   decoration:
                       BoxDecoration(shape: BoxShape.circle, color: Colors.red),
                 ),
