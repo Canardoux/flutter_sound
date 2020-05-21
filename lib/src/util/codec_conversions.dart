@@ -24,7 +24,7 @@ import 'file_util.dart';
 /// Provides some codec conversions.
 class CodecConversions {
   ///
-  /// Takes the file located at [path] which contains
+  /// Takes the file located at [file] which contains
   /// opus encoded audio file and remux's it
   /// into a Apple CAF envelope so we can play
   /// an Opus file on IOS.

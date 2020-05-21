@@ -23,7 +23,7 @@ class RecordingTrack {
   Codec nativeCodec;
 
   /// The path we will be recording to.
-  /// This is often the same as [track.path] unless
+  /// This is often the same as [track.file] unless
   /// we need to record to a different codec and then remux
   /// the file after recording finishes.
   String recordingPath;
