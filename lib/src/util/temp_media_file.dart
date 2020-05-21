@@ -85,7 +85,8 @@ class TempMediaFile {
     }
     // write final packet if there is a partial packet left
     if (bytesWritten != length) {
-      dataBuffer.sublist(parts * packetSize, length);
+      file.writeAsBytesSync(dataBuffer.sublist(parts * packetSize, length),
+          mode: FileMode.append);
       bytesWritten += length - (parts * packetSize);
     }
     assert(bytesWritten == length);

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
 import 'demo_active_codec.dart';
@@ -24,12 +23,8 @@ class AssetPlayer extends StatelessWidget {
   ///
   Future<Track> createAssetTrack() async {
     Track track;
-    var dataBuffer =
-        (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
-            .buffer
-            .asUint8List();
-    track = Track.fromBuffer(
-      dataBuffer,
+    track = Track.fromAsset(
+      assetSample[ActiveCodec().codec.index],
       codec: ActiveCodec().codec,
     );
 

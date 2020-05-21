@@ -16,7 +16,7 @@ typedef TrackAction = void Function(Track current);
 ///
 //
 class Track {
-  _TrackStorageType _storageType;
+  TrackStorageType _storageType;
 
   /// The title of this track
   String title;
@@ -61,9 +61,15 @@ class Track {
     if (!fm.FileUtil().isFile(path)) {
       throw TrackPathException('The given path $path is not a file.');
     }
-    _storageType = _TrackStorageType.path;
+    _storageType = TrackStorageType.file;
 
     _audio = Audio.fromFile(path, codec);
+  }
+
+  /// Loads a track from an asset
+  Track.fromAsset(String assetPath, {@required Codec codec}) {
+    _storageType = TrackStorageType.asset;
+    _audio = Audio.fromAsset(assetPath, codec);
   }
 
   /// Creates a track from a remote URL.
@@ -73,7 +79,7 @@ class Track {
       throw TrackPathException('The url MUST not be null.');
     }
 
-    _storageType = _TrackStorageType.url;
+    _storageType = TrackStorageType.url;
 
     _audio = Audio.fromURL(url, codec);
   }
@@ -89,7 +95,7 @@ class Track {
       buffer = Uint8List(0);
     }
 
-    _storageType = _TrackStorageType.buffer;
+    _storageType = TrackStorageType.buffer;
     _audio = Audio.fromBuffer(buffer, codec);
   }
 
@@ -97,13 +103,16 @@ class Track {
   Codec get codec => _audio.codec;
 
   /// true if the track is a url to the audio data.
-  bool get isURL => _storageType == _TrackStorageType.url;
+  bool get isURL => _storageType == TrackStorageType.url;
 
   /// True if the track is a local file path
-  bool get isFile => _storageType == _TrackStorageType.path;
+  bool get isFile => _storageType == TrackStorageType.file;
+
+  /// True if the track is stored in a flutter asset.
+  bool get isAsset => _storageType == TrackStorageType.file;
 
   /// True if the [Track] media is stored in buffer.
-  bool get isBuffer => _storageType == _TrackStorageType.buffer;
+  bool get isBuffer => _storageType == TrackStorageType.buffer;
 
   /// If the [Track] was created via [Track.fromURL]
   /// then this will be the passed url.
@@ -228,4 +237,17 @@ class TrackPathException implements Exception {
   String toString() => message;
 }
 
-enum _TrackStorageType { buffer, path, url }
+/// defines how the underlying audio media is stored.
+enum TrackStorageType {
+  ///
+  asset,
+
+  ///
+  buffer,
+
+  ///
+  file,
+
+  ///
+  url
+}

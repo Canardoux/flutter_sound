@@ -2,8 +2,11 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/services.dart';
+
 import '../codec.dart';
 import '../playback_disposition.dart';
+import '../track.dart';
 import '../util/codec_conversions.dart';
 import '../util/temp_media_file.dart';
 import 'downloader.dart';
@@ -14,6 +17,8 @@ import 'file_util.dart';
 /// This class is NOT part of the public api.
 class Audio {
   final List<TempMediaFile> _tempMediaFiles = [];
+
+  TrackStorageType _storageType;
 
   ///
   Codec codec;
@@ -57,7 +62,8 @@ class Audio {
     if (isBuffer) return _dataBuffer.length;
     if (isFile) return File(path).lengthSync();
 
-    // if its a URL and its not [_onDisk] then we don't know its length.
+    // if its a URL an asset and its not [_onDisk] then we don't
+    // know its length.
     return 0;
   }
 
@@ -102,13 +108,13 @@ class Audio {
 
   /// Returns the duration of the audio managed by this instances
   ///
-  /// The first time this is called it can be quite an expensive
-  /// operation as we have to process the audio to determine its
-  /// duration.
+  /// The duration is only available if the media is stored on disk.
   ///
-  /// If the audio was passed via a call to [fromBuffer] then we
-  /// have to first write the buffer to a file before we can
-  /// process it. This may be optimised in future versions.
+  /// This is an expensive operation as we have to process the audio
+  /// to determine its length.
+  ///
+  /// Assets, Buffers and URL based media will return a zero length
+  /// duration until the first time it plays and the media is prepared.
   ///
   /// After the first call we cache the duration so responses are
   /// instant.
@@ -116,9 +122,6 @@ class Audio {
   Future<Duration> get duration async {
     if (_duration == null) {
       _duration = Duration.zero;
-
-      /// will write to disk if its a databuffer.
-      _writeBufferToDisk((disposition) {});
 
       if (_onDisk && FileUtil().fileLength(_storagePath) > 0) {
         _duration = await CodecHelper.duration(codec, _storagePath);
@@ -137,18 +140,31 @@ class Audio {
 
   ///
   Audio.fromFile(this.path, Codec codec) {
+    _storageType = TrackStorageType.file;
     _storagePath = path;
     _onDisk = true;
     this.codec = determineCodec(path, codec);
   }
 
+  /// Create an [Audio] based on a flutter asset.
+  /// [path] to the asset. This is normally of the form
+  /// asset/xxx.wav
+  Audio.fromAsset(this.path, Codec codec) {
+    _storageType = TrackStorageType.asset;
+    _dataBuffer = null;
+    _onDisk = false;
+    this.codec = determineCodec(path, codec);
+  }
+
   ///
   Audio.fromURL(this.url, Codec codec) {
+    _storageType = TrackStorageType.url;
     this.codec = determineCodec(url, codec);
   }
 
   ///
   Audio.fromBuffer(this._dataBuffer, this.codec) {
+    _storageType = TrackStorageType.buffer;
     if (codec == null) {
       throw CodecNotSupportedException('You must pass in a codec.');
     }
@@ -156,15 +172,18 @@ class Audio {
 
   /// returns true if the Audio's media is located in via
   /// a file Path.
-  bool get isFile => path != null;
+  bool get isFile => _storageType == TrackStorageType.file;
 
   /// returns true if the Audio's media is located in via
   /// a URL
-  bool get isURL => url != null;
+  bool get isURL => _storageType == TrackStorageType.url;
+
+  /// true if the audio is stored in an asset.
+  bool get isAsset => _storageType == TrackStorageType.asset;
 
   /// returns true if the Audio's media is located in a
   /// databuffer  (as opposed to a URI)
-  bool get isBuffer => _dataBuffer != null;
+  bool get isBuffer => _storageType == TrackStorageType.buffer;
 
   /// returns the databuffer if there is one.
   /// see [isBuffer] to check if the audio is in a data buffer.
@@ -211,12 +230,16 @@ class Audio {
       stage++;
     }
 
+    if (isAsset) {
+      await _loadAsset();
+    }
+
     // android doesn't support data buffers so we must convert
     // to a file.
     // iOS doesn't support opus so we must convert to a file so we
     /// remux it.
-    if (isBuffer &&
-        (Platform.isAndroid || Platform.isIOS && codec == Codec.opusOGG)) {
+    if ((Platform.isAndroid && (isBuffer || isAsset) ||
+        (Platform.isIOS && codec == Codec.opusOGG))) {
       await _writeBufferToDisk((disposition) {
         _forwardStagedProgress(loadingProgress, disposition, stage, stages);
       });
@@ -252,13 +275,17 @@ class Audio {
     _onDisk = true;
   }
 
+  void _loadAsset() async {
+    _dataBuffer = (await rootBundle.load(path)).buffer.asUint8List();
+  }
+
   /// Only writes the audio to disk if we have a databuffer and we haven't
   /// already written it to disk.
   ///
   /// Returns the path where the current version of the audio is stored.
   void _writeBufferToDisk(LoadingProgress progress) {
     assert(progress != null);
-    if (!_onDisk && isBuffer) {
+    if (!_onDisk && (isBuffer || isAsset)) {
       var tempMediaFile = TempMediaFile.fromBuffer(_dataBuffer, progress);
       _tempMediaFiles.add(tempMediaFile);
 
@@ -321,9 +348,10 @@ class Audio {
       desc += 'storage: $_storagePath';
     }
 
-    if (url != null) desc += ' url: $url';
-    if (path != null) desc += ' path: $path';
-    if (_dataBuffer != null) desc += ' buffer len: ${_dataBuffer.length}';
+    if (isURL) desc += ' url: $url';
+    if (isFile) desc += ' path: $path';
+    if (isBuffer) desc += ' buffer len: ${_dataBuffer.length}';
+    if (isAsset) desc += ' asset: $path';
 
     return desc;
   }
