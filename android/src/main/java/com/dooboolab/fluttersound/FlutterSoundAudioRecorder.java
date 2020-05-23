@@ -173,7 +173,7 @@ public class FlutterSoundAudioRecorder
 		/**
 		 * Size of the buffer where the audio data is stored by Android
 		 */
-		int channelConfig = (numChannels == 1) ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_MONO;
+		int channelConfig = (numChannels == 1) ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO;
 		int audioFormat = tabCodec[codec.ordinal()];
 		int bufferSize = AudioRecord.getMinBufferSize(sampleRate,
 		                                              channelConfig, tabCodec[codec.ordinal()]) * 2;
