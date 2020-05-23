@@ -234,7 +234,7 @@ class FlutterSoundRecorder extends Session {
   }
 
   Future<void> startRecorder( {
-    Codec codec = Codec.aacADTS,
+    Codec codec = Codec.defaultCodec,
     String toFile = null,
     Stream toStream = null,
     int sampleRate = 16000,
