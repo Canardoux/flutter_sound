@@ -303,7 +303,8 @@ public class FlutterSoundRecorder extends Session
 		false, // pcm16CAF
 		false, // flac
 		false, // aacMP4
-		false, // amr
+		false, // amrNB
+		false, // amrWB
 	};
 
 

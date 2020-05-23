@@ -143,8 +143,8 @@ public class FlutterSoundAudioRecorder
 
 	int[] tabCodec =
 		{
-			AudioFormat.ENCODING_AAC_LC, // DEFAULT // Not used
-			AudioFormat.ENCODING_AAC_LC, // aacADTS // Not used
+			AudioFormat.ENCODING_DEFAULT, // DEFAULT
+			AudioFormat.ENCODING_AAC_LC, // aacADTS
 			0, // opusOGG
 			0, // opusCAF
 			AudioFormat.ENCODING_MP3, // MP3 // Not used
@@ -155,9 +155,11 @@ public class FlutterSoundAudioRecorder
 			0, // pcm16CAF
 			0, // flac
 			0, // aacMP4
-
-
+			0, // amrNB
+			0, // amrWB
 		};
+
+
 
 	public void _startRecorder
 		(
