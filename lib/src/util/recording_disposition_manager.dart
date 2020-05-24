@@ -79,10 +79,10 @@ class RecordingDispositionManager {
 
   /// Internal classes calls this method to notify a change
   /// in the db level.
-  void updateDbPeakDisposition(double decibels) {
+  void updateDbPeakDisposition(double decibels, {bool force}) {
     _lastDispositionDecibels = decibels;
 
-    _trySendDisposition();
+    _trySendDisposition(force: force);
   }
 
   /// [timePaused] The raw duration from the android/ios subsystem
@@ -96,10 +96,13 @@ class RecordingDispositionManager {
 
   /// Sends a disposition if the [interval] has elapsed since
   /// we last sent the data.
-  void _trySendDisposition() {
+  /// Set [force] to force an stream update even if the interval
+  /// since the last update hasn't lapsed.
+  void _trySendDisposition({bool force = false}) {
     if (_dispositionController != null) {
-      if (DateTime.now().difference(lastDispositonUpdate).inMilliseconds >=
-          interval.inMilliseconds) {
+      if (force ||
+          DateTime.now().difference(lastDispositonUpdate).inMilliseconds >=
+              interval.inMilliseconds) {
         lastDispositonUpdate = DateTime.now();
         _dispositionController.add(RecordingDisposition(
             _lastDispositionDuration, _lastDispositionDecibels));
