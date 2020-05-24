@@ -127,6 +127,8 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
 
   SoundRecorder _recorder;
 
+  //var fakeStream = StreamController<RecordingDisposition>();
+
   ///
   SoundRecorderUIState() {
     _recorder = SoundRecorder();
@@ -137,7 +139,16 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   @override
   void initState() {
     super.initState();
+
+    // fakeIt();
   }
+
+  // void fakeIt() {
+  //   fakeStream.add(RecordingDisposition(
+  //       Duration(seconds: 20), Random().nextDouble() * 40));
+
+  //   Future.delayed(Duration(milliseconds: 20), fakeIt);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -158,6 +169,8 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   Stream<RecordingDisposition> get dispositionStream =>
       _recorder.dispositionStream();
 
+  // _minDbCircle so the animated circle is always a
+  // reasonable size (db ranges is typically 45 - 80db)
   static const _minDbCircle = 55;
 
   Widget _buildMicrophone() {
@@ -166,6 +179,8 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
         width: 120,
         child: StreamBuilder<RecordingDisposition>(
             stream: _recorder.dispositionStream(),
+
+            /// fakeStream.stream
             initialData: RecordingDisposition.zero(), // was START_DECIBELS
             builder: (_, streamData) {
               var disposition = streamData.data;
@@ -173,9 +188,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
               //      onRecorderProgress(context, this, disposition.duration);
               return Stack(alignment: Alignment.center, children: [
                 AnimatedContainer(
-                  duration: Duration(milliseconds: 100),
-                  // + MIN_DB_CIRCLE so the animated circle is always a
-                  // reasonable size (db ranges is typically 45 - 80db)
+                  duration: Duration(milliseconds: 180),
                   width: disposition.decibels * 2 + _minDbCircle,
                   height: disposition.decibels * 2 + _minDbCircle,
                   constraints: BoxConstraints(
