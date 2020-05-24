@@ -386,11 +386,20 @@ public class FlutterSoundRecorder
 
 		try
 		{
+			/// for version older than 10 the AAC option isn't supported
+			/// but if we use DEFAULT we get AAC.
+			if (codec == t_CODEC.AAC 
+			&& android.os.Build.VERSION.SDK_INT < 10)
+			{
+				codec = t_CODEC.DEFAULT;
+			}
+
 			if ( codecArray[ codec.ordinal () ] == 0 )
 			{
 				result.error ( TAG, "Unsupported", "Unsupported encoder" );
 				return;
 			}
+
 			if (path == null) {
 				result.error(TAG, "InvalidArgument", "path must NOT be null.");
 				return;
