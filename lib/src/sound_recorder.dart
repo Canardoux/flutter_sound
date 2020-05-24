@@ -383,6 +383,10 @@ class SoundRecorder implements SlotEntry {
 
       // If requried, transcribe from the native codec to the requested codec.
       _recordingTrack.recode();
+
+      /// send final db so any listening UI is reset.
+      _dispositionManager.updateDbPeakDisposition(0, force: true);
+
       if (_onStopped != null) _onStopped(wasUser: true);
     });
   }
