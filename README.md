@@ -97,14 +97,18 @@ When you fill an issue, we try to answer something in less than 48h. Of course, 
 
 ## TODO
 
-- [X] Record PCM on Android
-- [X] Rewrite the documentation
-- [ ] Small examples, smaller than the actual demox.app
+- [ ] Record and playback raw PCM both on Android and iOS
 - [ ] Record OPUS on Android
+- [ ] Record MP3 both on Android and iOS
+- [ ] Record raw PCM to a Dart Stream instead of a file
+- [ ] Playback raw PCM from a Dart Stream instead of a file
 - [ ] Streaming records to Speech to Text
 - [ ] More support for the Apple Watch
 - [ ] Tests unit to avoid any regression
-- [ ] Web App support (!!!actually just a dream!!!)
+- [ ] Flutter Web App support
+- [ ] Flutter Sound port to React Native
+- [ ] Better UI Widget
+- [ ] Lock screen control between two sounds.
 
 
 ## Help Maintenance
