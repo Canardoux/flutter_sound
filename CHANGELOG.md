@@ -1,3 +1,8 @@
+## 5.1.0
+
+- On iOS : the "NowPlaying" info on the lockscreen is removed when the sound is fnished or when the App does a ```stopPlayer()```
+- On iOS : the "NowPlaying" progress bar on the lockscreen is uptodated when the App does a ```seekToPlayer()``` [#364](https://github.com/dooboolab/flutter_sound/issues/364)
+
 ## 5.0.1
 
 - Flutter Sound V5 is published under the LGPL license.

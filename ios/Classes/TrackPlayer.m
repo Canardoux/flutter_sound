@@ -40,8 +40,7 @@
        id forwardTarget;
        id backwardTarget;
        id pauseTarget;
-       int slotNo;
-
+       MPMediaItemArtwork* albumArt ;
 }
 
 - (TrackPlayer*)init: (FlutterMethodCall*)call
@@ -52,31 +51,10 @@
 
 - (void)releaseTrackPlayer:(FlutterMethodCall*)call result:(FlutterResult)result
 {
-        // The code used to release all the media player resources is the same of the one needed
-         // to stop the media playback. Then, use that one.
-         // [self stopRecorder:result];
-         [self stopPlayer];
-         MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
-         if (pauseTarget != nil)
-         {
-                 [commandCenter.togglePlayPauseCommand removeTarget: pauseTarget action: nil];
-                 pauseTarget = nil;
-         }
-         if (forwardTarget != nil)
-         {
-                 [commandCenter.nextTrackCommand removeTarget: forwardTarget action: nil];
-                 forwardTarget = nil;
-         }
-
-         if (backwardTarget != nil)
-         {
-                 [commandCenter.previousTrackCommand removeTarget: backwardTarget action: nil];
-                 backwardTarget = nil;
-         }
-
+        [self stopPlayer];
+        [self cleanTarget];
         [super releaseSession];
         result(@"The player has been successfully released");
-
 }
 
 
@@ -210,9 +188,9 @@
 
 - (void)updateProgress:(NSTimer*) atimer
 {
+        /*
         NSNumber *duration = [NSNumber numberWithLong: (long)(audioPlayer.duration * 1000)];
         NSNumber *position = [NSNumber numberWithLong: (long)(audioPlayer.currentTime * 1000)];
-        /*
         NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
         [songInfo setObject:position forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
         [songInfo setObject:duration forKey:MPMediaItemPropertyPlaybackDuration];
@@ -243,7 +221,7 @@
                 UIImage* artworkImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
                 if(artworkImage)
                 {
-                        MPMediaItemArtwork* albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
+                        albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
                         [songInfo setObject:albumArt forKey:MPMediaItemPropertyArtwork];
                 }
         } else
@@ -252,7 +230,7 @@
                 UIImage* artworkImage = [UIImage imageNamed: track.albumArtAsset];
                 if (artworkImage != nil)
                 {
-                        MPMediaItemArtwork* albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
+                        albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
                         [songInfo setObject:albumArt forKey: MPMediaItemPropertyArtwork];
                 }
         } else
@@ -261,7 +239,7 @@
                 UIImage* artworkImage = [UIImage imageWithContentsOfFile: track.albumArtFile];
                 if (artworkImage != nil)
                 {
-                        MPMediaItemArtwork* albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
+                        albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
                         [songInfo setObject:albumArt forKey: MPMediaItemPropertyArtwork];
                 }
         } else // Nothing specified. We try to use the App Icon
@@ -269,7 +247,7 @@
                 UIImage* artworkImage = [UIImage imageNamed: @"AppIcon"];
                 if (artworkImage != nil)
                 {
-                        MPMediaItemArtwork* albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
+                        albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
                         [songInfo setObject:albumArt forKey: MPMediaItemPropertyArtwork];
                 }
         }
@@ -281,14 +259,15 @@
         [songInfo setObject:track.author forKey:MPMediaItemPropertyArtist];
         [songInfo setObject:progress forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
         [songInfo setObject:duration forKey:MPMediaItemPropertyPlaybackDuration];
-        bool b = [audioPlayer isPlaying];
-        [songInfo setObject:[NSNumber numberWithDouble:(b ? 1.0f : 1.0f)] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+        //bool b = [audioPlayer isPlaying];
+        //[songInfo setObject:[NSNumber numberWithDouble:(b ? 1.0f : 1.0f)] forKey:MPNowPlayingInfoPropertyPlaybackRate]; // [LARPOUX] : I do not understand this instruction
+        [songInfo setObject:[NSNumber numberWithDouble: 1.0f] forKey:MPNowPlayingInfoPropertyPlaybackRate];
 
         [playingInfoCenter setNowPlayingInfo:songInfo];
 }
 
 
-- (void)cleanTarget:(BOOL)canPause canSkipForward:(BOOL)canSkipForward  canSkipBackward:(BOOL)canSkipBackward
+- (void)cleanTarget
 {
           // [commandCenter.playCommand setEnabled:YES];
           // [commandCenter.pauseCommand setEnabled:YES];
@@ -321,6 +300,34 @@
                 [commandCenter.previousTrackCommand removeTarget: backwardTarget action: nil];
                 backwardTarget = nil;
           }
+          MPNowPlayingInfoCenter* playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
+          //[playingInfoCenter setNowPlayingInfo: nil];
+          playingInfoCenter.nowPlayingInfo = nil;
+          albumArt = nil;
+ }
+
+
+- (void)stopPlayer
+{
+          [self stopTimer];
+          isPaused = false;
+          if (audioPlayer)
+          {
+                [audioPlayer stop];
+                //audioPlayer = nil;
+          }
+          [self cleanTarget];
+}
+
+
+
+// Give the system information about what to do when the notification
+// control buttons are pressed.
+- (void)setupRemoteCommandCenter:(BOOL)canPause canSkipForward:(BOOL)canSkipForward canSkipBackward:(BOOL)canSkipBackward result: (FlutterResult)result
+{
+          [self cleanTarget];
+          MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+   
           [commandCenter.togglePlayPauseCommand setEnabled: true]; // If the caller does not want to control pause button, we will use our default action
           [commandCenter.nextTrackCommand setEnabled:canSkipForward];
           [commandCenter.previousTrackCommand setEnabled:canSkipBackward];
@@ -369,29 +376,7 @@
                         return MPRemoteCommandHandlerStatusSuccess;
                 }];
         }
-}
 
-
-- (void)stopPlayer
-{
-          [self stopTimer];
-          isPaused = false;
-          if (audioPlayer)
-          {
-                [audioPlayer stop];
-                //audioPlayer = nil;
-          }
-          // ????  [self cleanTarget:false canSkipForward:false canSkipBackward:false];
-        [self cleanTarget:false canSkipForward:false canSkipBackward:false]; // ???
-}
-
-
-
-// Give the system information about what to do when the notification
-// control buttons are pressed.
-- (void)setupRemoteCommandCenter:(BOOL)canPause canSkipForward:(BOOL)canSkipForward canSkipBackward:(BOOL)canSkipBackward result: (FlutterResult)result
-{
-        [self cleanTarget:canPause canSkipForward:canSkipForward canSkipBackward:canSkipBackward];
 }
 
 
@@ -402,4 +387,35 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
         return [paths.firstObject stringByAppendingString:@"/"];
 }
 
+- (void)updateLockScreenProgression
+{
+        NSNumber* progress = [NSNumber numberWithDouble: audioPlayer.currentTime];
+        NSNumber* duration = [NSNumber numberWithDouble: audioPlayer.duration];
+        NSMutableDictionary* songInfo = [[NSMutableDictionary alloc] init];
+        [songInfo setObject:progress forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+        [songInfo setObject:duration forKey:MPMediaItemPropertyPlaybackDuration];
+        [songInfo setObject:albumArt forKey: MPMediaItemPropertyArtwork];
+        MPNowPlayingInfoCenter* playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
+        [playingInfoCenter setNowPlayingInfo:songInfo];
+
+}
+- (void)seekToPlayer:(FlutterMethodCall*)call result: (FlutterResult)result
+{
+ 
+        [super seekToPlayer: call result:result];
+        [self updateLockScreenProgression];
+  }
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+        [self cleanTarget];
+        [super audioPlayerDidFinishPlaying: player successfully: flag];
+}
+
+- (bool)resume
+{
+        bool b = [super resume];
+        [self updateLockScreenProgression];
+        return b;
+}
 @end

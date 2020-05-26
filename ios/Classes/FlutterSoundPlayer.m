@@ -293,11 +293,10 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         if ([path class] == [NSNull class])
         {
                 [self stopPlayer];
-                ([FlutterError
+                result([FlutterError
                 errorWithCode:@"Audio Player"
                 message:@"Play failure"
                 details:nil]);
-                //result([NSNumber numberWithBool: FALSE]);
                 return;
 
         }
@@ -325,7 +324,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                         if (!b)
                         {
                                 [self stopPlayer];
-                                ([FlutterError
+                                result([FlutterError
                                 errorWithCode:@"Audio Player"
                                 message:@"Play failure"
                                 details:nil]);
@@ -350,22 +349,20 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         } else
         {
                         [self stopPlayer];
-  
-                        [FlutterError
+                        result([FlutterError
                                 errorWithCode:@"Audio Player"
                                 message:@"Play failure"
-                                details:nil];
+                                details:nil]);
         }
 }
 
 
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result
 {
-                       ([FlutterError
+                       result([FlutterError
                                 errorWithCode:@"Audio Player"
                                 message:@"Start Player From Track failure"
                                 details:nil]);
-                        //result([NSNumber numberWithBool: FALSE]);
 }
 
 - (void)stopPlayer
@@ -429,7 +426,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                  } else
                  {
                         [self pause];
-                        result(@"pause play");
+                        result(@"Pause playback");
                  }
         } else
         {
@@ -470,7 +467,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         if (b)
         {
                 //NSString *filePath = audioFileURL.absoluteString;
-                result(@"toto");
+                result(@"Resume playback");
         } else
         {
                 result([FlutterError

@@ -33,10 +33,11 @@
 }
 - (TrackPlayer*)init: (FlutterMethodCall*)call;
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result;
-//- (void)initializeTrackPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
-//- (void)initializeFlautoPlayerWithUI: (FlutterMethodCall*)call result: (FlutterResult)result;
-- (void)releaseTrackPlayer:(FlutterMethodCall *)call result:(FlutterResult)result;
-- (void)freeSlot: (int)slotNo;
+- (void)seekToPlayer:(nonnull NSNumber*) time result: (FlutterResult)result;
+- (void)releaseTrackPlayer:(FlutterMethodCall*)call result:(FlutterResult)result;
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer*)player successfully:(BOOL)flag;
+- (bool)resume;
+
 
 @end
 
