@@ -71,6 +71,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 - (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result;
 
 
+
 @end
 
 
