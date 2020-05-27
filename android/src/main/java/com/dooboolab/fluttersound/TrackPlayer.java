@@ -227,7 +227,8 @@ public class TrackPlayer extends FlutterSoundPlayer
 		if ( path == null )
 		{
 			// No paths were given, then use the default file
-			mMediaBrowserHelper.mediaControllerCompat.getTransportControls().playFromMediaId( PlayerAudioModel.DEFAULT_FILE_LOCATION, null );
+			result.error( ERR_UNKNOWN, ERR_UNKNOWN, "Path is null" );
+			return;
 		} else
 		{
 			// A path was given, then send it to the media player
@@ -365,8 +366,8 @@ public class TrackPlayer extends FlutterSoundPlayer
 			return;
 		int duration = call.argument("milliSec");
 
-		this.model.subsDurationMillis = duration;
-		result.success( "setSubscriptionDuration: " + this.model.subsDurationMillis );
+		subsDurationMillis = duration;
+		result.success( "setSubscriptionDuration: " + subsDurationMillis );
 	}
 
 	private boolean wasMediaPlayerInitialized(  final Result result )
@@ -563,8 +564,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 				}
 			};
 
-			mTimer.schedule( mTask, 0, model.subsDurationMillis );
-			String resolvedPath = mPath == null ? PlayerAudioModel.DEFAULT_FILE_LOCATION : mPath;
+			mTimer.schedule( mTask, 0, subsDurationMillis );
 			return null;
 		}
 	}

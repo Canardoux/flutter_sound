@@ -21,6 +21,7 @@ package com.dooboolab.fluttersound;
 
 
 import android.content.Context;
+import android.media.AudioDeviceInfo;
 import android.media.MediaPlayer;
 import android.media.AudioManager;
 import android.os.Build;
@@ -207,36 +208,6 @@ class sdkCompat
 	static final int ENCODING_OPUS        = 20; // Android R
 }
 
-class PlayerAudioModel
-{
-	final public static String DEFAULT_FILE_LOCATION = Environment.getDataDirectory ().getPath () + "/default.aac"; // SDK
-	public              int    subsDurationMillis    = 10;
-
-	private MediaPlayer mediaPlayer;
-	private long        playTime = 0;
-
-
-	public MediaPlayer getMediaPlayer ()
-	{
-		return mediaPlayer;
-	}
-
-	public void setMediaPlayer ( MediaPlayer mediaPlayer )
-	{
-		this.mediaPlayer = mediaPlayer;
-	}
-
-	public long getPlayTime ()
-	{
-		return playTime;
-	}
-
-	public void setPlayTime ( long playTime )
-	{
-		this.playTime = playTime;
-	}
-}
-
 //-------------------------------------------------------------------------------------------------------------
 
 
@@ -278,7 +249,9 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 
 	final static  String           TAG         = "FlutterSoundPlugin";
-	final         PlayerAudioModel model       = new PlayerAudioModel ();
+	//final         PlayerAudioModel model       = new PlayerAudioModel ();
+	int subsDurationMillis = 0;
+	MediaPlayer mediaPlayer                    = null;
 	private       Timer            mTimer      = new Timer ();
 	final private Handler          mainHandler = new Handler ();
 
@@ -317,6 +290,11 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 	public void startPlayer ( final MethodCall call, final Result result )
 	{
+		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
+		audioManager.setSpeakerphoneOn(true);
+		audioManager.setBluetoothA2dpOn(false);
+		audioManager.setBluetoothScoOn(false);
+
 		Integer           _codec     = call.argument ( "codec" );
 		FlutterSoundCodec codec      = FlutterSoundCodec.values()[ ( _codec != null ) ? _codec : 0 ];
 		byte[]            dataBuffer = call.argument ( "fromDataBuffer" );
@@ -341,13 +319,13 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			}
 
 		}
-		if ( this.model.getMediaPlayer () != null )
+		if ( mediaPlayer != null )
 		{
-			Boolean isPaused = !this.model.getMediaPlayer ().isPlaying () && this.model.getMediaPlayer ().getCurrentPosition () > 1;
+			Boolean isPaused = !mediaPlayer.isPlaying () && mediaPlayer.getCurrentPosition () > 1;
 
 			if ( isPaused )
 			{
-				this.model.getMediaPlayer ().start ();
+				mediaPlayer.start ();
 				result.success ( true );
 				return;
 			}
@@ -357,30 +335,46 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			return;
 		} else
 		{
-			this.model.setMediaPlayer ( new MediaPlayer () );
+			mediaPlayer = ( new MediaPlayer () );
 		}
+		// Check whether the device has a speaker.
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+		{
+
+			AudioDeviceInfo[] devices = audioManager.getDevices( AudioManager.GET_DEVICES_OUTPUTS );
+			for (AudioDeviceInfo device : devices)
+			{
+				if (device.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP)
+				{
+					mediaPlayer.setPreferredDevice(device);
+				}
+			}
+		}
+
 		mTimer = new Timer ();
 
 		try
 		{
 			if ( path == null )
 			{
-				this.model.getMediaPlayer ().setDataSource ( PlayerAudioModel.DEFAULT_FILE_LOCATION );
+				//this.model.getMediaPlayer ().setDataSource ( PlayerAudioModel.DEFAULT_FILE_LOCATION );
+				result.error( ERR_UNKNOWN, ERR_UNKNOWN, "path is NULL");
+				return;
 			}
-			else
+			//else
 			{
-				this.model.getMediaPlayer ().setDataSource (  path );
+				mediaPlayer.setDataSource (  path );
 			}
 			final String pathFile = path;
-			this.model.getMediaPlayer ().setOnPreparedListener ( mp -> onPrepared(mp, pathFile)	);
+			mediaPlayer.setOnPreparedListener ( mp -> onPrepared(mp, pathFile)	);
 			/*
 			 * Detect when finish playing.
 			 */
-			this.model.getMediaPlayer ().setOnCompletionListener ( mp -> onCompletion(mp)
+			mediaPlayer.setOnCompletionListener ( mp -> onCompletion(mp)
 			                                                      );
-			this.model.getMediaPlayer ().setOnErrorListener(this);
+			mediaPlayer.setOnErrorListener(this);
 
-			this.model.getMediaPlayer ().prepare ();
+			mediaPlayer.prepare ();
 		}
 		catch ( Exception e )
 		{
@@ -417,7 +411,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			}
 			mp.reset();
 			mp.release();
-			model.setMediaPlayer(null);
+			mediaPlayer = (null);
 	}
 
 	// Listener called when media player has completed preparation.
@@ -453,9 +447,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			}
 		};
 
-		mTimer.schedule(mTask, 0, model.subsDurationMillis);
-		String resolvedPath = (path == null) ? PlayerAudioModel.DEFAULT_FILE_LOCATION : path;
-		//result.success((resolvedPath));
+		mTimer.schedule(mTask, 0, subsDurationMillis);
 	}
 
 
@@ -463,7 +455,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	{
 		mTimer.cancel ();
 
-		if ( this.model.getMediaPlayer () == null )
+		if ( mediaPlayer == null )
 		{
 			result.success ( "Player already Closed");
 			return;
@@ -471,10 +463,10 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 		try
 		{
-			this.model.getMediaPlayer ().stop ();
-			this.model.getMediaPlayer ().reset ();
-			this.model.getMediaPlayer ().release ();
-			this.model.setMediaPlayer ( null );
+			mediaPlayer.stop ();
+			mediaPlayer.reset ();
+			mediaPlayer.release ();
+			mediaPlayer = ( null );
 			result.success ( "stopped player." );
 		}
 		catch ( Exception e )
@@ -501,14 +493,14 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 	public void pausePlayer ( final MethodCall call, final Result result )
 	{
-		if ( this.model.getMediaPlayer () == null )
+		if ( mediaPlayer == null )
 		{
 			result.error ( ERR_PLAYER_IS_NULL, "pausePlayer()", ERR_PLAYER_IS_NULL );
 			return;
 		}
 		try
 		{
-			this.model.getMediaPlayer ().pause ();
+			mediaPlayer.pause ();
 			result.success ( "paused player." );
 		}
 		catch ( Exception e )
@@ -521,13 +513,13 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 	public void resumePlayer ( final MethodCall call, final Result result )
 	{
-		if ( this.model.getMediaPlayer () == null )
+		if ( mediaPlayer == null )
 		{
 			result.error ( ERR_PLAYER_IS_NULL, "resumePlayer", ERR_PLAYER_IS_NULL );
 			return;
 		}
 
-		if ( this.model.getMediaPlayer ().isPlaying () )
+		if ( mediaPlayer.isPlaying () )
 		{
 			result.error ( ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING );
 			return;
@@ -535,8 +527,8 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 		try
 		{
-			this.model.getMediaPlayer ().seekTo ( this.model.getMediaPlayer ().getCurrentPosition () );
-			this.model.getMediaPlayer ().start ();
+			mediaPlayer.seekTo ( mediaPlayer.getCurrentPosition () );
+			mediaPlayer.start ();
 			result.success ( "resumed player." );
 		}
 		catch ( Exception e )
@@ -550,19 +542,19 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	{
 		int millis = call.argument ( "duration" ) ;
 
-		if ( this.model.getMediaPlayer () == null )
+		if ( mediaPlayer == null )
 		{
 			result.error ( ERR_PLAYER_IS_NULL, "seekToPlayer()", ERR_PLAYER_IS_NULL );
 			return;
 		}
 
-		int currentMillis = this.model.getMediaPlayer ().getCurrentPosition ();
+		int currentMillis = mediaPlayer.getCurrentPosition ();
 		Log.d ( TAG, "currentMillis: " + currentMillis );
 		// millis += currentMillis; [This was the problem for me]
 
 		Log.d ( TAG, "seekTo: " + millis );
 
-		this.model.getMediaPlayer ().seekTo ( millis );
+		mediaPlayer.seekTo ( millis );
 		result.success ( String.valueOf ( millis ) );
 	}
 
@@ -570,14 +562,14 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	{
 		double volume = call.argument ( "volume" );
 
-		if ( this.model.getMediaPlayer () == null )
+		if ( mediaPlayer == null )
 		{
 			result.error ( ERR_PLAYER_IS_NULL, "setVolume()", ERR_PLAYER_IS_NULL );
 			return;
 		}
 
 		float mVolume = ( float ) volume;
-		this.model.getMediaPlayer ().setVolume ( mVolume, mVolume );
+		mediaPlayer.setVolume ( mVolume, mVolume );
 		result.success ( "Set volume" );
 	}
 
@@ -590,8 +582,8 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		}
 		int duration = call.argument ( "milliSec" );
 
-		this.model.subsDurationMillis = duration;
-		result.success ( "setSubscriptionDuration: " + this.model.subsDurationMillis );
+		subsDurationMillis = duration;
+		result.success ( "setSubscriptionDuration: " + subsDurationMillis );
 	}
 
 	void androidAudioFocusRequest ( final MethodCall call, final Result result )

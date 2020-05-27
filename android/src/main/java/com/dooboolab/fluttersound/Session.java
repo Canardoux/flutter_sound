@@ -20,6 +20,8 @@
 package com.dooboolab.fluttersound;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.media.AudioDeviceInfo;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.os.Build;
@@ -108,6 +110,11 @@ public abstract class Session
 	boolean prepareFocus( final MethodCall call)
 	{
 		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
+		audioManager.setSpeakerphoneOn(true);
+		audioManager.setBluetoothA2dpOn(false);
+		audioManager.setBluetoothScoOn(false);
+
+
 
 		boolean r = true;
 		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService( Context.AUDIO_SERVICE );

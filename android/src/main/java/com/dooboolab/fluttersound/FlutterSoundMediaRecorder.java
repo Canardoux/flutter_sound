@@ -31,8 +31,8 @@ public class FlutterSoundMediaRecorder
 	final static String             TAG                = "SoundMediaRecorder";
 
 	static int codecArray[] = {
-		0 // DEFAULT
-		, MediaRecorder.AudioEncoder.DEFAULT,
+		MediaRecorder.AudioEncoder.DEFAULT ,
+		MediaRecorder.AudioEncoder.AAC,
 		sdkCompat.AUDIO_ENCODER_OPUS,
 		0, // CODEC_CAF_OPUS (specific Apple)
 		0,// CODEC_MP3 (not implemented)
