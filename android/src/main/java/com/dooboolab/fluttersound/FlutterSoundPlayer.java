@@ -24,12 +24,14 @@ import android.content.Context;
 import android.media.AudioDeviceInfo;
 import android.media.MediaPlayer;
 import android.media.AudioManager;
+import android.media.MicrophoneInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
 import android.media.AudioFocusRequest;
+import android.widget.MediaController;
 
 import org.json.JSONObject;
 
@@ -290,10 +292,6 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 	public void startPlayer ( final MethodCall call, final Result result )
 	{
-		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
-		audioManager.setSpeakerphoneOn(true);
-		audioManager.setBluetoothA2dpOn(false);
-		audioManager.setBluetoothScoOn(false);
 
 		Integer           _codec     = call.argument ( "codec" );
 		FlutterSoundCodec codec      = FlutterSoundCodec.values()[ ( _codec != null ) ? _codec : 0 ];
@@ -335,20 +333,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			return;
 		} else
 		{
-			mediaPlayer = ( new MediaPlayer () );
-		}
-		// Check whether the device has a speaker.
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-		{
-
-			AudioDeviceInfo[] devices = audioManager.getDevices( AudioManager.GET_DEVICES_OUTPUTS );
-			for (AudioDeviceInfo device : devices)
-			{
-				if (device.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP)
-				{
-					mediaPlayer.setPreferredDevice(device);
-				}
-			}
+			mediaPlayer = new MediaPlayer () ;
 		}
 
 		mTimer = new Timer ();
