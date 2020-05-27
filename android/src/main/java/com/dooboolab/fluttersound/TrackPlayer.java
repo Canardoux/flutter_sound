@@ -26,6 +26,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioDeviceInfo;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.AudioManager;
@@ -223,11 +224,28 @@ public class TrackPlayer extends FlutterSoundPlayer
 		mMediaBrowserHelper.setMediaPlayerOnPreparedListener( new MediaPlayerOnPreparedListener(  path ) );
 		mMediaBrowserHelper.setMediaPlayerOnCompletionListener( new MediaPlayerOnCompletionListener() );
 
+		// Check whether the device has a speaker.
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+		{
+			AudioDeviceInfo[] devices = audioManager.getDevices( AudioManager.GET_DEVICES_OUTPUTS );
+			for (AudioDeviceInfo device : devices)
+			{
+				if (device.getType() == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER)
+				{
+					AudioDeviceInfo info = device;
+					//mediaPlayer.setPreferredDevice(info);
+
+				}
+			}
+		}
+
+
 		// Check whether a path to an audio file was given
 		if ( path == null )
 		{
 			// No paths were given, then use the default file
-			mMediaBrowserHelper.mediaControllerCompat.getTransportControls().playFromMediaId( PlayerAudioModel.DEFAULT_FILE_LOCATION, null );
+			result.error( ERR_UNKNOWN, ERR_UNKNOWN, "Path is null" );
+			return;
 		} else
 		{
 			// A path was given, then send it to the media player
@@ -365,8 +383,8 @@ public class TrackPlayer extends FlutterSoundPlayer
 			return;
 		int duration = call.argument("milliSec");
 
-		this.model.subsDurationMillis = duration;
-		result.success( "setSubscriptionDuration: " + this.model.subsDurationMillis );
+		subsDurationMillis = duration;
+		result.success( "setSubscriptionDuration: " + subsDurationMillis );
 	}
 
 	private boolean wasMediaPlayerInitialized(  final Result result )
@@ -563,8 +581,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 				}
 			};
 
-			mTimer.schedule( mTask, 0, model.subsDurationMillis );
-			String resolvedPath = mPath == null ? PlayerAudioModel.DEFAULT_FILE_LOCATION : mPath;
+			mTimer.schedule( mTask, 0, subsDurationMillis );
 			return null;
 		}
 	}

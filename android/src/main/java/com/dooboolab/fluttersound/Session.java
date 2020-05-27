@@ -20,6 +20,8 @@
 package com.dooboolab.fluttersound;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.media.AudioDeviceInfo;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.os.Build;
@@ -57,8 +59,16 @@ enum AudioFocus {
 };
 
 
+
 public abstract class Session
 {
+	final int outputToSpeaker = 1;
+	final int allowHeadset = 2;
+	final int allowEarPiece = 4;
+	final int allowBlueTooth = 8;
+	final int allowAirPlay = 16;
+	final int allowBlueToothA2DP = 32;
+
 
 	final static int CODEC_OPUS   = 2;
 	final static int CODEC_VORBIS = 5;
@@ -107,17 +117,15 @@ public abstract class Session
 
 	boolean prepareFocus( final MethodCall call)
 	{
-		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
-
 		boolean r = true;
 		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService( Context.AUDIO_SERVICE );
 		AudioFocus focus = AudioFocus.values()[(int)call.argument ( "focus" )];
 
+		int audioFlags = call.argument( "audioFlags" );
 		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
 		{
 			if ( focus != AudioFocus.abandonFocus && focus != AudioFocus.doNotRequestFocus && focus != AudioFocus.requestFocus )
 			{
-				int audioFlags = call.argument( "audioFlags" );
 				int focusGain = AudioManager.AUDIOFOCUS_GAIN;
 
 				switch (focus)
@@ -132,35 +140,38 @@ public abstract class Session
 				audioFocusRequest = new AudioFocusRequest.Builder( focusGain )
 					// .setAudioAttributes(mPlaybackAttributes)
 					.build();
-
-				/*
-				if (flags & outputToSpeaker)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker;
-				if (flags & allowAirPlay)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay;
-				if (flags & allowBlueTooth)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetooth;
-				if (flags & allowBlueToothA2DP)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
-				 */
 			}
 
 			if (focus != AudioFocus.doNotRequestFocus)
 			{
 				hasFocus = (focus != AudioFocus.abandonFocus);
-				//r = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
 				if (hasFocus)
 					audioManager.requestAudioFocus ( audioFocusRequest );
 				else
 					audioManager.abandonAudioFocusRequest ( audioFocusRequest );
 			}
 		}
+
+		audioManager.setSpeakerphoneOn( (audioFlags &  outputToSpeaker) != 0);
+		audioManager.setBluetoothScoOn( (audioFlags & allowBlueTooth) != 0);
+		if ((audioFlags & allowBlueTooth) != 0)
+			audioManager.startBluetoothSco();
+		else
+			audioManager.stopBluetoothSco();
+		audioManager.setBluetoothA2dpOn(  (audioFlags & allowBlueToothA2DP) != 0 );
+		audioManager.setMode( AudioManager.STREAM_MUSIC );
+		//audioManager.setRouting( AudioManager.MODE_NORMAL, AudioManager.ROUTE_SPEAKER, AudioManager.ROUTE_ALL );
+
 		return r;
 	}
 
 	void setFocus( final MethodCall call, final MethodChannel.Result result )
 	{
 		boolean r = prepareFocus(call);
+		if (r)
+			result.success ( r);
+		else
+			result.error ( "setFocus", "setFocus", "Failure to prepare focus");
 
 	}
 
