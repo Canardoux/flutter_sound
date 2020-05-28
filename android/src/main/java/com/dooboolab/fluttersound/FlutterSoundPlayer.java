@@ -317,6 +317,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			}
 
 		}
+		stop(); // To start a new clean playback
 		if ( mediaPlayer != null )
 		{
 			Boolean isPaused = !mediaPlayer.isPlaying () && mediaPlayer.getCurrentPosition () > 1;
@@ -435,14 +436,12 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		mTimer.schedule(mTask, 0, subsDurationMillis);
 	}
 
-
-	public void stopPlayer ( final MethodCall call, final Result result )
+	void stop()
 	{
 		mTimer.cancel ();
 
 		if ( mediaPlayer == null )
 		{
-			result.success ( "Player already Closed");
 			return;
 		}
 
@@ -457,8 +456,15 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		catch ( Exception e )
 		{
 			Log.e ( TAG, "stopPlay exception: " + e.getMessage () );
-			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 		}
+
+	}
+
+
+	public void stopPlayer ( final MethodCall call, final Result result )
+	{
+		stop();
+		result.success ( "stopped player." );
 	}
 
 	public void isDecoderSupported ( final MethodCall call, final Result result )
