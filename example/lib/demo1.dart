@@ -106,9 +106,9 @@ class _MyAppState extends State<MyApp> {
     await playerModule.closeAudioSession();
     _isAudioPlayer = withUI;
     if (withUI) {
-      await playerModule.openAudioSessionWithUI(focus: AudioFocus.requestFocusTransient, category: SessionCategory.playAndRecord, mode: SessionMode.modeDefault, audioFlags: outputToSpeaker);
+      await playerModule.openAudioSessionWithUI(focus: AudioFocus.requestFocusTransient, category: SessionCategory.playAndRecord, mode: SessionMode.modeDefault, audioFlags: outputToSpeaker | allowBlueTooth);
     } else {
-      await playerModule.openAudioSession( focus: AudioFocus.requestFocusTransient, category: SessionCategory.playAndRecord, mode: SessionMode.modeDefault, audioFlags: outputToSpeaker);
+      await playerModule.openAudioSession( focus: AudioFocus.requestFocusTransient, category: SessionCategory.playAndRecord, mode: SessionMode.modeDefault, audioFlags: outputToSpeaker | allowBlueTooth);
     }
     await playerModule.setSubscriptionDuration(Duration(milliseconds: 10));
     await recorderModule.setSubscriptionDuration(Duration(milliseconds: 10));
