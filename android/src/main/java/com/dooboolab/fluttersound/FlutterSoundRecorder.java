@@ -404,7 +404,10 @@ public class FlutterSoundRecorder extends Session
 	public void stopRecorder ( final MethodCall call, final Result result )
 	{
 		recordHandler.removeCallbacksAndMessages ( null );
-		recorder._stopRecorder (  );
+		if (recorder != null)
+		{
+			recorder._stopRecorder();
+		}
 		recorder = null;
 		result.success ( "Media Recorder is closed" );
 	}
