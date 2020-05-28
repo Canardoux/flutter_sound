@@ -29,7 +29,8 @@ public interface RecorderInterface
 			Integer sampleRate,
 			Integer bitRate,
 			FlutterSoundCodec codec,
-			String path
+			String path,
+			int audioSource
 		)
 		throws
 		IOException;

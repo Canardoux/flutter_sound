@@ -307,17 +307,54 @@ public class FlutterSoundRecorder extends Session
 		false, // amrWB
 	};
 
+	enum AudioSource {
+		defaultSource,
+		microphone,
+		voiceDownlink, // (if someone can explain me what it is, I will be grateful ;-) )
+		camCorder,
+		remote_submix,
+		unprocessed,
+		voice_call,
+		voice_communication,
+		voice_performance,
+		voice_recognition,
+		voiceUpLink,
+		bluetoothHFP,
+		headsetMic,
+		lineIn
+	}
+
+	int tabAudioSource [] =
+		{
+			MediaRecorder.AudioSource.DEFAULT,
+			MediaRecorder.AudioSource.MIC,
+			MediaRecorder.AudioSource.VOICE_DOWNLINK,
+			MediaRecorder.AudioSource.CAMCORDER,
+			MediaRecorder.AudioSource.REMOTE_SUBMIX,
+			MediaRecorder.AudioSource.UNPROCESSED,
+			MediaRecorder.AudioSource.VOICE_CALL,
+			MediaRecorder.AudioSource.VOICE_COMMUNICATION,
+			10, //MediaRecorder.AudioSource.VOICE_PERFORMANCE,,
+			MediaRecorder.AudioSource.VOICE_RECOGNITION,
+			MediaRecorder.AudioSource.VOICE_UPLINK,
+			MediaRecorder.AudioSource.DEFAULT, // bluetoothHFP,
+			MediaRecorder.AudioSource.DEFAULT, // headsetMic,
+			MediaRecorder.AudioSource.DEFAULT, // lineIn
+
+		};
 
 	public void startRecorder ( final MethodCall call, final Result result )
 	{
 		//taskScheduler.submit ( () ->
 		{
-			Integer           sampleRate          = call.argument ( "sampleRate" );
-			Integer           numChannels         = call.argument ( "numChannels" );
-			Integer           bitRate             = call.argument ( "bitRate" );
-			int               _codec              = call.argument ( "codec" );
-			FlutterSoundCodec codec               = FlutterSoundCodec.values()[ _codec ];
-			final String      path                = call.argument ( "path" );
+			Integer                         sampleRate          = call.argument ( "sampleRate" );
+			Integer                         numChannels         = call.argument ( "numChannels" );
+			Integer                         bitRate             = call.argument ( "bitRate" );
+			int                             _codec              = call.argument ( "codec" );
+			FlutterSoundCodec               codec               = FlutterSoundCodec.values()[ _codec ];
+			final String                     path               = call.argument ( "path" );
+			int                             _audioSource        = call.argument ( "audioSource" );
+			int                             audioSource         = tabAudioSource[_audioSource];
 			mPauseTime = 0;
 			mStartPauseTime = -1;
 			if (recorder != null)
@@ -333,7 +370,7 @@ public class FlutterSoundRecorder extends Session
 			}
 			try
 			{
-				recorder._startRecorder( numChannels, sampleRate, bitRate, codec, path );
+				recorder._startRecorder( numChannels, sampleRate, bitRate, codec, path, audioSource );
 			} catch ( Exception e )
 			{
 				result.error( TAG, "Error starting recorder", e.getMessage() );
