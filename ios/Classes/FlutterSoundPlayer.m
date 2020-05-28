@@ -265,6 +265,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 b = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
         }
  
+        [self stopPlayer]; // To start a fresh new playback
 
         NSString* path = (NSString*)call.arguments[@"fromURI"];
         FlutterStandardTypedData* dataBuffer = (FlutterStandardTypedData*)call.arguments[@"fromDataBuffer"];

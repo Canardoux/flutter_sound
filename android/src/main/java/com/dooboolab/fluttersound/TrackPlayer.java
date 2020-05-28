@@ -190,6 +190,8 @@ public class TrackPlayer extends FlutterSoundPlayer
 			}
 		}
 
+		_stopPlayer(); // To start a clean new playback
+
 		mTimer = new Timer();
 
 		// Add or remove the handlers for when the user tries to skip the current track

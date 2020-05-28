@@ -99,7 +99,7 @@
                                    details:nil]);
                 return;
         }
-
+        [self stopPlayer]; // to start a fresh new playback
 
         // Check whether the audio file is stored as a path to a file or a buffer
         if([track isUsingPath])

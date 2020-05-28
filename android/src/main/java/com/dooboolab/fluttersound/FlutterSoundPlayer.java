@@ -341,6 +341,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			}
 
 		}
+		stop(); // To start a new clean playback
 		if ( this.model.getMediaPlayer () != null )
 		{
 			Boolean isPaused = !this.model.getMediaPlayer ().isPlaying () && this.model.getMediaPlayer ().getCurrentPosition () > 1;
@@ -458,14 +459,12 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		//result.success((resolvedPath));
 	}
 
-
-	public void stopPlayer ( final MethodCall call, final Result result )
+	void stop()
 	{
 		mTimer.cancel ();
 
 		if ( this.model.getMediaPlayer () == null )
 		{
-			result.success ( "Player already Closed");
 			return;
 		}
 
@@ -475,13 +474,19 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			this.model.getMediaPlayer ().reset ();
 			this.model.getMediaPlayer ().release ();
 			this.model.setMediaPlayer ( null );
-			result.success ( "stopped player." );
 		}
 		catch ( Exception e )
 		{
 			Log.e ( TAG, "stopPlay exception: " + e.getMessage () );
-			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 		}
+
+	}
+
+
+	public void stopPlayer ( final MethodCall call, final Result result )
+	{
+		stop();
+		result.success ( "stopped player." );
 	}
 
 	public void isDecoderSupported ( final MethodCall call, final Result result )
