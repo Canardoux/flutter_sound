@@ -94,7 +94,8 @@ public class FlutterSoundMediaRecorder
 			Integer sampleRate,
 			Integer bitRate,
 			FlutterSoundCodec codec,
-			String path
+			String path,
+			int audioSource
                 )
 		throws
 		IOException
@@ -116,7 +117,7 @@ public class FlutterSoundMediaRecorder
 		try
 		{
 			mediaRecorder.reset();
-			mediaRecorder.setAudioSource ( MediaRecorder.AudioSource.MIC );
+			mediaRecorder.setAudioSource (audioSource );
 			int androidEncoder      = codecArray[ codec.ordinal () ];
 			int androidOutputFormat = formatsArray[ codec.ordinal () ];
 			mediaRecorder.setOutputFormat ( androidOutputFormat );

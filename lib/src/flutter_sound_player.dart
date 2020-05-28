@@ -205,7 +205,7 @@ class FlutterSoundPlayer extends Session {
                                                  AudioFocus focus = AudioFocus.requestFocusTransient,
                                                  SessionCategory category = SessionCategory.playAndRecord,
                                                  SessionMode mode = SessionMode.modeDefault,
-                                                 int audioFlags = outputToSpeaker}) async {
+                                                 int audioFlags = outputToSpeaker | allowBlueTooth}) async {
     if (isInited == Initialized.fullyInitialized || isInited == Initialized.fullyInitializedWithUI) {
       await closeAudioSession();
     }
@@ -222,7 +222,7 @@ class FlutterSoundPlayer extends Session {
     openSession();
     setPlayerCallback();
 
-    await invokeMethod('initializeMediaPlayer', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags,});
+    await invokeMethod('initializeMediaPlayer', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags | allowBlueTooth,});
     isInited = Initialized.fullyInitialized;
     return this;
   }
@@ -231,7 +231,7 @@ class FlutterSoundPlayer extends Session {
                                                        AudioFocus focus = AudioFocus.requestFocusTransient,
                                                        SessionCategory category = SessionCategory.playAndRecord,
                                                        SessionMode mode = SessionMode.modeDefault,
-                                                       int audioFlags = outputToSpeaker}) async {
+                                                       int audioFlags = outputToSpeaker | allowBlueTooth}) async {
     if (isInited == Initialized.fullyInitializedWithUI || isInited == Initialized.fullyInitialized) {
       await closeAudioSession();
     }

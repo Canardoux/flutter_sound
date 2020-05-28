@@ -41,6 +41,17 @@ enum AudioSource {
   defaultSource,
   microphone,
   voiceDownlink, // (if someone can explain me what it is, I will be grateful ;-) )
+  camCorder,
+  remote_submix,
+  unprocessed,
+  voice_call,
+  voice_communication,
+  voice_performance,
+  voice_recognition,
+  voiceUpLink,
+  bluetoothHFP,
+  headsetMic,
+  lineIn,
 }
 
 FlautoRecorderPlugin flautoRecorderPlugin; // Singleton, lazy initialized
@@ -113,7 +124,7 @@ class FlutterSoundRecorder extends Session {
                                                    AudioFocus focus = AudioFocus.requestFocusTransient,
                                                    SessionCategory category = SessionCategory.playAndRecord,
                                                    SessionMode mode = SessionMode.modeDefault,
-                                                   int audioFlags = outputToSpeaker}) async {
+                                                   int audioFlags = outputToSpeaker | allowBlueTooth}) async {
     if (isInited == Initialized.fullyInitialized) {
       return this;
     }
