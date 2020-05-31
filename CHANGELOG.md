@@ -1,3 +1,5 @@
+## 4.0.7 Patch to avoid problems when the App does s stopPlayer() during a startPlayer() [374](https://github.com/dooboolab/flutter_sound/issues/374)
+
 ## 4.0.6 Error returns from iOS in FlutterSoundPlayer.m was wrong : [#350](https://github.com/dooboolab/flutter_sound/pull/350)
 
 ## 4.0.5

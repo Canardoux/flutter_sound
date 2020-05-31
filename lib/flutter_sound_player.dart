@@ -369,6 +369,7 @@ class FlutterSoundPlayer {
   Future<String> _startPlayer(String method, Map<String, dynamic> what) async {
     String result;
     await stopPlayer(); // Just in case
+    playerState = t_PLAYER_STATE.IS_PLAYING;
     try {
       t_CODEC codec = what['codec'] as t_CODEC;
       String path = what['path'] as String; // can be null
@@ -406,6 +407,7 @@ class FlutterSoundPlayer {
           fout.path,
         ]); // remux OGG to CAF
         if (rc != 0) return null;
+        if (playerState != t_PLAYER_STATE.IS_PLAYING) return null; // Patch [LARPOUX] to handle the case where the App did a stopPlayer()
         // Now we can play Apple CAF/OPUS
         audioPlayerFinishedPlaying = what['whenFinished'] as void Function();
         what['whenFinished'] =
@@ -423,7 +425,7 @@ class FlutterSoundPlayer {
         print('startPlayer result: $result');
         setPlayerCallback();
 
-        playerState = t_PLAYER_STATE.IS_PLAYING;
+
       }
 
       return result;

@@ -268,8 +268,9 @@ class TrackPlayer extends FlutterSoundPlayer {
       throw PlayerRunningException('The selected codec is not supported on '
           'this platform.');
     }
-
+    playerState = t_PLAYER_STATE.IS_PLAYING;
     await track._adaptOggToIos();
+    if (playerState != t_PLAYER_STATE.IS_PLAYING) return null; // Patch [LARPOUX] to handle the case where the App did a stopPlayer()
 
     final trackMap = await track.toMap();
 
@@ -290,8 +291,7 @@ class TrackPlayer extends FlutterSoundPlayer {
     if (result != null) {
       print('startPlayer result: $result');
 
-      playerState = t_PLAYER_STATE.IS_PLAYING;
-    }
+      }
     return result;
   }
 
