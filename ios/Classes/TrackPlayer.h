@@ -42,6 +42,8 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 - (void)initializeTrackPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)releaseTrackPlayer:(FlutterMethodCall *)call result:(FlutterResult)result;
 - (void)freeSlot: (int)slotNo;
+- (void)setUIProgressBar:(FlutterMethodCall*)call result: (FlutterResult)result;
+
 
 @end
 
