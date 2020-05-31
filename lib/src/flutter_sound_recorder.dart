@@ -362,7 +362,7 @@ class FlutterSoundRecorder extends Session {
     if (isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus, 'category': category, 'mode': mode.index, 'audioFlags':audioFlags});
+    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags':audioFlags});
   }
 
 
