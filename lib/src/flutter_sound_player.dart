@@ -274,7 +274,7 @@ class FlutterSoundPlayer extends Session {
       throw (_notOpen());
     }
 
-    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus, 'category': category.index, 'mode': mode.index, 'audioFlags':audioFlags});
+    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags':audioFlags});
   }
 
 

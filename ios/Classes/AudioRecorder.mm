@@ -373,7 +373,7 @@ AVAudioSessionPort tabSessionPort [] =
            for (AVAudioSessionPortDescription* portDescr in availableInputs)
            {
                 AVAudioSessionPort port = [portDescr portType];
-                if (port == tabSessionPort[audioSource])
+                if ([port isEqual:tabSessionPort[audioSource]])
                 {
                         [audioSession setPreferredInput: portDescr error: nil ];
                         found = true;
