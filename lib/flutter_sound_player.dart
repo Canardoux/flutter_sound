@@ -443,8 +443,8 @@ class FlutterSoundPlayer {
      await initialize();
    	 return await _startPlayer('startPlayer', <String, dynamic>{
        'path': uri,
-      'codec': codec,
-      'whenFinished': whenFinished,
+       'codec': codec,
+       'whenFinished': whenFinished,
     });
   }
 

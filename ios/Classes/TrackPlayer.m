@@ -111,7 +111,12 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                  [aTrackPlayer startPlayerFromTrack: call result:result];
         } else
 
+        if ([@"setUIProgressBar" isEqualToString:call.method])
         {
+                 [aTrackPlayer setUIProgressBar: call result:result];
+        } else
+
+       {
                 [super handleMethodCall: call  result: result];
         }
 }
@@ -334,6 +339,21 @@ extern void TrackPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         [self setupNowPlaying];
 
 }
+
+
+
+- (void)setUIProgressBar:(FlutterMethodCall*)call result: (FlutterResult)result
+{
+        NSNumber *progress = [ NSNumber numberWithInt: [call.arguments[@"progress"] intValue] ];
+        NSNumber *duration = [ NSNumber numberWithInt: [call.arguments[@"duration"] intValue] ];
+        NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
+        [songInfo setObject:progress forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+        [songInfo setObject:duration forKey:MPMediaItemPropertyPlaybackDuration];
+        MPNowPlayingInfoCenter *playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
+        [playingInfoCenter setNowPlayingInfo:songInfo];
+}
+
+
 
 // Give the system information about what the audio player
 // is currently playing. Takes in the image to display in the

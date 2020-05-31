@@ -306,6 +306,13 @@ class TrackPlayer extends FlutterSoundPlayer {
     return await startPlayerFromTrack(track, whenFinished: whenFinished);
   }
 
+  Future<void> setUIProgressBar ( {
+    Duration duration,
+    Duration progress,
+  }) async {
+  return invokeMethod('setUIProgressBar', <String, dynamic>{'duration': duration.inMilliseconds, 'progress': progress.inMilliseconds});
+  }
+
   /// Plays the audio file in [buffer] decoded according to [codec].
   Future<String> startPlayerFromBuffer(
     Uint8List dataBuffer, {
