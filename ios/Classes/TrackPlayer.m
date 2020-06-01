@@ -27,10 +27,6 @@
 
 
 
-
-
-
-
 //---------------------------------------------------------------------------------------------
 
 @implementation TrackPlayer
@@ -198,6 +194,20 @@
         [playingInfoCenter setNowPlayingInfo:songInfo];
         */
         [super updateProgress: atimer];
+}
+
+
+
+
+- (void)setUIProgressBar:(FlutterMethodCall*)call result: (FlutterResult)result
+{
+        NSNumber *progress = [ NSNumber numberWithInt: [call.arguments[@"progress"] intValue] ];
+        NSNumber *duration = [ NSNumber numberWithInt: [call.arguments[@"duration"] intValue] ];
+        NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
+        [songInfo setObject:progress forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+        [songInfo setObject:duration forKey:MPMediaItemPropertyPlaybackDuration];
+        MPNowPlayingInfoCenter *playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
+        [playingInfoCenter setNowPlayingInfo:songInfo];
 }
 
 

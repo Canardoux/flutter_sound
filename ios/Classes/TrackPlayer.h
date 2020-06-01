@@ -37,6 +37,7 @@
 - (void)releaseTrackPlayer:(FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer*)player successfully:(BOOL)flag;
 - (bool)resume;
+- (void)setUIProgressBar:(FlutterMethodCall*)call result: (FlutterResult)result;
 
 
 @end

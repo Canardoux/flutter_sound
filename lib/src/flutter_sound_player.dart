@@ -468,7 +468,8 @@ class FlutterSoundPlayer extends Session {
       throw (_notOpen());
     }
     await stopPlayer(); // Just in case
-    //bool result = true;
+    playerState = PlayerState.isPlaying;
+
     try {
       if (needToConvert(codec)) {
 
@@ -488,14 +489,14 @@ class FlutterSoundPlayer extends Session {
         await _convertAudio(what);
         codec = what['codec'] as Codec;
         fromURI =  what['path'] as String;
-        //fromDataBuffer = what['fromDataBuffer'] as Uint8List;
+        if (playerState != PlayerState.isPlaying)
+          throw Exception('Player has been stopped');
       }
 
       audioPlayerFinishedPlaying = whenFinished;
       await invokeMethod('startPlayer', {'codec':codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI,} as Map<String, dynamic>);
       //setPlayerCallback();
 
-      playerState = PlayerState.isPlaying;
 
     } catch (err) {
       audioPlayerFinishedPlaying = null;
@@ -525,14 +526,13 @@ class FlutterSoundPlayer extends Session {
     this.onSkipBackward = onSkipBackward;
     this.onPaused = onPaused;
     Map<String, dynamic> trackDico = track.toMap();
+    playerState = PlayerState.isPlaying;
     await invokeMethod('startPlayerFromTrack',  <String, dynamic>{
           'track': trackDico,
           'canPause': onPaused != null,
           'canSkipForward': onSkipForward != null,
           'canSkipBackward': onSkipBackward != null,
     } );
-    //setPlayerCallback();
-    playerState = PlayerState.isPlaying;
   }
 
 
