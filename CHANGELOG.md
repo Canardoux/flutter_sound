@@ -18,6 +18,14 @@
 - Remove the NULL posted when the player or the recorder is closed.
 - The Audio Focus is **NOT** automaticaly abandoned between two `startPlayer()` or two `startRecorder()`
 
+## 4.0.7 Patch to avoid problems when the App does s stopPlayer() during a startPlayer() [374](https://github.com/dooboolab/flutter_sound/issues/374)
+
+## 4.0.6 Error returns from iOS in FlutterSoundPlayer.m was wrong : [#350](https://github.com/dooboolab/flutter_sound/pull/350)
+
+## 4.0.5
+
+- Fix as bug in the Focus gain, on iOS [#324](https://github.com/dooboolab/flutter_sound/issues/324#issuecomment-630970336)
+
 ## 4.0.4+1
 
 - Fix a bug in `resumeRecorder()` on Android : the dbPeak Stream was not restored after a resume()
