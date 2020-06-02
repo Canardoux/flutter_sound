@@ -181,6 +181,11 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         {
                 result( [[NSBundle mainBundle] resourcePath]);
         } else
+        
+        if ([@"setUIProgressBar" isEqualToString:call.method])
+        {
+                 [aFlautoPlayer setUIProgressBar: call result:result];
+        } else
 
         {
                 result(FlutterMethodNotImplemented);
@@ -365,6 +370,15 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                                 message:@"Start Player From Track failure"
                                 details:nil]);
 }
+
+- (void)setUIProgressBar:(FlutterMethodCall*)call result: (FlutterResult)result;
+{
+                       result([FlutterError
+                                errorWithCode:@"Audio Player"
+                                message:@"setUIProgressBar failure"
+                                details:nil]);
+}
+
 
 - (void)stopPlayer
 {

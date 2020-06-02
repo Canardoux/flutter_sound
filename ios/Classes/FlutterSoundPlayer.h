@@ -69,6 +69,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 - (void)initializeFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)releaseFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)setUIProgressBar:(FlutterMethodCall*)call result: (FlutterResult)result;
 
 
 

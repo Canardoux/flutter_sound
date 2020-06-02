@@ -156,7 +156,7 @@ class FlutterSoundRecorder extends Session {
     isInited = Initialized.initializationInProgress;
     _removeRecorderCallback(); // _recorderController will be closed by this function
     await invokeMethod('releaseFlautoRecorder', <String, dynamic>{});
-    closeSession();
+    super.closeAudioSession();
     isInited = Initialized.notInitialized;
   }
 

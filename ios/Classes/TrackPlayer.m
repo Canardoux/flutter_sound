@@ -326,7 +326,7 @@
                 [audioPlayer stop];
                 //audioPlayer = nil;
           }
-          [self cleanTarget];
+          // TEMPORARY // TODO // [self cleanTarget];
 }
 
 
@@ -418,7 +418,7 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
-        [self cleanTarget];
+        // TEMPORARY // TODO // [self cleanTarget];
         [super audioPlayerDidFinishPlaying: player successfully: flag];
 }
 

@@ -293,7 +293,7 @@ class FlutterSoundPlayer extends Session {
     //_removePlayerCallback(); // playerController is closed by this function
     await invokeMethod('releaseMediaPlayer', <String, dynamic>{});
     _removePlayerCallback();
-    closeSession();
+    super.closeAudioSession();
     isInited = Initialized.notInitialized;
   }
 
@@ -448,6 +448,35 @@ class FlutterSoundPlayer extends Session {
     what['codec'] = convert;
   }
 
+  Future<void> _convert ( Map<String, dynamic> what) async
+  {
+    Codec codec = what['codec'];
+    if (needToConvert(codec)) {
+      String fromURI = what['path'];
+      Uint8List fromDataBuffer = what['fromDataBuffer'];
+
+
+      if (fromDataBuffer != null) {
+        var tempDir = await getTemporaryDirectory();
+        File inputFile = File('${tempDir.path}/$slotNo-flutter_sound-tmp');
+
+        if (inputFile.existsSync()) {
+          await inputFile.delete();
+        }
+        inputFile.writeAsBytesSync(
+                    fromDataBuffer); // Write the user buffer into the temporary file
+        what['fromDataBuffer'] = null;
+        what['path'] = inputFile.path;
+      }
+      //Map<String, dynamic> what = {'codec': codec, 'path': fromURI, 'fromDataBuffer': fromDataBuffer,} as Map<String, dynamic>;
+      await _convertAudio(what);
+      //codec = what['codec'] as Codec;
+      //fromURI =  what['path'] as String;
+      if (playerState != PlayerState.isPlaying)
+        throw Exception('Player has been stopped');
+    }
+
+  }
 
   Future<void> startPlayer(
    {
@@ -469,35 +498,13 @@ class FlutterSoundPlayer extends Session {
     }
     await stopPlayer(); // Just in case
     playerState = PlayerState.isPlaying;
-
+    Map<String, dynamic> what = {'codec': codec, 'path': fromURI, 'fromDataBuffer': fromDataBuffer,} as Map<String, dynamic>;
+    await _convert(what);
+    codec = what['codec']; fromURI = what['path']; fromDataBuffer = what['fromDataBuffer'];
     try {
-      if (needToConvert(codec)) {
-
-        if (fromDataBuffer != null) {
-          var tempDir = await getTemporaryDirectory();
-          File inputFile = File('${tempDir.path}/$slotNo-flutter_sound-tmp');
-
-          if (inputFile.existsSync()) {
-            await inputFile.delete();
-          }
-          inputFile.writeAsBytesSync(
-                      fromDataBuffer); // Write the user buffer into the temporary file
-          fromDataBuffer = null;
-          fromURI = inputFile.path;
-        }
-        Map<String, dynamic> what = {'codec': codec, 'path': fromURI, 'fromDataBuffer': fromDataBuffer,} as Map<String, dynamic>;
-        await _convertAudio(what);
-        codec = what['codec'] as Codec;
-        fromURI =  what['path'] as String;
-        if (playerState != PlayerState.isPlaying)
-          throw Exception('Player has been stopped');
-      }
 
       audioPlayerFinishedPlaying = whenFinished;
       await invokeMethod('startPlayer', {'codec':codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI,} as Map<String, dynamic>);
-      //setPlayerCallback();
-
-
     } catch (err) {
       audioPlayerFinishedPlaying = null;
       throw Exception(err);
@@ -527,6 +534,11 @@ class FlutterSoundPlayer extends Session {
     this.onPaused = onPaused;
     Map<String, dynamic> trackDico = track.toMap();
     playerState = PlayerState.isPlaying;
+    Map<String, dynamic> what = {'codec': track.codec, 'path': track.trackPath, 'fromDataBuffer': track.dataBuffer,} as Map<String, dynamic>;
+    await _convert(what);
+    Codec codec =  what['codec'];
+    trackDico['bufferCodecIndex'] = codec.index; trackDico['path'] = what['path']; trackDico['dataBuffer'] = what['fromDataBuffer'];
+
     await invokeMethod('startPlayerFromTrack',  <String, dynamic>{
           'track': trackDico,
           'canPause': onPaused != null,
@@ -628,6 +640,14 @@ class FlutterSoundPlayer extends Session {
       'volume': indexedVolume,
     }) as String;
   }
+
+  Future<void> setUIProgressBar ( {
+                                    Duration duration,
+                                    Duration progress,
+                                  }) async {
+    return invokeMethod('setUIProgressBar', <String, dynamic>{'duration': duration.inMilliseconds, 'progress': progress.inMilliseconds});
+  }
+
 
   Future<String> getResourcePath() async {
     // iOS : /Volumes/Macos-Ext/Users/larpoux/Library/Developer/CoreSimulator/Devices/DC01AED0-124F-4589-B2FD-DC1D56A967DF/data/Containers/Bundle/Application/7FF3AF75-FD79-4C9C-A76D-0CFB09CB6BC5/Runner.app
