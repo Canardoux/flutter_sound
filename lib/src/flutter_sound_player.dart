@@ -68,34 +68,38 @@ class FlautoPlayerPlugin extends FlautoPlugin{
   Future<dynamic> channelMethodCallHandler(MethodCall call) {
     FlutterSoundPlayer aPlayer = getSession (call) as FlutterSoundPlayer;
 
+    Map arg = call.arguments as Map;
+    if (arg['playerStatus'] != null)
+      aPlayer.playerState = PlayerState.values[arg['playerStatus'] ];
+
     switch (call.method) {
-      case "updateProgress":
+       case "updateProgress":
         {
-          aPlayer._updateProgress(call.arguments as Map);
+          aPlayer._updateProgress(arg);
         }
         break;
 
       case "audioPlayerFinishedPlaying":
         {
-          aPlayer.audioPlayerFinished(call.arguments as Map);
+          aPlayer.audioPlayerFinished(arg);
         }
         break;
 
       case 'pause': // Pause/Resume
         {
-          aPlayer.pause(call.arguments as Map);
+          aPlayer.pause(arg);
         }
         break;
 
       case 'skipForward':
         {
-          aPlayer.skipForward(call.arguments as Map);
+          aPlayer.skipForward(arg);
         }
         break;
 
       case 'skipBackward':
         {
-          aPlayer.skipBackward(call.arguments as Map);
+          aPlayer.skipBackward(arg);
         }
         break;
 
@@ -118,6 +122,8 @@ class FlutterSoundPlayer extends Session {
   TonSkip onSkipForward; // User callback "onPaused:"
   TonSkip onSkipBackward; // User callback "onPaused:"
   TonPaused onPaused; // user callback "whenPause:"
+  bool interlockSemPauseResume = false;
+
 
   static const List<Codec> tabAndroidConvert = [
     Codec.defaultCodec, // defaultCodec
@@ -300,22 +306,16 @@ class FlutterSoundPlayer extends Session {
   void _updateProgress(Map call) {
     int duration = call['duration'] as int;
     int position = call['position'] as int;
-    //print('position=$position');
+    print('position=$position,  duration=$duration');
     _playerController.add(PlaybackDisposition(position: Duration(milliseconds: position), duration: Duration(milliseconds: duration),) );
   }
 
   void audioPlayerFinished(Map call) {
-    String args = call['arg'] as String;
-    //Map<String, dynamic> result = jsonDecode(args) as Map<String, dynamic>;
-    //PlayStatus status = PlayStatus.fromJSON(result);
 
-    //if (status.currentPosition != status.duration) {
-      //status.currentPosition = status.duration;
-    //}
-    //if (playerController != null) playerController.add(status);
-
-    playerState = PlayerState.isStopped;
-    //_removePlayerCallback();
+    //playerState = PlayerState.isStopped;
+    int state = call['arg'] as int;
+    assert (state!=null);
+    playerState = PlayerState.values[state];
 
     if (audioPlayerFinishedPlaying != null) audioPlayerFinishedPlaying();
   }
@@ -323,23 +323,31 @@ class FlutterSoundPlayer extends Session {
 
 
   void skipForward(Map call) {
-    if (onSkipForward != null) onSkipForward();
+    int state = call['arg'] as int;
+    assert (state!=null);
+    playerState = PlayerState.values[state];
+    if (onSkipForward != null)
+      onSkipForward();
   }
 
   void skipBackward(Map call) {
-    if (onSkipBackward != null) onSkipBackward();
+    int state = call['arg'] as int;
+    assert (state!=null);
+    playerState = PlayerState.values[state];
+
+    if (onSkipBackward != null)
+      onSkipBackward();
   }
 
-  void pause(Map call) {
-    bool b = call['arg'] as bool;
+  void pause(Map call)  {
+    int state = call['arg'] as int;
+    assert (state!=null);
+    playerState = PlayerState.values[state];
+
+    bool b = playerState == PlayerState.isPaused;
     if (onPaused != null) {
       // Probably always true
       onPaused(b);
-    } else {
-      if (b)
-        pausePlayer();
-      else
-        resumePlayer();
     }
   }
 
@@ -496,28 +504,40 @@ class FlutterSoundPlayer extends Session {
     if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await stopPlayer(); // Just in case
-    playerState = PlayerState.isPlaying;
-    Map<String, dynamic> what = {'codec': codec, 'path': fromURI, 'fromDataBuffer': fromDataBuffer,} as Map<String, dynamic>;
-    await _convert(what);
-    codec = what['codec']; fromURI = what['path']; fromDataBuffer = what['fromDataBuffer'];
-    try {
 
+    if (interlockSemPauseResume )
+      throw Exception("Play/Pause/Resume in progress");
+    try
+    {
+      interlockSemPauseResume = true;
+
+      await stopPlayer(); // Just in case
+      playerState = PlayerState.isPlaying;
+      Map<String, dynamic> what = {'codec': codec, 'path': fromURI, 'fromDataBuffer': fromDataBuffer,} as Map<String, dynamic>;
+      await _convert(what);
+      codec = what['codec']; fromURI = what['path']; fromDataBuffer = what['fromDataBuffer'];
       audioPlayerFinishedPlaying = whenFinished;
       await invokeMethod('startPlayer', {'codec':codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI,} as Map<String, dynamic>);
     } catch (err) {
-      audioPlayerFinishedPlaying = null;
+      // REALLY ??? // audioPlayerFinishedPlaying = null;
+      interlockSemPauseResume = false;
+
       throw Exception(err);
     }
+      interlockSemPauseResume = false;
+
   }
 
 
   Future<void> startPlayerFromTrack( Track track,
               {
-                TonSkip onSkipForward,
-                TonSkip onSkipBackward,
-                TonPaused onPaused,
+                TonSkip onSkipForward = null,
+                TonSkip onSkipBackward = null,
+                TonPaused onPaused = null,
                 TWhenFinished whenFinished = null,
+                Duration progress = null,
+                Duration duration = null,
+                bool defaultPauseResume = null,
               }) async {
 
     if (isInited == Initialized.initializationInProgress) {
@@ -526,27 +546,85 @@ class FlutterSoundPlayer extends Session {
     if (isInited != Initialized.fullyInitializedWithUI ) {
       throw (_notOpen());
     }
+    if (interlockSemPauseResume )
+      throw Exception("Play/Pause/Resume in progress");
+    try
+    {
+        interlockSemPauseResume = true;
 
-    await stopPlayer(); // Just in case
-    audioPlayerFinishedPlaying = whenFinished;
+        await stopPlayer(); // Just in case
+        audioPlayerFinishedPlaying = whenFinished;
+        this.onSkipForward = onSkipForward;
+        this.onSkipBackward = onSkipBackward;
+        this.onPaused = onPaused;
+        Map<String, dynamic> trackDico = track.toMap();
+        playerState = PlayerState.isPlaying;
+        Map<String, dynamic> what = {'codec': track.codec, 'path': track.trackPath, 'fromDataBuffer': track.dataBuffer,} as Map<String, dynamic>;
+        await _convert(what);
+        Codec codec =  what['codec'];
+        trackDico['bufferCodecIndex'] = codec.index; trackDico['path'] = what['path']; trackDico['dataBuffer'] = what['fromDataBuffer'];
+        int d = (duration != null) ? duration.inMilliseconds : null;
+        int p = (progress != null) ? progress.inMilliseconds : null;
+
+        if (defaultPauseResume == null)
+          defaultPauseResume = (onPaused == null);
+        await invokeMethod('startPlayerFromTrack',  <String, dynamic>{
+              'progress': p,
+              'duration': d,
+              'track': trackDico,
+              'canPause': (onPaused != null || defaultPauseResume),
+              'canSkipForward': (onSkipForward != null),
+              'canSkipBackward': (onSkipBackward != null),
+              'defaultPauseResume': defaultPauseResume,
+        } );
+    } catch(e) {
+      interlockSemPauseResume = false;
+      rethrow;
+    }
+    interlockSemPauseResume = false;
+
+}
+
+
+
+  Future<void> nowPlaying( Track track,
+              {
+                Duration duration,
+                Duration progress,
+                TonSkip onSkipForward,
+                TonSkip onSkipBackward,
+                TonPaused onPaused,
+                bool defaultPauseResume = null,
+              }) async {
+    if (isInited == Initialized.initializationInProgress) {
+      throw (
+                  _InitializationInProgress( )
+      );
+    }
+    if (isInited != Initialized.fullyInitializedWithUI) {
+      throw (
+                  _notOpen( )
+      );
+    }
     this.onSkipForward = onSkipForward;
     this.onSkipBackward = onSkipBackward;
     this.onPaused = onPaused;
-    Map<String, dynamic> trackDico = track.toMap();
-    playerState = PlayerState.isPlaying;
-    Map<String, dynamic> what = {'codec': track.codec, 'path': track.trackPath, 'fromDataBuffer': track.dataBuffer,} as Map<String, dynamic>;
-    await _convert(what);
-    Codec codec =  what['codec'];
-    trackDico['bufferCodecIndex'] = codec.index; trackDico['path'] = what['path']; trackDico['dataBuffer'] = what['fromDataBuffer'];
 
-    await invokeMethod('startPlayerFromTrack',  <String, dynamic>{
-          'track': trackDico,
-          'canPause': onPaused != null,
-          'canSkipForward': onSkipForward != null,
-          'canSkipBackward': onSkipBackward != null,
+    int d = (duration != null) ? duration.inMilliseconds : null;
+    int p = (progress != null) ? progress.inMilliseconds : null;
+    Map<String, dynamic> trackDico = (track != null) ? track.toMap() : null;
+    if (defaultPauseResume == null)
+      defaultPauseResume = (onPaused == null);
+    await invokeMethod('nowPlaying',  <String, dynamic>{
+      'track': trackDico,
+      'duration': d,
+      'progress': p,
+      'canPause': (onPaused != null || defaultPauseResume),
+      'canSkipForward': (onSkipForward != null),
+      'canSkipBackward': (onSkipBackward != null),
+      'defaultPauseResume': defaultPauseResume,
     } );
   }
-
 
     Future<void> stopPlayer() async {
       if (isInited == Initialized.initializationInProgress) {
@@ -557,7 +635,7 @@ class FlutterSoundPlayer extends Session {
       }
       playerState = PlayerState.isStopped;
 
-    audioPlayerFinishedPlaying = null;
+    // REALLY ? // audioPlayerFinishedPlaying = null;
 
     try {
       //_removePlayerCallback(); // playerController is closed by this function
@@ -570,7 +648,7 @@ class FlutterSoundPlayer extends Session {
   Future<void> _stopPlayerwithCallback() async {
     if (audioPlayerFinishedPlaying != null) {
       audioPlayerFinishedPlaying();
-      audioPlayerFinishedPlaying = null;
+      // REALLY ? // audioPlayerFinishedPlaying = null;
     }
     stopPlayer();
   }
@@ -582,15 +660,21 @@ class FlutterSoundPlayer extends Session {
     if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
+    if (interlockSemPauseResume )
+      throw Exception("Play/Pause/Resume in progress");
+    try
+    {
+      if (playerState != PlayerState.isPlaying)
+      {
+        await _stopPlayerwithCallback( ); // To recover a clean state
+        //throw PlayerRunningException(
+        //'Player is not playing.'); // I am not sure that it is good to throw an exception here
+      }
+      playerState = PlayerState.isPaused;
 
-    if (playerState != PlayerState.isPlaying) {
-      await _stopPlayerwithCallback(); // To recover a clean state
-      throw PlayerRunningException(
-          'Player is not playing.'); // I am not sure that it is good to throw an exception here
-    }
-    playerState = PlayerState.isPaused;
-
-    await invokeMethod('pausePlayer', <String, dynamic>{}) as String;
+      await invokeMethod( 'pausePlayer', <String, dynamic>{} ) as String;
+    } catch(e) {interlockSemPauseResume = false; rethrow;}
+    interlockSemPauseResume = false;
   }
 
   Future<void> resumePlayer() async {
@@ -600,14 +684,23 @@ class FlutterSoundPlayer extends Session {
     if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-
-    if (playerState != PlayerState.isPaused) {
-      await _stopPlayerwithCallback(); // To recover a clean state
-      throw PlayerRunningException(
-          'Player is not paused.'); // I am not sure that it is good to throw an exception here
+    if (interlockSemPauseResume )
+       throw Exception("Play/Pause/Resume in progress");
+    try {
+      interlockSemPauseResume = true;
+      if (playerState != PlayerState.isPaused)
+      {
+        await _stopPlayerwithCallback( ); // To recover a clean state
+        //throw PlayerRunningException(
+        //'Player is not paused.'); // I am not sure that it is good to throw an exception here
+      }
+      playerState = PlayerState.isPlaying;
+      await invokeMethod( 'resumePlayer', <String, dynamic>{} ) as String;
+    } catch(e) {
+      interlockSemPauseResume = false;
+      rethrow;
     }
-    playerState = PlayerState.isPlaying;
-    await invokeMethod('resumePlayer', <String, dynamic>{}) as String;
+    interlockSemPauseResume = false;
   }
 
   Future<void> seekToPlayer(Duration duration) async {
@@ -618,9 +711,19 @@ class FlutterSoundPlayer extends Session {
     if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await invokeMethod('seekToPlayer', <String, dynamic>{
+    if (interlockSemPauseResume )
+      throw Exception("Play/Pause/Resume in progress");
+    try {
+      interlockSemPauseResume = true;
+      await invokeMethod('seekToPlayer', <String, dynamic>{
       'duration': duration.inMilliseconds,
     });
+    } catch(e) {
+      interlockSemPauseResume = false;
+      rethrow;
+    }
+    interlockSemPauseResume = false;
+
   }
 
   Future<void> setVolume(double volume) async {
@@ -757,11 +860,10 @@ class Track {
           this.codec = Codec.defaultCodec,
         }) {
     //codec = codec == null ? Codec.defaultCodec : codec;
-    assert(trackPath != null || dataBuffer != null,
-    'You should provide a path or a buffer for the audio content to play.');
+    //assert(trackPath != null || dataBuffer != null,
+    //'You should provide a path or a buffer for the audio content to play.');
     assert(
-    (trackPath != null && dataBuffer == null) ||
-    (trackPath == null && dataBuffer != null),
+    (! (trackPath != null && dataBuffer != null) ),
     'You cannot provide both a path and a buffer.');
   }
 

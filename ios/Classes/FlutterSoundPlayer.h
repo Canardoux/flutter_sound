@@ -39,7 +39,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 
 @interface FlutterSoundPlayer : Session
 {
-        AVAudioPlayer *audioPlayer;
+        AVAudioPlayer* audioPlayer;
         bool isPaused ;
 }
 
@@ -70,6 +70,9 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 - (void)releaseFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)setUIProgressBar:(FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)nowPlaying:(FlutterMethodCall*)call result: (FlutterResult)result;
+- (NSNumber*)getPlayerStatus;
+
 
 
 

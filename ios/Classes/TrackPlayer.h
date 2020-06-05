@@ -38,6 +38,9 @@
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer*)player successfully:(BOOL)flag;
 - (bool)resume;
 - (void)setUIProgressBar:(FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)setUIProgressBar:(NSNumber*)progress duration:(NSNumber*)duration;
+- (void)nowPlaying:(FlutterMethodCall*)call result: (FlutterResult)result;
+
 
 
 @end
