@@ -187,7 +187,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   void startRecorder() async {
-    recorderModule.setAudioFocus(device: AudioDevice.speaker);
     try {
       // String path = await flutterSoundModule.startRecorder
       // (
@@ -340,7 +339,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> startPlayer() async {
-    playerModule.setAudioFocus(device: AudioDevice.earPiece);
     try {
       //String path;
       Uint8List dataBuffer;
