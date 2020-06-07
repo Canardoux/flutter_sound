@@ -110,13 +110,13 @@ class _MyAppState extends State<MyApp> {
           focus: AudioFocus.requestFocusTransient,
           category: SessionCategory.playAndRecord,
           mode: SessionMode.modeDefault,
-          audioFlags: AudioFlags.outputToSpeaker);
+          device: AudioDevice.speaker);
     } else {
       await playerModule.openAudioSession(
           focus: AudioFocus.requestFocusTransient,
           category: SessionCategory.playAndRecord,
           mode: SessionMode.modeDefault,
-          audioFlags: AudioFlags.outputToSpeaker);
+          device: AudioDevice.speaker);
     }
     await playerModule.setSubscriptionDuration(Duration(milliseconds: 10));
     await recorderModule.setSubscriptionDuration(Duration(milliseconds: 10));
@@ -130,7 +130,7 @@ class _MyAppState extends State<MyApp> {
         focus: AudioFocus.requestFocusTransient,
         category: SessionCategory.playAndRecord,
         mode: SessionMode.modeDefault,
-        audioFlags: AudioFlags.outputToSpeaker);
+        device: AudioDevice.speaker);
     await _initializeExample(false);
 
     if (Platform.isAndroid) {
@@ -187,6 +187,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void startRecorder() async {
+    recorderModule.setAudioFocus(device: AudioDevice.speaker);
     try {
       // String path = await flutterSoundModule.startRecorder
       // (
@@ -211,6 +212,7 @@ class _MyAppState extends State<MyApp> {
         codec: _codec,
         bitRate: 8000,
         sampleRate: 8000,
+        audioSource: AudioSource.voice_communication,
       );
       print('startRecorder');
 
@@ -338,6 +340,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> startPlayer() async {
+    playerModule.setAudioFocus(device: AudioDevice.earPiece);
     try {
       //String path;
       Uint8List dataBuffer;

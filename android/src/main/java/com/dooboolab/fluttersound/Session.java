@@ -59,13 +59,13 @@ enum AudioFocus {
 	doNotRequestFocus,
 }
 
-enum AudioFlags {
-	outputToSpeaker,
-	allowHeadset,
-	allowEarPiece,
-	allowBlueTooth,
-	allowBlueToothA2DP,
-	allowAirPlay
+enum AudioDevice {
+	speaker,
+	headset,
+	earPiece,
+	blueTooth,
+	blueToothA2DP,
+	airPlay
 }
 
 
@@ -122,7 +122,7 @@ public abstract class Session
 		boolean r = true;
 		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService( Context.AUDIO_SERVICE );
 		AudioFocus focus = AudioFocus.values()[(int)call.argument ( "focus" )];
-		AudioFlags audioFlags = AudioFlags.values()[(int)call.argument( "audioFlags" )];
+		AudioDevice device = AudioDevice.values()[(int)call.argument( "device" )];
 
 		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
 		{
@@ -143,9 +143,9 @@ public abstract class Session
 					.build();
 
 				// change the audio input/output device
-				switch (audioFlags)
+				switch (device)
 				{
-					case outputToSpeaker:
+					case speaker:
 						if (isBluetoothHeadsetConnected())
 							audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
 						else
@@ -154,8 +154,8 @@ public abstract class Session
 						audioManager.setBluetoothScoOn(false);
 						audioManager.setSpeakerphoneOn(true);
 						break;
-					case allowBlueTooth:
-					case allowBlueToothA2DP:
+					case blueTooth:
+					case blueToothA2DP:
 						audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
 						if (isBluetoothHeadsetConnected())
 						{
@@ -164,8 +164,8 @@ public abstract class Session
 						}
 						audioManager.setSpeakerphoneOn(false);
 						break;
-					case allowEarPiece:
-					case allowHeadset:
+					case earPiece:
+					case headset:
 						audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
 						audioManager.stopBluetoothSco();
 						audioManager.setBluetoothScoOn(false);
@@ -200,7 +200,10 @@ public abstract class Session
 	void setAudioFocus(final MethodCall call, final MethodChannel.Result result )
 	{
 		boolean r = prepareFocus(call);
-		result.success ( r );
+		if (r)
+			result.success ( r );
+		else
+			result.error ( "setAudioFocus", "setAudioFocus", "Failure to prepare focus") ;
 	}
 
 

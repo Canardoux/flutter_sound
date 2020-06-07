@@ -8,11 +8,8 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <!-- if you wanna use audioFlags to change Audio input/output device，open MODIFY_AUDIO_SETTINGS permission -->
-	  <!-- <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> -->
-    <!-- if you wanna change Audio input/output device with Bluetooth earphone, open the below tow permissions -->
-    <!-- <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BLUETOOTH" /> -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
 
     <application

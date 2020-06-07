@@ -155,17 +155,16 @@ enum AudioFocus {
   doNotRequestFocus,
 }
 
-
-enum AudioFlags {
-  outputToSpeaker,
+enum AudioDevice {
+  speaker,
   // allowHeadset and allowEarPiece are the same behaviour on both Android and iOS
-  allowHeadset,
-  allowEarPiece,
-  allowBlueTooth,
-  // only for iOS, Android do the same as allowBlueTooth 
-  allowBlueToothA2DP,
+  headset,
+  earPiece,
+  blueTooth,
+  // only for iOS, Android do the same as allowBlueTooth
+  blueToothA2DP,
   // only for iOS, Android do nothing
-  allowAirPlay 
+  airPlay
 }
 
 /*
