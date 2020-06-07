@@ -84,14 +84,14 @@ enum SessionMode
 };
 
 
-// Audio Flags
-// -----------
-const int outputToSpeaker = 1;
-const int allowHeadset = 2;
-const int allowEarPiece = 4;
-const int allowBlueTooth = 8;
-const int allowAirPlay = 16;
-const int allowBlueToothA2DP = 32;
+enum AudioFlags {
+  outputToSpeaker,
+  allowHeadset,
+  allowEarPiece,
+  allowBlueTooth,
+  allowBlueToothA2DP,
+  allowAirPlay // this only for ios, android do nothing
+};
 
 
 @implementation FlautoManager
@@ -238,9 +238,9 @@ const int allowBlueToothA2DP = 32;
         enum AudioFocus audioFocus = (enum AudioFocus) [call.arguments[@"focus"] intValue];
         enum SessionCategory category = (enum SessionCategory)[call.arguments[@"category"] intValue];
         enum SessionMode mode = (enum SessionMode)[call.arguments[@"mode"] intValue];
+        enum AudioFlags flag = (enum AudioFlags)[call.arguments[@"audioFlags"] intValue];
         if ( audioFocus != abandonFocus && audioFocus != doNotRequestFocus && audioFocus != requestFocus)
         {
-                int flags =  [call.arguments[@"audioFlags"] intValue];
                 NSUInteger sessionCategoryOption = 0;
                 switch (audioFocus)
                 {
@@ -251,14 +251,15 @@ const int allowBlueToothA2DP = 32;
                         case requestFocusTransientExclusive:
                         case requestFocusAndStopOthers: sessionCategoryOption |= 0; break; // NOOP
                 }
-                if (flags & outputToSpeaker)
-                        sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker;
-                if (flags & allowAirPlay)
-                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay;
-                 if (flags & allowBlueTooth)
-                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetooth;
-                if (flags & allowBlueToothA2DP)
-                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
+                switch (flag)
+                {
+                        case outputToSpeaker: sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker; break;
+                        case allowAirPlay: sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay; break;
+                        case allowBlueTooth: sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetooth; break;
+                        case allowBlueToothA2DP: sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP; break;
+                        case allowEarPiece:
+                        case allowHeadset: sessionCategoryOption |= 0; break;
+                }
                 r = [[AVAudioSession sharedInstance]
                         setCategory:  tabCategory[category] // AVAudioSessionCategoryPlayback
                         mode: tabSessionMode[mode]
