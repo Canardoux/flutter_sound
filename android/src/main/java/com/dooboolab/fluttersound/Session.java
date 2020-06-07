@@ -19,9 +19,12 @@
 
 package com.dooboolab.fluttersound;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
+import android.media.MediaRecorder;
 import android.os.Build;
 
 import java.util.HashMap;
@@ -54,7 +57,16 @@ enum AudioFocus {
 	abandonFocus,
 
 	doNotRequestFocus,
-};
+}
+
+enum AudioFlags {
+	outputToSpeaker,
+	allowHeadset,
+	allowEarPiece,
+	allowBlueTooth,
+	allowBlueToothA2DP,
+	allowAirPlay
+}
 
 
 public abstract class Session
@@ -107,17 +119,15 @@ public abstract class Session
 
 	boolean prepareFocus( final MethodCall call)
 	{
-		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService ( Context.AUDIO_SERVICE );
-
 		boolean r = true;
 		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService( Context.AUDIO_SERVICE );
 		AudioFocus focus = AudioFocus.values()[(int)call.argument ( "focus" )];
+		AudioFlags audioFlags = AudioFlags.values()[(int)call.argument( "audioFlags" )];
 
 		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
 		{
 			if ( focus != AudioFocus.abandonFocus && focus != AudioFocus.doNotRequestFocus && focus != AudioFocus.requestFocus )
 			{
-				int audioFlags = call.argument( "audioFlags" );
 				int focusGain = AudioManager.AUDIOFOCUS_GAIN;
 
 				switch (focus)
@@ -127,11 +137,40 @@ public abstract class Session
 					case requestFocusTransient: focusGain = AudioManager.AUDIOFOCUS_GAIN_TRANSIENT; break;
 					case requestFocusTransientExclusive: focusGain = AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE; break;
 					case requestFocusAndInterruptSpokenAudioAndMixWithOthers: focusGain = AudioManager.AUDIOFOCUS_GAIN; break;
-					case requestFocusAndStopOthers: focusGain = AudioManager.AUDIOFOCUS_GAIN; break;
 				}
 				audioFocusRequest = new AudioFocusRequest.Builder( focusGain )
 					// .setAudioAttributes(mPlaybackAttributes)
 					.build();
+
+				// change the audio input/output device
+				switch (audioFlags)
+				{
+					case outputToSpeaker:
+						if (isBluetoothHeadsetConnected())
+							audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+						else
+							audioManager.setMode(AudioManager.MODE_NORMAL);
+						audioManager.stopBluetoothSco();
+						audioManager.setBluetoothScoOn(false);
+						audioManager.setSpeakerphoneOn(true);
+						break;
+					case allowBlueTooth:
+					case allowBlueToothA2DP:
+						audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+						if (isBluetoothHeadsetConnected())
+						{
+							audioManager.startBluetoothSco();
+							audioManager.setBluetoothScoOn(true);
+						}
+						audioManager.setSpeakerphoneOn(false);
+						break;
+					case allowEarPiece:
+					case allowHeadset:
+						audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+						audioManager.stopBluetoothSco();
+						audioManager.setBluetoothScoOn(false);
+						audioManager.setSpeakerphoneOn(false);
+				}
 
 				/*
 				if (flags & outputToSpeaker)
@@ -158,10 +197,10 @@ public abstract class Session
 		return r;
 	}
 
-	void setFocus( final MethodCall call, final MethodChannel.Result result )
+	void setAudioFocus(final MethodCall call, final MethodChannel.Result result )
 	{
 		boolean r = prepareFocus(call);
-
+		result.success ( r );
 	}
 
 
@@ -208,7 +247,9 @@ public abstract class Session
 
 	}
 
-
-
+	private static boolean isBluetoothHeadsetConnected() {
+		BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+		return BluetoothProfile.STATE_CONNECTED == adapter.getProfileConnectionState(BluetoothProfile.HEADSET);
+	}
 
 }

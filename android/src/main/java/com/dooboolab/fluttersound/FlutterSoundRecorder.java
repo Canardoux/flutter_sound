@@ -102,6 +102,13 @@ class FlautoRecorderPlugin  extends AudioSessionManager
 				aRecorder.isEncoderSupported ( call, result );
 			}
 			break;
+
+			case "setAudioFocus":
+			{
+				aRecorder.setAudioFocus( call, result );
+			}
+			break;
+
 			case "startRecorder":
 			{
 				aRecorder.startRecorder ( call, result );
@@ -324,7 +331,7 @@ public class FlutterSoundRecorder extends Session
 		lineIn
 	}
 
-	int tabAudioSource [] =
+	int[] tabAudioSource =
 		{
 			MediaRecorder.AudioSource.DEFAULT,
 			MediaRecorder.AudioSource.MIC,
