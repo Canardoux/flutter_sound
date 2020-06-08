@@ -206,7 +206,8 @@ public class FlutterSoundRecorder extends Session
 		false, // pcm16CAF
 		false, // flac
 		false, // aacMP4
-		true, // amr
+		true,  // amrNB
+		true   // amrWB
 	};
 
 	final static int CODEC_OPUS   = 2;
