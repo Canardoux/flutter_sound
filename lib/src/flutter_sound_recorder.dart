@@ -41,6 +41,17 @@ enum AudioSource {
   defaultSource,
   microphone,
   voiceDownlink, // (if someone can explain me what it is, I will be grateful ;-) )
+  camCorder,
+  remote_submix,
+  unprocessed,
+  voice_call,
+  voice_communication,
+  voice_performance,
+  voice_recognition,
+  voiceUpLink,
+  bluetoothHFP,
+  headsetMic,
+  lineIn,
 }
 
 FlautoRecorderPlugin flautoRecorderPlugin; // Singleton, lazy initialized
@@ -113,7 +124,7 @@ class FlutterSoundRecorder extends Session {
                                                    AudioFocus focus = AudioFocus.requestFocusTransient,
                                                    SessionCategory category = SessionCategory.playAndRecord,
                                                    SessionMode mode = SessionMode.modeDefault,
-                                                   int audioFlags = outputToSpeaker}) async {
+                                                   AudioDevice device = AudioDevice.speaker}) async {
     if (isInited == Initialized.fullyInitialized) {
       return this;
     }
@@ -128,7 +139,7 @@ class FlutterSoundRecorder extends Session {
     } // The lazy singleton
     _setRecorderCallback();
     openSession();
-    await invokeMethod('initializeFlautoRecorder', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags,});
+    await invokeMethod('initializeFlautoRecorder', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'device': device.index,});
 
     isInited = Initialized.fullyInitialized;
     return this;
@@ -234,7 +245,7 @@ class FlutterSoundRecorder extends Session {
   }
 
   Future<void> startRecorder( {
-    Codec codec = Codec.aacADTS,
+    Codec codec = Codec.defaultCodec,
     String toFile = null,
     Stream toStream = null,
     int sampleRate = 16000,
@@ -344,14 +355,14 @@ class FlutterSoundRecorder extends Session {
                                 AudioFocus focus = AudioFocus.requestFocusTransient,
                                 SessionCategory category = SessionCategory.playAndRecord,
                                 SessionMode mode = SessionMode.modeDefault,
-                                int audioFlags = outputToSpeaker}) async {
+                                AudioDevice device = AudioDevice.speaker}) async {
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus, 'category': category, 'mode': mode.index, 'audioFlags':audioFlags});
+    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus.index, 'category': category.index, 'mode': mode.index, 'device':device.index});
   }
 
 

@@ -31,8 +31,8 @@ public class FlutterSoundMediaRecorder
 	final static String             TAG                = "SoundMediaRecorder";
 
 	static int codecArray[] = {
-		0 // DEFAULT
-		, MediaRecorder.AudioEncoder.DEFAULT,
+		MediaRecorder.AudioEncoder.DEFAULT, // DEFAULT
+		MediaRecorder.AudioEncoder.AAC,
 		sdkCompat.AUDIO_ENCODER_OPUS,
 		0, // CODEC_CAF_OPUS (specific Apple)
 		0,// CODEC_MP3 (not implemented)
@@ -94,7 +94,8 @@ public class FlutterSoundMediaRecorder
 			Integer sampleRate,
 			Integer bitRate,
 			FlutterSoundCodec codec,
-			String path
+			String path,
+			int audioSource
                 )
 		throws
 		IOException
@@ -116,7 +117,7 @@ public class FlutterSoundMediaRecorder
 		try
 		{
 			mediaRecorder.reset();
-			mediaRecorder.setAudioSource ( MediaRecorder.AudioSource.MIC );
+			mediaRecorder.setAudioSource (audioSource );
 			int androidEncoder      = codecArray[ codec.ordinal () ];
 			int androidOutputFormat = formatsArray[ codec.ordinal () ];
 			mediaRecorder.setOutputFormat ( androidOutputFormat );

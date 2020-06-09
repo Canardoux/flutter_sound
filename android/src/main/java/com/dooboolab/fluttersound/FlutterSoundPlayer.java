@@ -109,9 +109,9 @@ class FlautoPlayerPlugin extends AudioSessionManager
 			}
 			break;
 
-			case "setFocus":
+			case "setAudioFocus":
 			{
-				aPlayer.setFocus ( call, result );
+				aPlayer.setAudioFocus( call, result );
 			}
 			break;
 

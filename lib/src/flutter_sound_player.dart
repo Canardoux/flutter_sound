@@ -205,7 +205,7 @@ class FlutterSoundPlayer extends Session {
                                                  AudioFocus focus = AudioFocus.requestFocusTransient,
                                                  SessionCategory category = SessionCategory.playAndRecord,
                                                  SessionMode mode = SessionMode.modeDefault,
-                                                 int audioFlags = outputToSpeaker}) async {
+                                                 AudioDevice device = AudioDevice.speaker}) async {
     if (isInited == Initialized.fullyInitialized || isInited == Initialized.fullyInitializedWithUI) {
       await closeAudioSession();
     }
@@ -222,7 +222,7 @@ class FlutterSoundPlayer extends Session {
     openSession();
     setPlayerCallback();
 
-    await invokeMethod('initializeMediaPlayer', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags,});
+    await invokeMethod('initializeMediaPlayer', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'device': device.index,});
     isInited = Initialized.fullyInitialized;
     return this;
   }
@@ -231,7 +231,7 @@ class FlutterSoundPlayer extends Session {
                                                        AudioFocus focus = AudioFocus.requestFocusTransient,
                                                        SessionCategory category = SessionCategory.playAndRecord,
                                                        SessionMode mode = SessionMode.modeDefault,
-                                                       int audioFlags = outputToSpeaker}) async {
+                                                       AudioDevice device = AudioDevice.speaker}) async {
     if (isInited == Initialized.fullyInitializedWithUI || isInited == Initialized.fullyInitialized) {
       await closeAudioSession();
     }
@@ -248,7 +248,7 @@ class FlutterSoundPlayer extends Session {
     setPlayerCallback();
 
     try {
-      await invokeMethod('initializeMediaPlayerWithUI', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags,});
+      await invokeMethod('initializeMediaPlayerWithUI', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'device': device.index,});
 
       // Add the method call handler
       //getChannel( ).setMethodCallHandler( channelMethodCallHandler );
@@ -265,7 +265,7 @@ class FlutterSoundPlayer extends Session {
                                 AudioFocus focus = AudioFocus.requestFocusTransient,
                                 SessionCategory category = SessionCategory.playAndRecord,
                                 SessionMode mode = SessionMode.modeDefault,
-                                int audioFlags = outputToSpeaker}) async {
+                                AudioDevice device = AudioDevice.speaker}) async {
 
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
@@ -274,7 +274,7 @@ class FlutterSoundPlayer extends Session {
       throw (_notOpen());
     }
 
-    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus, 'category': category.index, 'mode': mode.index, 'audioFlags':audioFlags});
+    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus.index, 'category': category.index, 'mode': mode.index, 'device':device.index});
   }
 
 

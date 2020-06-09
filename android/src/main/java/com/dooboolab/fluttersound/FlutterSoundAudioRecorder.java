@@ -167,7 +167,8 @@ public class FlutterSoundAudioRecorder
 			Integer sampleRate,
 			Integer bitRate,
 			FlutterSoundCodec codec,
-			String path
+			String path,
+			int audioSource
 		)
 	{
 		/**
@@ -179,7 +180,7 @@ public class FlutterSoundAudioRecorder
 		                                              channelConfig, tabCodec[codec.ordinal()]) * 2;
 
 
-		recorder = new AudioRecord( MediaRecorder.AudioSource.MIC,
+		recorder = new AudioRecord( audioSource,
 		                            sampleRate,
 		                            channelConfig,
 		                            audioFormat,

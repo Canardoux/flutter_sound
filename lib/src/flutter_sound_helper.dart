@@ -86,7 +86,7 @@ class FlutterSoundHelper {
     Map<dynamic, dynamic> info = await FFmpegGetMediaInformation(uri);
     if (info == null) return null;
     int duration = info['duration'] as int;
-    return Duration(milliseconds: duration);
+    return (duration == null) ? null : Duration(milliseconds: duration);
   }
 
   Future<bool> convertFile(
