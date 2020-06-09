@@ -303,7 +303,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         }
         NSURL *remoteUrl = [NSURL URLWithString: path];
         NSURL *audioFileURL = [NSURL URLWithString:path];
-
+        
         if (remoteUrl && remoteUrl.scheme && remoteUrl.host)
         {
                 audioFileURL = remoteUrl;
@@ -365,7 +365,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                                 errorWithCode:@"Audio Player"
                                 message:@"Start Player From Track failure"
                                 details:nil]);
-                        //result([NSNumber numberWithBool: FALSE]);
+
 }
 
 - (void)stopPlayer
@@ -377,7 +377,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [audioPlayer stop];
                 audioPlayer = nil;
         }
-}
+
 
 - (void)pause
 {
