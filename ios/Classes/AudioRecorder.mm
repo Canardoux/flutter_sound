@@ -357,6 +357,20 @@ AVAudioSessionPort tabSessionPort [] =
 };
 
 
+
+- (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result
+{
+        BOOL r = [self setAudioFocus: call ];
+        if (r)
+                result((@"setAudioFocus"));
+        else
+                [FlutterError
+                                errorWithCode:@"Audio Player"
+                                message:@"Open session failure"
+                                details:nil];
+}
+
+
 - (void)startRecorder :(FlutterMethodCall*)call result:(FlutterResult)result
 {
            path = (NSString*)call.arguments[@"path"];

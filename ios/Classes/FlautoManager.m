@@ -203,7 +203,7 @@ const int allowBlueToothA2DP = 32;
 }
 
 
-- (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result
+- (BOOL)setAudioFocus: (FlutterMethodCall*)call
 {
 
 
@@ -272,13 +272,7 @@ const int allowBlueToothA2DP = 32;
                 hasFocus = (audioFocus != abandonFocus);
                 r = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
         }
-        if (r)
-                result([NSNumber numberWithBool: r]);
-        else
-                [FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"Open session failure"
-                                details:nil];
+        return r;
 }
 
 
