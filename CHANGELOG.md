@@ -1,7 +1,14 @@
 ## 5.1.0
 
-- On iOS : the "NowPlaying" info on the lockscreen is removed when the sound is fnished or when the App does a ```stopPlayer()```
+- Add a semaphore so that the App cannot do several call to Flutter Sound at the same time [374](https://github.com/dooboolab/flutter_sound/issues/374)
+- On iOS : the "NowPlaying" info on the lockscreen is removed when the sound is finished or when the App does a ```stopPlayer()```. Add parameter ```removeUIWhenStopped``` to ```startPlayerFromTrack()```. (iOS only).
 - On iOS : the "NowPlaying" progress bar on the lockscreen is uptodated when the App does a ```seekToPlayer()``` [#364](https://github.com/dooboolab/flutter_sound/issues/364)
+- On iOS : Add parameter ```defaultPauseResume``` to ```startPlayerFromTrack()```. (iOS only).
+- On iOS : Add API verb ```getProgress()```. (iOS only).
+- On iOS : Add API verb ```getPlayerState()```. (iOS only).
+- On iOS : Add API verb ```nowPlaying()```. (iOS only).
+- On iOS : Add API verb ```setUIProgressBar()```. (iOS only).
+- SetAudioFocus
 
 ## 5.0.1
 

@@ -17,9 +17,12 @@ The verbs offered by the Flutter Sound Player module are :
 - [resumePlayer()](#resumeplayer) to resume a paused playback
 - [seekPlayer()](#seekplayer) to position directely inside the current playback
 - [setVolume()](#setvolume) to adjust the ouput volume
-- [playerState, isPlaying, isPaused, isStopped](#playerstate-isplaying-ispaused-isstopped) to know the current player status
+- [playerState, isPlaying, isPaused, isStopped, getPlayerState()](#playerstate-isplaying-ispaused-isstopped) to know the current player status
 - [isDecoderSupported()](#isdecodersupported) to know if a specific codec is supported on the current platform.
 - [onProgress()](#onprogress) to subscribe to a Stream of the Progress events
+- [getProgress()]() to query the current progress of a playback.
+- [setUIProgressBar]() to set the position of the progress bar on the Lock Screen
+- [nowPlaying()]() to specify the containt of the lock screen beetween two playbacks
 - [setSubscriptionDuration()](#setsubscriptionduration) to specify the frequence of your subscription
 
 -------------------------------------------------------------------------------------------------------------------
@@ -251,7 +254,7 @@ But this parameter is necessary when Flutter Sound must do format conversion (fo
 
 `startPlayer()` returns a Future.
 
-[path_provider](https://pub.dev/packages/path_provider) can be useful if you want to get access to some directories on your device.
+Hint: [path_provider](https://pub.dev/packages/path_provider) can be useful if you want to get access to some directories on your device.
 
 
 *Example:*
@@ -291,10 +294,12 @@ But this parameter is necessary when Flutter Sound must do format conversion (fo
 Future<String> startPlayerFromTrack(
     Track track,
     {
-    TWhenFinished whenFinished,
-    TonPaused onPaused,
-    TonSkip onSkipForward,
-    TonSkip onSkipBackward,
+    TWhenFinished whenFinished = null,
+    TonPaused onPaused = null,
+    TonSkip onSkipForward = null,
+    TonSkip onSkipBackward = null,
+    bool removeUIWhenStopped = true,
+    bool defaultPauseResume = null,
     })
 ```
 
@@ -302,7 +307,7 @@ Use this verb to play data from a track specification and display controls on th
 
 - `track` parameter is a simple structure which describe the sound to play. Please see [here the Track structure specification](track.md)
 
-- `whenFinished:()` : A lambda function for specifying what to do when the playback will be finished.
+- `whenFinished:()` : A function for specifying what to do when the playback will be finished.
 
 - `onPaused:()` : this parameter can be :
    - a call back function to call when the user hit the Skip Pause button on the lock screen
@@ -317,10 +322,14 @@ Use this verb to play data from a track specification and display controls on th
    - a call back function to call when the user hit the Skip Backward button on the lock screen
    - <null> : The Skip Backwqrd button will be disabled
 
+- `removeUIWhenStopped` : is a boolean to specify if the UI on the lock screen must be removed when the sound is finished or when the App does a `stopPlayer()`. Most of the time this parameter must be true. It is used only for the rare cases where the App wants to control the lock screen between two playbacks. Be aware that if the UI is not removed, the button Pause/Resume, Skip Backward and Skip Forward remain active between two playbacks. If you want to disable those button, use the API verb ```nowPlaying()```. Remark: actually this parameter is implemented only on iOS.
+
+- `defaultPauseResume` : is a boolean value to specify if Flutter Sound must pause/resume the playback by itself when the user hit the pause/resume button. Set this parameter to *FALSE* if the App wants to manage itself the pause/resume button. If you do not specify this parameter and the `onPaused` parameter is specified then Flutter Sound will assume `FALSE`. If you do not specify this parameter and the `onPaused` parameter is not specified then Flutter Sound will assume `TRUE`. Remark: actually this parameter is implemented only on iOS.
+
 *Example:*
 ```dart
     final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
-
+    Track track = Track( codec: Codec.opusOGG, trackPath: fileUri, trackAuthor: '3 Inches of Blood', trackTitle: 'Axes of Evil', albumArtAsset: albumArt )
     await myPlayer.startPlayerFromTrack
     (
                 track,
@@ -421,7 +430,7 @@ await myPlayer.setVolume(0.1);
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
-## `playerState`, `isPlaying`, `isPaused`, `isStopped`
+## `playerState`, `isPlaying`, `isPaused`, `isStopped`. `getPlayerState()`
 
 *Dart definition (prototype) :*
 ```
@@ -429,6 +438,7 @@ await myPlayer.setVolume(0.1);
     bool get isPlaying => playerState == PlayerState.isPlaying;
     bool get isPaused => playerState == PlayerState.isPaused;
     bool get isStopped => playerState == PlayerState.isStopped;
+    Future<PlayerState> getPlayerState() async
 ```
 
 This four verbs is used when the app wants to get the current Audio State of the player.
@@ -443,6 +453,10 @@ This four verbs is used when the app wants to get the current Audio State of the
 - isPaused is a boolean atrribut which  is `true` when the player is in the "Paused" mode.
 - isStopped is a boolean atrribut which  is `true` when the player is in the "Stopped" mode.
 
+Flutter Sound shows in the `playerState` attribut the last known state. When the Audio State of the background OS engine changes, the `playerState` parameter is not updated exactly at the same time.
+If you want the exact background OS engine state you must use ```PlayerState theState = await myPlayer.getPlayerState()```.
+Acutually `getPlayerState()` is only implemented on iOS.
+
 *Example:*
 ```dart
         swtich(myPlayer.playerState)
@@ -455,6 +469,9 @@ This four verbs is used when the app wants to get the current Audio State of the
         if (myPlayer.isStopped) doSomething;
         if (myPlayer.isPlaying) doSomething;
         if (myPlayer.isPaused) doSomething;
+        ...
+        PlayerState theState = await myPlayer.getPlayerState();
+        ...
 
 ```
 
@@ -495,6 +512,74 @@ You may listen to this Stream to have feedback on the current playback.
                 Duration position = e.position;
                 ...
         }
+```
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `getProgress()`
+
+*Dart definition (prototype) :*
+```
+Future<Map> getProgress() async
+```
+
+This verb is used to get the current progress of a playback.
+It returns a `Map` with two Duration entries : `'progress'` and `'duration'`
+Remark : actually only implemented on iOS.
+
+*Example:*
+```dart
+        Duration progress = (await getProgress())['progress'];
+        Duration duration = (await getProgress())['duration'];
+```
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `setUIProgressBar()`
+
+*Dart definition (prototype) :*
+```
+Future<void> setUIProgressBar ( {
+                                    Duration duration,
+                                    Duration progress,
+                               }) async
+
+```
+
+This verb is used if the App wants to control itself the Progress Bar on the lock screen. By default, this progress bar is handled automaticaly by Flutter Sound.
+
+*Example:*
+```dart
+
+        Duration progress = (await getProgress())['progress'];
+        Duration duration = (await getProgress())['duration'];
+        setUIProgressBar(progress: Duration(milliseconds: progress.milliseconds - 500), duration: duration)
+````
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `nowPlaying()`
+
+*Dart definition (prototype) :*
+```
+Future<void> nowPlaying( Track track,
+              {
+                Duration duration,
+                Duration progress,
+                TonSkip onSkipForward,
+                TonSkip onSkipBackward,
+                TonPaused onPaused,
+              }) async
+```
+
+This verb is used to set the Lock screen fields without starting a new playback.
+The fields 'dataBuffer' and 'trackPath' of the Track parameter are not used.
+Please refer to 'startPlayerFromTrack' for the meaning of the different parameters
+
+*Example:*
+```dart
+    Track track = Track( codec: Codec.opusOGG, trackPath: fileUri, trackAuthor: '3 Inches of Blood', trackTitle: 'Axes of Evil', albumArtAsset: albumArt );
+    await nowPlaying(Track);
 ```
 
 ---------------------------------------------------------------------------------------------------------------------------------

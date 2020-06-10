@@ -580,6 +580,7 @@ class FlutterSoundPlayer extends Session {
      TWhenFinished whenFinished = null,
   }) async {
     print('FS:---> startPlayer ');
+    /*
     if (isInited == Initialized.fullyInitializedWithUI) {
       final track = Track(trackPath: fromURI, dataBuffer: fromDataBuffer, codec: codec);
       return startPlayerFromTrack(track,
@@ -589,6 +590,8 @@ class FlutterSoundPlayer extends Session {
                   }
       );
     }
+
+     */
 
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
@@ -631,6 +634,7 @@ class FlutterSoundPlayer extends Session {
                 Duration progress = null,
                 Duration duration = null,
                 bool defaultPauseResume = null,
+                bool removeUIWhenStopped = null,
               }) async {
 
      print('FS:---> startPlayerFromTrack ');
@@ -644,7 +648,10 @@ class FlutterSoundPlayer extends Session {
       try
       {
         await stop( ); // Just in case
-        audioPlayerFinishedPlaying = whenFinished;
+        audioPlayerFinishedPlaying = ()
+        {
+          whenFinished();
+        };
         this.onSkipForward = onSkipForward;
         this.onSkipBackward = onSkipBackward;
         this.onPaused = onPaused;
@@ -706,6 +713,7 @@ class FlutterSoundPlayer extends Session {
                 TonSkip onSkipBackward,
                 TonPaused onPaused,
                 bool defaultPauseResume = null,
+
               }) async {
     print('FS:---> nowPlaying ');
     await lock.synchronized(() async {

@@ -339,7 +339,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 - (void)startPlayer:(FlutterMethodCall*)call result: (FlutterResult)result
 {
         NSLog(@"IOS:--> startPlayer");
-       bool b = FALSE;
+        bool b = FALSE;
         if (!hasFocus) // We always acquire the Audio Focus (It could have been released by another session)
         {
                 hasFocus = TRUE;
@@ -558,7 +558,6 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 - (void)pausePlayer:(FlutterResult)result
 {
         NSLog(@"IOS:--> pausePlayer");
-       //if (verrue) NSLog(@"====verrue (ignored"); else
         if ([self pause])
         {
                 result([self getPlayerStatus]);
@@ -576,7 +575,6 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 - (void)resumePlayer:(FlutterResult)result
 {
         NSLog(@"IOS:--> resumePlayer");
-        //if (verrue) NSLog(@"====verrue (ignored)"); else
         if ([self resume])
         {
                 result([self getPlayerStatus]);
@@ -639,17 +637,8 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         NSLog(@"IOS:<-- stopTimer");}
 
 
-//bool verrue = false;
 - (void)updateProgress:(NSTimer*) atimer
 {
-/*
-        if (verrue && (long)(audioPlayer.currentTime * 1000) > 500)
-        {
-                NSLog(@"---- verrue");
-                verrue = false;
-        }
-        */
-
 dispatch_async(dispatch_get_main_queue(), ^{
         NSNumber *duration = [NSNumber numberWithLong: (long)(audioPlayer.duration * 1000)];
         NSNumber *position = [NSNumber numberWithLong: (long)(audioPlayer.currentTime * 1000)];
@@ -708,8 +697,6 @@ dispatch_async(dispatch_get_main_queue(), ^{
         NSLog(@"IOS:--> @audioPlayerDidFinishPlaying");
         [self stopTimer];
         audioPlayer = nil;
-        //NSLog(@"++++ verrue");
-        //verrue = true;
         dispatch_async(dispatch_get_main_queue(), ^{
                 NSLog(@"IOS:--> ^audioPlayerFinishedPlaying");
                 [self invokeMethod:@"audioPlayerFinishedPlaying" numberArg: [self getPlayerStatus]];

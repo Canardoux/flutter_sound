@@ -41,6 +41,7 @@
        id playTarget;
        MPMediaItemArtwork* albumArt ;
        BOOL defaultPauseResume;
+       BOOL removeUIWhenStopped;
 }
 
 - (TrackPlayer*)init: (FlutterMethodCall*)call
@@ -53,6 +54,7 @@
 {
         NSLog(@"IOS:--> releaseTrackPlayer");
         [self stopPlayer];
+        removeUIWhenStopped = true;
         [self cleanTarget];
         [super releaseSession];
         result([NSNull null]);;
@@ -71,10 +73,9 @@
          BOOL canPause  = [call.arguments[@"canPause"] boolValue];
          BOOL canSkipForward = [call.arguments[@"canSkipForward"] boolValue];
          BOOL canSkipBackward = [call.arguments[@"canSkipBackward"] boolValue];
-         //NSInteger duration = [call.arguments[@"duration"] integerValue];
-         //NSInteger progress = [call.arguments[@"duration"] integerValue];
          NSNumber* progress = (NSNumber*)call.arguments[@"progress"];
          NSNumber* duration = (NSNumber*)call.arguments[@"duration"];
+         removeUIWhenStopped  = [call.arguments[@"removeUIWhenStopped"] boolValue];
 
 
         defaultPauseResume  = [call.arguments[@"defaultPauseResume"] boolValue];
@@ -198,7 +199,9 @@
          {
                 [self startTimer];
                 // Display the notification with the media controls
+                //[self cleanTarget]; // Done by setupRemoteCommandCenter()
                 [self setupRemoteCommandCenter:canPause canSkipForward:canSkipForward   canSkipBackward:canSkipBackward ];
+                
                 if ( (progress == nil) || (progress.class == NSNull.class) )
                         progress = [NSNumber numberWithDouble: audioPlayer.currentTime];
                 else
@@ -322,10 +325,9 @@
                 [commandCenter.previousTrackCommand removeTarget: backwardTarget action: nil];
                 backwardTarget = nil;
           }
-          //MPNowPlayingInfoCenter* playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
-          //[playingInfoCenter setNowPlayingInfo: nil];
-          //playingInfoCenter.nowPlayingInfo = nil;
-          albumArt = nil;
+          
+      
+          //albumArt = nil;
           NSLog(@"IOS:<-- cleanTarget");
  }
 
@@ -341,7 +343,14 @@
                 [audioPlayer stop];
                 audioPlayer = nil;
           }
-          [self cleanTarget];
+          //[self cleanTarget];
+          if (removeUIWhenStopped)
+          {
+                [self cleanTarget];
+                MPNowPlayingInfoCenter* playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
+                [playingInfoCenter setNowPlayingInfo: nil];
+                playingInfoCenter.nowPlayingInfo = nil;
+          }
           NSLog(@"IOS:<-- stopPlayer");
 }
 
@@ -360,34 +369,39 @@
                 togglePlayPauseTarget = [commandCenter.togglePlayPauseCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
                 {
                         NSLog(@"IOS: toggleTarget\n");
-
-                        bool b = [audioPlayer isPlaying];
-                        // If the caller wants to control the pause button, just call him
-                        if (b)
-                        {
-                                if (defaultPauseResume)
-                                        [self pause];
-                                [self invokeMethod:@"pause" numberArg: [self getPlayerStatus] ];
-                        } else
-                        {
-                                if (defaultPauseResume)
-                                        [self resume];
-                                [self invokeMethod:@"pause" numberArg: [self getPlayerStatus]];
-                        }
+                        dispatch_async(dispatch_get_main_queue(), ^{
+ 
+ 
+                                bool b = [audioPlayer isPlaying];
+                                // If the caller wants to control the pause button, just call him
+                                if (b)
+                                {
+                                        if (defaultPauseResume)
+                                                [self pause];
+                                        [self invokeMethod:@"pause" numberArg: [self getPlayerStatus] ];
+                                } else
+                                {
+                                        if (defaultPauseResume)
+                                                [self resume];
+                                        [self invokeMethod:@"pause" numberArg: [self getPlayerStatus]];
+                                }
+                        });
                         return MPRemoteCommandHandlerStatusSuccess;
                 }];
 
                 pauseTarget = [commandCenter.pauseCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
                 {
                         NSLog(@"IOS: pauseTarget\n");
-                        bool b = [audioPlayer isPlaying];
-                        // If the caller wants to control the pause button, just call him
-                        if (b)
-                        {
-                                if (defaultPauseResume)
-                                        [self pause];
-                                [self invokeMethod:@"pause" numberArg: [self getPlayerStatus]];
-                        }
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                                bool b = [audioPlayer isPlaying];
+                                // If the caller wants to control the pause button, just call him
+                                if (b)
+                                {
+                                        if (defaultPauseResume)
+                                                [self pause];
+                                        [self invokeMethod:@"pause" numberArg: [self getPlayerStatus]];
+                                }
+                        });
                         return MPRemoteCommandHandlerStatusSuccess;
                  }];
 
@@ -401,14 +415,17 @@
                 playTarget = [commandCenter.playCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
                 {
                         NSLog(@"IOS: playTarget\n");
-                        bool b = [audioPlayer isPlaying];
-                        // If the caller wants to control the pause button, just call him
-                        if (!b)
-                        {
-                                if (defaultPauseResume)
-                                        [self resume];
-                                [self invokeMethod:@"pause" numberArg: [self getPlayerStatus]];
-                        }
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                                bool b = [audioPlayer isPlaying];
+                                // If the caller wants to control the pause button, just call him
+                                if (!b)
+                                {
+                                        if (defaultPauseResume)
+                                                [self resume];
+                                        [self invokeMethod:@"pause" numberArg: [self getPlayerStatus]];
+                                }
+                        });
+                                
                         return MPRemoteCommandHandlerStatusSuccess;
                 }];
         }
@@ -486,7 +503,7 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
 
         MPNowPlayingInfoCenter* playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
         [playingInfoCenter setNowPlayingInfo: songInfo];
-       NSLog(@"IOS:<-- setUIProgressBar");
+        NSLog(@"IOS:<-- setUIProgressBar");
 
 }
 
@@ -532,10 +549,11 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
         defaultPauseResume  = [call.arguments[@"defaultPauseResume"] boolValue];
 
         [self setupRemoteCommandCenter:canPause canSkipForward:canSkipForward   canSkipBackward:canSkipBackward ];
-        if(!track)
+        if ( !track  )
         {
+                //[self cleanTarget];
+
                 MPNowPlayingInfoCenter* playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
-                //[self setupRemoteCommandCenter: false canSkipForward:false   canSkipBackward:false result:result];
                 [playingInfoCenter setNowPlayingInfo: nil];
                 playingInfoCenter.nowPlayingInfo = nil;
                 result([self getPlayerStatus]);
@@ -575,7 +593,15 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
         NSLog(@"IOS:--> audioPlayerDidFinishPlaying");
-        [self cleanTarget];
+        //[self cleanTarget];
+        if (removeUIWhenStopped)
+        {
+                [self cleanTarget];
+                MPNowPlayingInfoCenter* playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
+                [playingInfoCenter setNowPlayingInfo: nil];
+                playingInfoCenter.nowPlayingInfo = nil;
+        }
+
         [super audioPlayerDidFinishPlaying: player successfully: flag];
         NSLog(@"IOS:<-- audioPlayerDidFinishPlaying");
 }
