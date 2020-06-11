@@ -155,15 +155,17 @@ enum AudioFocus {
   doNotRequestFocus,
 }
 
-
-// Audio Flags
-// -----------
-const outputToSpeaker = 1;
-const allowHeadset = 2;
-const allowEarPiece = 4;
-const allowBlueTooth = 8;
-const allowAirPlay = 16;
-const allowBlueToothA2DP = 32;
+enum AudioDevice {
+  speaker,
+  // allowHeadset and allowEarPiece are the same behaviour on both Android and iOS
+  headset,
+  earPiece,
+  blueTooth,
+  // only for iOS, Android do the same as allowBlueTooth
+  blueToothA2DP,
+  // only for iOS, Android do nothing
+  airPlay
+}
 
 /*
 final List<String> iosSessionCategory = [

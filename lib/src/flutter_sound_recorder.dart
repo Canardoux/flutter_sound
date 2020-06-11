@@ -124,7 +124,7 @@ class FlutterSoundRecorder extends Session {
                                                    AudioFocus focus = AudioFocus.requestFocusTransient,
                                                    SessionCategory category = SessionCategory.playAndRecord,
                                                    SessionMode mode = SessionMode.modeDefault,
-                                                   int audioFlags = outputToSpeaker | allowBlueTooth}) async {
+                                                   AudioDevice device = AudioDevice.speaker}) async {
     if (isInited == Initialized.fullyInitialized) {
       return this;
     }
@@ -139,7 +139,7 @@ class FlutterSoundRecorder extends Session {
     } // The lazy singleton
     _setRecorderCallback();
     openSession();
-    await invokeMethod('initializeFlautoRecorder', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags,});
+    await invokeMethod('initializeFlautoRecorder', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'device': device.index,});
 
     isInited = Initialized.fullyInitialized;
     return this;
@@ -355,14 +355,14 @@ class FlutterSoundRecorder extends Session {
                                 AudioFocus focus = AudioFocus.requestFocusTransient,
                                 SessionCategory category = SessionCategory.playAndRecord,
                                 SessionMode mode = SessionMode.modeDefault,
-                                int audioFlags = outputToSpeaker}) async {
+                                AudioDevice device = AudioDevice.speaker}) async {
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus, 'category': category, 'mode': mode.index, 'audioFlags':audioFlags});
+    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus.index, 'category': category.index, 'mode': mode.index, 'device':device.index});
   }
 
 

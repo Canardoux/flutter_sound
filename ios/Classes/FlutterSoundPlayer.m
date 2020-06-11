@@ -113,7 +113,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [aFlautoPlayer getPlayerState: call result:result];
         } else
 
-         if ([@"setFocus" isEqualToString:call.method])
+        if ([@"setAudioFocus" isEqualToString:call.method])
         {
                 [aFlautoPlayer setAudioFocus: call result:result];
         } else

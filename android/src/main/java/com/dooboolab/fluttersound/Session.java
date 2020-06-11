@@ -19,11 +19,14 @@
 
 package com.dooboolab.fluttersound;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.AudioDeviceInfo;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
+import android.media.MediaRecorder;
 import android.os.Build;
 
 import java.util.HashMap;
@@ -56,7 +59,16 @@ enum AudioFocus {
 	abandonFocus,
 
 	doNotRequestFocus,
-};
+}
+
+enum AudioDevice {
+	speaker,
+	headset,
+	earPiece,
+	blueTooth,
+	blueToothA2DP,
+	airPlay
+}
 
 
 
@@ -120,6 +132,7 @@ public abstract class Session
 		boolean r = true;
 		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService( Context.AUDIO_SERVICE );
 		AudioFocus focus = AudioFocus.values()[(int)call.argument ( "focus" )];
+		AudioDevice device = AudioDevice.values()[(int)call.argument( "device" )];
 
 		int audioFlags = call.argument( "audioFlags" );
 		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
@@ -140,6 +153,48 @@ public abstract class Session
 				audioFocusRequest = new AudioFocusRequest.Builder( focusGain )
 					// .setAudioAttributes(mPlaybackAttributes)
 					.build();
+
+				// change the audio input/output device
+				switch (device)
+				{
+					case speaker:
+						if (isBluetoothHeadsetConnected())
+							audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+						else
+							audioManager.setMode(AudioManager.MODE_NORMAL);
+						audioManager.stopBluetoothSco();
+						audioManager.setBluetoothScoOn(false);
+						audioManager.setSpeakerphoneOn(true);
+						break;
+					case blueTooth:
+					case blueToothA2DP:
+						audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+						if (isBluetoothHeadsetConnected())
+						{
+							audioManager.startBluetoothSco();
+							audioManager.setBluetoothScoOn(true);
+						}
+						audioManager.setSpeakerphoneOn(false);
+						break;
+					case earPiece:
+					case headset:
+						audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+						audioManager.stopBluetoothSco();
+						audioManager.setBluetoothScoOn(false);
+						audioManager.setSpeakerphoneOn(false);
+				}
+
+				/*
+				if (flags & outputToSpeaker)
+					sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker;
+				if (flags & allowAirPlay)
+					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay;
+				if (flags & allowBlueTooth)
+					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetooth;
+				if (flags & allowBlueToothA2DP)
+					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
+				 */
+
 			}
 
 			if (focus != AudioFocus.doNotRequestFocus)
@@ -165,7 +220,7 @@ public abstract class Session
 		return r;
 	}
 
-	void setFocus( final MethodCall call, final MethodChannel.Result result )
+	void setAudioFocus(final MethodCall call, final MethodChannel.Result result )
 	{
 		boolean r = prepareFocus(call);
 		if (r)
@@ -219,7 +274,9 @@ public abstract class Session
 
 	}
 
-
-
+	private static boolean isBluetoothHeadsetConnected() {
+		BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+		return BluetoothProfile.STATE_CONNECTED == adapter.getProfileConnectionState(BluetoothProfile.HEADSET);
+	}
 
 }

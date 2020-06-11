@@ -102,6 +102,13 @@ class FlautoRecorderPlugin  extends AudioSessionManager
 				aRecorder.isEncoderSupported ( call, result );
 			}
 			break;
+
+			case "setAudioFocus":
+			{
+				aRecorder.setAudioFocus( call, result );
+			}
+			break;
+
 			case "startRecorder":
 			{
 				aRecorder.startRecorder ( call, result );
@@ -206,7 +213,8 @@ public class FlutterSoundRecorder extends Session
 		false, // pcm16CAF
 		false, // flac
 		false, // aacMP4
-		true, // amr
+		true,  // amrNB
+		true   // amrWB
 	};
 
 	final static int CODEC_OPUS   = 2;
@@ -324,7 +332,7 @@ public class FlutterSoundRecorder extends Session
 		lineIn
 	}
 
-	int tabAudioSource [] =
+	int[] tabAudioSource =
 		{
 			MediaRecorder.AudioSource.DEFAULT,
 			MediaRecorder.AudioSource.MIC,

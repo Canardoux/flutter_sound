@@ -270,12 +270,11 @@ class FlutterSoundPlayer extends Session {
 
       isInited = Initialized.initializationInProgress;
 
-      if (flautoPlayerPlugin == null)
-      {
-        flautoPlayerPlugin = FlautoPlayerPlugin( ); // The lazy singleton
-      }
-      openSession( );
-      setPlayerCallback( );
+    if (flautoPlayerPlugin == null) {
+      flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton
+    }
+    openSession();
+    setPlayerCallback();
 
       int state = await invokeMethod( 'initializeMediaPlayerWithUI', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags,} );
       playerState = PlayerState.values[state];
@@ -291,7 +290,7 @@ class FlutterSoundPlayer extends Session {
                                 AudioFocus focus = AudioFocus.requestFocusTransient,
                                 SessionCategory category = SessionCategory.playAndRecord,
                                 SessionMode mode = SessionMode.modeDefault,
-                                int audioFlags = outputToSpeaker}) async {
+                                AudioDevice device = AudioDevice.speaker}) async {
 
     print('FS:---> setAudioFocus ');
     await lock.synchronized(() async {
