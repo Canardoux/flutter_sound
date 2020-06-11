@@ -34,7 +34,7 @@
 - (TrackPlayer*)init: (FlutterMethodCall*)call;
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)seekToPlayer:(nonnull NSNumber*) time result: (FlutterResult)result;
-- (void)releaseTrackPlayer:(FlutterMethodCall*)call result:(FlutterResult)result;
+- (void)releaseFlautoPlayer:(FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer*)player successfully:(BOOL)flag;
 - (bool)resume;
 - (void)setUIProgressBar:(FlutterMethodCall*)call result: (FlutterResult)result;

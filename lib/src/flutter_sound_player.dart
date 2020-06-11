@@ -909,9 +909,11 @@ class FlutterSoundPlayer extends Session {
                                     Duration duration,
                                     Duration progress,
                                   }) async {
-    print('FS:---> setUIProgressBar ');
+    int int_duration =  duration.inMilliseconds;
+    int int_progress =  progress.inMilliseconds;
+    print('FS:---> setUIProgressBar : duration=$int_duration  progress=$int_progress');
     await lock.synchronized(() async {
-      int state = await invokeMethod( 'setUIProgressBar', <String, dynamic>{'duration': duration.inMilliseconds, 'progress': progress.inMilliseconds} );
+      int state = await invokeMethod( 'setUIProgressBar', <String, dynamic>{'duration': int_duration, 'progress': int_progress} );
       playerState = PlayerState.values[state];
     });
       print('FS:<--- setUIProgressBar ');

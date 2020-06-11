@@ -43,25 +43,24 @@
        BOOL defaultPauseResume;
        BOOL removeUIWhenStopped;
 }
-
+ 
 - (TrackPlayer*)init: (FlutterMethodCall*)call
 {
         return [super init: call];
 }
 
 
-- (void)releaseTrackPlayer:(FlutterMethodCall*)call result:(FlutterResult)result
+- (void)releaseFlautoPlayer:(FlutterMethodCall*)call result:(FlutterResult)result
 {
-        NSLog(@"IOS:--> releaseTrackPlayer");
+        NSLog(@"IOS:--> releaseFlautoPlayer");
         [self stopPlayer];
+        [self cleanNowPlaying];
         removeUIWhenStopped = true;
         [self cleanTarget];
-        [super releaseSession];
+        [super releaseFlautoPlayer: call result: result];
         result([NSNull null]);;
-        NSLog(@"IOS:<-- releaseTrackPlayer");
+        NSLog(@"IOS:<-- releaseFlautoPlayer");
 }
-
-
 
 
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result
@@ -484,8 +483,8 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
         {
                 NSLog(@"IOS: setUIProgressBar Progress: %@ s.", progress);
                 NSLog(@"IOS: setUIProgressBar Duration: %@ s.", duration);
-                [songInfo setObject: progress forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
-                [songInfo setObject: duration forKey:MPMediaItemPropertyPlaybackDuration];
+                [songInfo setObject: progress forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime];
+                [songInfo setObject: duration forKey: MPMediaItemPropertyPlaybackDuration];
         }
 
         if (albumArt != nil)
@@ -495,8 +494,8 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
 
         if (track != nil)
         {
-                [songInfo setObject:track.title forKey:MPMediaItemPropertyTitle];
-                [songInfo setObject:track.author forKey:MPMediaItemPropertyArtist];
+                [songInfo setObject: track.title forKey: MPMediaItemPropertyTitle];
+                [songInfo setObject: track.author forKey: MPMediaItemPropertyArtist];
         }
         bool b = [audioPlayer isPlaying];
         [songInfo setObject:[NSNumber numberWithDouble:(b ? 1.0f : 0.0f)] forKey:MPNowPlayingInfoPropertyPlaybackRate];
@@ -533,6 +532,14 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
         NSLog(@"IOS:<-- setUIProgressBar");
 }
 
+- (void)cleanNowPlaying
+{
+                MPNowPlayingInfoCenter* playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
+                [playingInfoCenter setNowPlayingInfo: nil];
+                playingInfoCenter.nowPlayingInfo = nil;
+
+}
+
 
 - (void)nowPlaying:(FlutterMethodCall*)call result: (FlutterResult)result
 {
@@ -551,11 +558,7 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
         [self setupRemoteCommandCenter:canPause canSkipForward:canSkipForward   canSkipBackward:canSkipBackward ];
         if ( !track  )
         {
-                //[self cleanTarget];
-
-                MPNowPlayingInfoCenter* playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
-                [playingInfoCenter setNowPlayingInfo: nil];
-                playingInfoCenter.nowPlayingInfo = nil;
+                [self cleanNowPlaying];
                 result([self getPlayerStatus]);
                 return;
         }
