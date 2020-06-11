@@ -218,6 +218,7 @@ class FlutterSoundPlayer extends Session {
                                                  AudioFocus focus = AudioFocus.requestFocusTransient,
                                                  SessionCategory category = SessionCategory.playAndRecord,
                                                  SessionMode mode = SessionMode.modeDefault,
+                                                 AudioDevice device = AudioDevice.speaker,
                                                  int audioFlags = outputToSpeaker | allowBlueTooth}) async {
       print('FS:---> openAudioSession ');
       await lock.synchronized(() async {
@@ -254,6 +255,7 @@ class FlutterSoundPlayer extends Session {
                                                        AudioFocus focus = AudioFocus.requestFocusTransient,
                                                        SessionCategory category = SessionCategory.playAndRecord,
                                                        SessionMode mode = SessionMode.modeDefault,
+                                                       AudioDevice device = AudioDevice.speaker,
                                                        int audioFlags = outputToSpeaker | allowBlueTooth}) async {
     print('FS:---> openAudioSessionWithUI ');
     await lock.synchronized(() async {
@@ -357,7 +359,7 @@ class FlutterSoundPlayer extends Session {
   }
 
 
-  Future<Map> getProgress() async
+  Future<Map<String, Duration>> getProgress() async
   {
       if (isInited == Initialized.initializationInProgress)
       {
@@ -371,9 +373,9 @@ class FlutterSoundPlayer extends Session {
                     _notOpen( )
         );
       }
-      Map r = await invokeMethod( 'getProgress', <String, dynamic>{} );
-      playerState = PlayerState.values[r['playerStatus'] as int];
-    return r;
+      Map m = await invokeMethod( 'getProgress', <String, dynamic>{} );
+      Map <String, Duration> r = { 'duration' : Duration(milliseconds: m['duration']), 'progress': Duration(milliseconds: m['position']) };
+      return r;
   }
 
   void _updateProgress(Map call) {
@@ -437,7 +439,7 @@ class FlutterSoundPlayer extends Session {
       if (onPaused != null)
       {
         // Probably always true
-        onPaused( b );
+        onPaused( !b );
       }
     });
     print('FS:<--- pause ');

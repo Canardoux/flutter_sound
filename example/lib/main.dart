@@ -110,12 +110,14 @@ class _MyAppState extends State<MyApp> {
           focus: AudioFocus.requestFocusTransient,
           category: SessionCategory.playAndRecord,
           mode: SessionMode.modeDefault,
+          audioFlags: outputToSpeaker,
           device: AudioDevice.speaker);
     } else {
       await playerModule.openAudioSession(
           focus: AudioFocus.requestFocusTransient,
           category: SessionCategory.playAndRecord,
           mode: SessionMode.modeDefault,
+          audioFlags: outputToSpeaker,
           device: AudioDevice.speaker);
     }
     await playerModule.setSubscriptionDuration(Duration(milliseconds: 10));
@@ -399,8 +401,8 @@ class _MyAppState extends State<MyApp> {
           print('Skip forward');
           stopPlayer();
           startPlayer();
-        }, onPaused: (bool b) {
-          if (b)
+        }, onPaused: (bool doPause) {
+          if (doPause)
             playerModule.pausePlayer();
           else
             playerModule.resumePlayer();

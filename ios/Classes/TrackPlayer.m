@@ -97,12 +97,12 @@
 
                 bool isRemote = false;
                 // Check whether a path was given
-                if ([path class] == [NSNull class])
-                {
+                //if ([path class] == [NSNull class])
+                //{
                         // No path was given, get the path to a default sound
-                        audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:@"sound.aac"]];
+                        //audioFileURL = [NSURL fileURLWithPath:[GetDirectoryOfType_FlutterSound(NSCachesDirectory) stringByAppendingString:@"sound.aac"]];
                 // This file name is not good. Perhaps the codec is not AAC. !
-                } else
+                //} else
                 {
                         // A path was given, then create a NSURL with it
                         NSURL *remoteUrl = [NSURL URLWithString:path];

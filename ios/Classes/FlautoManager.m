@@ -233,12 +233,22 @@ enum AudioDevice {
         };
 
 
+// Audio Flags
+// -----------
+const int outputToSpeaker = 1;
+const int allowHeadset = 2;
+const int allowEarPiece = 4;
+const int allowBlueTooth = 8;
+const int allowAirPlay = 16;
+const int allowBlueToothA2DP = 32;
+
 
         BOOL r = TRUE;
         enum AudioFocus audioFocus = (enum AudioFocus) [call.arguments[@"focus"] intValue];
         enum SessionCategory category = (enum SessionCategory)[call.arguments[@"category"] intValue];
         enum SessionMode mode = (enum SessionMode)[call.arguments[@"mode"] intValue];
-        int sessionCategoryOption = [call.arguments[@"audioFlags"] intValue];
+        int flags = [call.arguments[@"audioFlags"] intValue];
+        int sessionCategoryOption = 0;
         if ( audioFocus != abandonFocus && audioFocus != doNotRequestFocus && audioFocus != requestFocus)
         {
                 //NSUInteger sessionCategoryOption = 0;
@@ -251,6 +261,16 @@ enum AudioDevice {
                         case requestFocusTransientExclusive:
                         case requestFocusAndStopOthers: sessionCategoryOption |= 0; break; // NOOP
                 }
+                
+                if (flags & outputToSpeaker)
+                        sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker;
+                if (flags & allowAirPlay)
+                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay;
+                 if (flags & allowBlueTooth)
+                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetooth;
+                if (flags & allowBlueToothA2DP)
+                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
+
                 /*
                 enum AudioDevice device = (enum AudioDevice)[call.arguments[@"device"] intValue];
                 switch (device)
