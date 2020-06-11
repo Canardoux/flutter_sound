@@ -384,7 +384,7 @@
           // ????  [self cleanTarget:false canSkipForward:false canSkipBackward:false];
         [self cleanTarget:false canSkipForward:false canSkipBackward:false]; // ???
 
-
+}
 
 // Give the system information about what to do when the notification
 // control buttons are pressed.

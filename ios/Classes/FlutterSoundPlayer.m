@@ -351,7 +351,6 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         {
                         [self stopPlayer];
   
-                        [FlutterError
                         result([FlutterError
                                 errorWithCode:@"Audio Player"
                                 message:@"Play failure"
@@ -366,40 +365,9 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                                 errorWithCode:@"Audio Player"
                                 message:@"Start Player From Track failure"
                                 details:nil]);
-        audioPlayer = [[AVAudioPlayer alloc] initWithData: [dataBuffer data] error: nil];
-        audioPlayer.delegate = self;
-        // Able to play in silent mode
-        if (setCategoryDone == NOT_SET)
-        {
-                [[AVAudioSession sharedInstance]
-                setCategory: AVAudioSessionCategoryPlayback
-                error: nil];
-                setCategoryDone = FOR_PLAYING;
-        }
-        // Able to play in background
-        if (setActiveDone == NOT_SET)
-        {
-                [[AVAudioSession sharedInstance] setActive: YES error: nil];
-                setActiveDone = FOR_PLAYING;
-        }
-        isPaused = false;
-        bool b = [audioPlayer play];
-        if (!b)
-        {
-                [self stopPlayer];
-                result([FlutterError
-                        errorWithCode:@"Audio Player"
-                        message:@"Play failure"
-                        details:nil]);
-        } else
-        {
-                [self startTimer];
-                result(@"Playing from buffer");
-        }
 }
 
 
-}
 
 - (void)stopPlayer
 {
@@ -410,7 +378,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [audioPlayer stop];
                 audioPlayer = nil;
         }
-
+}
 
 - (void)pause
 {
