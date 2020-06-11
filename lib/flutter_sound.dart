@@ -167,6 +167,17 @@ enum AudioDevice {
   airPlay
 }
 
+
+// Audio Flags
+// -----------
+const outputToSpeaker = 1;
+const allowHeadset = 2;
+const allowEarPiece = 4;
+const allowBlueTooth = 8;
+const allowAirPlay = 16;
+const allowBlueToothA2DP = 32;
+
+
 /*
 final List<String> iosSessionCategory = [
   'AVAudioSessionCategoryAmbient',

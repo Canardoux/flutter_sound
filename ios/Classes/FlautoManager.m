@@ -238,10 +238,10 @@ enum AudioDevice {
         enum AudioFocus audioFocus = (enum AudioFocus) [call.arguments[@"focus"] intValue];
         enum SessionCategory category = (enum SessionCategory)[call.arguments[@"category"] intValue];
         enum SessionMode mode = (enum SessionMode)[call.arguments[@"mode"] intValue];
-        enum AudioDevice device = (enum AudioDevice)[call.arguments[@"device"] intValue];
+        int sessionCategoryOption = [call.arguments[@"audioFlags"] intValue];
         if ( audioFocus != abandonFocus && audioFocus != doNotRequestFocus && audioFocus != requestFocus)
         {
-                NSUInteger sessionCategoryOption = 0;
+                //NSUInteger sessionCategoryOption = 0;
                 switch (audioFocus)
                 {
                         case requestFocusAndDuckOthers: sessionCategoryOption |= AVAudioSessionCategoryOptionDuckOthers; break;
@@ -251,6 +251,8 @@ enum AudioDevice {
                         case requestFocusTransientExclusive:
                         case requestFocusAndStopOthers: sessionCategoryOption |= 0; break; // NOOP
                 }
+                /*
+                enum AudioDevice device = (enum AudioDevice)[call.arguments[@"device"] intValue];
                 switch (device)
                 {
                         case speaker: sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker; break;
@@ -260,6 +262,7 @@ enum AudioDevice {
                         case earPiece:
                         case headset: sessionCategoryOption |= 0; break;
                 }
+                */
                 r = [[AVAudioSession sharedInstance]
                         setCategory:  tabCategory[category] // AVAudioSessionCategoryPlayback
                         mode: tabSessionMode[mode]

@@ -290,7 +290,9 @@ class FlutterSoundPlayer extends Session {
                                 AudioFocus focus = AudioFocus.requestFocusTransient,
                                 SessionCategory category = SessionCategory.playAndRecord,
                                 SessionMode mode = SessionMode.modeDefault,
-                                AudioDevice device = AudioDevice.speaker}) async {
+                                AudioDevice device = AudioDevice.speaker,
+                                int audioFlags = outputToSpeaker | allowBlueTooth,
+  }) async {
 
     print('FS:---> setAudioFocus ');
     await lock.synchronized(() async {
