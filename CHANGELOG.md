@@ -9,6 +9,12 @@
 - On iOS : Add API verb ```nowPlaying()```. (iOS only).
 - On iOS : Add API verb ```setUIProgressBar()```. (iOS only).
 - SetAudioFocus
+- Fixes bug [#380](https://github.com/dooboolab/flutter_sound/issues/380), [#385](https://github.com/dooboolab/flutter_sound/pull/385)
+- Fixes bug "AudioFlags and AudioSource not work as expect " [#366](https://github.com/dooboolab/flutter_sound/issues/366), [#372](https://github.com/dooboolab/flutter_sound/pull/372), [#381](https://github.com/dooboolab/flutter_sound/pull/381)
+
+## 5.0.2
+
+Error returns from iOS in FlutterSoundPlayer.m was wrong : [#350](https://github.com/dooboolab/flutter_sound/pull/350)
 
 ## 5.0.1
 

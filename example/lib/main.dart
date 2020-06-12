@@ -675,7 +675,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   void Function(bool) audioPlayerSwitchChanged() {
-    if ((!playerModule.isStopped) || (!recorderModule.isStopped)) return null;
+    if ( (!playerModule.isStopped) || (!recorderModule.isStopped) )
+      return null;
     return ((newVal) async {
       try {
         await _initializeExample(newVal);

@@ -385,7 +385,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         }
         NSURL *remoteUrl = [NSURL URLWithString: path];
         NSURL *audioFileURL = [NSURL URLWithString:path];
-
+        
         if (remoteUrl && remoteUrl.scheme && remoteUrl.host)
         {
                 audioFileURL = remoteUrl;
