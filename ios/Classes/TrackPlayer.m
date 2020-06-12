@@ -499,6 +499,10 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
         }
         bool b = [audioPlayer isPlaying];
         [songInfo setObject:[NSNumber numberWithDouble:(b ? 1.0f : 0.0f)] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+        
+        //[songInfo setObject: @"toto" forKey: MPNowPlayingInfoCollectionIdentifier];
+        //[songInfo setObject: @"titi" forKey: MPNowPlayingInfoPropertyChapterCount];
+        //[songInfo setObject: @"tutu" forKey: MPNowPlayingInfoPropertyChapterNumber];
 
         MPNowPlayingInfoCenter* playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
         [playingInfoCenter setNowPlayingInfo: songInfo];
