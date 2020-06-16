@@ -322,8 +322,9 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 {
         NSLog(@"IOS:--> stopPlayer");
         [self stopPlayer];
-        result([self getPlayerStatus]);
-        NSLog(@"IOS:<-- stopPlayer");
+        NSNumber* status = [self getPlayerStatus];
+        result(status);
+        NSLog(@"IOS:<-- stopPlayer - status = %s" , [[status stringValue] cString]);
 }
 
 

@@ -250,6 +250,17 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	};
 
 
+	enum PlayerState {
+		/// Player is stopped
+		isStopped,
+		/// Player is playing
+		isPlaying,
+		/// Player is paused
+		isPaused,
+	}
+
+
+
 	final static  String           TAG         = "FlutterSoundPlugin";
 	//final         PlayerAudioModel model       = new PlayerAudioModel ();
 	int subsDurationMillis = 0;
@@ -273,7 +284,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	{
 		boolean r = prepareFocus(call);
 		if (r)
-		        result.success ( r);
+		        result.success ( getPlayerState());
 		else
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Failure to open session");
 
@@ -284,10 +295,19 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		if (hasFocus)
 			abandonFocus();
 		releaseSession();
-		result.success ( "Flauto Recorder Released" );
+		result.success ( getPlayerState() );
 	}
 
+	Boolean isPaused() { return !mediaPlayer.isPlaying () && mediaPlayer.getCurrentPosition () > 1;}
 
+	int getPlayerState()
+	{
+		if (mediaPlayer == null)
+			return PlayerState.isStopped.ordinal();
+		if (mediaPlayer.isPlaying())
+			return PlayerState.isPlaying.ordinal();
+		return isPaused() ? PlayerState.isPaused.ordinal() : PlayerState.isStopped.ordinal();
+	}
 
 
 	public void startPlayer ( final MethodCall call, final Result result )
@@ -320,17 +340,17 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		stop(); // To start a new clean playback
 		if ( mediaPlayer != null )
 		{
-			Boolean isPaused = !mediaPlayer.isPlaying () && mediaPlayer.getCurrentPosition () > 1;
 
-			if ( isPaused )
+
+			if ( isPaused() )
 			{
 				mediaPlayer.start ();
-				result.success ( true );
+				result.success ( getPlayerState());
 				return;
 			}
 
 			Log.e ( TAG, "Player is already running. Stop it first." );
-			result.success ( false );
+			result.success ( getPlayerState() );
 			return;
 		} else
 		{
@@ -368,7 +388,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 			return;
 		}
-		result.success ( true );
+		result.success ( getPlayerState() );
 	}
 
 	public void startPlayerFromTrack ( final MethodCall call, final Result result )
@@ -390,7 +410,6 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			 * Reset player.
 			 */
 			Log.d(TAG, "Playback completed.");
-				invokeMethodWithString("audioPlayerFinishedPlaying", null);
 			mTimer.cancel();
 			if (mp.isPlaying()) {
 				mp.stop();
@@ -398,6 +417,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			mp.reset();
 			mp.release();
 			mediaPlayer = (null);
+			invokeMethodWithInteger("audioPlayerFinishedPlaying", getPlayerState());
 	}
 
 	// Listener called when media player has completed preparation.
@@ -418,6 +438,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 					Map<String, Object> dic = new HashMap<String, Object> ();
 					dic.put ( "position", position );
 					dic.put ( "duration", duration );
+					dic.put ( "playerStatus", getPlayerState() );
 
 					mainHandler.post(new Runnable() {
 						@Override
@@ -451,7 +472,6 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			mediaPlayer.reset ();
 			mediaPlayer.release ();
 			mediaPlayer = ( null );
-			result.success ( "stopped player." );
 		}
 		catch ( Exception e )
 		{
@@ -464,7 +484,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	public void stopPlayer ( final MethodCall call, final Result result )
 	{
 		stop();
-		result.success ( "stopped player." );
+		result.success ( getPlayerState());
 	}
 
 	public void isDecoderSupported ( final MethodCall call, final Result result )
@@ -478,7 +498,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 				b = false;
 			}
 		}
-		result.success ( b );
+		result.success (b );
 
 	}
 
@@ -492,7 +512,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		try
 		{
 			mediaPlayer.pause ();
-			result.success ( "paused player." );
+			result.success ( getPlayerState());
 		}
 		catch ( Exception e )
 		{
@@ -520,7 +540,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		{
 			mediaPlayer.seekTo ( mediaPlayer.getCurrentPosition () );
 			mediaPlayer.start ();
-			result.success ( "resumed player." );
+			result.success ( getPlayerState());
 		}
 		catch ( Exception e )
 		{
@@ -546,7 +566,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		Log.d ( TAG, "seekTo: " + millis );
 
 		mediaPlayer.seekTo ( millis );
-		result.success ( String.valueOf ( millis ) );
+		result.success (getPlayerState() );
 	}
 
 	public void setVolume ( final MethodCall call, final Result result )
@@ -561,7 +581,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 		float mVolume = ( float ) volume;
 		mediaPlayer.setVolume ( mVolume, mVolume );
-		result.success ( "Set volume" );
+		result.success ( getPlayerState());
 	}
 
 
@@ -574,7 +594,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		int duration = call.argument ( "milliSec" );
 
 		subsDurationMillis = duration;
-		result.success ( "setSubscriptionDuration: " + subsDurationMillis );
+		result.success ( getPlayerState());
 	}
 
 	void androidAudioFocusRequest ( final MethodCall call, final Result result )
@@ -591,11 +611,11 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 				.build ();
 			Boolean b = true;
 
-			result.success ( b );
+			result.success (getPlayerState() );
 		} else
 		{
 			Boolean b = false;
-			result.success ( b );
+			result.success (getPlayerState() );
 		}
 	}
 	void setActive ( final MethodCall call, final Result result )
@@ -618,7 +638,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		{
 			b = false;
 		}
-		result.success ( b );
+		result.success (getPlayerState() );
 	}
 
 

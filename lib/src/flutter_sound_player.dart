@@ -69,7 +69,7 @@ class FlautoPlayerPlugin extends FlautoPlugin{
     FlutterSoundPlayer aPlayer = getSession (call) as FlutterSoundPlayer;
     Map arg = call.arguments as Map;
     if (arg['playerStatus'] != null)
-      aPlayer.playerState = PlayerState.values[arg['playerStatus'] ];
+      aPlayer.playerState = PlayerState.values[arg['playerStatus']as int ] ;
 
     switch (call.method) {
        case "updateProgress":
@@ -109,6 +109,15 @@ class FlautoPlayerPlugin extends FlautoPlugin{
           print('FS:<--- channelMethodCallHandler : ${call.method}');
         }
         break;
+
+      case 'updatePlaybackState':
+        {
+          print('FS:---> channelMethodCallHandler : ${call.method}');
+          aPlayer.updatePlaybackState(arg);
+          print('FS:<--- channelMethodCallHandler : ${call.method}');
+        }
+        break;
+
 
 
       default:
@@ -243,7 +252,7 @@ class FlutterSoundPlayer extends Session {
         openSession( );
         setPlayerCallback( );
 
-        int state = await invokeMethod( 'initializeMediaPlayer', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags | allowBlueTooth,} );
+        int state = await invokeMethod( 'initializeMediaPlayer', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index ,}) as int;
         playerState = PlayerState.values[state];
         isInited = Initialized.fullyInitialized;
       });
@@ -278,7 +287,7 @@ class FlutterSoundPlayer extends Session {
     openSession();
     setPlayerCallback();
 
-      int state = await invokeMethod( 'initializeMediaPlayerWithUI', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags,} );
+      int state = await invokeMethod( 'initializeMediaPlayerWithUI', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index, } ) as int;
       playerState = PlayerState.values[state];
       isInited = Initialized.fullyInitializedWithUI;
     });
@@ -311,7 +320,7 @@ class FlutterSoundPlayer extends Session {
         );
       }
 
-      int state = await invokeMethod( 'setAudioFocus', <String, dynamic>{'focus': focus, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags} );
+      int state = await invokeMethod( 'setAudioFocus', <String, dynamic>{'focus': focus, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index,} ) as int;
       playerState = PlayerState.values[state];
     });
     print( 'FS:<--- setAudioFocus ' );
@@ -336,7 +345,7 @@ class FlutterSoundPlayer extends Session {
       await stop( );
 
       //_removePlayerCallback(); // playerController is closed by this function
-      int state = await invokeMethod( 'releaseMediaPlayer', <String, dynamic>{} );
+      int state = await invokeMethod( 'releaseMediaPlayer', <String, dynamic>{} ) as int;
       playerState = PlayerState.values[state];
       _removePlayerCallback( );
       super.closeAudioSession( );
@@ -373,8 +382,8 @@ class FlutterSoundPlayer extends Session {
                     _notOpen( )
         );
       }
-      Map m = await invokeMethod( 'getProgress', <String, dynamic>{} );
-      Map <String, Duration> r = { 'duration' : Duration(milliseconds: m['duration']), 'progress': Duration(milliseconds: m['position']) };
+      Map m = await invokeMethod( 'getProgress', <String, dynamic>{} ) as Map;
+      Map <String, Duration> r = { 'duration' : Duration(milliseconds: m['duration'] as int), 'progress': Duration(milliseconds: m['position'] as int) };
       return r;
   }
 
@@ -425,6 +434,16 @@ class FlutterSoundPlayer extends Session {
      });
     print( 'FS:<--- skipBackward ' );
   }
+
+
+  Future<void> updatePlaybackState(Map call) async {
+    print( 'FS:---> updatePlaybackState ' );
+      int state = call['arg'] as int;
+      assert (state != null);
+      playerState = PlayerState.values[state];
+    print( 'FS:<--- updatePlaybackState ' );
+  }
+
 
   Future<void> pause(Map call)  async {
     print( 'FS:---> pause ' );
@@ -621,7 +640,7 @@ class FlutterSoundPlayer extends Session {
           print('FS: !whenFinished()');
           whenFinished();
         };
-        int state = await invokeMethod( 'startPlayer', {'codec': codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI,} as Map<String, dynamic> );
+        int state = (await invokeMethod( 'startPlayer', {'codec': codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI,} as Map<String, dynamic> )) as int;
         playerState = PlayerState.values[state];
   } );
     print('FS:<--- startPlayer ');
@@ -637,7 +656,7 @@ class FlutterSoundPlayer extends Session {
                 Duration progress = null,
                 Duration duration = null,
                 bool defaultPauseResume = null,
-                bool removeUIWhenStopped = null,
+                bool removeUIWhenStopped = true,
               }) async {
 
      print('FS:---> startPlayerFromTrack ');
@@ -695,7 +714,8 @@ class FlutterSoundPlayer extends Session {
                       onSkipBackward != null
           ),
           'defaultPauseResume': defaultPauseResume,
-        } );
+          'removeUIWhenStopped': removeUIWhenStopped,
+        }) as int;
         playerState = PlayerState.values[state];
       }
       catch (e)
@@ -785,7 +805,7 @@ class FlutterSoundPlayer extends Session {
         try
         {
           //_removePlayerCallback(); // playerController is closed by this function
-          stop( );
+          await stop( );
         }
         catch (e)
         {

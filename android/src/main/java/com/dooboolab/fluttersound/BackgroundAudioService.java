@@ -88,9 +88,9 @@ public class BackgroundAudioService
 	// public static boolean includeAudioPlayerFeatures;
 	//public static Activity activity;
 
-	public final static int PLAYING_STATE = 0;
-	public final static int PAUSED_STATE  = 1;
-	public final static int STOPPED_STATE = 2;
+	public final static int PLAYING_STATE = 1;
+	public final static int PAUSED_STATE  = 2;
+	public final static int STOPPED_STATE = 0;
 
 	/**
 	 * The track that we're currently playing

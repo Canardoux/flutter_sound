@@ -120,6 +120,16 @@ public abstract class Session
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
 
+
+	void invokeMethodWithInteger ( String methodName, int arg )
+	{
+		Map<String, Object> dic = new HashMap<String, Object> ();
+		dic.put ( "slotNo", slotNo );
+		dic.put ( "arg", arg );
+		getPlugin ().invokeMethod ( methodName, dic );
+	}
+
+
 	void invokeMethodWithMap ( String methodName, Map<String, Object>  dic )
 	{
 		dic.put ( "slotNo", slotNo );
@@ -276,7 +286,9 @@ public abstract class Session
 
 	private static boolean isBluetoothHeadsetConnected() {
 		BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
-		return BluetoothProfile.STATE_CONNECTED == adapter.getProfileConnectionState(BluetoothProfile.HEADSET);
+		if (adapter == null)
+			return false;
+		return (BluetoothProfile.STATE_CONNECTED == adapter.getProfileConnectionState(BluetoothProfile.HEADSET));
 	}
 
 }
