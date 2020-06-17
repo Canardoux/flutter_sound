@@ -153,7 +153,7 @@ check_flutter_sound_podspec()
 			return -1
 		fi
 
-		if grep "^ *s.dependency *\'mobile-ffmpeg-audio\', *=* \'4.3.1.LTS\'$" ios/flutter_sound.podspec > /dev/null ; then
+		if grep "^ *s.dependency *\'mobile-ffmpeg-audio\', *=* \'4.3.2\'$" ios/flutter_sound.podspec > /dev/null ; then
 			echo "dependency in ios/flutter_sound.podspec is set: $(tput setaf 2) [OK]$(tput sgr 0)"
 		else
 			echo "dependency in ios/flutter_sound.podspec is not set: $(tput setaf 1) [NOK]$(tput sgr 0)"
@@ -188,7 +188,7 @@ check_flutter_sound_podspec()
 			return -1
 		fi
 
-		if grep "^ *s.dependency *\'mobile-ffmpeg-audio\', *=* \'4.3.1.LTS\'$" ios/flutter_sound_lite.podspec > /dev/null ; then
+		if grep "^ *s.dependency *\'mobile-ffmpeg-audio\', *=* \'4.3.2\'$" ios/flutter_sound_lite.podspec > /dev/null ; then
 			echo "dependency in ios/flutter_sound.podspec : $(tput setaf 1) [NOK]$(tput sgr 0)"
 		else
 			echo "dependency in ios/flutter_sound.podspec : $(tput setaf 2) [OK]$(tput sgr 0)"
@@ -208,7 +208,7 @@ check_flutter_sound_podspec()
 			return -1
 		fi
 
-		if grep "^ *s.dependency *\'mobile-ffmpeg-audio\', *=* \'4.3.1.LTS\'$" ios/flutter_sound.podspec > /dev/null ; then
+		if grep "^ *s.dependency *\'mobile-ffmpeg-audio\', *=* \'4.3.2\'$" ios/flutter_sound.podspec > /dev/null ; then
 			RES=-1
 			echo "dependency in ios/flutter_sound.podspec is set : $(tput setaf 1) [NOK]$(tput sgr 0)"
 			exit -1
@@ -363,10 +363,10 @@ check_android_build_gradle()
 {
 	RES=0
       	if [ $FLAVOR == 'FULL' ]; then
-       		if grep "^ *ext.flutterFFmpegPackage *= *'audio-lts'$" android/build.gradle  > /dev/null; then
-      			echo "android/build.gradle has audio-lts : $(tput setaf 2) [OK]$(tput sgr 0)"
+       		if grep "^ *ext.flutterFFmpegPackage *= *'audio'$" android/build.gradle  > /dev/null; then
+      			echo "android/build.gradle has audio : $(tput setaf 2) [OK]$(tput sgr 0)"
        		else
-       			echo "android/build.gradle does not have audio-lts : $(tput setaf 1) [NOK]$(tput sgr 0)"
+       			echo "android/build.gradle does not have audio : $(tput setaf 1) [NOK]$(tput sgr 0)"
        			RES=-1
        		fi
 
@@ -378,11 +378,11 @@ check_android_build_gradle()
        		fi
 
       	elif [ $FLAVOR == 'LITE' ]; then
-      		if grep "^ *ext.flutterFFmpegPackage *= *'audio-lts'$" android/build.gradle  > /dev/null; then
-       			echo "android/build.gradle has audio-lts : $(tput setaf 1) [NOK]$(tput sgr 0)"
+      		if grep "^ *ext.flutterFFmpegPackage *= *'audio'$" android/build.gradle  > /dev/null; then
+       			echo "android/build.gradle has audio : $(tput setaf 1) [NOK]$(tput sgr 0)"
        			RES=-1
        		else
-       			echo "android/build.gradle does not have audio-lts : $(tput setaf 2) [OK]$(tput sgr 0)"
+       			echo "android/build.gradle does not have audio : $(tput setaf 2) [OK]$(tput sgr 0)"
        		fi
 
       		if grep "^[ $'\t']*//implementation *'com.arthenica:mobile-ffmpeg-" android/build.gradle  > /dev/null; then
@@ -395,10 +395,10 @@ check_android_build_gradle()
 
 	else
      		if grep "^ *implementation *'com.arthenica:mobile-ffmpeg-"  android/build.gradle  > /dev/null; then
-       			echo "android/build.gradle has audio-lts : $(tput setaf 1) [OK]$(tput sgr 0)"
+       			echo "android/build.gradle has audio : $(tput setaf 1) [OK]$(tput sgr 0)"
        			RES=-1
        		else
-       			echo "android/build.gradle does not have audio-lts : $(tput setaf 2) [OK]$(tput sgr 0)"
+       			echo "android/build.gradle does not have audio : $(tput setaf 2) [OK]$(tput sgr 0)"
        		fi
 	fi
 	return $RES
@@ -572,8 +572,8 @@ FULL)
 		gsed -i  's/^\( *\)flutter_sound_lite:$/\1flutter_sound:/' example/pubspec.yaml
 		mv ios/flutter_sound_lite.podspec ios/flutter_sound.podspec 2>/dev/null
 		gsed -i  "s/^ *s.name *=* 'flutter_sound_lite'$/s.name = 'flutter_sound'/"  ios/flutter_sound.podspec
-		gsed -i  "/s.dependency *'mobile-ffmpeg-audio', *=* '4.3.1.LTS'$/d"   ios/flutter_sound.podspec
-		gsed -i  "/^end$/i \ \ s.dependency 'mobile-ffmpeg-audio', '4.3.1.LTS'" ios/flutter_sound.podspec
+		gsed -i  "/s.dependency *'mobile-ffmpeg-audio', *=* '4.3.2'$/d"   ios/flutter_sound.podspec
+		gsed -i  "/^end$/i \ \ s.dependency 'mobile-ffmpeg-audio', '4.3.2'" ios/flutter_sound.podspec
 		gsed -i  "/^ *#define *[A-Z]*_FLAVOR/d"   ios/Classes/FlutterFFmpegPlugin.h
 		gsed -i  "/^ *#ifdef *[A-Z]*_FLAVOR/i #define FULL_FLAVOR" ios/Classes/FlutterFFmpegPlugin.h
 
@@ -609,9 +609,9 @@ FULL)
 
 		mv "android/src/main/ffmpeg.park" "android/src/main/java/com/dooboolab/ffmpeg" 2>/dev/null
 
-		gsed -i  "/ext.flutterFFmpegPackage *= *'audio-lts'$/d"   android/build.gradle
+		gsed -i  "/ext.flutterFFmpegPackage *= *'audio'$/d"   android/build.gradle
 		#gsed -i  "/implementation *'com.arthenica:mobile-ffmpeg-/d"   android/build.gradle
-		gsed -i "1iext.flutterFFmpegPackage = 'audio-lts'" android/build.gradle
+		gsed -i "1iext.flutterFFmpegPackage = 'audio'" android/build.gradle
   		gsed -i "s/^[ \t]*\/\/implementation 'com.arthenica:mobile-ffmpeg-/    implementation 'com.arthenica:mobile-ffmpeg-/" android/build.gradle
 
 
@@ -636,8 +636,7 @@ LITE)
 		gsed -i  's/^\( *\)flutter_sound:$/\1flutter_sound_lite:/' example/pubspec.yaml
 		mv ios/flutter_sound.podspec ios/flutter_sound_lite.podspec 2>/dev/null
 		gsed -i  "s/^ *s.name *=* 'flutter_sound'$/s.name = 'flutter_sound_lite'/"  ios/flutter_sound_lite.podspec
-		gsed -i  "/s.dependency *'mobile-ffmpeg-audio', *=* '4.3.1.LTS'$/d"   ios/flutter_sound_lite.podspec
-		gsed -i  "/^end$/i \ \ #s.dependency 'mobile-ffmpeg-audio', '4.3.1.LTS'" ios/flutter_sound_lite.podspec
+		gsed -i  "/s.dependency *'mobile-ffmpeg-audio', *=* '4.3.2'$/d"   ios/flutter_sound_lite.podspec
 		gsed -i  "/^ *#define *[A-Z]*_FLAVOR/d"   ios/Classes/FlutterFFmpegPlugin.h
 		gsed -i  "/^ *#ifdef *[A-Z]*_FLAVOR/i #define LITE_FLAVOR" ios/Classes/FlutterFFmpegPlugin.h
 
@@ -673,9 +672,9 @@ LITE)
 
 		mv "android/src/main/java/com/dooboolab/ffmpeg" "android/src/main/ffmpeg.park" 2>/dev/null
 
-		gsed -i  "/ext.flutterFFmpegPackage *= *'audio-lts'$/d"   android/build.gradle
+		gsed -i  "/ext.flutterFFmpegPackage *= *'audio'$/d"   android/build.gradle
 		#gsed -i  "/implementation *'com.arthenica:mobile-ffmpeg-/d"   android/build.gradle
-		gsed -i "1i//ext.flutterFFmpegPackage = 'audio-lts'" android/build.gradle
+		gsed -i "1i//ext.flutterFFmpegPackage = 'audio'" android/build.gradle
  		gsed -i "s/^[ \t]*implementation 'com.arthenica:mobile-ffmpeg-/    \/\/implementation 'com.arthenica:mobile-ffmpeg-/" android/build.gradle
 
 
@@ -705,7 +704,8 @@ cd ..
 flutter clean
 rm -rf example/ios/DerivedData 2>/dev/null
 cd example/ios
-pod install
+rm Podfile
+#pod install
 cd ../..
 
 echo

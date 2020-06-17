@@ -258,7 +258,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
 
     return Container(
         decoration: BoxDecoration(
-            color: Colors.grey,
+            color: Colors.deepOrangeAccent,
             borderRadius: BorderRadius.circular(SoundPlayerUI._barHeight / 2)),
         child: Row(children: [
           _buildPlayButton(),
@@ -556,7 +556,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   Widget _buildPlayButtonIcon(Widget widget) {
     switch (_playState) {
       case PlayState.playing:
-        widget = Icon(Icons.pause, color: Colors.black);
+        widget = Icon(Icons.pause, color: Colors.green);
         break;
       case PlayState.stopped:
       case PlayState.paused:
@@ -568,13 +568,13 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
                 canPlay = asyncData.data;
               }
               return Icon(Icons.play_arrow,
-                  color: canPlay ? Colors.black : Colors.blueGrey);
+                  color: canPlay ? Colors.green : Colors.yellow);
             });
         break;
       case PlayState.disabled:
         GrayedOut(
             grayedOut: true,
-            child: widget = Icon(Icons.play_arrow, color: Colors.blueGrey));
+            child: widget = Icon(Icons.play_arrow, color: Colors.blue));
         break;
     }
     return widget;
@@ -610,6 +610,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   Widget _buildSlider() {
     return Expanded(
         child: PlaybarSlider(
+
       _localController.stream,
       (position) {
         _sliderPosition.position = position;

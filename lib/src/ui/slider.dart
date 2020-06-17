@@ -47,7 +47,9 @@ class PlaybarSliderState extends State<PlaybarSlider> {
     return SliderTheme(
         data: SliderTheme.of(context).copyWith(
             thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6.0),
-            inactiveTrackColor: Colors.blueGrey),
+            thumbColor: Colors.amber,
+
+            inactiveTrackColor: Colors.green),
         child: StreamBuilder<PlaybackDisposition>(
             stream: widget.stream,
             initialData: PlaybackDisposition.zero(),
