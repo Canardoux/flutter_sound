@@ -17,7 +17,8 @@ There is a huge impact on the memory used, but the **LITE** flavor will not be a
 - Support some codecs like Playback OGG/OPUS on iOS or Record OGG_OPUS on iOS
 - Will not be able to offer some helping functions, like `FlutterSoundHelper.FFmpegGetMediaInformation()` or `FlutterSoundHelper.duration()`
 
-Here are the size of example/demo1 iOS .ipa in Released Mode
+Here are the size of example/demo1 iOS .ipa in Released Mode.
+Those numbers include everything (flutter library, application, ...) and not only Flutter Sound.
 
 | Flavor  |  V4.x    |  V5.1   |
 | --------| :-------:|:--------|
