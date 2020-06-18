@@ -43,7 +43,7 @@
 - (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg;
 - (void)invokeMethod: (NSString*)methodName boolArg: (Boolean)boolArg;
 - (void)invokeMethod: (NSString*)methodName numberArg: (NSNumber*)arg;
-- (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result;
+- (BOOL)setAudioFocus: (FlutterMethodCall*)call ;
 
 
 @end

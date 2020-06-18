@@ -203,7 +203,7 @@ enum AudioDevice {
 }
 
 
-- (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result
+- (BOOL)setAudioFocus: (FlutterMethodCall*)call
 {
 
 
@@ -233,15 +233,25 @@ enum AudioDevice {
         };
 
 
+// Audio Flags
+// -----------
+const int outputToSpeaker = 1;
+const int allowHeadset = 2;
+const int allowEarPiece = 4;
+const int allowBlueTooth = 8;
+const int allowAirPlay = 16;
+const int allowBlueToothA2DP = 32;
+
 
         BOOL r = TRUE;
         enum AudioFocus audioFocus = (enum AudioFocus) [call.arguments[@"focus"] intValue];
         enum SessionCategory category = (enum SessionCategory)[call.arguments[@"category"] intValue];
         enum SessionMode mode = (enum SessionMode)[call.arguments[@"mode"] intValue];
-        enum AudioDevice device = (enum AudioDevice)[call.arguments[@"device"] intValue];
+        int flags = [call.arguments[@"audioFlags"] intValue];
+        int sessionCategoryOption = 0;
         if ( audioFocus != abandonFocus && audioFocus != doNotRequestFocus && audioFocus != requestFocus)
         {
-                NSUInteger sessionCategoryOption = 0;
+                //NSUInteger sessionCategoryOption = 0;
                 switch (audioFocus)
                 {
                         case requestFocusAndDuckOthers: sessionCategoryOption |= AVAudioSessionCategoryOptionDuckOthers; break;
@@ -251,6 +261,18 @@ enum AudioDevice {
                         case requestFocusTransientExclusive:
                         case requestFocusAndStopOthers: sessionCategoryOption |= 0; break; // NOOP
                 }
+                
+                if (flags & outputToSpeaker)
+                        sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker;
+                if (flags & allowAirPlay)
+                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay;
+                 if (flags & allowBlueTooth)
+                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetooth;
+                if (flags & allowBlueToothA2DP)
+                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
+
+                /*
+                enum AudioDevice device = (enum AudioDevice)[call.arguments[@"device"] intValue];
                 switch (device)
                 {
                         case speaker: sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker; break;
@@ -260,6 +282,7 @@ enum AudioDevice {
                         case earPiece:
                         case headset: sessionCategoryOption |= 0; break;
                 }
+                */
                 r = [[AVAudioSession sharedInstance]
                         setCategory:  tabCategory[category] // AVAudioSessionCategoryPlayback
                         mode: tabSessionMode[mode]
@@ -273,13 +296,7 @@ enum AudioDevice {
                 hasFocus = (audioFocus != abandonFocus);
                 r = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
         }
-        if (r)
-                result([NSNumber numberWithBool: r]);
-        else
-                [FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"Open session failure"
-                                details:nil];
+        return r;
 }
 
 

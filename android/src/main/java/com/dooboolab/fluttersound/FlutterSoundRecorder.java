@@ -351,6 +351,8 @@ public class FlutterSoundRecorder extends Session
 
 		};
 
+
+
 	public void startRecorder ( final MethodCall call, final Result result )
 	{
 		//taskScheduler.submit ( () ->
@@ -365,10 +367,7 @@ public class FlutterSoundRecorder extends Session
 			int                             audioSource         = tabAudioSource[_audioSource];
 			mPauseTime = 0;
 			mStartPauseTime = -1;
-			if (recorder != null)
-			{
-				recorder._stopRecorder (  );
-			}
+			stop(); // To start a new clean record
 			if (_isAudioRecorder[codec.ordinal()])
 			{
 				recorder = new FlutterSoundAudioRecorder();
@@ -385,7 +384,8 @@ public class FlutterSoundRecorder extends Session
 				return;
 			}
 			// Remove all pending runnables, this is just for safety (should never happen)
-			recordHandler.removeCallbacksAndMessages ( null );
+			//recordHandler.removeCallbacksAndMessages ( null );
+
 			final long systemTime = SystemClock.elapsedRealtime();
 			this.model.setRecorderTicker ( () ->
 			                               {
@@ -446,11 +446,19 @@ public class FlutterSoundRecorder extends Session
 
 	}
 
-	public void stopRecorder ( final MethodCall call, final Result result )
+	void stop()
 	{
 		recordHandler.removeCallbacksAndMessages ( null );
-		recorder._stopRecorder (  );
+		if (recorder != null)
+			recorder._stopRecorder (  );
 		recorder = null;
+
+
+	}
+
+	public void stopRecorder ( final MethodCall call, final Result result )
+	{
+		stop();
 		result.success ( "Media Recorder is closed" );
 	}
 

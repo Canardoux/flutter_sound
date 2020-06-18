@@ -124,6 +124,7 @@ class FlutterSoundRecorder extends Session {
                                                    AudioFocus focus = AudioFocus.requestFocusTransient,
                                                    SessionCategory category = SessionCategory.playAndRecord,
                                                    SessionMode mode = SessionMode.modeDefault,
+                                                   int audioFlags = outputToSpeaker,
                                                    AudioDevice device = AudioDevice.speaker}) async {
     if (isInited == Initialized.fullyInitialized) {
       return this;
@@ -139,7 +140,7 @@ class FlutterSoundRecorder extends Session {
     } // The lazy singleton
     _setRecorderCallback();
     openSession();
-    await invokeMethod('initializeFlautoRecorder', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'device': device.index,});
+    await invokeMethod('initializeFlautoRecorder', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'device': device.index, 'audioFlags': audioFlags});
 
     isInited = Initialized.fullyInitialized;
     return this;
@@ -156,7 +157,7 @@ class FlutterSoundRecorder extends Session {
     isInited = Initialized.initializationInProgress;
     _removeRecorderCallback(); // _recorderController will be closed by this function
     await invokeMethod('releaseFlautoRecorder', <String, dynamic>{});
-    closeSession();
+    super.closeAudioSession();
     isInited = Initialized.notInitialized;
   }
 

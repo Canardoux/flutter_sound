@@ -1,7 +1,16 @@
 ## 5.1.0
 
+- Add a semaphore so that the App cannot do several call to Flutter Sound at the same time [374](https://github.com/dooboolab/flutter_sound/issues/374)
+- On iOS : the "NowPlaying" info on the lockscreen is removed when the sound is finished or when the App does a ```stopPlayer()```. Add parameter ```removeUIWhenStopped``` to ```startPlayerFromTrack()```. (iOS only).
+- On iOS : the "NowPlaying" progress bar on the lockscreen is uptodated when the App does a ```seekToPlayer()``` [#364](https://github.com/dooboolab/flutter_sound/issues/364)
+- On iOS : Add parameter ```defaultPauseResume``` to ```startPlayerFromTrack()```. (iOS only).
+- On iOS : Add API verb ```getProgress()```. (iOS only).
+- On iOS : Add API verb ```getPlayerState()```. (iOS only).
+- On iOS : Add API verb ```nowPlaying()```. (iOS only).
+- On iOS : Add API verb ```setUIProgressBar()```. (iOS only). [376](https://github.com/dooboolab/flutter_sound/issues/376)
 - Fixes bug [#380](https://github.com/dooboolab/flutter_sound/issues/380), [#385](https://github.com/dooboolab/flutter_sound/pull/385)
 - Fixes bug "AudioFlags and AudioSource not work as expect " [#366](https://github.com/dooboolab/flutter_sound/issues/366), [#372](https://github.com/dooboolab/flutter_sound/pull/372), [#381](https://github.com/dooboolab/flutter_sound/pull/381)
+- New parameters in the `SoundPlayerUI` constructors for specifying colors, text style and slider style. [#397](https://github.com/dooboolab/flutter_sound/issues/397)
 
 ## 5.0.2
 
@@ -21,6 +30,14 @@ Error returns from iOS in FlutterSoundPlayer.m was wrong : [#350](https://github
 - Remove the authorization request from `startRecorder()`
 - Remove the NULL posted when the player or the recorder is closed.
 - The Audio Focus is **NOT** automaticaly abandoned between two `startPlayer()` or two `startRecorder()`
+
+## 4.0.7 Patch to avoid problems when the App does s stopPlayer() during a startPlayer() [374](https://github.com/dooboolab/flutter_sound/issues/374)
+
+## 4.0.6 Error returns from iOS in FlutterSoundPlayer.m was wrong : [#350](https://github.com/dooboolab/flutter_sound/pull/350)
+
+## 4.0.5
+
+- Fix as bug in the Focus gain, on iOS [#324](https://github.com/dooboolab/flutter_sound/issues/324#issuecomment-630970336)
 
 ## 4.0.4+1
 

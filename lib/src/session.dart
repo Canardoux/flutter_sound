@@ -89,7 +89,7 @@ class Session {
                 slotNo = getPlugin( )._lookupEmptySlot( this );
         }
 
-        void closeSession() {
+        void closeAudioSession() {
                 getPlugin().freeSlot(slotNo);
                 slotNo = null;
 

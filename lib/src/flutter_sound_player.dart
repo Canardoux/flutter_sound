@@ -24,7 +24,7 @@ import 'dart:core';
 import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
-
+import 'package:synchronized/synchronized.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
@@ -67,37 +67,57 @@ class FlautoPlayerPlugin extends FlautoPlugin{
 
   Future<dynamic> channelMethodCallHandler(MethodCall call) {
     FlutterSoundPlayer aPlayer = getSession (call) as FlutterSoundPlayer;
+    Map arg = call.arguments as Map;
+    if (arg['playerStatus'] != null)
+      aPlayer.playerState = PlayerState.values[arg['playerStatus']as int ] ;
 
     switch (call.method) {
-      case "updateProgress":
+       case "updateProgress":
         {
-          aPlayer._updateProgress(call.arguments as Map);
+          aPlayer._updateProgress(arg);
         }
         break;
 
       case "audioPlayerFinishedPlaying":
         {
-          aPlayer.audioPlayerFinished(call.arguments as Map);
+          print('FS:---> channelMethodCallHandler : ${call.method}');
+          aPlayer.audioPlayerFinished(arg);
+          print('FS:<--- channelMethodCallHandler : ${call.method}');
         }
         break;
 
       case 'pause': // Pause/Resume
         {
-          aPlayer.pause(call.arguments as Map);
+          print('FS:---> channelMethodCallHandler : ${call.method}');
+          aPlayer.pause(arg);
+          print('FS:<--- channelMethodCallHandler : ${call.method}');
         }
         break;
 
       case 'skipForward':
         {
-          aPlayer.skipForward(call.arguments as Map);
+          print('FS:---> channelMethodCallHandler : ${call.method}');
+          aPlayer.skipForward(arg);
+          print('FS:<--- channelMethodCallHandler : ${call.method}');
         }
         break;
 
       case 'skipBackward':
         {
-          aPlayer.skipBackward(call.arguments as Map);
+          print('FS:---> channelMethodCallHandler : ${call.method}');
+          aPlayer.skipBackward(arg);
+          print('FS:<--- channelMethodCallHandler : ${call.method}');
         }
         break;
+
+      case 'updatePlaybackState':
+        {
+          print('FS:---> channelMethodCallHandler : ${call.method}');
+          aPlayer.updatePlaybackState(arg);
+          print('FS:<--- channelMethodCallHandler : ${call.method}');
+        }
+        break;
+
 
 
       default:
@@ -118,6 +138,8 @@ class FlutterSoundPlayer extends Session {
   TonSkip onSkipForward; // User callback "onPaused:"
   TonSkip onSkipBackward; // User callback "onPaused:"
   TonPaused onPaused; // user callback "whenPause:"
+  var lock = new Lock();
+
 
   static const List<Codec> tabAndroidConvert = [
     Codec.defaultCodec, // defaultCodec
@@ -201,45 +223,63 @@ class FlutterSoundPlayer extends Session {
 
   FlautoPlugin getPlugin() => flautoPlayerPlugin;
 
-  Future<FlutterSoundPlayer> openAudioSession( {
+    Future<FlutterSoundPlayer> openAudioSession( {
                                                  AudioFocus focus = AudioFocus.requestFocusTransient,
                                                  SessionCategory category = SessionCategory.playAndRecord,
                                                  SessionMode mode = SessionMode.modeDefault,
-                                                 AudioDevice device = AudioDevice.speaker}) async {
-    if (isInited == Initialized.fullyInitialized || isInited == Initialized.fullyInitializedWithUI) {
-      await closeAudioSession();
-    }
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
+                                                 AudioDevice device = AudioDevice.speaker,
+                                                 int audioFlags = outputToSpeaker | allowBlueTooth}) async {
+      print('FS:---> openAudioSession ');
+      await lock.synchronized(() async {
+        if (isInited == Initialized.fullyInitialized || isInited == Initialized.fullyInitializedWithUI)
+        {
+          await closeAudioSession( );
+        }
+        if (isInited == Initialized.initializationInProgress)
+        {
+          throw (
+                      _InitializationInProgress( )
+          );
+        }
 
-    isInited = Initialized.initializationInProgress;
+        isInited = Initialized.initializationInProgress;
 
-    if (flautoPlayerPlugin == null) {
-      flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton
-    }
+        if (flautoPlayerPlugin == null)
+        {
+          flautoPlayerPlugin = FlautoPlayerPlugin( ); // The lazy singleton
+        }
 
-    openSession();
-    setPlayerCallback();
+        openSession( );
+        setPlayerCallback( );
 
-    await invokeMethod('initializeMediaPlayer', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'device': device.index,});
-    isInited = Initialized.fullyInitialized;
-    return this;
+        int state = await invokeMethod( 'initializeMediaPlayer', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index ,}) as int;
+        playerState = PlayerState.values[state];
+        isInited = Initialized.fullyInitialized;
+      });
+      print('FS:<--- openAudioSession ');
+      return this;
   }
 
   Future<FlutterSoundPlayer> openAudioSessionWithUI( {
                                                        AudioFocus focus = AudioFocus.requestFocusTransient,
                                                        SessionCategory category = SessionCategory.playAndRecord,
                                                        SessionMode mode = SessionMode.modeDefault,
-                                                       AudioDevice device = AudioDevice.speaker}) async {
-    if (isInited == Initialized.fullyInitializedWithUI || isInited == Initialized.fullyInitialized) {
-      await closeAudioSession();
-    }
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
+                                                       AudioDevice device = AudioDevice.speaker,
+                                                       int audioFlags = outputToSpeaker | allowBlueTooth}) async {
+    print('FS:---> openAudioSessionWithUI ');
+    await lock.synchronized(() async {
+      if (isInited == Initialized.fullyInitializedWithUI || isInited == Initialized.fullyInitialized)
+      {
+        await closeAudioSession( );
+      }
+      if (isInited == Initialized.initializationInProgress)
+      {
+        throw (
+                    _InitializationInProgress( )
+        );
+      }
 
-    isInited = Initialized.initializationInProgress;
+      isInited = Initialized.initializationInProgress;
 
     if (flautoPlayerPlugin == null) {
       flautoPlayerPlugin = FlautoPlayerPlugin(); // The lazy singleton
@@ -247,15 +287,11 @@ class FlutterSoundPlayer extends Session {
     openSession();
     setPlayerCallback();
 
-    try {
-      await invokeMethod('initializeMediaPlayerWithUI', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'device': device.index,});
-
-      // Add the method call handler
-      //getChannel( ).setMethodCallHandler( channelMethodCallHandler );
-    } catch (err) {
-      rethrow;
-    }
-    isInited = Initialized.fullyInitializedWithUI;
+      int state = await invokeMethod( 'initializeMediaPlayerWithUI', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index, } ) as int;
+      playerState = PlayerState.values[state];
+      isInited = Initialized.fullyInitializedWithUI;
+    });
+    print('FS:<--- openAudioSessionWithUI ');
     return this;
   }
 
@@ -265,95 +301,183 @@ class FlutterSoundPlayer extends Session {
                                 AudioFocus focus = AudioFocus.requestFocusTransient,
                                 SessionCategory category = SessionCategory.playAndRecord,
                                 SessionMode mode = SessionMode.modeDefault,
-                                AudioDevice device = AudioDevice.speaker}) async {
+                                AudioDevice device = AudioDevice.speaker,
+                                int audioFlags = outputToSpeaker | allowBlueTooth,
+  }) async {
 
+    print('FS:---> setAudioFocus ');
+    await lock.synchronized(() async {
+      if (isInited == Initialized.initializationInProgress)
+      {
+        throw (
+                    _InitializationInProgress( )
+        );
+      }
+      if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized)
+      {
+        throw (
+                    _notOpen( )
+        );
+      }
+
+      int state = await invokeMethod( 'setAudioFocus', <String, dynamic>{'focus': focus, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index,} ) as int;
+      playerState = PlayerState.values[state];
+    });
+    print( 'FS:<--- setAudioFocus ' );
+  }
+
+
+
+  Future<void> closeAudioSession() async {
+    print('FS:---> closeAudioSession ');
+    await lock.synchronized(() async {
+      if (isInited == Initialized.notInitialized)
+      {
+        return this;
+      }
+      // probably better not to throw an exception here
+      //if (isInited == Initialized.initializationInProgress) {
+      //throw (_InitializationInProgress());
+      //}
+
+
+      isInited = Initialized.initializationInProgress;
+      await stop( );
+
+      //_removePlayerCallback(); // playerController is closed by this function
+      int state = await invokeMethod( 'releaseMediaPlayer', <String, dynamic>{} ) as int;
+      playerState = PlayerState.values[state];
+      _removePlayerCallback( );
+      super.closeAudioSession( );
+      isInited = Initialized.notInitialized;
+    });
+    print('FS:<--- closeAudioSession ');
+  }
+
+  Future<PlayerState> getPlayerState() async
+  {
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-
-    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus.index, 'category': category.index, 'mode': mode.index, 'device':device.index});
+    int state = await invokeMethod('getPlayerState', <String, dynamic>{});
+    playerState = PlayerState.values[state];
+    return playerState;
   }
 
 
-
-  Future<void> closeAudioSession() async {
-    if (isInited == Initialized.notInitialized) {
-      return this;
-    }
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
-
-    await stopPlayer();
-    isInited = Initialized.initializationInProgress;
-
-    //_removePlayerCallback(); // playerController is closed by this function
-    await invokeMethod('releaseMediaPlayer', <String, dynamic>{});
-    _removePlayerCallback();
-    closeSession();
-    isInited = Initialized.notInitialized;
+  Future<Map<String, Duration>> getProgress() async
+  {
+      if (isInited == Initialized.initializationInProgress)
+      {
+        throw (
+                    _InitializationInProgress( )
+        );
+      }
+      if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized)
+      {
+        throw (
+                    _notOpen( )
+        );
+      }
+      Map m = await invokeMethod( 'getProgress', <String, dynamic>{} ) as Map;
+      Map <String, Duration> r = { 'duration' : Duration(milliseconds: m['duration'] as int), 'progress': Duration(milliseconds: m['position'] as int) };
+      return r;
   }
 
   void _updateProgress(Map call) {
     int duration = call['duration'] as int;
     int position = call['position'] as int;
-    //print('position=$position');
+    //print('position=$position,  duration=$duration');
     _playerController.add(PlaybackDisposition(position: Duration(milliseconds: position), duration: Duration(milliseconds: duration),) );
   }
 
-  void audioPlayerFinished(Map call) {
-    String args = call['arg'] as String;
-    //Map<String, dynamic> result = jsonDecode(args) as Map<String, dynamic>;
-    //PlayStatus status = PlayStatus.fromJSON(result);
+  void audioPlayerFinished(Map call) async {
+    print('FS:---> audioPlayerFinished');
+    await lock.synchronized(() async {
+        //playerState = PlayerState.isStopped;
+        int state = call['arg'] as int;
+        assert (state != null);
+        playerState = PlayerState.values[state];
 
-    //if (status.currentPosition != status.duration) {
-      //status.currentPosition = status.duration;
-    //}
-    //if (playerController != null) playerController.add(status);
-
-    playerState = PlayerState.isStopped;
-    //_removePlayerCallback();
-
-    if (audioPlayerFinishedPlaying != null) audioPlayerFinishedPlaying();
-  }
-
-
-
-  void skipForward(Map call) {
-    if (onSkipForward != null) onSkipForward();
-  }
-
-  void skipBackward(Map call) {
-    if (onSkipBackward != null) onSkipBackward();
-  }
-
-  void pause(Map call) {
-    bool b = call['arg'] as bool;
-    if (onPaused != null) {
-      // Probably always true
-      onPaused(b);
-    } else {
-      if (b)
-        pausePlayer();
-      else
-        resumePlayer();
+        if (audioPlayerFinishedPlaying != null)
+          await audioPlayerFinishedPlaying( );
+    });
+    print('FS:<--- audioPlayerFinished');
     }
+
+
+
+  Future<void> skipForward(Map call) async {
+    print( 'FS:---> skipForward ' );
+    await lock.synchronized(() async {
+     int state = call['arg'] as int;
+      assert (state != null);
+      playerState = PlayerState.values[state];
+      if (onSkipForward != null)
+        onSkipForward( );
+    });
+    print( 'FS:<--- skipForward ' );
+  }
+
+  Future<void> skipBackward(Map call) async {
+    print( 'FS:---> skipBackward ' );
+    await lock.synchronized(() async {
+      int state = call['arg'] as int;
+      assert (state != null);
+      playerState = PlayerState.values[state];
+
+      if (onSkipBackward != null)
+        onSkipBackward( );
+     });
+    print( 'FS:<--- skipBackward ' );
+  }
+
+
+  Future<void> updatePlaybackState(Map call) async {
+    print( 'FS:---> updatePlaybackState ' );
+      int state = call['arg'] as int;
+      assert (state != null);
+      playerState = PlayerState.values[state];
+    print( 'FS:<--- updatePlaybackState ' );
+  }
+
+
+  Future<void> pause(Map call)  async {
+    print( 'FS:---> pause ' );
+    await lock.synchronized(() async {
+      int state = call['arg'] as int;
+      assert (state != null);
+      playerState = PlayerState.values[state];
+
+      bool b = (
+                  playerState == PlayerState.isPaused
+      );
+      if (onPaused != null)
+      {
+        // Probably always true
+        onPaused( !b );
+      }
+    });
+    print('FS:<--- pause ');
   }
 
   bool needToConvert(Codec codec) {
+    print('FS:---> needToConvert ');
     if (codec == null) return false;
     Codec convert = (Platform.isIOS)
         ? tabIosConvert[codec.index]
         : tabAndroidConvert[codec.index];
+    print('FS:<--- needToConvert ');
     return (convert != Codec.defaultCodec);
   }
 
   /// Returns true if the specified decoder is supported by flutter_sound on this platform
   Future<bool> isDecoderSupported(Codec codec) async {
     bool result;
+    print('FS:---> isDecoderSupported ');
 
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
@@ -378,40 +502,25 @@ class FlutterSoundPlayer extends Session {
               'isDecoderSupported', <String, dynamic>{'codec': codec.index})
           as bool;
     }
+    print('FS:<--- isDecoderSupported ');
     return result;
   }
 
-  /// For Android only.
-  /// If this function is not called, everything is managed by default by flutter_sound.
-  /// If this function is called, it is probably called just once when the app starts.
-  /// After calling this function, the caller is responsible for using correctly setActive
-  ///    probably before startRecorder or startPlayer, and stopPlayer and stopRecorder
-  Future<bool> androidAudioFocusRequest(int focusGain) async {
-
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
-    if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
-    }
-    if (!Platform.isAndroid) return false;
-    var r = await invokeMethod('androidAudioFocusRequest',
-        <String, dynamic>{'focusGain': focusGain}) as bool;
-
-    return r;
-  }
 
   Future<void> setSubscriptionDuration(Duration duration) async {
 
+    print('FS:---> setSubscriptionDuration ');
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await invokeMethod('setSubscriptionDuration', <String, dynamic>{
+    int state = await invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'milliSec': duration.inMilliseconds,
     }) ;
+    playerState = PlayerState.values[state];
+    print('FS:<---- setSubscriptionDuration ');
   }
 
   void setPlayerCallback() {
@@ -428,17 +537,20 @@ class FlutterSoundPlayer extends Session {
       _playerController = null;
     }
   }
+  static int varInc2 = 0;
 
   Future<void> _convertAudio(Map<String, dynamic> what) async {
-    // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
+     // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We use FFmpeg for that task.
+    print('FS:---> _convertAudio ');
     var tempDir = await getTemporaryDirectory();
     Codec codec = what['codec'] as Codec;
     Codec convert = (Platform.isIOS)
         ? tabIosConvert[codec.index]
         : tabAndroidConvert[codec.index];
     String fout =
-        '${tempDir.path}/$slotNo-flutter_sound-tmp2${ext[convert.index]}';
+        '${tempDir.path}/$varInc2-flutter_sound-tmp2${ext[convert.index]}';
+    ++varInc2;
     String path = what['path'] as String;
     await flutterSoundHelper.convertFile(path, codec, fout, convert);
 
@@ -446,8 +558,41 @@ class FlutterSoundPlayer extends Session {
 
     what['path'] = fout;
     what['codec'] = convert;
+    print('FS:<--- _convertAudio ');
   }
 
+  static int varInc = 0;
+  Future<void> _convert ( Map<String, dynamic> what) async
+  {
+    print('FS:---> _convert ');
+    Codec codec = what['codec'];
+    if (needToConvert(codec)) {
+      String fromURI = what['path'];
+      Uint8List fromDataBuffer = what['fromDataBuffer'];
+
+      if (fromDataBuffer != null) {
+        var tempDir = await getTemporaryDirectory();
+        File inputFile = File('${tempDir.path}/$varInc-flutter_sound-tmp');
+        ++ varInc;
+
+        if (inputFile.existsSync()) {
+          await inputFile.delete();
+        }
+        inputFile.writeAsBytesSync(
+                    fromDataBuffer); // Write the user buffer into the temporary file
+        what['fromDataBuffer'] = null;
+        what['path'] = inputFile.path;
+      }
+      //Map<String, dynamic> what = {'codec': codec, 'path': fromURI, 'fromDataBuffer': fromDataBuffer,} as Map<String, dynamic>;
+      await _convertAudio(what);
+      //codec = what['codec'] as Codec;
+      //fromURI =  what['path'] as String;
+      //if (playerState != PlayerState.isPlaying)
+        //throw Exception('Player has been stopped');
+    }
+    print('FS:<--- _convert ');
+
+  }
 
   Future<void> startPlayer(
    {
@@ -456,10 +601,19 @@ class FlutterSoundPlayer extends Session {
      Codec codec = Codec.aacADTS,
      TWhenFinished whenFinished = null,
   }) async {
+    print('FS:---> startPlayer ');
+    /*
     if (isInited == Initialized.fullyInitializedWithUI) {
       final track = Track(trackPath: fromURI, dataBuffer: fromDataBuffer, codec: codec);
-      return startPlayerFromTrack(track, whenFinished: whenFinished);
+      return startPlayerFromTrack(track,
+                  whenFinished: ()
+                  {
+                    whenFinished();
+                  }
+      );
     }
+
+     */
 
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
@@ -467,170 +621,329 @@ class FlutterSoundPlayer extends Session {
     if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await stopPlayer(); // Just in case
-    //bool result = true;
-    try {
-      if (needToConvert(codec)) {
 
-        if (fromDataBuffer != null) {
-          var tempDir = await getTemporaryDirectory();
-          File inputFile = File('${tempDir.path}/$slotNo-flutter_sound-tmp');
+    await lock.synchronized(() async {
+        await stop( ); // Just in case
 
-          if (inputFile.existsSync()) {
-            await inputFile.delete();
-          }
-          inputFile.writeAsBytesSync(
-                      fromDataBuffer); // Write the user buffer into the temporary file
-          fromDataBuffer = null;
-          fromURI = inputFile.path;
-        }
+        //playerState = PlayerState.isPlaying;
         Map<String, dynamic> what = {'codec': codec, 'path': fromURI, 'fromDataBuffer': fromDataBuffer,} as Map<String, dynamic>;
-        await _convertAudio(what);
-        codec = what['codec'] as Codec;
-        fromURI =  what['path'] as String;
-        //fromDataBuffer = what['fromDataBuffer'] as Uint8List;
-      }
-
-      audioPlayerFinishedPlaying = whenFinished;
-      await invokeMethod('startPlayer', {'codec':codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI,} as Map<String, dynamic>);
-      //setPlayerCallback();
-
-      playerState = PlayerState.isPlaying;
-
-    } catch (err) {
-      audioPlayerFinishedPlaying = null;
-      throw Exception(err);
+        await _convert( what );
+        codec = what['codec'];
+        fromURI = what['path'];
+        fromDataBuffer = what['fromDataBuffer'];
+        if (playerState != PlayerState.isStopped)
+        {
+          throw Exception( 'Player is not stopped' );
+        }
+        audioPlayerFinishedPlaying = ()
+        {
+          print('FS: !whenFinished()');
+          whenFinished();
+        };
+        int state = (await invokeMethod( 'startPlayer', {'codec': codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI,} as Map<String, dynamic> )) as int;
+        playerState = PlayerState.values[state];
+  } );
+    print('FS:<--- startPlayer ');
     }
-  }
 
 
   Future<void> startPlayerFromTrack( Track track,
               {
-                TonSkip onSkipForward,
-                TonSkip onSkipBackward,
-                TonPaused onPaused,
+                TonSkip onSkipForward = null,
+                TonSkip onSkipBackward = null,
+                TonPaused onPaused = null,
                 TWhenFinished whenFinished = null,
+                Duration progress = null,
+                Duration duration = null,
+                bool defaultPauseResume = null,
+                bool removeUIWhenStopped = true,
               }) async {
 
+     print('FS:---> startPlayerFromTrack ');
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitializedWithUI ) {
       throw (_notOpen());
     }
+    await lock.synchronized(() async {
+      try
+      {
+        await stop( ); // Just in case
+        audioPlayerFinishedPlaying = ()
+        {
+          whenFinished();
+        };
+        this.onSkipForward = onSkipForward;
+        this.onSkipBackward = onSkipBackward;
+        this.onPaused = onPaused;
+        Map<String, dynamic> trackDico = track.toMap( );
+        //playerState = PlayerState.isPlaying;
+        Map<String, dynamic> what = {'codec': track.codec, 'path': track.trackPath, 'fromDataBuffer': track.dataBuffer,} as Map<String, dynamic>;
+        await _convert( what );
+        Codec codec = what['codec'];
+        trackDico['bufferCodecIndex'] = codec.index;
+        trackDico['path'] = what['path'];
+        trackDico['dataBuffer'] = what['fromDataBuffer'];
+        int d = (
+                    duration != null
+        ) ? duration.inMilliseconds : null;
+        int p = (
+                    progress != null
+        ) ? progress.inMilliseconds : null;
 
-    await stopPlayer(); // Just in case
-    audioPlayerFinishedPlaying = whenFinished;
-    this.onSkipForward = onSkipForward;
-    this.onSkipBackward = onSkipBackward;
-    this.onPaused = onPaused;
-    Map<String, dynamic> trackDico = track.toMap();
-    await invokeMethod('startPlayerFromTrack',  <String, dynamic>{
+        if (defaultPauseResume == null)
+          defaultPauseResume = (
+                      onPaused == null
+          );
+        if (playerState != PlayerState.isStopped)
+        {
+          throw Exception( 'Player is not stopped' );
+        }
+        int state = await invokeMethod( 'startPlayerFromTrack', <String, dynamic>{
+          'progress': p,
+          'duration': d,
           'track': trackDico,
-          'canPause': onPaused != null,
-          'canSkipForward': onSkipForward != null,
-          'canSkipBackward': onSkipBackward != null,
-    } );
-    //setPlayerCallback();
-    playerState = PlayerState.isPlaying;
+          'canPause': (
+                      onPaused != null || defaultPauseResume
+          ),
+          'canSkipForward': (
+                      onSkipForward != null
+          ),
+          'canSkipBackward': (
+                      onSkipBackward != null
+          ),
+          'defaultPauseResume': defaultPauseResume,
+          'removeUIWhenStopped': removeUIWhenStopped,
+        }) as int;
+        playerState = PlayerState.values[state];
+      }
+      catch (e)
+      {
+        rethrow;
+      }
+    });
+    print('FS:<--- startPlayerFromTrack ');
   }
 
 
+
+  Future<void> nowPlaying( Track track,
+              {
+                Duration duration,
+                Duration progress,
+                TonSkip onSkipForward,
+                TonSkip onSkipBackward,
+                TonPaused onPaused,
+                bool defaultPauseResume = null,
+
+              }) async {
+    print('FS:---> nowPlaying ');
+    await lock.synchronized(() async {
+      if (isInited == Initialized.initializationInProgress)
+      {
+        throw (
+                    _InitializationInProgress( )
+        );
+      }
+      if (isInited != Initialized.fullyInitializedWithUI)
+      {
+        throw (
+                    _notOpen( )
+        );
+      }
+      this.onSkipForward = onSkipForward;
+      this.onSkipBackward = onSkipBackward;
+      this.onPaused = onPaused;
+
+      int d = (
+                  duration != null
+      ) ? duration.inMilliseconds : null;
+      int p = (
+                  progress != null
+      ) ? progress.inMilliseconds : null;
+      Map<String, dynamic> trackDico = (
+                  track != null
+      ) ? track.toMap( ) : null;
+      if (defaultPauseResume == null)
+        defaultPauseResume = (
+                    onPaused == null
+        );
+      int state = await invokeMethod( 'nowPlaying', <String, dynamic>{
+        'track': trackDico,
+        'duration': d,
+        'progress': p,
+        'canPause': (
+                    onPaused != null || defaultPauseResume
+        ),
+        'canSkipForward': (
+                    onSkipForward != null
+        ),
+        'canSkipBackward': (
+                    onSkipBackward != null
+        ),
+        'defaultPauseResume': defaultPauseResume,
+      } );
+      playerState = PlayerState.values[state];
+      print( 'FS:<--- nowPlaying ' );
+    });
+  }
+
     Future<void> stopPlayer() async {
+      print('FS:---> stopPlayer ');
       if (isInited == Initialized.initializationInProgress) {
         throw (_InitializationInProgress());
       }
       if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
         throw (_notOpen());
       }
-      playerState = PlayerState.isStopped;
+      //playerState = PlayerState.isStopped;
 
-    audioPlayerFinishedPlaying = null;
+    // REALLY ? // audioPlayerFinishedPlaying = null;
 
-    try {
-      //_removePlayerCallback(); // playerController is closed by this function
-      await invokeMethod('stopPlayer', <String, dynamic>{}) as String;
-    } catch (e) {
-      print(e);
+      //await lock.synchronized(() async {
+        try
+        {
+          //_removePlayerCallback(); // playerController is closed by this function
+          await stop( );
+        }
+        catch (e)
+        {
+          print( e );
+        }
+      //});
+      print('FS:<--- stopPlayer ');
     }
+
+  Future<void> stop() async {
+    print('FS:---> stop ');
+    int state = await invokeMethod('stopPlayer', <String, dynamic>{}) as int;
+
+    playerState = PlayerState.values[state];
+    if (playerState != PlayerState.isStopped)
+    {
+      throw Exception( 'Player is not stopped' );
+    }
+
+    print('FS:<--- stop ');
+
   }
 
+
   Future<void> _stopPlayerwithCallback() async {
+    print('FS:---> _stopPlayerwithCallback ');
+
     if (audioPlayerFinishedPlaying != null) {
       audioPlayerFinishedPlaying();
-      audioPlayerFinishedPlaying = null;
+      // REALLY ? // audioPlayerFinishedPlaying = null;
     }
     stopPlayer();
+    print('FS:<--- _stopPlayerwithCallback ');
   }
 
   Future<void> pausePlayer() async {
+    print('FS:---> pausePlayer ');
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-
-    if (playerState != PlayerState.isPlaying) {
-      await _stopPlayerwithCallback(); // To recover a clean state
-      throw PlayerRunningException(
-          'Player is not playing.'); // I am not sure that it is good to throw an exception here
-    }
-    playerState = PlayerState.isPaused;
-
-    await invokeMethod('pausePlayer', <String, dynamic>{}) as String;
+    await lock.synchronized(() async {
+        playerState = PlayerState.values[await invokeMethod( 'pausePlayer', <String, dynamic>{} ) as int];
+        if (playerState != PlayerState.isPaused)
+        {
+          //await _stopPlayerwithCallback( ); // To recover a clean state
+          throw PlayerRunningException( 'Player is not paused.' ); // I am not sure that it is good to throw an exception here
+        }
+      });
+    print('FS:<--- pausePlayer ');
   }
 
   Future<void> resumePlayer() async {
+    print('FS:---> resumePlayer ');
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-
-    if (playerState != PlayerState.isPaused) {
-      await _stopPlayerwithCallback(); // To recover a clean state
-      throw PlayerRunningException(
-          'Player is not paused.'); // I am not sure that it is good to throw an exception here
-    }
-    playerState = PlayerState.isPlaying;
-    await invokeMethod('resumePlayer', <String, dynamic>{}) as String;
+    await lock.synchronized(() async {
+         int state = await invokeMethod( 'resumePlayer', <String, dynamic>{} ) as int;
+        playerState = PlayerState.values[state];
+        if (playerState != PlayerState.isPlaying)
+        {
+          //await _stopPlayerwithCallback( ); // To recover a clean state
+          throw PlayerRunningException( 'Player is not resumed.' ); // I am not sure that it is good to throw an exception here
+        }
+    });
+    print('FS:<--- resumePlayer ');
   }
 
   Future<void> seekToPlayer(Duration duration) async {
 
+    print('FS:---> seekToPlayer ');
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await invokeMethod('seekToPlayer', <String, dynamic>{
-      'duration': duration.inMilliseconds,
+    await lock.synchronized(() async {
+        int state = await invokeMethod( 'seekToPlayer', <String, dynamic>{
+          'duration': duration.inMilliseconds,
+        } );
+        playerState = PlayerState.values[state];
     });
+    print('FS:<--- seekToPlayer ');
   }
 
   Future<void> setVolume(double volume) async {
 
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
-    if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
-    }
-    var indexedVolume = Platform.isIOS ? volume * 100 : volume;
-    if (volume < 0.0 || volume > 1.0) {
-      throw RangeError('Value of volume should be between 0.0 and 1.0.');
-    }
+    print('FS:---> setVolume ');
+    await lock.synchronized(() async {
+      if (isInited == Initialized.initializationInProgress)
+      {
+        throw (
+                    _InitializationInProgress( )
+        );
+      }
+      if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized)
+      {
+        throw (
+                    _notOpen( )
+        );
+      }
+      var indexedVolume = Platform.isIOS ? volume * 100 : volume;
+      if (volume < 0.0 || volume > 1.0)
+      {
+        throw RangeError( 'Value of volume should be between 0.0 and 1.0.' );
+      }
 
-    String r = await invokeMethod('setVolume', <String, dynamic>{
-      'volume': indexedVolume,
-    }) as String;
+      int state = await invokeMethod( 'setVolume', <String, dynamic>{
+        'volume': indexedVolume,
+      } );
+      playerState = PlayerState.values[state];
+    });
+    print('FS:<--- setVolume ');
   }
 
+  Future<void> setUIProgressBar ( {
+                                    Duration duration,
+                                    Duration progress,
+                                  }) async {
+    int int_duration =  duration.inMilliseconds;
+    int int_progress =  progress.inMilliseconds;
+    print('FS:---> setUIProgressBar : duration=$int_duration  progress=$int_progress');
+    await lock.synchronized(() async {
+      int state = await invokeMethod( 'setUIProgressBar', <String, dynamic>{'duration': int_duration, 'progress': int_progress} );
+      playerState = PlayerState.values[state];
+    });
+      print('FS:<--- setUIProgressBar ');
+  }
+
+
   Future<String> getResourcePath() async {
-    // iOS : /Volumes/Macos-Ext/Users/larpoux/Library/Developer/CoreSimulator/Devices/DC01AED0-124F-4589-B2FD-DC1D56A967DF/data/Containers/Bundle/Application/7FF3AF75-FD79-4C9C-A76D-0CFB09CB6BC5/Runner.app
     if (Platform.isIOS) {
       String s =
           await invokeMethod('getResourcePath', <String, dynamic>{}) as String;
@@ -737,11 +1050,10 @@ class Track {
           this.codec = Codec.defaultCodec,
         }) {
     //codec = codec == null ? Codec.defaultCodec : codec;
-    assert(trackPath != null || dataBuffer != null,
-    'You should provide a path or a buffer for the audio content to play.');
+    //assert(trackPath != null || dataBuffer != null,
+    //'You should provide a path or a buffer for the audio content to play.');
     assert(
-    (trackPath != null && dataBuffer == null) ||
-    (trackPath == null && dataBuffer != null),
+    (! (trackPath != null && dataBuffer != null) ),
     'You cannot provide both a path and a buffer.');
   }
 

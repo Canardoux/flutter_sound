@@ -9,6 +9,7 @@ The verbs offered by the Flutter Sound Player module are :
 
 - [Default constructor](#creating-the-player-instance)
 - [openAudioSession() and closeAudioSession()](#openAudioSession-and-closeAudioSession) to open or close and audio session
+- [setAudioFocus()](#setaudiofocus) to manage the session Audio Focus
 - [startRecorder()](#startrecorder) to start your recorder
 - [stopRecorder()](#stoprecorder) to stop your current record.
 - [pauseRecorder()](#pauserecorder) to pause the current record
@@ -96,6 +97,42 @@ The four optional parameters are used if you want to control the Audio Focus. Pl
 
     myRecorder.closeAudioSession();
     myRecorder = null;
+```
+
+------------------------------------------------------------------------------------------------------------------
+
+## `setAudioFocus()`
+
+*Dart definition (prototype) :*
+```
+Future<void> setAudioFocus
+({
+        AudioFocus focus = AudioFocus.requestFocusTransient,
+        SessionCategory category = SessionCategory.playAndRecord,
+        SessionMode mode = SessionMode.modeDefault,
+        int audioFlags = outputToSpeaker,
+        AudioDevice device = AudioDevice.speaker,
+})
+```
+
+### `focus:` parameter possible values are
+- AudioFocus.requestFocus (request focus, but do not do anything special with others App)
+- AudioFocus.requestFocusAndStopOthers (your app will have **exclusive use** of the output audio)
+- AudioFocus.requestFocusAndDuckOthers (if another App like Spotify use the output audio, its volume will be **lowered**)
+- AudioFocus.requestFocusAndKeepOthers (your App will play sound **above** others App)
+- AudioFocus.requestFocusAndInterruptSpokenAudioAndMixWithOthers
+- AudioFocus.requestFocusTransient (for Android)
+- AudioFocus.requestFocusTransientExclusive (for Android)
+- AudioFocus.abandonFocus (Your App will not have anymore the audio focus)
+
+### Other parameters :
+
+Please look to [openAudioSession()](player.md#openaudiosession-and-closeaudiosession) to understand the meaning of the other parameters
+
+
+*Example:*
+```dart
+        myPlayer.setAudioFocus(focus: AudioFocus.requestFocusAndDuckOthers);
 ```
 
 -----------------------------------------------------------------------------------------------------------------

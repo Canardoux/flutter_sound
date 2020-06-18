@@ -59,6 +59,13 @@ class SoundPlayerUI extends StatefulWidget {
 
   final bool _enabled;
 
+  Color _backgroundColor;
+  Color _iconColor;
+  Color _disabledIconColor;
+  TextStyle _textStyle;
+  TextStyle _titleStyle;
+  SliderThemeData _sliderThemeData;
+
   /// [SoundPlayerUI.fromLoader] allows you to dynamically provide
   /// a [Track] when the user clicks the play
   /// button.
@@ -79,11 +86,24 @@ class SoundPlayerUI extends StatefulWidget {
   SoundPlayerUI.fromLoader(OnLoad onLoad,
       {bool showTitle = false,
       bool enabled = true,
-      AudioFocus audioFocus = AudioFocus.requestFocusAndDuckOthers})
+      AudioFocus audioFocus = AudioFocus.requestFocusAndDuckOthers,
+      Color backgroundColor = Colors.grey,
+      Color iconColor = Colors.black,
+      Color disabledIconColor = Colors.blueGrey,
+      TextStyle textStyle = null,
+      TextStyle titleStyle = null,
+      SliderThemeData sliderThemeData = null,
+      })
       : _onLoad = onLoad,
         _showTitle = showTitle,
         _track = null,
-        _enabled = enabled;
+        _enabled = enabled,
+        _backgroundColor = backgroundColor,
+        _iconColor = iconColor,
+        _disabledIconColor = disabledIconColor,
+        _textStyle = textStyle,
+        _titleStyle = titleStyle,
+        _sliderThemeData = sliderThemeData;
 
   ///
   /// [SoundPlayerUI.fromTrack] Constructs a Playbar with a Track.
@@ -103,15 +123,36 @@ class SoundPlayerUI extends StatefulWidget {
   SoundPlayerUI.fromTrack(Track track,
       {bool showTitle = false,
       bool enabled = true,
-      AudioFocus audioFocus = AudioFocus.requestFocusAndDuckOthers})
+      AudioFocus audioFocus = AudioFocus.requestFocusAndDuckOthers,
+      Color backgroundColor = Colors.grey,
+      Color iconColor = Colors.black,
+      Color disabledIconColor = Colors.blueGrey,
+      TextStyle textStyle = null,
+      TextStyle titleStyle = null,
+      SliderThemeData sliderThemeData = null,
+      })
       : _track = track,
         _showTitle = showTitle,
         _onLoad = null,
-        _enabled = enabled;
+        _enabled = enabled,
+        _backgroundColor = backgroundColor,
+        _iconColor = iconColor,
+        _disabledIconColor = disabledIconColor,
+        _textStyle = textStyle,
+        _titleStyle = titleStyle,
+        _sliderThemeData = sliderThemeData;
 
   @override
   State<StatefulWidget> createState() {
-    return SoundPlayerUIState(_track, _onLoad, enabled: _enabled);
+    return SoundPlayerUIState(_track, _onLoad,
+                enabled: _enabled,
+                backgroundColor: _backgroundColor,
+                iconColor: _iconColor,
+                disabledIconColor: _disabledIconColor,
+                textStyle: _textStyle,
+                titleStyle: _titleStyle,
+                sliderThemeData: _sliderThemeData,
+    );
   }
 }
 
@@ -147,13 +188,40 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
 
   final bool _enabled;
 
+  final Color _backgroundColor;
+
+  final Color _iconColor;
+
+  final Color _disabledIconColor;
+
+  final TextStyle _textStyle;
+
+  final TextStyle _titleStyle;
+
   StreamSubscription _playerSubscription;
 
+  SliderThemeData _sliderThemeData;
+
   ///
-  SoundPlayerUIState(this._track, this._onLoad, {bool enabled})
+  SoundPlayerUIState(this._track, this._onLoad, {
+    bool enabled,
+    Color backgroundColor,
+    Color iconColor,
+    Color disabledIconColor,
+    TextStyle textStyle,
+    TextStyle titleStyle,
+    SliderThemeData sliderThemeData,
+  })
       : _player =  FlutterSoundPlayer(),
         _enabled = enabled,
-        _localController = StreamController<PlaybackDisposition>.broadcast() {
+        _backgroundColor = backgroundColor,
+        _iconColor = iconColor,
+        _disabledIconColor = disabledIconColor,
+        _textStyle = textStyle,
+        _titleStyle = titleStyle,
+        _sliderThemeData = sliderThemeData,
+        _localController = StreamController<PlaybackDisposition>.broadcast()
+  {
     _sliderPosition.position = Duration(seconds: 0);
     _sliderPosition.maxPosition = Duration(seconds: 0);
     if (!_enabled) {
@@ -258,7 +326,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
 
     return Container(
         decoration: BoxDecoration(
-            color: Colors.grey,
+            color: _backgroundColor,
             borderRadius: BorderRadius.circular(SoundPlayerUI._barHeight / 2)),
         child: Row(children: [
           _buildPlayButton(),
@@ -556,7 +624,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   Widget _buildPlayButtonIcon(Widget widget) {
     switch (_playState) {
       case PlayState.playing:
-        widget = Icon(Icons.pause, color: Colors.black);
+        widget = Icon(Icons.pause, color: _iconColor);
         break;
       case PlayState.stopped:
       case PlayState.paused:
@@ -568,13 +636,13 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
                 canPlay = asyncData.data;
               }
               return Icon(Icons.play_arrow,
-                  color: canPlay ? Colors.black : Colors.blueGrey);
+                  color: canPlay ? _iconColor : _disabledIconColor);
             });
         break;
       case PlayState.disabled:
         GrayedOut(
             grayedOut: true,
-            child: widget = Icon(Icons.play_arrow, color: Colors.blueGrey));
+            child: widget = Icon(Icons.play_arrow, color: _disabledIconColor));
         break;
     }
     return widget;
@@ -589,7 +657,10 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
           return Text(
               '${Format.duration(disposition.position, showSuffix: false)}'
               ' / '
-              '${Format.duration(disposition.duration)}');
+              '${Format.duration(disposition.duration)}',
+              style: _textStyle,
+
+          );
         });
   }
 
@@ -610,11 +681,13 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   Widget _buildSlider() {
     return Expanded(
         child: PlaybarSlider(
+
       _localController.stream,
       (position) {
         _sliderPosition.position = position;
         _player.seekToPlayer(position);
       },
+      _sliderThemeData,
     ));
   }
 
@@ -622,13 +695,13 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     var columns = <Widget>[];
 
     if (_track.trackTitle != null) {
-      columns.add(Text(_track.trackTitle));
+      columns.add(Text(_track.trackTitle, style: _titleStyle,));
     }
     if (_track.trackTitle != null && _track.trackAuthor != null) {
-      columns.add(Text(' / '));
+      columns.add(Text(' / ', style: _titleStyle,));
     }
     if (_track.trackAuthor != null) {
-      columns.add(Text(_track.trackAuthor));
+      columns.add(Text(_track.trackAuthor, style: _titleStyle,));
     }
     return Container(
       margin: EdgeInsets.only(bottom: 5),

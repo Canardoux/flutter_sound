@@ -17,6 +17,14 @@ There is a huge impact on the memory used, but the **LITE** flavor will not be a
 - Support some codecs like Playback OGG/OPUS on iOS or Record OGG_OPUS on iOS
 - Will not be able to offer some helping functions, like `FlutterSoundHelper.FFmpegGetMediaInformation()` or `FlutterSoundHelper.duration()`
 
+Here are the size of example/demo1 iOS .ipa in Released Mode.
+Those numbers include everything (flutter library, application, ...) and not only Flutter Sound.
+
+| Flavor  |  V4.x    |  V5.1   |
+| --------| :-------:|:--------|
+| LITE    | 16.2 MB  | 17.8 MB |
+| FULL    | 30.7 MB  | 32.1 MB |
+
 ## Linking your App directly from `pub.dev`
 
 Add `flutter_sound` or `flutter_sound_lite` as a dependency in pubspec.yaml.
