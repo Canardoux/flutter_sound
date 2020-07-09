@@ -331,7 +331,8 @@ class FlutterSoundRecorder extends Session {
       // delete the target if it exists
       // (ffmpeg gives an error if the output file already exists)
       File f = File(savedUri);
-      if (f.existsSync()) await f.delete();
+      if (f.existsSync()) 
+        await f.delete();
       // The following ffmpeg instruction re-encode the Apple CAF to OPUS.
       // Unfortunately we cannot just remix the OPUS data,
       // because Apple does not set the "extradata" in its private OPUS format.

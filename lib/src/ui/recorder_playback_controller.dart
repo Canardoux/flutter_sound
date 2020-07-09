@@ -112,6 +112,24 @@ class _RecordPlaybackControllerState {
     }
   }
 
+
+  void _onRecorderPaused() {
+    Log.d('_onRecorderStopped');
+    if (_playerState != null) {
+      _playerState.playbackEnabled(enabled: false);
+      // TODO ...
+    }
+  }
+
+
+  void _onRecorderResume() {
+    Log.d('_onRecorderStopped');
+    if (_playerState != null) {
+      _playerState.playbackEnabled(enabled: false);
+      // TODO ...
+    }
+  }
+
   void registerRecorder(SoundRecorderUIState recorderState) {
     _recorderState = recorderState;
 
@@ -153,6 +171,18 @@ void onRecordingStarted(BuildContext context) {
 void onRecordingStopped(BuildContext context, Duration duration) {
   RecorderPlaybackController.of(context)._state._onRecorderStopped(duration);
 }
+
+///
+void onRecordingPaused(BuildContext context) {
+  RecorderPlaybackController.of(context)._state._onRecorderPaused();
+}
+
+
+///
+void onRecordingResume(BuildContext context) {
+  RecorderPlaybackController.of(context)._state._onRecorderResume();
+}
+
 
 // ///
 // void onRecorderProgress(

@@ -435,6 +435,11 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 				try {
 					long position = mp.getCurrentPosition();
 					long duration = mp.getDuration();
+					if (position > duration)
+					{
+						assert(position <= duration);
+					}
+
 					Map<String, Object> dic = new HashMap<String, Object> ();
 					dic.put ( "position", position );
 					dic.put ( "duration", duration );

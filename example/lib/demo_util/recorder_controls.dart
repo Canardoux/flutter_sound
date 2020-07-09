@@ -20,7 +20,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
-import '../util/grayed_out.dart';
 import 'demo_audio_state.dart';
 import 'demo_common.dart';
 
@@ -44,7 +43,7 @@ class _RecorderControlsState extends State<RecorderControls> {
   /// detect hot reloads and stop the recorder
   void reassemble() {
     super.reassemble();
-    RecorderState().stopRecorder();
+    UtilRecorder().stopRecorder();
   }
 
   @override
@@ -67,9 +66,9 @@ class _RecorderControlsState extends State<RecorderControls> {
   }
 
   Widget buildDBIndicator() {
-    return RecorderState().isRecording
+    return UtilRecorder().isRecording
         ? StreamBuilder<RecordingDisposition>(
-            stream: RecorderState()
+            stream: UtilRecorder()
                 .dispositionStream(interval: Duration(milliseconds: 50)),
             initialData: RecordingDisposition.zero(),
             builder: (context, snapshot) {
@@ -85,7 +84,7 @@ class _RecorderControlsState extends State<RecorderControls> {
 
   Widget buildDurationText() {
     return StreamBuilder<RecordingDisposition>(
-        stream: RecorderState()
+        stream: UtilRecorder()
             .dispositionStream(interval: Duration(milliseconds: 50)),
         initialData: RecordingDisposition.zero(),
         builder: (context, snapshot) {
@@ -186,11 +185,11 @@ class _RecorderControlsState extends State<RecorderControls> {
   void startStopRecorder(BuildContext context) async {
     paused = false;
     try {
-      if (RecorderState().isRecording || RecorderState().isPaused) {
-        await RecorderState().stopRecorder();
+      if (UtilRecorder().isRecording || UtilRecorder().isPaused) {
+        await UtilRecorder().stopRecorder();
       } else {
         if (checkPreconditions()) {
-          await RecorderState().startRecorder(context);
+          await UtilRecorder().startRecorder(context);
         }
       }
     } finally {
@@ -200,23 +199,23 @@ class _RecorderControlsState extends State<RecorderControls> {
 
   AssetImage recorderAssetImage() {
     if (!canRecord()) return AssetImage('res/icons/ic_mic_disabled.png');
-    return (RecorderState().isRecording || RecorderState().isPaused)
+    return (UtilRecorder().isRecording || UtilRecorder().isPaused)
         ? AssetImage('res/icons/ic_stop.png')
         : AssetImage('res/icons/ic_mic.png');
   }
 
   AudioState get audioState {
-    if (RecorderState().isPaused) {
+    if (UtilRecorder().isPaused) {
       return AudioState.isRecordingPaused;
     }
-    if (RecorderState().isRecording) return AudioState.isRecording;
+    if (UtilRecorder().isRecording) return AudioState.isRecording;
 
     return AudioState.isStopped;
   }
 
   void pauseResumeRecorder() async {
     paused = !paused;
-    await RecorderState().pauseResumeRecorder();
+    await UtilRecorder().pauseResumeRecorder();
 
     setState(() {});
   }

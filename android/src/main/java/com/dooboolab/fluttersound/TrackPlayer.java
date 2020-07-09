@@ -570,6 +570,10 @@ public class TrackPlayer extends FlutterSoundPlayer
 
 						long position = playbackState.getPosition();
 						long duration = trackDuration;
+						if (position > duration)
+						{
+							assert(position <= duration);
+						}
 						Map<String, Object> dic = new HashMap<String, Object> ();
 						dic.put ( "position", position );
 						dic.put ( "duration", duration );

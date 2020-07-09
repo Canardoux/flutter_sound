@@ -23,7 +23,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:flutter_sound/src/util/temp_file.dart';
+import 'package:flutter_sound_demo/demo_util/temp_file.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'demo_active_codec.dart';
 import 'demo_asset_player.dart';
@@ -50,11 +51,17 @@ class _MainBodyState extends State<MainBody> {
 
   @override
   void initState() {
+    Future<PermissionStatus> status =  Permission.microphone.request();
+    status.then((stat) {
+      if (stat != PermissionStatus.granted) {
+        throw RecordingPermissionException("Microphone permission not granted");
+      }
+    });
+
     super.initState();
      tempFile(suffix: '.aac').then( (path){
        recordingFile = path;
        track = Track(trackPath: recordingFile);
-       track.trackAuthor = 'Brett';
        setState(() {
        });
      });
@@ -128,10 +135,12 @@ class _MainBodyState extends State<MainBody> {
         child: RecorderPlaybackController(
             child: Column(
           children: [
+            Left("Recorder"),
             SoundRecorderUI(track),
             Left("Recording Playback"),
             SoundPlayerUI.fromTrack(
               track,
+              enabled: false,
               showTitle: true,
               audioFocus: true
                   ? AudioFocus.requestFocusAndDuckOthers
