@@ -392,7 +392,7 @@ class FlutterSoundPlayer extends Session {
     int position = call['position'] as int;
     if (duration < position)
       {
-        assert(duration >= position);
+        print(' Duration = $duration,   Position = $position :-( ');
       } else
         _playerController.add(PlaybackDisposition(position: Duration(milliseconds: position), duration: Duration(milliseconds: duration),) );
   }
