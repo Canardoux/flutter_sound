@@ -1,3 +1,9 @@
+## 5.1.1
+
+- Fix various bugs in UI Widget [#407](https://github.com/dooboolab/flutter_sound/issues/407)
+- Add a button Pause/Resume in UI Widget Recorder
+- Add a button Pause/Resume in UI Widget Player
+
 ## 5.1.0
 
 - Add a semaphore so that the App cannot do several call to Flutter Sound at the same time [374](https://github.com/dooboolab/flutter_sound/issues/374)

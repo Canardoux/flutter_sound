@@ -362,7 +362,7 @@ class FlutterSoundPlayer extends Session {
     if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    int state = await invokeMethod('getPlayerState', <String, dynamic>{});
+    int state = await invokeMethod('getPlayerState', <String, dynamic>{}) as int;
     playerState = PlayerState.values[state];
     return playerState;
   }
@@ -390,8 +390,11 @@ class FlutterSoundPlayer extends Session {
   void _updateProgress(Map call) {
     int duration = call['duration'] as int;
     int position = call['position'] as int;
-    //print('position=$position,  duration=$duration');
-    _playerController.add(PlaybackDisposition(position: Duration(milliseconds: position), duration: Duration(milliseconds: duration),) );
+    if (duration < position)
+      {
+        assert(duration >= position);
+      } else
+        _playerController.add(PlaybackDisposition(position: Duration(milliseconds: position), duration: Duration(milliseconds: duration),) );
   }
 
   void audioPlayerFinished(Map call) async {
@@ -518,7 +521,7 @@ class FlutterSoundPlayer extends Session {
     }
     int state = await invokeMethod('setSubscriptionDuration', <String, dynamic>{
       'milliSec': duration.inMilliseconds,
-    }) ;
+    }) as int ;
     playerState = PlayerState.values[state];
     print('FS:<---- setSubscriptionDuration ');
   }
@@ -537,7 +540,6 @@ class FlutterSoundPlayer extends Session {
       _playerController = null;
     }
   }
-  static int varInc2 = 0;
 
   Future<void> _convertAudio(Map<String, dynamic> what) async {
      // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
@@ -549,8 +551,7 @@ class FlutterSoundPlayer extends Session {
         ? tabIosConvert[codec.index]
         : tabAndroidConvert[codec.index];
     String fout =
-        '${tempDir.path}/$varInc2-flutter_sound-tmp2${ext[convert.index]}';
-    ++varInc2;
+        '${tempDir.path}/$slotNo-flutter_sound-tmp2${ext[convert.index]}';
     String path = what['path'] as String;
     await flutterSoundHelper.convertFile(path, codec, fout, convert);
 
@@ -561,19 +562,17 @@ class FlutterSoundPlayer extends Session {
     print('FS:<--- _convertAudio ');
   }
 
-  static int varInc = 0;
   Future<void> _convert ( Map<String, dynamic> what) async
   {
     print('FS:---> _convert ');
-    Codec codec = what['codec'];
+    Codec codec = what['codec'] as Codec;
     if (needToConvert(codec)) {
-      String fromURI = what['path'];
-      Uint8List fromDataBuffer = what['fromDataBuffer'];
+      String fromURI = what['path'] as String;
+      Uint8List fromDataBuffer = what['fromDataBuffer'] as Uint8List;
 
       if (fromDataBuffer != null) {
         var tempDir = await getTemporaryDirectory();
-        File inputFile = File('${tempDir.path}/$varInc-flutter_sound-tmp');
-        ++ varInc;
+        File inputFile = File('${tempDir.path}/$slotNo-flutter_sound-tmp');
 
         if (inputFile.existsSync()) {
           await inputFile.delete();
@@ -628,9 +627,9 @@ class FlutterSoundPlayer extends Session {
         //playerState = PlayerState.isPlaying;
         Map<String, dynamic> what = {'codec': codec, 'path': fromURI, 'fromDataBuffer': fromDataBuffer,} as Map<String, dynamic>;
         await _convert( what );
-        codec = what['codec'];
-        fromURI = what['path'];
-        fromDataBuffer = what['fromDataBuffer'];
+        codec = what['codec'] as Codec;
+        fromURI = what['path'] as String;
+        fromDataBuffer = what['fromDataBuffer'] as Uint8List;
         if (playerState != PlayerState.isStopped)
         {
           throw Exception( 'Player is not stopped' );
@@ -681,7 +680,7 @@ class FlutterSoundPlayer extends Session {
         //playerState = PlayerState.isPlaying;
         Map<String, dynamic> what = {'codec': track.codec, 'path': track.trackPath, 'fromDataBuffer': track.dataBuffer,} as Map<String, dynamic>;
         await _convert( what );
-        Codec codec = what['codec'];
+        Codec codec = what['codec'] as Codec;
         trackDico['bufferCodecIndex'] = codec.index;
         trackDico['path'] = what['path'];
         trackDico['dataBuffer'] = what['fromDataBuffer'];
@@ -783,7 +782,7 @@ class FlutterSoundPlayer extends Session {
                     onSkipBackward != null
         ),
         'defaultPauseResume': defaultPauseResume,
-      } );
+      } ) as int;
       playerState = PlayerState.values[state];
       print( 'FS:<--- nowPlaying ' );
     });
@@ -892,7 +891,7 @@ class FlutterSoundPlayer extends Session {
     await lock.synchronized(() async {
         int state = await invokeMethod( 'seekToPlayer', <String, dynamic>{
           'duration': duration.inMilliseconds,
-        } );
+        } ) as int;
         playerState = PlayerState.values[state];
     });
     print('FS:<--- seekToPlayer ');
@@ -922,7 +921,7 @@ class FlutterSoundPlayer extends Session {
 
       int state = await invokeMethod( 'setVolume', <String, dynamic>{
         'volume': indexedVolume,
-      } );
+      } ) as int;
       playerState = PlayerState.values[state];
     });
     print('FS:<--- setVolume ');
@@ -936,7 +935,7 @@ class FlutterSoundPlayer extends Session {
     int int_progress =  progress.inMilliseconds;
     print('FS:---> setUIProgressBar : duration=$int_duration  progress=$int_progress');
     await lock.synchronized(() async {
-      int state = await invokeMethod( 'setUIProgressBar', <String, dynamic>{'duration': int_duration, 'progress': int_progress} );
+      int state = await invokeMethod( 'setUIProgressBar', <String, dynamic>{'duration': int_duration, 'progress': int_progress} ) as int;
       playerState = PlayerState.values[state];
     });
       print('FS:<--- setUIProgressBar ');

@@ -106,7 +106,7 @@ class _DropdownsState extends State<Dropdowns> {
           child: Text('OGG/Opus'),
         ),
         DropdownMenuItem<Codec>(
-          value: Codec.cafOpus,
+          value: Codec.opusCAF,
           child: Text('CAF/Opus'),
         ),
         DropdownMenuItem<Codec>(
@@ -118,8 +118,8 @@ class _DropdownsState extends State<Dropdowns> {
           child: Text('OGG/Vorbis'),
         ),
         DropdownMenuItem<Codec>(
-          value: Codec.pcm,
-          child: Text('PCM'),
+          value: Codec.pcm16WAV,
+          child: Text('PCM Wave'),
         ),
       ],
     );

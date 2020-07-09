@@ -87,9 +87,9 @@ class SoundPlayerUI extends StatefulWidget {
       {bool showTitle = false,
       bool enabled = true,
       AudioFocus audioFocus = AudioFocus.requestFocusAndDuckOthers,
-      Color backgroundColor = Colors.grey,
+      Color backgroundColor = Colors.blueGrey,
       Color iconColor = Colors.black,
-      Color disabledIconColor = Colors.blueGrey,
+      Color disabledIconColor = Colors.grey,
       TextStyle textStyle = null,
       TextStyle titleStyle = null,
       SliderThemeData sliderThemeData = null,
@@ -124,9 +124,9 @@ class SoundPlayerUI extends StatefulWidget {
       {bool showTitle = false,
       bool enabled = true,
       AudioFocus audioFocus = AudioFocus.requestFocusAndDuckOthers,
-      Color backgroundColor = Colors.grey,
+      Color backgroundColor = Colors.blueGrey,
       Color iconColor = Colors.black,
-      Color disabledIconColor = Colors.blueGrey,
+      Color disabledIconColor = Colors.grey,
       TextStyle textStyle = null,
       TextStyle titleStyle = null,
       SliderThemeData sliderThemeData = null,
@@ -222,12 +222,15 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
         _sliderThemeData = sliderThemeData,
         _localController = StreamController<PlaybackDisposition>.broadcast()
   {
-    _sliderPosition.position = Duration(seconds: 0);
+     _sliderPosition.position = Duration(seconds: 0);
     _sliderPosition.maxPosition = Duration(seconds: 0);
     if (!_enabled) {
       __playState = PlayState.disabled;
     }
-    _player.openAudioSessionWithUI(focus: AudioFocus.requestFocusAndDuckOthers).then( (_){_setCallbacks();});
+    _player.openAudioSessionWithUI(focus: AudioFocus.requestFocusAndDuckOthers).then( (_){
+      _setCallbacks();
+      _player.setSubscriptionDuration(Duration(milliseconds: 30));
+    });
   }
 
   /// We can play if we have a non-zero duration or we are dynamically
@@ -325,11 +328,21 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     if (widget._showTitle && _track != null) rows.add(_buildTitle());
 
     return Container(
+      //height: 70,
         decoration: BoxDecoration(
             color: _backgroundColor,
             borderRadius: BorderRadius.circular(SoundPlayerUI._barHeight / 2)),
         child: Row(children: [
+           SizedBox(width: 20,),
           _buildPlayButton(),
+        SizedBox(
+            height: 50,
+            width: 30,
+            child: InkWell(
+
+            onTap: _player.isPaused ? resume : _player.isPlaying ?  pause : null,
+            child: Icon(   _player.isPaused ? Icons.play_arrow : Icons.pause , color: _player.isStopped ? _disabledIconColor : Colors.black, ),
+            ),),
           Expanded(child: Column(children: rows))
         ]));
   }
@@ -370,12 +383,12 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
         break;
 
       case PlayState.playing:
-        // pause the player
-        pause();
+        // stop the player
+        _stop();
         break;
       case PlayState.paused:
-        // resume the player
-        resume();
+        // stop the player
+        _stop();
 
         break;
       case PlayState.disabled:
@@ -501,13 +514,17 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   /// interal stop method.
   ///
   Future<void> _stop({bool supressState = false}) async {
-    if (_player.isPlaying) {
+    if (_player.isPlaying || _player.isPaused) {
       _player.stopPlayer().then<void>((_) {
         if (_playerSubscription != null) {
           _playerSubscription.cancel;
           _playerSubscription = null;
         }
-      });
+        setState(() {
+
+        });
+      }
+      );
     }
 
     // if called via dispose we can't trigger setState.
@@ -603,8 +620,8 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       button = _buildPlayButtonIcon(button);
     }
     return Container(
-        width: 50,
-        height: 50,
+        width: 30,
+        //height: 30,
         child: Padding(
             padding: EdgeInsets.only(left: 0, right: 0),
             child: FutureBuilder<bool>(
@@ -612,41 +629,44 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
                 builder: (context, asyncData) {
                   var _canPlay = false;
                   if (asyncData.connectionState == ConnectionState.done) {
-                    _canPlay = asyncData.data && !__transitioning;
+                    _canPlay = asyncData.data && !__transitioning ;
                   }
 
                   return InkWell(
-                      onTap: _canPlay ? () => _onPlay(context) : null,
+                      onTap: _canPlay && (_playState == PlayState.stopped || _playState == PlayState.playing || _playState == PlayState.paused)  ? () {
+                        return _onPlay(context);
+                      } : null,
                       child: button);
                 })));
   }
 
   Widget _buildPlayButtonIcon(Widget widget) {
-    switch (_playState) {
-      case PlayState.playing:
-        widget = Icon(Icons.pause, color: _iconColor);
-        break;
-      case PlayState.stopped:
-      case PlayState.paused:
-        widget = FutureBuilder<bool>(
+    //switch (_playState) {
+      //case PlayState.playing:
+        //widget = Icon(Icons.pause, color: _iconColor);
+        //break;
+      //case PlayState.stopped:
+      //case PlayState.paused:
+      if (_playState == PlayState.disabled)
+        widget = GrayedOut(
+          grayedOut: true,
+          child: widget = Icon(Icons.play_arrow, color: _disabledIconColor));
+      else  widget = FutureBuilder<bool>(
             future: canPlay,
             builder: (context, asyncData) {
               var canPlay = false;
               if (asyncData.connectionState == ConnectionState.done) {
                 canPlay = asyncData.data;
               }
-              return Icon(Icons.play_arrow,
+              return Icon(_player.isStopped ? Icons.play_arrow : Icons.stop,
                   color: canPlay ? _iconColor : _disabledIconColor);
             });
-        break;
-      case PlayState.disabled:
-        GrayedOut(
-            grayedOut: true,
-            child: widget = Icon(Icons.play_arrow, color: _disabledIconColor));
-        break;
-    }
-    return widget;
-  }
+        //break;
+      return  SizedBox(
+          height: 50,
+          width: 30,
+          child: widget);
+     }
 
   Widget _buildDuration() {
     return StreamBuilder<PlaybackDisposition>(
@@ -685,7 +705,8 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       _localController.stream,
       (position) {
         _sliderPosition.position = position;
-        _player.seekToPlayer(position);
+        if (_player.isPlaying || _player.isPaused)
+          _player.seekToPlayer(position);
       },
       _sliderThemeData,
     ));
@@ -703,10 +724,10 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     if (_track.trackAuthor != null) {
       columns.add(Text(_track.trackAuthor, style: _titleStyle,));
     }
-    return Container(
+    return _track.trackTitle != null || _track.trackAuthor != null ? Container(
       margin: EdgeInsets.only(bottom: 5),
       child: Row(children: columns),
-    );
+    ) : SizedBox();
   }
 }
 

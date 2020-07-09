@@ -23,7 +23,9 @@ export 'src/flutter_sound_recorder.dart';
 //export 'src/track_player.dart';
 export 'src/flutter_sound_helper.dart';
 export 'src/util/log.dart';
+export 'src/util/recorded_audio.dart';
 export 'src/util/ansi_color.dart';
+export 'src/ui/grayed_out.dart';
 
 export 'src/ui/recorder_playback_controller.dart'
             show RecorderPlaybackController;

@@ -23,7 +23,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
-import '../util/log.dart';
+//import 'util/log.dart';
 import 'demo_active_codec.dart';
 import 'demo_common.dart';
 import 'demo_media_path.dart';
@@ -60,8 +60,8 @@ class RecordingPlayer extends StatelessWidget {
         }
 
         if (track != null) {
-          track.title = title;
-          track.artist = "By flutter_sound";
+          track.trackTitle = title;
+          track.trackAuthor = "By flutter_sound";
 
           if (Platform.isIOS) {
             track.albumArtAsset = 'AppIcon';
@@ -93,7 +93,7 @@ class RecordingPlayer extends StatelessWidget {
       if (dataBuffer == null) {
         throw Exception('Unable to create the buffer');
       }
-      track = Track.fromBuffer(dataBuffer, codec: ActiveCodec().codec);
+      track = Track(dataBuffer: dataBuffer, codec: ActiveCodec().codec);
     }
     return track;
   }
@@ -101,7 +101,7 @@ class RecordingPlayer extends StatelessWidget {
   Future<Track> _createPathTrack() async {
     Track track;
     var audioFilePath = MediaPath().pathForCodec(ActiveCodec().codec);
-    track = Track.fromFile(audioFilePath, codec: ActiveCodec().codec);
+    track = Track(trackPath: audioFilePath, codec: ActiveCodec().codec);
     return track;
   }
 
