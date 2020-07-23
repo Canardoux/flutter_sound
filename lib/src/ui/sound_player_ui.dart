@@ -86,7 +86,7 @@ class SoundPlayerUI extends StatefulWidget {
   SoundPlayerUI.fromLoader(OnLoad onLoad,
       {bool showTitle = false,
       bool enabled = true,
-      AudioFocus audioFocus = AudioFocus.requestFocusAndDuckOthers,
+      AudioFocus audioFocus = AudioFocus.requestFocusAndKeepOthers,
       Color backgroundColor = Colors.blueGrey,
       Color iconColor = Colors.black,
       Color disabledIconColor = Colors.grey,
@@ -123,7 +123,7 @@ class SoundPlayerUI extends StatefulWidget {
   SoundPlayerUI.fromTrack(Track track,
       {bool showTitle = false,
       bool enabled = true,
-      AudioFocus audioFocus = AudioFocus.requestFocusAndDuckOthers,
+      AudioFocus audioFocus = AudioFocus.requestFocusAndKeepOthers,
       Color backgroundColor = Colors.blueGrey,
       Color iconColor = Colors.black,
       Color disabledIconColor = Colors.grey,
@@ -227,7 +227,15 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     if (!_enabled) {
       __playState = PlayState.disabled;
     }
-    _player.openAudioSessionWithUI(focus: AudioFocus.requestFocusAndDuckOthers).then( (_){
+    _player.openAudioSessionWithUI
+    (
+        focus: AudioFocus.requestFocusAndDuckOthers,
+        category: SessionCategory.playAndRecord,
+        mode:  SessionMode.modeDefault,
+        device: AudioDevice.speaker,
+        audioFlags: outputToSpeaker |  allowBlueToothA2DP  | allowAirPlay
+
+    ).then( (_){
       _setCallbacks();
       _player.setSubscriptionDuration(Duration(milliseconds: 30));
     });

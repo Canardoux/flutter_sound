@@ -180,7 +180,14 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   @override
   void initState() {
     _recorder =  FlutterSoundRecorder();
-    _recorder.openAudioSession(focus: AudioFocus.requestFocusAndDuckOthers).then((toto){controller.registerRecorder(context, this);});
+    _recorder.openAudioSession
+      (
+        focus: AudioFocus.requestFocusAndDuckOthers,
+        category: SessionCategory.playAndRecord,
+        mode:  SessionMode.modeDefault,
+        device: AudioDevice.speaker,
+        audioFlags: outputToSpeaker |  allowBlueToothA2DP  | allowAirPlay
+      ).then((toto){controller.registerRecorder(context, this);});
     super.initState();
   }
   @override

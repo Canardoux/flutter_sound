@@ -224,11 +224,11 @@ class FlutterSoundPlayer extends Session {
   FlautoPlugin getPlugin() => flautoPlayerPlugin;
 
     Future<FlutterSoundPlayer> openAudioSession( {
-                                                 AudioFocus focus = AudioFocus.requestFocusTransient,
+                                                 AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
                                                  SessionCategory category = SessionCategory.playAndRecord,
                                                  SessionMode mode = SessionMode.modeDefault,
                                                  AudioDevice device = AudioDevice.speaker,
-                                                 int audioFlags = outputToSpeaker | allowBlueTooth}) async {
+                                                 int audioFlags = outputToSpeaker |  allowBlueToothA2DP  | allowAirPlay}) async {
       print('FS:---> openAudioSession ');
       await lock.synchronized(() async {
         if (isInited == Initialized.fullyInitialized || isInited == Initialized.fullyInitializedWithUI)
@@ -261,11 +261,11 @@ class FlutterSoundPlayer extends Session {
   }
 
   Future<FlutterSoundPlayer> openAudioSessionWithUI( {
-                                                       AudioFocus focus = AudioFocus.requestFocusTransient,
+                                                       AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
                                                        SessionCategory category = SessionCategory.playAndRecord,
                                                        SessionMode mode = SessionMode.modeDefault,
                                                        AudioDevice device = AudioDevice.speaker,
-                                                       int audioFlags = outputToSpeaker | allowBlueTooth}) async {
+                                                       int audioFlags = outputToSpeaker |  allowBlueToothA2DP  | allowAirPlay}) async {
     print('FS:---> openAudioSessionWithUI ');
     await lock.synchronized(() async {
       if (isInited == Initialized.fullyInitializedWithUI || isInited == Initialized.fullyInitialized)
@@ -298,11 +298,11 @@ class FlutterSoundPlayer extends Session {
 
 
   Future<void> setAudioFocus( {
-                                AudioFocus focus = AudioFocus.requestFocusTransient,
-                                SessionCategory category = SessionCategory.playAndRecord,
-                                SessionMode mode = SessionMode.modeDefault,
+                                AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
+                                SessionCategory category = SessionCategory.ambient,
+                                SessionMode mode = SessionMode.modeSpokenAudio,
                                 AudioDevice device = AudioDevice.speaker,
-                                int audioFlags = outputToSpeaker | allowBlueTooth,
+                                int audioFlags = outputToSpeaker | allowBlueTooth | allowBlueToothA2DP | allowEarPiece,
   }) async {
 
     print('FS:---> setAudioFocus ');
