@@ -312,7 +312,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         else
                 [FlutterError
                                 errorWithCode:@"Audio Player"
-                                message:@"setCategory failure"
+                                message:@"setActive failure"
                                 details:nil];
        NSLog(@"IOS:<-- setActive");
 }
