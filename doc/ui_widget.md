@@ -12,6 +12,12 @@ The Widgets offered by the Flutter Sound UI Widgets module are :
 
 -----------------------------------------------------------------------------------------------------------------------
 
+## How to use
+First import the module
+``` import 'fluttersound/flutter_sound_ui.dart```
+
+Then reference to one of the flutter sound UI widgets in your widget tree.
+
 ## `SoundRecorderUI`
 .. working on describing it.
 
