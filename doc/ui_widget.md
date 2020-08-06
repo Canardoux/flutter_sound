@@ -6,9 +6,14 @@
 
 The Widgets offered by the Flutter Sound UI Widgets module are :
 
+- [Sound Recorder](#SoundRecorderUi)
 - [Grayed Out](#GrayedOut)
+- ...WIP
 
 -----------------------------------------------------------------------------------------------------------------------
+
+## `SoundRecorderUI`
+.. working on describing it.
 
 ## `GrayedOut`
 /// GreyedOut optionally grays out the given child widget.
