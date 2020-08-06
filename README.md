@@ -53,7 +53,7 @@ in other words V4 is our LTS version (Long Term Support).
 Flutter Sound is composed with 4 modules :
 
 - [FlutterSoundPlayer](doc/player.md#flutter-sound-player-api), wich deal with everything about playbacks
-- [FlutterSoudRecorder](doc/recorder.md#flutter-sound-recorder-api), which deal with everything about recording
+- [FlutterSoundRecorder](doc/recorder.md#flutter-sound-recorder-api), which deal with everything about recording
 - [FlutterSoundHelper](doc/helper.md), which offers some convenients tools
 - [FlutterSoundUI](doc/ui_widget.md), which offer some Widget ready to be used out of the box
 
