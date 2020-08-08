@@ -249,6 +249,8 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 {
         NSLog(@"IOS:--> initializeFlautoPlayer");
         BOOL r = [self setAudioFocus: call ];
+        [self invokeMethod:@"openAudioSessionCompleted" boolArg: r];
+
         if (r)
                 result( [self getPlayerStatus]);
         else
@@ -360,12 +362,16 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 {
                         [self stopPlayer];
                         [FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"Play failure"
-                                details:nil];
+                        errorWithCode:@"Audio Player"
+                        message:@"Play failure"
+                        details:nil];
                 } else
                 {
                         [self startTimer];
+                        long duration = (long)(audioPlayer.duration * 1000);
+                        int d = (int)duration;
+                        NSNumber* nd = [NSNumber numberWithInt: d];
+                        [self invokeMethod:@"startPlayerCompleted" numberArg: nd ];
                         result([self getPlayerStatus]);
                 }
                 NSLog(@"IOS:<-- startPlayer");
@@ -426,17 +432,21 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 audioPlayer.delegate = self;
                 b = [audioPlayer play];
         }
-        if (b)
+         if (b)
         {
+                long duration = (long)(audioPlayer.duration * 1000);
+                int d = (int)duration;
+                NSNumber* nd = [NSNumber numberWithInt: d];
+                [self invokeMethod:@"startPlayerCompleted" numberArg: nd ];
                 [self startTimer];
                 result([self getPlayerStatus]);
         } else
         {
                         [self stopPlayer];
                         result([FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"Play failure"
-                                details:nil]);
+                        errorWithCode:@"Audio Player"
+                        message:@"Play failure"
+                        details:nil]);
         }
         NSLog(@"IOS:<-- startPlayer");
 }

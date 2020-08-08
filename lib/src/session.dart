@@ -36,6 +36,7 @@ import 'package:flutter_sound/src/session.dart';
 enum Initialized {
         notInitialized,
         initializationInProgress,
+        initializationWithUIInProgress,
         fullyInitialized,
         fullyInitializedWithUI,
 }

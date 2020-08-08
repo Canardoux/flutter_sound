@@ -119,9 +119,34 @@ class FlautoPlayerPlugin extends AudioSessionManager
 			break;
 
 
-			case "isDecoderSupported":
+			case "getPlayerState":
 			{
-				aPlayer.isDecoderSupported ( call, result );
+				aPlayer.getPlayerState( call, result );
+			}
+			break;
+
+			case "getResourcePath":
+			{
+				aPlayer.getResourcePath( call, result );
+			}
+			break;
+
+
+			case "setUIProgressBar":
+			{
+				aPlayer.setUIProgressBar( call, result );
+			}
+			break;
+
+			case "nowPlaying":
+			{
+				aPlayer.nowPlaying( call, result );
+			}
+			break;
+
+			case "getProgress":
+			{
+				aPlayer.getProgress ( call, result );
 			}
 			break;
 
@@ -283,8 +308,13 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	void initializeFlautoPlayer ( final MethodCall call, final Result result )
 	{
 		boolean r = prepareFocus(call);
+		invokeMethodWithBoolean( "openAudioSessionCompleted", r );
+
 		if (r)
-		        result.success ( getPlayerState());
+		{
+
+			result.success(getPlayerState());
+		}
 		else
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Failure to open session");
 
@@ -388,7 +418,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 			return;
 		}
-		result.success ( getPlayerState() );
+		result.success ( getPlayerState());
 	}
 
 	public void startPlayerFromTrack ( final MethodCall call, final Result result )
@@ -426,6 +456,14 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		Log.d(TAG, "mediaPlayer prepared and start");
 		mp.start();
 
+		mainHandler.post(new Runnable()
+		{
+			@Override
+			public void run() {
+				long duration = mp.getDuration();
+				invokeMethodWithInteger("startPlayerCompleted", (int) duration);
+			}
+		});
 		/*
 		 * Set timer task to send event to RN.
 		 */
@@ -445,6 +483,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 					dic.put ( "duration", duration );
 					dic.put ( "playerStatus", getPlayerState() );
 
+
 					mainHandler.post(new Runnable() {
 						@Override
 						public void run() {
@@ -459,7 +498,8 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			}
 		};
 
-		mTimer.schedule(mTask, 0, subsDurationMillis);
+		if (subsDurationMillis > 0)
+			mTimer.schedule(mTask, 0, subsDurationMillis);
 	}
 
 	void stop()
@@ -646,7 +686,52 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		result.success (getPlayerState() );
 	}
 
+	void getProgress ( final MethodCall call, final Result result )
+	{
+		long position = 0;
+		long duration = 0;
+		if ( mediaPlayer != null ) {
+			 position = mediaPlayer.getCurrentPosition();
+			 duration = mediaPlayer.getDuration();
+		}
+		if (position > duration)
+		{
+			assert(position <= duration);
+		}
 
+		Map<String, Object> dic = new HashMap<String, Object> ();
+		dic.put ( "position", position );
+		dic.put ( "duration", duration );
+		dic.put ( "playerStatus", getPlayerState() );
+		dic.put ( "slotNo", slotNo);
+		result.success(dic);
+	}
+
+	void nowPlaying ( final MethodCall call, final Result result )
+	{
+		// TODO
+		result.success (getPlayerState() );
+	}
+
+
+	void setUIProgressBar ( final MethodCall call, final Result result )
+	{
+		// TODO
+		result.success (getPlayerState() );
+
+	}
+
+	void getResourcePath ( final MethodCall call, final Result result )
+	{
+		// TODO
+		result.success ("");
+
+	}
+
+	void getPlayerState ( final MethodCall call, final Result result )
+	{
+		result.success (getPlayerState());
+	}
 }
 
 //-------------------------------------------------------------------------------------------------------------

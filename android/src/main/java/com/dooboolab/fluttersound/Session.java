@@ -130,6 +130,14 @@ public abstract class Session
 	}
 
 
+	void invokeMethodWithBoolean ( String methodName, boolean arg )
+	{
+		Map<String, Object> dic = new HashMap<String, Object> ();
+		dic.put ( "slotNo", slotNo );
+		dic.put ( "arg", arg );
+		getPlugin ().invokeMethod ( methodName, dic );
+	}
+
 	void invokeMethodWithMap ( String methodName, Map<String, Object>  dic )
 	{
 		dic.put ( "slotNo", slotNo );
@@ -224,7 +232,7 @@ public abstract class Session
 		else
 			audioManager.stopBluetoothSco();
 		audioManager.setBluetoothA2dpOn(  (audioFlags & allowBlueToothA2DP) != 0 );
-		audioManager.setMode( AudioManager.STREAM_MUSIC );
+		audioManager.setMode( AudioManager.MODE_NORMAL );
 		//audioManager.setRouting( AudioManager.MODE_NORMAL, AudioManager.ROUTE_SPEAKER, AudioManager.ROUTE_ALL );
 
 		return r;

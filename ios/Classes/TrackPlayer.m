@@ -210,6 +210,15 @@
                 else
                         duration = [NSNumber numberWithDouble: [duration doubleValue] / 1000.0];
                 [self setupNowPlaying: progress duration: duration];
+                
+
+
+
+                long duration = (long)(audioPlayer.duration * 1000);
+                int d = (int)duration;
+                NSNumber* nd = [NSNumber numberWithInt: d];
+                [self invokeMethod:@"startPlayerCompleted" numberArg: nd ];
+
 
                 result([self getPlayerStatus]);
          }

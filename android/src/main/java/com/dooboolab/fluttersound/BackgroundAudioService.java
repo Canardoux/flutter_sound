@@ -645,7 +645,7 @@ public class BackgroundAudioService
 		// Add the track duration
 		metadataBuilder.putLong( MediaMetadataCompat.METADATA_KEY_DURATION, mMediaPlayer.getDuration() );
 		// Include the other metadata if the audio player features should be included
-		if ( true )
+		//if ( true )
 		{
 			// Add the display icon and the album art
 			metadataBuilder.putBitmap( MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON, albumArt );

@@ -365,6 +365,7 @@ public class FlutterSoundRecorder extends Session
 			final String                     path               = call.argument ( "path" );
 			int                             _audioSource        = call.argument ( "audioSource" );
 			int                             audioSource         = tabAudioSource[_audioSource];
+			//audioSource =MediaRecorder.AudioSource.MIC; // Just for test
 			mPauseTime = 0;
 			mStartPauseTime = -1;
 			stop(); // To start a new clean record

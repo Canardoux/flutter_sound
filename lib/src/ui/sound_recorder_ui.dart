@@ -144,7 +144,7 @@ class SoundRecorderUI extends StatefulWidget {
   /// ```
   SoundRecorderUI(
     Track track, {
-    this.backgroundColor = Colors.blueGrey,
+    this.backgroundColor,
     this.onStart,
     this.onStopped,
     this.onPaused,
@@ -157,7 +157,7 @@ class SoundRecorderUI extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return SoundRecorderUIState(backgroundColor);
+    return SoundRecorderUIState(backgroundColor != null ? backgroundColor : Color( 0xFFFAF0E6 ));
   }
 }
 
@@ -324,7 +324,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
 
   void _onRecord() async {
     if (!_isRecording) {
-      await _recorder.startRecorder(toFile: widget.audio.track.trackPath);
+      await _recorder.startRecorder(toFile: widget.audio.track.trackPath,);
       _onStarted(wasUser: true);
 
       //Log.d(widget.audio.track.identity);

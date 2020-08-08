@@ -87,7 +87,7 @@ class SoundPlayerUI extends StatefulWidget {
       {bool showTitle = false,
       bool enabled = true,
       AudioFocus audioFocus = AudioFocus.requestFocusAndKeepOthers,
-      Color backgroundColor = Colors.blueGrey,
+      Color backgroundColor =null,
       Color iconColor = Colors.black,
       Color disabledIconColor = Colors.grey,
       TextStyle textStyle = null,
@@ -103,7 +103,12 @@ class SoundPlayerUI extends StatefulWidget {
         _disabledIconColor = disabledIconColor,
         _textStyle = textStyle,
         _titleStyle = titleStyle,
-        _sliderThemeData = sliderThemeData;
+        _sliderThemeData = sliderThemeData
+  {
+    if (backgroundColor == null)
+      _backgroundColor = backgroundColor = Color( 0xFFFAF0E6 );
+  }
+
 
   ///
   /// [SoundPlayerUI.fromTrack] Constructs a Playbar with a Track.
@@ -124,7 +129,7 @@ class SoundPlayerUI extends StatefulWidget {
       {bool showTitle = false,
       bool enabled = true,
       AudioFocus audioFocus = AudioFocus.requestFocusAndKeepOthers,
-      Color backgroundColor = Colors.blueGrey,
+      Color backgroundColor = null,
       Color iconColor = Colors.black,
       Color disabledIconColor = Colors.grey,
       TextStyle textStyle = null,
@@ -146,7 +151,7 @@ class SoundPlayerUI extends StatefulWidget {
   State<StatefulWidget> createState() {
     return SoundPlayerUIState(_track, _onLoad,
                 enabled: _enabled,
-                backgroundColor: _backgroundColor,
+                backgroundColor: (_backgroundColor != null) ? _backgroundColor :  Color( 0xFFFAF0E6 ),
                 iconColor: _iconColor,
                 disabledIconColor: _disabledIconColor,
                 textStyle: _textStyle,
