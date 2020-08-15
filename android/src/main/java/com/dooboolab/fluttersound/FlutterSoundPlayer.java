@@ -460,7 +460,13 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		{
 			@Override
 			public void run() {
-				long duration = mp.getDuration();
+				long duration = 0;
+				try
+				{
+					 duration = mp.getDuration();
+				} catch(Exception e)
+				{
+				}
 				invokeMethodWithInteger("startPlayerCompleted", (int) duration);
 			}
 		});
