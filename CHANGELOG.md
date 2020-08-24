@@ -1,3 +1,9 @@
+## 5.2.0
+
+- Modification to the Widget Recorder UI, to be homogeneous with the Widget Player UI
+- Fix a bug on Android in openAudioSessionWithUI and startPlayerFromTrack : those two functions returned to early instead of a future. [425](https://github.com/dooboolab/flutter_sound/issues/425) 
+- On iOS, the device did not go to sleep when idle, with the Flutter Sound default parameters. [439](https://github.com/dooboolab/flutter_sound/issues/439)
+
 ## 5.1.1
 
 - Fix various bugs in UI Widget [#407](https://github.com/dooboolab/flutter_sound/issues/407)
@@ -37,9 +43,13 @@ Error returns from iOS in FlutterSoundPlayer.m was wrong : [#350](https://github
 - Remove the NULL posted when the player or the recorder is closed.
 - The Audio Focus is **NOT** automaticaly abandoned between two `startPlayer()` or two `startRecorder()`
 
-## 4.0.7 Patch to avoid problems when the App does s stopPlayer() during a startPlayer() [374](https://github.com/dooboolab/flutter_sound/issues/374)
+## 4.0.7 
 
-## 4.0.6 Error returns from iOS in FlutterSoundPlayer.m was wrong : [#350](https://github.com/dooboolab/flutter_sound/pull/350)
+- Patch to avoid problems when the App does s stopPlayer() during a startPlayer() [374](https://github.com/dooboolab/flutter_sound/issues/374)
+
+## 4.0.6 
+
+- Error returns from iOS in FlutterSoundPlayer.m was wrong : [#350](https://github.com/dooboolab/flutter_sound/pull/350)
 
 ## 4.0.5
 

@@ -27,13 +27,8 @@
 
 
 #import "FlutterSoundRecorder.h"
-#import "AudioRecorder.h"
-//#import "Flauto.h" // Just to register it
 #import <AVFoundation/AVFoundation.h>
 
-
-
-//FlutterMethodChannel* _flautoRecorderChannel;
 
 
 

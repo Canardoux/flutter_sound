@@ -17,35 +17,27 @@
  */
 
 
+
+#ifndef FlutterSoundPlayer_h
+#define FlutterSoundPlayer_h
+
+
+
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
-#import "FlautoManager.h"
-#import "Flauto.h"
+//#import "Flauto.h"
+//#import "FlautoManager.h"
+#import "FlautoPlayerManager.h"
 
 
-extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
-//extern NSMutableArray* flautoPlayerSlots;
-
-
-@interface FlautoPlayerManager : FlautoManager
-{
-}
-
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar;
-- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result;
-//- (void)invokeMethod: (NSString*)methodName arguments: (NSDictionary*)call;
-//- (void)freeSlot: (int)slotNo;
-@end
 
 @interface FlutterSoundPlayer : Session
 {
         AVAudioPlayer* audioPlayer;
-        //bool isPaused ;
 }
 
 - (FlautoPlayerManager*) getPlugin;
 - (Session*) init: (FlutterMethodCall*)call;
-//- (void) releaseSession;
 
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag;
@@ -83,4 +75,5 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 
 @end
 
+#endif // FlutterSoundPlayer_h
 
