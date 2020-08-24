@@ -21,25 +21,16 @@ package com.dooboolab.fluttersound;
 
 
 import android.content.Context;
-import android.media.AudioDeviceInfo;
 import android.media.MediaPlayer;
-import android.media.AudioManager;
-import android.media.MicrophoneInfo;
 import android.os.Build;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
 import android.media.AudioFocusRequest;
-import android.widget.MediaController;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -49,178 +40,6 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-
-class FlautoPlayerPlugin extends AudioSessionManager
-	implements MethodCallHandler
-{
-	final static String TAG = "FlutterPlayerPlugin";
-	static        Context            androidContext;
-	static        FlautoPlayerPlugin flautoPlayerPlugin; // singleton
-
-
-	public static void attachFlautoPlayer (
-		Context ctx, BinaryMessenger messenger
-	                                      )
-	{
-		assert ( flautoPlayerPlugin == null );
-		flautoPlayerPlugin = new FlautoPlayerPlugin ();
-		MethodChannel channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_player" );
-		flautoPlayerPlugin.init(channel);
-		channel.setMethodCallHandler ( flautoPlayerPlugin );
-
-		androidContext = ctx;
-
-	}
-
-
-
-	FlautoPlayerPlugin getManager ()
-	{
-		return flautoPlayerPlugin;
-	}
-
-	@Override
-	public void onMethodCall ( final MethodCall call, final Result result )
-	{
-
-
-		FlutterSoundPlayer aPlayer = (FlutterSoundPlayer)getSession(call);
-		switch ( call.method )
-		{
-
-			case "initializeMediaPlayer":
-			{
-				aPlayer = new FlutterSoundPlayer();
-				initSession( call, aPlayer);
-				aPlayer.initializeFlautoPlayer ( call, result );
-
-			}
-			break;
-
-			case "releaseMediaPlayer":
-			{
-				aPlayer.releaseFlautoPlayer ( call, result );
-				//slots.set ( slotNo, null );
-			}
-			break;
-
-			case "initializeMediaPlayerWithUI":
-			{
-				aPlayer = new TrackPlayer (  );
-				initSession( call, aPlayer);
-				aPlayer.initializeFlautoPlayer ( call, result );
-			}
-			break;
-
-			case "setAudioFocus":
-			{
-				aPlayer.setAudioFocus( call, result );
-			}
-			break;
-
-
-			case "getPlayerState":
-			{
-				aPlayer.getPlayerState( call, result );
-			}
-			break;
-
-			case "getResourcePath":
-			{
-				aPlayer.getResourcePath( call, result );
-			}
-			break;
-
-
-			case "setUIProgressBar":
-			{
-				aPlayer.setUIProgressBar( call, result );
-			}
-			break;
-
-			case "nowPlaying":
-			{
-				aPlayer.nowPlaying( call, result );
-			}
-			break;
-
-			case "getProgress":
-			{
-				aPlayer.getProgress ( call, result );
-			}
-			break;
-
-			case "startPlayer":
-			{
-				aPlayer.startPlayer ( call, result );
-			}
-			break;
-
-			case "startPlayerFromTrack":
-			{
-				aPlayer.startPlayerFromTrack ( call, result );
-			}
-			break;
-
-
-			case "stopPlayer":
-			{
-				aPlayer.stopPlayer ( call, result );
-			}
-			break;
-
-			case "pausePlayer":
-			{
-				aPlayer.pausePlayer ( call, result );
-			}
-			break;
-
-			case "resumePlayer":
-			{
-				aPlayer.resumePlayer ( call, result );
-			}
-			break;
-
-			case "seekToPlayer":
-			{
-				aPlayer.seekToPlayer ( call, result );
-			}
-			break;
-
-			case "setVolume":
-			{
-				aPlayer.setVolume ( call, result );
-			}
-			break;
-
-			case "setSubscriptionDuration":
-			{
-				aPlayer.setSubscriptionDuration ( call, result );
-			}
-			break;
-
-			case "androidAudioFocusRequest":
-			{
-				aPlayer.androidAudioFocusRequest ( call, result );
-			}
-			break;
-
-			case "setActive":
-			{
-				aPlayer.setActive ( call, result );
-			}
-			break;
-
-			default:
-			{
-				result.notImplemented ();
-			}
-			break;
-		}
-	}
-
-}
-
 
 // SDK compatibility
 // -----------------
@@ -299,9 +118,9 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	static final String ERR_PLAYER_IS_PLAYING = "ERR_PLAYER_IS_PLAYING";
 
 
-	AudioSessionManager  getPlugin ()
+	FlautoManager getPlugin ()
 	{
-		return FlautoPlayerPlugin.flautoPlayerPlugin;
+		return FlautoPlayerManager.flautoPlayerPlugin;
 	}
 
 
@@ -406,8 +225,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			/*
 			 * Detect when finish playing.
 			 */
-			mediaPlayer.setOnCompletionListener ( mp -> onCompletion(mp)
-			                                                      );
+			mediaPlayer.setOnCompletionListener ( mp -> onCompletion(mp) );
 			mediaPlayer.setOnErrorListener(this);
 
 			mediaPlayer.prepare ();
@@ -426,7 +244,8 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Must be initialized With UI" );
 	}
 
-	public boolean onError(MediaPlayer mp, int what, int extra) {
+	public boolean onError(MediaPlayer mp, int what, int extra)
+	{
 	// ... react appropriately ...
 	// The MediaPlayer has moved to the Error state, must be reset!
 	return false;

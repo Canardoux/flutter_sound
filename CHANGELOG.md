@@ -1,8 +1,9 @@
 ## 5.2.0
 
 - Modification to the Widget Recorder UI, to be homogeneous with the Widget Player UI
-- Fix a bug on Android in openAudioSessionWithUI and startPlayerFromTrack : those two functions returned to early instead of a future. [425](https://github.com/dooboolab/flutter_sound/issues/425) 
+- Fix a severe bug on Android in openAudioSessionWithUI and startPlayerFromTrack : those two functions returned to early instead of a future. [425](https://github.com/dooboolab/flutter_sound/issues/425) 
 - On iOS, the device did not go to sleep when idle, with the Flutter Sound default parameters. [439](https://github.com/dooboolab/flutter_sound/issues/439)
+- startPlayer() and startPlayerFromTrack() return a Future to the record duration.
 
 ## 5.1.1
 

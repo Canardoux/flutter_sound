@@ -28,12 +28,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,115 +38,6 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-
-
-class FlautoRecorderPlugin  extends AudioSessionManager
-	implements MethodCallHandler
-{
-
-	static Context              androidContext;
-	static FlautoRecorderPlugin flautoRecorderPlugin; // singleton
-
-
-	static final String ERR_UNKNOWN               = "ERR_UNKNOWN";
-	static final String ERR_RECORDER_IS_NULL      = "ERR_RECORDER_IS_NULL";
-	static final String ERR_RECORDER_IS_RECORDING = "ERR_RECORDER_IS_RECORDING";
-
-
-	public static void attachFlautoRecorder ( Context ctx, BinaryMessenger messenger )
-	{
-		assert ( flautoRecorderPlugin == null );
-		flautoRecorderPlugin = new FlautoRecorderPlugin ();
-		MethodChannel channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_recorder" );
-		flautoRecorderPlugin.init( channel);
-		channel.setMethodCallHandler ( flautoRecorderPlugin );
-		androidContext = ctx;
-	}
-
-
-
-	FlautoRecorderPlugin getManager ()
-	{
-		return flautoRecorderPlugin;
-	}
-
-
-	@Override
-	public void onMethodCall ( final MethodCall call, final Result result )
-	{
-
-		FlutterSoundRecorder aRecorder = (FlutterSoundRecorder) getSession( call);
-		switch ( call.method )
-		{
-			case "initializeFlautoRecorder":
-			{
-				aRecorder = new FlutterSoundRecorder (  );
-				initSession( call, aRecorder );
-				aRecorder.initializeFlautoRecorder ( call, result );
-			}
-			break;
-
-			case "releaseFlautoRecorder":
-			{
-				aRecorder.releaseFlautoRecorder ( call, result );
-			}
-			break;
-
-			case "isEncoderSupported":
-			{
-				aRecorder.isEncoderSupported ( call, result );
-			}
-			break;
-
-			case "setAudioFocus":
-			{
-				aRecorder.setAudioFocus( call, result );
-			}
-			break;
-
-			case "startRecorder":
-			{
-				aRecorder.startRecorder ( call, result );
-			}
-			break;
-
-			case "stopRecorder":
-			{
-				aRecorder.stopRecorder ( call, result );
-			}
-			break;
-
-
-			case "setSubscriptionDuration":
-			{
-				aRecorder.setSubscriptionDuration ( call, result );
-			}
-			break;
-
-			case "pauseRecorder":
-			{
-				aRecorder.pauseRecorder ( call, result );
-			}
-			break;
-
-
-			case "resumeRecorder":
-			{
-				aRecorder.resumeRecorder ( call, result );
-			}
-			break;
-
-
-			default:
-			{
-				result.notImplemented ();
-			}
-			break;
-		}
-	}
-
-}
-
 
 
 class RecorderAudioModel
@@ -240,9 +126,9 @@ public class FlutterSoundRecorder extends Session
 	}
 
 
-	FlautoRecorderPlugin getPlugin ()
+	FlautoRecorderManager getPlugin ()
 	{
-		return FlautoRecorderPlugin.flautoRecorderPlugin;
+		return FlautoRecorderManager.flautoRecorderPlugin;
 	}
 
 
@@ -371,10 +257,10 @@ public class FlutterSoundRecorder extends Session
 			stop(); // To start a new clean record
 			if (_isAudioRecorder[codec.ordinal()])
 			{
-				recorder = new FlutterSoundAudioRecorder();
+				recorder = new RecorderAudioRecorder();
 			} else
 			{
-				recorder = new FlutterSoundMediaRecorder();
+				recorder = new RecorderMediaRecorder();
 			}
 			try
 			{

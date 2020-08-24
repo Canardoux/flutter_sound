@@ -22,11 +22,8 @@ package com.dooboolab.fluttersound;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.media.AudioDeviceInfo;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
-import android.media.MediaRecorder;
 import android.os.Build;
 
 import java.util.HashMap;
@@ -96,7 +93,7 @@ public abstract class Session
 		slotNo = slot;
 	}
 
-	abstract AudioSessionManager getPlugin ();
+	abstract FlautoManager getPlugin ();
 
 	void releaseSession()
 	{
@@ -148,7 +145,7 @@ public abstract class Session
 	boolean prepareFocus( final MethodCall call)
 	{
 		boolean r = true;
-		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService( Context.AUDIO_SERVICE );
+		audioManager = ( AudioManager ) FlautoPlayerManager.androidContext.getSystemService( Context.AUDIO_SERVICE );
 		AudioFocus focus = AudioFocus.values()[(int)call.argument ( "focus" )];
 		AudioDevice device = AudioDevice.values()[(int)call.argument( "device" )];
 

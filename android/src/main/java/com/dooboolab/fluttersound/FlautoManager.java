@@ -53,7 +53,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
 
-public class AudioSessionManager
+public class FlautoManager
 {
 	public MethodChannel            channel;
 	public List<Session> slots;

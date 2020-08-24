@@ -25,7 +25,7 @@ import android.util.Log;
 
 import java.io.IOException;
 
-public class FlutterSoundMediaRecorder
+public class RecorderMediaRecorder
 	implements RecorderInterface
 {
 	final static String             TAG                = "SoundMediaRecorder";

@@ -29,7 +29,7 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 
 
-public class FlutterSoundAudioRecorder
+public class RecorderAudioRecorder
 	implements RecorderInterface
 {
 	private AudioRecord recorder = null;

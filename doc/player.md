@@ -241,7 +241,7 @@ Please look to [openAudioSession()](player.md#openaudiosession-and-closeaudioses
 
 *Dart definition (prototype) :*
 ```
-Future<void> startPlayer
+Future<Duration> startPlayer
 ({
         String fromUri,
         Uint8List fromDataBuffer,
@@ -267,7 +267,7 @@ You must specify one or those three parameters.
 Very often, the `codec:` parameter is not useful. Flutter Sound will adapt itself depending on the real format of the file provided.
 But this parameter is necessary when Flutter Sound must do format conversion (for example to play opusOGG on iOS)
 
-`startPlayer()` returns a Future.
+`startPlayer()` returns a Duration Future, which is the record duration.
 
 Hint: [path_provider](https://pub.dev/packages/path_provider) can be useful if you want to get access to some directories on your device.
 
@@ -276,7 +276,7 @@ Hint: [path_provider](https://pub.dev/packages/path_provider) can be useful if y
 ```dart
         Directory tempDir = await getTemporaryDirectory();
         File fin = await File ('${tempDir.path}/flutter_sound-tmp.aac');
-        await myPlayer.startPlayer(fin.path, codec: Codec.aacADTS);
+        Duration d = await myPlayer.startPlayer(fin.path, codec: Codec.aacADTS);
 
         _playerSubscription = myPlayer.onProgress.listen((e)
         {
@@ -289,7 +289,7 @@ Hint: [path_provider](https://pub.dev/packages/path_provider) can be useful if y
 ```dart
     final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
 
-    await myPlayer.startPlayer
+    Duration d = await myPlayer.startPlayer
     (
                 fileUri,
                 codec: Codec.mp3,
@@ -306,7 +306,7 @@ Hint: [path_provider](https://pub.dev/packages/path_provider) can be useful if y
 
 *Dart definition (prototype) :*
 ```
-Future<String> startPlayerFromTrack(
+Future<Duration> startPlayerFromTrack(
     Track track,
     {
     TWhenFinished whenFinished = null,
@@ -342,11 +342,15 @@ Remark: actually this parameter is implemented only on iOS.
 - `defaultPauseResume` : is a boolean value to specify if Flutter Sound must pause/resume the playback by itself when the user hit the pause/resume button. Set this parameter to *FALSE* if the App wants to manage itself the pause/resume button. If you do not specify this parameter and the `onPaused` parameter is specified then Flutter Sound will assume `FALSE`. If you do not specify this parameter and the `onPaused` parameter is not specified then Flutter Sound will assume `TRUE`.
 Remark: actually this parameter is implemented only on iOS.
 
+
+`startPlayerFromTrack()` returns a Duration Future, which is the record duration.
+
+
 *Example:*
 ```dart
     final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
     Track track = Track( codec: Codec.opusOGG, trackPath: fileUri, trackAuthor: '3 Inches of Blood', trackTitle: 'Axes of Evil', albumArtAsset: albumArt )
-    await myPlayer.startPlayerFromTrack
+    Duration d = await myPlayer.startPlayerFromTrack
     (
                 track,
                 whenFinished: ()
