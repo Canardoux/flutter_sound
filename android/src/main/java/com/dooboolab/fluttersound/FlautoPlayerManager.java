@@ -91,7 +91,12 @@ class FlautoPlayerManager extends FlautoManager
                         case "releaseMediaPlayer":
                         {
                                 aPlayer.releaseFlautoPlayer ( call, result );
-                                //slots.set ( slotNo, null );
+                        }
+                        break;
+
+                        case "isDecoderSupported":
+                        {
+                                aPlayer.isDecoderSupported ( call, result );
                         }
                         break;
 

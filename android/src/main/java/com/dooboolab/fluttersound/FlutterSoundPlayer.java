@@ -111,6 +111,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	MediaPlayer mediaPlayer                    = null;
 	private       Timer            mTimer      = new Timer ();
 	final private Handler          mainHandler = new Handler ();
+	boolean pauseMode;
 
 
 	static final String ERR_UNKNOWN           = "ERR_UNKNOWN";
@@ -147,15 +148,18 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		result.success ( getPlayerState() );
 	}
 
-	Boolean isPaused() { return !mediaPlayer.isPlaying () && mediaPlayer.getCurrentPosition () > 1;}
+	Boolean isPaused() { return mediaPlayer != null && (!mediaPlayer.isPlaying ()) && pauseMode;}
 
 	int getPlayerState()
 	{
 		if (mediaPlayer == null)
 			return PlayerState.isStopped.ordinal();
 		if (mediaPlayer.isPlaying())
+		{
+			assert(!pauseMode);
 			return PlayerState.isPlaying.ordinal();
-		return isPaused() ? PlayerState.isPaused.ordinal() : PlayerState.isStopped.ordinal();
+		}
+		return pauseMode ? PlayerState.isPaused.ordinal() : PlayerState.isStopped.ordinal();
 	}
 
 
@@ -259,14 +263,17 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			 * Reset player.
 			 */
 			Log.d(TAG, "Playback completed.");
+			assert(mp == mediaPlayer);
 			mTimer.cancel();
 			if (mp.isPlaying()) {
 				mp.stop();
 			}
 			mp.reset();
 			mp.release();
-			mediaPlayer = (null);
-			invokeMethodWithInteger("audioPlayerFinishedPlaying", getPlayerState());
+			mediaPlayer = null;
+			pauseMode = false;
+			assert(getPlayerState() == 0);
+			invokeMethodWithInteger("audioPlayerFinishedPlaying", getPlayerState() );
 	}
 
 	// Listener called when media player has completed preparation.
@@ -296,22 +303,24 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			@Override
 			public void run() {
 				try {
-					long position = mp.getCurrentPosition();
-					long duration = mp.getDuration();
-					if (position > duration)
+					mainHandler.post(new Runnable()
 					{
-						assert(position <= duration);
-					}
-
-					Map<String, Object> dic = new HashMap<String, Object> ();
-					dic.put ( "position", position );
-					dic.put ( "duration", duration );
-					dic.put ( "playerStatus", getPlayerState() );
-
-
-					mainHandler.post(new Runnable() {
 						@Override
-						public void run() {
+						public void run()
+						{
+
+							long position = mp.getCurrentPosition();
+							long duration = mp.getDuration();
+							if (position > duration)
+							{
+								assert(position <= duration);
+							}
+
+							Map<String, Object> dic = new HashMap<String, Object> ();
+							dic.put ( "position", position );
+							dic.put ( "duration", duration );
+							dic.put ( "playerStatus", getPlayerState() );
+
 							invokeMethodWithMap("updateProgress", dic);
 						}
 					});
@@ -329,6 +338,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 	void stop()
 	{
+		pauseMode = false;
 		mTimer.cancel ();
 
 		if ( mediaPlayer == null )
@@ -341,7 +351,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			mediaPlayer.stop ();
 			mediaPlayer.reset ();
 			mediaPlayer.release ();
-			mediaPlayer = ( null );
+			mediaPlayer =  null ;
 		}
 		catch ( Exception e )
 		{
@@ -382,6 +392,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		try
 		{
 			mediaPlayer.pause ();
+			pauseMode = true;
 			result.success ( getPlayerState());
 		}
 		catch ( Exception e )
@@ -405,10 +416,10 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			result.error ( ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING );
 			return;
 		}
-
+		pauseMode = false;
 		try
 		{
-			mediaPlayer.seekTo ( mediaPlayer.getCurrentPosition () );
+			// Is it really good ? // mediaPlayer.seekTo ( mediaPlayer.getCurrentPosition () );
 			mediaPlayer.start ();
 			result.success ( getPlayerState());
 		}

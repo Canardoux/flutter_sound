@@ -1,9 +1,10 @@
-## 5.2.0
+## 6.0.0
 
 - Modification to the Widget Recorder UI, to be homogeneous with the Widget Player UI
-- Fix a severe bug on Android in openAudioSessionWithUI and startPlayerFromTrack : those two functions returned to early instead of a future. [425](https://github.com/dooboolab/flutter_sound/issues/425) 
+- Fix two severe bugs on Android in openAudioSessionWithUI and startPlayerFromTrack : those two functions returned too early instead of a future. [425](https://github.com/dooboolab/flutter_sound/issues/425) 
 - On iOS, the device did not go to sleep when idle, with the Flutter Sound default parameters. [439](https://github.com/dooboolab/flutter_sound/issues/439)
-- startPlayer() and startPlayerFromTrack() return a Future to the record duration.
+- startPlayer() and startPlayerFromTrack() return a Future to the record duration instead of a void.
+- Flutter Sound **FULL** is now linked with mobile-ffmpeg-audio 4.3.1.LTS. Look to [the migration guide](doc/migration_6.x.x.md#migration-from-5xx-to-6xx)
 
 ## 5.1.1
 

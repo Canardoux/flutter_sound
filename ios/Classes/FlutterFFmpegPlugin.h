@@ -1,24 +1,21 @@
 /*
- * Copyright 2018, 2019, 2020 Dooboolab.
+ * Copyright (c) 2019 Taner Sener
  *
- * This file is part of Flutter-Sound.
+ * This file is part of FlutterFFmpeg.
  *
- * Flutter-Sound is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
- * the Free Software Foundation.
+ * FlutterFFmpeg is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Flutter-Sound is distributed in the hope that it will be useful,
+ * FlutterFFmpeg is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ * along with FlutterFFmpeg.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
-#define FULL_FLAVOR
-#ifdef FULL_FLAVOR
 
 #import <Flutter/Flutter.h>
 #import <mobileffmpeg/MobileFFmpegConfig.h>
@@ -26,12 +23,5 @@
 /**
  * Flutter FFmpeg Plugin
  */
-@interface FlutterFFmpegPlugin : NSObject<FlutterPlugin,FlutterStreamHandler,LogDelegate,StatisticsDelegate> {
-        FlutterFFmpegPlugin* flutterFFmpegPlugin; // Singleton
-}
-
+@interface FlutterFFmpegPlugin : NSObject<FlutterPlugin,FlutterStreamHandler,LogDelegate,StatisticsDelegate>
 @end
-
-extern void FfmpegReg(NSObject<FlutterPluginRegistrar>* registrar);
-
-#endif // FULL_FLAVOR

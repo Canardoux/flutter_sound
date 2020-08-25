@@ -34,10 +34,7 @@ in other words V4 is our LTS version (Long Term Support).
 
 - To migrate [to 4.x.x from 3.x.x](doc/migration_4.x.x.md#migration-from-3xx-to-4xx) you must do some minor changes in your configurations files.
 - To migrate [to 5.x.x from 4.x.x](doc/migration_5.x.x.md#migration-form-4xx-to-5xx) you must do a few changes in your App.
-
-## Free Read
-
-[Medium Blog](https://medium.com/@dooboolab/flutter-sound-plugin-audio-recorder-player-e5a455a8beaf). [*This link is probably obsolete!*]
+- To migrate [to 6.x.x from 5.x.x](doc/migration_6.x.x.md#migration-from-5xx-to-6xx) you must do some minor changes in your configurations files.
 
 ## SDK requirements
 

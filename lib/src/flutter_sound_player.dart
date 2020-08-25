@@ -68,8 +68,9 @@ class FlautoPlayerPlugin extends FlautoPlugin{
   Future<dynamic> channelMethodCallHandler(MethodCall call) {
     FlutterSoundPlayer aPlayer = getSession (call) as FlutterSoundPlayer;
     Map arg = call.arguments as Map;
-    if (arg['playerStatus'] != null)
-      aPlayer.playerState = PlayerState.values[arg['playerStatus']as int ] ;
+    if (arg['playerStatus'] != null) {
+      aPlayer.playerState = PlayerState.values[arg['playerStatus'] as int ];
+    }
 
     switch (call.method) {
        case "updateProgress":

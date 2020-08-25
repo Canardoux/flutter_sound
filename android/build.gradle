@@ -28,7 +28,7 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        minSdkVersion 24 // 16
+        minSdkVersion  16
     }
     lintOptions {
         disable 'InvalidPackage'
@@ -46,7 +46,7 @@ String safeExtGet(String prop, String fallback) {
 
 
 dependencies {
-    implementation 'com.arthenica:mobile-ffmpeg-audio:4.3.2'
+    implementation 'com.arthenica:mobile-ffmpeg-audio:4.3.1.LTS'
     implementation 'androidx.core:core:1.0.0'
     implementation 'androidx.media:media:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
