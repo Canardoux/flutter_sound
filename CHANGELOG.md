@@ -4,7 +4,9 @@
 - Fix two severe bugs on Android in openAudioSessionWithUI and startPlayerFromTrack : those two functions returned too early instead of a future. [425](https://github.com/dooboolab/flutter_sound/issues/425) 
 - On iOS, the device did not go to sleep when idle, with the Flutter Sound default parameters. [439](https://github.com/dooboolab/flutter_sound/issues/439)
 - startPlayer() and startPlayerFromTrack() return a Future to the record duration instead of a void.
-- Flutter Sound **FULL** is now linked with mobile-ffmpeg-audio 4.3.1.LTS. Look to [the migration guide](doc/migration_6.x.x.md#migration-from-5xx-to-6xx)
+- Flutter Sound **FULL** is now linked (again) with mobile-ffmpeg-audio 4.3.1.LTS. Please, look to [the migration guide](doc/migration_6.x.x.md#migration-from-5xx-to-6xx)
+- Fix a concurrency bug between `whenFinished()` and `updateProgress()` [#441](https://github.com/dooboolab/flutter_sound/issues/441)
+- Android : minAndroidSdk is (again) **16**. (Tested on a SDK 19 emulator).  [#400](https://github.com/dooboolab/flutter_sound/issues/400)
 
 ## 5.1.1
 

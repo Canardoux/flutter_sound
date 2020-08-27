@@ -25,6 +25,7 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -88,17 +89,17 @@ public class FlutterSoundRecorder extends Session
 {
 	static boolean _isAndroidEncoderSupported[] = {
 		true, // DEFAULT
-		true, // aacADTS
-		false, // opusOGG
+		Build.VERSION.SDK_INT >= 28, // aacADTS
+		false, // opusOGG // ( Build.VERSION.SDK_INT < 29 )
 		false, // opusCAF
 		false, // MP3
-		false, // vorbisOGG
+		false, // vorbisOGG // ( Build.VERSION.SDK_INT < 29 )
 		true, // pcm16
 		true, // pcm16WAV
 		false, // pcm16AIFF
 		false, // pcm16CAF
 		false, // flac
-		false, // aacMP4
+		true,  // aacMP4
 		true,  // amrNB
 		true   // amrWB
 	};
@@ -120,6 +121,8 @@ public class FlutterSoundRecorder extends Session
 	private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor ();
 	long mPauseTime = 0;
 	long mStartPauseTime = -1;
+	final private Handler          mainHandler = new Handler (Looper.getMainLooper ());
+
 
 	FlutterSoundRecorder (  )
 	{
@@ -158,11 +161,11 @@ public class FlutterSoundRecorder extends Session
 	{
 		int     _codec = call.argument ( "codec" );
 		boolean b      = _isAndroidEncoderSupported[ _codec ];
-		if ( Build.VERSION.SDK_INT < 29 )
+		//if ( Build.VERSION.SDK_INT < 29 )
 		{
-			if ( ( _codec == CODEC_OPUS ) || ( _codec == CODEC_VORBIS ) )
+			//if ( ( _codec == CODEC_OPUS ) || ( _codec == CODEC_VORBIS ) )
 			{
-				b = false;
+				//b = false;
 			}
 		}
 		result.success ( b );
@@ -275,54 +278,56 @@ public class FlutterSoundRecorder extends Session
 
 			final long systemTime = SystemClock.elapsedRealtime();
 			this.model.setRecorderTicker ( () ->
-			                               {
+			       {
+				       	mainHandler.post(new Runnable()
+					{
+						@Override
+						public void run() {
 
-				                               long time = SystemClock.elapsedRealtime () - systemTime - mPauseTime;
-				                               // Log.d(TAG, "elapsedTime: " + SystemClock.elapsedRealtime());
-				                               // Log.d(TAG, "time: " + time);
+							long time = SystemClock.elapsedRealtime() - systemTime - mPauseTime;
+							// Log.d(TAG, "elapsedTime: " + SystemClock.elapsedRealtime());
+							// Log.d(TAG, "time: " + time);
 
-				                               // DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
-				                               // String displayTime = format.format(time);
-				                               // model.setRecordTime(time);
-				                               try
-				                               {
-					                               double db = 0.0;
-					                               if ( recorder != null )
-					                               {
-						                               double maxAmplitude = recorder.getMaxAmplitude ();
+							// DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
+							// String displayTime = format.format(time);
+							// model.setRecordTime(time);
+							try {
+								double db = 0.0;
+								if (recorder != null) {
+									double maxAmplitude = recorder.getMaxAmplitude();
 
-						                               // Calculate db based on the following article.
-						                               // https://stackoverflow.com/questions/10655703/what-does-androids-getmaxamplitude-function-for-the-mediarecorder-actually-gi
-						                               //
-						                               double ref_pressure = 51805.5336;
-						                               double p            = maxAmplitude / ref_pressure;
-						                               double p0           = 0.0002;
+									// Calculate db based on the following article.
+									// https://stackoverflow.com/questions/10655703/what-does-androids-getmaxamplitude-function-for-the-mediarecorder-actually-gi
+									//
+									double ref_pressure = 51805.5336;
+									double p = maxAmplitude / ref_pressure;
+									double p0 = 0.0002;
 
-						                               db = 20.0 * Math.log10 ( p / p0 );
+									db = 20.0 * Math.log10(p / p0);
 
-						                               // if the microphone is off we get 0 for the amplitude which causes
-						                               // db to be infinite.
-						                               if ( Double.isInfinite ( db ) )
-						                               {
-							                               db = 0.0;
-						                               }
+									// if the microphone is off we get 0 for the amplitude which causes
+									// db to be infinite.
+									if (Double.isInfinite(db)) {
+										db = 0.0;
+									}
 
-					                               }
+								}
 
 
+								Map<String, Object> dic = new HashMap<String, Object>();
+								dic.put("slotNo", slotNo);
+								dic.put("duration", time);
+								dic.put("dbPeakLevel", db);
+								invokeMethodWithMap("updateRecorderProgress", dic);
+								recordHandler.postDelayed(model.getRecorderTicker(), model.subsDurationMillis);
+							} catch (Exception e) {
+								Log.d(TAG, " Exception: " + e.toString());
+							}
+						}
+					});
 
-					                               Map<String, Object> dic = new HashMap<String, Object> ();
-					                               dic.put ( "slotNo", slotNo );
-					                               dic.put ( "duration", time );
-					                               dic.put ( "dbPeakLevel", db );
-					                               invokeMethodWithMap ( "updateRecorderProgress", dic );
-					                               recordHandler.postDelayed ( model.getRecorderTicker (), model.subsDurationMillis );
-				                               }
-				                               catch (Exception e )
-				                               {
-					                               Log.d( TAG, " Exception: " + e.toString() );
-				                               }
-			                               } );
+
+					} );
 			recordHandler.post ( this.model.getRecorderTicker () );
 
 			//finalPath = path;

@@ -42,7 +42,7 @@ public class RecorderMediaRecorder
 		0, // aiff
 		0, // pcmCAF
 		0, // flac
-		0, // aacMP4
+		MediaRecorder.AudioEncoder.AAC, // aacMP4
 		MediaRecorder.AudioEncoder.AMR_NB,
 		MediaRecorder.AudioEncoder.AMR_WB,
 	};
@@ -61,7 +61,7 @@ public class RecorderMediaRecorder
 		, 0 // aiff
 		, 0 // pcmCAF
 		, 0 // flac
-		, 0 // aacMP4
+		, MediaRecorder.OutputFormat.MPEG_4 // aacMP4
 		, MediaRecorder.OutputFormat.AMR_NB
 		, MediaRecorder.OutputFormat.AMR_WB
 	};

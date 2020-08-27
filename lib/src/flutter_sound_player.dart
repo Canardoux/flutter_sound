@@ -322,7 +322,7 @@ class FlutterSoundPlayer extends Session
 
   void openSessionCompleted(Map call) {
     print('FS:---> openSessionCompleted ');
-    bool success = call['arg'];
+    bool success = call['arg'] as bool;
     isInited = success ? (isInited == Initialized.initializationWithUIInProgress ? Initialized.fullyInitializedWithUI :   Initialized.fullyInitialized) : Initialized.notInitialized;
     openAudioSessionCompleter.complete(success ? this : null);
     //openAudioSessionCompleter = null;
@@ -692,7 +692,6 @@ class FlutterSoundPlayer extends Session
 
   void startPlayerCompleted(Map call) {
     print('FS:---> startPlayerCompleted ');
-    var toto = call['arg'];
     int duration =  call['arg'] as int;
     if (startPlayerCompleter != null)
     {

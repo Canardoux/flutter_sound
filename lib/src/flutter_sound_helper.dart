@@ -17,9 +17,12 @@
  */
 
 
+import 'dart:typed_data';
+
 import 'package:flutter_sound/flutter_sound.dart';
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter_sound/src/wave_header.dart';
 
 FlutterSoundHelper flutterSoundHelper = FlutterSoundHelper(); // Singleton
 
@@ -89,20 +92,101 @@ class FlutterSoundHelper {
     return (duration == null) ? null : Duration(milliseconds: duration);
   }
 
+
+  /// Convert a raw PCM file to a WAVE file.
+  /// Add a WAVE header in front of the PCM data
+  Future<bool> pcmToWave
+  (
+      {
+          String inputFile,
+          String outputFile,
+          int numChannels,
+          int sampleRate,
+          int bitsPerSample,
+      }
+  ) async
+  {
+      File filIn = File(inputFile);
+      File filOut = File(outputFile);
+      int size = filIn.lengthSync();
+      print('pcmToWave() : input = $inputFile');
+      print('pcmToWave() : output = $outputFile');
+      print('pcmToWave() : size = $size');
+
+      IOSink sink = filOut.openWrite();
+
+      WaveHeader header = new WaveHeader
+      (
+          WaveHeader.FORMAT_PCM ,
+          1, // numChannels
+          sampleRate,
+          16,
+          size, // total number of bytes
+      );
+      await header.write( sink);
+
+      //Stream<List<int>> inputStream = filIn.openRead();
+      await filIn.open();
+      Uint8List buffer = filIn.readAsBytesSync();
+      sink.add(buffer.toList());
+      await sink.close();
+  }
+
+  /// Convert a raw PCM buffer to a WAVE buffer.
+  /// Add a WAVE header in front of the PCM data
+   /*
+  Future<Uint8List> pcmToWaveBuffer
+      (
+      {
+        Uint8List inputBuffer,
+        int numChannels,
+        int sampleRate,
+        int bitsPerSample,
+      }
+      ) async
+  {
+
+    int size = inputBuffer.length;
+    WaveHeader header = new WaveHeader
+      (
+      WaveHeader.FORMAT_PCM ,
+      1, // numChannels
+      sampleRate,
+      16,
+      size, // total number of bytes
+    );
+    await header.write( sink);
+
+    //Stream<List<int>> inputStream = filIn.openRead();
+    await filIn.open();
+
+
+    Uint8List buffer = Uint8List(0);
+    buffer.addAll(inputBuffer);
+    return buffer;
+  }
+
+
+  
+    */
+
+
+
+
   Future<bool> convertFile(
-      String infile, Codec codecin, String outfile, Codec codecout) async {
-      int rc;
-    if (codecin == Codec.opusOGG &&
-        codecout == Codec.opusCAF) // Do not need to re-encode. Just remux
+      String inputFile, Codec inputCodec, String outputFile, Codec outputCodec) async {
+    int rc = 0;
+    if (inputCodec == Codec.opusOGG &&
+        outputCodec == Codec.opusCAF) // Do not need to re-encode. Just remux
       rc = await flutterSoundHelper.executeFFmpegWithArguments([
         '-loglevel',
         'error',
         '-y',
         '-i',
-        infile,
+        inputFile,
         '-c:a',
         'copy',
-        outfile,
+        outputFile,
       ]); // remux OGG to CAF
     else
       rc = await flutterSoundHelper.executeFFmpegWithArguments([
@@ -110,8 +194,8 @@ class FlutterSoundHelper {
         'error',
         '-y',
         '-i',
-        infile,
-        outfile,
+        inputFile,
+        outputFile,
       ]);
 
     return (rc != 0);

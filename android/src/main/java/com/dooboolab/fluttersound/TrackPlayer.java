@@ -24,6 +24,7 @@ import android.media.AudioDeviceInfo;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
@@ -50,7 +51,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 	private       	MediaBrowserHelper 	mMediaBrowserHelper;
 	private       	Timer              	mTimer      = new Timer();
 	private		long			mDuration   = 0;
-	final private 	Handler            	mainHandler = new Handler();
+	final private 	Handler            	mainHandler = new Handler(Looper.getMainLooper ());
 	//public		boolean			initDone = false;
 	private		int 			playerState = 0;
 
@@ -242,6 +243,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 		// This remove all pending runnables
 		mTimer.cancel();
 		mDuration = 0;
+		pauseMode = false;
 		if ( mMediaBrowserHelper == null )
 			return false;
 		try
@@ -272,12 +274,13 @@ public class TrackPlayer extends FlutterSoundPlayer
 		{
 			return;
 		}
+		pauseMode = true;
+		playerState = 2;
 
 		try
 		{
 			// Pause the media player
 			mMediaBrowserHelper.pausePlayback();
-			playerState = 2;
 			result.success(getPlayerState() );
 		}
 		catch ( Exception e )
@@ -304,6 +307,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 			result.error( ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING );
 			return;
 		}
+		pauseMode = false;
 
 		try
 		{
@@ -507,42 +511,42 @@ public class TrackPlayer extends FlutterSoundPlayer
 		// long time = mp.getCurrentPosition();
 		// DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
 		// final String displayTime = format.format(time);
-
-		if ((mMediaBrowserHelper == null) || (mMediaBrowserHelper.mediaControllerCompat == null))
-		{
-			Log.e( TAG, "MediaPlayerOnPreparedListener timer: mMediaBrowserHelper.mediaControllerCompat is NULL. This is BAD !!!"  );
-
-			_stopPlayer( );
-			if (mMediaBrowserHelper != null)
-				mMediaBrowserHelper.releaseMediaBrowser();
-			mMediaBrowserHelper = null;
-			return;
-		}
-		PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
-
-		if ( playbackState == null || playbackState.getState() != PlaybackStateCompat.STATE_PLAYING)
-		{
-			return;
-		}
-
-		long position = playbackState.getPosition();
-		long duration = mMediaBrowserHelper.mediaControllerCompat.getMetadata().getLong( MediaMetadataCompat.METADATA_KEY_DURATION );
-		int state = playbackState.getState();
-		if (position > duration || position > 5000 || duration == 0) // for debugging)
-		{
-			assert(position <= duration);
-		}
-		Map<String, Object> dic = new HashMap<String, Object> ();
-		dic.put ( "position", position );
-		dic.put ( "duration", duration );
-		dic.put ( "playerStatus", getPlayerState() );
-
-
 		mainHandler.post( new Runnable()
 		{
 			@Override
 			public void run()
 			{
+
+
+				if ((mMediaBrowserHelper == null) || (mMediaBrowserHelper.mediaControllerCompat == null))
+				{
+					Log.e( TAG, "MediaPlayerOnPreparedListener timer: mMediaBrowserHelper.mediaControllerCompat is NULL. This is BAD !!!"  );
+					_stopPlayer( );
+					if (mMediaBrowserHelper != null)
+						mMediaBrowserHelper.releaseMediaBrowser();
+					mMediaBrowserHelper = null;
+					return;
+				}
+				PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
+
+				if ( playbackState == null || playbackState.getState() != PlaybackStateCompat.STATE_PLAYING)
+				{
+					return;
+				}
+
+				long position = playbackState.getPosition();
+				long duration = mMediaBrowserHelper.mediaControllerCompat.getMetadata().getLong( MediaMetadataCompat.METADATA_KEY_DURATION );
+				int state = playbackState.getState();
+				if (position > duration || position > 5000 || duration == 0) // for debugging)
+				{
+					assert(position <= duration);
+				}
+				Map<String, Object> dic = new HashMap<String, Object> ();
+				dic.put ( "position", position );
+				dic.put ( "duration", duration );
+				dic.put ( "playerStatus", getPlayerState() );
+
+
 				invokeMethodWithMap( "updateProgress",dic);
 			}
 		} );
@@ -648,6 +652,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 
 			Log.d( TAG, "Play completed." );
 			playerState = 0;
+			pauseMode = false;
 			invokeMethodWithInteger( "audioPlayerFinishedPlaying", getPlayerState() );
 
 			return null;

@@ -30,6 +30,7 @@ import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_sound/src/session.dart';
+import 'package:flutter_sound/src/wave_header.dart';
 
 enum RecorderState {
   isStopped,

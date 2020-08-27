@@ -24,6 +24,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import android.media.AudioFocusRequest;
@@ -62,18 +63,19 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 	static boolean _isAndroidDecoderSupported[] = {
 		true, // DEFAULT
-		true, // aacADTS
-		true, // opusOGG
-		true, // opusCAF
-		true, // MP3
-		true, // vorbisOGG
+		true, // aacADTS				// OK
+		true,//Build.VERSION.SDK_INT >= 23, // opusOGG	// NOK
+		false, // opusCAF				// NOK
+		true, // MP3					// OK
+		true,//Build.VERSION.SDK_INT >= 23, // vorbisOGG// OK
 		true, // pcm16 // Really ???
-		true, // pcm16WAV
-		false, // pcm16AIFF
-		false, // pcm16CAF
-		true, // flac
-		true, // aacMP4
-		true, // amr
+		true, // pcm16WAV				// OK
+		false, // pcm16AIFF				// OK
+		false, // pcm16CAF				// NOK
+		true, // flac					// OK
+		true, // aacMP4					// OK
+		true, // amrNB					// OK
+		true, // amrWB					// OK
 	};
 
 
@@ -90,7 +92,8 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		, "._pcm.caf"
 		, ".flac"
 		, ".mp4"
-		, ".amr"
+		, ".amr" // amrNB
+		, ".amr" // amrWB
 	};
 
 
@@ -110,7 +113,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	int subsDurationMillis = 0;
 	MediaPlayer mediaPlayer                    = null;
 	private       Timer            mTimer      = new Timer ();
-	final private Handler          mainHandler = new Handler ();
+	final private Handler          mainHandler = new Handler (Looper.getMainLooper ());
 	boolean pauseMode;
 
 
@@ -279,7 +282,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	// Listener called when media player has completed preparation.
 	private void onPrepared(MediaPlayer mp, String path)
 	{
-		Log.d(TAG, "mediaPlayer prepared and start");
+		Log.d(TAG, "mediaPlayer prepared and started");
 		mp.start();
 
 		mainHandler.post(new Runnable()
@@ -292,6 +295,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 					 duration = mp.getDuration();
 				} catch(Exception e)
 				{
+					System.out.println(e.toString());
 				}
 				invokeMethodWithInteger("startPlayerCompleted", (int) duration);
 			}
@@ -302,33 +306,35 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		TimerTask mTask = new TimerTask() {
 			@Override
 			public void run() {
-				try {
 					mainHandler.post(new Runnable()
 					{
 						@Override
 						public void run()
 						{
+							try {
 
-							long position = mp.getCurrentPosition();
-							long duration = mp.getDuration();
-							if (position > duration)
+								long position = mp.getCurrentPosition();
+								long duration = mp.getDuration();
+								if (position > duration)
+								{
+									assert(position <= duration);
+								}
+
+								Map<String, Object> dic = new HashMap<String, Object> ();
+								dic.put ( "position", position );
+								dic.put ( "duration", duration );
+								dic.put ( "playerStatus", getPlayerState() );
+
+								invokeMethodWithMap("updateProgress", dic);
+							} catch (Exception e)
 							{
-								assert(position <= duration);
+								Log.d(TAG, "Exception: " + e.toString());
+								stop();
 							}
-
-							Map<String, Object> dic = new HashMap<String, Object> ();
-							dic.put ( "position", position );
-							dic.put ( "duration", duration );
-							dic.put ( "playerStatus", getPlayerState() );
-
-							invokeMethodWithMap("updateProgress", dic);
 						}
 					});
 
 
-				} catch (Exception e) {
-					Log.d(TAG, "Exception: " + e.toString());
-				}
 			}
 		};
 
@@ -371,11 +377,11 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	{
 		int     _codec = call.argument ( "codec" );
 		boolean b      = _isAndroidDecoderSupported[ _codec ];
-		if ( Build.VERSION.SDK_INT < 23 )
+		//if ( Build.VERSION.SDK_INT < 23 )
 		{
-			if ( ( _codec == CODEC_OPUS ) || ( _codec == CODEC_VORBIS ) )
+			//if ( ( _codec == CODEC_OPUS ) || ( _codec == CODEC_VORBIS ) )
 			{
-				b = false;
+				//b = false;
 			}
 		}
 		result.success (b );

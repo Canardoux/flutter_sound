@@ -199,16 +199,6 @@ public abstract class Session
 						audioManager.setSpeakerphoneOn(false);
 				}
 
-				/*
-				if (flags & outputToSpeaker)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker;
-				if (flags & allowAirPlay)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay;
-				if (flags & allowBlueTooth)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetooth;
-				if (flags & allowBlueToothA2DP)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
-				 */
 
 			}
 
@@ -230,7 +220,6 @@ public abstract class Session
 			audioManager.stopBluetoothSco();
 		audioManager.setBluetoothA2dpOn(  (audioFlags & allowBlueToothA2DP) != 0 );
 		audioManager.setMode( AudioManager.MODE_NORMAL );
-		//audioManager.setRouting( AudioManager.MODE_NORMAL, AudioManager.ROUTE_SPEAKER, AudioManager.ROUTE_ALL );
 
 		return r;
 	}

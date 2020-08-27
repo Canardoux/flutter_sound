@@ -142,11 +142,11 @@ public:
         
         NSNumber* recorderProgress()
         {
-                return 0;
+                return [NSNumber numberWithInt: 666];
         }
         virtual NSNumber* dbPeakProgress()
         {
-                double r = 100*maxAmplitude;
+                double r = 1000*maxAmplitude;
 		maxAmplitude = 0;
 		return [NSNumber numberWithDouble: r];
 
@@ -230,7 +230,7 @@ static bool _isIosEncoderSupported [] =
 		true, // opusCAF
 		false, // MP3
 		false, // vorbisOGG
-		false, // pcm16
+		true, // pcm16
 		true, // pcm16WAV
 		false, // pcm16AIFF
 		true, // pcm16CAF

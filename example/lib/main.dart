@@ -196,6 +196,7 @@ class _MyAppState extends State<MyApp> {
         toFile: path,
         codec: _codec,
         bitRate: 8000,
+        numChannels: 1,
         sampleRate: 8000,
       );
       print('startRecorder');
@@ -322,15 +323,16 @@ class _MyAppState extends State<MyApp> {
       //String path;
       Uint8List dataBuffer;
       String audioFilePath;
+      Codec codec = _codec;
       if (_media == Media.asset) {
-        dataBuffer = (await rootBundle.load(assetSample[_codec.index])).buffer.asUint8List();
+        dataBuffer = (await rootBundle.load(assetSample[codec.index])).buffer.asUint8List();
       } else if (_media == Media.file) {
         // Do we want to play from buffer or from file ?
-        if (await fileExists(_path[_codec.index])) audioFilePath = this._path[_codec.index];
+        if (await fileExists(_path[codec.index])) audioFilePath = this._path[codec.index];
       } else if (_media == Media.buffer) {
         // Do we want to play from buffer or from file ?
-        if (await fileExists(_path[_codec.index])) {
-          dataBuffer = await makeBuffer(this._path[_codec.index]);
+        if (await fileExists(_path[codec.index])) {
+          dataBuffer = await makeBuffer(this._path[codec.index]);
           if (dataBuffer == null) {
             throw Exception('Unable to create the buffer');
           }
@@ -382,9 +384,28 @@ class _MyAppState extends State<MyApp> {
         });
       } else {
         if (audioFilePath != null) {
+
+          if (codec == Codec.pcm16)
+            {
+              Directory tempDir = await getTemporaryDirectory();
+              String path = '${tempDir.path}/${recorderModule.slotNo}-flutter_sound_tmp.wav';
+              await flutterSoundHelper.pcmToWave
+                (
+                  inputFile: audioFilePath,
+                  outputFile: path,
+                  numChannels:  1,
+                  bitsPerSample: 16,
+                  sampleRate: 8000,
+              );
+              audioFilePath = path;
+              codec = Codec.pcm16WAV;
+
+            }
+
+
           await playerModule.startPlayer(
               fromURI: audioFilePath,
-              codec: _codec,
+              codec: codec,
               whenFinished: () {
                 print('Play finished');
                 setState(() {});
@@ -392,7 +413,7 @@ class _MyAppState extends State<MyApp> {
         } else if (dataBuffer != null) {
           await playerModule.startPlayer(
               fromDataBuffer: dataBuffer,
-              codec: _codec,
+              codec: codec,
               whenFinished: () {
                 print('Play finished');
                 setState(() {});
