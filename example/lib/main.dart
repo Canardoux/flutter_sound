@@ -394,7 +394,7 @@ class _MyAppState extends State<MyApp> {
                   inputFile: audioFilePath,
                   outputFile: path,
                   numChannels:  1,
-                  bitsPerSample: 16,
+                  //bitsPerSample: 16,
                   sampleRate: 8000,
               );
               audioFilePath = path;
@@ -418,7 +418,7 @@ class _MyAppState extends State<MyApp> {
               (
                     inputBuffer: dataBuffer,
                     numChannels:  1,
-                    bitsPerSample: 16,
+                    //bitsPerSample: 16,
                     sampleRate: 8000,
               );
             }

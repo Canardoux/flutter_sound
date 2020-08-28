@@ -62,6 +62,7 @@ private:
         AVAudioFile* audioFile;
         
         AVAudioFormat* tapFormat;
+        AVAudioConverterInputStatus inputStatus = AVAudioConverterInputStatus_NoDataNow;
 
 public:
 
@@ -76,18 +77,23 @@ public:
                 AVAudioFormat* recordingFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: nbChannels.integerValue interleaved: YES];
                 converter = [[AVAudioConverter alloc]initFromFormat:inputFormat toFormat:recordingFormat];
                 NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:path];
+                NSFileManager* fileManager = [NSFileManager defaultManager];
+                BOOL success = [fileManager removeItemAtPath:path error:nil];
+                [fileManager createFileAtPath: path contents:nil attributes:nil];
                 //audioFile = [[AVAudioFile alloc] initForWriting:fileURL settings: [recordingFormat settings] error:nil];
                 fileHandle = [NSFileHandle fileHandleForWritingAtPath: path];
 
 
                 [inputNode installTapOnBus: 0 bufferSize: 2048 format: inputFormat block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when)
                 {
+                        inputStatus = AVAudioConverterInputStatus_HaveData ;
                         AVAudioPCMBuffer* convertedBuffer = [[AVAudioPCMBuffer alloc]initWithPCMFormat:recordingFormat frameCapacity: [buffer frameCapacity]];
 
         
                         AVAudioConverterInputBlock inputBlock = ^AVAudioBuffer*(AVAudioPacketCount inNumberOfPackets, AVAudioConverterInputStatus *outStatus)
                         {
-                                *outStatus = AVAudioConverterInputStatus_HaveData;
+                                *outStatus = inputStatus;
+                                inputStatus =  AVAudioConverterInputStatus_NoDataNow;
                                 return buffer;
                         };
                         BOOL toto = [converter convertToBuffer: convertedBuffer error: nil withInputFromBlock: inputBlock];
@@ -100,6 +106,7 @@ public:
                         int16_t *const  bb = [convertedBuffer int16ChannelData][0];
                         int n = [convertedBuffer frameLength];
                         NSData* b = [[NSData alloc] initWithBytes: bb length: n * 2 ];
+                        //[b writeToFile:path atomically:YES];
                         [fileHandle writeData: b];
                         //NSLog(@"writing");
                         //[audioFile writeFromBuffer: convertedBuffer error:nil];

@@ -102,7 +102,7 @@ class FlutterSoundHelper {
           String outputFile,
           int numChannels,
           int sampleRate,
-          int bitsPerSample,
+          //int bitsPerSample,
       }
   ) async
   {
@@ -118,7 +118,7 @@ class FlutterSoundHelper {
       WaveHeader header = new WaveHeader
       (
           WaveHeader.FORMAT_PCM ,
-          1, // numChannels
+          numChannels,
           sampleRate,
           16,
           size, // total number of bytes
@@ -140,7 +140,7 @@ class FlutterSoundHelper {
         Uint8List inputBuffer,
         int numChannels,
         int sampleRate,
-        int bitsPerSample,
+        //int bitsPerSample,
       }
       ) async
   {
@@ -149,7 +149,7 @@ class FlutterSoundHelper {
     WaveHeader header = new WaveHeader
       (
       WaveHeader.FORMAT_PCM ,
-      1, // numChannels
+      numChannels,
       sampleRate,
       16,
       size, // total number of bytes
