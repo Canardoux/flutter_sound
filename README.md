@@ -15,26 +15,19 @@ This plugin provides simple recorder and player functionalities for both Android
 
 - Play and Record sounds or music with various codecs. (See [the supported codecs here](doc/codec.md#actually-the-following-codecs-are-supported-by-flutter_sound))
 - Play local or remote files specified by their URL.
+- Record to a Dart stream
 - The App playback can be controled from the device lock screen or from an Apple watch
-- Handle playback stream from native (To sync exact time with bridging). [*Not sure to understand what it means!*]
 
 ## Flutter Sound branches
 
 We actually maintain two branches for Flutter Sound :
 
-- The V4 branch (the version ^4.0.0)
-- The master branch (actually the version ^5.0.0)
-
-We do not expect that everybody will switch today from 4.x.x to 5.x.x.
-
-V4 is our stable branch, and will be maintained as long as everybody will not have switch to V5 :
-in other words V4 is our LTS version (Long Term Support).
+- The V5 branch (the version ^5.0.0)
+- The master branch (actually the version ^6.0.0)
 
 ## Migration Guides
 
-See [the migration guide]() to migrate from an anterious version (V5, V4 or V3)
-- To migrate [to 5.x.x from 4.x.x](doc/migration_5.x.x.md#migration-form-4xx-to-5xx) you must do a few changes in your App.
-- To migrate [to 6.x.x from 5.x.x](doc/migration_6.x.x.md#migration-from-5xx-to-6xx) you must do some minor changes in your configurations files.
+See [the migration guide](doc/migration.md) to migrate from an anterious version (V5, V4 or V3)
 
 ## SDK requirements
 
@@ -94,10 +87,10 @@ When you fill an issue, we try to answer something in less than 48h. Of course, 
 
 ## TODO
 
-- [ ] Record and playback raw PCM both on Android and iOS
+- [X] Record raw PCM both on Android and iOS
 - [ ] Record OPUS on Android
 - [ ] Record MP3 both on Android and iOS
-- [ ] Record raw PCM to a Dart Stream instead of a file
+- [X] Record raw PCM to a Dart Stream instead of a file
 - [ ] Playback raw PCM from a Dart Stream instead of a file
 - [ ] Streaming records to Speech to Text
 - [ ] More support for the Apple Watch
@@ -105,7 +98,7 @@ When you fill an issue, we try to answer something in less than 48h. Of course, 
 - [ ] Flutter Web App support
 - [ ] Flutter Sound port to React Native
 - [ ] Better UI Widget
-- [ ] Lock screen control between two sounds.
+- [ ] Lock screen control between two sounds (Done on iOS).
 
 
 ## Help Maintenance

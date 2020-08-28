@@ -8,6 +8,8 @@ Flutter Sound offers some tools that can be convenient to work with sound :
 
 - [Module instanciation](#module-instanciation)
 - [convertFile()](#convertfile) to convert an audio file to another format
+- [pcmToWave()]()  to add a WAVE header in front of a Raw PCM record
+- [pcmToWaveBuffer()]()  to add a WAVE header in front of a Raw PCM buffer
 - [duration()](#duration) to know the appoximate duration of a sound
 - [isFFmpegAvailable()](#isffmpegavailable) to know if the current App is linked with FFmpeg
 - [executeFFmpegWithArguments()](#executeffmpegwitharguments) to execute an FFmpeg command
@@ -64,6 +66,41 @@ Note : this verb uses FFmpeg and is not available int the LITE flavor of Flutter
         var tempDir = await getTemporaryDirectory();
         String outpufFile = '${tempDir.path}/$foo.mp3';
         await flutterSoundHelper.convertFile(inputFile, codec.pcm16WAV, outputFile, Codec.mp3)
+```
+
+------------------------------------------------------------------------------------------------------------------------
+
+## `pcmToWave()`
+
+*Dart definition (prototype) :*
+```
+Future<void> pcmToWave
+(
+      {
+          String inputFile,
+          String outputFile,
+          int numChannels,
+          int sampleRate,
+      }
+) async
+```
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+## `pcmToWaveBuffer()`
+
+*Dart definition (prototype) :*
+```
+Future<Uint8List> pcmToWaveBuffer
+(
+      {
+        Uint8List inputBuffer,
+        int numChannels,
+        int sampleRate,
+      }
+) async
+
 ```
 
 -------------------------------------------------------------------------------------------------------------------------------

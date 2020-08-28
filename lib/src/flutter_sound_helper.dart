@@ -95,7 +95,7 @@ class FlutterSoundHelper {
 
   /// Convert a raw PCM file to a WAVE file.
   /// Add a WAVE header in front of the PCM data
-  Future<bool> pcmToWave
+  Future<void> pcmToWave
   (
       {
           String inputFile,
