@@ -7,8 +7,8 @@
 - Flutter Sound **FULL** is now linked (again) with mobile-ffmpeg-audio 4.3.1.LTS. Please, look to [the migration guide](doc/migration_6.x.x.md#migration-from-5xx-to-6xx)
 - Fix a concurrency bug between `whenFinished()` and `updateProgress()` [#441](https://github.com/dooboolab/flutter_sound/issues/441)
 - Android : minAndroidSdk is (again) **16**. (Tested on a SDK 19 emulator).  [#400](https://github.com/dooboolab/flutter_sound/issues/400)
-- New helper API verb : [pcmToWave()]()  to add a WAVE header in front of a Raw PCM record
-- New helper API verb : [pcmToWaveBuffer()]()  to add a WAVE header in front of a Raw PCM buffer
+- New helper API verb : [pcmToWave()](doc/helper.md#pcmtowave)  to add a WAVE header in front of a Raw PCM record
+- New helper API verb : [pcmToWaveBuffer()](doc/helper.md#pcmtowavebuffer)  to add a WAVE header in front of a Raw PCM buffer
 
 ## 5.1.1
 
