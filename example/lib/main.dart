@@ -411,6 +411,17 @@ class _MyAppState extends State<MyApp> {
                 setState(() {});
               });
         } else if (dataBuffer != null) {
+
+          if (codec == Codec.pcm16)
+            {
+              dataBuffer = await flutterSoundHelper.pcmToWaveBuffer
+              (
+                    inputBuffer: dataBuffer,
+                    numChannels:  1,
+                    bitsPerSample: 16,
+                    sampleRate: 8000,
+              );
+            }
           await playerModule.startPlayer(
               fromDataBuffer: dataBuffer,
               codec: codec,
@@ -628,7 +639,8 @@ class _MyAppState extends State<MyApp> {
       return null;
 
     // Disable the button if the selected codec is not supported
-    if (!_decoderSupported) return null;
+    if (! (_decoderSupported || _codec == Codec.pcm16) )
+      return null;
     return (playerModule.isStopped) ? startPlayer : null;
   }
 

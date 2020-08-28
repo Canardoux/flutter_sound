@@ -51,26 +51,88 @@ class AudioRecorderEngine : public AudioRecInterface
 private:
         AVAudioEngine* engine;
         AVAudioMixerNode* mixerNode;
-        AVAudioFormat* tapFormat;
-        AVAudioFile* audioFile;
+        //AVAudioFormat* tapFormat;
+        //AVAudioFile* audioFile;
         AVAudioInputNode* inputNode;
         AVAudioOutputNode* outputNode;
         AVAudioFormat* inputFormat;
+        NSFileHandle * fileHandle;
+        AVAudioConverter* converter;
+        AVAudioFormat* myFormat;
+        AVAudioFile* audioFile;
+        
+        AVAudioFormat* tapFormat;
+
 public:
-        /* ctor */ AudioRecorderEngine(t_CODEC coder, NSString* path, NSMutableDictionary* audioSettings)
+
+
+       /* ctor */ AudioRecorderEngine(t_CODEC coder, NSString* path, NSMutableDictionary* audioSettings)
         {
                 engine = [[AVAudioEngine alloc] init];
-                mixerNode = [engine mainMixerNode];
                 inputNode = [engine inputNode];
-                outputNode = [engine outputNode];
-                inputFormat = [inputNode inputFormatForBus: 0];
+                inputFormat = [inputNode outputFormatForBus: 0];
+                NSNumber* nbChannels = audioSettings [AVNumberOfChannelsKey];
+                NSNumber* sampleRate = audioSettings [AVSampleRateKey];
+                AVAudioFormat* recordingFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: nbChannels.integerValue interleaved: YES];
+                converter = [[AVAudioConverter alloc]initFromFormat:inputFormat toFormat:recordingFormat];
+                NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:path];
+                //audioFile = [[AVAudioFile alloc] initForWriting:fileURL settings: [recordingFormat settings] error:nil];
+                fileHandle = [NSFileHandle fileHandleForWritingAtPath: path];
+
+
+                [inputNode installTapOnBus: 0 bufferSize: 2048 format: inputFormat block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when)
+                {
+                        AVAudioPCMBuffer* convertedBuffer = [[AVAudioPCMBuffer alloc]initWithPCMFormat:recordingFormat frameCapacity: [buffer frameCapacity]];
+
+        
+                        AVAudioConverterInputBlock inputBlock = ^AVAudioBuffer*(AVAudioPacketCount inNumberOfPackets, AVAudioConverterInputStatus *outStatus)
+                        {
+                                *outStatus = AVAudioConverterInputStatus_HaveData;
+                                return buffer;
+                        };
+                        BOOL toto = [converter convertToBuffer: convertedBuffer error: nil withInputFromBlock: inputBlock];
+                        int16_t* const* channelData = [convertedBuffer int16ChannelData];
+                        int16_t* totox = *channelData;
+                        
+                        float* const* zozo = [convertedBuffer floatChannelData];
+                        int16_t* const* titi = [convertedBuffer int16ChannelData];
+
+                        int16_t *const  bb = [convertedBuffer int16ChannelData][0];
+                        int n = [convertedBuffer frameLength];
+                        NSData* b = [[NSData alloc] initWithBytes: bb length: n * 2 ];
+                        [fileHandle writeData: b];
+                        //NSLog(@"writing");
+                        //[audioFile writeFromBuffer: convertedBuffer error:nil];
+
+ 
+                        /*
+                        from (int i = 0; i < convertedBuffer.frameLength; )
+          let channelData = stride (from: 0,
+                                             to: Int(pcmBuffer!.frameLength),
+                                             by: buffer.stride).map{ channelDataPointer[$0] }
+                        //Return channelDataValueArray
+                        */
+          
+                }];
+        /*
+      }
+    }
+    
+                }];
+                NSNumber* nbChannels = audioSettings [AVNumberOfChannelsKey];
+                NSNumber* sampleRate = audioSettings [AVSampleRateKey];
+                AVAudioFormat* recordingFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: nbChannels.integerValue interleaved: YES];
+                converter = [[AVAudioConverter alloc]initFromFormat:inputFormat toFormat:recordingFormat];
+                
+                mixerNode = [engine mainMixerNode];
+                 outputNode = [engine outputNode];
                 [engine connect:inputNode to: mixerNode format: inputFormat];
                 [engine disconnectNodeInput:outputNode];
                 NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:path];
                 tapFormat = [mixerNode outputFormatForBus: 0];
                 NSDictionary* settings = [tapFormat settings];
-                NSNumber* floatKey =  settings[@"AVLinearPCMIsFloatKey"] ;
-                BOOL isFloat = ([floatKey intValue] == 1);
+                //NSNumber* floatKey =  settings[@"AVLinearPCMIsFloatKey"] ;
+                //BOOL isFloat = ([floatKey intValue] == 1);
                 
                 
                 //[settings setValue: [NSNumber numberWithInt: kAudioFormatLinearPCM] forKey:@"AVFormatIDKey"];
@@ -86,29 +148,122 @@ public:
                                          //nil];
                //AVAudioPCMBuffer* buffer = [[AVAudioPCMBuffer alloc]initWithPCMFormat:inputFormat frameCapacity: engine.manualRenderingMaximumFrameCount ];
                  
+                AVAudioFormat* format3 = [inputNode outputFormatForBus: 0 ];
+                NSDictionary* settings3 = [format3 settings];
+                NSNumber* depth = [NSNumber numberWithInt: 16];
+                [settings3 setValue: depth forKey: AVLinearPCMBitDepthKey] ;
+                NSNumber* nbChannels = audioSettings [AVNumberOfChannelsKey];
+                //[settings3 setValue: nbChannels forKey: AVNumberOfChannelsKey] ;
+                NSNumber* isFloat = [NSNumber numberWithInt: 0];
+                [settings3 setValue: isFloat forKey: AVLinearPCMIsFloatKey] ;
+                NSNumber* sampleRate = audioSettings [AVSampleRateKey];
+                [settings3 setValue: sampleRate forKey: AVSampleRateKey] ;
+                myFormat = [[AVAudioFormat  alloc] initWithSettings: settings3];
                 
+                converter = [[AVAudioConverter alloc]initFromFormat:inputFormat toFormat:myFormat];
+                 
                 
-                
-                audioFile = [[AVAudioFile alloc] initForWriting:fileURL settings: settings/*audioSettings2*/ error:nil];
+                audioFile = [[AVAudioFile alloc] initForWriting:fileURL settings: settings3/*audioSettings2* / error:nil];
                          
                 [mixerNode installTapOnBus:0 bufferSize:4096 format: tapFormat block:
                         ^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when)
                         {
+                                AVAudioPCMBuffer* convertedBuffer = [[AVAudioPCMBuffer alloc]initWithPCMFormat:myFormat frameCapacity: [buffer frameCapacity]];
+                                BOOL toto = [converter convertToBuffer: convertedBuffer fromBuffer:buffer error:nil];
+                                float* const* zozo = [convertedBuffer floatChannelData];
+                                int16_t* const* papa = [convertedBuffer int16ChannelData];
+                                
+                                //int16_t *const  bb = [convertedBuffer int16ChannelData][0];
+                                int n = [convertedBuffer frameLength];
+                                //NSData* b = [[NSData alloc] initWithBytes: bb length: n * 2 ];
+                                //[fileHandle writeData: b];
+   
                                 //NSLog(@"writing");
-                                [audioFile writeFromBuffer: buffer error:nil];
-                                if (isFloat)
-                                {
-                                        float*  _Nonnull  pt = *[buffer floatChannelData];
-                                        for (int i = 0; i < [buffer frameLength]; ++pt, ++i)
-                                        {
-                                                double v = (double)(*pt);
-                                                if (v > maxAmplitude)
-                                                        maxAmplitude = v;
-                                        }
-                                }
+                                [audioFile writeFromBuffer: convertedBuffer error:nil];
+                         }
+                ];
+                */
+           }
+        
+
+/*
+
+        /* ctor * / AudioRecorderEngine(t_CODEC coder, NSString* path, NSMutableDictionary* audioSettings)
+        {
+                engine = [[AVAudioEngine alloc] init];
+                mixerNode = [engine mainMixerNode];
+                inputNode = [engine inputNode];
+                outputNode = [engine outputNode];
+                inputFormat = [inputNode inputFormatForBus: 0];
+                NSDictionary* inputSettings = [inputFormat settings];
+                [engine disconnectNodeInput:outputNode];
+                NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:path];
+                
+                //tapFormat = [mixerNode outputFormatForBus: 0];
+                //NSDictionary* settings = [tapFormat settings];
+                //AVAudioFormat* format2 = [inputNode inputFormatForBus: 0 ];
+                //NSDictionary* settings2 = [format2 settings];
+                AVAudioFormat* format3 = [inputNode outputFormatForBus: 0 ];
+                NSDictionary* settings3 = [format3 settings];
+                NSNumber* depth = [NSNumber numberWithInt: 16];
+                [settings3 setValue: depth forKey: AVLinearPCMBitDepthKey] ;
+                NSNumber* nbChannels = audioSettings [AVNumberOfChannelsKey];
+                //[settings3 setValue: nbChannels forKey: AVNumberOfChannelsKey] ;
+                NSNumber* isFloat = [NSNumber numberWithInt: 0];
+                [settings3 setValue: isFloat forKey: AVLinearPCMIsFloatKey] ;
+                NSNumber* sampleRate = audioSettings [AVSampleRateKey];
+                [settings3 setValue: sampleRate forKey: AVSampleRateKey] ;
+                myFormat = [[AVAudioFormat  alloc] initWithSettings: settings3];
+                [engine connect: inputNode to: mixerNode format: inputFormat];
+                 
+                converter = [[AVAudioConverter alloc]initFromFormat:inputFormat toFormat:myFormat];
+                
+                
+                 
+                //BOOL isFloat = ([floatKey intValue] == 1);
+                
+                //[tapFormat setValue: 0 forKey:@"kAudioFormatLinearPCM"];
+                //[tapFormat setValue: audioSettings[ @"AVNumberOfChannelsKey"] forKey:@"AVNumberOfChannelsKey"];
+                //[tapFormat setValue: audioSettings[ @"AVSampleRateKey"]  forKey:@"kAudioFormatLinearPCM"];
+
+                //isFloat = false;
+                
+                //[settings setValue: [NSNumber numberWithInt: kAudioFormatLinearPCM] forKey:@"AVFormatIDKey"];
+                //[settings setValue: audioSettings[ @"AVSampleRateKey"] forKey:@"AVSampleRateKey"];
+                //[settings setValue: audioSettings[ @"AVNumberOfChannelsKey"] forKey:@"AVNumberOfChannelsKey"];
+                //AVAudioCommonFormat* outputFormat =   [ AVAudioCommonFormat   initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate:[AVAudioSession sharedInstance].sampleRate channels:AVAudioChannelCount(1) interleaved:false];
+                //NSMutableDictionary *audioSettings2 = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                         //[NSNumber numberWithFloat: [AVAudioSession sharedInstance].sampleRate],AVSampleRateKey,
+                                         //[NSNumber numberWithInt: kAudioFormatLinearPCM ],AVFormatIDKey,
+                                         //[NSNumber numberWithInt: 1 ],AVNumberOfChannelsKey,
+                                         //[NSNumber numberWithInt: ],AVEncoderAudioQualityKey,
+                                         //nil];
+               //AVAudioPCMBuffer* buffer = [[AVAudioPCMBuffer alloc]initWithPCMFormat:inputFormat frameCapacity: engine.manualRenderingMaximumFrameCount ];
+                 
+                
+                
+                
+                audioFile = [[AVAudioFile alloc] initForWriting:fileURL settings: settings3 error:nil];
+                //fileHandle = [NSFileHandle fileHandleForWritingAtPath: path];
+                         
+                [inputNode installTapOnBus:0 bufferSize:1024 format: inputFormat block:
+                        ^(AVAudioPCMBuffer* _Nonnull buffer, AVAudioTime * _Nonnull when)
+                        {
+                                AVAudioPCMBuffer* convertedBuffer = [[AVAudioPCMBuffer alloc]initWithPCMFormat:myFormat frameCapacity: [buffer frameCapacity]];
+                                [converter convertToBuffer: convertedBuffer fromBuffer:buffer error:nil];
+                                float* const* zozo = [convertedBuffer floatChannelData];
+                                int16_t* const* toto = [convertedBuffer int16ChannelData];
+                                
+                                //int16_t *const  bb = [convertedBuffer int16ChannelData][0];
+                                int n = [convertedBuffer frameLength];
+                                //NSData* b = [[NSData alloc] initWithBytes: bb length: n * 2 ];
+                                //[fileHandle writeData: b];
+                                //NSLog(@"writing");
+                                [audioFile writeFromBuffer: convertedBuffer error:nil];
                         }
                 ];
            }
+           */
         
         /* dtor */virtual ~AudioRecorderEngine()
         {
@@ -123,7 +278,7 @@ public:
         virtual void stopRecorder()
         {
                 [engine stop];
-                audioFile = nil;
+                [fileHandle closeFile];
                 engine = nil;
         }
         

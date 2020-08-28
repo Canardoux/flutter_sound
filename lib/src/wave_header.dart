@@ -271,7 +271,7 @@ class WaveHeader
          * @return number of bytes written.
          * @throws IOException
          */
-        int write(IOSink out)
+        int write(EventSink<List<int>> out)
         {
                 /* RIFF header */
                 writeId(out, "RIFF");
@@ -293,19 +293,19 @@ class WaveHeader
                 return HEADER_LENGTH;
         }
 
-        static void writeId(IOSink out, String id)
+        static void writeId(EventSink<List<int>> out, String id)
         {
-                out.write(id);
+                out.add(id.codeUnits);
         }
 
 
-        static void writeInt(IOSink  out, int val)
+        static void writeInt(EventSink<List<int>>  out, int val)
         {
                 out.add([val >> 0 , val >> 8 , val >> 16 , val >> 24]);
         }
 
 
-        static void writeint(IOSink out, int val) async
+        static void writeint(EventSink<List<int>> out, int val) async
         {
                 out.add( [val >> 0 , val >> 8]);
         }

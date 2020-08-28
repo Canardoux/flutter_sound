@@ -134,7 +134,6 @@ class FlutterSoundHelper {
 
   /// Convert a raw PCM buffer to a WAVE buffer.
   /// Add a WAVE header in front of the PCM data
-   /*
   Future<Uint8List> pcmToWaveBuffer
       (
       {
@@ -155,20 +154,25 @@ class FlutterSoundHelper {
       16,
       size, // total number of bytes
     );
+
+    List<int> buffer = List<int>();
+    StreamController controller  = StreamController<List<int>>();
+    StreamSink<List<int>> sink = controller.sink as StreamSink<List<int>> ;
+    Stream<List<int>> stream = controller.stream as Stream<List<int>>;
+    stream.listen( ( e)
+    {
+      var x = e.toList();
+      buffer.addAll(x);
+    });
     await header.write( sink);
-
-    //Stream<List<int>> inputStream = filIn.openRead();
-    await filIn.open();
-
-
-    Uint8List buffer = Uint8List(0);
-    buffer.addAll(inputBuffer);
-    return buffer;
+    sink.add(inputBuffer);
+    await sink.close();
+    await controller.close();
+    return Uint8List.fromList(buffer);
   }
 
 
-  
-    */
+
 
 
 
