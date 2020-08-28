@@ -260,6 +260,11 @@ public class FlutterSoundRecorder extends Session
 			stop(); // To start a new clean record
 			if (_isAudioRecorder[codec.ordinal()])
 			{
+				if (numChannels != 1)
+				{
+					result.error( TAG, "The number of channels supported is actually only 1", "" );
+					return;
+				}
 				recorder = new RecorderAudioRecorder();
 			} else
 			{
@@ -374,7 +379,7 @@ public class FlutterSoundRecorder extends Session
 
 	}
 
-public void setSubscriptionDuration ( final MethodCall call, final Result result )
+	public void setSubscriptionDuration ( final MethodCall call, final Result result )
 	{
 		if ( call.argument ( "duration" ) == null )
 		{

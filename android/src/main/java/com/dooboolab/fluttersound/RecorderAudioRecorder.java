@@ -36,14 +36,6 @@ public class RecorderAudioRecorder
 	private Thread recordingThread = null;
 	private boolean isRecording = false;
 	private double maxAmplitude = 0;
-	//int BufferElements2Rec = 1024; // want to play 2048 (2K) since 2 bytes we use only 1024
-	//int BytesPerElement = 2; // 2 bytes in 16bit format
-
-
-	//private static final int CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_MONO;
-
-	//private static final int AUDIO_FORMAT = AudioFormat.ENCODING_PCM_16BIT;
-
 
 
 	//convert short to byte
@@ -87,7 +79,7 @@ public class RecorderAudioRecorder
 				);
 			header.write( os);
 		}
-		int              totalBytes = 0;
+		int totalBytes = 0;
 		final ByteBuffer buffer     = ByteBuffer.allocateDirect( bufferSize );
 		int n = 0;
 		while (isRecording || n > 0)

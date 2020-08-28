@@ -89,7 +89,7 @@ This verb is usefull to convert a Raw PCM file to a Wave file.
 
 It adds a `Wave` envelop to the PCM file, so that the file can be played back with `startPlayer()`.
 
-Note: the parameters `numChannels` and `sampleRate` **are mandatory, and must match the actual PCM data**. [See here]() a discussion about Raw PCM and WAVE.
+Note: the parameters `numChannels` and `sampleRate` **are mandatory, and must match the actual PCM data**. [See here](doc/codec.md#note-on-raw-pcm-and-wave-files) a discussion about `Raw PCM` and `WAVE` file format.
 
 *Example:*
 ```dart
@@ -114,6 +114,17 @@ Future<Uint8List> pcmToWaveBuffer
       }
 ) async
 
+```
+
+This verb is usefull to convert a Raw PCM buffer to a Wave buffer.
+
+It adds a `Wave` envelop in front of the PCM buffer, so that the file can be played back with `startPlayerFromBuffer()`.
+
+Note: the parameters `numChannels` and `sampleRate` **are mandatory, and must match the actual PCM data**. [See here](doc/codec.md#note-on-raw-pcm-and-wave-files) a discussion about `Raw PCM` and `WAVE` file format.
+
+*Example:*
+```dart
+        Uint8List myWavBuffer = await flutterSoundHelper.pcmToWaveBuffer(inputBuffer: myPCMBuffer, numChannels: 1, sampleRate: 8000)
 ```
 
 -------------------------------------------------------------------------------------------------------------------------------

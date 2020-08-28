@@ -9,6 +9,7 @@
 - Android : minAndroidSdk is (again) **16**. (Tested on a SDK 19 emulator).  [#400](https://github.com/dooboolab/flutter_sound/issues/400)
 - New helper API verb : [pcmToWave()](doc/helper.md#pcmtowave)  to add a WAVE header in front of a Raw PCM record
 - New helper API verb : [pcmToWaveBuffer()](doc/helper.md#pcmtowavebuffer)  to add a WAVE header in front of a Raw PCM buffer
+- [startRecorder()](doc/recorder.md#startrecorder) can now record **Raw PCM Integers/Linear 16** files, both on iOS and Android (Look to a [PCM discussion, here](doc/codec.md#note-on-raw-pcm-and-wave-files))
 
 ## 5.1.1
 
