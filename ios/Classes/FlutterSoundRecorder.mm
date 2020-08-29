@@ -58,7 +58,7 @@ private:
 public:
 
 
-       /* ctor */ AudioRecorderEngine(t_CODEC coder, NSString* path, NSMutableDictionary* audioSettings)
+       /* ctor */ AudioRecorderEngine(t_CODEC coder, NSString* path, NSMutableDictionary* audioSettings, Session* session)
         {
                 engine = [[AVAudioEngine alloc] init];
                 dateCumul = 0;
@@ -70,12 +70,18 @@ public:
                 NSNumber* sampleRate = audioSettings [AVSampleRateKey];
                 AVAudioFormat* recordingFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: nbChannels.integerValue interleaved: YES];
                 AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat:inputFormat toFormat:recordingFormat];
-                NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:path];
                 NSFileManager* fileManager = [NSFileManager defaultManager];
-                BOOL success = [fileManager removeItemAtPath:path error:nil];
-                [fileManager createFileAtPath: path contents:nil attributes:nil];
-                //audioFile = [[AVAudioFile alloc] initForWriting:fileURL settings: [recordingFormat settings] error:nil];
-                fileHandle = [NSFileHandle fileHandleForWritingAtPath: path];
+                NSURL* fileURL = nil;
+                if (path != nil && path != [NSNull null])
+                {
+                        BOOL success = [fileManager removeItemAtPath:path error:nil];
+                        [fileManager createFileAtPath: path contents:nil attributes:nil];
+                        fileURL = [[NSURL alloc] initFileURLWithPath: path];
+                        fileHandle = [NSFileHandle fileHandleForWritingAtPath: path];
+                } else
+                {
+                        fileHandle = nil;
+                }
 
 
                 [inputNode installTapOnBus: 0 bufferSize: 2048 format: inputFormat block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when)
@@ -90,35 +96,34 @@ public:
                                 inputStatus =  AVAudioConverterInputStatus_NoDataNow;
                                 return buffer;
                         };
-                        BOOL toto = [converter convertToBuffer: convertedBuffer error: nil withInputFromBlock: inputBlock];
-                        int16_t* const* channelData = [convertedBuffer int16ChannelData];
-                        int16_t* totox = *channelData;
-                        
-                        float* const* zozo = [convertedBuffer floatChannelData];
-                        int16_t* const* titi = [convertedBuffer int16ChannelData];
-
-                        int16_t *const  bb = [convertedBuffer int16ChannelData][0];
+                        BOOL r = [converter convertToBuffer: convertedBuffer error: nil withInputFromBlock: inputBlock];
                         int n = [convertedBuffer frameLength];
+                        int16_t *const  bb = [convertedBuffer int16ChannelData][0];
                         NSData* b = [[NSData alloc] initWithBytes: bb length: n * 2 ];
-                        //[b writeToFile:path atomically:YES];
-                        [fileHandle writeData: b];
-                        
-                        int16_t* pt = [convertedBuffer int16ChannelData][0];
-                        for (int i = 0; i < [buffer frameLength]; ++pt, ++i)
+                        if (n > 0)
                         {
-                                short curSample = *pt;
-                                if ( curSample > maxAmplitude )
+                                if (fileHandle != nil)
                                 {
-                                        maxAmplitude = curSample;
+                                        [fileHandle writeData: b];
+                                } else
+                                {
+                                        //NSDictionary* dic = [[NSMutableDictionary alloc] init];
+                                        //[dic setValue: b forKey: @"recordingData"];
+                                        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: [session getSlotNo]], @"recordingData": b,};
+                                        [session invokeMethod: @"recordingData" dico: dico];
                                 }
-                
+                                
+                                int16_t* pt = [convertedBuffer int16ChannelData][0];
+                                for (int i = 0; i < [buffer frameLength]; ++pt, ++i)
+                                {
+                                        short curSample = *pt;
+                                        if ( curSample > maxAmplitude )
+                                        {
+                                                maxAmplitude = curSample;
+                                        }
+                        
+                                }
                         }
-
-        
-                        //NSLog(@"writing");
-                        //[audioFile writeFromBuffer: convertedBuffer error:nil];
-
-     
                 }];
         }
          
@@ -469,20 +474,6 @@ AVAudioSessionPort tabSessionPort [] =
                             forKey:AVEncoderBitRateKey];
             }
 
-  /*
-          // set volume default to speaker
-          UInt32 doChangeDefaultRoute = 1;
-          AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(doChangeDefaultRoute), &doChangeDefaultRoute);
-
-          // set up for bluetooth microphone input
-          UInt32 allowBluetoothInput = 1;
-          AudioSessionSetProperty (kAudioSessionProperty_OverrideCategoryEnableBluetoothInput,sizeof (allowBluetoothInput),&allowBluetoothInput);
-          //if (path == NULL)
-          {
-                        //audioFileURL = [NSURL fileURLWithPath:[ [self GetDirectoryOfType_FlutterSound: NSCachesDirectory]
-                        //stringByAppendingString:defaultExtensions[coder] ]];
-          }
-   */
           if(coder == pcm16)
           {
                 if (numChannels != 1)
@@ -493,7 +484,7 @@ AVAudioSessionPort tabSessionPort [] =
                                 details:nil];
                                 return;
                 }
-                audioRec = new AudioRecorderEngine(coder, path, audioSettings);
+                audioRec = new AudioRecorderEngine(coder, path, audioSettings, self);
           } else
           {
                 audioRec = new avAudioRec( path, audioSettings);

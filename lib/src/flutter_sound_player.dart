@@ -217,7 +217,7 @@ class FlutterSoundPlayer extends Session
   /// so multiples of 100ms will give you the most consistent timing
   /// source.
   ///
-  /// Note: all calls to [dispositionStream] agains this player will
+  /// Note: all calls to [dispositionStream] against this player will
   /// share a single interval which will controlled by the last
   /// call to this method.
   ///
@@ -637,21 +637,8 @@ class FlutterSoundPlayer extends Session
      Codec codec = Codec.aacADTS,
      TWhenFinished whenFinished = null,
   }) async {
-    print('FS:---> startPlayer ');
-    /*
-    if (isInited == Initialized.fullyInitializedWithUI) {
-      final track = Track(trackPath: fromURI, dataBuffer: fromDataBuffer, codec: codec);
-      return startPlayerFromTrack(track,
-                  whenFinished: ()
-                  {
-                    whenFinished();
-                  }
-      );
-    }
-
-     */
-
-    if (isInited == Initialized.initializationInProgress) {
+     print('FS:---> startPlayer ');
+     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {

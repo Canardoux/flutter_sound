@@ -22,11 +22,15 @@ package com.dooboolab.fluttersound;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.os.Handler;
+import android.os.Looper;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class RecorderAudioRecorder
@@ -36,6 +40,8 @@ public class RecorderAudioRecorder
 	private Thread recordingThread = null;
 	private boolean isRecording = false;
 	private double maxAmplitude = 0;
+	final private Handler mainHandler = new Handler (Looper.getMainLooper ());
+
 
 
 	//convert short to byte
@@ -57,30 +63,31 @@ public class RecorderAudioRecorder
 		return (short)(argB1 | (argB2 << 8));
 	}
 
-	private void writeAudioDataToFile(FlutterSoundCodec codec, int sampleRate, String filePath, int bufferSize) throws IOException
+	private void writeAudioDataToFile(FlutterSoundCodec codec, int sampleRate, String filePath, int bufferSize, Session session) throws IOException
 	{
 		// Write the output audio in byte
 
 		byte[] tempBuffer = new byte[bufferSize];
-
-		FileOutputStream os = null;
-		os = new FileOutputStream(filePath);
-
-		if (codec == FlutterSoundCodec.pcm16WAV)
-		{
-			WaveHeader header = new WaveHeader
-				(
-					WaveHeader.FORMAT_PCM,
-					(short)1, // numChannels
-					sampleRate,
-					(short)16,
-					100000 // total number of bytes
-
-				);
-			header.write( os);
-		}
 		int totalBytes = 0;
-		final ByteBuffer buffer     = ByteBuffer.allocateDirect( bufferSize );
+		FileOutputStream os = null;
+		if (filePath != null)
+		{
+			os = new FileOutputStream(filePath);
+
+			if (codec == FlutterSoundCodec.pcm16WAV) {
+				WaveHeader header = new WaveHeader
+					(
+						WaveHeader.FORMAT_PCM,
+						(short) 1, // numChannels
+						sampleRate,
+						(short) 16,
+						100000 // total number of bytes
+
+					);
+				header.write(os);
+			}
+		}
+		//final ByteBuffer buffer     = ByteBuffer.allocateDirect( bufferSize );
 		int n = 0;
 		while (isRecording || n > 0)
 		{
@@ -90,7 +97,23 @@ public class RecorderAudioRecorder
 			if (n > 0)
 			{
 				totalBytes += n;
-				os.write(tempBuffer, 0, n);
+				if (os != null)
+				{
+					os.write(tempBuffer, 0, n);
+				} else
+				{
+					mainHandler.post(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+
+							Map<String, Object> dic = new HashMap<String, Object>();
+							dic.put("recordingData", tempBuffer);
+							session.invokeMethodWithMap("recordingData", dic);
+						}
+					});
+				}
 				for (int i = 0; i < n/2; ++i)
 				{
 					short curSample = getShort( tempBuffer[ i * 2 ], tempBuffer[ i * 2 + 1 ] );
@@ -111,24 +134,25 @@ public class RecorderAudioRecorder
 
 		}
 
-		os.close();
-		if (codec == FlutterSoundCodec.pcm16WAV)
-		{
-			RandomAccessFile fh = new RandomAccessFile( filePath, "rw" );
-			fh.seek( 4 );
-			int x = totalBytes + 36;
-			fh.write( x >> 0 );
-			fh.write( x >> 8 );
-			fh.write( x >> 16 );
-			fh.write( x >> 24 );
+		if (os != null) {
+			os.close();
+			if (codec == FlutterSoundCodec.pcm16WAV) {
+				RandomAccessFile fh = new RandomAccessFile(filePath, "rw");
+				fh.seek(4);
+				int x = totalBytes + 36;
+				fh.write(x >> 0);
+				fh.write(x >> 8);
+				fh.write(x >> 16);
+				fh.write(x >> 24);
 
 
-			fh.seek( WaveHeader.HEADER_LENGTH - 4 );
-			fh.write( totalBytes >> 0 );
-			fh.write( totalBytes >> 8 );
-			fh.write( totalBytes >> 16 );
-			fh.write( totalBytes >> 24 );
-			fh.close();
+				fh.seek(WaveHeader.HEADER_LENGTH - 4);
+				fh.write(totalBytes >> 0);
+				fh.write(totalBytes >> 8);
+				fh.write(totalBytes >> 16);
+				fh.write(totalBytes >> 24);
+				fh.close();
+			}
 		}
 	}
 
@@ -160,7 +184,8 @@ public class RecorderAudioRecorder
 			Integer bitRate,
 			FlutterSoundCodec codec,
 			String path,
-			int audioSource
+			int audioSource,
+			Session session
 		)
 	{
 		/**
@@ -186,7 +211,7 @@ public class RecorderAudioRecorder
 			{
 				try
 				{
-					writeAudioDataToFile(codec, sampleRate, path, bufferSize);
+					writeAudioDataToFile(codec, sampleRate, path, bufferSize, session);
 				} catch (IOException e)
 				{
 					e.printStackTrace();

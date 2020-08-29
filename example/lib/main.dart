@@ -81,6 +81,7 @@ class _MyAppState extends State<MyApp> {
   ];
   StreamSubscription _recorderSubscription;
   StreamSubscription _playerSubscription;
+  StreamSubscription _recordingDataSubscription;
 
   FlutterSoundPlayer playerModule = FlutterSoundPlayer();
   FlutterSoundRecorder recorderModule = FlutterSoundRecorder();
@@ -101,6 +102,8 @@ class _MyAppState extends State<MyApp> {
   bool _isAudioPlayer = false;
 
   double _duration = null;
+  StreamController<Uint8List> recordingDataController;
+  IOSink sink;
 
   Future<void> _initializeExample(bool withUI) async {
     await playerModule.closeAudioSession();
@@ -113,7 +116,7 @@ class _MyAppState extends State<MyApp> {
     await playerModule.setSubscriptionDuration(Duration(milliseconds: 10));
     await recorderModule.setSubscriptionDuration(Duration(milliseconds: 10));
     initializeDateFormatting();
-    setCodec(_codec);
+    await setCodec(_codec);
   }
 
   Future<void> init() async {
@@ -122,7 +125,7 @@ class _MyAppState extends State<MyApp> {
     await _initializeExample(false);
 
     if (Platform.isAndroid) {
-      copyAssets();
+      await copyAssets();
     }
   }
 
@@ -155,11 +158,26 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+
+  void cancelRecordingDataSubscription() {
+    if (_recordingDataSubscription != null) {
+      _recordingDataSubscription.cancel();
+      _recordingDataSubscription = null;
+    }
+    recordingDataController = null;
+    if (sink != null)
+      {
+        sink.close();
+        sink = null;
+      }
+  }
+
   @override
   void dispose() {
     super.dispose();
     cancelPlayerSubscriptions();
     cancelRecorderSubscriptions();
+    cancelRecordingDataSubscription();
     releaseFlauto();
   }
 
@@ -175,30 +193,42 @@ class _MyAppState extends State<MyApp> {
 
   void startRecorder() async {
     try {
-      // String path = await flutterSoundModule.startRecorder
-      // (
-      //   paths[_codec.index],
-      //   codec: _codec,
-      //   sampleRate: 16000,
-      //   bitRate: 16000,
-      //   numChannels: 1,
-      //   androidAudioSource: AndroidAudioSource.MIC,
-      // );
-      // Request Microphone permission if needed
+        // Request Microphone permission if needed
         PermissionStatus status = await Permission.microphone.request();
         if (status != PermissionStatus.granted) {
           throw RecordingPermissionException("Microphone permission not granted");
         }
 
       Directory tempDir = await getTemporaryDirectory();
-      String path = '${tempDir.path}/${recorderModule.slotNo}-flutter_sound${ext[_codec.index]}';
-      await recorderModule.startRecorder(
-        toFile: path,
-        codec: _codec,
-        bitRate: 8000,
-        numChannels: 1,
-        sampleRate: 8000,
-      );
+      String path = '${tempDir.path}/${recorderModule
+            .slotNo}-flutter_sound${ext[_codec.index]}';
+
+      if (_media == Media.stream) {
+          assert(_codec == Codec.pcm16);
+          File outputFile = File(path);
+          await outputFile.delete();
+          sink = outputFile.openWrite();
+          recordingDataController = StreamController<Uint8List>();
+          _recordingDataSubscription = recordingDataController.stream.listen((Uint8List buffer) {
+            sink.add(buffer);
+          });
+          await recorderModule.startRecorder(
+            toStream: recordingDataController,
+            codec: _codec,
+            bitRate: 8000,
+            numChannels: 1,
+            sampleRate: 8000,
+          );
+
+      } else {
+        await recorderModule.startRecorder(
+          toFile: path,
+          codec: _codec,
+          bitRate: 8000,
+          numChannels: 1,
+          sampleRate: 8000,
+        );
+      }
       print('startRecorder');
 
       _recorderSubscription = recorderModule.onProgress.listen((e) {
@@ -222,10 +252,8 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         stopRecorder();
         this._isRecording = false;
-        if (_recorderSubscription != null) {
-          _recorderSubscription.cancel();
-          _recorderSubscription = null;
-        }
+        cancelRecordingDataSubscription();
+        cancelRecorderSubscriptions();
         });
     }
   }
@@ -252,6 +280,7 @@ class _MyAppState extends State<MyApp> {
       await recorderModule.stopRecorder();
       print('stopRecorder');
       cancelRecorderSubscriptions();
+      cancelRecordingDataSubscription();
       getDuration();
     } catch (err) {
       print('stopRecorder error: $err');
@@ -512,6 +541,10 @@ class _MyAppState extends State<MyApp> {
               value: Media.remoteExampleFile,
               child: Text('Remote Example File'),
             ),
+            DropdownMenuItem<Media>(
+              value: Media.stream,
+              child: Text('Dart Stream'),
+            ),
           ],
         ),
       ],
@@ -644,7 +677,7 @@ class _MyAppState extends State<MyApp> {
     return (playerModule.isStopped) ? startPlayer : null;
   }
 
-  void Function() startStopRecorder() {
+  void  startStopRecorder() {
     if (recorderModule.isRecording || recorderModule.isPaused)
       stopRecorder();
     else
@@ -652,9 +685,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   void Function() onStartRecorderPressed() {
-    //if (_media == t_MEDIA.ASSET || _media == t_MEDIA.BUFFER || _media == t_MEDIA.REMOTE_EXAMPLE_FILE) return null;
     // Disable the button if the selected codec is not supported
-    if (recorderModule == null || !_encoderSupported) return null;
+    if (recorderModule == null || !_encoderSupported)
+      return null;
+    if (_media == Media.stream && _codec != Codec.pcm16)
+      return null;
     return startStopRecorder;
   }
 

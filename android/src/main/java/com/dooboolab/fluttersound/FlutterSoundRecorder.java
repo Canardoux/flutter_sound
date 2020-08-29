@@ -89,7 +89,7 @@ public class FlutterSoundRecorder extends Session
 {
 	static boolean _isAndroidEncoderSupported[] = {
 		true, // DEFAULT
-		Build.VERSION.SDK_INT >= 28, // aacADTS
+		true, //Build.VERSION.SDK_INT >= 28, // aacADTS
 		false, // opusOGG // ( Build.VERSION.SDK_INT < 29 )
 		false, // opusCAF
 		false, // MP3
@@ -254,6 +254,7 @@ public class FlutterSoundRecorder extends Session
 			final String                     path               = call.argument ( "path" );
 			int                             _audioSource        = call.argument ( "audioSource" );
 			int                             audioSource         = tabAudioSource[_audioSource];
+			int 				toStream	    = call.argument ( "toStream");
 			//audioSource =MediaRecorder.AudioSource.MIC; // Just for test
 			mPauseTime = 0;
 			mStartPauseTime = -1;
@@ -272,7 +273,7 @@ public class FlutterSoundRecorder extends Session
 			}
 			try
 			{
-				recorder._startRecorder( numChannels, sampleRate, bitRate, codec, path, audioSource );
+				recorder._startRecorder( numChannels, sampleRate, bitRate, codec, path, audioSource, this );
 			} catch ( Exception e )
 			{
 				result.error( TAG, "Error starting recorder", e.getMessage() );

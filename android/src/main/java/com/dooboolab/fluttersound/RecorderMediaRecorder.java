@@ -95,12 +95,12 @@ public class RecorderMediaRecorder
 			Integer bitRate,
 			FlutterSoundCodec codec,
 			String path,
-			int audioSource
+			int audioSource,
+			Session session
                 )
 		throws
 		IOException
 	{
-		final int v = Build.VERSION.SDK_INT;
 		// The caller must be allowed to specify its path. We must not change it here
 		// path = PathUtils.getDataDirectory(reg.context()) + "/" + path; // SDK 29 :
 		// you may not write in getExternalStorageDirectory()

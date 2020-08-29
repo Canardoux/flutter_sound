@@ -23,6 +23,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'dart:io' show Platform;
+import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -82,6 +83,12 @@ class FlautoRecorderPlugin  extends FlautoPlugin {
         }
         break;
 
+      case "recordingData":
+        {
+          aRecorder.recordingData(call.arguments as Map<dynamic, dynamic>);
+        }
+        break;
+
       default:
         throw ArgumentError('Unknown method ${call.method}');
     }
@@ -92,6 +99,7 @@ class FlautoRecorderPlugin  extends FlautoPlugin {
 class FlutterSoundRecorder extends Session {
   RecorderState recorderState = RecorderState.isStopped;
   StreamController<RecordingDisposition> _recorderController;
+  StreamController<Uint8List> _userStreamController;
 
 
   ///
@@ -140,6 +148,10 @@ class FlutterSoundRecorder extends Session {
       flautoRecorderPlugin = FlautoRecorderPlugin();
     } // The lazy singleton
     _setRecorderCallback();
+    if (_userStreamController != null) {
+      _userStreamController.close();
+      _userStreamController = null;
+    }
     openSession();
     await invokeMethod('initializeFlautoRecorder', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'device': device.index, 'audioFlags': audioFlags});
 
@@ -157,6 +169,10 @@ class FlutterSoundRecorder extends Session {
     await stopRecorder();
     isInited = Initialized.initializationInProgress;
     _removeRecorderCallback(); // _recorderController will be closed by this function
+    if (_userStreamController != null) {
+      _userStreamController.close();
+      _userStreamController = null;
+    }
     await invokeMethod('releaseFlautoRecorder', <String, dynamic>{});
     super.closeAudioSession();
     isInited = Initialized.notInitialized;
@@ -166,6 +182,13 @@ class FlutterSoundRecorder extends Session {
     int duration = call['duration'] as int;
     double dbPeakLevel = call['dbPeakLevel'] as double;
     _recorderController.add(RecordingDisposition( Duration(milliseconds: duration), dbPeakLevel ,) );
+  }
+
+  void recordingData(Map call) {
+    if (_userStreamController != null) {
+      Uint8List data = call['recordingData'] as Uint8List;
+      _userStreamController.add(data);
+    }
   }
 
 
@@ -246,10 +269,14 @@ class FlutterSoundRecorder extends Session {
     return fout.path;
   }
 
+
+
+
+
   Future<void> startRecorder( {
     Codec codec = Codec.defaultCodec,
     String toFile = null,
-    Stream toStream = null,
+    StreamController<Uint8List> toStream = null,
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
@@ -277,7 +304,14 @@ class FlutterSoundRecorder extends Session {
       throw CodecNotSupportedException('Codec not supported.');
     }
 
-    //if (toFile == null) toFile = await defaultPath(codec);
+    if ( (toFile == null && toStream == null) || (toFile != null && toStream != null))
+      throw Exception('One, and only one parameter "toFile"/"toStream" must be provided');
+
+    if (toStream != null && codec != Codec.pcm16)
+      throw Exception ('toStream can only be used with codec == Codec.pcm16');
+
+    _userStreamController = toStream;
+
 
     // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
     // We use FFmpeg for that task.
@@ -301,7 +335,7 @@ class FlutterSoundRecorder extends Session {
         'numChannels': numChannels,
         'bitRate': bitRate,
         'codec': codec.index,
-        'toStream': toStream,
+        'toStream': toStream != null ? 1 : 0,
         'audioSource': audioSource.index,
       };
 
@@ -325,6 +359,10 @@ class FlutterSoundRecorder extends Session {
       throw (_notOpen());
     }
     await invokeMethod('stopRecorder', <String, dynamic>{}) as String;
+    if (_userStreamController != null) {
+      _userStreamController.close();
+      _userStreamController = null;
+    }
 
     recorderState = RecorderState.isStopped;
 
@@ -395,7 +433,7 @@ class FlutterSoundRecorder extends Session {
 /// Holds point in time details of the recording disposition
 /// including the current duration and decibels.
 /// Use the [dispositionStream] method to subscribe to a stream
-/// of [RecordingDisposition] will be emmited whilst recording.
+/// of [RecordingDisposition] will be emmmited while recording.
 class RecordingDisposition {
   /// The total duration of the recording at this point in time.
   final Duration duration;

@@ -167,6 +167,11 @@ enum AudioDevice {
         return [super init];
 }
 
+- (int) getSlotNo
+{
+        return slotNo;
+}
+
 - (void) releaseSession
 {
        if (hasFocus)
