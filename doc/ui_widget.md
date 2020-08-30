@@ -32,7 +32,17 @@ Then reference to one of the flutter sound UI widgets in your widget tree.
 /// a value of 0.0 makes the child fully opaque.
 /// The default value of [opacity] is 0.3.
 
-## Style of the `SoundPlayerUI` widget
+
+## `SoundPlayerUI`
+To use add FOREGROUND_SERVICE permission.
+
+### Android
+Add this line to your AndroidManifest.xml
+```
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+```
+
+### Style of the `SoundPlayerUI` widget
 
 The two constructors of the `SoundPlayerUI` widget have 6 optional parameters for allowing the App to tune the UI presentation:
 
