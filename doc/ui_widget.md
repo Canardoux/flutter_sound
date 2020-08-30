@@ -18,7 +18,7 @@ First import the module
 Then reference to one of the flutter sound UI widgets in your widget tree:
 
 - [Sound Player UI](#SoundPlayerUI)
-- [Sound Recorder](#SoundRecorderUI)
+- [Sound Recorder UI](#SoundRecorderUI)
 
 ## `SoundPlayerUI`
 To use add FOREGROUND_SERVICE permission.
