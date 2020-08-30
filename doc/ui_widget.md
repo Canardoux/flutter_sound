@@ -6,8 +6,8 @@
 
 The Widgets offered by the Flutter Sound UI Widgets module are :
 
-- [Sound Recorder](#SoundRecorderUI)
 - [Sound Player UI](#SoundPlayerUI)
+- [Sound Recorder](#SoundRecorderUI)
 
 -----------------------------------------------------------------------------------------------------------------------
 
@@ -17,11 +17,8 @@ First import the module
 
 Then reference to one of the flutter sound UI widgets in your widget tree:
 
-- [Sound Recorder](#SoundRecorderUI)
 - [Sound Player UI](#SoundPlayerUI)
-
-## `SoundRecorderUI`
-.. working on describing it.
+- [Sound Recorder](#SoundRecorderUI)
 
 ## `SoundPlayerUI`
 To use add FOREGROUND_SERVICE permission.
@@ -42,6 +39,10 @@ The two constructors of the `SoundPlayerUI` widget have 6 optional parameters fo
 - TextStyle textStyle = null,
 - TextStyle titleStyle = null,
 - SliderThemeData sliderThemeData = null,
+
+## `SoundRecorderUI`
+.. working on describing it.
+its actually not working for me. File the bugreport I have.
 
 -----------------------------------------------------------------------------------------------------------------------
 
