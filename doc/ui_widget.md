@@ -7,7 +7,7 @@
 The Widgets offered by the Flutter Sound UI Widgets module are :
 
 - [Sound Player UI](#SoundPlayerUI)
-- [Sound Recorder](#SoundRecorderUI)
+- [Sound Recorder UI](#SoundRecorderUI)
 
 -----------------------------------------------------------------------------------------------------------------------
 
