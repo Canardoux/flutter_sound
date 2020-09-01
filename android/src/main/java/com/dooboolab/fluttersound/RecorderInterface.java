@@ -35,7 +35,7 @@ public interface RecorderInterface
 		)
 		throws
 		IOException;
-	public void _stopRecorder (  );
+	public void _stopRecorder (  ) throws Exception;
 	public boolean pauseRecorder( );
 	public boolean resumeRecorder(  );
 	public double getMaxAmplitude ();

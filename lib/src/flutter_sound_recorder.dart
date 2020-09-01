@@ -67,7 +67,6 @@ class FlautoRecorderPlugin  extends FlautoPlugin {
   void setCallback() {
     channel = const MethodChannel('com.dooboolab.flutter_sound_recorder');
     channel.setMethodCallHandler((MethodCall call) {
-      // This lambda function is necessary because channelMethodCallHandler is a virtual function
       return channelMethodCallHandler(call);
     });
   }
@@ -99,7 +98,7 @@ class FlautoRecorderPlugin  extends FlautoPlugin {
 class FlutterSoundRecorder extends Session {
   RecorderState recorderState = RecorderState.isStopped;
   StreamController<RecordingDisposition> _recorderController;
-  StreamController<Uint8List> _userStreamController;
+  StreamSink<Uint8List> _userStreamSink;
 
 
   ///
@@ -148,9 +147,9 @@ class FlutterSoundRecorder extends Session {
       flautoRecorderPlugin = FlautoRecorderPlugin();
     } // The lazy singleton
     _setRecorderCallback();
-    if (_userStreamController != null) {
-      _userStreamController.close();
-      _userStreamController = null;
+    if (_userStreamSink != null) {
+      _userStreamSink.close();
+      _userStreamSink = null;
     }
     openSession();
     await invokeMethod('initializeFlautoRecorder', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'device': device.index, 'audioFlags': audioFlags});
@@ -169,9 +168,9 @@ class FlutterSoundRecorder extends Session {
     await stopRecorder();
     isInited = Initialized.initializationInProgress;
     _removeRecorderCallback(); // _recorderController will be closed by this function
-    if (_userStreamController != null) {
-      _userStreamController.close();
-      _userStreamController = null;
+    if (_userStreamSink != null) {
+      _userStreamSink.close();
+      _userStreamSink = null;
     }
     await invokeMethod('releaseFlautoRecorder', <String, dynamic>{});
     super.closeAudioSession();
@@ -185,9 +184,9 @@ class FlutterSoundRecorder extends Session {
   }
 
   void recordingData(Map call) {
-    if (_userStreamController != null) {
+    if (_userStreamSink != null) {
       Uint8List data = call['recordingData'] as Uint8List;
-      _userStreamController.add(data);
+      _userStreamSink.add(data);
     }
   }
 
@@ -276,7 +275,7 @@ class FlutterSoundRecorder extends Session {
   Future<void> startRecorder( {
     Codec codec = Codec.defaultCodec,
     String toFile = null,
-    StreamController<Uint8List> toStream = null,
+    StreamSink<Uint8List> toStream = null,
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
@@ -310,7 +309,7 @@ class FlutterSoundRecorder extends Session {
     if (toStream != null && codec != Codec.pcm16)
       throw Exception ('toStream can only be used with codec == Codec.pcm16');
 
-    _userStreamController = toStream;
+    _userStreamSink = toStream;
 
 
     // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
@@ -359,9 +358,9 @@ class FlutterSoundRecorder extends Session {
       throw (_notOpen());
     }
     await invokeMethod('stopRecorder', <String, dynamic>{}) as String;
-    if (_userStreamController != null) {
-      _userStreamController.close();
-      _userStreamController = null;
+    if (_userStreamSink != null) {
+      _userStreamSink.close();
+      _userStreamSink = null;
     }
 
     recorderState = RecorderState.isStopped;

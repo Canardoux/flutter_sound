@@ -44,6 +44,8 @@ enum PlayerState {
 typedef void TWhenFinished();
 typedef void TonPaused(bool paused);
 typedef void TonSkip();
+typedef Uint8List TNeedSomeData();
+
 //typedef void TupdateProgress({position: Duration , duration: Duration});
 
 FlautoPlayerPlugin flautoPlayerPlugin; // Singleton, lazy initialized
@@ -150,12 +152,16 @@ String fileExtension(String path) {
   var r = p.extension(path);
   return r;
 }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------
+
 class FlutterSoundPlayer extends Session
 {
   TonSkip onSkipForward; // User callback "onPaused:"
   TonSkip onSkipBackward; // User callback "onPaused:"
   TonPaused onPaused; // user callback "whenPause:"
   var lock = new Lock();
+  StreamSubscription<Uint8List> feedStreamSubscription ;
 
   Completer<FlutterSoundPlayer> openAudioSessionCompleter;
   Completer<Duration> startPlayerCompleter;
@@ -423,10 +429,6 @@ class FlutterSoundPlayer extends Session
   void _updateProgress(Map call) {
     int duration = call['duration'] as int;
     int position = call['position'] as int;
-    if (duration == 0 || position > 10000) // For debugging
-      {
-        print(duration);
-      }
     if (duration < position)
       {
         print(' Duration = $duration,   Position = $position');
@@ -635,6 +637,7 @@ class FlutterSoundPlayer extends Session
      String fromURI = null,
      Uint8List fromDataBuffer = null,
      Codec codec = Codec.aacADTS,
+     int sampleRate = 16000, // Used only with codec == Codec.pcm16
      TWhenFinished whenFinished = null,
   }) async {
      print('FS:---> startPlayer ');
@@ -645,8 +648,27 @@ class FlutterSoundPlayer extends Session
       throw (_notOpen());
     }
 
+     if (codec == Codec.pcm16 && fromURI != null) {
+       Directory tempDir = await getTemporaryDirectory();
+       String path =
+           '${tempDir.path}/flutter_sound_tmp.wav';
+       await flutterSoundHelper.pcmToWave(
+         inputFile: fromURI,
+         outputFile: path,
+         numChannels: 1,
+         //bitsPerSample: 16,
+         sampleRate: sampleRate,
+       );
+       fromURI = path;
+       codec = Codec.pcm16WAV;
+     } else
+     if (codec == Codec.pcm16 && fromDataBuffer != null) {
+       fromDataBuffer = await flutterSoundHelper.pcmToWaveBuffer(inputBuffer: fromDataBuffer, sampleRate: sampleRate, numChannels: 1);
+       codec = Codec.pcm16WAV;
+     }
 
-    await lock.synchronized(() async {
+
+     await lock.synchronized(() async {
         await stop( ); // Just in case
 
         //playerState = PlayerState.isPlaying;
@@ -689,6 +711,66 @@ class FlutterSoundPlayer extends Session
     print('FS:<--- startPlayerCompleted ');
   }
 
+
+  Future<Duration> startPlayerFromStream ({
+    Codec codec = Codec.pcm16,
+    TNeedSomeData needSomeData = null,
+    Stream<Uint8List> inputStream = null,
+    int numChannels = 1,
+    int sampleRate = 16000,
+  }) async
+  {
+    print('FS:---> startPlayerFromStream ');
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if ( isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
+
+
+      await lock.synchronized(() async {
+      await stop( ); // Just in case
+      if (inputStream != null)
+        {
+          feedStreamSubscription = inputStream.listen((Uint8List buffer)
+          {
+            feedStreamSubscription.pause( feed(buffer));
+          }) ;
+        }
+      int state  = (await invokeMethod( 'startPlayer',
+          {
+            'codec': codec.index,
+            'fromDataBuffer': null,
+            'fromURI': null,
+            'numChannels': numChannels,
+            'sampleRate': sampleRate
+          } as Map<String, dynamic> )) as int;
+      playerState = PlayerState.values[state];
+    } );
+    print('FS:<--- startPlayerFromStream ');
+    }
+
+
+    Future<void> feed(Uint8List data) async {
+      if (isInited == Initialized.initializationInProgress) {
+        throw (_InitializationInProgress());
+      }
+      if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
+        throw (_notOpen());
+      }
+      await lock.synchronized(() async {
+        try
+        {
+            playerState = await PlayerState.values[await invokeMethod( 'feed',  <String, dynamic>{'data': data,} ) as int];
+        }
+        catch (e)
+        {
+          rethrow;
+        }
+      });
+
+    }
 
   Future<Duration> startPlayerFromTrack( Track track,
               {
@@ -837,6 +919,31 @@ class FlutterSoundPlayer extends Session
     });
   }
 
+  Future<void> finishPlayer() async {
+    print('FS:---> finishPlayer ');
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitializedWithUI &&
+        isInited != Initialized.fullyInitialized) {
+      throw (_notOpen());
+    }
+    try
+    {
+      //_removePlayerCallback(); // playerController is closed by this function
+      await stop( );
+    }
+    catch (e)
+    {
+      print( e );
+    }
+    int state = await invokeMethod('finishPlayer', <String, dynamic>{}) as int;
+    stop();
+    print('FS:<--- finishPlayer ');
+
+  }
+
+
     Future<void> stopPlayer() async {
       print('FS:---> stopPlayer ');
       if (isInited == Initialized.initializationInProgress) {
@@ -865,6 +972,11 @@ class FlutterSoundPlayer extends Session
 
   Future<void> stop() async {
     print('FS:---> stop ');
+    if (feedStreamSubscription != null)
+      {
+        feedStreamSubscription.cancel();
+        feedStreamSubscription = null;
+      }
     int state = await invokeMethod('stopPlayer', <String, dynamic>{}) as int;
 
     playerState = PlayerState.values[state];
@@ -877,17 +989,6 @@ class FlutterSoundPlayer extends Session
 
   }
 
-
-  Future<void> _stopPlayerwithCallback() async {
-    print('FS:---> _stopPlayerwithCallback ');
-
-    if (audioPlayerFinishedPlaying != null) {
-      audioPlayerFinishedPlaying();
-      // REALLY ? // audioPlayerFinishedPlaying = null;
-    }
-    stopPlayer();
-    print('FS:<--- _stopPlayerwithCallback ');
-  }
 
   Future<void> pausePlayer() async {
     print('FS:---> pausePlayer ');

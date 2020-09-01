@@ -165,6 +165,12 @@ class FlautoPlayerManager extends FlautoManager
                         }
                         break;
 
+                        case "finishPlayer":
+                        {
+                                aPlayer.finishPlayer ( call, result );
+                        }
+                        break;
+
                         case "pausePlayer":
                         {
                                 aPlayer.pausePlayer ( call, result );
@@ -204,6 +210,12 @@ class FlautoPlayerManager extends FlautoManager
                         case "setActive":
                         {
                                 aPlayer.setActive ( call, result );
+                        }
+                        break;
+
+                        case "feed":
+                        {
+                                aPlayer.feed ( call, result );
                         }
                         break;
 

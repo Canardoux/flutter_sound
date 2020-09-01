@@ -40,49 +40,6 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
-
-class RecorderAudioModel
-{
-	final public static String  DEFAULT_FILE_LOCATION = Environment.getDataDirectory ().getPath () + "/default.aac"; // SDK
-	public              int     subsDurationMillis    = 10;
-
-	private      Runnable      recorderTicker;
-	private      long          recordTime   = 0;
-	public final double        micLevelBase = 2700;
-
-
-	//public MediaRecorder getMediaRecorder ()
-	//{
-		//return mediaRecorder;
-	//}
-
-	//public void setMediaRecorder ( MediaRecorder mediaRecorder )
-	//{
-		//this.mediaRecorder = mediaRecorder;
-	//}
-
-	public Runnable getRecorderTicker ()
-	{
-		return recorderTicker;
-	}
-
-	public void setRecorderTicker ( Runnable recorderTicker )
-	{
-		this.recorderTicker = recorderTicker;
-	}
-
-
-	public long getRecordTime ()
-	{
-		return recordTime;
-	}
-
-	public void setRecordTime ( long recordTime )
-	{
-		this.recordTime = recordTime;
-	}
-
-}
 //-----------------------------------------------------------------------------------------------------------------------------------------------
 
 public class FlutterSoundRecorder extends Session
@@ -114,15 +71,17 @@ public class FlutterSoundRecorder extends Session
 
 
 	final static String             TAG                = "FlutterSoundRecorder";
-	final        RecorderAudioModel model              = new RecorderAudioModel ();
 	RecorderInterface recorder;
-	final public Handler            recordHandler      = new Handler ();
+	public Handler            recordHandler   ;
 	//String finalPath;
 	private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor ();
 	long mPauseTime = 0;
 	long mStartPauseTime = -1;
 	final private Handler          mainHandler = new Handler (Looper.getMainLooper ());
 
+	public              int     subsDurationMillis    = 10;
+
+	private      Runnable      recorderTicker;
 
 	FlutterSoundRecorder (  )
 	{
@@ -283,7 +242,8 @@ public class FlutterSoundRecorder extends Session
 			//recordHandler.removeCallbacksAndMessages ( null );
 
 			final long systemTime = SystemClock.elapsedRealtime();
-			this.model.setRecorderTicker ( () ->
+			recordHandler      = new Handler ();
+			recorderTicker = ( () ->
 			       {
 				       	mainHandler.post(new Runnable()
 					{
@@ -325,7 +285,8 @@ public class FlutterSoundRecorder extends Session
 								dic.put("duration", time);
 								dic.put("dbPeakLevel", db);
 								invokeMethodWithMap("updateRecorderProgress", dic);
-								recordHandler.postDelayed(model.getRecorderTicker(), model.subsDurationMillis);
+								if (recordHandler != null)
+									recordHandler.postDelayed(recorderTicker, subsDurationMillis);
 							} catch (Exception e) {
 								Log.d(TAG, " Exception: " + e.toString());
 							}
@@ -334,7 +295,7 @@ public class FlutterSoundRecorder extends Session
 
 
 					} );
-			recordHandler.post ( this.model.getRecorderTicker () );
+			recordHandler.post ( recorderTicker );
 
 			//finalPath = path;
 			result.success ( "Media Recorder is started" );
@@ -346,9 +307,16 @@ public class FlutterSoundRecorder extends Session
 
 	void stop()
 	{
-		recordHandler.removeCallbacksAndMessages ( null );
-		if (recorder != null)
-			recorder._stopRecorder (  );
+		try {
+			if (recordHandler != null)
+				recordHandler.removeCallbacksAndMessages(null);
+			recordHandler = null;
+			if (recorder != null)
+				recorder._stopRecorder();
+		} catch (Exception e)
+		{
+
+		}
 		recorder = null;
 
 
@@ -363,15 +331,16 @@ public class FlutterSoundRecorder extends Session
 	public void pauseRecorder( final MethodCall call, final MethodChannel.Result result )
 	{
 		recordHandler.removeCallbacksAndMessages ( null );
+		recordHandler      = null;
 		recorder.pauseRecorder( );
 		mStartPauseTime = SystemClock.elapsedRealtime ();
 		result.success( "Recorder is paused");
-		//return true;
 	}
 
 	public void resumeRecorder( final MethodCall call, final MethodChannel.Result result )
 	{
-		recordHandler.post ( this.model.getRecorderTicker () );
+		recordHandler      = new Handler ();
+		recordHandler.post (recorderTicker );
 		recorder.resumeRecorder();
 		if (mStartPauseTime >= 0)
 			mPauseTime += SystemClock.elapsedRealtime () - mStartPauseTime;
@@ -387,10 +356,9 @@ public class FlutterSoundRecorder extends Session
 			return;
 		}
 		int duration = call.argument ( "duration" );
-		//double intervalInSecs = call.argument ( "intervalInSecs" );
 
-		this.model.subsDurationMillis = duration;
-		result.success ( "setSubscriptionDuration: " + this.model.subsDurationMillis );
+		this.subsDurationMillis = duration;
+		result.success ( "setSubscriptionDuration: " + this.subsDurationMillis );
 	}
 
 

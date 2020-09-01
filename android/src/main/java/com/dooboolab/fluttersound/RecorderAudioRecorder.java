@@ -21,7 +21,7 @@ package com.dooboolab.fluttersound;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;
-import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -29,50 +29,44 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.ShortBuffer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
 
 
 public class RecorderAudioRecorder
 	implements RecorderInterface
 {
 	private AudioRecord recorder = null;
-	private Thread recordingThread = null;
+	//private Thread recordingThread = null;
 	private boolean isRecording = false;
 	private double maxAmplitude = 0;
+	String filePath;
+	int totalBytes = 0;
+	FlutterSoundCodec codec;
+	Runnable p;
+	Session session = null;
+	FileOutputStream outputStream = null;
 	final private Handler mainHandler = new Handler (Looper.getMainLooper ());
 
 
-
-	//convert short to byte
-	private byte[] short2byte(short[] sData)
-	{
-		int shortArrsize = sData.length;
-		byte[] bytes = new byte[shortArrsize * 2];
-		for (int i = 0; i < shortArrsize; i++) {
-			bytes[i * 2] = (byte) (sData[i] & 0x00FF);
-			bytes[(i * 2) + 1] = (byte) (sData[i] >> 8);
-			sData[i] = 0;
-		}
-		return bytes;
-
-	}
 
 
 	private short getShort(byte argB1, byte argB2) {
 		return (short)(argB1 | (argB2 << 8));
 	}
 
-	private void writeAudioDataToFile(FlutterSoundCodec codec, int sampleRate, String filePath, int bufferSize, Session session) throws IOException
+	private void writeAudioDataToFile(FlutterSoundCodec codec, int sampleRate, String aFilePath) throws IOException
 	{
 		// Write the output audio in byte
-
-		byte[] tempBuffer = new byte[bufferSize];
-		int totalBytes = 0;
-		FileOutputStream os = null;
+		System.out.println("---> writeAudioDataToFile");
+		totalBytes = 0;
+		outputStream = null;
+		filePath = aFilePath;
 		if (filePath != null)
 		{
-			os = new FileOutputStream(filePath);
+			outputStream = new FileOutputStream(filePath);
 
 			if (codec == FlutterSoundCodec.pcm16WAV) {
 				WaveHeader header = new WaveHeader
@@ -84,58 +78,17 @@ public class RecorderAudioRecorder
 						100000 // total number of bytes
 
 					);
-				header.write(os);
+				header.write(outputStream);
 			}
 		}
-		//final ByteBuffer buffer     = ByteBuffer.allocateDirect( bufferSize );
-		int n = 0;
-		while (isRecording || n > 0)
-		{
-			// gets the voice output from microphone to byte format
-			n = recorder.read(tempBuffer, 0, bufferSize);
+		System.out.println("<--- writeAudioDataToFile");
+	}
 
-			if (n > 0)
-			{
-				totalBytes += n;
-				if (os != null)
-				{
-					os.write(tempBuffer, 0, n);
-				} else
-				{
-					mainHandler.post(new Runnable()
-					{
-						@Override
-						public void run()
-						{
+	void closeAudioDataFile(String filepath) throws Exception
+	{
 
-							Map<String, Object> dic = new HashMap<String, Object>();
-							dic.put("recordingData", tempBuffer);
-							session.invokeMethodWithMap("recordingData", dic);
-						}
-					});
-				}
-				for (int i = 0; i < n/2; ++i)
-				{
-					short curSample = getShort( tempBuffer[ i * 2 ], tempBuffer[ i * 2 + 1 ] );
-					if ( curSample > maxAmplitude )
-					{
-						maxAmplitude = curSample;
-					}
-				}
-			} else
-			if (n == AudioRecord.ERROR_INVALID_OPERATION || n ==
-				AudioRecord.ERROR_BAD_VALUE || n == 0)
-			{
-				continue;
-			} else
-			{
-				break;
-			}
-
-		}
-
-		if (os != null) {
-			os.close();
+		if (outputStream != null) {
+			outputStream.close();
 			if (codec == FlutterSoundCodec.pcm16WAV) {
 				RandomAccessFile fh = new RandomAccessFile(filePath, "rw");
 				fh.seek(4);
@@ -154,8 +107,8 @@ public class RecorderAudioRecorder
 				fh.close();
 			}
 		}
-	}
 
+	}
 
 	int[] tabCodec =
 		{
@@ -176,68 +129,162 @@ public class RecorderAudioRecorder
 		};
 
 
+	int writeData(int bufferSize)
+	{
+		int n = 0;
+		int r = 0;
+		while (isRecording ) {
+			//ShortBuffer shortBuffer = ShortBuffer.allocate(bufferSize/2);
+			ByteBuffer byteBuffer = ByteBuffer.allocate(bufferSize);
+			try {
+				// gets the voice output from microphone to byte format
+				if ( Build.VERSION.SDK_INT >= 23 )
+				{
+					//n = recorder.read(shortBuffer.array(), 0, bufferSize/2, AudioRecord.READ_NON_BLOCKING);
+					n = recorder.read(byteBuffer.array(), 0, bufferSize, AudioRecord.READ_NON_BLOCKING);
+/*
+					for (int i = 0; i < n; ++ i)
+					{
+						byteBuffer.array()[2*i] = (byte)shortBuffer.array()[i];
+						byteBuffer.array()[2*i+1] = (byte)(shortBuffer.array()[i] >> 8);
+					}
+
+
+ */
+					//byteBuffer.asShortBuffer().put(shortBuffer.array(), 0, n);
+					//n *= 2;
+
+				}
+				else
+				{
+					n = recorder.read(byteBuffer.array(), 0, bufferSize);
+				}
+				//System.out.println("n = " + n);
+				final int ln = n;//2 * n;
+
+				if (n > 0) {
+					totalBytes += n;
+					r += n;
+					if (outputStream != null) {
+						//System.out.println("Writing : n = " + n);
+						outputStream.write(byteBuffer.array(), 0, ln);
+					} else {
+						mainHandler.post(new Runnable() {
+							@Override
+							public void run() {
+
+								Map<String, Object> dic = new HashMap<String, Object>();
+								dic.put("recordingData",Arrays.copyOfRange(byteBuffer.array(), 0, ln));
+								session.invokeMethodWithMap("recordingData", dic);
+							}
+						});
+					}
+					for (int i = 0; i < n / 2; ++i) {
+						short curSample = getShort(byteBuffer.array()[i * 2], byteBuffer.array()[i * 2 + 1]);
+						if (curSample > maxAmplitude) {
+							maxAmplitude = curSample;
+						}
+					}
+				//} else if (n == AudioRecord.ERROR_INVALID_OPERATION || n ==
+					//AudioRecord.ERROR_BAD_VALUE || n == 0) {
+					//continue;
+				} else
+				{
+					break;
+				}
+				if ( Build.VERSION.SDK_INT < 23 ) // We must break the loop, because n is always 1024 (READ_BLOCKING_MODE)
+					break;
+			} catch (Exception e) {
+				System.out.println(e);
+				break;
+			}
+		}
+		if (isRecording)
+			mainHandler.post(p);
+
+		return r;
+
+	}
 
 	public void _startRecorder
 		(
 			Integer numChannels,
 			Integer sampleRate,
 			Integer bitRate,
-			FlutterSoundCodec codec,
+			FlutterSoundCodec theCodec,
 			String path,
 			int audioSource,
-			Session session
+			Session theSession
+
 		)
 	{
 		/**
 		 * Size of the buffer where the audio data is stored by Android
 		 */
+		session = theSession;
+		codec = theCodec;
 		int channelConfig = (numChannels == 1) ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO;
 		int audioFormat = tabCodec[codec.ordinal()];
-		int bufferSize = AudioRecord.getMinBufferSize(sampleRate,
-		                                              channelConfig, tabCodec[codec.ordinal()]) * 2;
+		int bufferSize = AudioRecord.getMinBufferSize
+			(
+				sampleRate,
+			      	channelConfig,
+				tabCodec[codec.ordinal()]
+			) * 2;
 
 
-		recorder = new AudioRecord( audioSource,
-		                            sampleRate,
-		                            channelConfig,
-		                            audioFormat,
-		                            bufferSize);
+		recorder = new AudioRecord( 	audioSource,
+						sampleRate,
+						channelConfig,
+		                            	audioFormat,
+		                            	bufferSize
+					);
 
 		recorder.startRecording();
 		isRecording = true;
-		recordingThread = new Thread(new Runnable()
+		try {
+			writeAudioDataToFile(codec, sampleRate, path);
+		} catch(Exception e)
 		{
+			e.printStackTrace();
+		}
+		p = new Runnable()
+		{
+			@Override
 			public void run()
 			{
-				try
-				{
-					writeAudioDataToFile(codec, sampleRate, path, bufferSize, session);
-				} catch (IOException e)
-				{
-					e.printStackTrace();
+
+				if (isRecording) {
+					int n = writeData(bufferSize);
+
 				}
 			}
-		}, "AudioRecorder Thread");
-		recordingThread.start();
+		};
+		mainHandler.post(p);
+
 	}
 
-	public void _stopRecorder (  )
+	public void _stopRecorder (  ) throws Exception
 	{
 		if (null != recorder)
 		{
 			try
 			{
 				recorder.stop();
-				isRecording = false;
-				recordingThread.join();
-				recorder.release();
-				recorder = null;
-				recordingThread = null;
 			} catch ( Exception e )
 			{
-
 			}
+
+			try
+			{
+				isRecording = false;
+				recorder.release();
+			} catch ( Exception e )
+			{
+			}
+			recorder = null;
 		}
+		closeAudioDataFile(filePath);
 	}
 
 	public boolean pauseRecorder( )

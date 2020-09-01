@@ -93,6 +93,27 @@ class FlutterSoundHelper {
   }
 
 
+  /// Convert a WAVE file to a Raw PCM file.
+  /// Remove the WAVE header in front of the Wave data
+  Future<void> waveToPCM({String inputFile,String outputFile,}) async {
+    File filIn = File(inputFile);
+    File filOut = File(outputFile);
+    IOSink sink = filOut.openWrite();
+    await filIn.open();
+    Uint8List buffer = filIn.readAsBytesSync();
+    sink.add(buffer.sublist(WaveHeader.HEADER_LENGTH));
+    await sink.close();
+  }
+
+  /// Convert a WAVE file to a Raw PCM buffer.
+  /// Remove WAVE header in front of the Wave buffer
+  Uint8List waveToPCMBuffer
+  ({Uint8List inputBuffer,}) {
+    return inputBuffer.sublist(WaveHeader.HEADER_LENGTH);
+  }
+
+
+
   /// Convert a raw PCM file to a WAVE file.
   /// Add a WAVE header in front of the PCM data
   Future<void> pcmToWave
@@ -100,8 +121,8 @@ class FlutterSoundHelper {
       {
           String inputFile,
           String outputFile,
-          int numChannels,
-          int sampleRate,
+          int numChannels = 1,
+          int sampleRate = 16000,
           //int bitsPerSample,
       }
   ) async
@@ -118,14 +139,13 @@ class FlutterSoundHelper {
       WaveHeader header = new WaveHeader
       (
           WaveHeader.FORMAT_PCM ,
-          numChannels,
-          sampleRate,
+          numChannels = 1,
+          sampleRate = sampleRate,
           16,
           size, // total number of bytes
       );
       await header.write( sink);
 
-      //Stream<List<int>> inputStream = filIn.openRead();
       await filIn.open();
       Uint8List buffer = filIn.readAsBytesSync();
       sink.add(buffer.toList());
@@ -138,8 +158,8 @@ class FlutterSoundHelper {
       (
       {
         Uint8List inputBuffer,
-        int numChannels,
-        int sampleRate,
+        int numChannels = 1,
+        int sampleRate = 16000,
         //int bitsPerSample,
       }
       ) async
@@ -149,8 +169,8 @@ class FlutterSoundHelper {
     WaveHeader header = new WaveHeader
       (
       WaveHeader.FORMAT_PCM ,
-      numChannels,
-      sampleRate,
+      numChannels = 1,
+      sampleRate = 16000,
       16,
       size, // total number of bytes
     );

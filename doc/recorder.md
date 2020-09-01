@@ -145,7 +145,7 @@ Please look to [openAudioSession()](player.md#openaudiosession-and-closeaudioses
         {
                 Codec codec = Codec.aacADTS,
                 String toFile,
-                Stream toStream,
+                StreamSink toStream,
                 int sampleRate = 16000,
                 int numChannels = 1,
                 int bitRate = 16000,
