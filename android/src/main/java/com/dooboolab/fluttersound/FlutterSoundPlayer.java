@@ -29,6 +29,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.util.Log;
 
 import android.media.AudioFocusRequest;
@@ -60,7 +61,7 @@ class sdkCompat
 
 abstract class PlayerInterface
 {
-	abstract void _startPlayer(String path, FlutterSoundPlayer flutterPlayer) throws Exception;
+	abstract void _startPlayer(String path, FlutterSoundPlayer flutterPlayer, int sampleRate, FlutterSoundPlayer theSession) throws Exception;
 	abstract void _stop();
 	abstract void _pausePlayer() throws Exception;
 	abstract void _resumePlayer() throws Exception;
@@ -69,7 +70,7 @@ abstract class PlayerInterface
 	abstract boolean _isPlaying();
 	abstract long _getDuration();
 	abstract long _getCurrentPosition();
-	abstract void feed(byte[] data) throws Exception;
+	abstract int feed(byte[] data) throws Exception;
 	abstract void _finish() ;
 
 
@@ -216,8 +217,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 		if (path == null && codec == FlutterSoundCodec.pcm16)
 		{
-			Integer		  _sampleRate  = call.argument ( "sampleRate" );
-			player = new AudioTrackEngine(_sampleRate);
+			player = new AudioTrackEngine();
 		} else
 		{
 			player = new MediaPlayerEngine();
@@ -225,8 +225,13 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 		try
 		{
+			Integer		  _sampleRate  = 16000;
+			if (call.argument ( "sampleRate" ) != null)
+			{
+				_sampleRate = call.argument ( "sampleRate" );
+			}
 			mTimer = new Timer();
-			player._startPlayer(path, this);
+			player._startPlayer(path, this, _sampleRate, this);
 		}
 		catch ( Exception e )
 		{
@@ -243,13 +248,12 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		{
 			byte[] data =call.argument ( "data" );
 
-			player.feed(data);
-			result.success ( getPlayerState());
+			 int r = player.feed(data);
+			 result.success (r);
 		} catch (Exception e)
 		{
 			Log.e ( TAG, "feed() exception" );
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
-			return;
 		}
 	}
 
@@ -356,13 +360,6 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		result.success ( getPlayerState());
 	}
 
-
-	public void finishPlayer ( final MethodCall call, final Result result )
-	{
-		if (player != null)
-			player._finish();
-		result.success ( getPlayerState());
-	}
 
 
 	public void isDecoderSupported ( final MethodCall call, final Result result )
@@ -555,12 +552,8 @@ class MediaPlayerEngine extends PlayerInterface
 {
 	MediaPlayer mediaPlayer = null;
 	FlutterSoundPlayer flutterPlayer;
-	// Listener called when media player has completed preparation.
-	private void onPrepared(MediaPlayer mp, String path)
-	{
-	}
 
-	void _startPlayer(String path, FlutterSoundPlayer aFlutterPlayer) throws Exception
+	void _startPlayer(String path, FlutterSoundPlayer aFlutterPlayer, int sampleRate, FlutterSoundPlayer theSession) throws Exception
  	{
  		mediaPlayer = new MediaPlayer();
 
@@ -574,11 +567,10 @@ class MediaPlayerEngine extends PlayerInterface
 		mediaPlayer.setOnPreparedListener(mp -> {mp.start(); flutterPlayer.onPrepared();});
 		mediaPlayer.setOnCompletionListener(mp -> flutterPlayer.onCompletion());
 		mediaPlayer.setOnErrorListener(flutterPlayer);
-
 		mediaPlayer.prepare();
 	}
 
-	void feed(byte[] data) throws Exception
+	int feed(byte[] data) throws Exception
 	{
 		throw new Exception("Cannot feed a Media Player");
 	}
@@ -669,18 +661,26 @@ class AudioTrackEngine extends PlayerInterface
 {
 	AudioTrack audioTrack = null;
 	int sessionId = 0;
-	int sampleRate;
+	long mPauseTime = 0;
+	long mStartPauseTime = -1;
+	long systemTime = 0;
 
 
-	/* ctor */ AudioTrackEngine(int theSampleRate)
+
+	/* ctor */ AudioTrackEngine()
 	{
 		AudioManager audioManager = ( AudioManager ) FlautoPlayerManager.androidContext.getSystemService ( Context.AUDIO_SERVICE );
 		sessionId = audioManager.generateAudioSessionId ();
-		sampleRate = theSampleRate;
 	}
 
 
-	void _startPlayer(String path, FlutterSoundPlayer flutterPlayer) throws Exception
+	void _startPlayer
+		(
+			String path,
+			FlutterSoundPlayer flutterPlayer,
+			int sampleRate,
+			FlutterSoundPlayer theSession
+		) throws Exception
 	{
 		AudioAttributes attributes = new AudioAttributes.Builder()
 			.setLegacyStreamType(AudioManager.STREAM_MUSIC)
@@ -694,36 +694,50 @@ class AudioTrackEngine extends PlayerInterface
 			.setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
 			.build();
 		audioTrack = new AudioTrack(attributes, format, 4096, AudioTrack.MODE_STREAM, sessionId);
+		mPauseTime = 0;
+		mStartPauseTime = -1;
+		systemTime = SystemClock.elapsedRealtime();
+
 		audioTrack.play();
+		theSession.onPrepared( );
 	}
 
 
 	void _stop()
 	{
+		audioTrack.stop();
+		audioTrack.release();
 		audioTrack = null;
 
 	}
 
-	void _finish() {
+	void _finish()
+	{
 	}
 
 
 
 	void _pausePlayer() throws Exception
 	{
-
+		mStartPauseTime = SystemClock.elapsedRealtime ();
+		audioTrack.pause();
 	}
 
 
 	void _resumePlayer() throws Exception
 	{
+		if (mStartPauseTime >= 0)
+			mPauseTime += SystemClock.elapsedRealtime () - mStartPauseTime;
+		mStartPauseTime = -1;
+
+		audioTrack.play();
 
 	}
 
 
 	void _setVolume(float volume)
 	{
-
+		audioTrack.setVolume(volume);
 	}
 
 
@@ -735,25 +749,37 @@ class AudioTrackEngine extends PlayerInterface
 
 	boolean _isPlaying()
 	{
-		return false;
+		return audioTrack.getPlayState () == AudioTrack.PLAYSTATE_PLAYING;
 	}
 
 
 	long _getDuration()
 	{
-		return 0;
+		return _getCurrentPosition(); // It would be better if we add what is in the input buffers and not still played
 	}
 
 
 	long _getCurrentPosition()
 	{
-		return 0;
+		long time ;
+		if (mStartPauseTime >= 0)
+			time =   mStartPauseTime - systemTime - mPauseTime ;
+		else
+			time = SystemClock.elapsedRealtime() - systemTime - mPauseTime;
+		return time;
 	}
 
 
-	void feed(byte[] data) throws Exception
+	int feed(byte[] data) throws Exception
 	{
-		audioTrack.write(data, 0, data.length);
+		if ( Build.VERSION.SDK_INT >= 23 )
+		{
+			return audioTrack.write(data, 0, data.length, AudioTrack.WRITE_BLOCKING);
+		} else
+		{
+			return audioTrack.write(data, 0, data.length);
+
+		}
 	}
 
 

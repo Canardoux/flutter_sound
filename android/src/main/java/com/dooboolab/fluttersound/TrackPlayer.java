@@ -615,12 +615,6 @@ public class TrackPlayer extends FlutterSoundPlayer
 			assert(position <= duration);
 		}
 
-		if (duration > 30000 || position > 5000) // for debugging
-		{
-			long toto = duration;
-			System.out.println(toto);
-		}
-
 		Map<String, Object> dic = new HashMap<String, Object> ();
 		dic.put ( "position", position );
 		dic.put ( "duration", duration );

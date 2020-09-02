@@ -752,23 +752,25 @@ class FlutterSoundPlayer extends Session
     }
 
 
-    Future<void> feed(Uint8List data) async {
+    Future<int> feed(Uint8List data) async {
       if (isInited == Initialized.initializationInProgress) {
         throw (_InitializationInProgress());
       }
       if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
         throw (_notOpen());
       }
+      int r = 0;
       await lock.synchronized(() async {
         try
         {
-            playerState = await PlayerState.values[await invokeMethod( 'feed',  <String, dynamic>{'data': data,} ) as int];
+            r = await invokeMethod( 'feed',  <String, dynamic>{'data': data,} ) as int;
         }
         catch (e)
         {
           rethrow;
         }
       });
+      return r;
 
     }
 
@@ -918,31 +920,6 @@ class FlutterSoundPlayer extends Session
       print( 'FS:<--- nowPlaying ' );
     });
   }
-
-  Future<void> finishPlayer() async {
-    print('FS:---> finishPlayer ');
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
-    if (isInited != Initialized.fullyInitializedWithUI &&
-        isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
-    }
-    try
-    {
-      //_removePlayerCallback(); // playerController is closed by this function
-      await stop( );
-    }
-    catch (e)
-    {
-      print( e );
-    }
-    int state = await invokeMethod('finishPlayer', <String, dynamic>{}) as int;
-    stop();
-    print('FS:<--- finishPlayer ');
-
-  }
-
 
     Future<void> stopPlayer() async {
       print('FS:---> stopPlayer ');

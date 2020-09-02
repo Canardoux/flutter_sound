@@ -385,10 +385,9 @@ class _MyAppState extends State<MyApp> {
     while (totalLength > 0)
       {
         int ln = totalLength > 512 ? 512 : totalLength;
-        await playerModule.feed(data.sublist(start,start + ln));
-        //feedStream.sink.add(data.sublist(start,start + ln));
-        totalLength -= ln;
-        start += ln;
+        int r = await playerModule.feed(data.sublist(start,start + ln));
+        totalLength -= r;
+        start += r;
       }
   }
 
@@ -473,7 +472,7 @@ class _MyAppState extends State<MyApp> {
           _addListeners();
           setState(() {});
           await feedHim(audioFilePath);
-          await finishPlayer();
+          //await finishPlayer();
           await stopPlayer();
 
         } else {
@@ -510,14 +509,6 @@ class _MyAppState extends State<MyApp> {
       print('error: $err');
     }
     setState(() {});
-  }
-
-  Future<void> finishPlayer() async {
-    try {
-      await playerModule.finishPlayer();
-    } catch (err) {
-      print('error: $err');
-    }
   }
 
 

@@ -165,11 +165,6 @@ class FlautoPlayerManager extends FlautoManager
                         }
                         break;
 
-                        case "finishPlayer":
-                        {
-                                aPlayer.finishPlayer ( call, result );
-                        }
-                        break;
 
                         case "pausePlayer":
                         {
