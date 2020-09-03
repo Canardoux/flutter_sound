@@ -41,7 +41,7 @@ The two constructors of the `SoundPlayerUI` widget have 6 optional parameters fo
 - SliderThemeData sliderThemeData = null,
 
 ## `SoundRecorderUI`
-.. working on documentation.
+...working on documentation.
 
 -----------------------------------------------------------------------------------------------------------------------
 
