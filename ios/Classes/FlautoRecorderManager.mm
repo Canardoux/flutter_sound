@@ -30,6 +30,10 @@
 #import <AVFoundation/AVFoundation.h>
 
 
+extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
+{
+        [FlautoRecorderManager registerWithRegistrar: registrar];
+}
 
 
 
@@ -61,10 +65,6 @@ FlautoRecorderManager* flautoRecorderManager; // Singleton
         return self;
 }
 
-extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
-{
-        [FlautoRecorderManager registerWithRegistrar: registrar];
-}
 
 
 
@@ -93,7 +93,7 @@ extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
         if ([@"isEncoderSupported" isEqualToString:call.method])
         {
                 NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
-                [aFlautoRecorder isEncoderSupported:[codec intValue] result:result];
+                [aFlautoRecorder isEncoderSupported: (t_CODEC)[codec intValue] result:result];
         } else
         
         if ([@"startRecorder" isEqualToString:call.method])

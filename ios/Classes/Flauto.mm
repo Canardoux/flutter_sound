@@ -28,11 +28,13 @@
 #import "FlutterFfmpegPlugin.h"
 
 #import "flauto.h"
-#import "FlutterSoundPlayer.h"
-#import "FlutterSoundRecorder.h"
-#import "TrackPlayer.h"
-#import <AVFoundation/AVFoundation.h>
-#import <Foundation/Foundation.h>
+#import "FlautoPlayerManager.h"
+#import "FlautoRecorderManager.h"
+//#import "FlutterSoundPlayer.h"
+//#import "FlutterSoundRecorder.h"
+//#import "TrackPlayer.h"
+//#import <AVFoundation/AVFoundation.h>
+//#import <Foundation/Foundation.h>
 
 
 @implementation Flauto

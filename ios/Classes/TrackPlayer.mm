@@ -62,6 +62,17 @@
         NSLog(@"IOS:<-- releaseFlautoPlayer");
 }
 
+- (AVAudioPlayer*)getPlayer
+{
+        return [(AudioPlayerEngine*)player  getAudioPlayer];
+        
+}
+
+- (void)setPlayer:(AVAudioPlayer*) theAudioPlayer
+{
+        [(AudioPlayerEngine*)player  setAudioPlayer: theAudioPlayer];
+}
+
 
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result
 {
@@ -87,6 +98,8 @@
                 return;
         }
         [self stopPlayer]; // to start a fresh new playback
+
+        player = [[AudioPlayerEngine alloc]init: self];
 
         // Check whether the audio file is stored as a path to a file or a buffer
         if([track isUsingPath])
@@ -136,15 +149,15 @@
                                                       // and start playing.
 
                                                       // We must create a new Audio Player instance to be able to play a different Url
-                                                      audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
-                                                      audioPlayer.delegate = self;
+                                                      [self setPlayer: [[AVAudioPlayer alloc] initWithData:data error:nil] ];
+                                                      [self getPlayer].delegate = self;
 
                                                       dispatch_async(dispatch_get_main_queue(), ^{
                                                           NSLog(@"IOS: ^beginReceivingRemoteControlEvents");
                                                           [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
                                                       });
 
-                                                      [audioPlayer play];
+                                                      [[self getPlayer] play];
                                                    }];
                         r = true; // ??? not sure
                         [downloadTask resume];
@@ -155,8 +168,8 @@
                         // and start playing.
 
                         // if (!audioPlayer) { // Fix sound distoring when playing recorded audio again.
-                        audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:nil];
-                        audioPlayer.delegate = self;
+                        [self setPlayer: [[AVAudioPlayer alloc] initWithContentsOfURL: audioFileURL error:nil] ];
+                        [self getPlayer].delegate = self;
                         // }
 
                         // Able to play in silent mode
@@ -166,8 +179,8 @@
                                 [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
                         });
 
-                        r = [audioPlayer play];
-                        if (![audioPlayer isPlaying])
+                        r = [[self getPlayer] play];
+                        if (![[self getPlayer] isPlaying])
                                 NSLog(@"IOS: AudioPlayer failed to play");
                         else
                                 NSLog(@"IOS: !Play");
@@ -180,15 +193,15 @@
                 NSData* bufferData = [dataBuffer data];
                 //if (audioPlayer != nil)
                         //[audioPlayer stop];
-                audioPlayer = [[AVAudioPlayer alloc] initWithData: bufferData error: nil];
-                audioPlayer.delegate = self;
+                [self setPlayer: ([[AVAudioPlayer alloc] initWithData: bufferData error: nil]) ];
+                [self getPlayer].delegate = self;
                 dispatch_async(dispatch_get_main_queue(),
                 ^{
                         NSLog(@"^beginReceivingRemoteControlEvents");
                         [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
                 });
-                r = [audioPlayer play];
-                if (![audioPlayer isPlaying])
+                r = [[self getPlayer] play];
+                if (![[self getPlayer] isPlaying])
                         NSLog(@"IOS: AudioPlayer failed to play");
                 else
                         NSLog(@"IOS: !Play");
@@ -202,11 +215,11 @@
                 [self setupRemoteCommandCenter:canPause canSkipForward:canSkipForward   canSkipBackward:canSkipBackward ];
                 
                 if ( (progress == nil) || (progress.class == NSNull.class) )
-                        progress = [NSNumber numberWithDouble: audioPlayer.currentTime];
+                        progress = [NSNumber numberWithDouble: [self getPlayer].currentTime];
                 else
                         progress = [NSNumber numberWithDouble: [progress doubleValue] / 1000.0];
                 if ( (duration == nil) || (duration.class == NSNull.class) )
-                        duration = [NSNumber numberWithDouble: audioPlayer.duration];
+                        duration = [NSNumber numberWithDouble: [self getDuration] / 1000.0];
                 else
                         duration = [NSNumber numberWithDouble: [duration doubleValue] / 1000.0];
                 [self setupNowPlaying: progress duration: duration];
@@ -214,7 +227,7 @@
 
 
 
-                long duration = (long)(audioPlayer.duration * 1000);
+                long duration = [self getDuration];
                 int d = (int)duration;
                 NSNumber* nd = [NSNumber numberWithInt: d];
                 [self invokeMethod:@"startPlayerCompleted" numberArg: nd ];
@@ -345,11 +358,11 @@
           NSLog(@"IOS:--> stopPlayer");
           [self stopTimer];
           //isPaused = false;
-          if (audioPlayer)
+          if ([self getPlayer] != nil)
           {
                 NSLog(@"IOS: !stopPlayer");
-                [audioPlayer stop];
-                audioPlayer = nil;
+                [[self getPlayer] stop];
+                [self setPlayer: nil];
           }
           //[self cleanTarget];
           if (removeUIWhenStopped)
@@ -380,7 +393,7 @@
                         dispatch_async(dispatch_get_main_queue(), ^{
  
  
-                                bool b = [audioPlayer isPlaying];
+                                bool b = [[self getPlayer] isPlaying];
                                 // If the caller wants to control the pause button, just call him
                                 if (b)
                                 {
@@ -401,7 +414,7 @@
                 {
                         NSLog(@"IOS: pauseTarget\n");
                         dispatch_async(dispatch_get_main_queue(), ^{
-                                bool b = [audioPlayer isPlaying];
+                                bool b = [[self getPlayer] isPlaying];
                                 // If the caller wants to control the pause button, just call him
                                 if (b)
                                 {
@@ -424,7 +437,7 @@
                 {
                         NSLog(@"IOS: playTarget\n");
                         dispatch_async(dispatch_get_main_queue(), ^{
-                                bool b = [audioPlayer isPlaying];
+                                bool b = [[self getPlayer] isPlaying];
                                 // If the caller wants to control the pause button, just call him
                                 if (!b)
                                 {
@@ -506,7 +519,7 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
                 [songInfo setObject: track.title forKey: MPMediaItemPropertyTitle];
                 [songInfo setObject: track.author forKey: MPMediaItemPropertyArtist];
         }
-        bool b = [audioPlayer isPlaying];
+        bool b = [[self getPlayer] isPlaying];
         [songInfo setObject:[NSNumber numberWithDouble:(b ? 1.0f : 0.0f)] forKey:MPNowPlayingInfoPropertyPlaybackRate];
         
         //[songInfo setObject: @"toto" forKey: MPNowPlayingInfoCollectionIdentifier];
@@ -522,8 +535,8 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
 - (void)updateLockScreenProgression
 {
         NSLog(@"IOS:--> updateLockScreenProgression");
-        NSNumber* progress = [NSNumber numberWithDouble: audioPlayer.currentTime/1000.0];
-        NSNumber* duration = [NSNumber numberWithDouble: audioPlayer.duration/1000.0];
+        NSNumber* progress = [NSNumber numberWithDouble: [self getPosition]] ;
+        NSNumber* duration = [NSNumber numberWithDouble: [self getDuration]];
         [self setUIProgressBar: progress duration: duration];
         NSLog(@"IOS:<-- updateLockScreenProgression");
 }

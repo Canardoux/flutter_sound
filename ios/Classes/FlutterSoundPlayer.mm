@@ -24,6 +24,7 @@
 #import "TrackPlayer.h"
 #import <AVFoundation/AVFoundation.h>
 #import "FlautoPlayerManager.h"
+#import "PlayerEngine.h"
 
 
 
@@ -53,13 +54,104 @@ static bool _isIosDecoderSupported [] =
 };
 
 
+@implementation AudioPlayerEngine
+{
+        FlutterSoundPlayer* flutterSoundPlayer; // Owner
+        AVAudioPlayer* player;
+}
 
+       - (AVAudioPlayer*) getAudioPlayer
+       {
+                return player;
+       }
+       
+        - (void) setAudioPlayer: (AVAudioPlayer*)thePlayer
+        {
+                player = thePlayer;
+        }
+
+
+       - (AudioPlayerEngine*)init: (/*FlutterSoundPlayer**/NSObject*)owner
+       {
+                flutterSoundPlayer = (FlutterSoundPlayer*)owner;
+                return [super init];
+       }
+       
+       -(bool) startPlayerFromBuffer: (NSData*) dataBuffer
+       {
+                [self setAudioPlayer:  [[AVAudioPlayer alloc] initWithData:dataBuffer error: nil]];
+                [self getAudioPlayer].delegate = flutterSoundPlayer;
+                bool b = [[self getAudioPlayer] play];
+                return b;
+       }
+       
+       -(bool)  startPlayerFromURL: (NSURL*) url
+       {
+                [self setAudioPlayer: [[AVAudioPlayer alloc] initWithContentsOfURL: url error:nil] ];
+                [self getAudioPlayer].delegate = flutterSoundPlayer;
+                bool b = [ [self getAudioPlayer] play];
+                return b;
+        }
+
+       
+       -(long)  getDuration
+       {
+                long duration = (long)( [self getAudioPlayer].duration * 1000);
+                return duration;
+       }
+       
+       -(long)  getPosition
+       {
+                long position = (long)( [self getAudioPlayer].currentTime * 1000);
+                return position;
+       }
+       
+       -(void)  stop
+       {
+                [ [self getAudioPlayer] stop];
+                  [self setAudioPlayer: nil];
+       }
+       
+       -(bool)  resume
+       {
+                bool b = [ [self getAudioPlayer] play];
+                return b;
+       }
+        
+       -(bool)  pause
+       {
+                [ [self getAudioPlayer] pause];
+                return true;
+       }
+       
+       -(bool)  setVolume: (double) volume
+       {
+                [ [self getAudioPlayer] setVolume: volume];
+                return true;
+       }
+       
+       -(void)  seek: (double) pos
+       {
+                [self getAudioPlayer].currentTime = pos / 1000.0;
+       }
+       
+       -(int)  getStatus
+       {
+                if (  [self getAudioPlayer] == nil )
+                        return IS_STOPPED;
+                if ( [ [self getAudioPlayer] isPlaying])
+                        return IS_PLAYING;
+                return IS_PAUSED;
+       }
+
+
+@end
 
 @implementation FlutterSoundPlayer
 {
-        //AVAudioPlayer* audioPlayer; // In the interface
         NSTimer *timer;
         double subscriptionDuration;
+
 }
 
 
@@ -190,13 +282,12 @@ static bool _isIosDecoderSupported [] =
 
         [self stopPlayer]; // To start a fresh new playback
 
+        player = [[AudioPlayerEngine alloc]init: self];
         NSString* path = (NSString*)call.arguments[@"fromURI"];
         FlutterStandardTypedData* dataBuffer = (FlutterStandardTypedData*)call.arguments[@"fromDataBuffer"];
         if ([dataBuffer class] != [NSNull class])
         {
-                audioPlayer = [[AVAudioPlayer alloc] initWithData: [dataBuffer data] error: nil];
-                audioPlayer.delegate = self;
-                b = [audioPlayer play];
+                b = [player startPlayerFromBuffer:  [dataBuffer data] ];
                 if (!b)
                 {
                         [self stopPlayer];
@@ -207,7 +298,7 @@ static bool _isIosDecoderSupported [] =
                 } else
                 {
                         [self startTimer];
-                        long duration = (long)(audioPlayer.duration * 1000);
+                        long duration = [player getDuration];
                         int d = (int)duration;
                         NSNumber* nd = [NSNumber numberWithInt: d];
                         [self invokeMethod:@"startPlayerCompleted" numberArg: nd ];
@@ -245,11 +336,7 @@ static bool _isIosDecoderSupported [] =
                 {
 
                         // We must create a new Audio Player instance to be able to play a different Url
-                        audioPlayer = [[AVAudioPlayer alloc] initWithData:data error:nil];
-                        audioPlayer.delegate = self;
-
-
-                        BOOL b = [self ->audioPlayer play];
+                        bool b = [player startPlayerFromBuffer: data];
                         if (!b)
                         {
                                 [self stopPlayer];
@@ -267,13 +354,11 @@ static bool _isIosDecoderSupported [] =
                 b = true;
         } else
         {
-                audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:nil];
-                audioPlayer.delegate = self;
-                b = [audioPlayer play];
+                b = [player startPlayerFromURL: audioFileURL];
         }
-         if (b)
+        if (b)
         {
-                long duration = (long)(audioPlayer.duration * 1000);
+                long duration = [player getDuration];
                 int d = (int)duration;
                 NSNumber* nd = [NSNumber numberWithInt: d];
                 [self invokeMethod:@"startPlayerCompleted" numberArg: nd ];
@@ -324,9 +409,9 @@ static bool _isIosDecoderSupported [] =
         if ( ([self getStatus] == IS_PLAYING) || ([self getStatus] == IS_PAUSED) )
         {
                 NSLog(@"IOS: ![audioPlayer stop]");
-                [audioPlayer stop];
+                [player stop];
         }
-        audioPlayer = nil;
+        player = nil;
         NSLog(@"IOS:<-- stopPlayer");
 }
 
@@ -340,13 +425,13 @@ static bool _isIosDecoderSupported [] =
           }
           if ([self getStatus] == IS_PLAYING)
           {
-                [audioPlayer pause];
-           }
+                [player pause];
+          }
           else
                 NSLog(@"IOS: audioPlayer is not Playing");
 
-         long duration =  (long)(audioPlayer.duration * 1000);
-         long position = (long)(audioPlayer.currentTime * 1000);
+         long duration =   [player getDuration];
+         long position =   [player getPosition];
          if (duration - position < 80) // PATCH [LARPOUX]
           {
                 NSLog (@"IOS: !patch [LARPOUX]");
@@ -373,8 +458,8 @@ static bool _isIosDecoderSupported [] =
 - (bool)resume
 {
         NSLog(@"IOS:--> resume");
-        long duration =  (long)(audioPlayer.duration * 1000);
-        long position = (long)(audioPlayer.currentTime * 1000);
+        long duration =   [player getDuration];
+        long position =   [player getPosition];
         if (duration - position < 80) // PATCH [LARPOUX]
         {
                 NSLog (@"IOS: !patch [LARPOUX]");
@@ -392,7 +477,7 @@ static bool _isIosDecoderSupported [] =
                 {
                        // [audioPlayer setDelegate: self]; // TRY
                         NSLog(@"IOS: play!");
-                        bool b = [audioPlayer play];
+                        bool b = [player resume];
                  }
                 [self startTimer];
         }
@@ -440,15 +525,16 @@ static bool _isIosDecoderSupported [] =
 
 }
 
+
 - (void)seekToPlayer:(FlutterMethodCall*)call result: (FlutterResult)result
 {
         NSLog(@"IOS:--> seekToPlayer");
-        if (audioPlayer)
+        if (player != nil)
         {
-                NSNumber* milli = (NSNumber*)call.arguments[@"duration"];
+                NSNumber* milli = (NSNumber*)(call.arguments[@"duration"]);
                 double t = [milli doubleValue];
-                audioPlayer.currentTime = t / 1000.0;
-                [self updateProgress:nil];
+                [player seek: t];
+                [self updateProgress: nil];
                 result([self getPlayerStatus]);
         } else
         {
@@ -463,9 +549,9 @@ static bool _isIosDecoderSupported [] =
 - (void)setVolume:(double) volume result: (FlutterResult)result
 {
         NSLog(@"IOS:--> setVolume");
-        if (audioPlayer)
+        if (player)
         {
-                [audioPlayer setVolume: volume];
+                [player setVolume: volume ];
                 result([self getPlayerStatus]);
         } else
         {
@@ -487,11 +573,22 @@ static bool _isIosDecoderSupported [] =
         NSLog(@"IOS:<-- stopTimer");}
 
 
+- (long)getPosition
+{
+        return [player getPosition];
+}
+
+- (long)getDuration
+{
+         return [player getDuration];
+}
+
+
 - (void)updateProgress:(NSTimer*) atimer
 {
 dispatch_async(dispatch_get_main_queue(), ^{
-        NSNumber *duration = [NSNumber numberWithLong: (long)(audioPlayer.duration * 1000)];
-        NSNumber *position = [NSNumber numberWithLong: (long)(audioPlayer.currentTime * 1000)];
+        NSNumber *duration = [NSNumber numberWithLong: [player getDuration]];
+        NSNumber *position = [NSNumber numberWithLong: [player getPosition]];
         NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"position": position, @"duration": duration, @"playerStatus": [self getPlayerStatus] };
         [self invokeMethod:@"updateProgress" dico: dico];
 });
@@ -500,8 +597,8 @@ dispatch_async(dispatch_get_main_queue(), ^{
 - (void)getProgress:(FlutterMethodCall*)call result: (FlutterResult)result
 {
         NSLog(@"IOS:--> getProgress");
-        NSNumber *duration = [NSNumber numberWithLong: (long)(audioPlayer.duration * 1000)];
-        NSNumber *position = [NSNumber numberWithLong: (long)(audioPlayer.currentTime * 1000)];
+        NSNumber *duration = [NSNumber numberWithLong: [player getDuration]];
+        NSNumber *position = [NSNumber numberWithLong: [player getPosition]];
         NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"position": position, @"duration": duration, @"playerStatus": [self getPlayerStatus] };
         result(dico);
         NSLog(@"IOS:--> getProgress");
@@ -542,11 +639,12 @@ dispatch_async(dispatch_get_main_queue(), ^{
 }
 
 
-- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)thePlayer successfully:(BOOL)flag
 {
         NSLog(@"IOS:--> @audioPlayerDidFinishPlaying");
         [self stopTimer];
-        audioPlayer = nil;
+        [player stop];
+        player = nil;
         dispatch_async(dispatch_get_main_queue(), ^{
                 NSLog(@"IOS:--> ^audioPlayerFinishedPlaying");
                 [self invokeMethod:@"audioPlayerFinishedPlaying" numberArg: [self getPlayerStatus]];
@@ -558,11 +656,9 @@ dispatch_async(dispatch_get_main_queue(), ^{
 
 - (int)getStatus
 {
-        if (  audioPlayer == nil)
+        if ( player == nil )
                 return IS_STOPPED;
-        if ( [audioPlayer isPlaying])
-                return IS_PLAYING;
-        return IS_PAUSED;
+        return [player getStatus];
 }
 
 - (NSNumber*)getPlayerStatus

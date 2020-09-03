@@ -25,21 +25,19 @@
 
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
-//#import "Flauto.h"
-//#import "FlautoManager.h"
+#import "PlayerEngine.h"
 #import "FlautoPlayerManager.h"
-
+#import "PlayerEngine.h"
 
 
 @interface FlutterSoundPlayer : Session
 {
-        AVAudioPlayer* audioPlayer;
+        NSObject<PlayerInterface>* player;
+         
 }
 
 - (FlautoPlayerManager*) getPlugin;
 - (Session*) init: (FlutterMethodCall*)call;
-
-
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag;
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result;
 - (void)updateProgress:(NSTimer *)timer;
@@ -50,11 +48,11 @@
 - (void)stopTimer;
 - (bool)pause;
 - (bool)resume;
-- (void)startPlayer:(NSString*)path result: (FlutterResult)result;
+- (void)startPlayer:(FlutterMethodCall*)path result: (FlutterResult)result;
 - (void)getProgress:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result;
-- (void)seekToPlayer:(nonnull NSNumber*) time result: (FlutterResult)result;
+- (void)seekToPlayer:(FlutterMethodCall*) time result: (FlutterResult)result;
 - (void)setSubscriptionDuration:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)setVolume:(double) volume result: (FlutterResult)result;
 - (void)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options result:(FlutterResult)result;
@@ -66,9 +64,10 @@
 - (void)nowPlaying:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)getPlayerState:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)stopPlayer:(FlutterMethodCall*)call  result:(FlutterResult)result;
-
 - (NSNumber*)getPlayerStatus;
 - (int)getStatus;
+- (long)getPosition;
+- (long)getDuration;
 
 
 

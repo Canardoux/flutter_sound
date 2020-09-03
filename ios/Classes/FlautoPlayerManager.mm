@@ -102,7 +102,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         if ([@"isDecoderSupported" isEqualToString:call.method])
         {
                 NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
-                [aFlautoPlayer isDecoderSupported:[codec intValue] result:result];
+                [aFlautoPlayer isDecoderSupported:(t_CODEC)[codec intValue] result:result];
         } else
 
         if ([@"startPlayer" isEqualToString:call.method])
