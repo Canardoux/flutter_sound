@@ -782,12 +782,15 @@ static bool _isIosDecoderSupported [] =
         } else
         {
 
-                if ( [self getStatus] == IS_PAUSED )
+                // if ( [self getStatus] == IS_PAUSED ) // (after a long pause with the lock screen, the status is not "PAUSED"
                 {
                        // [audioPlayer setDelegate: self]; // TRY
                         NSLog(@"IOS: play!");
                         bool b = [player resume];
-                 }
+                } //else
+                {
+                        //NSLog(@"IOS: ~play! (status is not paused)" );
+                }
                 [self startTimer];
         }
         bool b = ([self getStatus] == IS_PLAYING);
