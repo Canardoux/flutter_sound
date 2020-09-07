@@ -53,8 +53,302 @@ static bool _isIosDecoderSupported [] =
                 false, // amrWB
 };
 
+//--------------------------------------------------------------------------------------------------------------------------------------------
+
+@interface AudioPlayerEngine  : NSObject <PlayerInterface>
+{
+        FlutterSoundPlayer* flutterSoundPlayer; // Owner
+}
+       - (AudioPlayerEngine*)init: (/*FlutterSoundPlayer**/NSObject*)owner  audioSettings: (NSMutableDictionary*) audioSettings;
+
+@end
 
 @implementation AudioPlayerEngine
+{
+        AVAudioEngine* engine;
+        AVAudioPlayerNode* playerNode;
+        AVAudioFormat* playerFormat;
+        //AVAudioConverter* converter;
+        AVAudioFormat* outputFormat;
+        //AVAudioMixerNode* mixerNode;
+        //AVAudioInputNode* inputNode;
+        AVAudioOutputNode* outputNode;
+        NSNumber* sampleRate;
+        NSNumber* nbChannels;
+}
+
+       - (AudioPlayerEngine*)init: (/*FlutterSoundPlayer**/NSObject*)owner  audioSettings: (NSMutableDictionary*) audioSettings
+       {
+                flutterSoundPlayer = (FlutterSoundPlayer*)owner;
+                
+                // Setup the nodes
+                engine = [[AVAudioEngine alloc] init];
+                outputNode = [engine outputNode];
+                //mixerNode = [engine mainMixerNode];
+                //mixerNode = [[AVAudioMixerNode alloc] init];
+                //inputNode = [engine inputNode];
+                playerNode = [[AVAudioPlayerNode alloc] init];
+                
+                outputFormat = [outputNode outputFormatForBus: 0];
+                //[[AVAudioSession sharedInstance] setCategory:  AVAudioSessionCategoryPlayback error: nil ];
+                [playerNode prepareWithFrameCount: 2048];
+
+                
+                // Attach and connect the nodes
+                [engine attachNode: playerNode];
+                nbChannels = audioSettings [@"numChannels"];
+                sampleRate = audioSettings [@"sampleRate"];
+ 
+                [engine connect: playerNode to: outputNode format: outputFormat];
+                //[engine connect: inputNode to: outputNode format: [playerNode outputFormatForBus: 0]];
+                //[engine attachNode: mixerNode];
+                //[engine connect: mixerNode to: outputNode format: nil];
+                
+                // The Audio buffer
+                  //[engine prepare];
+                [engine startAndReturnError: nil];
+ 
+   
+/*
+                    AVAudioConverterInputBlock inputBlock = ^AVAudioBuffer*(AVAudioPacketCount inNumberOfPackets, AVAudioConverterInputStatus* outStatus)
+                        {
+                                *outStatus = AVAudioConverterInputStatus_HaveData ;
+                                //inputStatus =  AVAudioConverterInputStatus_NoDataNow;
+                                int ln = [data length];
+                                AVAudioPCMBuffer* thePCMInputBuffer =  [[AVAudioPCMBuffer alloc] initWithPCMFormat: playerFormat frameCapacity: [data length]/2];
+                                memcpy((unsigned char*)thePCMInputBuffer.int16ChannelData[0], [data bytes], [data length]);
+                                return thePCMInputBuffer;
+                        };
+                                audioInputNode.installTapOnBus(0, bufferSize:frameLength, format: audioInputNode.outputFormatForBus(0), block: {(buffer, time) in
+*/
+                 
+
+ /*
+                for (int i = 0; i < 10; ++i)
+                {
+                        //memcpy((unsigned char*)thePCMOutputBuffer.floatChannelData[0], [data bytes], 512);
+                        memset((unsigned char*)thePCMOutputBuffer.floatChannelData[0],127, 2048);
+                        memset((unsigned char*)thePCMOutputBuffer.floatChannelData[1],30, 2048);
+                        [playerNode scheduleBuffer: thePCMOutputBuffer completionHandler:
+                        ^(void)
+                        {
+                        }];
+                }
+ 
+
+                //AVAudioPlayerNode* playerNode = [ [AVAudioPlayerNode alloc] init];
+                 //AVAudioInputNode* inputNode = [engine inputNode];
+                //AVAudioMixerNode* mixerNode = [engine mainMixerNode];
+                
+                
+
+                /*
+                [inputNode installTapOnBus: 0 bufferSize: 2048 format: inputFormat block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when)
+                {
+                        //inputStatus = AVAudioConverterInputStatus_HaveData ;
+                        AVAudioPCMBuffer* convertedBuffer = [[AVAudioPCMBuffer alloc]initWithPCMFormat:recordingFormat frameCapacity: [buffer frameCapacity]];
+
+                        AVAudioConverterInputBlock inputBlock = ^AVAudioBuffer*(AVAudioPacketCount inNumberOfPackets, AVAudioConverterInputStatus *outStatus)
+                        {
+                                *outStatus = inputStatus;
+                                inputStatus =  AVAudioConverterInputStatus_NoDataNow;
+                                return buffer;
+                        };
+                        BOOL r = [converter convertToBuffer: convertedBuffer error: nil withInputFromBlock: inputBlock];
+                        int n = [convertedBuffer frameLength];
+                        int16_t *const  bb = [convertedBuffer int16ChannelData][0];
+                        NSData* b = [[NSData alloc] initWithBytes: bb length: n * 2 ];
+                        if (n > 0)
+                        {
+                                if (fileHandle != nil)
+                                {
+                                        [fileHandle writeData: b];
+                                } else
+                                {
+                                        //NSDictionary* dic = [[NSMutableDictionary alloc] init];
+                                        //[dic setValue: b forKey: @"recordingData"];
+                                        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: [session getSlotNo]], @"recordingData": b,};
+                                        [session invokeMethod: @"recordingData" dico: dico];
+                                }
+                                
+                                int16_t* pt = [convertedBuffer int16ChannelData][0];
+                                for (int i = 0; i < [buffer frameLength]; ++pt, ++i)
+                                {
+                                        short curSample = *pt;
+                                        if ( curSample > maxAmplitude )
+                                        {
+                                                maxAmplitude = curSample;
+                                        }
+                        
+                                }
+                        }
+                }];
+                */
+                return [super init];
+       }
+       
+       -(bool) startPlayerFromBuffer: (NSData*) dataBuffer
+       {
+                 return true; // TODO
+       }
+        static int ready = 0;
+       
+       -(bool)  startPlayerFromURL: (NSURL*) url
+       {
+                assert(url == nil || url == [NSNull null]);
+                ready = 0;
+                [playerNode play];
+                return true;
+       }
+
+       
+       -(long)  getDuration
+       {
+                return 0; // TODO
+       }
+       
+       -(long)  getPosition // TODO
+       {
+                return 0;
+       }
+       
+       -(void)  stop // TODO
+       {
+       }
+       
+       -(bool)  resume // TODO
+       {
+                return true;
+       }
+        
+       -(bool)  pause // TODO
+       {
+                return true;
+       }
+       
+       -(bool)  setVolume: (double) volume // TODO
+       {
+                return true;
+       }
+       
+       -(bool)  seek: (double) pos // TODO
+       {
+                return true;
+       }
+       
+       -(int)  getStatus // TODO
+       {
+                        return IS_STOPPED;
+       }
+
+        - (int) feed: (NSData*)data
+        {
+                int frameLength = 2048;
+                assert( frameLength >= [data length]);
+             //while (true)
+                if (ready < 1)
+                {
+                        int ln = [data length];
+                        int frameLn = ln/2;
+                     
+                                                  
+                                playerFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: 2 interleaved: NO];
+                                AVAudioPCMBuffer* thePCMInputBuffer =  [[AVAudioPCMBuffer alloc] initWithPCMFormat: playerFormat frameCapacity: frameLength];
+                                memcpy((unsigned char*)thePCMInputBuffer.int16ChannelData[0], [data bytes], ln);
+                                memcpy((unsigned char*)thePCMInputBuffer.int16ChannelData[1], [data bytes], ln);
+                                /*
+                                unsigned char* pt = (unsigned char*)[data bytes];
+                                for (int i = 0; i < frameLn; ++i, pt +=2)
+                                {
+                                       int v = ((*(pt+1)) << 8) | (*(pt+0)) ;
+                                        thePCMInputBuffer.int16ChannelData[0][i] = v;
+                                }
+                                */
+                        thePCMInputBuffer.frameLength = frameLn;
+  
+                        AVAudioConverterInputBlock inputBlock = ^AVAudioBuffer*(AVAudioPacketCount inNumberOfPackets, AVAudioConverterInputStatus* outStatus)
+                        {
+                                *outStatus = AVAudioConverterInputStatus_HaveData ;
+                                //*outStatus =  AVAudioConverterInputStatus_NoDataNow;
+                                return thePCMInputBuffer;
+                        };
+                        AVAudioFormat* format2 = [[AVAudioFormat alloc] initWithCommonFormat:[outputFormat commonFormat] sampleRate: [outputFormat sampleRate] channels: 2 interleaved: NO ];
+                        AVAudioFormat* format = [[AVAudioFormat alloc] initStandardFormatWithSampleRate: [outputFormat sampleRate] channels: 2  ];
+
+                        AVAudioPCMBuffer* thePCMOutputBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat: outputFormat frameCapacity: frameLength];
+                        //thePCMOutputBuffer.frameLength = frameLn;
+
+                        AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat: playerFormat toFormat: outputFormat];
+                        BOOL r = [converter convertToBuffer: thePCMOutputBuffer error: nil withInputFromBlock: inputBlock];
+                        
+                        //thePCMOutputBuffer.frameLength = frameLn;
+                        /*
+                        for (int i = 0; i < ln/2; ++i)
+                        {
+                                        // doing my real time stuff
+                                        thePCMOutputBuffer.floatChannelData[0][i] = 100000 * (float)i;
+                                        thePCMOutputBuffer.floatChannelData[1][i] = 100000 * (float)i;
+                        }
+                        */
+                         //[playerNode reset];
+                         ++ready ;
+                        [playerNode scheduleBuffer: thePCMOutputBuffer  completionHandler:
+                        ^(void)
+                        {
+                                --ready;
+                        }];
+              
+                        return ln;
+                }
+ 
+                return 0;
+                //[inputNode installTapOnBus: 0 bufferSize: 2048 format: inputFormat block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when)
+                //{
+                        //AVAudioConverterInputStatus inputStatus = AVAudioConverterInputStatus_HaveData ;
+                         //AVAudioPCMBuffer* thePCMOutputBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat: outputFormat frameCapacity: [data length]/2];
+ 
+                         //int n = [convertedBuffer frameLength];
+                        //int16_t *const  bb = [convertedBuffer int16ChannelData][0];
+                        //NSData* b = [[NSData alloc] initWithBytes: bb length: n * 2 ];
+   
+                // make a silent stereo buffer
+                //AVAudioChannelLayout *chLayout = [[AVAudioChannelLayout alloc] initWithLayoutTag:kAudioChannelLayoutTag_Mono];
+ 
+                //AVAudioPCMBuffer* thePCMBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat: playerFormat frameCapacity: [data length]/2];
+                //thePCMBuffer.frameLength = thePCMBuffer.frameCapacity;
+                //memset(thePCMBuffer.int16ChannelData[0], 0, thePCMBuffer.frameLength * playerFormat.streamDescription ->mBytesPerFrame);
+                //memset(thePCMBuffer.int16ChannelData[1], 0, thePCMBuffer.frameLength * playerFormat.streamDescription ->mBytesPerFrame);
+                //memcpy(thePCMBuffer.int16ChannelData[0], [data bytes], [data length]);
+                //memcpy(thePCMBuffer.int16ChannelData[1], [data bytes], [data length]);
+
+/*
+                if (ready)
+                {
+                        ready = false;
+                        AVAudioPCMBuffer* thePCMOutputBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat: outputFormat frameCapacity: 512];
+                         //memcpy((unsigned char*)thePCMOutputBuffer.floatChannelData[0], [data bytes], 512);
+                        memset((unsigned char*)thePCMOutputBuffer.floatChannelData[0],127, 512);
+                        memset((unsigned char*)thePCMOutputBuffer.floatChannelData[1],30, 512);
+                        [playerNode scheduleBuffer: thePCMOutputBuffer completionHandler:
+                        ^(void)
+                        {
+                                bool ready = true;
+                        }];
+  
+                        return [data length];
+                }
+                return 0;
+                */
+        }
+
+
+
+
+@end
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+@implementation AudioPlayer 
 {
         FlutterSoundPlayer* flutterSoundPlayer; // Owner
         AVAudioPlayer* player;
@@ -71,7 +365,7 @@ static bool _isIosDecoderSupported [] =
         }
 
 
-       - (AudioPlayerEngine*)init: (/*FlutterSoundPlayer**/NSObject*)owner
+       - (AudioPlayer*)init: (/*FlutterSoundPlayer**/NSObject*)owner
        {
                 flutterSoundPlayer = (FlutterSoundPlayer*)owner;
                 return [super init];
@@ -130,9 +424,10 @@ static bool _isIosDecoderSupported [] =
                 return true;
        }
        
-       -(void)  seek: (double) pos
+       -(bool)  seek: (double) pos
        {
                 [self getAudioPlayer].currentTime = pos / 1000.0;
+                return true;
        }
        
        -(int)  getStatus
@@ -145,7 +440,16 @@ static bool _isIosDecoderSupported [] =
        }
 
 
+        - (int) feed: (NSData*)data
+        {
+                return -1;
+        }
+
+
+
 @end
+
+//-------------------------------------------------------------------------------------------------------------------------------
 
 @implementation FlutterSoundPlayer
 {
@@ -282,8 +586,12 @@ static bool _isIosDecoderSupported [] =
 
         [self stopPlayer]; // To start a fresh new playback
 
-        player = [[AudioPlayerEngine alloc]init: self];
         NSString* path = (NSString*)call.arguments[@"fromURI"];
+        t_CODEC codec = (t_CODEC)([(NSNumber*)call.arguments[@"codec"] intValue]);
+        if ( (path == nil ||  [path class] == [NSNull class] ) && codec == pcm16)
+                player = [[AudioPlayerEngine alloc] init: self audioSettings: call.arguments];
+        else
+                player = [[AudioPlayer alloc]init: self];
         FlutterStandardTypedData* dataBuffer = (FlutterStandardTypedData*)call.arguments[@"fromDataBuffer"];
         if ([dataBuffer class] != [NSNull class])
         {
@@ -309,52 +617,53 @@ static bool _isIosDecoderSupported [] =
         }
 
         bool isRemote = false;
-        if ([path class] == [NSNull class])
+        //if ( (path == nil ||  [path class] == [NSNull class] ) && codec == pcm16)
         {
-                [self stopPlayer];
-                result([FlutterError
-                errorWithCode:@"Audio Player"
-                message:@"Play failure"
-                details:nil]);
-                NSLog(@"IOS:<-- startPlayer");
-                return;
+                //NSLog(@"IOS:<-- startPlayer");
+                //return;
 
         }
-        NSURL *remoteUrl = [NSURL URLWithString: path];
-        NSURL *audioFileURL = [NSURL URLWithString:path];
+        if (path != [NSNull null])
+        {
+                NSURL* remoteUrl = [NSURL URLWithString: path];
+                NSURL* audioFileURL = [NSURL URLWithString:path];
         
-        if (remoteUrl && remoteUrl.scheme && remoteUrl.host)
-        {
-                audioFileURL = remoteUrl;
-                isRemote = true;
-        }
-
-          if (isRemote)
-          {
-                NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
-                        dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+                if (remoteUrl && remoteUrl.scheme && remoteUrl.host)
                 {
+                        audioFileURL = remoteUrl;
+                        isRemote = true;
+                }
 
-                        // We must create a new Audio Player instance to be able to play a different Url
-                        bool b = [player startPlayerFromBuffer: data];
-                        if (!b)
+                  if (isRemote)
+                  {
+                        NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
+                                dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
                         {
-                                [self stopPlayer];
-                                result([FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"Play failure"
-                                details:nil]);
 
-                        }
-                }];
+                                // We must create a new Audio Player instance to be able to play a different Url
+                                bool b = [player startPlayerFromBuffer: data];
+                                if (!b)
+                                {
+                                        [self stopPlayer];
+                                        result([FlutterError
+                                        errorWithCode:@"Audio Player"
+                                        message:@"Play failure"
+                                        details:nil]);
 
-                [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-                NSString *filePath = audioFileURL.absoluteString;
-                [downloadTask resume];
-                b = true;
+                                }
+                        }];
+
+                        [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+                        NSString *filePath = audioFileURL.absoluteString;
+                        [downloadTask resume];
+                        b = true;
+                } else
+                {
+                        b = [player startPlayerFromURL: audioFileURL];
+                }
         } else
         {
-                b = [player startPlayerFromURL: audioFileURL];
+                b = [player startPlayerFromURL: nil];
         }
         if (b)
         {
@@ -525,6 +834,27 @@ static bool _isIosDecoderSupported [] =
 
 }
 
+
+
+- (void)feed:(FlutterMethodCall*)call result: (FlutterResult)result
+{
+		try
+		{
+                        FlutterStandardTypedData* x = call.arguments[ @"data" ] ;
+                        assert ([x elementSize] == 1);
+			NSData* data = [x data];
+                        assert ([data length] == [x elementCount]);
+                        int r = [player feed: data];
+			result([NSNumber numberWithInt: r]);
+		} catch (NSException* e)
+		{
+                        result([FlutterError
+                                errorWithCode:@"feed"
+                                message:@"error"
+                                details:nil]);
+		}
+
+}
 
 - (void)seekToPlayer:(FlutterMethodCall*)call result: (FlutterResult)result
 {

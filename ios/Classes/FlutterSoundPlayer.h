@@ -68,6 +68,8 @@
 - (int)getStatus;
 - (long)getPosition;
 - (long)getDuration;
+- (void)feed:(FlutterMethodCall*)call result: (FlutterResult)result;
+
 
 
 

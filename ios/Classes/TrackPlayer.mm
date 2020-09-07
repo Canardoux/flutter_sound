@@ -64,13 +64,13 @@
 
 - (AVAudioPlayer*)getPlayer
 {
-        return [(AudioPlayerEngine*)player  getAudioPlayer];
+        return [(AudioPlayer*)player  getAudioPlayer];
         
 }
 
 - (void)setPlayer:(AVAudioPlayer*) theAudioPlayer
 {
-        [(AudioPlayerEngine*)player  setAudioPlayer: theAudioPlayer];
+        [(AudioPlayer*)player  setAudioPlayer: theAudioPlayer];
 }
 
 
@@ -99,7 +99,7 @@
         }
         [self stopPlayer]; // to start a fresh new playback
 
-        player = [[AudioPlayerEngine alloc]init: self];
+        player = [[AudioPlayer alloc]init: self];
 
         // Check whether the audio file is stored as a path to a file or a buffer
         if([track isUsingPath])

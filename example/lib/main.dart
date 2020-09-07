@@ -473,7 +473,7 @@ class _MyAppState extends State<MyApp> {
           setState(() {});
           await feedHim(audioFilePath);
           //await finishPlayer();
-          await stopPlayer();
+          // TODO // TEMPORARY // await stopPlayer();
 
         } else {
         if (audioFilePath != null) {
@@ -496,6 +496,8 @@ class _MyAppState extends State<MyApp> {
           }
           await playerModule.startPlayer(
               fromDataBuffer: dataBuffer,
+              sampleRate: 8000,
+
               codec: codec,
               whenFinished: () {
                 print('Play finished');

@@ -246,7 +246,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	{
 		try
 		{
-			byte[] data =call.argument ( "data" );
+			byte[] data = call.argument ( "data" );
 
 			 int r = player.feed(data);
 			 result.success (r);

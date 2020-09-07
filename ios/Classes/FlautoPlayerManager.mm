@@ -181,6 +181,12 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         {
                  [aFlautoPlayer getProgress: call result:result];
         } else
+        
+        if ([@"feed" isEqualToString:call.method])
+        {
+                 [aFlautoPlayer feed: call result:result];
+        } else
+
 
         {
                 result(FlutterMethodNotImplemented);

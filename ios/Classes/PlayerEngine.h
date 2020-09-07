@@ -42,13 +42,14 @@
        - (bool) setVolume: (double) volume;
        - (bool) seek: (double) pos;
        - (int) getStatus;
+       - (int) feed: (NSData*)data;
 
 @end
 
-@interface AudioPlayerEngine : NSObject <PlayerInterface>
+@interface AudioPlayer : NSObject <PlayerInterface>
 {
 }
-       - (AudioPlayerEngine*) init: (/*FlutterSoundPlayer**/NSObject*)owner;
+       - (AudioPlayer*) init: (NSObject*)owner; // FlutterSoundPlayer*
 
        - (bool) startPlayerFromBuffer:  (NSData*)data;
        - (bool) startPlayerFromURL;
@@ -62,6 +63,7 @@
        - (int) getStatus;
        - (AVAudioPlayer*) getAudioPlayer;
        - (void) setAudioPlayer: (AVAudioPlayer*)thePlayer;
+       - (int) feed: (NSData*)data;
 
 @end
 
