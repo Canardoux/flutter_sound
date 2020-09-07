@@ -1,23 +1,26 @@
 /*
- * Copyright (c) 2019 Taner Sener
+ * Copyright 2018, 2019, 2020 Dooboolab.
  *
- * This file is part of FlutterFFmpeg.
+ * This file is part of Flutter-Sound.
  *
- * FlutterFFmpeg is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Flutter-Sound is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
+ * the Free Software Foundation.
  *
- * FlutterFFmpeg is distributed in the hope that it will be useful,
+ * Flutter-Sound is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with FlutterFFmpeg.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+
+
 #import "FlutterFFmpegPlugin.h"
+
+#ifdef FULL_FLAVOR
 
 #import <mobileffmpeg/ArchDetect.h>
 #import <mobileffmpeg/MobileFFmpegConfig.h>
@@ -48,6 +51,14 @@ static NSString *const KEY_STAT_VIDEO_FPS = @"videoFps";
 static NSString *const EVENT_LOG = @"FlutterFFmpegLogCallback";
 static NSString *const EVENT_STAT = @"FlutterFFmpegStatisticsCallback";
 
+
+extern void FfmpegReg(NSObject<FlutterPluginRegistrar>* registrar)
+{
+        [FlutterFFmpegPlugin registerWithRegistrar: registrar];
+}
+
+
+
 /**
  * Flutter FFmpeg Plugin
  */
@@ -66,13 +77,13 @@ static NSString *const EVENT_STAT = @"FlutterFFmpegStatisticsCallback";
 }
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-    FlutterFFmpegPlugin* instance = [[FlutterFFmpegPlugin alloc] init];
+    FlutterFFmpegPlugin* flutterFFmpegPlugin = [[FlutterFFmpegPlugin alloc] init]; // The singleton
 
     FlutterMethodChannel* methodChannel = [FlutterMethodChannel methodChannelWithName:@"flutter_ffmpeg" binaryMessenger:[registrar messenger]];
-    [registrar addMethodCallDelegate:instance channel:methodChannel];
+    [registrar addMethodCallDelegate:flutterFFmpegPlugin channel:methodChannel];
 
     FlutterEventChannel* eventChannel = [FlutterEventChannel eventChannelWithName:@"flutter_ffmpeg_event" binaryMessenger:[registrar messenger]];
-    [eventChannel setStreamHandler:instance];
+    [eventChannel setStreamHandler:flutterFFmpegPlugin];
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
@@ -400,3 +411,6 @@ static NSString *const EVENT_STAT = @"FlutterFFmpegStatisticsCallback";
 }
 
 @end
+
+#endif // FULL_FLAVOR
+
