@@ -63,7 +63,7 @@
         albumArtAsset = albumArtAssetString;
         
         NSString *albumArtFileString = [responseObj objectForKey:@"albumArtFile"];
-        albumArtFile = albumArtAssetString;
+        albumArtFile = albumArtFileString;
 
 
         FlutterStandardTypedData *dataBufferJson = [responseObj objectForKey:@"dataBuffer"];
