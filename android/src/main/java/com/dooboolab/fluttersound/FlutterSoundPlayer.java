@@ -693,7 +693,7 @@ class AudioTrackEngine extends PlayerInterface
 			.setSampleRate(sampleRate)
 			.setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
 			.build();
-		audioTrack = new AudioTrack(attributes, format, 4096, AudioTrack.MODE_STREAM, sessionId);
+		audioTrack = new AudioTrack(attributes, format, 2048, AudioTrack.MODE_STREAM, sessionId);
 		mPauseTime = 0;
 		mStartPauseTime = -1;
 		systemTime = SystemClock.elapsedRealtime();
@@ -774,7 +774,7 @@ class AudioTrackEngine extends PlayerInterface
 	{
 		if ( Build.VERSION.SDK_INT >= 23 )
 		{
-			return audioTrack.write(data, 0, data.length, AudioTrack.WRITE_BLOCKING);
+			return audioTrack.write(data, 0, data.length, AudioTrack.WRITE_NON_BLOCKING);
 		} else
 		{
 			return audioTrack.write(data, 0, data.length);

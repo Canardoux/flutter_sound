@@ -22,29 +22,21 @@ import 'package:flutter/material.dart';
 import 'demo_util/demo3_body.dart';
 
 
-/// demonstrates the recording widget linked to a playback widget.
-void main() {
-
-  runApp(MyApp());
-}
-
 /// Example app.
-class MyApp extends StatefulWidget {
+class WidgetUIDemo extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _WidgetUIDemoState createState() => _WidgetUIDemoState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _WidgetUIDemoState extends State<WidgetUIDemo> {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
-          title: const Text('Flutter Sound'),
+          title: const Text('Widget UI Demo'),
         ),
         body: MainBody(),
-      ),
     );
   }
 

@@ -75,6 +75,11 @@ static bool _isIosDecoderSupported [] =
         AVAudioOutputNode* outputNode;
         NSNumber* sampleRate;
         NSNumber* nbChannels;
+        CFTimeInterval mStartPauseTime ; // The time when playback was paused
+	CFTimeInterval systemTime ; //The time when  StartPlayer() ;
+        double mPauseTime ; // The number of seconds during the total Pause mode
+
+
 }
 
        - (AudioPlayerEngine*)init: (/*FlutterSoundPlayer**/NSObject*)owner  audioSettings: (NSMutableDictionary*) audioSettings
@@ -89,9 +94,9 @@ static bool _isIosDecoderSupported [] =
                 //inputNode = [engine inputNode];
                 playerNode = [[AVAudioPlayerNode alloc] init];
                 
-                outputFormat = [outputNode outputFormatForBus: 0];
+                outputFormat = [outputNode inputFormatForBus: 0];
                 //[[AVAudioSession sharedInstance] setCategory:  AVAudioSessionCategoryPlayback error: nil ];
-                [playerNode prepareWithFrameCount: 2048];
+                //[playerNode prepareWithFrameCount: 2048];
 
                 
                 // Attach and connect the nodes
@@ -184,12 +189,17 @@ static bool _isIosDecoderSupported [] =
                         }
                 }];
                 */
+                mPauseTime = 0.0; // Total number of seconds in pause mode
+		mStartPauseTime = -1; // Not in paused mode
+		systemTime = CACurrentMediaTime(); // The time when started
+                [playerNode play];
+
                 return [super init];
        }
        
        -(bool) startPlayerFromBuffer: (NSData*) dataBuffer
        {
-                 return true; // TODO
+                 return [self feed: dataBuffer] > 0;
        }
         static int ready = 0;
        
@@ -204,41 +214,71 @@ static bool _isIosDecoderSupported [] =
        
        -(long)  getDuration
        {
-                return 0; // TODO
+		return [self getPosition]; // It would be better if we add what is in the input buffers and not still played
        }
        
        -(long)  getPosition // TODO
        {
-                return 0;
+		double time ;
+		if (mStartPauseTime >= 0) // In pause mode
+			time =   mStartPauseTime - systemTime - mPauseTime ;
+		else
+			time = CACurrentMediaTime() - systemTime - mPauseTime;
+		return (long)(time * 1000);
        }
        
        -(void)  stop // TODO
        {
+ 
+                if (engine != nil)
+                {
+                        if (playerNode != nil)
+                        {
+                                [playerNode stop];
+                                // Does not work !!! // [engine detachNode:  playerNode];
+                                playerNode = nil;
+                         }
+                        [engine stop];
+                        engine = nil;
+                }
        }
        
        -(bool)  resume // TODO
        {
+		if (mStartPauseTime >= 0)
+			mPauseTime += CACurrentMediaTime() - mStartPauseTime;
+		mStartPauseTime = -1;
+
+		[playerNode play];
                 return true;
        }
         
        -(bool)  pause // TODO
        {
+		mStartPauseTime = CACurrentMediaTime();
+		[playerNode pause];
                 return true;
        }
        
        -(bool)  setVolume: (double) volume // TODO
        {
-                return true;
+                return true; // TODO
        }
        
        -(bool)  seek: (double) pos // TODO
        {
-                return true;
+                return false;
        }
        
        -(int)  getStatus // TODO
        {
+                if (engine == nil)
                         return IS_STOPPED;
+                if (mStartPauseTime > 0)
+                        return IS_PAUSED;
+                if ( [playerNode isPlaying])
+                        return IS_PLAYING;
+                return IS_PLAYING; // ??? Not sure !!!
        }
 
         - (int) feed: (NSData*)data
@@ -249,13 +289,28 @@ static bool _isIosDecoderSupported [] =
                 if (ready < 1)
                 {
                         int ln = [data length];
-                        int frameLn = ln/2;
+                        int frameLn = ln/2; // Two octets for a frame (Monophony, INT Linear 16)
+                        
+                        playerFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: nbChannels.intValue interleaved: NO];
+                        /*----
+                        AudioStreamBasicDescription desc;
+                        desc.mBitsPerChannel = 16;
+                        desc.mBytesPerFrame = frameLength;
+                        desc.mBytesPerPacket = frameLength;
+                        desc.mChannelsPerFrame = nbChannels.intValue;
+                        desc.mFormatFlags = kAudioFormatFlagIsNonInterleaved || kAudioFormatFlagIsSignedInteger || kAppleLosslessFormatFlag_16BitSourceData;
+                        desc.mFormatID = kAudioFormatLinearPCM;
+                        desc.mFramesPerPacket = 1;
+                        desc.mSampleRate = sampleRate.doubleValue;
+                        AVAudioFormat* playerFormat3 =  [[AVAudioFormat alloc] initWithStreamDescription: &desc channelLayout: nil];
+                        //----*/
+                        
                      
                                                   
-                                playerFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: 2 interleaved: NO];
+  
                                 AVAudioPCMBuffer* thePCMInputBuffer =  [[AVAudioPCMBuffer alloc] initWithPCMFormat: playerFormat frameCapacity: frameLength];
-                                memcpy((unsigned char*)thePCMInputBuffer.int16ChannelData[0], [data bytes], ln);
-                                memcpy((unsigned char*)thePCMInputBuffer.int16ChannelData[1], [data bytes], ln);
+                                memcpy((unsigned char*)(thePCMInputBuffer.int16ChannelData[0]), [data bytes], ln);
+                                //memcpy((unsigned char*)thePCMInputBuffer.int16ChannelData[1], [data bytes], ln);
                                 /*
                                 unsigned char* pt = (unsigned char*)[data bytes];
                                 for (int i = 0; i < frameLn; ++i, pt +=2)
@@ -265,21 +320,22 @@ static bool _isIosDecoderSupported [] =
                                 }
                                 */
                         thePCMInputBuffer.frameLength = frameLn;
-  
+                        static bool hasData = true;
+                        hasData = true;
                         AVAudioConverterInputBlock inputBlock = ^AVAudioBuffer*(AVAudioPacketCount inNumberOfPackets, AVAudioConverterInputStatus* outStatus)
                         {
-                                *outStatus = AVAudioConverterInputStatus_HaveData ;
+                                *outStatus = hasData ? AVAudioConverterInputStatus_HaveData : AVAudioConverterInputStatus_NoDataNow;
+                                hasData = false;
                                 //*outStatus =  AVAudioConverterInputStatus_NoDataNow;
                                 return thePCMInputBuffer;
                         };
-                        AVAudioFormat* format2 = [[AVAudioFormat alloc] initWithCommonFormat:[outputFormat commonFormat] sampleRate: [outputFormat sampleRate] channels: 2 interleaved: NO ];
-                        AVAudioFormat* format = [[AVAudioFormat alloc] initStandardFormatWithSampleRate: [outputFormat sampleRate] channels: 2  ];
-
+                        
                         AVAudioPCMBuffer* thePCMOutputBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat: outputFormat frameCapacity: frameLength];
-                        //thePCMOutputBuffer.frameLength = frameLn;
+                        thePCMOutputBuffer.frameLength = frameLn;
 
                         AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat: playerFormat toFormat: outputFormat];
                         BOOL r = [converter convertToBuffer: thePCMOutputBuffer error: nil withInputFromBlock: inputBlock];
+                        //BOOL r = [converter convertToBuffer: thePCMOutputBuffer fromBuffer: thePCMInputBuffer error: nil ];
                         
                         //thePCMOutputBuffer.frameLength = frameLn;
                         /*
@@ -291,15 +347,19 @@ static bool _isIosDecoderSupported [] =
                         }
                         */
                          //[playerNode reset];
-                         ++ready ;
-                        [playerNode scheduleBuffer: thePCMOutputBuffer  completionHandler:
-                        ^(void)
-                        {
-                                --ready;
-                        }];
+                         if (r)
+                         {
+                                ++ready ;
+                                [playerNode scheduleBuffer: thePCMOutputBuffer  completionHandler:
+                                ^(void)
+                                {
+                                        --ready;
+                                }];
+                                return ln;
+                         }
+                         return 0;
               
-                        return ln;
-                }
+                 }
  
                 return 0;
                 //[inputNode installTapOnBus: 0 bufferSize: 2048 format: inputFormat block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when)
@@ -617,12 +677,7 @@ static bool _isIosDecoderSupported [] =
         }
 
         bool isRemote = false;
-        //if ( (path == nil ||  [path class] == [NSNull class] ) && codec == pcm16)
-        {
-                //NSLog(@"IOS:<-- startPlayer");
-                //return;
-
-        }
+   
         if (path != [NSNull null])
         {
                 NSURL* remoteUrl = [NSURL URLWithString: path];
@@ -741,6 +796,7 @@ static bool _isIosDecoderSupported [] =
 
          long duration =   [player getDuration];
          long position =   [player getPosition];
+         /*
          if (duration - position < 80) // PATCH [LARPOUX]
           {
                 NSLog (@"IOS: !patch [LARPOUX]");
@@ -752,6 +808,7 @@ static bool _isIosDecoderSupported [] =
                  });
 
           }
+          */
 
 
           bool b =  ( [self getStatus] == IS_PAUSED);
@@ -769,6 +826,7 @@ static bool _isIosDecoderSupported [] =
         NSLog(@"IOS:--> resume");
         long duration =   [player getDuration];
         long position =   [player getPosition];
+        /*
         if (duration - position < 80) // PATCH [LARPOUX]
         {
                 NSLog (@"IOS: !patch [LARPOUX]");
@@ -780,6 +838,7 @@ static bool _isIosDecoderSupported [] =
                  });
 
         } else
+        */
         {
 
                 // if ( [self getStatus] == IS_PAUSED ) // (after a long pause with the lock screen, the status is not "PAUSED"

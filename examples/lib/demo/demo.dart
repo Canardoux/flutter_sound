@@ -22,13 +22,14 @@ import 'dart:math';
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_sound_demo/demo1.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+const int BITRATE = 8000;
 
 enum Media {
   file,
@@ -53,16 +54,12 @@ final exampleAudioFilePath =
 final albumArtPath =
     "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_500kB.png";
 
-void main() {
-  runApp(new MyApp());
-}
-
-class MyApp extends StatefulWidget {
+class Demo extends StatefulWidget {
   @override
   _MyAppState createState() => new _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<Demo> {
   bool _isRecording = false;
   List<String> _path = [
     null,
@@ -230,7 +227,7 @@ class _MyAppState extends State<MyApp> {
           toStream: recordingDataController.sink,
           codec: _codec,
           numChannels: 1,
-          sampleRate: 8000,
+          sampleRate: BITRATE,
         );
       } else {
         await recorderModule.startRecorder(
@@ -466,14 +463,14 @@ class _MyAppState extends State<MyApp> {
             codec: _codec,
             needSomeData: null,
             numChannels: 1,
-            sampleRate: 8000,
+            sampleRate: BITRATE,
             //inputStream: feedStream.stream,
           );
           _addListeners();
           setState(() {});
           await feedHim(audioFilePath);
           //await finishPlayer();
-          // TODO // TEMPORARY // await stopPlayer();
+          await stopPlayer(); // TODO finishPlayer()
 
         } else {
         if (audioFilePath != null) {
@@ -1026,10 +1023,10 @@ class _MyAppState extends State<MyApp> {
       ],
     );
 
-    return MaterialApp(
-      home: Scaffold(
+    return  Scaffold(
         appBar: AppBar(
-          title: const Text('Flutter Sound'),
+          title: const Text('Flutter Sound Demo'),
+
         ),
         body: ListView(
           children: <Widget>[
@@ -1039,7 +1036,6 @@ class _MyAppState extends State<MyApp> {
             trackSwitch,
           ],
         ),
-      ),
     );
   }
 }
