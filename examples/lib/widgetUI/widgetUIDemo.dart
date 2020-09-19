@@ -21,6 +21,15 @@ import 'package:flutter/material.dart';
 
 import 'demo_util/demo3_body.dart';
 
+// If you update the following test, please update also the Examples/README.md file and the comment inside the dart file.
+/*
+ * This is a Demo of an App which uses the Flutter Sound UI Widgets.
+ *
+ * My own feeling is that this Demo is really too much complicated for doing something very simple.
+ * There is too many dependencies and too many sources.
+ *
+ * I really hope that someone will write soon another simpler Demo App.
+ */
 
 /// Example app.
 class WidgetUIDemo extends StatefulWidget {
@@ -32,7 +41,7 @@ class _WidgetUIDemoState extends State<WidgetUIDemo> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.blue,
         appBar: AppBar(
           title: const Text('Widget UI Demo'),
         ),

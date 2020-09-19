@@ -47,6 +47,7 @@ class Example
 final List<Example> exampleTable =
     [
       Example(title: 'Demo', subTitle: 'Flutter Sound capabilities', route: (BuildContext) => Demo(), description:
+// If you update the following test, please update also the Examples/README.md file and the comment inside the dart file.
 '''This is a Demo of what it is possible to do with Flutter Sound.
 The code of this Demo app is not so simple and unfortunately not very clean :-( .
 
@@ -61,42 +62,30 @@ The biggest interest of this Demo is that it shows most of the features of Flutt
 - Can show controls on the iOS or Android lock-screen
 - ...
 
+This Demo does not make use of the Flutter Sound UI Widgets.
+
 It would be really great if someone rewrite this demo soon'''
       ),
 
       Example(title: 'WidgetUIDemo', subTitle: 'Demonstration of the UI Widget', route: (BuildContext) => WidgetUIDemo(), description:
-'''the description
+// If you update the following test, please update also the Examples/README.md file and the comment inside the dart file.
+'''
+This is a Demo of an App which uses the Flutter Sound UI Widgets.
+
+My own feeling is that this Demo is really too much complicated for doing something very simple.
+There is too many dependencies and too many sources.
+
+I really hope that someone will write soon another simpler Demo App.
 ''',
       ),
 
       Example(title: 'RecordToStreamExample', subTitle: 'Example of recording to Stream', route: (BuildContext) => RecordToStreamExample(), description:
-'''zozo sldgkdslk; a dsflk; df;alkd ;ladfsk sdf;ldfsk sdf;lkdfs  sdf;lksd dfsa dflkdfsf;dfs dfl;kdfs dfsk dfs;ldsfk dsfk sdf'kdsf l;sdaf
-La plume
-erwer
-gsfgsdfgsdfg
-sfgsgfgfg
-lklklklklkkk
-zozo sldgkdslk; a dsflk; df;alkd ;ladfsk sdf;ldfsk sdf;lkdfs  sdf;lksd dfsa dflkdfsf;dfs dfl;kdfs dfsk dfs;ldsfk dsfk sdf'kdsf l;sdaf
-La plume
-erwer
-gsfgsdfgsdfg
-sfgsgfgfg
-lklklklklkkk
-zozo sldgkdslk; a dsflk; df;alkd ;ladfsk sdf;ldfsk sdf;lkdfs  sdf;lksd dfsa dflkdfsf;dfs dfl;kdfs dfsk dfs;ldsfk dsfk sdf'kdsf l;sdaf
-La plume
-erwer
-gsfgsdfgsdfg
-sfgsgfgfg
-lklklklklkkk
-zozo sldgkdslk; a dsflk; df;alkd ;ladfsk sdf;ldfsk sdf;lkdfs  sdf;lksd dfsa dflkdfsf;dfs dfl;kdfs dfsk dfs;ldsfk dsfk sdf'kdsf l;sdaf
-La plume
-erwer
-gsfgsdfgsdfg
-sfgsgfgfg
-lklklklklkkk
+'''
+This is an example showing how to record to a Dart Stream.
+It writes all the recorded data from a Stream to a File, which is completely stupid:
+if an App wants to record something to a File, it must not use Streams.
 
-
-
+The real interest of recording to a Stream is for example to feed a Speech-to-Text engine, or for processing the Live data in Dart in real time.
 ''',
       ),
 
@@ -184,7 +173,7 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
                 padding: const EdgeInsets.all( 3 ),
                 decoration: BoxDecoration
                   (
-                  color:  isSelected ? Colors.indigo : Color( 0xFFFAF0E6), 
+                  color:  isSelected ? Colors.indigo : Color( 0xFFFAF0E6),
                   border: Border.all( color: Colors.white, width: 3, ),
                 ),
 
@@ -254,19 +243,20 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
       ),
       body: makeBody(),
             bottomNavigationBar: BottomAppBar
-        (
+      (
         color: Colors.blue,
-    child: Container(
-    margin: const EdgeInsets.all( 3 ),
-    padding: const EdgeInsets.all( 3 ),
-    height: 40,
-    decoration: BoxDecoration
-    (
-    color:  Color( 0xFFFAF0E6 ),
-    border: Border.all( color: Colors.indigo, width: 3, ),
-    ),
-        child: Row ( mainAxisAlignment: MainAxisAlignment.end, children: [ RaisedButton(onPressed: () =>selectedExample.go(context), color: Colors.indigo, child: Text('GO', style: TextStyle(color: Colors.white),),)],)
-      ),
+        child: Container
+        (
+          margin: const EdgeInsets.all( 3 ),
+          padding: const EdgeInsets.all( 3 ),
+          height: 40,
+          decoration: BoxDecoration
+          (
+            color:  Color( 0xFFFAF0E6 ),
+            border: Border.all( color: Colors.indigo, width: 3, ),
+          ),
+          child: Row ( mainAxisAlignment: MainAxisAlignment.end, children: [ RaisedButton(onPressed: () =>selectedExample.go(context), color: Colors.indigo, child: Text('GO', style: TextStyle(color: Colors.white),),)],)
+        ),
       ),
 
     );

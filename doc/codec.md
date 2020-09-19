@@ -24,15 +24,15 @@ Yes(*) : The codec is supported by Flutter Sound, but with a File Format Convers
 ## Raw PCM and Wave files
 
 Raw PCM is not an audio format. Raw PCM files store the raw data without any envelope.
-A simple way for playing a Raw PCM file, is to add a `Wave` header in front of the data before playing it. To do that, the helper verb `pcmToWave()` is convenient. You can also call directely the `startPlayer()` verb. If you do that, do not forget to provide the `sampleRate` parameter.
+A simple way for playing a Raw PCM file, is to add a `Wave` header in front of the data before playing it. To do that, the helper verb `pcmToWave()` is convenient. You can also call directely the `startPlayer()` verb. If you do that, do not forget to provide the `sampleRate` and `nbChannels` parameters.
 
 **A Wave file is just PCM data in a specific file format**.
 
 The Wave audio file format has a terrible drawback : **it cannot be streamed**.
-The Wave file is considered not valid, until it is closed. During the construction of the Wave file, it is considered as corrupted because he Wave header is still not written.
+The Wave file is considered not valid, until it is closed. During the construction of the Wave file, it is considered as corrupted because the Wave header is still not written.
 
 
-Note the following limitations in current the Flutter Sound version :
+Note the following limitations in the current Flutter Sound version :
 - The stream is  `PCM-Integer Linear 16` with just one channel. Actually, Flutter Sound does not manipulate Raw PCM with floating point PCM data nor with more than one audio channel.
 - `FlutterSoundHelper duration()` does not work with Raw PCM file
 - `startRecorder()` does not return the record duration.
@@ -43,14 +43,14 @@ Note the following limitations in current the Flutter Sound version :
 
 Please, remember that actually, Flutter Sound does not support Floating Point PCM data, nor records with more that one audio channel.
 
-- To record a Raw PCM16 file, you use the regular `startRecorder()` API verb
-- To play a Raw PCM16 file, you can either add a Wave header in front of the file with `pcm16ToWave()` verb, or call the regular `startPlayer()` API verb. If you do the later, you must provide the `sampleRate` parameter during the call.
+To record a Raw PCM16 file, you use the regular `startRecorder()` API verb.
+To play a Raw PCM16 file, you can either add a Wave header in front of the file with `pcm16ToWave()` verb, or call the regular `startPlayer()` API verb. If you do the later, you must provide the `sampleRate` parameter during the call.
 You can look to the simple example provided with Flutter Sound.
 
 *Example*
 ``` dart
-var tempDir = await getTemporaryDirectory();
-var fout = outputFile('${tempDir.path}/myFile.pcm');
+Directory tempDir = await getTemporaryDirectory();
+String outputFile = '${tempDir.path}/myFile.pcm';
 
 await startRecorder
 (
@@ -64,6 +64,7 @@ await startPlayer
 (
         fromURI: = outputFile,
         codec: Codec.pcm16,
+        numChannels: 1,
         sampleRate: 16000, // Used only with codec == Codec.pcm16
         whenFinished: (){ /* Do something */},
 
@@ -77,12 +78,28 @@ await startPlayer
 Please, remember that actually, Flutter Sound does not support Floating Point PCM data, nor records with more that one audio channel.
 
 This works only with `openAudioSession()` and  does not work with `openAudioSessionWithUI()`.
-You can look to the simple example provided with Flutter Sound.
+You can look to the [simple example](../examples/README.md) provided with Flutter Sound.
 
 Note : This new functionnality works better with Android minSdk >= 23, because previous SDK was not able to do UNBLOCKING `read`.
 
 *Example*
 ``` dart
+  IOSink sink = await createFile();
+  StreamController<Uint8List> recordingDataController = StreamController<Uint8List>();
+  _mRecordingDataSubscription =
+          recordingDataController.stream.listen
+            ((Uint8List buffer)
+              {
+                sink.add(buffer);
+              }
+            );
+  await _mRecorder.startRecorder(
+        toStream: recordingDataController.sink,
+        codec: Codec.pcm16,
+        numChannels: 1,
+        sampleRate: 48000,
+  );
+
 ```
 
 -------------------------------------------------------------------------------------------------------------------------------------

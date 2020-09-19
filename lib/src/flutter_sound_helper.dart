@@ -169,8 +169,8 @@ class FlutterSoundHelper {
     WaveHeader header = new WaveHeader
       (
       WaveHeader.FORMAT_PCM ,
-      numChannels = 1,
-      sampleRate = 16000,
+      numChannels = numChannels,
+      sampleRate = sampleRate,
       16,
       size, // total number of bytes
     );

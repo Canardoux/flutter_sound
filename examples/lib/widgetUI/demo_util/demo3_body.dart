@@ -84,7 +84,12 @@ class _MainBodyState extends State<MainBody> {
 
   void dispose() {
     if (recordingFile != null) {
-      File(recordingFile).delete();
+      try {
+        File(recordingFile).delete();
+      } catch (e)
+      {
+        // ignore
+      }
     }
     super.dispose();
   }

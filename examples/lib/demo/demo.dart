@@ -29,7 +29,29 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-const int BITRATE = 8000;
+// If someone update the following comment, please update also the Examples/README.md file and the code inside Examples/lib/demo/main.dart
+/*
+ * This is a Demo of what it is possible to do with Flutter Sound.
+ * The code of this Demo app is not so simple and unfortunately not very clean :-( .
+ *
+ * The biggest interest of this Demo is that it shows most of the features of Flutter Sound :
+ *
+ * - Plays from various media with various codecs
+ * - Records to various media with various codecs
+ * - Pause and Resume control from recording or playback
+ * - Shows how to use a Stream for getting the playback (or recoding) events
+ * - Shows how to specify a callback function when a playback is terminated,
+ * - Shows how to record to a Stream or playback from a stream
+ * - Can show controls on the iOS or Android lock-screen
+ * - ...
+ *
+ * This Demo does not make use of the Flutter Sound UI Widgets.
+ *
+ * It would be really great if someone rewrite this demo soon
+ *
+ */
+
+const int SAMPLE_RATE = 48000;
 
 enum Media {
   file,
@@ -227,7 +249,7 @@ class _MyAppState extends State<Demo> {
           toStream: recordingDataController.sink,
           codec: _codec,
           numChannels: 1,
-          sampleRate: BITRATE,
+          sampleRate: SAMPLE_RATE,
         );
       } else {
         await recorderModule.startRecorder(
@@ -235,7 +257,7 @@ class _MyAppState extends State<Demo> {
           codec: _codec,
           bitRate: 8000,
           numChannels: 1,
-          sampleRate: 8000,
+          sampleRate: SAMPLE_RATE,
         );
       }
       print('startRecorder');
@@ -379,9 +401,9 @@ class _MyAppState extends State<Demo> {
     Uint8List data = await _readFileByte(path);
     int start = 0;
     int totalLength = data.length;
-    while (totalLength > 0)
+    while (totalLength > 0 && playerModule != null && !playerModule.isStopped)
       {
-        int ln = totalLength > 512 ? 512 : totalLength;
+        int ln = totalLength > 4096 ? 4096 : totalLength;
         int r = await playerModule.feed(data.sublist(start,start + ln));
         totalLength -= r;
         start += r;
@@ -463,7 +485,7 @@ class _MyAppState extends State<Demo> {
             codec: _codec,
             needSomeData: null,
             numChannels: 1,
-            sampleRate: BITRATE,
+            sampleRate: SAMPLE_RATE,
             //inputStream: feedStream.stream,
           );
           _addListeners();
@@ -478,7 +500,7 @@ class _MyAppState extends State<Demo> {
           await playerModule.startPlayer(
               fromURI: audioFilePath,
               codec: codec,
-              sampleRate: 8000,
+              sampleRate: SAMPLE_RATE,
               whenFinished: () {
                 print('Play finished');
                 setState(() {});
@@ -488,12 +510,12 @@ class _MyAppState extends State<Demo> {
             dataBuffer = await flutterSoundHelper.pcmToWaveBuffer(
               inputBuffer: dataBuffer,
               numChannels: 1,
-              sampleRate: 8000,
+              sampleRate: SAMPLE_RATE,
             );
           }
           await playerModule.startPlayer(
               fromDataBuffer: dataBuffer,
-              sampleRate: 8000,
+              sampleRate: SAMPLE_RATE,
 
               codec: codec,
               whenFinished: () {

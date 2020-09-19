@@ -230,7 +230,10 @@
                 long duration = [self getDuration];
                 int d = (int)duration;
                 NSNumber* nd = [NSNumber numberWithInt: d];
-                [self invokeMethod:@"startPlayerCompleted" numberArg: nd ];
+                //[self invokeMethod:@"startPlayerCompleted" numberArg: nd ];
+                NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"state":  [self getPlayerStatus], @"duration": nd };
+                [self invokeMethod:@"startPlayerCompleted" dico: dico ];
+
 
 
                 result([self getPlayerStatus]);

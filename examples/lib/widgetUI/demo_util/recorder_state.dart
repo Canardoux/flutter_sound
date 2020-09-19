@@ -31,10 +31,10 @@ import 'demo_media_path.dart';
 class UtilRecorder {
   static final UtilRecorder _self = UtilRecorder._internal();
 
-  /// primary recording moduel
+  /// primary recording module
   FlutterSoundRecorder recorderModule;
 
-  /// secondary recording modue used to show that two recordings can occur
+  /// secondary recording module used to show that two recordings can occur
   /// concurrently.
   FlutterSoundRecorder recorderModule_2; // Used if REENTRANCE_CONCURENCY
 

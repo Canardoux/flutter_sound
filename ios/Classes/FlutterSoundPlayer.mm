@@ -90,11 +90,11 @@ static bool _isIosDecoderSupported [] =
                 engine = [[AVAudioEngine alloc] init];
                 outputNode = [engine outputNode];
                 //mixerNode = [engine mainMixerNode];
+                outputFormat = [outputNode inputFormatForBus: 0];
                 //mixerNode = [[AVAudioMixerNode alloc] init];
                 //inputNode = [engine inputNode];
                 playerNode = [[AVAudioPlayerNode alloc] init];
                 
-                outputFormat = [outputNode inputFormatForBus: 0];
                 //[[AVAudioSession sharedInstance] setCategory:  AVAudioSessionCategoryPlayback error: nil ];
                 //[playerNode prepareWithFrameCount: 2048];
 
@@ -111,7 +111,11 @@ static bool _isIosDecoderSupported [] =
                 
                 // The Audio buffer
                   //[engine prepare];
-                [engine startAndReturnError: nil];
+                bool b = [engine startAndReturnError: nil];
+                if (!b)
+                {
+                        NSLog(@"Cannot start the audio engine");
+                }
  
    
 /*
@@ -192,7 +196,7 @@ static bool _isIosDecoderSupported [] =
                 mPauseTime = 0.0; // Total number of seconds in pause mode
 		mStartPauseTime = -1; // Not in paused mode
 		systemTime = CACurrentMediaTime(); // The time when started
-                [playerNode play];
+                //[playerNode play];
 
                 return [super init];
        }
@@ -283,13 +287,14 @@ static bool _isIosDecoderSupported [] =
 
         - (int) feed: (NSData*)data
         {
-                int frameLength = 2048;
-                assert( frameLength >= [data length]);
+                //int frameLength = 2048;
+                //assert( frameLength >= [data length]);
              //while (true)
-                if (ready < 1)
+                if (ready < 6)
                 {
                         int ln = [data length];
-                        int frameLn = ln/2; // Two octets for a frame (Monophony, INT Linear 16)
+                        int frameLn = ln/2;
+                        int frameLength =  8*frameLn;// Two octets for a frame (Monophony, INT Linear 16)
                         
                         playerFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: nbChannels.intValue interleaved: NO];
                         /*----
@@ -308,18 +313,18 @@ static bool _isIosDecoderSupported [] =
                      
                                                   
   
-                                AVAudioPCMBuffer* thePCMInputBuffer =  [[AVAudioPCMBuffer alloc] initWithPCMFormat: playerFormat frameCapacity: frameLength];
-                                memcpy((unsigned char*)(thePCMInputBuffer.int16ChannelData[0]), [data bytes], ln);
-                                //memcpy((unsigned char*)thePCMInputBuffer.int16ChannelData[1], [data bytes], ln);
-                                /*
-                                unsigned char* pt = (unsigned char*)[data bytes];
-                                for (int i = 0; i < frameLn; ++i, pt +=2)
-                                {
-                                       int v = ((*(pt+1)) << 8) | (*(pt+0)) ;
-                                        thePCMInputBuffer.int16ChannelData[0][i] = v;
-                                }
-                                */
+                        AVAudioPCMBuffer* thePCMInputBuffer =  [[AVAudioPCMBuffer alloc] initWithPCMFormat: playerFormat frameCapacity: frameLn];
+                        memcpy((unsigned char*)(thePCMInputBuffer.int16ChannelData[0]), [data bytes], ln);
                         thePCMInputBuffer.frameLength = frameLn;
+                        //memcpy((unsigned char*)thePCMInputBuffer.int16ChannelData[1], [data bytes], ln);
+                        /*
+                        unsigned char* pt = (unsigned char*)[data bytes];
+                        for (int i = 0; i < frameLn; ++i, pt +=2)
+                        {
+                               int v = ((*(pt+1)) << 8) | (*(pt+0)) ;
+                                thePCMInputBuffer.int16ChannelData[0][i] = v;
+                        }
+                        */
                         static bool hasData = true;
                         hasData = true;
                         AVAudioConverterInputBlock inputBlock = ^AVAudioBuffer*(AVAudioPacketCount inNumberOfPackets, AVAudioConverterInputStatus* outStatus)
@@ -331,10 +336,11 @@ static bool _isIosDecoderSupported [] =
                         };
                         
                         AVAudioPCMBuffer* thePCMOutputBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat: outputFormat frameCapacity: frameLength];
-                        thePCMOutputBuffer.frameLength = frameLn;
+                        thePCMOutputBuffer.frameLength = 0;
 
                         AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat: playerFormat toFormat: outputFormat];
-                        BOOL r = [converter convertToBuffer: thePCMOutputBuffer error: nil withInputFromBlock: inputBlock];
+                        NSError* error;
+                        AVAudioConverterOutputStatus r = [converter convertToBuffer: thePCMOutputBuffer error: &error withInputFromBlock: inputBlock];
                         //BOOL r = [converter convertToBuffer: thePCMOutputBuffer fromBuffer: thePCMInputBuffer error: nil ];
                         
                         //thePCMOutputBuffer.frameLength = frameLn;
@@ -347,8 +353,9 @@ static bool _isIosDecoderSupported [] =
                         }
                         */
                          //[playerNode reset];
-                         if (r)
+                         if (r == AVAudioConverterOutputStatus_HaveData || true)
                          {
+                                //assert(thePCMOutputBuffer.frameLength == frameLength);
                                 ++ready ;
                                 [playerNode scheduleBuffer: thePCMOutputBuffer  completionHandler:
                                 ^(void)
@@ -356,9 +363,18 @@ static bool _isIosDecoderSupported [] =
                                         --ready;
                                 }];
                                 return ln;
-                         }
-                         return 0;
-              
+                         } else
+                         {
+                                 if (error != nil)
+                                 {
+                                        NSLog([error localizedDescription]);
+                                        NSLog([error localizedFailureReason]);
+                                        //NSLog([error localizedRecoveryOptions]);
+                                        NSLog([error localizedRecoverySuggestion]);
+                                 }
+                                 return 0;
+                        }
+               
                  }
  
                 return 0;
@@ -725,7 +741,9 @@ static bool _isIosDecoderSupported [] =
                 long duration = [player getDuration];
                 int d = (int)duration;
                 NSNumber* nd = [NSNumber numberWithInt: d];
-                [self invokeMethod:@"startPlayerCompleted" numberArg: nd ];
+                //[self invokeMethod:@"startPlayerCompleted" numberArg: nd ];
+                NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"state":  [self getPlayerStatus], @"duration": nd };
+                [self invokeMethod:@"startPlayerCompleted" dico: dico ];
                 [self startTimer];
                 result([self getPlayerStatus]);
         } else

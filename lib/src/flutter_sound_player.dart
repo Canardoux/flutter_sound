@@ -638,6 +638,7 @@ class FlutterSoundPlayer extends Session
      Uint8List fromDataBuffer = null,
      Codec codec = Codec.aacADTS,
      int sampleRate = 16000, // Used only with codec == Codec.pcm16
+     int numChannels = 1, // Used only with codec == Codec.pcm16
      TWhenFinished whenFinished = null,
   }) async {
      print('FS:---> startPlayer ');
@@ -663,7 +664,7 @@ class FlutterSoundPlayer extends Session
        codec = Codec.pcm16WAV;
      } else
      if (codec == Codec.pcm16 && fromDataBuffer != null) {
-       fromDataBuffer = await flutterSoundHelper.pcmToWaveBuffer(inputBuffer: fromDataBuffer, sampleRate: sampleRate, numChannels: 1);
+       fromDataBuffer = await flutterSoundHelper.pcmToWaveBuffer(inputBuffer: fromDataBuffer, sampleRate: sampleRate, numChannels: numChannels);
        codec = Codec.pcm16WAV;
      }
 
@@ -701,7 +702,8 @@ class FlutterSoundPlayer extends Session
 
   void startPlayerCompleted(Map call) {
     print('FS:---> startPlayerCompleted ');
-    int duration =  call['arg'] as int;
+    int duration =  call['duration'] as int;
+    playerState = PlayerState.values[call['state'] as int];
     if (startPlayerCompleter != null)
     {
       Duration d = Duration(milliseconds: duration);
@@ -767,6 +769,9 @@ class FlutterSoundPlayer extends Session
         }
         catch (e)
         {
+          print(e);
+          if ( isStopped)
+            return 0;
           rethrow;
         }
       });

@@ -244,6 +244,12 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 	public void feed ( final MethodCall call, final Result result )
 	{
+		if (player == null)
+		{
+			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Player is null" );
+			return;
+		}
+
 		try
 		{
 			byte[] data = call.argument ( "data" );
@@ -299,7 +305,11 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 				{
 					System.out.println(e.toString());
 				}
-				invokeMethodWithInteger("startPlayerCompleted", (int) duration);
+				//invokeMethodWithInteger("startPlayerCompleted", (int) duration);
+				Map<String, Object> dico = new HashMap<String, Object> ();
+				dico.put( "duration", (int) duration);
+				dico.put( "state",  (int)getPlayerState());
+				invokeMethodWithMap( "startPlayerCompleted", dico);
 			}
 		});
 		/*

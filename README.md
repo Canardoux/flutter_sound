@@ -7,6 +7,26 @@
 </p>
 This plugin provides simple recorder and player functionalities for both Android and iOS platforms.
 
+-----------------------------------------------------------------------------------------------------------------------------------
+
+# <center>Flauto (Flutter Sound) V 6.0 is OUT </center>
+
+We (I) think that this version will be a major release. Please refer to the [CHANGELOG.md file](CHANGELOG.md) to get learn all the great new features. It has especially the following :
+
+## Record to Dart Stream
+
+This feature has been requested from many months from many, many, many Flutter Sound users. This open doors to things like feeding a Speech-to-Text engine.
+
+You can refer to the [Getting Started with Record-to-Stream]() notice.
+
+## Playback from a live Dart Stream
+
+This feature has also been requested from many months from many Flutter Sound users. Unfortunately, this feature does not work corectely on iOS : the sound is distorted and is not played at the correct speed :. After fighting with this issue during almost one week, I gave up. I hope now that someone else will work successfully on this problem. But on Android there is no problem.
+
+You can refer to the [Getting Started with Playback-from-Stream]() notice.
+
+------------------------------------------------------------------------------------------------------------------------------------
+
 <br/><br/>
 
 ![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
@@ -15,7 +35,8 @@ This plugin provides simple recorder and player functionalities for both Android
 
 - Play and Record sounds or music with various codecs. (See [the supported codecs here](doc/codec.md#actually-the-following-codecs-are-supported-by-flutter_sound))
 - Play local or remote files specified by their URL.
-- Record to a Dart stream
+- Record to a Dart Stream
+- Playback from a Dart Stream on Android (does not work yet on iOS)
 - The App playback can be controled from the device lock screen or from an Apple watch
 
 ## Flutter Sound branches
@@ -32,7 +53,7 @@ See [the migration guide](doc/migration.md) to migrate from an anterious version
 ## SDK requirements
 
 - Flutter Sound requires an iOS 9.3 SDK (or later)
-- Flutter Sound requires an Android 24 (or later)
+- Flutter Sound requires an Android 21 (or later)
 
 ## Installation
 

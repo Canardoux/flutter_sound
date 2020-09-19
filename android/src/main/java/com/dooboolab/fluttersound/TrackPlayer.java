@@ -579,7 +579,12 @@ public class TrackPlayer extends FlutterSoundPlayer
 			// The content is ready to be played, then play it
 			mMediaBrowserHelper.playPlayback();
 			long trackDuration = mMediaBrowserHelper.mediaControllerCompat.getMetadata().getLong( MediaMetadataCompat.METADATA_KEY_DURATION );
-			invokeMethodWithInteger( "startPlayerCompleted", (int)trackDuration);
+			//invokeMethodWithInteger( "startPlayerCompleted", (int)trackDuration);
+			Map<String, Object> dico = new HashMap<String, Object> ();
+			dico.put( "duration", (int) trackDuration);
+			dico.put( "state",  (int)getPlayerState());
+			invokeMethodWithMap( "startPlayerCompleted", dico);
+
 
 			updateProgress();
 			// Set timer task to send event to RN

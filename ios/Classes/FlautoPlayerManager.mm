@@ -69,7 +69,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result
 {
          FlutterSoundPlayer* aFlautoPlayer = (FlutterSoundPlayer*)[ self getSession: call];
-         NSLog(@"IOS:--> rcv: %@", call.method);
+         //NSLog(@"IOS:--> rcv: %@", call.method);
 
         if ([@"initializeMediaPlayer" isEqualToString:call.method])
         {
@@ -191,7 +191,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         {
                 result(FlutterMethodNotImplemented);
         }
-         NSLog(@"IOS:<-- rcv: %@", call.method);
+         //NSLog(@"IOS:<-- rcv: %@", call.method);
 }
 
 @end
