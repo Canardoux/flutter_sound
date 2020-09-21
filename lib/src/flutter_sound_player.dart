@@ -754,7 +754,7 @@ class FlutterSoundPlayer extends Session
         {
           feedStreamSubscription = inputStream.listen((Uint8List buffer)
           {
-            feedStreamSubscription.pause( feed(buffer));
+            feedStreamSubscription.pause(feedFromStream(buffer));
           }) ;
         }
       int state  = (await invokeMethod( 'startPlayer',
@@ -770,6 +770,15 @@ class FlutterSoundPlayer extends Session
     print('FS:<--- startPlayerFromStream ');
     }
 
+    Future<void> feedFromStream(Uint8List buffer) async
+    {
+      int lnData = 0;
+      while (lnData < buffer.length)
+      {
+        int ln = await feed(buffer.sublist(lnData));
+        lnData += ln;
+      }
+    }
 
     Future<int> feed(Uint8List data) async {
       if (isInited == Initialized.initializationInProgress) {
@@ -780,12 +789,12 @@ class FlutterSoundPlayer extends Session
       }
       if (isStopped)
         return 0;
-      int ln;
+      //int ln;
       //assert(needSomeFoodCompleter == null);
       needSomeFoodCompleter = new Completer<int>();
       //print('State = ${playerState.index}');
       try {
-        ln = await invokeMethod(
+        int ln = await invokeMethod(
             'feed', <String, dynamic>{'data': data,}) as int;
         if (ln != 0)
         {

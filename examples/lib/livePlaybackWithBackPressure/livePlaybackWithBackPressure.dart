@@ -175,7 +175,7 @@ class _LivePlaybackWithBackPressureState extends State<LivePlaybackWithBackPress
 
     return Scaffold(backgroundColor: Colors.blue,
       appBar: AppBar(
-        title: const Text('Play from Live data ex.'),
+        title: const Text('Live playback with back pressure'),
       ),
       body: makeBody(),
     );

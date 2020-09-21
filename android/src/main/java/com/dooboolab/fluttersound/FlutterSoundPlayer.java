@@ -351,7 +351,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 									long position = player._getCurrentPosition();
 									long duration = player._getDuration();
 									if (position > duration) {
-										assert (position <= duration);
+										position = duration;
 									}
 
 									Map<String, Object> dic = new HashMap<String, Object>();
@@ -540,7 +540,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		}
 		if (position > duration)
 		{
-			assert(position <= duration);
+			position = duration;
 		}
 
 		Map<String, Object> dic = new HashMap<String, Object> ();

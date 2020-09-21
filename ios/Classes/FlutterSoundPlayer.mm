@@ -652,8 +652,8 @@ static bool _isIosDecoderSupported [] =
           else
                 NSLog(@"IOS: audioPlayer is not Playing");
 
-         long duration =   [player getDuration];
          long position =   [player getPosition];
+         long duration =   [player getDuration];
          /*
          if (duration - position < 80) // PATCH [LARPOUX]
           {
@@ -682,8 +682,8 @@ static bool _isIosDecoderSupported [] =
 - (bool)resume
 {
         NSLog(@"IOS:--> resume");
-        long duration =   [player getDuration];
         long position =   [player getPosition];
+        long duration =   [player getDuration];
         /*
         if (duration - position < 80) // PATCH [LARPOUX]
         {
@@ -837,8 +837,8 @@ static bool _isIosDecoderSupported [] =
 - (void)updateProgress:(NSTimer*) atimer
 {
 dispatch_async(dispatch_get_main_queue(), ^{
-        NSNumber *duration = [NSNumber numberWithLong: [player getDuration]];
         NSNumber *position = [NSNumber numberWithLong: [player getPosition]];
+        NSNumber *duration = [NSNumber numberWithLong: [player getDuration]];
         NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"position": position, @"duration": duration, @"playerStatus": [self getPlayerStatus] };
         [self invokeMethod:@"updateProgress" dico: dico];
 });
@@ -847,8 +847,8 @@ dispatch_async(dispatch_get_main_queue(), ^{
 - (void)getProgress:(FlutterMethodCall*)call result: (FlutterResult)result
 {
         NSLog(@"IOS:--> getProgress");
-        NSNumber *duration = [NSNumber numberWithLong: [player getDuration]];
         NSNumber *position = [NSNumber numberWithLong: [player getPosition]];
+        NSNumber *duration = [NSNumber numberWithLong: [player getDuration]];
         NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"position": position, @"duration": duration, @"playerStatus": [self getPlayerStatus] };
         result(dico);
         NSLog(@"IOS:--> getProgress");
