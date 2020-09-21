@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.lang.Thread;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel.Result;
@@ -61,7 +62,7 @@ class sdkCompat
 
 abstract class PlayerInterface
 {
-	abstract void _startPlayer(String path, FlutterSoundPlayer flutterPlayer, int sampleRate, FlutterSoundPlayer theSession) throws Exception;
+	abstract void _startPlayer(String path, FlutterSoundPlayer flutterPlayer, int sampleRate, int blockSize, FlutterSoundPlayer theSession) throws Exception;
 	abstract void _stop();
 	abstract void _pausePlayer() throws Exception;
 	abstract void _resumePlayer() throws Exception;
@@ -192,6 +193,11 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		Integer           _codec     = call.argument ( "codec" );
 		FlutterSoundCodec codec      = FlutterSoundCodec.values()[ ( _codec != null ) ? _codec : 0 ];
 		byte[]            dataBuffer = call.argument ( "fromDataBuffer" );
+		Integer		  _blockSize  = 4096;
+		if (call.argument ( "blockSize" ) != null)
+		{
+			_blockSize = call.argument ( "blockSize" );
+		}
 		String path = call.argument("fromURI");
 		//if ( ! hasFocus ) // We always require focus because it could have been abandoned by another Session
 		{
@@ -231,7 +237,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 				_sampleRate = call.argument ( "sampleRate" );
 			}
 			mTimer = new Timer();
-			player._startPlayer(path, this, _sampleRate, this);
+			player._startPlayer(path, this, _sampleRate, _blockSize, this);
 		}
 		catch ( Exception e )
 		{
@@ -254,13 +260,27 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		{
 			byte[] data = call.argument ( "data" );
 
-			 int r = player.feed(data);
-			 result.success (r);
+			int ln = player.feed(data);
+			result.success (ln);
 		} catch (Exception e)
 		{
 			Log.e ( TAG, "feed() exception" );
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 		}
+	}
+
+	public void needSomeFood(int ln)
+	{
+		assert(ln > 0);
+		mainHandler.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+
+				invokeMethodWithInteger("needSomeFood", ln);
+			}
+		});
 	}
 
 	public void startPlayerFromTrack ( final MethodCall call, final Result result )
@@ -323,21 +343,24 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 						@Override
 						public void run()
 						{
-							try {
-
-								long position = player._getCurrentPosition();
-								long duration = player._getDuration();
-								if (position > duration)
+							try
+							{
+								if (player != null)
 								{
-									assert(position <= duration);
+
+									long position = player._getCurrentPosition();
+									long duration = player._getDuration();
+									if (position > duration) {
+										assert (position <= duration);
+									}
+
+									Map<String, Object> dic = new HashMap<String, Object>();
+									dic.put("position", position);
+									dic.put("duration", duration);
+									dic.put("playerStatus", getPlayerState());
+
+									invokeMethodWithMap("updateProgress", dic);
 								}
-
-								Map<String, Object> dic = new HashMap<String, Object> ();
-								dic.put ( "position", position );
-								dic.put ( "duration", duration );
-								dic.put ( "playerStatus", getPlayerState() );
-
-								invokeMethodWithMap("updateProgress", dic);
 							} catch (Exception e)
 							{
 								Log.d(TAG, "Exception: " + e.toString());
@@ -563,7 +586,7 @@ class MediaPlayerEngine extends PlayerInterface
 	MediaPlayer mediaPlayer = null;
 	FlutterSoundPlayer flutterPlayer;
 
-	void _startPlayer(String path, FlutterSoundPlayer aFlutterPlayer, int sampleRate, FlutterSoundPlayer theSession) throws Exception
+	void _startPlayer(String path, FlutterSoundPlayer aFlutterPlayer, int sampleRate, int blockSize, FlutterSoundPlayer theSession) throws Exception
  	{
  		mediaPlayer = new MediaPlayer();
 
@@ -674,8 +697,47 @@ class AudioTrackEngine extends PlayerInterface
 	long mPauseTime = 0;
 	long mStartPauseTime = -1;
 	long systemTime = 0;
+	WriteBlockThread blockThread = null;
+	FlutterSoundPlayer mSession = null;
 
+	class WriteBlockThread extends Thread
+	{
+		byte[] mData = null;
+		/* ctor */ WriteBlockThread(byte[] data)
+		{
+			mData = data;
+		}
+		public void run()
+		{
+			int ln =  mData.length;
+			int total = 0;
+			int written = 0;
+			while (audioTrack != null && ln > 0)
+			{
+				try
+				{
+					if (Build.VERSION.SDK_INT >= 23) {
+						written = audioTrack.write(mData, 0, ln, AudioTrack.WRITE_BLOCKING);
+					} else {
+						written = audioTrack.write(mData, 0, mData.length);
+					}
+					if (written > 0) {
+						ln -= written;
+						total += written;
+					}
+				} catch (Exception e )
+				{
+					System.out.println(e.toString());
+					return;
+				}
+			}
+			assert(total > 0);
 
+			mSession.needSomeFood(total);
+			blockThread = null;
+
+		}
+	}
 
 	/* ctor */ AudioTrackEngine()
 	{
@@ -689,9 +751,11 @@ class AudioTrackEngine extends PlayerInterface
 			String path,
 			FlutterSoundPlayer flutterPlayer,
 			int sampleRate,
+			int blockSize,
 			FlutterSoundPlayer theSession
 		) throws Exception
 	{
+		mSession = theSession;
 		AudioAttributes attributes = new AudioAttributes.Builder()
 			.setLegacyStreamType(AudioManager.STREAM_MUSIC)
 			.setUsage(AudioAttributes.USAGE_MEDIA)
@@ -703,7 +767,7 @@ class AudioTrackEngine extends PlayerInterface
 			.setSampleRate(sampleRate)
 			.setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
 			.build();
-		audioTrack = new AudioTrack(attributes, format, 2048, AudioTrack.MODE_STREAM, sessionId);
+		audioTrack = new AudioTrack(attributes, format, blockSize, AudioTrack.MODE_STREAM, sessionId);
 		mPauseTime = 0;
 		mStartPauseTime = -1;
 		systemTime = SystemClock.elapsedRealtime();
@@ -718,7 +782,7 @@ class AudioTrackEngine extends PlayerInterface
 		audioTrack.stop();
 		audioTrack.release();
 		audioTrack = null;
-
+		blockThread = null;
 	}
 
 	void _finish()
@@ -782,14 +846,21 @@ class AudioTrackEngine extends PlayerInterface
 
 	int feed(byte[] data) throws Exception
 	{
+		int ln = 0;
 		if ( Build.VERSION.SDK_INT >= 23 )
 		{
-			return audioTrack.write(data, 0, data.length, AudioTrack.WRITE_NON_BLOCKING);
+			ln = audioTrack.write(data, 0, data.length, AudioTrack.WRITE_NON_BLOCKING);
 		} else
 		{
-			return audioTrack.write(data, 0, data.length);
-
+			ln = 0;
 		}
+		if (ln == 0) {
+
+			assert (blockThread == null);
+			blockThread = new WriteBlockThread(data);
+			blockThread.start();
+		}
+		return ln;
 	}
 
 

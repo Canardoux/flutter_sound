@@ -52,6 +52,7 @@ import 'package:permission_handler/permission_handler.dart';
  */
 
 const int SAMPLE_RATE = 48000;
+const int BLOCK_SIZE = 4096;
 
 enum Media {
   file,
@@ -394,7 +395,6 @@ class _MyAppState extends State<Demo> {
     });
     return bytes;
   }
-  //StreamController<Uint8List> feedStream ;
 
   Future<void> feedHim(String path) async
   {
@@ -403,7 +403,7 @@ class _MyAppState extends State<Demo> {
     int totalLength = data.length;
     while (totalLength > 0 && playerModule != null && !playerModule.isStopped)
       {
-        int ln = totalLength > 4096 ? 4096 : totalLength;
+        int ln = totalLength > BLOCK_SIZE ? BLOCK_SIZE : totalLength;
         int r = await playerModule.feed(data.sublist(start,start + ln));
         totalLength -= r;
         start += r;
@@ -412,7 +412,6 @@ class _MyAppState extends State<Demo> {
 
   Future<void> startPlayer() async {
     try {
-      //String path;
       Uint8List dataBuffer;
       String audioFilePath;
       Codec codec = _codec;
@@ -486,13 +485,15 @@ class _MyAppState extends State<Demo> {
             needSomeData: null,
             numChannels: 1,
             sampleRate: SAMPLE_RATE,
+            blockSize: BLOCK_SIZE,
             //inputStream: feedStream.stream,
           );
           _addListeners();
           setState(() {});
           await feedHim(audioFilePath);
           //await finishPlayer();
-          await stopPlayer(); // TODO finishPlayer()
+          await stopPlayer();
+          return;
 
         } else {
         if (audioFilePath != null) {
@@ -525,12 +526,12 @@ class _MyAppState extends State<Demo> {
         }
       }
       _addListeners();
-      print('startPlayer');
+      setState(() {});
+      print('<--- startPlayer');
     } catch (err) {
       print('error: $err');
     }
-    setState(() {});
-  }
+   }
 
 
     Future<void> stopPlayer() async {

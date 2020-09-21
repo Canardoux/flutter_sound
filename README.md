@@ -21,7 +21,7 @@ You can refer to the [Getting Started with Record-to-Stream]() notice.
 
 ## Playback from a live Dart Stream
 
-This feature has also been requested from many months from many Flutter Sound users. Unfortunately, this feature does not work corectely on iOS : the sound is distorted and is not played at the correct speed :. After fighting with this issue during almost one week, I gave up. I hope now that someone else will work successfully on this problem. But on Android there is no problem.
+This feature has also been requested from many months from many Flutter Sound users.
 
 You can refer to the [Getting Started with Playback-from-Stream]() notice.
 

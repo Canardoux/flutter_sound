@@ -68,16 +68,14 @@ static bool _isIosDecoderSupported [] =
         AVAudioEngine* engine;
         AVAudioPlayerNode* playerNode;
         AVAudioFormat* playerFormat;
-        //AVAudioConverter* converter;
         AVAudioFormat* outputFormat;
-        //AVAudioMixerNode* mixerNode;
-        //AVAudioInputNode* inputNode;
         AVAudioOutputNode* outputNode;
         NSNumber* sampleRate;
         NSNumber* nbChannels;
         CFTimeInterval mStartPauseTime ; // The time when playback was paused
 	CFTimeInterval systemTime ; //The time when  StartPlayer() ;
         double mPauseTime ; // The number of seconds during the total Pause mode
+        NSData* waitingBlock;
 
 
 }
@@ -85,119 +83,26 @@ static bool _isIosDecoderSupported [] =
        - (AudioPlayerEngine*)init: (/*FlutterSoundPlayer**/NSObject*)owner  audioSettings: (NSMutableDictionary*) audioSettings
        {
                 flutterSoundPlayer = (FlutterSoundPlayer*)owner;
-                
-                // Setup the nodes
+                waitingBlock = nil;
                 engine = [[AVAudioEngine alloc] init];
                 outputNode = [engine outputNode];
-                //mixerNode = [engine mainMixerNode];
                 outputFormat = [outputNode inputFormatForBus: 0];
-                //mixerNode = [[AVAudioMixerNode alloc] init];
-                //inputNode = [engine inputNode];
                 playerNode = [[AVAudioPlayerNode alloc] init];
                 
-                //[[AVAudioSession sharedInstance] setCategory:  AVAudioSessionCategoryPlayback error: nil ];
-                //[playerNode prepareWithFrameCount: 2048];
-
-                
-                // Attach and connect the nodes
                 [engine attachNode: playerNode];
                 nbChannels = audioSettings [@"numChannels"];
                 sampleRate = audioSettings [@"sampleRate"];
  
                 [engine connect: playerNode to: outputNode format: outputFormat];
-                //[engine connect: inputNode to: outputNode format: [playerNode outputFormatForBus: 0]];
-                //[engine attachNode: mixerNode];
-                //[engine connect: mixerNode to: outputNode format: nil];
-                
-                // The Audio buffer
-                  //[engine prepare];
                 bool b = [engine startAndReturnError: nil];
                 if (!b)
                 {
                         NSLog(@"Cannot start the audio engine");
                 }
  
-   
-/*
-                    AVAudioConverterInputBlock inputBlock = ^AVAudioBuffer*(AVAudioPacketCount inNumberOfPackets, AVAudioConverterInputStatus* outStatus)
-                        {
-                                *outStatus = AVAudioConverterInputStatus_HaveData ;
-                                //inputStatus =  AVAudioConverterInputStatus_NoDataNow;
-                                int ln = [data length];
-                                AVAudioPCMBuffer* thePCMInputBuffer =  [[AVAudioPCMBuffer alloc] initWithPCMFormat: playerFormat frameCapacity: [data length]/2];
-                                memcpy((unsigned char*)thePCMInputBuffer.int16ChannelData[0], [data bytes], [data length]);
-                                return thePCMInputBuffer;
-                        };
-                                audioInputNode.installTapOnBus(0, bufferSize:frameLength, format: audioInputNode.outputFormatForBus(0), block: {(buffer, time) in
-*/
-                 
-
- /*
-                for (int i = 0; i < 10; ++i)
-                {
-                        //memcpy((unsigned char*)thePCMOutputBuffer.floatChannelData[0], [data bytes], 512);
-                        memset((unsigned char*)thePCMOutputBuffer.floatChannelData[0],127, 2048);
-                        memset((unsigned char*)thePCMOutputBuffer.floatChannelData[1],30, 2048);
-                        [playerNode scheduleBuffer: thePCMOutputBuffer completionHandler:
-                        ^(void)
-                        {
-                        }];
-                }
- 
-
-                //AVAudioPlayerNode* playerNode = [ [AVAudioPlayerNode alloc] init];
-                 //AVAudioInputNode* inputNode = [engine inputNode];
-                //AVAudioMixerNode* mixerNode = [engine mainMixerNode];
-                
-                
-
-                /*
-                [inputNode installTapOnBus: 0 bufferSize: 2048 format: inputFormat block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when)
-                {
-                        //inputStatus = AVAudioConverterInputStatus_HaveData ;
-                        AVAudioPCMBuffer* convertedBuffer = [[AVAudioPCMBuffer alloc]initWithPCMFormat:recordingFormat frameCapacity: [buffer frameCapacity]];
-
-                        AVAudioConverterInputBlock inputBlock = ^AVAudioBuffer*(AVAudioPacketCount inNumberOfPackets, AVAudioConverterInputStatus *outStatus)
-                        {
-                                *outStatus = inputStatus;
-                                inputStatus =  AVAudioConverterInputStatus_NoDataNow;
-                                return buffer;
-                        };
-                        BOOL r = [converter convertToBuffer: convertedBuffer error: nil withInputFromBlock: inputBlock];
-                        int n = [convertedBuffer frameLength];
-                        int16_t *const  bb = [convertedBuffer int16ChannelData][0];
-                        NSData* b = [[NSData alloc] initWithBytes: bb length: n * 2 ];
-                        if (n > 0)
-                        {
-                                if (fileHandle != nil)
-                                {
-                                        [fileHandle writeData: b];
-                                } else
-                                {
-                                        //NSDictionary* dic = [[NSMutableDictionary alloc] init];
-                                        //[dic setValue: b forKey: @"recordingData"];
-                                        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: [session getSlotNo]], @"recordingData": b,};
-                                        [session invokeMethod: @"recordingData" dico: dico];
-                                }
-                                
-                                int16_t* pt = [convertedBuffer int16ChannelData][0];
-                                for (int i = 0; i < [buffer frameLength]; ++pt, ++i)
-                                {
-                                        short curSample = *pt;
-                                        if ( curSample > maxAmplitude )
-                                        {
-                                                maxAmplitude = curSample;
-                                        }
-                        
-                                }
-                        }
-                }];
-                */
                 mPauseTime = 0.0; // Total number of seconds in pause mode
 		mStartPauseTime = -1; // Not in paused mode
 		systemTime = CACurrentMediaTime(); // The time when started
-                //[playerNode play];
-
                 return [super init];
        }
        
@@ -221,7 +126,7 @@ static bool _isIosDecoderSupported [] =
 		return [self getPosition]; // It would be better if we add what is in the input buffers and not still played
        }
        
-       -(long)  getPosition // TODO
+       -(long)  getPosition
        {
 		double time ;
 		if (mStartPauseTime >= 0) // In pause mode
@@ -231,7 +136,7 @@ static bool _isIosDecoderSupported [] =
 		return (long)(time * 1000);
        }
        
-       -(void)  stop // TODO
+       -(void)  stop
        {
  
                 if (engine != nil)
@@ -247,7 +152,7 @@ static bool _isIosDecoderSupported [] =
                 }
        }
        
-       -(bool)  resume // TODO
+       -(bool)  resume
        {
 		if (mStartPauseTime >= 0)
 			mPauseTime += CACurrentMediaTime() - mStartPauseTime;
@@ -257,7 +162,7 @@ static bool _isIosDecoderSupported [] =
                 return true;
        }
         
-       -(bool)  pause // TODO
+       -(bool)  pause
        {
 		mStartPauseTime = CACurrentMediaTime();
 		[playerNode pause];
@@ -269,7 +174,7 @@ static bool _isIosDecoderSupported [] =
                 return true; // TODO
        }
        
-       -(bool)  seek: (double) pos // TODO
+       -(bool)  seek: (double) pos
        {
                 return false;
        }
@@ -284,54 +189,27 @@ static bool _isIosDecoderSupported [] =
                         return IS_PLAYING;
                 return IS_PLAYING; // ??? Not sure !!!
        }
-
+       
+        #define NB_BUFFERS 3
         - (int) feed: (NSData*)data
         {
-                //int frameLength = 2048;
-                //assert( frameLength >= [data length]);
-             //while (true)
-                if (ready < 6)
+                if (ready < NB_BUFFERS )
                 {
                         int ln = [data length];
                         int frameLn = ln/2;
                         int frameLength =  8*frameLn;// Two octets for a frame (Monophony, INT Linear 16)
                         
                         playerFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: nbChannels.intValue interleaved: NO];
-                        /*----
-                        AudioStreamBasicDescription desc;
-                        desc.mBitsPerChannel = 16;
-                        desc.mBytesPerFrame = frameLength;
-                        desc.mBytesPerPacket = frameLength;
-                        desc.mChannelsPerFrame = nbChannels.intValue;
-                        desc.mFormatFlags = kAudioFormatFlagIsNonInterleaved || kAudioFormatFlagIsSignedInteger || kAppleLosslessFormatFlag_16BitSourceData;
-                        desc.mFormatID = kAudioFormatLinearPCM;
-                        desc.mFramesPerPacket = 1;
-                        desc.mSampleRate = sampleRate.doubleValue;
-                        AVAudioFormat* playerFormat3 =  [[AVAudioFormat alloc] initWithStreamDescription: &desc channelLayout: nil];
-                        //----*/
-                        
-                     
-                                                  
-  
+   
                         AVAudioPCMBuffer* thePCMInputBuffer =  [[AVAudioPCMBuffer alloc] initWithPCMFormat: playerFormat frameCapacity: frameLn];
                         memcpy((unsigned char*)(thePCMInputBuffer.int16ChannelData[0]), [data bytes], ln);
                         thePCMInputBuffer.frameLength = frameLn;
-                        //memcpy((unsigned char*)thePCMInputBuffer.int16ChannelData[1], [data bytes], ln);
-                        /*
-                        unsigned char* pt = (unsigned char*)[data bytes];
-                        for (int i = 0; i < frameLn; ++i, pt +=2)
-                        {
-                               int v = ((*(pt+1)) << 8) | (*(pt+0)) ;
-                                thePCMInputBuffer.int16ChannelData[0][i] = v;
-                        }
-                        */
                         static bool hasData = true;
                         hasData = true;
                         AVAudioConverterInputBlock inputBlock = ^AVAudioBuffer*(AVAudioPacketCount inNumberOfPackets, AVAudioConverterInputStatus* outStatus)
                         {
                                 *outStatus = hasData ? AVAudioConverterInputStatus_HaveData : AVAudioConverterInputStatus_NoDataNow;
                                 hasData = false;
-                                //*outStatus =  AVAudioConverterInputStatus_NoDataNow;
                                 return thePCMInputBuffer;
                         };
                         
@@ -341,26 +219,20 @@ static bool _isIosDecoderSupported [] =
                         AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat: playerFormat toFormat: outputFormat];
                         NSError* error;
                         AVAudioConverterOutputStatus r = [converter convertToBuffer: thePCMOutputBuffer error: &error withInputFromBlock: inputBlock];
-                        //BOOL r = [converter convertToBuffer: thePCMOutputBuffer fromBuffer: thePCMInputBuffer error: nil ];
-                        
-                        //thePCMOutputBuffer.frameLength = frameLn;
-                        /*
-                        for (int i = 0; i < ln/2; ++i)
-                        {
-                                        // doing my real time stuff
-                                        thePCMOutputBuffer.floatChannelData[0][i] = 100000 * (float)i;
-                                        thePCMOutputBuffer.floatChannelData[1][i] = 100000 * (float)i;
-                        }
-                        */
-                         //[playerNode reset];
                          if (r == AVAudioConverterOutputStatus_HaveData || true)
                          {
-                                //assert(thePCMOutputBuffer.frameLength == frameLength);
                                 ++ready ;
                                 [playerNode scheduleBuffer: thePCMOutputBuffer  completionHandler:
                                 ^(void)
                                 {
                                         --ready;
+                                        if (waitingBlock != nil)
+                                        {
+                                                [self feed: waitingBlock]; // Recursion here
+                                                waitingBlock = nil;
+                                                [flutterSoundPlayer needSomeFood: ln];
+                                        }
+
                                 }];
                                 return ln;
                          } else
@@ -369,53 +241,16 @@ static bool _isIosDecoderSupported [] =
                                  {
                                         NSLog([error localizedDescription]);
                                         NSLog([error localizedFailureReason]);
-                                        //NSLog([error localizedRecoveryOptions]);
                                         NSLog([error localizedRecoverySuggestion]);
                                  }
                                  return 0;
                         }
                
-                 }
- 
-                return 0;
-                //[inputNode installTapOnBus: 0 bufferSize: 2048 format: inputFormat block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when)
-                //{
-                        //AVAudioConverterInputStatus inputStatus = AVAudioConverterInputStatus_HaveData ;
-                         //AVAudioPCMBuffer* thePCMOutputBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat: outputFormat frameCapacity: [data length]/2];
- 
-                         //int n = [convertedBuffer frameLength];
-                        //int16_t *const  bb = [convertedBuffer int16ChannelData][0];
-                        //NSData* b = [[NSData alloc] initWithBytes: bb length: n * 2 ];
-   
-                // make a silent stereo buffer
-                //AVAudioChannelLayout *chLayout = [[AVAudioChannelLayout alloc] initWithLayoutTag:kAudioChannelLayoutTag_Mono];
- 
-                //AVAudioPCMBuffer* thePCMBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat: playerFormat frameCapacity: [data length]/2];
-                //thePCMBuffer.frameLength = thePCMBuffer.frameCapacity;
-                //memset(thePCMBuffer.int16ChannelData[0], 0, thePCMBuffer.frameLength * playerFormat.streamDescription ->mBytesPerFrame);
-                //memset(thePCMBuffer.int16ChannelData[1], 0, thePCMBuffer.frameLength * playerFormat.streamDescription ->mBytesPerFrame);
-                //memcpy(thePCMBuffer.int16ChannelData[0], [data bytes], [data length]);
-                //memcpy(thePCMBuffer.int16ChannelData[1], [data bytes], [data length]);
-
-/*
-                if (ready)
-                {
-                        ready = false;
-                        AVAudioPCMBuffer* thePCMOutputBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat: outputFormat frameCapacity: 512];
-                         //memcpy((unsigned char*)thePCMOutputBuffer.floatChannelData[0], [data bytes], 512);
-                        memset((unsigned char*)thePCMOutputBuffer.floatChannelData[0],127, 512);
-                        memset((unsigned char*)thePCMOutputBuffer.floatChannelData[1],30, 512);
-                        [playerNode scheduleBuffer: thePCMOutputBuffer completionHandler:
-                        ^(void)
-                        {
-                                bool ready = true;
-                        }];
-  
-                        return [data length];
                 }
+                assert(waitingBlock == nil);
+                waitingBlock = data;
                 return 0;
-                */
-        }
+         }
 
 
 
@@ -795,6 +630,11 @@ static bool _isIosDecoderSupported [] =
         }
         player = nil;
         NSLog(@"IOS:<-- stopPlayer");
+}
+
+- (void)needSomeFood: (int) ln
+{
+        [self invokeMethod:@"needSomeFood" numberArg: [NSNumber numberWithInt: ln] ];
 }
 
 - (bool)pause

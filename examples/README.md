@@ -53,3 +53,19 @@ if an App wants to record something to a File, it must not use Streams.
 
 The real interest of recording to a Stream is for example to feed a
 Speech-to-Text engine, or for processing the Live data in Dart in real time.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+## [livePlaybackWithBackPressure](livePlaybackWithBackPressure.dart)
+
+A very simple example showing how to play Live Data with back pressure.
+It feeds a live stream, waiting that the Futures are completed for each block.
+
+This example get the data from an asset file, which is completely stupid :
+if an App wants to play an asset file he must use "StartPlayerFromBuffer().
+
+If you do not need any back pressure, you can see another simple example : "LivePlaybackWithoutBackPressure.dart".
+This other example is a little bit simpler because the App does not need to await the playback for each block before playing another one.
+But if you do not use any back pressure, you will be front of two problems :
+- If your App is too fast feeding the audio channel, it can have problems with the Stream memory used.
+- The App does not have any knowledge of when the provided block is really played. If he does a "stopPlayer()" it will loose all the buffered data.

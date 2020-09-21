@@ -137,6 +137,12 @@ class FlautoPlayerPlugin extends FlautoPlugin{
         }
         break;
 
+      case 'needSomeFood':
+        {
+          aPlayer.needSomeFood(arg);
+        }
+        break;
+
 
       default:
         throw ArgumentError('Unknown method ${call.method}');
@@ -165,6 +171,8 @@ class FlutterSoundPlayer extends Session
 
   Completer<FlutterSoundPlayer> openAudioSessionCompleter;
   Completer<Duration> startPlayerCompleter;
+  Completer<int> needSomeFoodCompleter;
+  int _mBlockSize = 4096;
 
 
   static const List<Codec> tabAndroidConvert = [
@@ -696,7 +704,15 @@ class FlutterSoundPlayer extends Session
 
   }
 
-
+  void needSomeFood(Map call) {
+      int ln = call['arg'] as int;
+      assert(ln > 0);
+      if (needSomeFoodCompleter != null)
+        {
+          needSomeFoodCompleter.complete(ln);
+          //needSomeFoodCompleter = null;
+        }
+  }
 
 
 
@@ -720,6 +736,7 @@ class FlutterSoundPlayer extends Session
     Stream<Uint8List> inputStream = null,
     int numChannels = 1,
     int sampleRate = 16000,
+    int blockSize = 4096,
   }) async
   {
     print('FS:---> startPlayerFromStream ');
@@ -730,7 +747,7 @@ class FlutterSoundPlayer extends Session
       throw (_notOpen());
     }
 
-
+      _mBlockSize = blockSize;
       await lock.synchronized(() async {
       await stop( ); // Just in case
       if (inputStream != null)
@@ -758,24 +775,35 @@ class FlutterSoundPlayer extends Session
       if (isInited == Initialized.initializationInProgress) {
         throw (_InitializationInProgress());
       }
-      if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized) {
+      if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized ) {
         throw (_notOpen());
       }
-      int r = 0;
-      await lock.synchronized(() async {
-        try
+      if (isStopped)
+        return 0;
+      int ln;
+      //assert(needSomeFoodCompleter == null);
+      needSomeFoodCompleter = new Completer<int>();
+      //print('State = ${playerState.index}');
+      try {
+        ln = await invokeMethod(
+            'feed', <String, dynamic>{'data': data,}) as int;
+        if (ln != 0)
         {
-            r = await invokeMethod( 'feed',  <String, dynamic>{'data': data,} ) as int;
+          needSomeFoodCompleter = null;
+          return (ln);
         }
-        catch (e)
-        {
-          print(e);
-          if ( isStopped)
-            return 0;
-          rethrow;
-        }
-      });
-      return r;
+      } catch(e)
+      {
+        needSomeFoodCompleter = null;
+        if (isStopped)
+          return 0;
+        rethrow;
+      }
+
+      if (needSomeFoodCompleter != null) {
+        return needSomeFoodCompleter.future;
+      }
+      return 0;
 
     }
 
@@ -959,6 +987,7 @@ class FlutterSoundPlayer extends Session
         feedStreamSubscription.cancel();
         feedStreamSubscription = null;
       }
+    needSomeFoodCompleter = null;
     int state = await invokeMethod('stopPlayer', <String, dynamic>{}) as int;
 
     playerState = PlayerState.values[state];

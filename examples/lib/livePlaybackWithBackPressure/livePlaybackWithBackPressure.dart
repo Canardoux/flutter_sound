@@ -27,27 +27,34 @@ import 'package:flutter/services.dart' show rootBundle;
 
 
 /*
- * This is an example showing how to record to a Dart Stream.
- * It writes all the recorded data from a Stream to a File, which is completely stupid:
- * if an App wants to record something to a File, it must not use Streams.
  *
- * The real interest of recording to a Stream is for example to feed a
- * Speech-to-Text engine, or for processing the Live data in Dart in real time.
+ * A very simple example showing how to play Live Data with back pressure.
+ * It feeds a live stream, waiting that the Futures are completed for each block.
+ *
+ * This example get the data from an asset file, which is completely stupid :
+ * if an App wants to play an asset file he must use "StartPlayerFromBuffer().
+ *
+ * If you do not need any back pressure, you can see another simple example : "LivePlaybackWithoutbackPressure.dart".
+ * This other example is a little bit simpler because the App does not need to await the playback for each block before playing another one.
+ * But if you do not use any back pressure, you will be front of two problems :
+ * - If your App is too fast feeding the audio channel, it can have problems with the Stream memory used.
+ * - The App does not have any knowledge of when the provided block is really played. If he does a "stopPlayer()" it will loose all the buffered data.
  *
  */
 
 
 const int SAMPLE_RATE = 48000;
+const int BLOCK_SIZE = 4096;
 typedef fn();
 
 
 /// Example app.
-class PlayFromLiveExample extends StatefulWidget {
+class LivePlaybackWithBackPressure extends StatefulWidget {
   @override
-  _PlayFromLiveExampleState createState() => _PlayFromLiveExampleState();
+  _LivePlaybackWithBackPressureState createState() => _LivePlaybackWithBackPressureState();
 }
 
-class _PlayFromLiveExampleState extends State<PlayFromLiveExample> {
+class _LivePlaybackWithBackPressureState extends State<LivePlaybackWithBackPressure> {
 
   FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
@@ -80,7 +87,7 @@ class _PlayFromLiveExampleState extends State<PlayFromLiveExample> {
     int totalLength = data.length;
     while (totalLength > 0 && _mPlayer != null && !_mPlayer.isStopped)
     {
-      int ln = totalLength > 4096 ? 4096 : totalLength;
+      int ln = totalLength > BLOCK_SIZE ? BLOCK_SIZE : totalLength;
       int r = await _mPlayer.feed(data.sublist(start,start + ln));
       totalLength -= r;
       start += r;
@@ -96,13 +103,15 @@ class _PlayFromLiveExampleState extends State<PlayFromLiveExample> {
       codec:  Codec.pcm16,
       numChannels: 1,
       sampleRate: SAMPLE_RATE,
+      blockSize:  BLOCK_SIZE,
     );
     setState(() {});
     Uint8List data = await getAssetData('assets/samples/sample.pcm');
     await feedHim(data);
-    await stopPlayer();
-
-    setState(() {});
+    if (_mPlayer != null) {
+      await stopPlayer();
+      setState(() {});
+    }
   }
 
 
@@ -118,7 +127,8 @@ class _PlayFromLiveExampleState extends State<PlayFromLiveExample> {
 
   Future<void> stopPlayer() async
   {
-    await _mPlayer.stopPlayer();
+    if (_mPlayer != null)
+      await _mPlayer.stopPlayer();
   }
 
   fn getPlaybackFn()

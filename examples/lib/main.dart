@@ -20,8 +20,8 @@ import 'package:flutter/material.dart';
 import 'demo/demo.dart';
 import 'widgetUI/widgetUIDemo.dart';
 import 'recordToStream/recordToStreamExample.dart';
-import 'playFromStream/playFromStreamExample.dart';
-import 'playFromLive/playFromLiveExample.dart';
+import 'livePlaybackWithBackPressure/livePlaybackWithBackPressure.dart';
+import 'livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.dart';
 
 /*
     This APP is just a driver to call the various Flutter Sound examples.
@@ -79,7 +79,7 @@ I really hope that someone will write soon another simpler Demo App.
 ''',
       ),
 
-      Example(title: 'RecordToStreamExample', subTitle: 'Example of recording to Stream', route: (BuildContext) => RecordToStreamExample(), description:
+      Example(title: 'recordToStream', subTitle: 'Example of recording to Stream', route: (BuildContext) => RecordToStreamExample(), description:
 '''
 This is an example showing how to record to a Dart Stream.
 It writes all the recorded data from a Stream to a File, which is completely stupid:
@@ -89,13 +89,26 @@ The real interest of recording to a Stream is for example to feed a Speech-to-Te
 ''',
       ),
 
-      Example(title: 'PlayFromStreamExample', subTitle: 'Example of playing from Stream', route: (BuildContext) => PlayFromStreamExample(), description:
+      Example(title: 'PlayFromStreamExample', subTitle: 'Example of playing from Stream', route: (BuildContext) => LivePlaybackWithoutBackPressure(), description:
 '''the description
 ''',
       ),
 
-      Example(title: 'PlayFromLiveExample', subTitle: 'Example of playing from <live> feed()', route: (BuildContext) => PlayFromLiveExample(), description:
-'''the description
+      Example(title: 'livePlaybackWithBackPressure', subTitle: 'Live Playback with BackPressure', route: (BuildContext) => LivePlaybackWithBackPressure(), description:
+'''
+A very simple example showing how to play Live Data with back pressure.
+It feeds a live stream, waiting that the Futures are completed for each block.
+
+This example get the data from an asset file, which is completely stupid :
+if an App wants to play an asset file he must use "StartPlayerFromBuffer().
+
+If you do not need any back pressure, you can see another simple example : "LivePlaybackWithoutbackPressure.dart".
+This other example is a little bit simpler because the App does not need to await the playback for each block before
+playing another one.
+But if you do not use any back pressure, you will be front of two problems :
+- If your App is too fast feeding the audio channel, it can have problems with the Stream memory used.
+- The App does not have any knowledge of when the provided block is really played. 
+If he does a "stopPlayer()" it will loose all the buffered data.
 ''',
       ),
     ];

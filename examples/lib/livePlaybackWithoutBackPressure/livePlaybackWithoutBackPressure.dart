@@ -22,12 +22,12 @@ import 'package:flutter/material.dart';
 
 
 /// Example app.
-class PlayFromStreamExample extends StatefulWidget {
+class LivePlaybackWithoutBackPressure extends StatefulWidget {
   @override
-  _PlayFromStreamExampleState createState() => _PlayFromStreamExampleState();
+  _LivePlaybackWithoutBackPressureState createState() => _LivePlaybackWithoutBackPressureState();
 }
 
-class _PlayFromStreamExampleState extends State<PlayFromStreamExample> {
+class _LivePlaybackWithoutBackPressureState extends State<LivePlaybackWithoutBackPressure> {
   @override
   Widget build(BuildContext context) {
 

@@ -69,6 +69,8 @@
 - (long)getPosition;
 - (long)getDuration;
 - (void)feed:(FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)needSomeFood: (int) ln;
+
 
 
 
