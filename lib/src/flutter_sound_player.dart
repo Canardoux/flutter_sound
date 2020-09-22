@@ -161,13 +161,33 @@ String fileExtension(String path) {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
+class streamEvent
+{
+  Future<void> exec(FlutterSoundPlayer player) {}
+}
+
+class dataEvent extends streamEvent
+{
+  Uint8List data;
+  /* ctor */ dataEvent(Uint8List this.data){}
+  Future<void> exec(FlutterSoundPlayer player) => player.feedFromStream(data);
+}
+
+class onEvent extends streamEvent
+{
+  Function on;
+  /* ctor */ onEvent(Function this.on){}
+  Future<void> exec(FlutterSoundPlayer player) => on();
+}
+
 class FlutterSoundPlayer extends Session
 {
   TonSkip onSkipForward; // User callback "onPaused:"
   TonSkip onSkipBackward; // User callback "onPaused:"
   TonPaused onPaused; // user callback "whenPause:"
   var lock = new Lock();
-  StreamSubscription<Uint8List> feedStreamSubscription ;
+  StreamSubscription<streamEvent> feedStreamSubscription ;
+  StreamController <streamEvent> feedStreamController;
 
   Completer<FlutterSoundPlayer> openAudioSessionCompleter;
   Completer<Duration> startPlayerCompleter;
@@ -733,7 +753,6 @@ class FlutterSoundPlayer extends Session
   Future<Duration> startPlayerFromStream ({
     Codec codec = Codec.pcm16,
     TNeedSomeData needSomeData = null,
-    Stream<Uint8List> inputStream = null,
     int numChannels = 1,
     int sampleRate = 16000,
     int blockSize = 4096,
@@ -750,13 +769,11 @@ class FlutterSoundPlayer extends Session
       _mBlockSize = blockSize;
       await lock.synchronized(() async {
       await stop( ); // Just in case
-      if (inputStream != null)
-        {
-          feedStreamSubscription = inputStream.listen((Uint8List buffer)
-          {
-            feedStreamSubscription.pause(feedFromStream(buffer));
-          }) ;
-        }
+      feedStreamController = StreamController();
+      feedStreamSubscription = feedStreamController.stream.listen((streamEvent event)
+      {
+            feedStreamSubscription.pause(event.exec(this));
+      }) ;
       int state  = (await invokeMethod( 'startPlayer',
           {
             'codec': codec.index,
@@ -773,10 +790,13 @@ class FlutterSoundPlayer extends Session
     Future<void> feedFromStream(Uint8List buffer) async
     {
       int lnData = 0;
-      while (lnData < buffer.length)
+      int totalLength = buffer.length;
+      while (totalLength > 0 && !isStopped)
       {
-        int ln = await feed(buffer.sublist(lnData));
+        int bsize = totalLength > _mBlockSize ? _mBlockSize : totalLength;
+        int ln = await feed(buffer.sublist(lnData, lnData + bsize));
         lnData += ln;
+        totalLength -= ln;
       }
     }
 
@@ -784,7 +804,8 @@ class FlutterSoundPlayer extends Session
       if (isInited == Initialized.initializationInProgress) {
         throw (_InitializationInProgress());
       }
-      if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized ) {
+      if (isInited != Initialized.fullyInitializedWithUI && isInited != Initialized.fullyInitialized )
+      {
         throw (_notOpen());
       }
       if (isStopped)
@@ -793,7 +814,8 @@ class FlutterSoundPlayer extends Session
       //assert(needSomeFoodCompleter == null);
       needSomeFoodCompleter = new Completer<int>();
       //print('State = ${playerState.index}');
-      try {
+      try
+      {
         int ln = await invokeMethod(
             'feed', <String, dynamic>{'data': data,}) as int;
         if (ln != 0)
@@ -997,6 +1019,12 @@ class FlutterSoundPlayer extends Session
         feedStreamSubscription = null;
       }
     needSomeFoodCompleter = null;
+    if (feedStreamController != null)
+      {
+        feedStreamController.sink.close();
+        feedStreamController.close();
+        feedStreamController = null;
+      }
     int state = await invokeMethod('stopPlayer', <String, dynamic>{}) as int;
 
     playerState = PlayerState.values[state];

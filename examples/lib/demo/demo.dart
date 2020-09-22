@@ -398,16 +398,8 @@ class _MyAppState extends State<Demo> {
 
   Future<void> feedHim(String path) async
   {
-    Uint8List data = await _readFileByte(path);
-    int start = 0;
-    int totalLength = data.length;
-    while (totalLength > 0 && playerModule != null && !playerModule.isStopped)
-      {
-        int ln = totalLength > BLOCK_SIZE ? BLOCK_SIZE : totalLength;
-        int r = await playerModule.feed(data.sublist(start,start + ln));
-        totalLength -= r;
-        start += r;
-      }
+      Uint8List data = await _readFileByte(path);
+      return playerModule.feedFromStream(data);
   }
 
   Future<void> startPlayer() async {

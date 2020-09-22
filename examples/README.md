@@ -56,7 +56,25 @@ Speech-to-Text engine, or for processing the Live data in Dart in real time.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [livePlaybackWithBackPressure](livePlaybackWithBackPressure.dart)
+## [livePlaybackWithBackPressure](lib/livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.dart)
+
+A very simple example showing how to play Live Data without back pressure.
+It feeds a live stream, without waiting that the Futures are completed for each block.
+This is simpler because the App does not need to await the playback for each block before playing another one.
+
+This example get the data from an asset file, which is completely stupid :
+if an App wants to play an asset file he must use "StartPlayerFromBuffer().
+
+Feeding Flutter Sound without back pressure is very simple but you can have two problems :
+- If your App is too fast feeding the audio channel, it can have problems with the Stream memory used.
+- The App does not have any knowledge of when the provided block is really played.
+If he does a "stopPlayer()" it will loose all the buffered data.
+
+This example uses the ```foodEvent``` object to resynchronize the output stream before doing a ```stop()```
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+## [livePlaybackWithBackPressure](lib/livePlaybackWithBackPressure/livePlaybackWithBackPressure.dart)
 
 A very simple example showing how to play Live Data with back pressure.
 It feeds a live stream, waiting that the Futures are completed for each block.
@@ -65,7 +83,14 @@ This example get the data from an asset file, which is completely stupid :
 if an App wants to play an asset file he must use "StartPlayerFromBuffer().
 
 If you do not need any back pressure, you can see another simple example : "LivePlaybackWithoutBackPressure.dart".
-This other example is a little bit simpler because the App does not need to await the playback for each block before playing another one.
-But if you do not use any back pressure, you will be front of two problems :
-- If your App is too fast feeding the audio channel, it can have problems with the Stream memory used.
-- The App does not have any knowledge of when the provided block is really played. If he does a "stopPlayer()" it will loose all the buffered data.
+This other example is a little bit simpler because the App does not need to await the playback for each block before
+playing another one.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+## [soundEffect](lib/soundEffect/soundEffect.dart)
+
+```startPlayerFromStream()``` can be very efficient to play sound effects. For example in a game App.
+The App open the Audio Session and call ```startPlayerFromStream()``` during initialization.
+When it want to play a noise, it has just to call the verb ```feed```
+

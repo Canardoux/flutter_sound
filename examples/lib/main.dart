@@ -22,6 +22,7 @@ import 'widgetUI/widgetUIDemo.dart';
 import 'recordToStream/recordToStreamExample.dart';
 import 'livePlaybackWithBackPressure/livePlaybackWithBackPressure.dart';
 import 'livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.dart';
+import 'soundEffect/soundEffect.dart';
 
 /*
     This APP is just a driver to call the various Flutter Sound examples.
@@ -91,17 +92,20 @@ The real interest of recording to a Stream is for example to feed a Speech-to-Te
 
       Example(title: 'livePlaybackWithoutBackPressure', subTitle: 'Live Playback without BackPressure', route: (BuildContext) => LivePlaybackWithoutBackPressure(), description:
 '''A very simple example showing how to play Live Data without back pressure.
+A very simple example showing how to play Live Data without back pressure.
 It feeds a live stream, without waiting that the Futures are completed for each block.
+This is simpler because the App does not need to await the playback for each block before playing another one.
+
 
 This example get the data from an asset file, which is completely stupid :
 if an App wants to play an asset file he must use "StartPlayerFromBuffer().
 
 Feeding Flutter Sound without back pressure is very simple but you can have two problems :
 - If your App is too fast feeding the audio channel, it can have problems with the Stream memory used.
-- The App does not have any knowledge of when the provided block is really played. If he does a "stopPlayer()" it will loose all the buffered data.
+- The App does not have any knowledge of when the provided block is really played.
+If he does a "stopPlayer()" it will loose all the buffered data.
 
-If you want to have back pressure, you can see another simple example : "LivePlaybackWithBackPressure.dart".
-This other example  await the playback for each block before playing another one.
+This example uses the ```foodEvent``` object to resynchronize the output stream before doing a ```stop()```
 ''',
       ),
 
@@ -116,10 +120,14 @@ if an App wants to play an asset file he must use "StartPlayerFromBuffer().
 If you do not need any back pressure, you can see another simple example : "LivePlaybackWithoutBackPressure.dart".
 This other example is a little bit simpler because the App does not need to await the playback for each block before
 playing another one.
-But if you do not use any back pressure, you will be front of two problems :
-- If your App is too fast feeding the audio channel, it can have problems with the Stream memory used.
-- The App does not have any knowledge of when the provided block is really played. 
-If he does a "stopPlayer()" it will loose all the buffered data.
+''',
+      ),
+
+      Example(title: 'soundEffect', subTitle: 'Sound Effect', route: (BuildContext) => SoundEffect(), description:
+'''
+```startPlayerFromStream()``` can be very efficient to play sound effects. For example in a game App.
+The App open the Audio Session and call ```startPlayerFromStream()``` during initialization.
+When it want to play a noise, it has just to call the verb ```feed```
 ''',
       ),
     ];

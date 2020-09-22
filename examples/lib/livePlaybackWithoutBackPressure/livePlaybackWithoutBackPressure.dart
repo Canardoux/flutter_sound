@@ -29,24 +29,27 @@ import 'package:flutter/services.dart' show rootBundle;
 /*
  *
  * A very simple example showing how to play Live Data without back pressure.
+ * A very simple example showing how to play Live Data without back pressure.
  * It feeds a live stream, without waiting that the Futures are completed for each block.
+ * This is simpler because the App does not need to await the playback for each block before playing another one.
+ *
  *
  * This example get the data from an asset file, which is completely stupid :
  * if an App wants to play an asset file he must use "StartPlayerFromBuffer().
  *
- *  Feeding Flutter Sound without back pressure is very simple but you can have two problems :
+ * Feeding Flutter Sound without back pressure is very simple but you can have two problems :
  * - If your App is too fast feeding the audio channel, it can have problems with the Stream memory used.
- * - The App does not have any knowledge of when the provided block is really played. If he does a "stopPlayer()" it will loose all the buffered data.
+ * - The App does not have any knowledge of when the provided block is really played.
+ * If he does a "stopPlayer()" it will loose all the buffered data.
  *
- * If you want to have back pressure, you can see another simple example : "LivePlaybackWithBackPressure.dart".
- * This other example  await the playback for each block before playing another one.
+ * This example uses the ```foodEvent``` object to resynchronize the output stream before doing a ```stop()```
  *
  */
 
 
 const int SAMPLE_RATE = 48000;
 const int BLOCK_SIZE = 4096;
-typedef fn();
+typedef void Fn();
 
 
 /// Example app.
@@ -82,14 +85,14 @@ class _LivePlaybackWithoutBackPressureState extends State<LivePlaybackWithoutBac
   // -------  Here is the code to play Live data with back-pressure ------------
 
 
-  Future<void> feedHim(Uint8List data, StreamSink<Uint8List> ostream ) async
+  void feedHim(Uint8List data)
   {
     int start = 0;
     int totalLength = data.length;
     while (totalLength > 0 && _mPlayer != null && !_mPlayer.isStopped)
     {
       int ln = totalLength > BLOCK_SIZE ? BLOCK_SIZE : totalLength;
-      ostream.add(data.sublist(start,start + ln));
+      _mPlayer.feedStreamController.sink.add(dataEvent(data.sublist(start,start + ln)) );
       totalLength -= ln;
       start += ln;
     }
@@ -98,21 +101,19 @@ class _LivePlaybackWithoutBackPressureState extends State<LivePlaybackWithoutBac
 
   void play() async
   {
-    StreamController <Uint8List> streamController = StreamController();
     assert (_mPlayerIsInited && _mPlayer.isStopped);
     await _mPlayer.startPlayerFromStream(
       codec:  Codec.pcm16,
       numChannels: 1,
       sampleRate: SAMPLE_RATE,
       blockSize:  BLOCK_SIZE,
-      inputStream: streamController.stream,
     );
     setState(() {});
     Uint8List data = await getAssetData('assets/samples/sample.pcm');
-    await feedHim(data, streamController.sink);
+    feedHim(data);
     if (_mPlayer != null) {
-      //await stopPlayer();
-      setState(() {});
+      // We must not do stopPlayer() directely //await stopPlayer();
+      _mPlayer.feedStreamController.sink.add(onEvent((){_mPlayer.stop(); setState(() {});}));
     }
   }
 
@@ -133,7 +134,7 @@ class _LivePlaybackWithoutBackPressureState extends State<LivePlaybackWithoutBac
       await _mPlayer.stopPlayer();
   }
 
-  fn getPlaybackFn()
+  Fn getPlaybackFn()
   {
     if (!_mPlayerIsInited)
       return null;

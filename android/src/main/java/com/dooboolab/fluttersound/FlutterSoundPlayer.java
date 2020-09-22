@@ -62,7 +62,7 @@ class sdkCompat
 
 abstract class PlayerInterface
 {
-	abstract void _startPlayer(String path, FlutterSoundPlayer flutterPlayer, int sampleRate, int blockSize, FlutterSoundPlayer theSession) throws Exception;
+	abstract void _startPlayer(String path, FlutterSoundPlayer flutterPlayer, int sampleRate, int numChannels, int blockSize, FlutterSoundPlayer theSession) throws Exception;
 	abstract void _stop();
 	abstract void _pausePlayer() throws Exception;
 	abstract void _resumePlayer() throws Exception;
@@ -89,7 +89,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		false, // opusCAF				// NOK
 		true, // MP3					// OK
 		true,//Build.VERSION.SDK_INT >= 23, // vorbisOGG// OK
-		true, // pcm16 // Really ???
+		true, // pcm16
 		true, // pcm16WAV				// OK
 		false, // pcm16AIFF				// OK
 		false, // pcm16CAF				// NOK
@@ -236,8 +236,14 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 			{
 				_sampleRate = call.argument ( "sampleRate" );
 			}
+			Integer		  _numChannels  = 1;
+			if (call.argument ( "numChannels" ) != null)
+			{
+				_numChannels = call.argument ( "numChannels" );
+			}
+
 			mTimer = new Timer();
-			player._startPlayer(path, this, _sampleRate, _blockSize, this);
+			player._startPlayer(path, this, _sampleRate, _numChannels, _blockSize, this);
 		}
 		catch ( Exception e )
 		{
@@ -586,7 +592,7 @@ class MediaPlayerEngine extends PlayerInterface
 	MediaPlayer mediaPlayer = null;
 	FlutterSoundPlayer flutterPlayer;
 
-	void _startPlayer(String path, FlutterSoundPlayer aFlutterPlayer, int sampleRate, int blockSize, FlutterSoundPlayer theSession) throws Exception
+	void _startPlayer(String path, FlutterSoundPlayer aFlutterPlayer, int sampleRate, int numChannels, int blockSize, FlutterSoundPlayer theSession) throws Exception
  	{
  		mediaPlayer = new MediaPlayer();
 
@@ -751,6 +757,7 @@ class AudioTrackEngine extends PlayerInterface
 			String path,
 			FlutterSoundPlayer flutterPlayer,
 			int sampleRate,
+			int numChannels,
 			int blockSize,
 			FlutterSoundPlayer theSession
 		) throws Exception
@@ -765,7 +772,7 @@ class AudioTrackEngine extends PlayerInterface
 		AudioFormat format = new AudioFormat.Builder()
 			.setEncoding(AudioFormat.ENCODING_PCM_16BIT)
 			.setSampleRate(sampleRate)
-			.setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
+			.setChannelMask(numChannels == 1 ? AudioFormat.CHANNEL_OUT_MONO : AudioFormat.CHANNEL_OUT_STEREO)
 			.build();
 		audioTrack = new AudioTrack(attributes, format, blockSize, AudioTrack.MODE_STREAM, sessionId);
 		mPauseTime = 0;
@@ -779,9 +786,12 @@ class AudioTrackEngine extends PlayerInterface
 
 	void _stop()
 	{
-		audioTrack.stop();
-		audioTrack.release();
-		audioTrack = null;
+		if (audioTrack != null)
+		{
+			audioTrack.stop();
+			audioTrack.release();
+			audioTrack = null;
+		}
 		blockThread = null;
 	}
 
