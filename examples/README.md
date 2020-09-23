@@ -3,6 +3,10 @@
 Flutter Sound comes with several Demo/Examples :
 - [Demo](#demo) is a demonstration of what we can do with Flutter Sound. This Demo App is a kind of exerciser which try to implement the major Flutter Sound features. This Demo does not use the Flutter Sound UI Widgets
 - [WidgetUIDemo](#WidgetUIDemo) is an example of what can be done using the Flutter Sound UI Widgets
+- [RecordToStream](recordtostream) is an example showing how to record to a live Dart Stream
+- [livePlaybackWithBackPressure](#liveplaybackwithbackpressure) is an example showing how to play live data synchronously
+- [livePlaybackWithoutBackPressure](#liveplaybackwithoutbackpressure) is an example showing how to play live data asynchronously
+- [soundEffect](#soundeffect) is an example showing to play sound effects synchronously
 
 if Someone update this README.md, please update also the code inside Examples/lib/demo/main.dart and the comment in the header of the demo or example dart file.
 
@@ -56,11 +60,13 @@ Speech-to-Text engine, or for processing the Live data in Dart in real time.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [livePlaybackWithBackPressure](lib/livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.dart)
+## [livePlaybackWithoutBackPressure](lib/livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.dart)
+
+<img src="lib/livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.png" width="70%" height="70%"/>
 
 A very simple example showing how to play Live Data without back pressure.
 It feeds a live stream, without waiting that the Futures are completed for each block.
-This is simpler because the App does not need to await the playback for each block before playing another one.
+This is simpler than playing buffers synchronously because the App does not need to await the playback for each block before playing another one.
 
 This example get the data from an asset file, which is completely stupid :
 if an App wants to play an asset file he must use "StartPlayerFromBuffer().
@@ -76,13 +82,15 @@ This example uses the ```foodEvent``` object to resynchronize the output stream 
 
 ## [livePlaybackWithBackPressure](lib/livePlaybackWithBackPressure/livePlaybackWithBackPressure.dart)
 
+<img src="lib/livePlaybackWithBackPressure/livePlaybackWithBackPressure.png" width="70%" height="70%"/>
+
 A very simple example showing how to play Live Data with back pressure.
 It feeds a live stream, waiting that the Futures are completed for each block.
 
 This example get the data from an asset file, which is completely stupid :
 if an App wants to play an asset file he must use "StartPlayerFromBuffer().
 
-If you do not need any back pressure, you can see another simple example : "LivePlaybackWithoutBackPressure.dart".
+If you do not need any back pressure, you can see another simple example : [LivePlaybackWithoutBackPressure.dart](#liveplaybackwithoutbackpressure).
 This other example is a little bit simpler because the App does not need to await the playback for each block before
 playing another one.
 
@@ -90,7 +98,9 @@ playing another one.
 
 ## [soundEffect](lib/soundEffect/soundEffect.dart)
 
-```startPlayerFromStream()``` can be very efficient to play sound effects. For example in a game App.
+<img src="lib/soundEffect/soundEffect.png" width="70%" height="70%"/>
+
+```startPlayerFromStream()``` can be very efficient to play sound effects in real time. For example in a game App.
 The App open the Audio Session and call ```startPlayerFromStream()``` during initialization.
-When it want to play a noise, it has just to call the verb ```feed```
+When it want to play a noise, it has just to call the synchronous verb ```feed```. Very fast.
 

@@ -81,8 +81,9 @@ await myPlayer.startPlayer
 Please, remember that actually, Flutter Sound does not support Floating Point PCM data, nor records with more that one audio channel.
 On Flutter Sound, **Raw PCM is only PCM-LINEAR 16 monophony**
 
-This works only with `openAudioSession()` and  does not work with `openAudioSessionWithUI()`.
-To record a Live PCM file, you need just specify the parameter `toStream:` with you Stream sink, instead of the parameter `toFile:`
+This works only with [openAudioSession()](#openAudioSession-and-closeAudioSession) and  does not work with `openAudioSessionWithUI()`.
+To record a Live PCM file, for the verb [startRecorder()](recorder.md#startrecorder) you specify the parameter `toStream:` with you Stream sink, instead of the parameter `toFile:`.
+This parameter is a StreamSink that you can listen to, for processing the input data.
 
 Note : This new functionnality works better with Android minSdk >= 23, because previous SDK was not able to do UNBLOCKING `read`.
 
@@ -115,8 +116,8 @@ You can look to the [simple example](../examples/README.md#recordtostream) provi
 
 Please, remember that actually, Flutter Sound does not support Floating Point PCM data, nor records with more that one audio channel.
 
-This works only with `openAudioSession()` and does not work with `openAudioSessionWithUI()`.
-To play live stream, you start playing with the verb :
+This works only with openAudioSession](#openaudiosession-and-closeaudiosession) and does not work with `openAudioSessionWithUI()`.
+To play live stream, you start playing with the verb [startPlayerFromStream](player.md#startplayerfromstream) instead of the regular `startPlayer()` verb:
 ```
 await myPlayer.startPlayerFromStream
 (
@@ -131,7 +132,7 @@ The first thing you have to do if you want to play live audio is to answer this 
 
 ### Without back pressure,
 
-the App does just ```myPlayer.foodSink.add(FoodData(aBuffer))``` each time it wants to play some data.
+The App does just [myPlayer.foodSink.add( FoodData(aBuffer) )]((player.md#food)) each time it wants to play some data.
 No need to await, no need to verify if the previous buffers have finished to be played.
 All the buffers added to `foodSink` are buffered, an are played sequentially. The App continues to work without knowing when the buffers are really played.
 
@@ -140,7 +141,7 @@ This means two things :
    - When the App has finished feeding the sink, it cannot just do `myPlayer.stopPlayer()`, because there is perhaps many buffers not yet played.
 If it does a `stopPlayer()`, all the waiting buffers will be flushed which is probably not what it wants.
 
-But there is a mechanism if the App wants to resynchronize with the output Stream :
+But there is a mechanism if the App wants to resynchronize with the output Stream. To resynchronize with the current playback, the App does [myPlayer.foodSink.add( FoodEvent(aCallback) );](player#food)
 
 ```
 myPlayer.foodSink.add
@@ -153,9 +154,11 @@ myPlayer.foodSink.add
   )
 );
 ```
-In this example the Lambda function will really do the `stopPlayer()` when all the previous data have been played. So, now it is OK to do a `stopPlayer()`
 
 *Example:*
+
+You can look to the [simple example](../examples/README.md#liveplaybackwithoutbackpressure) provided with Flutter Sound.
+
 ```dart
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
 
@@ -168,9 +171,13 @@ myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
 
 ### With back pressure
 
-If the App wants to keep synchronization with what is played, it uses the verb ```await myPlayer.feedFromStream(aBuffer)```.
-It is really very, very important not to call another `feedFromStream()` before the completion of the previous future. When each Future is completed, the App can be sure that the provided data are correctely either played, or at least put in low level internal buffers, and it knows that it is safe to do another one.
+If the App wants to keep synchronization with what is played, it uses the verb [feedFromStream](player#feedfromstream) to play data.
+It is really very important not to call another `feedFromStream()` before the completion of the previous future. When each Future is completed, the App can be sure that the provided data are correctely either played, or at least put in low level internal buffers, and it knows that it is safe to do another one.
 
+
+*Example:*
+
+You can look to the [simple examples](../examples/README.md#liveplaybackwithbackpressure) and [this example](../examples/README.md#soundeffect)
 ```
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
 
