@@ -4,10 +4,32 @@
 
 # Flutter Sound UI Widgets API
 
-* [ This documentation must be written by someone. (@bsutton ?) ]
+The Widgets offered by the Flutter Sound UI Widgets module are :
 
+- [Sound Player UI](#SoundPlayerUI)
+- [Sound Recorder UI](#SoundRecorderUI)
 
-## Style of the `SoundPlayerUI` widget
+-----------------------------------------------------------------------------------------------------------------------
+
+## How to use
+First import the module
+``` import 'fluttersound/flutter_sound_ui.dart```
+
+Then reference to one of the flutter sound UI widgets in your widget tree:
+
+- [Sound Player UI](#SoundPlayerUI)
+- [Sound Recorder UI](#SoundRecorderUI)
+
+## `SoundPlayerUI`
+To use add FOREGROUND_SERVICE permission.
+
+### Android
+Add this line to your AndroidManifest.xml
+```
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+```
+
+### Style of the `SoundPlayerUI` widget
 
 The two constructors of the `SoundPlayerUI` widget have 6 optional parameters for allowing the App to tune the UI presentation:
 
@@ -18,6 +40,8 @@ The two constructors of the `SoundPlayerUI` widget have 6 optional parameters fo
 - TextStyle titleStyle = null,
 - SliderThemeData sliderThemeData = null,
 
+## `SoundRecorderUI`
+...working on documentation.
 
 -----------------------------------------------------------------------------------------------------------------------
 
