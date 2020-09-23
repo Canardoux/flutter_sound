@@ -145,7 +145,7 @@ Please look to [openAudioSession()](player.md#openaudiosession-and-closeaudioses
         {
                 Codec codec = Codec.aacADTS,
                 String toFile,
-                Stream toStream,
+                StreamSink toStream,
                 int sampleRate = 16000,
                 int numChannels = 1,
                 int bitRate = 16000,
@@ -157,7 +157,7 @@ You use `startRecorder()` to start recording in an open session. `startRecorder(
 It has also 7 optional parameters to specify :
 - codec: The codec to be used. Please refer to the [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
 - toFile: a path to the file being recorded
-- toStream: if you want to record to a Dart Stream *(not yet implemented)*
+- toStream: if you want to record to a Dart Stream. Please look to [the following notice](codec.md#recording-pcm-16-to-a-dart-stream)
 - sampleRate: The sample rate in Hertz
 - numChannels: The number of channels (1=monophony, 2=stereophony)
 - bitRate: The bit rate in Hertz

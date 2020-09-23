@@ -22,11 +22,11 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#ifndef Flauto_h
+#define Flauto_h
 
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
-#ifndef Flauto_h
-#define Flauto_h
 
 
 // this enum MUST be synchronized with lib/flutter_sound.dart and fluttersound/AudioInterface.java

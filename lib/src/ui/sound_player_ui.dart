@@ -86,8 +86,8 @@ class SoundPlayerUI extends StatefulWidget {
   SoundPlayerUI.fromLoader(OnLoad onLoad,
       {bool showTitle = false,
       bool enabled = true,
-      AudioFocus audioFocus = AudioFocus.requestFocusAndDuckOthers,
-      Color backgroundColor = Colors.blueGrey,
+      AudioFocus audioFocus = AudioFocus.requestFocusAndKeepOthers,
+      Color backgroundColor =null,
       Color iconColor = Colors.black,
       Color disabledIconColor = Colors.grey,
       TextStyle textStyle = null,
@@ -103,7 +103,12 @@ class SoundPlayerUI extends StatefulWidget {
         _disabledIconColor = disabledIconColor,
         _textStyle = textStyle,
         _titleStyle = titleStyle,
-        _sliderThemeData = sliderThemeData;
+        _sliderThemeData = sliderThemeData
+  {
+    if (backgroundColor == null)
+      _backgroundColor = backgroundColor = Color( 0xFFFAF0E6 );
+  }
+
 
   ///
   /// [SoundPlayerUI.fromTrack] Constructs a Playbar with a Track.
@@ -123,8 +128,8 @@ class SoundPlayerUI extends StatefulWidget {
   SoundPlayerUI.fromTrack(Track track,
       {bool showTitle = false,
       bool enabled = true,
-      AudioFocus audioFocus = AudioFocus.requestFocusAndDuckOthers,
-      Color backgroundColor = Colors.blueGrey,
+      AudioFocus audioFocus = AudioFocus.requestFocusAndKeepOthers,
+      Color backgroundColor = null,
       Color iconColor = Colors.black,
       Color disabledIconColor = Colors.grey,
       TextStyle textStyle = null,
@@ -146,7 +151,7 @@ class SoundPlayerUI extends StatefulWidget {
   State<StatefulWidget> createState() {
     return SoundPlayerUIState(_track, _onLoad,
                 enabled: _enabled,
-                backgroundColor: _backgroundColor,
+                backgroundColor: (_backgroundColor != null) ? _backgroundColor :  Color( 0xFFFAF0E6 ),
                 iconColor: _iconColor,
                 disabledIconColor: _disabledIconColor,
                 textStyle: _textStyle,
@@ -227,7 +232,15 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     if (!_enabled) {
       __playState = PlayState.disabled;
     }
-    _player.openAudioSessionWithUI(focus: AudioFocus.requestFocusAndDuckOthers).then( (_){
+    _player.openAudioSessionWithUI
+    (
+        focus: AudioFocus.requestFocusAndDuckOthers,
+        category: SessionCategory.playAndRecord,
+        mode:  SessionMode.modeDefault,
+        device: AudioDevice.speaker,
+        audioFlags: outputToSpeaker |  allowBlueToothA2DP  | allowAirPlay
+
+    ).then( (_){
       _setCallbacks();
       _player.setSubscriptionDuration(Duration(milliseconds: 30));
     });

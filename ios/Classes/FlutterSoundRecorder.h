@@ -1,8 +1,8 @@
 //
-//  SoundRecorder.h
-//  Pods
+//  AudioRecorder.h
+//  
 //
-//  Created by larpoux on 24/03/2020.
+//  Created by larpoux on 02/05/2020.
 //
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
@@ -23,29 +23,37 @@
  */
 
 
-
-#ifndef FlautoRecorder_h
-#define FlautoRecorder_h
+#ifndef FlutterSoundRecorder_h
+#define FlutterSoundRecorder_h
 
 
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
 #import "Flauto.h"
 #import "FlautoManager.h"
+#import "FlautoRecorderManager.h"
+#import "FlutterSoundRecorder.h"
 
-extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar);
 
-
-@interface FlautoRecorderManager : FlautoManager
+@interface FlutterSoundRecorder  : Session
 {
 }
 
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar;
-- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result;
-- (void)invokeMethod: (NSString*)methodName arguments: (NSDictionary*)call;
-- (void)freeSlot: (int)slotNo;
+- (FlautoRecorderManager*) getPlugin;
+- (Session*) init: (FlutterMethodCall*)call;
+
+- (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result;
+- (void)startRecorder :(FlutterMethodCall*)call result:(FlutterResult)result;
+- (void)stopRecorder:(FlutterResult)result;
+- (void)setDbPeakLevelUpdate:(double)intervalInSecs result: (FlutterResult)result;
+- (void)setDbLevelEnabled:(BOOL)enabled result: (FlutterResult)result;
+- (void)initializeFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
+- (void)releaseFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
+- (void)setSubscriptionDuration:(FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)pauseRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
+- (void)resumeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
+
 @end
 
-extern FlautoRecorderManager* flautoRecorderManager; // Singleton
-
-#endif /* FlautoRecorder_h */
+#endif /* FlutterSoundRecorder_h */

@@ -145,6 +145,8 @@ enum AudioDevice {
 
 
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 @implementation Session
@@ -163,6 +165,11 @@ enum AudioDevice {
         slotNo = [[self getPlugin] initPlugin: self call: call];
         hasFocus = FALSE;
         return [super init];
+}
+
+- (int) getSlotNo
+{
+        return slotNo;
 }
 
 - (void) releaseSession
@@ -271,7 +278,7 @@ const int allowBlueToothA2DP = 32;
                 if (flags & allowBlueToothA2DP)
                         sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
 
-                /*
+                
                 enum AudioDevice device = (enum AudioDevice)[call.arguments[@"device"] intValue];
                 switch (device)
                 {
@@ -282,7 +289,7 @@ const int allowBlueToothA2DP = 32;
                         case earPiece:
                         case headset: sessionCategoryOption |= 0; break;
                 }
-                */
+                
                 r = [[AVAudioSession sharedInstance]
                         setCategory:  tabCategory[category] // AVAudioSessionCategoryPlayback
                         mode: tabSessionMode[mode]
@@ -301,3 +308,5 @@ const int allowBlueToothA2DP = 32;
 
 
 @end
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------

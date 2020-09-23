@@ -44,6 +44,7 @@
 - (void)invokeMethod: (NSString*)methodName boolArg: (Boolean)boolArg;
 - (void)invokeMethod: (NSString*)methodName numberArg: (NSNumber*)arg;
 - (BOOL)setAudioFocus: (FlutterMethodCall*)call ;
+- (int)getSlotNo;
 
 
 @end

@@ -8,6 +8,10 @@ Flutter Sound offers some tools that can be convenient to work with sound :
 
 - [Module instanciation](#module-instanciation)
 - [convertFile()](#convertfile) to convert an audio file to another format
+- [pcmToWave()](#pcmtowave)  to add a WAVE header in front of a Raw PCM record
+- [pcmToWaveBuffer()](#pcmtowavebuffer)  to add a WAVE header in front of a Raw PCM buffer
+- [waveToPCM()](#wavetopcm)  to remove a WAVE header in front of a Wave record
+- [waveToPCMBuffer()](#wavetopcmbuffer)  to remove a WAVE header in front of a Wave buffer
 - [duration()](#duration) to know the appoximate duration of a sound
 - [isFFmpegAvailable()](#isffmpegavailable) to know if the current App is linked with FFmpeg
 - [executeFFmpegWithArguments()](#executeffmpegwitharguments) to execute an FFmpeg command
@@ -66,7 +70,112 @@ Note : this verb uses FFmpeg and is not available int the LITE flavor of Flutter
         await flutterSoundHelper.convertFile(inputFile, codec.pcm16WAV, outputFile, Codec.mp3)
 ```
 
--------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+## `pcmToWave()`
+
+*Dart definition (prototype) :*
+```
+Future<void> pcmToWave
+(
+      {
+          String inputFile,
+          String outputFile,
+          int numChannels,
+          int sampleRate,
+      }
+) async
+```
+
+This verb is usefull to convert a Raw PCM file to a Wave file.
+
+It adds a `Wave` envelop to the PCM file, so that the file can be played back with `startPlayer()`.
+
+Note: the parameters `numChannels` and `sampleRate` **are mandatory, and must match the actual PCM data**. [See here](doc/codec.md#note-on-raw-pcm-and-wave-files) a discussion about `Raw PCM` and `WAVE` file format.
+
+*Example:*
+```dart
+        String inputFile = '$myInputPath/bar.pcm';
+        var tempDir = await getTemporaryDirectory();
+        String outpufFile = '${tempDir.path}/$foo.wav';
+        await flutterSoundHelper.pcmToWave(inputFile: inputFile, outpoutFile: outputFile, numChannels: 1, sampleRate: 8000);
+```
+
+------------------------------------------------------------------------------------------------------------------------
+
+## `pcmToWaveBuffer()`
+
+*Dart definition (prototype) :*
+```
+Future<Uint8List> pcmToWaveBuffer
+(
+      {
+        Uint8List inputBuffer,
+        int numChannels,
+        int sampleRate,
+      }
+) async
+
+```
+
+This verb is usefull to convert a Raw PCM buffer to a Wave buffer.
+
+It adds a `Wave` envelop in front of the PCM buffer, so that the file can be played back with `startPlayerFromBuffer()`.
+
+Note: the parameters `numChannels` and `sampleRate` **are mandatory, and must match the actual PCM data**. [See here](doc/codec.md#note-on-raw-pcm-and-wave-files) a discussion about `Raw PCM` and `WAVE` file format.
+
+*Example:*
+```dart
+        Uint8List myWavBuffer = await flutterSoundHelper.pcmToWaveBuffer(inputBuffer: myPCMBuffer, numChannels: 1, sampleRate: 8000);
+```
+
+------------------------------------------------------------------------------------------------------------------------
+
+## `waveToPCM()`
+
+*Dart definition (prototype) :*
+```
+Future<void> waveToPCM
+(
+      {
+          String inputFile,
+          String outputFile,
+       }
+) async
+```
+
+This verb is usefull to convert a Wave file to a Raw PCM file.
+
+It removes the `Wave` envelop from the PCM file.
+
+*Example:*
+```dart
+        String inputFile = '$myInputPath/bar.pcm';
+        var tempDir = await getTemporaryDirectory();
+        String outpufFile = '${tempDir.path}/$foo.wav';
+        await flutterSoundHelper.waveToPCM(inputFile: inputFile, outpoutFile: outputFile);
+```
+
+------------------------------------------------------------------------------------------------------------------------
+
+## `waveToPCMBuffer()`
+
+*Dart definition (prototype) :*
+```
+Uint8List waveToPCMBuffer (Uint8List inputBuffer)
+```
+
+This verb is usefull to convert a Wave buffer to a Raw PCM buffer.
+Note that this verb is not asynchronous and does not return a Future.
+
+It removes the `Wave` envelop from the PCM buffer.
+
+*Example:*
+```dart
+        Uint8List pcmBuffer flutterSoundHelper.waveToPCMBuffer(inputBuffer: aWaveBuffer);
+```
+
+----------------------------------------------------------------------------------------------------------------------------
 
 ## `duration()`
 

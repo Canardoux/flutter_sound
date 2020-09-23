@@ -25,15 +25,11 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -44,177 +40,25 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
-
-class FlautoRecorderPlugin  extends AudioSessionManager
-	implements MethodCallHandler
-{
-
-	static Context              androidContext;
-	static FlautoRecorderPlugin flautoRecorderPlugin; // singleton
-
-
-	static final String ERR_UNKNOWN               = "ERR_UNKNOWN";
-	static final String ERR_RECORDER_IS_NULL      = "ERR_RECORDER_IS_NULL";
-	static final String ERR_RECORDER_IS_RECORDING = "ERR_RECORDER_IS_RECORDING";
-
-
-	public static void attachFlautoRecorder ( Context ctx, BinaryMessenger messenger )
-	{
-		assert ( flautoRecorderPlugin == null );
-		flautoRecorderPlugin = new FlautoRecorderPlugin ();
-		MethodChannel channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_recorder" );
-		flautoRecorderPlugin.init( channel);
-		channel.setMethodCallHandler ( flautoRecorderPlugin );
-		androidContext = ctx;
-	}
-
-
-
-	FlautoRecorderPlugin getManager ()
-	{
-		return flautoRecorderPlugin;
-	}
-
-
-	@Override
-	public void onMethodCall ( final MethodCall call, final Result result )
-	{
-
-		FlutterSoundRecorder aRecorder = (FlutterSoundRecorder) getSession( call);
-		switch ( call.method )
-		{
-			case "initializeFlautoRecorder":
-			{
-				aRecorder = new FlutterSoundRecorder (  );
-				initSession( call, aRecorder );
-				aRecorder.initializeFlautoRecorder ( call, result );
-			}
-			break;
-
-			case "releaseFlautoRecorder":
-			{
-				aRecorder.releaseFlautoRecorder ( call, result );
-			}
-			break;
-
-			case "isEncoderSupported":
-			{
-				aRecorder.isEncoderSupported ( call, result );
-			}
-			break;
-
-			case "setAudioFocus":
-			{
-				aRecorder.setAudioFocus( call, result );
-			}
-			break;
-
-			case "startRecorder":
-			{
-				aRecorder.startRecorder ( call, result );
-			}
-			break;
-
-			case "stopRecorder":
-			{
-				aRecorder.stopRecorder ( call, result );
-			}
-			break;
-
-
-			case "setSubscriptionDuration":
-			{
-				aRecorder.setSubscriptionDuration ( call, result );
-			}
-			break;
-
-			case "pauseRecorder":
-			{
-				aRecorder.pauseRecorder ( call, result );
-			}
-			break;
-
-
-			case "resumeRecorder":
-			{
-				aRecorder.resumeRecorder ( call, result );
-			}
-			break;
-
-
-			default:
-			{
-				result.notImplemented ();
-			}
-			break;
-		}
-	}
-
-}
-
-
-
-class RecorderAudioModel
-{
-	final public static String  DEFAULT_FILE_LOCATION = Environment.getDataDirectory ().getPath () + "/default.aac"; // SDK
-	public              int     subsDurationMillis    = 10;
-
-	private      Runnable      recorderTicker;
-	private      long          recordTime   = 0;
-	public final double        micLevelBase = 2700;
-
-
-	//public MediaRecorder getMediaRecorder ()
-	//{
-		//return mediaRecorder;
-	//}
-
-	//public void setMediaRecorder ( MediaRecorder mediaRecorder )
-	//{
-		//this.mediaRecorder = mediaRecorder;
-	//}
-
-	public Runnable getRecorderTicker ()
-	{
-		return recorderTicker;
-	}
-
-	public void setRecorderTicker ( Runnable recorderTicker )
-	{
-		this.recorderTicker = recorderTicker;
-	}
-
-
-	public long getRecordTime ()
-	{
-		return recordTime;
-	}
-
-	public void setRecordTime ( long recordTime )
-	{
-		this.recordTime = recordTime;
-	}
-
-}
 //-----------------------------------------------------------------------------------------------------------------------------------------------
 
 public class FlutterSoundRecorder extends Session
 {
 	static boolean _isAndroidEncoderSupported[] = {
 		true, // DEFAULT
-		true, // aacADTS
-		false, // opusOGG
+		Build.VERSION.SDK_INT >= 23,  // aacADTS
+		false, // opusOGG // ( Build.VERSION.SDK_INT < 29 )
 		false, // opusCAF
 		false, // MP3
-		false, // vorbisOGG
+		false, // vorbisOGG // ( Build.VERSION.SDK_INT < 29 )
 		true, // pcm16
 		true, // pcm16WAV
 		false, // pcm16AIFF
 		false, // pcm16CAF
 		false, // flac
-		false, // aacMP4
-		true,  // amrNB
-		true   // amrWB
+		Build.VERSION.SDK_INT >= 23,  // aacMP4
+		Build.VERSION.SDK_INT >= 23,  // amrNB
+		Build.VERSION.SDK_INT >= 23   // amrWB
 	};
 
 	final static int CODEC_OPUS   = 2;
@@ -227,22 +71,26 @@ public class FlutterSoundRecorder extends Session
 
 
 	final static String             TAG                = "FlutterSoundRecorder";
-	final        RecorderAudioModel model              = new RecorderAudioModel ();
 	RecorderInterface recorder;
-	final public Handler            recordHandler      = new Handler ();
+	public Handler            recordHandler   ;
 	//String finalPath;
 	private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor ();
 	long mPauseTime = 0;
 	long mStartPauseTime = -1;
+	final private Handler          mainHandler = new Handler (Looper.getMainLooper ());
+
+	public              int     subsDurationMillis    = 10;
+
+	private      Runnable      recorderTicker;
 
 	FlutterSoundRecorder (  )
 	{
 	}
 
 
-	FlautoRecorderPlugin getPlugin ()
+	FlautoRecorderManager getPlugin ()
 	{
-		return FlautoRecorderPlugin.flautoRecorderPlugin;
+		return FlautoRecorderManager.flautoRecorderPlugin;
 	}
 
 
@@ -272,11 +120,11 @@ public class FlutterSoundRecorder extends Session
 	{
 		int     _codec = call.argument ( "codec" );
 		boolean b      = _isAndroidEncoderSupported[ _codec ];
-		if ( Build.VERSION.SDK_INT < 29 )
+		//if ( Build.VERSION.SDK_INT < 29 )
 		{
-			if ( ( _codec == CODEC_OPUS ) || ( _codec == CODEC_VORBIS ) )
+			//if ( ( _codec == CODEC_OPUS ) || ( _codec == CODEC_VORBIS ) )
 			{
-				b = false;
+				//b = false;
 			}
 		}
 		result.success ( b );
@@ -365,19 +213,26 @@ public class FlutterSoundRecorder extends Session
 			final String                     path               = call.argument ( "path" );
 			int                             _audioSource        = call.argument ( "audioSource" );
 			int                             audioSource         = tabAudioSource[_audioSource];
+			int 				toStream	    = call.argument ( "toStream");
+			//audioSource =MediaRecorder.AudioSource.MIC; // Just for test
 			mPauseTime = 0;
 			mStartPauseTime = -1;
 			stop(); // To start a new clean record
 			if (_isAudioRecorder[codec.ordinal()])
 			{
-				recorder = new FlutterSoundAudioRecorder();
+				if (numChannels != 1)
+				{
+					result.error( TAG, "The number of channels supported is actually only 1", "" );
+					return;
+				}
+				recorder = new RecorderAudioRecorder();
 			} else
 			{
-				recorder = new FlutterSoundMediaRecorder();
+				recorder = new RecorderMediaRecorder();
 			}
 			try
 			{
-				recorder._startRecorder( numChannels, sampleRate, bitRate, codec, path, audioSource );
+				recorder._startRecorder( numChannels, sampleRate, bitRate, codec, path, audioSource, this );
 			} catch ( Exception e )
 			{
 				result.error( TAG, "Error starting recorder", e.getMessage() );
@@ -387,56 +242,60 @@ public class FlutterSoundRecorder extends Session
 			//recordHandler.removeCallbacksAndMessages ( null );
 
 			final long systemTime = SystemClock.elapsedRealtime();
-			this.model.setRecorderTicker ( () ->
-			                               {
+			recordHandler      = new Handler ();
+			recorderTicker = ( () ->
+			       {
+				       	mainHandler.post(new Runnable()
+					{
+						@Override
+						public void run() {
 
-				                               long time = SystemClock.elapsedRealtime () - systemTime - mPauseTime;
-				                               // Log.d(TAG, "elapsedTime: " + SystemClock.elapsedRealtime());
-				                               // Log.d(TAG, "time: " + time);
+							long time = SystemClock.elapsedRealtime() - systemTime - mPauseTime;
+							// Log.d(TAG, "elapsedTime: " + SystemClock.elapsedRealtime());
+							// Log.d(TAG, "time: " + time);
 
-				                               // DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
-				                               // String displayTime = format.format(time);
-				                               // model.setRecordTime(time);
-				                               try
-				                               {
-					                               double db = 0.0;
-					                               if ( recorder != null )
-					                               {
-						                               double maxAmplitude = recorder.getMaxAmplitude ();
+							// DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
+							// String displayTime = format.format(time);
+							// model.setRecordTime(time);
+							try {
+								double db = 0.0;
+								if (recorder != null) {
+									double maxAmplitude = recorder.getMaxAmplitude();
 
-						                               // Calculate db based on the following article.
-						                               // https://stackoverflow.com/questions/10655703/what-does-androids-getmaxamplitude-function-for-the-mediarecorder-actually-gi
-						                               //
-						                               double ref_pressure = 51805.5336;
-						                               double p            = maxAmplitude / ref_pressure;
-						                               double p0           = 0.0002;
+									// Calculate db based on the following article.
+									// https://stackoverflow.com/questions/10655703/what-does-androids-getmaxamplitude-function-for-the-mediarecorder-actually-gi
+									//
+									double ref_pressure = 51805.5336;
+									double p = maxAmplitude / ref_pressure;
+									double p0 = 0.0002;
 
-						                               db = 20.0 * Math.log10 ( p / p0 );
+									db = 20.0 * Math.log10(p / p0);
 
-						                               // if the microphone is off we get 0 for the amplitude which causes
-						                               // db to be infinite.
-						                               if ( Double.isInfinite ( db ) )
-						                               {
-							                               db = 0.0;
-						                               }
+									// if the microphone is off we get 0 for the amplitude which causes
+									// db to be infinite.
+									if (Double.isInfinite(db)) {
+										db = 0.0;
+									}
 
-					                               }
+								}
 
 
+								Map<String, Object> dic = new HashMap<String, Object>();
+								dic.put("slotNo", slotNo);
+								dic.put("duration", time);
+								dic.put("dbPeakLevel", db);
+								invokeMethodWithMap("updateRecorderProgress", dic);
+								if (recordHandler != null)
+									recordHandler.postDelayed(recorderTicker, subsDurationMillis);
+							} catch (Exception e) {
+								Log.d(TAG, " Exception: " + e.toString());
+							}
+						}
+					});
 
-					                               Map<String, Object> dic = new HashMap<String, Object> ();
-					                               dic.put ( "slotNo", slotNo );
-					                               dic.put ( "duration", time );
-					                               dic.put ( "dbPeakLevel", db );
-					                               invokeMethodWithMap ( "updateRecorderProgress", dic );
-					                               recordHandler.postDelayed ( model.getRecorderTicker (), model.subsDurationMillis );
-				                               }
-				                               catch (Exception e )
-				                               {
-					                               Log.d( TAG, " Exception: " + e.toString() );
-				                               }
-			                               } );
-			recordHandler.post ( this.model.getRecorderTicker () );
+
+					} );
+			recordHandler.post ( recorderTicker );
 
 			//finalPath = path;
 			result.success ( "Media Recorder is started" );
@@ -448,9 +307,16 @@ public class FlutterSoundRecorder extends Session
 
 	void stop()
 	{
-		recordHandler.removeCallbacksAndMessages ( null );
-		if (recorder != null)
-			recorder._stopRecorder (  );
+		try {
+			if (recordHandler != null)
+				recordHandler.removeCallbacksAndMessages(null);
+			recordHandler = null;
+			if (recorder != null)
+				recorder._stopRecorder();
+		} catch (Exception e)
+		{
+
+		}
 		recorder = null;
 
 
@@ -465,15 +331,16 @@ public class FlutterSoundRecorder extends Session
 	public void pauseRecorder( final MethodCall call, final MethodChannel.Result result )
 	{
 		recordHandler.removeCallbacksAndMessages ( null );
+		recordHandler      = null;
 		recorder.pauseRecorder( );
 		mStartPauseTime = SystemClock.elapsedRealtime ();
 		result.success( "Recorder is paused");
-		//return true;
 	}
 
 	public void resumeRecorder( final MethodCall call, final MethodChannel.Result result )
 	{
-		recordHandler.post ( this.model.getRecorderTicker () );
+		recordHandler      = new Handler ();
+		recordHandler.post (recorderTicker );
 		recorder.resumeRecorder();
 		if (mStartPauseTime >= 0)
 			mPauseTime += SystemClock.elapsedRealtime () - mStartPauseTime;
@@ -482,17 +349,16 @@ public class FlutterSoundRecorder extends Session
 
 	}
 
-public void setSubscriptionDuration ( final MethodCall call, final Result result )
+	public void setSubscriptionDuration ( final MethodCall call, final Result result )
 	{
 		if ( call.argument ( "duration" ) == null )
 		{
 			return;
 		}
 		int duration = call.argument ( "duration" );
-		//double intervalInSecs = call.argument ( "intervalInSecs" );
 
-		this.model.subsDurationMillis = duration;
-		result.success ( "setSubscriptionDuration: " + this.model.subsDurationMillis );
+		this.subsDurationMillis = duration;
+		result.success ( "setSubscriptionDuration: " + this.subsDurationMillis );
 	}
 
 

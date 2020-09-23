@@ -22,11 +22,8 @@ package com.dooboolab.fluttersound;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.media.AudioDeviceInfo;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
-import android.media.MediaRecorder;
 import android.os.Build;
 
 import java.util.HashMap;
@@ -96,7 +93,7 @@ public abstract class Session
 		slotNo = slot;
 	}
 
-	abstract AudioSessionManager getPlugin ();
+	abstract FlautoManager getPlugin ();
 
 	void releaseSession()
 	{
@@ -130,6 +127,14 @@ public abstract class Session
 	}
 
 
+	void invokeMethodWithBoolean ( String methodName, boolean arg )
+	{
+		Map<String, Object> dic = new HashMap<String, Object> ();
+		dic.put ( "slotNo", slotNo );
+		dic.put ( "arg", arg );
+		getPlugin ().invokeMethod ( methodName, dic );
+	}
+
 	void invokeMethodWithMap ( String methodName, Map<String, Object>  dic )
 	{
 		dic.put ( "slotNo", slotNo );
@@ -140,7 +145,7 @@ public abstract class Session
 	boolean prepareFocus( final MethodCall call)
 	{
 		boolean r = true;
-		audioManager = ( AudioManager ) FlautoPlayerPlugin.androidContext.getSystemService( Context.AUDIO_SERVICE );
+		audioManager = ( AudioManager ) FlautoPlayerManager.androidContext.getSystemService( Context.AUDIO_SERVICE );
 		AudioFocus focus = AudioFocus.values()[(int)call.argument ( "focus" )];
 		AudioDevice device = AudioDevice.values()[(int)call.argument( "device" )];
 
@@ -194,16 +199,6 @@ public abstract class Session
 						audioManager.setSpeakerphoneOn(false);
 				}
 
-				/*
-				if (flags & outputToSpeaker)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker;
-				if (flags & allowAirPlay)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay;
-				if (flags & allowBlueTooth)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetooth;
-				if (flags & allowBlueToothA2DP)
-					sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
-				 */
 
 			}
 
@@ -224,8 +219,7 @@ public abstract class Session
 		else
 			audioManager.stopBluetoothSco();
 		audioManager.setBluetoothA2dpOn(  (audioFlags & allowBlueToothA2DP) != 0 );
-		audioManager.setMode( AudioManager.STREAM_MUSIC );
-		//audioManager.setRouting( AudioManager.MODE_NORMAL, AudioManager.ROUTE_SPEAKER, AudioManager.ROUTE_ALL );
+		audioManager.setMode( AudioManager.MODE_NORMAL );
 
 		return r;
 	}

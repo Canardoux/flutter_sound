@@ -30,11 +30,12 @@ public interface RecorderInterface
 			Integer bitRate,
 			FlutterSoundCodec codec,
 			String path,
-			int audioSource
+			int audioSource,
+			Session session
 		)
 		throws
 		IOException;
-	public void _stopRecorder (  );
+	public void _stopRecorder (  ) throws Exception;
 	public boolean pauseRecorder( );
 	public boolean resumeRecorder(  );
 	public double getMaxAmplitude ();

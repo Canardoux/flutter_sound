@@ -1,11 +1,31 @@
 # Flutter Sound
 
-<img src="https://raw.githubusercontent.com/dooboolab/flutter_sound/master/Logotype primary.png" width="70%" height="70%" />
+<img src="Logotype primary.png" width="70%" height="70%" />
 
 <p align="left">
   <a href="https://pub.dartlang.org/packages/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square"></a>
 </p>
 This plugin provides simple recorder and player functionalities for both Android and iOS platforms.
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+# <center>Flauto (Flutter Sound) V 6.0 is OUT </center>
+
+We (I) think that this version will be a major release. Please refer to the [CHANGELOG.md file](CHANGELOG.md) to get learn all the great new features. It has especially the following :
+
+## Record to Dart Stream
+
+This feature has been requested from many months from many, many, many Flutter Sound users. This open doors to things like feeding a Speech-to-Text engine.
+
+You can refer to the [Getting Started with Record-to-Stream](doc/codec.md#recording-pcm-16-to-a-dart-stream) notice.
+
+## Playback from a live Dart Stream
+
+This feature has also been requested from many months from many Flutter Sound users.
+
+You can refer to the [Getting Started with Playback-from-Stream](doc/codec.md#playing-pcm-16-from-a-dart-stream) notice.
+
+------------------------------------------------------------------------------------------------------------------------------------
 
 <br/><br/>
 
@@ -15,34 +35,25 @@ This plugin provides simple recorder and player functionalities for both Android
 
 - Play and Record sounds or music with various codecs. (See [the supported codecs here](doc/codec.md#actually-the-following-codecs-are-supported-by-flutter_sound))
 - Play local or remote files specified by their URL.
+- Record to a Dart Stream
+- Playback from a Dart Stream
 - The App playback can be controled from the device lock screen or from an Apple watch
-- Handle playback stream from native (To sync exact time with bridging). [*Not sure to understand what it means!*]
 
 ## Flutter Sound branches
 
 We actually maintain two branches for Flutter Sound :
 
-- The V4 branch (the version ^4.0.0)
-- The master branch (actually the version ^5.0.0)
-
-We do not expect that everybody will switch today from 4.x.x to 5.x.x.
-
-V4 is our stable branch, and will be maintained as long as everybody will not have switch to V5 :
-in other words V4 is our LTS version (Long Term Support).
+- The V5 branch (the version ^5.0.0)
+- The master branch (actually the version ^6.0.0)
 
 ## Migration Guides
 
-- To migrate [to 4.x.x from 3.x.x](doc/migration_4.x.x.md#migration-from-3xx-to-4xx) you must do some minor changes in your configurations files.
-- To migrate [to 5.x.x from 4.x.x](doc/migration_5.x.x.md#migration-form-4xx-to-5xx) you must do a few changes in your App.
-
-## Free Read
-
-[Medium Blog](https://medium.com/@dooboolab/flutter-sound-plugin-audio-recorder-player-e5a455a8beaf). [*This link is probably obsolete!*]
+See [the migration guide](doc/migration.md) to migrate from an anterious version (V5, V4 or V3)
 
 ## SDK requirements
 
 - Flutter Sound requires an iOS 9.3 SDK (or later)
-- Flutter Sound requires an Android 24 (or later)
+- Flutter Sound requires an Android 21 (or later)
 
 ## Installation
 
@@ -62,14 +73,14 @@ To use Flutter Sound you just do :
 import 'package:flutter_sound/flutter_sound.dart';
 ```
 
-This will export all the necessaries dart interfaces.
+This will import all the necessaries dart interfaces.
 
 ## Examples (Demo Apps)
 
-Flutter Sound comes with two Demo/Examples :
-- [Demo1 app](example/README.md#demo1) is a small demonstration of what we can do with Flutter Sound.
-This Demo App is a kind of exerciser which try to implement the major Flutter Sound features. This Demo does not use the Flutter Sound UI Widgets
-- [Demo2 app](example/README.md#demo2) is an example of what can be done using the Flutter Sound UI Widgets
+Flutter Sound comes with several Demo/Examples :
+
+Please refer to [the README.md](examples/README.md) to have a preview of those examples.
+[The `examples App`](examples/lib/main.dart) is a driver which can call all the various examples.
 
 ## License
 
@@ -97,10 +108,10 @@ When you fill an issue, we try to answer something in less than 48h. Of course, 
 
 ## TODO
 
-- [ ] Record and playback raw PCM both on Android and iOS
+- [X] Record raw PCM both on Android and iOS
 - [ ] Record OPUS on Android
 - [ ] Record MP3 both on Android and iOS
-- [ ] Record raw PCM to a Dart Stream instead of a file
+- [X] Record raw PCM to a Dart Stream instead of a file
 - [ ] Playback raw PCM from a Dart Stream instead of a file
 - [ ] Streaming records to Speech to Text
 - [ ] More support for the Apple Watch
@@ -108,7 +119,7 @@ When you fill an issue, we try to answer something in less than 48h. Of course, 
 - [ ] Flutter Web App support
 - [ ] Flutter Sound port to React Native
 - [ ] Better UI Widget
-- [ ] Lock screen control between two sounds.
+- [ ] Lock screen control between two sounds (Done on iOS).
 
 
 ## Help Maintenance

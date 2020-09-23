@@ -67,8 +67,8 @@ public class Flauto
 
 		//androidActivity = ???
 
-		FlautoPlayerPlugin.attachFlautoPlayer ( ctx, binding.getBinaryMessenger () );
-		FlautoRecorderPlugin.attachFlautoRecorder ( ctx, binding.getBinaryMessenger () );
+		FlautoPlayerManager.attachFlautoPlayer ( ctx, binding.getBinaryMessenger () );
+		FlautoRecorderManager.attachFlautoRecorder ( ctx, binding.getBinaryMessenger () );
 		//TrackPlayerPlugin.attachTrackPlayer ( ctx, binding.getBinaryMessenger () );
         if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin( ctx, binding.getBinaryMessenger() );}
 	}
@@ -83,8 +83,8 @@ public class Flauto
 		ctx = registrar.context ();
 		androidActivity = registrar.activity ();
 
-		FlautoPlayerPlugin.attachFlautoPlayer ( ctx, registrar.messenger () );
-		FlautoRecorderPlugin.attachFlautoRecorder ( ctx, registrar.messenger ()  );
+		FlautoPlayerManager.attachFlautoPlayer ( ctx, registrar.messenger () );
+		FlautoRecorderManager.attachFlautoRecorder ( ctx, registrar.messenger ()  );
 		//TrackPlayerPlugin.attachTrackPlayer ( ctx, registrar.messenger ()  );
         if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin(ctx,registrar.messenger ()  );}
 
