@@ -92,7 +92,7 @@ class _LivePlaybackWithoutBackPressureState extends State<LivePlaybackWithoutBac
     while (totalLength > 0 && _mPlayer != null && !_mPlayer.isStopped)
     {
       int ln = totalLength > BLOCK_SIZE ? BLOCK_SIZE : totalLength;
-      _mPlayer.feedStreamController.sink.add(dataEvent(data.sublist(start,start + ln)) );
+      _mPlayer.foodSink.add(FoodData(data.sublist(start,start + ln)) );
       totalLength -= ln;
       start += ln;
     }
@@ -106,14 +106,13 @@ class _LivePlaybackWithoutBackPressureState extends State<LivePlaybackWithoutBac
       codec:  Codec.pcm16,
       numChannels: 1,
       sampleRate: SAMPLE_RATE,
-      blockSize:  BLOCK_SIZE,
     );
     setState(() {});
     Uint8List data = await getAssetData('assets/samples/sample.pcm');
     feedHim(data);
     if (_mPlayer != null) {
       // We must not do stopPlayer() directely //await stopPlayer();
-      _mPlayer.feedStreamController.sink.add(onEvent((){_mPlayer.stop(); setState(() {});}));
+      _mPlayer.foodSink.add(FoodEvent((){_mPlayer.stop(); setState(() {});}));
     }
   }
 

@@ -17,13 +17,13 @@ We (I) think that this version will be a major release. Please refer to the [CHA
 
 This feature has been requested from many months from many, many, many Flutter Sound users. This open doors to things like feeding a Speech-to-Text engine.
 
-You can refer to the [Getting Started with Record-to-Stream]() notice.
+You can refer to the [Getting Started with Record-to-Stream](doc/codec.md#recording-pcm-16-to-a-dart-stream) notice.
 
 ## Playback from a live Dart Stream
 
 This feature has also been requested from many months from many Flutter Sound users.
 
-You can refer to the [Getting Started with Playback-from-Stream]() notice.
+You can refer to the [Getting Started with Playback-from-Stream](doc/codec.md#playing-pcm-16-from-a-dart-stream) notice.
 
 ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -36,7 +36,7 @@ You can refer to the [Getting Started with Playback-from-Stream]() notice.
 - Play and Record sounds or music with various codecs. (See [the supported codecs here](doc/codec.md#actually-the-following-codecs-are-supported-by-flutter_sound))
 - Play local or remote files specified by their URL.
 - Record to a Dart Stream
-- Playback from a Dart Stream on Android (does not work yet on iOS)
+- Playback from a Dart Stream
 - The App playback can be controled from the device lock screen or from an Apple watch
 
 ## Flutter Sound branches
@@ -73,14 +73,14 @@ To use Flutter Sound you just do :
 import 'package:flutter_sound/flutter_sound.dart';
 ```
 
-This will export all the necessaries dart interfaces.
+This will import all the necessaries dart interfaces.
 
 ## Examples (Demo Apps)
 
-Flutter Sound comes with two Demo/Examples :
-- [Demo1 app](example/README.md#demo1) is a small demonstration of what we can do with Flutter Sound.
-This Demo App is a kind of exerciser which try to implement the major Flutter Sound features. This Demo does not use the Flutter Sound UI Widgets
-- [Demo2 app](example/README.md#demo2) is an example of what can be done using the Flutter Sound UI Widgets
+Flutter Sound comes with several Demo/Examples :
+
+Please refer to [the README.md](examples/README.md) to have a preview of those examples.
+[The `examples App`](examples/lib/main.dart) is a driver which can call all the various examples.
 
 ## License
 

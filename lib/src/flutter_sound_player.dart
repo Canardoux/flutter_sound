@@ -32,6 +32,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/src/session.dart';
 
+const BLOCK_SIZE = 4096;
+
 enum PlayerState {
   /// Player is stopped
   isStopped,
@@ -44,7 +46,6 @@ enum PlayerState {
 typedef void TWhenFinished();
 typedef void TonPaused(bool paused);
 typedef void TonSkip();
-typedef Uint8List TNeedSomeData();
 
 //typedef void TupdateProgress({position: Duration , duration: Duration});
 
@@ -161,22 +162,22 @@ String fileExtension(String path) {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
-class streamEvent
+class Food
 {
   Future<void> exec(FlutterSoundPlayer player) {}
 }
 
-class dataEvent extends streamEvent
+class FoodData extends Food
 {
   Uint8List data;
-  /* ctor */ dataEvent(Uint8List this.data){}
+  /* ctor */ FoodData(Uint8List this.data){}
   Future<void> exec(FlutterSoundPlayer player) => player.feedFromStream(data);
 }
 
-class onEvent extends streamEvent
+class FoodEvent extends Food
 {
   Function on;
-  /* ctor */ onEvent(Function this.on){}
+  /* ctor */ FoodEvent(Function this.on){}
   Future<void> exec(FlutterSoundPlayer player) => on();
 }
 
@@ -186,13 +187,12 @@ class FlutterSoundPlayer extends Session
   TonSkip onSkipBackward; // User callback "onPaused:"
   TonPaused onPaused; // user callback "whenPause:"
   var lock = new Lock();
-  StreamSubscription<streamEvent> feedStreamSubscription ;
-  StreamController <streamEvent> feedStreamController;
+  StreamSubscription<Food> foodStreamSubscription ;
+  StreamController <Food> foodStreamController;
 
   Completer<FlutterSoundPlayer> openAudioSessionCompleter;
   Completer<Duration> startPlayerCompleter;
   Completer<int> needSomeFoodCompleter;
-  int _mBlockSize = 4096;
 
 
   static const List<Codec> tabAndroidConvert = [
@@ -233,6 +233,7 @@ class FlutterSoundPlayer extends Session
   // The stream source
   StreamController<PlaybackDisposition> _playerController ;
 
+  StreamSink<Food> get foodSink => foodStreamController != null ? foodStreamController.sink : null;
 
   Stream<PlaybackDisposition> get onProgress =>
               _playerController != null ? _playerController.stream : null;
@@ -750,12 +751,10 @@ class FlutterSoundPlayer extends Session
   }
 
 
-  Future<Duration> startPlayerFromStream ({
+  Future<void> startPlayerFromStream ({
     Codec codec = Codec.pcm16,
-    TNeedSomeData needSomeData = null,
     int numChannels = 1,
     int sampleRate = 16000,
-    int blockSize = 4096,
   }) async
   {
     print('FS:---> startPlayerFromStream ');
@@ -766,13 +765,12 @@ class FlutterSoundPlayer extends Session
       throw (_notOpen());
     }
 
-      _mBlockSize = blockSize;
       await lock.synchronized(() async {
       await stop( ); // Just in case
-      feedStreamController = StreamController();
-      feedStreamSubscription = feedStreamController.stream.listen((streamEvent event)
+      foodStreamController = StreamController();
+      foodStreamSubscription = foodStreamController.stream.listen((Food food)
       {
-            feedStreamSubscription.pause(event.exec(this));
+            foodStreamSubscription.pause(food.exec(this));
       }) ;
       int state  = (await invokeMethod( 'startPlayer',
           {
@@ -793,7 +791,7 @@ class FlutterSoundPlayer extends Session
       int totalLength = buffer.length;
       while (totalLength > 0 && !isStopped)
       {
-        int bsize = totalLength > _mBlockSize ? _mBlockSize : totalLength;
+        int bsize = totalLength > BLOCK_SIZE ? BLOCK_SIZE : totalLength;
         int ln = await feed(buffer.sublist(lnData, lnData + bsize));
         lnData += ln;
         totalLength -= ln;
@@ -1013,17 +1011,17 @@ class FlutterSoundPlayer extends Session
 
   Future<void> stop() async {
     print('FS:---> stop ');
-    if (feedStreamSubscription != null)
+    if (foodStreamSubscription != null)
       {
-        feedStreamSubscription.cancel();
-        feedStreamSubscription = null;
+        foodStreamSubscription.cancel();
+        foodStreamSubscription = null;
       }
     needSomeFoodCompleter = null;
-    if (feedStreamController != null)
+    if (foodStreamController != null)
       {
-        feedStreamController.sink.close();
-        feedStreamController.close();
-        feedStreamController = null;
+        foodStreamController.sink.close();
+        foodStreamController.close();
+        foodStreamController = null;
       }
     int state = await invokeMethod('stopPlayer', <String, dynamic>{}) as int;
 

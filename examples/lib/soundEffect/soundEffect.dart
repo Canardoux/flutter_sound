@@ -36,7 +36,6 @@ import 'package:flutter/services.dart' show rootBundle;
 
 
 const int SAMPLE_RATE = 44100;
-const int BLOCK_SIZE = 4096;
 const int NUM_CHANNELS = 1;
 const BIM = 'assets/noises/bim.wav';
 const BAM = 'assets/noises/bam.wav';
@@ -79,7 +78,6 @@ class _SoundEffectState extends State<SoundEffect>
                   codec:  Codec.pcm16,
                   numChannels: NUM_CHANNELS,
                   sampleRate: SAMPLE_RATE,
-                  blockSize:  BLOCK_SIZE,
                 );
 
         }

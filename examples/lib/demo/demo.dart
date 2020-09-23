@@ -474,11 +474,8 @@ class _MyAppState extends State<Demo> {
           //feedStream = StreamController<Uint8List>();
           await playerModule.startPlayerFromStream(
             codec: _codec,
-            needSomeData: null,
             numChannels: 1,
             sampleRate: SAMPLE_RATE,
-            blockSize: BLOCK_SIZE,
-            //inputStream: feedStream.stream,
           );
           _addListeners();
           setState(() {});

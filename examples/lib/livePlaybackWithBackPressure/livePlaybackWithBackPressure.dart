@@ -44,7 +44,6 @@ import 'package:flutter/services.dart' show rootBundle;
 
 
 const int SAMPLE_RATE = 48000;
-const int BLOCK_SIZE = 4096;
 typedef void Fn();
 
 
@@ -88,26 +87,25 @@ class _LivePlaybackWithBackPressureState extends State<LivePlaybackWithBackPress
       codec:  Codec.pcm16,
       numChannels: 1,
       sampleRate: SAMPLE_RATE,
-      blockSize:  BLOCK_SIZE,
     );
     setState(() {});
     Uint8List data = await getAssetData('assets/samples/sample.pcm');
-    await _mPlayer.feedFromStream(data);
+    await feedHim(data);
     if (_mPlayer != null) {
       await stopPlayer();
       setState(() {});
     }
   }
 
-  // Here we call the verb "await feed()" (with await!!!) for each block of BLOCK_SIZE size.
-  // This is just for demonstration of calling sequentially several "await feed()" (with await!!!!).
+  // Here we call the verb "await feedFromStream()" (with await!!!) for each block of BLOCK_SIZE size.
+  // This is just for demonstration of calling sequentially several "await feedFromStream()" (with await!!!!).
   // Of course this is just for demo. The following code is exactly what there is in the procedure ```feedForStream()```
   // so in a real app, you will call simply ```await feedForStream()``` (with await !!!!)
-  // Be very careful not calling a second `feed()` or a second `feedFromStream()` when the previous one has not completed his future.
+  // Be very careful not calling a second `feedFromStream()` when the previous one has not completed his future.
   //
-  // **You may not have two calls two calls to `feed()` or to`feedFromStream()` simultaneously.**
-  // ********************************************************************************************
-  // And, of course, you may not mix those verbs with the output food Stream.
+  // **You may not have two calls two calls to `feedFromStream()` simultaneously.**
+  // ******************************************************************************
+  // And, of course, you may not mix those verbs with the real output food Stream.
 
   Future<void> feedHim(Uint8List buffer) async
   {
@@ -116,9 +114,9 @@ class _LivePlaybackWithBackPressureState extends State<LivePlaybackWithBackPress
     while (totalLength > 0 && !_mPlayer.isStopped)
     {
       int bsize = totalLength > BLOCK_SIZE ?  BLOCK_SIZE : totalLength;
-      int ln = await _mPlayer.feed(buffer.sublist(lnData, lnData + bsize)); // await !!!!
-      lnData += ln;
-      totalLength -= ln;
+      await _mPlayer.feedFromStream(buffer.sublist(lnData, lnData + bsize)); // await !!!!
+      lnData += bsize;
+      totalLength -= bsize;
     }
   }
 
