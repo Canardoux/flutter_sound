@@ -46,7 +46,7 @@ public class FlutterSoundRecorder extends Session
 {
 	static boolean _isAndroidEncoderSupported[] = {
 		true, // DEFAULT
-		true, //Build.VERSION.SDK_INT >= 28, // aacADTS
+		Build.VERSION.SDK_INT >= 23,  // aacADTS
 		false, // opusOGG // ( Build.VERSION.SDK_INT < 29 )
 		false, // opusCAF
 		false, // MP3
@@ -56,9 +56,9 @@ public class FlutterSoundRecorder extends Session
 		false, // pcm16AIFF
 		false, // pcm16CAF
 		false, // flac
-		true,  // aacMP4
-		true,  // amrNB
-		true   // amrWB
+		Build.VERSION.SDK_INT >= 23,  // aacMP4
+		Build.VERSION.SDK_INT >= 23,  // amrNB
+		Build.VERSION.SDK_INT >= 23   // amrWB
 	};
 
 	final static int CODEC_OPUS   = 2;

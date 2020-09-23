@@ -6,18 +6,20 @@
 
 ## Actually, the following codecs are supported by flutter_sound:
 
-|                   | AAC ADTS | Opus OGG | Opus CAF | MP3 | Vorbis OGG | PCM raw| PCM WAV | PCM AIFF | PCM CAF | FLAC    | AAC MP4 | AMR-NB | AMR-WB |
-| :---------------- | :------: | :------: | :------: | :-: | :--------: | :----: | :-----: | :------: | :-----: | :-----: | :-----: | :----: | :----: |
-| iOS encoder       | Yes      |   Yes(*) | Yes      | No  | No         | Yes    | Yes     | No       | Yes     | Yes     | Yes     | NO     | NO     |
-| iOS decoder       | Yes      |   Yes(*) | Yes      | Yes | No         | Yes    | Yes     | Yes      | Yes     | Yes     | Yes     | NO     | NO     |
-| Android encoder   | Yes      |   No     | No       | No  | No         | Yes    | Yes     | No       | No      | No      | Yes     | Yes    | Yes    |
-| Android decoder   | Yes      |   Yes    | Yes(*)   | Yes | Yes        | Yes    | Yes     | Yes(*)   | Yes(*)  | Yes     | Yes     | Yes    | Yes    |
+|                   | AAC ADTS | Opus OGG | Opus CAF    | MP3 | Vorbis OGG | PCM raw| PCM WAV | PCM AIFF | PCM CAF | FLAC    | AAC MP4 | AMR-NB | AMR-WB |
+| :---------------- | :------: | :------: | :---------: | :-: | :--------: | :----: | :-----: | :------: | :-----: | :-----: | :-----: | :----: | :----: |
+| iOS encoder       | Yes      |   Yes(*) | Yes         | No  | No         | Yes    | Yes     | No       | Yes     | Yes     | Yes     | NO     | NO     |
+| iOS decoder       | Yes      |   Yes(*) | Yes         | Yes | No         | Yes    | Yes     | Yes      | Yes     | Yes     | Yes     | NO     | NO     |
+| Android encoder   | Yes(1)   |   No     | No          | No  | No         | Yes    | Yes     | No       | No      | No      | Yes(1)  | Yes(1) | Yes(1) |
+| Android decoder   | Yes      |   Yes(1) | Yes(*)(1)   | Yes | Yes        | Yes    | Yes     | Yes(*)   | Yes(*)  | Yes     | Yes     | Yes    | Yes    |
 
-This table will eventually be upgrated when more codecs will be added.
+This table will eventually be upgraded when more codecs will be added.
 
-Yes(*) : The codec is supported by Flutter Sound, but with a File Format Conversion. This has several drawbacks :
-- Needs FFmpeg. FFmpeg is not included in the LITE flavor of Flutter Sound
-- Can add some delay before Playing Back the file, or after stopping the recording. This delay can be substancial for very large records.
+- Yes(*) : The codec is supported by Flutter Sound, but with a File Format Conversion. This has several drawbacks :
+   - Needs FFmpeg. FFmpeg is not included in the LITE flavor of Flutter Sound
+   - Can add some delay before Playing Back the file, or after stopping the recording. This delay can be substancial for very large records.
+
+- Yes(1) : needs MinSDK 23
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -81,8 +83,8 @@ await myPlayer.startPlayer
 Please, remember that actually, Flutter Sound does not support Floating Point PCM data, nor records with more that one audio channel.
 On Flutter Sound, **Raw PCM is only PCM-LINEAR 16 monophony**
 
-This works only with [openAudioSession()](#openAudioSession-and-closeAudioSession) and  does not work with `openAudioSessionWithUI()`.
-To record a Live PCM file, for the verb [startRecorder()](recorder.md#startrecorder) you specify the parameter `toStream:` with you Stream sink, instead of the parameter `toFile:`.
+This works only with [openAudioSession()](recorder#openAudioSession-and-closeAudioSession) and  does not work with `openAudioSessionWithUI()`.
+To record a Live PCM file, when calling the verb [startRecorder()](recorder.md#startrecorder), you specify the parameter `toStream:` with you Stream sink, instead of the parameter `toFile:`.
 This parameter is a StreamSink that you can listen to, for processing the input data.
 
 Note : This new functionnality works better with Android minSdk >= 23, because previous SDK was not able to do UNBLOCKING `read`.
@@ -116,7 +118,7 @@ You can look to the [simple example](../examples/README.md#recordtostream) provi
 
 Please, remember that actually, Flutter Sound does not support Floating Point PCM data, nor records with more that one audio channel.
 
-This works only with openAudioSession](#openaudiosession-and-closeaudiosession) and does not work with `openAudioSessionWithUI()`.
+This works only with [openAudioSession](player.md.#openaudiosession-and-closeaudiosession) and does not work with `openAudioSessionWithUI()`.
 To play live stream, you start playing with the verb [startPlayerFromStream](player.md#startplayerfromstream) instead of the regular `startPlayer()` verb:
 ```
 await myPlayer.startPlayerFromStream
@@ -132,7 +134,7 @@ The first thing you have to do if you want to play live audio is to answer this 
 
 ### Without back pressure,
 
-The App does just [myPlayer.foodSink.add( FoodData(aBuffer) )]((player.md#food)) each time it wants to play some data.
+The App does just [myPlayer.foodSink.add( FoodData(aBuffer) )](player.md#food) each time it wants to play some data.
 No need to await, no need to verify if the previous buffers have finished to be played.
 All the buffers added to `foodSink` are buffered, an are played sequentially. The App continues to work without knowing when the buffers are really played.
 
@@ -141,7 +143,7 @@ This means two things :
    - When the App has finished feeding the sink, it cannot just do `myPlayer.stopPlayer()`, because there is perhaps many buffers not yet played.
 If it does a `stopPlayer()`, all the waiting buffers will be flushed which is probably not what it wants.
 
-But there is a mechanism if the App wants to resynchronize with the output Stream. To resynchronize with the current playback, the App does [myPlayer.foodSink.add( FoodEvent(aCallback) );](player#food)
+But there is a mechanism if the App wants to resynchronize with the output Stream. To resynchronize with the current playback, the App does [myPlayer.foodSink.add( FoodEvent(aCallback) );](player.md#food)
 
 ```
 myPlayer.foodSink.add
@@ -157,7 +159,7 @@ myPlayer.foodSink.add
 
 *Example:*
 
-You can look to the [simple example](../examples/README.md#liveplaybackwithoutbackpressure) provided with Flutter Sound.
+You can look to this simple [example](../examples/README.md#liveplaybackwithoutbackpressure) provided with Flutter Sound.
 
 ```dart
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
@@ -171,13 +173,13 @@ myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
 
 ### With back pressure
 
-If the App wants to keep synchronization with what is played, it uses the verb [feedFromStream](player#feedfromstream) to play data.
+If the App wants to keep synchronization with what is played, it uses the verb [feedFromStream](player.md#feedfromstream) to play data.
 It is really very important not to call another `feedFromStream()` before the completion of the previous future. When each Future is completed, the App can be sure that the provided data are correctely either played, or at least put in low level internal buffers, and it knows that it is safe to do another one.
 
 
 *Example:*
 
-You can look to the [simple examples](../examples/README.md#liveplaybackwithbackpressure) and [this example](../examples/README.md#soundeffect)
+You can look to this [example](../examples/README.md#liveplaybackwithbackpressure) and [this example](../examples/README.md#soundeffect)
 ```
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
 
@@ -192,9 +194,10 @@ You probably will `await` or use `then()` for each call to `feedFromStream()`.
 ### Note :
 This new functionnality works better with Android minSdk >= 23, because previous SDK was not able to do UNBLOCKING `write`.
 
-*Example*
+*Examples*
 You can look to the three provided examples :
 
+- [This example](../examples/README.md#recordtostream) shows how to record to a Dart Stream
 - [This example](../examples/README.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
 - [This example](../examples/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
 - [This example](../examples/README.md#soundeffect) shows how to play some real time sound effects.

@@ -85,14 +85,14 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	static boolean _isAndroidDecoderSupported[] = {
 		true, // DEFAULT
 		true, // aacADTS				// OK
-		true,//Build.VERSION.SDK_INT >= 23, // opusOGG	// NOK
-		false, // opusCAF				// NOK
+		Build.VERSION.SDK_INT >= 23, // opusOGG	// (API 29 ???)
+		Build.VERSION.SDK_INT >= 23, // opusCAF				/
 		true, // MP3					// OK
 		true,//Build.VERSION.SDK_INT >= 23, // vorbisOGG// OK
 		true, // pcm16
 		true, // pcm16WAV				// OK
-		false, // pcm16AIFF				// OK
-		false, // pcm16CAF				// NOK
+		true, // pcm16AIFF				// OK
+		true, // pcm16CAF				// NOK
 		true, // flac					// OK
 		true, // aacMP4					// OK
 		true, // amrNB					// OK
