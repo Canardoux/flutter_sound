@@ -153,7 +153,7 @@ check_flutter_sound_podspec()
 			return -1
 		fi
 
-		if grep "^ *s.dependency *\'mobile-ffmpeg-audio\', *=* \'4.3.2\'$" ios/flutter_sound.podspec > /dev/null ; then
+		if grep "^ *s.dependency *\'mobile-ffmpeg-audio\', *=* \'4.3.1.LTS\'$" ios/flutter_sound.podspec > /dev/null ; then
 			echo "dependency in ios/flutter_sound.podspec is set: $(tput setaf 2) [OK]$(tput sgr 0)"
 		else
 			echo "dependency in ios/flutter_sound.podspec is not set: $(tput setaf 1) [NOK]$(tput sgr 0)"
@@ -188,7 +188,7 @@ check_flutter_sound_podspec()
 			return -1
 		fi
 
-		if grep "^ *s.dependency *\'mobile-ffmpeg-audio\', *=* \'4.3.2\'$" ios/flutter_sound_lite.podspec > /dev/null ; then
+		if grep "^ *s.dependency *\'mobile-ffmpeg-audio\', *=* \'4.3.1.LTS\'$" ios/flutter_sound_lite.podspec > /dev/null ; then
 			echo "dependency in ios/flutter_sound.podspec : $(tput setaf 1) [NOK]$(tput sgr 0)"
 		else
 			echo "dependency in ios/flutter_sound.podspec : $(tput setaf 2) [OK]$(tput sgr 0)"
@@ -208,7 +208,7 @@ check_flutter_sound_podspec()
 			return -1
 		fi
 
-		if grep "^ *s.dependency *\'mobile-ffmpeg-audio\', *=* \'4.3.2\'$" ios/flutter_sound.podspec > /dev/null ; then
+		if grep "^ *s.dependency *\'mobile-ffmpeg-audio\', *=* \'4.3.1.LTS\'$" ios/flutter_sound.podspec > /dev/null ; then
 			RES=-1
 			echo "dependency in ios/flutter_sound.podspec is set : $(tput setaf 1) [NOK]$(tput sgr 0)"
 			exit -1
@@ -572,8 +572,8 @@ FULL)
 		gsed -i  's/^\( *\)flutter_sound_lite:$/\1flutter_sound:/' example/pubspec.yaml
 		mv ios/flutter_sound_lite.podspec ios/flutter_sound.podspec 2>/dev/null
 		gsed -i  "s/^ *s.name *=* 'flutter_sound_lite'$/s.name = 'flutter_sound'/"  ios/flutter_sound.podspec
-		gsed -i  "/s.dependency *'mobile-ffmpeg-audio', *=* '4.3.2'$/d"   ios/flutter_sound.podspec
-		gsed -i  "/^end$/i \ \ s.dependency 'mobile-ffmpeg-audio', '4.3.2'" ios/flutter_sound.podspec
+		gsed -i  "/s.dependency *'mobile-ffmpeg-audio', *=* '4.3.LTS'$/d"   ios/flutter_sound.podspec
+		gsed -i  "/^end$/i \ \ s.dependency 'mobile-ffmpeg-audio', '4.3.1.LTS'" ios/flutter_sound.podspec
 		gsed -i  "/^ *#define *[A-Z]*_FLAVOR/d"   ios/Classes/FlutterFFmpegPlugin.h
 		gsed -i  "/^ *#ifdef *[A-Z]*_FLAVOR/i #define FULL_FLAVOR" ios/Classes/FlutterFFmpegPlugin.h
 
@@ -636,7 +636,7 @@ LITE)
 		gsed -i  's/^\( *\)flutter_sound:$/\1flutter_sound_lite:/' example/pubspec.yaml
 		mv ios/flutter_sound.podspec ios/flutter_sound_lite.podspec 2>/dev/null
 		gsed -i  "s/^ *s.name *=* 'flutter_sound'$/s.name = 'flutter_sound_lite'/"  ios/flutter_sound_lite.podspec
-		gsed -i  "/s.dependency *'mobile-ffmpeg-audio', *=* '4.3.2'$/d"   ios/flutter_sound_lite.podspec
+		gsed -i  "/s.dependency *'mobile-ffmpeg-audio', *=* '4.3.1.LTS'$/d"   ios/flutter_sound_lite.podspec
 		gsed -i  "/^ *#define *[A-Z]*_FLAVOR/d"   ios/Classes/FlutterFFmpegPlugin.h
 		gsed -i  "/^ *#ifdef *[A-Z]*_FLAVOR/i #define LITE_FLAVOR" ios/Classes/FlutterFFmpegPlugin.h
 

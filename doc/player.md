@@ -390,9 +390,9 @@ Please look to [the following notice](codec.md#playing-pcm-16-from-a-dart-stream
 *Example*
 You can look to the three provided examples :
 
-- [This example](../examples/README.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
-- [This example](../examples/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
-- [This example](../examples/README.md#soundeffect) shows how to play some real time sound effects.
+- [This example](../example/README.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
+- [This example](../example/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
+- [This example](../example/README.md#soundeffect) shows how to play some real time sound effects.
 
 *Example 1:*
 ```dart
@@ -429,8 +429,8 @@ This procedure returns a Future. It is very important that you wait that this Fu
 
 *Example:*
 
-- [This example](../examples/README.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
-- [This example](../examples/README.md#soundeffect) shows how to play some real time sound effects synchronously.
+- [This example](../example/README.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
+- [This example](../example/README.md#soundeffect) shows how to play some real time sound effects synchronously.
 
 ```dart
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
@@ -458,7 +458,7 @@ This StreamSink accept two kinds of objects :
 
 *Example:*
 
-[This example](../examples/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
+[This example](../example/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
 ```dart
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
 
@@ -486,7 +486,7 @@ The Food class has two others inherited classes :
 
 *Example:*
 
-[This example](../examples/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
+[This example](../example/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
 ```dart
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
 

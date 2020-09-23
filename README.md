@@ -79,8 +79,8 @@ This will import all the necessaries dart interfaces.
 
 Flutter Sound comes with several Demo/Examples :
 
-Please refer to [the README.md](examples/README.md) to have a preview of those examples.
-[The `examples App`](examples/lib/main.dart) is a driver which can call all the various examples.
+Please refer to [the README.md](example/README.md) to have a preview of those examples.
+[The `examples App`](example/lib/main.dart) is a driver which can call all the various examples.
 
 ## License
 

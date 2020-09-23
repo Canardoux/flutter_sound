@@ -91,7 +91,7 @@ Note : This new functionnality works better with Android minSdk >= 23, because p
 
 *Example*
 
-You can look to the [simple example](../examples/README.md#recordtostream) provided with Flutter Sound.
+You can look to the [simple example](../example/README.md#recordtostream) provided with Flutter Sound.
 
 ``` dart
   IOSink outputFile = await createFile();
@@ -159,7 +159,7 @@ myPlayer.foodSink.add
 
 *Example:*
 
-You can look to this simple [example](../examples/README.md#liveplaybackwithoutbackpressure) provided with Flutter Sound.
+You can look to this simple [example](../example/README.md#liveplaybackwithoutbackpressure) provided with Flutter Sound.
 
 ```dart
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
@@ -179,7 +179,7 @@ It is really very important not to call another `feedFromStream()` before the co
 
 *Example:*
 
-You can look to this [example](../examples/README.md#liveplaybackwithbackpressure) and [this example](../examples/README.md#soundeffect)
+You can look to this [example](../example/README.md#liveplaybackwithbackpressure) and [this example](../example/README.md#soundeffect)
 ```
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
 
@@ -197,10 +197,10 @@ This new functionnality works better with Android minSdk >= 23, because previous
 *Examples*
 You can look to the three provided examples :
 
-- [This example](../examples/README.md#recordtostream) shows how to record to a Dart Stream
-- [This example](../examples/README.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
-- [This example](../examples/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
-- [This example](../examples/README.md#soundeffect) shows how to play some real time sound effects.
+- [This example](../example/README.md#recordtostream) shows how to record to a Dart Stream
+- [This example](../example/README.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
+- [This example](../example/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
+- [This example](../example/README.md#soundeffect) shows how to play some real time sound effects.
 
 -------------------------------------------------------------------------------------------------------------------------------------
 
