@@ -33,14 +33,6 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/src/session.dart';
 
 
-enum Initialized {
-        notInitialized,
-        initializationInProgress,
-        initializationWithUIInProgress,
-        fullyInitialized,
-        fullyInitializedWithUI,
-}
-
 class FlautoPlugin {
         List<Session> slots = [];
 

@@ -69,9 +69,6 @@ enum AudioState {
   isRecordingPaused,
 }
 
-/// Boolean to specify if we want to test the Rentrance/Concurency feature.
-/// If true, we start two instances of FlautoPlayer when the user hit the "Play" button.
-/// If true, we start two instances of FlautoRecorder and one instance of FlautoPlayer when the user hit the Record button
 final exampleAudioFilePath =
     "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
 final albumArtPath =
@@ -258,7 +255,7 @@ class _MyAppState extends State<Demo> {
           codec: _codec,
           bitRate: 8000,
           numChannels: 1,
-          sampleRate: SAMPLE_RATE,
+          sampleRate: 8000,
         );
       }
       print('startRecorder');
@@ -563,8 +560,10 @@ class _MyAppState extends State<Demo> {
   }
 
   void seekToPlayer(int milliSecs) async {
-    await playerModule.seekToPlayer(Duration(milliseconds: milliSecs));
-    print('seekToPlayer');
+    print('-->seekToPlayer');
+    if (playerModule.isPlaying)
+        await playerModule.seekToPlayer(Duration(milliseconds: milliSecs));
+    print('<--seekToPlayer');
   }
 
   Widget makeDropdowns(BuildContext context) {
@@ -863,8 +862,7 @@ class _MyAppState extends State<Demo> {
             min: 0.0,
             max: maxDuration,
             onChanged: (double value) async {
-              await playerModule
-                  .seekToPlayer(Duration(milliseconds: value.toInt()));
+              await seekToPlayer( value.toInt());
             },
             divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt()));
 
@@ -1024,8 +1022,7 @@ class _MyAppState extends State<Demo> {
                 min: 0.0,
                 max: maxDuration,
                 onChanged: (double value) async {
-                  await playerModule
-                      .seekToPlayer(Duration(milliseconds: value.toInt()));
+                  await seekToPlayer( value.toInt());
                 },
                 divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt())),
         Container(

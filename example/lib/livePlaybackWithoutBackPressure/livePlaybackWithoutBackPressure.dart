@@ -112,7 +112,9 @@ class _LivePlaybackWithoutBackPressureState extends State<LivePlaybackWithoutBac
     feedHim(data);
     if (_mPlayer != null) {
       // We must not do stopPlayer() directely //await stopPlayer();
-      _mPlayer.foodSink.add(FoodEvent((){_mPlayer.stop(); setState(() {});}));
+      _mPlayer.foodSink.add(FoodEvent(() async{await _mPlayer.stopPlayer();
+      setState(() {});
+      }));
     }
   }
 

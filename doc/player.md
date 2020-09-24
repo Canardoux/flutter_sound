@@ -493,7 +493,7 @@ await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleR
 myPlayer.foodSink.add(FoodData(aBuffer));
 myPlayer.foodSink.add(FoodData(anotherBuffer));
 myPlayer.foodSink.add(FoodData(myOtherBuffer));
-myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
+myPlayer.foodSink.add(FoodEvent(()async {await _mPlayer.stopPlayer(); setState((){});}));
 ```
 
 ---------------------------------------------------------------------------------------------------------------------------------

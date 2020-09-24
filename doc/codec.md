@@ -149,9 +149,10 @@ But there is a mechanism if the App wants to resynchronize with the output Strea
 myPlayer.foodSink.add
 ( FoodEvent
   (
-     ()
+     () async
      {
-          myPlayer.stopPlayer();
+          await myPlayer.stopPlayer();
+          setState((){});
      }
   )
 );

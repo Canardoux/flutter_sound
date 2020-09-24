@@ -209,3 +209,12 @@ const int iosAllowBluetooth = 0x4;
 const int iosAllowBluetoothA2DP = 0x20;
 const int iosAllowAirplay = 0x40;
 const int iosDefaultToSpeaker = 0x8;
+
+
+enum Initialized {
+  notInitialized,
+  initializationInProgress,
+  initializationWithUIInProgress,
+  fullyInitialized,
+  fullyInitializedWithUI,
+}
