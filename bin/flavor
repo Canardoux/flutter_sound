@@ -524,7 +524,7 @@ then
   done
 
 
-  for f in example/lib/demo_util/*.dart
+  for f in example/lib/widgetUI/demo_util/*.dart
   do
     check_import $f
     if [ $? != 0 ] ; then
@@ -602,7 +602,7 @@ FULL)
 			process_dart_file $f FULL
 		done
 
-    for f in example/lib/demo_util/*.dart
+    for f in example/lib/widgetUI/demo_util/*.dart
     do
       process_dart_file $f FULL
     done
@@ -665,7 +665,7 @@ LITE)
       process_dart_file $f LITE
     done
 
-    for f in example/lib/demo_util/*.dart
+    for f in example/lib/widgetUI/demo_util/*.dart
     do
       process_dart_file $f LITE
     done
