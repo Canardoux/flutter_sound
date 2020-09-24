@@ -1,3 +1,7 @@
+## 6.0.1
+
+- Little bug in the Demo App : 58000 is not a valid Sample rate for AAC/ADTS [#460](https://github.com/dooboolab/flutter_sound/issues/460)
+
 ## 6.0.0
 
 - Modification to the Widget Recorder UI, to be homogeneous with the Widget Player UI
