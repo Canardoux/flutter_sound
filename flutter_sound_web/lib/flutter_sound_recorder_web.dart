@@ -9,12 +9,10 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 /// The web implementation of [FlutterSoundRecorderPlatform].
 ///
 /// This class implements the `package:FlutterSoundPlayerPlatform` functionality for the web.
-class FlutterSoundWeb //extends FlutterSoundPlatform
-{
-  /// Registers this class as the default instance of [FlutterSoundPlatform].
-  static void registerWith(Registrar registrar)
-  {
-    //FlutterSoundPlatform.instance = FlutterSoundWeb();
+class FlutterSoundRecorderWeb extends FlutterSoundPlatform {
+  /// Registers this class as the default instance of [FlutterSoundRecorderPlatform].
+  static void registerWith(Registrar registrar) {
+    FlutterSoundPlatform.instance = FlutterSoundRecorderWeb();
   }
 
   @override

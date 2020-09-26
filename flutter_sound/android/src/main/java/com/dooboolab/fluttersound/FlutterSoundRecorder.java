@@ -46,19 +46,19 @@ public class FlutterSoundRecorder extends Session
 {
 	static boolean _isAndroidEncoderSupported[] = {
 		true, // DEFAULT
-		Build.VERSION.SDK_INT >= 23,  // aacADTS
+		true, //Build.VERSION.SDK_INT >= 23,  // aacADTS
 		false, // opusOGG // ( Build.VERSION.SDK_INT < 29 )
 		false, // opusCAF
 		false, // MP3
 		false, // vorbisOGG // ( Build.VERSION.SDK_INT < 29 )
-		true, // pcm16
-		true, // pcm16WAV
+		Build.VERSION.SDK_INT >= 21, // pcm16
+		Build.VERSION.SDK_INT >= 21, // pcm16WAV
 		false, // pcm16AIFF
 		false, // pcm16CAF
 		false, // flac
-		Build.VERSION.SDK_INT >= 23,  // aacMP4
-		Build.VERSION.SDK_INT >= 23,  // amrNB
-		Build.VERSION.SDK_INT >= 23   // amrWB
+		true, //Build.VERSION.SDK_INT >= 23,  // aacMP4
+		true, //Build.VERSION.SDK_INT >= 23,  // amrNB
+		true  //Build.VERSION.SDK_INT >= 23   // amrWB
 	};
 
 	final static int CODEC_OPUS   = 2;
@@ -99,10 +99,10 @@ public class FlutterSoundRecorder extends Session
 	void initializeFlautoRecorder ( final MethodCall call, final Result result )
 	{
 		boolean r = prepareFocus(call);
-		if (r)
-			result.success ( r);
-		else
-			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Failure to open session");
+		//if (r)
+			result.success ( true);
+		//else
+			//result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Failure to open session");
 
 	}
 

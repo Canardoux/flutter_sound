@@ -92,13 +92,13 @@ public class TrackPlayer extends FlutterSoundPlayer
 		boolean r = prepareFocus(call);
 		//invokeMethodWithBoolean( "openAudioSessionCompleted", r );
 
-		if (r)
+		//if (r)
 		{
 
 			result.success(getPlayerState());
 		}
-		else
-			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Failure to open session");
+		//else
+			//result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Failure to open session");
 
 	}
 

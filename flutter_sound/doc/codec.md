@@ -10,7 +10,7 @@
 | :---------------- | :------: | :------: | :---------: | :-: | :--------: | :----: | :-----: | :------: | :-----: | :-----: | :-----: | :----: | :----: |
 | iOS encoder       | Yes      |   Yes(*) | Yes         | No  | No         | Yes    | Yes     | No       | Yes     | Yes     | Yes     | NO     | NO     |
 | iOS decoder       | Yes      |   Yes(*) | Yes         | Yes | No         | Yes    | Yes     | Yes      | Yes     | Yes     | Yes     | NO     | NO     |
-| Android encoder   | Yes(1)   |   No     | No          | No  | No         | Yes    | Yes     | No       | No      | No      | Yes(1)  | Yes(1) | Yes(1) |
+| Android encoder   | Yes(1)   |   No     | No          | No  | No         | Yes(1) | Yes(1)  | No       | No      | No      | Yes(1)  | Yes(1) | Yes(1) |
 | Android decoder   | Yes      |   Yes(1) | Yes(*)(1)   | Yes | Yes        | Yes    | Yes     | Yes(*)   | Yes(*)  | Yes     | Yes     | Yes    | Yes    |
 
 This table will eventually be upgraded when more codecs will be added.
@@ -19,7 +19,7 @@ This table will eventually be upgraded when more codecs will be added.
    - Needs FFmpeg. FFmpeg is not included in the LITE flavor of Flutter Sound
    - Can add some delay before Playing Back the file, or after stopping the recording. This delay can be substancial for very large records.
 
-- Yes(1) : needs MinSDK 23
+- Yes(1) : needs MinSDK >=23
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ A simple way for playing a Raw PCM file, is to add a `Wave` header in front of t
 
 A Wave file is just PCM data in a specific file format.
 
-The Wave audio file format has a terrible drawback : **it cannot be streamed**.
+The Wave audio file format has a terrible drawback : it cannot be streamed.
 The Wave file is considered not valid, until it is closed. During the construction of the Wave file, it is considered as corrupted because the Wave header is still not written.
 
 Note the following limitations in the current Flutter Sound version :
@@ -87,7 +87,10 @@ This works only with [openAudioSession()](recorder#openAudioSession-and-closeAud
 To record a Live PCM file, when calling the verb [startRecorder()](recorder.md#startrecorder), you specify the parameter `toStream:` with you Stream sink, instead of the parameter `toFile:`.
 This parameter is a StreamSink that you can listen to, for processing the input data.
 
-Note : This new functionnality works better with Android minSdk >= 23, because previous SDK was not able to do UNBLOCKING `read`.
+## Notes :
+
+- This new functionnality needs, at least, an Android SDK >= 21
+- This new functionnality works better with Android minSdk >= 23, because previous SDK was not able to do UNBLOCKING `write`.
 
 *Example*
 
@@ -192,8 +195,10 @@ await myPlayer.stopPlayer();
 ```
 You probably will `await` or use `then()` for each call to `feedFromStream()`.
 
-### Note :
-This new functionnality works better with Android minSdk >= 23, because previous SDK was not able to do UNBLOCKING `write`.
+### Notes :
+
+- This new functionnality needs, at least, an Android SDK >= 21
+- This new functionnality works better with Android minSdk >= 23, because previous SDK was not able to do UNBLOCKING `write`.
 
 *Examples*
 You can look to the three provided examples :

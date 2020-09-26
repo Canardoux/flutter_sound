@@ -157,7 +157,7 @@ You use `startRecorder()` to start recording in an open session. `startRecorder(
 It has also 7 optional parameters to specify :
 - codec: The codec to be used. Please refer to the [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
 - toFile: a path to the file being recorded
-- toStream: if you want to record to a Dart Stream. Please look to [the following notice](codec.md#recording-pcm-16-to-a-dart-stream)
+- toStream: if you want to record to a Dart Stream. Please look to [the following notice](codec.md#recording-pcm-16-to-a-dart-stream). **This new functionnality needs, at least, Android SDK >= 21 (23 is better)**
 - sampleRate: The sample rate in Hertz
 - numChannels: The number of channels (1=monophony, 2=stereophony)
 - bitRate: The bit rate in Hertz

@@ -381,6 +381,8 @@ Future<void> startPlayerFromStream
 )
 ```
 
+**This new functionnality needs, at least, and Android SDK >= 21**
+
 - The only codec supported is actually `Codec.pcm16`.
 - The only value possible for `numChannels` is actually 1.
 - SampleRate is the sample rate of the data you want to play.

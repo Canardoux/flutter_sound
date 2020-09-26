@@ -150,7 +150,7 @@ public abstract class Session
 		AudioDevice device = AudioDevice.values()[(int)call.argument( "device" )];
 
 		int audioFlags = call.argument( "audioFlags" );
-		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
+		if ( Build.VERSION.SDK_INT >= 26 )
 		{
 			if ( focus != AudioFocus.abandonFocus && focus != AudioFocus.doNotRequestFocus && focus != AudioFocus.requestFocus )
 			{
@@ -210,7 +210,6 @@ public abstract class Session
 				else
 					audioManager.abandonAudioFocusRequest ( audioFocusRequest );
 			}
-		}
 
 		audioManager.setSpeakerphoneOn( (audioFlags &  outputToSpeaker) != 0);
 		audioManager.setBluetoothScoOn( (audioFlags & allowBlueTooth) != 0);
@@ -220,6 +219,8 @@ public abstract class Session
 			audioManager.stopBluetoothSco();
 		audioManager.setBluetoothA2dpOn(  (audioFlags & allowBlueToothA2DP) != 0 );
 		audioManager.setMode( AudioManager.MODE_NORMAL );
+		} else
+			r = false;
 
 		return r;
 	}
@@ -237,7 +238,7 @@ public abstract class Session
 
 	boolean requestFocus ()
 	{
-		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
+		if ( Build.VERSION.SDK_INT >= 26)
 		{
 			if ( audioFocusRequest == null )
 			{
@@ -258,7 +259,7 @@ public abstract class Session
 
 	boolean abandonFocus ()
 	{
-		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
+		if ( Build.VERSION.SDK_INT >= 26)
 		{
 			if ( audioFocusRequest == null )
 			{

@@ -66,7 +66,7 @@ abstract class PlayerInterface
 	abstract void _stop();
 	abstract void _pausePlayer() throws Exception;
 	abstract void _resumePlayer() throws Exception;
-	abstract void _setVolume(float volume);
+	abstract void _setVolume(float volume) throws Exception;
 	abstract void _seekTo(int millisec);
 	abstract boolean _isPlaying();
 	abstract long _getDuration();
@@ -153,15 +153,15 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	void initializeFlautoPlayer ( final MethodCall call, final Result result )
 	{
 		boolean r = prepareFocus(call);
-		invokeMethodWithBoolean( "openAudioSessionCompleted", r );
+		invokeMethodWithBoolean( "openAudioSessionCompleted", true );
 
-		if (r)
+		//if (r)
 		{
 
 			result.success(getPlayerState());
 		}
-		else
-			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Failure to open session");
+		//else
+			//result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Failure to open session");
 
 	}
 
@@ -221,16 +221,16 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 		}
 		stop(); // To start a new clean playback
 
-		if (path == null && codec == FlutterSoundCodec.pcm16)
-		{
-			player = new AudioTrackEngine();
-		} else
-		{
-			player = new MediaPlayerEngine();
-		}
-
 		try
 		{
+			if (path == null && codec == FlutterSoundCodec.pcm16)
+			{
+				player = new AudioTrackEngine();
+			} else
+			{
+				player = new MediaPlayerEngine();
+			}
+
 			Integer		  _sampleRate  = 16000;
 			if (call.argument ( "sampleRate" ) != null)
 			{
@@ -466,17 +466,22 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 	public void setVolume ( final MethodCall call, final Result result )
 	{
-		double volume = call.argument ( "volume" );
-
-		if ( player == null )
+		try
 		{
-			result.error ( ERR_PLAYER_IS_NULL, "setVolume()", ERR_PLAYER_IS_NULL );
-			return;
-		}
+			double volume = call.argument("volume");
 
-		float mVolume = ( float ) volume;
-		player._setVolume(mVolume);
-		result.success ( getPlayerState());
+			if (player == null) {
+				result.error(ERR_PLAYER_IS_NULL, "setVolume()", ERR_PLAYER_IS_NULL);
+				return;
+			}
+
+			float mVolume = (float) volume;
+			player._setVolume(mVolume);
+			result.success(getPlayerState());
+		} catch(Exception e)
+		{
+			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
+		}
 	}
 
 
@@ -496,7 +501,7 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 	{
 		Integer focusGain = call.argument ( "focusGain" );
 
-		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
+		if ( Build.VERSION.SDK_INT >= 26 )
 		{
 			audioFocusRequest = new AudioFocusRequest.Builder ( focusGain )
 				// .setAudioAttributes(mPlaybackAttributes)
@@ -745,10 +750,17 @@ class AudioTrackEngine extends PlayerInterface
 		}
 	}
 
-	/* ctor */ AudioTrackEngine()
+	/* ctor */ AudioTrackEngine() throws Exception
 	{
-		AudioManager audioManager = ( AudioManager ) FlautoPlayerManager.androidContext.getSystemService ( Context.AUDIO_SERVICE );
-		sessionId = audioManager.generateAudioSessionId ();
+		if ( Build.VERSION.SDK_INT >= 21 )
+		{
+
+			AudioManager audioManager = (AudioManager) FlautoPlayerManager.androidContext.getSystemService(Context.AUDIO_SERVICE);
+			sessionId = audioManager.generateAudioSessionId();
+		} else
+		{
+			throw new Exception("Need SDK 21");
+		}
 	}
 
 
@@ -762,25 +774,31 @@ class AudioTrackEngine extends PlayerInterface
 			FlutterSoundPlayer theSession
 		) throws Exception
 	{
-		mSession = theSession;
-		AudioAttributes attributes = new AudioAttributes.Builder()
-			.setLegacyStreamType(AudioManager.STREAM_MUSIC)
-			.setUsage(AudioAttributes.USAGE_MEDIA)
-			.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-			.build();
+		if ( Build.VERSION.SDK_INT >= 21 )
+		{
+			mSession = theSession;
+			AudioAttributes attributes = new AudioAttributes.Builder()
+				.setLegacyStreamType(AudioManager.STREAM_MUSIC)
+				.setUsage(AudioAttributes.USAGE_MEDIA)
+				.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+				.build();
 
-		AudioFormat format = new AudioFormat.Builder()
-			.setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-			.setSampleRate(sampleRate)
-			.setChannelMask(numChannels == 1 ? AudioFormat.CHANNEL_OUT_MONO : AudioFormat.CHANNEL_OUT_STEREO)
-			.build();
-		audioTrack = new AudioTrack(attributes, format, blockSize, AudioTrack.MODE_STREAM, sessionId);
-		mPauseTime = 0;
-		mStartPauseTime = -1;
-		systemTime = SystemClock.elapsedRealtime();
+			AudioFormat format = new AudioFormat.Builder()
+				.setEncoding(AudioFormat.ENCODING_PCM_16BIT)
+				.setSampleRate(sampleRate)
+				.setChannelMask(numChannels == 1 ? AudioFormat.CHANNEL_OUT_MONO : AudioFormat.CHANNEL_OUT_STEREO)
+				.build();
+			audioTrack = new AudioTrack(attributes, format, blockSize, AudioTrack.MODE_STREAM, sessionId);
+			mPauseTime = 0;
+			mStartPauseTime = -1;
+			systemTime = SystemClock.elapsedRealtime();
 
-		audioTrack.play();
-		theSession.onPrepared( );
+			audioTrack.play();
+			theSession.onPrepared();
+		} else
+		{
+			throw new Exception("Need SDK 21");
+		}
 	}
 
 
@@ -819,9 +837,17 @@ class AudioTrackEngine extends PlayerInterface
 	}
 
 
-	void _setVolume(float volume)
+	void _setVolume(float volume)  throws Exception
 	{
-		audioTrack.setVolume(volume);
+
+		if ( Build.VERSION.SDK_INT >= 21 )
+		{
+			audioTrack.setVolume(volume);
+		} else
+		{
+			throw new Exception("Need SDK 21");
+		}
+
 	}
 
 

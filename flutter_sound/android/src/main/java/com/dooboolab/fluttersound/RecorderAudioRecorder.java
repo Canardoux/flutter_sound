@@ -216,11 +216,10 @@ public class RecorderAudioRecorder
 			int audioSource,
 			Session theSession
 
-		)
+		) throws Exception
 	{
-		/**
-		 * Size of the buffer where the audio data is stored by Android
-		 */
+		if ( Build.VERSION.SDK_INT < 21)
+			throw new Exception ("Need at least SDK 21");
 		session = theSession;
 		codec = theCodec;
 		int channelConfig = (numChannels == 1) ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO;
@@ -240,27 +239,30 @@ public class RecorderAudioRecorder
 		                            	bufferSize
 					);
 
-		recorder.startRecording();
-		isRecording = true;
-		try {
-			writeAudioDataToFile(codec, sampleRate, path);
-		} catch(Exception e)
+		if (recorder.getState() == AudioRecord.STATE_INITIALIZED)
 		{
-			e.printStackTrace();
-		}
-		p = new Runnable()
-		{
-			@Override
-			public void run()
-			{
-
-				if (isRecording) {
-					int n = writeData(bufferSize);
-
-				}
+			recorder.startRecording();
+			isRecording = true;
+			try {
+				writeAudioDataToFile(codec, sampleRate, path);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		};
-		mainHandler.post(p);
+			p = new Runnable() {
+				@Override
+				public void run() {
+
+					if (isRecording) {
+						int n = writeData(bufferSize);
+
+					}
+				}
+			};
+			mainHandler.post(p);
+		} else
+		{
+			throw new Exception("Cannot initialize the AudioRecord");
+		}
 
 	}
 

@@ -34,7 +34,7 @@ public interface RecorderInterface
 			Session session
 		)
 		throws
-		IOException;
+		IOException, Exception;
 	public void _stopRecorder (  ) throws Exception;
 	public boolean pauseRecorder( );
 	public boolean resumeRecorder(  );
