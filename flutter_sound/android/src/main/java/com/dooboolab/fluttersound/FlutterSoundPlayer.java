@@ -487,13 +487,11 @@ public class FlutterSoundPlayer extends Session implements MediaPlayer.OnErrorLi
 
 	public void setSubscriptionDuration ( final MethodCall call, Result result )
 	{
-		if ( call.argument ( "milliSec" ) == null )
+		if ( call.argument ( "duration" ) != null )
 		{
-			return;
+			int duration = call.argument("duration");
+			subsDurationMillis = duration;
 		}
-		int duration = call.argument ( "milliSec" );
-
-		subsDurationMillis = duration;
 		result.success ( getPlayerState());
 	}
 

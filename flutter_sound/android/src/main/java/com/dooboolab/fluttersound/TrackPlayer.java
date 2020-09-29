@@ -369,11 +369,11 @@ public class TrackPlayer extends FlutterSoundPlayer
 
 	public void setSubscriptionDuration( final MethodCall call, Result result )
 	{
-		if (call.argument("milliSec") == null)
-			return;
-		int duration = call.argument("milliSec");
-
-		subsDurationMillis = duration;
+		if (call.argument("duration") != null)
+		{
+			int duration = call.argument("duration");
+			subsDurationMillis = duration;
+		}
 		result.success( getPlayerState());
 	}
 
@@ -579,7 +579,6 @@ public class TrackPlayer extends FlutterSoundPlayer
 			// The content is ready to be played, then play it
 			mMediaBrowserHelper.playPlayback();
 			long trackDuration = mMediaBrowserHelper.mediaControllerCompat.getMetadata().getLong( MediaMetadataCompat.METADATA_KEY_DURATION );
-			//invokeMethodWithInteger( "startPlayerCompleted", (int)trackDuration);
 			Map<String, Object> dico = new HashMap<String, Object> ();
 			dico.put( "duration", (int) trackDuration);
 			dico.put( "state",  (int)getPlayerState());

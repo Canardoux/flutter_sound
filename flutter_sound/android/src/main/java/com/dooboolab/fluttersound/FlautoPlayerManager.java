@@ -81,7 +81,11 @@ class FlautoPlayerManager extends FlautoManager
 
                         case "initializeMediaPlayer":
                         {
-                                aPlayer = new FlutterSoundPlayer();
+                                int withUI = call.argument("withUI");
+                                if (withUI == 0)
+                                        aPlayer = new FlutterSoundPlayer();
+                                else
+                                        aPlayer = new TrackPlayer (  );
                                 initSession( call, aPlayer);
                                 aPlayer.initializeFlautoPlayer ( call, result );
 
@@ -97,14 +101,6 @@ class FlautoPlayerManager extends FlautoManager
                         case "isDecoderSupported":
                         {
                                 aPlayer.isDecoderSupported ( call, result );
-                        }
-                        break;
-
-                        case "initializeMediaPlayerWithUI":
-                        {
-                                aPlayer = new TrackPlayer (  );
-                                initSession( call, aPlayer);
-                                aPlayer.initializeFlautoPlayer ( call, result );
                         }
                         break;
 
