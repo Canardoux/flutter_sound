@@ -16,16 +16,11 @@ dependencies:
   flutter_spinkit: ^4.0.0
   path: ">=1.0.0 <2.0.0"
   synchronized: ^2.2.0
-  flutter_sound_platform_interface:
-    path: ../flutter_sound_platform_interface
-  flutter_sound_web:
-    path: ../flutter_sound_web
+  flutter_sound_platform_interface: ^1.0.0
 
 
   flutter:
     sdk: flutter
-  #permission_handler: ">=5.0.0 <6.0.0"
-  #flutter_ffmpeg: ">=0.2.0 <1.0.0"
 
 dev_dependencies:
   flutter_test:
@@ -48,17 +43,6 @@ flutter:
         pluginClass: Flauto
       ios:
         pluginClass: Flauto
-      web:
-        default_package: flutter_sound_web
-        #pluginClass: FlutterSoundWeb
-        #fileName: flutter_sound_web.dart
-
-    ##androidPackage: com.dooboolab.fluttersound
-    ##pluginClass: Flauto
-
-
-    #androidPackage: xyz.canardoux.flauto
-    #pluginClass: FlutterSoundPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

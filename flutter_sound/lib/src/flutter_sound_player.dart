@@ -75,7 +75,7 @@ class FoodEvent extends Food
 {
   Function on;
   /* ctor */ FoodEvent(Function this.on){}
-  Future<void> exec(FlutterSoundPlayer player) => on();
+  Future<void> exec(FlutterSoundPlayer player) async => on();
 }
 
 class FlutterSoundPlayer implements FlutterSoundPlayerCallback
@@ -568,8 +568,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         };
         retMap  = await FlutterSoundPlayerPlatform.instance.startPlayer(this, codec: codec, fromDataBuffer: fromDataBuffer, fromURI: fromURI,) ;
    } );
-     Duration duration = Duration(milliseconds: retMap['duration']);
-     int state = retMap['state'];
+     Duration duration = Duration(milliseconds: retMap['duration'] as int);
+     int state = retMap['state'] as int;
      playerState = PlayerState.values[state];
      print('FS:<--- startPlayer ');
      return duration;
@@ -615,7 +615,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
             numChannels: numChannels,
             sampleRate: sampleRate
            );
-      int state = retMap['state'];
+      int state = retMap['state'] as int;
       playerState = PlayerState.values[state];
     } );
     print('FS:<--- startPlayerFromStream ');
@@ -740,8 +740,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         rethrow;
       }
     });
-     Duration d = Duration(milliseconds: retMap['duration']);
-     int state = retMap['state'];
+     Duration d = Duration(milliseconds: retMap['duration'] as int);
+     int state = retMap['state'] as int;
      playerState = PlayerState.values[state];
 
      print('FS:<--- startPlayerFromTrack ');
