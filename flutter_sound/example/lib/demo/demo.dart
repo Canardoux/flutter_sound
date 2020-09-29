@@ -146,8 +146,7 @@ class _MyAppState extends State<Demo> {
   }
 
   Future<void> init() async {
-    //playerModule = await FlutterSoundPlayer().openAudioSession();
-    recorderModule.openAudioSession(
+    await recorderModule.openAudioSession(
         focus: AudioFocus.requestFocusTransient,
         category: SessionCategory.playAndRecord,
         mode: SessionMode.modeDefault,
@@ -230,7 +229,7 @@ class _MyAppState extends State<Demo> {
 
       Directory tempDir = await getTemporaryDirectory();
       String path =
-          '${tempDir.path}/${recorderModule.slotNo}-flutter_sound${ext[_codec.index]}';
+          '${tempDir.path}/flutter_sound${ext[_codec.index]}';
 
       if (_media == Media.stream) {
         assert(_codec == Codec.pcm16);
@@ -440,6 +439,7 @@ class _MyAppState extends State<Demo> {
 
         final track = Track(
           trackPath: audioFilePath,
+          codec: _codec,
           dataBuffer: dataBuffer,
           trackTitle: "This is a record",
           trackAuthor: "from flutter_sound",

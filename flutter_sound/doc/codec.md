@@ -37,6 +37,7 @@ Note the following limitations in the current Flutter Sound version :
 - The stream is  `PCM-Integer Linear 16` with just one channel. Actually, Flutter Sound does not manipulate Raw PCM with floating point PCM data nor with more than one audio channel.
 - `FlutterSoundHelper duration()` does not work with Raw PCM file
 - `startPlayer()` does not return the record duration.
+- `withUI` parameter in `openAudioSession()` is actually incompatible with Raw PCM files.
 
 -------------------------------------------------------------------------------------------------------------------------------------
 

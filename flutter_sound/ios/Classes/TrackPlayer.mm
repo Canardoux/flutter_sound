@@ -166,8 +166,6 @@
                 {
                         // Initialize the audio player with the file that the given path points to,
                         // and start playing.
-
-                        // if (!audioPlayer) { // Fix sound distoring when playing recorded audio again.
                         [self setPlayer: [[AVAudioPlayer alloc] initWithContentsOfURL: audioFileURL error:nil] ];
                         [self getPlayer].delegate = self;
                         // }

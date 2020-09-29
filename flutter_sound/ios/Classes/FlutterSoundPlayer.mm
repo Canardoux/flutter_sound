@@ -284,7 +284,8 @@ static bool _isIosDecoderSupported [] =
        
        -(bool) startPlayerFromBuffer: (NSData*) dataBuffer
        {
-                [self setAudioPlayer:  [[AVAudioPlayer alloc] initWithData:dataBuffer error: nil]];
+                NSError* error = [[NSError alloc] init];
+                [self setAudioPlayer:  [[AVAudioPlayer alloc] initWithData:dataBuffer error: &error]];
                 [self getAudioPlayer].delegate = flutterSoundPlayer;
                 bool b = [[self getAudioPlayer] play];
                 return b;
@@ -520,7 +521,9 @@ static bool _isIosDecoderSupported [] =
                         long duration = [player getDuration];
                         int d = (int)duration;
                         NSNumber* nd = [NSNumber numberWithInt: d];
-                        [self invokeMethod:@"startPlayerCompleted" numberArg: nd ];
+                        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"state":  [self getPlayerStatus], @"duration": nd };
+                        [self invokeMethod:@"startPlayerCompleted" dico: dico ];
+
                         result([self getPlayerStatus]);
                 }
                 NSLog(@"IOS:<-- startPlayer");
@@ -543,7 +546,7 @@ static bool _isIosDecoderSupported [] =
                   if (isRemote)
                   {
                         NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
-                                dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+                                dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError* error)
                         {
 
                                 // We must create a new Audio Player instance to be able to play a different Url
@@ -576,7 +579,6 @@ static bool _isIosDecoderSupported [] =
                 long duration = [player getDuration];
                 int d = (int)duration;
                 NSNumber* nd = [NSNumber numberWithInt: d];
-                //[self invokeMethod:@"startPlayerCompleted" numberArg: nd ];
                 NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"state":  [self getPlayerStatus], @"duration": nd };
                 [self invokeMethod:@"startPlayerCompleted" dico: dico ];
                 [self startTimer];

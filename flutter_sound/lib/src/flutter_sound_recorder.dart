@@ -30,72 +30,11 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_sound/src/session.dart';
 import 'package:flutter_sound/src/wave_header.dart';
 
-enum RecorderState {
-  isStopped,
-  isPaused,
-  isRecording,
-}
-
-enum AudioSource {
-  defaultSource,
-  microphone,
-  voiceDownlink, // (if someone can explain me what it is, I will be grateful ;-) )
-  camCorder,
-  remote_submix,
-  unprocessed,
-  voice_call,
-  voice_communication,
-  voice_performance,
-  voice_recognition,
-  voiceUpLink,
-  bluetoothHFP,
-  headsetMic,
-  lineIn,
-}
-
-FlautoRecorderPlugin flautoRecorderPlugin; // Singleton, lazy initialized
-
-class FlautoRecorderPlugin  extends FlautoPlugin {
-
-  /* ctor */  FlautoRecorderPlugin() {
-    setCallback();
-  }
-
-  void setCallback() {
-    channel = const MethodChannel('com.dooboolab.flutter_sound_recorder');
-    channel.setMethodCallHandler((MethodCall call) {
-      return channelMethodCallHandler(call);
-    });
-  }
-
-
-  Future<dynamic> channelMethodCallHandler(MethodCall call) {
-    FlutterSoundRecorder aRecorder = getSession (call) as FlutterSoundRecorder;
-
-    switch (call.method) {
-      case "updateRecorderProgress":
-        {
-          aRecorder.updateRecorderProgress(call.arguments as Map<dynamic, dynamic>);
-        }
-        break;
-
-      case "recordingData":
-        {
-          aRecorder.recordingData(call.arguments as Map<dynamic, dynamic>);
-        }
-        break;
-
-      default:
-        throw ArgumentError('Unknown method ${call.method}');
-    }
-    return null;
-  }
-}
-
-class FlutterSoundRecorder extends Session {
+class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
+{
+  Initialized isInited = Initialized.notInitialized;
   RecorderState recorderState = RecorderState.isStopped;
   StreamController<RecordingDisposition> _recorderController;
   StreamSink<Uint8List> _userStreamSink;
@@ -126,7 +65,7 @@ class FlutterSoundRecorder extends Session {
 
   //FlutterSoundRecorder() {}
 
-  FlautoPlugin getPlugin() => flautoRecorderPlugin;
+  //FlautoPlugin getPlugin() => flautoRecorderPlugin;
 
   Future<FlutterSoundRecorder> openAudioSession( {
                                                    AudioFocus focus = AudioFocus.requestFocusTransient,
@@ -143,16 +82,14 @@ class FlutterSoundRecorder extends Session {
 
     isInited = Initialized.initializationInProgress;
 
-    if (flautoRecorderPlugin == null) {
-      flautoRecorderPlugin = FlautoRecorderPlugin();
-    } // The lazy singleton
     _setRecorderCallback();
     if (_userStreamSink != null) {
       _userStreamSink.close();
       _userStreamSink = null;
     }
-    openSession();
-    await invokeMethod('initializeFlautoRecorder', <String, dynamic>{'focus': focus.index, 'category': category.index, 'mode': mode.index, 'device': device.index, 'audioFlags': audioFlags});
+    FlutterSoundRecorderPlatform.instance.openSession(this);
+    await FlutterSoundRecorderPlatform.instance.initializeFlautoRecorder(this, focus: focus, category: category, mode: mode, audioFlags: audioFlags, device: device,) ;
+
 
     isInited = Initialized.fullyInitialized;
     return this;
@@ -172,20 +109,22 @@ class FlutterSoundRecorder extends Session {
       _userStreamSink.close();
       _userStreamSink = null;
     }
-    await invokeMethod('releaseFlautoRecorder', <String, dynamic>{});
-    super.closeAudioSession();
+    await FlutterSoundRecorderPlatform.instance.releaseFlautoRecorder(this);
+    FlutterSoundRecorderPlatform.instance.closeSession(this);
     isInited = Initialized.notInitialized;
   }
 
-  void updateRecorderProgress(Map call) {
-    int duration = call['duration'] as int;
-    double dbPeakLevel = call['dbPeakLevel'] as double;
-    _recorderController.add(RecordingDisposition( Duration(milliseconds: duration), dbPeakLevel ,) );
+  @override
+  void updateRecorderProgress({Duration duration, double dbPeakLevel}) {
+    //int duration = call['duration'] as int;
+    //double dbPeakLevel = call['dbPeakLevel'] as double;
+    _recorderController.add(RecordingDisposition(duration,  dbPeakLevel ,) );
   }
 
-  void recordingData(Map call) {
+  @override
+  void recordingData({  Uint8List data }) {
     if (_userStreamSink != null) {
-      Uint8List data = call['recordingData'] as Uint8List;
+      //Uint8List data = call['recordingData'] as Uint8List;
       _userStreamSink.add(data);
     }
   }
@@ -209,12 +148,10 @@ class FlutterSoundRecorder extends Session {
       //if (!await isFFmpegSupported( ))
       //result = false;
       //else
-      result = await invokeMethod('isEncoderSupported',
-          <String, dynamic>{'codec': Codec.opusCAF.index}) as bool;
+      result = await FlutterSoundRecorderPlatform.instance.isEncoderSupported(this, codec: Codec.opusCAF );
     } else {
-      result = await invokeMethod(
-              'isEncoderSupported', <String, dynamic>{'codec': codec.index})
-          as bool;
+      result = await FlutterSoundRecorderPlatform.instance.isEncoderSupported(this, codec: codec);
+         
     }
     return result;
   }
@@ -248,9 +185,7 @@ class FlutterSoundRecorder extends Session {
     if (isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await invokeMethod('setSubscriptionDuration', <String, dynamic>{
-      'duration': duration.inMilliseconds,
-    }) ;
+    await  FlutterSoundRecorderPlatform.instance.setSubscriptionDuration( this,  duration: duration);
   }
 
 
@@ -320,7 +255,7 @@ class FlutterSoundRecorder extends Session {
       isOggOpus = true;
       codec = Codec.opusCAF;
       var tempDir = await getTemporaryDirectory();
-      var fout = File('${tempDir.path}/$slotNo-flutter_sound-tmp.caf');
+      var fout = File('${tempDir.path}/flutter_sound-tmp.caf');
       toFile = fout.path;
       tmpUri = toFile;
     } else {
@@ -328,17 +263,8 @@ class FlutterSoundRecorder extends Session {
     }
 
     try {
-      var param = <String, dynamic>{
-        'path': toFile,
-        'sampleRate': sampleRate,
-        'numChannels': numChannels,
-        'bitRate': bitRate,
-        'codec': codec.index,
-        'toStream': toStream != null ? 1 : 0,
-        'audioSource': audioSource.index,
-      };
-
-      await invokeMethod('startRecorder', param);
+  
+      await FlutterSoundRecorderPlatform.instance.startRecorder(this, path: toFile, sampleRate: sampleRate, numChannels: numChannels, bitRate: bitRate, codec: codec, toStream: toStream != null, audioSource: audioSource);
 
       recorderState = RecorderState.isRecording;
       // if the caller wants OGG/OPUS we must remux the temporary file
@@ -357,7 +283,7 @@ class FlutterSoundRecorder extends Session {
     if (isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await invokeMethod('stopRecorder', <String, dynamic>{}) as String;
+    await FlutterSoundRecorderPlatform.instance.stopRecorder(this);
     if (_userStreamSink != null) {
       _userStreamSink.close();
       _userStreamSink = null;
@@ -402,9 +328,8 @@ class FlutterSoundRecorder extends Session {
     if (isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await invokeMethod('setAudioFocus', <String, dynamic>{'focus':focus.index, 'category': category.index, 'mode': mode.index, 'device':device.index});
+    await FlutterSoundRecorderPlatform.instance.setAudioFocus(this, focus: focus, category: category, mode: mode, device: device, );
   }
-
 
   Future<void> pauseRecorder() async {
     if (isInited == Initialized.initializationInProgress) {
@@ -413,7 +338,7 @@ class FlutterSoundRecorder extends Session {
     if (isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await invokeMethod('pauseRecorder', <String, dynamic>{}) as String;
+    await FlutterSoundRecorderPlatform.instance.pauseRecorder(this);
     recorderState = RecorderState.isPaused;
   }
 
@@ -424,7 +349,7 @@ class FlutterSoundRecorder extends Session {
     if (isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await invokeMethod('resumeRecorder', <String, dynamic>{}) as String;
+    await FlutterSoundRecorderPlatform.instance.resumeRecorder(this);
     recorderState = RecorderState.isRecording;
   }
 }

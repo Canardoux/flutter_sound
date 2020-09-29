@@ -8,7 +8,6 @@ The verbs offered by the Flutter Sound Player module are :
 
 - [Default constructor](#creating-the-player-instance)
 - [openAudioSession](#openaudiosession-and-closeaudiosession) and [closeAudioSession()](#openAudioSession-and-closeAudioSession) to open or close an audio session
-- [openAudioSessionWithUI()](#openaudiosessionwithui) to open an audio session with control from the Lock Screen or an Apple Watch
 - [setAudioFocus()](#setaudiofocus) to manage the session Audio Focus
 - [startPlayer()](#startplayer) to play an audio file or  a buffer.
 - [startPlayerFromTrack](#startplayerfromtrack) to play data from a track specification and display controls on the lock screen or an Apple Watch
@@ -59,6 +58,7 @@ Future<FlutterSoundPlayer> openAudioSession
         SessionMode mode = SessionMode.modeDefault,
         int audioFlags = outputToSpeaker,
         AudioDevice device = AudioDevice.speaker,
+        bool withUI = false,
 })
 
 Future<void> closeAudioSession()
@@ -130,8 +130,7 @@ See [iOS documentation](https://developer.apple.com/documentation/avfoundation/a
 - blueToothA2DP,
 - airPlay
 
-
-Note: you must use the verb [OpenAudioSessionWithUI()](player.md#openaudiosessionwithui) instead of `openAudioSession()` if you plan to use [startPlayerFromTrack()](player.md#startplayerfromtrack) during your Audio Session. (See under).
+## `withUI` is a boolean that you set to `true` if you want to control your App from the lock-screen (using [startPlayerFromTrack()](player.md#startplayerfromtrack) during your Audio Session).
 
 You MUST ensure that the player has been closed when your widget is detached from the UI.
 Overload your widget's `dispose()` method to closeAudioSession the player when your widget is disposed.
@@ -171,36 +170,6 @@ You will be very bad if you try something like :
     ...
 
     await myPlayer.closeAudioSession();
-    myPlayer = null;
-```
-
------------------------------------------------------------------------------------------------------------------
-
-## `OpenAudioSessionWithUI()`
-
-*Dart definition (prototype) :*
-```
-Future<FlutterSoundPlayer> OpenAudioSessionWithUI
-({
-        AudioFocus focus = AudioFocus.requestFocusTransient,
-        SessionCategory category = SessionCategory.playAndRecord,
-        SessionMode mode = SessionMode.modeDefault,
-        int audioFlags = outputToSpeaker,
-        AudioDevice device = AudioDevice.speaker,
-})
-```
-
-Use this verb instead of [openAudioSession()]() if you want to control the Audio Session from the lock screen or an Apple Watch. This verb must be used if you plan to use the verbs [startPlayerFromTrack()]() or [displayTrack()]() during your Audio Session. Please refer to [openAudioSession()](player.md#openaudiosession-and-closeaudiosession) above for the syntax parameters.
-
-*Example:*
-```dart
-    myPlayer = await FlutterSoundPlayer().openAudioSessionWithUI(focus: Focus.requestFocusAndDuckOthers);
-
-    ...
-    await myPlayer.startPlayerFromTrack(aTrack);
-    ...
-
-    myPlayer.closeAudioSession();
     myPlayer = null;
 ```
 
@@ -325,7 +294,7 @@ Future<Duration> startPlayerFromTrack(
     })
 ```
 
-Use this verb to play data from a track specification and display controls on the lock screen or an Apple Watch. The Audio Session must have been open with the verb [OpenAudioSessionWithUI]().
+Use this verb to play data from a track specification and display controls on the lock screen or an Apple Watch. The Audio Session must have been open with the parameter `withUI`.
 
 - `track` parameter is a simple structure which describe the sound to play. Please see [here the Track structure specification](track.md)
 

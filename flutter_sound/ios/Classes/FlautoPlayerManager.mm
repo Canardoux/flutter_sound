@@ -73,13 +73,11 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
         if ([@"initializeMediaPlayer" isEqualToString:call.method])
         {
-                aFlautoPlayer = [[FlutterSoundPlayer alloc] init: call];
-                [aFlautoPlayer initializeFlautoPlayer: call result:result];
-        } else
-
-        if ([@"initializeMediaPlayerWithUI" isEqualToString:call.method])
-        {
-                aFlautoPlayer = [[TrackPlayer alloc] init: call];
+                NSNumber* withUI = call.arguments[@"withUI"];
+                if (withUI.intValue == 0)
+                        aFlautoPlayer = [[FlutterSoundPlayer alloc] init: call];
+                else
+                        aFlautoPlayer = [[TrackPlayer alloc] init: call];
                 [aFlautoPlayer initializeFlautoPlayer: call result:result];
         } else
 
