@@ -554,18 +554,24 @@ static bool _isIosDecoderSupported [] =
                                 if (!b)
                                 {
                                         [self stopPlayer];
-                                        result([FlutterError
-                                        errorWithCode:@"Audio Player"
-                                        message:@"Play failure"
-                                        details:nil]);
-
+                                        return;
                                 }
+                                long duration = [player getDuration];
+                                int d = (int)duration;
+                                NSNumber* nd = [NSNumber numberWithInt: d];
+                                NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"state":  [self getPlayerStatus], @"duration": nd };
+                                [self invokeMethod:@"startPlayerCompleted" dico: dico ];
+                                return;
                         }];
 
                         [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
                         NSString *filePath = audioFileURL.absoluteString;
                         [downloadTask resume];
-                        b = true;
+                        [self startTimer];
+                        result([self getPlayerStatus]);
+                        NSLog(@"IOS:<-- startPlayer");
+                        return;
+
                 } else
                 {
                         b = [player startPlayerFromURL: audioFileURL];

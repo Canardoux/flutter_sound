@@ -1,3 +1,7 @@
+## 6.1.2
+
+- Playback from a remote URL [#470](https://github.com/dooboolab/flutter_sound/issues/470)
+
 ## 6.1.1
 
 - Volume control with the volume buttons, on Android. [#457](https://github.com/dooboolab/flutter_sound/issues/457)

@@ -70,9 +70,9 @@ enum AudioState {
 }
 
 final exampleAudioFilePath =
-    "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
+    "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3";
 final albumArtPath =
-    "https://file-examples.com/wp-content/uploads/2017/10/file_example_PNG_500kB.png";
+    "https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png";
 
 class Demo extends StatefulWidget {
   @override
@@ -126,19 +126,12 @@ class _MyAppState extends State<Demo> {
   Future<void> _initializeExample(bool withUI) async {
     await playerModule.closeAudioSession();
     _isAudioPlayer = withUI;
-    if (withUI) {
-      await playerModule.openAudioSessionWithUI(
+    await playerModule.openAudioSession(
+          withUI: withUI ,
           focus: AudioFocus.requestFocusAndKeepOthers,
           category: SessionCategory.playAndRecord,
           mode: SessionMode.modeDefault,
           device: AudioDevice.speaker);
-    } else {
-      await playerModule.openAudioSession(
-          focus: AudioFocus.requestFocusAndKeepOthers,
-          category: SessionCategory.playAndRecord,
-          mode: SessionMode.modeDefault,
-          device: AudioDevice.speaker);
-    }
     await playerModule.setSubscriptionDuration(Duration(milliseconds: 10));
     await recorderModule.setSubscriptionDuration(Duration(milliseconds: 10));
     initializeDateFormatting();
