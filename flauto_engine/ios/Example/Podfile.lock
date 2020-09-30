@@ -1,0 +1,16 @@
+PODS:
+  - flauto_engine (0.1.0)
+
+DEPENDENCIES:
+  - flauto_engine (from `../`)
+
+EXTERNAL SOURCES:
+  flauto_engine:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  flauto_engine: 41e45a9c17748616f1113ae5f39e8d5d74656c2e
+
+PODFILE CHECKSUM: 6ebf6cadfd46121a9241e3228d48875d9d1f8937
+
+COCOAPODS: 1.9.3
