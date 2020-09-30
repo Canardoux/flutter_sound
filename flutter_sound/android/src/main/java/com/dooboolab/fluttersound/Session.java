@@ -173,17 +173,17 @@ public abstract class Session
 				switch (device)
 				{
 					case speaker:
-						if (isBluetoothHeadsetConnected())
-							audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-						else
-							audioManager.setMode(AudioManager.MODE_NORMAL);
+						//if (isBluetoothHeadsetConnected())
+							//audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+						//else
+							//audioManager.setMode(AudioManager.MODE_NORMAL);
 						audioManager.stopBluetoothSco();
 						audioManager.setBluetoothScoOn(false);
 						audioManager.setSpeakerphoneOn(true);
 						break;
 					case blueTooth:
 					case blueToothA2DP:
-						audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+						//audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
 						if (isBluetoothHeadsetConnected())
 						{
 							audioManager.startBluetoothSco();
@@ -193,7 +193,7 @@ public abstract class Session
 						break;
 					case earPiece:
 					case headset:
-						audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+						//audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
 						audioManager.stopBluetoothSco();
 						audioManager.setBluetoothScoOn(false);
 						audioManager.setSpeakerphoneOn(false);

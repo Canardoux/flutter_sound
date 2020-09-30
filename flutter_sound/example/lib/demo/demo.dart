@@ -128,13 +128,13 @@ class _MyAppState extends State<Demo> {
     _isAudioPlayer = withUI;
     if (withUI) {
       await playerModule.openAudioSessionWithUI(
-          focus: AudioFocus.requestFocusTransient,
+          focus: AudioFocus.requestFocusAndKeepOthers,
           category: SessionCategory.playAndRecord,
           mode: SessionMode.modeDefault,
           device: AudioDevice.speaker);
     } else {
       await playerModule.openAudioSession(
-          focus: AudioFocus.requestFocusTransient,
+          focus: AudioFocus.requestFocusAndKeepOthers,
           category: SessionCategory.playAndRecord,
           mode: SessionMode.modeDefault,
           device: AudioDevice.speaker);

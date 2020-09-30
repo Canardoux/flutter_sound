@@ -1,3 +1,7 @@
+## 6.1.1
+
+- Volume control with the volume buttons, on Android. [#457](https://github.com/dooboolab/flutter_sound/issues/457)
+
 ## 6.1.0
 
 - Re-design the modules architecture to be Google recommandations compliant. (We use a new dependency : `flutter_sound_platform_interface`)
