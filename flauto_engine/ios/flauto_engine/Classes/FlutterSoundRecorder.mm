@@ -70,7 +70,7 @@ public:
                 AVAudioFormat* inputFormat = [inputNode outputFormatForBus: 0];
                 NSNumber* nbChannels = audioSettings [AVNumberOfChannelsKey];
                 NSNumber* sampleRate = audioSettings [AVSampleRateKey];
-                AVAudioFormat* recordingFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: nbChannels.integerValue interleaved: YES];
+                AVAudioFormat* recordingFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: (unsigned int)nbChannels.unsignedIntegerValue interleaved: YES];
                 AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat:inputFormat toFormat:recordingFormat];
                 NSFileManager* fileManager = [NSFileManager defaultManager];
                 NSURL* fileURL = nil;
@@ -102,8 +102,11 @@ public:
                         BOOL r = [converter convertToBuffer: convertedBuffer error: &error withInputFromBlock: inputBlock];
                         if (!r)
                         {
-                                NSLog(error.localizedDescription);
-                                NSLog(error.localizedFailureReason);
+                                NSString* s =  error.localizedDescription;
+                                NSString* f = @"%s";
+                                NSLog(f, s);
+                                s = error.localizedFailureReason;
+                                NSLog(f, s);
                                 return;
                         }
                         int n = [convertedBuffer frameLength];
@@ -184,7 +187,7 @@ public:
                 {
                         r += CACurrentMediaTime() * 1000 - previousTS;
                 }
-                return [NSNumber numberWithInt: r];
+                return [NSNumber numberWithInt: (int)r];
         }
         virtual NSNumber* dbPeakProgress()
         {
@@ -370,7 +373,7 @@ AudioRecInterface* audioRec;
 
 - (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result
 {
-        NSNumber* b = [NSNumber numberWithBool: _isIosEncoderSupported[codec] ];
+        // TODO // NSNumber* b = [NSNumber numberWithBool: _isIosEncoderSupported[codec] ];
         // TODO // result(b);
 }
 
@@ -580,9 +583,9 @@ AVAudioSessionPort tabSessionPort [] =
 - (void)updateRecorderProgress:(NSTimer*) atimer
 {
         assert (recorderTimer == atimer);
-        NSNumber* duration = audioRec ->recorderProgress();
+        // TODO NSNumber* duration = audioRec ->recorderProgress();
 
-        NSNumber * normalizedPeakLevel = audioRec ->dbPeakProgress();
+        // TODO NSNumber * normalizedPeakLevel = audioRec ->dbPeakProgress();
         
         // TODO NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"dbPeakLevel": normalizedPeakLevel, @"duration": duration};
         // TODO [self invokeMethod:@"updateRecorderProgress" dico: dico];
