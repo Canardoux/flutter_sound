@@ -34,7 +34,7 @@
 
 
 
-
+/* TODO
 static bool _isIosDecoderSupported [] =
 {
 		true, // DEFAULT
@@ -52,6 +52,7 @@ static bool _isIosDecoderSupported [] =
                 false, // amrNB
                 false, // amrWB
 };
+*/
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -219,7 +220,7 @@ static bool _isIosDecoderSupported [] =
                         AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat: playerFormat toFormat: outputFormat];
                         NSError* error;
                         AVAudioConverterOutputStatus r = [converter convertToBuffer: thePCMOutputBuffer error: &error withInputFromBlock: inputBlock];
-                         if (r == AVAudioConverterOutputStatus_HaveData || true)
+                         // TODO if (r == AVAudioConverterOutputStatus_HaveData || true)
                          {
                                 ++ready ;
                                 [playerNode scheduleBuffer: thePCMOutputBuffer  completionHandler:
@@ -235,7 +236,8 @@ static bool _isIosDecoderSupported [] =
 
                                 }];
                                 return ln;
-                         } else
+                         } //else
+                         /* TODO
                          {
                                  if (error != nil)
                                  {
@@ -247,6 +249,7 @@ static bool _isIosDecoderSupported [] =
                                  }
                                  return 0;
                         }
+                        */
                
                 }
                 assert(waitingBlock == nil);
