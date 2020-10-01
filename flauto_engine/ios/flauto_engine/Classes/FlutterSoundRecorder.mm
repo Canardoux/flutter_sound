@@ -111,7 +111,7 @@ public:
                                 {
                                         //NSDictionary* dic = [[NSMutableDictionary alloc] init];
                                         //[dic setValue: b forKey: @"recordingData"];
-                                        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: -1], @"recordingData": b,};
+                                        // TODO //NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: -1], @"recordingData": b,};
                                         // TODO //[session invokeMethod: @"recordingData" dico: dico];
                                 }
                                 
