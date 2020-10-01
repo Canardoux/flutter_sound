@@ -13,10 +13,17 @@
 		1A36E1554EAF6C0AFD90D728DF0A6E46 /* flauto_engine-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 7A2A42337AAE9A074D6332F7C313F954 /* flauto_engine-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3822E3A8A942E70654E3E0E35F1A5654 /* Pods-flauto_engine_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E29CAA9FE1A877C5091D74494D59049F /* Pods-flauto_engine_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5511DC8481573A8D7817E6058E36ED02 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
-		597E3E9DBF06F6E2F187E037A8D456F1 /* ReplaceMe.m in Sources */ = {isa = PBXBuildFile; fileRef = 551B49DF41BFCBF2607001D01F8C8A27 /* ReplaceMe.m */; };
 		6CF74367B0F6D1F1A62F3C60E63449BB /* Pods-flauto_engine_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 91BA5F5F48C8B7A89B4D476E8BEF4FC1 /* Pods-flauto_engine_Example-dummy.m */; };
 		77928A791C2BA2800ACA001A2722820C /* Pods-flauto_engine_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 921A5627A61E2AC1BD7EBF556585AB09 /* Pods-flauto_engine_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		96C6EC581FC92733FFA53FEA3073DB88 /* Pods-flauto_engine_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFC6C3D79F945604F17604B7FCAC75A /* Pods-flauto_engine_Tests-dummy.m */; };
+		C5EDAB982524D3FA004F49E9 /* FlutterSoundRecorder.mm in Sources */ = {isa = PBXBuildFile; fileRef = C5EDAB942524D3F9004F49E9 /* FlutterSoundRecorder.mm */; };
+		C5EDAB992524D3FA004F49E9 /* FlutterSoundPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = C5EDAB952524D3F9004F49E9 /* FlutterSoundPlayer.mm */; };
+		C5EDAB9A2524D3FA004F49E9 /* FlutterSoundPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = C5EDAB962524D3F9004F49E9 /* FlutterSoundPlayer.h */; };
+		C5EDAB9B2524D3FA004F49E9 /* FlutterSoundRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = C5EDAB972524D3F9004F49E9 /* FlutterSoundRecorder.h */; };
+		C5EDAB9E2524D561004F49E9 /* TrackPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = C5EDAB9C2524D561004F49E9 /* TrackPlayer.h */; };
+		C5EDAB9F2524D561004F49E9 /* TrackPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = C5EDAB9D2524D561004F49E9 /* TrackPlayer.mm */; };
+		C5EDABA22524D680004F49E9 /* Track.h in Headers */ = {isa = PBXBuildFile; fileRef = C5EDABA02524D680004F49E9 /* Track.h */; };
+		C5EDABA32524D680004F49E9 /* Track.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EDABA12524D680004F49E9 /* Track.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +56,6 @@
 		3CFD34F41652303DC165C5453D3F4D37 /* flauto_engine-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "flauto_engine-dummy.m"; sourceTree = "<group>"; };
 		43C83A9E93B0D5E9075D999120625372 /* flauto_engine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = flauto_engine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		47FA4D5402C0599D9B49BCA072EF2C4F /* Pods-flauto_engine_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-flauto_engine_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		551B49DF41BFCBF2607001D01F8C8A27 /* ReplaceMe.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ReplaceMe.m; path = flauto_engine/Classes/ReplaceMe.m; sourceTree = "<group>"; };
 		58852C87CB71F021B18945CC54EED4C4 /* flauto_engine.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = flauto_engine.modulemap; sourceTree = "<group>"; };
 		7A2A42337AAE9A074D6332F7C313F954 /* flauto_engine-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "flauto_engine-umbrella.h"; sourceTree = "<group>"; };
 		7B343092B57592C19D12582C9D4A36CF /* Pods-flauto_engine_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-flauto_engine_Example-acknowledgements.plist"; sourceTree = "<group>"; };
@@ -62,6 +68,14 @@
 		9B9C4017C939938F97CF11E3BC2C22E7 /* Pods-flauto_engine_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-flauto_engine_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A6BC9DC985DC4BF7441B0384912CCEF4 /* Pods-flauto_engine_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-flauto_engine_Example-frameworks.sh"; sourceTree = "<group>"; };
+		C5EDAB942524D3F9004F49E9 /* FlutterSoundRecorder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = FlutterSoundRecorder.mm; path = flauto_engine/Classes/FlutterSoundRecorder.mm; sourceTree = "<group>"; };
+		C5EDAB952524D3F9004F49E9 /* FlutterSoundPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = FlutterSoundPlayer.mm; path = flauto_engine/Classes/FlutterSoundPlayer.mm; sourceTree = "<group>"; };
+		C5EDAB962524D3F9004F49E9 /* FlutterSoundPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlutterSoundPlayer.h; path = flauto_engine/Classes/FlutterSoundPlayer.h; sourceTree = "<group>"; };
+		C5EDAB972524D3F9004F49E9 /* FlutterSoundRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlutterSoundRecorder.h; path = flauto_engine/Classes/FlutterSoundRecorder.h; sourceTree = "<group>"; };
+		C5EDAB9C2524D561004F49E9 /* TrackPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TrackPlayer.h; path = flauto_engine/Classes/TrackPlayer.h; sourceTree = "<group>"; };
+		C5EDAB9D2524D561004F49E9 /* TrackPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TrackPlayer.mm; path = flauto_engine/Classes/TrackPlayer.mm; sourceTree = "<group>"; };
+		C5EDABA02524D680004F49E9 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Track.h; path = flauto_engine/Classes/Track.h; sourceTree = "<group>"; };
+		C5EDABA12524D680004F49E9 /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Track.m; path = flauto_engine/Classes/Track.m; sourceTree = "<group>"; };
 		CB2F0B595E6E8249F4FD7CD48CA92480 /* Pods-flauto_engine_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-flauto_engine_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		D40D98B16234E95BADD67129BA283932 /* Pods-flauto_engine_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-flauto_engine_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		DC0149F9E87F19E067AB45595B8C17FE /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -156,7 +170,14 @@
 		ACAFE8FC1A8E705A3D2DA1FC288AE216 /* flauto_engine */ = {
 			isa = PBXGroup;
 			children = (
-				551B49DF41BFCBF2607001D01F8C8A27 /* ReplaceMe.m */,
+				C5EDAB962524D3F9004F49E9 /* FlutterSoundPlayer.h */,
+				C5EDAB952524D3F9004F49E9 /* FlutterSoundPlayer.mm */,
+				C5EDAB972524D3F9004F49E9 /* FlutterSoundRecorder.h */,
+				C5EDAB942524D3F9004F49E9 /* FlutterSoundRecorder.mm */,
+				C5EDAB9C2524D561004F49E9 /* TrackPlayer.h */,
+				C5EDAB9D2524D561004F49E9 /* TrackPlayer.mm */,
+				C5EDABA02524D680004F49E9 /* Track.h */,
+				C5EDABA12524D680004F49E9 /* Track.m */,
 				1FFFC07E6529A7188A313E6E67BDC966 /* Pod */,
 				E5E462541CA6F451DFF7E3B0B80F7DB0 /* Support Files */,
 			);
@@ -238,7 +259,11 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5EDAB9A2524D3FA004F49E9 /* FlutterSoundPlayer.h in Headers */,
+				C5EDAB9E2524D561004F49E9 /* TrackPlayer.h in Headers */,
 				1A36E1554EAF6C0AFD90D728DF0A6E46 /* flauto_engine-umbrella.h in Headers */,
+				C5EDABA22524D680004F49E9 /* Track.h in Headers */,
+				C5EDAB9B2524D3FA004F49E9 /* FlutterSoundRecorder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,8 +414,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5EDAB9F2524D561004F49E9 /* TrackPlayer.mm in Sources */,
+				C5EDAB992524D3FA004F49E9 /* FlutterSoundPlayer.mm in Sources */,
+				C5EDAB982524D3FA004F49E9 /* FlutterSoundRecorder.mm in Sources */,
+				C5EDABA32524D680004F49E9 /* Track.m in Sources */,
 				0E7BDB924B085191E134833B0977697E /* flauto_engine-dummy.m in Sources */,
-				597E3E9DBF06F6E2F187E037A8D456F1 /* ReplaceMe.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

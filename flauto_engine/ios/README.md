@@ -26,4 +26,4 @@ Larpoux, larpoux@canardoux.xyz
 
 ## License
 
-flauto_engine is available under the MIT license. See the LICENSE file for more info.
+flauto_engine is available under the LGPL-V3 license. See the LICENSE file for more info.

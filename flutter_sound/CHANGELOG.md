@@ -77,7 +77,7 @@ Error returns from iOS in FlutterSoundPlayer.m was wrong : [#350](https://github
 
 ## 4.0.7
 
-- Patch to avoid problems when the App does s stopPlayer() during a startPlayer() [#374](https://github.com/dooboolab/flutter_sound/issues/374)
+- Patch to avoid problems when the App does a `stopPlayer()` during a `startPlayer()` [#374](https://github.com/dooboolab/flutter_sound/issues/374)
 
 ## 4.0.6
 
