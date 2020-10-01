@@ -27,6 +27,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "FlutterSoundRecorder.h"
 
 
 class AudioRecInterface
