@@ -28,7 +28,7 @@
 
 
 #import <AVFoundation/AVFoundation.h>
-
+#import "Track.h"
 
 @interface FlutterMethodCall
 {
