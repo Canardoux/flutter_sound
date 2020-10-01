@@ -4,7 +4,7 @@ if [ -z "$1" ]; then
 	exit -1
 fi
 export v=$1
-gsed -i  's/^\( *s\.version *)/\1$v/' flauto_engine_ios.podspec
+gsed -i  's/^\( *s\.version *)/\1toto/' flauto_engine_ios.podspec
 git add .
 git commit -m 'pod_flauto_engine_ios.sh'
 git push
