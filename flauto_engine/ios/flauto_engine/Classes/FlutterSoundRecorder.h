@@ -28,8 +28,6 @@
 
 
 #import <AVFoundation/AVFoundation.h>
-#import "Flauto.h"
-#import "FlutterSoundRecorder.h"
 
 
 @interface FlutterMethodCall
