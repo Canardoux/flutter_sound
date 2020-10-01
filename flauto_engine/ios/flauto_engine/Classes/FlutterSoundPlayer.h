@@ -34,12 +34,6 @@
 @end
 
 
-enum t_CODEC
-{
-TOTO,
-TITI
-};
-
 
 enum FlutterResult
 {
