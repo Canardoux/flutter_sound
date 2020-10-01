@@ -98,7 +98,14 @@ public:
                                 inputStatus =  AVAudioConverterInputStatus_NoDataNow;
                                 return buffer;
                         };
-                        BOOL r = [converter convertToBuffer: convertedBuffer error: nil withInputFromBlock: inputBlock];
+                        NSError* error;
+                        BOOL r = [converter convertToBuffer: convertedBuffer error: &error withInputFromBlock: inputBlock];
+                        if (!r)
+                        {
+                                NSLog(error.localizedDescription);
+                                NSLog(error.localizedFailureReason);
+                                return;
+                        }
                         int n = [convertedBuffer frameLength];
                         int16_t *const  bb = [convertedBuffer int16ChannelData][0];
                         NSData* b = [[NSData alloc] initWithBytes: bb length: n * 2 ];
