@@ -74,9 +74,9 @@ public:
                 AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat:inputFormat toFormat:recordingFormat];
                 NSFileManager* fileManager = [NSFileManager defaultManager];
                 NSURL* fileURL = nil;
-                if (path != nil && path != [NSNull null])
+                if (path != nil && path != (id)[NSNull null])
                 {
-                        BOOL success = [fileManager removeItemAtPath:path error:nil];
+                        [fileManager removeItemAtPath:path error:nil];
                         [fileManager createFileAtPath: path contents:nil attributes:nil];
                         fileURL = [[NSURL alloc] initFileURLWithPath: path];
                         fileHandle = [NSFileHandle fileHandleForWritingAtPath: path];
