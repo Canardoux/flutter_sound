@@ -219,7 +219,7 @@ static bool _isIosDecoderSupported [] =
 
                         AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat: playerFormat toFormat: outputFormat];
                         NSError* error;
-                        AVAudioConverterOutputStatus r = [converter convertToBuffer: thePCMOutputBuffer error: &error withInputFromBlock: inputBlock];
+                        [converter convertToBuffer: thePCMOutputBuffer error: &error withInputFromBlock: inputBlock];
                          // TODO if (r == AVAudioConverterOutputStatus_HaveData || true)
                          {
                                 ++ready ;
