@@ -238,9 +238,11 @@ static bool _isIosDecoderSupported [] =
                          {
                                  if (error != nil)
                                  {
-                                        NSLog([error localizedDescription]);
-                                        NSLog([error localizedFailureReason]);
-                                        NSLog([error localizedRecoverySuggestion]);
+                                        NSString* f = @"%s : %s : %s");
+                                        NSString* s1 = [error localizedDescription];
+                                        NSString* s2 = [error localizedFailureReason];
+                                        NSString* s3 = [error localizedRecoverySuggestion];
+                                        NSLog(f, s1, s2, s3);
                                  }
                                  return 0;
                         }
