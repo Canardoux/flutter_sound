@@ -287,7 +287,7 @@ public:
 
 //-------------------------------------------------------------------------------------------------------------------------------------
 
-
+/* TODO
 static bool _isIosEncoderSupported [] =
 {
      		true, // DEFAULT
@@ -306,6 +306,7 @@ static bool _isIosEncoderSupported [] =
                 false, // amrWB
 
 };
+*/
 
 static NSString* defaultExtensions [] =
 {
@@ -326,6 +327,7 @@ static NSString* defaultExtensions [] =
 
 };
 
+/* TODO
 static AudioFormatID formats [] =
 {
           kAudioFormatMPEG4AAC          // CODEC_DEFAULT
@@ -344,7 +346,7 @@ static AudioFormatID formats [] =
         , kAudioFormatAMR_WB            // amrWB
 };
 
-
+*/
 AudioRecInterface* audioRec;
 
 @implementation FlutterSoundRecorder

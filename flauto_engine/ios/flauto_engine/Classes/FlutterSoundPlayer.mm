@@ -113,7 +113,7 @@ static bool _isIosDecoderSupported [] =
        
        -(bool)  startPlayerFromURL: (NSURL*) url
        {
-                assert(url == nil || url == [NSNull null]);
+                assert(url == nil || url ==  (id)[NSNull null]);
                 ready = 0;
                 [playerNode play];
                 return true;
@@ -194,7 +194,7 @@ static bool _isIosDecoderSupported [] =
         {
                 if (ready < NB_BUFFERS )
                 {
-                        int ln = [data length];
+                        int ln = (int)[data length];
                         int frameLn = ln/2;
                         int frameLength =  8*frameLn;// Two octets for a frame (Monophony, INT Linear 16)
                         
@@ -225,10 +225,10 @@ static bool _isIosDecoderSupported [] =
                                 ^(void)
                                 {
                                         --ready;
-                                        if (waitingBlock != nil)
+                                        if (self ->waitingBlock != nil)
                                         {
-                                                [self feed: waitingBlock]; // Recursion here
-                                                waitingBlock = nil;
+                                                [self feed: self ->waitingBlock]; // Recursion here
+                                                self ->waitingBlock = nil;
                                                 // TODO // [flutterSoundPlayer needSomeFood: ln];
                                         }
 
