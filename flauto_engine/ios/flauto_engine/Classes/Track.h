@@ -17,6 +17,20 @@
  */
 
 
+@interface FlutterMethodCall
+{
+// TODO
+}
+@end
+
+enum FlutterResult
+{
+// TODO
+TOTO,
+TITI
+};
+
+
 // this enum MUST be synchronized with lib/flutter_sound.dart and fluttersound/AudioInterface.java
 typedef enum
 {

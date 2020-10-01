@@ -27,20 +27,6 @@
 #import "PlayerEngine.h"
 #import "Track.h"
 
-@interface FlutterMethodCall
-{
-// TODO
-}
-@end
-
-
-
-enum FlutterResult
-{
-// TODO
-ZOZO,
-ZIZI
-};
 
 @interface FlutterSoundPlayer  : NSObject
 {

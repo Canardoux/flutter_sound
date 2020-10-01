@@ -30,19 +30,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import "Track.h"
 
-@interface FlutterMethodCall
-{
-// TODO
-}
-@end
-
-enum FlutterResult
-{
-// TODO
-TOTO,
-TITI
-};
-
 
 @interface FlutterSoundRecorder   : NSObject
 {
