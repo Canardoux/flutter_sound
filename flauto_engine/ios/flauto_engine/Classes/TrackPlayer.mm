@@ -492,14 +492,14 @@
        */
  }
 
-
+/* TODO
 // post fix with _FlutterSound to avoid conflicts with common libs including path_provider
 static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
 {
         NSArray* paths = NSSearchPathForDirectoriesInDomains(dir, NSUserDomainMask, YES);
         return [paths.firstObject stringByAppendingString:@"/"];
 }
-
+*/
 
 - (void)setUIProgressBar:(NSNumber*)progress duration:(NSNumber*)duration
 {
