@@ -32,7 +32,7 @@ It has been exacted to be isolated from Flutter ans can be used with other frame
 
   s.ios.deployment_target = '12.0'
 
-  s.source_files = 'flauto_engine/ios/Classes/flauto_engine/**/*'
+  s.source_files = 'flauto_engine/ios/flauto_engine/Classes/**/*'
 
   # s.resource_bundles = {
   #   'flutter_engine' => ['flutter_engine/Assets/*.png']
