@@ -7,6 +7,6 @@ git add .
 git commit -m 'pod_flauto_engine_ios.sh'
 git push
 git tag -f $1
-git push --tag
+git push --tag -f
 pod cache clean --all
 pod trunk push flauto_engine_ios.podspec
