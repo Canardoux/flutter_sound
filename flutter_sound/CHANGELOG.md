@@ -1,4 +1,4 @@
-## 6.1.3
+## 6.1.3+2
 
 - The links was broken (error 404) on [pub.dev](https://pub.dev/packages/flutter_sound) [#477](https://github.com/dooboolab/flutter_sound/issues/477)
 
