@@ -23,8 +23,8 @@
 #import "FlutterSoundPlayer.h"
 #import "TrackPlayer.h"
 #import <AVFoundation/AVFoundation.h>
+#import "FlautoPlayerManager.h"
 #import "PlayerEngine.h"
-#import "Track.h"
 
 
 
@@ -34,7 +34,7 @@
 
 
 
-/* TODO
+
 static bool _isIosDecoderSupported [] =
 {
 		true, // DEFAULT
@@ -52,7 +52,6 @@ static bool _isIosDecoderSupported [] =
                 false, // amrNB
                 false, // amrWB
 };
-*/
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -115,7 +114,7 @@ static bool _isIosDecoderSupported [] =
        
        -(bool)  startPlayerFromURL: (NSURL*) url
        {
-                assert(url == nil || url ==  (id)[NSNull null]);
+                assert(url == nil || url == [NSNull null]);
                 ready = 0;
                 [playerNode play];
                 return true;
@@ -196,7 +195,7 @@ static bool _isIosDecoderSupported [] =
         {
                 if (ready < NB_BUFFERS )
                 {
-                        int ln = (int)[data length];
+                        int ln = [data length];
                         int frameLn = ln/2;
                         int frameLength =  8*frameLn;// Two octets for a frame (Monophony, INT Linear 16)
                         
@@ -219,37 +218,33 @@ static bool _isIosDecoderSupported [] =
 
                         AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat: playerFormat toFormat: outputFormat];
                         NSError* error;
-                        [converter convertToBuffer: thePCMOutputBuffer error: &error withInputFromBlock: inputBlock];
-                         // TODO if (r == AVAudioConverterOutputStatus_HaveData || true)
+                        AVAudioConverterOutputStatus r = [converter convertToBuffer: thePCMOutputBuffer error: &error withInputFromBlock: inputBlock];
+                         if (r == AVAudioConverterOutputStatus_HaveData || true)
                          {
                                 ++ready ;
                                 [playerNode scheduleBuffer: thePCMOutputBuffer  completionHandler:
                                 ^(void)
                                 {
                                         --ready;
-                                        if (self ->waitingBlock != nil)
+                                        if (waitingBlock != nil)
                                         {
-                                                [self feed: self ->waitingBlock]; // Recursion here
-                                                self ->waitingBlock = nil;
-                                                // TODO // [flutterSoundPlayer needSomeFood: ln];
+                                                [self feed: waitingBlock]; // Recursion here
+                                                waitingBlock = nil;
+                                                [flutterSoundPlayer needSomeFood: ln];
                                         }
 
                                 }];
                                 return ln;
-                         } //else
-                         /* TODO
+                         } else
                          {
                                  if (error != nil)
                                  {
-                                        NSString* f = @"%s : %s : %s";
-                                        NSString* s1 = [error localizedDescription];
-                                        NSString* s2 = [error localizedFailureReason];
-                                        NSString* s3 = [error localizedRecoverySuggestion];
-                                        NSLog(f, s1, s2, s3);
+                                        NSLog([error localizedDescription]);
+                                        NSLog([error localizedFailureReason]);
+                                        NSLog([error localizedRecoverySuggestion]);
                                  }
                                  return 0;
                         }
-                        */
                
                 }
                 assert(waitingBlock == nil);
@@ -291,7 +286,7 @@ static bool _isIosDecoderSupported [] =
        {
                 NSError* error = [[NSError alloc] init];
                 [self setAudioPlayer:  [[AVAudioPlayer alloc] initWithData:dataBuffer error: &error]];
-                // TODO // [self getAudioPlayer].delegate = flutterSoundPlayer;
+                [self getAudioPlayer].delegate = flutterSoundPlayer;
                 bool b = [[self getAudioPlayer] play];
                 return b;
        }
@@ -299,7 +294,7 @@ static bool _isIosDecoderSupported [] =
        -(bool)  startPlayerFromURL: (NSURL*) url
        {
                 [self setAudioPlayer: [[AVAudioPlayer alloc] initWithContentsOfURL: url error:nil] ];
-                // TODO // [self getAudioPlayer].delegate = flutterSoundPlayer;
+                [self getAudioPlayer].delegate = flutterSoundPlayer;
                 bool b = [ [self getAudioPlayer] play];
                 return b;
         }
@@ -376,25 +371,53 @@ static bool _isIosDecoderSupported [] =
 }
 
 
+- (FlutterSoundPlayer*) init: (FlutterSoundPlayerCallback*)call result: (FlutterResult)result;
+
+- (void)initializeFlautoPlayer: (FlutterMethodCall*)call;
+- (void)releaseFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)getPlayerState:(FlutterMethodCall*)call  result: (FlutterResult)result;
+- (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)isDecoderSupported:(t_CODEC)codec  result: (FlutterResult)result;
+- (void)startPlayer:(FlutterMethodCall*)path  result: (FlutterResult)result;
+- (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)stopPlayer:(FlutterMethodCall*)call  result: (FlutterResult)result;
+- (void)pausePlayer:(FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)resumePlayer:(FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)seekToPlayer:(FlutterMethodCall*) time  result: (FlutterResult)result;
+- (void)setSubscriptionDuration:(FlutterMethodCall*)call  result: (FlutterResult)result;
+- (void)setVolume:(double) volume  result: (FlutterResult)result;
+- (void)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options result: (FlutterResult)result ;
+- (void)setActive:(BOOL)enabled ;
+- (void)setUIProgressBar:(FlutterMethodCall*)call  result: (FlutterResult)result;
+- (void)nowPlaying:(FlutterMethodCall*)call  result: (FlutterResult)result;
+- (void)getProgress:(FlutterMethodCall*)call  result: (FlutterResult)result;
+- (void)feed:(FlutterMethodCall*)call  result: (FlutterResult)result;
+
+
+
 - (FlutterSoundPlayer*)init: (FlutterMethodCall*)call
 {
-        return [super init];
+        return [super init: call];
 }
 
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result
 {
         NSLog(@"IOS:--> isDecoderSupported");
-        // TODO // NSNumber*  b = [NSNumber numberWithBool: _isIosDecoderSupported[codec] ];
-        // TODO // result(b);
+        NSNumber*  b = [NSNumber numberWithBool: _isIosDecoderSupported[codec] ];
+        result(b);
         NSLog(@"IOS:<-- isDecoderSupported");
 }
 
 
 
+-(FlautoPlayerManager*) getPlugin
+{
+        return flautoPlayerManager;
+}
+
 
 - (void)initializeFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
-/* TODO
         NSLog(@"IOS:--> initializeFlautoPlayer");
         BOOL r = [self setAudioFocus: call ];
         [self invokeMethod:@"openAudioSessionCompleted" boolArg: r];
@@ -407,13 +430,11 @@ static bool _isIosDecoderSupported [] =
                                 message:@"Open session failure"
                                 details:nil];
         NSLog(@"IOS:<-- initializeFlautoPlayer");
-        */
 }
 
 
 - (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result
 {
-/* TODO
         NSLog(@"IOS:--> setAudioFocus");
         BOOL r = [self setAudioFocus: call ];
         if (r)
@@ -424,23 +445,19 @@ static bool _isIosDecoderSupported [] =
                                 message:@"Open session failure"
                                 details:nil];
         NSLog(@"IOS:<-- setAudioFocus");
-        */
 }
 
 
 - (void)releaseFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
-/* TODO
         NSLog(@"IOS:--> releaseFlautoPlayer");
         [super releaseSession];
         result([self getPlayerStatus]);
         NSLog(@"IOS:<-- releaseFlautoPlayer");
-        */
 }
 
 - (void)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options result:(FlutterResult)result
 {
-/* TODO
        NSLog(@"IOS:--> setCategory");
          // Able to play in silent mode
         BOOL b = [[AVAudioSession sharedInstance]
@@ -457,9 +474,8 @@ static bool _isIosDecoderSupported [] =
                                 message:@"setCategory failure"
                                 details:nil];
       NSLog(@"IOS:<-- setCategory");
-      */
 }
-/* TODO
+
 - (void)setActive:(BOOL)enabled result:(FlutterResult)result
 {
         NSLog(@"IOS:--> setActive");
@@ -670,7 +686,7 @@ static bool _isIosDecoderSupported [] =
 
          long position =   [player getPosition];
          long duration =   [player getDuration];
-         / *
+         /*
          if (duration - position < 80) // PATCH [LARPOUX]
           {
                 NSLog (@"IOS: !patch [LARPOUX]");
@@ -682,7 +698,7 @@ static bool _isIosDecoderSupported [] =
                  });
 
           }
-          * /
+          */
 
 
           bool b =  ( [self getStatus] == IS_PAUSED);
@@ -700,7 +716,7 @@ static bool _isIosDecoderSupported [] =
         NSLog(@"IOS:--> resume");
         long position =   [player getPosition];
         long duration =   [player getDuration];
-        / *
+        /*
         if (duration - position < 80) // PATCH [LARPOUX]
         {
                 NSLog (@"IOS: !patch [LARPOUX]");
@@ -712,7 +728,7 @@ static bool _isIosDecoderSupported [] =
                  });
 
         } else
-        * /
+        */
         {
 
                 // if ( [self getStatus] == IS_PAUSED ) // (after a long pause with the lock screen, the status is not "PAUSED"
@@ -919,7 +935,7 @@ dispatch_async(dispatch_get_main_queue(), ^{
 
        NSLog(@"IOS:<-- @audioPlayerDidFinishPlaying");
 }
-*/
+
 - (int)getStatus
 {
         if ( player == nil )

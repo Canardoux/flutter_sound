@@ -23,18 +23,21 @@
 
 
 
+#import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
 #import "PlayerEngine.h"
-#import "Track.h"
+#import "FlautoPlayerManager.h"
+#import "PlayerEngine.h"
 
 
-@interface FlutterSoundPlayer  : NSObject
+@interface FlutterSoundPlayer : FlautoPlayer
 {
         NSObject<PlayerInterface>* player;
          
 }
-/*
-//- (Session*) init: (FlutterMethodCall*)call;
+
+- (FlautoPlayerManager*) getPlugin;
+- (Session*) init: (FlutterMethodCall*)call;
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag;
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result;
 - (void)updateProgress:(NSTimer *)timer;
@@ -68,7 +71,7 @@
 - (void)feed:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)needSomeFood: (int) ln;
 
-*/
+
 
 
 

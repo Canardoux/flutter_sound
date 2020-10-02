@@ -47,26 +47,26 @@
                                  error:&error];
 
     if(! error) {
-        NSString *pathString = [responseObj objectForKey:@"path"];
+        NSString *pathString = [responseObj objectForKey: @"path"];
         path = pathString;
 
-        NSString *titleString = [responseObj objectForKey:@"title"];
+        NSString *titleString = [responseObj objectForKey :@"title"];
         title = titleString;
 
-        NSString *authorString = [responseObj objectForKey:@"author"];
+        NSString *authorString = [responseObj objectForKey: @"author"];
         author = authorString;
 
-        NSString *albumArtUrlString = [responseObj objectForKey:@"albumArtUrl"];
+        NSString *albumArtUrlString = [responseObj objectForKey: @"albumArtUrl"];
         albumArtUrl = albumArtUrlString;
 
-        NSString *albumArtAssetString = [responseObj objectForKey:@"albumArtAsset"];
+        NSString *albumArtAssetString = [responseObj objectForKey: @"albumArtAsset"];
         albumArtAsset = albumArtAssetString;
         
-        NSString *albumArtFileString = [responseObj objectForKey:@"albumArtFile"];
+        NSString *albumArtFileString = [responseObj objectForKey: @"albumArtFile"];
         albumArtFile = albumArtFileString;
 
 
-        FlutterStandardTypedData *dataBufferJson = [responseObj objectForKey:@"dataBuffer"];
+        NSData* dataBufferJson = [responseObj objectForKey: @"dataBuffer"];
         dataBuffer = dataBufferJson;
     } else {
         NSLog(@"Error in parsing JSON");
@@ -77,26 +77,26 @@
 }
 
 -(id) initFromDictionary:(NSDictionary*) jsonData {
-    NSString *pathString = [jsonData objectForKey:@"path"];
+    NSString *pathString = [jsonData objectForKey: @"path"];
     path = pathString;
 
-    NSString *titleString = [jsonData objectForKey:@"title"];
+    NSString *titleString = [jsonData objectForKey: @"title"];
     title = titleString;
 
-    NSString *authorString = [jsonData objectForKey:@"author"];
+    NSString *authorString = [jsonData objectForKey: @"author"];
     author = authorString;
 
-    NSString *albumArtUrlString = [jsonData objectForKey:@"albumArtUrl"];
+    NSString *albumArtUrlString = [jsonData objectForKey: @"albumArtUrl"];
     albumArtUrl = albumArtUrlString;
 
-    NSString *albumArtAssetString = [jsonData objectForKey:@"albumArtAsset"];
+    NSString *albumArtAssetString = [jsonData objectForKey: @"albumArtAsset"];
     albumArtAsset = albumArtAssetString;
     
-    NSString *albumArtFileString = [jsonData objectForKey:@"albumArtFile"];
+    NSString *albumArtFileString = [jsonData objectForKey: @"albumArtFile"];
     albumArtFile = albumArtFileString;
 
 
-    FlutterStandardTypedData *dataBufferJson = [jsonData objectForKey:@"dataBuffer"];
+    NSData* dataBufferJson = [jsonData objectForKey: @"dataBuffer"];
     dataBuffer = dataBufferJson;
 
     return self;
