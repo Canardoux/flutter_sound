@@ -208,6 +208,8 @@ You can look to the three provided examples :
 - [This example](../example/README.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
 - [This example](../example/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
 - [This example](../example/README.md#soundeffect) shows how to play some real time sound effects.
+- [This example](../example/README.md#streamloop) play live stream what is recorded from the microphone.
+
 
 -------------------------------------------------------------------------------------------------------------------------------------
 
