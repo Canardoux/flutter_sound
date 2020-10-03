@@ -1,7 +1,7 @@
 ## 6.1.4
 
 - Record to stream uses now a `food` sink, to be symetrical to `startPlayerFromStream` [#90](https://github.com/dooboolab/flutter_sound/issues/90)
-- New example showing a [streamLoop](#streamLoop) from the microphone to the headset [#90](https://github.com/dooboolab/flutter_sound/issues/90)
+- New example showing a [streamLoop](example/README.md#streamLoop) from the microphone to the headset [#90](https://github.com/dooboolab/flutter_sound/issues/90)
 
 ## 6.1.3+2
 
