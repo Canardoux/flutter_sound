@@ -1,0 +1,198 @@
+/*
+ * Copyright 2018, 2019, 2020 Dooboolab.
+ *
+ * This file is part of Flutter-Sound.
+ *
+ * Flutter-Sound is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
+ * the Free Software Foundation.
+ *
+ * Flutter-Sound is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+
+import 'package:flutter/material.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'dart:typed_data';
+import 'package:flutter/services.dart' show rootBundle;
+
+
+/*
+ *
+ * ```streamLoop()``` is a very simple example which connect the FlutterSoundRecorder sink
+ * to the FlutterSoundPlayer Stream.
+ * Of course, we do not play to the loudspeaker to avoid a very unpleasant Larsen effect.
+ * This example does not use a new StreamController, but use directely `foodStreamController`
+ * from flutter_sound_player.dart.
+ *
+ */
+
+
+const int SAMPLE_RATE = 44100;
+typedef void Fn();
+
+
+/// Example app.
+class StreamLoop extends StatefulWidget {
+  @override
+  _StreamLoopState createState() => _StreamLoopState();
+}
+
+class _StreamLoopState extends State<StreamLoop> {
+
+  FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
+  FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
+  bool _isInited = false;
+
+  Future<void> init() async
+  {
+          await _mPlayer.openAudioSession
+          (
+                device: AudioDevice.headset,
+                audioFlags: allowHeadset | allowEarPiece | allowBlueToothA2DP,
+                category: SessionCategory.playAndRecord,
+          );
+          await _mRecorder.openAudioSession
+          (
+          );
+
+          await _mPlayer.startPlayerFromStream
+          (
+                codec:  Codec.pcm16,
+                numChannels: 1,
+                sampleRate: SAMPLE_RATE,
+          );
+    }
+
+
+
+  @override
+  void initState()
+  {
+          super.initState();
+          // Be careful : openAudioSession return a Future.
+          // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
+          init().then((value)
+          {
+                setState( (){_isInited = true;} );
+          } );
+  }
+
+  Future<void> release() async
+  {
+          await stopPlayer();
+          await _mPlayer.closeAudioSession();
+          _mPlayer = null;
+
+          await stopRecorder();
+          await _mRecorder.closeAudioSession();
+          _mRecorder = null;
+  }
+
+
+  @override
+  void dispose()
+  {
+          release();
+          super.dispose();
+  }
+
+
+
+  Future<void> stopRecorder()
+  {
+          if (_mRecorder != null)
+                  return _mRecorder.stopRecorder();
+          return null;
+  }
+
+
+  Future<void> stopPlayer()
+  {
+          if (_mPlayer != null)
+                  return _mPlayer.stopPlayer();
+          return null;
+  }
+
+  Future<void> record() async
+  {
+          await _mRecorder.startRecorder
+          (
+                  codec:  Codec.pcm16,
+                  toStream: _mPlayer.foodSink, // ***** THIS IS THE LOOP !!! *****
+                  sampleRate: SAMPLE_RATE,
+                  numChannels: 1,
+          );
+          setState(()
+          {
+          });
+    }
+
+  Future<void> stop() async
+  {
+          if (_mRecorder != null)
+                await _mRecorder.stopRecorder();
+          setState(() {});
+  }
+
+  Fn getRecFn()
+  {
+          if (!_isInited )
+                return null;
+          return _mRecorder.isRecording ? stop : record;
+  }
+
+  // ----------------------------------------------------------------------------------------------------------------------
+
+  @override
+  Widget build(BuildContext context) {
+
+    Widget makeBody()
+    {
+            return Column( children:
+            [
+
+                    Container
+                      (
+                      margin: const EdgeInsets.all( 3 ),
+                      padding: const EdgeInsets.all( 3 ),
+                      height: 80,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration
+                      (
+                              color:  Color( 0xFFFAF0E6 ),
+                              border: Border.all( color: Colors.indigo, width: 3, ),
+                      ),
+                      child: Row(
+                          children:
+                          [
+                                  RaisedButton(onPressed: getRecFn(), color: Colors.white, disabledColor: Colors.grey, child: Text(_mRecorder.isRecording ? 'Stop' : 'Record'), ),
+                                  SizedBox(width: 20,),
+                                  Text(_mRecorder.isRecording ? 'Playback to your headset!' : 'Recorder is stopped'),
+                          ]
+                      ),
+                    ),
+
+            ],
+            );
+    }
+
+
+    return Scaffold(backgroundColor: Colors.blue,
+      appBar: AppBar(
+        title: const Text('Stream Loop'),
+      ),
+      body: makeBody(),
+    );
+  }
+}

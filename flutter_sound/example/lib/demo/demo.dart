@@ -51,7 +51,7 @@ import 'package:permission_handler/permission_handler.dart';
  *
  */
 
-const int SAMPLE_RATE = 48000;
+const int SAMPLE_RATE = 44100;
 const int BLOCK_SIZE = 4096;
 
 enum Media {
@@ -120,7 +120,7 @@ class _MyAppState extends State<Demo> {
   bool _isAudioPlayer = false;
 
   double _duration = null;
-  StreamController<Uint8List> recordingDataController;
+  StreamController<Food> recordingDataController;
   IOSink sink;
 
   Future<void> _initializeExample(bool withUI) async {
@@ -230,10 +230,11 @@ class _MyAppState extends State<Demo> {
         if (outputFile.existsSync())
           await outputFile.delete();
         sink = outputFile.openWrite();
-        recordingDataController = StreamController<Uint8List>();
+        recordingDataController = StreamController<Food>();
         _recordingDataSubscription =
-            recordingDataController.stream.listen((Uint8List buffer) {
-          sink.add(buffer);
+            recordingDataController.stream.listen((Food buffer) {
+            if (buffer is FoodData)
+                sink.add(buffer.data);
         });
         await recorderModule.startRecorder(
           toStream: recordingDataController.sink,

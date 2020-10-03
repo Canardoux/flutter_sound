@@ -43,7 +43,7 @@ import 'package:flutter/services.dart' show rootBundle;
  */
 
 
-const int SAMPLE_RATE = 48000;
+const int SAMPLE_RATE = 44100;
 typedef void Fn();
 
 

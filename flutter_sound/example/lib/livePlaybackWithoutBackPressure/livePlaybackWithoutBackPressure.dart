@@ -47,7 +47,7 @@ import 'package:flutter/services.dart' show rootBundle;
  */
 
 
-const int SAMPLE_RATE = 48000;
+const int SAMPLE_RATE = 44100;
 const int BLOCK_SIZE = 4096;
 typedef void Fn();
 

@@ -28,6 +28,7 @@ import 'package:synchronized/synchronized.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
+import 'package:flutter_sound/src/food.dart';
 
 
 import 'package:flutter/services.dart';
@@ -58,25 +59,6 @@ String fileExtension(String path) {
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
-
-class Food
-{
-  Future<void> exec(FlutterSoundPlayer player) {}
-}
-
-class FoodData extends Food
-{
-  Uint8List data;
-  /* ctor */ FoodData(Uint8List this.data){}
-  Future<void> exec(FlutterSoundPlayer player) => player.feedFromStream(data);
-}
-
-class FoodEvent extends Food
-{
-  Function on;
-  /* ctor */ FoodEvent(Function this.on){}
-  Future<void> exec(FlutterSoundPlayer player) async => on();
-}
 
 class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 {

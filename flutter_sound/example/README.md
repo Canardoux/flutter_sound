@@ -8,6 +8,8 @@ Flutter Sound comes with several Demo/Examples. All the examples are called from
 - [livePlaybackWithBackPressure](#liveplaybackwithbackpressure) is an example showing how to play live data synchronously
 - [livePlaybackWithoutBackPressure](#liveplaybackwithoutbackpressure) is an example showing how to play live data asynchronously
 - [soundEffect](#soundeffect) is an example showing to play sound effects synchronously
+- [streamLoop](#streamLoop) is an example which connect the microphone to a earphone or headset
+
 
 if Someone update this README.md, please update also the code inside Examples/lib/demo/main.dart and the comment in the header of the demo or example dart file.
 
@@ -104,4 +106,17 @@ playing another one.
 [startPlayerFromStream](#startplayerfromstream) can be very efficient to play sound effects in real time. For example in a game App.
 In this example, the App open the Audio Session and call ```startPlayerFromStream()``` during initialization.
 When it want to play a noise, it has just to call the synchronous verb ```feed```. Very fast.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+## [streamLoop](lib/streamLoop/streamLoop.dart)
+
+<img src="lib/streamLoop/streamLoop.png" width="70%" height="70%"/>
+
+```streamLoop()``` is a very simple example which connect the FlutterSoundRecorder sink
+to the FlutterSoundPlayer Stream.
+Of course, we do not play to the loudspeaker to avoid a very unpleasant Larsen effect.
+this example does not use a new StreamController, but use directely `foodStreamController`
+from flutter_sound_player.dart.
+
 

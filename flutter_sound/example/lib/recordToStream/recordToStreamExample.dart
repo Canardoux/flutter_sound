@@ -35,7 +35,7 @@ import 'dart:typed_data' show Uint8List;
  */
 
 
-const int SAMPLE_RATE = 48000;
+const int SAMPLE_RATE = 44100;
 typedef fn();
 
 
@@ -97,12 +97,13 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   {
     assert (_mRecorderIsInited &&  _mPlayer.isStopped);
     IOSink sink = await createFile();
-    StreamController<Uint8List> recordingDataController = StreamController<Uint8List>();
+    StreamController<Food> recordingDataController = StreamController<Food>();
     _mRecordingDataSubscription =
           recordingDataController.stream.listen
-            ((Uint8List buffer)
+            ((Food buffer)
               {
-                sink.add(buffer);
+                if (buffer is FoodData)
+                  sink.add(buffer.data);
               }
             );
     await _mRecorder.startRecorder(
