@@ -31,13 +31,15 @@ import 'package:flutter/services.dart' show rootBundle;
  * ```streamLoop()``` is a very simple example which connect the FlutterSoundRecorder sink
  * to the FlutterSoundPlayer Stream.
  * Of course, we do not play to the loudspeaker to avoid a very unpleasant Larsen effect.
- * This example does not use a new StreamController, but use directely `foodStreamController`
+ * This example does not use a new StreamController, but use directly `foodStreamController`
  * from flutter_sound_player.dart.
  *
  */
 
 
-const int SAMPLE_RATE = 44100;
+const int SAMPLE_RATE_RECORDER = 44100;
+const int SAMPLE_RATE_PLAYER = 45500;
+
 typedef void Fn();
 
 
@@ -69,7 +71,7 @@ class _StreamLoopState extends State<StreamLoop> {
           (
                 codec:  Codec.pcm16,
                 numChannels: 1,
-                sampleRate: SAMPLE_RATE,
+                sampleRate: SAMPLE_RATE_PLAYER,
           );
     }
 
@@ -129,7 +131,7 @@ class _StreamLoopState extends State<StreamLoop> {
           (
                   codec:  Codec.pcm16,
                   toStream: _mPlayer.foodSink, // ***** THIS IS THE LOOP !!! *****
-                  sampleRate: SAMPLE_RATE,
+                  sampleRate: SAMPLE_RATE_RECORDER,
                   numChannels: 1,
           );
           setState(()
