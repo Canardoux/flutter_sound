@@ -60,12 +60,12 @@
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		6FEF752EFC651B37FE0B0B66 /* Pods-flauto_engine_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flauto_engine_Tests.release.xcconfig"; path = "Target Support Files/Pods-flauto_engine_Tests/Pods-flauto_engine_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		74CAE9BD3243AD66ACFFF077 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		74CAE9BD3243AD66ACFFF077 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		7FB4915F3623342585F1BA4B /* Pods_flauto_engine_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_flauto_engine_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		ABF1872496B5D5F0846EF773 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		ABF1872496B5D5F0846EF773 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		B2176D8A23ECA7399223F4EF /* Pods-flauto_engine_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flauto_engine_Tests.debug.xcconfig"; path = "Target Support Files/Pods-flauto_engine_Tests/Pods-flauto_engine_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		BEF8AC396B4BF04ECF41D839 /* flauto_engine.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = flauto_engine.podspec; path = ../flauto_engine.podspec; sourceTree = "<group>"; };
+		BEF8AC396B4BF04ECF41D839 /* flauto_engine.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = flauto_engine.podspec; path = ../flauto_engine.podspec; sourceTree = "<group>"; };
 		C8623D2A99A4AF72F89FF25A /* Pods-flauto_engine_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flauto_engine_Example.debug.xcconfig"; path = "Target Support Files/Pods-flauto_engine_Example/Pods-flauto_engine_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -193,7 +193,6 @@
 				B2176D8A23ECA7399223F4EF /* Pods-flauto_engine_Tests.debug.xcconfig */,
 				6FEF752EFC651B37FE0B0B66 /* Pods-flauto_engine_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -248,6 +247,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = Larpoux;
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = 5YY4QLF92X;
+					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
 					};
@@ -258,6 +260,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -494,6 +497,7 @@
 			baseConfigurationReference = C8623D2A99A4AF72F89FF25A /* Pods-flauto_engine_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 5YY4QLF92X;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "flauto_engine/flauto_engine-Prefix.pch";
 				INFOPLIST_FILE = "flauto_engine/flauto_engine-Info.plist";
@@ -510,6 +514,7 @@
 			baseConfigurationReference = 5E12CC33A017F0629677D5CA /* Pods-flauto_engine_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 5YY4QLF92X;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "flauto_engine/flauto_engine-Prefix.pch";
 				INFOPLIST_FILE = "flauto_engine/flauto_engine-Info.plist";

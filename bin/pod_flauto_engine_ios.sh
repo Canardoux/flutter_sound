@@ -6,7 +6,7 @@ fi
 export v=$1
 gsed -i  "s/^\( *s.version *= *\).*$/\1'$1'/" flauto_engine_ios.podspec
 git add .
-git commit -m 'pod_flauto_engine_ios.sh'
+git commit -m "pod_flauto_engine_ios.sh : Version $1"
 git push
 git tag -f $1
 git push --tag -f

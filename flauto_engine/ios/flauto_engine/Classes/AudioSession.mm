@@ -65,8 +65,8 @@
 // Audio Flags
 // -----------
 const int outputToSpeaker = 1;
-const int allowHeadset = 2;
-const int allowEarPiece = 4;
+// NOT USED // const int allowHeadset = 2;
+// NOT USED // const int allowEarPiece = 4;
 const int allowBlueTooth = 8;
 const int allowAirPlay = 16;
 const int allowBlueToothA2DP = 32;
