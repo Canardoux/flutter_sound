@@ -26,10 +26,10 @@
 
 #ifndef PlayerEngine_h
 #define PlayerEngine_h
-#import "FlutterSoundPlayer.h"
+#import "FlautoPlayer.h"
 
 
-@protocol PlayerInterface <NSObject>
+@protocol PlayerEngineInterface <NSObject>
 
        - (bool) startPlayerFromBuffer:  (NSData*)data;
        - (bool) startPlayerFromURL: (NSURL*)url;
@@ -38,14 +38,14 @@
        - (void) stop;
        - (bool) resume;
        - (bool) pause;
-       - (bool) setVolume: (double) volume;
+       - (bool) setVolume: (long) volume;
        - (bool) seek: (double) pos;
-       - (int) getStatus;
+       - (t_PLAYER_STATUS) getStatus;
        - (int) feed: (NSData*)data;
 
 @end
 
-@interface AudioPlayer : NSObject <PlayerInterface>
+@interface AudioPlayer : NSObject <PlayerEngineInterface>
 {
 }
        - (AudioPlayer*) init: (NSObject*)owner; // FlutterSoundPlayer*
@@ -57,13 +57,36 @@
        - (void) stop;
        - (bool) resume;
        - (bool) pause;
-       - (bool) setVolume: (double) volume;
+       - (bool) setVolume: (long) volume;
        - (bool) seek: (double) pos;
-       - (int) getStatus;
-       - (AVAudioPlayer*) getAudioPlayer;
-       - (void) setAudioPlayer: (AVAudioPlayer*)thePlayer;
+       - (t_PLAYER_STATUS) getStatus;
+       //- (AVAudioPlayer*) getAudioPlayer;
        - (int) feed: (NSData*)data;
 
 @end
+
+
+@interface AudioEngine  : NSObject <PlayerEngineInterface>
+{
+        // TODO FlutterSoundPlayer* flutterSoundPlayer; // Owner
+}
+       - (AudioEngine*) init: (NSObject*)owner; // FlutterSoundPlayer*
+
+       - (bool) startPlayerFromBuffer:  (NSData*)data;
+       // TODO - (bool) startPlayerFromURL;
+       // TODO - (long) duration;
+       // TODO - (long) position;
+       - (void) stop;
+       - (bool) resume;
+       - (bool) pause;
+       - (bool) setVolume: (long) volume;
+       - (bool) seek: (double) pos;
+       - (int) getStatus;
+       //- (AVAudioPlayer*) getAudioPlayer;
+       - (int) feed: (NSData*)data;
+
+@end
+
+
 
 #endif /* PlayerEngine_h */

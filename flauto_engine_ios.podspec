@@ -30,7 +30,7 @@ It has been exacted to be isolated from Flutter ans can be used with other frame
   s.source           = { :git => 'https://github.com/Canardoux/flauto.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '12.0'
+  s.ios.deployment_target = '10.0'
 
   s.source_files = 'flauto_engine/ios/flauto_engine/Classes/**/*'
   s.frameworks = 'AVFoundation', 'MediaPlayer'

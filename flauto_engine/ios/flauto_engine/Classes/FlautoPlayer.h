@@ -25,6 +25,16 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import "AudioSession.h"
+#import "FlautoEngine.h"
+#import "Track.h"
+
+typedef enum
+{
+        PLAYER_NOT_INITIALIZED,
+        PLAYER_IS_STOPPED,
+        PLAYER_IS_PLAYING,
+        PLAYER_IS_PAUSED
+} t_PLAYER_STATUS;
 
 
 @interface FlautoPlayerCallback  : NSObject
@@ -36,13 +46,12 @@
 
 @interface FlautoPlayer  : AudioSession
 {
-        FlautoPlayerCallback* m_callBack;
          
 }
 
            
 - (t_PLAYER_STATUS)getPlayerState;
-- bool isDecoderSupported: (t_CODEC)codec ;
+- (bool)isDecoderSupported: (t_CODEC)codec ;
 
 - (bool)startPlayerCodec: (t_CODEC)codec
         fromURI: (NSString*)path
@@ -56,9 +65,9 @@
 - (void)seekToPlayer: (long)time;
 - (void)setSubscriptionDuration: (long)call ;
 - (void)setVolume: (double)volume ;
-- (void)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options result:(FlutterResult)result
+- (bool)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options ;
 - (bool)setActive:(BOOL)enabled ;
-- (void)setUIProgressBar: (double)call
+- (void)setUIProgressBar: (double)call;
 - (void)nowPlaying: (Track*)track ;
 - (NSDictionary*)getProgress ;
 - (int)feed: (NSData*)data;

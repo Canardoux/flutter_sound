@@ -302,11 +302,11 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-flauto_engine_Example/Pods-flauto_engine_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/flauto_engine/flauto_engine.framework",
+				"${BUILT_PRODUCTS_DIR}/flauto_engine_ios/flauto_engine_ios.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/flauto_engine.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/flauto_engine_ios.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

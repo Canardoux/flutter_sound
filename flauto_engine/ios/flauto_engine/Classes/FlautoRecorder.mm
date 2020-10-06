@@ -27,7 +27,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "FlutterSoundRecorder.h"
+#import "FlautoRecorder.h"
+#import "FlautoEngine.h"
 
 
 class AudioRecInterface
@@ -349,6 +350,8 @@ static AudioFormatID formats [] =
 */
 AudioRecInterface* audioRec;
 
+typedef int FlutterResult;
+
 @implementation FlutterSoundRecorder
 {
         //NSURL *audioFileURL;
@@ -359,15 +362,17 @@ AudioRecInterface* audioRec;
 }
 
 
-- (FlutterSoundRecorder*)init: (FlutterMethodCall*)call
+- (FlutterSoundRecorder*)init
 {
         return [super init];
 }
-- (void)initializeFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
+- (void)initializeFlautoRecorder 
 {
-        [self setAudioFocus: call result: result];}
+        // TODO //[self setAudioFocus: call result: result];
+        
+}
 
-- (void)releaseFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
+- (void)releaseFlautoRecorder 
 {
         // TODO // [super releaseSession];
         // TODO // result([NSNumber numberWithBool: YES]);
@@ -418,7 +423,7 @@ AVAudioSessionPort tabSessionPort [] =
 
 
 
-- (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result
+- (void)setAudioFocus
 {
 /* TODO
         BOOL r = [self setAudioFocus: call ];
@@ -433,7 +438,7 @@ AVAudioSessionPort tabSessionPort [] =
 }
 
 
-- (void)startRecorder :(FlutterMethodCall*)call result:(FlutterResult)result
+- (void)startRecorder
 {
 /* TODO
            path = (NSString*)call.arguments[@"path"];
@@ -559,21 +564,21 @@ AVAudioSessionPort tabSessionPort [] =
 }
 
 
-- (void)setSubscriptionDuration:(FlutterMethodCall*)call result: (FlutterResult)result
+- (void)setSubscriptionDuration
 {
         // TODO // NSNumber* milliSec = (NSNumber*)call.arguments[@"duration"];
         // TODO // subscriptionDuration = [milliSec doubleValue]/1000;
         // TODO // result(@"setSubscriptionDuration");
 }
 
-- (void)pauseRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
+- (void)pauseRecorder
 {
         audioRec ->pauseRecorder();
         [self stopRecorderTimer];
         // TODO // result(@"Recorder is Paused");
 }
 
-- (void)resumeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
+- (void)resumeRecorder
 {
         audioRec ->resumeRecorder();
         [self startRecorderTimer];

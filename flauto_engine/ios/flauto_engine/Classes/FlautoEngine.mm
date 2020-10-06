@@ -21,7 +21,7 @@
 #import <Foundation/Foundation.h>
 #import "FlautoEngine.h"
 
-FlautoEngine* theFlautoEngine = [[FlautoEngine alloc]init]; // The singleton
+FlautoEngine* theFlautoEngine = [[FlautoEngine alloc] init]; // The singleton
 @implementation FlautoEngine
 
 @end

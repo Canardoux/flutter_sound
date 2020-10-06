@@ -22,11 +22,11 @@
 #define TrackPlayer_h
 
 
-#import "FlutterSoundPlayer.h"
+#import "FlautoPlayer.h"
 
 
 
-@interface TrackPlayer : FlutterSoundPlayer
+@interface TrackPlayer : FlautoPlayer
 {
 
 }

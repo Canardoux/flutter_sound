@@ -80,10 +80,77 @@ typedef enum
 } t_CODEC;
 
 
-external FlautoEngine* theFlautoEngine ; // The singleton
+
+
+/// Used by [AudioPlayer.audioFocus]
+/// to control the focus mode.
+typedef enum  {
+  requestFocus,
+
+  /// request focus and allow other audio
+  /// to continue playing at their current volume.
+  requestFocusAndKeepOthers,
+
+  /// request focus and stop other audio playing
+  requestFocusAndStopOthers,
+
+  /// request focus and reduce the volume of other players
+  /// In the Android world this is know as 'Duck Others'.
+  requestFocusAndDuckOthers,
+  
+  requestFocusAndInterruptSpokenAudioAndMixWithOthers,
+  
+  requestFocusTransient,
+  requestFocusTransientExclusive,
+
+
+  /// relinquish the audio focus.
+  abandonFocus,
+
+  doNotRequestFocus,
+} t_AUDIO_FOCUS;
+
+
+
+typedef enum {
+  ambient,
+  multiRoute,
+  playAndRecord,
+  playback,
+  record,
+  soloAmbient,
+  audioProcessing,
+} t_SESSION_CATEGORY ;
+
+
+typedef enum
+{
+  modeDefault, // 'AVAudioSessionModeDefault',
+  modeGameChat, //'AVAudioSessionModeGameChat',
+  modeMeasurement, //'AVAudioSessionModeMeasurement',
+  modeMoviePlayback, //'AVAudioSessionModeMoviePlayback',
+  modeSpokenAudio, //'AVAudioSessionModeSpokenAudio',
+  modeVideoChat, //'AVAudioSessionModeVideoChat',
+  modeVideoRecording, // 'AVAudioSessionModeVideoRecording',
+  modeVoiceChat, // 'AVAudioSessionModeVoiceChat',
+  modeVoicePrompt, // 'AVAudioSessionModeVoicePrompt',
+}  t_SESSION_MODE;
+
+
+typedef enum {
+  speaker,
+  headset,
+  earPiece,
+  blueTooth,
+  blueToothA2DP,
+  airPlay
+} t_AUDIO_DEVICE;
+
 @interface FlautoEngine : NSObject
 {
 }
-
 @end
+
+extern FlautoEngine* theFlautoEngine ; // The singleton
+
 

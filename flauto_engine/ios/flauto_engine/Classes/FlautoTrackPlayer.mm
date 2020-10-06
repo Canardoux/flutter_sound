@@ -19,7 +19,7 @@
 
 
 
-#import "TrackPlayer.h"
+#import "FlautoTrackPlayer.h"
 #import "Track.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -43,7 +43,7 @@
        BOOL defaultPauseResume;
        BOOL removeUIWhenStopped;
 }
- 
+ /* TODO
 - (TrackPlayer*)init: (FlutterMethodCall*)call
 {
         return [super init];
@@ -73,8 +73,8 @@
         [(AudioPlayer*)player  setAudioPlayer: theAudioPlayer];
 }
 
-
-- (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result
+*/
+- (bool)startPlayerFromTrack: (Track*)track
 {
 /* TODO
          NSLog(@"IOS:--> startPlayerFromTrack");
@@ -243,6 +243,7 @@
                                    details:nil]);
          NSLog(@"IOS:<-- startPlayerFromTrack");
          */
+         return false;
 }
 
 
@@ -355,10 +356,10 @@
           NSLog(@"IOS:<-- cleanTarget");
  }
 
-
 - (void)stopPlayer
 {
-          NSLog(@"IOS:--> stopPlayer");
+
+/* TODO          NSLog(@"IOS:--> stopPlayer");
           // TODO // [self stopTimer];
           //isPaused = false;
           if ([self getPlayer] != nil)
@@ -376,6 +377,7 @@
                 playingInfoCenter.nowPlayingInfo = nil;
           }
           NSLog(@"IOS:<-- stopPlayer");
+          */
 }
 
 
@@ -524,8 +526,8 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
                 [songInfo setObject: track.title forKey: MPMediaItemPropertyTitle];
                 [songInfo setObject: track.author forKey: MPMediaItemPropertyArtist];
         }
-        bool b = [[self getPlayer] isPlaying];
-        [songInfo setObject:[NSNumber numberWithDouble:(b ? 1.0f : 0.0f)] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+        // TODO bool b = [[self getPlayer] isPlaying];
+        // TODO [songInfo setObject:[NSNumber numberWithDouble:(b ? 1.0f : 0.0f)] forKey:MPNowPlayingInfoPropertyPlaybackRate];
         
         //[songInfo setObject: @"toto" forKey: MPNowPlayingInfoCollectionIdentifier];
         //[songInfo setObject: @"titi" forKey: MPNowPlayingInfoPropertyChapterCount];
@@ -614,7 +616,7 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
 
 }
 
-*/
+
 - (void)seekToPlayer:(FlutterMethodCall*)call result: (FlutterResult)result
 {
 
@@ -623,7 +625,7 @@ static NSString* GetDirectoryOfType_FlutterSound(NSSearchPathDirectory dir)
         [self updateLockScreenProgression];
         NSLog(@"IOS:<-- seekToPlayer");
   }
-
+*/
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
         NSLog(@"IOS:--> audioPlayerDidFinishPlaying");

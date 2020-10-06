@@ -1,0 +1,6 @@
+framework module flauto_engine_ios {
+  umbrella header "flauto_engine_ios-umbrella.h"
+
+  export *
+  module * { export * }
+}

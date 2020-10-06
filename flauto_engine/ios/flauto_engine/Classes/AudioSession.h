@@ -18,6 +18,7 @@
 
 // This is the base Class for FlautoRecorder and FlautoPlayer
 
+#include "FlautoEngine.h"
 
 @interface FlautoResult : NSObject
 {
@@ -26,21 +27,22 @@
 
 @interface AudioSession : NSObject
 {
+        bool hasFocus;
 }
 
 - (bool) initializeFlautoPlayerFocus:
-                (AudioFocus)focus
-                category: (SessionCategory)category
-                mode: (SessionMode)mode
+                (t_AUDIO_FOCUS)focus
+                category: (t_SESSION_CATEGORY)category
+                mode: (t_SESSION_MODE)mode
                 audioFlags: (int)audioFlags
-                audioDevice: (AudioDevice)audioDevice;
+                audioDevice: (t_AUDIO_DEVICE)audioDevice;
 
 - (bool) setAudioFocus:
-                (AudioFocus)focus
-                category: (SessionCategory)category
-                mode: (SessionMode)mode
+                (t_AUDIO_FOCUS)focus
+                category: (t_SESSION_CATEGORY)category
+                mode: (t_SESSION_MODE)mode
                 audioFlags: (int)audioFlags
-                audioDevice: (AudioDevice)audioDevice;
+                audioDevice: (t_AUDIO_DEVICE)audioDevice;
 
 
 - (void)releaseFlautoPlayer;

@@ -19,17 +19,19 @@
 
 
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
+
 #import "AudioSession.h"
 
 @implementation AudioSession
 
 
 - (bool) setAudioFocus:
-                (AudioFocus)focus
-                category: (SessionCategory)category
-                mode: (SessionMode)mode
+                (t_AUDIO_FOCUS)audioFocus
+                category: (t_SESSION_CATEGORY)category
+                mode: (t_SESSION_MODE)mode
                 audioFlags: (int)audioFlags
-                audioDevice: (AudioDevice)audioDevice
+                audioDevice: (t_AUDIO_DEVICE)audioDevice
 
 {
         NSLog(@"IOS:--> initializeFlautoPlayer");
@@ -42,7 +44,7 @@
                 AVAudioSessionCategoryPlayback,
                 AVAudioSessionCategoryRecord,
                 AVAudioSessionCategorySoloAmbient,
-                AVAudioSessionCategoryAudioProcessing
+                //AVAudioSessionCategoryAudioProcessing
         };
         
         
@@ -56,7 +58,7 @@
                 AVAudioSessionModeVideoChat,
                 AVAudioSessionModeVideoRecording,
                 AVAudioSessionModeVoiceChat,
-                AVAudioSessionModeVoicePrompt,
+                //AVAudioSessionModeVoicePrompt,
         };
 
 
@@ -82,20 +84,23 @@ const int allowBlueToothA2DP = 32;
                         case requestFocusAndInterruptSpokenAudioAndMixWithOthers: sessionCategoryOption |= AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers; break;
                         case requestFocusTransient:
                         case requestFocusTransientExclusive:
+                        case requestFocus:
+                        case  abandonFocus:
+                        case doNotRequestFocus:
                         case requestFocusAndStopOthers: sessionCategoryOption |= 0; break; // NOOP
                 }
                 
-                if (flags & outputToSpeaker)
+                if (audioFlags & outputToSpeaker)
                         sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker;
-                if (flags & allowAirPlay)
+                if (audioFlags & allowAirPlay)
                         sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay;
-                 if (flags & allowBlueTooth)
+                 if (audioFlags & allowBlueTooth)
                         sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetooth;
-                if (flags & allowBlueToothA2DP)
+                if (audioFlags & allowBlueToothA2DP)
                         sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
 
                 
-                switch (device)
+                switch (audioDevice)
                 {
                         case speaker: sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker; break;
                         case airPlay: sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay; break;
@@ -116,18 +121,18 @@ const int allowBlueToothA2DP = 32;
         if (audioFocus != doNotRequestFocus)
         {
                 hasFocus = (audioFocus != abandonFocus);
-                r = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
+                r = [[AVAudioSession sharedInstance]  setActive: (audioFocus != abandonFocus) error:nil] ;
         }
         return r;
 }
 
-- (bool) initializeFlautoPlayerFocus: (AudioFocus)audioFocus
-                category: (SessionCategory)category
-                mode: (SessionMode)mode
-                audioFlags: (int)flags
-                audioDevice: (AudioDevice)device
+- (bool) initializeFlautoPlayerFocus: (t_AUDIO_FOCUS)audioFocus
+                category: (t_SESSION_CATEGORY)category
+                mode: (t_SESSION_MODE)mode
+                audioFlags: (int)audioFlags
+                audioDevice: (t_AUDIO_DEVICE)audioDevice
 {
-        return setAudioFocus:audioFocus category:category mode:mode audioFlags:flags audioDevice:device;
+        return [self setAudioFocus: audioFocus category: category mode: mode audioFlags: audioFlags audioDevice: audioDevice];
 }
 
 - (void)releaseFlautoPlayer

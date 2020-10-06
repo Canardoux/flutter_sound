@@ -1,6 +1,0 @@
-framework module flauto_engine {
-  umbrella header "flauto_engine-umbrella.h"
-
-  export *
-  module * { export * }
-}

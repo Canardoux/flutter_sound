@@ -1,16 +1,16 @@
 PODS:
-  - flauto_engine (0.1.0)
+  - flauto_engine_ios (0.1.0)
 
 DEPENDENCIES:
-  - flauto_engine (from `../`)
+  - flauto_engine_ios (from `../../..`)
 
 EXTERNAL SOURCES:
-  flauto_engine:
-    :path: "../"
+  flauto_engine_ios:
+    :path: "../../.."
 
 SPEC CHECKSUMS:
-  flauto_engine: 41e45a9c17748616f1113ae5f39e8d5d74656c2e
+  flauto_engine_ios: 0b27b743896e4f27066d8330db0abcc18dddfdb3
 
-PODFILE CHECKSUM: 6ebf6cadfd46121a9241e3228d48875d9d1f8937
+PODFILE CHECKSUM: fdae81f24026e8cc21ef4b10081f30f74d0415a5
 
 COCOAPODS: 1.9.3
