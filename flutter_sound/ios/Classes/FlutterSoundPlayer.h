@@ -25,9 +25,9 @@
 
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
-#import "PlayerEngine.h"
+#import "FlautoPlayerEngine.h"
 #import <flauto_engine_ios/FlautoPlayer.h>
-#import <flauto_engine_ios/FlautoEngine.h>
+#import <flauto_engine_ios/Flauto.h>
 #include "FlutterSoundManager.h"
 #include "FlutterSoundPlayerManager.h"
 
@@ -51,7 +51,8 @@
 //- (NSNumber*)getPlayerStatus;
 //- (int)getStatus;
 //- (long)getPosition;
-//- (long)getDuration;- (void)startPlayer:(FlutterMethodCall*)path result: (FlutterResult)result;
+//- (long)getDuration;
+- (void)startPlayer:(FlutterMethodCall*)path result: (FlutterResult)result;
 - (void)getProgress:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result;
 //- (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result;

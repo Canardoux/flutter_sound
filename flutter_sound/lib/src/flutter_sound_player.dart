@@ -375,7 +375,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   void pause(int state)  async {
     print( 'FS:---> pause ' );
     await lock.synchronized(() async {
-      int state = call['arg'] as int;
       assert (state != null);
       playerState = PlayerState.values[state];
 
@@ -396,7 +395,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   void resume(int state)  async {
     print( 'FS:---> pause ' );
     await lock.synchronized(() async {
-      int state = call['arg'] as int;
       assert (state != null);
       playerState = PlayerState.values[state];
 

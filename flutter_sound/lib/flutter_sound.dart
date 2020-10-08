@@ -19,7 +19,6 @@
 export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 export 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
 export 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
-export 'package:flutter_sound_platform_interface/flutter_sound_helper_platform_interface.dart';
 export 'src/flutter_ffmpeg.dart';
 export 'src/flutter_sound_player.dart';
 export 'src/flutter_sound_recorder.dart';

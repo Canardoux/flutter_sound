@@ -17,6 +17,8 @@
  */
 
 
+#ifndef FLAUTO_H
+#define FLAUTO_H
 
 // this enum MUST be synchronized with lib/flutter_sound.dart and fluttersound/AudioInterface.java
 typedef enum
@@ -158,12 +160,12 @@ typedef enum
 
 // Audio Flags
 // -----------
-const int outputToSpeaker = 1;
+#define outputToSpeaker  1
 // NOT USED // const int allowHeadset = 2;
 // NOT USED // const int allowEarPiece = 4;
-const int allowBlueTooth = 8;
-const int allowAirPlay = 16;
-const int allowBlueToothA2DP = 32;
+#define allowBlueTooth  8
+#define allowAirPlay 16
+#define allowBlueToothA2DP  32
 
 
 @interface Flauto : NSObject
@@ -174,3 +176,4 @@ const int allowBlueToothA2DP = 32;
 extern Flauto* theFlautoEngine ; // The singleton
 
 
+#endif

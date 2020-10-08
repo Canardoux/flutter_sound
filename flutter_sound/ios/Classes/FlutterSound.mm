@@ -29,7 +29,7 @@
 
 #import "FlutterSound.h"
 #import "FlutterSoundPlayerManager.h"
-#import "FlautoRecorderManager.h"
+#import "FlutterSoundRecorderManager.h"
 
 @implementation FlutterSound
 {
@@ -38,8 +38,8 @@
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
 {
-        FlautoPlayerReg(registrar);
-        FlautoRecorderReg(registrar);
+        FlutterSoundPlayerReg(registrar);
+        FlutterSoundRecorderReg(registrar);
         #ifdef FULL_FLAVOR
                 FfmpegReg(registrar);
         #endif

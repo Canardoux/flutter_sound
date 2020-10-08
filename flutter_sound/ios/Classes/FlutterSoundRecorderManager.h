@@ -24,28 +24,26 @@
 
 
 
-#ifndef FlautoRecorderManager_h
-#define FlautoRecorderManager_h
+#ifndef FlutterSoundRecorderManager_h
+#define FlutterSoundRecorderManager_h
 
 
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
-#import "Flauto.h"
-#import "FlautoManager.h"
+//#import "Flauto.h"
+#import "FlutterSoundManager.h"
 
-extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar);
+extern void FlutterSoundRecorderReg(NSObject<FlutterPluginRegistrar>* registrar);
 
 
-@interface FlautoRecorderManager : FlautoManager
+@interface FlutterSoundRecorderManager : FlutterSoundManager
 {
 }
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar;
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result;
-- (void)invokeMethod: (NSString*)methodName arguments: (NSDictionary*)call;
-- (void)freeSlot: (int)slotNo;
 @end
 
-extern FlautoRecorderManager* flautoRecorderManager; // Singleton
+extern FlutterSoundRecorderManager* flutterSoundRecorderManager; // Singleton
 
-#endif /* FlautoRecorderManager_h */
+#endif /* FlutterSoundRecorderManager_h */

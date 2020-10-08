@@ -23,21 +23,24 @@
  */
 
 
-#ifndef FlautoRecorder_h
-#define FlautoRecorder_h
+#ifndef FlutterSoundRecorder_h
+#define FlutterSoundRecorder_h
 
 
+#import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
-#import "FlautoTrack.h"
+#import "Flauto.h"
+#import "FlutterSoundManager.h"
+#import "FlutterSoundRecorderManager.h"
+#import "FlutterSoundRecorder.h"
 
 
-@interface FlautoRecorder   : NSObject
+@interface FlutterSoundRecorder  : Session
 {
 }
+- (FlutterSoundRecorderManager*) getPlugin;
+- (Session*) init: (FlutterMethodCall*)call;
 
-//- (FlautoRecorderManager*) getPlugin;
-//- (Session*) init: (FlutterMethodCall*)call;
-/*
 - (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result;
 - (void)startRecorder :(FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)stopRecorder:(FlutterResult)result;
@@ -49,7 +52,7 @@
 - (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)pauseRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)resumeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
-*/
+
 @end
 
-#endif /* FlautoRecorder_h */
+#endif /* FlutterSoundRecorder_h */

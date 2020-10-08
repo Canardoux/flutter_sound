@@ -22,9 +22,9 @@
 
 #import "FlutterSoundManager.h"
 
-extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
+extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 
-@interface FlutterSoundPlayerManager : FlutterSoundManager
+@interface FlutterSoundPlayerManager : FlutterSoundManager 
 {
 }
 extern FlutterSoundPlayerManager* flutterSoundPlayerManager; // Singleton

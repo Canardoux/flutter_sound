@@ -27,8 +27,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Flauto.h"
-#import "FlautoRecorder.h"
+#import "FlutterSoundRecorder.h"
 
 
 class AudioRecInterface
@@ -36,7 +35,7 @@ class AudioRecInterface
 public:
         virtual ~AudioRecInterface(){};
         virtual void stopRecorder() = 0;
-        virtual void startRecorder( FlautoRecorder* rec) = 0;
+        virtual void startRecorder( FlutterSoundRecorder* rec) = 0;
         virtual void resumeRecorder() = 0;
         virtual void pauseRecorder() = 0;
         virtual NSNumber* recorderProgress() = 0;
@@ -61,7 +60,7 @@ private:
 public:
 
 
-       /* ctor */ AudioRecorderEngine(t_CODEC coder, NSString* path, NSMutableDictionary* audioSettings)
+       /* ctor */ AudioRecorderEngine(t_CODEC coder, NSString* path, NSMutableDictionary* audioSettings, Session* session)
         {
                 engine = [[AVAudioEngine alloc] init];
                 dateCumul = 0;
@@ -71,13 +70,13 @@ public:
                 AVAudioFormat* inputFormat = [inputNode outputFormatForBus: 0];
                 NSNumber* nbChannels = audioSettings [AVNumberOfChannelsKey];
                 NSNumber* sampleRate = audioSettings [AVSampleRateKey];
-                AVAudioFormat* recordingFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: (unsigned int)nbChannels.unsignedIntegerValue interleaved: YES];
+                AVAudioFormat* recordingFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: nbChannels.integerValue interleaved: YES];
                 AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat:inputFormat toFormat:recordingFormat];
                 NSFileManager* fileManager = [NSFileManager defaultManager];
                 NSURL* fileURL = nil;
-                if (path != nil && path != (id)[NSNull null])
+                if (path != nil && path != [NSNull null])
                 {
-                        [fileManager removeItemAtPath:path error:nil];
+                        BOOL success = [fileManager removeItemAtPath:path error:nil];
                         [fileManager createFileAtPath: path contents:nil attributes:nil];
                         fileURL = [[NSURL alloc] initFileURLWithPath: path];
                         fileHandle = [NSFileHandle fileHandleForWritingAtPath: path];
@@ -99,17 +98,7 @@ public:
                                 inputStatus =  AVAudioConverterInputStatus_NoDataNow;
                                 return buffer;
                         };
-                        NSError* error;
-                        BOOL r = [converter convertToBuffer: convertedBuffer error: &error withInputFromBlock: inputBlock];
-                        if (!r)
-                        {
-                                NSString* s =  error.localizedDescription;
-                                NSString* f = @"%s";
-                                NSLog(f, s);
-                                s = error.localizedFailureReason;
-                                NSLog(f, s);
-                                return;
-                        }
+                        BOOL r = [converter convertToBuffer: convertedBuffer error: nil withInputFromBlock: inputBlock];
                         int n = [convertedBuffer frameLength];
                         int16_t *const  bb = [convertedBuffer int16ChannelData][0];
                         NSData* b = [[NSData alloc] initWithBytes: bb length: n * 2 ];
@@ -122,8 +111,8 @@ public:
                                 {
                                         //NSDictionary* dic = [[NSMutableDictionary alloc] init];
                                         //[dic setValue: b forKey: @"recordingData"];
-                                        // TODO //NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: -1], @"recordingData": b,};
-                                        // TODO //[session invokeMethod: @"recordingData" dico: dico];
+                                        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: [session getSlotNo]], @"recordingData": b,};
+                                        [session invokeMethod: @"recordingData" dico: dico];
                                 }
                                 
                                 int16_t* pt = [convertedBuffer int16ChannelData][0];
@@ -145,7 +134,7 @@ public:
         
         }
 
-        virtual void startRecorder(FlautoRecorder* rec)
+        virtual void startRecorder(FlutterSoundRecorder* rec)
         {
                 [engine startAndReturnError: nil];
                 previousTS = CACurrentMediaTime() * 1000;
@@ -188,7 +177,7 @@ public:
                 {
                         r += CACurrentMediaTime() * 1000 - previousTS;
                 }
-                return [NSNumber numberWithInt: (int)r];
+                return [NSNumber numberWithInt: r];
         }
         virtual NSNumber* dbPeakProgress()
         {
@@ -245,9 +234,9 @@ public:
                 [audioRecorder stop];
         }
         
-        void startRecorder(FlautoRecorder* rec)
+        void startRecorder(FlutterSoundRecorder* rec)
         {
-                  // TODO // !!! [audioRecorder setDelegate: rec];
+                  [audioRecorder setDelegate: rec];
                   [audioRecorder record];
                   [audioRecorder setMeteringEnabled: YES];
         }
@@ -288,7 +277,7 @@ public:
 
 //-------------------------------------------------------------------------------------------------------------------------------------
 
-/* TODO
+
 static bool _isIosEncoderSupported [] =
 {
      		true, // DEFAULT
@@ -307,7 +296,6 @@ static bool _isIosEncoderSupported [] =
                 false, // amrWB
 
 };
-*/
 
 static NSString* defaultExtensions [] =
 {
@@ -328,7 +316,6 @@ static NSString* defaultExtensions [] =
 
 };
 
-/* TODO
 static AudioFormatID formats [] =
 {
           kAudioFormatMPEG4AAC          // CODEC_DEFAULT
@@ -347,12 +334,10 @@ static AudioFormatID formats [] =
         , kAudioFormatAMR_WB            // amrWB
 };
 
-*/
+
 AudioRecInterface* audioRec;
 
-typedef int FlutterResult;
-
-@implementation FlautoRecorder
+@implementation FlutterSoundRecorder
 {
         //NSURL *audioFileURL;
         NSTimer* dbPeakTimer;
@@ -362,26 +347,30 @@ typedef int FlutterResult;
 }
 
 
-- (FlautoRecorder*)init
+- (FlutterSoundRecorder*)init: (FlutterMethodCall*)call
 {
-        return [super init];
-}
-- (void)initializeFlautoRecorder 
-{
-        // TODO //[self setAudioFocus: call result: result];
-        
+        return [super init: call];
 }
 
-- (void)releaseFlautoRecorder 
+-(FlutterSoundRecorderManager*) getPlugin
 {
-        // TODO // [super releaseSession];
-        // TODO // result([NSNumber numberWithBool: YES]);
+        return flutterSoundRecorderManager;
+}
+
+- (void)initializeFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
+{
+        [self setAudioFocus: call result: result];}
+
+- (void)releaseFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
+{
+        [super releaseSession];
+        result([NSNumber numberWithBool: YES]);
 }
 
 - (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result
 {
-        // TODO // NSNumber* b = [NSNumber numberWithBool: _isIosEncoderSupported[codec] ];
-        // TODO // result(b);
+        NSNumber* b = [NSNumber numberWithBool: _isIosEncoderSupported[codec] ];
+        result(b);
 }
 
 
@@ -423,9 +412,8 @@ AVAudioSessionPort tabSessionPort [] =
 
 
 
-- (void)setAudioFocus
+- (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result
 {
-/* TODO
         BOOL r = [self setAudioFocus: call ];
         if (r)
                 result((@"setAudioFocus"));
@@ -434,13 +422,11 @@ AVAudioSessionPort tabSessionPort [] =
                                 errorWithCode:@"Audio Player"
                                 message:@"Open session failure"
                                 details:nil];
-                                */
 }
 
 
-- (void)startRecorder
+- (void)startRecorder :(FlutterMethodCall*)call result:(FlutterResult)result
 {
-/* TODO
            path = (NSString*)call.arguments[@"path"];
            NSNumber* sampleRateArgs = (NSNumber*)call.arguments[@"sampleRate"];
            NSNumber* numChannelsArgs = (NSNumber*)call.arguments[@"numChannels"];
@@ -513,7 +499,6 @@ AVAudioSessionPort tabSessionPort [] =
           [self startRecorderTimer];
 
            result(path);
-           */
 }
 
 
@@ -530,7 +515,7 @@ AVAudioSessionPort tabSessionPort [] =
                 delete audioRec;
                 audioRec = nil;
           }
-          // TODO // result(path);
+          result(path);
 }
 
 
@@ -564,25 +549,25 @@ AVAudioSessionPort tabSessionPort [] =
 }
 
 
-- (void)setSubscriptionDuration
+- (void)setSubscriptionDuration:(FlutterMethodCall*)call result: (FlutterResult)result
 {
-        // TODO // NSNumber* milliSec = (NSNumber*)call.arguments[@"duration"];
-        // TODO // subscriptionDuration = [milliSec doubleValue]/1000;
-        // TODO // result(@"setSubscriptionDuration");
+        NSNumber* milliSec = (NSNumber*)call.arguments[@"duration"];
+        subscriptionDuration = [milliSec doubleValue]/1000;
+        result(@"setSubscriptionDuration");
 }
 
-- (void)pauseRecorder
+- (void)pauseRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
 {
         audioRec ->pauseRecorder();
         [self stopRecorderTimer];
-        // TODO // result(@"Recorder is Paused");
+        result(@"Recorder is Paused");
 }
 
-- (void)resumeRecorder
+- (void)resumeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
 {
         audioRec ->resumeRecorder();
         [self startRecorderTimer];
-        // TODO // result(@"Recorder is Resumed");
+        result(@"Recorder is Resumed");
 }
 
 
@@ -590,12 +575,12 @@ AVAudioSessionPort tabSessionPort [] =
 - (void)updateRecorderProgress:(NSTimer*) atimer
 {
         assert (recorderTimer == atimer);
-        // TODO NSNumber* duration = audioRec ->recorderProgress();
+        NSNumber* duration = audioRec ->recorderProgress();
 
-        // TODO NSNumber * normalizedPeakLevel = audioRec ->dbPeakProgress();
+        NSNumber * normalizedPeakLevel = audioRec ->dbPeakProgress();
         
-        // TODO NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"dbPeakLevel": normalizedPeakLevel, @"duration": duration};
-        // TODO [self invokeMethod:@"updateRecorderProgress" dico: dico];
+        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"dbPeakLevel": normalizedPeakLevel, @"duration": duration};
+        [self invokeMethod:@"updateRecorderProgress" dico: dico];
 }
  
 

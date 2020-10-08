@@ -28,40 +28,42 @@
 
 #import <flauto_engine_ios/FlautoRecorder.h>
 #import <AVFoundation/AVFoundation.h>
+#import <Flutter/Flutter.h>
+#import "FlutterSoundRecorder.h"
+#import "FlutterSoundRecorderManager.h"
 
 
-extern void FlautoRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
+
+extern void FlutterSoundRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
 {
-        [FlautoRecorderManager registerWithRegistrar: registrar];
+        [FlutterSoundRecorderManager registerWithRegistrar: registrar];
 }
 
 
 
 //---------------------------------------------------------------------------------------------
 
-@implementation FlautoRecorderManager
+@implementation FlutterSoundRecorderManager
 {
-        //NSMutableArray* flautoRecorderSlots;
 }
 
-FlautoRecorderManager* flautoRecorderManager; // Singleton
+FlutterSoundRecorderManager* flutterSoundRecorderManager; // Singleton
 
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
 {
         FlutterMethodChannel* aChannel = [FlutterMethodChannel methodChannelWithName:@"com.dooboolab.flutter_sound_recorder"
                                         binaryMessenger:[registrar messenger]];
-        assert (flautoRecorderManager == nil);
-        flautoRecorderManager = [[FlautoRecorderManager alloc] init];
-        flautoRecorderManager ->channel = aChannel;
-        [registrar addMethodCallDelegate:flautoRecorderManager channel:aChannel];
+        assert (flutterSoundRecorderManager == nil);
+        flutterSoundRecorderManager = [[FlutterSoundRecorderManager alloc] init];
+        flutterSoundRecorderManager ->channel = aChannel;
+        [registrar addMethodCallDelegate: flutterSoundRecorderManager channel:aChannel];
 }
 
 
-- (FlautoRecorderManager*)init
+- (FlutterSoundRecorderManager*)init
 {
         self = [super init];
-        //flautoRecorderSlots = [[NSMutableArray alloc] init];
         return self;
 }
 

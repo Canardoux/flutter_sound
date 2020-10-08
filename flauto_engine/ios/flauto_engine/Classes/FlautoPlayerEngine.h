@@ -29,7 +29,7 @@
 
 
 #include "Flauto.h"
-//#import "FlautoPlayer.h"
+#import <AVFoundation/AVFoundation.h>
 
 @protocol FlautoPlayerEngineInterface <NSObject>
 

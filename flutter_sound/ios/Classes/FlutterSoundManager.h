@@ -30,7 +30,7 @@
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface Session : NSObject 
+@interface Session : NSObject
 {
       int slotNo;
       BOOL hasFocus;
@@ -44,12 +44,14 @@
 - (void)invokeMethod: (NSString*)methodName numberArg: (NSNumber*)arg;
 - (BOOL)setAudioFocus: (FlutterMethodCall*)call ;
 - (int)getSlotNo;
+- (void)freeSlot: (int)slotNo;
+- (void)invokeMethod: (NSString*)methodName arguments: (NSDictionary*)call;
 
 
 @end
 
 
-@interface FlutterSoundManager : NSObject
+@interface FlutterSoundManager : NSObject <FlutterPlugin>
 {
         FlutterMethodChannel* channel;
 }

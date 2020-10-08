@@ -21,7 +21,8 @@
 
 
 #import "FlutterSoundPlayer.h"
-#import "TrackPlayer.h"
+#import "FlutterSoundPlayerManager.h"
+#import "FlautoTrackPlayer.h"
 #import <AVFoundation/AVFoundation.h>
 
 
@@ -49,20 +50,20 @@ FlutterSoundPlayerManager* flutterSoundPlayerManager; // Singleton
 }
 
 
-- (FlautoPlayerManager*)init
+- (FlutterSoundPlayerManager*)init
 {
         self = [super init];
         return self;
 }
 
-extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
+extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 {
         [FlutterSoundPlayerManager registerWithRegistrar: registrar];
 }
 
-- (FlautoPlayerManager*)getManager
+- (FlutterSoundPlayerManager*)getManager
 {
-        return flautoPlayerManager;
+        return flutterSoundPlayerManager;
 }
 
 
@@ -73,7 +74,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
         if ([@"initializeMediaPlayer" isEqualToString:call.method])
         {
-                        aFlautoPlayer = [[FlutterSoundPlayer alloc] init: call];
+                aFlautoPlayer = [[FlutterSoundPlayer alloc] init: call];
                 [aFlautoPlayer initializeFlautoPlayer: call result:result];
         } else
 
