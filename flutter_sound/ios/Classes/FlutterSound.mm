@@ -1,6 +1,6 @@
 //
-//  Flauto.h
-//  Pods
+//  Flauto.m
+//  flauto
 //
 //  Created by larpoux on 24/03/2020.
 //
@@ -22,14 +22,27 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef Flauto_h
-#define Flauto_h
-
-#import <Flutter/Flutter.h>
-#import <AVFoundation/AVFoundation.h>
 
 
 
+#import "FlutterFfmpegPlugin.h"
+
+#import "FlutterSound.h"
+#import "FlutterSoundPlayerManager.h"
+#import "FlautoRecorderManager.h"
+
+@implementation FlutterSound
+{
+}
 
 
-#endif /* Flauto_h */
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
+{
+        FlautoPlayerReg(registrar);
+        FlautoRecorderReg(registrar);
+        #ifdef FULL_FLAVOR
+                FfmpegReg(registrar);
+        #endif
+}
+
+@end

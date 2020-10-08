@@ -1,3 +1,9 @@
+//
+//  Flauto.h
+//  Pods
+//
+//  Created by larpoux on 24/03/2020.
+//
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
  *
@@ -16,12 +22,18 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#ifndef FlutterSound_h
+#define FlutterSound_h
 
+#import <Flutter/Flutter.h>
+#import <AVFoundation/AVFoundation.h>
+#import <flauto_engine_ios/FlautoEngine.h>
 
-#import <Foundation/Foundation.h>
-#import "FlautoEngine.h"
-
-FlautoEngine* theFlautoEngine = [[FlautoEngine alloc] init]; // The singleton
-@implementation FlautoEngine
+@interface FlutterSound : NSObject <FlutterPlugin, AVAudioPlayerDelegate>
+{
+}
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar;
 
 @end
+
+#endif /* FlutterSound_h */

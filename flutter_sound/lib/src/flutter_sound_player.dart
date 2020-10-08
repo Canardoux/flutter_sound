@@ -375,21 +375,44 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   void pause(int state)  async {
     print( 'FS:---> pause ' );
     await lock.synchronized(() async {
-      //int state = call['arg'] as int;
+      int state = call['arg'] as int;
       assert (state != null);
       playerState = PlayerState.values[state];
 
       bool b = (
                   playerState == PlayerState.isPaused
       );
-      if (onPaused != null)
+      if (onPaused != null) // Probably always true
       {
-        // Probably always true
+        
         onPaused( !b );
       }
     });
     print('FS:<--- pause ');
   }
+
+
+  @override
+  void resume(int state)  async {
+    print( 'FS:---> pause ' );
+    await lock.synchronized(() async {
+      int state = call['arg'] as int;
+      assert (state != null);
+      playerState = PlayerState.values[state];
+
+      bool b = (
+                  playerState == PlayerState.isPaused
+      );
+      if (onPaused != null) // Probably always true
+      {
+        
+        onPaused( !b );
+      }
+    });
+    print('FS:<--- pause ');
+  }
+
+ 
 
   bool needToConvert(Codec codec) {
     print('FS:---> needToConvert ');

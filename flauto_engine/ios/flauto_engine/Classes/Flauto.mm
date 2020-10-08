@@ -1,9 +1,3 @@
-//
-//  Flauto.m
-//  flauto
-//
-//  Created by larpoux on 24/03/2020.
-//
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
  *
@@ -24,31 +18,10 @@
 
 
 
+#import <Foundation/Foundation.h>
+#import "Flauto.h"
 
-#import "FlutterFfmpegPlugin.h"
-
-#import "flauto.h"
-#import "FlautoPlayerManager.h"
-#import "FlautoRecorderManager.h"
-//#import "FlutterSoundPlayer.h"
-//#import "FlutterSoundRecorder.h"
-//#import "TrackPlayer.h"
-//#import <AVFoundation/AVFoundation.h>
-//#import <Foundation/Foundation.h>
-
-
+Flauto* theFlautoEngine = [[Flauto alloc] init]; // The singleton
 @implementation Flauto
-{
-}
-
-
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
-{
-        FlautoPlayerReg(registrar);
-        FlautoRecorderReg(registrar);
-        #ifdef FULL_FLAVOR
-                FfmpegReg(registrar);
-        #endif
-}
 
 @end

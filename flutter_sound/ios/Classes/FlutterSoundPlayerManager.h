@@ -17,21 +17,21 @@
  */
 
 
-#ifndef FlautoPlayerManager_h
-#define FlautoPlayerManager_h
+#ifndef FlutterSoundPlayerManager_h
+#define FlutterSoundPlayerManager_h
 
-#import "FlautoManager.h"
+#import "FlutterSoundManager.h"
 
 extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 
-@interface FlautoPlayerManager : FlautoManager
+@interface FlutterSoundPlayerManager : FlutterSoundManager
 {
 }
-extern FlautoPlayerManager* flautoPlayerManager; // Singleton
+extern FlutterSoundPlayerManager* flutterSoundPlayerManager; // Singleton
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar;
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result;
 
 @end
 
-#endif //FlautoPlayerManager_h 
+#endif //FlutterSoundPlayerManager_h 

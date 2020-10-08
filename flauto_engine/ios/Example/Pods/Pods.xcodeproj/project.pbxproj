@@ -7,30 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		03065065F220BD48B0B28A4E4A4C475C /* FlautoEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06E043AD73163BB9DB2F364F783B6C9C /* FlautoEngine.mm */; };
 		20522351F75CA883959795312966567B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CA76C0749A083718F810629A2649BF2 /* Foundation.framework */; };
-		266B91955D7FBD36D7A7557355E11EEC /* FlautoTrackPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 13BA67E2A5F0379700A22C1C23835F7C /* FlautoTrackPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		353BAA9D8A512A523CDCB086F287A704 /* Track.h in Headers */ = {isa = PBXBuildFile; fileRef = BEA6800FDF3D5E908063E59CA1AE8162 /* Track.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3822E3A8A942E70654E3E0E35F1A5654 /* Pods-flauto_engine_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E29CAA9FE1A877C5091D74494D59049F /* Pods-flauto_engine_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4454250F278B05274A85078964791960 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFBBED95DE2C7A95C2A22A67A162850 /* MediaPlayer.framework */; };
-		4C5FC465BF9B7BDF2E590018F6107983 /* FlautoPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3ACF188AE132DDABE8C83696BD6C30B5 /* FlautoPlayer.mm */; };
 		4F76308BC56131E5C82818E379A379F9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CA76C0749A083718F810629A2649BF2 /* Foundation.framework */; };
-		5059AD6A4C811417C5F454923F4A53B3 /* PlayerEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = F5BCA6D0DF6EE7CEBE25998B7EF1B5B8 /* PlayerEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5511DC8481573A8D7817E6058E36ED02 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CA76C0749A083718F810629A2649BF2 /* Foundation.framework */; };
-		560D71AD1B15331FE46117669B6F273A /* FlautoTrackPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9F3E4103BD4AC8F54C57450E5C0D959 /* FlautoTrackPlayer.mm */; };
 		5CD42836F99E4540E1EF1C6CE2F1E364 /* flauto_engine_ios-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C07442B732015BB8C9D4BBEE8F7AB758 /* flauto_engine_ios-dummy.m */; };
-		5DAA872EF28E22B291EA78C9FB9B15D2 /* AudioSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28E2F7BDCE33AB1D7A8EC14D0CA2F4DF /* AudioSession.mm */; };
-		6A06F5829CEC130F76F7CB561CCFF1F3 /* FlautoRecorder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7561BC78EF20D6B868C7ADF7715E6284 /* FlautoRecorder.mm */; };
 		6B3883E2F0EC26FA6CE6F34F6189ECF9 /* Pods-flauto_engine_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 921A5627A61E2AC1BD7EBF556585AB09 /* Pods-flauto_engine_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		718D4B6905D63CF116B7995F481E256A /* FlautoEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 927164B4410AEB0A5E8305FED715ABE2 /* FlautoEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		96C6EC581FC92733FFA53FEA3073DB88 /* Pods-flauto_engine_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFC6C3D79F945604F17604B7FCAC75A /* Pods-flauto_engine_Tests-dummy.m */; };
-		A18D6249D4C7B930B31A4A3D5513A98C /* Track.mm in Sources */ = {isa = PBXBuildFile; fileRef = 484DB70532CD2CB1ACFBD2E73DDAA8ED /* Track.mm */; };
-		B1F6D01BD3491F876DF5094096D125B7 /* FlautoPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 78FA08A1446BF8CAC33BEF386751E656 /* FlautoPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C274B8CB5C292A46BD0618F108BC2A18 /* Pods-flauto_engine_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 91BA5F5F48C8B7A89B4D476E8BEF4FC1 /* Pods-flauto_engine_Example-dummy.m */; };
-		D43FF61C979F926F481FACBDCA515250 /* PlayerEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF5B7CE119FB5F8AF94929A5952F56D4 /* PlayerEngine.mm */; };
-		DC263E89373FC40F840F034327AF0A8A /* AudioSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 97DCB0EAFBA8F2B5864562E22CD0D2EF /* AudioSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DD13AC97B544ECC98A52F55F2F345080 /* flauto_engine_ios-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E4715B1CF77A4CB2678D920A9A8F7D59 /* flauto_engine_ios-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E1DEA10C41138BA16FF51A1A953E56C4 /* FlautoRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = DC7A50F14C9F5B7F9590F86089C4BE5F /* FlautoRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F68178D94A3F7F55AECA7EC5FB86D5A4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 721754999D10B6CD690106DAF6FF1D2D /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -52,52 +38,38 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		023F13CC317859E354816A7604858E20 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
-		06E043AD73163BB9DB2F364F783B6C9C /* FlautoEngine.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = FlautoEngine.mm; path = flauto_engine/ios/flauto_engine/Classes/FlautoEngine.mm; sourceTree = "<group>"; };
+		023F13CC317859E354816A7604858E20 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		10684FEDB531B22B59B3BD318438BE76 /* Pods-flauto_engine_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-flauto_engine_Example.release.xcconfig"; sourceTree = "<group>"; };
-		13BA67E2A5F0379700A22C1C23835F7C /* FlautoTrackPlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FlautoTrackPlayer.h; path = flauto_engine/ios/flauto_engine/Classes/FlautoTrackPlayer.h; sourceTree = "<group>"; };
 		1F8A6C4EB4A1611722A35FD2AABC596A /* Pods-flauto_engine_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-flauto_engine_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		264592DFE38E5E6B302E8B8BF4F903DE /* flauto_engine_ios-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "flauto_engine_ios-prefix.pch"; sourceTree = "<group>"; };
 		27166D3E1AAEE612E3A5902901B3C33A /* Pods-flauto_engine_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-flauto_engine_Example.modulemap"; sourceTree = "<group>"; };
-		28E2F7BDCE33AB1D7A8EC14D0CA2F4DF /* AudioSession.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = AudioSession.mm; path = flauto_engine/ios/flauto_engine/Classes/AudioSession.mm; sourceTree = "<group>"; };
-		29C6FA31EFEB0B4C8C1B5CD9333AC461 /* Pods_flauto_engine_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_flauto_engine_Example.framework; path = "Pods-flauto_engine_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2F578F031E53ECF1CFD808F959A8FE02 /* flauto_engine_ios.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = flauto_engine_ios.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		3ACF188AE132DDABE8C83696BD6C30B5 /* FlautoPlayer.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = FlautoPlayer.mm; path = flauto_engine/ios/flauto_engine/Classes/FlautoPlayer.mm; sourceTree = "<group>"; };
+		29C6FA31EFEB0B4C8C1B5CD9333AC461 /* Pods_flauto_engine_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_flauto_engine_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F578F031E53ECF1CFD808F959A8FE02 /* flauto_engine_ios.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = flauto_engine_ios.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3ECEA340D81D1F02F14D8F7A6A3676C5 /* flauto_engine_ios-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "flauto_engine_ios-Info.plist"; sourceTree = "<group>"; };
-		433CC6CFE8A04E928FBA8818804D4336 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		433CC6CFE8A04E928FBA8818804D4336 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		47FA4D5402C0599D9B49BCA072EF2C4F /* Pods-flauto_engine_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-flauto_engine_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		484DB70532CD2CB1ACFBD2E73DDAA8ED /* Track.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = Track.mm; path = flauto_engine/ios/flauto_engine/Classes/Track.mm; sourceTree = "<group>"; };
 		4FFBBED95DE2C7A95C2A22A67A162850 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
-		6F7D29959FD2CB0E820BD5E8FF0F75B8 /* flauto_engine_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = flauto_engine_ios.framework; path = flauto_engine_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F7D29959FD2CB0E820BD5E8FF0F75B8 /* flauto_engine_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = flauto_engine_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		721754999D10B6CD690106DAF6FF1D2D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
-		7561BC78EF20D6B868C7ADF7715E6284 /* FlautoRecorder.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = FlautoRecorder.mm; path = flauto_engine/ios/flauto_engine/Classes/FlautoRecorder.mm; sourceTree = "<group>"; };
-		78FA08A1446BF8CAC33BEF386751E656 /* FlautoPlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FlautoPlayer.h; path = flauto_engine/ios/flauto_engine/Classes/FlautoPlayer.h; sourceTree = "<group>"; };
 		7B343092B57592C19D12582C9D4A36CF /* Pods-flauto_engine_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-flauto_engine_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		889383A3F366C0C440C86D14CAC62912 /* flauto_engine_ios.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = flauto_engine_ios.modulemap; sourceTree = "<group>"; };
 		8CA76C0749A083718F810629A2649BF2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		90AE5D32D7D53B26184C4BE46EFFA9BD /* Pods-flauto_engine_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-flauto_engine_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		91BA5F5F48C8B7A89B4D476E8BEF4FC1 /* Pods-flauto_engine_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-flauto_engine_Example-dummy.m"; sourceTree = "<group>"; };
 		921A5627A61E2AC1BD7EBF556585AB09 /* Pods-flauto_engine_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-flauto_engine_Example-umbrella.h"; sourceTree = "<group>"; };
-		927164B4410AEB0A5E8305FED715ABE2 /* FlautoEngine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FlautoEngine.h; path = flauto_engine/ios/flauto_engine/Classes/FlautoEngine.h; sourceTree = "<group>"; };
-		966E0C95A24B3D943DC77DA537A88010 /* Pods_flauto_engine_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_flauto_engine_Tests.framework; path = "Pods-flauto_engine_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		97DCB0EAFBA8F2B5864562E22CD0D2EF /* AudioSession.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AudioSession.h; path = flauto_engine/ios/flauto_engine/Classes/AudioSession.h; sourceTree = "<group>"; };
+		966E0C95A24B3D943DC77DA537A88010 /* Pods_flauto_engine_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_flauto_engine_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		99CB18BFCA4E37B5CB80D5F98EBAEC84 /* Pods-flauto_engine_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-flauto_engine_Example-Info.plist"; sourceTree = "<group>"; };
 		9B9C4017C939938F97CF11E3BC2C22E7 /* Pods-flauto_engine_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-flauto_engine_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		9D8E04EB17F98A6569222FCB5417C4FA /* flauto_engine_ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = flauto_engine_ios.release.xcconfig; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A6BC9DC985DC4BF7441B0384912CCEF4 /* Pods-flauto_engine_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-flauto_engine_Example-frameworks.sh"; sourceTree = "<group>"; };
-		AF5B7CE119FB5F8AF94929A5952F56D4 /* PlayerEngine.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = PlayerEngine.mm; path = flauto_engine/ios/flauto_engine/Classes/PlayerEngine.mm; sourceTree = "<group>"; };
-		B9F3E4103BD4AC8F54C57450E5C0D959 /* FlautoTrackPlayer.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = FlautoTrackPlayer.mm; path = flauto_engine/ios/flauto_engine/Classes/FlautoTrackPlayer.mm; sourceTree = "<group>"; };
-		BEA6800FDF3D5E908063E59CA1AE8162 /* Track.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Track.h; path = flauto_engine/ios/flauto_engine/Classes/Track.h; sourceTree = "<group>"; };
 		C07442B732015BB8C9D4BBEE8F7AB758 /* flauto_engine_ios-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "flauto_engine_ios-dummy.m"; sourceTree = "<group>"; };
 		C81177E10175BD0A160A407CE9FB3F54 /* flauto_engine_ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = flauto_engine_ios.debug.xcconfig; sourceTree = "<group>"; };
 		CB2F0B595E6E8249F4FD7CD48CA92480 /* Pods-flauto_engine_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-flauto_engine_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		D40D98B16234E95BADD67129BA283932 /* Pods-flauto_engine_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-flauto_engine_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		DC7A50F14C9F5B7F9590F86089C4BE5F /* FlautoRecorder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FlautoRecorder.h; path = flauto_engine/ios/flauto_engine/Classes/FlautoRecorder.h; sourceTree = "<group>"; };
 		DDFC6C3D79F945604F17604B7FCAC75A /* Pods-flauto_engine_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-flauto_engine_Tests-dummy.m"; sourceTree = "<group>"; };
 		E29CAA9FE1A877C5091D74494D59049F /* Pods-flauto_engine_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-flauto_engine_Tests-umbrella.h"; sourceTree = "<group>"; };
 		E4715B1CF77A4CB2678D920A9A8F7D59 /* flauto_engine_ios-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "flauto_engine_ios-umbrella.h"; sourceTree = "<group>"; };
-		F5BCA6D0DF6EE7CEBE25998B7EF1B5B8 /* PlayerEngine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PlayerEngine.h; path = flauto_engine/ios/flauto_engine/Classes/PlayerEngine.h; sourceTree = "<group>"; };
 		F60CA1E973667DB510611DD36D43A0EB /* Pods-flauto_engine_Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-flauto_engine_Tests-Info.plist"; sourceTree = "<group>"; };
 		F8ACDE61313B569D977296A33D01E4F0 /* Pods-flauto_engine_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-flauto_engine_Tests.modulemap"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -219,20 +191,6 @@
 		78E6804F04823CE40A26BAFEF111150F /* flauto_engine_ios */ = {
 			isa = PBXGroup;
 			children = (
-				97DCB0EAFBA8F2B5864562E22CD0D2EF /* AudioSession.h */,
-				28E2F7BDCE33AB1D7A8EC14D0CA2F4DF /* AudioSession.mm */,
-				927164B4410AEB0A5E8305FED715ABE2 /* FlautoEngine.h */,
-				06E043AD73163BB9DB2F364F783B6C9C /* FlautoEngine.mm */,
-				78FA08A1446BF8CAC33BEF386751E656 /* FlautoPlayer.h */,
-				3ACF188AE132DDABE8C83696BD6C30B5 /* FlautoPlayer.mm */,
-				DC7A50F14C9F5B7F9590F86089C4BE5F /* FlautoRecorder.h */,
-				7561BC78EF20D6B868C7ADF7715E6284 /* FlautoRecorder.mm */,
-				13BA67E2A5F0379700A22C1C23835F7C /* FlautoTrackPlayer.h */,
-				B9F3E4103BD4AC8F54C57450E5C0D959 /* FlautoTrackPlayer.mm */,
-				F5BCA6D0DF6EE7CEBE25998B7EF1B5B8 /* PlayerEngine.h */,
-				AF5B7CE119FB5F8AF94929A5952F56D4 /* PlayerEngine.mm */,
-				BEA6800FDF3D5E908063E59CA1AE8162 /* Track.h */,
-				484DB70532CD2CB1ACFBD2E73DDAA8ED /* Track.mm */,
 				1253E3E40C027E30B0A801F0268D03AD /* Pod */,
 				4F6BA50D63539C2BB7A0222A44395EAC /* Support Files */,
 			);
@@ -285,14 +243,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DC263E89373FC40F840F034327AF0A8A /* AudioSession.h in Headers */,
 				DD13AC97B544ECC98A52F55F2F345080 /* flauto_engine_ios-umbrella.h in Headers */,
-				718D4B6905D63CF116B7995F481E256A /* FlautoEngine.h in Headers */,
-				B1F6D01BD3491F876DF5094096D125B7 /* FlautoPlayer.h in Headers */,
-				E1DEA10C41138BA16FF51A1A953E56C4 /* FlautoRecorder.h in Headers */,
-				266B91955D7FBD36D7A7557355E11EEC /* FlautoTrackPlayer.h in Headers */,
-				5059AD6A4C811417C5F454923F4A53B3 /* PlayerEngine.h in Headers */,
-				353BAA9D8A512A523CDCB086F287A704 /* Track.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,14 +380,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DAA872EF28E22B291EA78C9FB9B15D2 /* AudioSession.mm in Sources */,
 				5CD42836F99E4540E1EF1C6CE2F1E364 /* flauto_engine_ios-dummy.m in Sources */,
-				03065065F220BD48B0B28A4E4A4C475C /* FlautoEngine.mm in Sources */,
-				4C5FC465BF9B7BDF2E590018F6107983 /* FlautoPlayer.mm in Sources */,
-				6A06F5829CEC130F76F7CB561CCFF1F3 /* FlautoRecorder.mm in Sources */,
-				560D71AD1B15331FE46117669B6F273A /* FlautoTrackPlayer.mm in Sources */,
-				D43FF61C979F926F481FACBDCA515250 /* PlayerEngine.mm in Sources */,
-				A18D6249D4C7B930B31A4A3D5513A98C /* Track.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -719,8 +663,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};

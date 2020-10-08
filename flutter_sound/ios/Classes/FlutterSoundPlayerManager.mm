@@ -31,21 +31,21 @@
 
 
 
-@implementation FlautoPlayerManager
+@implementation FlutterSoundPlayerManager
 {
 }
 
-FlautoPlayerManager* flautoPlayerManager; // Singleton
+FlutterSoundPlayerManager* flutterSoundPlayerManager; // Singleton
 
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
 {
         FlutterMethodChannel* aChannel = [FlutterMethodChannel methodChannelWithName:@"com.dooboolab.flutter_sound_player"
                                         binaryMessenger:[registrar messenger]];
-        assert (flautoPlayerManager == nil);
-        flautoPlayerManager = [[FlautoPlayerManager alloc] init];
-        flautoPlayerManager ->channel = aChannel;
-        [registrar addMethodCallDelegate:flautoPlayerManager channel: aChannel];
+        assert (flutterSoundPlayerManager == nil);
+        flutterSoundPlayerManager = [[FlutterSoundPlayerManager alloc] init];
+        flutterSoundPlayerManager ->channel = aChannel;
+        [registrar addMethodCallDelegate: flutterSoundPlayerManager channel: aChannel];
 }
 
 
@@ -57,7 +57,7 @@ FlautoPlayerManager* flautoPlayerManager; // Singleton
 
 extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 {
-        [FlautoPlayerManager registerWithRegistrar: registrar];
+        [FlutterSoundPlayerManager registerWithRegistrar: registrar];
 }
 
 - (FlautoPlayerManager*)getManager
@@ -73,11 +73,7 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
         if ([@"initializeMediaPlayer" isEqualToString:call.method])
         {
-                NSNumber* withUI = call.arguments[@"withUI"];
-                if (withUI.intValue == 0)
                         aFlautoPlayer = [[FlutterSoundPlayer alloc] init: call];
-                else
-                        aFlautoPlayer = [[TrackPlayer alloc] init: call];
                 [aFlautoPlayer initializeFlautoPlayer: call result:result];
         } else
 
@@ -148,16 +144,12 @@ extern void FlautoPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
         if ([@"iosSetCategory" isEqualToString:call.method])
         {
-                NSString* categ = (NSString*)call.arguments[@"category"];
-                NSString* mode = (NSString*)call.arguments[@"mode"];
-                NSNumber* options = (NSNumber*)call.arguments[@"options"];
-                [aFlautoPlayer setCategory: categ mode: mode options: [options intValue] result:result];
+                [aFlautoPlayer setCategory: call result:result];
         } else
 
         if ([@"setActive" isEqualToString:call.method])
         {
-                BOOL enabled = [call.arguments[@"enabled"] boolValue];
-                [aFlautoPlayer setActive:enabled result:result];
+                [aFlautoPlayer setActive: call result:result];
         } else
 
         if ( [@"getResourcePath" isEqualToString:call.method] )

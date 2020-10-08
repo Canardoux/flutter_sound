@@ -18,20 +18,15 @@
 
 
 
-
-
-#import "FlautoPlayer.h"
-#import "PlayerEngine.h"
-#import "FlautoTrackPlayer.h"
 #import <AVFoundation/AVFoundation.h>
-#import "PlayerEngine.h"
-#import "Track.h"
 
 
+#import "Flauto.h"
+#import "FlautoPlayerEngine.h"
+#import "FlautoPlayer.h"
+//#import "FlautoTrackPlayer.h"
+#import "FlautoTrack.h"
 
-#define IS_STOPPED 0
-#define IS_PLAYING 1
-#define IS_PAUSED 2
 
 
 
@@ -64,13 +59,18 @@ static bool _isIosDecoderSupported [] =
 {
         NSTimer* timer;
         double subscriptionDuration;
-        FlautoPlayerCallback* m_callBack;
-        NSObject<PlayerEngineInterface>*  m_playerEngine;
- 
+  
 
 }
 
-- (t_PLAYER_STATUS)getPlayerState
+- (FlautoPlayer*)init: (NSObject<FlautoPlayerCallback>*) callback
+{
+        m_callBack = callback;
+        return [super init];
+}
+
+
+- (t_PLAYER_STATE)getPlayerState
 {
         if ( m_playerEngine == nil )
                 return PLAYER_IS_STOPPED;
@@ -86,66 +86,71 @@ static bool _isIosDecoderSupported [] =
 
 
 
-- (void)initializeFlautoPlayer: (int)toto
+- (bool)initializeFlautoPlayerFocus:
+                (t_AUDIO_FOCUS)focus
+                category: (t_SESSION_CATEGORY)category
+                mode: (t_SESSION_MODE)mode
+                audioFlags: (int)audioFlags
+                audioDevice: (t_AUDIO_DEVICE)audioDevice
 {
         NSLog(@"IOS:--> initializeFlautoPlayer");
-        /* TODO
-        BOOL r = [self setAudioFocus: call ];
-        [self invokeMethod:@"openAudioSessionCompleted" boolArg: r];
-
-        if (r)
-                result( [self getPlayerStatus]);
-        else
-                [FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"Open session failure"
-                                details:nil];
-        */
+        BOOL r = [self setAudioFocus: focus category: category mode: mode audioFlags: audioFlags audioDevice: audioDevice ];
+        [m_callBack openAudioSessionCompleted: r];
         NSLog(@"IOS:<-- initializeFlautoPlayer");
+        return r;
+}
+
+
+- (void)releaseFlautoPlayer
+{
+        NSLog(@"IOS:--> releaseFlautoPlayer");
+        NSLog(@"IOS:<-- releaseFlautoPlayer");
+}
+
+
+- (bool)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options
+{
+        NSLog(@"IOS:--> setCategory");
+        BOOL b = [[AVAudioSession sharedInstance]
+                setCategory:  categ // AVAudioSessionCategoryPlayback
+                mode: mode
+                options: options
+                error: nil];
+        if (b){}
+
+      NSLog(@"IOS:<-- setCategory");
+      return b;
 }
 
 
 
-- (void)updateProgress:(NSTimer*) atimer
+- (bool)setActive: (BOOL)enabled
 {
-        dispatch_async(dispatch_get_main_queue(),
-        ^{
-                // TODO NSNumber *position = [NSNumber numberWithLong: [self ->m_playerEngine getPosition]];
-                // TODO NSNumber *duration = [NSNumber numberWithLong: [self ->m_playerEngine getDuration]];
-                // TODO NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"position": position, @"duration": duration, @"playerStatus": [self getPlayerStatus] };
-                // TODO [self invokeMethod:@"updateProgress" dico: dico];
-        });
+       BOOL b = [[AVAudioSession sharedInstance]  setActive:enabled error:nil] ;
+       return b;
 }
 
 
-- (void)startTimer
+- (void)stopPlayer
 {
-        NSLog(@"IOS:--> startTimer");
+        NSLog(@"IOS:--> stopPlayer");
         [self stopTimer];
-        dispatch_async(dispatch_get_main_queue(), ^{ // ??? Why Async ?  (no async for recorder)
-        self ->timer = [NSTimer scheduledTimerWithTimeInterval: self ->subscriptionDuration
-                                           target:self
-                                           selector:@selector(updateProgress:)
-                                           userInfo:nil
-                                           repeats:YES];
-        });
-        NSLog(@"IOS:<-- startTimer");
-}
-
-
-- (void) stopTimer{
-        NSLog(@"IOS:--> stopTimer");
-        if (timer != nil) {
-                [timer invalidate];
-                timer = nil;
+        if ( ([self getStatus] == PLAYER_IS_PLAYING) || ([self getStatus] == PLAYER_IS_PAUSED) )
+        {
+                NSLog(@"IOS: ![audioPlayer stop]");
+                [m_playerEngine stop];
         }
-        NSLog(@"IOS:<-- stopTimer");}
+        m_playerEngine = nil;
+        NSLog(@"IOS:<-- stopPlayer");
+}
 
 
 
 - (bool)startPlayerCodec: (t_CODEC)codec
         fromURI: (NSString*)path
         fromDataBuffer: (NSData*)dataBuffer
+        channels: (int)numChannels
+        sampleRate: (long)sampleRate
 {
         NSLog(@"IOS:--> startPlayer");
         bool b = FALSE;
@@ -158,25 +163,20 @@ static bool _isIosDecoderSupported [] =
         [self stopPlayer]; // To start a fresh new playback
 
         if ( (path == nil ||  [path class] == [NSNull class] ) && codec == pcm16)
-                m_playerEngine = [[AudioEngine alloc] init: self ]; // TODOaudioSettings: call.arguments];
+                m_playerEngine = [[AudioEngine alloc] init: self ];
         else
                 m_playerEngine = [[AudioPlayer alloc]init: self];
-        if ([dataBuffer class] != [NSNull class])
+        if (dataBuffer != nil)
         {
-                b = [m_playerEngine startPlayerFromBuffer: dataBuffer];
+                b = [m_playerEngine startPlayerFromBuffer: dataBuffer ];
                 if (!b)
                 {
                         [self stopPlayer];
                 } else
                 {
                         [self startTimer];
-                        // TODO // long duration = [m_playerEngine getDuration];
-                        // TODO // int d = (int)duration;
-                        // TODO // NSNumber* nd = [NSNumber numberWithInt: d];
-                        // TODO // NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"state":  [self getPlayerStatus], @"duration": nd };
-                        // TODO //[self invokeMethod:@"startPlayerCompleted" dico: dico ];
-
-                        // TODO //result([self getPlayerStatus]);
+                        long duration = [m_playerEngine getDuration];
+                        [ m_callBack startPlayerCompleted: duration];
                 }
                 NSLog(@"IOS:<-- startPlayer");
                 return b;
@@ -209,64 +209,92 @@ static bool _isIosDecoderSupported [] =
                                                 [self stopPlayer];
                                         } else
                                         {
-                                                // TODO //long duration = [self ->m_playerEngine getDuration];
-                                                // TODO //int d = (int)duration;
-                                                // TODO //NSNumber* nd = [NSNumber numberWithInt: d];
-                                                // TODO //NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"state":  [self getPlayerStatus], @"duration": nd };
-                                                // TODO //[self invokeMethod:@"startPlayerCompleted" dico: dico ];
+                                                [self startTimer];
+                                                long duration = [self ->m_playerEngine getDuration];
+                                                [ self ->m_callBack startPlayerCompleted: duration];
                                         }
-                                        //return b;
                                 }];
 
                         [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-                        // TODO // NSString *filePath = audioFileURL.absoluteString;
                         [downloadTask resume];
-                        [self startTimer];
+                        //[self startTimer];
                         NSLog(@"IOS:<-- startPlayer");
                         return true;
 
                 } else
                 {
-                        b = [m_playerEngine startPlayerFromURL: audioFileURL];
+                        b = [m_playerEngine startPlayerFromURL: audioFileURL codec: codec channels: numChannels sampleRate: sampleRate];
                 }
         } else
         {
-                b = [m_playerEngine startPlayerFromURL: nil];
+                b = [m_playerEngine startPlayerFromURL: nil codec: codec channels: numChannels sampleRate: sampleRate];
         }
         if (b)
         {
-                /* TODO
-                long duration = [m_playerEngine getDuration];
-                int d = (int)duration;
-                NSNumber* nd = [NSNumber numberWithInt: d];
-                NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"state":  [self getPlayerStatus], @"duration": nd };
-                [self invokeMethod:@"startPlayerCompleted" dico: dico ];
-                */
                 [self startTimer];
+                long duration = [m_playerEngine getDuration];
+                [ m_callBack startPlayerCompleted: duration];
         }
         NSLog(@"IOS:<-- startPlayer");
         return b;
 }
 
-- (bool)startPlayerFromTrack: (Track*)track
+
+- (void)needSomeFood: (int) ln
+{
+        [m_callBack needSomeFood: ln];
+}
+
+- (void)updateProgress:(NSTimer*) atimer
+{
+         dispatch_async(dispatch_get_main_queue(), ^{
+                long position = [self ->m_playerEngine getPosition];
+                long duration = [self ->m_playerEngine getDuration];
+                [self ->m_callBack updateProgressPositon: position duration: duration];
+         });
+}
+
+
+- (void)startTimer
+{
+        NSLog(@"IOS:--> startTimer");
+        [self stopTimer];
+        dispatch_async(dispatch_get_main_queue(), ^{ // ??? Why Async ?  (no async for recorder)
+        self ->timer = [NSTimer scheduledTimerWithTimeInterval: self ->subscriptionDuration
+                                           target:self
+                                           selector:@selector(updateProgress:)
+                                           userInfo:nil
+                                           repeats:YES];
+        });
+        NSLog(@"IOS:<-- startTimer");
+}
+
+
+- (void) stopTimer{
+        NSLog(@"IOS:--> stopTimer");
+        if (timer != nil) {
+                [timer invalidate];
+                timer = nil;
+        }
+        NSLog(@"IOS:<-- stopTimer");}
+
+
+- (bool)startPlayerFromTrack: (Track*)track canPause: (bool)canPause canSkipForward: (bool)canSkipForward canSkipBackward: (bool)canSkipBackward
+        progress: (NSNumber*)progress duration: (NSNumber*)duration removeUIWhenStopped: (bool)removeUIWhenStopped defaultPauseResume: (bool)defaultPauseResume;
 {
         assert(false);
 }
 
 
-
-
-
-
 - (bool)pausePlayer
 {
-        NSLog(@"IOS:--> pause");
+        NSLog(@"IOS:--> pausePlayer");
         if (timer != nil)
         {
                 [timer invalidate];
                 timer = nil;
         }
-        if ([self getStatus] == IS_PLAYING)
+        if ([self getStatus] == PLAYER_IS_PLAYING)
         {
                 [m_playerEngine pause];
         }
@@ -274,8 +302,8 @@ static bool _isIosDecoderSupported [] =
                 NSLog(@"IOS: audioPlayer is not Playing");
 
          /*
-        long position =   [m_playerEngine getPosition];
-        long duration =   [m_playerEngine getDuration];
+         long position =   [m_playerEngine getPosition];
+         long duration =   [m_playerEngine getDuration];
          if (duration - position < 80) // PATCH [LARPOUX]
           {
                 NSLog (@"IOS: !patch [LARPOUX]");
@@ -290,7 +318,7 @@ static bool _isIosDecoderSupported [] =
           */
 
 
-          bool b =  ( [self getStatus] == IS_PAUSED);
+          bool b =  ( [self getStatus] == PLAYER_IS_PAUSED);
           if (!b)
           {
                 NSLog(@"IOS: AudioPlayer : cannot pause!!!");
@@ -300,6 +328,11 @@ static bool _isIosDecoderSupported [] =
           return b;
 
 }
+
+
+
+
+
 
 - (bool)resumePlayer
 {
@@ -333,7 +366,7 @@ static bool _isIosDecoderSupported [] =
                 }
                 [self startTimer];
         }
-        bool b = ([self getStatus] == IS_PLAYING);
+        bool b = ([self getStatus] == PLAYER_IS_PLAYING);
         if (!b)
         {
                  NSLog(@"IOS: AudioPlayer : cannot resume!!!");
@@ -343,288 +376,21 @@ static bool _isIosDecoderSupported [] =
 }
 
 
-- (void)setUIProgressBar: (double)call
+
+
+- (void)setUIProgressBar: (NSNumber*)pos duration: (NSNumber*)duration
 {
         assert(false);
 }
 
-- (void)nowPlaying: (Track*)track
+- (void)nowPlaying: (Track*)track canPause: (bool)canPause canSkipForward: (bool)canSkipForward canSkipBackward: (bool)canSkipBackward
+                defaultPauseResume: (bool)defaultPauseResume progress: (NSNumber*)progress duration: (NSNumber*)duration
+
 {
         assert(false);
 }
 
 
-/* TODO
-
-
-- (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result
-{
-        NSLog(@"IOS:--> setAudioFocus");
-        BOOL r = [self setAudioFocus: call ];
-        if (r)
-                result([self getPlayerStatus]);
-        else
-                [FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"Open session failure"
-                                details:nil];
-        NSLog(@"IOS:<-- setAudioFocus");
-       
-}
-
-
-- (void)releaseFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
-{
-        NSLog(@"IOS:--> releaseFlautoPlayer");
-        [super releaseSession];
-        result([self getPlayerStatus]);
-        NSLog(@"IOS:<-- releaseFlautoPlayer");
-}
-*/
-
-- (bool)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options
-{
-       NSLog(@"IOS:--> setCategory");
-         // Able to play in silent mode
-        BOOL b = [[AVAudioSession sharedInstance]
-                setCategory:  categ // AVAudioSessionCategoryPlayback
-                mode: mode
-                options: options
-                error: nil];
-        if (b){}
-
-      NSLog(@"IOS:<-- setCategory");
-      return b;
-}
-
-
-- (bool)setActive:(BOOL)enabled
-{
-       BOOL b = [[AVAudioSession sharedInstance]  setActive:enabled error:nil] ;
-       return b;
-}
-
-
-- (void)stopPlayer
-{
-        NSLog(@"IOS:--> stopPlayer");
-        [self stopTimer];
-        if ( ([self getStatus] == IS_PLAYING) || ([self getStatus] == IS_PAUSED) )
-        {
-                NSLog(@"IOS: ![audioPlayer stop]");
-                [m_playerEngine stop];
-        }
-        m_playerEngine = nil;
-        NSLog(@"IOS:<-- stopPlayer");
-}
-
-
-
-/*
-- (void)startPlayer:(FlutterMethodCall*)call result: (FlutterResult)result
-{
-        NSLog(@"IOS:--> startPlayer");
-        bool b = FALSE;
-        if (!hasFocus) // We always acquire the Audio Focus (It could have been released by another session)
-        {
-                hasFocus = TRUE;
-                b = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
-        }
-
-        [self stopPlayer]; // To start a fresh new playback
-
-        NSString* path = (NSString*)call.arguments[@"fromURI"];
-        t_CODEC codec = (t_CODEC)([(NSNumber*)call.arguments[@"codec"] intValue]);
-        if ( (path == nil ||  [path class] == [NSNull class] ) && codec == pcm16)
-                player = [[AudioPlayerEngine alloc] init: self audioSettings: call.arguments];
-        else
-                player = [[AudioPlayer alloc]init: self];
-        FlutterStandardTypedData* dataBuffer = (FlutterStandardTypedData*)call.arguments[@"fromDataBuffer"];
-        if ([dataBuffer class] != [NSNull class])
-        {
-                b = [player startPlayerFromBuffer:  [dataBuffer data] ];
-                if (!b)
-                {
-                        [self stopPlayer];
-                        [FlutterError
-                        errorWithCode:@"Audio Player"
-                        message:@"Play failure"
-                        details:nil];
-                } else
-                {
-                        [self startTimer];
-                        long duration = [player getDuration];
-                        int d = (int)duration;
-                        NSNumber* nd = [NSNumber numberWithInt: d];
-                        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"state":  [self getPlayerStatus], @"duration": nd };
-                        [self invokeMethod:@"startPlayerCompleted" dico: dico ];
-
-                        result([self getPlayerStatus]);
-                }
-                NSLog(@"IOS:<-- startPlayer");
-                return;
-        }
-
-        bool isRemote = false;
-   
-        if (path != [NSNull null])
-        {
-                NSURL* remoteUrl = [NSURL URLWithString: path];
-                NSURL* audioFileURL = [NSURL URLWithString:path];
-        
-                if (remoteUrl && remoteUrl.scheme && remoteUrl.host)
-                {
-                        audioFileURL = remoteUrl;
-                        isRemote = true;
-                }
-
-                  if (isRemote)
-                  {
-                        NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
-                                dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError* error)
-                        {
-
-                                // We must create a new Audio Player instance to be able to play a different Url
-                                bool b = [player startPlayerFromBuffer: data];
-                                if (!b)
-                                {
-                                        [self stopPlayer];
-                                        return;
-                                }
-                                long duration = [player getDuration];
-                                int d = (int)duration;
-                                NSNumber* nd = [NSNumber numberWithInt: d];
-                                NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"state":  [self getPlayerStatus], @"duration": nd };
-                                [self invokeMethod:@"startPlayerCompleted" dico: dico ];
-                                return;
-                        }];
-
-                        [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-                        NSString *filePath = audioFileURL.absoluteString;
-                        [downloadTask resume];
-                        [self startTimer];
-                        result([self getPlayerStatus]);
-                        NSLog(@"IOS:<-- startPlayer");
-                        return;
-
-                } else
-                {
-                        b = [player startPlayerFromURL: audioFileURL];
-                }
-        } else
-        {
-                b = [player startPlayerFromURL: nil];
-        }
-        if (b)
-        {
-                long duration = [player getDuration];
-                int d = (int)duration;
-                NSNumber* nd = [NSNumber numberWithInt: d];
-                NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"state":  [self getPlayerStatus], @"duration": nd };
-                [self invokeMethod:@"startPlayerCompleted" dico: dico ];
-                [self startTimer];
-                result([self getPlayerStatus]);
-        } else
-        {
-                        [self stopPlayer];
-                        result([FlutterError
-                        errorWithCode:@"Audio Player"
-                        message:@"Play failure"
-                        details:nil]);
-        }
-        NSLog(@"IOS:<-- startPlayer");
-}
-*/
-
-
-
-- (void)needSomeFood: (int) ln
-{
-        // TODO //[self invokeMethod:@"needSomeFood" numberArg: [NSNumber numberWithInt: ln] ];
-}
-
-- (bool)pause
-{
-          NSLog(@"IOS:--> pause");
-          if (timer != nil)
-          {
-              [timer invalidate];
-              timer = nil;
-          }
-          if ([self getStatus] == IS_PLAYING)
-          {
-                [m_playerEngine pause];
-          }
-          else
-                NSLog(@"IOS: audioPlayer is not Playing");
-
-         /*
-         long position =   [m_playerEngine getPosition];
-         long duration =   [m_playerEngine getDuration];
-         if (duration - position < 80) // PATCH [LARPOUX]
-          {
-                NSLog (@"IOS: !patch [LARPOUX]");
-                [self stopPlayer];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                        NSLog(@"IOS:--> ^audioPlayerFinishedPlaying");
-                        [self invokeMethod:@"audioPlayerFinishedPlaying" numberArg: [self getPlayerStatus]];
-                        NSLog(@"IOS:<-- ^audioPlayerFinishedPlaying");
-                 });
-
-          }
-          */
-
-
-          bool b =  ( [self getStatus] == IS_PAUSED);
-          if (!b)
-          {
-                NSLog(@"IOS: AudioPlayer : cannot pause!!!");
-          }
-
-          NSLog(@"IOS:<-- pause");
-          return b;
- }
-
-- (bool)resume
-{
-        NSLog(@"IOS:--> resume");
-        /*
-        long position =   [player getPosition];
-        long duration =   [player getDuration];
-        if (duration - position < 80) // PATCH [LARPOUX]
-        {
-                NSLog (@"IOS: !patch [LARPOUX]");
-                [self stopPlayer];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                        NSLog(@"IOS:--> ^audioPlayerFinishedPlaying");
-                        [self invokeMethod:@"audioPlayerFinishedPlaying" numberArg: [self getPlayerStatus]];
-                        NSLog(@"IOS:<-- ^audioPlayerFinishedPlaying");
-                 });
-
-        } else
-        */
-        bool b;
-        {
-
-                // if ( [self getStatus] == IS_PAUSED ) // (after a long pause with the lock screen, the status is not "PAUSED"
-                {
-                       // [audioPlayer setDelegate: self]; // TRY
-                        NSLog(@"IOS: play!");
-                        b = [m_playerEngine resume];
-                } //else
-                {
-                        //NSLog(@"IOS: ~play! (status is not paused)" );
-                }
-                [self startTimer];
-        }
-        b = ([self getStatus] == IS_PLAYING);
-        if (!b)
-        {
-                 NSLog(@"IOS: AudioPlayer : cannot resume!!!");
-        }
-        NSLog(@"IOS:<-- resume");
-        return b;
-}
 
 
 - (int)feed:(NSData*)data
@@ -639,6 +405,8 @@ static bool _isIosDecoderSupported [] =
   		}
 
 }
+
+
 
 
 - (void)seekToPlayer: (long)t
@@ -717,14 +485,14 @@ static bool _isIosDecoderSupported [] =
         m_playerEngine = nil;
         dispatch_async(dispatch_get_main_queue(), ^{
                 NSLog(@"IOS:--> ^audioPlayerFinishedPlaying");
-                // TODO // [self invokeMethod:@"audioPlayerFinishedPlaying" numberArg: [self getPlayerStatus]];
+                [self ->m_callBack  audioPlayerDidFinishPlaying: true];
                 NSLog(@"IOS:<-- ^audioPlayerFinishedPlaying");
          });
 
        NSLog(@"IOS:<-- @audioPlayerDidFinishPlaying");
 }
 
-- (t_PLAYER_STATUS)getStatus
+- (t_PLAYER_STATE)getStatus
 {
         if ( m_playerEngine == nil )
                 return PLAYER_IS_STOPPED;

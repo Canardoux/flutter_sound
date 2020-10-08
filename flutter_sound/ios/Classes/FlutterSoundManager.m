@@ -26,80 +26,16 @@
 
 
 #import <Foundation/Foundation.h>
-#import "FlautoManager.h"
+#import "FlutterSoundManager.h"
+#import <flauto_engine_ios/FlautoEngine.h>
 
 
-/// Used by [AudioPlayer.audioFocus]
-/// to control the focus mode.
-enum AudioFocus {
-  requestFocus,
-
-  /// request focus and allow other audio
-  /// to continue playing at their current volume.
-  requestFocusAndKeepOthers,
-
-  /// request focus and stop other audio playing
-  requestFocusAndStopOthers,
-
-  /// request focus and reduce the volume of other players
-  /// In the Android world this is know as 'Duck Others'.
-  requestFocusAndDuckOthers,
-  
-  requestFocusAndInterruptSpokenAudioAndMixWithOthers,
-  
-  requestFocusTransient,
-  requestFocusTransientExclusive,
-
-
-  /// relinquish the audio focus.
-  abandonFocus,
-
-  doNotRequestFocus,
-};
-
-
-
-enum SessionCategory {
-  ambient,
-  multiRoute,
-  playAndRecord,
-  playback,
-  record,
-  soloAmbient,
-  audioProcessing,
-};
-
-
-enum SessionMode
-{
-  modeDefault, // 'AVAudioSessionModeDefault',
-  modeGameChat, //'AVAudioSessionModeGameChat',
-  modeMeasurement, //'AVAudioSessionModeMeasurement',
-  modeMoviePlayback, //'AVAudioSessionModeMoviePlayback',
-  modeSpokenAudio, //'AVAudioSessionModeSpokenAudio',
-  modeVideoChat, //'AVAudioSessionModeVideoChat',
-  modeVideoRecording, // 'AVAudioSessionModeVideoRecording',
-  modeVoiceChat, // 'AVAudioSessionModeVoiceChat',
-  modeVoicePrompt, // 'AVAudioSessionModeVoicePrompt',
-};
-
-
-enum AudioDevice {
-  speaker,
-  headset,
-  earPiece,
-  blueTooth,
-  blueToothA2DP,
-  airPlay
-};
-
-
-@implementation FlautoManager
+@implementation FlutterSoundManager
 {
         NSMutableArray* flautoPlayerSlots;
 }
 
-- (FlautoManager*)init
+- (FlutterSoundManager*)init
 {
         self = [super init];
         flautoPlayerSlots = [[NSMutableArray alloc] init];
@@ -114,6 +50,7 @@ enum AudioDevice {
         flautoPlayerSlots[slotNo] = session;
         return slotNo;
 }
+
 - (void)freeSlot: (int)slotNo
 {
         flautoPlayerSlots[slotNo] = [NSNull null];
@@ -155,7 +92,7 @@ enum AudioDevice {
 }
 
 
--(FlautoManager*) getPlugin
+-(FlutterSoundManager*) getPlugin
 {
         return nil; // Implented in subclass
 }
@@ -222,7 +159,7 @@ enum AudioDevice {
                 AVAudioSessionCategoryPlayback,
                 AVAudioSessionCategoryRecord,
                 AVAudioSessionCategorySoloAmbient,
-                AVAudioSessionCategoryAudioProcessing
+                // DEPRECATED // AVAudioSessionCategoryAudioProcessing
         };
         
         
@@ -236,24 +173,15 @@ enum AudioDevice {
                 AVAudioSessionModeVideoChat,
                 AVAudioSessionModeVideoRecording,
                 AVAudioSessionModeVoiceChat,
-                AVAudioSessionModeVoicePrompt,
+                // ONLY iOS 12.0 // AVAudioSessionModeVoicePrompt,
         };
 
 
-// Audio Flags
-// -----------
-const int outputToSpeaker = 1;
-const int allowHeadset = 2;
-const int allowEarPiece = 4;
-const int allowBlueTooth = 8;
-const int allowAirPlay = 16;
-const int allowBlueToothA2DP = 32;
-
 
         BOOL r = TRUE;
-        enum AudioFocus audioFocus = (enum AudioFocus) [call.arguments[@"focus"] intValue];
-        enum SessionCategory category = (enum SessionCategory)[call.arguments[@"category"] intValue];
-        enum SessionMode mode = (enum SessionMode)[call.arguments[@"mode"] intValue];
+        t_AUDIO_FOCUS audioFocus = (t_AUDIO_FOCUS) [call.arguments[@"focus"] intValue];
+        t_SESSION_CATEGORY category = (t_SESSION_CATEGORY)[call.arguments[@"category"] intValue];
+        t_SESSION_MODE mode = (t_SESSION_MODE)[call.arguments[@"mode"] intValue];
         int flags = [call.arguments[@"audioFlags"] intValue];
         int sessionCategoryOption = 0;
         if ( audioFocus != abandonFocus && audioFocus != doNotRequestFocus && audioFocus != requestFocus)
@@ -266,6 +194,9 @@ const int allowBlueToothA2DP = 32;
                         case requestFocusAndInterruptSpokenAudioAndMixWithOthers: sessionCategoryOption |= AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers; break;
                         case requestFocusTransient:
                         case requestFocusTransientExclusive:
+                        case requestFocus:
+                        case abandonFocus:
+                        case doNotRequestFocus:
                         case requestFocusAndStopOthers: sessionCategoryOption |= 0; break; // NOOP
                 }
                 
@@ -279,7 +210,7 @@ const int allowBlueToothA2DP = 32;
                         sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
 
                 
-                enum AudioDevice device = (enum AudioDevice)[call.arguments[@"device"] intValue];
+                t_AUDIO_DEVICE device = (t_AUDIO_DEVICE)[call.arguments[@"device"] intValue];
                 switch (device)
                 {
                         case speaker: sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker; break;

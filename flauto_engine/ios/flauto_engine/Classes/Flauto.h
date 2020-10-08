@@ -133,7 +133,7 @@ typedef enum
   modeVideoChat, //'AVAudioSessionModeVideoChat',
   modeVideoRecording, // 'AVAudioSessionModeVideoRecording',
   modeVoiceChat, // 'AVAudioSessionModeVoiceChat',
-  modeVoicePrompt, // 'AVAudioSessionModeVoicePrompt',
+  // ONLY iOS 12.0 // modeVoicePrompt, // 'AVAudioSessionModeVoicePrompt',
 }  t_SESSION_MODE;
 
 
@@ -146,11 +146,31 @@ typedef enum {
   airPlay
 } t_AUDIO_DEVICE;
 
-@interface FlautoEngine : NSObject
+
+typedef enum
+{
+        PLAYER_IS_STOPPED,
+        PLAYER_IS_PLAYING,
+        PLAYER_IS_PAUSED
+} t_PLAYER_STATE;
+
+
+
+// Audio Flags
+// -----------
+const int outputToSpeaker = 1;
+// NOT USED // const int allowHeadset = 2;
+// NOT USED // const int allowEarPiece = 4;
+const int allowBlueTooth = 8;
+const int allowAirPlay = 16;
+const int allowBlueToothA2DP = 32;
+
+
+@interface Flauto : NSObject
 {
 }
 @end
 
-extern FlautoEngine* theFlautoEngine ; // The singleton
+extern Flauto* theFlautoEngine ; // The singleton
 
 

@@ -18,14 +18,14 @@
 
 // This is the base Class for FlautoRecorder and FlautoPlayer
 
-#include "FlautoEngine.h"
+#include "Flauto.h"
 
 @interface FlautoResult : NSObject
 {
 }
 @end
 
-@interface AudioSession : NSObject
+@interface FlautoSession : NSObject
 {
         bool hasFocus;
 }

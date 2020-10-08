@@ -18,46 +18,65 @@
 
 
 
-#ifndef FlutterSoundPlayer_h
-#define FlutterSoundPlayer_h
+#ifndef FlautoPlayer_h
+#define FlautoPlayer_h
 
 
 
+#import "Flauto.h"
 #import <AVFoundation/AVFoundation.h>
-#import "AudioSession.h"
-#import "FlautoEngine.h"
-#import "Track.h"
-
-typedef enum
-{
-        PLAYER_NOT_INITIALIZED,
-        PLAYER_IS_STOPPED,
-        PLAYER_IS_PLAYING,
-        PLAYER_IS_PAUSED
-} t_PLAYER_STATUS;
+#import "FlautoPlayerEngine.h"
+#import "FlautoSession.h"
+#import "FlautoTrack.h"
 
 
-@interface FlautoPlayerCallback  : NSObject
-{
-         
-}
+
+@protocol FlautoPlayerCallback <NSObject>
+
+- (void)openAudioSessionCompleted: (bool)success;
+- (void)startPlayerCompleted: (long)duration;
+- (void)needSomeFood: (int) ln;
+- (void)updateProgressPositon: (long)position duration: (long)duration;
+- (void)audioPlayerDidFinishPlaying: (BOOL)flag;
+- (void)pause;
+- (void)resume;
+- (void)skipForward;
+- (void)skipBackward;
 @end
 
 
-@interface FlautoPlayer  : AudioSession
+@interface FlautoPlayer  : FlautoSession < AVAudioPlayerDelegate, AVAudioRecorderDelegate>
 {
-         
+        NSObject<FlautoPlayerEngineInterface>* m_playerEngine;
+        NSObject<FlautoPlayerCallback>* m_callBack;
+
+
+        
 }
 
+- (FlautoPlayer*)init: (NSObject<FlautoPlayerCallback>*) callback;
            
-- (t_PLAYER_STATUS)getPlayerState;
+- (t_PLAYER_STATE)getPlayerState;
 - (bool)isDecoderSupported: (t_CODEC)codec ;
+
+- (bool)initializeFlautoPlayerFocus:
+                (t_AUDIO_FOCUS)focus
+                category: (t_SESSION_CATEGORY)category
+                mode: (t_SESSION_MODE)mode
+                audioFlags: (int)audioFlags
+                audioDevice: (t_AUDIO_DEVICE)audioDevice;
+                
+- (void)releaseFlautoPlayer;
 
 - (bool)startPlayerCodec: (t_CODEC)codec
         fromURI: (NSString*)path
-        fromDataBuffer: (NSData*)dataBuffer;
+        fromDataBuffer: (NSData*)dataBuffer
+        channels: (int)numChannels
+        sampleRate: (long)sampleRate
+        ;
         
-- (bool)startPlayerFromTrack: (Track*)track;
+- (bool)startPlayerFromTrack: (Track*)track canPause: (bool)canPause canSkipForward: (bool)canSkipForward canSkipBackward: (bool)canSkipBackward
+        progress: (NSNumber*)progress duration: (NSNumber*)duration removeUIWhenStopped: (bool)removeUIWhenStopped defaultPauseResume: (bool)defaultPauseResume;
 
 - (void)stopPlayer;
 - (bool)pausePlayer;
@@ -67,27 +86,22 @@ typedef enum
 - (void)setVolume: (double)volume ;
 - (bool)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options ;
 - (bool)setActive:(BOOL)enabled ;
-- (void)setUIProgressBar: (double)call;
-- (void)nowPlaying: (Track*)track ;
+- (void)setUIProgressBar: (NSNumber*)pos duration: (NSNumber*)duration;
 - (NSDictionary*)getProgress ;
 - (int)feed: (NSData*)data;
-
-
-
-/*
-- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag;
-- (void)updateProgress:(NSTimer *)timer;
+- (void)needSomeFood: (int) ln;
+- (t_PLAYER_STATE)getStatus;
 - (void)startTimer;
 - (void)stopTimer;
-- (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result;
-- (NSNumber*)getPlayerStatus;
-- (int)getStatus;
 - (long)getPosition;
 - (long)getDuration;
-- (void)needSomeFood: (int) ln;
-*/
+- (void)nowPlaying: (Track*)track canPause: (bool)canPause canSkipForward: (bool)canSkipForward canSkipBackward: (bool)canSkipBackward
+                defaultPauseResume: (bool)defaultPauseResume progress: (NSNumber*)progress duration: (NSNumber*)duration;
+
+
+
 
 @end
 
-#endif // FlutterSoundPlayer_h
+#endif // FlautoPlayer_h
 

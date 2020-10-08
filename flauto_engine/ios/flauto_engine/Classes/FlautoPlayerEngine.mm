@@ -23,13 +23,14 @@
 //
 //  Created by larpoux on 03/09/2020.
 //
-#import "PlayerEngine.h"
+#import "Flauto.h"
+#import "FlautoPlayerEngine.h"
 #import "FlautoPlayer.h"
 
-
+,,,,
 @implementation AudioPlayer
 {
-        FlautoPlayer* flutterSoundPlayer; // Owner
+        FlautoPlayer* flautoPlayer; // Owner
         AVAudioPlayer* player;
 }
 
@@ -43,10 +44,11 @@
                 player = thePlayer;
         }
 
-
+       
+     
        - (AudioPlayer*)init: (FlautoPlayer*)owner
        {
-                flutterSoundPlayer = owner;
+                flautoPlayer = owner;
                 return [super init];
        }
        
@@ -54,15 +56,16 @@
        {
                 NSError* error = [[NSError alloc] init];
                 [self setAudioPlayer:  [[AVAudioPlayer alloc] initWithData:dataBuffer error: &error]];
-                // TODO // [self getAudioPlayer].delegate = flutterSoundPlayer;
+                [self getAudioPlayer].delegate = flautoPlayer;
                 bool b = [[self getAudioPlayer] play];
                 return b;
        }
        
-       -(bool)  startPlayerFromURL: (NSURL*) url
+       -(bool)  startPlayerFromURL: (NSURL*) url codec: (t_CODEC)codec channels: (int)numChannels sampleRate: (long)sampleRate
+
        {
                 [self setAudioPlayer: [[AVAudioPlayer alloc] initWithContentsOfURL: url error:nil] ];
-                // TODO // [self getAudioPlayer].delegate = flutterSoundPlayer;
+                [self getAudioPlayer].delegate = flautoPlayer;
                 bool b = [ [self getAudioPlayer] play];
                 return b;
         }
@@ -83,7 +86,7 @@
        -(void)  stop
        {
                 [ [self getAudioPlayer] stop];
-                  [self setAudioPlayer: nil];
+                [self setAudioPlayer: nil];
        }
        
        -(bool)  resume
@@ -112,7 +115,7 @@
                 return true;
        }
        
-       -(t_PLAYER_STATUS)  getStatus
+       -(t_PLAYER_STATE)  getStatus
        {
                 if (  [self getAudioPlayer] == nil )
                         return PLAYER_IS_STOPPED;
@@ -141,14 +144,14 @@
         AVAudioFormat* playerFormat;
         AVAudioFormat* outputFormat;
         AVAudioOutputNode* outputNode;
-        NSNumber* sampleRate;
-        NSNumber* nbChannels;
+        long sampleRate;
+        int nbChannels;
         CFTimeInterval mStartPauseTime ; // The time when playback was paused
 	CFTimeInterval systemTime ; //The time when  StartPlayer() ;
         double mPauseTime ; // The number of seconds during the total Pause mode
         NSData* waitingBlock;
-
-
+        long m_sampleRate ;
+        int  m_numChannels;
 }
 
        - (AudioEngine*)init: (FlautoPlayer*)owner
@@ -161,8 +164,6 @@
                 playerNode = [[AVAudioPlayerNode alloc] init];
                 
                 [engine attachNode: playerNode];
-                // TODO nbChannels = audioSettings [@"numChannels"];
-                // TODO sampleRate = audioSettings [@"sampleRate"];
  
                 [engine connect: playerNode to: outputNode format: outputFormat];
                 bool b = [engine startAndReturnError: nil];
@@ -183,9 +184,11 @@
        }
         static int ready = 0;
        
-       -(bool)  startPlayerFromURL: (NSURL*) url
+       -(bool)  startPlayerFromURL: (NSURL*) url codec: (t_CODEC)codec channels: (int)numChannels sampleRate: (long)sampleRate
        {
                 assert(url == nil || url ==  (id)[NSNull null]);
+                m_sampleRate = sampleRate;
+                m_numChannels= numChannels;
                 ready = 0;
                 [playerNode play];
                 return true;
@@ -246,7 +249,7 @@
                 return false;
        }
        
-       -(int)  getStatus // TODO
+       -(int)  getStatus
        {
                 if (engine == nil)
                         return PLAYER_IS_STOPPED;
@@ -266,7 +269,7 @@
                         int frameLn = ln/2;
                         int frameLength =  8*frameLn;// Two octets for a frame (Monophony, INT Linear 16)
                         
-                        playerFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: nbChannels.intValue interleaved: NO];
+                        playerFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: (double)sampleRate channels: nbChannels interleaved: NO];
    
                         AVAudioPCMBuffer* thePCMInputBuffer =  [[AVAudioPCMBuffer alloc] initWithPCMFormat: playerFormat frameCapacity: frameLn];
                         memcpy((unsigned char*)(thePCMInputBuffer.int16ChannelData[0]), [data bytes], ln);
@@ -286,8 +289,8 @@
                         AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat: playerFormat toFormat: outputFormat];
                         NSError* error;
                         [converter convertToBuffer: thePCMOutputBuffer error: &error withInputFromBlock: inputBlock];
-                         // TODO if (r == AVAudioConverterOutputStatus_HaveData || true)
-                         {
+                         // if (r == AVAudioConverterOutputStatus_HaveData || true)
+                        {
                                 ++ready ;
                                 [playerNode scheduleBuffer: thePCMOutputBuffer  completionHandler:
                                 ^(void)
@@ -297,37 +300,23 @@
                                         {
                                                 [self feed: self ->waitingBlock]; // Recursion here
                                                 self ->waitingBlock = nil;
-                                                // TODO // [flutterSoundPlayer needSomeFood: ln];
+                                                [self ->flutterSoundPlayer needSomeFood: ln];
                                         }
 
                                 }];
                                 return ln;
-                         } //else
-                         /* TODO
-                         {
-                                 if (error != nil)
-                                 {
-                                        NSString* f = @"%s : %s : %s";
-                                        NSString* s1 = [error localizedDescription];
-                                        NSString* s2 = [error localizedFailureReason];
-                                        NSString* s3 = [error localizedRecoverySuggestion];
-                                        NSLog(f, s1, s2, s3);
-                                 }
-                                 return 0;
                         }
-                        */
-               
                 }
                 assert(waitingBlock == nil);
                 waitingBlock = data;
                 return 0;
          }
 
-  -(bool)  setVolume: (long) volume // TODO
-       {
-                return true; // TODO
-       }
-  
+-(bool)  setVolume: (long) volume // TODO
+{
+        return true; // TODO
+}
+
 
 
 @end

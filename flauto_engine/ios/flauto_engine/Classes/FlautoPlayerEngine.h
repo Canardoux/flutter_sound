@@ -26,13 +26,16 @@
 
 #ifndef PlayerEngine_h
 #define PlayerEngine_h
-#import "FlautoPlayer.h"
 
 
-@protocol PlayerEngineInterface <NSObject>
+#include "Flauto.h"
+//#import "FlautoPlayer.h"
+
+@protocol FlautoPlayerEngineInterface <NSObject>
 
        - (bool) startPlayerFromBuffer:  (NSData*)data;
-       - (bool) startPlayerFromURL: (NSURL*)url;
+       - (bool)  startPlayerFromURL: (NSURL*) url codec: (t_CODEC)codec channels: (int)numChannels sampleRate: (long)sampleRate;
+
        - (long) getDuration;
        - (long) getPosition;
        - (void) stop;
@@ -40,18 +43,18 @@
        - (bool) pause;
        - (bool) setVolume: (long) volume;
        - (bool) seek: (double) pos;
-       - (t_PLAYER_STATUS) getStatus;
+       - (t_PLAYER_STATE) getStatus;
        - (int) feed: (NSData*)data;
 
 @end
 
-@interface AudioPlayer : NSObject <PlayerEngineInterface>
+@interface AudioPlayer : NSObject  <FlautoPlayerEngineInterface>
 {
 }
        - (AudioPlayer*) init: (NSObject*)owner; // FlutterSoundPlayer*
 
        - (bool) startPlayerFromBuffer:  (NSData*)data;
-       // TODO - (bool) startPlayerFromURL;
+       - (bool)  startPlayerFromURL: (NSURL*) url codec: (t_CODEC)codec channels: (int)numChannels sampleRate: (long)sampleRate;
        // TODO - (long) duration;
        // TODO - (long) position;
        - (void) stop;
@@ -59,21 +62,22 @@
        - (bool) pause;
        - (bool) setVolume: (long) volume;
        - (bool) seek: (double) pos;
-       - (t_PLAYER_STATUS) getStatus;
-       //- (AVAudioPlayer*) getAudioPlayer;
+       - (t_PLAYER_STATE) getStatus;
+       - (AVAudioPlayer*) getAudioPlayer;
+       - (void) setAudioPlayer: (AVAudioPlayer*)thePlayer;
        - (int) feed: (NSData*)data;
 
 @end
 
 
-@interface AudioEngine  : NSObject <PlayerEngineInterface>
+@interface AudioEngine  : NSObject <FlautoPlayerEngineInterface>
 {
         // TODO FlutterSoundPlayer* flutterSoundPlayer; // Owner
 }
        - (AudioEngine*) init: (NSObject*)owner; // FlutterSoundPlayer*
 
        - (bool) startPlayerFromBuffer:  (NSData*)data;
-       // TODO - (bool) startPlayerFromURL;
+       - (bool)  startPlayerFromURL: (NSURL*) url codec: (t_CODEC)codec channels: (int)numChannels sampleRate: (long)sampleRate;
        // TODO - (long) duration;
        // TODO - (long) position;
        - (void) stop;

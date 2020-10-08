@@ -27,8 +27,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "Flauto.h"
 #import "FlautoRecorder.h"
-#import "FlautoEngine.h"
 
 
 class AudioRecInterface

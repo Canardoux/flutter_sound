@@ -21,9 +21,9 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
-#import "AudioSession.h"
+#import "FlautoSession.h"
 
-@implementation AudioSession
+@implementation FlautoSession
 
 
 - (bool) setAudioFocus:
@@ -61,15 +61,6 @@
                 //AVAudioSessionModeVoicePrompt,
         };
 
-
-// Audio Flags
-// -----------
-const int outputToSpeaker = 1;
-// NOT USED // const int allowHeadset = 2;
-// NOT USED // const int allowEarPiece = 4;
-const int allowBlueTooth = 8;
-const int allowAirPlay = 16;
-const int allowBlueToothA2DP = 32;
 
 
         BOOL r = TRUE;

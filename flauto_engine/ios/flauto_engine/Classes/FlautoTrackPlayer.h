@@ -7,6 +7,7 @@
  * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
  * the Free Software Foundation.
  *
+/Volumes/Macos-Ext/Users/larpoux/projmac/flauto/flauto_engine/ios/flauto_engine/Classes/FlautoTrackPlayer.h
  * Flutter-Sound is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -26,23 +27,21 @@
 
 
 
-@interface TrackPlayer : FlautoPlayer
+@interface FlautoTrackPlayer : FlautoPlayer
 {
 
 }
-/*
-- (TrackPlayer*)init: (FlutterMethodCall*)call;
-- (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result;
-- (void)seekToPlayer:(nonnull NSNumber*) time result: (FlutterResult)result;
-- (void)releaseFlautoPlayer:(FlutterMethodCall*)call result:(FlutterResult)result;
-- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer*)player successfully:(BOOL)flag;
-- (bool)resume;
-- (void)setUIProgressBar:(FlutterMethodCall*)call result: (FlutterResult)result;
-- (void)setUIProgressBar:(NSNumber*)progress duration:(NSNumber*)duration;
-- (void)nowPlaying:(FlutterMethodCall*)call result: (FlutterResult)result;
-*/
+- (FlautoTrackPlayer*)init: (NSObject<FlautoPlayerCallback>*) callback;
+- (bool)startPlayerFromTrack: (Track*)track canPause: (bool)canPause canSkipForward: (bool)canSkipForward canSkipBackward: (bool)canSkipBackward
+        progress: (NSNumber*)progress duration: (NSNumber*)duration removeUIWhenStopped: (bool)removeUIWhenStopped defaultPauseResume: (bool)defaultPauseResume;
+- (void)seekToPlayer: (long)time;
+- (void)releaseFlautoPlayer;
+- (void)setUIProgressBar: (NSNumber*)pos duration: (NSNumber*)duration;
+- (void)nowPlaying: (Track*)track canPause: (bool)canPause canSkipForward: (bool)canSkipForward canSkipBackward: (bool)canSkipBackward
+                defaultPauseResume: (bool)defaultPauseResume progress: (NSNumber*)progress duration: (NSNumber*)duration;
 
 
 @end
 
 #endif // TrackPlayer_h
+

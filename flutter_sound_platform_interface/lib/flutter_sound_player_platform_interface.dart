@@ -15,6 +15,7 @@ abstract class FlutterSoundPlayerCallback
 
   void updateProgress({Duration duration, Duration position,}) ;
   void pause(int state);
+  void resume(int state);
   void skipBackward(int state);
   void skipForward(int state);
   void updatePlaybackState(int state);

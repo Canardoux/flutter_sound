@@ -66,6 +66,15 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
         }
         break;
 
+        case 'resume': // Pause/Resume
+        {
+          print('FS:---> channelMethodCallHandler : ${call.method}');
+          aPlayer.resume(arg['arg']);
+          print('FS:<--- channelMethodCallHandler : ${call.method}');
+        }
+        break;
+
+
       case 'skipForward':
         {
           print('FS:---> channelMethodCallHandler : ${call.method}');

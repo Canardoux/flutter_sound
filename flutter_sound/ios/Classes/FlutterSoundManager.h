@@ -24,14 +24,13 @@
 //  Created by larpoux on 14/05/2020.
 //
 
-#ifndef FlautoManager_h
-#define FlautoManager_h
+#ifndef FlutterSoundManager_h
+#define FlutterSoundManager_h
 
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
-#import "Flauto.h"
 
-@interface Session : NSObject <AVAudioPlayerDelegate, AVAudioRecorderDelegate>
+@interface Session : NSObject 
 {
       int slotNo;
       BOOL hasFocus;
@@ -50,13 +49,13 @@
 @end
 
 
-@interface FlautoManager : NSObject<FlutterPlugin>
+@interface FlutterSoundManager : NSObject
 {
         FlutterMethodChannel* channel;
 }
 
 - (Session*)getSession: (FlutterMethodCall*)call;
-- (void) initPlugin: (Session*) session slot:(int)slotNo;
+- (int) initPlugin: (Session*) session call:(FlutterMethodCall*)call;
 
 
 
@@ -65,4 +64,4 @@
 
 
 
-#endif /* FlautoManager_h */
+#endif /* FlutterSoundManager_h */
