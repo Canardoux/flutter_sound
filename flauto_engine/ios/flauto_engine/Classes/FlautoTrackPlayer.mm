@@ -213,6 +213,9 @@
          albumArt = nil;
         // The caller specify an asset to be used.
         // Probably good in the future to allow the caller to specify the image itself, and not a resource.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
         if ((track.albumArtUrl != nil) && ([track.albumArtUrl class] != [NSNull class])   )         // The albumArt is accessed in a URL
         {
                 // Retrieve the album art for the
@@ -248,6 +251,7 @@
                         albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
                 }
         }
+#pragma clang diagnostic pop
         [ self setUIProgressBar: progress duration: duration ];
         NSLog(@"IOS:<-- setupNowPlaying");
 
