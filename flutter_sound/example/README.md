@@ -8,6 +8,8 @@ Flutter Sound comes with several Demo/Examples. All the examples are called from
 - [livePlaybackWithBackPressure](#liveplaybackwithbackpressure) is an example showing how to play live data synchronously
 - [livePlaybackWithoutBackPressure](#liveplaybackwithoutbackpressure) is an example showing how to play live data asynchronously
 - [soundEffect](#soundeffect) is an example showing to play sound effects synchronously
+- [streamLoop](#streamLoop) is an example which connect the microphone to a earphone or headset
+
 
 if Someone update this README.md, please update also the code inside Examples/lib/demo/main.dart and the comment in the header of the demo or example dart file.
 
@@ -50,7 +52,7 @@ I really hope that someone will write soon another simpler Demo App.
 
 ## [RecordToStream](lib/recordToStream/recordToStreamExample.dart)
 
-<img src="lib/recordToStream/recordToStreamExample.png" width="70%" height="70%"/>
+<img src="lib/recordToStream/recordToStreamExample.png" width="40%" height="40%"/>
 
 This is an example showing how to record to a Dart Stream.
 It writes all the recorded data from a Stream to a File, which is completely stupid:
@@ -63,7 +65,7 @@ Speech-to-Text engine, or for processing the Live data in Dart in real time.
 
 ## [livePlaybackWithoutBackPressure](lib/livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.dart)
 
-<img src="lib/livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.png" width="70%" height="70%"/>
+<img src="lib/livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.png" width="40%" height="40%"/>
 
 A very simple example showing how to play Live Data without back pressure.
 It feeds a live stream, without waiting that the Futures are completed for each block.
@@ -83,7 +85,7 @@ This example uses the [FoodEvent](#food) object to resynchronize the output stre
 
 ## [livePlaybackWithBackPressure](lib/livePlaybackWithBackPressure/livePlaybackWithBackPressure.dart)
 
-<img src="lib/livePlaybackWithBackPressure/livePlaybackWithBackPressure.png" width="70%" height="70%"/>
+<img src="lib/livePlaybackWithBackPressure/livePlaybackWithBackPressure.png" width="40%" height="40%"/>
 
 A very simple example showing how to play Live Data with back pressure.
 It feeds a live stream, waiting that the Futures are completed for each block.
@@ -99,9 +101,22 @@ playing another one.
 
 ## [soundEffect](lib/soundEffect/soundEffect.dart)
 
-<img src="lib/soundEffect/soundEffect.png" width="70%" height="70%"/>
+<img src="lib/soundEffect/soundEffect.png" width="40%" height="40%"/>
 
 [startPlayerFromStream](#startplayerfromstream) can be very efficient to play sound effects in real time. For example in a game App.
 In this example, the App open the Audio Session and call ```startPlayerFromStream()``` during initialization.
 When it want to play a noise, it has just to call the synchronous verb ```feed```. Very fast.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+## [streamLoop](lib/streamLoop/streamLoop.dart)
+
+<img src="lib/streamLoop/streamLoop.png" width="40%" height="40%"/>
+
+```streamLoop()``` is a very simple example which connect the FlutterSoundRecorder sink
+to the FlutterSoundPlayer Stream.
+Of course, we do not play to the loudspeaker to avoid a very unpleasant Larsen effect.
+this example does not use a new StreamController, but use directely `foodStreamController`
+from flutter_sound_player.dart.
+
 

@@ -23,6 +23,7 @@ import 'recordToStream/recordToStreamExample.dart';
 import 'livePlaybackWithBackPressure/livePlaybackWithBackPressure.dart';
 import 'livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.dart';
 import 'soundEffect/soundEffect.dart';
+import 'streamLoop/streamLoop.dart';
 
 /*
     This APP is just a driver to call the various Flutter Sound examples.
@@ -130,7 +131,22 @@ The App open the Audio Session and call ```startPlayerFromStream()``` during ini
 When it want to play a noise, it has just to call the verb ```feed```
 ''',
       ),
+
+
+      Example(title: 'streamLoop', subTitle: 'Loop from recorder to player', route: (BuildContext) => StreamLoop(), description:
+      '''
+```streamLoop()``` is a very simple example which connect the FlutterSoundRecorder sink 
+to the FlutterSoundPlayer Stream.
+
+Of course, we do not play to the loudspeaker to avoid a very unpleasant Larsen effect.
+
+This example does not use a new StreamController, but use directly `foodStreamController`
+from flutter_sound_player.dart.
+''',
+      ),
+
     ];
+
 
 
 class ExamplesApp extends StatelessWidget {

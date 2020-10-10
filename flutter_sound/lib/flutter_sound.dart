@@ -27,6 +27,7 @@ export 'src/util/log.dart';
 export 'src/util/recorded_audio.dart';
 export 'src/util/ansi_color.dart';
 export 'src/ui/grayed_out.dart';
+export 'src/food.dart';
 
 export 'src/ui/recorder_playback_controller.dart'
             show RecorderPlaybackController;
@@ -57,3 +58,4 @@ enum Initialized {
   initializationInProgress,
   fullyInitialized,
 }
+

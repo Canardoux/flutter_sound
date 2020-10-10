@@ -25,19 +25,17 @@ import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_sound/src/wave_header.dart';
 
 class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
 {
   Initialized isInited = Initialized.notInitialized;
   RecorderState recorderState = RecorderState.isStopped;
   StreamController<RecordingDisposition> _recorderController;
-  StreamSink<Uint8List> _userStreamSink;
+  StreamSink<Food> _userStreamSink;
 
 
   ///
@@ -125,7 +123,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
   void recordingData({  Uint8List data }) {
     if (_userStreamSink != null) {
       //Uint8List data = call['recordingData'] as Uint8List;
-      _userStreamSink.add(data);
+      _userStreamSink.add(FoodData(data));
     }
   }
 
@@ -210,7 +208,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
   Future<void> startRecorder( {
     Codec codec = Codec.defaultCodec,
     String toFile = null,
-    StreamSink<Uint8List> toStream = null,
+    StreamSink<Food> toStream = null,
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
@@ -284,10 +282,10 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
       throw (_notOpen());
     }
     await FlutterSoundRecorderPlatform.instance.stopRecorder(this);
-    if (_userStreamSink != null) {
-      _userStreamSink.close();
+    //if (_userStreamSink != null) {
+      //_userStreamSink.close();
       _userStreamSink = null;
-    }
+   // }
 
     recorderState = RecorderState.isStopped;
 
