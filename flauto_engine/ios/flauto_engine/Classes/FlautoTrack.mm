@@ -21,7 +21,7 @@
 #import <Foundation/Foundation.h>
 #import "FlautoTrack.h"
 
-@implementation Track
+@implementation FlautoTrack
 
 @synthesize path;
 @synthesize title;

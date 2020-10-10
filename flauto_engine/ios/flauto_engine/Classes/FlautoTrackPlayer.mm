@@ -32,7 +32,7 @@
 @implementation FlautoTrackPlayer
 {
        NSURL *audioFileURL;
-       Track *track;
+       FlautoTrack *track;
        id forwardTarget;
        id backwardTarget;
        id pauseTarget;
@@ -71,7 +71,7 @@
         [(AudioPlayer*)m_playerEngine  setAudioPlayer: theAudioPlayer];
 }
 
-- (bool)startPlayerFromTrack: (Track*)track canPause: (bool)canPause canSkipForward: (bool)canSkipForward canSkipBackward: (bool)canSkipBackward
+- (bool)startPlayerFromTrack: (FlautoTrack*)track canPause: (bool)canPause canSkipForward: (bool)canSkipForward canSkipBackward: (bool)canSkipBackward
         progress: (NSNumber*)progress duration: (NSNumber*)duration removeUIWhenStopped: (bool)removeUIWhenStopped defaultPauseResume: (bool)defaultPauseResume;
 {
          NSLog(@"IOS:--> startPlayerFromTrack");
@@ -180,7 +180,7 @@
         {
                 [self startTimer];
                 // Display the notification with the media controls
-                [self setupRemoteCommandCenter:canPause canSkipForward:canSkipForward   canSkipBackward:canSkipBackward ];
+                [self setupRemoteCommandCenter: canPause canSkipForward: canSkipForward   canSkipBackward: canSkipBackward ];
                 
                 if ( (progress == nil) || (progress.class == NSNull.class) )
                         progress = [NSNumber numberWithDouble: [self getPlayer].currentTime];
@@ -487,7 +487,7 @@
 }
 
 
-- (void)nowPlaying: (Track*)track canPause: (bool)canPause canSkipForward: (bool)canSkipForward canSkipBackward: (bool)canSkipBackward
+- (void)nowPlaying: (FlautoTrack*)track canPause: (bool)canPause canSkipForward: (bool)canSkipForward canSkipBackward: (bool)canSkipBackward
                 defaultPauseResume: (bool)defaultPauseResume progress: (NSNumber*)progress duration: (NSNumber*)duration
 {
          NSLog(@"IOS:--> nowPlaying");

@@ -24,6 +24,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <flauto_engine_ios/FlautoPlayer.h>
 #import <flauto_engine_ios/FlautoTrackPlayer.h>
+#import <flauto_engine_ios/FlautoTrack.h>
 #import "FlutterSoundPlayerManager.h"
          
  
@@ -269,10 +270,32 @@
 
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result
 {
-                       result([FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"Start Player From Track failure"
-                                details:nil]);
+         NSLog(@"IOS:--> startPlayerFromTrack");
+         NSDictionary* trackDict = (NSDictionary*) call.arguments[@"track"];
+         FlautoTrack* track = [[FlautoTrack alloc] initFromDictionary: trackDict];
+         BOOL canPause  = [call.arguments[@"canPause"] boolValue];
+         BOOL canSkipForward = [call.arguments[@"canSkipForward"] boolValue];
+         BOOL canSkipBackward = [call.arguments[@"canSkipBackward"] boolValue];
+         NSNumber* progress = (NSNumber*)call.arguments[@"progress"];
+         NSNumber* duration = (NSNumber*)call.arguments[@"duration"];
+         bool removeUIWhenStopped  = [call.arguments[@"removeUIWhenStopped"] boolValue];
+         bool defaultPauseResume  = [call.arguments[@"defaultPauseResume"] boolValue];
+         bool b = [flautoPlayer startPlayerFromTrack: track canPause: canPause canSkipForward:canSkipForward
+                       canSkipBackward:canSkipBackward progress: progress duration: duration removeUIWhenStopped: removeUIWhenStopped defaultPauseResume: defaultPauseResume];
+
+        if (b)
+        {
+   
+                        result([self getPlayerStatus]);
+        } else
+        {
+                        [FlutterError
+                        errorWithCode:@"Audio Player"
+                        message:@"startPlayer failure"
+                        details:nil];
+        }
+
+        NSLog(@"IOS:<-- startPlayerFromTrack");
 }
 
 - (void)nowPlaying:(FlutterMethodCall*)call result: (FlutterResult)result

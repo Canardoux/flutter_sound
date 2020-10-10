@@ -18,7 +18,7 @@
 
 
 
-@interface Track : NSObject
+@interface FlautoTrack : NSObject
 {
     NSString* path;
     NSString* title;

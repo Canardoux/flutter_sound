@@ -143,8 +143,6 @@
         AVAudioFormat* playerFormat;
         AVAudioFormat* outputFormat;
         AVAudioOutputNode* outputNode;
-        long sampleRate;
-        int nbChannels;
         CFTimeInterval mStartPauseTime ; // The time when playback was paused
 	CFTimeInterval systemTime ; //The time when  StartPlayer() ;
         double mPauseTime ; // The number of seconds during the total Pause mode
@@ -268,7 +266,7 @@
                         int frameLn = ln/2;
                         int frameLength =  8*frameLn;// Two octets for a frame (Monophony, INT Linear 16)
                         
-                        playerFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: (double)sampleRate channels: nbChannels interleaved: NO];
+                        playerFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: (double)m_sampleRate channels: m_numChannels interleaved: NO];
    
                         AVAudioPCMBuffer* thePCMInputBuffer =  [[AVAudioPCMBuffer alloc] initWithPCMFormat: playerFormat frameCapacity: frameLn];
                         memcpy((unsigned char*)(thePCMInputBuffer.int16ChannelData[0]), [data bytes], ln);
