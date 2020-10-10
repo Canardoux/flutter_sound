@@ -30,7 +30,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "FlautoRecorder.h"
 
-
+#ifdef __cplusplus
 
 class AudioRecInterface
 {
@@ -94,5 +94,5 @@ public:
         virtual NSNumber* dbPeakProgress();
 };
 
-
+#endif // #ifdef __cplusplus
 #endif /* FlautoRecorderEngine_h */
