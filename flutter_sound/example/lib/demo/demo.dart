@@ -51,7 +51,7 @@ import 'package:permission_handler/permission_handler.dart';
  *
  */
 
-const int SAMPLE_RATE = 48000;
+const int SAMPLE_RATE = 8000;
 const int BLOCK_SIZE = 4096;
 
 enum Media {
@@ -247,7 +247,7 @@ class _MyAppState extends State<Demo> {
           codec: _codec,
           bitRate: 8000,
           numChannels: 1,
-          sampleRate: 8000,
+          sampleRate: SAMPLE_RATE,
         );
       }
       print('startRecorder');
@@ -480,7 +480,7 @@ class _MyAppState extends State<Demo> {
           await playerModule.startPlayer(
               fromURI: audioFilePath,
               codec: codec,
-              sampleRate: SAMPLE_RATE,
+              sampleRate:  SAMPLE_RATE,
               whenFinished: () {
                 print('Play finished');
                 setState(() {});
@@ -490,12 +490,13 @@ class _MyAppState extends State<Demo> {
             dataBuffer = await flutterSoundHelper.pcmToWaveBuffer(
               inputBuffer: dataBuffer,
               numChannels: 1,
-              sampleRate: SAMPLE_RATE,
+              sampleRate: (_codec == Codec.pcm16 && _media == Media.asset)? 48000 : SAMPLE_RATE,
             );
+            codec = Codec.pcm16WAV;
           }
           await playerModule.startPlayer(
               fromDataBuffer: dataBuffer,
-              sampleRate: SAMPLE_RATE,
+              sampleRate:   SAMPLE_RATE,
 
               codec: codec,
               whenFinished: () {

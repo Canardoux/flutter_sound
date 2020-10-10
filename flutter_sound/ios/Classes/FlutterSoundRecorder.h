@@ -29,15 +29,20 @@
 
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
-#import "Flauto.h"
-#import "FlutterSoundManager.h"
 #import "FlutterSoundRecorderManager.h"
-#import "FlutterSoundRecorder.h"
+#import <flauto_engine_ios/Flauto.h>
+#import <flauto_engine_ios/FlautoRecorder.h>
 
 
-@interface FlutterSoundRecorder  : Session
+@interface FlutterSoundRecorder  : Session<FlautoRecorderCallback>
 {
+        FlautoRecorder* flautoRecorder;
 }
+// Callback
+- (void)updateRecorderProgressDbPeakLevel: normalizedPeakLevel duration: duration;
+- (void)recordingData: (NSData*)data;
+
+// Interface
 - (FlutterSoundRecorderManager*) getPlugin;
 - (Session*) init: (FlutterMethodCall*)call;
 
@@ -45,7 +50,7 @@
 - (void)startRecorder :(FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)stopRecorder:(FlutterResult)result;
 - (void)setDbPeakLevelUpdate:(double)intervalInSecs result: (FlutterResult)result;
-- (void)setDbLevelEnabled:(BOOL)enabled result: (FlutterResult)result;
+//- (void)setDbLevelEnabled:(BOOL)enabled result: (FlutterResult)result;
 - (void)initializeFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)releaseFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)setSubscriptionDuration:(FlutterMethodCall*)call result: (FlutterResult)result;
@@ -53,6 +58,7 @@
 - (void)pauseRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)resumeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 
+ 
 @end
 
 #endif /* FlutterSoundRecorder_h */

@@ -158,6 +158,24 @@ typedef enum
 
 
 
+typedef enum
+{
+          defaultSource,
+          microphone,
+          voiceDownlink, // (if someone can explain me what it is, I will be grateful ;-) )
+          camCorder,
+          remote_submix,
+          unprocessed,
+          voice_call,
+          voice_communication,
+          voice_performance,
+          voice_recognition,
+          voiceUpLink,
+          bluetoothHFP,
+          headsetMic,
+          lineIn
+} t_AUDIO_SOURCE;
+
 // Audio Flags
 // -----------
 #define outputToSpeaker  1

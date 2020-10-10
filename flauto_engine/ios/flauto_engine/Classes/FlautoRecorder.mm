@@ -29,266 +29,11 @@
 
 #import "Flauto.h"
 #import "FlautoRecorder.h"
-
-
-class AudioRecInterface
-{
-public:
-        virtual ~AudioRecInterface(){};
-        virtual void stopRecorder() = 0;
-        virtual void startRecorder( FlautoRecorder* rec) = 0;
-        virtual void resumeRecorder() = 0;
-        virtual void pauseRecorder() = 0;
-        virtual NSNumber* recorderProgress() = 0;
-        virtual NSNumber* dbPeakProgress() = 0;
-
-        int16_t maxAmplitude = 0;
-};
-
-
-//-------------------------------------------------------------------------------------------------------------------------------------------
-
-
-class AudioRecorderEngine : public AudioRecInterface
-{
-private:
-        AVAudioEngine* engine;
-        NSFileHandle * fileHandle;
-        AVAudioConverterInputStatus inputStatus = AVAudioConverterInputStatus_NoDataNow;
-        long dateCumul = 0;
-        long previousTS;
-
-public:
-
-
-       /* ctor */ AudioRecorderEngine(t_CODEC coder, NSString* path, NSMutableDictionary* audioSettings)
-        {
-                engine = [[AVAudioEngine alloc] init];
-                dateCumul = 0;
-                previousTS = 0;
-
-                AVAudioInputNode* inputNode = [engine inputNode];
-                AVAudioFormat* inputFormat = [inputNode outputFormatForBus: 0];
-                NSNumber* nbChannels = audioSettings [AVNumberOfChannelsKey];
-                NSNumber* sampleRate = audioSettings [AVSampleRateKey];
-                AVAudioFormat* recordingFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: (unsigned int)nbChannels.unsignedIntegerValue interleaved: YES];
-                AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat:inputFormat toFormat:recordingFormat];
-                NSFileManager* fileManager = [NSFileManager defaultManager];
-                NSURL* fileURL = nil;
-                if (path != nil && path != (id)[NSNull null])
-                {
-                        [fileManager removeItemAtPath:path error:nil];
-                        [fileManager createFileAtPath: path contents:nil attributes:nil];
-                        fileURL = [[NSURL alloc] initFileURLWithPath: path];
-                        fileHandle = [NSFileHandle fileHandleForWritingAtPath: path];
-                } else
-                {
-                        fileHandle = nil;
-                }
-
-
-                [inputNode installTapOnBus: 0 bufferSize: 2048 format: inputFormat block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when)
-                {
-                        inputStatus = AVAudioConverterInputStatus_HaveData ;
-                        AVAudioPCMBuffer* convertedBuffer = [[AVAudioPCMBuffer alloc]initWithPCMFormat:recordingFormat frameCapacity: [buffer frameCapacity]];
-
-        
-                        AVAudioConverterInputBlock inputBlock = ^AVAudioBuffer*(AVAudioPacketCount inNumberOfPackets, AVAudioConverterInputStatus *outStatus)
-                        {
-                                *outStatus = inputStatus;
-                                inputStatus =  AVAudioConverterInputStatus_NoDataNow;
-                                return buffer;
-                        };
-                        NSError* error;
-                        BOOL r = [converter convertToBuffer: convertedBuffer error: &error withInputFromBlock: inputBlock];
-                        if (!r)
-                        {
-                                NSString* s =  error.localizedDescription;
-                                NSString* f = @"%s";
-                                NSLog(f, s);
-                                s = error.localizedFailureReason;
-                                NSLog(f, s);
-                                return;
-                        }
-                        int n = [convertedBuffer frameLength];
-                        int16_t *const  bb = [convertedBuffer int16ChannelData][0];
-                        NSData* b = [[NSData alloc] initWithBytes: bb length: n * 2 ];
-                        if (n > 0)
-                        {
-                                if (fileHandle != nil)
-                                {
-                                        [fileHandle writeData: b];
-                                } else
-                                {
-                                        //NSDictionary* dic = [[NSMutableDictionary alloc] init];
-                                        //[dic setValue: b forKey: @"recordingData"];
-                                        // TODO //NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: -1], @"recordingData": b,};
-                                        // TODO //[session invokeMethod: @"recordingData" dico: dico];
-                                }
-                                
-                                int16_t* pt = [convertedBuffer int16ChannelData][0];
-                                for (int i = 0; i < [buffer frameLength]; ++pt, ++i)
-                                {
-                                        short curSample = *pt;
-                                        if ( curSample > maxAmplitude )
-                                        {
-                                                maxAmplitude = curSample;
-                                        }
-                        
-                                }
-                        }
-                }];
-        }
-         
-        /* dtor */virtual ~AudioRecorderEngine()
-        {
-        
-        }
-
-        virtual void startRecorder(FlautoRecorder* rec)
-        {
-                [engine startAndReturnError: nil];
-                previousTS = CACurrentMediaTime() * 1000;
-        }
-        
-        virtual void stopRecorder()
-        {
-                [engine stop];
-                [fileHandle closeFile];
-                if (previousTS != 0)
-                {
-                        dateCumul += CACurrentMediaTime() * 1000 - previousTS;
-                        previousTS = 0;
-                }
-                engine = nil;
-        }
-        
-        virtual void resumeRecorder()
-        {
-                [engine startAndReturnError: nil];
-                previousTS = CACurrentMediaTime() * 1000;
-         
-        }
-        
-        virtual void pauseRecorder()
-        {
-                [engine pause];
-                if (previousTS != 0)
-                {
-                        dateCumul += CACurrentMediaTime() * 1000 - previousTS;
-                        previousTS = 0;
-                }
-         
-        }
-        
-        NSNumber* recorderProgress()
-        {
-                long r = dateCumul;
-                if (previousTS != 0)
-                {
-                        r += CACurrentMediaTime() * 1000 - previousTS;
-                }
-                return [NSNumber numberWithInt: (int)r];
-        }
-        virtual NSNumber* dbPeakProgress()
-        {
-                double max = (double)maxAmplitude;
-                maxAmplitude = 0;
-                if (max == 0.0)
-                {
-                        // if the microphone is off we get 0 for the amplitude which causes
-                        // db to be infinite.
-                        return [NSNumber numberWithDouble: 0.0];
-                }
-                
-        
-                // Calculate db based on the following article.
-                // https://stackoverflow.com/questions/10655703/what-does-androids-getmaxamplitude-function-for-the-mediarecorder-actually-gi
-                //
-                double ref_pressure = 51805.5336;
-                double p = max / ref_pressure;
-                double p0 = 0.0002;
-                double l = log10(p / p0);
-
-                double db = 20.0 * l;
-
-                return [NSNumber numberWithDouble: db];
-        }
-
-
-};
-
-//-----------------------------------------------------------------------------------------------------------------------------------------
-
-class avAudioRec : public AudioRecInterface
-{
-        AVAudioRecorder* audioRecorder;
-public:
-        /* ctor */avAudioRec( NSString* path, NSMutableDictionary *audioSettings)
-        {
-        
-                  NSURL *audioFileURL;
-                  {
-                        audioFileURL = [NSURL fileURLWithPath: path];
-                  }
-
-                 audioRecorder = [[AVAudioRecorder alloc]
-                                        initWithURL:audioFileURL
-                                        settings:audioSettings
-                                        error:nil];
-
-                  
-        }
-        
-        /* dtor */virtual ~avAudioRec()
-        {
-                [audioRecorder stop];
-        }
-        
-        void startRecorder(FlautoRecorder* rec)
-        {
-                  // TODO // !!! [audioRecorder setDelegate: rec];
-                  [audioRecorder record];
-                  [audioRecorder setMeteringEnabled: YES];
-        }
-        
-        void stopRecorder()
-        {
-                [audioRecorder stop];
-        }
-        
-        void resumeRecorder()
-        {
-                [audioRecorder record];
-        }
-        
-        void pauseRecorder()
-        {
-                [audioRecorder pause];
-
-        }
-        
-        NSNumber* recorderProgress()
-        {
-                NSNumber* duration =    [NSNumber numberWithLong: (long)(audioRecorder.currentTime * 1000 )];
-
-                
-                [audioRecorder updateMeters];
-                return duration;
-        }
-        virtual NSNumber* dbPeakProgress()
-        {
-                NSNumber* normalizedPeakLevel = [NSNumber numberWithDouble:MIN(pow(10.0, [audioRecorder peakPowerForChannel:0] / 20.0) * 160.0, 160.0)];
-		return normalizedPeakLevel;
-
-        }
-
-};
+#import "FlautoRecorderEngine.h"
 
 
 //-------------------------------------------------------------------------------------------------------------------------------------
 
-/* TODO
 static bool _isIosEncoderSupported [] =
 {
      		true, // DEFAULT
@@ -307,7 +52,6 @@ static bool _isIosEncoderSupported [] =
                 false, // amrWB
 
 };
-*/
 
 static NSString* defaultExtensions [] =
 {
@@ -328,7 +72,6 @@ static NSString* defaultExtensions [] =
 
 };
 
-/* TODO
 static AudioFormatID formats [] =
 {
           kAudioFormatMPEG4AAC          // CODEC_DEFAULT
@@ -347,61 +90,6 @@ static AudioFormatID formats [] =
         , kAudioFormatAMR_WB            // amrWB
 };
 
-*/
-AudioRecInterface* audioRec;
-
-typedef int FlutterResult;
-
-@implementation FlautoRecorder
-{
-        //NSURL *audioFileURL;
-        NSTimer* dbPeakTimer;
-        NSTimer* recorderTimer;
-        double subscriptionDuration;
-        NSString* path;
-}
-
-
-- (FlautoRecorder*)init
-{
-        return [super init];
-}
-- (void)initializeFlautoRecorder 
-{
-        // TODO //[self setAudioFocus: call result: result];
-        
-}
-
-- (void)releaseFlautoRecorder 
-{
-        // TODO // [super releaseSession];
-        // TODO // result([NSNumber numberWithBool: YES]);
-}
-
-- (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result
-{
-        // TODO // NSNumber* b = [NSNumber numberWithBool: _isIosEncoderSupported[codec] ];
-        // TODO // result(b);
-}
-
-
-enum AudioSource {
-  defaultSource,
-  microphone,
-  voiceDownlink, // (if someone can explain me what it is, I will be grateful ;-) )
-  camCorder,
-  remote_submix,
-  unprocessed,
-  voice_call,
-  voice_communication,
-  voice_performance,
-  voice_recognition,
-  voiceUpLink,
-  bluetoothHFP,
-  headsetMic,
-  lineIn
-
-};
 
 AVAudioSessionPort tabSessionPort [] =
 {
@@ -423,101 +111,111 @@ AVAudioSessionPort tabSessionPort [] =
 
 
 
-- (void)setAudioFocus
+AudioRecInterface* audioRec;
+
+
+@implementation FlautoRecorder
 {
-/* TODO
-        BOOL r = [self setAudioFocus: call ];
-        if (r)
-                result((@"setAudioFocus"));
-        else
-                [FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"Open session failure"
-                                details:nil];
-                                */
+        //NSURL *audioFileURL;
+        NSTimer* dbPeakTimer;
+        NSTimer* recorderTimer;
+        double subscriptionDuration;
+        NSString* path;
+}
+
+- (void)recordingData: (NSData*)data
+{
+        [m_callBack recordingData: data];
 }
 
 
-- (void)startRecorder
+- (FlautoRecorder*)init: (NSObject<FlautoRecorderCallback>*) callback
 {
-/* TODO
-           path = (NSString*)call.arguments[@"path"];
-           NSNumber* sampleRateArgs = (NSNumber*)call.arguments[@"sampleRate"];
-           NSNumber* numChannelsArgs = (NSNumber*)call.arguments[@"numChannels"];
-           //NSNumber* iosQuality = (NSNumber*)call.arguments[@"iosQuality"];
-           NSNumber* bitRate = (NSNumber*)call.arguments[@"bitRate"];
-           NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
-           int audioSource = [(NSNumber*)call.arguments[@"audioSource"] intValue];
-           
-           AVAudioSession* audioSession = [AVAudioSession sharedInstance];
-           NSArray<AVAudioSessionPortDescription*>* availableInputs = [audioSession availableInputs];
-           bool found = false;
-           for (AVAudioSessionPortDescription* portDescr in availableInputs)
-           {
-                AVAudioSessionPort port = [portDescr portType];
-                if ([port isEqual:tabSessionPort[audioSource]])
+        m_callBack = callback;
+        return [super init];
+}
+
+- (bool)initializeFlautoRecorder:
+               (t_AUDIO_FOCUS)focus
+                category: (t_SESSION_CATEGORY)category
+                mode: (t_SESSION_MODE)mode
+                audioFlags: (int)audioFlags
+                audioDevice: (t_AUDIO_DEVICE)audioDevice
+{
+        BOOL r = [self setAudioFocus: focus category: category mode: mode audioFlags: audioFlags audioDevice: audioDevice ];
+        return r;
+}
+
+- (bool)isEncoderSupported:(t_CODEC)codec 
+{
+        return  _isIosEncoderSupported[codec] ;
+}
+
+
+- (void)releaseFlautoRecorder
+{
+        NSLog(@"IOS:--> releaseFlautoPlayer");
+        NSLog(@"IOS:<-- releaseFlautoPlayer");
+}
+
+
+
+- (bool)startRecorderCodec: (t_CODEC)codec
+                toPath: (NSString*)path
+                channels: (int)numChannels
+                sampleRate: (long)sampleRate
+                bitRate: (long)bitRate
+                audioSource: (t_AUDIO_SOURCE) audioSource
+{
+        AVAudioSession* audioSession = [AVAudioSession sharedInstance];
+        NSArray<AVAudioSessionPortDescription*>* availableInputs = [audioSession availableInputs];
+        //bool found = false;
+        if (tabSessionPort[audioSource] != 0)
+        {
+                for (AVAudioSessionPortDescription* portDescr in availableInputs)
                 {
-                        [audioSession setPreferredInput: portDescr error: nil ];
-                        found = true;
+                        AVAudioSessionPort port = [portDescr portType];
+                        if ([port isEqual:tabSessionPort[audioSource]])
+                        {
+                                [audioSession setPreferredInput: portDescr error: nil ];
+                                break;
+                                //found = true;
+                        }
                 }
-           }
+        }
 
-           t_CODEC coder = aacADTS;
-           if (![codec isKindOfClass:[NSNull class]])
-           {
-                   coder = (t_CODEC)([codec intValue]);
-           }
+        NSMutableDictionary* audioSettings = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                 [NSNumber numberWithFloat: (float)sampleRate], AVSampleRateKey,
+                                 [NSNumber numberWithInt: formats[codec] ], AVFormatIDKey,
+                                 [NSNumber numberWithInt: numChannels ], AVNumberOfChannelsKey,
+                         nil];
 
-           float sampleRate = 44100;
-           if (![sampleRateArgs isKindOfClass:[NSNull class]])
-           {
-                sampleRate = [sampleRateArgs integerValue];
-           }
+        // If bitrate is defined, we use it, otherwise use the OS default
+        if(bitRate > 0)
+        {
+                [audioSettings setValue:[NSNumber numberWithLong: bitRate]
+                    forKey:AVEncoderBitRateKey];
+        }
 
-           int numChannels = 2;
-           if (![numChannelsArgs isKindOfClass:[NSNull class]])
-           {
-                numChannels = [numChannelsArgs integerValue];
-           }
-
-          NSMutableDictionary *audioSettings = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                         [NSNumber numberWithFloat: sampleRate],AVSampleRateKey,
-                                         [NSNumber numberWithInt: formats[coder] ],AVFormatIDKey,
-                                         [NSNumber numberWithInt: numChannels ],AVNumberOfChannelsKey,
-                                         //[NSNumber numberWithInt: [iosQuality intValue]],AVEncoderAudioQualityKey,
-                                         nil];
-
-            // If bitrate is defined, we use it, otherwise use the OS default
-            if(![bitRate isEqual:[NSNull null]])
-            {
-                        [audioSettings setValue:[NSNumber numberWithInt: [bitRate intValue]]
-                            forKey:AVEncoderBitRateKey];
-            }
-
-          if(coder == pcm16)
-          {
+        if(codec == pcm16)
+        {
                 if (numChannels != 1)
                 {
-                              [FlutterError
-                                errorWithCode:@"FlutterSoundRecorder"
-                                message:@"Raw PCM is supported with only 1 number of channels"
-                                details:nil];
-                                return;
+                                return false;
                 }
-                audioRec = new AudioRecorderEngine(coder, path, audioSettings, self);
-          } else
-          {
-                audioRec = new avAudioRec( path, audioSettings);
-          }
-          audioRec ->startRecorder(self);
-          [self startRecorderTimer];
+                audioRec = new AudioRecorderEngine(codec, path, audioSettings, self);
+        } else
+        {
+                audioRec = new avAudioRec(codec, path, audioSettings, self);
+        }
+        audioRec ->startRecorder();
+        [self startRecorderTimer];
 
-           result(path);
-           */
+        return true;
 }
 
 
-- (void)stopRecorder:(FlutterResult)result
+- (void)stopRecorder
 {
  
           [self stopRecorderTimer];
@@ -530,20 +228,17 @@ AVAudioSessionPort tabSessionPort [] =
                 delete audioRec;
                 audioRec = nil;
           }
-          // TODO // result(path);
 }
 
 
 - (void)startRecorderTimer
 {
         [self stopRecorderTimer];
-        //dispatch_async(dispatch_get_main_queue(), ^{
         recorderTimer = [NSTimer scheduledTimerWithTimeInterval: subscriptionDuration
                                            target:self
                                            selector:@selector(updateRecorderProgress:)
                                            userInfo:nil
                                            repeats:YES];
-        //});
 }
 
 
@@ -556,33 +251,31 @@ AVAudioSessionPort tabSessionPort [] =
 }
 
 
-- (void) stopRecorderTimer{
-    if (recorderTimer != nil) {
-        [recorderTimer invalidate];
-        recorderTimer = nil;
-    }
+- (void) stopRecorderTimer
+{
+        if (recorderTimer != nil)
+        {
+                [recorderTimer invalidate];
+                recorderTimer = nil;
+        }
 }
 
 
-- (void)setSubscriptionDuration
+- (void)setSubscriptionDuration: (long)millisec
 {
-        // TODO // NSNumber* milliSec = (NSNumber*)call.arguments[@"duration"];
-        // TODO // subscriptionDuration = [milliSec doubleValue]/1000;
-        // TODO // result(@"setSubscriptionDuration");
+        subscriptionDuration = ((double)millisec)/1000.0;
 }
 
 - (void)pauseRecorder
 {
         audioRec ->pauseRecorder();
         [self stopRecorderTimer];
-        // TODO // result(@"Recorder is Paused");
 }
 
 - (void)resumeRecorder
 {
         audioRec ->resumeRecorder();
         [self startRecorderTimer];
-        // TODO // result(@"Recorder is Resumed");
 }
 
 
@@ -590,12 +283,9 @@ AVAudioSessionPort tabSessionPort [] =
 - (void)updateRecorderProgress:(NSTimer*) atimer
 {
         assert (recorderTimer == atimer);
-        // TODO NSNumber* duration = audioRec ->recorderProgress();
-
-        // TODO NSNumber * normalizedPeakLevel = audioRec ->dbPeakProgress();
-        
-        // TODO NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"dbPeakLevel": normalizedPeakLevel, @"duration": duration};
-        // TODO [self invokeMethod:@"updateRecorderProgress" dico: dico];
+        NSNumber* duration = audioRec ->recorderProgress();
+        NSNumber * normalizedPeakLevel = audioRec ->dbPeakProgress();
+        [m_callBack updateRecorderProgressDbPeakLevel: normalizedPeakLevel duration: duration];
 }
  
 

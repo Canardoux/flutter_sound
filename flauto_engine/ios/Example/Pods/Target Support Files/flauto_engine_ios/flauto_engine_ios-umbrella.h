@@ -10,13 +10,14 @@
 #endif
 #endif
 
-#import "AudioSession.h"
-#import "FlautoEngine.h"
+#import "Flauto.h"
 #import "FlautoPlayer.h"
+#import "FlautoPlayerEngine.h"
 #import "FlautoRecorder.h"
+#import "FlautoRecorderEngine.h"
+#import "FlautoSession.h"
+#import "FlautoTrack.h"
 #import "FlautoTrackPlayer.h"
-#import "PlayerEngine.h"
-#import "Track.h"
 
 FOUNDATION_EXPORT double flauto_engine_iosVersionNumber;
 FOUNDATION_EXPORT const unsigned char flauto_engine_iosVersionString[];

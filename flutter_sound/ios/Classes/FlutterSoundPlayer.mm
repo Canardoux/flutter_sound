@@ -240,15 +240,16 @@
         NSData* data = nil;
         if ([dataBuffer class] != [NSNull class])
                 data = [dataBuffer data];
-         
+        int channels = ([numChannels class] != [NSNull class]) ? [numChannels intValue] : 1;
+        long samplerateLong = ([sampleRate class] != [NSNull class]) ? [sampleRate longValue] : 44100;
   
         bool b =
         [
                 flautoPlayer startPlayerCodec: codec
                 fromURI: path
                 fromDataBuffer: data
-                channels: [ numChannels intValue]
-                sampleRate: [sampleRate longValue]
+                channels: channels
+                sampleRate: samplerateLong
         ];
         if (b)
         {

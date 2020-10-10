@@ -45,13 +45,10 @@
 @end
 
 
-@interface FlautoPlayer  : FlautoSession < AVAudioPlayerDelegate, AVAudioRecorderDelegate>
+@interface FlautoPlayer  : FlautoSession <AVAudioPlayerDelegate>
 {
         NSObject<FlautoPlayerEngineInterface>* m_playerEngine;
         NSObject<FlautoPlayerCallback>* m_callBack;
-
-
-        
 }
 
 - (FlautoPlayer*)init: (NSObject<FlautoPlayerCallback>*) callback;

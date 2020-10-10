@@ -240,12 +240,12 @@ static bool _isIosDecoderSupported [] =
 }
 
 
-- (void)needSomeFood: (int) ln
+- (void)needSomeFood: (int)ln
 {
         [m_callBack needSomeFood: ln];
 }
 
-- (void)updateProgress:(NSTimer*) atimer
+- (void)updateProgress: (NSTimer*)atimer
 {
          dispatch_async(dispatch_get_main_queue(), ^{
                 long position = [self ->m_playerEngine getPosition];
@@ -259,8 +259,9 @@ static bool _isIosDecoderSupported [] =
 {
         NSLog(@"IOS:--> startTimer");
         [self stopTimer];
-        dispatch_async(dispatch_get_main_queue(), ^{ // ??? Why Async ?  (no async for recorder)
-        self ->timer = [NSTimer scheduledTimerWithTimeInterval: self ->subscriptionDuration
+        dispatch_async(dispatch_get_main_queue(),
+        ^{ // ??? Why Async ?  (no async for recorder)
+                self ->timer = [NSTimer scheduledTimerWithTimeInterval: self ->subscriptionDuration
                                            target:self
                                            selector:@selector(updateProgress:)
                                            userInfo:nil
@@ -270,13 +271,16 @@ static bool _isIosDecoderSupported [] =
 }
 
 
-- (void) stopTimer{
+- (void) stopTimer
+{
         NSLog(@"IOS:--> stopTimer");
         if (timer != nil) {
                 [timer invalidate];
                 timer = nil;
         }
-        NSLog(@"IOS:<-- stopTimer");}
+        NSLog(@"IOS:<-- stopTimer");
+        
+}
 
 
 - (bool)startPlayerFromTrack: (Track*)track canPause: (bool)canPause canSkipForward: (bool)canSkipForward canSkipBackward: (bool)canSkipBackward

@@ -28,28 +28,44 @@
 
 
 #import <AVFoundation/AVFoundation.h>
-#import "FlautoTrack.h"
+#import "Flauto.h"
+#import "FlautoSession.h"
+ 
 
+@protocol FlautoRecorderCallback <NSObject>
+- (void)updateRecorderProgressDbPeakLevel: normalizedPeakLevel duration: duration;
+- (void)recordingData: (NSData*)data;
+@end
 
-@interface FlautoRecorder   : NSObject
+@interface FlautoRecorder  : FlautoSession <  AVAudioRecorderDelegate>
 {
+        NSObject<FlautoRecorderCallback>* m_callBack;
 }
+- (FlautoRecorder*)init: (NSObject<FlautoRecorderCallback>*) callback;
+- (bool)initializeFlautoRecorder:
+               (t_AUDIO_FOCUS)focus
+                category: (t_SESSION_CATEGORY)category
+                mode: (t_SESSION_MODE)mode
+                audioFlags: (int)audioFlags
+                audioDevice: (t_AUDIO_DEVICE)audioDevice;
 
-//- (FlautoRecorderManager*) getPlugin;
-//- (Session*) init: (FlutterMethodCall*)call;
-/*
-- (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result;
-- (void)startRecorder :(FlutterMethodCall*)call result:(FlutterResult)result;
-- (void)stopRecorder:(FlutterResult)result;
-- (void)setDbPeakLevelUpdate:(double)intervalInSecs result: (FlutterResult)result;
-- (void)setDbLevelEnabled:(BOOL)enabled result: (FlutterResult)result;
-- (void)initializeFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
-- (void)releaseFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
-- (void)setSubscriptionDuration:(FlutterMethodCall*)call result: (FlutterResult)result;
-- (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result;
-- (void)pauseRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
-- (void)resumeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
-*/
+- (bool)isEncoderSupported:(t_CODEC)codec ;
+- (void)releaseFlautoRecorder;
+
+- (bool)startRecorderCodec: (t_CODEC)codec
+                toPath: (NSString*)path
+                channels: (int)numChannels
+                sampleRate: (long)sampleRate
+                bitRate: (long)bitRate
+                audioSource: (t_AUDIO_SOURCE) audioSource;
+                
+- (void)stopRecorder;
+- (void)setSubscriptionDuration: (long)millisec;
+- (void)pauseRecorder;
+- (void)resumeRecorder;
+- (void)recordingData: (NSData*)data;
+
+
 @end
 
 #endif /* FlautoRecorder_h */
