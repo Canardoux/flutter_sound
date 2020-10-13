@@ -25,38 +25,40 @@
 
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
-#import "PlayerEngine.h"
-#import "FlautoPlayerManager.h"
-#import "PlayerEngine.h"
+#import "FlautoPlayerEngine.h"
+#import <flauto_engine_ios/FlautoPlayer.h>
+#import <flauto_engine_ios/Flauto.h>
+#include "FlutterSoundManager.h"
+#include "FlutterSoundPlayerManager.h"
 
-
-@interface FlutterSoundPlayer : Session
+@interface FlutterSoundPlayer : Session<FlautoPlayerCallback>
 {
-        NSObject<PlayerInterface>* player;
-         
+        FlautoPlayer* flautoPlayer;
 }
 
-- (FlautoPlayerManager*) getPlugin;
+
+- (FlutterSoundPlayerManager*) getPlugin;
 - (Session*) init: (FlutterMethodCall*)call;
-- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag;
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result;
-- (void)updateProgress:(NSTimer *)timer;
-- (void)startTimer;
-- (void)stopPlayer;
 - (void)pausePlayer:(FlutterResult)result;
 - (void)resumePlayer:(FlutterResult)result;
-- (void)stopTimer;
-- (bool)pause;
-- (bool)resume;
+//- (void)audioPlayerDidFinishPlaying: (BOOL)flag;
+//- (void)updateProgress:(NSTimer *)timer;
+//- (bool)pause;
+//- (bool)resume;
+//- (NSNumber*)getPlayerStatus;
+//- (int)getStatus;
+//- (long)getPosition;
+//- (long)getDuration;
 - (void)startPlayer:(FlutterMethodCall*)path result: (FlutterResult)result;
 - (void)getProgress:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result;
-- (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result;
+//- (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result;
 - (void)seekToPlayer:(FlutterMethodCall*) time result: (FlutterResult)result;
 - (void)setSubscriptionDuration:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)setVolume:(double) volume result: (FlutterResult)result;
-- (void)setCategory: (NSString*)categ mode:(NSString*)mode options:(int)options result:(FlutterResult)result;
-- (void)setActive:(BOOL)enabled result:(FlutterResult)result;
+- (void)setCategory: (FlutterMethodCall*)call result:(FlutterResult)result;
+- (void)setActive: (FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)initializeFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)releaseFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result;
@@ -64,17 +66,9 @@
 - (void)nowPlaying:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)getPlayerState:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)stopPlayer:(FlutterMethodCall*)call  result:(FlutterResult)result;
-- (NSNumber*)getPlayerStatus;
-- (int)getStatus;
-- (long)getPosition;
-- (long)getDuration;
+
 - (void)feed:(FlutterMethodCall*)call result: (FlutterResult)result;
-- (void)needSomeFood: (int) ln;
-
-
-
-
-
+//- (void)needSomeFood: (int) ln;
 
 @end
 

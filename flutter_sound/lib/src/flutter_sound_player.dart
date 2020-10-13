@@ -27,7 +27,10 @@ import 'dart:typed_data' show Uint8List;
 import 'package:synchronized/synchronized.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
+//export 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
+
 import 'package:flutter_sound/src/food.dart';
 
 
@@ -357,21 +360,46 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   void pause(int state)  async {
     print( 'FS:---> pause ' );
     await lock.synchronized(() async {
-      //int state = call['arg'] as int;
       assert (state != null);
       playerState = PlayerState.values[state];
-
+/*
       bool b = (
                   playerState == PlayerState.isPaused
       );
-      if (onPaused != null)
+
+ */
+      if (onPaused != null) // Probably always true
       {
-        // Probably always true
-        onPaused( !b );
+        
+        onPaused( true );
       }
     });
     print('FS:<--- pause ');
   }
+
+
+  @override
+  void resume(int state)  async {
+    print( 'FS:---> pause ' );
+    await lock.synchronized(() async {
+      assert (state != null);
+      playerState = PlayerState.values[state];
+/*
+      bool b = (
+                  playerState == PlayerState.isPaused
+      );
+
+ */
+      if (onPaused != null) // Probably always true
+      {
+        
+        onPaused( false );
+      }
+    });
+    print('FS:<--- pause ');
+  }
+
+ 
 
   bool needToConvert(Codec codec) {
     print('FS:---> needToConvert ');
@@ -819,14 +847,15 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     print('FS:---> stop ');
     if (foodStreamSubscription != null)
       {
-        foodStreamSubscription.cancel();
+        await foodStreamSubscription.cancel();
         foodStreamSubscription = null;
       }
     needSomeFoodCompleter = null;
     if (foodStreamController != null)
       {
-        foodStreamController.sink.close();
-        foodStreamController.close();
+        await foodStreamController.sink.close();
+        //await foodStreamController.stream.drain<bool>();
+        await foodStreamController.close();
         foodStreamController = null;
       }
     int state = await FlutterSoundPlayerPlatform.instance.stopPlayer(this);

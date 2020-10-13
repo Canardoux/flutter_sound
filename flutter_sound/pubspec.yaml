@@ -1,5 +1,5 @@
 name: flutter_sound
-version: 6.1.4
+version: 6.2.0
 description: Flutter plugin that relates to sound like audio and recorder.
 #author: dooboolab<dooboolab@gmail.com>
 homepage: https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/
@@ -16,7 +16,7 @@ dependencies:
   flutter_spinkit: ^4.0.0
   path: ">=1.0.0 <2.0.0"
   synchronized: ^2.2.0
-  flutter_sound_platform_interface: ^1.0.0
+  flutter_sound_platform_interface: 2.0.0
 
 
   flutter:
@@ -42,7 +42,7 @@ flutter:
         package: com.dooboolab.fluttersound
         pluginClass: Flauto
       ios:
-        pluginClass: Flauto
+        pluginClass: FlutterSound
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

@@ -602,6 +602,41 @@ FULL)
 			process_dart_file $f FULL
 		done
 
+   for f in example/lib/demo/*.dart
+    do
+      process_dart_file $f FULL
+    done
+
+    for f in example/lib/livePlaybackWithBackPressure/*.dart
+    do
+      process_dart_file $f FULL
+    done
+
+    for f in example/lib/livePlaybackWithoutBackPressure/*.dart
+    do
+      process_dart_file $f FULL
+    done
+
+    for f in example/lib/recordToStream/*.dart
+    do
+      process_dart_file $f FULL
+    done
+
+    for f in example/lib/soundEffect/*.dart
+    do
+      process_dart_file $f FULL
+    done
+
+    for f in example/lib/streamLoop/*.dart
+    do
+      process_dart_file $f FULL
+    done
+
+    for f in example/lib/widgetUI/*.dart
+    do
+      process_dart_file $f FULL
+    done
+
     for f in example/lib/widgetUI/demo_util/*.dart
     do
       process_dart_file $f FULL
@@ -661,6 +696,41 @@ LITE)
     done
 
     for f in example/lib/*.dart
+    do
+      process_dart_file $f LITE
+    done
+
+    for f in example/lib/demo/*.dart
+    do
+      process_dart_file $f LITE
+    done
+
+    for f in example/lib/livePlaybackWithBackPressure/*.dart
+    do
+      process_dart_file $f LITE
+    done
+
+    for f in example/lib/livePlaybackWithoutBackPressure/*.dart
+    do
+      process_dart_file $f LITE
+    done
+
+    for f in example/lib/recordToStream/*.dart
+    do
+      process_dart_file $f LITE
+    done
+
+    for f in example/lib/soundEffect/*.dart
+    do
+      process_dart_file $f LITE
+    done
+
+    for f in example/lib/streamLoop/*.dart
+    do
+      process_dart_file $f LITE
+    done
+
+    for f in example/lib/widgetUI/*.dart
     do
       process_dart_file $f LITE
     done

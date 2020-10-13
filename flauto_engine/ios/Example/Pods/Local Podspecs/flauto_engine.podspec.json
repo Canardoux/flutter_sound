@@ -1,0 +1,22 @@
+{
+  "name": "flauto_engine",
+  "version": "0.1.0",
+  "summary": "A short description of flauto_engine.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/Larpoux/flauto_engine",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Larpoux": "larpoux@canardoux.xyz"
+  },
+  "source": {
+    "git": "https://github.com/Larpoux/flauto_engine.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "flauto_engine/Classes/**/*"
+}

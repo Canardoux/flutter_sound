@@ -324,6 +324,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
 
   void _onRecord() async {
     if (!_isRecording) {
+      await _recorder.setSubscriptionDuration(Duration(milliseconds: 100));
       await _recorder.startRecorder(toFile: widget.audio.track.trackPath,);
       _onStarted(wasUser: true);
 

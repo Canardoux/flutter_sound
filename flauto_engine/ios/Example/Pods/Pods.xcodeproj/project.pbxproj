@@ -1,0 +1,846 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		11BD1C1F424693E5FF899C71A21C6D4C /* FlautoTrackPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = C9807178E821BCE89109B503FB8D201C /* FlautoTrackPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		12386C89EEDFBC35BA5134D9289ABC5C /* flauto_engine_ios-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F49A4B7ACCAB779D55B663E227D1BB8E /* flauto_engine_ios-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		192238286433E4AEF8DBB92E722D9EA5 /* FlautoRecorderEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DBC342DE1CE372F4D1028C8D2F8F3E6 /* FlautoRecorderEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		19747FD2166FB8EC4F7637D82CC150E5 /* FlautoSession.h in Headers */ = {isa = PBXBuildFile; fileRef = FC38E5CD2C4D5049E2DC3D96A7AD45D1 /* FlautoSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1BB89E52A6A14FCF106995E3DEC02AF3 /* FlautoPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5CE7F251F2A39224BE682298B21C7F98 /* FlautoPlayer.mm */; };
+		20522351F75CA883959795312966567B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CA76C0749A083718F810629A2649BF2 /* Foundation.framework */; };
+		22A5BBA1C809B9398AA2E5908B7ADF2E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CA76C0749A083718F810629A2649BF2 /* Foundation.framework */; };
+		2CBCC8D361DF9E1230DBD1FEA0071A1A /* FlautoPlayerEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = A05FFC37E6A62C046B3A00444161D51B /* FlautoPlayerEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2F89EFE700B7403FF8A2E48FFD6FE5CD /* FlautoTrack.mm in Sources */ = {isa = PBXBuildFile; fileRef = 15FED4C02736AB9C74E50843A3D6A218 /* FlautoTrack.mm */; };
+		30B0316CC4FC0B51553080D219D3C354 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 721754999D10B6CD690106DAF6FF1D2D /* AVFoundation.framework */; };
+		3822E3A8A942E70654E3E0E35F1A5654 /* Pods-flauto_engine_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E29CAA9FE1A877C5091D74494D59049F /* Pods-flauto_engine_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		38B5E4CF7FEE87FFC15DB4E394C3C271 /* Flauto.h in Headers */ = {isa = PBXBuildFile; fileRef = 0F6AB0C7FD70722A1330D6ECCDC897A7 /* Flauto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3F45ED47701384D71D7BAE5067447722 /* FlautoRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = DE1CFF817267949A33408AE0BDE4CED2 /* FlautoRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A859FA98943A31713117004E9395396 /* FlautoRecorderEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 73A1B15D0F4E9345415AB3FE8B164DA2 /* FlautoRecorderEngine.mm */; };
+		5511DC8481573A8D7817E6058E36ED02 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CA76C0749A083718F810629A2649BF2 /* Foundation.framework */; };
+		551CA50C1FD7988ED6C8AEE96CA713DF /* FlautoSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 87AE4DDB9B1E791B5461AA92D05859A3 /* FlautoSession.mm */; };
+		6B3883E2F0EC26FA6CE6F34F6189ECF9 /* Pods-flauto_engine_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 921A5627A61E2AC1BD7EBF556585AB09 /* Pods-flauto_engine_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		96C6EC581FC92733FFA53FEA3073DB88 /* Pods-flauto_engine_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFC6C3D79F945604F17604B7FCAC75A /* Pods-flauto_engine_Tests-dummy.m */; };
+		99979DFCA7542264A06DAD945EBE996F /* FlautoPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DC0EB5AD5CDEA834AD2564C1FDDA46F /* FlautoPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		99E2D83993423F00E90127B6F6BCF7E0 /* FlautoRecorder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B58ECC5670F94EF77E5FF93FF37EE6E /* FlautoRecorder.mm */; };
+		AA86ACBEE4587CFB7FAD9387A89AFC4F /* FlautoTrackPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = CFA2D8BD0D04F11BC46983D3D0A993A4 /* FlautoTrackPlayer.mm */; };
+		B0C8F69C6D76E3B1D7A804D8F7582741 /* FlautoPlayerEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83F155E4310308CAE78393FC29821A53 /* FlautoPlayerEngine.mm */; };
+		B1EE869F3736C9D7D60DFF3C7019C166 /* flauto_engine_ios-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F0D99ECFE23660988BED40B7EF9973E /* flauto_engine_ios-dummy.m */; };
+		B921F972F28BA737E4BCE060BA5F9B53 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFBBED95DE2C7A95C2A22A67A162850 /* MediaPlayer.framework */; };
+		C274B8CB5C292A46BD0618F108BC2A18 /* Pods-flauto_engine_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 91BA5F5F48C8B7A89B4D476E8BEF4FC1 /* Pods-flauto_engine_Example-dummy.m */; };
+		C7E079E308C079DEA69F4236A2003C4F /* Flauto.mm in Sources */ = {isa = PBXBuildFile; fileRef = 33FFC93946F94586F015B31217A73BD1 /* Flauto.mm */; };
+		E2C82ADCEEE46505ADCE78D691441005 /* FlautoTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = A6B6FA4E9BF64963DADD54BECFD3AFE8 /* FlautoTrack.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BA478C70A7E6F78560CA0BA122835D8A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6B4E3824CCA2A4044BD12EDB7496F4A8;
+			remoteInfo = flauto_engine_ios;
+		};
+		CCABA0756E79025902A38AC4B41E0E50 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 65C2D4272315ACA2C3A52F04C6335680;
+			remoteInfo = "Pods-flauto_engine_Example";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		03AD1C3458B25C8FD41E438C7FAE850E /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		0F0D99ECFE23660988BED40B7EF9973E /* flauto_engine_ios-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "flauto_engine_ios-dummy.m"; sourceTree = "<group>"; };
+		0F6AB0C7FD70722A1330D6ECCDC897A7 /* Flauto.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Flauto.h; path = flauto_engine/ios/flauto_engine/Classes/Flauto.h; sourceTree = "<group>"; };
+		10684FEDB531B22B59B3BD318438BE76 /* Pods-flauto_engine_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-flauto_engine_Example.release.xcconfig"; sourceTree = "<group>"; };
+		15FED4C02736AB9C74E50843A3D6A218 /* FlautoTrack.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = FlautoTrack.mm; path = flauto_engine/ios/flauto_engine/Classes/FlautoTrack.mm; sourceTree = "<group>"; };
+		1B58ECC5670F94EF77E5FF93FF37EE6E /* FlautoRecorder.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = FlautoRecorder.mm; path = flauto_engine/ios/flauto_engine/Classes/FlautoRecorder.mm; sourceTree = "<group>"; };
+		1CAE7352D6E9A6339EFC729E5F7820D7 /* flauto_engine_ios.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = flauto_engine_ios.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		1F8A6C4EB4A1611722A35FD2AABC596A /* Pods-flauto_engine_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-flauto_engine_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		27166D3E1AAEE612E3A5902901B3C33A /* Pods-flauto_engine_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-flauto_engine_Example.modulemap"; sourceTree = "<group>"; };
+		29C6FA31EFEB0B4C8C1B5CD9333AC461 /* Pods_flauto_engine_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_flauto_engine_Example.framework; path = "Pods-flauto_engine_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		33FFC93946F94586F015B31217A73BD1 /* Flauto.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = Flauto.mm; path = flauto_engine/ios/flauto_engine/Classes/Flauto.mm; sourceTree = "<group>"; };
+		47FA4D5402C0599D9B49BCA072EF2C4F /* Pods-flauto_engine_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-flauto_engine_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		4FFBBED95DE2C7A95C2A22A67A162850 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
+		5CE7F251F2A39224BE682298B21C7F98 /* FlautoPlayer.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = FlautoPlayer.mm; path = flauto_engine/ios/flauto_engine/Classes/FlautoPlayer.mm; sourceTree = "<group>"; };
+		5DBC342DE1CE372F4D1028C8D2F8F3E6 /* FlautoRecorderEngine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FlautoRecorderEngine.h; path = flauto_engine/ios/flauto_engine/Classes/FlautoRecorderEngine.h; sourceTree = "<group>"; };
+		6F7D29959FD2CB0E820BD5E8FF0F75B8 /* flauto_engine_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = flauto_engine_ios.framework; path = flauto_engine_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		721754999D10B6CD690106DAF6FF1D2D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		7340354C3BA397ADE8F947A847C16DA8 /* flauto_engine_ios-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "flauto_engine_ios-prefix.pch"; sourceTree = "<group>"; };
+		73A1B15D0F4E9345415AB3FE8B164DA2 /* FlautoRecorderEngine.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = FlautoRecorderEngine.mm; path = flauto_engine/ios/flauto_engine/Classes/FlautoRecorderEngine.mm; sourceTree = "<group>"; };
+		7B343092B57592C19D12582C9D4A36CF /* Pods-flauto_engine_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-flauto_engine_Example-acknowledgements.plist"; sourceTree = "<group>"; };
+		83F155E4310308CAE78393FC29821A53 /* FlautoPlayerEngine.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = FlautoPlayerEngine.mm; path = flauto_engine/ios/flauto_engine/Classes/FlautoPlayerEngine.mm; sourceTree = "<group>"; };
+		87AE4DDB9B1E791B5461AA92D05859A3 /* FlautoSession.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = FlautoSession.mm; path = flauto_engine/ios/flauto_engine/Classes/FlautoSession.mm; sourceTree = "<group>"; };
+		8CA76C0749A083718F810629A2649BF2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		90AE5D32D7D53B26184C4BE46EFFA9BD /* Pods-flauto_engine_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-flauto_engine_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
+		91BA5F5F48C8B7A89B4D476E8BEF4FC1 /* Pods-flauto_engine_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-flauto_engine_Example-dummy.m"; sourceTree = "<group>"; };
+		921A5627A61E2AC1BD7EBF556585AB09 /* Pods-flauto_engine_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-flauto_engine_Example-umbrella.h"; sourceTree = "<group>"; };
+		966E0C95A24B3D943DC77DA537A88010 /* Pods_flauto_engine_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_flauto_engine_Tests.framework; path = "Pods-flauto_engine_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		99CB18BFCA4E37B5CB80D5F98EBAEC84 /* Pods-flauto_engine_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-flauto_engine_Example-Info.plist"; sourceTree = "<group>"; };
+		9B4ED17847F5BA609E45048CDAC6860D /* flauto_engine_ios-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "flauto_engine_ios-Info.plist"; sourceTree = "<group>"; };
+		9B9C4017C939938F97CF11E3BC2C22E7 /* Pods-flauto_engine_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-flauto_engine_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9DC0EB5AD5CDEA834AD2564C1FDDA46F /* FlautoPlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FlautoPlayer.h; path = flauto_engine/ios/flauto_engine/Classes/FlautoPlayer.h; sourceTree = "<group>"; };
+		A05FFC37E6A62C046B3A00444161D51B /* FlautoPlayerEngine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FlautoPlayerEngine.h; path = flauto_engine/ios/flauto_engine/Classes/FlautoPlayerEngine.h; sourceTree = "<group>"; };
+		A6B6FA4E9BF64963DADD54BECFD3AFE8 /* FlautoTrack.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FlautoTrack.h; path = flauto_engine/ios/flauto_engine/Classes/FlautoTrack.h; sourceTree = "<group>"; };
+		A6BC9DC985DC4BF7441B0384912CCEF4 /* Pods-flauto_engine_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-flauto_engine_Example-frameworks.sh"; sourceTree = "<group>"; };
+		AEA566C41A3717E34332906BFF3AEBE5 /* flauto_engine_ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = flauto_engine_ios.release.xcconfig; sourceTree = "<group>"; };
+		B29CBCB5F8A2119C2410E24CFB9206CF /* flauto_engine_ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = flauto_engine_ios.debug.xcconfig; sourceTree = "<group>"; };
+		BA4EB7A540CCB8E940BE166858DEEFCD /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		C9807178E821BCE89109B503FB8D201C /* FlautoTrackPlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FlautoTrackPlayer.h; path = flauto_engine/ios/flauto_engine/Classes/FlautoTrackPlayer.h; sourceTree = "<group>"; };
+		CB2F0B595E6E8249F4FD7CD48CA92480 /* Pods-flauto_engine_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-flauto_engine_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
+		CFA2D8BD0D04F11BC46983D3D0A993A4 /* FlautoTrackPlayer.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = FlautoTrackPlayer.mm; path = flauto_engine/ios/flauto_engine/Classes/FlautoTrackPlayer.mm; sourceTree = "<group>"; };
+		D40D98B16234E95BADD67129BA283932 /* Pods-flauto_engine_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-flauto_engine_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		DDFC6C3D79F945604F17604B7FCAC75A /* Pods-flauto_engine_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-flauto_engine_Tests-dummy.m"; sourceTree = "<group>"; };
+		DE1CFF817267949A33408AE0BDE4CED2 /* FlautoRecorder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FlautoRecorder.h; path = flauto_engine/ios/flauto_engine/Classes/FlautoRecorder.h; sourceTree = "<group>"; };
+		E29CAA9FE1A877C5091D74494D59049F /* Pods-flauto_engine_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-flauto_engine_Tests-umbrella.h"; sourceTree = "<group>"; };
+		F49A4B7ACCAB779D55B663E227D1BB8E /* flauto_engine_ios-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "flauto_engine_ios-umbrella.h"; sourceTree = "<group>"; };
+		F60CA1E973667DB510611DD36D43A0EB /* Pods-flauto_engine_Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-flauto_engine_Tests-Info.plist"; sourceTree = "<group>"; };
+		F8ACDE61313B569D977296A33D01E4F0 /* Pods-flauto_engine_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-flauto_engine_Tests.modulemap"; sourceTree = "<group>"; };
+		FC38E5CD2C4D5049E2DC3D96A7AD45D1 /* FlautoSession.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FlautoSession.h; path = flauto_engine/ios/flauto_engine/Classes/FlautoSession.h; sourceTree = "<group>"; };
+		FFE9520E069CCB5A939552C5162D47F7 /* flauto_engine_ios.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = flauto_engine_ios.modulemap; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		287DBBC222BB8ECECED6ECD7C5A245C0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5511DC8481573A8D7817E6058E36ED02 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA1E879FEBC6B3A3B1920B83FD1EAD57 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20522351F75CA883959795312966567B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D309C126EB25345FCF313E517A1E6B9B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				30B0316CC4FC0B51553080D219D3C354 /* AVFoundation.framework in Frameworks */,
+				22A5BBA1C809B9398AA2E5908B7ADF2E /* Foundation.framework in Frameworks */,
+				B921F972F28BA737E4BCE060BA5F9B53 /* MediaPlayer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		03C5C200A0787E300053CFA8F53CA094 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E24306D5C6400D51CACCBEBCE6528491 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		05930F64FF8093F1325CAF3D5705007C /* Pods-flauto_engine_Example */ = {
+			isa = PBXGroup;
+			children = (
+				27166D3E1AAEE612E3A5902901B3C33A /* Pods-flauto_engine_Example.modulemap */,
+				CB2F0B595E6E8249F4FD7CD48CA92480 /* Pods-flauto_engine_Example-acknowledgements.markdown */,
+				7B343092B57592C19D12582C9D4A36CF /* Pods-flauto_engine_Example-acknowledgements.plist */,
+				91BA5F5F48C8B7A89B4D476E8BEF4FC1 /* Pods-flauto_engine_Example-dummy.m */,
+				A6BC9DC985DC4BF7441B0384912CCEF4 /* Pods-flauto_engine_Example-frameworks.sh */,
+				99CB18BFCA4E37B5CB80D5F98EBAEC84 /* Pods-flauto_engine_Example-Info.plist */,
+				921A5627A61E2AC1BD7EBF556585AB09 /* Pods-flauto_engine_Example-umbrella.h */,
+				9B9C4017C939938F97CF11E3BC2C22E7 /* Pods-flauto_engine_Example.debug.xcconfig */,
+				10684FEDB531B22B59B3BD318438BE76 /* Pods-flauto_engine_Example.release.xcconfig */,
+			);
+			name = "Pods-flauto_engine_Example";
+			path = "Target Support Files/Pods-flauto_engine_Example";
+			sourceTree = "<group>";
+		};
+		1D8ED3F6B5709936DD71F433D8B254D9 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				1CAE7352D6E9A6339EFC729E5F7820D7 /* flauto_engine_ios.podspec */,
+				BA4EB7A540CCB8E940BE166858DEEFCD /* LICENSE */,
+				03AD1C3458B25C8FD41E438C7FAE850E /* README.md */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		541E831C1D59E12054336348A122A1A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6F7D29959FD2CB0E820BD5E8FF0F75B8 /* flauto_engine_ios.framework */,
+				29C6FA31EFEB0B4C8C1B5CD9333AC461 /* Pods_flauto_engine_Example.framework */,
+				966E0C95A24B3D943DC77DA537A88010 /* Pods_flauto_engine_Tests.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6EF86CCBB0E429A2229330BDB7633586 /* Pods-flauto_engine_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F8ACDE61313B569D977296A33D01E4F0 /* Pods-flauto_engine_Tests.modulemap */,
+				D40D98B16234E95BADD67129BA283932 /* Pods-flauto_engine_Tests-acknowledgements.markdown */,
+				90AE5D32D7D53B26184C4BE46EFFA9BD /* Pods-flauto_engine_Tests-acknowledgements.plist */,
+				DDFC6C3D79F945604F17604B7FCAC75A /* Pods-flauto_engine_Tests-dummy.m */,
+				F60CA1E973667DB510611DD36D43A0EB /* Pods-flauto_engine_Tests-Info.plist */,
+				E29CAA9FE1A877C5091D74494D59049F /* Pods-flauto_engine_Tests-umbrella.h */,
+				1F8A6C4EB4A1611722A35FD2AABC596A /* Pods-flauto_engine_Tests.debug.xcconfig */,
+				47FA4D5402C0599D9B49BCA072EF2C4F /* Pods-flauto_engine_Tests.release.xcconfig */,
+			);
+			name = "Pods-flauto_engine_Tests";
+			path = "Target Support Files/Pods-flauto_engine_Tests";
+			sourceTree = "<group>";
+		};
+		CBD5D78E3D28DDCB3F11EB3DBADB709F /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				05930F64FF8093F1325CAF3D5705007C /* Pods-flauto_engine_Example */,
+				6EF86CCBB0E429A2229330BDB7633586 /* Pods-flauto_engine_Tests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		CF1408CF629C7361332E53B88F7BD30C = {
+			isa = PBXGroup;
+			children = (
+				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
+				D561C51456A9FD369325429BBA317695 /* Development Pods */,
+				03C5C200A0787E300053CFA8F53CA094 /* Frameworks */,
+				541E831C1D59E12054336348A122A1A0 /* Products */,
+				CBD5D78E3D28DDCB3F11EB3DBADB709F /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		D561C51456A9FD369325429BBA317695 /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FA24B1F96AA0FD90D09FA3AA98AFD724 /* flauto_engine_ios */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		E24306D5C6400D51CACCBEBCE6528491 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				721754999D10B6CD690106DAF6FF1D2D /* AVFoundation.framework */,
+				8CA76C0749A083718F810629A2649BF2 /* Foundation.framework */,
+				4FFBBED95DE2C7A95C2A22A67A162850 /* MediaPlayer.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		EF9243624A4AFA37CF0E17052E5C02D3 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				FFE9520E069CCB5A939552C5162D47F7 /* flauto_engine_ios.modulemap */,
+				0F0D99ECFE23660988BED40B7EF9973E /* flauto_engine_ios-dummy.m */,
+				9B4ED17847F5BA609E45048CDAC6860D /* flauto_engine_ios-Info.plist */,
+				7340354C3BA397ADE8F947A847C16DA8 /* flauto_engine_ios-prefix.pch */,
+				F49A4B7ACCAB779D55B663E227D1BB8E /* flauto_engine_ios-umbrella.h */,
+				B29CBCB5F8A2119C2410E24CFB9206CF /* flauto_engine_ios.debug.xcconfig */,
+				AEA566C41A3717E34332906BFF3AEBE5 /* flauto_engine_ios.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "flauto_engine/ios/Example/Pods/Target Support Files/flauto_engine_ios";
+			sourceTree = "<group>";
+		};
+		FA24B1F96AA0FD90D09FA3AA98AFD724 /* flauto_engine_ios */ = {
+			isa = PBXGroup;
+			children = (
+				0F6AB0C7FD70722A1330D6ECCDC897A7 /* Flauto.h */,
+				33FFC93946F94586F015B31217A73BD1 /* Flauto.mm */,
+				9DC0EB5AD5CDEA834AD2564C1FDDA46F /* FlautoPlayer.h */,
+				5CE7F251F2A39224BE682298B21C7F98 /* FlautoPlayer.mm */,
+				A05FFC37E6A62C046B3A00444161D51B /* FlautoPlayerEngine.h */,
+				83F155E4310308CAE78393FC29821A53 /* FlautoPlayerEngine.mm */,
+				DE1CFF817267949A33408AE0BDE4CED2 /* FlautoRecorder.h */,
+				1B58ECC5670F94EF77E5FF93FF37EE6E /* FlautoRecorder.mm */,
+				5DBC342DE1CE372F4D1028C8D2F8F3E6 /* FlautoRecorderEngine.h */,
+				73A1B15D0F4E9345415AB3FE8B164DA2 /* FlautoRecorderEngine.mm */,
+				FC38E5CD2C4D5049E2DC3D96A7AD45D1 /* FlautoSession.h */,
+				87AE4DDB9B1E791B5461AA92D05859A3 /* FlautoSession.mm */,
+				A6B6FA4E9BF64963DADD54BECFD3AFE8 /* FlautoTrack.h */,
+				15FED4C02736AB9C74E50843A3D6A218 /* FlautoTrack.mm */,
+				C9807178E821BCE89109B503FB8D201C /* FlautoTrackPlayer.h */,
+				CFA2D8BD0D04F11BC46983D3D0A993A4 /* FlautoTrackPlayer.mm */,
+				1D8ED3F6B5709936DD71F433D8B254D9 /* Pod */,
+				EF9243624A4AFA37CF0E17052E5C02D3 /* Support Files */,
+			);
+			name = flauto_engine_ios;
+			path = ../../../..;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		3F7D25E40E88BEF7D2D238EED028721C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6B3883E2F0EC26FA6CE6F34F6189ECF9 /* Pods-flauto_engine_Example-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA0331BE7FD264E8E96DD3EB8CAF051B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				38B5E4CF7FEE87FFC15DB4E394C3C271 /* Flauto.h in Headers */,
+				12386C89EEDFBC35BA5134D9289ABC5C /* flauto_engine_ios-umbrella.h in Headers */,
+				99979DFCA7542264A06DAD945EBE996F /* FlautoPlayer.h in Headers */,
+				2CBCC8D361DF9E1230DBD1FEA0071A1A /* FlautoPlayerEngine.h in Headers */,
+				3F45ED47701384D71D7BAE5067447722 /* FlautoRecorder.h in Headers */,
+				192238286433E4AEF8DBB92E722D9EA5 /* FlautoRecorderEngine.h in Headers */,
+				19747FD2166FB8EC4F7637D82CC150E5 /* FlautoSession.h in Headers */,
+				E2C82ADCEEE46505ADCE78D691441005 /* FlautoTrack.h in Headers */,
+				11BD1C1F424693E5FF899C71A21C6D4C /* FlautoTrackPlayer.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8AA8E0181C832356054BAAE7CFD8DDC /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3822E3A8A942E70654E3E0E35F1A5654 /* Pods-flauto_engine_Tests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		65C2D4272315ACA2C3A52F04C6335680 /* Pods-flauto_engine_Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5C63E50E2FF08E1A62906637FEB5D6E0 /* Build configuration list for PBXNativeTarget "Pods-flauto_engine_Example" */;
+			buildPhases = (
+				3F7D25E40E88BEF7D2D238EED028721C /* Headers */,
+				8A6D0EA65721E483418E1CF1F787AF5A /* Sources */,
+				CA1E879FEBC6B3A3B1920B83FD1EAD57 /* Frameworks */,
+				A1F2C41309592172166FF2CDB6E7ED17 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2DE2E2971225F0BB184924D4E9FBD93A /* PBXTargetDependency */,
+			);
+			name = "Pods-flauto_engine_Example";
+			productName = "Pods-flauto_engine_Example";
+			productReference = 29C6FA31EFEB0B4C8C1B5CD9333AC461 /* Pods_flauto_engine_Example.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		6B4E3824CCA2A4044BD12EDB7496F4A8 /* flauto_engine_ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE93E1961C7E15B410B99264344AB0CA /* Build configuration list for PBXNativeTarget "flauto_engine_ios" */;
+			buildPhases = (
+				CA0331BE7FD264E8E96DD3EB8CAF051B /* Headers */,
+				FD969892820675165ABEC3D7830B84FF /* Sources */,
+				D309C126EB25345FCF313E517A1E6B9B /* Frameworks */,
+				2A9707B202F9667C1A5875A3FD8C7176 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = flauto_engine_ios;
+			productName = flauto_engine_ios;
+			productReference = 6F7D29959FD2CB0E820BD5E8FF0F75B8 /* flauto_engine_ios.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		95D3245AF8C6B733854C839F7ABC458F /* Pods-flauto_engine_Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EE25C2AE2FFBB13493B11C789A0A2560 /* Build configuration list for PBXNativeTarget "Pods-flauto_engine_Tests" */;
+			buildPhases = (
+				E8AA8E0181C832356054BAAE7CFD8DDC /* Headers */,
+				053C321F022FBB39597667D49CCABA3E /* Sources */,
+				287DBBC222BB8ECECED6ECD7C5A245C0 /* Frameworks */,
+				E94C446B78EB89CE70ACBCEDD7FF7D36 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				27F8139D23C8A776BA8BDAD3073F1C86 /* PBXTargetDependency */,
+			);
+			name = "Pods-flauto_engine_Tests";
+			productName = "Pods-flauto_engine_Tests";
+			productReference = 966E0C95A24B3D943DC77DA537A88010 /* Pods_flauto_engine_Tests.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1100;
+				LastUpgradeCheck = 1100;
+			};
+			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			productRefGroup = 541E831C1D59E12054336348A122A1A0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6B4E3824CCA2A4044BD12EDB7496F4A8 /* flauto_engine_ios */,
+				65C2D4272315ACA2C3A52F04C6335680 /* Pods-flauto_engine_Example */,
+				95D3245AF8C6B733854C839F7ABC458F /* Pods-flauto_engine_Tests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2A9707B202F9667C1A5875A3FD8C7176 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1F2C41309592172166FF2CDB6E7ED17 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E94C446B78EB89CE70ACBCEDD7FF7D36 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		053C321F022FBB39597667D49CCABA3E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96C6EC581FC92733FFA53FEA3073DB88 /* Pods-flauto_engine_Tests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8A6D0EA65721E483418E1CF1F787AF5A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C274B8CB5C292A46BD0618F108BC2A18 /* Pods-flauto_engine_Example-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD969892820675165ABEC3D7830B84FF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7E079E308C079DEA69F4236A2003C4F /* Flauto.mm in Sources */,
+				B1EE869F3736C9D7D60DFF3C7019C166 /* flauto_engine_ios-dummy.m in Sources */,
+				1BB89E52A6A14FCF106995E3DEC02AF3 /* FlautoPlayer.mm in Sources */,
+				B0C8F69C6D76E3B1D7A804D8F7582741 /* FlautoPlayerEngine.mm in Sources */,
+				99E2D83993423F00E90127B6F6BCF7E0 /* FlautoRecorder.mm in Sources */,
+				4A859FA98943A31713117004E9395396 /* FlautoRecorderEngine.mm in Sources */,
+				551CA50C1FD7988ED6C8AEE96CA713DF /* FlautoSession.mm in Sources */,
+				2F89EFE700B7403FF8A2E48FFD6FE5CD /* FlautoTrack.mm in Sources */,
+				AA86ACBEE4587CFB7FAD9387A89AFC4F /* FlautoTrackPlayer.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		27F8139D23C8A776BA8BDAD3073F1C86 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-flauto_engine_Example";
+			target = 65C2D4272315ACA2C3A52F04C6335680 /* Pods-flauto_engine_Example */;
+			targetProxy = CCABA0756E79025902A38AC4B41E0E50 /* PBXContainerItemProxy */;
+		};
+		2DE2E2971225F0BB184924D4E9FBD93A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = flauto_engine_ios;
+			target = 6B4E3824CCA2A4044BD12EDB7496F4A8 /* flauto_engine_ios */;
+			targetProxy = BA478C70A7E6F78560CA0BA122835D8A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		196DFA3E4A09A28224918543529A1885 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		48A2ADFBB6F3DBC0F031DE75D7CE6FC4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9B9C4017C939938F97CF11E3BC2C22E7 /* Pods-flauto_engine_Example.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-flauto_engine_Example/Pods-flauto_engine_Example-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-flauto_engine_Example/Pods-flauto_engine_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		4E5C3B1357C5F988F809F9E56BA2BBF2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 47FA4D5402C0599D9B49BCA072EF2C4F /* Pods-flauto_engine_Tests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-flauto_engine_Tests/Pods-flauto_engine_Tests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-flauto_engine_Tests/Pods-flauto_engine_Tests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		503A99B99F02F4D4A5D13E6547648190 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 10684FEDB531B22B59B3BD318438BE76 /* Pods-flauto_engine_Example.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-flauto_engine_Example/Pods-flauto_engine_Example-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-flauto_engine_Example/Pods-flauto_engine_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		5B3565D0C11B0901E810ECD01738F047 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AEA566C41A3717E34332906BFF3AEBE5 /* flauto_engine_ios.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/flauto_engine_ios/flauto_engine_ios-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/flauto_engine_ios/flauto_engine_ios-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/flauto_engine_ios/flauto_engine_ios.modulemap";
+				PRODUCT_MODULE_NAME = flauto_engine_ios;
+				PRODUCT_NAME = flauto_engine_ios;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		80C0A1C5C7FBC5CB739F0C5C8661B8DD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B29CBCB5F8A2119C2410E24CFB9206CF /* flauto_engine_ios.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/flauto_engine_ios/flauto_engine_ios-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/flauto_engine_ios/flauto_engine_ios-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/flauto_engine_ios/flauto_engine_ios.modulemap";
+				PRODUCT_MODULE_NAME = flauto_engine_ios;
+				PRODUCT_NAME = flauto_engine_ios;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		B01D14FDC83DCF9D4BE53066BEA96D05 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		C59AEAEBF81C9722355897202C4BB82A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1F8A6C4EB4A1611722A35FD2AABC596A /* Pods-flauto_engine_Tests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-flauto_engine_Tests/Pods-flauto_engine_Tests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-flauto_engine_Tests/Pods-flauto_engine_Tests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				196DFA3E4A09A28224918543529A1885 /* Debug */,
+				B01D14FDC83DCF9D4BE53066BEA96D05 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5C63E50E2FF08E1A62906637FEB5D6E0 /* Build configuration list for PBXNativeTarget "Pods-flauto_engine_Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				48A2ADFBB6F3DBC0F031DE75D7CE6FC4 /* Debug */,
+				503A99B99F02F4D4A5D13E6547648190 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE93E1961C7E15B410B99264344AB0CA /* Build configuration list for PBXNativeTarget "flauto_engine_ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80C0A1C5C7FBC5CB739F0C5C8661B8DD /* Debug */,
+				5B3565D0C11B0901E810ECD01738F047 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EE25C2AE2FFBB13493B11C789A0A2560 /* Build configuration list for PBXNativeTarget "Pods-flauto_engine_Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C59AEAEBF81C9722355897202C4BB82A /* Debug */,
+				4E5C3B1357C5F988F809F9E56BA2BBF2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+}

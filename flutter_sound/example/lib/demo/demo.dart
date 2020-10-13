@@ -51,7 +51,7 @@ import 'package:permission_handler/permission_handler.dart';
  *
  */
 
-const int SAMPLE_RATE = 44100;
+const int SAMPLE_RATE = 8000;
 const int BLOCK_SIZE = 4096;
 
 enum Media {
@@ -128,7 +128,7 @@ class _MyAppState extends State<Demo> {
     _isAudioPlayer = withUI;
     await playerModule.openAudioSession(
           withUI: withUI ,
-          focus: AudioFocus.requestFocusAndKeepOthers,
+          focus: AudioFocus.requestFocusAndStopOthers,
           category: SessionCategory.playAndRecord,
           mode: SessionMode.modeDefault,
           device: AudioDevice.speaker);
@@ -140,7 +140,7 @@ class _MyAppState extends State<Demo> {
 
   Future<void> init() async {
     await recorderModule.openAudioSession(
-        focus: AudioFocus.requestFocusTransient,
+        focus: AudioFocus.requestFocusAndStopOthers,
         category: SessionCategory.playAndRecord,
         mode: SessionMode.modeDefault,
         device: AudioDevice.speaker);
@@ -248,7 +248,7 @@ class _MyAppState extends State<Demo> {
           codec: _codec,
           bitRate: 8000,
           numChannels: 1,
-          sampleRate: 8000,
+          sampleRate: SAMPLE_RATE,
         );
       }
       print('startRecorder');
@@ -442,7 +442,8 @@ class _MyAppState extends State<Demo> {
           albumArtFile: albumArtFile,
         );
         await playerModule.startPlayerFromTrack(track,
-            /*canSkipForward:true, canSkipBackward:true,*/
+            defaultPauseResume: false,
+            removeUIWhenStopped: true,
             whenFinished: () {
           print('I hope you enjoyed listening to this song');
           setState(() {});
@@ -462,7 +463,6 @@ class _MyAppState extends State<Demo> {
         });
       } else
         if (_media == Media.stream){
-          //feedStream = StreamController<Uint8List>();
           await playerModule.startPlayerFromStream(
             codec: _codec,
             numChannels: 1,
@@ -481,7 +481,7 @@ class _MyAppState extends State<Demo> {
           await playerModule.startPlayer(
               fromURI: audioFilePath,
               codec: codec,
-              sampleRate: SAMPLE_RATE,
+              sampleRate:  SAMPLE_RATE,
               whenFinished: () {
                 print('Play finished');
                 setState(() {});
@@ -491,12 +491,13 @@ class _MyAppState extends State<Demo> {
             dataBuffer = await flutterSoundHelper.pcmToWaveBuffer(
               inputBuffer: dataBuffer,
               numChannels: 1,
-              sampleRate: SAMPLE_RATE,
+              sampleRate: (_codec == Codec.pcm16 && _media == Media.asset)? 48000 : SAMPLE_RATE,
             );
+            codec = Codec.pcm16WAV;
           }
           await playerModule.startPlayer(
               fromDataBuffer: dataBuffer,
-              sampleRate: SAMPLE_RATE,
+              sampleRate:   SAMPLE_RATE,
 
               codec: codec,
               whenFinished: () {

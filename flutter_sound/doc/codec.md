@@ -99,7 +99,7 @@ You can look to the [simple example](../example/README.md#recordtostream) provid
 
 ``` dart
   IOSink outputFile = await createFile();
-  StreamController<Uint8List> recordingDataController = StreamController<Uint8List>();
+  StreamController<Food> recordingDataController = StreamController<Food>();
   _mRecordingDataSubscription =
           recordingDataController.stream.listen
             ((Uint8List buffer)

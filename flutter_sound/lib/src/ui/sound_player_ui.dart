@@ -242,7 +242,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
 
     ).then( (_){
       _setCallbacks();
-      _player.setSubscriptionDuration(Duration(milliseconds: 30));
+      _player.setSubscriptionDuration(Duration(milliseconds: 100));
     });
   }
 
@@ -513,7 +513,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     }).whenComplete(() {
       _loading = false;
       _transitioning = false;
-      Log.d(green('Transitioning = false'));
+       Log.d(green('Transitioning = false'));
     });
   }
 
