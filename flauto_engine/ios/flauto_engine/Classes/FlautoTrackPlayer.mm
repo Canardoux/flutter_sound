@@ -200,7 +200,7 @@
                 {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wformat-nonliteral"
-                        NSLog([error localizedDescription]);
+                        //NSLog([error localizedDescription]);
 #pragma clang diagnostic pop
                         return false;
                 }
