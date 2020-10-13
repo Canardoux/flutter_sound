@@ -244,7 +244,7 @@ static bool _isIosDecoderSupported [] =
 {
         dispatch_async(dispatch_get_main_queue(),
         ^{
-                [m_callBack needSomeFood: ln];
+                [self ->m_callBack needSomeFood: ln];
          });
 }
 
