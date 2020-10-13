@@ -10,7 +10,9 @@ project 'Runner', {
   'Release' => :release,
 }
 
-pod 'flauto_engine_ios', :path => '../../..'
+# CAUTION: The following instruction is for developping and debugging the Flauto Engine
+# DO NOT INCLUDE THE FOLLOWING LINE IN A REAL APP !!!
+#pod 'flauto_engine_ios', :path => '../../..'
 
 def flutter_root
   generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)

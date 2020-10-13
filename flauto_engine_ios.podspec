@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'flauto_engine_ios'
-  s.version          = '0.1.2'
+  s.version          = '1.0.0'
   s.summary          = 'Provides simple recorder and player functionalities for both Android and iOS platforms.'
 
 # This description is used to generate tags and improve search results.
