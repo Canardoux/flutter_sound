@@ -242,12 +242,16 @@ static bool _isIosDecoderSupported [] =
 
 - (void)needSomeFood: (int)ln
 {
-        [m_callBack needSomeFood: ln];
+        dispatch_async(dispatch_get_main_queue(),
+        ^{
+                [m_callBack needSomeFood: ln];
+         });
 }
 
 - (void)updateProgress: (NSTimer*)atimer
 {
-         dispatch_async(dispatch_get_main_queue(), ^{
+         dispatch_async(dispatch_get_main_queue(),
+         ^{
                 long position = [self ->m_playerEngine getPosition];
                 long duration = [self ->m_playerEngine getDuration];
                 [self ->m_callBack updateProgressPositon: position duration: duration];
@@ -259,14 +263,17 @@ static bool _isIosDecoderSupported [] =
 {
         NSLog(@"IOS:--> startTimer");
         [self stopTimer];
-        dispatch_async(dispatch_get_main_queue(),
-        ^{ // ??? Why Async ?  (no async for recorder)
-                self ->timer = [NSTimer scheduledTimerWithTimeInterval: self ->subscriptionDuration
-                                           target:self
-                                           selector:@selector(updateProgress:)
-                                           userInfo:nil
-                                           repeats:YES];
-        });
+        if (subscriptionDuration > 0)
+        {
+                dispatch_async(dispatch_get_main_queue(),
+                ^{ // ??? Why Async ?  (no async for recorder)
+                        self ->timer = [NSTimer scheduledTimerWithTimeInterval: self ->subscriptionDuration
+                                                   target:self
+                                                   selector:@selector(updateProgress:)
+                                                   userInfo:nil
+                                                   repeats:YES];
+                });
+        }
         NSLog(@"IOS:<-- startTimer");
 }
 

@@ -359,14 +359,16 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     await lock.synchronized(() async {
       assert (state != null);
       playerState = PlayerState.values[state];
-
+/*
       bool b = (
                   playerState == PlayerState.isPaused
       );
+
+ */
       if (onPaused != null) // Probably always true
       {
         
-        onPaused( !b );
+        onPaused( true );
       }
     });
     print('FS:<--- pause ');
@@ -379,14 +381,16 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     await lock.synchronized(() async {
       assert (state != null);
       playerState = PlayerState.values[state];
-
+/*
       bool b = (
                   playerState == PlayerState.isPaused
       );
+
+ */
       if (onPaused != null) // Probably always true
       {
         
-        onPaused( !b );
+        onPaused( false );
       }
     });
     print('FS:<--- pause ');
@@ -840,14 +844,15 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     print('FS:---> stop ');
     if (foodStreamSubscription != null)
       {
-        foodStreamSubscription.cancel();
+        await foodStreamSubscription.cancel();
         foodStreamSubscription = null;
       }
     needSomeFoodCompleter = null;
     if (foodStreamController != null)
       {
-        foodStreamController.sink.close();
-        foodStreamController.close();
+        await foodStreamController.sink.close();
+        //await foodStreamController.stream.drain<bool>();
+        await foodStreamController.close();
         foodStreamController = null;
       }
     int state = await FlutterSoundPlayerPlatform.instance.stopPlayer(this);

@@ -82,16 +82,22 @@ class _MainBodyState extends State<MainBody> {
     return initialized;
   }
 
-  void dispose() {
-    if (recordingFile != null) {
-      try {
-        File(recordingFile).delete();
-      } catch (e)
-      {
-        // ignore
-      }
+
+void _clean() async
+{
+  if (recordingFile != null) {
+    try {
+      await File(recordingFile).delete();
+    } catch (e)
+    {
+      // ignore
     }
-    super.dispose();
+  }
+}
+
+  void dispose() {
+    _clean();
+     super.dispose();
   }
 
   @override

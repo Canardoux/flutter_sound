@@ -22,6 +22,7 @@ export 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform
 export 'src/flutter_ffmpeg.dart';
 export 'src/flutter_sound_player.dart';
 export 'src/flutter_sound_recorder.dart';
+export 'src/food.dart';
 export 'src/flutter_sound_helper.dart';
 export 'src/util/log.dart';
 export 'src/util/recorded_audio.dart';

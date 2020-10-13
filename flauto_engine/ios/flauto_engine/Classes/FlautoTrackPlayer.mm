@@ -31,8 +31,8 @@
 
 @implementation FlautoTrackPlayer
 {
-       NSURL *audioFileURL;
-       FlautoTrack *track;
+       NSURL* audioFileURL;
+       FlautoTrack* m_track;
        id forwardTarget;
        id backwardTarget;
        id pauseTarget;
@@ -40,8 +40,8 @@
        id stopTarget;
        id playTarget;
        MPMediaItemArtwork* albumArt ;
-       BOOL defaultPauseResume;
-       BOOL removeUIWhenStopped;
+       BOOL m_defaultPauseResume;
+       BOOL m_removeUIWhenStopped;
 }
 - (FlautoTrackPlayer*)init: (NSObject<FlautoPlayerCallback>*) callback;
 {
@@ -54,7 +54,7 @@
         NSLog(@"IOS:--> releaseFlautoPlayer");
         [self stopPlayer];
         [self cleanNowPlaying];
-        removeUIWhenStopped = true;
+        m_removeUIWhenStopped = true;
         [self cleanTarget];
         [super releaseFlautoPlayer];
         NSLog(@"IOS:<-- releaseFlautoPlayer");
@@ -81,10 +81,13 @@
         {
                 return false;
         }
+        m_track = track;
+        m_removeUIWhenStopped = removeUIWhenStopped;
+        m_defaultPauseResume = defaultPauseResume;
         [self stopPlayer]; // to start a fresh new playback
 
         m_playerEngine = [[AudioPlayer alloc]init: self];
-
+ 
         // Check whether the audio file is stored as a path to a file or a buffer
         if([track isUsingPath])
         {
@@ -107,7 +110,7 @@
                         audioFileURL = [NSURL URLWithString:path];
                 }
 
-                if (!hasFocus) // We always acquire the Audio Focus (It could have been released by another session)
+                //if (!hasFocus) // We always acquire the Audio Focus (It could have been released by another session)
                 {
                         hasFocus = TRUE;
                         r = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
@@ -119,24 +122,52 @@
                 if (isRemote)
                 {
                         NSURLSessionDataTask *downloadTask = [[NSURLSession sharedSession]
-                                                  dataTaskWithURL:audioFileURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                      // The file to play has been downloaded, then initialize the audio player
-                                                      // and start playing.
+                                  dataTaskWithURL:audioFileURL completionHandler:
+                                  ^(NSData *data, NSURLResponse *response, NSError *error)
+                                  {
+                                        // The file to play has been downloaded, then initialize the audio player
+                                        // and start playing.
 
-                                                      // We must create a new Audio Player instance to be able to play a different Url
-                                                      [self setPlayer: [[AVAudioPlayer alloc] initWithData:data error:nil] ];
-                                                      [self getPlayer].delegate = self;
+                                        // We must create a new Audio Player instance to be able to play a different Url
+                                        NSError* err = nil;
+                                        [self setPlayer: [[AVAudioPlayer alloc] initWithData: data error: &err] ];
+                                        if (err != nil)
+                                        {
+                                                //NSLog([err localizedDescription]);
+                                                return;
+                                        }
+                                        [self getPlayer].delegate = self;
 
-                                                      dispatch_async(dispatch_get_main_queue(), ^{
-                                                          NSLog(@"IOS: ^beginReceivingRemoteControlEvents");
-                                                          [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-                                                      });
+                                        dispatch_async(dispatch_get_main_queue(),
+                                        ^{
+                                                NSLog(@"IOS: ^beginReceivingRemoteControlEvents");
+                                                [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+                                        });
 
-                                                      [[self getPlayer] play];
-                                                   }];
+                                        [[self getPlayer] play];
+                                        [self startTimer];
+                                        [self setupRemoteCommandCenter: canPause canSkipForward: canSkipForward   canSkipBackward: canSkipBackward ];
+                                        NSNumber* _duration ;
+                                        NSNumber* _progress ;
+                                         if ( (progress == nil) || (progress.class == NSNull.class) )
+                                                _progress = [NSNumber numberWithDouble: [self getPlayer].currentTime];
+                                        else
+                                                _progress = [NSNumber numberWithDouble: [progress doubleValue] / 1000.0];
+                                        if ( (duration == nil) || (duration.class == NSNull.class) )
+                                                _duration = [NSNumber numberWithDouble: [self getDuration] / 1000.0];
+                                        else
+                                                _duration = [NSNumber numberWithDouble: [duration doubleValue] / 1000.0];
+
+                                        [self setupNowPlaying: _progress duration: _duration];
+                                        long durationLong =  (long)([_duration doubleValue] * 1000.0) ;
+                                        [ self ->m_callBack startPlayerCompleted: durationLong];
+                  
+                                }];
                         r = true; // ??? not sure
                         [downloadTask resume];
-                        //[self startTimer];
+                        //[self setUIProgressBar: progress duration: duration];
+
+                        return true;
                 } else
                 {
                         // Initialize the audio player with the file that the given path points to,
@@ -163,7 +194,17 @@
         {
         // The audio file is stored as a buffer
                 NSData* bufferData = track.dataBuffer;
-                [self setPlayer: ([[AVAudioPlayer alloc] initWithData: bufferData error: nil]) ];
+                NSError* error;
+                AVAudioPlayer* audioPlayer = [[AVAudioPlayer alloc] initWithData: bufferData error: &error];
+                if (audioPlayer == nil)
+                {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
+                        NSLog([error localizedDescription]);
+#pragma clang diagnostic pop
+                        return false;
+                }
+                [self setPlayer: audioPlayer ];
                 [self getPlayer].delegate = self;
                 dispatch_async(dispatch_get_main_queue(),
                 ^{
@@ -181,20 +222,20 @@
                 [self startTimer];
                 // Display the notification with the media controls
                 [self setupRemoteCommandCenter: canPause canSkipForward: canSkipForward   canSkipBackward: canSkipBackward ];
-                
-                if ( (progress == nil) || (progress.class == NSNull.class) )
-                        progress = [NSNumber numberWithDouble: [self getPlayer].currentTime];
-                else
-                        progress = [NSNumber numberWithDouble: [progress doubleValue] / 1000.0];
-                if ( (duration == nil) || (duration.class == NSNull.class) )
-                        duration = [NSNumber numberWithDouble: [self getDuration] / 1000.0];
-                else
-                        duration = [NSNumber numberWithDouble: [duration doubleValue] / 1000.0];
+                        if ( (progress == nil) || (progress.class == NSNull.class) )
+                                progress = [NSNumber numberWithDouble: [self getPlayer].currentTime];
+                        else
+                                progress = [NSNumber numberWithDouble: [progress doubleValue] / 1000.0];
+                        if ( (duration == nil) || (duration.class == NSNull.class) )
+                                duration = [NSNumber numberWithDouble: [self getDuration] / 1000.0];
+                        else
+                                duration = [NSNumber numberWithDouble: [duration doubleValue] / 1000.0];
                 [self setupNowPlaying: progress duration: duration];
+                //[self setUIProgressBar: progress duration: duration];
                 
+                long durationLong = [self getDuration];
+                [ m_callBack startPlayerCompleted: durationLong];
 
-                long duration = [self getDuration];
-                [ m_callBack startPlayerCompleted: duration];
         }
         return r;
 }
@@ -216,29 +257,29 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
-        if ((track.albumArtUrl != nil) && ([track.albumArtUrl class] != [NSNull class])   )         // The albumArt is accessed in a URL
+        if ((m_track.albumArtUrl != nil) && ([m_track.albumArtUrl class] != [NSNull class])   )         // The albumArt is accessed in a URL
         {
                 // Retrieve the album art for the
                 // current track .
-                NSURL* url = [NSURL URLWithString:self->track.albumArtUrl];
+                NSURL* url = [NSURL URLWithString:self ->m_track.albumArtUrl];
                 UIImage* artworkImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
                 if(artworkImage)
                 {
                         albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
                 }
         } else
-        if ((track.albumArtAsset) && ([track.albumArtAsset class] != [NSNull class])   )        // The albumArt is an Asset
+        if ((m_track.albumArtAsset) && ([m_track.albumArtAsset class] != [NSNull class])   )        // The albumArt is an Asset
         {
-                UIImage* artworkImage = [UIImage imageNamed: track.albumArtAsset];
+                UIImage* artworkImage = [UIImage imageNamed: m_track.albumArtAsset];
                 if (artworkImage != nil)
                 {
                         albumArt = [ [MPMediaItemArtwork alloc] initWithImage: artworkImage ];
 
                 }
         } else
-        if ((track.albumArtFile) && ([track.albumArtFile class] != [NSNull class])   )          //  The AlbumArt is a File
+        if ((m_track.albumArtFile) && ([m_track.albumArtFile class] != [NSNull class])   )          //  The AlbumArt is a File
         {
-                UIImage* artworkImage = [UIImage imageWithContentsOfFile: track.albumArtFile];
+                UIImage* artworkImage = [UIImage imageWithContentsOfFile: m_track.albumArtFile];
                 if (artworkImage != nil)
                 {
                         albumArt = [[MPMediaItemArtwork alloc] initWithImage: artworkImage];
@@ -315,7 +356,7 @@
                 [[self getPlayer] stop];
                 [self setPlayer: nil];
           }
-          if (removeUIWhenStopped)
+          if (m_removeUIWhenStopped)
           {
                 [self cleanTarget];
                 MPNowPlayingInfoCenter* playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
@@ -337,22 +378,24 @@
         if (canPause)
         {
 
-                togglePlayPauseTarget = [commandCenter.togglePlayPauseCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
+                togglePlayPauseTarget = [commandCenter.togglePlayPauseCommand addTargetWithHandler:
+                ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
                 {
                         NSLog(@"IOS: toggleTarget\n");
-                        dispatch_async(dispatch_get_main_queue(), ^{
+                        dispatch_async(dispatch_get_main_queue(),
+                        ^{
  
  
                                 bool b = [[self getPlayer] isPlaying];
                                 // If the caller wants to control the pause button, just call him
                                 if (b)
                                 {
-                                        if (self ->defaultPauseResume)
+                                        if (self ->m_removeUIWhenStopped)
                                                 [self pausePlayer];
                                         [self ->m_callBack pause];
                                 } else
                                 {
-                                        if ( self ->defaultPauseResume)
+                                        if ( self ->m_removeUIWhenStopped)
                                                 [self resumePlayer];
                                         [self ->m_callBack resume];
                                 }
@@ -360,41 +403,48 @@
                         return MPRemoteCommandHandlerStatusSuccess;
                 }];
 
-                pauseTarget = [commandCenter.pauseCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
+                pauseTarget = [commandCenter.pauseCommand addTargetWithHandler:
+                ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
                 {
                         NSLog(@"IOS: pauseTarget\n");
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                                bool b = [[self getPlayer] isPlaying];
-                                // If the caller wants to control the pause button, just call him
-                                if (b)
-                                {
-                                        if (self ->defaultPauseResume)
-                                                [self pausePlayer];
-                                        [self ->m_callBack pause];                                }
-                        });
+                        dispatch_async(dispatch_get_main_queue(),
+                                ^{
+                                        bool b = [[self getPlayer] isPlaying];
+                                        // If the caller wants to control the pause button, just call him
+                                        if (b)
+                                        {
+                                                if (self ->m_removeUIWhenStopped)
+                                                        [self pausePlayer];
+                                                [self ->m_callBack pause];                                }
+                                }
+                        );
                         return MPRemoteCommandHandlerStatusSuccess;
                  }];
 
-                stopTarget = [commandCenter.stopCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
+                stopTarget = [commandCenter.stopCommand addTargetWithHandler:
+                ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
                 {
                         NSLog(@"IOS: stopTarget\n");
                         return MPRemoteCommandHandlerStatusSuccess;
                 }];
 
 
-                playTarget = [commandCenter.playCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
+                playTarget = [commandCenter.playCommand addTargetWithHandler:
+                ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
                 {
                         NSLog(@"IOS: playTarget\n");
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                                bool b = [[self getPlayer] isPlaying];
-                                // If the caller wants to control the pause button, just call him
-                                if (!b)
-                                {
-                                        if (self ->defaultPauseResume)
-                                                [self resumePlayer];
-                                       [self ->m_callBack resume];
+                        dispatch_async(dispatch_get_main_queue(),
+                                ^{
+                                        bool b = [[self getPlayer] isPlaying];
+                                        // If the caller wants to control the pause button, just call him
+                                        if (!b)
+                                        {
+                                                if (self ->m_removeUIWhenStopped)
+                                                        [self resumePlayer];
+                                               [self ->m_callBack resume];
+                                        }
                                 }
-                        });
+                        );
                                 
                         return MPRemoteCommandHandlerStatusSuccess;
                 }];
@@ -416,20 +466,24 @@
 
         if (canSkipForward)
         {
-                forwardTarget = [commandCenter.nextTrackCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
-                {
-                        [self ->m_callBack skipForward];
-                        return MPRemoteCommandHandlerStatusSuccess;
-                }];
+                forwardTarget = [commandCenter.nextTrackCommand addTargetWithHandler:
+                        ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
+                        {
+                                [self ->m_callBack skipForward];
+                                return MPRemoteCommandHandlerStatusSuccess;
+                        }
+                ];
         }
 
         if (canSkipBackward)
         {
-                backwardTarget = [commandCenter.previousTrackCommand addTargetWithHandler: ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
-                {
-                        [self ->m_callBack skipBackward];
-                        return MPRemoteCommandHandlerStatusSuccess;
-                }];
+                backwardTarget = [commandCenter.previousTrackCommand addTargetWithHandler:
+                        ^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event)
+                        {
+                                [self ->m_callBack skipBackward];
+                                return MPRemoteCommandHandlerStatusSuccess;
+                        }
+                ];
         }
        NSLog(@"IOS:<-- setupRemoteCommandCenter");
  }
@@ -438,6 +492,16 @@
 {
         NSLog(@"IOS:--> setUIProgressBar");
         NSMutableDictionary* songInfo = [[NSMutableDictionary alloc] init];
+        /*
+        if ( (progress == nil) || (progress.class == NSNull.class) )
+                progress = [NSNumber numberWithDouble: [self getPlayer].currentTime];
+        else
+                progress = [NSNumber numberWithDouble: [progress doubleValue] / 1000.0];
+        if ( (duration == nil) || (duration.class == NSNull.class) )
+                duration = [NSNumber numberWithDouble: [self getDuration] / 1000.0];
+        else
+                duration = [NSNumber numberWithDouble: [duration doubleValue] / 1000.0];
+           */
 
         if ( (progress != nil) && ([progress class] != [NSNull class]) && (duration != nil) && ([duration class] != [NSNull class]))
         {
@@ -452,13 +516,13 @@
                        [songInfo setObject:albumArt forKey: MPMediaItemPropertyArtwork];
         }
 
-        if (track != nil)
+        if (m_track != nil)
         {
-                [songInfo setObject: track.title forKey: MPMediaItemPropertyTitle];
-                [songInfo setObject: track.author forKey: MPMediaItemPropertyArtist];
+                [songInfo setObject: m_track.title forKey: MPMediaItemPropertyTitle];
+                [songInfo setObject: m_track.author forKey: MPMediaItemPropertyArtist];
         }
         bool b = [[self getPlayer] isPlaying];
-        [songInfo setObject:[NSNumber numberWithDouble:(b ? 1.0f : 0.0f)] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+        [songInfo setObject: [NSNumber numberWithDouble:(b ? 1.0f : 0.0f)] forKey: MPNowPlayingInfoPropertyPlaybackRate];
         
 
         MPNowPlayingInfoCenter* playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
@@ -491,10 +555,9 @@
                 defaultPauseResume: (bool)defaultPauseResume progress: (NSNumber*)progress duration: (NSNumber*)duration
 {
          NSLog(@"IOS:--> nowPlaying");
-         track = nil;
   
    
-        [self setupRemoteCommandCenter:canPause canSkipForward:canSkipForward   canSkipBackward:canSkipBackward ];
+        [self setupRemoteCommandCenter: canPause canSkipForward: canSkipForward   canSkipBackward: canSkipBackward ];
         if ( !track  )
         {
                 [self cleanNowPlaying];
@@ -533,7 +596,7 @@
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
         NSLog(@"IOS:--> audioPlayerDidFinishPlaying");
-        if (removeUIWhenStopped)
+        if (m_removeUIWhenStopped)
         {
                 [self cleanTarget];
                 MPNowPlayingInfoCenter* playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];

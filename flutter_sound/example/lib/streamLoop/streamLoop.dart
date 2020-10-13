@@ -37,8 +37,8 @@ import 'package:flutter/services.dart' show rootBundle;
  */
 
 
-const int SAMPLE_RATE_RECORDER = 44100;
-const int SAMPLE_RATE_PLAYER = 45500;
+const int SAMPLE_RATE_RECORDER = 16000;
+const int SAMPLE_RATE_PLAYER =   16000; // same speed than the recorder
 
 typedef void Fn();
 
@@ -57,23 +57,19 @@ class _StreamLoopState extends State<StreamLoop> {
 
   Future<void> init() async
   {
-          await _mPlayer.openAudioSession
+          await _mRecorder.openAudioSession
           (
-                device: AudioDevice.headset,
+                device: AudioDevice.blueToothA2DP,
                 audioFlags: allowHeadset | allowEarPiece | allowBlueToothA2DP,
                 category: SessionCategory.playAndRecord,
           );
-          await _mRecorder.openAudioSession
+          await _mPlayer.openAudioSession
           (
+                device: AudioDevice.blueToothA2DP,
+                audioFlags: allowHeadset | allowEarPiece | allowBlueToothA2DP,
+                category: SessionCategory.playAndRecord,
           );
-
-          await _mPlayer.startPlayerFromStream
-          (
-                codec:  Codec.pcm16,
-                numChannels: 1,
-                sampleRate: SAMPLE_RATE_PLAYER,
-          );
-    }
+  }
 
 
 
@@ -127,22 +123,33 @@ class _StreamLoopState extends State<StreamLoop> {
 
   Future<void> record() async
   {
-          await _mRecorder.startRecorder
-          (
+
+        await _mPlayer.startPlayerFromStream
+        (
                   codec:  Codec.pcm16,
-                  toStream: _mPlayer.foodSink, // ***** THIS IS THE LOOP !!! *****
-                  sampleRate: SAMPLE_RATE_RECORDER,
                   numChannels: 1,
-          );
-          setState(()
-          {
-          });
+                  sampleRate: SAMPLE_RATE_PLAYER,
+
+        );
+
+        await _mRecorder.startRecorder
+              (
+                      codec:  Codec.pcm16,
+                      toStream: _mPlayer.foodSink, // ***** THIS IS THE LOOP !!! *****
+                      sampleRate: SAMPLE_RATE_RECORDER,
+                      numChannels: 1,
+              );
+        setState(()
+        {
+        });
     }
 
   Future<void> stop() async
   {
           if (_mRecorder != null)
                 await _mRecorder.stopRecorder();
+          if (_mPlayer != null)
+                await _mPlayer.stopPlayer();
           setState(() {});
   }
 

@@ -5,6 +5,7 @@ if [ -z "$1" ]; then
 fi
 export v=$1
 gsed -i  "s/^\( *s.version *= *\).*$/\1'$1'/" flauto_engine_ios.podspec
+gsed -i  "s/^\( *s.dependency *'flauto_engine_ios', *\).*$/\1'$1'/" flutter_sound/ios/flutter_sound.podspec
 git add .
 git commit -m "pod_flauto_engine_ios.sh : Version $1"
 git push

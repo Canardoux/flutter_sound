@@ -185,7 +185,7 @@ AudioRecInterface* audioRec;
         }
 
         NSMutableDictionary* audioSettings = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                 [NSNumber numberWithFloat: (float)sampleRate], AVSampleRateKey,
+                                 [NSNumber numberWithLong: sampleRate], AVSampleRateKey,
                                  [NSNumber numberWithInt: formats[codec] ], AVFormatIDKey,
                                  [NSNumber numberWithInt: numChannels ], AVNumberOfChannelsKey,
                          nil];
@@ -234,11 +234,14 @@ AudioRecInterface* audioRec;
 - (void)startRecorderTimer
 {
         [self stopRecorderTimer];
-        recorderTimer = [NSTimer scheduledTimerWithTimeInterval: subscriptionDuration
-                                           target:self
-                                           selector:@selector(updateRecorderProgress:)
-                                           userInfo:nil
-                                           repeats:YES];
+        if (subscriptionDuration > 0)
+        {
+                recorderTimer = [NSTimer scheduledTimerWithTimeInterval: subscriptionDuration
+                                                   target:self
+                                                   selector:@selector(updateRecorderProgress:)
+                                                   userInfo:nil
+                                                   repeats:YES];
+        }    
 }
 
 

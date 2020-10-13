@@ -54,7 +54,7 @@
        -(bool) startPlayerFromBuffer: (NSData*) dataBuffer
        {
                 NSError* error = [[NSError alloc] init];
-                [self setAudioPlayer:  [[AVAudioPlayer alloc] initWithData:dataBuffer error: &error]];
+                [self setAudioPlayer:  [[AVAudioPlayer alloc] initWithData: dataBuffer error: &error]];
                 [self getAudioPlayer].delegate = flautoPlayer;
                 bool b = [[self getAudioPlayer] play];
                 return b;
@@ -63,7 +63,7 @@
        -(bool)  startPlayerFromURL: (NSURL*) url codec: (t_CODEC)codec channels: (int)numChannels sampleRate: (long)sampleRate
 
        {
-                [self setAudioPlayer: [[AVAudioPlayer alloc] initWithContentsOfURL: url error:nil] ];
+                [self setAudioPlayer: [[AVAudioPlayer alloc] initWithContentsOfURL: url error: nil] ];
                 [self getAudioPlayer].delegate = flautoPlayer;
                 bool b = [ [self getAudioPlayer] play];
                 return b;
@@ -72,14 +72,14 @@
        
        -(long)  getDuration
        {
-                long duration = (long)( [self getAudioPlayer].duration * 1000);
-                return duration;
+                double duration =  [self getAudioPlayer].duration;
+                return (long)(duration * 1000.0);
        }
        
        -(long)  getPosition
        {
-                long position = (long)( [self getAudioPlayer].currentTime * 1000);
-                return position;
+                double position = [self getAudioPlayer].currentTime ;
+                return (long)( position * 1000.0);
        }
        
        -(void)  stop
@@ -257,7 +257,7 @@
                 return PLAYER_IS_PLAYING; // ??? Not sure !!!
        }
        
-        #define NB_BUFFERS 3
+        #define NB_BUFFERS 4
         - (int) feed: (NSData*)data
         {
                 if (ready < NB_BUFFERS )
@@ -295,6 +295,7 @@
                                         --ready;
                                         if (self ->waitingBlock != nil)
                                         {
+                                                NSLog(@"Writing waiting block. Ready = %d", ready);
                                                 [self feed: self ->waitingBlock]; // Recursion here
                                                 self ->waitingBlock = nil;
                                                 [self ->flutterSoundPlayer needSomeFood: ln];
@@ -303,6 +304,9 @@
                                 }];
                                 return ln;
                         }
+                } else
+                {
+                        NSLog(@"Ready = %d", ready);
                 }
                 assert(waitingBlock == nil);
                 waitingBlock = data;

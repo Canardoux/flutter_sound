@@ -46,8 +46,8 @@
         AVAudioFormat* inputFormat = [inputNode outputFormatForBus: 0];
         NSNumber* nbChannels = audioSettings [AVNumberOfChannelsKey];
         NSNumber* sampleRate = audioSettings [AVSampleRateKey];
-        AVAudioFormat* recordingFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: (unsigned int)nbChannels.unsignedIntegerValue interleaved: YES];
-        AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat:inputFormat toFormat:recordingFormat];
+        AVAudioFormat* recordingFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: (unsigned int)(nbChannels.unsignedIntegerValue) interleaved: YES];
+        AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat: inputFormat toFormat: recordingFormat];
         NSFileManager* fileManager = [NSFileManager defaultManager];
         NSURL* fileURL = nil;
         if (path != nil && path != (id)[NSNull null])
@@ -62,13 +62,15 @@
         }
 
 
-        [inputNode installTapOnBus: 0 bufferSize: 2048 format: inputFormat block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when)
+        [inputNode installTapOnBus: 0 bufferSize: 2048 format: inputFormat block:
+        ^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when)
         {
                 inputStatus = AVAudioConverterInputStatus_HaveData ;
-                AVAudioPCMBuffer* convertedBuffer = [[AVAudioPCMBuffer alloc]initWithPCMFormat:recordingFormat frameCapacity: [buffer frameCapacity]];
+                AVAudioPCMBuffer* convertedBuffer = [[AVAudioPCMBuffer alloc]initWithPCMFormat: recordingFormat frameCapacity: [buffer frameCapacity]];
 
 
-                AVAudioConverterInputBlock inputBlock = ^AVAudioBuffer*(AVAudioPacketCount inNumberOfPackets, AVAudioConverterInputStatus *outStatus)
+                AVAudioConverterInputBlock inputBlock =
+                ^AVAudioBuffer*(AVAudioPacketCount inNumberOfPackets, AVAudioConverterInputStatus *outStatus)
                 {
                         *outStatus = inputStatus;
                         inputStatus =  AVAudioConverterInputStatus_NoDataNow;

@@ -128,7 +128,7 @@ class _MyAppState extends State<Demo> {
     _isAudioPlayer = withUI;
     await playerModule.openAudioSession(
           withUI: withUI ,
-          focus: AudioFocus.requestFocusAndKeepOthers,
+          focus: AudioFocus.requestFocusAndStopOthers,
           category: SessionCategory.playAndRecord,
           mode: SessionMode.modeDefault,
           device: AudioDevice.speaker);
@@ -140,7 +140,7 @@ class _MyAppState extends State<Demo> {
 
   Future<void> init() async {
     await recorderModule.openAudioSession(
-        focus: AudioFocus.requestFocusTransient,
+        focus: AudioFocus.requestFocusAndStopOthers,
         category: SessionCategory.playAndRecord,
         mode: SessionMode.modeDefault,
         device: AudioDevice.speaker);
@@ -442,7 +442,8 @@ class _MyAppState extends State<Demo> {
           albumArtFile: albumArtFile,
         );
         await playerModule.startPlayerFromTrack(track,
-            /*canSkipForward:true, canSkipBackward:true,*/
+            defaultPauseResume: false,
+            removeUIWhenStopped: true,
             whenFinished: () {
           print('I hope you enjoyed listening to this song');
           setState(() {});
@@ -462,7 +463,6 @@ class _MyAppState extends State<Demo> {
         });
       } else
         if (_media == Media.stream){
-          //feedStream = StreamController<Uint8List>();
           await playerModule.startPlayerFromStream(
             codec: _codec,
             numChannels: 1,

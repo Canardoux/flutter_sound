@@ -35,7 +35,7 @@ import 'dart:typed_data' show Uint8List;
  */
 
 
-const int SAMPLE_RATE = 44100;
+const int SAMPLE_RATE = 8000;
 typedef fn();
 
 

@@ -233,6 +233,7 @@
 - (void)startPlayer:(FlutterMethodCall*)call result: (FlutterResult)result
 {
         NSLog(@"IOS:--> startPlayer");
+
         NSString* path = (NSString*)call.arguments[@"fromURI"];
         NSNumber* numChannels = (NSNumber*)call.arguments[@"numChannels"];
         NSNumber* sampleRate = (NSNumber*)call.arguments[@"sampleRate"];
@@ -271,8 +272,19 @@
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result
 {
          NSLog(@"IOS:--> startPlayerFromTrack");
-         NSDictionary* trackDict = (NSDictionary*) call.arguments[@"track"];
+         NSMutableDictionary* trackDict = (NSMutableDictionary*) call.arguments[@"track"];
+         
+         if ([trackDict[@"dataBuffer"] class] != [NSNull class])
+         {
+                trackDict[@"dataBuffer"] = [(FlutterStandardTypedData*)trackDict[@"dataBuffer"] data];
+         }
+         
          FlautoTrack* track = [[FlautoTrack alloc] initFromDictionary: trackDict];
+         //FlutterStandardTypedData* data = (FlutterStandardTypedData*)trackDict[@"dataBuffer"];
+         //track[@"dataBuffer"] = [data data];
+         //AVAudioPlayer* toto = [[AVAudioPlayer alloc] initWithData: [zozo data] error: nil];
+
+         
          BOOL canPause  = [call.arguments[@"canPause"] boolValue];
          BOOL canSkipForward = [call.arguments[@"canSkipForward"] boolValue];
          BOOL canSkipBackward = [call.arguments[@"canSkipBackward"] boolValue];
@@ -280,8 +292,8 @@
          NSNumber* duration = (NSNumber*)call.arguments[@"duration"];
          bool removeUIWhenStopped  = [call.arguments[@"removeUIWhenStopped"] boolValue];
          bool defaultPauseResume  = [call.arguments[@"defaultPauseResume"] boolValue];
-         bool b = [flautoPlayer startPlayerFromTrack: track canPause: canPause canSkipForward:canSkipForward
-                       canSkipBackward:canSkipBackward progress: progress duration: duration removeUIWhenStopped: removeUIWhenStopped defaultPauseResume: defaultPauseResume];
+         bool b = [flautoPlayer startPlayerFromTrack: track canPause: canPause canSkipForward: canSkipForward
+                       canSkipBackward: canSkipBackward progress: progress duration: duration removeUIWhenStopped: removeUIWhenStopped defaultPauseResume: defaultPauseResume];
 
         if (b)
         {
