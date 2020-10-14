@@ -1,0 +1,13 @@
+-locale 'en_US'
+-charset 'UTF-8'
+-classpath '/Volumes/Macos-Ext/Users/larpoux/android-sdk-macosx/platforms/android-30/android.jar:/Volumes/Macos-Ext/Users/larpoux/projmac/flauto/flauto_engine/android/FlautoEngine/build/intermediates/compile_only_not_namespaced_r_class_jar/release/generateReleaseRFile/R.jar'
+-d '/Volumes/Macos-Ext/Users/larpoux/projmac/flauto/flauto_engine/android/FlautoEngine/build/docs/javadoc'
+-doctitle 'FlutterSound 0.0.1 API'
+-encoding 'UTF-8'
+-link 'http://docs.oracle.com/javase/7/docs/api/'
+-linkoffline 'http://d.android.com/reference' '/Volumes/Macos-Ext/Users/larpoux/android-sdk-macosx/docs/reference'
+-public 
+-notimestamp 
+-quiet 
+-windowtitle 'FlutterSound 0.0.1 Reference'
+'/Volumes/Macos-Ext/Users/larpoux/projmac/flauto/flauto_engine/android/FlautoEngine/src/main/java/com/dooboolab/FlautoEngine/Toto.java'
