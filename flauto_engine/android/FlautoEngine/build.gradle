@@ -63,9 +63,9 @@ dependencies {
 
 }
 ext {
-    PUBLISH_GROUP_ID = 'com.canardoux'
-    PUBLISH_ARTIFACT_ID = 'FlautoEnginexx'
-    PUBLISH_VERSION = android.defaultConfig.versionName
+    PUBLISH_GROUP_ID = 'xyz.canardoux'
+    PUBLISH_ARTIFACT_ID = 'FlautoEngine'
+    PUBLISH_VERSION = 'release' //android.defaultConfig.versionName
 }
 
 apply from: "${rootProject.projectDir}/publish-mavencentral.gradle"
