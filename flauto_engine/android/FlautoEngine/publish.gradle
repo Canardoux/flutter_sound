@@ -1,0 +1,41 @@
+apply plugin: 'com.jfrog.bintray'
+
+group 'com.dooboolab'
+version '0.0.1'
+
+project.ext {
+    mavGitUrl = 'https://github.com/dooboolab/flutter_sound/tree/master/flauto_engine/android'
+    mavProjectName = 'FlutterSound'
+    mavLibraryLicenses = ["LGPL-V3":'https://www.gnu.org/licenses/lgpl-3.0.html']
+    mavLibraryDescription = "The Flauto Library for Android"
+    mavPublishToMavenLocal = true
+    mavSiteUrl = 'https://dooboolab.com/'
+}
+
+def properties = new Properties()
+properties.load(new FileInputStream("local.properties"))
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    publications = ['Production']
+    configurations = ['archives']
+    override = true
+    pkg {
+        repo = 'maven'
+        name = 'FlautoEngine'
+        description = "The Flauto Library for Android"
+        publicDownloadNumbers = true
+        licenses = ['LGPL-V3']
+        vcsUrl = 'https://github.com/dooboolab/flutter_sound/tree/master/flauto_engine/android'
+        version {
+            name = this.version
+            desc = "Version ${this.version}"
+            released = new Date()
+            vcsTag = this.version
+        }
+    }
+}
+
+apply from: 'https://raw.githubusercontent.com/sky-uk/gradle-maven-plugin/master/gradle-mavenizer.gradle'
+
