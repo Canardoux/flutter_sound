@@ -64,7 +64,7 @@ dependencies {
 }
 ext {
     PUBLISH_GROUP_ID = 'com.canardoux'
-    PUBLISH_ARTIFACT_ID = 'FlautoEngine'
+    PUBLISH_ARTIFACT_ID = 'FlautoEnginexx'
     PUBLISH_VERSION = android.defaultConfig.versionName
 }
 
