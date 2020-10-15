@@ -1,4 +1,4 @@
-## 6.2.0
+## 6.2.0+1
 
 - On iOS, Flutter Sound use now a Pod library : `flauto_engine_ios`
 - On iOS : `startPlayer()` from a remote URL returned too early (before downloading the file)
