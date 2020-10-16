@@ -9,6 +9,8 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.0'
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.0"
+
         //classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
         //classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
@@ -38,8 +40,8 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 1008
-        versionName '0.0.8'
+        versionCode 1006
+        versionName '0.0.6'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -69,6 +71,9 @@ ext {
     PUBLISH_ARTIFACT_ID = 'FlautoEngine'
     PUBLISH_VERSION = android.defaultConfig.versionName // '0.0.2' //
 }
+
+apply plugin: 'io.codearte.nexus-staging'
+
 
 // ==========================================================================================================================================================
 //apply from: "${rootProject.projectDir}/publish-mavencentral.gradle"
@@ -185,6 +190,14 @@ publishing {
         }
     }
 }
+
+nexusStaging {
+    packageGroup = PUBLISH_GROUP_ID
+    stagingProfileId = 'a66751cdc7661' // dummy example, replace with your own!
+    username = ossrhUsername
+    password = ossrhPassword
+}
+
 
 
 signing {

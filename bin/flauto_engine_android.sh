@@ -25,7 +25,15 @@ if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
 fi
+
 ./gradlew publishReleasePublicationToSonatypeRepository
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+
+
+./gradlew closeAndReleaseRepository
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
