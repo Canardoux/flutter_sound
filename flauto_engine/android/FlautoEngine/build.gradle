@@ -59,8 +59,8 @@ android {
 }
 
 //apply from: 'publish.gradle'
-apply from: 'https://github.com/Canardoux/flauto/tree/master/flauto_engine/android/FlautoEngine/bintray.gradle'
-apply from: 'https://github.com/Canardoux/flauto/tree/master/flauto_engine/android/FlautoEngine/publications.gradle'
+//apply from: 'https://github.com/Canardoux/flauto/tree/master/flauto_engine/android/FlautoEngine/bintray.gradle'
+//apply from: 'https://github.com/Canardoux/flauto/tree/master/flauto_engine/android/FlautoEngine/publications.gradle'
 
 dependencies {
     //implementation fileTree(dir: "libs", include: ["*.jar"])
