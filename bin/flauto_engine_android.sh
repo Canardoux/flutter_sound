@@ -5,12 +5,11 @@ if [ -z "$1" ]; then
         exit -1
 fi
 
-set v=$1
-set $versionCode=123456
-echo "s/^\( *versionName *\).*$/\1'$v'/"
-gsed -i  "s/^\( *versionName *\).*$/\1'$v'/" flauto_engine/android/FlautoEngine/build.gradle
-gsed -i  "s/^\( *versionCode *\).*$/\1$versionCode/" flauto_engine/android/FlautoEngine/build.gradle
-
+VERSION=$1
+VERSION_CODE=${VERSION//./}
+gsed -i  "s/^\( *versionName *\).*$/\1'$1'/" flauto_engine/android/FlautoEngine/build.gradle
+gsed -i  "s/^\( *versionCode *\).*$/\1$VERSION_CODE/" flauto_engine/android/FlautoEngine/build.gradle
+gsed -i  "s/^\( *implementation 'xyz.canardoux:FlautoEngine:\).*$/\1$1'/" flutter_sound/android/build.gradle
 git add .
 git commit -m "pod_flauto_engine_android.sh : Version $1"
 git push
@@ -20,4 +19,12 @@ git push --tag -f
 cd flauto_engine/android/FlautoEngine
 ./gradlew clean
 ./gradlew assemble
-#####./gradlew publishReleasePublicationToSonatypeRepository
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+./gradlew publishReleasePublicationToSonatypeRepository
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
