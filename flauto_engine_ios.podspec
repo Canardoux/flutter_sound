@@ -24,22 +24,14 @@ It has been extracted to be isolated from Flutter ans can be used with other fra
                        DESC
 
   s.homepage         = 'https://github.com/dooboolab/flutter_sound'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'LGPL', :file => 'LICENSE' }
   s.author           = { 'larpoux' => 'larpoux@canardoux.xyz' }
   s.source           = { :git => 'https://github.com/Canardoux/flauto.git', :tag => 'flauto_engine_' + s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '10.0'
 
   s.source_files = 'flauto_engine/ios/flauto_engine/Classes/**/*'
   s.frameworks = 'AVFoundation', 'MediaPlayer'
 
-  # s.resource_bundles = {
-  #   'flutter_engine' => ['flutter_engine/Assets/*.png']
-  # }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end

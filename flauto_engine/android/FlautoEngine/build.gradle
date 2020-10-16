@@ -39,7 +39,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 30
         versionCode 
-        versionName "0.0.6"
+        versionName ''
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
