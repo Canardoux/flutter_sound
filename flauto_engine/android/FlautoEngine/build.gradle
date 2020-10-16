@@ -38,7 +38,7 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 6
+        versionCode 
         versionName "0.0.6"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -70,6 +70,7 @@ ext {
     PUBLISH_VERSION = android.defaultConfig.versionName // '0.0.2' //
 }
 
+// ==========================================================================================================================================================
 //apply from: "${rootProject.projectDir}/publish-mavencentral.gradle"
 
 task androidSourcesJar(type: Jar) {
