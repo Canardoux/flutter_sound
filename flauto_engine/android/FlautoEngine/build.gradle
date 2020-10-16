@@ -40,8 +40,8 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 1006
-        versionName '0.0.6'
+        versionCode 1007
+        versionName '0.0.7'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -193,7 +193,7 @@ publishing {
 
 nexusStaging {
     packageGroup = PUBLISH_GROUP_ID
-    stagingProfileId = 'a66751cdc7661' // dummy example, replace with your own!
+    stagingProfileId = 'a66751cdc7661'
     username = ossrhUsername
     password = ossrhPassword
 }
