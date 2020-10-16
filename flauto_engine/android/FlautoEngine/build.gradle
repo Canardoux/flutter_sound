@@ -1,3 +1,5 @@
+
+
 buildscript {
     repositories {
         google()
@@ -10,12 +12,18 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.0'
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.0"
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
 
         //classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
         //classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
+}
+
+
+plugins {
+  id "com.jfrog.bintray" version "1.7.3"
+  id "maven-publish"
 }
 
 rootProject.allprojects {
@@ -76,6 +84,92 @@ ext {
     PUBLISH_ARTIFACT_ID = 'FlautoEngine'
     PUBLISH_VERSION = android.defaultConfig.versionName // '0.0.2' //
 }
+
+// =========================================================================================================================================================
+/*
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+def pomConfig = {
+    licenses {
+        license {
+            name "Lesser Gnu Public Licenses"
+            url "https://www.gnu.org/licenses/lgpl-3.0.en.html"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "larpoux"
+            name "Larpoux"
+            email "larpoux@canardoux.xyz"
+        }
+    }
+
+    scm {
+        url "https://github.com/Canardoux/flauto/tree/master/flauto_engine/android/FlautoEngine"
+    }
+}
+
+publishing {
+    publications {
+        mavenPublication(MavenPublication) {
+            from components.java
+            artifact sourcesJar {
+                classifier "sources"
+            }
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+            groupId 'xyz.Canardoux'
+            artifactId 'FlautoEngine'
+            version '0.0.8'
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'An AWESOME lib. Really!')
+                root.appendNode('name', 'FlautoEngine')
+                root.appendNode('url', 'https://github.com/Canardoux/flauto')
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getProperty('bintray.user')
+    key = System.getProperty('bintray.key')
+    publications = ['mavenPublication']
+
+    pkg {
+        repo = 'CanardouxMaven'
+        name = 'FlautoEngine'
+        userOrg = 'reflectoring'
+        licenses = ['LGPL-V3']
+        vcsUrl = 'https://github.com/Canardoux/flauto/tree/master/flauto_engine/android/FlautoEngine'
+        version {
+            name = '0.0.8'
+            desc = '0.0.8'
+            released  = new Date()
+        }
+    }
+
+}
+*/
+
+// ======================================================================================================================================================
 
 apply plugin: 'io.codearte.nexus-staging'
 
@@ -203,10 +297,13 @@ nexusStaging {
     password = ossrhPassword
 }
 
-
+// =============================================================================================================================================
 
 signing {
     sign publishing.publications
 }
+
+apply from: 'install.gradle'
+apply from: 'bintray.gradle'
 
 

@@ -1,0 +1,45 @@
+apply plugin: 'com.jfrog.bintray'
+
+version = '0.0.8'
+
+task sourcesJar(type: Jar) {
+   from android.sourceSets.main.java.srcDirs
+   classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+   source = android.sourceSets.main.java.srcDirs
+   classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+   classifier = 'javadoc'
+   from javadoc.destinationDir
+}
+
+artifacts {
+   archives javadocJar
+   archives sourcesJar
+}
+
+Properties properties = new Properties()
+properties.load( new FileInputStream("local.properties"))
+
+// Bintray
+bintray {
+   user = properties.getProperty("bintray.user")
+   key = properties.getProperty("bintray.apikey")
+
+   pkg {
+       repo = 'CanardouxMaven'
+       name = 'xyz.canardoux.FlautoEngine'
+       configurations = ['archives']
+       desc = 'An android library.'
+       websiteUrl = 'https://github.com/Canardoux/flauto'
+       vcsUrl = 'https://github.com/Canardoux/flauto/tree/master/flauto_engine/android/FlautoEngine'
+       licenses = ["LGPL-V3"]
+       publish = true
+       publicDownloadNumbers = true
+   }
+}
+
