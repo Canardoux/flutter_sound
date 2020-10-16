@@ -5,8 +5,8 @@ if [ -z "$1" ]; then
         exit -1
 fi
 
-set v $1
-set $versionCode 123456
+set v=$1
+set $versionCode=123456
 gsed -i  "s/^\( *versionName *\).*$/\1'$v'/" flauto_engine/android/FlautoEngine/build.gradle
 gsed -i  "s/^\( *versionCode *\).*$/\1$versionCode/" flauto_engine/android/FlautoEngine/build.gradle
 
