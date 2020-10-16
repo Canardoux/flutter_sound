@@ -9,7 +9,7 @@ install {
                packaging 'aar'
                groupId 'xyz.canardoux'
                artifactId 'FlautoEngine'
-               name 'FlautoId'
+               name 'FlautoEngine'
                description 'An android library.'
                url 'https://github.com/Canardoux/flauto'
 
