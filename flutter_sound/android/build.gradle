@@ -58,7 +58,7 @@ dependencies {
     implementation 'androidx.core:core:1.0.0'
     implementation 'androidx.media:media:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'xyz.canardoux:FlautoEngine:0.0.2'
+    implementation 'xyz.canardoux:FlautoEngine:0.0.8'
 
 }
 
