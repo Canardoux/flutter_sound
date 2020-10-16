@@ -12,7 +12,7 @@ project 'Runner', {
 # -------------------------------------------------------------------------------------
 # CAUTION: The following instruction is for developping and debugging the Flauto Engine
 # DO NOT INCLUDE THE FOLLOWING LINE IN A REAL APP !!!
-pod 'flauto_engine_ios', :path => '../../..'
+# pod 'flauto_engine_ios', :path => '../../..'
 # -------------------------------------------------------------------------------------
 
 def flutter_root
