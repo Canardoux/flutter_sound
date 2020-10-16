@@ -28,9 +28,11 @@ then
 	exit -1
 fi
 
+cd flutter_sound
+
 if [ ! -f pubspec.yaml ]
 then
-	echo "No file ./pubspec.yaml"
+	echo "No file ./flutter_sound/pubspec.yaml"
 	exit -1
 fi
 

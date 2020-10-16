@@ -9,5 +9,8 @@ package com.dooboolab.FlautoEngine;
  *
  */
 public class Toto {
-        public void zozo(){}
+        public String zozo()
+        {
+                return "La plume (du chapeau) de ma tante ZOZO! PAPA" ;
+        }
 }

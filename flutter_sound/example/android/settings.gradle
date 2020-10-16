@@ -13,3 +13,12 @@ plugins.each { name, path ->
     include ":$name"
     project(":$name").projectDir = pluginDirectory
 }
+
+    // -------------------------------------------------------------------------------------
+    // CAUTION: The following instruction is for developping and debugging the Flauto Engine
+    // DO NOT INCLUDE THE FOLLOWING LINES IN A REAL APP !!!
+    include 'FlautoEngine'
+    project(':FlautoEngine').projectDir = file('../../../flauto_engine/android/FlautoEngine')
+    // -------------------------------------------------------------------------------------
+
+

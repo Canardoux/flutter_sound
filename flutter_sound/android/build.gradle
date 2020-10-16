@@ -7,6 +7,10 @@ version '1.0-SNAPSHOT'
 buildscript {
     repositories {
         google()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases" }
+        maven { url "https://oss.sonatype.org/content/groups/public" }
         jcenter()
     }
 
@@ -18,6 +22,10 @@ buildscript {
 rootProject.allprojects {
     repositories {
         google()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases" }
+        maven { url "https://oss.sonatype.org/content/groups/public" }
         jcenter()
     }
 }
@@ -25,7 +33,7 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 18 // 18 works fine for the player, but the recorder needs at least 24
@@ -50,6 +58,7 @@ dependencies {
     implementation 'androidx.core:core:1.0.0'
     implementation 'androidx.media:media:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'xyz.canardoux:FlautoEngine:0.0.6'
 
 }
 

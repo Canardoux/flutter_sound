@@ -27,7 +27,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
     sourceSets {
              main {
@@ -46,7 +46,7 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.dooboolab.example"
         minSdkVersion 18 // 18 works fine for the player, but the recorder needs at least 24
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -66,5 +66,12 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+
+    // -------------------------------------------------------------------------------------
+    // CAUTION: The following instruction is for developping and debugging the Flauto Engine
+    // DO NOT INCLUDE THE FOLLOWING LINE IN A REAL APP !!!
+    implementation  project(':FlautoEngine')
+    // -------------------------------------------------------------------------------------
+
+    //apply plugin: 'maven'
 }

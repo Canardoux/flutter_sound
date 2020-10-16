@@ -51,6 +51,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+//import com.dooboolab.FlautoEngine.Toto;
 
 
 public class FlautoManager
@@ -96,6 +97,8 @@ public class FlautoManager
 		int slot =  call.argument ( "slotNo" );
 		slots.set ( slot, aPlayer );
 		aPlayer.init( slot );
+		//String s = (new Toto()).zozo();
+		//System.out.println(s);
 
 	}
 
