@@ -10,6 +10,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.0'
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.0"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
 
         //classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
         //classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
@@ -42,6 +44,7 @@ android {
         targetSdkVersion 30
         versionCode 1007
         versionName '0.0.7'
+        //versionName project.getProperty(“libraryVersion”)
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -56,6 +59,8 @@ android {
 }
 
 //apply from: 'publish.gradle'
+apply from: 'https://github.com/Canardoux/flauto/tree/master/flauto_engine/android/FlautoEngine/bintray.gradle'
+apply from: 'https://github.com/Canardoux/flauto/tree/master/flauto_engine/android/FlautoEngine/publications.gradle'
 
 dependencies {
     //implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -72,7 +77,6 @@ ext {
     PUBLISH_VERSION = android.defaultConfig.versionName // '0.0.2' //
 }
 
-apply plugin: 'io.codearte.nexus-staging'
 
 
 // ==========================================================================================================================================================
@@ -203,3 +207,6 @@ nexusStaging {
 signing {
     sign publishing.publications
 }
+
+apply plugin: 'io.codearte.nexus-staging'
+
