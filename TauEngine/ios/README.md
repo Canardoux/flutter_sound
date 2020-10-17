@@ -1,9 +1,9 @@
-# flauto_engine
+# TauEngine
 
-[![CI Status](https://img.shields.io/travis/Larpoux/flauto_engine.svg?style=flat)](https://travis-ci.org/Larpoux/flauto_engine)
-[![Version](https://img.shields.io/cocoapods/v/flauto_engine.svg?style=flat)](https://cocoapods.org/pods/flauto_engine)
-[![License](https://img.shields.io/cocoapods/l/flauto_engine.svg?style=flat)](https://cocoapods.org/pods/flauto_engine)
-[![Platform](https://img.shields.io/cocoapods/p/flauto_engine.svg?style=flat)](https://cocoapods.org/pods/flauto_engine)
+[![CI Status](https://img.shields.io/travis/Larpoux/TauEngine.svg?style=flat)](https://travis-ci.org/Larpoux/TauEngine)
+[![Version](https://img.shields.io/cocoapods/v/TauEngine.svg?style=flat)](https://cocoapods.org/pods/TauEngine)
+[![License](https://img.shields.io/cocoapods/l/TauEngine.svg?style=flat)](https://cocoapods.org/pods/TauEngine)
+[![Platform](https://img.shields.io/cocoapods/p/TauEngine.svg?style=flat)](https://cocoapods.org/pods/TauEngine)
 
 ## Example
 
@@ -13,11 +13,11 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-flauto_engine is available through [CocoaPods](https://cocoapods.org). To install
+TauEngine is available through [CocoaPods](https://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'flauto_engine'
+pod 'TauEngine'
 ```
 
 ## Author
@@ -26,4 +26,4 @@ Larpoux, larpoux@canardoux.xyz
 
 ## License
 
-flauto_engine is available under the LGPL-V3 license. See the LICENSE file for more info.
+TauEngine is available under the LGPL-V3 license. See the LICENSE file for more info.

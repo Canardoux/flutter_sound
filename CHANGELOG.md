@@ -4,7 +4,7 @@
 
 ## 6.2.0
 
-- On iOS, Flutter Sound use now a Pod library : `flauto_engine_ios`
+- On iOS, Flutter Sound use now a Pod library : `TauEngine`
 - On iOS : `startPlayer()` from a remote URL returned too early (before downloading the file)
 - The loop example, (from the recorder to the player) has now a delay < 1 sec. [#479](https://github.com/dooboolab/flutter_sound/issues/479) and [#90](https://github.com/dooboolab/flutter_sound/issues/90)
 - Fix compilation errors of the examples in LITE flavor [#483](https://github.com/dooboolab/flutter_sound/issues/483)

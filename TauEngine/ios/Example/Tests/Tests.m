@@ -1,6 +1,6 @@
 //
-//  flauto_engineTests.m
-//  flauto_engineTests
+//  TauEngine.m
+//  TauEngine
 //
 //  Created by Larpoux on 09/30/2020.
 //  Copyright (c) 2020 Larpoux. All rights reserved.
