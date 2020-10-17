@@ -43,7 +43,7 @@ gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound_platform_interface/p
 gsed -i  "s/^\( *version *= *\).*$/\1'$VERSION'/" flauto_engine/android/FlautoEngine/bintray.gradle
 
 cd flutter_sound
-#flutter pub publish
+flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
@@ -52,7 +52,7 @@ cd ..
 
 
 cd flutter_sound_platform_interface/
-#flutter pub publish
+flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
@@ -63,11 +63,11 @@ cd ..
 git add .
 git commit -m "FLAUTO : Version $VERSION"
 git push
-git tag -f $1
+git tag -f Version-$1
 git push --tag -f
 
 pod cache clean --all
-#pod trunk push flauto_engine_ios.podspec
+pod trunk push flauto_engine_ios.podspec
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1

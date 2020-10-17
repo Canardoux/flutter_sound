@@ -16,7 +16,7 @@ dependencies:
   # ============================================================================
   # The following instructions are just for developing/debugging Flutter Sound
   flutter_sound: 0.0.9
-    #path: ../ # Comment
+  #  path: ../ # Comment
   # The following instruction is for a real APP
   # flutter_sound: ^6.0.0
   # ============================================================================
