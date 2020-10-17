@@ -27,11 +27,11 @@ VERSION_CODE=${VERSION//./}
 VERSION_CODE=${VERSION_CODE//+/}
 
 
-gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/" flauto_engine_ios.podspec
-gsed -i  "s/^\( *s.dependency *'flauto_engine_ios', *\).*$/\1'$VERSION'/" flutter_sound/ios/flutter_sound.podspec
-gsed -i  "s/^\( *versionName *\).*$/\1'$VERSION'/" flauto_engine/android/FlautoEngine/build.gradle
-gsed -i  "s/^\( *versionCode *\).*$/\11$VERSION_CODE/" flauto_engine/android/FlautoEngine/build.gradle
-gsed -i  "s/^\( *implementation 'xyz.canardoux:FlautoEngine:\).*$/\1$VERSION'/" flutter_sound/android/build.gradle
+gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/" TauEngine.podspec
+gsed -i  "s/^\( *s.dependency *'TauEngine_ios', *\).*$/\1'$VERSION'/" flutter_sound/ios/flutter_sound.podspec
+gsed -i  "s/^\( *versionName *\).*$/\1'$VERSION'/" TauEngine/android/TauEngine/build.gradle
+gsed -i  "s/^\( *versionCode *\).*$/\11$VERSION_CODE/" TauEngine/android/TauEngine/build.gradle
+gsed -i  "s/^\( *implementation 'xyz.canardoux:TauEngine:\).*$/\1$VERSION'/" flutter_sound/android/build.gradle
 gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/" flutter_sound/ios/flutter_sound.podspec
 gsed -i  "s/^\( *version *\).*$/\1'$VERSION'/" flutter_sound/android/build.gradle
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound/pubspec.yaml
@@ -40,7 +40,7 @@ gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound/example/pubspec.yaml
 gsed -i  "s/^\( *## \).*$/\1$VERSION/" flutter_sound/CHANGELOG.md
 gsed -i  "s/^\( *## \).*$/\1$VERSION/" flutter_sound_platform_interface/CHANGELOG.md
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound_platform_interface/pubspec.yaml
-gsed -i  "s/^\( *version *= *\).*$/\1'$VERSION'/" flauto_engine/android/FlautoEngine/bintray.gradle
+gsed -i  "s/^\( *version *= *\).*$/\1'$VERSION'/" TauEngine/android/TauEngine/bintray.gradle
 
 cd flutter_sound
 flutter pub publish
@@ -67,14 +67,14 @@ git tag -f Version-$1
 git push --tag -f
 
 pod cache clean --all
-pod trunk push flauto_engine_ios.podspec
+pod trunk push TauEngine_ios.podspec
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
 fi
 
 
-cd flauto_engine/android/FlautoEngine
+cd TauEngine/android/TauEngine
 if [ $SONATYPE = 1 ]; then
 
         #./gradlew clean
@@ -112,5 +112,5 @@ if [ $BINTRAY .eq 1 ]; then
         echo 'Do not forget to go to "https://oss.sonatype.org/#view-repositories;public~browsestorage" and close/publish your new version'
 else
         echo 'E.O.J'
-        echo 'Do not forget to go to "https://bintray.com/larpoux/CanardouxMaven/xyz.canardoux.FlautoEngine" and close/publish your new version'
+        echo 'Do not forget to go to "https://bintray.com/larpoux/CanardouxMaven/xyz.canardoux.TauEngine" and close/publish your new version'
 fi
