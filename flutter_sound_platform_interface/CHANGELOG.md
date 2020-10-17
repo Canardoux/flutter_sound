@@ -1,7 +1,4 @@
-## 2.0.0
+## 0.0.9
 
-- Remove FFmpeg interface
+- Please [look to this](/CHANGELOG.md)
 
-## 1.0.0
-
-- Initial open-source release.

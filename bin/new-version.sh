@@ -1,5 +1,4 @@
 #!/bin/bash
-
 if [ -z "$1" ]; then
         echo "Correct usage is $0 <Version> [SONATYPE | BINTRAY]"
         exit -1
@@ -17,7 +16,7 @@ else
                 SONATYPE=1
                 BINTRAY=0
         else
-               echo "Correct usage is $0 <Version> [SONATYPE | BINTRAY]"
+                echo "Correct usage is $0 <Version> [SONATYPE | BINTRAY]"
                 exit -1
         fi
 fi
@@ -27,18 +26,54 @@ VERSION=$1
 VERSION_CODE=${VERSION//./}
 VERSION_CODE=${VERSION_CODE//+/}
 
+
+gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/" flauto_engine_ios.podspec
+gsed -i  "s/^\( *s.dependency *'flauto_engine_ios', *\).*$/\1'$VERSION'/" flutter_sound/ios/flutter_sound.podspec
 gsed -i  "s/^\( *versionName *\).*$/\1'$VERSION'/" flauto_engine/android/FlautoEngine/build.gradle
 gsed -i  "s/^\( *versionCode *\).*$/\11$VERSION_CODE/" flauto_engine/android/FlautoEngine/build.gradle
 gsed -i  "s/^\( *implementation 'xyz.canardoux:FlautoEngine:\).*$/\1$VERSION'/" flutter_sound/android/build.gradle
+gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/" flutter_sound/ios/flutter_sound.podspec
+gsed -i  "s/^\( *version *\).*$/\1'$VERSION'/" flutter_sound/android/build.gradle
+gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound/pubspec.yaml
+gsed -i  "s/^\( *flutter_sound_platform_interface: *\).*$/\1$VERSION/" flutter_sound/pubspec.yaml
+gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound/example/pubspec.yaml
+gsed -i  "s/^\( *## \).*$/\1$VERSION/" flutter_sound/CHANGELOG.md
+gsed -i  "s/^\( *## \).*$/\1$VERSION/" flutter_sound_platform_interface/CHANGELOG.md
+gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound_platform_interface/pubspec.yaml
+
+cd flutter_sound
+flutter pub publish
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+cd ..
+
+
+cd flutter_sound_platform_interface/
+flutter pub publish
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+cd ..
+
 
 git add .
-git commit -m "pod_flauto_engine_android.sh : Version $VERSION"
+git commit -m "FLAUTO : Version $VERSION"
 git push
-git tag -f flauto_engine_$1
+git tag -f $1
 git push --tag -f
 
-cd flauto_engine/android/FlautoEngine
+pod cache clean --all
+pod trunk push flauto_engine_ios.podspec
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
 
+
+cd flauto_engine/android/FlautoEngine
 if [ $BINTRAY .eq 1 ]; then
 
         #./gradlew clean
@@ -68,6 +103,7 @@ else
         fi
 
 fi
+
 
 if [ $BINTRAY .eq 1 ]; then
         echo 'E.O.J'

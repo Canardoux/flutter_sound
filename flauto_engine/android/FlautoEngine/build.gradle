@@ -55,8 +55,8 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 1004
-        versionName '0.0.4'
+        versionCode 1009
+        versionName '0.0.9'
         //versionName project.getProperty(“libraryVersion”)
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -87,7 +87,7 @@ dependencies {
 ext {
     PUBLISH_GROUP_ID = 'xyz.canardoux'
     PUBLISH_ARTIFACT_ID = 'FlautoEngine'
-    PUBLISH_VERSION = android.defaultConfig.versionName // '0.0.2' //
+    PUBLISH_VERSION = android.defaultConfig.versionName // '0.0.2' // project.getProperty(“libraryVersion”)
 }
 
 
@@ -163,7 +163,7 @@ bintray {
         repo = 'CanardouxMaven'
         name = 'FlautoEngine'
         userOrg = 'reflectoring'
-        licenses = ['LGPL-V3']
+        licenses = ['LGPL-3.0']
         vcsUrl = 'https://github.com/Canardoux/flauto/tree/master/flauto_engine/android/FlautoEngine'
         version {
             name = '0.0.8'
@@ -242,7 +242,7 @@ publishing {
                 url = 'https://github.com/canardoux/flauto'
                 licenses {
                     license {
-                        name = 'LGPL-V3'
+                        name = 'LGPL-3.0'
                         url = 'https://www.gnu.org/licenses/lgpl-3.0.en.html'
                     }
                 }
@@ -334,7 +334,7 @@ afterEvaluate {
                 //from components.release
                 groupId = 'xyz.canardoux'
                 artifactId = 'FlautoEngine'
-                version = '0.0.8'
+                version = PUBLISH_VERSION
             }
         }
     }
@@ -350,11 +350,11 @@ bintray {
         repo = 'CanardouxMaven'
         name = 'FlautoEngine'
         desc = 'Here is my library description'
-        licenses = ['LGPL-V3']
+        licenses = ['LGPL-3.0']
         vcsUrl = 'https://github.com/Canardoux/flauto/tree/master/flauto_engine/android'
         publicDownloadNumbers = true
         version {
-            name = '0.0.8'
+            name = PUBLISH_VERSION
             released = new Date()
         }
     }

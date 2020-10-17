@@ -37,7 +37,7 @@ bintray {
        desc = 'An android library.'
        websiteUrl = 'https://github.com/Canardoux/flauto'
        vcsUrl = 'https://github.com/Canardoux/flauto/tree/master/flauto_engine/android/FlautoEngine'
-       licenses = ["LGPL-V3"]
+       licenses = ["LGPL-3.0"]
        publish = true
        publicDownloadNumbers = true
    }
