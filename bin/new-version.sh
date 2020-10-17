@@ -53,7 +53,7 @@ git push --tag -f
 
 bin/flavor FULL
 cd flutter_sound
-#flutter pub publish
+flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
@@ -62,7 +62,7 @@ cd ..
 
 bin/flavor LITE
 cd flutter_sound
-#flutter pub publish
+flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
@@ -73,7 +73,7 @@ bin/flavor FULL
 
 
 cd flutter_sound_platform_interface/
-#flutter pub publish
+flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
@@ -93,7 +93,6 @@ pod cache clean --all
 pod install --repo-update
 cd ../../..
 
-exit 0
 
 cd TauEngine/android/TauEngine
 if [ $SONATYPE = 1 ]; then
