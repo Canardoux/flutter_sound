@@ -42,7 +42,7 @@ gsed -i  "s/^\( *## \).*$/\1$VERSION/" flutter_sound_platform_interface/CHANGELO
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound_platform_interface/pubspec.yaml
 
 cd flutter_sound
-flutter pub publish
+#flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
@@ -51,7 +51,7 @@ cd ..
 
 
 cd flutter_sound_platform_interface/
-flutter pub publish
+#flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
@@ -103,6 +103,7 @@ else
         fi
 
 fi
+cd ../../..
 
 
 if [ $BINTRAY .eq 1 ]; then
