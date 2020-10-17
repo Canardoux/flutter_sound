@@ -55,8 +55,8 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 10011
-        versionName '0.0.11'
+        versionCode 10012
+        versionName '0.0.12'
         //versionName project.getProperty(“libraryVersion”)
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -90,90 +90,6 @@ ext {
     PUBLISH_VERSION = android.defaultConfig.versionName // '0.0.2' // project.getProperty(“libraryVersion”)
 }
 
-
-// =========================================================================================================================================================
-/*
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-javadoc.failOnError = false
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
-
-def pomConfig = {
-    licenses {
-        license {
-            name "Lesser Gnu Public Licenses"
-            url "https://www.gnu.org/licenses/lgpl-3.0.en.html"
-            distribution "repo"
-        }
-    }
-    developers {
-        developer {
-            id "larpoux"
-            name "Larpoux"
-            email "larpoux@canardoux.xyz"
-        }
-    }
-
-    scm {
-        url "https://github.com/Canardoux/tau/tree/master/TauEngine/android/TauEngine"
-    }
-}
-
-publishing {
-    publications {
-        mavenPublication(MavenPublication) {
-            from components.java
-            artifact sourcesJar {
-                classifier "sources"
-            }
-            artifact javadocJar {
-                classifier "javadoc"
-            }
-            groupId 'xyz.Canardoux'
-            artifactId 'TauEngine'
-            version '0.0.8'
-            pom.withXml {
-                def root = asNode()
-                root.appendNode('description', 'An AWESOME lib. Really!')
-                root.appendNode('name', 'TauEngine')
-                root.appendNode('url', 'https://github.com/Canardoux/tau')
-                root.children().last() + pomConfig
-            }
-        }
-    }
-}
-
-bintray {
-    user = System.getProperty('bintray.user')
-    key = System.getProperty('bintray.key')
-    publications = ['mavenPublication']
-
-    pkg {
-        repo = 'TauRepo'
-        name = 'TauEngine'
-        userOrg = 'reflectoring'
-        licenses = ['LGPL-3.0']
-        vcsUrl = 'https://github.com/Canardoux/tau/tree/master/TauEngine/android/TauEngine'
-        version {
-            name = '0.0.8'
-            desc = '0.0.8'
-            released  = new Date()
-        }
-    }
-
-}
-*/
 
 // ======================================================================================================================================================
 

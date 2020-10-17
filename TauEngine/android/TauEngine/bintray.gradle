@@ -1,6 +1,6 @@
 apply plugin: 'com.jfrog.bintray'
 
-version = '0.0.11'
+version = '0.0.12'
 
 task sourcesJar(type: Jar) {
    from android.sourceSets.main.java.srcDirs
@@ -31,12 +31,12 @@ bintray {
    key = properties.getProperty("bintray.apikey")
 
    pkg {
-       repo = 'tau'
+       repo = 'TauRepo'
        name = 'xyz.canardoux.TauEngine'
        configurations = ['archives']
        desc = 'An android library.'
        websiteUrl = 'https://github.com/Canardoux/tau'
-       vcsUrl = 'https://github.com/Canardoux/tau/tree/master/flauto_engine/android/TauEngine'
+       vcsUrl = 'https://github.com/Canardoux/tau/tree/master/TauEngine/android/TauEngine'
        licenses = ["LGPL-3.0"]
        publish = true
        publicDownloadNumbers = true
