@@ -66,7 +66,7 @@ git tag -f $1
 git push --tag -f
 
 pod cache clean --all
-pod trunk push flauto_engine_ios.podspec
+#pod trunk push flauto_engine_ios.podspec
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
