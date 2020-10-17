@@ -7,7 +7,7 @@ description: Driver for the various Flutter Sound examples
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 0.1.18
+version: 0.1.19
 
 dependencies:
   flutter:
@@ -18,7 +18,7 @@ dependencies:
   flutter_sound: 0.1.18
   #  path: ../ # Flutter Sound Dir
   # The following instruction is for a real APP
-  # flutter_sound: ^0.1.18
+  # flutter_sound: ^0.1.19
   # ============================================================================
 
 

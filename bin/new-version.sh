@@ -44,6 +44,7 @@ gsed -i  "s/^\( *## \).*$/\1$VERSION/" flutter_sound_platform_interface/CHANGELO
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound_platform_interface/pubspec.yaml
 gsed -i  "s/^\( *version *= *\).*$/\1'$VERSION'/" TauEngine/android/TauEngine/bintray.gradle
 
+bin/flavor FULL
 
 git add .
 git commit -m "TAU : Version $VERSION"
@@ -51,7 +52,6 @@ git push
 git tag -f $1
 git push --tag -f
 
-bin/flavor FULL
 cd flutter_sound
 flutter pub publish
 if [ $? -ne 0 ]; then
