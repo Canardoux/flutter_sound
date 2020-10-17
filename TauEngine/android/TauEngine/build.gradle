@@ -55,8 +55,8 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 10116
-        versionName '0.1.16'
+        versionCode 10117
+        versionName '0.1.17'
         //versionName project.getProperty(“libraryVersion”)
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
