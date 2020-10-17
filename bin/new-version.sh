@@ -40,6 +40,7 @@ gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound/example/pubspec.yaml
 gsed -i  "s/^\( *## \).*$/\1$VERSION/" flutter_sound/CHANGELOG.md
 gsed -i  "s/^\( *## \).*$/\1$VERSION/" flutter_sound_platform_interface/CHANGELOG.md
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound_platform_interface/pubspec.yaml
+gsed -i  "s/^\( *version *= *\).*$/\1'$VERSION'/" flauto_engine/android/FlautoEngine/bintray.gradle
 
 cd flutter_sound
 #flutter pub publish
