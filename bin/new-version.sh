@@ -28,7 +28,7 @@ VERSION_CODE=${VERSION_CODE//+/}
 
 
 gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/" TauEngine.podspec
-gsed -i  "s/^\( *s.dependency *'TauEngine_ios', *\).*$/\1'$VERSION'/" flutter_sound/ios/flutter_sound.podspec
+gsed -i  "s/^\( *s.dependency *'TauEngine', *\).*$/\1'$VERSION'/" flutter_sound/ios/flutter_sound.podspec
 gsed -i  "s/^\( *versionName *\).*$/\1'$VERSION'/" TauEngine/android/TauEngine/build.gradle
 gsed -i  "s/^\( *versionCode *\).*$/\11$VERSION_CODE/" TauEngine/android/TauEngine/build.gradle
 gsed -i  "s/^\( *implementation 'xyz.canardoux:TauEngine:\).*$/\1$VERSION'/" flutter_sound/android/build.gradle
@@ -51,7 +51,7 @@ git push --tag -f
 
 bin/flavor FULL
 cd flutter_sound
-flutter pub publish
+#flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
@@ -60,7 +60,7 @@ cd ..
 
 bin/flavor LITE
 cd flutter_sound
-flutter pub publish
+#flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
@@ -71,20 +71,27 @@ bin/flavor FULL
 
 
 cd flutter_sound_platform_interface/
-flutter pub publish
+#flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
 fi
 cd ..
 
-pod cache clean --all
 pod trunk push TauEngine.podspec
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
 fi
+cd flutter_sound/example
+flutter pub get
+cd ios
+rm Podfile.lock 2> /dev/null
+pod cache clean --all
+pod install --repo-update
+cd ../../..
 
+exit 0
 
 cd TauEngine/android/TauEngine
 if [ $SONATYPE = 1 ]; then
