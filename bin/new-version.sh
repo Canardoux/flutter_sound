@@ -42,6 +42,14 @@ gsed -i  "s/^\( *## \).*$/\1$VERSION/" flutter_sound_platform_interface/CHANGELO
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound_platform_interface/pubspec.yaml
 gsed -i  "s/^\( *version *= *\).*$/\1'$VERSION'/" TauEngine/android/TauEngine/bintray.gradle
 
+
+git add .
+git commit -m "TAU : Version $VERSION"
+git push
+git tag -f Version-$1
+git push --tag -f
+
+bin/flavor FULL
 cd flutter_sound
 flutter pub publish
 if [ $? -ne 0 ]; then
@@ -49,6 +57,17 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 cd ..
+
+bin/flavor LITE
+cd flutter_sound
+flutter pub publish
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+cd ..
+
+bin/flavor FULL
 
 
 cd flutter_sound_platform_interface/
@@ -59,15 +78,8 @@ if [ $? -ne 0 ]; then
 fi
 cd ..
 
-
-git add .
-git commit -m "FLAUTO : Version $VERSION"
-git push
-git tag -f Version-$1
-git push --tag -f
-
 pod cache clean --all
-pod trunk push TauEngine_ios.podspec
+pod trunk push TauEngine.podspec
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
