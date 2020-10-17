@@ -74,7 +74,7 @@ fi
 
 
 cd flauto_engine/android/FlautoEngine
-if [ $BINTRAY .eq 1 ]; then
+if [ $SONATYPE = 1 ]; then
 
         #./gradlew clean
         #./gradlew assemble
