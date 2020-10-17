@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TauEngine'
-  s.version          = '0.0.12'
+  s.version          = '0.1.13'
   s.summary          = 'Provides simple recorder and player functionalities for both Android and iOS platforms.'
 
 # This description is used to generate tags and improve search results.
@@ -26,7 +26,7 @@ It has been extracted to be isolated from Flutter ans can be used with other fra
   s.homepage         = 'https://github.com/dooboolab/flutter_sound'
   s.license          = { :type => 'LGPL', :file => 'LICENSE' }
   s.author           = { 'larpoux' => 'larpoux@canardoux.xyz' }
-  s.source           = { :git => 'https://github.com/Canardoux/tau.git', :tag => 'Version-' + s.version.to_s }
+  s.source           = { :git => 'https://github.com/Canardoux/tau.git', :tag => '' + s.version.to_s }
 
   s.ios.deployment_target = '10.0'
 

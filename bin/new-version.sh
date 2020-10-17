@@ -46,7 +46,7 @@ gsed -i  "s/^\( *version *= *\).*$/\1'$VERSION'/" TauEngine/android/TauEngine/bi
 git add .
 git commit -m "TAU : Version $VERSION"
 git push
-git tag -f Version-$1
+git tag -f $1
 git push --tag -f
 
 bin/flavor FULL
