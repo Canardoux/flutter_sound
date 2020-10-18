@@ -18,6 +18,6 @@ Flutter plugin that relates to sound like audio and recorder.
 
   s.ios.deployment_target = '10.0'
   s.static_framework = true
-  s.dependency 'TauEngine', '0.1.20'
+#  s.dependency 'TauEngine', '0.1.20'
   s.dependency 'mobile-ffmpeg-audio', '4.3.1.LTS'
 end

@@ -13,11 +13,8 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.4.0'
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.0"
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
         classpath 'com.novoda:bintray-release:0.9.2'
-
-        //classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
-        //classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }
 
@@ -77,12 +74,6 @@ android {
 
 dependencies {
     //implementation fileTree(dir: "libs", include: ["*.jar"])
-    //implementation 'com.android.support:appcompat-v7:28.0.0'
-    //testImplementation 'junit:junit:4.12'
-    //androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    //androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    //implementation ':TauEngine'
-
 }
 ext {
     PUBLISH_GROUP_ID = 'xyz.canardoux'
@@ -93,11 +84,10 @@ ext {
 
 // ======================================================================================================================================================
 
-apply plugin: 'io.codearte.nexus-staging'
+//apply plugin: 'io.codearte.nexus-staging'
 
 
 // ==========================================================================================================================================================
-//apply from: "${rootProject.projectDir}/publish-mavencentral.gradle"
 
 task androidSourcesJar(type: Jar) {
     classifier = 'sources'
@@ -114,6 +104,7 @@ apply plugin: 'signing'
 group = PUBLISH_GROUP_ID
 version = PUBLISH_VERSION
 
+/*
 ext["signing.keyId"] = ''
 ext["signing.password"] = ''
 ext["signing.secretKeyRingFile"] = ''
@@ -211,36 +202,19 @@ publishing {
         }
     }
 }
+*/
 
+/*
 nexusStaging {
     packageGroup = PUBLISH_GROUP_ID
     stagingProfileId = 'a66751cdc7661'
     username = ossrhUsername
     password = ossrhPassword
 }
+*/
 
 // =========================================================================================================================================================
 
-/*
-
-apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
-publish {
-
-    def groupProjectID = 'TauEngine'
-    def artifactProjectID = 'TauEngine'
-    def publishVersionID = '0.0.8'
-
-    userOrg = 'larpoux'
-    repoName = 'TauRepo'
-    groupId = groupProjectID
-    artifactId = artifactProjectID
-    publishVersion = publishVersionID
-    desc = 'Raz le bol'
-    website = 'https://github.com/Canardoux/tau'
-
-}
-*/
 
 afterEvaluate {
     publishing {
@@ -256,6 +230,7 @@ afterEvaluate {
     }
 }
 
+/*
 bintray {
     user = project.property('bintray.user')
     key = project.property('bintray.apikey')
@@ -275,7 +250,7 @@ bintray {
         }
     }
 }
-
+*/
 
 // =============================================================================================================================================
 

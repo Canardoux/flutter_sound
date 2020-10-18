@@ -63,5 +63,12 @@ dependencies {
     implementation 'androidx.media:media:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'xyz.canardoux:TauEngine:0.1.20'
+
+    // -------------------------------------------------------------------------------------
+    // CAUTION: The following instruction is for developping and debugging the Flauto Engine
+    // DO NOT INCLUDE THE FOLLOWING LINE IN A REAL APP !!!
+    implementation project(':TauEngine')
+    // -------------------------------------------------------------------------------------
+
 }
 

@@ -37,14 +37,15 @@ gsed -i  "s/^\( *version *\).*$/\1'$VERSION'/" flutter_sound/android/build.gradl
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound/pubspec.yaml
 gsed -i  "s/^\( *flutter_sound_platform_interface: *\).*$/\1$VERSION/" flutter_sound/pubspec.yaml
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound/example/pubspec.yaml
-gsed -i  "s/^\( *flutter_sound: *\^*\).*$/\1$VERSION/" flutter_sound/example/pubspec.yaml
-gsed -i  "s/^\( *# *flutter_sound: *\^*\).*$/\1$VERSION/" flutter_sound/example/pubspec.yaml
+gsed -i  "s/^\( *flutter_sound: *#* *\^*\).*$/\1$VERSION/" flutter_sound/example/pubspec.yaml
+gsed -i  "s/^\( *flutter_sound_lite: *#* *\^*\).*$/\1$VERSION/" flutter_sound/example/pubspec.yaml
 gsed -i  "s/^\( *## \).*$/\1$VERSION/" flutter_sound/CHANGELOG.md
 gsed -i  "s/^\( *## \).*$/\1$VERSION/" flutter_sound_platform_interface/CHANGELOG.md
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound_platform_interface/pubspec.yaml
 gsed -i  "s/^\( *version *= *\).*$/\1'$VERSION'/" TauEngine/android/TauEngine/bintray.gradle
 
 bin/flavor FULL
+bin/reldev REL
 
 git add .
 git commit -m "TAU : Version $VERSION"
@@ -90,7 +91,7 @@ fi
 cd flutter_sound/example
 flutter pub get
 cd ios
-rm Podfile.lock 2> /dev/null
+//rm Podfile.lock 2> /dev/null
 pod cache clean --all
 pod install --repo-update
 cd ../../..
@@ -134,5 +135,5 @@ if [ $BINTRAY .eq 1 ]; then
         echo 'Do not forget to go to "https://oss.sonatype.org/#view-repositories;public~browsestorage" and close/publish your new version'
 else
         echo 'E.O.J'
-        echo 'Do not forget to go to "https://bintray.com/larpoux/CanardouxMaven/xyz.canardoux.TauEngine" and close/publish your new version'
+        echo 'Do not forget to go to "https://bintray.com/larpoux/CanardouxMaven/xyz.canardoux.TauEngine" and publish your new version'
 fi

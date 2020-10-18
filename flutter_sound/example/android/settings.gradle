@@ -14,11 +14,11 @@ plugins.each { name, path ->
     project(":$name").projectDir = pluginDirectory
 }
 
-    // -------------------------------------------------------------------------------------
-    // CAUTION: The following instruction is for developping and debugging the Flauto Engine
-    // DO NOT INCLUDE THE FOLLOWING LINES IN A REAL APP !!!
-    // include 'TauEngine'
-    // project(':TauEngine').projectDir = file('../../../TauEngine/android/TauEngine')
-    // -------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
+// CAUTION: The following instruction is for developping and debugging the Flauto Engine
+// DO NOT INCLUDE THE FOLLOWING LINES IN A REAL APP !!!
+   include 'TauEngine'
+   project(':TauEngine').projectDir = file('../../../TauEngine/android/TauEngine')
+// -------------------------------------------------------------------------------------
 
 
