@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/example/ios/.symlinks/plugins/flutter_sound/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/example/ios/.symlinks/plugins/flutter_sound/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/example/ios/.symlinks/plugins/flutter_sound/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/example/ios/.symlinks/plugins/flutter_sound/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/example/ios/.symlinks/plugins/path_provider/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/example/ios/.symlinks/plugins/path_provider/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/example/ios/.symlinks/plugins/path_provider/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/example/ios/.symlinks/plugins/path_provider/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/example/ios/.symlinks/plugins/permission_handler/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/example/ios/.symlinks/plugins/permission_handler/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/example/ios/.symlinks/plugins/permission_handler/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound/example/ios/.symlinks/plugins/permission_handler/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound_platform_interface/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound_platform_interface/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound_web/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_sound_web/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

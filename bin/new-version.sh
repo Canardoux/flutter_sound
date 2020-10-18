@@ -52,6 +52,16 @@ git push
 git tag -f $1
 git push --tag -f
 
+
+cd flutter_sound_platform_interface/
+flutter pub publish
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+cd ..
+
+
 cd flutter_sound
 flutter pub publish
 if [ $? -ne 0 ]; then
@@ -71,14 +81,6 @@ cd ..
 
 bin/flavor FULL
 
-
-cd flutter_sound_platform_interface/
-flutter pub publish
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
-cd ..
 
 pod trunk push TauEngine.podspec
 if [ $? -ne 0 ]; then

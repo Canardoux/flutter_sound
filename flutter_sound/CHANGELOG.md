@@ -1,4 +1,4 @@
-## 0.1.19
+## 0.1.20
 
 - Please [look to this](/CHANGELOG.md)
 
