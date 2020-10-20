@@ -53,15 +53,15 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
 
-public class FlautoManager
+public class FlutterSoundManager
 {
 	public MethodChannel            channel;
-	public List<Session> slots;
+	public List<FlutterSoundSession> slots;
 
 	void init(MethodChannel aChannel)
 	{
 		assert ( slots == null );
-		slots   = new ArrayList<Session>();
+		slots   = new ArrayList<FlutterSoundSession>();
 		channel = aChannel;
 	}
 
@@ -78,7 +78,7 @@ public class FlautoManager
 	}
 
 
-	Session getSession(final MethodCall call)
+	FlutterSoundSession getSession(final MethodCall call)
 	{
 		int slotNo = call.argument ( "slotNo" );
 		assert ( ( slotNo >= 0 ) && ( slotNo <= slots.size () ) );
@@ -91,14 +91,11 @@ public class FlautoManager
 		return slots.get ( slotNo );
 	}
 
-	void initSession( final MethodCall call, Session aPlayer)
+	void initSession( final MethodCall call, FlutterSoundSession aPlayer)
 	{
 		int slot =  call.argument ( "slotNo" );
 		slots.set ( slot, aPlayer );
 		aPlayer.init( slot );
-		//String s = (new Toto()).zozo();
-		//System.out.println(s);
-
 	}
 
 }

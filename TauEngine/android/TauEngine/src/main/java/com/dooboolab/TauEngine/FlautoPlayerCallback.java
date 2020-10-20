@@ -1,3 +1,4 @@
+package com.dooboolab.TauEngine;
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
  *
@@ -16,10 +17,18 @@
  * along with the Tau project.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
-#import "Flauto.h"
+import com.dooboolab.TauEngine.Flauto.t_PLAYER_STATE;
 
-Flauto* theFlautoEngine = [[Flauto alloc] init]; // The singleton
-@implementation Flauto
-
-@end
+public interface FlautoPlayerCallback
+{
+  	abstract public void openAudioSessionCompleted(boolean success);
+	abstract public void startPlayerCompleted (long duration);
+	abstract public void needSomeFood (int ln);
+	abstract public void updateProgress(long position, long duration);
+	abstract public void audioPlayerDidFinishPlaying (boolean flag);
+	abstract public void pause();
+	abstract public void resume();
+	abstract public void skipForward();
+	abstract public void skipBackward();
+	abstract public void updatePlaybackState(t_PLAYER_STATE newState);
+}

@@ -26,6 +26,8 @@ VERSION=$1
 VERSION_CODE=${VERSION//./}
 VERSION_CODE=${VERSION_CODE//+/}
 
+bin/flavor FULL
+bin/reldev REL
 
 gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/" TauEngine.podspec
 gsed -i  "s/^\( *s.dependency *'TauEngine', *\).*$/\1'$VERSION'/" flutter_sound/ios/flutter_sound.podspec
@@ -38,14 +40,15 @@ gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound/pubspec.yaml
 gsed -i  "s/^\( *flutter_sound_platform_interface: *\).*$/\1$VERSION/" flutter_sound/pubspec.yaml
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound/example/pubspec.yaml
 gsed -i  "s/^\( *flutter_sound: *#* *\^*\).*$/\1$VERSION/" flutter_sound/example/pubspec.yaml
+gsed -i  "s/^\( *flutter_sound_platform_interface: *#* *\^*\).*$/\1$VERSION/" flutter_sound/example/pubspec.yaml
+
+
 gsed -i  "s/^\( *flutter_sound_lite: *#* *\^*\).*$/\1$VERSION/" flutter_sound/example/pubspec.yaml
 gsed -i  "s/^\( *## \).*$/\1$VERSION/" flutter_sound/CHANGELOG.md
 gsed -i  "s/^\( *## \).*$/\1$VERSION/" flutter_sound_platform_interface/CHANGELOG.md
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/" flutter_sound_platform_interface/pubspec.yaml
 gsed -i  "s/^\( *version *= *\).*$/\1'$VERSION'/" TauEngine/android/TauEngine/bintray.gradle
 
-bin/flavor FULL
-bin/reldev REL
 
 git add .
 git commit -m "TAU : Version $VERSION"

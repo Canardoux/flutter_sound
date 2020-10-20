@@ -1,23 +1,21 @@
-package com.dooboolab.fluttersound;
+package com.dooboolab.TauEngine;
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
  *
- * This file is part of Flutter-Sound.
+ * This file is part of the Tau project.
  *
- * Flutter-Sound is free software: you can redistribute it and/or modify
+ * Tau is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
  * the Free Software Foundation.
  *
- * Flutter-Sound is distributed in the hope that it will be useful,
+ * Tau is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ * along with the Tau project.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-
 
 import android.content.Context;
 import android.media.AudioDeviceInfo;
@@ -28,7 +26,6 @@ import android.os.Looper;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
-
 import androidx.arch.core.util.Function;
 
 import java.io.File;
@@ -39,45 +36,46 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Callable;
 
-import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel.Result;
+import com.dooboolab.TauEngine.Flauto.*;
 
 
 //-----------------------------------------------------------------------------------------------------------------------------
 
 
-public class TrackPlayer extends FlutterSoundPlayer
+public class FlautoTrackPlayer extends FlautoPlayer
 {
-	private       	MediaBrowserHelper 	mMediaBrowserHelper;
+	private       	FlautoMediaBrowserHelper 	mMediaBrowserHelper;
 	private       	Timer              	mTimer      = new Timer();
 	private		long			mDuration   = 0;
 	final private 	Handler            	mainHandler = new Handler(Looper.getMainLooper ());
 	//public		boolean			initDone = false;
-	private		int 			playerState = 0;
+	private		t_PLAYER_STATE 		playerState = t_PLAYER_STATE.PLAYER_IS_STOPPED;
 
-	int getPlayerState()
+	/* ctor */ public FlautoTrackPlayer(FlautoPlayerCallback callBack)
+	{
+		super(callBack);
+	}
+
+
+	public t_PLAYER_STATE getPlayerState()
 	{
 		if (mMediaBrowserHelper == null)
-			return 0;
+			return t_PLAYER_STATE.PLAYER_IS_STOPPED;
 		return playerState;
 	}
 
 
 
 	@Override
-	void initializeFlautoPlayer( final MethodCall call, final Result result )
+	public boolean initializeFlautoPlayer(t_AUDIO_FOCUS focus, t_SESSION_CATEGORY category, t_SESSION_MODE sessionMode, int audioFlags, t_AUDIO_DEVICE audioDevice)
 	{
-		//super.initializeFlautoPlayer( call, result );
-		audioManager = ( AudioManager ) FlautoPlayerManager.androidContext.getSystemService ( Context.AUDIO_SERVICE );
+		audioManager = ( AudioManager ) Flauto.androidContext.getSystemService ( Context.AUDIO_SERVICE );
 		assert(Flauto.androidActivity != null);
 
 		// Initialize the media browser if it hasn't already been initialized
 		if ( mMediaBrowserHelper == null )
 		{
-			//initDone = false;
-			// If the initialization will be successful, result.success will
-			// be called, otherwise result.error will be called.
-			mMediaBrowserHelper = new MediaBrowserHelper
+			mMediaBrowserHelper = new FlautoMediaBrowserHelper
 			(
 				new MediaPlayerConnectionListener(  true ),
 				new MediaPlayerConnectionListener(  false )
@@ -85,30 +83,17 @@ public class TrackPlayer extends FlutterSoundPlayer
 			// Pass the playback state updater to the media browser
 			mMediaBrowserHelper.setPlaybackStateUpdater( new PlaybackStateUpdater() );
 		}
-		//result.success( true );
-		//while (!initDone)
-			//Thread.yield();
-		//super.initializeFlautoPlayer( call, result);
-		boolean r = prepareFocus(call);
-		//invokeMethodWithBoolean( "openAudioSessionCompleted", r );
-
-		//if (r)
-		{
-
-			result.success(getPlayerState());
-		}
-		//else
-			//result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Failure to open session");
-
+		boolean r = setAudioFocus(focus, category, sessionMode, audioFlags, audioDevice);
+		return r;
 	}
 
 	@Override
-	void releaseFlautoPlayer( final MethodCall call, final Result result )
+	public void releaseFlautoPlayer()
 	{
 		// Throw an error if the media player is not initialized
 		if ( mMediaBrowserHelper == null )
 		{
-			result.error( TAG, "The player cannot be released because it is not initialized.", null );
+			Log.e( TAG, "The player cannot be released because it is not initialized."  );
 			return;
 		}
 
@@ -118,40 +103,27 @@ public class TrackPlayer extends FlutterSoundPlayer
 		if (hasFocus)
 			abandonFocus();
 		releaseSession();
-		result.success( getPlayerState() );
-	}
-
-	void invokeMethodWithInteger ( String methodName, double arg )
-	{
-		Map<String, Object> dic = new HashMap<String, Object> ();
-		dic.put ( "slotNo", slotNo );
-		dic.put ( "arg", arg );
-		getPlugin ().invokeMethod ( methodName, dic );
-	}
-
-	void invokeMethodWithBoolean ( String methodName, Boolean arg )
-	{
-		Map<String, Object> dic = new HashMap<String, Object> ();
-		dic.put ( "slotNo", slotNo );
-		dic.put ( "arg", arg );
-		getPlugin ().invokeMethod ( methodName, dic );
 	}
 
 
-	public void startPlayerFromTrack( final MethodCall call, final Result result )
+	public boolean startPlayerFromTrack
+	(
+		FlautoTrack track,
+		boolean canPause,
+		boolean canSkipForward,
+		boolean canSkipBackward,
+		int progress,
+		int duration,
+		boolean removeUIWhenStopped,
+		boolean defaultPauseResume
+	)
 	{
-		final HashMap<String, Object> trackMap = call.argument( "track" );
-		final Track track = new Track( trackMap );
-
-		boolean canSkipForward = call.argument( "canSkipForward" );
-		boolean canSkipBackward = call.argument( "canSkipBackward" );
-		boolean canPause = call.argument( "canPause" );
 
 		// Exit the method if a media browser helper was not initialized
-		if ( !wasMediaPlayerInitialized( result ) )
+		if ( !wasMediaPlayerInitialized( ) )
 		{
-			result.error( ERR_UNKNOWN, ERR_UNKNOWN, "Track player not initialized" );
-			return;
+			Log.e (TAG,  "Track player not initialized" );
+			return false;
 		}
 
 		// Check whether the audio file is stored by a string or a buffer
@@ -167,19 +139,19 @@ public class TrackPlayer extends FlutterSoundPlayer
 			// to that file.
 			try
 			{
-				File             f   = File.createTempFile( "flutter_sound", extentionArray[ track.getBufferCodecIndex() ] );
+				File             f   = File.createTempFile( "Tau", extentionArray[ track.getBufferCodecIndex() ] );
 				FileOutputStream fos = new FileOutputStream( f );
 				fos.write( track.getDataBuffer() );
 				path = f.getAbsolutePath();
 			}
 			catch ( Exception e )
 			{
-				result.error( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage() );
-				return;
+				Log.e(TAG, e.getMessage() );
+				return false;
 			}
 		}
 
-		_stopPlayer(); // To start a clean new playback
+		stopPlayer(); // To start a clean new playback
 
 		mTimer = new Timer();
 
@@ -223,8 +195,6 @@ public class TrackPlayer extends FlutterSoundPlayer
 				if (device.getType() == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER)
 				{
 					AudioDeviceInfo info = device;
-					//mediaPlayer.setPreferredDevice(info);
-
 				}
 			}
 		}
@@ -232,71 +202,63 @@ public class TrackPlayer extends FlutterSoundPlayer
 
 		// A path was given, then send it to the media player
 		mMediaBrowserHelper.mediaControllerCompat.getTransportControls().playFromMediaId( path, null );
-		playerState = 1;
-		result.success ( getPlayerState());
+		playerState = t_PLAYER_STATE.PLAYER_IS_PLAYING;
+		return true;
 		// The media player is started in the on prepared callback
 	}
 
-
-	private boolean _stopPlayer()
+	@Override
+	public void stopPlayer()
 	{
 		// This remove all pending runnables
 		mTimer.cancel();
 		mDuration = 0;
 		pauseMode = false;
 		if ( mMediaBrowserHelper == null )
-			return false;
+			return;
 		try
 		{
 			// Stop the playback
 			mMediaBrowserHelper.stop();
-			playerState = 0;
+			playerState = t_PLAYER_STATE.PLAYER_IS_STOPPED;
 		}
 		catch ( Exception e )
 		{
-			return false;
 		}
-		return true;
+		return;
 	}
 
 	@Override
-	public void stopPlayer(final MethodCall call, final Result result )
-	{
-		_stopPlayer();
-		result.success( getPlayerState() );
-	}
-
-	@Override
-	public void pausePlayer(final MethodCall call, final Result result )
+	public boolean pausePlayer()
 	{
 		// Exit the method if a media browser helper was not initialized
-		if ( !wasMediaPlayerInitialized( result ) )
+		if ( !wasMediaPlayerInitialized(  ) )
 		{
-			return;
+			return false;
 		}
 		pauseMode = true;
-		playerState = 2;
+		playerState = t_PLAYER_STATE.PLAYER_IS_PAUSED;
 
 		try
 		{
 			// Pause the media player
 			mMediaBrowserHelper.pausePlayback();
-			result.success(getPlayerState() );
+			return true;
 		}
 		catch ( Exception e )
 		{
-			Log.e( TAG, "pausePlay exception: " + e.getMessage() );
-			result.error( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage() );
+			Log.e( TAG, "pausePlayer exception: " + e.getMessage() );
+			return false;
 		}
 	}
 
 	@Override
-	public void resumePlayer( final MethodCall call,final Result result )
+	public boolean resumePlayer( )
 	{
 		// Exit the method if a media browser helper was not initialized
-		if ( !wasMediaPlayerInitialized( result ) )
+		if ( !wasMediaPlayerInitialized(  ) )
 		{
-			return;
+			return false;
 		}
 
 		// Throw an error if we can't resume the media player because it is already
@@ -304,8 +266,8 @@ public class TrackPlayer extends FlutterSoundPlayer
 		PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
 		if ( playbackState != null && playbackState.getState() == PlaybackStateCompat.STATE_PLAYING )
 		{
-			result.error( ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING, ERR_PLAYER_IS_PLAYING );
-			return;
+			Log.e( TAG, "resumePlayer exception: "  );
+			return false;
 		}
 		pauseMode = false;
 
@@ -314,46 +276,43 @@ public class TrackPlayer extends FlutterSoundPlayer
 			// Resume the player
 			mMediaBrowserHelper.resumePlayback();
 
-			playerState = 1;
+			playerState = t_PLAYER_STATE.PLAYER_IS_PLAYING;
 			// Seek the player to the last position and resume it
-			result.success(getPlayerState());
+			return true;
 		}
 		catch ( Exception e )
 		{
 			Log.e( TAG, "mediaPlayer resume: " + e.getMessage() );
-			result.error( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage() );
+			return false;
 		}
 	}
 
 	@Override
-	public void seekToPlayer(final MethodCall call,Result result )
+	public boolean seekToPlayer (long millis)
 	{
-		int millis = call.argument ( "duration" ) ;
 
 		// Exit the method if a media browser helper was not initialized
-		if ( !wasMediaPlayerInitialized( result ) )
+		if ( !wasMediaPlayerInitialized( ) )
 		{
 			Log.d(TAG, "seekToPlayer ended with no initialization");
-			result.error( TAG,"seekToPlayer ended with no initialization", null);
-			return;
+			return false;
 		}
 
 		mMediaBrowserHelper.seekTo(millis);
 		// Should declaratively change state: https://stackoverflow.com/questions/39719320/seekto-does-not-trigger-onplaybackstatechanged-in-mediacontrollercompat
 		mMediaBrowserHelper.playPlayback();
 
-		result.success(getPlayerState());
+		return true;
 	}
 
 	@Override
-	public void setVolume(final MethodCall call,final Result result )
+	public boolean setVolume ( double volume )
 	{
 		// Exit the method if a media browser helper was not initialized
-		if ( !wasMediaPlayerInitialized( result ) )
+		if ( !wasMediaPlayerInitialized( ) )
 		{
-			return;
+			return false;
 		}
-		double volume = call.argument("volume");
 		float mVolume = (float) volume;
 
 		// Get the maximum value for the volume
@@ -363,29 +322,17 @@ public class TrackPlayer extends FlutterSoundPlayer
 
 		// Adjust the media player volume to the given level
 		mMediaBrowserHelper.mediaControllerCompat.setVolumeTo( newVolume, 0 );
-		result.success( getPlayerState() );
+		return true;
 	}
 
 
-	public void setSubscriptionDuration( final MethodCall call, Result result )
-	{
-		if (call.argument("duration") != null)
-		{
-			int duration = call.argument("duration");
-			subsDurationMillis = duration;
-		}
-		result.success( getPlayerState());
-	}
-
-	private boolean wasMediaPlayerInitialized(  final Result result )
+	private boolean wasMediaPlayerInitialized()
 	{
 		if ( mMediaBrowserHelper == null )
 		{
 			Log.e( TAG, "initializePlayer() must be called before this method." );
-			result.error( TAG, "initializePlayer() must be called before this method.", null );
 			return false;
 		}
-
 		return true;
 	}
 
@@ -398,7 +345,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 	private class MediaPlayerConnectionListener
 		implements Callable<Void>
 	{
-		private Result  mResult;
+		//private Result  mResult;
 		// Whether this callback is called when the connection is successful
 		private boolean mIsSuccessfulCallback;
 
@@ -412,22 +359,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 			throws
 			Exception
 		{
-			if ( mIsSuccessfulCallback )
-			{
-				//mResult.success( "The media player has been successfully initialized" );
-				//mDuration = mMediaBrowserHelper.mediaControllerCompat.getMetadata().getLong( MediaMetadataCompat.METADATA_KEY_DURATION );
-				//initDone = true;
-			} else
-			{
-				//mResult.error( TAG, "An error occurred while initializing the media player", null );
-				//initDone = true;
-			}
-
-			//long trackDuration = mMediaBrowserHelper.mediaControllerCompat.getMetadata().getLong( MediaMetadataCompat.METADATA_KEY_DURATION );
-
-
-
-			invokeMethodWithBoolean( "openAudioSessionCompleted", mIsSuccessfulCallback );
+			m_callBack.openAudioSessionCompleted(mIsSuccessfulCallback);
 			return null;
 		}
 	}
@@ -453,10 +385,10 @@ public class TrackPlayer extends FlutterSoundPlayer
 		{
 			if ( mIsSkippingForward )
 			{
-				invokeMethodWithInteger( "skipForward", getPlayerState() );
+				m_callBack.skipForward();
 			} else
 			{
-				invokeMethodWithInteger( "skipBackward", getPlayerState() );
+				m_callBack.skipBackward();
 			}
 
 			return null;
@@ -482,8 +414,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 			Exception
 		{
 			PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
-			invokeMethodWithInteger( "pause", getPlayerState() );
-
+			m_callBack.pause();
 			return null;
 		}
 	}
@@ -495,13 +426,13 @@ public class TrackPlayer extends FlutterSoundPlayer
 	 * state.
 	 */
 	private class PlaybackStateUpdater
-		implements Function<Integer, Void>
+		implements Function<t_PLAYER_STATE, Void>
 	{
 		@Override
-		public Void apply( Integer newState )
+		public Void apply( t_PLAYER_STATE newState )
 		{
-			playerState = newState.intValue();
-			invokeMethodWithInteger( "updatePlaybackState", newState );
+			playerState = newState;
+			m_callBack.updatePlaybackState(playerState);
 			return null;
 		}
 	}
@@ -521,7 +452,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 				if ((mMediaBrowserHelper == null) || (mMediaBrowserHelper.mediaControllerCompat == null))
 				{
 					Log.e( TAG, "MediaPlayerOnPreparedListener timer: mMediaBrowserHelper.mediaControllerCompat is NULL. This is BAD !!!"  );
-					_stopPlayer( );
+					stopPlayer( );
 					if (mMediaBrowserHelper != null)
 						mMediaBrowserHelper.releaseMediaBrowser();
 					mMediaBrowserHelper = null;
@@ -541,13 +472,11 @@ public class TrackPlayer extends FlutterSoundPlayer
 				{
 					assert(position <= duration);
 				}
-				Map<String, Object> dic = new HashMap<String, Object> ();
-				dic.put ( "position", position );
-				dic.put ( "duration", duration );
-				dic.put ( "playerStatus", getPlayerState() );
-
-
-				invokeMethodWithMap( "updateProgress",dic);
+				//Map<String, Object> dic = new HashMap<String, Object> ();
+				//dic.put ( "position", position );
+				//dic.put ( "duration", duration );
+				//dic.put ( "playerStatus", getPlayerState() );
+				m_callBack.updateProgress(position, duration);
 			}
 		} );
 
@@ -579,11 +508,10 @@ public class TrackPlayer extends FlutterSoundPlayer
 			// The content is ready to be played, then play it
 			mMediaBrowserHelper.playPlayback();
 			long trackDuration = mMediaBrowserHelper.mediaControllerCompat.getMetadata().getLong( MediaMetadataCompat.METADATA_KEY_DURATION );
-			Map<String, Object> dico = new HashMap<String, Object> ();
-			dico.put( "duration", (int) trackDuration);
-			dico.put( "state",  (int)getPlayerState());
-			invokeMethodWithMap( "startPlayerCompleted", dico);
-
+			//Map<String, Object> dico = new HashMap<String, Object> ();
+			//dico.put( "duration", (int) trackDuration);
+			//dico.put( "state",  (int)getPlayerState());
+			m_callBack.startPlayerCompleted(trackDuration);
 
 			updateProgress();
 			// Set timer task to send event to RN
@@ -603,7 +531,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 		}
 	}
 
-	void getProgress ( final MethodCall call, final Result result )
+	public Map<String, Object> getProgress (  )
 	{
 		long position = 0;
 		long duration = 0;
@@ -623,8 +551,7 @@ public class TrackPlayer extends FlutterSoundPlayer
 		dic.put ( "position", position );
 		dic.put ( "duration", duration );
 		dic.put ( "playerStatus", getPlayerState() );
-		dic.put ( "slotNo", slotNo);
-		result.success(dic);
+		return dic;
 	}
 
 
@@ -649,10 +576,9 @@ public class TrackPlayer extends FlutterSoundPlayer
 			mTimer.cancel();
 
 			Log.d( TAG, "Play completed." );
-			playerState = 0;
+			playerState = t_PLAYER_STATE.PLAYER_IS_STOPPED;
 			pauseMode = false;
-			invokeMethodWithInteger( "audioPlayerFinishedPlaying", getPlayerState() );
-
+			m_callBack.audioPlayerDidFinishPlaying(true); // What is "true" for ?
 			return null;
 		}
 	}

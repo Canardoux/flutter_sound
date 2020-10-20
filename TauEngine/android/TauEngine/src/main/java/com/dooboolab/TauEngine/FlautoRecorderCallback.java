@@ -1,3 +1,4 @@
+package com.dooboolab.TauEngine;
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
  *
@@ -16,10 +17,10 @@
  * along with the Tau project.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
-#import "Flauto.h"
 
-Flauto* theFlautoEngine = [[Flauto alloc] init]; // The singleton
-@implementation Flauto
-
-@end
+public interface FlautoRecorderCallback
+{
+        void openAudioSessionCompleted(boolean success);
+        void updateRecorderProgressDbPeakLevel(double normalizedPeakLevel, long duration);
+        void recordingData ( byte[] data);
+}

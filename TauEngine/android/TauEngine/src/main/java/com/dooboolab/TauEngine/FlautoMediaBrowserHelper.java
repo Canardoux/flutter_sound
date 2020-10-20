@@ -1,22 +1,21 @@
-package com.dooboolab.fluttersound;
+package com.dooboolab.TauEngine;
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
  *
- * This file is part of Flutter-Sound.
+ * This file is part of the Tau project.
  *
- * Flutter-Sound is free software: you can redistribute it and/or modify
+ * Tau is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
  * the Free Software Foundation.
  *
- * Flutter-Sound is distributed in the hope that it will be useful,
+ * Tau is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ * along with the Tau project.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 
 
 import android.app.Activity;
@@ -25,16 +24,16 @@ import android.content.ComponentName;
 import android.os.RemoteException;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.session.MediaControllerCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
+//import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
-import com.dooboolab.fluttersound.Track;
+import com.dooboolab.TauEngine.FlautoTrack;
 
 
 import androidx.arch.core.util.Function;
 
 import java.util.concurrent.Callable;
 
-public class MediaBrowserHelper
+public class FlautoMediaBrowserHelper
 {
 	MediaControllerCompat mediaControllerCompat;
 	private MediaBrowserCompat mMediaBrowserCompat;
@@ -119,7 +118,7 @@ public class MediaBrowserHelper
 	 * @param serviceUnsuccConnectionCallback The callback to call when the
 	 *                                        connection is unsuccessful.
 	 */
-	MediaBrowserHelper(
+	/* ctor */ FlautoMediaBrowserHelper(
 		 Callable<Void> serviceSuccessConnectionCallback, Callable<Void> serviceUnsuccConnectionCallback
 	                  )
 	{
@@ -138,7 +137,7 @@ public class MediaBrowserHelper
 		mMediaBrowserCompat = new MediaBrowserCompat
 		(
 			Flauto.androidActivity,
-			new ComponentName( Flauto.androidActivity, BackgroundAudioService.class ),
+			new ComponentName( Flauto.androidActivity, FlautoBackgroundAudioService.class ),
 			mMediaBrowserCompatConnectionCallback,
 			Flauto.androidActivity.getIntent().getExtras()
 		);
@@ -159,19 +158,19 @@ public class MediaBrowserHelper
 
 	void playPlayback()
 	{
-		BackgroundAudioService.pauseResumeCalledByApp = true;
+		FlautoBackgroundAudioService.pauseResumeCalledByApp = true;
 		mediaControllerCompat.getTransportControls().play();
 	}
 
 	void pausePlayback()
 	{
-		BackgroundAudioService.pauseResumeCalledByApp = true;
+		FlautoBackgroundAudioService.pauseResumeCalledByApp = true;
 		mediaControllerCompat.getTransportControls().pause();
 	}
 
 	void resumePlayback()
 	{
-		BackgroundAudioService.pauseResumeCalledByApp = true;
+		FlautoBackgroundAudioService.pauseResumeCalledByApp = true;
 		mediaControllerCompat.getTransportControls().play();
 	}
 
@@ -188,12 +187,12 @@ public class MediaBrowserHelper
 
 	void setMediaPlayerOnPreparedListener( Callable<Void> callback )
 	{
-		BackgroundAudioService.mediaPlayerOnPreparedListener = callback;
+		FlautoBackgroundAudioService.mediaPlayerOnPreparedListener = callback;
 	}
 
 	void setMediaPlayerOnCompletionListener( Callable<Void> callback )
 	{
-		BackgroundAudioService.mediaPlayerOnCompletionListener = callback;
+		FlautoBackgroundAudioService.mediaPlayerOnCompletionListener = callback;
 	}
 
 	/**
@@ -201,7 +200,7 @@ public class MediaBrowserHelper
 	 */
 	void setSkipTrackForwardHandler( Callable<Void> handler )
 	{
-		BackgroundAudioService.skipTrackForwardHandler = handler;
+		FlautoBackgroundAudioService.skipTrackForwardHandler = handler;
 	}
 
 	/**
@@ -210,7 +209,7 @@ public class MediaBrowserHelper
 	 */
 	void removeSkipTrackForwardHandler()
 	{
-		BackgroundAudioService.skipTrackForwardHandler = null;
+		FlautoBackgroundAudioService.skipTrackForwardHandler = null;
 	}
 
 	/**
@@ -218,7 +217,7 @@ public class MediaBrowserHelper
 	 */
 	void setSkipTrackBackwardHandler( Callable<Void> handler )
 	{
-		BackgroundAudioService.skipTrackBackwardHandler = handler;
+		FlautoBackgroundAudioService.skipTrackBackwardHandler = handler;
 	}
 
 	/**
@@ -226,12 +225,12 @@ public class MediaBrowserHelper
 	 */
 	void setPauseHandler( Callable<Void> handler )
 	{
-		BackgroundAudioService.pauseHandler = handler;
+		FlautoBackgroundAudioService.pauseHandler = handler;
 	}
 
 	void removePauseHandler(  )
 	{
-		BackgroundAudioService.pauseHandler = null;
+		FlautoBackgroundAudioService.pauseHandler = null;
 	}
 
 	/**
@@ -240,7 +239,7 @@ public class MediaBrowserHelper
 	 */
 	void removeSkipTrackBackwardHandler()
 	{
-		BackgroundAudioService.skipTrackBackwardHandler = null;
+		FlautoBackgroundAudioService.skipTrackBackwardHandler = null;
 	}
 
 	/**
@@ -249,20 +248,20 @@ public class MediaBrowserHelper
 	 *
 	 * @param track The currently playing track.
 	 */
-	void setNotificationMetadata( Track track )
+	void setNotificationMetadata( FlautoTrack track )
 	{
-		BackgroundAudioService.currentTrack = track;
+		FlautoBackgroundAudioService.currentTrack = track;
 	}
 
 	/**
 	 * Passes to the media browser the function to execute to update the playback
-	 * state in the Flutter code.
+	 * state .
 	 *
 	 * @param playbackStateUpdater The function to execute to update the playback
-	 *                             state in the Flutter code.
+	 *                             state .
 	 */
 	void setPlaybackStateUpdater( Function playbackStateUpdater )
 	{
-		BackgroundAudioService.playbackStateUpdater = playbackStateUpdater;
+		FlautoBackgroundAudioService.playbackStateUpdater = playbackStateUpdater;
 	}
 }

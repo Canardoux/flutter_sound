@@ -1,22 +1,21 @@
-package com.dooboolab.fluttersound;
+package com.dooboolab.TauEngine;
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
  *
- * This file is part of Flutter-Sound.
+ * This file is part of the Tau project.
  *
- * Flutter-Sound is free software: you can redistribute it and/or modify
+ * Tau is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
  * the Free Software Foundation.
  *
- * Flutter-Sound is distributed in the hope that it will be useful,
+ * Tau is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ * along with the Tau project.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 
 
 import android.media.AudioFormat;
@@ -34,9 +33,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Arrays;
 
+import com.dooboolab.TauEngine.Flauto.*;
 
-public class RecorderAudioRecorder
-	implements RecorderInterface
+
+public class FlautoRecorderEngine
+	implements FlautoRecorderInterface
 {
 	private AudioRecord recorder = null;
 	//private Thread recordingThread = null;
@@ -44,9 +45,9 @@ public class RecorderAudioRecorder
 	private double maxAmplitude = 0;
 	String filePath;
 	int totalBytes = 0;
-	FlutterSoundCodec codec;
+	t_CODEC codec;
 	Runnable p;
-	Session session = null;
+	FlautoRecorder session = null;
 	FileOutputStream outputStream = null;
 	final private Handler mainHandler = new Handler (Looper.getMainLooper ());
 
@@ -57,7 +58,7 @@ public class RecorderAudioRecorder
 		return (short)(argB1 | (argB2 << 8));
 	}
 
-	private void writeAudioDataToFile(FlutterSoundCodec codec, int sampleRate, String aFilePath) throws IOException
+	private void writeAudioDataToFile(t_CODEC codec, int sampleRate, String aFilePath) throws IOException
 	{
 		// Write the output audio in byte
 		System.out.println("---> writeAudioDataToFile");
@@ -68,10 +69,10 @@ public class RecorderAudioRecorder
 		{
 			outputStream = new FileOutputStream(filePath);
 
-			if (codec == FlutterSoundCodec.pcm16WAV) {
-				WaveHeader header = new WaveHeader
+			if (codec == t_CODEC.pcm16WAV) {
+				FlautoWaveHeader header = new FlautoWaveHeader
 					(
-						WaveHeader.FORMAT_PCM,
+						FlautoWaveHeader.FORMAT_PCM,
 						(short) 1, // numChannels
 						sampleRate,
 						(short) 16,
@@ -89,7 +90,7 @@ public class RecorderAudioRecorder
 
 		if (outputStream != null) {
 			outputStream.close();
-			if (codec == FlutterSoundCodec.pcm16WAV) {
+			if (codec == t_CODEC.pcm16WAV) {
 				RandomAccessFile fh = new RandomAccessFile(filePath, "rw");
 				fh.seek(4);
 				int x = totalBytes + 36;
@@ -99,7 +100,7 @@ public class RecorderAudioRecorder
 				fh.write(x >> 24);
 
 
-				fh.seek(WaveHeader.HEADER_LENGTH - 4);
+				fh.seek(FlautoWaveHeader.HEADER_LENGTH - 4);
 				fh.write(totalBytes >> 0);
 				fh.write(totalBytes >> 8);
 				fh.write(totalBytes >> 16);
@@ -173,9 +174,7 @@ public class RecorderAudioRecorder
 							@Override
 							public void run() {
 
-								Map<String, Object> dic = new HashMap<String, Object>();
-								dic.put("recordingData",Arrays.copyOfRange(byteBuffer.array(), 0, ln));
-								session.invokeMethodWithMap("recordingData", dic);
+								session.recordingData(Arrays.copyOfRange(byteBuffer.array(), 0, ln));
 							}
 						});
 					}
@@ -206,15 +205,16 @@ public class RecorderAudioRecorder
 
 	}
 
+
 	public void _startRecorder
 		(
 			Integer numChannels,
 			Integer sampleRate,
 			Integer bitRate,
-			FlutterSoundCodec theCodec,
+			t_CODEC theCodec,
 			String path,
 			int audioSource,
-			Session theSession
+			FlautoRecorder theSession
 
 		) throws Exception
 	{

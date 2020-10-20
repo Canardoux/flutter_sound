@@ -1,22 +1,21 @@
-package com.dooboolab.fluttersound;
+package com.dooboolab.TauEngine;
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
  *
- * This file is part of Flutter-Sound.
+ * This file is part of the Tau project.
  *
- * Flutter-Sound is free software: you can redistribute it and/or modify
+ * Tau is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
  * the Free Software Foundation.
  *
- * Flutter-Sound is distributed in the hope that it will be useful,
+ * Tau is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ * along with the Tau project.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 
 
 import android.media.MediaRecorder;
@@ -24,19 +23,21 @@ import android.os.Build;
 import android.util.Log;
 
 import java.io.IOException;
+import com.dooboolab.TauEngine.Flauto.t_CODEC;
 
-public class RecorderMediaRecorder
-	implements RecorderInterface
+
+public class FlautoRecorderMedia
+	implements FlautoRecorderInterface
 {
 	final static String             TAG                = "SoundMediaRecorder";
 
 	static int codecArray[] = {
 		MediaRecorder.AudioEncoder.DEFAULT,
 		MediaRecorder.AudioEncoder.AAC,
-		sdkCompat.AUDIO_ENCODER_OPUS,
+		MediaRecorder.AudioEncoder.OPUS,
 		0, // CODEC_CAF_OPUS (specific Apple)
 		0,// CODEC_MP3 (not implemented)
-		sdkCompat.AUDIO_ENCODER_VORBIS,
+		MediaRecorder.AudioEncoder.VORBIS,
 		7, // MediaRecorder.AudioEncoder.DEFAULT // CODEC_PCM (not implemented)
 		0, // wav
 		0, // aiff
@@ -52,11 +53,11 @@ public class RecorderMediaRecorder
 	static int formatsArray[] = {
 		MediaRecorder.OutputFormat.DEFAULT // DEFAULT
 		, MediaRecorder.OutputFormat.AAC_ADTS // CODEC_AAC
-		, sdkCompat.OUTPUT_FORMAT_OGG // CODEC_OPUS
+		, MediaRecorder.OutputFormat.OGG // CODEC_OPUS
 		, 0 // CODEC_CAF_OPUS (this is apple specific)
 		, 0 // CODEC_MP3
-		, sdkCompat.OUTPUT_FORMAT_OGG // CODEC_VORBIS
-		, sdkCompat.ENCODING_PCM_16BIT// CODEC_PCM
+		, MediaRecorder.OutputFormat.OGG // CODEC_VORBIS
+		, 0 //ENCODING_PCM_16BIT// CODEC_PCM
 		, 0 // wav
 		, 0 // aiff
 		, 0 // pcmCAF
@@ -93,10 +94,10 @@ public class RecorderMediaRecorder
 			Integer numChannels,
 			Integer sampleRate,
 			Integer bitRate,
-			FlutterSoundCodec codec,
+			t_CODEC codec,
 			String path,
 			int audioSource,
-			Session session
+			FlautoRecorder session
                 )
 		throws
 		IOException

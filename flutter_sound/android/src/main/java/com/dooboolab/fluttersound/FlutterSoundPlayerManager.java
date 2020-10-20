@@ -41,11 +41,11 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
-class FlautoPlayerManager extends FlautoManager
+class FlautoPlayerManager extends FlutterSoundManager
         implements MethodCallHandler
 {
         final static String TAG = "FlutterPlayerPlugin";
-        static        Context            androidContext;
+        static Context            androidContext;
         static FlautoPlayerManager flautoPlayerPlugin; // singleton
 
 
@@ -58,9 +58,7 @@ class FlautoPlayerManager extends FlautoManager
                 MethodChannel channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_player" );
                 flautoPlayerPlugin.init(channel);
                 channel.setMethodCallHandler ( flautoPlayerPlugin );
-
                 androidContext = ctx;
-
         }
 
 
@@ -82,10 +80,7 @@ class FlautoPlayerManager extends FlautoManager
                         case "initializeMediaPlayer":
                         {
                                 int withUI = call.argument("withUI");
-                                if (withUI == 0)
-                                        aPlayer = new FlutterSoundPlayer();
-                                else
-                                        aPlayer = new TrackPlayer (  );
+                                aPlayer = new FlutterSoundPlayer (call );
                                 initSession( call, aPlayer);
                                 aPlayer.initializeFlautoPlayer ( call, result );
 

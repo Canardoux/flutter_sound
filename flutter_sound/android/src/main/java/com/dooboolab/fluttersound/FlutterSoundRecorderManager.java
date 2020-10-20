@@ -40,7 +40,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
 
-class FlautoRecorderManager extends FlautoManager
+class FlautoRecorderManager extends FlutterSoundManager
         implements MethodCallHandler
 {
 

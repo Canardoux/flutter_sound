@@ -1,20 +1,20 @@
-package com.dooboolab.fluttersound;
+package com.dooboolab.TauEngine;
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
  *
- * This file is part of Flutter-Sound.
+ * This file is part of the Tau project.
  *
- * Flutter-Sound is free software: you can redistribute it and/or modify
+ * Tau is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
  * the Free Software Foundation.
  *
- * Flutter-Sound is distributed in the hope that it will be useful,
+ * Tau is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ * along with the Tau project.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 
@@ -59,6 +59,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.media.MediaBrowserServiceCompat;
 import androidx.media.app.NotificationCompat.MediaStyle;
 import androidx.media.session.MediaButtonReceiver;
+import com.dooboolab.TauEngine.R;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -70,14 +71,14 @@ import java.net.URL;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-public class BackgroundAudioService
+public class FlautoBackgroundAudioService
 	extends MediaBrowserServiceCompat
 	implements MediaPlayer.OnCompletionListener,
 	           AudioManager.OnAudioFocusChangeListener
 {
 
 	final static String TAG                   = "BackgroundAudioService";
-	static final String notificationChannelId = "flutter_sound_channel_01";
+	static final String notificationChannelId = "tau_channel_01";
 
 	public        static Callable mediaPlayerOnPreparedListener;
 	public        static Callable mediaPlayerOnCompletionListener;
@@ -95,7 +96,7 @@ public class BackgroundAudioService
 	/**
 	 * The track that we're currently playing
 	 */
-	public static Track currentTrack;
+	public static FlautoTrack currentTrack;
 	public static boolean pauseResumeCalledByApp = false;
 
 	private boolean            mIsNoisyReceiverRegistered;
@@ -609,7 +610,7 @@ public class BackgroundAudioService
 		// translates them into the appropriate callbacks.
 		ComponentName mediaButtonReceiver = new ComponentName( getApplicationContext(), MediaButtonReceiver.class );
 		// Initialize the media session compat object
-		String mediaSessionDebugTag = "flutter_sound_media_session";
+		String mediaSessionDebugTag = "tau_media_session";
 		mMediaSessionCompat = new MediaSessionCompat( getApplicationContext(), mediaSessionDebugTag, mediaButtonReceiver, null );
 		// Pass to the media session the callback that responds to media button events
 		mMediaSessionCompat.setCallback( mMediaSessionCallback );
@@ -819,11 +820,11 @@ public class BackgroundAudioService
 				MediaButtonReceiver.buildMediaButtonPendingIntent( context, PlaybackStateCompat.ACTION_STOP ) ).addAction( skipBackward ).addAction( action ).addAction( skipForward ).setStyle( style );
 
 			// Create the notification channel, if needed
-			String notificationChannelId = "flutter_sound_channel_01";
+			String notificationChannelId = "tau_channel_01";
 			if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
 			{
 				// Initialize the channel with name, description, importance and ID
-				CharSequence        name               = "flutter_sound";
+				CharSequence        name               = "tau";
 				String              channelDescription = "Media playback controls";
 				int                 importance         = NotificationManager.IMPORTANCE_LOW;
 				NotificationChannel channel            = new NotificationChannel( notificationChannelId, name, importance );

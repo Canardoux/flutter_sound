@@ -1,22 +1,21 @@
-package com.dooboolab.fluttersound;
+package com.dooboolab.TauEngine;
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
  *
- * This file is part of Flutter-Sound.
+ * This file is part of the Tau project.
  *
- * Flutter-Sound is free software: you can redistribute it and/or modify
+ * Tau is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
  * the Free Software Foundation.
  *
- * Flutter-Sound is distributed in the hope that it will be useful,
+ * Tau is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ * along with the Tau project.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 
 
 import android.content.Context;
@@ -30,16 +29,15 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.media.app.NotificationCompat.MediaStyle;
 import androidx.media.session.MediaButtonReceiver;
-import com.dooboolab.fluttersound.R;
 
-//import androidx.appcompat.app.NotificationCompat;
 
 /**
  * Helper APIs for constructing MediaStyle notifications
  */
-public class MediaStyleHelper {
+public class FlautoMediaStyleHelper {
 
-        private static MediaMetadataCompat initMediaSessionMetadata(Bitmap albumArt) {
+        private static MediaMetadataCompat initMediaSessionMetadata(Bitmap albumArt)
+        {
                 // Build the metadata of the currently playing audio file
                 MediaMetadataCompat.Builder metadataBuilder = new MediaMetadataCompat.Builder();
 
@@ -74,7 +72,8 @@ public class MediaStyleHelper {
          * @return A pre-built notification with information from the given media
          *         session.
          */
-        public static NotificationCompat.Builder from(Context context, MediaSessionCompat mediaSession) {
+        public static NotificationCompat.Builder from(Context context, MediaSessionCompat mediaSession)
+        {
                 MediaControllerCompat controller = mediaSession.getController();
 
                 mediaSession.setMetadata(initMediaSessionMetadata(null));
@@ -82,7 +81,7 @@ public class MediaStyleHelper {
                 MediaMetadataCompat mediaMetadata = controller.getMetadata();
                 MediaDescriptionCompat description = mediaMetadata.getDescription();
 
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context,BackgroundAudioService.notificationChannelId);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, FlautoBackgroundAudioService.notificationChannelId);
                 builder.setContentTitle(description.getTitle()).setContentText(description.getSubtitle())
                                 .setSubText(description.getDescription()).setLargeIcon(description.getIconBitmap())
                                 .setContentIntent(controller.getSessionActivity())

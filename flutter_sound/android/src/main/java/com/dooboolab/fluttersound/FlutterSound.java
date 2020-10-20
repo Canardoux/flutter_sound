@@ -18,59 +18,34 @@ import com.dooboolab.ffmpeg.FlutterFFmpegPlugin;
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import io.flutter.embedding.engine.plugins.FlutterPlugin;
-import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 
 import android.app.Activity;
 import android.content.Context;
-
 import androidx.annotation.NonNull;
-
-
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 
+import com.dooboolab.TauEngine.Flauto;
 
-// this enum MUST be synchronized with lib/flutter_sound.dart and ios/Classes/FlutterSoundPlugin.h
-enum FlutterSoundCodec
-{
-	defaultCodec,
-	aacADTS,
-	opusOGG,
-  	opusCAF, // Apple encapsulates its bits in its own special envelope : .caf instead of a regular ogg/opus (.opus). This is completely stupid, this is Apple.
-  	mp3,
-	vorbisOGG,
-	pcm16,
-	pcm16WAV,
-	pcm16AIFF,
-	pcm16CAF,
-	flac,
-	aacMP4,
-	amrNB,
-	amrWB,
-}
-
-public class Flauto
+public class FlutterSound
 	implements FlutterPlugin,
 	           ActivityAware
 {
     public static final boolean FULL_FLAVOR = true;
-	static Context ctx;
-	static Registrar reg;
-	static Activity androidActivity;
+	//static Context ctx;
+	//static Registrar reg;
+	//static Activity androidActivity;
 
 
 	@Override
 	public void onAttachedToEngine ( FlutterPlugin.FlutterPluginBinding binding )
 	{
-		ctx = binding.getApplicationContext ();
-
-		//androidActivity = ???
-
-		FlautoPlayerManager.attachFlautoPlayer ( ctx, binding.getBinaryMessenger () );
-		FlautoRecorderManager.attachFlautoRecorder ( ctx, binding.getBinaryMessenger () );
-		//TrackPlayerPlugin.attachTrackPlayer ( ctx, binding.getBinaryMessenger () );
-        if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin( ctx, binding.getBinaryMessenger() );}
+		Flauto.androidContext = binding.getApplicationContext ();
+		FlautoPlayerManager.attachFlautoPlayer ( Flauto.androidContext, binding.getBinaryMessenger () );
+		FlautoRecorderManager.attachFlautoRecorder ( Flauto.androidContext, binding.getBinaryMessenger () );
+        	if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin( Flauto.androidContext, binding.getBinaryMessenger() );}
 	}
 
 
@@ -79,14 +54,13 @@ public class Flauto
 	 */
 	public static void registerWith ( Registrar registrar )
 	{
-		reg = registrar;
-		ctx = registrar.context ();
-		androidActivity = registrar.activity ();
+		//reg = registrar;
+		Flauto.androidContext = registrar.context ();
+		Flauto.androidActivity = registrar.activity ();
 
-		FlautoPlayerManager.attachFlautoPlayer ( ctx, registrar.messenger () );
-		FlautoRecorderManager.attachFlautoRecorder ( ctx, registrar.messenger ()  );
-		//TrackPlayerPlugin.attachTrackPlayer ( ctx, registrar.messenger ()  );
-        if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin(ctx,registrar.messenger ()  );}
+		FlautoPlayerManager.attachFlautoPlayer ( Flauto.androidContext, registrar.messenger () );
+		FlautoRecorderManager.attachFlautoRecorder ( Flauto.androidContext, registrar.messenger ()  );
+        	if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin(Flauto.androidContext,registrar.messenger ()  );}
 
 	}
 
@@ -122,7 +96,7 @@ public class Flauto
 			ActivityPluginBinding binding
 	                                 )
 	{
-		androidActivity = binding.getActivity ();
+		Flauto.androidActivity = binding.getActivity ();
 	}
 
 

@@ -1,23 +1,22 @@
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
  *
- * This file is part of Flutter-Sound.
+ * This file is part of the Tau project.
  *
- * Flutter-Sound is free software: you can redistribute it and/or modify
+ * Tau is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
  * the Free Software Foundation.
  *
- * Flutter-Sound is distributed in the hope that it will be useful,
+ * Tau is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ * along with the Tau project.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
-package com.dooboolab.fluttersound;
+package com.dooboolab.TauEngine;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothProfile;
@@ -28,48 +27,10 @@ import android.os.Build;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
-
-/// to control the focus mode.
-enum AudioFocus {
-	requestFocus,
-
-	/// request focus and allow other audio
-	/// to continue playing at their current volume.
-	requestFocusAndKeepOthers,
-
-	/// request focus and stop other audio playing
-	requestFocusAndStopOthers,
-
-	/// request focus and reduce the volume of other players
-	/// In the Android world this is know as 'Duck Others'.
-	requestFocusAndDuckOthers,
-
-	requestFocusAndInterruptSpokenAudioAndMixWithOthers,
-
-	requestFocusTransient,
-	requestFocusTransientExclusive,
-
-	/// relinquish the audio focus.
-	abandonFocus,
-
-	doNotRequestFocus,
-}
-
-enum AudioDevice {
-	speaker,
-	headset,
-	earPiece,
-	blueTooth,
-	blueToothA2DP,
-	airPlay
-}
+import com.dooboolab.TauEngine.Flauto.*;
 
 
-
-public abstract class Session
+public abstract class FlautoSession
 {
 	final int outputToSpeaker = 1;
 	final int allowHeadset = 2;
@@ -88,71 +49,19 @@ public abstract class Session
 
 
 
-	void init( int slot)
+	public void releaseSession()
 	{
-		slotNo = slot;
-	}
 
-	abstract FlautoManager getPlugin ();
-
-	void releaseSession()
-	{
-		getPlugin().freeSlot(slotNo);
 	}
 
 
-	void invokeMethodWithString ( String methodName, String arg )
-	{
-		Map<String, Object> dic = new HashMap<String, Object>();
-		dic.put ( "slotNo", slotNo );
-		dic.put ( "arg", arg );
-		getPlugin ().invokeMethod ( methodName, dic );
-	}
-
-	void invokeMethodWithDouble ( String methodName, double arg )
-	{
-		Map<String, Object> dic = new HashMap<String, Object> ();
-		dic.put ( "slotNo", slotNo );
-		dic.put ( "arg", arg );
-		getPlugin ().invokeMethod ( methodName, dic );
-	}
-
-
-	void invokeMethodWithInteger ( String methodName, int arg )
-	{
-		Map<String, Object> dic = new HashMap<String, Object> ();
-		dic.put ( "slotNo", slotNo );
-		dic.put ( "arg", arg );
-		getPlugin ().invokeMethod ( methodName, dic );
-	}
-
-
-	void invokeMethodWithBoolean ( String methodName, boolean arg )
-	{
-		Map<String, Object> dic = new HashMap<String, Object> ();
-		dic.put ( "slotNo", slotNo );
-		dic.put ( "arg", arg );
-		getPlugin ().invokeMethod ( methodName, dic );
-	}
-
-	void invokeMethodWithMap ( String methodName, Map<String, Object>  dic )
-	{
-		dic.put ( "slotNo", slotNo );
-		getPlugin ().invokeMethod ( methodName, dic );
-	}
-
-
-	boolean prepareFocus( final MethodCall call)
+	public boolean setAudioFocus(t_AUDIO_FOCUS focus, t_SESSION_CATEGORY category, t_SESSION_MODE sessionMode, int audioFlags, t_AUDIO_DEVICE audioDevice)
 	{
 		boolean r = true;
-		audioManager = ( AudioManager ) FlautoPlayerManager.androidContext.getSystemService( Context.AUDIO_SERVICE );
-		AudioFocus focus = AudioFocus.values()[(int)call.argument ( "focus" )];
-		AudioDevice device = AudioDevice.values()[(int)call.argument( "device" )];
-
-		int audioFlags = call.argument( "audioFlags" );
+		audioManager = ( AudioManager ) Flauto.androidContext.getSystemService( Context.AUDIO_SERVICE );
 		if ( Build.VERSION.SDK_INT >= 26 )
 		{
-			if ( focus != AudioFocus.abandonFocus && focus != AudioFocus.doNotRequestFocus && focus != AudioFocus.requestFocus )
+			if ( focus != t_AUDIO_FOCUS.abandonFocus && focus != t_AUDIO_FOCUS.doNotRequestFocus && focus != t_AUDIO_FOCUS.requestFocus )
 			{
 				int focusGain = AudioManager.AUDIOFOCUS_GAIN;
 
@@ -170,7 +79,7 @@ public abstract class Session
 					.build();
 
 				// change the audio input/output device
-				switch (device)
+				switch (audioDevice)
 				{
 					case speaker:
 						//if (isBluetoothHeadsetConnected())
@@ -202,9 +111,9 @@ public abstract class Session
 
 			}
 
-			if (focus != AudioFocus.doNotRequestFocus)
+			if (focus != t_AUDIO_FOCUS.doNotRequestFocus)
 			{
-				hasFocus = (focus != AudioFocus.abandonFocus);
+				hasFocus = (focus != t_AUDIO_FOCUS.abandonFocus);
 				if (hasFocus)
 					audioManager.requestAudioFocus ( audioFocusRequest );
 				else
@@ -225,18 +134,8 @@ public abstract class Session
 		return r;
 	}
 
-	void setAudioFocus(final MethodCall call, final MethodChannel.Result result )
-	{
-		boolean r = prepareFocus(call);
-		if (r)
-			result.success ( r);
-		else
-			result.error ( "setFocus", "setFocus", "Failure to prepare focus");
 
-	}
-
-
-	boolean requestFocus ()
+	public boolean requestFocus ()
 	{
 		if ( Build.VERSION.SDK_INT >= 26)
 		{
@@ -257,7 +156,7 @@ public abstract class Session
 		}
 	}
 
-	boolean abandonFocus ()
+	public boolean abandonFocus ()
 	{
 		if ( Build.VERSION.SDK_INT >= 26)
 		{
@@ -279,7 +178,8 @@ public abstract class Session
 
 	}
 
-	private static boolean isBluetoothHeadsetConnected() {
+	private static boolean isBluetoothHeadsetConnected()
+	{
 		BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
 		if (adapter == null)
 			return false;

@@ -43,7 +43,7 @@ flutter:
     platforms:
       android:
         package: com.dooboolab.fluttersound
-        pluginClass: Flauto
+        pluginClass: FlutterSound
       ios:
         pluginClass: FlutterSound
 

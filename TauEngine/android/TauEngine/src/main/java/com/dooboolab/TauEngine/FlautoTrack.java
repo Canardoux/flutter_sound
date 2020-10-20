@@ -1,27 +1,27 @@
-package com.dooboolab.fluttersound;
+package com.dooboolab.TauEngine;
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
  *
- * This file is part of Flutter-Sound.
+ * This file is part of the Tau project.
  *
- * Flutter-Sound is free software: you can redistribute it and/or modify
+ * Tau is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
  * the Free Software Foundation.
  *
- * Flutter-Sound is distributed in the hope that it will be useful,
+ * Tau is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ * along with the Tau project.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 
-
 import java.util.HashMap;
+import com.dooboolab.TauEngine.Flauto.t_CODEC;
 
-public class Track {
+public class FlautoTrack {
     private String path;
     private String title;
     private String author;
@@ -32,7 +32,7 @@ public class Track {
     private byte[] dataBuffer;
     private Integer bufferCodecIndex;
 
-    Track(HashMap<String, Object> map) {
+    FlautoTrack(HashMap<String, Object> map) {
         this.path = (String) map.get("path");
         this.author = (String) map.get("author");
         this.title = (String) map.get("title");
@@ -100,8 +100,8 @@ public class Track {
         return bufferCodecIndex;
     }
 
-    public FlutterSoundCodec getBufferCodec() {
-        return FlutterSoundCodec.values()[bufferCodecIndex != null ? bufferCodecIndex : 0];
+    public t_CODEC getBufferCodec() {
+        return t_CODEC.values()[bufferCodecIndex != null ? bufferCodecIndex : 0];
     }
 
     /**

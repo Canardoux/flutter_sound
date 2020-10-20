@@ -66,6 +66,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 //apply from: 'publish.gradle'
@@ -74,6 +80,10 @@ android {
 
 dependencies {
     //implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.core:core:1.0.0'
+    implementation 'androidx.media:media:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+
 }
 ext {
     PUBLISH_GROUP_ID = 'xyz.canardoux'
