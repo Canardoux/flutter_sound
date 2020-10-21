@@ -108,7 +108,7 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 	public boolean initializeFlautoPlayer (t_AUDIO_FOCUS focus, t_SESSION_CATEGORY category, t_SESSION_MODE sessionMode, int audioFlags, t_AUDIO_DEVICE audioDevice)
 	{
 		boolean r = setAudioFocus(focus, category, sessionMode, audioFlags, audioDevice);
-		m_callBack.openAudioSessionCompleted(true);
+		m_callBack.openAudioSessionCompleted(r);
 		return r;
 	}
 
@@ -199,7 +199,7 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 
 	public void needSomeFood(int ln)
 	{
-		assert(ln > 0);
+		assert(ln >= 0);
 		mainHandler.post(new Runnable()
 		{
 			@Override

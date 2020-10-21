@@ -40,12 +40,12 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
 
-class FlautoRecorderManager extends FlutterSoundManager
+class FlutterSoundRecorderManager extends FlutterSoundManager
         implements MethodCallHandler
 {
 
         static Context              androidContext;
-        static FlautoRecorderManager flautoRecorderPlugin; // singleton
+        static FlutterSoundRecorderManager flutterSoundRecorderPlugin; // singleton
 
 
         static final String ERR_UNKNOWN               = "ERR_UNKNOWN";
@@ -55,19 +55,19 @@ class FlautoRecorderManager extends FlutterSoundManager
 
         public static void attachFlautoRecorder ( Context ctx, BinaryMessenger messenger )
         {
-                assert ( flautoRecorderPlugin == null );
-                flautoRecorderPlugin = new FlautoRecorderManager();
+                assert ( flutterSoundRecorderPlugin == null );
+                flutterSoundRecorderPlugin = new FlutterSoundRecorderManager();
                 MethodChannel channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_recorder" );
-                flautoRecorderPlugin.init( channel);
-                channel.setMethodCallHandler ( flautoRecorderPlugin );
+                flutterSoundRecorderPlugin.init( channel);
+                channel.setMethodCallHandler ( flutterSoundRecorderPlugin );
                 androidContext = ctx;
         }
 
 
 
-        FlautoRecorderManager getManager ()
+        FlutterSoundRecorderManager getManager ()
         {
-                return flautoRecorderPlugin;
+                return flutterSoundRecorderPlugin;
         }
 
 
@@ -80,7 +80,7 @@ class FlautoRecorderManager extends FlutterSoundManager
                 {
                         case "initializeFlautoRecorder":
                         {
-                                aRecorder = new FlutterSoundRecorder (  );
+                                aRecorder = new FlutterSoundRecorder ( call );
                                 initSession( call, aRecorder );
                                 aRecorder.initializeFlautoRecorder ( call, result );
                         }

@@ -112,7 +112,7 @@ public class FlautoTrackPlayer extends FlautoPlayer
 		boolean canPause,
 		boolean canSkipForward,
 		boolean canSkipBackward,
-		int progress,
+		int progress, // NOT YET USED ! CAN BE -1 IF NULL
 		int duration,
 		boolean removeUIWhenStopped,
 		boolean defaultPauseResume
@@ -414,7 +414,18 @@ public class FlautoTrackPlayer extends FlautoPlayer
 			Exception
 		{
 			PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
-			m_callBack.pause();
+			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++" + playbackState.toString());
+			if (playbackState.getState() == PlaybackStateCompat.STATE_PAUSED)
+			{
+				m_callBack.resume();
+			} else
+			if (playbackState.getState() == PlaybackStateCompat.STATE_PLAYING)
+			{
+				m_callBack.pause();
+			} else
+			{
+
+			}
 			return null;
 		}
 	}

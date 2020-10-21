@@ -129,7 +129,7 @@ public abstract class FlautoSession
 		audioManager.setBluetoothA2dpOn(  (audioFlags & allowBlueToothA2DP) != 0 );
 		audioManager.setMode( AudioManager.MODE_NORMAL );
 		} else
-			r = false;
+			r = true; // BOF!
 
 		return r;
 	}

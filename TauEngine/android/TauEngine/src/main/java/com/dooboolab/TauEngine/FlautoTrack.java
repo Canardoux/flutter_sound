@@ -32,7 +32,7 @@ public class FlautoTrack {
     private byte[] dataBuffer;
     private Integer bufferCodecIndex;
 
-    FlautoTrack(HashMap<String, Object> map) {
+    public FlautoTrack(HashMap<String, Object> map) {
         this.path = (String) map.get("path");
         this.author = (String) map.get("author");
         this.title = (String) map.get("title");

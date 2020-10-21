@@ -587,7 +587,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   }
 
   void needSomeFood(int ln) {
-      assert(ln > 0);
+      assert(ln >= 0);
       if (needSomeFoodCompleter != null)
         {
           needSomeFoodCompleter.complete(ln);

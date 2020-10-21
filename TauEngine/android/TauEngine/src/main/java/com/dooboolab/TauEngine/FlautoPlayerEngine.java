@@ -88,7 +88,7 @@ class FlautoPlayerEngine extends FlautoPlayerEngineInterface
 					return;
 				}
 			}
-			assert(total > 0);
+			assert (total >= 0);
 
 			mSession.needSomeFood(total);
 			blockThread = null;
@@ -235,9 +235,12 @@ class FlautoPlayerEngine extends FlautoPlayerEngineInterface
 		{
 			ln = 0;
 		}
-		if (ln == 0) {
-
-			assert (blockThread == null);
+		if (ln == 0)
+		{
+			if (blockThread != null)
+			{
+				System.out.println("Audio packet Lost !");
+			}
 			blockThread = new WriteBlockThread(data);
 			blockThread.start();
 		}

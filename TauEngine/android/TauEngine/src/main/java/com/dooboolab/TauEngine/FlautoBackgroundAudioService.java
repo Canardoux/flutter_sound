@@ -89,9 +89,9 @@ public class FlautoBackgroundAudioService
 	// public static boolean includeAudioPlayerFeatures;
 	//public static Activity activity;
 
-	public final static int PLAYING_STATE = 1;
-	public final static int PAUSED_STATE  = 2;
-	public final static int STOPPED_STATE = 0;
+	//public final static int PLAYING_STATE = 1;
+	//public final static int PAUSED_STATE  = 2;
+	//public final static int STOPPED_STATE = 0;
 
 	/**
 	 * The track that we're currently playing
@@ -204,7 +204,7 @@ public class FlautoBackgroundAudioService
 				stopBackgroundAudioService( false );
 
 				// Update the playback state
-				playbackStateUpdater.apply( PAUSED_STATE );
+				playbackStateUpdater.apply(Flauto.t_PLAYER_STATE.PLAYER_IS_PAUSED );
 			}
 		}
 
@@ -266,7 +266,7 @@ public class FlautoBackgroundAudioService
 			stopBackgroundAudioService( true );
 
 			// Update the playback state
-			playbackStateUpdater.apply( STOPPED_STATE );
+			playbackStateUpdater.apply(Flauto.t_PLAYER_STATE.PLAYER_IS_STOPPED );
 		}
 
 		@Override
@@ -335,7 +335,7 @@ public class FlautoBackgroundAudioService
 		//startService( new Intent( Flauto.androidActivity, BackgroundAudioService.class ) );
 
 		// Update the playback state
-		playbackStateUpdater.apply( PLAYING_STATE );
+		playbackStateUpdater.apply(Flauto.t_PLAYER_STATE.PLAYER_IS_PLAYING );
 		return true;
 	}
 

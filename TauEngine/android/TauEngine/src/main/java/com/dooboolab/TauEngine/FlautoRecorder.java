@@ -119,7 +119,7 @@ public class FlautoRecorder extends FlautoSession
 
 	private      Runnable      recorderTicker;
 
-	FlautoRecorder ( FlautoRecorderCallback callback )
+	public FlautoRecorder ( FlautoRecorderCallback callback )
 	{
 		m_callBack = callback;
 	}

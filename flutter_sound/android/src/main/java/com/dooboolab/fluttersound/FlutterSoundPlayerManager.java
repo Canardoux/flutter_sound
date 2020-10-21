@@ -41,31 +41,31 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
-class FlautoPlayerManager extends FlutterSoundManager
+class FlutterSoundPlayerManager extends FlutterSoundManager
         implements MethodCallHandler
 {
         final static String TAG = "FlutterPlayerPlugin";
         static Context            androidContext;
-        static FlautoPlayerManager flautoPlayerPlugin; // singleton
+        static FlutterSoundPlayerManager flutterSoundPlayerPlugin; // singleton
 
 
         public static void attachFlautoPlayer (
                 Context ctx, BinaryMessenger messenger
         )
         {
-                assert ( flautoPlayerPlugin == null );
-                flautoPlayerPlugin = new FlautoPlayerManager();
+                assert ( flutterSoundPlayerPlugin == null );
+                flutterSoundPlayerPlugin = new FlutterSoundPlayerManager();
                 MethodChannel channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_player" );
-                flautoPlayerPlugin.init(channel);
-                channel.setMethodCallHandler ( flautoPlayerPlugin );
+                flutterSoundPlayerPlugin.init(channel);
+                channel.setMethodCallHandler ( flutterSoundPlayerPlugin );
                 androidContext = ctx;
         }
 
 
 
-        FlautoPlayerManager getManager ()
+        FlutterSoundPlayerManager getManager ()
         {
-                return flautoPlayerPlugin;
+                return flutterSoundPlayerPlugin;
         }
 
         @Override
@@ -79,7 +79,7 @@ class FlautoPlayerManager extends FlutterSoundManager
 
                         case "initializeMediaPlayer":
                         {
-                                int withUI = call.argument("withUI");
+                                //int withUI = call.argument("withUI");
                                 aPlayer = new FlutterSoundPlayer (call );
                                 initSession( call, aPlayer);
                                 aPlayer.initializeFlautoPlayer ( call, result );

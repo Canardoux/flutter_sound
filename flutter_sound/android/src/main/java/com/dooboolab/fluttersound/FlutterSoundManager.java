@@ -68,7 +68,6 @@ public class FlutterSoundManager
 
 	void invokeMethod ( String methodName, Map dic )
 	{
-		//Log.d(TAG, "FlutterAutoPlugin: invokeMethod" + methodName);
 		channel.invokeMethod ( methodName, dic );
 	}
 

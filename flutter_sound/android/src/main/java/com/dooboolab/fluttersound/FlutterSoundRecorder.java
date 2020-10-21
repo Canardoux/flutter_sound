@@ -20,51 +20,64 @@ package com.dooboolab.fluttersound;
 
 
 
-import android.content.Context;
 import android.media.MediaRecorder;
-import android.os.Build;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.SystemClock;
-import android.util.Log;
 
-import com.dooboolab.TauEngine.FlautoRecorderEngine;
-import com.dooboolab.TauEngine.FlautoRecorderMedia;
-
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
+import com.dooboolab.TauEngine.FlautoRecorderCallback;
 import com.dooboolab.TauEngine.FlautoRecorder;
 import com.dooboolab.TauEngine.Flauto;
 import com.dooboolab.TauEngine.Flauto.*;
 
-//-----------------------------------------------------------------------------------------------------------------------------------------------
 
-public class FlutterSoundRecorder extends FlutterSoundSession
+public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoRecorderCallback
 {
 	static final String ERR_UNKNOWN           = "ERR_UNKNOWN";
 	static final String ERR_RECORDER_IS_NULL      = "ERR_RECORDER_IS_NULL";
 	static final String ERR_RECORDER_IS_RECORDING = "ERR_RECORDER_IS_RECORDING";
 	final static String             TAG                = "FlutterSoundRecorder";
-	FlautoRecorder recorder;
+	FlautoRecorder m_recorder;
 
-	FlutterSoundRecorder (  )
+// =============================================================  callback ===============================================================
+
+      public void openAudioSessionCompleted(boolean success)
+      {
+
+      }
+
+      public void updateRecorderProgressDbPeakLevel(double normalizedPeakLevel, long duration)
+      {
+	      Map<String, Object> dic = new HashMap<String, Object>();
+	      dic.put("duration", duration);
+	      dic.put("dbPeakLevel", normalizedPeakLevel);
+	      invokeMethodWithMap("updateRecorderProgress", dic);
+      }
+
+      public void recordingData ( byte[] data)
+      {
+	      Map<String, Object> dic = new HashMap<String, Object>();
+	      dic.put("recordingData", data);
+	      invokeMethodWithMap("recordingData", dic);
+
+      }
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+
+	/* ctor */ FlutterSoundRecorder (final MethodCall call)
 	{
+		m_recorder = new FlautoRecorder(this);
 	}
 
 
-	FlautoRecorderManager getPlugin ()
+	FlutterSoundManager getPlugin ()
 	{
-		return FlautoRecorderManager.flautoRecorderPlugin;
+		return FlutterSoundRecorderManager.flutterSoundRecorderPlugin;
 	}
 
 
@@ -73,13 +86,13 @@ public class FlutterSoundRecorder extends FlutterSoundSession
 	void initializeFlautoRecorder ( final MethodCall call, final Result result )
 	{
 		setAudioFocus(call, result);
-		result.success ( true);
+		//result.success ( true);
 	}
 
 	void releaseFlautoRecorder ( final MethodCall call, final Result result )
 	{
-		recorder.abandonFocus();
-		recorder.releaseSession();
+		m_recorder.abandonFocus();
+		m_recorder.releaseSession();
 		result.success ( "Flauto Recorder Released" );
 	}
 
@@ -88,7 +101,7 @@ public class FlutterSoundRecorder extends FlutterSoundSession
 	void isEncoderSupported ( final MethodCall call, final Result result )
 	{
 		int     _codec = call.argument ( "codec" );
-		boolean b      = recorder.isEncoderSupported(t_CODEC.values()[_codec]);
+		boolean b      = m_recorder.isEncoderSupported(t_CODEC.values()[_codec]);
 		//if ( Build.VERSION.SDK_INT < 29 )
 		{
 			//if ( ( _codec == CODEC_OPUS ) || ( _codec == CODEC_VORBIS ) )
@@ -183,8 +196,11 @@ public class FlutterSoundRecorder extends FlutterSoundSession
 			int                             _audioSource        = call.argument ( "audioSource" );
 			t_AUDIO_SOURCE                  audioSource         = t_AUDIO_SOURCE.values()[_audioSource];
 			int 				toStream	    = call.argument ( "toStream");
-			boolean r = recorder.startRecorder(codec, sampleRate, numChannels, bitRate, path, audioSource, toStream != 0);
-			result.success ( "Media Recorder is started" );
+			boolean r = m_recorder.startRecorder(codec, sampleRate, numChannels, bitRate, path, audioSource, toStream != 0);
+			if (r)
+				result.success ( "Media Recorder is started" );
+			else
+				result.error ( "startRecorder", "startRecorder", "Failure to start recorder");
 
 		}
 		//);
@@ -194,19 +210,19 @@ public class FlutterSoundRecorder extends FlutterSoundSession
 
 	public void stopRecorder ( final MethodCall call, final Result result )
 	{
-		recorder.stopRecorder();
+		m_recorder.stopRecorder();
 		result.success ( "Media Recorder is closed" );
 	}
 
 	public void pauseRecorder( final MethodCall call, final MethodChannel.Result result )
 	{
-		recorder.pauseRecorder( );
+		m_recorder.pauseRecorder( );
 		result.success( "Recorder is paused");
 	}
 
 	public void resumeRecorder( final MethodCall call, final MethodChannel.Result result )
 	{
-		recorder.resumeRecorder();
+		m_recorder.resumeRecorder();
 		result.success( "Recorder is resumed");
 
 	}
@@ -219,7 +235,7 @@ public class FlutterSoundRecorder extends FlutterSoundSession
 		}
 		int duration = call.argument ( "duration" );
 
-		recorder.setSubscriptionDuration(duration);
+		m_recorder.setSubscriptionDuration(duration);
 		result.success ( "setSubscriptionDuration: " + duration );
 	}
 
@@ -229,12 +245,12 @@ public class FlutterSoundRecorder extends FlutterSoundSession
 		Flauto.t_AUDIO_FOCUS focus = Flauto.t_AUDIO_FOCUS.values()[x1];
 		int x2 = call.argument("category");
 		Flauto.t_SESSION_CATEGORY category = Flauto.t_SESSION_CATEGORY.values()[x2];
-		int x3 = call.argument("sessionMode");
+		int x3 = call.argument("mode");
 		Flauto.t_SESSION_MODE mode = Flauto.t_SESSION_MODE.values()[x3];
 		int x4 = call.argument("device");
 		Flauto.t_AUDIO_DEVICE audioDevice = Flauto.t_AUDIO_DEVICE.values()[x4];
-		int audioFlags = call.argument("flags");
-		boolean r = recorder.setAudioFocus(focus, category, mode, audioFlags, audioDevice);
+		int audioFlags = call.argument("audioFlags");
+		boolean r = m_recorder.setAudioFocus(focus, category, mode, audioFlags, audioDevice);
 		if (r)
 			result.success ( r);
 		else
