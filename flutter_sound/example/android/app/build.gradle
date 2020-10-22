@@ -45,7 +45,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.dooboolab.example"
-        minSdkVersion 18 // 18 works fine for the player, but the recorder needs at least 24
+        minSdkVersion 21 // 18 works fine for the player, but the recorder needs at least 24. Speech to Text need 21
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

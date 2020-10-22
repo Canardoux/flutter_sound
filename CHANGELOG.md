@@ -1,3 +1,8 @@
+## 6.3.0+1
+
+- On Android : Flutter Sound is now a wrapper around `TauEngine`
+- Add a new example doing Speech-To-Text. Thanks to @jtkeyva :-) . [#210](https://github.com/dooboolab/flutter_sound/issues/210)
+
 ## 6.2.0+1
 
 - Publication on JCenter

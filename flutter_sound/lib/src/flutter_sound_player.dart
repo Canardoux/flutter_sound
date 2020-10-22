@@ -157,8 +157,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
   FlutterSoundPlayer();
 
-  //FlautoPlugin getPlugin() => flautoPlayerPlugin;
-
     Future<FlutterSoundPlayer> openAudioSession( {
                                                  AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
                                                  SessionCategory category = SessionCategory.playAndRecord,
@@ -362,15 +360,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     await lock.synchronized(() async {
       assert (state != null);
       playerState = PlayerState.values[state];
-/*
-      bool b = (
-                  playerState == PlayerState.isPaused
-      );
-
- */
       if (onPaused != null) // Probably always true
       {
-        
         onPaused( true );
       }
     });
@@ -384,15 +375,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     await lock.synchronized(() async {
       assert (state != null);
       playerState = PlayerState.values[state];
-/*
-      bool b = (
-                  playerState == PlayerState.isPaused
-      );
-
- */
       if (onPaused != null) // Probably always true
       {
-        
         onPaused( false );
       }
     });
@@ -510,12 +494,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         what['fromDataBuffer'] = null;
         what['path'] = inputFile.path;
       }
-      //Map<String, dynamic> what = {'codec': codec, 'path': fromURI, 'fromDataBuffer': fromDataBuffer,} as Map<String, dynamic>;
       await _convertAudio(what);
-      //codec = what['codec'] as Codec;
-      //fromURI =  what['path'] as String;
-      //if (playerState != PlayerState.isPlaying)
-        //throw Exception('Player has been stopped');
     }
     print('FS:<--- _convert ');
 
@@ -589,10 +568,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   void needSomeFood(int ln) {
       assert(ln >= 0);
       if (needSomeFoodCompleter != null)
-        {
-          needSomeFoodCompleter.complete(ln);
-          //needSomeFoodCompleter = null;
-        }
+      {
+        needSomeFoodCompleter.complete(ln);
+      }
   }
 
 
@@ -654,10 +632,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       }
       if (isStopped)
         return 0;
-      //int ln;
-      //assert(needSomeFoodCompleter == null);
       needSomeFoodCompleter = new Completer<int>();
-      //print('State = ${playerState.index}');
       try
       {
         int ln = await FlutterSoundPlayerPlatform.instance.feed(this, data: data,);
@@ -825,21 +800,18 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       if (isInited != Initialized.fullyInitialized) {
         throw (_notOpen());
       }
-      //playerState = PlayerState.isStopped;
 
     // REALLY ? // audioPlayerFinishedPlaying = null;
 
-      //await lock.synchronized(() async {
-        try
-        {
-          //_removePlayerCallback(); // playerController is closed by this function
-          await stop( );
-        }
-        catch (e)
-        {
-          print( e );
-        }
-      //});
+      try
+      {
+        //_removePlayerCallback(); // playerController is closed by this function
+        await stop( );
+      }
+      catch (e)
+      {
+        print( e );
+      }
       print('FS:<--- stopPlayer ');
     }
 
@@ -995,10 +967,6 @@ class PlaybackDisposition {
               : position = Duration(seconds: 0),
                 duration = Duration(seconds: 0);
 
-  ///
-  //PlaybackDisposition(this.position, this.duration);
-
-  ///
   PlaybackDisposition(
                {
                 this.position = Duration.zero,
@@ -1074,9 +1042,6 @@ class Track {
           this.albumArtFile,
           this.codec = Codec.defaultCodec,
         }) {
-    //codec = codec == null ? Codec.defaultCodec : codec;
-    //assert(trackPath != null || dataBuffer != null,
-    //'You should provide a path or a buffer for the audio content to play.');
     assert(
     (! (trackPath != null && dataBuffer != null) ),
     'You cannot provide both a path and a buffer.');

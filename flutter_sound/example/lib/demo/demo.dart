@@ -69,8 +69,10 @@ enum AudioState {
   isRecordingPaused,
 }
 
-final exampleAudioFilePath =
+final exampleAudioFilePathMP3 =
     "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3";
+final exampleAudioFilePathOPUS =
+    "https://whatsapp-inbox-server.clare.ai/api/file/showFile?fileName=data/audios/e3f16eb2-10c3-45c9-b0fa-900c94cbe805.opus&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxMWI5YjQ3Zi1jMzBjLTRlZDMtYTFhNy1iNmYxNzRkMWQ1NTYiLCJ1bmlxdWVfbmFtZSI6InZlcm5hbEBjbGFyZS5haSIsIm5hbWVpZCI6InZlcm5hbEBjbGFyZS5haSIsImVtYWlsIjoidmVybmFsQGNsYXJlLmFpIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiRVhURVJOQUxfQURNSU5JU1RSQVRPUiIsImV4cCI6MjUzNDAyMzAwODAwLCJpc3MiOiJDbGFyZV9BSSIsImF1ZCI6IkNsYXJlX0FJIn0.yXVZ3n_lYYvJ1rGyF2mVh-80HuS0EEp7sQepxn9rGcY";
 final albumArtPath =
     "https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png";
 
@@ -415,7 +417,10 @@ class _MyAppState extends State<Demo> {
         }
       } else if (_media == Media.remoteExampleFile) {
         // We have to play an example audio file loaded via a URL
-        audioFilePath = exampleAudioFilePath;
+        if (_codec == Codec.mp3)
+            audioFilePath = exampleAudioFilePathMP3;
+        else if (codec == Codec.opusOGG)
+            audioFilePath = exampleAudioFilePathOPUS;
       }
 
       // Check whether the user wants to use the audio player features
@@ -573,9 +578,6 @@ class _MyAppState extends State<Demo> {
         DropdownButton<Media>(
           value: _media,
           onChanged: (newMedia) {
-            if (newMedia == Media.remoteExampleFile)
-              _codec = Codec
-                  .mp3; // Actually this is the only example we use in this example
             _media = newMedia;
             getDuration();
             setState(() {});
@@ -726,8 +728,7 @@ class _MyAppState extends State<Demo> {
     {
       if (_path[_codec.index] == null) return null;
     }
-    if (_media == Media.remoteExampleFile &&
-        _codec != Codec.mp3) // in this example we use just a remote mp3 file
+    if (_media == Media.remoteExampleFile && !(_codec == Codec.mp3 || _codec == Codec.opusOGG) )// in this example we use just a remote mp3 or upus file
       return null;
 
     if (_media == Media.stream && _codec != Codec.pcm16)

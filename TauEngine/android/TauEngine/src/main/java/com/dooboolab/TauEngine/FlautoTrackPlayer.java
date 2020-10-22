@@ -48,7 +48,6 @@ public class FlautoTrackPlayer extends FlautoPlayer
 	private       	Timer              	mTimer      = new Timer();
 	private		long			mDuration   = 0;
 	final private 	Handler            	mainHandler = new Handler(Looper.getMainLooper ());
-	//public		boolean			initDone = false;
 	private		t_PLAYER_STATE 		playerState = t_PLAYER_STATE.PLAYER_IS_STOPPED;
 
 	/* ctor */ public FlautoTrackPlayer(FlautoPlayerCallback callBack)
@@ -414,7 +413,6 @@ public class FlautoTrackPlayer extends FlautoPlayer
 			Exception
 		{
 			PlaybackStateCompat playbackState = mMediaBrowserHelper.mediaControllerCompat.getPlaybackState();
-			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++" + playbackState.toString());
 			if (playbackState.getState() == PlaybackStateCompat.STATE_PAUSED)
 			{
 				m_callBack.resume();
@@ -450,9 +448,6 @@ public class FlautoTrackPlayer extends FlautoPlayer
 
 	void updateProgress()
 	{
-		// long time = mp.getCurrentPosition();
-		// DateFormat format = new SimpleDateFormat("mm:ss:SS", Locale.US);
-		// final String displayTime = format.format(time);
 		mainHandler.post( new Runnable()
 		{
 			@Override
@@ -478,15 +473,10 @@ public class FlautoTrackPlayer extends FlautoPlayer
 
 				long position = playbackState.getPosition();
 				long duration = mMediaBrowserHelper.mediaControllerCompat.getMetadata().getLong( MediaMetadataCompat.METADATA_KEY_DURATION );
-				int state = playbackState.getState();
-				if (position > duration || position > 5000 || duration == 0) // for debugging)
+				if (position > duration)
 				{
-					assert(position <= duration);
+					position = duration;
 				}
-				//Map<String, Object> dic = new HashMap<String, Object> ();
-				//dic.put ( "position", position );
-				//dic.put ( "duration", duration );
-				//dic.put ( "playerStatus", getPlayerState() );
 				m_callBack.updateProgress(position, duration);
 			}
 		} );
@@ -503,11 +493,8 @@ public class FlautoTrackPlayer extends FlautoPlayer
 		//private Result mResult;
 		private String mPath;
 
-		private MediaPlayerOnPreparedListener(
-			String path
-		                                     )
+		private MediaPlayerOnPreparedListener(String path)
 		{
-			//mResult = result;
 			mPath   = path;
 		}
 
@@ -519,9 +506,6 @@ public class FlautoTrackPlayer extends FlautoPlayer
 			// The content is ready to be played, then play it
 			mMediaBrowserHelper.playPlayback();
 			long trackDuration = mMediaBrowserHelper.mediaControllerCompat.getMetadata().getLong( MediaMetadataCompat.METADATA_KEY_DURATION );
-			//Map<String, Object> dico = new HashMap<String, Object> ();
-			//dico.put( "duration", (int) trackDuration);
-			//dico.put( "state",  (int)getPlayerState());
 			m_callBack.startPlayerCompleted(trackDuration);
 
 			updateProgress();

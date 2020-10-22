@@ -24,6 +24,7 @@ import 'livePlaybackWithBackPressure/livePlaybackWithBackPressure.dart';
 import 'livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.dart';
 import 'soundEffect/soundEffect.dart';
 import 'streamLoop/streamLoop.dart';
+import 'speechToText/speechToTextExample.dart';
 
 /*
     This APP is just a driver to call the various Flutter Sound examples.
@@ -48,8 +49,9 @@ class Example
 
 final List<Example> exampleTable =
     [
+      // If you update the following test, please update also the Examples/README.md file and the comment inside the dart file.
+
       Example(title: 'Demo', subTitle: 'Flutter Sound capabilities', route: (BuildContext) => Demo(), description:
-// If you update the following test, please update also the Examples/README.md file and the comment inside the dart file.
 '''This is a Demo of what it is possible to do with Flutter Sound.
 The code of this Demo app is not so simple and unfortunately not very clean :-( .
 
@@ -143,6 +145,16 @@ Of course, we do not play to the loudspeaker to avoid a very unpleasant Larsen e
 This example does not use a new StreamController, but use directly `foodStreamController`
 from flutter_sound_player.dart.
 ''',
+      ),
+
+      Example(title: 'SpeechToText', subTitle: 'Speech to Text example', route: (BuildContext) => SpeechToTextExample(), description:
+      '''
+This is an example showing how to do Speech To Text.
+This is just for FUN :-D, because this example does not use the Flutter Sound library.
+But it is included in Flutter Sound examples because it shows how easy it is
+to deal with Sounds on Flutter.
+
+This example was provided by @jtkeyva. Thanks to him :-) '''
       ),
 
     ];
