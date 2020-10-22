@@ -652,11 +652,11 @@ FULL)
   		gsed -i "s/^[ \t]*\/\/implementation 'com.arthenica:mobile-ffmpeg-/    implementation 'com.arthenica:mobile-ffmpeg-/" android/build.gradle
 
 
-  		gsed -i  "/import *com.dooboolab.ffmpeg.FlutterFFmpegPlugin;$/d"  android/src/main/java/com/dooboolab/fluttersound/Flauto.java
-		gsed -i "1aimport com.dooboolab.ffmpeg.FlutterFFmpegPlugin;"  android/src/main/java/com/dooboolab/fluttersound/Flauto.java
+  		gsed -i  "/import *com.dooboolab.ffmpeg.FlutterFFmpegPlugin;$/d"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
+		gsed -i "1aimport com.dooboolab.ffmpeg.FlutterFFmpegPlugin;"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
 
- 		gsed -i  "s/^[ $'\t']*public static *final *boolean *FULL_FLAVOR *= *false;$/    public static final boolean FULL_FLAVOR = true;/"  android/src/main/java/com/dooboolab/fluttersound/Flauto.java
-		gsed -i  "s/^[ $'\t']*if *( *FULL_FLAVOR *) *;\/\/\ *{/        if (FULL_FLAVOR) \{/"  android/src/main/java/com/dooboolab/fluttersound/Flauto.java
+ 		gsed -i  "s/^[ $'\t']*public static *final *boolean *FULL_FLAVOR *= *false;$/    public static final boolean FULL_FLAVOR = true;/"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
+		gsed -i  "s/^[ $'\t']*if *( *FULL_FLAVOR *) *;\/\/\ *{/        if (FULL_FLAVOR) \{/"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
 	else
 		exit -1
 	fi
@@ -753,11 +753,11 @@ LITE)
  		gsed -i "s/^[ \t]*implementation 'com.arthenica:mobile-ffmpeg-/    \/\/implementation 'com.arthenica:mobile-ffmpeg-/" android/build.gradle
 
 
-  		gsed -i  "/import *com.dooboolab.ffmpeg.FlutterFFmpegPlugin;$/d"  android/src/main/java/com/dooboolab/fluttersound/Flauto.java
-		gsed -i "1a//import com.dooboolab.ffmpeg.FlutterFFmpegPlugin;"  android/src/main/java/com/dooboolab/fluttersound/Flauto.java
+  		gsed -i  "/import *com.dooboolab.ffmpeg.FlutterFFmpegPlugin;$/d"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
+		gsed -i "1a//import com.dooboolab.ffmpeg.FlutterFFmpegPlugin;"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
 
-		gsed -i  "s/^[ $'\t']*public static *final *boolean *FULL_FLAVOR *= *true;$/    public static final boolean FULL_FLAVOR = false;/"  android/src/main/java/com/dooboolab/fluttersound/Flauto.java
-		gsed -i  "s/^[ $'\t']*if *( *FULL_FLAVOR *) *{/        if (FULL_FLAVOR) ;\/\/\{/"  android/src/main/java/com/dooboolab/fluttersound/Flauto.java
+		gsed -i  "s/^[ $'\t']*public static *final *boolean *FULL_FLAVOR *= *true;$/    public static final boolean FULL_FLAVOR = false;/"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
+		gsed -i  "s/^[ $'\t']*if *( *FULL_FLAVOR *) *{/        if (FULL_FLAVOR) ;\/\/\{/"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
 
 	else
 		exit -1
