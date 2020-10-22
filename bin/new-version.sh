@@ -56,7 +56,6 @@ git push
 git tag -f $1
 git push --tag -f
 
-exit 0
 
 cd flutter_sound_platform_interface/
 flutter pub publish
