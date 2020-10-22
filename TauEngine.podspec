@@ -26,7 +26,7 @@ It has been extracted to be isolated from Flutter ans can be used with other fra
   s.homepage         = 'https://github.com/dooboolab/flutter_sound'
   s.license          = { :type => 'LGPL', :file => 'LICENSE' }
   s.author           = { 'larpoux' => 'larpoux@canardoux.xyz' }
-  s.source           = { :git => 'https://github.com/Canardoux/tau.git', :tag => '' + s.version.to_s }
+  s.source           = { :git => 'https://github.com/dooboolab/flutter_sound.git', :tag => '' + s.version.to_s }
 
   s.ios.deployment_target = '10.0'
 

@@ -130,8 +130,9 @@ cd ../../..
 cd flutter_sound/example
 flutter pub get
 cd ios
-//rm Podfile.lock 2> /dev/null
 pod cache clean --all
+rm Podfile.lock
+pod repo update
 pod install --repo-update
 cd ../../..
 
