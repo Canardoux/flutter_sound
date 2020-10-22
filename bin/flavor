@@ -410,14 +410,14 @@ check_android_java()
 {
 	RES=0
       	if [ $FLAVOR == 'FULL' ]; then
-       		if grep "^ *import *com.dooboolab.ffmpeg.FlutterFFmpegPlugin;$" android/src/main/java/com/dooboolab/fluttersound/Flauto.java  > /dev/null; then
+       		if grep "^ *import *com.dooboolab.ffmpeg.FlutterFFmpegPlugin;$" android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java  > /dev/null; then
       			echo "Flauto.java import FFmpeg : $(tput setaf 2) [OK]$(tput sgr 0)"
        		else
        			echo "Flauto.java does notimport FFmpeg : $(tput setaf 1) [NOK]$(tput sgr 0)"
        			RES=-1
        		fi
 
-       		if grep 'public static *final *boolean *FULL_FLAVOR *= *true;$' android/src/main/java/com/dooboolab/fluttersound/Flauto.java  > /dev/null; then
+       		if grep 'public static *final *boolean *FULL_FLAVOR *= *true;$' android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java  > /dev/null; then
        			echo "Flauto.java FULL_FLAVOR : $(tput setaf 2) [OK]$(tput sgr 0)"
        		else
        			echo "Flauto.java FULL_FLAVOR != true : $(tput setaf 1) [NOK]$(tput sgr 0)"
@@ -425,14 +425,14 @@ check_android_java()
        		fi
 
       	elif [ $FLAVOR == 'LITE' ]; then
-      		if grep "^ *import *com.dooboolab.ffmpeg.FlutterFFmpegPlugin;$" android/src/main/java/com/dooboolab/fluttersound/Flauto.java   > /dev/null; then
+      		if grep "^ *import *com.dooboolab.ffmpeg.FlutterFFmpegPlugin;$" android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java   > /dev/null; then
        			echo "Flauto.java import FFmpeg : $(tput setaf 1) [NOK]$(tput sgr 0)"
        			RES=-1
        		else
        			echo "Flauto.java does notimport FFmpeg : $(tput setaf 2) [OK]$(tput sgr 0)"
        		fi
 
-       		if grep "public static *final *boolean *FULL_FLAVOR *= *false;$" android/src/main/java/com/dooboolab/fluttersound/Flauto.java  > /dev/null; then
+       		if grep "public static *final *boolean *FULL_FLAVOR *= *false;$" android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java  > /dev/null; then
        			echo "Flauto.java LITE_FLAVOR : $(tput setaf 2) [OK]$(tput sgr 0)"
        		else
        			echo "Flauto.java FULL_FLAVOR == true : $(tput setaf 1) [NOK]$(tput sgr 0)"
@@ -441,14 +441,14 @@ check_android_java()
 
 
 	else
-       		if grep "^[ $'\t']*FlutterFFmpegPlugin.attachFFmpegPlugin *(ctx, *registrar.messenger ( *) *);$" android/src/main/java/com/dooboolab/fluttersound/Flauto.java  > /dev/null; then
+       		if grep "^[ $'\t']*FlutterFFmpegPlugin.attachFFmpegPlugin *(ctx, *registrar.messenger ( *) *);$" android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java  > /dev/null; then
        			echo "Flauto.java initialize FFmpeg : $(tput setaf 2) [OK]$(tput sgr 0)"
        			RES=-1
        		else
        			echo "Flauto.java does not initialize FFmpeg : $(tput setaf 2) [OK]$(tput sgr 0)"
        		fi
 
-       		if grep "^[ $'\t']*public static *final *boolean *FULL_FLAVOR *= *false$" android/src/main/java/com/dooboolab/fluttersound/Flauto.java  > /dev/null; then
+       		if grep "^[ $'\t']*public static *final *boolean *FULL_FLAVOR *= *false$" android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java  > /dev/null; then
        			echo "Flauto.java LITE_FLAVOR : $(tput setaf 2) [OK]$(tput sgr 0)"
        		else
        			echo "Flauto.java FULL_FLAVOR == true : $(tput setaf 1) [NOK]$(tput sgr 0)"
