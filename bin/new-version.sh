@@ -27,7 +27,7 @@ VERSION_CODE=${VERSION//./}
 VERSION_CODE=${VERSION_CODE//+/}
 
 bin/flavor FULL
-bin/reldev REL
+bin/reldev.sh REL
 
 gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/"                          TauEngine.podspec
 gsed -i  "s/^\( *s.dependency *'TauEngine', *\).*$/\1'$VERSION'/"            flutter_sound/ios/flutter_sound.podspec
@@ -56,7 +56,7 @@ git push
 git tag -f $1
 git push --tag -f
 
-exit
+exit 0
 
 cd flutter_sound_platform_interface/
 flutter pub publish
