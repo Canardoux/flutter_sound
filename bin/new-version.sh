@@ -91,13 +91,6 @@ if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
 fi
-cd flutter_sound/example
-flutter pub get
-cd ios
-//rm Podfile.lock 2> /dev/null
-pod cache clean --all
-pod install --repo-update
-cd ../../..
 
 
 cd TauEngine/android/TauEngine
@@ -131,6 +124,17 @@ else
 
 fi
 cd ../../..
+
+
+
+cd flutter_sound/example
+flutter pub get
+cd ios
+//rm Podfile.lock 2> /dev/null
+pod cache clean --all
+pod install --repo-update
+cd ../../..
+
 
 
 if [ $BINTRAY .eq 1 ]; then
