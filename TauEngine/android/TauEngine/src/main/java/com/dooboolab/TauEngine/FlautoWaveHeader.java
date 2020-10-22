@@ -29,7 +29,7 @@ import java.io.OutputStream;
  * </ul>
  *
  * Not yet ready to be supported, so
- * @hide
+ * at-hide
  */
 public class FlautoWaveHeader {
 

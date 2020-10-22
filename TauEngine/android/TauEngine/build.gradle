@@ -52,8 +52,8 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 16303
-        versionName '6.3.0+3'
+        versionCode 16304
+        versionName '6.3.0+4'
         //versionName project.getProperty(“libraryVersion”)
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -263,6 +263,14 @@ bintray {
 */
 
 // =============================================================================================================================================
+/*
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    destinationDir = file("../javadoc/")
+    failOnError false
+}
+*/
 
 signing {
     sign publishing.publications
