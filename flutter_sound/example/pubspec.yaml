@@ -15,10 +15,10 @@ dependencies:
 
 # ============================================================================
 # The following instructions are just for developing/debugging Flutter Sound
-  flutter_sound: 6.3.0+1
-#    path: ../ # Flutter Sound Dir
-  flutter_sound_platform_interface: 6.3.0+1
-#    path: ../../flutter_sound_platform_interface # flutter_sound_platform_interface Dir
+  flutter_sound: # 6.3.0+1
+    path: ../ # Flutter Sound Dir
+  flutter_sound_platform_interface: # 6.3.0+1
+    path: ../../flutter_sound_platform_interface # flutter_sound_platform_interface Dir
 # ============================================================================
 
 
