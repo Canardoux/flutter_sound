@@ -7,24 +7,31 @@ description: Driver for the various Flutter Sound examples
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 1.0.0+1
+version: 6.3.0+3
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sound:
-    path: ../
+
+# ============================================================================
+# The following instructions are just for developing/debugging Flutter Sound
+  flutter_sound: 6.3.0+3
+#    path: ../ # Flutter Sound Dir
+  flutter_sound_platform_interface: 6.3.0+3
+#    path: ../../flutter_sound_platform_interface # flutter_sound_platform_interface Dir
+# ============================================================================
+
+
   #flutter_sound_web:
     #path: ../../flutter_sound_web
 
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   intl: ^0.16.1
   cupertino_icons: ^0.1.3
-  path_provider: ^1.6.1
-  path: ^1.6.4
+  path_provider: ^1.6.21
   permission_handler: ^5.0.1
+  path: ^1.6.4
+  speech_to_text: ^2.7.0
+
 
 
 dev_dependencies:

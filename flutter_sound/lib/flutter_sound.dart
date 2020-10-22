@@ -51,6 +51,8 @@ const List<String> ext = [
   '.mp4', // aacMP4
   '.amr', // AMR-NB
   '.amr', // amr-WB
+  '.pcm', // pcm8
+  '.pcm', // pcmFloat32
 ];
 
 

@@ -27,7 +27,7 @@
 
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
-#import <flauto_engine_ios/Flauto.h>
+#import <TauEngine/Flauto.h>
 
 @interface FlutterSound : NSObject <FlutterPlugin, AVAudioPlayerDelegate>
 {

@@ -1,0 +1,274 @@
+
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.4.0'
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.0"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath 'com.novoda:bintray-release:0.9.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+    }
+}
+
+/*
+plugins {
+    id 'com.android.library'
+    id 'com.jfrog.bintray'
+    id "maven-publish"
+}
+*/
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        jcenter()
+    }
+}
+
+def properties = new Properties()
+properties.load(new FileInputStream("local.properties"))
+//user = properties.getProperty("bintray.user")
+//key = properties.getProperty("bintray.apikey")
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.1"
+
+    defaultConfig {
+        minSdkVersion 18
+        targetSdkVersion 30
+        versionCode 16303
+        versionName '6.3.0+3'
+        //versionName project.getProperty(“libraryVersion”)
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+//apply from: 'publish.gradle'
+//apply from: 'https://github.com/Canardoux/tau/tree/master/TauEngine/android/TauEngine/bintray.gradle'
+//apply from: 'https://github.com/Canardoux/tau/tree/master/TauEngine/android/TauEngine/publications.gradle'
+
+dependencies {
+    //implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.core:core:1.0.0'
+    implementation 'androidx.media:media:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+
+}
+ext {
+    PUBLISH_GROUP_ID = 'xyz.canardoux'
+    PUBLISH_ARTIFACT_ID = 'TauEngine'
+    PUBLISH_VERSION = android.defaultConfig.versionName // '0.0.2' // project.getProperty(“libraryVersion”)
+}
+
+
+// ======================================================================================================================================================
+
+//apply plugin: 'io.codearte.nexus-staging'
+
+
+// ==========================================================================================================================================================
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.source
+}
+
+artifacts {
+    archives androidSourcesJar
+}
+
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+group = PUBLISH_GROUP_ID
+version = PUBLISH_VERSION
+
+/*
+ext["signing.keyId"] = ''
+ext["signing.password"] = ''
+ext["signing.secretKeyRingFile"] = ''
+ext["ossrhUsername"] = ''
+ext["ossrhPassword"] = ''
+
+File secretPropsFile = project.rootProject.file('local.properties')
+if (secretPropsFile.exists()) {
+    println "Found secret props file, loading props"
+    Properties p = new Properties()
+    p.load(new FileInputStream(secretPropsFile))
+    p.each { name, value ->
+        ext[name] = value
+    }
+} else {
+    println "No props file, loading env vars"
+    ext["signing.keyId"] = System.getenv('SIGNING_KEY_ID')
+    ext["signing.password"] = System.getenv('SIGNING_PASSWORD')
+    ext["signing.secretKeyRingFile"] = System.getenv('SIGNING_SECRET_KEY_RING_FILE')
+    ext["ossrhUsername"] = System.getenv('OSSRH_USERNAME')
+    ext["ossrhPassword"] = System.getenv('OSSRH_PASSWORD')
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            // The coordinates of the library, being set from variables that
+            // we'll set up in a moment
+            groupId PUBLISH_GROUP_ID
+            artifactId PUBLISH_ARTIFACT_ID
+            version PUBLISH_VERSION
+
+            // Two artifacts, the `aar` and the sources
+            artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+            artifact androidSourcesJar
+
+            // Self-explanatory metadata for the most part
+            pom {
+                name = PUBLISH_ARTIFACT_ID
+                description = 'The Flauto Engine library for Android'
+                // If your project has a dedicated site, use its URL here
+                url = 'https://github.com/canardoux/tau'
+                licenses {
+                    license {
+                        name = 'LGPL-3.0'
+                        url = 'https://www.gnu.org/licenses/lgpl-3.0.en.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'larpoux'
+                        name = 'larpoux'
+                        email = 'larpoux@canardoux.xyz'
+                    }
+                }
+                // Version control info, if you're using GitHub, follow the format as seen here
+                scm {
+                    connection = 'scm:git:github.com/canardoux/tau.git'
+                    developerConnection = 'scm:git:ssh://github.com/canardoux/tau.git'
+                    url = 'https://github.com/Canardoux/tau/tree/master/TauEngine/android'
+                }
+                // A slightly hacky fix so that your POM will include any transitive dependencies
+                // that your library builds upon
+                withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+
+                    project.configurations.implementation.allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        // The repository to publish to, Sonatype/MavenCentral
+        maven {
+            // This is an arbitrary name, you may also use "mavencentral" or
+            // any other name that's descriptive for you
+            name = "sonatype"
+
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            // You only need this if you want to publish snapshots, otherwise just set the URL
+            // to the release repo directly
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+
+            // The username and password we've fetched earlier
+            credentials {
+                username ossrhUsername
+                password ossrhPassword
+            }
+        }
+    }
+}
+*/
+
+/*
+nexusStaging {
+    packageGroup = PUBLISH_GROUP_ID
+    stagingProfileId = 'a66751cdc7661'
+    username = ossrhUsername
+    password = ossrhPassword
+}
+*/
+
+// =========================================================================================================================================================
+
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                //from components.release
+                groupId = 'xyz.canardoux'
+                artifactId = 'TauEngine'
+                version = PUBLISH_VERSION
+            }
+        }
+    }
+}
+
+/*
+bintray {
+    user = project.property('bintray.user')
+    key = project.property('bintray.apikey')
+    publications = ['release']
+    publish = true
+    override = true
+    pkg {
+        repo = 'TauRepo'
+        name = 'TauEngine'
+        desc = 'Here is my library description'
+        licenses = ['LGPL-3.0']
+        vcsUrl = 'https://github.com/Canardoux/tau/tree/master/TauEngine/android'
+        publicDownloadNumbers = true
+        version {
+            name = PUBLISH_VERSION
+            released = new Date()
+        }
+    }
+}
+*/
+
+// =============================================================================================================================================
+
+signing {
+    sign publishing.publications
+}
+
+apply from: 'install.gradle'
+apply from: 'bintray.gradle'
+
+

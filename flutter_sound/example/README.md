@@ -9,6 +9,7 @@ Flutter Sound comes with several Demo/Examples. All the examples are called from
 - [livePlaybackWithoutBackPressure](#liveplaybackwithoutbackpressure) is an example showing how to play live data asynchronously
 - [soundEffect](#soundeffect) is an example showing to play sound effects synchronously
 - [streamLoop](#streamLoop) is an example which connect the microphone to a earphone or headset
+- [speechToText](#speechtotext) is an example showing how to do Speech to Text recognition.
 
 
 if Someone update this README.md, please update also the code inside Examples/lib/demo/main.dart and the comment in the header of the demo or example dart file.
@@ -119,4 +120,13 @@ Of course, we do not play to the loudspeaker to avoid a very unpleasant Larsen e
 this example does not use a new StreamController, but use directely `foodStreamController`
 from flutter_sound_player.dart.
 
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
+## [speechtotext](lib/speechToText/speechToTextExample.dart)
+
+This is an example showing how to do Speech To Text.
+This is just for FUN :-D, because this example does not use the Flutter Sound library.
+But it is included in Flutter Sound examples because it shows how easy it is
+to deal with Sounds on Flutter.
+
+This example was provided by @jtkeyva. Thanks to him :-) '''

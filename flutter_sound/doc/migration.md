@@ -6,7 +6,7 @@
 
 Flutter Sound 6.0 **FULL** flavor is now linked with `mobile-ffmpeg-audio 4.3.1.LTS`
 Flutter Sound 6.2 is linked with flutter_sound_interface 2.0.0
-Flutter Sound 6.2 is linked with the Pod flauto_engine_ios 1.0.0
+Flutter Sound 6.2 is linked with the Pod TauEngine 1.0.0
 
 You must delete the file `ios/Pofile.lock` in your App directory and execute the command :
 ``` sh

@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '10.0'
+
+target 'TauEngine' do
+  pod 'TauEngine', :path => '../../..'
+
+  target 'TauEngine' do
+    inherit! :search_paths
+
+    
+  end
+end
