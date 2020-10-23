@@ -239,7 +239,7 @@ class _SpeechToTextExampleState extends State {
 
   return Scaffold(backgroundColor: Colors.blue,
     appBar: AppBar(
-      title: const Text('Record to Stream ex.'),
+      title: const Text('Speech to Text ex.'),
     ),
     body: makeBody(),
   );

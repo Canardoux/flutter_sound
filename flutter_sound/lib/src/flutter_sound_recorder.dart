@@ -24,6 +24,8 @@ import 'dart:core';
 import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
@@ -145,7 +147,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
     // - encode CAF/OPPUS (with native Apple AVFoundation)
     // - remux CAF file format to OPUS file format (with ffmpeg)
 
-    if ((codec == Codec.opusOGG) && (Platform.isIOS)) {
+    if ((codec == Codec.opusOGG) && (!kIsWeb) && (Platform.isIOS)) {
       //if (!await isFFmpegSupported( ))
       //result = false;
       //else
@@ -250,7 +252,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
 
     // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
     // We use FFmpeg for that task.
-    if ((Platform.isIOS) &&
+    if ( (!kIsWeb) && (Platform.isIOS) &&
         ((codec == Codec.opusOGG) || (fileExtension(toFile) == '.opus'))) {
       savedUri = toFile;
       isOggOpus = true;

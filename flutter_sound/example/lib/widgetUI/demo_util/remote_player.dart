@@ -21,6 +21,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 import 'package:flutter_sound/flutter_sound.dart';
 
 import 'demo_active_codec.dart';
@@ -60,7 +62,9 @@ class RemotePlayer extends StatelessWidget {
       track.trackAuthor = "By flutter_sound";
       track.albumArtUrl = albumArtPath;
 
-      if (Platform.isIOS) {
+      if (kIsWeb)
+        track.albumArtAsset = null;
+      else if (Platform.isIOS) {
         track.albumArtAsset = 'AppIcon';
       } else if (Platform.isAndroid) {
         track.albumArtAsset = 'AppIcon.png';

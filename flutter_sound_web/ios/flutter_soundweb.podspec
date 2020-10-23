@@ -2,13 +2,13 @@
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
 #
 Pod::Spec.new do |s|
-s.name = 'flutter_sound'
-  s.version          = '6.3.0+4'
-  s.summary          = 'Flutter plugin that relates to sound like audio and recorder.'
+  s.name             = 'flutter_sound_web'
+  s.version          = '0.0.1'
+  s.summary          = 'No-op implementation of flutter_sound_web web plugin to avoid build issues on iOS'
   s.description      = <<-DESC
-Flutter plugin that relates to sound like audio and recorder.
+temp fake flutter_sound_web plugin
                        DESC
-  s.homepage         = 'https://github.com/dooboolab/flutter_sound/flutter_sound'
+  s.homepage         = s.homepage         = 'https://github.com/dooboolab/flutter_sound/flutter_sound_web
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Dooboolab' => 'dooboolab@gmail.com' }
   s.source           = { :path => '.' }
@@ -17,7 +17,4 @@ Flutter plugin that relates to sound like audio and recorder.
   s.dependency 'Flutter'
 
   s.ios.deployment_target = '10.0'
-  s.static_framework = true
-  s.dependency 'TauEngine', '6.3.0+4'
-  s.dependency 'mobile-ffmpeg-audio', '4.3.1.LTS'
 end

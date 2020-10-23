@@ -30,6 +30,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
 //export 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:flutter_sound/src/food.dart';
 
@@ -90,6 +91,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     Codec.defaultCodec, // aacMP4
     Codec.defaultCodec, // amrNB
     Codec.defaultCodec, // amrWB
+    Codec.defaultCodec, // pcm8
+    Codec.defaultCodec, // pcmFloat32
   ];
 
   static const List<Codec> tabIosConvert = [
@@ -107,7 +110,30 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     Codec.defaultCodec, // aacMP4
     Codec.defaultCodec, // amrNB
     Codec.defaultCodec, // amrWB
+    Codec.defaultCodec, // pcm8
+    Codec.defaultCodec, // pcmFloat32
   ];
+
+
+  static const List<Codec> tabWebConvert = [
+    Codec.defaultCodec, // defaultCodec
+    Codec.defaultCodec, // aacADTS
+    Codec.defaultCodec, // opusOGG
+    Codec.defaultCodec, // opusCAF
+    Codec.defaultCodec, // mp3
+    Codec.defaultCodec, // vorbisOGG
+    Codec.defaultCodec, // pcm16
+    Codec.defaultCodec, // pcm16WAV
+    Codec.defaultCodec, // pcm16AIFF
+    Codec.defaultCodec, // pcm16CAF
+    Codec.defaultCodec, // flac
+    Codec.defaultCodec, // aacMP4
+    Codec.defaultCodec, // amrNB
+    Codec.defaultCodec, // amrWB
+    Codec.defaultCodec, // pcm8
+    Codec.defaultCodec, // pcmFloat32
+  ];
+
 
   Initialized isInited = Initialized.notInitialized;
 
@@ -388,9 +414,11 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   bool needToConvert(Codec codec) {
     print('FS:---> needToConvert ');
     if (codec == null) return false;
-    Codec convert = (Platform.isIOS)
-        ? tabIosConvert[codec.index]
-        : tabAndroidConvert[codec.index];
+    Codec convert =
+        (kIsWeb) ? tabWebConvert[codec.index]
+        : (Platform.isIOS) ? tabIosConvert[codec.index]
+        : (Platform.isAndroid) ? tabAndroidConvert[codec.index]
+        : null;
     print('FS:<--- needToConvert ');
     return (convert != Codec.defaultCodec);
   }
@@ -412,9 +440,10 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
     if (needToConvert(codec)) {
       if (!await flutterSoundHelper.isFFmpegAvailable()) return false;
-      Codec convert = (Platform.isIOS)
-          ? tabIosConvert[codec.index]
-          : tabAndroidConvert[codec.index];
+      Codec convert = kIsWeb ? tabWebConvert[codec.index]
+          : (Platform.isIOS) ? tabIosConvert[codec.index]
+          : (Platform.isAndroid) ? tabAndroidConvert[codec.index]
+          : null;
       result = await FlutterSoundPlayerPlatform.instance.isDecoderSupported(this, codec: convert);
     } else {
       result = await FlutterSoundPlayerPlatform.instance.isDecoderSupported(this, codec: codec);
@@ -459,9 +488,10 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     print('FS:---> _convertAudio ');
     var tempDir = await getTemporaryDirectory();
     Codec codec = what['codec'] as Codec;
-    Codec convert = (Platform.isIOS)
-        ? tabIosConvert[codec.index]
-        : tabAndroidConvert[codec.index];
+    Codec convert = kIsWeb ? tabWebConvert[codec.index]
+        : (Platform.isIOS) ? tabIosConvert[codec.index]
+        : (Platform.isAndroid) ? tabAndroidConvert[codec.index]
+        : null;
     String fout =
         '${tempDir.path}/flutter_sound-tmp2${ext[convert.index]}';
     String path = what['path'] as String;
@@ -915,7 +945,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
                     _notOpen( )
         );
       }
-      var indexedVolume = Platform.isIOS ? volume * 100 : volume;
+      var indexedVolume = (!kIsWeb) && Platform.isIOS ? volume * 100 : volume;
       if (volume < 0.0 || volume > 1.0)
       {
         throw RangeError( 'Value of volume should be between 0.0 and 1.0.' );
@@ -941,9 +971,10 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
 
   Future<String> getResourcePath() async {
-    if (Platform.isIOS) {
-      String s =
-          await FlutterSoundPlayerPlatform.instance.getResourcePath(this);
+    if (kIsWeb)
+      return null;
+    else if (Platform.isIOS) {
+      String s = await FlutterSoundPlayerPlatform.instance.getResourcePath(this);
       return s;
     } else
       return (await getApplicationDocumentsDirectory()).path;

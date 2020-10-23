@@ -11,11 +11,12 @@ flutter:
   plugin:
     platforms:
       web:
-        pluginClass: FlutterSoundWeb
+        pluginClass: FlutterSoundPlugin
         fileName: flutter_sound_web.dart
 
 dependencies:
-  url_launcher_platform_interface: ^1.0.8
+  flutter_sound_platform_interface: # ^6.3.0
+    path: ../flutter_sound_platform_interface
   flutter:
     sdk: flutter
   flutter_web_plugins:
@@ -25,11 +26,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  url_launcher: ^5.2.5
   pedantic: ^1.8.0
-  mockito: ^4.1.1
-  integration_test:
-    path: ../../integration_test
 
 environment:
   sdk: ">=2.2.0 <3.0.0"

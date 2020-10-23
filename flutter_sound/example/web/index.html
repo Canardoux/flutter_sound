@@ -3,19 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="An example of an App using Flutter Sound.">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="example">
+  <meta name="apple-mobile-web-app-title" content="Flutter Sound example">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>example</title>
+  <title>Flutter Sound example</title>
   <link rel="manifest" href="manifest.json">
+
+  <!---------------  Flutter Sound ----------------------->
+  <script src="https://cdn.jsdelivr.net/npm/howler@2.1.3/dist/howler.min.js"></script>
+  <script type="application/javascript">
+    var audio;
+    function playAudioFromURL(path)
+    {
+          audio= new Howl({
+            src: [path]
+          });
+          audio.play();
+    }
+
+    function playAudioFromBuffer(dataBuffer)
+    {
+            var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+            // Create an empty three-second stereo buffer at the sample rate of the AudioContext
+            var myArrayBuffer = audioCtx.createBuffer(2, audioCtx.sampleRate * 3, audioCtx.sampleRate);
+            // Fill the buffer with white noise;
+            // just random values between -1.0 and 1.0
+            for (var channel = 0; channel < myArrayBuffer.numberOfChannels; channel++)
+            {
+                  // This gives us the actual array that contains the data
+                  var nowBuffering = myArrayBuffer.getChannelData(channel);
+                  for (var i = 0; i < myArrayBuffer.length; i++)
+                  {
+                          // Math.random() is in [0; 1.0]
+                          // audio needs to be in [-1.0; 1.0]
+                          nowBuffering[i] = Math.random() * 2 - 1;
+                  }
+            }
+
+            // Get an AudioBufferSourceNode.
+            // This is the AudioNode to use when we want to play an AudioBuffer
+            var source = audioCtx.createBufferSource();
+
+            // set the buffer in the AudioBufferSourceNode
+            source.buffer = myArrayBuffer;
+
+            // connect the AudioBufferSourceNode to the
+            // destination so we can hear the sound
+            source.connect(audioCtx.destination);
+
+            // start the source playing
+            source.start();
+
+    }
+
+  </script>
+<!----------------------------------------------------------->
+
 </head>
 <body>
   <!-- This script installs service_worker.js to provide PWA functionality to
