@@ -218,15 +218,21 @@ class _MyAppState extends State<Demo> {
 
   void startRecorder() async {
     try {
-      // Request Microphone permission if needed
-      PermissionStatus status = await Permission.microphone.request();
-      if (status != PermissionStatus.granted) {
-        throw RecordingPermissionException("Microphone permission not granted");
+              // Request Microphone permission if needed
+              if (!kIsWeb)
+              {
+                      PermissionStatus status = await Permission.microphone.request();
+                      if (status != PermissionStatus.granted)
+                      {
+                        throw RecordingPermissionException("Microphone permission not granted");
+                      }
+              }
+      String path = '';
+      if (!kIsWeb) {
+        Directory tempDir = await getTemporaryDirectory();
+        path =
+            '${tempDir.path}/flutter_sound${ext[_codec.index]}';
       }
-
-      Directory tempDir = await getTemporaryDirectory();
-      String path =
-          '${tempDir.path}/flutter_sound${ext[_codec.index]}';
 
       if (_media == Media.stream) {
         assert(_codec == Codec.pcm16);
@@ -677,7 +683,7 @@ class _MyAppState extends State<Demo> {
             ),
             DropdownMenuItem<Codec>(
               value: Codec.amrWB,
-              child: Text('AMR-WB'),
+              child: Text('AMR-WB '),
             ),
           ],
         ),

@@ -1,3 +1,6 @@
+@JS()
+library flutter_sound;
+
 import 'dart:async';
 import 'dart:html' as html;
 import 'dart:typed_data' show Uint8List;
@@ -6,12 +9,33 @@ import 'package:meta/meta.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'dart:js' as js;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'package:js/js.dart';
 
+@JS('playAudioFromBuffer3')
+external playAudioFromBuffer3(Uint8List buffer);
 
+//@JS('playAudioFromURL')
+//external playAudioFromURL(String url);
+
+@JS('newInstance')
+external Toto newInstance();
+
+@JS('v')
+class Toto
+{
+        //@JS('constructor')
+        /* ctor */ //external Toto();
+        @JS('newInstance')
+        external static Toto newInstance();
+        @JS('playAudioFromURL')
+        external void playAudioFromURL(String text);
+        @JS('playAudioFromBuffer')
+        external void playAudioFromBuffer(Uint8List buffer);
+
+}
 
 /// The web implementation of [FlutterSoundPlatform].
 ///
@@ -269,16 +293,23 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform
                         {
                                 throw Exception("You may not specify both 'fromURI' and 'fromDataBuffer' parameters");
                         }
-                        js.context.callMethod('playAudioFromBuffer', [fromDataBuffer]);
+                        //js.context.callMethod('playAudioFromBuffer', [fromDataBuffer]);
+                        //playAudioFromBuffer(fromDataBuffer);
+                        Toto toto = Toto.newInstance();
+                        toto.playAudioFromBuffer(fromDataBuffer);
+                        //playAudioFromBuffer3(fromDataBuffer);
                         return null;
                         //Directory tempDir = await getTemporaryDirectory();
+                        /*
                         String path = defaultExtensions[codec.index];
                         File filOut = File(path);
                         IOSink sink = filOut.openWrite();
                         sink.add(fromDataBuffer.toList());
                         fromURI = path;
+                         */
                 }
-                js.context.callMethod('playAudioFromURL', [fromURI]);
+                //js.context.callMethod('playAudioFromURL', [fromURI]);
+                newInstance().playAudioFromURL(fromURI);
                 Map<String, dynamic> r = new Map<String, dynamic>();
                 r['duration'] = 0;
                 r['state'] = 1;

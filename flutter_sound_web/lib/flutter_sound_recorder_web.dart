@@ -1,3 +1,5 @@
+@JS()
+library toto;
 import 'dart:async';
 import 'dart:html' as html;
 
@@ -5,6 +7,10 @@ import 'package:meta/meta.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:js/js.dart';
+
+@JS('startRecorder')
+external startJSRecorder();
 
 
 /// The web implementation of [FlutterSoundRecorderPlatform].
@@ -144,6 +150,7 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform
                 //                 'toStream': toStream ? 1 : 0,
                 //                 'audioSource': audioSource.index,
                 //         },);
+                startJSRecorder();
         }
 
         @override
