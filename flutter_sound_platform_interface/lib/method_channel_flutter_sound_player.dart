@@ -15,9 +15,6 @@ const MethodChannel _channel = MethodChannel('com.dooboolab.flutter_sound_player
 /// An implementation of [FlutterSoundPlayerPlatform] that uses method channels.
 class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
 {
-  List<FlutterSoundPlayerCallback> _slots = [];
-  Completer<bool> openAudioSessionCompleter;
-  Completer<Map> startPlayerCompleter;
 
 
 
@@ -36,17 +33,16 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
   }
 
 
-
   Future<dynamic> channelMethodCallHandler(MethodCall call)
   {
-    FlutterSoundPlayerCallback aPlayer = _slots[call.arguments['slotNo'] as int];
+    FlutterSoundPlayerCallback aPlayer = getSession(call.arguments['slotNo'] as int);
     Map arg = call.arguments ;
 
     switch (call.method)
     {
       case "updateProgress":
         {
-          aPlayer.updateProgress(duration: Duration(milliseconds: arg['duration']), position: Duration(milliseconds: arg['position']));
+          aPlayer.updateProgress(duration:  arg['duration'], position:  arg['position']);
         }
         break;
 
@@ -103,7 +99,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
         {
           print('FS:---> channelMethodCallHandler : ${call.method}');
           bool success = arg['arg'] as bool;
-          openAudioSessionCompleter.complete(success );
+          aPlayer.openAudioSessionCompleted(success);
           print('FS:<--- channelMethodCallHandler : ${call.method}');
         }
         break;
@@ -111,9 +107,8 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
       case 'startPlayerCompleted':
         {
           print('FS:---> channelMethodCallHandler : ${call.method}');
-          //int duration =  arg['duration'] as int;
-          //Duration d = Duration(milliseconds: duration);
-          startPlayerCompleter.complete(arg ) ;
+          int duration = arg['duration'] as int;
+          aPlayer.startPlayerCompleted(duration);
           print('FS:<--- channelMethodCallHandler : ${call.method}');
         }
         break;
@@ -135,40 +130,6 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
 
 //===============================================================================================================================
 
-
-  int findSession(FlutterSoundPlayerCallback aSession)
-  {
-    for (var i = 0; i < _slots.length; ++i)
-    {
-      if (_slots[i] == aSession)
-      {
-        return i;
-      }
-    }
-    return -1;
-  }
-
-  @override
-  void openSession(FlutterSoundPlayerCallback aSession)
-  {
-    assert(findSession(aSession) == -1);
-
-    for (var i = 0; i < _slots.length; ++i)
-    {
-      if (_slots[i] == null)
-      {
-        _slots[i] = aSession;
-        return;
-      }
-    }
-    _slots.add(aSession);
-  }
-
-  @override
-  void closeSession(FlutterSoundPlayerCallback aSession)
-  {
-    _slots[findSession(aSession)] = null;
-  }
 
 
   Future<int> invokeMethod (FlutterSoundPlayerCallback callback,  String methodName, Map<String, dynamic> call)
@@ -194,11 +155,9 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
 
 
   @override
-  Future<bool> initializeMediaPlayer(FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI}) async
+  Future<int> initializeMediaPlayer(FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI})
   {
-    openAudioSessionCompleter = new Completer<bool>();
-    await invokeMethod( callback, 'initializeMediaPlayer', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index, 'withUI': withUI ? 1 : 0 ,},) ;
-    return  openAudioSessionCompleter.future ;
+    return  invokeMethod( callback, 'initializeMediaPlayer', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index, 'withUI': withUI ? 1 : 0 ,},) ;
   }
 
   @override
@@ -240,11 +199,9 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
   }
 
   @override
-  Future<Map> startPlayer(FlutterSoundPlayerCallback callback,  {Codec codec, Uint8List fromDataBuffer, String  fromURI, int numChannels, int sampleRate}) async
+  Future<int> startPlayer(FlutterSoundPlayerCallback callback,  {Codec codec, Uint8List fromDataBuffer, String  fromURI, int numChannels, int sampleRate})
   {
-    startPlayerCompleter = new Completer<Map>();
-    await invokeMethod( callback, 'startPlayer', {'codec': codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI, 'numChannels': numChannels, 'sampleRate': sampleRate},) ;
-    return  startPlayerCompleter.future ;
+     return  invokeMethod( callback, 'startPlayer', {'codec': codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI, 'numChannels': numChannels, 'sampleRate': sampleRate},) ;
   }
 
   @override
@@ -254,13 +211,10 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
   }
 
   @override
-  Future<Map> startPlayerFromTrack(FlutterSoundPlayerCallback callback, {Duration progress, Duration duration, Map<String, dynamic> track, bool canPause, bool canSkipForward, bool canSkipBackward, bool defaultPauseResume, bool removeUIWhenStopped }) async
+  Future<int> startPlayerFromTrack(FlutterSoundPlayerCallback callback, {Duration progress, Duration duration, Map<String, dynamic> track, bool canPause, bool canSkipForward, bool canSkipBackward, bool defaultPauseResume, bool removeUIWhenStopped })
   {
-    startPlayerCompleter = new Completer<Map>();
-    await invokeMethod( callback, 'startPlayerFromTrack', {'progress': progress, 'duration': duration, 'track': track, 'canPause': canPause, 'canSkipForward': canSkipForward, 'canSkipBackward': canSkipBackward,
+    return invokeMethod( callback, 'startPlayerFromTrack', {'progress': progress, 'duration': duration, 'track': track, 'canPause': canPause, 'canSkipForward': canSkipForward, 'canSkipBackward': canSkipBackward,
            'defaultPauseResume': defaultPauseResume, 'removeUIWhenStopped': removeUIWhenStopped,},);
-    return  startPlayerCompleter.future ;
-
   }
 
   @override

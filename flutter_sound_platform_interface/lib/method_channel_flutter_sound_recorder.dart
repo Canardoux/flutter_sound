@@ -12,7 +12,6 @@ const MethodChannel _channel = MethodChannel('com.dooboolab.flutter_sound_record
 /// An implementation of [UrlLauncherPlatform] that uses method channels.
 class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform
 {
-  List<FlutterSoundRecorderCallback> _slots = [];
 
   /*ctor */ MethodChannelFlutterSoundRecorder()
   {
@@ -29,8 +28,9 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform
   }
 
 
-  Future<dynamic> channelMethodCallHandler(MethodCall call) {
-    FlutterSoundRecorderCallback aRecorder = _slots[call.arguments['slotNo'] as int];
+
+Future<dynamic> channelMethodCallHandler(MethodCall call) {
+    FlutterSoundRecorderCallback aRecorder = getSession(call.arguments['slotNo'] as int);
 
     switch (call.method) {
       case "updateRecorderProgress":
@@ -52,40 +52,6 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform
     return null;
   }
 
-
-  int findSession(FlutterSoundRecorderCallback aSession)
-  {
-    for (var i = 0; i < _slots.length; ++i)
-    {
-      if (_slots[i] == aSession)
-      {
-        return i;
-      }
-    }
-    return -1;
-  }
-
-  @override
-  void openSession(FlutterSoundRecorderCallback aSession)
-  {
-    assert(findSession(aSession) == -1);
-
-    for (var i = 0; i < _slots.length; ++i)
-    {
-      if (_slots[i] == null)
-      {
-        _slots[i] = aSession;
-        return;
-      }
-    }
-    _slots.add(aSession);
-  }
-
-  @override
-  void closeSession(FlutterSoundRecorderCallback aSession)
-  {
-    _slots[findSession(aSession)] = null;
-  }
 
 
   Future<void> invokeMethodVoid (FlutterSoundRecorderCallback callback,  String methodName, Map<String, dynamic> call)

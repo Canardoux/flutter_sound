@@ -53,7 +53,6 @@ abstract class FlutterSoundRecorderCallback
 /// [FlutterSoundPlatform] methods.
 abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
 
-
   /// Constructs a UrlLauncherPlatform.
   FlutterSoundRecorderPlatform() : super(token: _token);
 
@@ -73,15 +72,51 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  void openSession(FlutterSoundRecorderCallback aSession)
+
+
+  List<FlutterSoundRecorderCallback> _slots = [];
+
+  @override
+  int findSession(FlutterSoundRecorderCallback aSession)
   {
-    throw UnimplementedError('invokeMethod() has not been implemented.');
+    for (var i = 0; i < _slots.length; ++i)
+    {
+      if (_slots[i] == aSession)
+      {
+        return i;
+      }
+    }
+    return -1;
   }
 
+  @override
+  void openSession(FlutterSoundRecorderCallback aSession)
+  {
+    assert(findSession(aSession) == -1);
+
+    for (var i = 0; i < _slots.length; ++i)
+    {
+      if (_slots[i] == null)
+      {
+        _slots[i] = aSession;
+        return;
+      }
+    }
+    _slots.add(aSession);
+  }
+
+  @override
   void closeSession(FlutterSoundRecorderCallback aSession)
   {
-    throw UnimplementedError('invokeMethod() has not been implemented.');
+    _slots[findSession(aSession)] = null;
   }
+
+  FlutterSoundRecorderCallback getSession(int slotno)
+  {
+    return _slots[slotno];
+  }
+
+
 
   Future<void> initializeFlautoRecorder(FlutterSoundRecorderCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device})
   {

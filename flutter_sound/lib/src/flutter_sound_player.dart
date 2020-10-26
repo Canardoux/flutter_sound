@@ -74,6 +74,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   StreamController <Food> foodStreamController;
 
   Completer<int> needSomeFoodCompleter;
+  Completer<FlutterSoundPlayer> openAudioSessionCompleter;
+  Completer<Duration> startPlayerCompleter;
+
 
 
   static const List<Codec> tabAndroidConvert = [
@@ -134,6 +137,137 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     Codec.defaultCodec, // pcmFloat32
   ];
 
+  //===================================  Callbacks ================================================================
+
+
+  @override
+  void updateProgress({int duration, int position,})
+  {
+      if (duration < position)
+      {
+        print(' Duration = $duration,   Position = $position');
+      }
+      _playerController.add(PlaybackDisposition(position: Duration(milliseconds: position), duration: Duration(milliseconds: duration),), );
+  }
+
+
+  @override
+  void pause(int state) async
+  {
+      print( 'FS:---> pause ' );
+      await lock.synchronized(() async {
+        assert (state != null);
+        playerState = PlayerState.values[state];
+        if (onPaused != null) // Probably always true
+            {
+          onPaused( true );
+        }
+      });
+      print('FS:<--- pause ');
+  }
+
+  @override
+  void resume(int state) async
+  {
+
+      print( 'FS:---> pause ' );
+      await lock.synchronized(() async {
+        assert (state != null);
+        playerState = PlayerState.values[state];
+        if (onPaused != null) // Probably always true
+            {
+          onPaused( false );
+        }
+      });
+      print('FS:<--- pause ');
+  }
+
+  @override
+  void skipBackward(int state) async
+  {
+
+      print( 'FS:---> skipBackward ' );
+      await lock.synchronized(() async {
+        assert (state != null);
+        playerState = PlayerState.values[state];
+
+        if (onSkipBackward != null)
+          onSkipBackward( );
+      });
+      print( 'FS:<--- skipBackward ' );
+  }
+
+  @override
+  void skipForward(int state) async
+  {
+
+      print( 'FS:---> skipForward ' );
+      await lock.synchronized(() async {
+        assert (state != null);
+        playerState = PlayerState.values[state];
+        if (onSkipForward != null)
+          onSkipForward( );
+      });
+      print( 'FS:<--- skipForward ' );
+  }
+
+  @override
+  void updatePlaybackState(int state)
+  {
+      print( 'FS:---> updatePlaybackState ' );
+      assert (state != null);
+      playerState = PlayerState.values[state];
+      print( 'FS:<--- updatePlaybackState ' );
+  }
+
+  @override
+  void needSomeFood(int ln)
+  {
+      assert(ln >= 0);
+      if (needSomeFoodCompleter != null)
+      {
+        needSomeFoodCompleter.complete(ln);
+      }
+  }
+
+  @override
+  void audioPlayerFinished(int state) async
+  {
+      print('FS:---> audioPlayerFinished');
+      await lock.synchronized(() async {
+        //playerState = PlayerState.isStopped;
+        //int state = call['arg'] as int;
+        assert (state != null);
+        playerState = PlayerState.values[state];
+
+        if (audioPlayerFinishedPlaying != null)
+          audioPlayerFinishedPlaying( );
+      });
+      print('FS:<--- audioPlayerFinished');
+  }
+
+  @override
+  void openAudioSessionCompleted(bool success)
+  {
+        isInited = success ?  Initialized.fullyInitialized : Initialized.notInitialized;
+        if (success)
+        {
+          openAudioSessionCompleter.complete(this);
+        } else
+        {
+          openAudioSessionCompleter.complete(null);
+        }
+  }
+
+  @override
+  void startPlayerCompleted(int duration)
+  {
+    startPlayerCompleter.complete(Duration(milliseconds: duration) );
+  }
+
+
+
+  //===============================================================================================================
 
   Initialized isInited = Initialized.notInitialized;
 
@@ -209,13 +343,14 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
         FlutterSoundPlayerPlatform.instance.openSession( this);
         setPlayerCallback( );
-        bool success = await FlutterSoundPlayerPlatform.instance.initializeMediaPlayer(this, focus: focus, category: category, mode: mode, audioFlags: audioFlags, device: device, withUI: withUI );
-        isInited = success ?  Initialized.fullyInitialized : Initialized.notInitialized;
+        openAudioSessionCompleter = new Completer<FlutterSoundPlayer>();
+        FlutterSoundPlayerPlatform.instance.initializeMediaPlayer(this, focus: focus, category: category, mode: mode, audioFlags: audioFlags, device: device, withUI: withUI );
+        //playerState = PlayerState.values[state];
+        //isInited = success ?  Initialized.fullyInitialized : Initialized.notInitialized;
 
       });
-
       print('FS:<--- openAudioSession ');
-      return this;
+      return  openAudioSessionCompleter.future ;
     }
 
   @deprecated
@@ -319,97 +454,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       return FlutterSoundPlayerPlatform.instance.getProgress(this);
   }
 
-  @override
-  void updateProgress({Duration duration, Duration position,})
-  {
-    if (duration < position)
-      {
-        print(' Duration = $duration,   Position = $position');
-      } 
-      _playerController.add(PlaybackDisposition(position: position, duration: duration,), );
-  }
-
-  @override
-  void audioPlayerFinished(int state) async {
-    print('FS:---> audioPlayerFinished');
-    await lock.synchronized(() async {
-        //playerState = PlayerState.isStopped;
-        //int state = call['arg'] as int;
-        assert (state != null);
-        playerState = PlayerState.values[state];
-
-        if (audioPlayerFinishedPlaying != null)
-           audioPlayerFinishedPlaying( );
-    });
-    print('FS:<--- audioPlayerFinished');
-    }
 
 
-  @override
-  void skipForward(int state) async {
-    print( 'FS:---> skipForward ' );
-    await lock.synchronized(() async {
-      assert (state != null);
-      playerState = PlayerState.values[state];
-      if (onSkipForward != null)
-        onSkipForward( );
-    });
-    print( 'FS:<--- skipForward ' );
-  }
-
-  @override
-  void skipBackward(int state) async {
-    print( 'FS:---> skipBackward ' );
-    await lock.synchronized(() async {
-      assert (state != null);
-      playerState = PlayerState.values[state];
-
-      if (onSkipBackward != null)
-        onSkipBackward( );
-     });
-    print( 'FS:<--- skipBackward ' );
-  }
-
-
-  @override
-  void updatePlaybackState(int state) async {
-    print( 'FS:---> updatePlaybackState ' );
-      assert (state != null);
-      playerState = PlayerState.values[state];
-    print( 'FS:<--- updatePlaybackState ' );
-  }
-
-
-  @override
-  void pause(int state)  async {
-    print( 'FS:---> pause ' );
-    await lock.synchronized(() async {
-      assert (state != null);
-      playerState = PlayerState.values[state];
-      if (onPaused != null) // Probably always true
-      {
-        onPaused( true );
-      }
-    });
-    print('FS:<--- pause ');
-  }
-
-
-  @override
-  void resume(int state)  async {
-    print( 'FS:---> pause ' );
-    await lock.synchronized(() async {
-      assert (state != null);
-      playerState = PlayerState.values[state];
-      if (onPaused != null) // Probably always true
-      {
-        onPaused( false );
-      }
-    });
-    print('FS:<--- pause ');
-  }
-
- 
 
   bool needToConvert(Codec codec) {
     print('FS:---> needToConvert ');
@@ -566,7 +612,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
        codec = Codec.pcm16WAV;
      }
 
-     Map retMap;
      await lock.synchronized(() async {
         await stop( ); // Just in case
 
@@ -585,24 +630,14 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
           print('FS: !whenFinished()');
           whenFinished();
         };
-        retMap  = await FlutterSoundPlayerPlatform.instance.startPlayer(this, codec: codec, fromDataBuffer: fromDataBuffer, fromURI: fromURI,) ;
+        startPlayerCompleter = new Completer<Duration>();
+        FlutterSoundPlayerPlatform.instance.startPlayer(this, codec: codec, fromDataBuffer: fromDataBuffer, fromURI: fromURI,) ;
    } );
-     Duration duration = Duration(milliseconds: retMap['duration'] as int);
-     int state = retMap['state'] as int;
-     playerState = PlayerState.values[state];
+     //Duration duration = Duration(milliseconds: retMap['duration'] as int);
      print('FS:<--- startPlayer ');
-     return duration;
+     return startPlayerCompleter.future;
 
   }
-
-  void needSomeFood(int ln) {
-      assert(ln >= 0);
-      if (needSomeFoodCompleter != null)
-      {
-        needSomeFoodCompleter.complete(ln);
-      }
-  }
-
 
 
   Future<void> startPlayerFromStream ({
@@ -626,14 +661,13 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       {
             foodStreamSubscription.pause(food.exec(this));
       }) ;
-      Map retMap = await FlutterSoundPlayerPlatform.instance.startPlayer(this,
+      int state  = await FlutterSoundPlayerPlatform.instance.startPlayer(this,
             codec: codec,
             fromDataBuffer: null,
             fromURI: null,
             numChannels: numChannels,
             sampleRate: sampleRate
            );
-      int state = retMap['state'] as int;
       playerState = PlayerState.values[state];
     } );
     print('FS:<--- startPlayerFromStream ');
@@ -705,7 +739,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     if (isInited != Initialized.fullyInitialized ) {
       throw (_notOpen());
     }
-     Map retMap;
+     //Map retMap;
      await lock.synchronized(() async {
       try
       {
@@ -734,7 +768,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         {
           throw Exception( 'Player is not stopped' );
         }
-          retMap = await FlutterSoundPlayerPlatform.instance.startPlayerFromTrack(this,
+        openAudioSessionCompleter = new Completer<FlutterSoundPlayer>();
+        FlutterSoundPlayerPlatform.instance.startPlayerFromTrack(this,
           progress: progress,
           duration: duration,
           track: trackDico,
@@ -755,14 +790,11 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         rethrow;
       }
     });
-     Duration d = Duration(milliseconds: retMap['duration'] as int);
-     int state = retMap['state'] as int;
-     playerState = PlayerState.values[state];
-
+     //Duration d = Duration(milliseconds: retMap['duration'] as int);
+     //int state = retMap['state'] as int;
+     //playerState = PlayerState.values[state];
      print('FS:<--- startPlayerFromTrack ');
-
-     return d;
-
+     return startPlayerCompleter.future;
   }
 
 

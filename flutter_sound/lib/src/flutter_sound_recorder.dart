@@ -66,9 +66,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
 
 
 
-  //FlutterSoundRecorder() {}
 
-  //FlautoPlugin getPlugin() => flautoRecorderPlugin;
 
   Future<FlutterSoundRecorder> openAudioSession( {
                                                    AudioFocus focus = AudioFocus.requestFocusTransient,

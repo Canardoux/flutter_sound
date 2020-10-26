@@ -1,3 +1,21 @@
+/*
+ * Copyright 2018, 2019, 2020 Dooboolab.
+ *
+ * This file is part of Flutter-Sound.
+ *
+ * Flutter-Sound is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
+ * the Free Software Foundation.
+ *
+ * Flutter-Sound is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 @JS()
 library flutter_sound;
 
@@ -14,35 +32,83 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:js/js.dart';
 
-@JS('playAudioFromBuffer3')
-external playAudioFromBuffer3(Uint8List buffer);
 
-//@JS('playAudioFromURL')
-//external playAudioFromURL(String url);
+// ====================================  JS  =======================================================
 
-@JS('newInstance')
-external Toto newInstance();
+@JS('newPlayerInstance')
+external FlutterSoundPlayer newPlayerInstance(FlutterSoundPlayerCallback theCallBack);
 
-@JS('v')
-class Toto
+
+@JS('FlutterSoundPlayer')
+class FlutterSoundPlayer
 {
-        //@JS('constructor')
-        /* ctor */ //external Toto();
         @JS('newInstance')
-        external static Toto newInstance();
-        @JS('playAudioFromURL')
-        external void playAudioFromURL(String text);
-        @JS('playAudioFromBuffer')
-        external void playAudioFromBuffer(Uint8List buffer);
+        external static FlutterSoundPlayer newInstance(FlutterSoundPlayerCallback theCallBack);
 
+        @JS('playAudioFromURL')
+        external int playAudioFromURL(String text);
+
+        @JS('playAudioFromBuffer')
+        external int playAudioFromBuffer(Uint8List buffer);
+
+        @JS('releaseMediaPlayer')
+        external int releaseMediaPlayer();
+
+        @JS('')
+        external int initializeMediaPlayer(FlutterSoundPlayerCallback callback, int focus, int category, int mode, int audioFlags, int device, bool withUI);
+
+        @JS('')
+        external int setAudioFocus(int focus, int category, int mode, int audioFlags, int device,);
+
+        @JS('')
+        external int getPlayerState();
+
+        @JS('')
+        external bool isDecoderSupported( int codec,);
+
+        @JS('')
+        external int setSubscriptionDuration( int duration);
+
+        @JS('')
+        external int startPlayer(int codec, Uint8List fromDataBuffer, String  fromURI, int numChannels, int sampleRate);
+
+        @JS('')
+        external int feed(Uint8List data,);
+
+        @JS('')
+        external int startPlayerFromTrack(int progress, int duration, Map<String, dynamic> track, bool canPause, bool canSkipForward, bool canSkipBackward, bool defaultPauseResume, bool removeUIWhenStopped, );
+
+        @JS('')
+        external int nowPlaying(int progress, int duration, Map<String, dynamic> track, bool canPause, bool canSkipForward, bool canSkipBackward, bool defaultPauseResume, );
+
+        @JS('')
+        external int stopPlayer();
+
+        @JS('')
+        external int pausePlayer();
+
+        @JS('')
+        external int resumePlayer();
+
+        @JS('')
+        external int seekToPlayer( int duration);
+
+        @JS('')
+        external int setVolume(double volume);
+
+        @JS('')
+        external int setUIProgressBar(int duration, int progress);
 }
+
+//=========================================================================================================
+
 
 /// The web implementation of [FlutterSoundPlatform].
 ///
 /// This class implements the `package:flutter_sound_player` functionality for the web.
 ///
 
-class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform
+class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements FlutterSoundPlayerCallback
 {
 
 
@@ -67,7 +133,6 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform
         ];
 
 
-        List<FlutterSoundPlayerCallback> _slots = [];
 
         /// Registers this class as the default instance of [FlutterSoundPlatform].
         static void registerWith(Registrar registrar)
@@ -76,19 +141,120 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform
         }
 
 
-        // /* ctor */ MethodChannelFlutterSoundPlayer()
-        // {
-        //         setCallback();
-        // }
-        //
-        // void setCallback()
-        // {
-        //         //_channel = const MethodChannel('com.dooboolab.flutter_sound_player');
-        //         // _channel.setMethodCallHandler((MethodCall call)
-        //         // {
-        //         //         return channelMethodCallHandler(call);
-        //         // });
-        // }
+        /* ctor */ MethodChannelFlutterSoundPlayer()
+        {
+        }
+
+//=======================================================  Callback  ==============================================================
+/*
+        @override
+        void updateProgress({Duration duration, Duration position,})
+        {
+
+        }
+
+        @override
+        void pause(int state)
+        {
+
+        }
+
+        @override
+        void resume(int state)
+        {
+
+        }
+
+        @override
+        void skipBackward(int state)
+        {
+
+        }
+
+        @override
+        void skipForward(int state)
+        {
+
+        }
+
+        @override
+        void updatePlaybackState(int state)
+        {
+
+        }
+
+        @override
+        void needSomeFood(int ln)
+        {
+
+        }
+
+        @override
+        void audioPlayerFinished(int state)
+        {
+
+        }
+
+        @override
+        void openAudioSessionCompleted(bool success)
+        {
+        }
+
+
+        @override
+        void startPlayerCompleted(Duration durationp)
+        {
+        }
+*/
+//============================================ Session manager ===================================================================
+
+
+        List<FlutterSoundPlayer> _slots = [];
+/*
+        int findWebSession(FlutterSoundPlayer aSession)
+        {
+                for (var i = 0; i < _slots.length; ++i)
+                {
+                        if (_slots[i] == aSession)
+                        {
+                                return i;
+                        }
+                }
+                return -1;
+        }
+
+        void openWebSession(FlutterSoundPlayer aSession)
+        {
+                assert(findWebSession(aSession) == -1);
+
+                for (var i = 0; i < _slots.length; ++i)
+                {
+                        if (_slots[i] == null)
+                        {
+                                _slots[i] = aSession;
+                                return;
+                        }
+                }
+                _slots.add(aSession);
+        }
+
+        void closeWebSession(FlutterSoundPlayer aSession)
+        {
+                _slots[findWebSession(aSession)] = null;
+        }
+
+        FlutterSoundPlayer getWebSession(int slotno)
+        {
+                return _slots[slotno];
+        }
+        */
+        FlutterSoundPlayer getWebSession(FlutterSoundPlayerCallback callback)
+        {
+                return _slots[findSession(callback)];
+        }
+
+
+//================================================================================================================
 
 
 
@@ -97,63 +263,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform
         //         // FlutterSoundPlayerCallback aPlayer = _slots[call.arguments['slotNo'] as int];
                 // Map arg = call.arguments ;
                 //
-                // switch (call.method)
-                // {
-                //           case "updateProgress":
-                //           {
-                //                   aPlayer.updateProgress(duration: Duration(milliseconds: arg['duration']), position: Duration(milliseconds: arg['position']));
-                //           }
-                //           break;
-                //
-                //           case "audioPlayerFinishedPlaying":
-                //           {
-                //                   print('FS:---> channelMethodCallHandler : ${call.method}');
-                //                   aPlayer.audioPlayerFinished(arg['arg']);
-                //                   print('FS:<--- channelMethodCallHandler : ${call.method}');
-                //           }
-                //           break;
-                //
-                //           case 'pause': // Pause/Resume
-                //           {
-                //                   print('FS:---> channelMethodCallHandler : ${call.method}');
-                //                   aPlayer.pause(arg['arg']);
-                //                   print('FS:<--- channelMethodCallHandler : ${call.method}');
-                //           }
-                //           break;
-                //
-                //           case 'resume': // Pause/Resume
-                //           {
-                //                   print('FS:---> channelMethodCallHandler : ${call.method}');
-                //                   aPlayer.resume(arg['arg']);
-                //                   print('FS:<--- channelMethodCallHandler : ${call.method}');
-                //           }
-                //           break;
-                //
-                //
-                //           case 'skipForward':
-                //           {
-                //                   print('FS:---> channelMethodCallHandler : ${call.method}');
-                //                   aPlayer.skipForward(arg['arg']);
-                //                   print('FS:<--- channelMethodCallHandler : ${call.method}');
-                //           }
-                //           break;
-                //
-                //           case 'skipBackward':
-                //           {
-                //                   print('FS:---> channelMethodCallHandler : ${call.method}');
-                //                   aPlayer.skipBackward(arg['arg']);
-                //                   print('FS:<--- channelMethodCallHandler : ${call.method}');
-                //                 }
-                //           break;
-                //
-                //         case 'updatePlaybackState':
-                //           {
-                //                   print('FS:---> channelMethodCallHandler : ${call.method}');
-                //                   aPlayer.updatePlaybackState(arg['arg']);
-                //                   print('FS:<--- channelMethodCallHandler : ${call.method}');
-                //                 }
-                //           break;
-                //
+           //
                 //         case 'openAudioSessionCompleted':
                 //           {
                 //                   print('FS:---> channelMethodCallHandler : ${call.method}');
@@ -172,87 +282,52 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform
                 //                   print('FS:<--- channelMethodCallHandler : ${call.method}');
                 //                 }
                 //           break;
-                //
-                //         case 'needSomeFood':
-                //           {
-                //                   aPlayer.needSomeFood(arg['arg']);
-                //           }
-                //           break;
-                //
-                //
-                //         default:
-                //                   throw ArgumentError('Unknown method ${call.method}');
-                //       }
-
-                //       return null;
-                // }
 
 
-//===============================================================================================================================
 
 
-        int findSession(FlutterSoundPlayerCallback aSession)
-        {
-                for (var i = 0; i < _slots.length; ++i)
-                {
-                          if (_slots[i] == aSession)
-                          {
-                                 return i;
-                          }
-                }
-                return -1;
-        }
+//==============================================================================================================================
 
         @override
-        void openSession(FlutterSoundPlayerCallback aSession)
-        {
-                assert(findSession(aSession) == -1);
-
-                for (var i = 0; i < _slots.length; ++i)
-                {
-                  if (_slots[i] == null)
-                  {
-                    _slots[i] = aSession;
-                    return;
-                  }
-                }
-                _slots.add(aSession);
-        }
-
-        @override
-        void closeSession(FlutterSoundPlayerCallback aSession)
-        {
-                _slots[findSession(aSession)] = null;
-        }
-
-        @override
-        Future<bool> initializeMediaPlayer(FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI}) async
+        Future<int> initializeMediaPlayer(FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI}) async
         {
                 // openAudioSessionCompleter = new Completer<bool>();
                 // await invokeMethod( callback, 'initializeMediaPlayer', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index, 'withUI': withUI ? 1 : 0 ,},) ;
                 // return  openAudioSessionCompleter.future ;
-                return true;
+                int slotno = findSession(callback);
+                if (slotno < _slots.length)
+                {
+                        assert (_slots[slotno] == null);
+                        _slots[slotno] = newPlayerInstance(callback);
+                } else
+                {
+                        assert(slotno == _slots.length);
+                        _slots.add( newPlayerInstance(callback));
+                }
+                return _slots[slotno].initializeMediaPlayer( callback, focus.index,  category.index, mode.index, audioFlags, device.index, withUI);
+        }
+
+
+        @override
+        Future<int> releaseMediaPlayer(FlutterSoundPlayerCallback callback, ) async
+        {
+                int slotno = findSession(callback);
+                int r = _slots[slotno].releaseMediaPlayer();
+                _slots[slotno] = null;
+                return r;
         }
 
         @override
         Future<int> setAudioFocus(FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device,} ) async
         {
-                // return invokeMethod( callback, 'setAudioFocus', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index ,},);
-                return 0;
+                return getWebSession(callback).setAudioFocus(focus.index, category.index, mode.index, audioFlags, device.index);
         }
 
-        @override
-        Future<int> releaseMediaPlayer(FlutterSoundPlayerCallback callback, ) async
-        {
-                // return invokeMethod( callback, 'releaseMediaPlayer',  Map<String, dynamic>(),);
-                return 0;
-        }
 
         @override
         Future<int> getPlayerState(FlutterSoundPlayerCallback callback, ) async
         {
-                // return invokeMethod( callback, 'getPlayerState',  Map<String, dynamic>(),);
-                return 0;
+                return getWebSession(callback).getPlayerState();
         }
         @override
         Future<Map<String, Duration>> getProgress(FlutterSoundPlayerCallback callback, ) async
@@ -266,20 +341,18 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform
         @override
         Future<bool> isDecoderSupported(FlutterSoundPlayerCallback callback, { Codec codec,}) async
         {
-                // return invokeMethodBool( callback, 'isDecoderSupported', {'codec': codec.index,},) as Future<bool>;
-                return true;
+                return getWebSession(callback).isDecoderSupported(codec.index);
         }
 
 
         @override
         Future<int> setSubscriptionDuration(FlutterSoundPlayerCallback callback, { Duration duration,}) async
         {
-                //return invokeMethod( callback, 'setSubscriptionDuration', {'duration': duration.inMilliseconds},);
-                return 0;
+                return getWebSession(callback).setSubscriptionDuration(duration.inMilliseconds);
         }
 
         @override
-        Future<Map> startPlayer(FlutterSoundPlayerCallback callback,  {Codec codec, Uint8List fromDataBuffer, String  fromURI, int numChannels, int sampleRate}) async
+        Future<int> startPlayer(FlutterSoundPlayerCallback callback,  {Codec codec, Uint8List fromDataBuffer, String  fromURI, int numChannels, int sampleRate}) async
         {
                 // startPlayerCompleter = new Completer<Map>();
                 // await invokeMethod( callback, 'startPlayer', {'codec': codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI, 'numChannels': numChannels, 'sampleRate': sampleRate},) ;
@@ -295,10 +368,8 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform
                         }
                         //js.context.callMethod('playAudioFromBuffer', [fromDataBuffer]);
                         //playAudioFromBuffer(fromDataBuffer);
-                        Toto toto = Toto.newInstance();
-                        toto.playAudioFromBuffer(fromDataBuffer);
+                        return getWebSession(callback).playAudioFromBuffer(fromDataBuffer);
                         //playAudioFromBuffer3(fromDataBuffer);
-                        return null;
                         //Directory tempDir = await getTemporaryDirectory();
                         /*
                         String path = defaultExtensions[codec.index];
@@ -309,84 +380,73 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform
                          */
                 }
                 //js.context.callMethod('playAudioFromURL', [fromURI]);
-                newInstance().playAudioFromURL(fromURI);
+                newPlayerInstance(null).playAudioFromURL(fromURI);
                 Map<String, dynamic> r = new Map<String, dynamic>();
                 r['duration'] = 0;
                 r['state'] = 1;
-                return r;
+                return 0;
         }
 
         @override
         Future<int> feed(FlutterSoundPlayerCallback callback, {Uint8List data, }) async
         {
-                // return invokeMethod( callback, 'feed', {'data': data, },) ;
-                return 0;
+                return getWebSession(callback).feed(data);
         }
 
         @override
-        Future<Map> startPlayerFromTrack(FlutterSoundPlayerCallback callback, {Duration progress, Duration duration, Map<String, dynamic> track, bool canPause, bool canSkipForward, bool canSkipBackward, bool defaultPauseResume, bool removeUIWhenStopped }) async
+        Future<int> startPlayerFromTrack(FlutterSoundPlayerCallback callback, {Duration progress, Duration duration, Map<String, dynamic> track, bool canPause, bool canSkipForward, bool canSkipBackward, bool defaultPauseResume, bool removeUIWhenStopped }) async
         {
                 // startPlayerCompleter = new Completer<Map>();
                 // await invokeMethod( callback, 'startPlayerFromTrack', {'progress': progress, 'duration': duration, 'track': track, 'canPause': canPause, 'canSkipForward': canSkipForward, 'canSkipBackward': canSkipBackward,
                 //   'defaultPauseResume': defaultPauseResume, 'removeUIWhenStopped': removeUIWhenStopped,},);
                 // return  startPlayerCompleter.future ;
                 //
-                return null;
+                return getWebSession(callback).startPlayerFromTrack( progress.inMilliseconds,  duration.inMilliseconds, track, canPause, canSkipForward, canSkipBackward, defaultPauseResume, removeUIWhenStopped);
           }
 
         @override
         Future<int> nowPlaying(FlutterSoundPlayerCallback callback,  {Duration progress, Duration duration, Map<String, dynamic> track, bool canPause, bool canSkipForward, bool canSkipBackward, bool defaultPauseResume, }) async
         {
-              //   return invokeMethod( callback, 'nowPlaying', {'progress': progress.inMilliseconds, 'duration': duration.inMilliseconds, 'track': track, 'canPause': canPause, 'canSkipForward': canSkipForward, 'canSkipBackward': canSkipBackward,
-              //     'defaultPauseResume': defaultPauseResume,},);
-              //
-                return 0;
+                return getWebSession(callback).nowPlaying(progress.inMilliseconds, duration.inMilliseconds, track, canPause, canSkipForward, canSkipBackward, defaultPauseResume);
         }
 
         @override
         Future<int> stopPlayer(FlutterSoundPlayerCallback callback,  ) async
         {
-                // return invokeMethod( callback, 'stopPlayer',  Map<String, dynamic>(),) ;
-                return 0;
+                return getWebSession(callback).stopPlayer();
         }
 
         @override
         Future<int> pausePlayer(FlutterSoundPlayerCallback callback,  ) async
         {
-                // return invokeMethod( callback, 'pausePlayer',  Map<String, dynamic>(),) ;
-                return 0;
+                return getWebSession(callback).pausePlayer();
         }
 
         @override
         Future<int> resumePlayer(FlutterSoundPlayerCallback callback,  ) async
         {
-                // return invokeMethod( callback, 'resumePlayer',  Map<String, dynamic>(),) ;
-                return 0;
+                return getWebSession(callback).resumePlayer();
         }
 
         @override
         Future<int> seekToPlayer(FlutterSoundPlayerCallback callback,  {Duration duration}) async
         {
-                // return invokeMethod( callback, 'seekToPlayer', {'duration': duration.inMilliseconds,},) ;
-                return 0;
+                return getWebSession(callback).seekToPlayer(duration.inMilliseconds);
         }
 
         Future<int> setVolume(FlutterSoundPlayerCallback callback,  {double volume}) async
         {
-                // return invokeMethod( callback, 'setVolume', {'volume': volume,}) ;
-                return 0;
+                return getWebSession(callback).setVolume(volume);
         }
 
         @override
         Future<int> setUIProgressBar(FlutterSoundPlayerCallback callback, {Duration duration, Duration progress,}) async
         {
-                // return invokeMethod( callback, 'setUIProgressBar', {'duration': duration.inMilliseconds, 'progress': progress,}) ;
-                return 0;
+                return getWebSession(callback).setUIProgressBar(duration.inMilliseconds, progress.inMilliseconds);
         }
 
         Future<String> getResourcePath(FlutterSoundPlayerCallback callback, ) async
         {
-                // return invokeMethodString( callback, 'getResourcePath',  Map<String, dynamic>(),) ;
                 return null;
         }
 
