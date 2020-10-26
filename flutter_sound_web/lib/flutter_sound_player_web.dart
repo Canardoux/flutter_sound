@@ -54,49 +54,49 @@ class FlutterSoundPlayer
         @JS('releaseMediaPlayer')
         external int releaseMediaPlayer();
 
-        @JS('')
+        @JS('initializeMediaPlayer')
         external int initializeMediaPlayer(FlutterSoundPlayerCallback callback, int focus, int category, int mode, int audioFlags, int device, bool withUI);
 
-        @JS('')
+        @JS('setAudioFocus')
         external int setAudioFocus(int focus, int category, int mode, int audioFlags, int device,);
 
-        @JS('')
+        @JS('getPlayerState')
         external int getPlayerState();
 
-        @JS('')
+        @JS('isDecoderSupported')
         external bool isDecoderSupported( int codec,);
 
-        @JS('')
+        @JS('setSubscriptionDuration')
         external int setSubscriptionDuration( int duration);
 
-        @JS('')
+        @JS('startPlayer')
         external int startPlayer(int codec, Uint8List fromDataBuffer, String  fromURI, int numChannels, int sampleRate);
 
-        @JS('')
+        @JS('feed')
         external int feed(Uint8List data,);
 
-        @JS('')
+        @JS('startPlayerFromTrack')
         external int startPlayerFromTrack(int progress, int duration, Map<String, dynamic> track, bool canPause, bool canSkipForward, bool canSkipBackward, bool defaultPauseResume, bool removeUIWhenStopped, );
 
-        @JS('')
+        @JS('nowPlaying')
         external int nowPlaying(int progress, int duration, Map<String, dynamic> track, bool canPause, bool canSkipForward, bool canSkipBackward, bool defaultPauseResume, );
 
-        @JS('')
+        @JS('stopPlayer')
         external int stopPlayer();
 
-        @JS('')
+        @JS('resumePlayer')
         external int pausePlayer();
 
         @JS('')
         external int resumePlayer();
 
-        @JS('')
+        @JS('seekToPlayer')
         external int seekToPlayer( int duration);
 
-        @JS('')
+        @JS('setVolume')
         external int setVolume(double volume);
 
-        @JS('')
+        @JS('setUIProgressBar')
         external int setUIProgressBar(int duration, int progress);
 }
 
@@ -145,144 +145,15 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
         {
         }
 
-//=======================================================  Callback  ==============================================================
-/*
-        @override
-        void updateProgress({Duration duration, Duration position,})
-        {
 
-        }
-
-        @override
-        void pause(int state)
-        {
-
-        }
-
-        @override
-        void resume(int state)
-        {
-
-        }
-
-        @override
-        void skipBackward(int state)
-        {
-
-        }
-
-        @override
-        void skipForward(int state)
-        {
-
-        }
-
-        @override
-        void updatePlaybackState(int state)
-        {
-
-        }
-
-        @override
-        void needSomeFood(int ln)
-        {
-
-        }
-
-        @override
-        void audioPlayerFinished(int state)
-        {
-
-        }
-
-        @override
-        void openAudioSessionCompleted(bool success)
-        {
-        }
-
-
-        @override
-        void startPlayerCompleted(Duration durationp)
-        {
-        }
-*/
 //============================================ Session manager ===================================================================
 
 
         List<FlutterSoundPlayer> _slots = [];
-/*
-        int findWebSession(FlutterSoundPlayer aSession)
-        {
-                for (var i = 0; i < _slots.length; ++i)
-                {
-                        if (_slots[i] == aSession)
-                        {
-                                return i;
-                        }
-                }
-                return -1;
-        }
-
-        void openWebSession(FlutterSoundPlayer aSession)
-        {
-                assert(findWebSession(aSession) == -1);
-
-                for (var i = 0; i < _slots.length; ++i)
-                {
-                        if (_slots[i] == null)
-                        {
-                                _slots[i] = aSession;
-                                return;
-                        }
-                }
-                _slots.add(aSession);
-        }
-
-        void closeWebSession(FlutterSoundPlayer aSession)
-        {
-                _slots[findWebSession(aSession)] = null;
-        }
-
-        FlutterSoundPlayer getWebSession(int slotno)
-        {
-                return _slots[slotno];
-        }
-        */
         FlutterSoundPlayer getWebSession(FlutterSoundPlayerCallback callback)
         {
                 return _slots[findSession(callback)];
         }
-
-
-//================================================================================================================
-
-
-
-        // Future<dynamic> channelMethodCallHandler(MethodCall call)
-        // {
-        //         // FlutterSoundPlayerCallback aPlayer = _slots[call.arguments['slotNo'] as int];
-                // Map arg = call.arguments ;
-                //
-           //
-                //         case 'openAudioSessionCompleted':
-                //           {
-                //                   print('FS:---> channelMethodCallHandler : ${call.method}');
-                //                   bool success = arg['arg'] as bool;
-                //                   openAudioSessionCompleter.complete(success );
-                //                   print('FS:<--- channelMethodCallHandler : ${call.method}');
-                //                 }
-                //           break;
-                //
-                //         case 'startPlayerCompleted':
-                //           {
-                //                   print('FS:---> channelMethodCallHandler : ${call.method}');
-                //                   //int duration =  arg['duration'] as int;
-                //                   //Duration d = Duration(milliseconds: duration);
-                //                   startPlayerCompleter.complete(arg ) ;
-                //                   print('FS:<--- channelMethodCallHandler : ${call.method}');
-                //                 }
-                //           break;
-
 
 
 
@@ -380,10 +251,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                          */
                 }
                 //js.context.callMethod('playAudioFromURL', [fromURI]);
-                newPlayerInstance(null).playAudioFromURL(fromURI);
-                Map<String, dynamic> r = new Map<String, dynamic>();
-                r['duration'] = 0;
-                r['state'] = 1;
+                getWebSession(callback).playAudioFromURL(fromURI);
                 return 0;
         }
 

@@ -41,11 +41,33 @@ class FlutterSoundRecorder
         @JS('newInstance')
         external static FlutterSoundRecorder newInstance(FlutterSoundRecorderCallback callback);
 
-        @JS('startRecorder')
-        external void startRecorder();
+
+        @JS('initializeFlautoRecorder')
+        external void initializeFlautoRecorder(int focus, int category, int mode, int audioFlags, int device);
 
         @JS('releaseMediaPlayer')
         external void releaseMediaPlayer();
+
+        @JS('setAudioFocus')
+        external void setAudioFocus(int focus, int category, int mode, int audioFlags, int device);
+
+        @JS('isEncoderSupported')
+        external bool isEncoderSupported(int codec);
+
+        @JS('setSubscriptionDuration')
+        external void setSubscriptionDuration(int duration);
+
+        @JS('startRecorder')
+        external void startRecorder(String path, int sampleRate, int numChannels, int bitRate, int codec, bool toStream, int audioSource);
+
+        @JS('stopRecorder')
+        external void stopRecorder();
+
+        @JS('pauseRecorder')
+        external void pauseRecorder();
+
+        @JS('resumeRecorder')
+        external void resumeRecorder();
 
 }
 
@@ -69,96 +91,13 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
 
 
         List<FlutterSoundRecorder> _slots = [];
-/*
-        int findWebSession(FlutterSoundRecorder aSession)
-        {
-                for (var i = 0; i < _slots.length; ++i)
-                {
-                        if (_slots[i] == aSession)
-                        {
-                                return i;
-                        }
-                }
-                return -1;
-        }
-
-        void openWebSession(FlutterSoundRecorder aSession)
-        {
-                assert(findWebSession(aSession) == -1);
-
-                for (var i = 0; i < _slots.length; ++i)
-                {
-                        if (_slots[i] == null)
-                        {
-                                _slots[i] = aSession;
-                                return;
-                        }
-                }
-                _slots.add(aSession);
-        }
-
-        void closeWebSession(FlutterSoundRecorder aSession)
-        {
-                _slots[findWebSession(aSession)] = null;
-        }
-*/
         FlutterSoundRecorder getWebSession(FlutterSoundRecorderCallback callback)
         {
                 return _slots[findSession(callback)];
         }
 
 
-//=======================================================  Callback  ==============================================================
-/*
-        @override
-        void updateRecorderProgress({Duration duration, double dbPeakLevel})
-        {
-
-        }
-
-        @override
-        void recordingData({Uint8List data} )
-        {
-
-        }
-*/
-
 //================================================================================================================
-
-
-        //
-        // /*ctor */ MethodChannelFlutterSoundRecorder()
-        // {
-        //         _setCallback();
-        // }
-        //
-        // void _setCallback()
-        // {
-        // }
-        //
-
-        // Future<dynamic> channelMethodCallHandler(MethodCall call) {
-                // FlutterSoundRecorderCallback aRecorder = _slots[call.arguments['slotNo'] as int];
-                //
-                // switch (call.method) {
-                //         case "updateRecorderProgress":
-                //                 {
-                //                         aRecorder.updateRecorderProgress(duration: Duration(milliseconds: call.arguments ['duration']), dbPeakLevel: call.arguments['dbPeakLevel']);
-                //                 }
-                //                 break;
-                //
-                //         case "recordingData":
-                //                 {
-                //                         aRecorder.recordingData(data: call.arguments['recordingData'] );
-                //                 }
-                //                 break;
-                //
-                //         default:
-                //                 throw ArgumentError('Unknown method ${call.method}');
-                // }
-                //
-        //         return null;
-        // }
 
 
         @override
@@ -174,8 +113,7 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
                         assert(slotno == _slots.length);
                         _slots.add( newRecorderInstance(callback));
                 }
-                return true;
-                // return invokeMethodVoid( callback, 'initializeFlautoRecorder', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index ,},) ;
+                getWebSession(callback).initializeFlautoRecorder(focus.index, category.index, mode.index, audioFlags, device.index);
         }
 
 
@@ -185,26 +123,24 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
                 int slotno = findSession(callback);
                 _slots[slotno].releaseMediaPlayer();
                 _slots[slotno] = null;
-                // return invokeMethodVoid( callback, 'releaseFlautoRecorder',  Map<String, dynamic>(),);
         }
 
         @override
         Future<void> setAudioFocus(FlutterSoundRecorderCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device,} ) async
         {
-                // return invokeMethodVoid( callback, 'setAudioFocus', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index ,},);
+                getWebSession(callback).setAudioFocus(focus.index, category.index, mode.index, audioFlags, device.index);
         }
 
         @override
         Future<bool> isEncoderSupported(FlutterSoundRecorderCallback callback, {Codec codec,}) async
         {
-                // return invokeMethodBool( callback, 'isEncoderSupported', {'codec': codec.index,},) as Future<bool>;
-                return true;
+                return getWebSession(callback).isEncoderSupported(codec.index);
         }
 
         @override
         Future<void> setSubscriptionDuration(FlutterSoundRecorderCallback callback, {Duration duration,}) async
         {
-                // return invokeMethodVoid( callback, 'setSubscriptionDuration', {'duration': duration.inMilliseconds},);
+                getWebSession(callback).setSubscriptionDuration(duration.inMilliseconds);
         }
 
         @override
@@ -219,35 +155,25 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
                     AudioSource audioSource,
             }) async
         {
-                // return invokeMethodVoid( callback, 'startRecorder',
-                //         {
-                //                 'path': path,
-                //                 'sampleRate': sampleRate,
-                //                 'numChannels': numChannels,
-                //                 'bitRate': bitRate,
-                //                 'codec': codec.index,
-                //                 'toStream': toStream ? 1 : 0,
-                //                 'audioSource': audioSource.index,
-                //         },);
-                newRecorderInstance(null).startRecorder();
+                getWebSession(callback).startRecorder(path, sampleRate, numChannels, bitRate, codec.index, toStream, audioSource.index);
         }
 
         @override
         Future<void> stopRecorder(FlutterSoundRecorderCallback callback,  ) async
         {
-                // return invokeMethodVoid( callback, 'stopRecorder',  Map<String, dynamic>(),) ;
+                getWebSession(callback).stopRecorder();
         }
 
         @override
         Future<void> pauseRecorder(FlutterSoundRecorderCallback callback,  ) async
         {
-                // return invokeMethodVoid( callback, 'pauseRecorder',  Map<String, dynamic>(),) ;
+                getWebSession(callback).pauseRecorder();
         }
 
         @override
         Future<void> resumeRecorder(FlutterSoundRecorderCallback callback, ) async
         {
-                // return invokeMethodVoid( callback, 'resumeRecorder', Map<String, dynamic>(),) ;
+                getWebSession(callback).resumeRecorder();
         }
 
 }

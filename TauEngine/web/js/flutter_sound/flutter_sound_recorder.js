@@ -29,31 +29,76 @@ class FlutterSoundRecorder
           }
 
 
-          releaseMediaPlayer()
-          {
-          }
+
+      initializeFlautoRecorder( focus, category, mode, audioFlags, device)
+      {
+
+      }
 
 
-          startRecorder()
-          {
-                    var constraints = { audio: true, video: false };
-                    navigator.mediaDevices.getUserMedia(constraints).then
-                    (function(mediaStream)
-                    {
-                      /*
-                              var audio = document.querySelector('audio');
-                              audio.srcObject = mediaStream;
-                              audio.onloadedmetadata = function(e)
-                              {
-                                        audio.play();
-                              };
-                              */
-                              var audioCtx = new AudioContext();
-                              var source = audioCtx.createMediaStreamSource(mediaStream);
-                              source.connect(audioCtx.destination);
+      releaseMediaPlayer()
+      {
 
-                    })
-                    .catch(function(err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
-          }
+      }
+
+
+      setAudioFocus( focus, category, mode, audioFlags, device)
+      {
+
+      }
+
+
+      isEncoderSupported( codec)
+      {
+               return true;
+      }
+
+
+      setSubscriptionDuration( duration)
+      {
+
+      }
+
+
+      startRecorder( path, sampleRate, numChannels, bitRate, codec, toStream, audioSource)
+        {
+               var constraints = { audio: true, video: false };
+               navigator.mediaDevices.getUserMedia(constraints).then
+               (function(mediaStream)
+               {
+                 /*
+                         var audio = document.querySelector('audio');
+                         audio.srcObject = mediaStream;
+                         audio.onloadedmetadata = function(e)
+                         {
+                                   audio.play();
+                         };
+                         */
+                         var audioCtx = new AudioContext();
+                         var source = audioCtx.createMediaStreamSource(mediaStream);
+                         source.connect(audioCtx.destination);
+
+               })
+               .catch(function(err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
+        }
+
+
+      stopRecorder()
+      {
+
+      }
+
+
+      pauseRecorder()
+      {
+
+      }
+
+
+      resumeRecorder()
+      {
+
+      }
+
 
 }
