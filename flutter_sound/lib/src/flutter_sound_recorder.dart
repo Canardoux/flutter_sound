@@ -25,7 +25,7 @@ import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data';
 
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';

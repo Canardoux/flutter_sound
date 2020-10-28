@@ -18,7 +18,7 @@
 
 import 'dart:async';
 import 'dart:typed_data' show Uint8List;
-import 'package:flutter_sound_lite/src/flutter_sound_player.dart';
+import 'package:flutter_sound/src/flutter_sound_player.dart';
 
 class Food
 {
