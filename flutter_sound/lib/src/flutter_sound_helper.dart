@@ -19,10 +19,10 @@
 
 import 'dart:typed_data';
 
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter_sound/src/wave_header.dart';
+import 'package:flutter_sound_lite/src/wave_header.dart';
 
 FlutterSoundHelper flutterSoundHelper = FlutterSoundHelper(); // Singleton
 

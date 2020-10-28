@@ -1,5 +1,5 @@
 package com.dooboolab.fluttersound;
-import com.dooboolab.ffmpeg.FlutterFFmpegPlugin;
+//import com.dooboolab.ffmpeg.FlutterFFmpegPlugin;
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
  *
@@ -33,7 +33,7 @@ public class FlutterSound
 	implements FlutterPlugin,
 	           ActivityAware
 {
-    public static final boolean FULL_FLAVOR = true;
+    public static final boolean FULL_FLAVOR = false;
 	//static Context ctx;
 	//static Registrar reg;
 	//static Activity androidActivity;
@@ -45,7 +45,7 @@ public class FlutterSound
 		Flauto.androidContext = binding.getApplicationContext ();
 		FlutterSoundPlayerManager.attachFlautoPlayer ( Flauto.androidContext, binding.getBinaryMessenger () );
 		FlutterSoundRecorderManager.attachFlautoRecorder ( Flauto.androidContext, binding.getBinaryMessenger () );
-        if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin( Flauto.androidContext, binding.getBinaryMessenger() );}
+        if (FULL_FLAVOR) ;//{FlutterFFmpegPlugin.attachFFmpegPlugin( Flauto.androidContext, binding.getBinaryMessenger() );}
 	}
 
 
@@ -60,7 +60,7 @@ public class FlutterSound
 
 		FlutterSoundPlayerManager.attachFlautoPlayer ( Flauto.androidContext, registrar.messenger () );
 		FlutterSoundRecorderManager.attachFlautoRecorder ( Flauto.androidContext, registrar.messenger ()  );
-        if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin(Flauto.androidContext,registrar.messenger ()  );}
+        if (FULL_FLAVOR) ;//{FlutterFFmpegPlugin.attachFFmpegPlugin(Flauto.androidContext,registrar.messenger ()  );}
 
 	}
 

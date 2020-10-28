@@ -31,11 +31,11 @@ import 'package:flutter_sound_platform_interface/flutter_sound_platform_interfac
 import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
 //export 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 
-import 'package:flutter_sound/src/food.dart';
+import 'package:flutter_sound_lite/src/food.dart';
 
 
 import 'package:flutter/services.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_lite/flutter_sound.dart';
 
 const BLOCK_SIZE = 4096;
 

@@ -20,10 +20,10 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:intl/intl.dart';
 
-import 'package:flutter_sound/src/util/log.dart';
+import 'package:flutter_sound_lite/src/util/log.dart';
 import 'demo_media_path.dart';
 
 /// Describes how the media is stored.
