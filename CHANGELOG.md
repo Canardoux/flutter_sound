@@ -1,3 +1,8 @@
+## 6.3.1+1
+
+- Fix a syntax error in the TauEngine build.gradle [499](https://github.com/dooboolab/flutter_sound/issues/499)
+- English in the UI widget is now configurable [498](https://github.com/dooboolab/flutter_sound/pull/498)
+
 ## 6.3.0+4
 
 - On Android : Flutter Sound is now a wrapper around `TauEngine`
