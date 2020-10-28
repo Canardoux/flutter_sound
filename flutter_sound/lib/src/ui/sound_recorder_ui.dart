@@ -221,7 +221,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
                 _buildMicrophone(),
                 _buildStartStopButton(),
                 widget.showTrashCan != null ? _buildTrashButton() : SizedBox(),
-                Text(_isPaused ? pausedTitle : _isRecording ? recordingTitle : stoppedTitle),
+                Text(_isPaused ? widget.pausedTitle : _isRecording ? widget.recordingTitle : widget.stoppedTitle),
 
               ],
             //Expanded(child: Column(children: rows))
