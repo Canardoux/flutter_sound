@@ -45,6 +45,7 @@
 // Interface
 - (FlutterSoundRecorderManager*) getPlugin;
 - (Session*) init: (FlutterMethodCall*)call;
+- (int)getStatus;
 
 - (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result;
 - (void)startRecorder :(FlutterMethodCall*)call result:(FlutterResult)result;

@@ -77,6 +77,15 @@ typedef enum
 
           /// Raw PCM with 32 bits Floating Points
           pcmFloat32,
+          
+          /// pcm with a WebM format
+          pcmWebM,
+          
+          /// Opus with a WebM format
+          opusWebM,
+          
+          /// Vorbis with a WebM format
+          vorbisWebM,
   
 } t_CODEC;
 

@@ -52,9 +52,15 @@ public class FlautoRecorder extends FlautoSession
 		false, // pcm16AIFF
 		false, // pcm16CAF
 		false, // flac
-		true, //Build.VERSION.SDK_INT >= 23,  // aacMP4
-		true, //Build.VERSION.SDK_INT >= 23,  // amrNB
-		true  //Build.VERSION.SDK_INT >= 23   // amrWB
+		Build.VERSION.SDK_INT >= 23,  // aacMP4
+		Build.VERSION.SDK_INT >= 23,  // amrNB
+		Build.VERSION.SDK_INT >= 23,  // amrWB
+
+		false, // pcm8
+		false, // pcmFloat32
+		false, // pcmWebM
+		true, // opusWebM
+		false, // vorbisWebM
 	};
 
 
@@ -73,6 +79,11 @@ public class FlautoRecorder extends FlautoSession
 		false, // aacMP4
 		false, // amrNB
 		false, // amrWB
+		false, // pcm8
+		false, // pcmFloat32
+		false, // pcmWebM
+		false, // opusWebM
+		false, // vorbisWebM
 	};
 
 	int[] tabAudioSource =

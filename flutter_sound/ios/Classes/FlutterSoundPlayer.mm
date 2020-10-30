@@ -60,7 +60,7 @@
 {
                 NSNumber* p = [NSNumber numberWithLong: position];
                 NSNumber* d = [NSNumber numberWithLong: duration];
-                NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: self ->slotNo], @"position": p, @"duration": d, @"playerStatus": [self getPlayerStatus] };
+                NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: self ->slotNo], @"state": [self getPlayerStatus], @"position": p, @"duration": d, @"playerStatus": [self getPlayerStatus] };
                 [self invokeMethod:@"updateProgress" dico: dico];
 }
 
@@ -255,8 +255,8 @@
         ];
         if (b)
         {
-   
-                        result([self getPlayerStatus]);
+                        NSNumber* status = [self getPlayerStatus];
+                        result(status);
         } else
         {
                         [FlutterError

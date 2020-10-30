@@ -45,11 +45,11 @@ class FlutterSoundPlayer
         @JS('newInstance')
         external static FlutterSoundPlayer newInstance(FlutterSoundPlayerCallback theCallBack);
 
-        @JS('playAudioFromURL')
-        external int playAudioFromURL(String text);
+        //@JS('playAudioFromURL')
+        //external int playAudioFromURL(String text);
 
-        @JS('playAudioFromBuffer')
-        external int playAudioFromBuffer(Uint8List buffer);
+        //@JS('playAudioFromBuffer')
+        //external int playAudioFromBuffer(Uint8List buffer);
 
         @JS('releaseMediaPlayer')
         external int releaseMediaPlayer();
@@ -239,7 +239,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                         }
                         //js.context.callMethod('playAudioFromBuffer', [fromDataBuffer]);
                         //playAudioFromBuffer(fromDataBuffer);
-                        return getWebSession(callback).playAudioFromBuffer(fromDataBuffer);
+                        // .......................return getWebSession(callback).playAudioFromBuffer(fromDataBuffer);
                         //playAudioFromBuffer3(fromDataBuffer);
                         //Directory tempDir = await getTemporaryDirectory();
                         /*
@@ -251,8 +251,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                          */
                 }
                 //js.context.callMethod('playAudioFromURL', [fromURI]);
-                getWebSession(callback).playAudioFromURL(fromURI);
-                return 0;
+                return getWebSession(callback).startPlayer(codec.index,  fromDataBuffer, fromURI, numChannels, sampleRate);
         }
 
         @override

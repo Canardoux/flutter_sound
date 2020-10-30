@@ -232,7 +232,6 @@ You can use `startPlayer` to play a sound.
    - `fromUri:`  (if you want to play a file or a remote URI)
    - `fromDataBuffer:` (if you want to play from a data buffer)
    - `sampleRate` is mandatory if `codec` == `Codec.pcm16`. Not used for other codecs.
-   - `fromStream` *(not yet implemented)*
 
 You must specify one or the three parameters : `fromUri`, `fromDataBuffer`, `fromStream`.
 

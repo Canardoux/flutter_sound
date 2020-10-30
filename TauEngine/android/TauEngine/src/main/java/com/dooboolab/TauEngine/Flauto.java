@@ -44,6 +44,9 @@ public class Flauto
 		amrWB,
 		pcm8,
 		pcmFloat32,
+		pcmWebM,
+		opusWebM,
+		vorbisWebM,
 	}
 
 	public enum t_AUDIO_FOCUS

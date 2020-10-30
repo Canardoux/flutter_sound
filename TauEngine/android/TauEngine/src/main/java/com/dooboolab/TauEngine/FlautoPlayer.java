@@ -54,7 +54,7 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 		Build.VERSION.SDK_INT >= 23, // opusOGG	// (API 29 ???)
 		Build.VERSION.SDK_INT >= 23, // opusCAF				/
 		true, // MP3					// OK
-		true,//Build.VERSION.SDK_INT >= 23, // vorbisOGG// OK
+		true, //Build.VERSION.SDK_INT >= 23, // vorbisOGG// OK
 		true, // pcm16
 		true, // pcm16WAV				// OK
 		true, // pcm16AIFF				// OK
@@ -63,6 +63,11 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 		true, // aacMP4					// OK
 		true, // amrNB					// OK
 		true, // amrWB					// OK
+		false, // pcm8
+		false, // pcmFloat32
+		false, // pcmWebM
+		true, // opusWebM
+		true, // vorbisWebM
 	};
 
 
@@ -81,6 +86,11 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 		, ".mp4"
 		, ".amr" // amrNB
 		, ".amr" // amrWB
+		, ".pcm" // pcm8
+		, ".pcm" // pcmFloat323
+		, ".webm" // pcmWebM
+		, ".opus" // opusWebM
+		, ".vorbis" // vorbisWebM
 	};
 
 

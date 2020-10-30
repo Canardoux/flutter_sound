@@ -6,12 +6,39 @@
 
 ## Actually, the following codecs are supported by flutter_sound:
 
-|                   | AAC ADTS | Opus OGG | Opus CAF    | MP3 | Vorbis OGG | PCM raw| PCM WAV | PCM AIFF | PCM CAF | FLAC    | AAC MP4 | AMR-NB | AMR-WB |
-| :---------------- | :------: | :------: | :---------: | :-: | :--------: | :----: | :-----: | :------: | :-----: | :-----: | :-----: | :----: | :----: |
-| iOS encoder       | Yes      |   Yes(*) | Yes         | No  | No         | Yes    | Yes     | No       | Yes     | Yes     | Yes     | NO     | NO     |
-| iOS decoder       | Yes      |   Yes(*) | Yes         | Yes | No         | Yes    | Yes     | Yes      | Yes     | Yes     | Yes     | NO     | NO     |
-| Android encoder   | Yes(1)   |   No     | No          | No  | No         | Yes(1) | Yes(1)  | No       | No      | No      | Yes(1)  | Yes(1) | Yes(1) |
-| Android decoder   | Yes      |   Yes(1) | Yes(*)(1)   | Yes | Yes        | Yes    | Yes     | Yes(*)   | Yes(*)  | Yes     | Yes     | Yes    | Yes    |
+|                   | AAC ADTS | Opus OGG | Opus CAF    | MP3 | Vorbis OGG | PCM16  | PCM WAV | PCM AIFF | PCM CAF | FLAC    | AAC MP4 | AMR-NB | AMR-WB | PCM-8     | PCM F32  | PCM WEBM | Opus WEBM   | Vorbis WEBM |
+| :---------------- | :------: | :------: | :---------: | :-: | :--------: | :----: | :-----: | :------: | :-----: | :-----: | :-----: | :----: | :----: | :-------: | :------: | :------: | :---------: | :---------: |
+|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| iOS encoder       | Yes      | Yes(*)   | Yes         | No  | No         | Yes    | Yes     | No       | Yes     | Yes     | Yes     | No     | No     | No        | No       | NO       | No          | No          |
+| iOS decoder       | Yes      | Yes(*)   | Yes         | Yes | No         | Yes    | Yes     | Yes      | Yes     | Yes     | Yes     | No     | No     | No        | No       | No       | No          | No          |
+|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| :---------------- | :------: | :------: | :---------: | :-: | :--------: | :----: | :-----: | :------: | :-----: | :-----: | :-----: | :----: | :----: | :-------: | :------: | :------: | :---------: | :---------: |
+|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| Android encoder   | Yes(1)   | No       | No          | No  | No         | Yes(1) | Yes(1)  | No       | No      | No      | Yes(1)  | Yes(1) | Yes(1) | No        | No       | No       | Yes         | No          |
+| Android decoder   | Yes      | Yes(1)   | Yes(*)(1)   | Yes | Yes        | Yes    | Yes     | Yes(*)   | Yes(*)  | Yes     | Yes     | Yes    | Yes    | No        | No       | No       | Yes         | Yes         |
+|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| :---------------- | :------: | :------: | :---------: | :-: | :--------: | :----: | :-----: | :------: | :-----: | :-----: | :-----: | :----: | :----: | :-------: | :------: | :------: | :---------: | :---------: |
+|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| Chrome encoder    | No       | No       | No          | No  | No         | No     | No      | No       | No      | No      | No      | No     | No     | No        | No       | No       | Yes         | No          |
+| Chrome decoder    | Yes      | Yes      | No          | Yes | Yes        | Yes    | Yes     | No       | No      | Yes     | Yes     | No     | No     | No        | No       | No       | Yes         | Yes         |
+|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| :---------------- | :------: | :------: | :---------: | :-: | :--------: | :----: | :-----: | :------: | :-----: | :-----: | :-----: | :----: | :----: | :-------: | :------: | :------: | :---------: | :---------: |
+|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| Firefox encoder   | No       | Yes      | No          | No  | No         | No     | No      | No       | No      | No      | No      | No     | No     | No        | No       | No       | Yes         | No          |
+| Firefox decoder   | Yes      | Yes      | No          | Yes | Yes        | Yes    | Yes     | No       | No      | Yes     | Yes     | No     | No     | No        | No       | No       | Yes         | yes         |
+|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| :---------------- | :------: | :------: | :---------: | :-: | :--------: | :----: | :-----: | :------: | :-----: | :-----: | :-----: | :----: | :----: | :-------: | :------: | :------: | :---------: | :---------: |
+|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| Edge encoder      |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| Edge decoder      |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| :---------------- | :------: | :------: | :---------: | :-: | :--------: | :----: | :-----: | :------: | :-----: | :-----: | :-----: | :----: | :----: | :-------: | :------: | :------: | :---------: | :---------: |
+|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| Safari encoder    |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| Safari decoder    |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| :---------------- | :------: | :------: | :---------: | :-: | :--------: | :----: | :-----: | :------: | :-----: | :-----: | :-----: | :----: | :----: | :-------: | :------: | :------: | :---------: | :---------: |
+
 
 This table will eventually be upgraded when more codecs will be added.
 

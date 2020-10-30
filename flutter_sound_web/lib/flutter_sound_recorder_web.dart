@@ -33,17 +33,17 @@ import 'package:js/js.dart';
 //========================================  JS  ===============================================================
 
 @JS('newRecorderInstance')
-external FlutterSoundRecorder newRecorderInstance(FlutterSoundRecorderCallback callback);
+external FlutterSoundRecorder newRecorderInstance(FlutterSoundRecorderWeb caller);
 
 @JS('FlutterSoundRecorder')
 class FlutterSoundRecorder
 {
         @JS('newInstance')
-        external static FlutterSoundRecorder newInstance(FlutterSoundRecorderCallback callback);
+        external static FlutterSoundRecorder newInstance(FlutterSoundRecorderWeb caller);
 
 
         @JS('initializeFlautoRecorder')
-        external void initializeFlautoRecorder(int focus, int category, int mode, int audioFlags, int device);
+        external void initializeFlautoRecorder(FlutterSoundRecorderCallback callback, int focus, int category, int mode, int audioFlags, int device);
 
         @JS('releaseMediaPlayer')
         external void releaseMediaPlayer();
@@ -58,7 +58,7 @@ class FlutterSoundRecorder
         external void setSubscriptionDuration(int duration);
 
         @JS('startRecorder')
-        external void startRecorder(String path, int sampleRate, int numChannels, int bitRate, int codec, bool toStream, int audioSource);
+        external void startRecorder(String path, int sampleRate, int numChannels, int bitRate, int codec, bool toStream, int audioSource, Function toto);
 
         @JS('stopRecorder')
         external void stopRecorder();
@@ -107,13 +107,13 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
                 if (slotno < _slots.length)
                 {
                         assert (_slots[slotno] == null);
-                        _slots[slotno] = newRecorderInstance(callback);
+                        _slots[slotno] = newRecorderInstance(this);
                 } else
                 {
                         assert(slotno == _slots.length);
-                        _slots.add( newRecorderInstance(callback));
+                        _slots.add( newRecorderInstance(this));
                 }
-                getWebSession(callback).initializeFlautoRecorder(focus.index, category.index, mode.index, audioFlags, device.index);
+                getWebSession(callback).initializeFlautoRecorder(callback, focus.index, category.index, mode.index, audioFlags, device.index);
         }
 
 
@@ -155,7 +155,12 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
                     AudioSource audioSource,
             }) async
         {
-                getWebSession(callback).startRecorder(path, sampleRate, numChannels, bitRate, codec.index, toStream, audioSource.index);
+                getWebSession(callback).startRecorder(path, sampleRate, numChannels, bitRate, codec.index, toStream, audioSource.index,
+                    allowInterop(
+                    ( bidule)
+                {
+                        print(bidule);
+                }));
         }
 
         @override

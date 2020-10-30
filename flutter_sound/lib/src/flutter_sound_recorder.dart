@@ -277,44 +277,47 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
     }
   }
 
-  Future<void> stopRecorder() async {
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
-    if (isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
-    }
-    await FlutterSoundRecorderPlatform.instance.stopRecorder(this);
-    //if (_userStreamSink != null) {
-      //_userStreamSink.close();
-      _userStreamSink = null;
-   // }
+  Future<void> stopRecorder() async
+  {
+          if (isInited == Initialized.initializationInProgress)
+          {
+                  throw (_InitializationInProgress());
+          }
+          if (isInited != Initialized.fullyInitialized)
+          {
+                  throw (_notOpen());
+          }
+          await FlutterSoundRecorderPlatform.instance.stopRecorder(this);
+          _userStreamSink = null;
 
-    recorderState = RecorderState.isStopped;
+          recorderState = RecorderState.isStopped;
 
-    if (isOggOpus) {
-      // delete the target if it exists
-      // (ffmpeg gives an error if the output file already exists)
-      File f = File(savedUri);
-      if (f.existsSync()) 
-        await f.delete();
-      // The following ffmpeg instruction re-encode the Apple CAF to OPUS.
-      // Unfortunately we cannot just remix the OPUS data,
-      // because Apple does not set the "extradata" in its private OPUS format.
-      // It will be good if we can improve this...
-      int rc = await flutterSoundHelper.executeFFmpegWithArguments([
-        '-loglevel',
-        'error',
-        '-y',
-        '-i',
-        tmpUri,
-        '-c:a',
-        'libopus',
-        savedUri,
-      ]); // remux CAF to OGG
-      if (rc != 0) return null;
-      return savedUri;
-    }
+          if (isOggOpus)
+          {
+                  // delete the target if it exists
+                  // (ffmpeg gives an error if the output file already exists)
+                  File f = File(savedUri);
+                  if (f.existsSync())
+                          await f.delete();
+                  // The following ffmpeg instruction re-encode the Apple CAF to OPUS.
+                  // Unfortunately we cannot just remix the OPUS data,
+                  // because Apple does not set the "extradata" in its private OPUS format.
+                  // It will be good if we can improve this...
+                  int rc = await flutterSoundHelper.executeFFmpegWithArguments
+                  ([
+                            '-loglevel',
+                            'error',
+                            '-y',
+                            '-i',
+                            tmpUri,
+                            '-c:a',
+                            'libopus',
+                            savedUri,
+                  ]); // remux CAF to OGG
+                  if (rc != 0)
+                          return null;
+                  return savedUri;
+          }
   }
 
 

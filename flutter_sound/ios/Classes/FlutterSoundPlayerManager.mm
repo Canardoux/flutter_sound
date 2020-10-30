@@ -75,82 +75,82 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         if ([@"initializeMediaPlayer" isEqualToString:call.method])
         {
                 aFlautoPlayer = [[FlutterSoundPlayer alloc] init: call];
-                [aFlautoPlayer initializeFlautoPlayer: call result:result];
+                [aFlautoPlayer initializeFlautoPlayer: call result: result];
         } else
 
         if ([@"releaseMediaPlayer" isEqualToString:call.method])
         {
-                [aFlautoPlayer releaseFlautoPlayer: call result:result];
+                [aFlautoPlayer releaseFlautoPlayer: call result: result];
          } else
 
         if ([@"getPlayerState" isEqualToString:call.method])
         {
-                [aFlautoPlayer getPlayerState: call result:result];
+                [aFlautoPlayer getPlayerState: call result: result];
         } else
 
         if ([@"setAudioFocus" isEqualToString:call.method])
         {
-                [aFlautoPlayer setAudioFocus: call result:result];
+                [aFlautoPlayer setAudioFocus: call result: result];
         } else
 
 
         if ([@"isDecoderSupported" isEqualToString:call.method])
         {
                 NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
-                [aFlautoPlayer isDecoderSupported:(t_CODEC)[codec intValue] result:result];
+                [aFlautoPlayer isDecoderSupported: (t_CODEC)[codec intValue] result: result];
         } else
 
-        if ([@"startPlayer" isEqualToString:call.method])
+        if ([@"startPlayer" isEqualToString: call.method])
         {
-                [aFlautoPlayer startPlayer: call result:result];
+                [aFlautoPlayer startPlayer: call result: result];
         } else
 
-        if ([@"startPlayerFromTrack" isEqualToString:call.method])
+        if ([@"startPlayerFromTrack" isEqualToString: call.method])
         {
-                 [aFlautoPlayer startPlayerFromTrack: call result:result];
+                 [aFlautoPlayer startPlayerFromTrack: call result: result];
         } else
 
-        if ([@"stopPlayer" isEqualToString:call.method])
+        if ([@"stopPlayer" isEqualToString: call.method])
         {
-                [aFlautoPlayer stopPlayer: call result:result];
+                [aFlautoPlayer stopPlayer: call result: result];
         } else
 
-        if ([@"pausePlayer" isEqualToString:call.method])
+        if ([@"pausePlayer" isEqualToString: call.method])
         {
                 [aFlautoPlayer pausePlayer: result];
         } else
 
-        if ([@"resumePlayer" isEqualToString:call.method])
+        if ([@"resumePlayer" isEqualToString: call.method])
         {
-                [aFlautoPlayer resumePlayer:result];
+                [aFlautoPlayer resumePlayer: result];
         } else
 
-        if ([@"seekToPlayer" isEqualToString:call.method])
+        if ([@"seekToPlayer" isEqualToString: call.method])
         {
                 //NSNumber* sec = (NSNumber*)call.arguments[@"sec"];
-                [aFlautoPlayer seekToPlayer:call result:result];
+                [aFlautoPlayer seekToPlayer: call result: result];
         } else
 
         if ([@"setSubscriptionDuration" isEqualToString:call.method])
         {
                 //NSNumber* sec = (NSNumber*)call.arguments[@"sec"];
-                [aFlautoPlayer setSubscriptionDuration:call result:result];
+                [aFlautoPlayer setSubscriptionDuration: call result: result];
         } else
 
         if ([@"setVolume" isEqualToString:call.method])
         {
                 NSNumber* volume = (NSNumber*)call.arguments[@"volume"];
-                [aFlautoPlayer setVolume:[volume doubleValue] result:result];
+                [aFlautoPlayer setVolume: [volume doubleValue] result: result];
         } else
 
         if ([@"iosSetCategory" isEqualToString:call.method])
         {
-                [aFlautoPlayer setCategory: call result:result];
+                [aFlautoPlayer setCategory: call result: result];
         } else
 
         if ([@"setActive" isEqualToString:call.method])
         {
-                [aFlautoPlayer setActive: call result:result];
+                [aFlautoPlayer setActive: call result: result];
         } else
 
         if ( [@"getResourcePath" isEqualToString:call.method] )
@@ -160,22 +160,22 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
         if ([@"setUIProgressBar" isEqualToString:call.method])
         {
-                 [aFlautoPlayer setUIProgressBar: call result:result];
+                 [aFlautoPlayer setUIProgressBar: call result: result];
         } else
 
         if ([@"nowPlaying" isEqualToString:call.method])
         {
-                 [aFlautoPlayer nowPlaying: call result:result];
+                 [aFlautoPlayer nowPlaying: call result: result];
         } else
 
         if ([@"getProgress" isEqualToString:call.method])
         {
-                 [aFlautoPlayer getProgress: call result:result];
+                 [aFlautoPlayer getProgress: call result: result];
         } else
         
-        if ([@"feed" isEqualToString:call.method])
+        if ([@"feed" isEqualToString: call.method])
         {
-                 [aFlautoPlayer feed: call result:result];
+                 [aFlautoPlayer feed: call result: result];
         } else
 
 

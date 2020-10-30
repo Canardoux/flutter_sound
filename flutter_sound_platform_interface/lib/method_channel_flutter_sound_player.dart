@@ -42,6 +42,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
     {
       case "updateProgress":
         {
+          aPlayer.updatePlaybackState(arg['state']);
           aPlayer.updateProgress(duration:  arg['duration'], position:  arg['position']);
         }
         break;
@@ -49,6 +50,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
       case "audioPlayerFinishedPlaying":
         {
           print('FS:---> channelMethodCallHandler : ${call.method}');
+          aPlayer.updatePlaybackState(arg['state']);
           aPlayer.audioPlayerFinished(arg['arg']);
           print('FS:<--- channelMethodCallHandler : ${call.method}');
         }
@@ -99,6 +101,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
         {
           print('FS:---> channelMethodCallHandler : ${call.method}');
           bool success = arg['arg'] as bool;
+          aPlayer.updatePlaybackState(arg['state']);
           aPlayer.openAudioSessionCompleted(success);
           print('FS:<--- channelMethodCallHandler : ${call.method}');
         }
@@ -108,6 +111,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
         {
           print('FS:---> channelMethodCallHandler : ${call.method}');
           int duration = arg['duration'] as int;
+          aPlayer.updatePlaybackState(arg['state']);
           aPlayer.startPlayerCompleted(duration);
           print('FS:<--- channelMethodCallHandler : ${call.method}');
         }
@@ -115,6 +119,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
 
       case 'needSomeFood':
         {
+          aPlayer.updatePlaybackState(arg['state']);
           aPlayer.needSomeFood(arg['arg']);
         }
         break;

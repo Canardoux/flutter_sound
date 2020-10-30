@@ -53,6 +53,9 @@ const List<String> ext = [
   '.amr', // amr-WB
   '.pcm', // pcm8
   '.pcm', // pcmFloat32
+  '.pcm', //codec.pcmWebM,
+  '.opus', // codec.opusWebM,
+
 ];
 
 

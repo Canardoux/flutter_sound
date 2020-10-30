@@ -47,6 +47,12 @@ static bool _isIosEncoderSupported [] =
 		true, // aacMP4
                 false, // amrNB
                 false, // amrWB
+                
+                false, // pcm8
+                false, // pcmFloat32
+                false, // pcmWebM
+                false, // opusWebM
+                false, // vorbisWebM
 
 };
 
@@ -65,7 +71,14 @@ static NSString* defaultExtensions [] =
           @"sound.flac", // flac
           @"sound.mp4", // aacMP4
           @"sound.amr", // amrNB
-          @"sound.amr", // amrWB
+          @"sound.amrwb", // amrWB
+          @"sound.pcm8", // pcm8
+          @"sound.pcmF32", // pcmFloat32
+          @"sound.webm", // pcmWebM
+          @"sound_opus.webm", // opusWebM
+          @"sound_vorbis.webm", // vorbisWebM
+
+          
 
 };
 
@@ -77,7 +90,7 @@ static AudioFormatID formats [] =
         , kAudioFormatOpus              // CODEC_CAF_OPUS
         , 0                             // CODEC_MP3
         , 0                             // CODEC_OGG_vorbis
-        , 0                             // pcm16
+        , kAudioFormatLinearPCM         // pcm16
         , kAudioFormatLinearPCM         // pcm16WAV
         , 0                             // pcm16AIFF
         , kAudioFormatLinearPCM         // pcm16CAF
@@ -85,6 +98,11 @@ static AudioFormatID formats [] =
         , kAudioFormatMPEG4AAC          // aacMP4
         , kAudioFormatAMR               // amrNB
         , kAudioFormatAMR_WB            // amrWB
+        , 0                             // pcm8
+        , 0                             // pcmFloat32
+        , 0                             // pcmWebM
+        , 0                             // opusWebM
+        , 0                             // vorbisWebM
 };
 
 

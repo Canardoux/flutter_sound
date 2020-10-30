@@ -96,6 +96,10 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     Codec.defaultCodec, // amrWB
     Codec.defaultCodec, // pcm8
     Codec.defaultCodec, // pcmFloat32
+    Codec.defaultCodec, // pcmWebM
+    Codec.defaultCodec, // opusWebM
+    Codec.defaultCodec, // vorbisWebM
+
   ];
 
   static const List<Codec> tabIosConvert = [
@@ -115,6 +119,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     Codec.defaultCodec, // amrWB
     Codec.defaultCodec, // pcm8
     Codec.defaultCodec, // pcmFloat32
+    Codec.defaultCodec, // pcmWebM
+    Codec.defaultCodec, // opusWebM
+    Codec.defaultCodec, // vorbisWebM
   ];
 
 
@@ -135,6 +142,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     Codec.defaultCodec, // amrWB
     Codec.defaultCodec, // pcm8
     Codec.defaultCodec, // pcmFloat32
+    Codec.defaultCodec, // pcmWebM
+    Codec.defaultCodec, // opusWebM
+    Codec.defaultCodec, // vorbisWebM
   ];
 
   //===================================  Callbacks ================================================================
@@ -214,10 +224,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   @override
   void updatePlaybackState(int state)
   {
-      print( 'FS:---> updatePlaybackState ' );
       assert (state != null);
       playerState = PlayerState.values[state];
-      print( 'FS:<--- updatePlaybackState ' );
   }
 
   @override
@@ -344,8 +352,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         FlutterSoundPlayerPlatform.instance.openSession( this);
         setPlayerCallback( );
         openAudioSessionCompleter = new Completer<FlutterSoundPlayer>();
-        FlutterSoundPlayerPlatform.instance.initializeMediaPlayer(this, focus: focus, category: category, mode: mode, audioFlags: audioFlags, device: device, withUI: withUI );
-        //playerState = PlayerState.values[state];
+        int state = await FlutterSoundPlayerPlatform.instance.initializeMediaPlayer(this, focus: focus, category: category, mode: mode, audioFlags: audioFlags, device: device, withUI: withUI );
+        playerState = PlayerState.values[state];
         //isInited = success ?  Initialized.fullyInitialized : Initialized.notInitialized;
 
       });
@@ -631,7 +639,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
           whenFinished();
         };
         startPlayerCompleter = new Completer<Duration>();
-        FlutterSoundPlayerPlatform.instance.startPlayer(this, codec: codec, fromDataBuffer: fromDataBuffer, fromURI: fromURI,) ;
+        int state = await FlutterSoundPlayerPlatform.instance.startPlayer(this, codec: codec, fromDataBuffer: fromDataBuffer, fromURI: fromURI,) ;
+        playerState = PlayerState.values[state];
    } );
      //Duration duration = Duration(milliseconds: retMap['duration'] as int);
      print('FS:<--- startPlayer ');
@@ -769,7 +778,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
           throw Exception( 'Player is not stopped' );
         }
         openAudioSessionCompleter = new Completer<FlutterSoundPlayer>();
-        FlutterSoundPlayerPlatform.instance.startPlayerFromTrack(this,
+        int state = await FlutterSoundPlayerPlatform.instance.startPlayerFromTrack(this,
           progress: progress,
           duration: duration,
           track: trackDico,
@@ -784,6 +793,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
           ),
           defaultPauseResume: defaultPauseResume,
           removeUIWhenStopped: removeUIWhenStopped,);
+        playerState = PlayerState.values[state];
       }
       catch (e)
       {

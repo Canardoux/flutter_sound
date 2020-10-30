@@ -16,6 +16,9 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+
+
+
 function newPlayerInstance(theFlutterSoundPlayerCallback) { return new FlutterSoundPlayer();}
 
 class FlutterSoundPlayer
@@ -38,11 +41,12 @@ class FlutterSoundPlayer
           {
           }
 
-          playAudioFromURL(path)
+          playAudioFromURL(path, codec)
           {
 
                 var audio = new Howl({
-                  src: [path]
+                  src: [path],
+                  format: tabFormat[codec]
                 });
                 audio.play();
                 this.callback.startPlayerCompleted(777);
@@ -57,9 +61,10 @@ class FlutterSoundPlayer
 
               var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
               var source = audioCtx.createBufferSource();
+              console.log(dataBuffer.constructor.name)
               audioCtx.decodeAudioData
               (
-                dataBuffer.buffer,
+                dataBuffer, //dataBuffer.buffer,
                 function(buffer)
                 {
                     source.buffer = buffer;
@@ -102,6 +107,41 @@ class FlutterSoundPlayer
 
         startPlayer( codec, fromDataBuffer,  fromURI, numChannels, sampleRate)
         {
+                if (fromDataBuffer != null)
+                {
+                         console.log(fromDataBuffer.constructor.name)
+
+                        this.playAudioFromBuffer(fromDataBuffer.buffer)
+                } else
+                if (fromURI != null && fromURI != '')
+                {
+                        var data = window.sessionStorage.getItem(fromURI);
+                        if (data != null)
+                        {
+                                console.log('session storage');
+                        } else
+                        {
+                                data = window.localStorage.getItem(fromURI);
+                        }
+                        if (data != null)
+                        {
+                                console.log('++++++++++' + data.constructor.name);
+                                fromURI = data;
+                                //var buffer = JSON.parse(data);
+                                //console.log('++++++++++' + buffer.constructor.name);
+                                //buffer.arrayBuffer().then(buf => this.playAudioFromBuffer(buf) );
+                                //this.playAudioFromBuffer(buffer);
+                                //var myArrayBuffer = await data.arrayBuffer();
+                                //console.log('data ln = ' + myArrayBuffer.byteLength);
+                                //playAudioFromBuffer(myArrayBuffer);
+                        }
+                        //else
+                        //{
+                                console.log('fromURI');
+                                this.playAudioFromURL(fromURI, codec);
+                        //}
+
+                }
                 return 0;
         }
 

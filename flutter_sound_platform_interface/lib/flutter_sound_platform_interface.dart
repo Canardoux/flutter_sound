@@ -62,6 +62,14 @@ enum Codec {
   /// Raw PCM with 32 bits Floating Points
   pcmFloat32,
 
+  /// PCM with a WebM format
+  pcmWebM,
+
+  /// Opus with a WebM format
+  opusWebM,
+
+  /// Vorbis with a WebM format
+  vorbisWebM,
 }
 
 

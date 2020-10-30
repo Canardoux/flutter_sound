@@ -29,6 +29,7 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:async';
 
 
 // If someone update the following comment, please update also the Examples/README.md file and the code inside Examples/lib/demo/main.dart
@@ -100,7 +101,37 @@ class _MyAppState extends State<Demo> {
     null,
     null,
     null,
+    null,
+    null,
+    null,
+    null,
+    null,
   ];
+
+
+  List<String> assetSample = [
+    'assets/samples/sample.aac',
+    'assets/samples/sample.aac',
+    'assets/samples/sample.opus',
+    'assets/samples/sample_opus.caf',
+    'assets/samples/sample.mp3',
+    'assets/samples/sample.ogg',
+    'assets/samples/sample.pcm',
+    'assets/samples/sample.wav',
+    'assets/samples/sample.aiff',
+    'assets/samples/sample_pcm.caf',
+    'assets/samples/sample.flac',
+    'assets/samples/sample.mp4',
+    'assets/samples/sample.amr', // amrNB
+    'assets/samples/sample_xxx.amr', // amrWB
+    'assets/samples/sample_xxx.pcm', // pcm8
+    'assets/samples/sample_xxx.pcm', // pcmFloat32
+    'assets/samples/sample_xxx.pcm', // pcmWebM
+    'assets/samples/sample_opus.webm', // opusWebM
+    'assets/samples/sample_vorbis.webm', // vorbisWebM
+  ];
+
+
   StreamSubscription _recorderSubscription;
   StreamSubscription _playerSubscription;
   StreamSubscription _recordingDataSubscription;
@@ -115,7 +146,7 @@ class _MyAppState extends State<Demo> {
   double sliderCurrentPosition = 0.0;
   double maxDuration = 1.0;
   Media _media = Media.file;
-  Codec _codec = Codec.aacADTS;
+  Codec _codec = (kIsWeb) ? Codec.opusWebM : Codec.aacADTS;
 
   bool _encoderSupported = true; // Optimist
   bool _decoderSupported = true; // Optimist
@@ -227,60 +258,73 @@ class _MyAppState extends State<Demo> {
                         throw RecordingPermissionException("Microphone permission not granted");
                       }
               }
-      String path = '';
-      if (!kIsWeb) {
-        Directory tempDir = await getTemporaryDirectory();
-        path =
-            '${tempDir.path}/flutter_sound${ext[_codec.index]}';
-      }
+              String path = '';
+              if (!kIsWeb)
+              {
+                      Directory tempDir = await getTemporaryDirectory();
+                      path = '${tempDir.path}/flutter_sound${ext[_codec.index]}';
+              } else
+              {
+                      path = '_flutter_sound${ext[_codec.index]}';
+              }
 
-      if (_media == Media.stream) {
-        assert(_codec == Codec.pcm16);
-        File outputFile = File(path);
-        if (outputFile.existsSync())
-          await outputFile.delete();
-        sink = outputFile.openWrite();
-        recordingDataController = StreamController<Food>();
-        _recordingDataSubscription =
-            recordingDataController.stream.listen((Food buffer) {
-            if (buffer is FoodData)
-                sink.add(buffer.data);
-        });
-        await recorderModule.startRecorder(
-          toStream: recordingDataController.sink,
-          codec: _codec,
-          numChannels: 1,
-          sampleRate: SAMPLE_RATE,
-        );
-      } else {
-        await recorderModule.startRecorder(
-          toFile: path,
-          codec: _codec,
-          bitRate: 8000,
-          numChannels: 1,
-          sampleRate: SAMPLE_RATE,
-        );
-      }
-      print('startRecorder');
+              if (_media == Media.stream)
+              {
+                        assert(_codec == Codec.pcm16);
+                        if (!kIsWeb)
+                        {
+                                File outputFile = File(path);
+                                if (outputFile.existsSync())
+                                        await outputFile.delete();
+                                sink = outputFile.openWrite();
+                        } else
+                        {
+                                sink = IOSink(null);// TODO !!!!!
+                        }
+                        recordingDataController = StreamController<Food>();
+                        _recordingDataSubscription = recordingDataController.stream.listen((Food buffer)
+                        {
+                                if (buffer is FoodData)
+                                        sink.add(buffer.data);
+                        });
+                        await recorderModule.startRecorder
+                        (
+                                  toStream: recordingDataController.sink,
+                                  codec: _codec,
+                                  numChannels: 1,
+                                  sampleRate: SAMPLE_RATE,
+                        );
+              } else
+              {
+                          await recorderModule.startRecorder
+                          (
+                                  toFile: path,
+                                  codec: _codec,
+                                  bitRate: 8000,
+                                  numChannels: 1,
+                                  sampleRate: SAMPLE_RATE,
+                          );
+              }
+              print('startRecorder');
 
-      _recorderSubscription = recorderModule.onProgress.listen((e) {
-        if (e != null && e.duration != null) {
-          DateTime date = new DateTime.fromMillisecondsSinceEpoch(
-              e.duration.inMilliseconds,
-              isUtc: true);
-          String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
+              _recorderSubscription = recorderModule.onProgress.listen((e) {
+                if (e != null && e.duration != null) {
+                  DateTime date = new DateTime.fromMillisecondsSinceEpoch(
+                      e.duration.inMilliseconds,
+                      isUtc: true);
+                  String txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
 
-          this.setState(() {
-            _recorderTxt = txt.substring(0, 8);
-            _dbLevel = e.decibels;
-          });
-        }
-      });
+                  this.setState(() {
+                    _recorderTxt = txt.substring(0, 8);
+                    _dbLevel = e.decibels;
+                  });
+                }
+              });
 
-      this.setState(() {
-        this._isRecording = true;
-        this._path[_codec.index] = path;
-      });
+              this.setState(() {
+                this._isRecording = true;
+                this._path[_codec.index] = path;
+              });
     } catch (err) {
       print('startRecorder error: $err');
       setState(() {
@@ -344,23 +388,6 @@ class _MyAppState extends State<Demo> {
     }
   }
 
-  List<String> assetSample = [
-    'assets/samples/sample.aac',
-    'assets/samples/sample.aac',
-    'assets/samples/sample.opus',
-    'assets/samples/sample_opus.caf',
-    'assets/samples/sample.mp3',
-    'assets/samples/sample.ogg',
-    'assets/samples/sample.pcm',
-    'assets/samples/sample.wav',
-    'assets/samples/sample.aiff',
-    'assets/samples/sample_pcm.caf',
-    'assets/samples/sample.flac',
-    'assets/samples/sample.mp4',
-    'assets/samples/sample.amr', // amrNB
-    'assets/samples/sample.amr', // amrWB
-  ];
-
   void _addListeners() {
     cancelPlayerSubscriptions();
     _playerSubscription = playerModule.onProgress.listen((e) {
@@ -402,130 +429,136 @@ class _MyAppState extends State<Demo> {
       return playerModule.feedFromStream(data);
   }
 
-  Future<void> startPlayer() async {
-    try {
-      Uint8List dataBuffer;
-      String audioFilePath;
-      Codec codec = _codec;
-      if (_media == Media.asset) {
-        dataBuffer = (await rootBundle.load(assetSample[codec.index]))
-            .buffer
-            .asUint8List();
-      } else if (_media == Media.file || _media == Media.stream) {
-        // Do we want to play from buffer or from file ?
-        if (await fileExists(_path[codec.index]))
-          audioFilePath = this._path[codec.index];
-      } else if (_media == Media.buffer) {
-        // Do we want to play from buffer or from file ?
-        if (await fileExists(_path[codec.index])) {
-          dataBuffer = await makeBuffer(this._path[codec.index]);
-          if (dataBuffer == null) {
-            throw Exception('Unable to create the buffer');
-          }
-        }
-      } else if (_media == Media.remoteExampleFile) {
-        // We have to play an example audio file loaded via a URL
-        if (_codec == Codec.mp3)
-            audioFilePath = exampleAudioFilePathMP3;
-        else if (codec == Codec.opusOGG)
-            audioFilePath = exampleAudioFilePathOPUS;
-      }
+  Future<void> startPlayer() async
+  {
+    try
+    {
+            Uint8List dataBuffer;
+            String audioFilePath;
+            Codec codec = _codec;
+            if (_media == Media.asset) {
+              dataBuffer = (await rootBundle.load(assetSample[codec.index]))
+                  .buffer
+                  .asUint8List();
+            } else if (_media == Media.file || _media == Media.stream) {
+              // Do we want to play from buffer or from file ?
+              if (kIsWeb || await fileExists(_path[codec.index]))
+                audioFilePath = this._path[codec.index];
+            } else if (_media == Media.buffer) {
+              // Do we want to play from buffer or from file ?
+              if (await fileExists(_path[codec.index])) {
+                dataBuffer = await makeBuffer(this._path[codec.index]);
+                if (dataBuffer == null) {
+                  throw Exception('Unable to create the buffer');
+                }
+              }
+            } else if (_media == Media.remoteExampleFile) {
+              // We have to play an example audio file loaded via a URL
+              if (_codec == Codec.mp3)
+                  audioFilePath = exampleAudioFilePathMP3;
+              else if (codec == Codec.opusOGG)
+                  audioFilePath = exampleAudioFilePathOPUS;
+            }
 
-      // Check whether the user wants to use the audio player features
-      if (_isAudioPlayer) {
-        String albumArtUrl;
-        String albumArtAsset;
-        String albumArtFile;
-        if (_media == Media.remoteExampleFile)
-          albumArtUrl = albumArtPath;
-        else {
-          albumArtFile =
-              await playerModule.getResourcePath() + "/assets/canardo.png";
-          print(albumArtFile);
-        }
+            // Check whether the user wants to use the audio player features
+            if (_isAudioPlayer)
+            {
+                          String albumArtUrl;
+                          String albumArtAsset;
+                          String albumArtFile;
+                          if (_media == Media.remoteExampleFile)
+                            albumArtUrl = albumArtPath;
+                          else {
+                            albumArtFile =
+                                await playerModule.getResourcePath() + "/assets/canardo.png";
+                            print(albumArtFile);
+                          }
 
-        final track = Track(
-          trackPath: audioFilePath,
-          codec: _codec,
-          dataBuffer: dataBuffer,
-          trackTitle: "This is a record",
-          trackAuthor: "from flutter_sound",
-          albumArtUrl: albumArtUrl,
-          albumArtAsset: albumArtAsset,
-          albumArtFile: albumArtFile,
-        );
-        await playerModule.startPlayerFromTrack(track,
-            defaultPauseResume: false,
-            removeUIWhenStopped: true,
-            whenFinished: () {
-          print('I hope you enjoyed listening to this song');
-          setState(() {});
-        }, onSkipBackward: () {
-          print('Skip backward');
-          stopPlayer();
-          startPlayer();
-        }, onSkipForward: () {
-          print('Skip forward');
-          stopPlayer();
-          startPlayer();
-        }, onPaused: (bool b) {
-          if (b)
-            playerModule.pausePlayer();
-          else
-            playerModule.resumePlayer();
-        });
-      } else
-        if (_media == Media.stream){
-          await playerModule.startPlayerFromStream(
-            codec: _codec,
-            numChannels: 1,
-            sampleRate: SAMPLE_RATE,
-          );
-          _addListeners();
-          setState(() {});
-          await feedHim(audioFilePath);
-          //await finishPlayer();
-          await stopPlayer();
-          return;
+                          final track = Track(
+                            trackPath: audioFilePath,
+                            codec: _codec,
+                            dataBuffer: dataBuffer,
+                            trackTitle: "This is a record",
+                            trackAuthor: "from flutter_sound",
+                            albumArtUrl: albumArtUrl,
+                            albumArtAsset: albumArtAsset,
+                            albumArtFile: albumArtFile,
+                          );
+                          await playerModule.startPlayerFromTrack(track,
+                              defaultPauseResume: false,
+                              removeUIWhenStopped: true,
+                              whenFinished: () {
+                            print('I hope you enjoyed listening to this song');
+                            setState(() {});
+                          }, onSkipBackward: () {
+                            print('Skip backward');
+                            stopPlayer();
+                            startPlayer();
+                          }, onSkipForward: () {
+                            print('Skip forward');
+                            stopPlayer();
+                            startPlayer();
+                          }, onPaused: (bool b) {
+                            if (b)
+                              playerModule.pausePlayer();
+                            else
+                              playerModule.resumePlayer();
+                          });
+              } else
+              if (_media == Media.stream)
+              {
+                            await playerModule.startPlayerFromStream(
+                              codec: _codec,
+                              numChannels: 1,
+                              sampleRate: SAMPLE_RATE,
+                            );
+                            _addListeners();
+                            setState(() {});
+                            await feedHim(audioFilePath);
+                            //await finishPlayer();
+                            await stopPlayer();
+                            return;
 
-        } else {
-        if (audioFilePath != null) {
+              } else
+              {
+                          if (audioFilePath != null) {
 
-          await playerModule.startPlayer(
-              fromURI: audioFilePath,
-              codec: codec,
-              sampleRate:  SAMPLE_RATE,
-              whenFinished: () {
-                print('Play finished');
-                setState(() {});
-              });
-        } else if (dataBuffer != null) {
-          if (codec == Codec.pcm16) {
-            dataBuffer = await flutterSoundHelper.pcmToWaveBuffer(
-              inputBuffer: dataBuffer,
-              numChannels: 1,
-              sampleRate: (_codec == Codec.pcm16 && _media == Media.asset)? 48000 : SAMPLE_RATE,
-            );
-            codec = Codec.pcm16WAV;
-          }
-          await playerModule.startPlayer(
-              fromDataBuffer: dataBuffer,
-              sampleRate:   SAMPLE_RATE,
+                            await playerModule.startPlayer(
+                                fromURI: audioFilePath,
+                                codec: codec,
+                                sampleRate:  SAMPLE_RATE,
+                                whenFinished: () {
+                                  print('Play finished');
+                                  setState(() {});
+                                });
+                          } else if (dataBuffer != null) {
+                            if (codec == Codec.pcm16) {
+                              dataBuffer = await flutterSoundHelper.pcmToWaveBuffer(
+                                inputBuffer: dataBuffer,
+                                numChannels: 1,
+                                sampleRate: (_codec == Codec.pcm16 && _media == Media.asset)? 48000 : SAMPLE_RATE,
+                              );
+                              codec = Codec.pcm16WAV;
+                            }
+                            await playerModule.startPlayer(
+                                fromDataBuffer: dataBuffer,
+                                sampleRate:   SAMPLE_RATE,
 
-              codec: codec,
-              whenFinished: () {
-                print('Play finished');
-                setState(() {});
-              });
-        }
-      }
-      _addListeners();
-      setState(() {});
-      print('<--- startPlayer');
-    } catch (err) {
+                                codec: codec,
+                                whenFinished: () {
+                                  print('Play finished');
+                                  setState(() {});
+                                });
+                          }
+            }
+            _addListeners();
+            setState(() {});
+            print('<--- startPlayer');
+    } catch (err)
+    {
       print('error: $err');
     }
-   }
+  }
 
 
     Future<void> stopPlayer() async {
@@ -685,6 +718,29 @@ class _MyAppState extends State<Demo> {
               value: Codec.amrWB,
               child: Text('AMR-WB '),
             ),
+
+            DropdownMenuItem<Codec>(
+              value: Codec.pcm8,
+              child: Text('PCM8 '),
+            ),
+            DropdownMenuItem<Codec>(
+              value: Codec.pcmFloat32,
+              child: Text('PCM Float32 '),
+            ),
+            DropdownMenuItem<Codec>(
+              value: Codec.pcmWebM,
+              child: Text('PCM/WebM '),
+            ),
+            DropdownMenuItem<Codec>(
+              value: Codec.opusWebM,
+              child: Text('Opus/WebM '),
+            ),
+            DropdownMenuItem<Codec>(
+              value: Codec.vorbisWebM,
+              child: Text('Vorbis/WebM '),
+            ),
+
+
           ],
         ),
       ],
@@ -731,6 +787,8 @@ class _MyAppState extends State<Demo> {
 
   void Function() onStartPlayerPressed() {
     if (playerModule == null) return null;
+    if (_media == Media.buffer && kIsWeb)
+      return null;
     if (_media == Media.file || _media == Media.stream ||
         _media == Media.buffer) // A file must be already recorded to play it
     {

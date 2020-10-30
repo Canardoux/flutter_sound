@@ -37,6 +37,7 @@
 }
 
 
+- (int)getStatus;
 - (FlutterSoundPlayerManager*) getPlugin;
 - (Session*) init: (FlutterMethodCall*)call;
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result;
