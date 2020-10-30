@@ -18,59 +18,59 @@
 
 
 
-function newRecorderInstance(caller) { var x = new FlutterSoundRecorder(); x.caller = caller; return x;}
+function newRecorderInstance(aCallback) { return new FlutterSoundRecorder(aCallback);}
 
 
 
 class FlutterSoundRecorder
 {
-        static newInstance(caller) {  var x = new FlutterSoundRecorder(); x.caller = caller; return x;}
+        static newInstance(aCallback) { return new FlutterSoundRecorder(aCallback);}
 
-        constructor(caller)
+        constructor(aCallback)
         {
-                this.caller = caller;
+                this.callback = aCallback;
+                this.subscriptionDuration = 0;
+                this.timerId = null;
+                this.deltaTime = 0;
         }
 
 
 
-        initializeFlautoRecorder( aCallback, focus, category, mode, audioFlags, device)
+        initializeFlautoRecorder(  focus, category, mode, audioFlags, device)
         {
-               this.callback = aCallback;
-
         }
 
 
-        releaseMediaPlayer()
+        releaseFlautoRecorder()
         {
-
+                this.stopRecorder();
         }
 
 
         setAudioFocus( focus, category, mode, audioFlags, device)
         {
-
         }
 
 
         isEncoderSupported( codec)
         {
-
+/*
                 for (var i in mime_types)
                 {
                         console.log( "Is " + mime_types[i] + " supported? " + (MediaRecorder.isTypeSupported(mime_types[i]) ? "Maybe!" : "Nope :("));
                 }
-
+*/
                return MediaRecorder.isTypeSupported(mime_types[codec]);
         }
 
 
         setSubscriptionDuration( duration)
         {
-
+                this.subscriptionDuration = duration;
         }
 
 
-        startRecorder( path, sampleRate, numChannels, bitRate, codec, toStream, audioSource, onStop)
+        startRecorder( path, sampleRate, numChannels, bitRate, codec, toStream, audioSource)
         {
                 var constraints = { audio: true};
                 var chunks ;//= [];
@@ -90,19 +90,15 @@ class FlutterSoundRecorder
                        }
                 }
 
-
-                //var myStorage = myStorage = window.sessionStorage;
-
                 navigator.mediaDevices.getUserMedia(constraints).then
                 (function(mediaStream)
                 {
                         /*
-                        {
                                 var audioCtx = new AudioContext();
 
 
                                 var source = audioCtx.createMediaStreamSource(mediaStream);
-
+                                //var dest = new audioCtx.createMediaStreamDestination();
                                 var offlineCtx = new OfflineAudioContext(2,44100*40,44100);
                                 var sourceOfflineCtx = offlineCtx.createBufferSource();
                                 //source.connect(sourceOfflineCtx);
@@ -121,12 +117,9 @@ class FlutterSoundRecorder
                                 ).catch(function(err)
                                 {
                                         console.log('Rendering failed: ' + err);
-          // Note: The promise should reject when startRendering is called a second time on an OfflineAudioContext
+                                        // Note: The promise should reject when startRendering is called a second time on an OfflineAudioContext
                                 }
                                 );
-                        }
-                );
-        }
 */
 
                         //       var buffer = audioCtx.createBuffer(numChannels, tenMinutes, sampleRate); // Play back ???
@@ -134,76 +127,66 @@ class FlutterSoundRecorder
 
 
                         // ===========================================================================
-                        //var audioCtx = new AudioContext();
-                        //var dest = new audioCtx.createMediaStreamDestination(); // osc
+
                         var chunks = [];
                         var options =
                         {
                               audioBitsPerSecond : bitRate,
-                              mimeType : mime_types[codec] //'audio/ogg; codecs=opus'
+                              mimeType : mime_types[codec]
                         }
-
-
-
 
                         var mediaRecorder = new MediaRecorder(mediaStream, options);
                         me.mediaRecorder = mediaRecorder;
-                        if (toStream)
+                        if (toStream) // not yet implemented !
                                 mediaRecorder.start(30); // 30 milliseconds for a chunk
                         else
                                 mediaRecorder.start();
-                        console.log(mediaRecorder.state);
-                        console.log("recorder started");
+                        console.log("recorder started : " + mediaRecorder.state);
 
 
                         mediaRecorder.ondataavailable = function(e)
                         {
-                                if (toStream)
+                                if (toStream) // not yet implemented !
                                 {
                                         me.callback.recordingData(e.data);
                                 }
                                 if (path != null && path != '')
                                 {
-                                        //chunks.push(e.data);
-                                        //chunks = e.data;
-                                        console.log('++++++++++' + e.data.constructor.name);
-                                        //e.data.arrayBuffer().then(buffer => chunks = buffer);
+                                        console.log('On data available : ' + e.data.constructor.name);
                                         chunks.push(e.data);
-
                                 }
                         }
 
-                        mediaRecorder.onstop = function(e)
+                        mediaRecorder.onstart = function(e)
                         {
+                                me.deltaTime = 0;
+                                me.startTimer();
+                                console.log('mediaRecorder OnStart : ' + me.mediaRecorder.state);
+                        }
 
-                                //var clipName = prompt('Enter a name for your sound clip');
+                        mediaRecorder.onerror = function(e)
+                        {
+                                console.log("mediaRecorder OnError : " + e.error);
+                                me.stopRecorder()
+                        }
 
-                                //var clipContainer = document.createElement('article');
-                                //var clipLabel = document.createElement('p');
-                                //var audio = document.createElement('audio');
-                                //var deleteButton = document.createElement('button');
+                        mediaRecorder.onpause = function(e)
+                        {
+                                console.log('mediaRecorder OnPause : ' + me.mediaRecorder.state);
+                        }
 
-                                //clipContainer.classList.add('clip');
-                                //audio.setAttribute('controls', '');
-                                //deleteButton.innerHTML = "Delete";
-                                //clipLabel.innerHTML = clipName;
+                        mediaRecorder.onresume = function(e)
+                        {
+                                console.log('mediaRecorder OnResume : ' + me.mediaRecorder.state);
+                        }
 
-                                //clipContainer.appendChild(audio);
-                                //clipContainer.appendChild(clipLabel);
-                                //clipContainer.appendChild(deleteButton);
-                                //soundClips.appendChild(clipContainer);
-
-                                //audio.controls = true;
+                         mediaRecorder.onstop = function(e)
+                        {
                                 if (path != null && path != '')
                                 {
-                                        //var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
-                                        console.log("data available after in Storage : " + path);
-                                        //console.log("caller = " + caller.constructor.name);
-                                        console.log('++++++++++' + chunks.constructor.name);
-                                        var blob = new Blob(chunks, {'type' : "audio/webm\;codecs=opus"} /* { 'type' : 'audio/ogg; codecs=opus' }*/);
+                                        console.log('data available after in Storage ' + path + ' : ' + chunks.constructor.name);
+                                        var blob = new Blob(chunks, {'type' : "audio/webm\;codecs=opus"} );
                                         var url = URL.createObjectURL(blob);
-                                        console.log('!!!!!!!!!!' + url.constructor.name);
-                                        onStop(url);
                                         myStorage.setItem(path, url);
 /*
                                         var xhr = new XMLHttpRequest();
@@ -245,31 +228,12 @@ class FlutterSoundRecorder
                                         // Send XHR
                                         xhr.send();
 */
-
-
-                                        //this.caller.toto(chunks);
-                                        //onStop(url);
-                                        console.log('toto done');
-                                        //chunks.arrayBuffer().then(buffer => myStorage.setItem(path, buffer));
-
-                                        //myStorage.setItem(path, JSON.stringify(chunks));
-                                        //myStorage.setItem(path, chunks);
                                 }
-                                //chunks = null;///[];
-                                        //var audioURL = URL.createObjectURL(blob);
-                                //audio.src = audioURL;
-                                console.log("recorder stopped");
-
-                                //deleteButton.onclick = function(e)
-                                //{
-                                        //evtTgt = e.target;
-                                        //evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
-                                //}
-                        }
-
-
+                                chunks = null;///[];
+                                console.log('recorder stopped' );
+                                me.mediaRecorder = null;
+                       }
                 });
-                //.catch(function(err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
         }
 
         stopRecorder()
@@ -277,9 +241,9 @@ class FlutterSoundRecorder
                 if (this.mediaRecorder != null)
                 {
                         this.mediaRecorder.stop();
-                        console.log(this.mediaRecorder.state);
                 }
-                console.log("recorder stopped");
+                this.stopTimer();
+                console.log("recorder stopped : " + this.mediaRecorder.state);
                 this.mediaRecorder = null;
         }
 
@@ -287,8 +251,8 @@ class FlutterSoundRecorder
         pauseRecorder()
         {
                 this.mediaRecorder.pause();
-                console.log(this.mediaRecorder.state);
-                console.log("recorder paused");
+                this.stopTimer();
+                console.log("recorder paused : " + this.mediaRecorder.state);
 
         }
 
@@ -296,9 +260,45 @@ class FlutterSoundRecorder
         resumeRecorder()
         {
                 this.mediaRecorder.resume();
-                console.log(this.mediaRecorder.state);
-                console.log("recorder resumed");
+                this.startTimer();
+                console.log("recorder resumed : " + this.mediaRecorder.state);
         }
 
+        startTimer()
+        {
+                console.log('startTimer()');
+                this.stopTimer();
+                var me = this;
+
+                if (this.subscriptionDuration > 0)
+                {
+                        this.countDownDate = new Date().getTime();
+                        this.timerId = setInterval
+                        (
+                                function()
+                                {
+                                        var now = new Date().getTime();
+                                        var distance = now - me.countDownDate;
+                                        //console.log('top : ' + distance);
+                                        me.callback.updateRecorderProgress({duration: me.deltaTime + distance, dbPeakLevel: 0});
+                                },
+                                this.subscriptionDuration
+                        );
+                }
+        }
+
+        stopTimer()
+        {
+                console.log('stopTimer()');
+                if (this.timerId != null)
+                {
+                        clearInterval(this.timerId);
+                        var now = new Date().getTime();
+                        var distance = now - this.countDownDate;
+                        this.deltaTime += distance;
+                        this.timerId = null;
+                }
+        }
 
 }
+

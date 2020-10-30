@@ -9,7 +9,7 @@
 |                   | AAC ADTS | Opus OGG | Opus CAF    | MP3 | Vorbis OGG | PCM16  | PCM WAV | PCM AIFF | PCM CAF | FLAC    | AAC MP4 | AMR-NB | AMR-WB | PCM-8     | PCM F32  | PCM WEBM | Opus WEBM   | Vorbis WEBM |
 | :---------------- | :------: | :------: | :---------: | :-: | :--------: | :----: | :-----: | :------: | :-----: | :-----: | :-----: | :----: | :----: | :-------: | :------: | :------: | :---------: | :---------: |
 |                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
-| iOS encoder       | Yes      | Yes(*)   | Yes         | No  | No         | Yes    | Yes     | No       | Yes     | Yes     | Yes     | No     | No     | No        | No       | NO       | No          | No          |
+| iOS encoder       | Yes      | Yes(*)   | Yes         | No  | No         | Yes    | Yes     | No       | Yes     | Yes     | Yes     | No     | No     | No        | No       | No       | No          | No          |
 | iOS decoder       | Yes      | Yes(*)   | Yes         | Yes | No         | Yes    | Yes     | Yes      | Yes     | Yes     | Yes     | No     | No     | No        | No       | No       | No          | No          |
 |                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
 | Android encoder   | Yes(1)   | No       | No          | No  | No         | Yes(1) | Yes(1)  | No       | No      | No      | Yes(1)  | Yes(1) | Yes(1) | No        | No       | No       | Yes         | No          |
@@ -228,5 +228,51 @@ You can look to the three provided examples :
 
 
 -------------------------------------------------------------------------------------------------------------------------------------
+
+## Flutter Sound on Flutter Web
+
+Flutter Sound is now supported by Flutter Web (with some limitations).
+
+### Player
+
+- Flutter Sound can play buffers with `startPlayerFromBuffer()`, exactly like with other platforms. Please refer to [the codecs compatibility table](#flutter-sound-codecs)
+- Flutter Sound can play remote URL with `startPlayer()`, exactly like with other platforms. Please refer to [the codecs compatibility table](#flutter-sound-codecs)
+- Playing from a Dart Stream with `startPlayerFromStream()`is not yet implemented.
+- Playing with UI (`startPlayerFromTrack`) is obviously not implemented, because we do not have control to the lock screen inside a web app.
+
+The web App does not have access to any file system. But you can store an URL into your local sessionStorage, and use the key as if it was an audio file.
+This is compatible with the Flutter Sound recorder.
+
+```
+final prefs = await SharedPreferences.getInstance();
+prefs.setString('foo', 'https://www.toto.com/foo.mp3');
+...
+startPlayer('foo');
+```
+
+Limitations:
+- Actually, `startPlayer()` does not return the song duration.
+- Flutter Sound does not have control to the audio-focus.
+
+### Recorder
+
+Flutter Sound on web cannot have access to any file system. You can use `startRecorder()` like others platforms, but the recorded data will be stored inside an internal HTTP object.
+Please refer to [the codecs compatibility table](#flutter-sound-codecs).
+When the recorder is stopped, `startRecorder` stores the URL of this object into your local sessionStorage.
+
+```
+await startRecorder(codec:  , toFile: 'foo');
+...
+await stopRecorder();
+await startPlayer('foo'); // ('foo' is the localSessionStorage key of the recorded sound URL object)
+```
+
+Limitations :
+- Recording to a Dart Stream is not yet implemented
+- Flutter Sound does not have access to the audio focus
+- Flutter Sound does not provide the audio peak level in the Recorder Progress events.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
 
 [Back to the README](../README.md#flutter-sound)

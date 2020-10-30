@@ -116,10 +116,10 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
   }
 
   @override
-  void updateRecorderProgress({Duration duration, double dbPeakLevel}) {
+  void updateRecorderProgress({int duration, double dbPeakLevel}) {
     //int duration = call['duration'] as int;
     //double dbPeakLevel = call['dbPeakLevel'] as double;
-    _recorderController.add(RecordingDisposition(duration,  dbPeakLevel ,) );
+    _recorderController.add(RecordingDisposition(Duration(milliseconds: duration),  dbPeakLevel ,) );
   }
 
   @override

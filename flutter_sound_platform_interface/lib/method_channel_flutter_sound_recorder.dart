@@ -35,7 +35,7 @@ Future<dynamic> channelMethodCallHandler(MethodCall call) {
     switch (call.method) {
       case "updateRecorderProgress":
         {
-          aRecorder.updateRecorderProgress(duration: Duration(milliseconds: call.arguments ['duration']), dbPeakLevel: call.arguments['dbPeakLevel']);
+          aRecorder.updateRecorderProgress(duration:call.arguments ['duration'], dbPeakLevel: call.arguments['dbPeakLevel']);
         }
         break;
 
