@@ -45,17 +45,11 @@ class FlutterSoundPlayer
         @JS('newInstance')
         external static FlutterSoundPlayer newInstance(FlutterSoundPlayerCallback theCallBack);
 
-        //@JS('playAudioFromURL')
-        //external int playAudioFromURL(String text);
-
-        //@JS('playAudioFromBuffer')
-        //external int playAudioFromBuffer(Uint8List buffer);
-
         @JS('releaseMediaPlayer')
         external int releaseMediaPlayer();
 
         @JS('initializeMediaPlayer')
-        external int initializeMediaPlayer(FlutterSoundPlayerCallback callback, int focus, int category, int mode, int audioFlags, int device, bool withUI);
+        external int initializeMediaPlayer( int focus, int category, int mode, int audioFlags, int device, bool withUI);
 
         @JS('setAudioFocus')
         external int setAudioFocus(int focus, int category, int mode, int audioFlags, int device,);
@@ -160,7 +154,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
 //==============================================================================================================================
 
         @override
-        Future<int> initializeMediaPlayer(FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI}) async
+        Future<int> initializeMediaPlayer( FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI}) async
         {
                 // openAudioSessionCompleter = new Completer<bool>();
                 // await invokeMethod( callback, 'initializeMediaPlayer', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index, 'withUI': withUI ? 1 : 0 ,},) ;
@@ -175,7 +169,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                         assert(slotno == _slots.length);
                         _slots.add( newPlayerInstance(callback));
                 }
-                return _slots[slotno].initializeMediaPlayer( callback, focus.index,  category.index, mode.index, audioFlags, device.index, withUI);
+                return _slots[slotno].initializeMediaPlayer( focus.index,  category.index, mode.index, audioFlags, device.index, withUI);
         }
 
 
@@ -268,7 +262,8 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                 //   'defaultPauseResume': defaultPauseResume, 'removeUIWhenStopped': removeUIWhenStopped,},);
                 // return  startPlayerCompleter.future ;
                 //
-                return getWebSession(callback).startPlayerFromTrack( progress.inMilliseconds,  duration.inMilliseconds, track, canPause, canSkipForward, canSkipBackward, defaultPauseResume, removeUIWhenStopped);
+                //return getWebSession(callback).startPlayerFromTrack( progress.inMilliseconds,  duration.inMilliseconds, track, canPause, canSkipForward, canSkipBackward, defaultPauseResume, removeUIWhenStopped);
+                return getWebSession(callback).startPlayer(track['codec'],  track['dataBuffer'], track['path'], track['numChannels'], track['sampleRate']);
           }
 
         @override

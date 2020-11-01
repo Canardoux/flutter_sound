@@ -468,10 +468,14 @@ class _MyAppState extends State<Demo> {
                           String albumArtFile;
                           if (_media == Media.remoteExampleFile)
                             albumArtUrl = albumArtPath;
-                          else {
-                            albumArtFile =
-                                await playerModule.getResourcePath() + "/assets/canardo.png";
-                            print(albumArtFile);
+                          else
+                          if (!kIsWeb)
+                          {
+                                  albumArtFile = await playerModule.getResourcePath() + "/assets/canardo.png";
+                                  print(albumArtFile);
+                          } else
+                          {
+
                           }
 
                           final track = Track(
@@ -601,10 +605,10 @@ class _MyAppState extends State<Demo> {
   }
 
   void seekToPlayer(int milliSecs) async {
-    print('-->seekToPlayer');
+    //print('-->seekToPlayer');
     if (playerModule.isPlaying)
         await playerModule.seekToPlayer(Duration(milliseconds: milliSecs));
-    print('<--seekToPlayer');
+    //print('<--seekToPlayer');
   }
 
   Widget makeDropdowns(BuildContext context) {

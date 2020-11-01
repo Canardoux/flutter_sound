@@ -161,7 +161,11 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
         @override
         Future<void> stopRecorder(FlutterSoundRecorderCallback callback,  ) async
         {
-                getWebSession(callback).stopRecorder();
+                FlutterSoundRecorder session = getWebSession(callback);
+                if (session != null)
+                        session.stopRecorder();
+                else
+                        print('Recorder already stopped');
         }
 
         @override

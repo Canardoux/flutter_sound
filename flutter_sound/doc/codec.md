@@ -238,21 +238,11 @@ Flutter Sound is now supported by Flutter Web (with some limitations).
 - Flutter Sound can play buffers with `startPlayerFromBuffer()`, exactly like with other platforms. Please refer to [the codecs compatibility table](#flutter-sound-codecs)
 - Flutter Sound can play remote URL with `startPlayer()`, exactly like with other platforms. Please refer to [the codecs compatibility table](#flutter-sound-codecs)
 - Playing from a Dart Stream with `startPlayerFromStream()`is not yet implemented.
-- Playing with UI (`startPlayerFromTrack`) is obviously not implemented, because we do not have control to the lock screen inside a web app.
+- Playing with UI is obviously not implemented, because we do not have control to the lock screen inside a web app.
+- Flutter Sound does not have control to the audio-focus.
 
 The web App does not have access to any file system. But you can store an URL into your local sessionStorage, and use the key as if it was an audio file.
 This is compatible with the Flutter Sound recorder.
-
-```
-final prefs = await SharedPreferences.getInstance();
-prefs.setString('foo', 'https://www.toto.com/foo.mp3');
-...
-startPlayer('foo');
-```
-
-Limitations:
-- Actually, `startPlayer()` does not return the song duration.
-- Flutter Sound does not have control to the audio-focus.
 
 ### Recorder
 

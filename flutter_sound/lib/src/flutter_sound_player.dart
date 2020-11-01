@@ -270,7 +270,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   @override
   void startPlayerCompleted(int duration)
   {
-    startPlayerCompleter.complete(Duration(milliseconds: duration) );
+          startPlayerCompleter.complete(Duration(milliseconds: duration) );
   }
 
 
@@ -768,6 +768,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         trackDico['bufferCodecIndex'] = codec.index;
         trackDico['path'] = what['path'];
         trackDico['dataBuffer'] = what['fromDataBuffer'];
+        trackDico['codec'] = codec.index;
 
         if (defaultPauseResume == null)
           defaultPauseResume = (
@@ -777,7 +778,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         {
           throw Exception( 'Player is not stopped' );
         }
-        openAudioSessionCompleter = new Completer<FlutterSoundPlayer>();
+        startPlayerCompleter = new Completer<Duration>();
         int state = await FlutterSoundPlayerPlatform.instance.startPlayerFromTrack(this,
           progress: progress,
           duration: duration,
@@ -956,7 +957,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
   Future<void> seekToPlayer(Duration duration) async {
 
-    print('FS:---> seekToPlayer ');
+    //print('FS:---> seekToPlayer ');
     if (isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
     }
@@ -968,7 +969,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         int state = await FlutterSoundPlayerPlatform.instance.seekToPlayer( this, duration: duration,);
         playerState = PlayerState.values[state];
     });
-    print('FS:<--- seekToPlayer ');
+    //print('FS:<--- seekToPlayer ');
   }
 
   Future<void> setVolume(double volume) async {

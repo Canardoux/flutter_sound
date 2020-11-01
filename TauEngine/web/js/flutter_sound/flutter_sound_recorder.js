@@ -32,23 +32,44 @@ class FlutterSoundRecorder
                 this.subscriptionDuration = 0;
                 this.timerId = null;
                 this.deltaTime = 0;
+                this.localObjects = [];
         }
 
 
 
         initializeFlautoRecorder(  focus, category, mode, audioFlags, device)
         {
+                console.log( 'initializeFlautoRecorder');
         }
 
 
         releaseFlautoRecorder()
         {
+                console.log( 'releaseFlautoRecorder');
                 this.stopRecorder();
+                var myStorage = window.sessionStorage;
+                for (var url in this.localObjects)
+                {
+                        if (this.localObjects[url] != null )
+                        {
+                                var objId = myStorage.getItem(this.localObjects[url]);
+                                if ( objId != null)
+                                {
+                                        console.log( 'Deleting object ' + objId + ' : ' +  this.localObjects[url] );
+                                        URL.revokeObjectURL(objId);
+                                } else
+                                        console.log('NULL2');
+                        } else
+                                console.log('NULL1');
+                }
+                this.localObjects = [];
+
         }
 
 
         setAudioFocus( focus, category, mode, audioFlags, device)
         {
+               console.log( 'setAudioFocus');
         }
 
 
@@ -66,12 +87,14 @@ class FlutterSoundRecorder
 
         setSubscriptionDuration( duration)
         {
+                console.log( 'setSubscriptionDuration');
                 this.subscriptionDuration = duration;
         }
 
 
         startRecorder( path, sampleRate, numChannels, bitRate, codec, toStream, audioSource)
         {
+                console.log( 'startRecorder');
                 var constraints = { audio: true};
                 var chunks ;//= [];
                 var me = this;
@@ -84,7 +107,7 @@ class FlutterSoundRecorder
                                 console.log('sessionStorage');
                         } else
                         {
-                                myStorage = window.localStorage;
+                                myStorage = window.sessionStorage;
                                 console.log('localStorage'); // Actually we do not use 'sessionStorage'
                                 //console.log('sessionStorage');
                        }
@@ -184,9 +207,27 @@ class FlutterSoundRecorder
                         {
                                 if (path != null && path != '')
                                 {
-                                        console.log('data available after in Storage ' + path + ' : ' + chunks.constructor.name);
-                                        var blob = new Blob(chunks, {'type' : "audio/webm\;codecs=opus"} );
+                                        var blob = new Blob(chunks, {'type' : mime_types[codec]} );
                                         var url = URL.createObjectURL(blob);
+                                        var objId = myStorage.getItem(path);
+                                        if (objId != null && objId != '')
+                                        {
+                                                console.log( 'Deleting object ' +  url.toString() +  ' : ' + objId.toString()  );
+                                                URL.revokeObjectURL(objId);
+                                                var found = me.localObjects.findIndex(element => element == path);
+                                                if (found != null && found >= 0)
+                                                {
+                                                        console.log("Found : " + found);
+                                                        me.localObjects[found] = path;
+                                                } else
+                                                {
+                                                        console.log("NOT FOUND! : " + path);
+                                                        me.localObjects.push(path);
+                                                }
+                                        } else
+                                        {
+                                                me.localObjects.push(path);
+                                        }
                                         myStorage.setItem(path, url);
 /*
                                         var xhr = new XMLHttpRequest();
@@ -238,18 +279,20 @@ class FlutterSoundRecorder
 
         stopRecorder()
         {
+                console.log( 'stopRecorder');
                 if (this.mediaRecorder != null)
                 {
                         this.mediaRecorder.stop();
                 }
                 this.stopTimer();
-                console.log("recorder stopped : " + this.mediaRecorder.state);
                 this.mediaRecorder = null;
-        }
+                console.log("recorder stopped" );
+       }
 
 
         pauseRecorder()
         {
+                console.log( 'pauseRecorder');
                 this.mediaRecorder.pause();
                 this.stopTimer();
                 console.log("recorder paused : " + this.mediaRecorder.state);
@@ -259,6 +302,7 @@ class FlutterSoundRecorder
 
         resumeRecorder()
         {
+                console.log( 'resumeRecorder');
                 this.mediaRecorder.resume();
                 this.startTimer();
                 console.log("recorder resumed : " + this.mediaRecorder.state);
