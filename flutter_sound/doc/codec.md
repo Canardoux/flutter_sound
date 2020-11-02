@@ -236,7 +236,7 @@ You can look to the three provided examples :
 Flutter Sound is now supported by Flutter Web (with some limitations).
 The big problem is (as usual) Apple. Webkit is bull shit : you cannot use MediaRecorder to record anything with it. It means that Flutter Sound on Safari cannot record.
 And because Apple forces Firefox and Chrome to use also Webkit on iOS, you cannot record anything on iOS with Flutter Sound. Apple really sucks :-(.
-You can play with [this live demo on the web](https://www.canardoux.space/tau/flutter_sound_example)
+You can play with [this live demo on the web](https://www.canardoux.space/tau/flutter_sound_example), but better if not Safari and not iOS.
 
 ### Player
 
