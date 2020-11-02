@@ -33,14 +33,13 @@ import 'package:js/js.dart';
 //========================================  JS  ===============================================================
 
 @JS('newRecorderInstance')
-external FlutterSoundRecorder newRecorderInstance(FlutterSoundRecorderCallback callBack);
+external FlutterSoundRecorder newRecorderInstance(FlutterSoundRecorderCallback callBack, List<Function> callbackTable);
 
 @JS('FlutterSoundRecorder')
 class FlutterSoundRecorder
 {
         @JS('newInstance')
-        external static FlutterSoundRecorder newInstance(FlutterSoundRecorderCallback callBack);
-
+        external static FlutterSoundRecorder newInstance(FlutterSoundRecorderCallback callBack, List<Function> callbackTable);
 
         @JS('initializeFlautoRecorder')
         external void initializeFlautoRecorder( int focus, int category, int mode, int audioFlags, int device);
@@ -70,6 +69,14 @@ class FlutterSoundRecorder
         external void resumeRecorder();
 
 }
+
+
+List<Function> callbackTable =
+[
+        allowInterop( (FlutterSoundRecorderCallback cb, int duration, double dbPeakLevel) { cb.updateRecorderProgress(duration: duration, dbPeakLevel: dbPeakLevel);} ),
+        allowInterop( (FlutterSoundRecorderCallback cb, {Uint8List data}) { cb.recordingData(data: data);} ),
+];
+
 
 //============================================================================================================================
 
@@ -107,11 +114,11 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
                 if (slotno < _slots.length)
                 {
                         assert (_slots[slotno] == null);
-                        _slots[slotno] = newRecorderInstance(callback);
+                        _slots[slotno] = newRecorderInstance(callback, callbackTable);
                 } else
                 {
                         assert(slotno == _slots.length);
-                        _slots.add( newRecorderInstance(callback));
+                        _slots.add( newRecorderInstance(callback, callbackTable));
                 }
                 getWebSession(callback).initializeFlautoRecorder(focus.index, category.index, mode.index, audioFlags, device.index);
         }

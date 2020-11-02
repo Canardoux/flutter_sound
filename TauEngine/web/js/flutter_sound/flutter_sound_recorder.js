@@ -18,17 +18,20 @@
 
 
 
-function newRecorderInstance(aCallback) { return new FlutterSoundRecorder(aCallback);}
+function newRecorderInstance(aCallback, callbackTable) { return new FlutterSoundRecorder(aCallback, callbackTable);}
 
 
+const CB_updateRecorderProgress = 0;
+const CB_recordingData = 1;
 
 class FlutterSoundRecorder
 {
-        static newInstance(aCallback) { return new FlutterSoundRecorder(aCallback);}
+        static newInstance(aCallback, callbackTable) { return new FlutterSoundRecorder(aCallback, callbackTable);}
 
-        constructor(aCallback)
+        constructor(aCallback, callbackTable)
         {
                 this.callback = aCallback;
+                this.callbackTable = callbackTable;
                 this.subscriptionDuration = 0;
                 this.timerId = null;
                 this.deltaTime = 0;
@@ -171,7 +174,8 @@ class FlutterSoundRecorder
                         {
                                 if (toStream) // not yet implemented !
                                 {
-                                        me.callback.recordingData(e.data);
+                                        me.callbackTable[CB_recordingData](me.callback, e.data);
+
                                 }
                                 if (path != null && path != '')
                                 {
@@ -324,7 +328,8 @@ class FlutterSoundRecorder
                                         var now = new Date().getTime();
                                         var distance = now - me.countDownDate;
                                         //console.log('top : ' + distance);
-                                        me.callback.updateRecorderProgress({duration: me.deltaTime + distance, dbPeakLevel: 0});
+                                        me.callbackTable[CB_updateRecorderProgress](me.callback,  me.deltaTime + distance,  0);
+
                                 },
                                 this.subscriptionDuration
                         );

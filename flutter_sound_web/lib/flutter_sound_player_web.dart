@@ -36,14 +36,14 @@ import 'package:js/js.dart';
 // ====================================  JS  =======================================================
 
 @JS('newPlayerInstance')
-external FlutterSoundPlayer newPlayerInstance(FlutterSoundPlayerCallback theCallBack);
+external FlutterSoundPlayer newPlayerInstance(FlutterSoundPlayerCallback theCallBack, List<Function> callbackTable);
 
 
 @JS('FlutterSoundPlayer')
 class FlutterSoundPlayer
 {
         @JS('newInstance')
-        external static FlutterSoundPlayer newInstance(FlutterSoundPlayerCallback theCallBack);
+        external static FlutterSoundPlayer newInstance(FlutterSoundPlayerCallback theCallBack, List<Function> callbackTable);
 
         @JS('releaseMediaPlayer')
         external int releaseMediaPlayer();
@@ -93,6 +93,36 @@ class FlutterSoundPlayer
         @JS('setUIProgressBar')
         external int setUIProgressBar(int duration, int progress);
 }
+/*
+Map<String, Function> callbackTable2 =
+{
+        'openAudioSessionCompleted': allowInterop( (FlutterSoundPlayerCallback cb, bool success) { cb.openAudioSessionCompleted(success);} ),
+        'updateProgress': allowInterop( (FlutterSoundPlayerCallback cb,{int duration, int position}) { cb.updateProgress(duration: duration, position: position,);} ),
+        'pause': allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.pause(state,);} ),
+        'resume': allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.resume(state,);} ),
+        'skipBackward': allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.skipBackward(state,);} ),
+        'skipForward': allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.skipForward(state,);} ),
+        'updatePlaybackState': allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.updatePlaybackState(state,);} ),
+        'needSomeFood': allowInterop( (FlutterSoundPlayerCallback cb, int ln) { cb.needSomeFood(ln,);} ),
+        'audioPlayerFinished': allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.audioPlayerFinished(state,);} ),
+        'startPlayerCompleted': allowInterop( (FlutterSoundPlayerCallback cb, int duration) { cb.startPlayerCompleted(duration,);} ),
+};
+
+ */
+List<Function> callbackTable =
+[
+        allowInterop( (FlutterSoundPlayerCallback cb, bool success) { cb.openAudioSessionCompleted(success);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int position, int duration) { cb.updateProgress(duration: duration, position: position,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.pause(state,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.resume(state,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.skipBackward(state,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.skipForward(state,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.updatePlaybackState(state,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int ln) { cb.needSomeFood(ln,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.audioPlayerFinished(state,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int duration) { cb.startPlayerCompleted(duration,);} ),
+
+];
 
 //=========================================================================================================
 
@@ -163,11 +193,11 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                 if (slotno < _slots.length)
                 {
                         assert (_slots[slotno] == null);
-                        _slots[slotno] = newPlayerInstance(callback);
+                        _slots[slotno] = newPlayerInstance(callback, callbackTable);
                 } else
                 {
                         assert(slotno == _slots.length);
-                        _slots.add( newPlayerInstance(callback));
+                        _slots.add( newPlayerInstance(callback, callbackTable));
                 }
                 return _slots[slotno].initializeMediaPlayer( focus.index,  category.index, mode.index, audioFlags, device.index, withUI);
         }

@@ -21,11 +21,11 @@
 | Firefox encoder   | No       | Yes      | No          | No  | No         | No     | No      | No       | No      | No      | No      | No     | No     | No        | No       | No       | Yes         | No          |
 | Firefox decoder   | Yes      | Yes      | No          | Yes | Yes        | Yes    | Yes     | No       | No      | Yes     | Yes     | No     | No     | No        | No       | No       | Yes         | yes         |
 |                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
-| Edge encoder      |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
-| Edge decoder      |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| Edge encoder      | No       | No       | No          | No  | No         | No     | No      | No       | No      | No      | no      | No     | No     | No        | No       | No       | Yes         | No          |
+| Edge decoder      | Yes      | Yes      | No          | Yes | Yes        | Yes    | Yes     | No       | No      | Yes     | Yes     | No     | No     | No        | No       | no       | Yes         | Yes         |
 |                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
-| Safari encoder    |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
-| Safari decoder    |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+| Webkit (Safari)   | No       | No       | No          | No  | No         | No     | No      | No       | No      | No      | No      | No     | No     | No        | No       | No       | No          | No          |
+| Webkit (Safari)   | Yes      | No       | Yes         | Yes | No         | No     | No      | No       | Yes     | Yes     | Yes     | No     | No     | No        | No       | No       | No          | No          |
 |                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
 
 
@@ -36,6 +36,8 @@ This table will eventually be upgraded when more codecs will be added.
    - Can add some delay before Playing Back the file, or after stopping the recording. This delay can be substancial for very large records.
 
 - Yes(1) : needs MinSDK >=23
+
+- Webkit is bull shit : you cannot record anything with Safari, or Firefox/Chrome on iOS.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -232,6 +234,9 @@ You can look to the three provided examples :
 ## Flutter Sound on Flutter Web
 
 Flutter Sound is now supported by Flutter Web (with some limitations).
+The big problem is (as usual) Apple. Webkit is bull shit : you cannot use MediaRecorder to record anything with it. It means that Flutter Sound on Safari cannot record.
+And because Apple forces Firefox and Chrome to use also Webkit on iOS, you cannot record anything on iOS with Flutter Sound. Apple really sucks :-(.
+You can play with [this live demo on the web](https://www.canardoux.space/tau/flutter_sound_example)
 
 ### Player
 
@@ -247,7 +252,7 @@ This is compatible with the Flutter Sound recorder.
 ### Recorder
 
 Flutter Sound on web cannot have access to any file system. You can use `startRecorder()` like others platforms, but the recorded data will be stored inside an internal HTTP object.
-Please refer to [the codecs compatibility table](#flutter-sound-codecs).
+Please refer to [the codecs compatibility table](#flutter-sound-codecs) : Flutter Sound Recorder does not work on Safari nor iOS.
 When the recorder is stopped, `startRecorder` stores the URL of this object into your local sessionStorage.
 
 ```

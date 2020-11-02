@@ -72,6 +72,8 @@ enum AudioState {
   isRecordingPaused,
 }
 
+final exampleAudioFilePathWave =
+    'http://5.189.150.137:5000/download_audio/CantinaBand3.wav';
 final exampleAudioFilePathMP3 =
     "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3";
 final exampleAudioFilePathOPUS =
@@ -455,9 +457,11 @@ class _MyAppState extends State<Demo> {
             } else if (_media == Media.remoteExampleFile) {
               // We have to play an example audio file loaded via a URL
               if (_codec == Codec.mp3)
-                  audioFilePath = exampleAudioFilePathMP3;
+                    audioFilePath = exampleAudioFilePathMP3;
               else if (codec == Codec.opusOGG)
-                  audioFilePath = exampleAudioFilePathOPUS;
+                    audioFilePath = exampleAudioFilePathOPUS;
+              else if (codec == Codec.pcm16WAV)
+                    exampleAudioFilePathWave;
             }
 
             // Check whether the user wants to use the audio player features
@@ -798,7 +802,7 @@ class _MyAppState extends State<Demo> {
     {
       if (_path[_codec.index] == null) return null;
     }
-    if (_media == Media.remoteExampleFile && !(_codec == Codec.mp3 || _codec == Codec.opusOGG) )// in this example we use just a remote mp3 or upus file
+    if (_media == Media.remoteExampleFile && !(_codec == Codec.mp3 || _codec == Codec.opusOGG || _codec == Codec.pcm16WAV) )// in this example we use just a remote mp3 or upus file
       return null;
 
     if (_media == Media.stream && _codec != Codec.pcm16)

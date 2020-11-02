@@ -1,9 +1,13 @@
-## 6.3.0+4
+## 6.4.0
+
+- Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://www.canardoux.space/tau/flutter_sound_example) (still cannot record with Safari or any web browser on iOS). You can [read this](). [494](https://github.com/dooboolab/flutter_sound/issues/494), [468](https://github.com/dooboolab/flutter_sound/issues/468), [297](https://github.com/dooboolab/flutter_sound/issues/297)
+
+## 6.3.0
 
 - On Android : Flutter Sound is now a wrapper around `TauEngine`
 - Add a new example doing Speech-To-Text. Thanks to @jtkeyva :-) . [#210](https://github.com/dooboolab/flutter_sound/issues/210)
 
-## 6.2.0+1
+## 6.2.0
 
 - Publication on JCenter
 

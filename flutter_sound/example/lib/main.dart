@@ -35,14 +35,17 @@ void main() {
   runApp(ExamplesApp());
 }
 
+const int NOT_WEB = 1;
+
 class Example
 {
     final String title;
     final String subTitle;
     final String description;
     final WidgetBuilder route;
+    final int flags;
 
-    /* ctor */ Example({ this.title, this.subTitle, this.description, this.route}){}
+    /* ctor */ Example({ this.title, this.subTitle, this.description, this.flags, this.route}){}
 
     void go(BuildContext context) => Navigator.push(context, MaterialPageRoute<void>( builder: route));
 }
@@ -51,7 +54,7 @@ final List<Example> exampleTable =
     [
       // If you update the following test, please update also the Examples/README.md file and the comment inside the dart file.
 
-      Example(title: 'Demo', subTitle: 'Flutter Sound capabilities', route: (BuildContext) => Demo(), description:
+      Example(title: 'Demo', subTitle: 'Flutter Sound capabilities', flags: 0, route: (BuildContext) => Demo(), description:
 '''This is a Demo of what it is possible to do with Flutter Sound.
 The code of this Demo app is not so simple and unfortunately not very clean :-( .
 
@@ -71,7 +74,7 @@ This Demo does not make use of the Flutter Sound UI Widgets.
 It would be really great if someone rewrite this demo soon'''
       ),
 
-      Example(title: 'WidgetUIDemo', subTitle: 'Demonstration of the UI Widget', route: (BuildContext) => WidgetUIDemo(), description:
+      Example(title: 'WidgetUIDemo', subTitle: 'Demonstration of the UI Widget', flags: 0,  route: (BuildContext) => WidgetUIDemo(), description:
 // If you update the following test, please update also the Examples/README.md file and the comment inside the dart file.
 '''
 This is a Demo of an App which uses the Flutter Sound UI Widgets.
@@ -83,7 +86,7 @@ I really hope that someone will write soon another simpler Demo App.
 ''',
       ),
 
-      Example(title: 'recordToStream', subTitle: 'Example of recording to Stream', route: (BuildContext) => RecordToStreamExample(), description:
+      Example(title: 'recordToStream', subTitle: 'Example of recording to Stream', flags: NOT_WEB,  route: (BuildContext) => RecordToStreamExample(), description:
 '''
 This is an example showing how to record to a Dart Stream.
 It writes all the recorded data from a Stream to a File, which is completely stupid:
@@ -93,7 +96,7 @@ The real interest of recording to a Stream is for example to feed a Speech-to-Te
 ''',
       ),
 
-      Example(title: 'livePlaybackWithoutBackPressure', subTitle: 'Live Playback without BackPressure', route: (BuildContext) => LivePlaybackWithoutBackPressure(), description:
+      Example(title: 'livePlaybackWithoutBackPressure', subTitle: 'Live Playback without BackPressure', flags: NOT_WEB,  route: (BuildContext) => LivePlaybackWithoutBackPressure(), description:
 '''A very simple example showing how to play Live Data without back pressure.
 A very simple example showing how to play Live Data without back pressure.
 It feeds a live stream, without waiting that the Futures are completed for each block.
@@ -112,7 +115,7 @@ This example uses the ```foodEvent``` object to resynchronize the output stream 
 ''',
       ),
 
-      Example(title: 'livePlaybackWithBackPressure', subTitle: 'Live Playback with BackPressure', route: (BuildContext) => LivePlaybackWithBackPressure(), description:
+      Example(title: 'livePlaybackWithBackPressure', subTitle: 'Live Playback with BackPressure', flags: NOT_WEB,  route: (BuildContext) => LivePlaybackWithBackPressure(), description:
 '''
 A very simple example showing how to play Live Data with back pressure.
 It feeds a live stream, waiting that the Futures are completed for each block.
@@ -126,7 +129,7 @@ playing another one.
 ''',
       ),
 
-      Example(title: 'soundEffect', subTitle: 'Sound Effect', route: (BuildContext) => SoundEffect(), description:
+      Example(title: 'soundEffect', subTitle: 'Sound Effect', flags: NOT_WEB,  route: (BuildContext) => SoundEffect(), description:
 '''
 ```startPlayerFromStream()``` can be very efficient to play sound effects. For example in a game App.
 The App open the Audio Session and call ```startPlayerFromStream()``` during initialization.
@@ -135,7 +138,7 @@ When it want to play a noise, it has just to call the verb ```feed```
       ),
 
 
-      Example(title: 'streamLoop', subTitle: 'Loop from recorder to player', route: (BuildContext) => StreamLoop(), description:
+      Example(title: 'streamLoop', subTitle: 'Loop from recorder to player', flags: NOT_WEB,  route: (BuildContext) => StreamLoop(), description:
       '''
 ```streamLoop()``` is a very simple example which connect the FlutterSoundRecorder sink 
 to the FlutterSoundPlayer Stream.
@@ -147,7 +150,7 @@ from flutter_sound_player.dart.
 ''',
       ),
 
-      Example(title: 'SpeechToText', subTitle: 'Speech to Text example', route: (BuildContext) => SpeechToTextExample(), description:
+      Example(title: 'SpeechToText', subTitle: 'Speech to Text example', flags: NOT_WEB,  route: (BuildContext) => SpeechToTextExample(), description:
       '''
 This is an example showing how to do Speech To Text.
 This is just for FUN :-D, because this example does not use the Flutter Sound library.
@@ -315,7 +318,11 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
             color:  Color( 0xFFFAF0E6 ),
             border: Border.all( color: Colors.indigo, width: 3, ),
           ),
-          child: Row ( mainAxisAlignment: MainAxisAlignment.end, children: [ RaisedButton(onPressed: () =>selectedExample.go(context), color: Colors.indigo, child: Text('GO', style: TextStyle(color: Colors.white),),)],)
+          child: Row ( mainAxisAlignment: MainAxisAlignment.end, children:
+          [
+                  Text( (selectedExample.flags & NOT_WEB != 0) ? 'This example is not supported on Flutter Web   ' : ''),
+                  RaisedButton(  onPressed: (selectedExample.flags & NOT_WEB != 0) ? null :() =>selectedExample.go(context), color: Colors.indigo, child: Text('GO', style: TextStyle(color: Colors.white),),)
+          ],)
         ),
       ),
 
