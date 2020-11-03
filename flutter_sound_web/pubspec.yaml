@@ -1,5 +1,5 @@
 name: flutter_sound_web
-version: 6.0.1
+version: 6.3.1+2
 description: Flutter plugin that relates to sound like audio and recorder.
 #author: dooboolab<dooboolab@gmail.com>
 homepage: https://github.com/dooboolab/flutter_sound
@@ -15,14 +15,14 @@ flutter:
         fileName: flutter_sound_web.dart
 
 dependencies:
-  flutter_sound_platform_interface: # ^6.3.0
-    path: ../flutter_sound_platform_interface
+  flutter_sound_platform_interface: 6.3.1+2
+#    path: ../flutter_sound_platform_interface # Flutter Sound Dir
   flutter:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
   meta: ^1.1.7
-  #flutter_js: ^0.2.2+0
+  js: ^0.6.0
 
 dev_dependencies:
   flutter_test:

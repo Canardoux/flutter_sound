@@ -21,42 +21,81 @@ fi
 
 if [ "_$1" = "_REL" ] ; then
         echo 'REL mode'
+
         echo '--------'
-        gsed -i  "s/^ *flutter_sound: *#* *\(.*\)$/  flutter_sound: \1/" flutter_sound/example/pubspec.yaml
-        gsed -i  "s/^ *flutter_sound_lite: *#* *\(.*\)$/  flutter_sound_lite: \1/" flutter_sound/example/pubspec.yaml
-        gsed -i  "s/^ *path: \.\.\/ # Flutter Sound Dir$/#    path: \.\.\/ # Flutter Sound Dir/" flutter_sound/example/pubspec.yaml
         gsed -i  "s/^ *implementation project(':TauEngine')$/    \/\/ implementation project(':TauEngine')/" flutter_sound/example/android/app/build.gradle
         gsed -i  "s/^ *project(':TauEngine').projectDir\(.*\)$/\/\/ project(':TauEngine').projectDir\1/" flutter_sound/example/android/settings.gradle
         gsed -i  "s/^ *include 'TauEngine'$/\/\/ include 'TauEngine'/" flutter_sound/example/android/settings.gradle
         gsed -i  "s/^ *pod 'TauEngine',\(.*\)$/# pod 'TauEngine',\1/"  flutter_sound/example/ios/Podfile
-        gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: \1/" flutter_sound/pubspec.yaml
-        gsed -i  "s/^ *path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir$/#    path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir/" flutter_sound/pubspec.yaml
         gsed -i  "s/^ *implementation project(':TauEngine')$/    \/\/ implementation project(':TauEngine')/" flutter_sound/android/build.gradle
         gsed -i  "s/^ *project(':TauEngine').projectDir\(.*\)$/\/\/ project(':TauEngine').projectDir\1/" flutter_sound/android/settings.gradle
-        # gsed -i  "s/^#\( *s.dependency 'TauEngine',.*\)$/\1/" flutter_sound/ios/flutter_sound.podspec
-        gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: \1/" flutter_sound/example/pubspec.yaml
+
+# flutter_sound_web/pubspec.yaml
+#-------------------------------
+        gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: \1/"                                                          flutter_sound_web/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir$/#    path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir/"            flutter_sound_web/pubspec.yaml
+
+# flutter_sound/pubspec.yaml
+#---------------------------
+        gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: \1/"                                                          flutter_sound/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir$/#    path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir/"        flutter_sound/pubspec.yaml
+        gsed -i  "s/^ *flutter_sound_web: *#* *\(.*\)$/  flutter_sound_web: \1/"                                                                                        flutter_sound/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/flutter_sound_web # Flutter Sound Dir$/#    path: \.\.\/flutter_sound_web # Flutter Sound Dir/"                                      flutter_sound/pubspec.yaml
+
+# flutter_sound/example/pubspec.yaml
+#-----------------------------------
+        gsed -i  "s/^ *flutter_sound: *#* *\(.*\)$/  flutter_sound: \1/"                                                                                                flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^ *flutter_sound_lite: *#* *\(.*\)$/  flutter_sound_lite: \1/"                                                                                      flutter_sound/example/pubspec.yaml
+
+        gsed -i  "s/^ *path: \.\.\/ # Flutter Sound Dir$/#    path: \.\.\/ # Flutter Sound Dir/"                                                                        flutter_sound/example/pubspec.yaml
+
+        gsed -i  "s/^ *#* *flutter_sound_platform_interface: *#* *\(.*\)$/#  flutter_sound_platform_interface: \1/"                                                     flutter_sound/example/pubspec.yaml
         gsed -i  "s/^ *path: \.\.\/\.\.\/flutter_sound_platform_interface # flutter_sound_platform_interface Dir$/#    path: \.\.\/\.\.\/flutter_sound_platform_interface # flutter_sound_platform_interface Dir/" flutter_sound/example/pubspec.yaml
 
+        gsed -i  "s/^ *#* *flutter_sound_web: *#* *\(.*\)$/#  flutter_sound_web: \1/"                                                                                   flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/\.\.\/flutter_sound_web # flutter_sound_web Dir$/#    path: \.\.\/\.\.\/flutter_sound_web # flutter_sound_web Dir/"                  flutter_sound/example/pubspec.yaml
 
         exit 0
+
+#========================================================================================================================================================================================================
+
 
 elif [ "_$1" = "_DEV" ]; then
         echo 'DEV mode'
         echo '--------'
-        gsed -i  "s/^ *flutter_sound: *#* *\(.*\)$/  flutter_sound: # \1/" flutter_sound/example/pubspec.yaml
-        gsed -i  "s/^ *flutter_sound_lite: *#* *\(.*\)$/  flutter_sound_lite: # \1/" flutter_sound/example/pubspec.yaml
-        gsed -i  "s/^# *path: \.\.\/ # Flutter Sound Dir$/    path: \.\.\/ # Flutter Sound Dir/" flutter_sound/example/pubspec.yaml
+
         gsed -i  "s/^ *\/\/ implementation project(':TauEngine')$/    implementation project(':TauEngine')/" flutter_sound/example/android/app/build.gradle
         gsed -i  "s/^ *\/\/ *project(':TauEngine').projectDir\(.*\)$/   project(':TauEngine').projectDir\1/" flutter_sound/example/android/settings.gradle
         gsed -i  "s/^ *\/\/ *include 'TauEngine'$/   include 'TauEngine'/" flutter_sound/example/android/settings.gradle
         gsed -i  "s/^ *# pod 'TauEngine',\(.*\)$/pod 'TauEngine',\1/" flutter_sound/example/ios/Podfile
-        gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: # \1/" flutter_sound/pubspec.yaml
-        gsed -i  "s/^# *path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir$/    path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir/" flutter_sound/pubspec.yaml
         gsed -i  "s/^ *\/\/ implementation project(':TauEngine')$/    implementation project(':TauEngine')/" flutter_sound/android/build.gradle
         gsed -i  "s/^ *\/\/ *project(':TauEngine').projectDir\(.*\)$/   project(':TauEngine').projectDir\1/" flutter_sound/android/settings.gradle
-        # gsed -i  "s/^\( *s.dependency 'TauEngine',.*\)$/#\1/" flutter_sound/ios/flutter_sound.podspec
-        gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: # \1/" flutter_sound/example/pubspec.yaml
+
+# flutter_sound_web/pubspec.yaml
+#-------------------------------
+       gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: # \1/"                                                         flutter_sound_web/pubspec.yaml
+        gsed -i  "s/^# *path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir$/    path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir/"            flutter_sound_web/pubspec.yaml
+
+# flutter_sound/pubspec.yaml
+#---------------------------
+        gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: # \1/"                                                        flutter_sound/pubspec.yaml
+        gsed -i  "s/^# *path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir$/    path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir/"        flutter_sound/pubspec.yaml
+        gsed -i  "s/^ *flutter_sound_web: *#* *\(.*\)$/  flutter_sound_web: # \1/" flutter_sound/pubspec.yaml
+        gsed -i  "s/^# *path: \.\.\/flutter_sound_web # Flutter Sound Dir$/    path: \.\.\/flutter_sound_web # Flutter Sound Dir/"                                      flutter_sound/pubspec.yaml
+
+
+# flutter_sound/example/pubspec.yaml
+#-----------------------------------
+        gsed -i  "s/^ *flutter_sound: *#* *\(.*\)$/  flutter_sound: # \1/"                                                                                              flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^ *flutter_sound_lite: *#* *\(.*\)$/  flutter_sound_lite: # \1/"                                                                                    flutter_sound/example/pubspec.yaml
+
+        gsed -i  "s/^# *path: \.\.\/ # Flutter Sound Dir$/    path: \.\.\/ # Flutter Sound Dir/"                                                                        flutter_sound/example/pubspec.yaml
+
+        gsed -i  "s/^ *#* *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: # \1/"                                                    flutter_sound/example/pubspec.yaml
         gsed -i  "s/^# *path: \.\.\/\.\.\/flutter_sound_platform_interface # flutter_sound_platform_interface Dir$/    path: \.\.\/\.\.\/flutter_sound_platform_interface # flutter_sound_platform_interface Dir/" flutter_sound/example/pubspec.yaml
+
+        gsed -i  "s/^ *#* *flutter_sound_web: *#* *\(.*\)$/  flutter_sound_web: # \1/"                                                                                  flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^# *path: \.\.\/\.\.\/flutter_sound_web # flutter_sound_web Dir$/    path: \.\.\/\.\.\/flutter_sound_web # flutter_sound_web Dir/"                  flutter_sound/example/pubspec.yaml
 
         exit 0
 

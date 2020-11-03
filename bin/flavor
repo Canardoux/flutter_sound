@@ -753,7 +753,7 @@ LITE)
  		gsed -i "s/^[ \t]*implementation 'com.arthenica:mobile-ffmpeg-/    \/\/implementation 'com.arthenica:mobile-ffmpeg-/" android/build.gradle
 
 
-  		gsed -i  "/import *com.dooboolab.ffmpeg.FlutterFFmpegPlugin;$/d"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
+  	gsed -i  "/import *com.dooboolab.ffmpeg.FlutterFFmpegPlugin;$/d"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
 		gsed -i "1a//import com.dooboolab.ffmpeg.FlutterFFmpegPlugin;"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
 
 		gsed -i  "s/^[ $'\t']*public static *final *boolean *FULL_FLAVOR *= *true;$/    public static final boolean FULL_FLAVOR = false;/"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
@@ -772,18 +772,8 @@ LITE)
 	exit -1
 esac
 
-cd flutter_sound
-flutter pub get
-cd example
-#flutter pub get
-flutter clean
-cd ..
-flutter clean
-rm -rf example/ios/DerivedData 2>/dev/null
-cd example/ios
-rm Podfile
-#pod install
-cd ../../..
+rm -rf flutter_sound/example/ios/DerivedData 2>/dev/null
+rm -rf flutter_sound/example/ios/Podfile 2>/dev/null
 
 echo
 echo 'New current flavor'

@@ -27,8 +27,8 @@ import 'package:meta/meta.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
+//import 'package:path/path.dart' as p;
+//import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:js/js.dart';
 
