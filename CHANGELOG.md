@@ -2,6 +2,11 @@
 
 - Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://www.canardoux.space/tau/flutter_sound_example) (still cannot record with Safari or any web browser on iOS : thank you Apple). You can [read this](flutter_sound/doc/codec.md#flutter-sound-on-flutter-web). Issues : [#494](https://github.com/dooboolab/flutter_sound/issues/494), [#468](https://github.com/dooboolab/flutter_sound/issues/468) and [#297](https://github.com/dooboolab/flutter_sound/issues/297)
 
+## 6.3.1
+
+- Fix a syntax error in the TauEngine build.gradle [499](https://github.com/dooboolab/flutter_sound/issues/499)
+- English in the UI widget is now configurable [498](https://github.com/dooboolab/flutter_sound/pull/498)
+
 ## 6.3.0
 
 - On Android : Flutter Sound is now a wrapper around `TauEngine`

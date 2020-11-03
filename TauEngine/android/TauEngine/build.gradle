@@ -45,8 +45,8 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 16312
-        versionName '6.3.1+2'
+        versionCode 16311
+        versionName '6.3.1+1'
         //versionName project.getProperty(“libraryVersion”)
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -67,10 +67,6 @@ android {
 
 }
 
-//apply from: 'publish.gradle'
-//apply from: 'https://github.com/Canardoux/tau/tree/master/TauEngine/android/TauEngine/bintray.gradle'
-//apply from: 'https://github.com/Canardoux/tau/tree/master/TauEngine/android/TauEngine/publications.gradle'
-
 dependencies {
     //implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.core:core:1.0.0'
@@ -85,9 +81,6 @@ ext {
 }
 
 
-// ======================================================================================================================================================
-
-//apply plugin: 'io.codearte.nexus-staging'
 
 
 // ==========================================================================================================================================================

@@ -54,7 +54,10 @@ class SoundRecorderUI extends StatefulWidget {
   static const int _barHeight = 60;
 
   final Color backgroundColor;
-
+  
+  final String pausedTitle;
+  final String recordingTitle;
+  final String stoppedTitle;
 
   /// Callback to be notified when the recording stops
   final OnStop onStopped;
@@ -151,6 +154,9 @@ class SoundRecorderUI extends StatefulWidget {
     this.onDelete,
     this.requestPermissions,
     this.showTrashCan = true,
+    this.pausedTitle = 'Recorder is paused',
+    this.recordingTitle = 'Recorder is recording',
+    this.stoppedTitle = 'Recorder is stopped',
     Key key,
   })  : audio = RecordedAudio.toTrack(track),
         super(key: key);
@@ -215,7 +221,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
                 _buildMicrophone(),
                 _buildStartStopButton(),
                 widget.showTrashCan != null ? _buildTrashButton() : SizedBox(),
-                Text(_isPaused ? 'Recorder is paused' : _isRecording ? 'Recorder is recording' : 'Recorder is stopped'),
+                Text(_isPaused ? widget.pausedTitle : _isRecording ? widget.recordingTitle : widget.stoppedTitle),
 
               ],
             //Expanded(child: Column(children: rows))
