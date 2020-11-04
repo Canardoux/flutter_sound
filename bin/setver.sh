@@ -35,3 +35,4 @@ gsed -i  "s/^\( *version: *\).*$/\1$VERSION/"                                   
 gsed -i  "s/^\( *flutter_sound_platform_interface: *#* *\).*$/\1$VERSION/"              flutter_sound_web/pubspec.yaml
 gsed -i  "s/^\( *## \).*$/\1$VERSION/"                                                  flutter_sound_web/CHANGELOG.md
 gsed -i  "s/^\( *\"version\": *\).*$/\1\"$VERSION\",/"                                  TauEngine/web/package.json
+gsed -i  "s/^\( *<script src=\"https:\/\/cdn.jsdelivr.net\/npm\/tau_engine@\)[^\/]*/\1$VERSION/g" flutter_sound/example/web/index.html

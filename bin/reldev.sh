@@ -29,6 +29,8 @@ if [ "_$1" = "_REL" ] ; then
         gsed -i  "s/^ *pod 'TauEngine',\(.*\)$/# pod 'TauEngine',\1/"  flutter_sound/example/ios/Podfile
         gsed -i  "s/^ *implementation project(':TauEngine')$/    \/\/ implementation project(':TauEngine')/" flutter_sound/android/build.gradle
         gsed -i  "s/^ *project(':TauEngine').projectDir\(.*\)$/\/\/ project(':TauEngine').projectDir\1/" flutter_sound/android/settings.gradle
+        gsed -i  "s/^\( *<\!-- static\) -->$/\1/" flutter_sound/example/web/index.html
+        gsed -i  "s/^\( *<\!-- dynamic\)$/\1 -->/" flutter_sound/example/web/index.html
 
 # flutter_sound_web/pubspec.yaml
 #-------------------------------
@@ -70,6 +72,8 @@ elif [ "_$1" = "_DEV" ]; then
         gsed -i  "s/^ *# pod 'TauEngine',\(.*\)$/pod 'TauEngine',\1/" flutter_sound/example/ios/Podfile
         gsed -i  "s/^ *\/\/ implementation project(':TauEngine')$/    implementation project(':TauEngine')/" flutter_sound/android/build.gradle
         gsed -i  "s/^ *\/\/ *project(':TauEngine').projectDir\(.*\)$/   project(':TauEngine').projectDir\1/" flutter_sound/android/settings.gradle
+        gsed -i  "s/^\( *<\!-- dynamic\) -->$/\1/" flutter_sound/example/web/index.html
+        gsed -i  "s/^\( *<\!-- static\)$/\1 -->/" flutter_sound/example/web/index.html
 
 # flutter_sound_web/pubspec.yaml
 #-------------------------------

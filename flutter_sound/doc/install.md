@@ -143,7 +143,7 @@ If your App needs an other FFmpeg package (for example the "video" package), use
 
 ## Flutter Web
 
-To use Flutter Sound in a web application, you can :
+To use Flutter Sound in a web application, you can either :
 
 ### Static reference
 
@@ -155,7 +155,7 @@ Add those 4 lines at the end of the `<head>` section of your `index.html` file :
   <script src="assets/packages/flutter_sound_web/js/howler/howler.js"></script>
 ```
 
-### Dynamic reference
+### or Dynamic reference
 
 Add those 4 lines at the end of the `<head>` section of your `index.html` file :
 ```

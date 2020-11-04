@@ -233,7 +233,7 @@ You can look to the three provided examples :
 
 ## Flutter Sound on Flutter Web
 
-Flutter Sound is now supported by Flutter Web (with some limitations).
+Flutter Sound is now supported by Flutter Web (with some limitations). Please [go to there](install.md#flutter-web) to have informations on how to setup your App for web.
 
 The big problem (as usual) is Apple. Webkit is bull shit : you cannot use MediaRecorder to record anything with it. It means that Flutter Sound on Safari cannot record.
 And because Apple forces Firefox and Chrome to use also Webkit on iOS, you cannot record anything on iOS with Flutter Sound. Apple really sucks :-(.
@@ -272,7 +272,7 @@ Limitations :
 
 ### FFmpeg
 
-Actually, Flutter Sound on Web does not support FFmpeg. We are actually not sure if we should support it or if the code weight would be too high for a Web App.
+Actually, Flutter Sound on Web does not support FFmpeg. We are still actually not sure if we should support it or if the code weight would be too high for a Web App.
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 
