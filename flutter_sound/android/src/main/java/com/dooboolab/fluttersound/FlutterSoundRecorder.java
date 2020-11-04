@@ -117,6 +117,7 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 		Map<String, Object> dic = new HashMap<String, Object> ();
 		dic.put ( "slotNo", slotNo );
 		dic.put ( "arg", arg );
+		dic.put ( "state", getStatus() );
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
 
@@ -125,7 +126,13 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 		Map<String, Object> dic = new HashMap<String, Object> ();
 		dic.put ( "slotNo", slotNo );
 		dic.put ( "arg", arg );
+		dic.put ( "state", getStatus() );
 		getPlugin ().invokeMethod ( methodName, dic );
+	}
+
+	int getStatus()
+	{
+		return -1; // unimplemented
 	}
 
 	static boolean _isAudioRecorder[] = {

@@ -23,10 +23,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
+
 //import 'util/log.dart';
 import 'demo_active_codec.dart';
 import 'demo_common.dart';
 import 'demo_media_path.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 ///
 class RecordingPlayer extends StatelessWidget {
@@ -63,7 +65,9 @@ class RecordingPlayer extends StatelessWidget {
           track.trackTitle = title;
           track.trackAuthor = "By flutter_sound";
 
-          if (Platform.isIOS) {
+          if (kIsWeb)
+            track.albumArtAsset = null;
+          else if (Platform.isIOS) {
             track.albumArtAsset = 'AppIcon';
           } else if (Platform.isAndroid) {
             track.albumArtAsset = 'AppIcon.png';

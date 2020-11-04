@@ -31,7 +31,8 @@ public class FlautoRecorderMedia
 {
 	final static String             TAG                = "SoundMediaRecorder";
 
-	static int codecArray[] = {
+	static int codecArray[] =
+	{
 		MediaRecorder.AudioEncoder.DEFAULT,
 		MediaRecorder.AudioEncoder.AAC,
 		MediaRecorder.AudioEncoder.OPUS,
@@ -46,11 +47,17 @@ public class FlautoRecorderMedia
 		MediaRecorder.AudioEncoder.AAC, // aacMP4
 		MediaRecorder.AudioEncoder.AMR_NB,
 		MediaRecorder.AudioEncoder.AMR_WB,
+		0, // pcm8
+		0, // pcmFloat32
+		0, // pcmWebM
+		MediaRecorder.AudioEncoder.OPUS, // opusWebM
+		MediaRecorder.AudioEncoder.VORBIS, // vorbisWebM
 	};
 
 
 
-	static int formatsArray[] = {
+	static int formatsArray[] =
+	{
 		MediaRecorder.OutputFormat.DEFAULT // DEFAULT
 		, MediaRecorder.OutputFormat.AAC_ADTS // CODEC_AAC
 		, MediaRecorder.OutputFormat.OGG // CODEC_OPUS
@@ -65,9 +72,15 @@ public class FlautoRecorderMedia
 		, MediaRecorder.OutputFormat.MPEG_4 // aacMP4
 		, MediaRecorder.OutputFormat.AMR_NB
 		, MediaRecorder.OutputFormat.AMR_WB
+		, 0 // pcm8
+		, 0 // pcmFloat32
+		, MediaRecorder.OutputFormat.WEBM // pcmWebM
+		, MediaRecorder.OutputFormat.WEBM // opusWebM
+		, MediaRecorder.OutputFormat.WEBM // vorbisWebM
 	};
 
-	static       String pathArray[]               = {
+	static       String pathArray[]               =
+	{
 		"sound.fs" // DEFAULT
 		, "sound.aac" // CODEC_AAC
 		, "sound.opus" // CODEC_OPUS
@@ -82,6 +95,11 @@ public class FlautoRecorderMedia
 		, "sound.mp4" // aacMP4
 		, "sound.amr" // amrNB
 		, "sound.amr" // amrWB
+		, "sound.pcm" // pcm8
+		, "sound.pcm" // pcmFloat32
+		, "sound.webm" // pcmWebM
+		, "sound.opus" // opusWebM
+		, "sound.vorbis" // vorbisWebM
 
 	};
 

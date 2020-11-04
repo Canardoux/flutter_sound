@@ -9,9 +9,13 @@ This plugin provides simple recorder and player functionalities for both Android
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
-# <center>Flauto (Flutter Sound) V 6.0 is OUT </center>
+# Flutter Sound V6.x is OUT
 
-We (I) think that this version will be a major release. Please refer to the [CHANGELOG.md file](CHANGELOG.md) to get learn all the great new features. It has especially the following :
+Please refer to the [CHANGELOG.md file](../CHANGELOG.md) to get learn all the great new features. It has especially the following :
+
+## Flutter Web support
+
+Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://www.canardoux.space/tau/flutter_sound_example) (still cannot record with Safari or any web browser on iOS). You can [read this](doc/codec.md#flutter-sound-on-flutter-web).
 
 ## Record to Dart Stream
 

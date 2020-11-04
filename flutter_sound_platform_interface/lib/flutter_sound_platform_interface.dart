@@ -12,7 +12,7 @@ enum Codec {
   /// Flutter Sound will use the files extension to guess the codec.
   /// If the file extension doesn't match a known codec then
   /// Flutter Sound will throw an exception in which case you need
-  /// pass one of the know codec.
+  /// pass one of the known codec.
   defaultCodec,
 
   /// AAC codec in an ADTS container
@@ -56,6 +56,20 @@ enum Codec {
   /// AMR-WB
   amrWB,
 
+  /// Raw PCM Linear 8
+  pcm8,
+
+  /// Raw PCM with 32 bits Floating Points
+  pcmFloat32,
+
+  /// PCM with a WebM format
+  pcmWebM,
+
+  /// Opus with a WebM format
+  opusWebM,
+
+  /// Vorbis with a WebM format
+  vorbisWebM,
 }
 
 

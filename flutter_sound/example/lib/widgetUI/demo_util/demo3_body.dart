@@ -32,6 +32,7 @@ import 'demo_asset_player.dart';
 import 'demo_drop_downs.dart';
 import 'recorder_state.dart';
 import 'remote_player.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 ///
 class MainBody extends StatefulWidget {
@@ -51,23 +52,27 @@ class _MainBodyState extends State<MainBody> {
   Track track;
 
   @override
-  void initState() {
-    Future<PermissionStatus> status =  Permission.microphone.request();
-    status.then((stat) {
-      if (stat != PermissionStatus.granted) {
-        throw RecordingPermissionException("Microphone permission not granted");
-      }
-    });
-
-    super.initState();
-     tempFile(suffix: '.aac').then( (path){
-       recordingFile = path;
-       track = Track(trackPath: recordingFile);
-       setState(() {
-       });
-     });
-
-
+  void initState()
+  {
+              if (!kIsWeb)
+              {
+                      Future<PermissionStatus> status = Permission.microphone.request();
+                      status.then((stat)
+                      {
+                              if (stat != PermissionStatus.granted)
+                              {
+                                        throw RecordingPermissionException("Microphone permission not granted");
+                              }
+                }     );
+              }
+              super.initState();
+              tempFile(suffix: '.aac').then( (path)
+              {
+                       recordingFile = path;
+                       track = Track(trackPath: recordingFile);
+                       setState(() {
+                       });
+              });
   }
 
   Future<bool> init()  async {

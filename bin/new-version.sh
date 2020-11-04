@@ -65,7 +65,14 @@ if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
 fi
+cd ..
 
+
+pod trunk push TauEngine.podspec
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
 
 cd TauEngine/android/TauEngine
 ./gradlew clean build bintrayUpload
@@ -74,7 +81,6 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 cd ../../..
-
 
 
 cd flutter_sound/example

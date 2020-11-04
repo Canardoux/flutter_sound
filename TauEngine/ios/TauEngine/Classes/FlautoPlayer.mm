@@ -46,6 +46,9 @@ static bool _isIosDecoderSupported [] =
                 false, // amrWB
                 false, //pcm8,
                 false, //pcmFloat32,
+                false, // pcmWebM
+                false, // opusWebM
+                false, // vorbisWebM
   
 
 };

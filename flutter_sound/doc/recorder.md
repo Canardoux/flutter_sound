@@ -189,7 +189,9 @@ Flutter Sound does not take care of the recording permission. It is the App resp
 
 *Dart definition (prototype) :*
 ```
-Future<void> stopRecorder( )
+await startRecorder( codec: Codec.opusWebM, toFile: 'foo' );
+
+
 ```
 
 Use this verb to stop a record. This verb never throws any exception. It is safe to call it everywhere,

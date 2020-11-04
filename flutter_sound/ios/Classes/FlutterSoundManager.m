@@ -121,7 +121,7 @@
 
 - (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg
 {
-        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": stringArg};
+        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": stringArg, @"state": [NSNumber numberWithInt:([self getStatus])] };
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 
@@ -135,14 +135,14 @@
 
 - (void)invokeMethod: (NSString*)methodName boolArg: (Boolean)boolArg
 {
-        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": [NSNumber numberWithBool: boolArg]};
+        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": [NSNumber numberWithBool: boolArg] , @"state": [NSNumber numberWithInt:([self getStatus])]};
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 
 
 - (void)invokeMethod: (NSString*)methodName numberArg: (NSNumber*)arg
 {
-        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": arg};
+        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": arg, @"state": [NSNumber numberWithInt:([self getStatus])]};
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 

@@ -51,11 +51,14 @@ public abstract class FlutterSoundSession
 		getPlugin().freeSlot(slotNo);
 	}
 
+	abstract int getStatus();
+
 
 	void invokeMethodWithString ( String methodName, String arg )
 	{
 		Map<String, Object> dic = new HashMap<String, Object>();
 		dic.put ( "slotNo", slotNo );
+		dic.put ( "state", getStatus() );
 		dic.put ( "arg", arg );
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
@@ -64,6 +67,7 @@ public abstract class FlutterSoundSession
 	{
 		Map<String, Object> dic = new HashMap<String, Object> ();
 		dic.put ( "slotNo", slotNo );
+		dic.put ( "state", getStatus() );
 		dic.put ( "arg", arg );
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
@@ -73,6 +77,7 @@ public abstract class FlutterSoundSession
 	{
 		Map<String, Object> dic = new HashMap<String, Object> ();
 		dic.put ( "slotNo", slotNo );
+		dic.put ( "state", getStatus() );
 		dic.put ( "arg", arg );
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
@@ -82,6 +87,7 @@ public abstract class FlutterSoundSession
 	{
 		Map<String, Object> dic = new HashMap<String, Object> ();
 		dic.put ( "slotNo", slotNo );
+		dic.put ( "state", getStatus() );
 		dic.put ( "arg", arg );
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
@@ -89,6 +95,7 @@ public abstract class FlutterSoundSession
 	void invokeMethodWithMap ( String methodName, Map<String, Object>  dic )
 	{
 		dic.put ( "slotNo", slotNo );
+		dic.put ( "state", getStatus() );
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
 

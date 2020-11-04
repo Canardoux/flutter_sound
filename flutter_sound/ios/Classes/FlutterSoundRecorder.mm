@@ -40,13 +40,13 @@
 
 - (void)updateRecorderProgressDbPeakLevel: normalizedPeakLevel duration: duration;
 {
-        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"dbPeakLevel": normalizedPeakLevel, @"duration": duration};
+        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"status": [NSNumber numberWithInt: -1], @"dbPeakLevel": normalizedPeakLevel, @"duration": duration};
         [self invokeMethod:@"updateRecorderProgress" dico: dico];
 }
  
 - (void)recordingData: (NSData*)data
 {
-       NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"recordingData": data};
+        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo],  @"status": [NSNumber numberWithInt: -1], @"recordingData": data};
         [self invokeMethod:@"recordingData" dico: dico];
   
 }
@@ -198,6 +198,10 @@
 }
 
 
+- (int)getStatus
+{
+        return -1; // not implemented
+}
 
 
 @end

@@ -1,6 +1,6 @@
 apply plugin: 'com.github.dcendents.android-maven'
 
-group 'xyz.canardoux'
+group  'xyz.canardoux'
 
 install {
    repositories.mavenInstaller {

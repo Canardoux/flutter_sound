@@ -35,7 +35,7 @@
       int slotNo;
       BOOL hasFocus;
 }
-
+- (int) getStatus;
 - (Session*) init: (FlutterMethodCall*)call;
 - (void) releaseSession;
 - (void)invokeMethod: (NSString*)methodName dico: (NSDictionary*)dico;
@@ -58,7 +58,6 @@
 
 - (Session*)getSession: (FlutterMethodCall*)call;
 - (int) initPlugin: (Session*) session call:(FlutterMethodCall*)call;
-
 
 
 
