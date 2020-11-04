@@ -40,6 +40,7 @@ fi
 cd ..
 
 bin/flavor LITE
+
 cd flutter_sound
 flutter pub publish
 if [ $? -ne 0 ]; then
@@ -73,7 +74,6 @@ fi
 cd ../../..
 
 
-
 cd flutter_sound/example
 flutter pub get
 cd ios
@@ -83,5 +83,8 @@ pod repo update
 pod install --repo-update
 cd ../../..
 
+cd TauEngine/web
+npm publish .
+cd ../..
 
 echo 'E.O.J'

@@ -55,8 +55,8 @@ dependencies:
 The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
 
 There is actually two branches :
-- V4. This is the Long Term Support (LTS) branch which is maintained under the version 4.x.x
-- master. This is the branch currently developed and is released under the version 5.x.x.
+- V5. This is the Long Term Support (LTS) branch which is maintained under the version 5.x.x
+- master. This is the branch currently developed and is released under the version 6.x.x.
 
 If you want to generate your App from the sources with a `FULL` flavor:
 
@@ -140,6 +140,32 @@ If your App needs an other FFmpeg package (for example the "video" package), use
   <uses-permission android:name="android.permission.RECORD_AUDIO" />
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
   ```
+
+## Flutter Web
+
+To use Flutter Sound in a web application, you can :
+
+### Static reference
+
+Add those 4 lines at the end of the `<head>` section of your `index.html` file :
+```
+  <script src="assets/packages/flutter_sound_web/js/flutter_sound/flutter_sound.js"></script>
+  <script src="assets/packages/flutter_sound_web/js/flutter_sound/flutter_sound_player.js"></script>
+  <script src="assets/packages/flutter_sound_web/js/flutter_sound/flutter_sound_recorder.js"></script>
+  <script src="assets/packages/flutter_sound_web/js/howler/howler.js"></script>
+```
+
+### Dynamic reference
+
+Add those 4 lines at the end of the `<head>` section of your `index.html` file :
+```
+  <script src="https://cdn.jsdelivr.net/npm/tau_engine@6/js/flutter_sound/flutter_sound.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tau_engine@6/js/flutter_sound/flutter_sound_player.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tau_engine@6/js/flutter_sound/flutter_sound_recorder.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/howler@2/dist/howler.min.js"></script>
+```
+
+Please [read this](https://www.jsdelivr.com/features) to understand how you can specify the interval of the versions you are interested by.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
