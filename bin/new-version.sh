@@ -90,7 +90,7 @@ cd ios
 pod cache clean --all
 rm Podfile.lock
 pod repo update
-pod install --repo-update
+pod install
 cd ../../..
 
 
