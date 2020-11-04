@@ -60,13 +60,6 @@ fi
 cd ..
 
 
-pod trunk push TauEngine.podspec
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
-cd ..
-
 
 pod trunk push TauEngine.podspec
 if [ $? -ne 0 ]; then
@@ -82,6 +75,14 @@ if [ $? -ne 0 ]; then
 fi
 cd ../../..
 
+cd TauEngine/web
+npm publish .
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+cd ../..
+
 
 cd flutter_sound/example
 flutter pub get
@@ -92,8 +93,6 @@ pod repo update
 pod install --repo-update
 cd ../../..
 
-cd TauEngine/web
-npm publish .
-cd ../..
+
 
 echo 'E.O.J'

@@ -1,7 +1,7 @@
 ext.flutterFFmpegPackage = 'audio'
 
 group 'com.dooboolab.fluttersound'
-version '6.4.0+1'
+version '6.4.0+2'
 
 buildscript {
     repositories {
@@ -62,9 +62,9 @@ dependencies {
     implementation 'androidx.media:media:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
 <<<<<<< HEAD
-    implementation 'xyz.canardoux:TauEngine:6.4.0+1'
+    implementation 'xyz.canardoux:TauEngine:6.4.0+2'
 =======
-    implementation 'xyz.canardoux:TauEngine:6.4.0+1'
+    implementation 'xyz.canardoux:TauEngine:6.4.0+2'
 >>>>>>> FS/master
 
     // -------------------------------------------------------------------------------------
