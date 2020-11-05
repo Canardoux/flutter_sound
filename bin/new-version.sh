@@ -14,6 +14,9 @@ bin/flavor FULL
 bin/reldev.sh REL
 bin/setver.sh $VERSION
 
+cd flutter_sound
+dartdoc --pretty-index-json
+cd ..
 
 git add .
 git commit -m "TAU : Version $VERSION"

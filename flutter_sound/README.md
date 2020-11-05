@@ -88,8 +88,8 @@ Please refer to [the README.md](example/README.md) to have a preview of those ex
 
 ## License
 
-Flutter Sound is copyrighted by Dooboolab (2018, 2019, 2020)
-Flutter Sound is released under a license with a *copyleft* clause: the LGPL-V3 license. This means that if you modify some of Flutter Sound code you must be publish your modifications under the LGPL license too.
+Flutter Sound is copyrighted by Dooboolab (2018, 2019, 2020).
+Flutter Sound is released under a license with a *copyleft* clause: the LGPL-V3 license. This means that if you modify some of Flutter Sound code you must publish your modifications under the LGPL license too.
 
 ## Contributions
 
@@ -116,11 +116,11 @@ When you fill an issue, we try to answer something in less than 48h. Of course, 
 - [ ] Record OPUS on Android
 - [ ] Record MP3 both on Android and iOS
 - [X] Record raw PCM to a Dart Stream instead of a file
-- [ ] Playback raw PCM from a Dart Stream instead of a file
-- [ ] Streaming records to Speech to Text
+- [X] Playback raw PCM from a Dart Stream instead of a file
+- [X] Streaming records
 - [ ] More support for the Apple Watch
 - [ ] Tests unit to avoid any regression
-- [ ] Flutter Web App support
+- [X] Flutter Web App support
 - [ ] Flutter Sound port to React Native
 - [ ] Better UI Widget
 - [ ] Lock screen control between two sounds (Done on iOS).
