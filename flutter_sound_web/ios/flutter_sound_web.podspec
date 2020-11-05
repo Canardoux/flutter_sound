@@ -3,12 +3,12 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'flutter_sound_web'
-  s.version          = '0.0.1'
+  s.version          = '6.4.2+1'
   s.summary          = 'No-op implementation of flutter_sound_web web plugin to avoid build issues on iOS'
   s.description      = <<-DESC
 temp fake flutter_sound_web plugin
                        DESC
-  s.homepage         = s.homepage         = 'https://github.com/dooboolab/flutter_sound/flutter_sound_web
+  s.homepage         = s.homepage         = 'https://github.com/dooboolab/flutter_sound/flutter_sound_web'
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Dooboolab' => 'dooboolab@gmail.com' }
   s.source           = { :path => '.' }

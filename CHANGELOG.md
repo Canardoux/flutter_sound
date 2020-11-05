@@ -1,3 +1,7 @@
+## 6.4.2
+
+- Syntaxe error in flutter_sound_web.podspec [#509](https://github.com/dooboolab/flutter_sound/issues/509)
+
 ## 6.4.1
 
 - Little mistake in the Podspec file name for flutter_sound_web [#509](https://github.com/dooboolab/flutter_sound/issues/509)
