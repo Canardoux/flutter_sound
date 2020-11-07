@@ -2,11 +2,26 @@
 
 -----------------------------------------------------------------------------------------------------------------------
 
+# Migration from 6.4 to 6.5
+
+Flutter Sound 6.5 API is backward compatible with previous versions. But the API has been (once again) cleaned.
+
+Here are the changes :
+- FlutterSoundPlayer.openAudioSession(), FlutterSoundPlayer.openAudioSessionWithUI(), FlutterSoundPlayer.setAudioFocus(),
+  FlutterSoundRecorder.openAudioSession() and FlutterSoundRecorder.setAudioFocus() are deprecated. Those 5 verbs are now replaced
+  by a simple global `FlutterSound.setAudioFocus()`. `FlutterSound.setAudioFocus()` returns a Future, but the App does not need
+  to wait for the Future to be completed. This is really much simpler that the previous API! and this is correctely handled by iOS,
+  unlike the previous behavior.
+
+- the API for the Flutter Sound Recorder has been cleaned. [See the new doc](api/flutter_sound/FlutterSoundRecorder-class.html)
+
+-----------------------------------------------------------------------------------------------------------------------
+
 # Migration form 5.x.x to 6.x.x
 
-Flutter Sound 6.0 **FULL** flavor is now linked with `mobile-ffmpeg-audio 4.3.1.LTS`
-Flutter Sound 6.2 is linked with flutter_sound_interface 2.0.0
-Flutter Sound 6.2 is linked with the Pod TauEngine 1.0.0
+- Flutter Sound 6.0 **FULL** flavor is now linked with `mobile-ffmpeg-audio 4.3.1.LTS`
+- Flutter Sound 6.2 is linked with flutter_sound_interface 2.0.0
+- Flutter Sound 6.2 is linked with the Pod TauEngine 1.0.0
 
 You must delete the file `ios/Pofile.lock` in your App directory and execute the command :
 ``` sh
@@ -30,8 +45,7 @@ This file is just a list of "exports" from the various dart files present in the
 
 Global enums are renamed to be compliant with the Google CamelCase recommandations :
 
-- `t_CODECS` is renamed `Codec`.
-The `Codec` values are LowerCase, followed by the File Format in Uppercase when there is ambiguity :
+- `t_CODECS` is renamed `Codec`. The `Codec` values are LowerCase, followed by the File Format in Uppercase when there is ambiguity :
    - aacADTS
    - opusOGG
    - opusCAF

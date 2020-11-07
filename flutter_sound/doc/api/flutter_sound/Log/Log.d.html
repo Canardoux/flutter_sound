@@ -114,20 +114,21 @@
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">factory Log.d(String message,
-    {dynamic error, StackTrace stackTrace, bool supressDuplicates = false}) {
-  autoInit();
-  var suppress = false;
+    {dynamic error, StackTrace stackTrace, bool supressDuplicates = false})
+{
+        autoInit();
+        var suppress = false;
 
-  if (supressDuplicates) {
-    var lastLogged = _recentLogs[message];
-    if (lastLogged != null &amp;&amp;
-        lastLogged.add(Duration(milliseconds: 100)).isAfter(DateTime.now())) {
-      suppress = true;
-    }
-    _recentLogs[message] = DateTime.now();
-  }
-  if (suppress) _self.d(message, error, stackTrace);
-  return _self;
+        if (supressDuplicates) {
+          var lastLogged = _recentLogs[message];
+          if (lastLogged != null &amp;&amp;
+              lastLogged.add(Duration(milliseconds: 100)).isAfter(DateTime.now())) {
+            suppress = true;
+          }
+          _recentLogs[message] = DateTime.now();
+        }
+        if (suppress) _self.d(message, error, stackTrace);
+        return _self;
 }</code></pre>
     </section>
 

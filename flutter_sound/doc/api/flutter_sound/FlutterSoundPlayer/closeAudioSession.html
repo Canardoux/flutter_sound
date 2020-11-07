@@ -27,7 +27,7 @@
     <li><a href="../../index.html">flutter_sound</a></li>
     <li><a href="../../flutter_sound/flutter_sound-library.html">flutter_sound</a></li>
     <li><a href="../../flutter_sound/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
-    <li class="self-crumb">closeAudioSession method</li>
+    <li class="self-crumb"><span class="deprecated">closeAudioSession</span> method</li>
   </ol>
   <div class="self-name">closeAudioSession</div>
   <form class="search navbar-right" role="search">
@@ -48,7 +48,7 @@
       <li><a href="../../index.html">flutter_sound</a></li>
       <li><a href="../../flutter_sound/flutter_sound-library.html">flutter_sound</a></li>
       <li><a href="../../flutter_sound/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
-      <li class="self-crumb">closeAudioSession method</li>
+      <li class="self-crumb"><span class="deprecated">closeAudioSession</span> method</li>
     </ol>
     
     <h5>FlutterSoundPlayer class</h5>
@@ -69,7 +69,6 @@
         <li><a href="../../flutter_sound/FlutterSoundPlayer/isPaused.html">isPaused</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/isPlaying.html">isPlaying</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/isStopped.html">isStopped</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundPlayer/lock.html">lock</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/needSomeFoodCompleter.html">needSomeFoodCompleter</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/onPaused.html">onPaused</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/onProgress.html">onProgress</a></li>
@@ -82,7 +81,7 @@
     
         <li class="section-title"><a href="../../flutter_sound/FlutterSoundPlayer-class.html#instance-methods">Methods</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/audioPlayerFinished.html">audioPlayerFinished</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundPlayer/closeAudioSession.html">closeAudioSession</a></li>
+        <li><a class="deprecated" href="../../flutter_sound/FlutterSoundPlayer/closeAudioSession.html">closeAudioSession</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/dispositionStream.html">dispositionStream</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/feed.html">feed</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/feedFromStream.html">feedFromStream</a></li>
@@ -90,11 +89,12 @@
         <li><a href="../../flutter_sound/FlutterSoundPlayer/getProgress.html">getProgress</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/getResourcePath.html">getResourcePath</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/isDecoderSupported.html">isDecoderSupported</a></li>
+        <li><a href="../../flutter_sound/FlutterSoundPlayer/isOpen.html">isOpen</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/needSomeFood.html">needSomeFood</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/needToConvert.html">needToConvert</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/nowPlaying.html">nowPlaying</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundPlayer/openAudioSession.html">openAudioSession</a></li>
+        <li><a class="deprecated" href="../../flutter_sound/FlutterSoundPlayer/openAudioSession.html">openAudioSession</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/openAudioSessionCompleted.html">openAudioSessionCompleted</a></li>
         <li><a class="deprecated" href="../../flutter_sound/FlutterSoundPlayer/openAudioSessionWithUI.html">openAudioSessionWithUI</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/pause.html">pause</a></li>
@@ -102,7 +102,7 @@
         <li><a href="../../flutter_sound/FlutterSoundPlayer/resume.html">resume</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/resumePlayer.html">resumePlayer</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/seekToPlayer.html">seekToPlayer</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundPlayer/setAudioFocus.html">setAudioFocus</a></li>
+        <li><a class="deprecated" href="../../flutter_sound/FlutterSoundPlayer/setAudioFocus.html">setAudioFocus</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/setPlayerCallback.html">setPlayerCallback</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/setSubscriptionDuration.html">setSubscriptionDuration</a></li>
         <li><a href="../../flutter_sound/FlutterSoundPlayer/setUIProgressBar.html">setUIProgressBar</a></li>
@@ -137,17 +137,23 @@
       <div><h1><span class="kind-method">closeAudioSession</span> method </h1></div>
 
     <section class="multi-line-signature">
+      <div>
+        <ol class="annotation-list">
+          <li>@<a href="https://api.flutter.dev/flutter/dart-core/deprecated-constant.html">deprecated</a></li>
+        </ol>
+      </div>
       <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
-            <span class="name ">closeAudioSession</span>
+            <span class="name deprecated">closeAudioSession</span>
 (<wbr>)
       
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; closeAudioSession() async {
+      <pre class="language-dart"><code class="language-dart">@deprecated
+Future&lt;void&gt; closeAudioSession() async {
   print(&#39;FS:---&gt; closeAudioSession &#39;);
-  await lock.synchronized(() async {
+  await _lock.synchronized(() async {
     if (isInited == Initialized.notInitialized)
     {
       return this;

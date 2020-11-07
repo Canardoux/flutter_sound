@@ -25,260 +25,203 @@ import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
-
-
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound/src/flutter_sound_helper.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
+import 'package:synchronized/synchronized.dart';
 
-
+/// ----------------------------------------------------------------------------------------------------
+///
+/// A recorder is an object that can record from various sources.
+/// Using a recorder is very simple :
+///
+/// 1. Create a new `FlutterSoundRecorder` (optional).
+/// This is optional, and most of the time, APP will use the pre-built [defaultRecorder]
+/// instead of creating a new object
+///
+/// 2. Start your record with [startRecording()].
+/// [startRecording()] returns a future, but you do not need
+/// to wait for this future completed before working with your record.
+///
+/// 3. Use the various verbs (optional):
+///    - [pauseRecorder()]
+///    - [resumeRecorder()]
+///
+/// 5. Stop your recorder : [stopRecorder]
+///
+/// 6. Release your recorder when you have finished with it : [releaseRecorder()].
+/// This verb will call to [stopRecorder()] will be done if necessary.
+///
+/// ----------------------------------------------------------------------------------------------------
 class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
 {
-  Initialized isInited = Initialized.notInitialized;
-  RecorderState recorderState = RecorderState.isStopped;
-  StreamController<RecordingDisposition> _recorderController;
-  StreamSink<Food> _userStreamSink;
 
 
-  ///
-  Stream<RecordingDisposition> dispositionStream() {
-    return (_recorderController != null) ? _recorderController.stream : null;
-  }
-  Stream<RecordingDisposition> get onProgress => (_recorderController != null) ? _recorderController.stream : null;
-
-
-
-  bool isOggOpus =
-      false; // Set by startRecorder when the user wants to record an ogg/opus
-  String
-      savedUri; // Used by startRecorder/stopRecorder to keep the caller wanted uri
-  String
-      tmpUri; // Used by startRecorder/stopRecorder to keep the temporary uri to record CAF
-
-  bool get isRecording => (recorderState == RecorderState.isRecording);
-
-  bool get isStopped => (recorderState == RecorderState.isStopped);
-
-  bool get isPaused => (recorderState == RecorderState.isPaused);
+// Locals
+        StreamSink<Food> _userStreamSink;
+        bool _isOggOpus = false; // Set by startRecorder when the user wants to record an ogg/opus
+        String _savedUri; // Used by startRecorder/stopRecorder to keep the caller wanted uri
+        String _tmpUri; // Used by startRecorder/stopRecorder to keep the temporary uri to record CAF
+        RecorderState _recorderState = RecorderState.isStopped;
+        Lock _lock = new Lock();
 
 
 
+// Public
+        /// The current state of the recorder
+        RecorderState get recorderState => _recorderState;
+
+        /// The Stream of the progress informations
+        Stream<RecordingDisposition> get onProgress => (_recorderController != null) ? _recorderController.stream : null;
 
 
-  Future<FlutterSoundRecorder> openAudioSession( {
-                                                   AudioFocus focus = AudioFocus.requestFocusTransient,
-                                                   SessionCategory category = SessionCategory.playAndRecord,
-                                                   SessionMode mode = SessionMode.modeDefault,
-                                                   int audioFlags = outputToSpeaker,
-                                                   AudioDevice device = AudioDevice.speaker}) async {
-    if (isInited == Initialized.fullyInitialized) {
-      return this;
-    }
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
+        /// True if `RecorderState.isRecording`
+        bool get isRecording => (_recorderState == RecorderState.isRecording);
 
-    isInited = Initialized.initializationInProgress;
+        /// True if `RecorderState.isStopped`
+        bool get isStopped => (_recorderState == RecorderState.isStopped);
 
-    _setRecorderCallback();
-    if (_userStreamSink != null) {
-      _userStreamSink.close();
-      _userStreamSink = null;
-    }
-    FlutterSoundRecorderPlatform.instance.openSession(this);
-    await FlutterSoundRecorderPlatform.instance.initializeFlautoRecorder(this, focus: focus, category: category, mode: mode, audioFlags: audioFlags, device: device,) ;
-
-
-    isInited = Initialized.fullyInitialized;
-    return this;
-  }
-
-  Future<void> closeAudioSession() async {
-    if (isInited == Initialized.notInitialized) {
-      return this;
-    }
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
-    await stopRecorder();
-    isInited = Initialized.initializationInProgress;
-    _removeRecorderCallback(); // _recorderController will be closed by this function
-    if (_userStreamSink != null) {
-      _userStreamSink.close();
-      _userStreamSink = null;
-    }
-    await FlutterSoundRecorderPlatform.instance.releaseFlautoRecorder(this);
-    FlutterSoundRecorderPlatform.instance.closeSession(this);
-    isInited = Initialized.notInitialized;
-  }
-
-  @override
-  void updateRecorderProgress({int duration, double dbPeakLevel}) {
-    //int duration = call['duration'] as int;
-    //double dbPeakLevel = call['dbPeakLevel'] as double;
-    _recorderController.add(RecordingDisposition(Duration(milliseconds: duration),  dbPeakLevel ,) );
-  }
-
-  @override
-  void recordingData({  Uint8List data }) {
-    if (_userStreamSink != null) {
-      //Uint8List data = call['recordingData'] as Uint8List;
-      _userStreamSink.add(FoodData(data));
-    }
-  }
-
-
-  /// Returns true if the specified encoder is supported by flutter_sound on this platform
-  Future<bool> isEncoderSupported(Codec codec) async {
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
-    if (isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
-    }
-
-    bool result;
-    // For encoding ogg/opus on ios, we need to support two steps :
-    // - encode CAF/OPPUS (with native Apple AVFoundation)
-    // - remux CAF file format to OPUS file format (with ffmpeg)
-
-    if ((codec == Codec.opusOGG) && (!kIsWeb) && (Platform.isIOS)) {
-      //if (!await isFFmpegSupported( ))
-      //result = false;
-      //else
-      result = await FlutterSoundRecorderPlatform.instance.isEncoderSupported(this, codec: Codec.opusCAF );
-    } else {
-      result = await FlutterSoundRecorderPlatform.instance.isEncoderSupported(this, codec: codec);
-         
-    }
-    return result;
-  }
-
-  Future<void> _setRecorderCallback()  {
-    if (_recorderController == null) {
-      _recorderController = StreamController.broadcast();
-    }
-
-  }
-
-  void _removeRecorderCallback() {
-    if (_recorderController != null) {
-      _recorderController
-        //..add(null) // We keep that strange line for backward compatibility
-        ..close();
-      _recorderController = null;
-    }
-  }
+        /// True if `RecorderState.isPaused`
+        bool get isPaused => (_recorderState == RecorderState.isPaused);
 
 
 
 
-  /// Sets the frequency at which duration updates are sent to
-  /// duration listeners.
-  /// The default is every 10 milliseconds.
-  Future<void> setSubscriptionDuration(Duration duration) async {
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
-    if (isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
-    }
-    await  FlutterSoundRecorderPlatform.instance.setSubscriptionDuration( this,  duration: duration);
-  }
+        /// This instance of [FlutterSoundRecorder] is just to be smart for the App.
+        /// The Apps can use this instance without having to create a [FlutterSoundRecorder] themselves.
+        static FlutterSoundRecorder defaultRecorder = FlutterSoundRecorder();
 
 
-  /// Return the file extension for the given path.
-  /// path can be null. We return null in this case.
-  String fileExtension(String path) {
-    if (path == null) return null;
-    var r = p.extension(path);
-    return r;
-  }
-
-  Future<String> defaultPath(Codec codec) async {
-    var tempDir = await getTemporaryDirectory();
-    var fout = File('${tempDir.path}/flutter_sound${ext[codec.index]}');
-    return fout.path;
-  }
+        /// This is the first thing to do, if you want to deal with recording.
+        /// The instanciation of a new recorder does not do many thing.
+        /// You are safe if you put this instanciation inside a global or instance variable initialization.
+        ///Most of the time, APPs do not create any recorder, but use the [defaultRecorder]
+        /* ctor */ FlutterSoundRecorder();
+      
+// ----------------------------------------------------------  Callbacks from the OS  -------------------------------------------------
 
 
+      
+        /// Callback from the OS. Do not use int the APPs
+        @override
+        void updateRecorderProgress({int duration, double dbPeakLevel})
+        {
+                _recorderController.add(RecordingDisposition(Duration(milliseconds: duration),  dbPeakLevel ,) );
+        }
+      
+      
+      
+      
+        /// Callback from the OS.  Do not use int the APPs
+        @override
+        void recordingData({  Uint8List data }) 
+        {
+                if (_userStreamSink != null) 
+                {
+                        //Uint8List data = call['recordingData'] as Uint8List;
+                        _userStreamSink.add(FoodData(data));
+                }
+        }
+
+
+// -------------------------------------------------------------  deprecated  --------------------------------------------------------------
+
+        /// Obsolete.
+        @deprecated
+        Initialized get isInited => _openState;
+        Initialized _openState = Initialized.notInitialized;
+      
+        /// True if the recorder has been open
+        @deprecated
+        bool get _isOpen =>  (_openState == Initialized.fullyInitialized || _openState == Initialized.fullyInitializedWithUI);
+      
+        bool get isOpen => (isInited == Initialized.fullyInitialized);
+      
+      
+        /// The Stream of the progress informations.
+        /// Obsolete. Use [onProgress] instead
+        @deprecated
+        Stream<RecordingDisposition> dispositionStream()
+        {
+          return (_recorderController != null) ? _recorderController.stream : null;
+        }
+        StreamController<RecordingDisposition> _recorderController;
+      
+      
+
+
+        /// Obsolete. Please use [openRecorder()] instead
+        @deprecated     
+        Future<FlutterSoundRecorder> openAudioSession( {
+                                                         AudioFocus focus = AudioFocus.requestFocusTransient,
+                                                         SessionCategory category = SessionCategory.playAndRecord,
+                                                         SessionMode mode = SessionMode.modeDefault,
+                                                         int audioFlags = outputToSpeaker,
+                                                         AudioDevice device = AudioDevice.speaker
+                                                      }) async 
+        {
+                if (isInited == Initialized.fullyInitialized) 
+                {
+                        return this;
+                }
+                if (isInited == Initialized.initializationInProgress) 
+                {
+                        throw (_InitializationInProgress());
+                }
+            
+                _openState = Initialized.initializationInProgress;
+            
+                _setRecorderCallback();
+                if (_userStreamSink != null) 
+                {
+                        _userStreamSink.close();
+                        _userStreamSink = null;
+                }
+                FlutterSoundRecorderPlatform.instance.openSession(this);
+                await FlutterSoundRecorderPlatform.instance.initializeFlautoRecorder(this, focus: focus, category: category, mode: mode, audioFlags: audioFlags, device: device,) ;
+
+                _openState = Initialized.fullyInitialized;
+                return this;
+        }
+        
+        
+        
+        
+
+      
+        /// Sets the frequency at which duration updates are sent to
+        /// duration listeners. Zero means "no callbacks".
+        /// The default is zero.
+        @deprecated
+        Future<void> setSubscriptionDuration(Duration duration) async 
+        {
+                if (isInited == Initialized.initializationInProgress) 
+                {
+                        throw (_InitializationInProgress());
+                }
+                if (isInited != Initialized.fullyInitialized) 
+                {
+                        throw (_notOpen());
+                }
+                await  FlutterSoundRecorderPlatform.instance.setSubscriptionDuration( this,  duration: duration);
+        }
 
 
 
-  Future<void> startRecorder( {
-    Codec codec = Codec.defaultCodec,
-    String toFile = null,
-    StreamSink<Food> toStream = null,
-    int sampleRate = 16000,
-    int numChannels = 1,
-    int bitRate = 16000,
-    AudioSource audioSource = AudioSource.defaultSource,
-  }) async {
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
-    if (isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
-    }
-    // Request Microphone permission if needed
-    /*
-    if (requestPermission) {
-      PermissionStatus status = await Permission.microphone.request();
-      if (status != PermissionStatus.granted) {
-        throw RecordingPermissionException("Microphone permission not granted");
-      }
-    }
-    */
-    if (recorderState != null && recorderState != RecorderState.isStopped) {
-      throw RecorderRunningException('Recorder is not stopped.');
-    }
-    if (!await isEncoderSupported(codec)) {
-      throw CodecNotSupportedException('Codec not supported.');
-    }
 
-    if ( (toFile == null && toStream == null) || (toFile != null && toStream != null))
-      throw Exception('One, and only one parameter "toFile"/"toStream" must be provided');
-
-    if (toStream != null && codec != Codec.pcm16)
-      throw Exception ('toStream can only be used with codec == Codec.pcm16');
-
-    _userStreamSink = toStream;
-
-
-    // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
-    // We use FFmpeg for that task.
-    if ( (!kIsWeb) && (Platform.isIOS) &&
-        ((codec == Codec.opusOGG) || (fileExtension(toFile) == '.opus'))) {
-      savedUri = toFile;
-      isOggOpus = true;
-      codec = Codec.opusCAF;
-      var tempDir = await getTemporaryDirectory();
-      var fout = File('${tempDir.path}/flutter_sound-tmp.caf');
-      toFile = fout.path;
-      tmpUri = toFile;
-    } else {
-      isOggOpus = false;
-    }
-
-    try {
-  
-      await FlutterSoundRecorderPlatform.instance.startRecorder(this, path: toFile, sampleRate: sampleRate, numChannels: numChannels, bitRate: bitRate, codec: codec, toStream: toStream != null, audioSource: audioSource);
-
-      recorderState = RecorderState.isRecording;
-      // if the caller wants OGG/OPUS we must remux the temporary file
-      if ( isOggOpus) {
-        return savedUri;
-      }
-    } catch (err) {
-      throw Exception(err);
-    }
-  }
-
-  Future<void> stopRecorder() async
-  {
+        @deprecated
+        Future<void> setAudioFocus
+          ({
+                  AudioFocus focus = AudioFocus.requestFocusTransient,
+                  SessionCategory category = SessionCategory.playAndRecord,
+                  SessionMode mode = SessionMode.modeDefault,
+                  AudioDevice device = AudioDevice.speaker
+          }) async
+          {
           if (isInited == Initialized.initializationInProgress)
           {
                   throw (_InitializationInProgress());
@@ -287,135 +230,359 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
           {
                   throw (_notOpen());
           }
-          await FlutterSoundRecorderPlatform.instance.stopRecorder(this);
-          _userStreamSink = null;
-
-          recorderState = RecorderState.isStopped;
-
-          if (isOggOpus)
-          {
-                  // delete the target if it exists
-                  // (ffmpeg gives an error if the output file already exists)
-                  File f = File(savedUri);
-                  if (f.existsSync())
-                          await f.delete();
-                  // The following ffmpeg instruction re-encode the Apple CAF to OPUS.
-                  // Unfortunately we cannot just remix the OPUS data,
-                  // because Apple does not set the "extradata" in its private OPUS format.
-                  // It will be good if we can improve this...
-                  int rc = await flutterSoundHelper.executeFFmpegWithArguments
-                  ([
-                            '-loglevel',
-                            'error',
-                            '-y',
-                            '-i',
-                            tmpUri,
-                            '-c:a',
-                            'libopus',
-                            savedUri,
-                  ]); // remux CAF to OGG
-                  if (rc != 0)
-                          return null;
-                  return savedUri;
-          }
-  }
+          await FlutterSoundRecorderPlatform.instance.setAudioFocus(this, focus: focus, category: category, mode: mode, device: device, );
+        }
 
 
-  Future<void> setAudioFocus( {
-                                AudioFocus focus = AudioFocus.requestFocusTransient,
-                                SessionCategory category = SessionCategory.playAndRecord,
-                                SessionMode mode = SessionMode.modeDefault,
-                                AudioDevice device = AudioDevice.speaker}) async {
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
-    if (isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
-    }
-    await FlutterSoundRecorderPlatform.instance.setAudioFocus(this, focus: focus, category: category, mode: mode, device: device, );
-  }
+        @deprecated
+        Future<void> closeAudioSession() async
+        {
+                if (isInited == Initialized.notInitialized)
+                {
+                        return this;
+                }
+                if (isInited == Initialized.initializationInProgress)
+                {
+                        throw (_InitializationInProgress());
+                }
+                await stopRecorder();
+                _openState = Initialized.initializationInProgress;
+                _removeRecorderCallback(); // _recorderController will be closed by this function
+                if (_userStreamSink != null)
+                {
+                        _userStreamSink.close();
+                        _userStreamSink = null;
+                }
+                await FlutterSoundRecorderPlatform.instance.releaseFlautoRecorder(this);
+                FlutterSoundRecorderPlatform.instance.closeSession(this);
+                _openState = Initialized.notInitialized;
+        }
 
-  Future<void> pauseRecorder() async {
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
-    if (isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
-    }
-    await FlutterSoundRecorderPlatform.instance.pauseRecorder(this);
-    recorderState = RecorderState.isPaused;
-  }
 
-  Future<void> resumeRecorder() async {
-    if (isInited == Initialized.initializationInProgress) {
-      throw (_InitializationInProgress());
-    }
-    if (isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
-    }
-    await FlutterSoundRecorderPlatform.instance.resumeRecorder(this);
-    recorderState = RecorderState.isRecording;
-  }
+
+// ----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+        /// Returns true if the specified encoder is supported by flutter_sound on this platform
+        /// `isEncoderSupported` is a method for legacy reason, but should be a static function.
+        Future<bool> isEncoderSupported(Codec codec) async
+        {
+                // For encoding ogg/opus on ios, we need to support two steps :
+                // - encode CAF/OPPUS (with native Apple AVFoundation)
+                // - remux CAF file format to OPUS file format (with ffmpeg)
+                if ((codec == Codec.opusOGG) && (!kIsWeb) && (Platform.isIOS))
+                {
+                        if (!await FlutterSoundHelper().isFFmpegAvailable( ))
+                                return false;
+                        codec = Codec.opusCAF ;
+                } 
+
+                bool needToClose = false;
+                if (!_isOpen) // We must open a session for legacy reason. this is not clean and should be improved
+                {
+                        await _lock.synchronized(() async
+                        {
+                                if (!_isOpen) // This could have been changed during waiting for the semaphore
+                                {
+                                        needToClose = true;
+                                        await FlutterSound().internalOpenSessionForRecording();  
+                                }
+                        });
+                }
+                
+                bool result = await FlutterSoundRecorderPlatform.instance.isEncoderSupported(this, codec: codec);
+                if (needToClose)
+                        closeAudioSession();
+                return result;
+        }
+
+
+
+
+
+      
+        Future<void> _setRecorderCallback()  
+        {
+                if (_recorderController == null) 
+                {
+                        _recorderController = StreamController.broadcast();
+                }
+        }
+        
+        
+        
+      
+        void _removeRecorderCallback() 
+        {
+                if (_recorderController != null) 
+                {
+                        _recorderController
+                          ..close();
+                        _recorderController = null;
+                }
+        }
+      
+      
+      
+      
+        /// Return the file extension for the given path.
+        /// path can be null. We return null in this case.
+        String _fileExtension(String path) 
+        {
+                if (path == null) return null;
+                var r = p.extension(path);
+                return r;
+        }
+
+
+        Future<void> releaseRecorder() async
+        {
+                await _lock.synchronized(() async
+                {
+                        if (!_isOpen)
+                                return null;
+                        await stopRecorder();
+                        _openState = Initialized.initializationInProgress;
+                        _removeRecorderCallback(); // _recorderController will be closed by this function
+                        if (_userStreamSink != null)
+                        {
+                                _userStreamSink.close();
+                                _userStreamSink = null;
+                        }
+                        await FlutterSoundRecorderPlatform.instance.releaseFlautoRecorder(this);
+                        FlutterSoundRecorderPlatform.instance.closeSession(this);
+                        _openState = Initialized.notInitialized;
+                });
+        }
+
+      
+      
+      
+        Future<void> startRecorder
+        ({
+                  Codec codec = Codec.defaultCodec,
+                  String toFile = null,
+                  StreamSink<Food> toStream = null,
+                  int sampleRate = 16000,
+                  int numChannels = 1,
+                  int bitRate = 16000,
+                  AudioSource audioSource = AudioSource.defaultSource,
+        }) async
+        {
+                if (isInited == Initialized.initializationInProgress)
+                {
+                        throw (_InitializationInProgress());
+                }
+                if (isInited != Initialized.fullyInitialized)
+                {
+                        throw (_notOpen());
+                }
+                // Request Microphone permission if needed
+                /*
+                if (requestPermission) {
+                  PermissionStatus status = await Permission.microphone.request();
+                  if (status != PermissionStatus.granted) {
+                    throw RecordingPermissionException("Microphone permission not granted");
+                  }
+                }
+                */
+                if (_recorderState != null && _recorderState != RecorderState.isStopped)
+                {
+                        throw _RecorderRunningException('Recorder is not stopped.');
+                }
+                if (!await isEncoderSupported(codec))
+                {
+                        throw _CodecNotSupportedException('Codec not supported.');
+                }
+
+                if ( (toFile == null && toStream == null) || (toFile != null && toStream != null))
+                        throw Exception('One, and only one parameter "toFile"/"toStream" must be provided');
+
+                if (toStream != null && codec != Codec.pcm16)
+                        throw Exception ('toStream can only be used with codec == Codec.pcm16');
+
+                _userStreamSink = toStream;
+
+
+                // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
+                // We use FFmpeg for that task.
+                if ( (!kIsWeb) && (Platform.isIOS) &&
+                    ((codec == Codec.opusOGG) || (_fileExtension(toFile) == '.opus')))
+                {
+                        _savedUri = toFile;
+                        _isOggOpus = true;
+                        codec = Codec.opusCAF;
+                        var tempDir = await getTemporaryDirectory();
+                        var fout = File('${tempDir.path}/flutter_sound-tmp.caf');
+                        toFile = fout.path;
+                        _tmpUri = toFile;
+                } else
+                {
+                        _isOggOpus = false;
+                }
+
+                try
+                {
+                        await FlutterSoundRecorderPlatform.instance.startRecorder(this, path: toFile, sampleRate: sampleRate, numChannels: numChannels, bitRate: bitRate, codec: codec, toStream: toStream != null, audioSource: audioSource);
+
+                        _recorderState = RecorderState.isRecording;
+                        // if the caller wants OGG/OPUS we must remux the temporary file
+                        if ( _isOggOpus)
+                        {
+                                return _savedUri;
+                        }
+                } catch (err)
+                {
+                        throw Exception(err);
+                }
+        }
+
+
+
+
+
+        Future<void> stopRecorder() async
+        {
+                await _lock.synchronized(() async
+                {
+                        if (!_isOpen)
+                                return null;
+                        await FlutterSoundRecorderPlatform.instance.stopRecorder(this);
+                        _userStreamSink = null;
+
+                        _recorderState = RecorderState.isStopped;
+                        closeAudioSession();
+
+                        if (_isOggOpus)
+                        {
+                                // delete the target if it exists
+                                // (ffmpeg gives an error if the output file already exists)
+                                File f = File(_savedUri);
+                                if (f.existsSync())
+                                        await f.delete();
+                                // The following ffmpeg instruction re-encode the Apple CAF to OPUS.
+                                // Unfortunately we cannot just remix the OPUS data,
+                                // because Apple does not set the "extradata" in its private OPUS format.
+                                // It will be good if we can improve this...
+                                int rc = await flutterSoundHelper.executeFFmpegWithArguments
+                                ([
+                                        '-loglevel',
+                                        'error',
+                                        '-y',
+                                        '-i',
+                                        _tmpUri,
+                                        '-c:a',
+                                        'libopus',
+                                        _savedUri,
+                                ]); // remux CAF to OGG
+                                if (rc != 0)
+                                        return null;
+                                return _savedUri;
+                        }
+                });
+        }
+
+
+        Future<void> pauseRecorder() async
+        {
+                await _lock.synchronized(() async
+                {
+                        if (!_isOpen)
+                                throw _notOpen();
+                        await FlutterSoundRecorderPlatform.instance.pauseRecorder(this);
+                        _recorderState = RecorderState.isPaused;
+                });
+        }
+
+
+
+
+      
+        Future<void> resumeRecorder() async
+        {
+                await _lock.synchronized(() async
+                {
+                        if (!_isOpen)
+                                throw _notOpen();
+                        await FlutterSoundRecorderPlatform.instance.resumeRecorder(this);
+                         _recorderState = RecorderState.isRecording;
+                });
+        }
+
+
+
 }
 
 /// Holds point in time details of the recording disposition
 /// including the current duration and decibels.
 /// Use the [dispositionStream] method to subscribe to a stream
 /// of [RecordingDisposition] will be emmmited while recording.
-class RecordingDisposition {
-  /// The total duration of the recording at this point in time.
-  final Duration duration;
-
-  /// The volume of the audio being captured
-  /// at this point in time.
-  /// Value ranges from 0 to 120
-  final double decibels;
-
-  /// ctor
-  RecordingDisposition(this.duration, this.decibels);
-
-  /// use this ctor to as the initial value when building
-  /// a [StreamBuilder]
-  RecordingDisposition.zero()
-              : duration = Duration(seconds: 0),
-                decibels = 0;
-
-  @override
-  String toString() {
-    return 'duration: $duration decibels: $decibels';
-  }
+class RecordingDisposition 
+{
+        /// The total duration of the recording at this point in time.
+        final Duration duration;
+      
+        /// The volume of the audio being captured
+        /// at this point in time.
+        /// Value ranges from 0 to 120
+        final double decibels;
+      
+        /// ctor
+        RecordingDisposition(this.duration, this.decibels);
+      
+        /// use this ctor to as the initial value when building
+        /// a [StreamBuilder]
+        RecordingDisposition.zero()
+                    : duration = Duration(seconds: 0),
+                      decibels = 0;
+      
+        /// Return a String representation of the Disposition
+        @override
+        String toString() {
+          return 'duration: $duration decibels: $decibels';
+        }
 }
 
 
-class RecorderException implements Exception {
-  final String _message;
-
-  RecorderException(this._message);
-
-  String get message => _message;
+class _RecorderException implements Exception 
+{
+        final String _message;
+      
+        _RecorderException(this._message);
+      
+        String get message => _message;
 }
 
-class RecorderRunningException extends RecorderException {
-  RecorderRunningException(String message) : super(message);
+class _RecorderRunningException extends _RecorderException 
+{
+        _RecorderRunningException(String message) : super(message);
 }
 
-class CodecNotSupportedException extends RecorderException {
-  CodecNotSupportedException(String message) : super(message);
-}
-
-class RecordingPermissionException extends RecorderException {
-  RecordingPermissionException(String message) : super(message);
-}
-
-class _InitializationInProgress implements Exception {
-  _InitializationInProgress() {
-    print('An initialization is currently already in progress.');
-  }
+class _CodecNotSupportedException extends _RecorderException 
+{
+        _CodecNotSupportedException(String message) : super(message);
 }
 
 
-class _notOpen implements Exception {
-  _notOpen() {
-    print('Audio session is not open');
-  }
+/// Permission to record was not granted
+class RecordingPermissionException extends _RecorderException 
+{
+        RecordingPermissionException(String message) : super(message);
+}
+
+class _InitializationInProgress implements Exception 
+{
+        _InitializationInProgress() 
+        {
+                print('An initialization is currently already in progress.');
+        }
+}
+
+
+class _notOpen implements Exception 
+{
+        _notOpen() 
+        {
+                print('Audio session is not open');
+        }
 }

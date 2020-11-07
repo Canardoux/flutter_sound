@@ -107,46 +107,59 @@ storing the message.</p>
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">@override
-void log(LogEvent event) {
-  if (EnumHelper.getIndexOf(Level.values, Log.loggingLevel) &gt;
-      EnumHelper.getIndexOf(Level.values, event.level)) {
-    &#47;&#47; don&#39;t log events where the log level is set higher
-    return;
-  }
-  var formatter = DateFormat(&#39;dd HH:mm:ss.&#39;);
-  var now = DateTime.now();
-  var formattedDate = formatter.format(now) + now.millisecond.toString();
+void log(LogEvent event)
+{
+        if (EnumHelper.getIndexOf(Level.values, Log.loggingLevel) &gt;
+            EnumHelper.getIndexOf(Level.values, event.level))
+        {
+                &#47;&#47; don&#39;t log events where the log level is set higher
+                return;
+        }
+        var formatter = DateFormat(&#39;dd HH:mm:ss.&#39;);
+        var now = DateTime.now();
+        var formattedDate = formatter.format(now) + now.millisecond.toString();
 
-  var frames = StackTraceImpl();
-  var i = 0;
-  var depth = 0;
-  for (var frame in frames.frames) {
-    i++;
-    var path2 = frame.sourceFile.path;
-    if (!path2.contains(Log._localPath) &amp;&amp; !path2.contains(&quot;logger.dart&quot;)) {
-      depth = i - 1;
-      break;
-    }
-  }
+        var frames = StackTraceImpl();
+        var i = 0;
+        var depth = 0;
+        for (var frame in frames.frames)
+        {
+                i++;
+                var path2 = frame.sourceFile.path;
+                if (!path2.contains(Log._localPath) &amp;&amp; !path2.contains(&quot;logger.dart&quot;))
+                {
+                        depth = i - 1;
+                        break;
+                }
+        }
 
-  print(color(
-      event.level,
-      &quot;$formattedDate ${EnumHelper.getName(event.level)} &quot;
-      &quot;${StackTraceImpl(skipFrames: depth).formatStackTrace(methodCount: 1)} &quot;
-      &quot;::: ${event.message}&quot;));
+        print
+        (
+                color
+                (
+                        event.level,
+                        &quot;$formattedDate ${EnumHelper.getName(event.level)} &quot;
+                        &quot;${StackTraceImpl(skipFrames: depth).formatStackTrace(methodCount: 1)} &quot;
+                        &quot;::: ${event.message}&quot;
+                )
+        );
 
-  if (event.error != null) {
-    print(color(event.level, &quot;${event.error}&quot;));
-  }
+        if (event.error != null)
+        {
+                print(color(event.level, &quot;${event.error}&quot;));
+        }
 
-  if (event.stackTrace != null) {
-    if (event.stackTrace.runtimeType == StackTraceImpl) {
-      var st = event.stackTrace as StackTraceImpl;
-      print(color(event.level, &quot;$st&quot;));
-    } else {
-      print(color(event.level, &quot;${event.stackTrace}&quot;));
-    }
-  }
+        if (event.stackTrace != null)
+        {
+                if (event.stackTrace.runtimeType == StackTraceImpl)
+                {
+                        var st = event.stackTrace as StackTraceImpl;
+                        print(color(event.level, &quot;$st&quot;));
+                } else
+                {
+                        print(color(event.level, &quot;${event.stackTrace}&quot;));
+                }
+        }
 }</code></pre>
     </section>
 

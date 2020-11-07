@@ -18,6 +18,9 @@
 
 
 
+/// Toto et titi
+library flutter_sound;
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
@@ -32,12 +35,15 @@ import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_i
 //export 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-import 'package:flutter_sound/src/food.dart';
+//import 'package:flutter_sound/src/food.dart';
 
 
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
+/// Sont dans un bateau
+
+/// toto tombe a l'eau
 const BLOCK_SIZE = 4096;
 
 enum PlayerState {
@@ -64,12 +70,19 @@ String fileExtension(String path) {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
+/// toto
+
+
+///titi
+///
+/// tutu
+
 class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 {
   TonSkip onSkipForward; // User callback "onPaused:"
   TonSkip onSkipBackward; // User callback "onPaused:"
   TonPaused onPaused; // user callback "whenPause:"
-  var lock = new Lock();
+  var _lock = new Lock();
   StreamSubscription<Food> foodStreamSubscription ;
   StreamController <Food> foodStreamController;
 
@@ -165,7 +178,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   void pause(int state) async
   {
       print( 'FS:---> pause ' );
-      await lock.synchronized(() async {
+      await _lock.synchronized(() async {
         assert (state != null);
         playerState = PlayerState.values[state];
         if (onPaused != null) // Probably always true
@@ -181,7 +194,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   {
 
       print( 'FS:---> pause ' );
-      await lock.synchronized(() async {
+      await _lock.synchronized(() async {
         assert (state != null);
         playerState = PlayerState.values[state];
         if (onPaused != null) // Probably always true
@@ -197,7 +210,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   {
 
       print( 'FS:---> skipBackward ' );
-      await lock.synchronized(() async {
+      await _lock.synchronized(() async {
         assert (state != null);
         playerState = PlayerState.values[state];
 
@@ -212,7 +225,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   {
 
       print( 'FS:---> skipForward ' );
-      await lock.synchronized(() async {
+      await _lock.synchronized(() async {
         assert (state != null);
         playerState = PlayerState.values[state];
         if (onSkipForward != null)
@@ -242,7 +255,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   void audioPlayerFinished(int state) async
   {
       print('FS:---> audioPlayerFinished');
-      await lock.synchronized(() async {
+      await _lock.synchronized(() async {
         //playerState = PlayerState.isStopped;
         //int state = call['arg'] as int;
         assert (state != null);
@@ -325,7 +338,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
   FlutterSoundPlayer();
 
-    Future<FlutterSoundPlayer> openAudioSession( {
+  @deprecated
+  Future<FlutterSoundPlayer> openAudioSession( {
                                                  AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
                                                  SessionCategory category = SessionCategory.playAndRecord,
                                                  SessionMode mode = SessionMode.modeDefault,
@@ -335,7 +349,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
                                               }) async
     {
       print('FS:---> openAudioSession ');
-      await lock.synchronized(() async {
+      await _lock.synchronized(() async {
         if (isInited == Initialized.fullyInitialized )
         {
           await closeAudioSession( );
@@ -361,6 +375,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       return  openAudioSessionCompleter.future ;
     }
 
+
+
+
   @deprecated
   Future<FlutterSoundPlayer> openAudioSessionWithUI( {
                                                        AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
@@ -373,6 +390,10 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   }
 
 
+
+
+
+  @deprecated
   Future<void> setAudioFocus( {
                                 AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
                                 SessionCategory category = SessionCategory.playback,
@@ -382,7 +403,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   }) async {
 
     print('FS:---> setAudioFocus ');
-    await lock.synchronized(() async {
+    await _lock.synchronized(() async {
       if (isInited == Initialized.initializationInProgress)
       {
         throw (
@@ -403,10 +424,15 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   }
 
 
+  bool isOpen()
+  {
+    // TODO !!!!!!
+  }
 
+  @deprecated
   Future<void> closeAudioSession() async {
     print('FS:---> closeAudioSession ');
-    await lock.synchronized(() async {
+    await _lock.synchronized(() async {
       if (isInited == Initialized.notInitialized)
       {
         return this;
@@ -620,7 +646,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
        codec = Codec.pcm16WAV;
      }
 
-     await lock.synchronized(() async {
+     await _lock.synchronized(() async {
         await stop( ); // Just in case
 
         //playerState = PlayerState.isPlaying;
@@ -663,7 +689,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       throw (_notOpen());
     }
 
-      await lock.synchronized(() async {
+      await _lock.synchronized(() async {
       await stop( ); // Just in case
       foodStreamController = StreamController();
       foodStreamSubscription = foodStreamController.stream.listen((Food food)
@@ -749,7 +775,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       throw (_notOpen());
     }
      //Map retMap;
-     await lock.synchronized(() async {
+     await _lock.synchronized(() async {
       try
       {
         await stop( ); // Just in case
@@ -821,7 +847,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
               }) async {
     print('FS:---> nowPlaying ');
-    await lock.synchronized(() async {
+    await _lock.synchronized(() async {
       if (isInited == Initialized.initializationInProgress)
       {
         throw (
@@ -924,7 +950,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     if (isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await lock.synchronized(() async {
+    await _lock.synchronized(() async {
         playerState = PlayerState.values[await FlutterSoundPlayerPlatform.instance.pausePlayer(this)];
         if (playerState != PlayerState.isPaused)
         {
@@ -943,7 +969,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     if (isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await lock.synchronized(() async {
+    await _lock.synchronized(() async {
          int state = await FlutterSoundPlayerPlatform.instance.resumePlayer(this);
         playerState = PlayerState.values[state];
         if (playerState != PlayerState.isPlaying)
@@ -964,7 +990,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     if (isInited != Initialized.fullyInitialized) {
       throw (_notOpen());
     }
-    await lock.synchronized(() async
+    await _lock.synchronized(() async
     {
         int state = await FlutterSoundPlayerPlatform.instance.seekToPlayer( this, duration: duration,);
         playerState = PlayerState.values[state];
@@ -975,7 +1001,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   Future<void> setVolume(double volume) async {
 
     print('FS:---> setVolume ');
-    await lock.synchronized(() async {
+    await _lock.synchronized(() async {
       if (isInited == Initialized.initializationInProgress)
       {
         throw (
@@ -1005,7 +1031,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
                                     Duration progress,
                                   }) async {
     print('FS:---> setUIProgressBar : duration=$duration  progress=$progress');
-    await lock.synchronized(() async {
+    await _lock.synchronized(() async {
       int state = await FlutterSoundPlayerPlatform.instance.setUIProgressBar( this, duration: duration, progress: progress);
       playerState = PlayerState.values[state];
     });

@@ -97,7 +97,7 @@ enum SessionMode
   modeVoicePrompt, // 'AVAudioSessionModeVoicePrompt',
 }
 
-/// Used by [AudioPlayer.audioFocus]
+/// Used by [FlutterSound.setAudioFocus]
 /// to control the focus mode.
 enum AudioFocus {
   requestFocus,
@@ -113,15 +113,19 @@ enum AudioFocus {
   /// In the Android world this is know as 'Duck Others'.
   requestFocusAndDuckOthers,
 
+  /// Probably not to be used
   requestFocusAndInterruptSpokenAudioAndMixWithOthers,
 
+  /// Probably not to be used
   requestFocusTransient,
-  requestFocusTransientExclusive,
 
+  /// Probably not to be used
+  requestFocusTransientExclusive,
 
   /// relinquish the audio focus.
   abandonFocus,
 
+  /// Deprecated. Do not use
   doNotRequestFocus,
 }
 

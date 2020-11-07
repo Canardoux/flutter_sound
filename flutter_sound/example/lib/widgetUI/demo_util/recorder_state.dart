@@ -97,7 +97,7 @@ class UtilRecorder {
       Log.d('startRecorder: $track');
 
       MediaPath().setCodecPath(ActiveCodec().codec, track.trackPath);
-    } on RecorderException catch (err) {
+    } on Exception catch (err) {
       Log.d('startRecorder error: $err');
 
       var error = SnackBar(

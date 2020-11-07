@@ -17,8 +17,8 @@ plugins.each { name, path ->
 // -------------------------------------------------------------------------------------
 // CAUTION: The following instruction is for developping and debugging the Flauto Engine
 // DO NOT INCLUDE THE FOLLOWING LINES IN A REAL APP !!!
-// include 'TauEngine'
-// project(':TauEngine').projectDir = file('../../../TauEngine/android/TauEngine')
+   include 'TauEngine'
+   project(':TauEngine').projectDir = file('../../../TauEngine/android/TauEngine')
 // -------------------------------------------------------------------------------------
 
 

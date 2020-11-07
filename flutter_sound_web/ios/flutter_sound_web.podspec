@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
 temp fake flutter_sound_web plugin
                        DESC
-  s.homepage         = s.homepage         = 'https://github.com/dooboolab/flutter_sound/flutter_sound_web
+  s.homepage         = s.homepage         = 'https://github.com/dooboolab/flutter_sound/flutter_sound_web'
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Dooboolab' => 'dooboolab@gmail.com' }
   s.source           = { :path => '.' }

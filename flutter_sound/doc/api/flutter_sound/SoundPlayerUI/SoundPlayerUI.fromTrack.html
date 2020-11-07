@@ -126,26 +126,27 @@ reduce the volume of any other players.</p>
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">SoundPlayerUI.fromTrack(Track track,
-    {bool showTitle = false,
-    bool enabled = true,
-    AudioFocus audioFocus = AudioFocus.requestFocusAndKeepOthers,
-    Color backgroundColor = null,
-    Color iconColor = Colors.black,
-    Color disabledIconColor = Colors.grey,
-    TextStyle textStyle = null,
-    TextStyle titleStyle = null,
-    SliderThemeData sliderThemeData = null,
-    })
-    : _track = track,
-      _showTitle = showTitle,
-      _onLoad = null,
-      _enabled = enabled,
-      _backgroundColor = backgroundColor,
-      _iconColor = iconColor,
-      _disabledIconColor = disabledIconColor,
-      _textStyle = textStyle,
-      _titleStyle = titleStyle,
-      _sliderThemeData = sliderThemeData;</code></pre>
+{
+        bool showTitle = false,
+        bool enabled = true,
+        AudioFocus audioFocus = AudioFocus.requestFocusAndKeepOthers,
+        Color backgroundColor = null,
+        Color iconColor = Colors.black,
+        Color disabledIconColor = Colors.grey,
+        TextStyle textStyle = null,
+        TextStyle titleStyle = null,
+        SliderThemeData sliderThemeData = null,
+})
+    :   _track = track,
+        _showTitle = showTitle,
+        _onLoad = null,
+        _enabled = enabled,
+        _backgroundColor = backgroundColor,
+        _iconColor = iconColor,
+        _disabledIconColor = disabledIconColor,
+        _textStyle = textStyle,
+        _titleStyle = titleStyle,
+        _sliderThemeData = sliderThemeData;</code></pre>
     </section>
 
   </div> <!-- /.main-content -->

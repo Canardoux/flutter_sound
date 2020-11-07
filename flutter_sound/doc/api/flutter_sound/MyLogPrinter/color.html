@@ -98,34 +98,35 @@
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">String color(Level level, String line) {
-  var result = &quot;&quot;;
+      <pre class="language-dart"><code class="language-dart">String color(Level level, String line)
+{
+        var result = &quot;&quot;;
 
-  switch (level) {
-    case Level.debug:
-      result += grey(line, level: 0.75);
-      break;
-    case Level.verbose:
-      result += grey(line, level: 0.50);
-      break;
-    case Level.info:
-      result += line;
-      break;
-    case Level.warning:
-      result += orange(line);
-      break;
-    case Level.error:
-      result += red(line);
-      break;
-    case Level.wtf:
-      result += red(line, bgcolor: AnsiColor.yellow);
-      break;
-    case Level.nothing:
-      result += line;
-      break;
-  }
-
-  return result;
+        switch (level)
+        {
+                case Level.debug:
+                  result += grey(line, level: 0.75);
+                  break;
+                case Level.verbose:
+                  result += grey(line, level: 0.50);
+                  break;
+                case Level.info:
+                  result += line;
+                  break;
+                case Level.warning:
+                  result += orange(line);
+                  break;
+                case Level.error:
+                  result += red(line);
+                  break;
+                case Level.wtf:
+                  result += red(line, bgcolor: AnsiColor.yellow);
+                  break;
+                case Level.nothing:
+                  result += line;
+                  break;
+        }
+        return result;
 }</code></pre>
     </section>
 

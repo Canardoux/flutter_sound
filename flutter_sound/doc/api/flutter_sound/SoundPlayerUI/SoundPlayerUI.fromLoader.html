@@ -130,29 +130,30 @@ reduce the volume of any other players.</p>
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">SoundPlayerUI.fromLoader(OnLoad onLoad,
-    {bool showTitle = false,
-    bool enabled = true,
-    AudioFocus audioFocus = AudioFocus.requestFocusAndKeepOthers,
-    Color backgroundColor =null,
-    Color iconColor = Colors.black,
-    Color disabledIconColor = Colors.grey,
-    TextStyle textStyle = null,
-    TextStyle titleStyle = null,
-    SliderThemeData sliderThemeData = null,
-    })
-    : _onLoad = onLoad,
-      _showTitle = showTitle,
-      _track = null,
-      _enabled = enabled,
-      _backgroundColor = backgroundColor,
-      _iconColor = iconColor,
-      _disabledIconColor = disabledIconColor,
-      _textStyle = textStyle,
-      _titleStyle = titleStyle,
-      _sliderThemeData = sliderThemeData
 {
-  if (backgroundColor == null)
-    _backgroundColor = backgroundColor = Color( 0xFFFAF0E6 );
+        bool showTitle = false,
+        bool enabled = true,
+        AudioFocus audioFocus = AudioFocus.requestFocusAndKeepOthers,
+        Color backgroundColor =null,
+        Color iconColor = Colors.black,
+        Color disabledIconColor = Colors.grey,
+        TextStyle textStyle = null,
+        TextStyle titleStyle = null,
+        SliderThemeData sliderThemeData = null,
+})
+    :   _onLoad = onLoad,
+        _showTitle = showTitle,
+        _track = null,
+        _enabled = enabled,
+        _backgroundColor = backgroundColor,
+        _iconColor = iconColor,
+        _disabledIconColor = disabledIconColor,
+        _textStyle = textStyle,
+        _titleStyle = titleStyle,
+        _sliderThemeData = sliderThemeData
+{
+        if (backgroundColor == null)
+                _backgroundColor = backgroundColor = Color( 0xFFFAF0E6 );
 }</code></pre>
     </section>
 

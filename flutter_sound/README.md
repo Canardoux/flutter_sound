@@ -43,6 +43,15 @@ You can refer to the [Getting Started with Playback-from-Stream](doc/codec.md#pl
 - Playback from a Dart Stream
 - The App playback can be controled from the device lock screen or from an Apple watch
 
+## Supported platforms
+
+Flutter Sound is actually supported by :
+- Android
+- iOS
+- Flutter Web
+
+Maybe, one day, we will be supported by Linux, Macos, and even (why not) Windows. But this is not top of our priorities.
+
 ## Flutter Sound branches
 
 We actually maintain two branches for Flutter Sound :

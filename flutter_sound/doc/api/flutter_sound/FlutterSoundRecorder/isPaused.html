@@ -61,30 +61,27 @@
             <a href="../../flutter_sound/FlutterSoundRecorder-class.html#instance-properties">Properties</a>
         </li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/isInited.html">isInited</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/isOggOpus.html">isOggOpus</a></li>
+        <li><a class="deprecated" href="../../flutter_sound/FlutterSoundRecorder/isInited.html">isInited</a></li>
+        <li><a href="../../flutter_sound/FlutterSoundRecorder/isOpen.html">isOpen</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/isPaused.html">isPaused</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/isRecording.html">isRecording</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/isStopped.html">isStopped</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/onProgress.html">onProgress</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/recorderState.html">recorderState</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/savedUri.html">savedUri</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/tmpUri.html">tmpUri</a></li>
     
         <li class="section-title"><a href="../../flutter_sound/FlutterSoundRecorder-class.html#instance-methods">Methods</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/closeAudioSession.html">closeAudioSession</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/defaultPath.html">defaultPath</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/dispositionStream.html">dispositionStream</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/fileExtension.html">fileExtension</a></li>
+        <li><a class="deprecated" href="../../flutter_sound/FlutterSoundRecorder/closeAudioSession.html">closeAudioSession</a></li>
+        <li><a class="deprecated" href="../../flutter_sound/FlutterSoundRecorder/dispositionStream.html">dispositionStream</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/isEncoderSupported.html">isEncoderSupported</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/openAudioSession.html">openAudioSession</a></li>
+        <li><a class="deprecated" href="../../flutter_sound/FlutterSoundRecorder/openAudioSession.html">openAudioSession</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/pauseRecorder.html">pauseRecorder</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/recordingData.html">recordingData</a></li>
+        <li><a href="../../flutter_sound/FlutterSoundRecorder/releaseRecorder.html">releaseRecorder</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/resumeRecorder.html">resumeRecorder</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/setAudioFocus.html">setAudioFocus</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/setSubscriptionDuration.html">setSubscriptionDuration</a></li>
+        <li><a class="deprecated" href="../../flutter_sound/FlutterSoundRecorder/setAudioFocus.html">setAudioFocus</a></li>
+        <li><a class="deprecated" href="../../flutter_sound/FlutterSoundRecorder/setSubscriptionDuration.html">setSubscriptionDuration</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/startRecorder.html">startRecorder</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/stopRecorder.html">stopRecorder</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
@@ -93,6 +90,8 @@
         <li class="section-title inherited"><a href="../../flutter_sound/FlutterSoundRecorder-class.html#operators">Operators</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
     
+        <li class="section-title"><a href="../../flutter_sound/FlutterSoundRecorder-class.html#static-properties">Static properties</a></li>
+        <li><a href="../../flutter_sound/FlutterSoundRecorder/defaultRecorder.html">defaultRecorder</a></li>
     
     
     
@@ -112,9 +111,12 @@
           
 </section>
         
-                        <section class="summary source-code" id="source">
+                <section class="desc markdown">
+          <p>True if <code>RecorderState.isPaused</code></p>
+        </section>
+                <section class="summary source-code" id="source">
           <h2><span>Implementation</span></h2>
-          <pre class="language-dart"><code class="language-dart">bool get isPaused =&gt; (recorderState == RecorderState.isPaused);</code></pre>
+          <pre class="language-dart"><code class="language-dart">bool get isPaused =&gt; (_recorderState == RecorderState.isPaused);</code></pre>
         </section>
 </section>
         

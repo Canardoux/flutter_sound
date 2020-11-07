@@ -114,10 +114,11 @@
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">factory Log.color(String message, AnsiColor color,
-    {dynamic error, StackTrace stackTrace}) {
-  autoInit();
-  _self.d(color.apply(message), error, stackTrace);
-  return _self;
+    {dynamic error, StackTrace stackTrace})
+{
+        autoInit();
+        _self.d(color.apply(message), error, stackTrace);
+        return _self;
 }</code></pre>
     </section>
 

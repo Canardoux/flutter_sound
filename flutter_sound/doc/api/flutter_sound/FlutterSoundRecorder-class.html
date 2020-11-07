@@ -56,6 +56,7 @@
       <li><a href="../flutter_sound/FlutterFFmpeg-class.html">FlutterFFmpeg</a></li>
       <li><a href="../flutter_sound/FlutterFFmpegConfig-class.html">FlutterFFmpegConfig</a></li>
       <li><a href="../flutter_sound/FlutterFFprobe-class.html">FlutterFFprobe</a></li>
+      <li><a href="../flutter_sound/FlutterSound-class.html">FlutterSound</a></li>
       <li><a href="../flutter_sound/FlutterSoundHelper-class.html">FlutterSoundHelper</a></li>
       <li><a href="../flutter_sound/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_player_platform_interface/FlutterSoundPlayerCallback-class.html">FlutterSoundPlayerCallback</a></li>
@@ -66,11 +67,10 @@
       <li><a href="../flutter_sound/Food-class.html">Food</a></li>
       <li><a href="../flutter_sound/FoodData-class.html">FoodData</a></li>
       <li><a href="../flutter_sound/FoodEvent-class.html">FoodEvent</a></li>
-      <li><a href="../flutter_sound/GrayedOut-class.html">GrayedOut</a></li>
       <li><a href="../flutter_sound/Log-class.html">Log</a></li>
+      <li><a href="../flutter_sound/LogLevel-class.html">LogLevel</a></li>
       <li><a href="../flutter_sound/MyLogPrinter-class.html">MyLogPrinter</a></li>
       <li><a href="../flutter_sound/PlaybackDisposition-class.html">PlaybackDisposition</a></li>
-      <li><a href="../flutter_sound/RecordedAudio-class.html">RecordedAudio</a></li>
       <li><a href="../flutter_sound/RecorderPlaybackController-class.html">RecorderPlaybackController</a></li>
       <li><a href="../flutter_sound/RecordingDisposition-class.html">RecordingDisposition</a></li>
       <li><a href="../flutter_sound/SoundPlayerUI-class.html">SoundPlayerUI</a></li>
@@ -118,7 +118,7 @@
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/AudioFocus-class.html">AudioFocus</a></li>
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_recorder_platform_interface/AudioSource-class.html">AudioSource</a></li>
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/Codec-class.html">Codec</a></li>
-      <li><a href="../flutter_sound/Initialized-class.html">Initialized</a></li>
+      <li><a class="deprecated" href="../flutter_sound/Initialized-class.html">Initialized</a></li>
       <li><a href="../flutter_sound/PlayerState-class.html">PlayerState</a></li>
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_recorder_platform_interface/RecorderState-class.html">RecorderState</a></li>
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/SessionCategory-class.html">SessionCategory</a></li>
@@ -130,10 +130,7 @@
       <li><a href="../flutter_sound/TWhenFinished.html">TWhenFinished</a></li>
     
       <li class="section-title"><a href="../flutter_sound/flutter_sound-library.html#exceptions">Exceptions</a></li>
-      <li><a href="../flutter_sound/CodecNotSupportedException-class.html">CodecNotSupportedException</a></li>
       <li><a href="../flutter_sound/PlayerRunningException-class.html">PlayerRunningException</a></li>
-      <li><a href="../flutter_sound/RecorderException-class.html">RecorderException</a></li>
-      <li><a href="../flutter_sound/RecorderRunningException-class.html">RecorderRunningException</a></li>
       <li><a href="../flutter_sound/RecordingPermissionException-class.html">RecordingPermissionException</a></li>
     </ol>
   </div>
@@ -141,6 +138,37 @@
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <div><h1><span class="kind-class">FlutterSoundRecorder</span> class  </h1></div>
 
+    <section class="desc markdown">
+      <hr>
+<p>A recorder is an object that can record from various sources.
+Using a recorder is very simple :</p>
+<ol>
+<li>
+<p>Create a new <code>FlutterSoundRecorder</code> (optional).
+This is optional, and most of the time, APP will use the pre-built <a href="../flutter_sound/FlutterSoundRecorder/defaultRecorder.html">defaultRecorder</a>
+instead of creating a new object</p>
+</li>
+<li>
+<p>Start your record with <code>startRecording()</code>.
+<code>startRecording()</code> returns a future, but you do not need
+to wait for this future completed before working with your record.</p>
+</li>
+<li>
+<p>Use the various verbs (optional):</p>
+<ul>
+<li><a href="../flutter_sound/FlutterSoundRecorder/pauseRecorder.html">pauseRecorder()</a></li>
+<li><a href="../flutter_sound/FlutterSoundRecorder/resumeRecorder.html">resumeRecorder()</a></li>
+</ul>
+</li>
+<li>
+<p>Stop your recorder : <a href="../flutter_sound/FlutterSoundRecorder/stopRecorder.html">stopRecorder</a></p>
+</li>
+<li>
+<p>Release your recorder when you have finished with it.</p>
+</li>
+</ol>
+<hr>
+    </section>
     
     <section>
       <dl class="dl-horizontal">
@@ -166,7 +194,10 @@
           <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/FlutterSoundRecorder.html">FlutterSoundRecorder</a></span><span class="signature">()</span>
         </dt>
         <dd>
-           
+          This is the first thing to do, if you want to deal with recording.
+The instanciation of a new recorder does not do many thing.
+You are safe if you put this instanciation inside a global or instance variable initialization.
+Most of the time, APPs do not create any recorder, but use the <a href="../flutter_sound/FlutterSoundRecorder/defaultRecorder.html">defaultRecorder</a> 
         </dd>
       </dl>
     </section>
@@ -184,27 +215,27 @@
                   <div class="features">read-only, inherited</div>
 </dd>
         <dt id="isInited" class="property">
-          <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/isInited.html">isInited</a></span>
-          <span class="signature">&#8596; <a href="../flutter_sound/Initialized-class.html">Initialized</a></span>         
+          <span class="name"><a class="deprecated" href="../flutter_sound/FlutterSoundRecorder/isInited.html">isInited</a></span>
+          <span class="signature">&#8594; <a class="deprecated" href="../flutter_sound/Initialized-class.html">Initialized</a></span>         
         </dt>
         <dd>
-           
-                  <div class="features">read / write</div>
+          Obsolete. 
+                  <div class="features">read-only</div>
 </dd>
-        <dt id="isOggOpus" class="property">
-          <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/isOggOpus.html">isOggOpus</a></span>
-          <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>         
+        <dt id="isOpen" class="property">
+          <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/isOpen.html">isOpen</a></span>
+          <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>         
         </dt>
         <dd>
            
-                  <div class="features">read / write</div>
+                  <div class="features">read-only</div>
 </dd>
         <dt id="isPaused" class="property">
           <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/isPaused.html">isPaused</a></span>
           <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>         
         </dt>
         <dd>
-           
+          True if <code>RecorderState.isPaused</code> 
                   <div class="features">read-only</div>
 </dd>
         <dt id="isRecording" class="property">
@@ -212,7 +243,7 @@
           <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>         
         </dt>
         <dd>
-           
+          True if <code>RecorderState.isRecording</code> 
                   <div class="features">read-only</div>
 </dd>
         <dt id="isStopped" class="property">
@@ -220,7 +251,7 @@
           <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>         
         </dt>
         <dd>
-           
+          True if <code>RecorderState.isStopped</code> 
                   <div class="features">read-only</div>
 </dd>
         <dt id="onProgress" class="property">
@@ -228,16 +259,16 @@
           <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../flutter_sound/RecordingDisposition-class.html">RecordingDisposition</a></span>&gt;</span></span>         
         </dt>
         <dd>
-           
+          The Stream of the progress informations 
                   <div class="features">read-only</div>
 </dd>
         <dt id="recorderState" class="property">
           <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/recorderState.html">recorderState</a></span>
-          <span class="signature">&#8596; <a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_recorder_platform_interface/RecorderState-class.html">RecorderState</a></span>         
+          <span class="signature">&#8594; <a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_recorder_platform_interface/RecorderState-class.html">RecorderState</a></span>         
         </dt>
         <dd>
-           
-                  <div class="features">read / write</div>
+          The current state of the recorder 
+                  <div class="features">read-only</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
           <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
@@ -247,22 +278,6 @@
           A representation of the runtime type of the object. 
                   <div class="features">read-only, inherited</div>
 </dd>
-        <dt id="savedUri" class="property">
-          <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/savedUri.html">savedUri</a></span>
-          <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>         
-        </dt>
-        <dd>
-           
-                  <div class="features">read / write</div>
-</dd>
-        <dt id="tmpUri" class="property">
-          <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/tmpUri.html">tmpUri</a></span>
-          <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>         
-        </dt>
-        <dd>
-           
-                  <div class="features">read / write</div>
-</dd>
       </dl>
     </section>
 
@@ -270,7 +285,7 @@
       <h2>Methods</h2>
       <dl class="callables">
         <dt id="closeAudioSession" class="callable">
-          <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/closeAudioSession.html">closeAudioSession</a></span><span class="signature">(<wbr>)
+          <span class="name deprecated"><a class="deprecated" href="../flutter_sound/FlutterSoundRecorder/closeAudioSession.html">closeAudioSession</a></span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
           </span>
                   </dt>
@@ -278,32 +293,14 @@
            
                   
 </dd>
-        <dt id="defaultPath" class="callable">
-          <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/defaultPath.html">defaultPath</a></span><span class="signature">(<wbr><span class="parameter" id="defaultPath-param-codec"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/Codec-class.html">Codec</a></span> <span class="parameter-name">codec</span></span>)
-            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-           
-                  
-</dd>
         <dt id="dispositionStream" class="callable">
-          <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/dispositionStream.html">dispositionStream</a></span><span class="signature">(<wbr>)
+          <span class="name deprecated"><a class="deprecated" href="../flutter_sound/FlutterSoundRecorder/dispositionStream.html">dispositionStream</a></span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../flutter_sound/RecordingDisposition-class.html">RecordingDisposition</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
-           
-                  
-</dd>
-        <dt id="fileExtension" class="callable">
-          <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/fileExtension.html">fileExtension</a></span><span class="signature">(<wbr><span class="parameter" id="fileExtension-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span></span>)
-            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
-          </span>
-                  </dt>
-        <dd>
-          Return the file extension for the given path.
-path can be null. We return null in this case. 
+          The Stream of the progress informations.
+Obsolete. Use <a href="../flutter_sound/FlutterSoundRecorder/onProgress.html">onProgress</a> instead 
                   
 </dd>
         <dt id="isEncoderSupported" class="callable">
@@ -312,7 +309,8 @@ path can be null. We return null in this case.
           </span>
                   </dt>
         <dd>
-          Returns true if the specified encoder is supported by flutter_sound on this platform 
+          Returns true if the specified encoder is supported by flutter_sound on this platform
+<code>isEncoderSupported</code> is a method for legacy reason, but should be a static function. 
                   
 </dd>
         <dt id="noSuchMethod" class="callable inherited">
@@ -325,12 +323,12 @@ path can be null. We return null in this case.
                   <div class="features">inherited</div>
 </dd>
         <dt id="openAudioSession" class="callable">
-          <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/openAudioSession.html">openAudioSession</a></span><span class="signature">(<wbr><span class="parameter" id="openAudioSession-param-focus">{<span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/AudioFocus-class.html">AudioFocus</a></span> <span class="parameter-name">focus</span>: <span class="default-value">AudioFocus.requestFocusTransient</span>, </span><span class="parameter" id="openAudioSession-param-category"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/SessionCategory-class.html">SessionCategory</a></span> <span class="parameter-name">category</span>: <span class="default-value">SessionCategory.playAndRecord</span>, </span><span class="parameter" id="openAudioSession-param-mode"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/SessionMode-class.html">SessionMode</a></span> <span class="parameter-name">mode</span>: <span class="default-value">SessionMode.modeDefault</span>, </span><span class="parameter" id="openAudioSession-param-audioFlags"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">audioFlags</span>: <span class="default-value">outputToSpeaker</span>, </span><span class="parameter" id="openAudioSession-param-device"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/AudioDevice-class.html">AudioDevice</a></span> <span class="parameter-name">device</span>: <span class="default-value">AudioDevice.speaker</span>}</span>)
+          <span class="name deprecated"><a class="deprecated" href="../flutter_sound/FlutterSoundRecorder/openAudioSession.html">openAudioSession</a></span><span class="signature">(<wbr><span class="parameter" id="openAudioSession-param-focus">{<span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/AudioFocus-class.html">AudioFocus</a></span> <span class="parameter-name">focus</span>: <span class="default-value">AudioFocus.requestFocusTransient</span>, </span><span class="parameter" id="openAudioSession-param-category"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/SessionCategory-class.html">SessionCategory</a></span> <span class="parameter-name">category</span>: <span class="default-value">SessionCategory.playAndRecord</span>, </span><span class="parameter" id="openAudioSession-param-mode"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/SessionMode-class.html">SessionMode</a></span> <span class="parameter-name">mode</span>: <span class="default-value">SessionMode.modeDefault</span>, </span><span class="parameter" id="openAudioSession-param-audioFlags"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">audioFlags</span>: <span class="default-value">outputToSpeaker</span>, </span><span class="parameter" id="openAudioSession-param-device"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/AudioDevice-class.html">AudioDevice</a></span> <span class="parameter-name">device</span>: <span class="default-value">AudioDevice.speaker</span>}</span>)
             <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../flutter_sound/FlutterSoundRecorder-class.html">FlutterSoundRecorder</a></span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
-           
+          Obsolete. Please use <code>openRecorder()</code> instead 
                   
 </dd>
         <dt id="pauseRecorder" class="callable">
@@ -348,8 +346,17 @@ path can be null. We return null in this case.
           </span>
                   </dt>
         <dd>
-           
+          Callback from the OS.  Do not use int the APPs 
                   <div class="features">override</div>
+</dd>
+        <dt id="releaseRecorder" class="callable">
+          <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/releaseRecorder.html">releaseRecorder</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+           
+                  
 </dd>
         <dt id="resumeRecorder" class="callable">
           <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/resumeRecorder.html">resumeRecorder</a></span><span class="signature">(<wbr>)
@@ -361,7 +368,7 @@ path can be null. We return null in this case.
                   
 </dd>
         <dt id="setAudioFocus" class="callable">
-          <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/setAudioFocus.html">setAudioFocus</a></span><span class="signature">(<wbr><span class="parameter" id="setAudioFocus-param-focus">{<span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/AudioFocus-class.html">AudioFocus</a></span> <span class="parameter-name">focus</span>: <span class="default-value">AudioFocus.requestFocusTransient</span>, </span><span class="parameter" id="setAudioFocus-param-category"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/SessionCategory-class.html">SessionCategory</a></span> <span class="parameter-name">category</span>: <span class="default-value">SessionCategory.playAndRecord</span>, </span><span class="parameter" id="setAudioFocus-param-mode"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/SessionMode-class.html">SessionMode</a></span> <span class="parameter-name">mode</span>: <span class="default-value">SessionMode.modeDefault</span>, </span><span class="parameter" id="setAudioFocus-param-device"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/AudioDevice-class.html">AudioDevice</a></span> <span class="parameter-name">device</span>: <span class="default-value">AudioDevice.speaker</span>}</span>)
+          <span class="name deprecated"><a class="deprecated" href="../flutter_sound/FlutterSoundRecorder/setAudioFocus.html">setAudioFocus</a></span><span class="signature">(<wbr><span class="parameter" id="setAudioFocus-param-focus">{<span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/AudioFocus-class.html">AudioFocus</a></span> <span class="parameter-name">focus</span>: <span class="default-value">AudioFocus.requestFocusTransient</span>, </span><span class="parameter" id="setAudioFocus-param-category"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/SessionCategory-class.html">SessionCategory</a></span> <span class="parameter-name">category</span>: <span class="default-value">SessionCategory.playAndRecord</span>, </span><span class="parameter" id="setAudioFocus-param-mode"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/SessionMode-class.html">SessionMode</a></span> <span class="parameter-name">mode</span>: <span class="default-value">SessionMode.modeDefault</span>, </span><span class="parameter" id="setAudioFocus-param-device"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/AudioDevice-class.html">AudioDevice</a></span> <span class="parameter-name">device</span>: <span class="default-value">AudioDevice.speaker</span>}</span>)
             <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
           </span>
                   </dt>
@@ -370,14 +377,14 @@ path can be null. We return null in this case.
                   
 </dd>
         <dt id="setSubscriptionDuration" class="callable">
-          <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/setSubscriptionDuration.html">setSubscriptionDuration</a></span><span class="signature">(<wbr><span class="parameter" id="setSubscriptionDuration-param-duration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">duration</span></span>)
+          <span class="name deprecated"><a class="deprecated" href="../flutter_sound/FlutterSoundRecorder/setSubscriptionDuration.html">setSubscriptionDuration</a></span><span class="signature">(<wbr><span class="parameter" id="setSubscriptionDuration-param-duration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">duration</span></span>)
             <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
           Sets the frequency at which duration updates are sent to
-duration listeners.
-The default is every 10 milliseconds. 
+duration listeners. Zero means "no callbacks".
+The default is zero. 
                   
 </dd>
         <dt id="startRecorder" class="callable">
@@ -413,7 +420,7 @@ The default is every 10 milliseconds.
           </span>
                   </dt>
         <dd>
-           
+          Callback from the OS. Do not use int the APPs 
                   <div class="features">override</div>
 </dd>
       </dl>
@@ -434,6 +441,21 @@ The default is every 10 milliseconds.
       </dl>
     </section>
 
+    <section class="summary offset-anchor" id="static-properties">
+      <h2>Static Properties</h2>
+
+      <dl class="properties">
+        <dt id="defaultRecorder" class="property">
+          <span class="name"><a href="../flutter_sound/FlutterSoundRecorder/defaultRecorder.html">defaultRecorder</a></span>
+          <span class="signature">&#8596; <a href="../flutter_sound/FlutterSoundRecorder-class.html">FlutterSoundRecorder</a></span>         
+        </dt>
+        <dd>
+          This instance of <a href="../flutter_sound/FlutterSoundRecorder-class.html">FlutterSoundRecorder</a> is just to be smart for the App.
+The Apps can use this instance without having to create a <a href="../flutter_sound/FlutterSoundRecorder-class.html">FlutterSoundRecorder</a> themselves. 
+                  <div class="features">read / write</div>
+</dd>
+      </dl>
+    </section>
 
 
 
@@ -449,30 +471,27 @@ The default is every 10 milliseconds.
         <a href="../flutter_sound/FlutterSoundRecorder-class.html#instance-properties">Properties</a>
       </li>
       <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
-      <li><a href="../flutter_sound/FlutterSoundRecorder/isInited.html">isInited</a></li>
-      <li><a href="../flutter_sound/FlutterSoundRecorder/isOggOpus.html">isOggOpus</a></li>
+      <li><a class="deprecated" href="../flutter_sound/FlutterSoundRecorder/isInited.html">isInited</a></li>
+      <li><a href="../flutter_sound/FlutterSoundRecorder/isOpen.html">isOpen</a></li>
       <li><a href="../flutter_sound/FlutterSoundRecorder/isPaused.html">isPaused</a></li>
       <li><a href="../flutter_sound/FlutterSoundRecorder/isRecording.html">isRecording</a></li>
       <li><a href="../flutter_sound/FlutterSoundRecorder/isStopped.html">isStopped</a></li>
       <li><a href="../flutter_sound/FlutterSoundRecorder/onProgress.html">onProgress</a></li>
       <li><a href="../flutter_sound/FlutterSoundRecorder/recorderState.html">recorderState</a></li>
       <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
-      <li><a href="../flutter_sound/FlutterSoundRecorder/savedUri.html">savedUri</a></li>
-      <li><a href="../flutter_sound/FlutterSoundRecorder/tmpUri.html">tmpUri</a></li>
     
       <li class="section-title"><a href="../flutter_sound/FlutterSoundRecorder-class.html#instance-methods">Methods</a></li>
-      <li><a href="../flutter_sound/FlutterSoundRecorder/closeAudioSession.html">closeAudioSession</a></li>
-      <li><a href="../flutter_sound/FlutterSoundRecorder/defaultPath.html">defaultPath</a></li>
-      <li><a href="../flutter_sound/FlutterSoundRecorder/dispositionStream.html">dispositionStream</a></li>
-      <li><a href="../flutter_sound/FlutterSoundRecorder/fileExtension.html">fileExtension</a></li>
+      <li><a class="deprecated" href="../flutter_sound/FlutterSoundRecorder/closeAudioSession.html">closeAudioSession</a></li>
+      <li><a class="deprecated" href="../flutter_sound/FlutterSoundRecorder/dispositionStream.html">dispositionStream</a></li>
       <li><a href="../flutter_sound/FlutterSoundRecorder/isEncoderSupported.html">isEncoderSupported</a></li>
       <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
-      <li><a href="../flutter_sound/FlutterSoundRecorder/openAudioSession.html">openAudioSession</a></li>
+      <li><a class="deprecated" href="../flutter_sound/FlutterSoundRecorder/openAudioSession.html">openAudioSession</a></li>
       <li><a href="../flutter_sound/FlutterSoundRecorder/pauseRecorder.html">pauseRecorder</a></li>
       <li><a href="../flutter_sound/FlutterSoundRecorder/recordingData.html">recordingData</a></li>
+      <li><a href="../flutter_sound/FlutterSoundRecorder/releaseRecorder.html">releaseRecorder</a></li>
       <li><a href="../flutter_sound/FlutterSoundRecorder/resumeRecorder.html">resumeRecorder</a></li>
-      <li><a href="../flutter_sound/FlutterSoundRecorder/setAudioFocus.html">setAudioFocus</a></li>
-      <li><a href="../flutter_sound/FlutterSoundRecorder/setSubscriptionDuration.html">setSubscriptionDuration</a></li>
+      <li><a class="deprecated" href="../flutter_sound/FlutterSoundRecorder/setAudioFocus.html">setAudioFocus</a></li>
+      <li><a class="deprecated" href="../flutter_sound/FlutterSoundRecorder/setSubscriptionDuration.html">setSubscriptionDuration</a></li>
       <li><a href="../flutter_sound/FlutterSoundRecorder/startRecorder.html">startRecorder</a></li>
       <li><a href="../flutter_sound/FlutterSoundRecorder/stopRecorder.html">stopRecorder</a></li>
       <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
@@ -481,6 +500,8 @@ The default is every 10 milliseconds.
       <li class="section-title inherited"><a href="../flutter_sound/FlutterSoundRecorder-class.html#operators">Operators</a></li>
       <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
     
+      <li class="section-title"><a href="../flutter_sound/FlutterSoundRecorder-class.html#static-properties">Static properties</a></li>
+      <li><a href="../flutter_sound/FlutterSoundRecorder/defaultRecorder.html">defaultRecorder</a></li>
     
     
     

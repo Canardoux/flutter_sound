@@ -57,6 +57,21 @@
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <div><h1><span class="kind-library">flutter_sound</span> library  </h1></div>
 
+    <section class="desc markdown">
+      <hr>
+<h1 id="the-flutter-sound-library">The Flutter Sound library</h1>
+<p>Flutter Sound is composed with four main modules/classes</p>
+<ul>
+<li><a href="../flutter_sound/FlutterSound-class.html">FlutterSound</a>. This is the main Flutter Sound module.</li>
+<li><a href="../flutter_sound/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a>. Everything about the playback functions</li>
+<li><a href="../flutter_sound/FlutterSoundRecorder-class.html">FlutterSoundRecorder</a>. Everything about the recording functions</li>
+<li><a href="../flutter_sound/FlutterSoundHelper-class.html">FlutterSoundHelper</a>. Some utilities to manage audio data.
+And two modules for the Widget UI</li>
+<li><a href="../flutter_sound/SoundPlayerUI-class.html">SoundPlayerUI</a></li>
+<li><a href="../flutter_sound/SoundRecorderUI-class.html">SoundRecorderUI</a></li>
+</ul>
+<hr>
+    </section>
     
     <section class="summary offset-anchor" id="classes">
       <h2>Classes</h2>
@@ -86,17 +101,26 @@
         <dd>
            
         </dd>
+        <dt id="FlutterSound">
+          <span class="name "><a href="../flutter_sound/FlutterSound-class.html">FlutterSound</a></span>         
+        </dt>
+        <dd>
+          This is <strong>THE</strong> main Flutter Sound class.
+This class is not instanciable. Use the expression <a href="../flutter_sound/FlutterSound/FlutterSound.html">FlutterSound()</a> when you want to get the Singleton. <a href="../flutter_sound/FlutterSound-class.html">[...]</a>
+        </dd>
         <dt id="FlutterSoundHelper">
           <span class="name "><a href="../flutter_sound/FlutterSoundHelper-class.html">FlutterSoundHelper</a></span>         
         </dt>
         <dd>
-           
+          FlutterSoundHelper class is for handleing audio files and buffers.
+Most of those utilities use FFmpeg, so are not available in the LITE flavor of Flutter Sound. 
         </dd>
         <dt id="FlutterSoundPlayer">
           <span class="name "><a href="../flutter_sound/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></span>         
         </dt>
         <dd>
-           
+          toto
+titi <a href="../flutter_sound/FlutterSoundPlayer-class.html">[...]</a>
         </dd>
         <dt id="FlutterSoundPlayerCallback">
           <span class="name "><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_player_platform_interface/FlutterSoundPlayerCallback-class.html">FlutterSoundPlayerCallback</a></span>         
@@ -114,7 +138,7 @@
           <span class="name "><a href="../flutter_sound/FlutterSoundRecorder-class.html">FlutterSoundRecorder</a></span>         
         </dt>
         <dd>
-           
+           <a href="../flutter_sound/FlutterSoundRecorder-class.html">[...]</a>
         </dd>
         <dt id="FlutterSoundRecorderCallback">
           <span class="name "><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_recorder_platform_interface/FlutterSoundRecorderCallback-class.html">FlutterSoundRecorderCallback</a></span>         
@@ -132,39 +156,36 @@
           <span class="name "><a href="../flutter_sound/Food-class.html">Food</a></span>         
         </dt>
         <dd>
-           
+          Food is an abstract class which represents objects that can be sent
+to a player when playing data from astream or received by a recorder
+when recording to a Dart Stream.
+This class is extended by <a href="../flutter_sound/FoodData-class.html">FoodData</a> and <a href="../flutter_sound/FoodEvent-class.html">FoodEvent</a>. 
         </dd>
         <dt id="FoodData">
           <span class="name "><a href="../flutter_sound/FoodData-class.html">FoodData</a></span>         
         </dt>
         <dd>
-           
+          FoodData are the regular objects received from a recorder when recording to a Dart Stream
+or sent to a player when playing from a Dart Stream 
         </dd>
         <dt id="FoodEvent">
           <span class="name "><a href="../flutter_sound/FoodEvent-class.html">FoodEvent</a></span>         
         </dt>
         <dd>
-           
-        </dd>
-        <dt id="GrayedOut">
-          <span class="name "><a href="../flutter_sound/GrayedOut-class.html">GrayedOut</a></span>         
-        </dt>
-        <dd>
-          GreyedOut optionally grays out the given child widget.
-<a href="../flutter_sound/GrayedOut/child.html">child</a> the child widget to display
-If <code>greyedOut</code> is true then the child will be grayed out and
-any touch activity over the child will be discarded.
-If <code>greyedOut</code> is false then the child will displayed as normal.
-The <a href="../flutter_sound/GrayedOut/opacity.html">opacity</a> setting controls the visiblity of the child
-when it is greyed out. A value of 1.0 makes the child fully visible,
-a value of 0.0 makes the child fully opaque.
-The default value of <a href="../flutter_sound/GrayedOut/opacity.html">opacity</a> is 0.3. 
+          foodEvent is a special kin of food which allows to re-synchronize a stream
+with a player that play from a Dart Stream 
         </dd>
         <dt id="Log">
           <span class="name "><a href="../flutter_sound/Log-class.html">Log</a></span>         
         </dt>
         <dd>
           Logging class 
+        </dd>
+        <dt id="LogLevel">
+          <span class="name "><a href="../flutter_sound/LogLevel-class.html">LogLevel</a></span>         
+        </dt>
+        <dd>
+           
         </dd>
         <dt id="MyLogPrinter">
           <span class="name "><a href="../flutter_sound/MyLogPrinter-class.html">MyLogPrinter</a></span>         
@@ -178,13 +199,6 @@ The default value of <a href="../flutter_sound/GrayedOut/opacity.html">opacity</
         <dd>
           Used to stream data about the position of the
 playback as playback proceeds. 
-        </dd>
-        <dt id="RecordedAudio">
-          <span class="name "><a href="../flutter_sound/RecordedAudio-class.html">RecordedAudio</a></span>         
-        </dt>
-        <dd>
-          <a href="../flutter_sound/RecordedAudio-class.html">RecordedAudio</a> is used to track the audio media
-created during a recording session via the SoundRecorderUI. 
         </dd>
         <dt id="RecorderPlaybackController">
           <span class="name "><a href="../flutter_sound/RecorderPlaybackController-class.html">RecorderPlaybackController</a></span>         
@@ -297,7 +311,8 @@ The <a href="../flutter_sound/SoundPlayerUI-class.html">SoundPlayerUI</a> displa
           <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
                   </dt>
         <dd>
-           
+          Sont dans un bateau
+toto tombe a l'eau 
                   
   <div>
             <span class="signature"><code>4096</code></span>
@@ -308,7 +323,7 @@ The <a href="../flutter_sound/SoundPlayerUI-class.html">SoundPlayerUI</a> displa
           <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>
                   </dt>
         <dd>
-           
+          The usual file extensions used for each codecs 
                   
   <div>
             <span class="signature"><code>const [&#39;.aac&#39;, &#39;.aac&#39;, &#39;.opus&#39;, &#39;_opus.caf&#39;, &#39;.mp3&#39;, &#39;.ogg&#39;, &#39;.pcm&#39;, &#39;.wav&#39;, &#39;.aiff&#39;, &#39;_pcm.caf&#39;, &#39;.flac&#39;, &#39;…</code></span>
@@ -414,7 +429,7 @@ The <a href="../flutter_sound/SoundPlayerUI-class.html">SoundPlayerUI</a> displa
           <span class="signature">&#8596; <a href="../flutter_sound/FlutterSoundHelper-class.html">FlutterSoundHelper</a></span>         
         </dt>
         <dd>
-           
+          The FlutterSoundHelper singleton for accessing the helpers functions 
                   <div class="features">read / write</div>
 </dd>
       </dl>
@@ -564,10 +579,10 @@ to control the focus mode.
            
         </dd>
         <dt id="Initialized">
-          <span class="name "><a href="../flutter_sound/Initialized-class.html">Initialized</a></span>         
+          <span class="name deprecated"><a class="deprecated" href="../flutter_sound/Initialized-class.html">Initialized</a></span>         
         </dt>
         <dd>
-           
+          The possible states of the players and recorders 
         </dd>
         <dt id="PlayerState">
           <span class="name "><a href="../flutter_sound/PlayerState-class.html">PlayerState</a></span>         
@@ -634,26 +649,8 @@ to control the focus mode.
       <h2>Exceptions / Errors</h2>
 
       <dl>
-        <dt id="CodecNotSupportedException">
-          <span class="name "><a href="../flutter_sound/CodecNotSupportedException-class.html">CodecNotSupportedException</a></span>         
-        </dt>
-        <dd>
-           
-        </dd>
         <dt id="PlayerRunningException">
           <span class="name "><a href="../flutter_sound/PlayerRunningException-class.html">PlayerRunningException</a></span>         
-        </dt>
-        <dd>
-           
-        </dd>
-        <dt id="RecorderException">
-          <span class="name "><a href="../flutter_sound/RecorderException-class.html">RecorderException</a></span>         
-        </dt>
-        <dd>
-           
-        </dd>
-        <dt id="RecorderRunningException">
-          <span class="name "><a href="../flutter_sound/RecorderRunningException-class.html">RecorderRunningException</a></span>         
         </dt>
         <dd>
            
@@ -662,7 +659,7 @@ to control the focus mode.
           <span class="name "><a href="../flutter_sound/RecordingPermissionException-class.html">RecordingPermissionException</a></span>         
         </dt>
         <dd>
-           
+          Permission to record was not granted 
         </dd>
       </dl>
     </section>
@@ -677,6 +674,7 @@ to control the focus mode.
       <li><a href="../flutter_sound/FlutterFFmpeg-class.html">FlutterFFmpeg</a></li>
       <li><a href="../flutter_sound/FlutterFFmpegConfig-class.html">FlutterFFmpegConfig</a></li>
       <li><a href="../flutter_sound/FlutterFFprobe-class.html">FlutterFFprobe</a></li>
+      <li><a href="../flutter_sound/FlutterSound-class.html">FlutterSound</a></li>
       <li><a href="../flutter_sound/FlutterSoundHelper-class.html">FlutterSoundHelper</a></li>
       <li><a href="../flutter_sound/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_player_platform_interface/FlutterSoundPlayerCallback-class.html">FlutterSoundPlayerCallback</a></li>
@@ -687,11 +685,10 @@ to control the focus mode.
       <li><a href="../flutter_sound/Food-class.html">Food</a></li>
       <li><a href="../flutter_sound/FoodData-class.html">FoodData</a></li>
       <li><a href="../flutter_sound/FoodEvent-class.html">FoodEvent</a></li>
-      <li><a href="../flutter_sound/GrayedOut-class.html">GrayedOut</a></li>
       <li><a href="../flutter_sound/Log-class.html">Log</a></li>
+      <li><a href="../flutter_sound/LogLevel-class.html">LogLevel</a></li>
       <li><a href="../flutter_sound/MyLogPrinter-class.html">MyLogPrinter</a></li>
       <li><a href="../flutter_sound/PlaybackDisposition-class.html">PlaybackDisposition</a></li>
-      <li><a href="../flutter_sound/RecordedAudio-class.html">RecordedAudio</a></li>
       <li><a href="../flutter_sound/RecorderPlaybackController-class.html">RecorderPlaybackController</a></li>
       <li><a href="../flutter_sound/RecordingDisposition-class.html">RecordingDisposition</a></li>
       <li><a href="../flutter_sound/SoundPlayerUI-class.html">SoundPlayerUI</a></li>
@@ -739,7 +736,7 @@ to control the focus mode.
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/AudioFocus-class.html">AudioFocus</a></li>
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_recorder_platform_interface/AudioSource-class.html">AudioSource</a></li>
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/Codec-class.html">Codec</a></li>
-      <li><a href="../flutter_sound/Initialized-class.html">Initialized</a></li>
+      <li><a class="deprecated" href="../flutter_sound/Initialized-class.html">Initialized</a></li>
       <li><a href="../flutter_sound/PlayerState-class.html">PlayerState</a></li>
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_recorder_platform_interface/RecorderState-class.html">RecorderState</a></li>
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/SessionCategory-class.html">SessionCategory</a></li>
@@ -751,10 +748,7 @@ to control the focus mode.
       <li><a href="../flutter_sound/TWhenFinished.html">TWhenFinished</a></li>
     
       <li class="section-title"><a href="../flutter_sound/flutter_sound-library.html#exceptions">Exceptions</a></li>
-      <li><a href="../flutter_sound/CodecNotSupportedException-class.html">CodecNotSupportedException</a></li>
       <li><a href="../flutter_sound/PlayerRunningException-class.html">PlayerRunningException</a></li>
-      <li><a href="../flutter_sound/RecorderException-class.html">RecorderException</a></li>
-      <li><a href="../flutter_sound/RecorderRunningException-class.html">RecorderRunningException</a></li>
       <li><a href="../flutter_sound/RecordingPermissionException-class.html">RecordingPermissionException</a></li>
     </ol>
   </div><!--/sidebar-offcanvas-right-->

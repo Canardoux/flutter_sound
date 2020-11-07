@@ -123,16 +123,19 @@ again to create a fresh <a href="https://api.flutter.dev/flutter/widgets/State-c
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">@override
-State&lt;StatefulWidget&gt; createState() {
-  return SoundPlayerUIState(_track, _onLoad,
-              enabled: _enabled,
-              backgroundColor: (_backgroundColor != null) ? _backgroundColor :  Color( 0xFFFAF0E6 ),
-              iconColor: _iconColor,
-              disabledIconColor: _disabledIconColor,
-              textStyle: _textStyle,
-              titleStyle: _titleStyle,
-              sliderThemeData: _sliderThemeData,
-  );
+State&lt;StatefulWidget&gt; createState()
+{
+        return SoundPlayerUIState
+        (
+                _track, _onLoad,
+                enabled: _enabled,
+                backgroundColor: (_backgroundColor != null) ? _backgroundColor :  Color( 0xFFFAF0E6 ),
+                iconColor: _iconColor,
+                disabledIconColor: _disabledIconColor,
+                textStyle: _textStyle,
+                titleStyle: _titleStyle,
+                sliderThemeData: _sliderThemeData,
+        );
 }</code></pre>
     </section>
 

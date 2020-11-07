@@ -60,7 +60,6 @@
         <li class="section-title">
             <a href="../../flutter_sound/FlutterSoundHelper-class.html#instance-properties">Properties</a>
         </li>
-        <li><a href="../../flutter_sound/FlutterSoundHelper/ffmpegAvailable.html">ffmpegAvailable</a></li>
         <li><a href="../../flutter_sound/FlutterSoundHelper/flutterFFmpeg.html">flutterFFmpeg</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
@@ -101,15 +100,16 @@
       
     </section>
     <section class="desc markdown">
-      <p>Convert a WAVE file to a Raw PCM buffer.
-Remove WAVE header in front of the Wave buffer</p>
+      <p>Convert a WAVE buffer to a Raw PCM buffer.
+Remove WAVE header in front of the Wave buffer.
+Note that this verb is not asynchronous and does not return a Future.</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Uint8List waveToPCMBuffer
-({Uint8List inputBuffer,}) {
-  return inputBuffer.sublist(WaveHeader.HEADER_LENGTH);
+      <pre class="language-dart"><code class="language-dart">Uint8List waveToPCMBuffer({Uint8List inputBuffer,})
+{
+        return inputBuffer.sublist(WaveHeader.HEADER_LENGTH);
 }</code></pre>
     </section>
 

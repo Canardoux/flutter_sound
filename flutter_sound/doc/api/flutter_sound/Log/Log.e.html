@@ -112,10 +112,11 @@
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">factory Log.e(String message, {dynamic error, StackTrace stackTrace}) {
-  autoInit();
-  _self.e(message, error, stackTrace);
-  return _self;
+      <pre class="language-dart"><code class="language-dart">factory Log.e(String message, {dynamic error, StackTrace stackTrace})
+{
+        autoInit();
+        _self.e(message, error, stackTrace);
+        return _self;
 }</code></pre>
     </section>
 

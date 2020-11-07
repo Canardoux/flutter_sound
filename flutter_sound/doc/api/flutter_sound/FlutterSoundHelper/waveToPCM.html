@@ -60,7 +60,6 @@
         <li class="section-title">
             <a href="../../flutter_sound/FlutterSoundHelper-class.html#instance-properties">Properties</a>
         </li>
-        <li><a href="../../flutter_sound/FlutterSoundHelper/ffmpegAvailable.html">ffmpegAvailable</a></li>
         <li><a href="../../flutter_sound/FlutterSoundHelper/flutterFFmpeg.html">flutterFFmpeg</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
@@ -103,19 +102,22 @@
     </section>
     <section class="desc markdown">
       <p>Convert a WAVE file to a Raw PCM file.
-Remove the WAVE header in front of the Wave data</p>
+Remove the WAVE header in front of the Wave file</p>
+<p>This verb is usefull to convert a Wave file to a Raw PCM file.
+Note that this verb is not asynchronous and does not return a Future.</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; waveToPCM({String inputFile,String outputFile,}) async {
-  File filIn = File(inputFile);
-  File filOut = File(outputFile);
-  IOSink sink = filOut.openWrite();
-  await filIn.open();
-  Uint8List buffer = filIn.readAsBytesSync();
-  sink.add(buffer.sublist(WaveHeader.HEADER_LENGTH));
-  await sink.close();
+      <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; waveToPCM({String inputFile,String outputFile,}) async
+{
+        File filIn = File(inputFile);
+        File filOut = File(outputFile);
+        IOSink sink = filOut.openWrite();
+        await filIn.open();
+        Uint8List buffer = filIn.readAsBytesSync();
+        sink.add(buffer.sublist(WaveHeader.HEADER_LENGTH));
+        await sink.close();
 }</code></pre>
     </section>
 

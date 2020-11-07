@@ -60,7 +60,6 @@
         <li class="section-title">
             <a href="../../flutter_sound/FlutterSoundHelper-class.html#instance-properties">Properties</a>
         </li>
-        <li><a href="../../flutter_sound/FlutterSoundHelper/ffmpegAvailable.html">ffmpegAvailable</a></li>
         <li><a href="../../flutter_sound/FlutterSoundHelper/flutterFFmpeg.html">flutterFFmpeg</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
@@ -100,17 +99,24 @@
 </ol>)
       
     </section>
+    <section class="desc markdown">
+      <p>Returns various informations about the Audio specified by the <code>uri</code> parameter.
+The informations Map got with FFmpegGetMediaInformation() are <a href="https://pub.dev/packages/flutter_ffmpeg">documented here</a>.</p>
+    </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Future&lt;Map&lt;dynamic, dynamic&gt;&gt; FFmpegGetMediaInformation(String uri) async {
-  if (uri == null) return null;
-  if (_flutterFFprobe == null) _flutterFFprobe = FlutterFFprobe();
-  try {
-    return await _flutterFFprobe.getMediaInformation(uri);
-  } catch (e) {
-    return null;
-  }
+      <pre class="language-dart"><code class="language-dart">Future&lt;Map&lt;dynamic, dynamic&gt;&gt; FFmpegGetMediaInformation(String uri) async
+{
+        if (uri == null) return null;
+        if (_flutterFFprobe == null) _flutterFFprobe = FlutterFFprobe();
+        try
+        {
+                return await _flutterFFprobe.getMediaInformation(uri);
+        } catch (e)
+        {
+                return null;
+        }
 }</code></pre>
     </section>
 

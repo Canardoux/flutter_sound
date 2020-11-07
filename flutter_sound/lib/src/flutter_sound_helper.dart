@@ -18,210 +18,303 @@
 
 
 import 'dart:typed_data';
-
 import 'package:flutter_sound/flutter_sound.dart';
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter_sound/src/wave_header.dart';
-
-FlutterSoundHelper flutterSoundHelper = FlutterSoundHelper(); // Singleton
-
-class FlutterSoundHelper {
-  FlutterFFmpeg flutterFFmpeg;
-  FlutterFFmpegConfig _flutterFFmpegConfig;
-  FlutterFFprobe _flutterFFprobe;
-  bool ffmpegAvailable;
-
-  Future<bool> isFFmpegAvailable() async {
-    if (_flutterFFmpegConfig == null) {
-      _flutterFFmpegConfig = FlutterFFmpegConfig();
-      String version = await _flutterFFmpegConfig.getFFmpegVersion();
-      String platform = await _flutterFFmpegConfig.getPlatform();
-      ffmpegAvailable = (version != null && platform != null);
-    }
-    return ffmpegAvailable;
-  }
-
-  /// We use here our own ffmpeg "execute" procedure instead of the one provided by the flutter_ffmpeg plugin,
-  /// so that the developers not interested by ffmpeg can use flutter_plugin without the flutter_ffmpeg plugin
-  /// and without any complain from the link-editor.
-  ///
-  /// Executes FFmpeg with [commandArguments] provided.
-  Future<int> executeFFmpegWithArguments(List<String> arguments) {
-    if (flutterFFmpeg == null) flutterFFmpeg = FlutterFFmpeg();
-    return flutterFFmpeg.executeWithArguments(arguments);
-  }
-
-  /// We use here our own ffmpeg "getLastReturnCode" procedure instead of the one provided by the flutter_ffmpeg plugin,
-  /// so that the developers not interested by ffmpeg can use flutter_plugin without the flutter_ffmpeg plugin
-  /// and without any complain from the link-editor.
-  ///
-  /// Returns return code of last executed command.
-  Future<int> getLastFFmpegReturnCode() async {
-    await isFFmpegAvailable();
-    return _flutterFFmpegConfig.getLastReturnCode();
-  }
-
-  /// We use here our own ffmpeg "getLastCommandOutput" procedure instead of the one provided by the flutter_ffmpeg plugin,
-  /// so that the developers not interested by ffmpeg can use flutter_plugin without the flutter_ffmpeg plugin
-  /// and without any complain from the link-editor.
-  ///
-  /// Returns log output of last executed command. Please note that disabling redirection using
-  /// This method does not support executing multiple concurrent commands. If you execute multiple commands at the same time, this method will return output from all executions.
-  /// [disableRedirection()] method also disables this functionality.
-  Future<String> getLastFFmpegCommandOutput() async {
-    await isFFmpegAvailable();
-    return _flutterFFmpegConfig.getLastCommandOutput();
-  }
-
-  Future<Map<dynamic, dynamic>> FFmpegGetMediaInformation(String uri) async {
-    if (uri == null) return null;
-    if (_flutterFFprobe == null) _flutterFFprobe = FlutterFFprobe();
-    try {
-      return await _flutterFFprobe.getMediaInformation(uri);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  Future<Duration> duration(String uri) async {
-    if (uri == null) return null;
-    Map<dynamic, dynamic> info = await FFmpegGetMediaInformation(uri);
-    if (info == null) return null;
-    int duration = info['duration'] as int;
-    return (duration == null) ? null : Duration(milliseconds: duration);
-  }
+import 'package:flutter_sound/src/util/wave_header.dart';
+import 'util/log.dart';
 
 
-  /// Convert a WAVE file to a Raw PCM file.
-  /// Remove the WAVE header in front of the Wave data
-  Future<void> waveToPCM({String inputFile,String outputFile,}) async {
-    File filIn = File(inputFile);
-    File filOut = File(outputFile);
-    IOSink sink = filOut.openWrite();
-    await filIn.open();
-    Uint8List buffer = filIn.readAsBytesSync();
-    sink.add(buffer.sublist(WaveHeader.HEADER_LENGTH));
-    await sink.close();
-  }
+/// The FlutterSoundHelper singleton for accessing the helpers functions
+FlutterSoundHelper flutterSoundHelper = FlutterSoundHelper._internal(); // Singleton
 
-  /// Convert a WAVE file to a Raw PCM buffer.
-  /// Remove WAVE header in front of the Wave buffer
-  Uint8List waveToPCMBuffer
-  ({Uint8List inputBuffer,}) {
-    return inputBuffer.sublist(WaveHeader.HEADER_LENGTH);
-  }
+/// FlutterSoundHelper class is for handleing audio files and buffers.
+/// Most of those utilities use FFmpeg, so are not available in the LITE flavor of Flutter Sound.
+class FlutterSoundHelper
+{
+        /// The Flutter FFmpeg module
+        FlutterFFmpeg flutterFFmpeg;
+
+        bool _ffmpegAvailable;
+        FlutterFFmpegConfig _flutterFFmpegConfig;
+        FlutterFFprobe _flutterFFprobe;
+
+// -------------------------------------------------------------------------------------------------------------
+
+        /// The factory which returns the Singleton
+        factory FlutterSoundHelper()
+        {
+                return flutterSoundHelper;
+        }
+
+        /// Private constructor of the Singleton
+        /* ctor */ FlutterSoundHelper._internal();
+
+
+//-------------------------------------------------------------------------------------------------------------
+
+
+        /// This verb is used to know during runtime if FFmpeg is linked with the App.
+        /// returns true if FFmpeg is available (probably the FULL version of Flutter Sound)
+        Future<bool> isFFmpegAvailable() async
+        {
+                if (_flutterFFmpegConfig == null)
+                {
+                        _flutterFFmpegConfig = FlutterFFmpegConfig();
+                        String version = await _flutterFFmpegConfig.getFFmpegVersion();
+                        String platform = await _flutterFFmpegConfig.getPlatform();
+                        _ffmpegAvailable = (version != null && platform != null);
+                }
+                return _ffmpegAvailable;
+        }
 
 
 
-  /// Convert a raw PCM file to a WAVE file.
-  /// Add a WAVE header in front of the PCM data
+
+
+        /// This verb is a wrapper for the great FFmpeg application.
+        /// The command `man ffmpeg` (if you have installed ffmpeg on your computer) will give you many informations.
+        /// If you do not have `ffmpeg` on your computer you will find easyly on internet many documentation on this great program.
+        ///
+        /// We use here our own ffmpeg "execute" procedure instead of the one provided by the flutter_ffmpeg plugin,
+        /// so that the developers not interested by ffmpeg can use Flutter Sound without the flutter_ffmpeg plugin
+        /// and without any complain from the link-editor.
+        ///
+        /// Executes FFmpeg with [commandArguments] provided.
+        Future<int> executeFFmpegWithArguments(List<String> arguments)
+        {
+                if (flutterFFmpeg == null) flutterFFmpeg = FlutterFFmpeg();
+                return flutterFFmpeg.executeWithArguments(arguments);
+        }
+
+
+
+
+
+        /// We use here our own ffmpeg "getLastReturnCode" procedure instead of the one provided by the flutter_ffmpeg plugin,
+        /// so that the developers not interested by ffmpeg can use Flutter Sound without the flutter_ffmpeg plugin
+        /// and without any complain from the link-editor.
+        ///
+        /// This simple verb is used to get the result of the last FFmpeg command.
+        Future<int> getLastFFmpegReturnCode() async
+        {
+                await isFFmpegAvailable();
+                return _flutterFFmpegConfig.getLastReturnCode();
+        }
+
+
+
+
+        /// We use here our own ffmpeg "getLastCommandOutput" procedure instead of the one provided by the flutter_ffmpeg plugin,
+        /// so that the developers not interested by ffmpeg can use Flutter Sound without the flutter_ffmpeg plugin
+        /// and without any complain from the link-editor.
+        ///
+        /// Returns log output of last executed command. Please note that disabling redirection using
+        /// This method does not support executing multiple concurrent commands. If you execute multiple commands at the same time, this method will return output from all executions.
+        /// [disableRedirection()] method also disables this functionality.
+        Future<String> getLastFFmpegCommandOutput() async
+        {
+                await isFFmpegAvailable();
+                return _flutterFFmpegConfig.getLastCommandOutput();
+        }
+
+
+
+
+
+        /// Returns various informations about the Audio specified by the `uri` parameter.
+        /// The informations Map got with FFmpegGetMediaInformation() are [documented here](https://pub.dev/packages/flutter_ffmpeg).
+        Future<Map<dynamic, dynamic>> FFmpegGetMediaInformation(String uri) async
+        {
+                if (uri == null) return null;
+                if (_flutterFFprobe == null) _flutterFFprobe = FlutterFFprobe();
+                try
+                {
+                        return await _flutterFFprobe.getMediaInformation(uri);
+                } catch (e)
+                {
+                        return null;
+                }
+        }
+
+
+
+
+
+        /// This verb is used to get an estimation of the duration of a sound file.
+        /// Be aware that it is just an estimation, based on the Codec used and the sample rate.
+        Future<Duration> duration(String uri) async
+        {
+                if (uri == null) return null;
+                Map<dynamic, dynamic> info = await FFmpegGetMediaInformation(uri);
+                if (info == null)
+                        return null;
+                int duration = info['duration'] as int;
+                return (duration == null) ? null : Duration(milliseconds: duration);
+        }
+
+
+
+
+
+        /// Convert a WAVE file to a Raw PCM file.
+        /// Remove the WAVE header in front of the Wave file
+        ///
+        ///This verb is usefull to convert a Wave file to a Raw PCM file.
+        ///Note that this verb is not asynchronous and does not return a Future.
+        Future<void> waveToPCM({String inputFile,String outputFile,}) async
+        {
+                File filIn = File(inputFile);
+                File filOut = File(outputFile);
+                IOSink sink = filOut.openWrite();
+                await filIn.open();
+                Uint8List buffer = filIn.readAsBytesSync();
+                sink.add(buffer.sublist(WaveHeader.HEADER_LENGTH));
+                await sink.close();
+        }
+
+
+
+
+
+        /// Convert a WAVE buffer to a Raw PCM buffer.
+        /// Remove WAVE header in front of the Wave buffer.
+        /// Note that this verb is not asynchronous and does not return a Future.
+        Uint8List waveToPCMBuffer({Uint8List inputBuffer,})
+        {
+                return inputBuffer.sublist(WaveHeader.HEADER_LENGTH);
+        }
+
+
+
+
+
+        /// Converts a raw PCM file to a WAVE file.
+        /// Add a WAVE header in front of the PCM data
+        /// This verb is usefull to convert a Raw PCM file to a Wave file.
+        /// It adds a `Wave` envelop to the PCM file, so that the file can be played back with `startPlayer()`.
+        ///
+        /// Note: the parameters `numChannels` and `sampleRate` **are mandatory, and must match the actual PCM data**.
+        /// [See here](doc/codec.md#note-on-raw-pcm-and-wave-files) a discussion about `Raw PCM` and `WAVE` file format.
   Future<void> pcmToWave
-  (
-      {
-          String inputFile,
-          String outputFile,
-          int numChannels = 1,
-          int sampleRate = 16000,
-          //int bitsPerSample,
-      }
-  ) async
-  {
-      File filIn = File(inputFile);
-      File filOut = File(outputFile);
-      int size = filIn.lengthSync();
-      print('pcmToWave() : input = $inputFile');
-      print('pcmToWave() : output = $outputFile');
-      print('pcmToWave() : size = $size');
+        ({
+                String inputFile,
+                String outputFile,
+                /// Stereophony is not yet implemented
+                int numChannels = 1,
+                int sampleRate = 16000,
+        }) async
+        {
+                File filIn = File(inputFile);
+                File filOut = File(outputFile);
+                int size = filIn.lengthSync();
+                Log.i('pcmToWave() : input = $inputFile,  output = $outputFile,  size = $size');
+                IOSink sink = filOut.openWrite();
 
-      IOSink sink = filOut.openWrite();
+                WaveHeader header = new WaveHeader
+                (
+                        WaveHeader.FORMAT_PCM ,
+                        numChannels = numChannels, //
+                        sampleRate = sampleRate,
+                        16, // 16 bits per byte
+                        size, // total number of bytes
+                );
+                await header.write( sink);
+                await filIn.open();
+                Uint8List buffer = filIn.readAsBytesSync();
+                sink.add(buffer.toList());
+                await sink.close();
+        }
 
-      WaveHeader header = new WaveHeader
-      (
-          WaveHeader.FORMAT_PCM ,
-          numChannels = 1,
-          sampleRate = sampleRate,
-          16,
-          size, // total number of bytes
-      );
-      await header.write( sink);
 
-      await filIn.open();
-      Uint8List buffer = filIn.readAsBytesSync();
-      sink.add(buffer.toList());
-      await sink.close();
-  }
 
-  /// Convert a raw PCM buffer to a WAVE buffer.
-  /// Add a WAVE header in front of the PCM data
-  Future<Uint8List> pcmToWaveBuffer
-      (
-      {
-        Uint8List inputBuffer,
-        int numChannels = 1,
-        int sampleRate = 16000,
-        //int bitsPerSample,
-      }
-      ) async
-  {
 
-    int size = inputBuffer.length;
-    WaveHeader header = new WaveHeader
-      (
-      WaveHeader.FORMAT_PCM ,
-      numChannels,
-      sampleRate,
-      16,
-      size, // total number of bytes
-    );
 
-    List<int> buffer = List<int>();
-    StreamController controller  = StreamController<List<int>>();
-    StreamSink<List<int>> sink = controller.sink as StreamSink<List<int>> ;
-    Stream<List<int>> stream = controller.stream as Stream<List<int>>;
-    stream.listen( ( e)
-    {
-      var x = e.toList();
-      buffer.addAll(x);
-    });
-    await header.write( sink);
-    sink.add(inputBuffer);
-    await sink.close();
-    await controller.close();
-    return Uint8List.fromList(buffer);
-  }
+        /// Convert a raw PCM buffer to a WAVE buffer.
+        /// Adds a WAVE header in front of the PCM data
+        /// It adds a `Wave` envelop in front of the PCM buffer, so that the file can be played back with `startPlayerFromBuffer()`.
+        ///
+        /// Note: the parameters `numChannels` and `sampleRate` **are mandatory, and must match the actual PCM data**. [See here](doc/codec.md#note-on-raw-pcm-and-wave-files) a discussion about `Raw PCM` and `WAVE` file format.
+        Future<Uint8List> pcmToWaveBuffer
+        ({
+                Uint8List inputBuffer,
+                int numChannels = 1,
+                int sampleRate = 16000,
+                //int bitsPerSample,
+        }) async
+        {
 
+                int size = inputBuffer.length;
+                WaveHeader header = new WaveHeader
+                (
+                        WaveHeader.FORMAT_PCM ,
+                        numChannels,
+                        sampleRate,
+                        16,
+                        size, // total number of bytes
+                );
+
+                List<int> buffer = List<int>();
+                StreamController controller  = StreamController<List<int>>();
+                StreamSink<List<int>> sink = controller.sink as StreamSink<List<int>> ;
+                Stream<List<int>> stream = controller.stream as Stream<List<int>>;
+                stream.listen( ( e)
+                {
+                        var x = e.toList();
+                        buffer.addAll(x);
+                });
+                await header.write( sink);
+                sink.add(inputBuffer);
+                await sink.close();
+                await controller.close();
+                return Uint8List.fromList(buffer);
+        }
 
 
 
 
 
 
-  Future<bool> convertFile(
-      String inputFile, Codec inputCodec, String outputFile, Codec outputCodec) async {
-    int rc = 0;
-    if (inputCodec == Codec.opusOGG &&
-        outputCodec == Codec.opusCAF) // Do not need to re-encode. Just remux
-      rc = await flutterSoundHelper.executeFFmpegWithArguments([
-        '-loglevel',
-        'error',
-        '-y',
-        '-i',
-        inputFile,
-        '-c:a',
-        'copy',
-        outputFile,
-      ]); // remux OGG to CAF
-    else
-      rc = await flutterSoundHelper.executeFFmpegWithArguments([
-        '-loglevel',
-        'error',
-        '-y',
-        '-i',
-        inputFile,
-        outputFile,
-      ]);
-
-    return (rc != 0);
-  }
+        /// This verb is useful to convert a sound file to a new format.
+        ///
+        /// - `inputFile` is the file path of the file you want to convert
+        /// - `inputCodec` is the actual file format
+        /// - `outputFile` is the path of the file you want to create
+        /// - `outputCodec` is the new file format
+        ///
+        /// Be careful : `outfile` and `outputCodec` must be compatible. The output file extension must be a correct file extension for the new format.
+        ///
+        /// Note : this verb uses FFmpeg and is not available int the LITE flavor of Flutter Sound.
+        Future<bool> convertFile(String inputFile, Codec inputCodec, String outputFile, Codec outputCodec) async
+        {
+                int rc = 0;
+                if (inputCodec == Codec.opusOGG &&
+                    outputCodec == Codec.opusCAF) // Do not need to re-encode. Just remux
+                {
+                        rc = await flutterSoundHelper.executeFFmpegWithArguments
+                        ([
+                                '-loglevel',
+                                'error',
+                                '-y',
+                                '-i',
+                                inputFile,
+                                '-c:a',
+                                'copy',
+                                outputFile,
+                        ]); // remux OGG to CAF
+                }
+                else
+                {
+                        rc = await flutterSoundHelper.executeFFmpegWithArguments
+                        ([
+                                '-loglevel',
+                                'error',
+                                '-y',
+                                '-i',
+                                inputFile,
+                                outputFile,
+                        ]);
+                }
+                return (rc != 0);
+        }
 }

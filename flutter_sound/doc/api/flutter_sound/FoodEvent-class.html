@@ -56,6 +56,7 @@
       <li><a href="../flutter_sound/FlutterFFmpeg-class.html">FlutterFFmpeg</a></li>
       <li><a href="../flutter_sound/FlutterFFmpegConfig-class.html">FlutterFFmpegConfig</a></li>
       <li><a href="../flutter_sound/FlutterFFprobe-class.html">FlutterFFprobe</a></li>
+      <li><a href="../flutter_sound/FlutterSound-class.html">FlutterSound</a></li>
       <li><a href="../flutter_sound/FlutterSoundHelper-class.html">FlutterSoundHelper</a></li>
       <li><a href="../flutter_sound/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_player_platform_interface/FlutterSoundPlayerCallback-class.html">FlutterSoundPlayerCallback</a></li>
@@ -66,11 +67,10 @@
       <li><a href="../flutter_sound/Food-class.html">Food</a></li>
       <li><a href="../flutter_sound/FoodData-class.html">FoodData</a></li>
       <li><a href="../flutter_sound/FoodEvent-class.html">FoodEvent</a></li>
-      <li><a href="../flutter_sound/GrayedOut-class.html">GrayedOut</a></li>
       <li><a href="../flutter_sound/Log-class.html">Log</a></li>
+      <li><a href="../flutter_sound/LogLevel-class.html">LogLevel</a></li>
       <li><a href="../flutter_sound/MyLogPrinter-class.html">MyLogPrinter</a></li>
       <li><a href="../flutter_sound/PlaybackDisposition-class.html">PlaybackDisposition</a></li>
-      <li><a href="../flutter_sound/RecordedAudio-class.html">RecordedAudio</a></li>
       <li><a href="../flutter_sound/RecorderPlaybackController-class.html">RecorderPlaybackController</a></li>
       <li><a href="../flutter_sound/RecordingDisposition-class.html">RecordingDisposition</a></li>
       <li><a href="../flutter_sound/SoundPlayerUI-class.html">SoundPlayerUI</a></li>
@@ -118,7 +118,7 @@
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/AudioFocus-class.html">AudioFocus</a></li>
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_recorder_platform_interface/AudioSource-class.html">AudioSource</a></li>
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/Codec-class.html">Codec</a></li>
-      <li><a href="../flutter_sound/Initialized-class.html">Initialized</a></li>
+      <li><a class="deprecated" href="../flutter_sound/Initialized-class.html">Initialized</a></li>
       <li><a href="../flutter_sound/PlayerState-class.html">PlayerState</a></li>
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_recorder_platform_interface/RecorderState-class.html">RecorderState</a></li>
       <li><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/SessionCategory-class.html">SessionCategory</a></li>
@@ -130,10 +130,7 @@
       <li><a href="../flutter_sound/TWhenFinished.html">TWhenFinished</a></li>
     
       <li class="section-title"><a href="../flutter_sound/flutter_sound-library.html#exceptions">Exceptions</a></li>
-      <li><a href="../flutter_sound/CodecNotSupportedException-class.html">CodecNotSupportedException</a></li>
       <li><a href="../flutter_sound/PlayerRunningException-class.html">PlayerRunningException</a></li>
-      <li><a href="../flutter_sound/RecorderException-class.html">RecorderException</a></li>
-      <li><a href="../flutter_sound/RecorderRunningException-class.html">RecorderRunningException</a></li>
       <li><a href="../flutter_sound/RecordingPermissionException-class.html">RecordingPermissionException</a></li>
     </ol>
   </div>
@@ -141,6 +138,10 @@
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <div><h1><span class="kind-class">FoodEvent</span> class  </h1></div>
 
+    <section class="desc markdown">
+      <p>foodEvent is a special kin of food which allows to re-synchronize a stream
+with a player that play from a Dart Stream</p>
+    </section>
     
     <section>
       <dl class="dl-horizontal">
@@ -166,7 +167,7 @@
           <span class="name"><a href="../flutter_sound/FoodEvent/FoodEvent.html">FoodEvent</a></span><span class="signature">(<span class="parameter" id="-param-on"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Function-class.html">Function</a></span> <span class="parameter-name">on</span></span>)</span>
         </dt>
         <dd>
-           
+          The constructor, specifying the callback which must be fired when synchronization is done 
         </dd>
       </dl>
     </section>
@@ -188,7 +189,7 @@
           <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/Function-class.html">Function</a></span>         
         </dt>
         <dd>
-           
+          The callback to fire when this food is synchronized with the player 
                   <div class="features">read / write</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
@@ -211,7 +212,7 @@
           </span>
                   </dt>
         <dd>
-           
+          Used internally by Flutter Sound 
                   <div class="features">override</div>
 </dd>
         <dt id="noSuchMethod" class="callable inherited">

@@ -60,7 +60,6 @@
         <li class="section-title">
             <a href="../../flutter_sound/FlutterSoundHelper-class.html#instance-properties">Properties</a>
         </li>
-        <li><a href="../../flutter_sound/FlutterSoundHelper/ffmpegAvailable.html">ffmpegAvailable</a></li>
         <li><a href="../../flutter_sound/FlutterSoundHelper/flutterFFmpeg.html">flutterFFmpeg</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
@@ -101,17 +100,21 @@
       
     </section>
     <section class="desc markdown">
-      <p>We use here our own ffmpeg "execute" procedure instead of the one provided by the flutter_ffmpeg plugin,
-so that the developers not interested by ffmpeg can use flutter_plugin without the flutter_ffmpeg plugin
+      <p>This verb is a wrapper for the great FFmpeg application.
+The command <code>man ffmpeg</code> (if you have installed ffmpeg on your computer) will give you many informations.
+If you do not have <code>ffmpeg</code> on your computer you will find easyly on internet many documentation on this great program.</p>
+<p>We use here our own ffmpeg "execute" procedure instead of the one provided by the flutter_ffmpeg plugin,
+so that the developers not interested by ffmpeg can use Flutter Sound without the flutter_ffmpeg plugin
 and without any complain from the link-editor.</p>
 <p>Executes FFmpeg with <code>commandArguments</code> provided.</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Future&lt;int&gt; executeFFmpegWithArguments(List&lt;String&gt; arguments) {
-  if (flutterFFmpeg == null) flutterFFmpeg = FlutterFFmpeg();
-  return flutterFFmpeg.executeWithArguments(arguments);
+      <pre class="language-dart"><code class="language-dart">Future&lt;int&gt; executeFFmpegWithArguments(List&lt;String&gt; arguments)
+{
+        if (flutterFFmpeg == null) flutterFFmpeg = FlutterFFmpeg();
+        return flutterFFmpeg.executeWithArguments(arguments);
 }</code></pre>
     </section>
 

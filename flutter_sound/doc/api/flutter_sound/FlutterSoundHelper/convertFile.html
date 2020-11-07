@@ -60,7 +60,6 @@
         <li class="section-title">
             <a href="../../flutter_sound/FlutterSoundHelper-class.html#instance-properties">Properties</a>
         </li>
-        <li><a href="../../flutter_sound/FlutterSoundHelper/ffmpegAvailable.html">ffmpegAvailable</a></li>
         <li><a href="../../flutter_sound/FlutterSoundHelper/flutterFFmpeg.html">flutterFFmpeg</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
@@ -103,35 +102,51 @@
 </ol>)
       
     </section>
+    <section class="desc markdown">
+      <p>This verb is useful to convert a sound file to a new format.</p>
+<ul>
+<li><code>inputFile</code> is the file path of the file you want to convert</li>
+<li><code>inputCodec</code> is the actual file format</li>
+<li><code>outputFile</code> is the path of the file you want to create</li>
+<li><code>outputCodec</code> is the new file format</li>
+</ul>
+<p>Be careful : <code>outfile</code> and <code>outputCodec</code> must be compatible. The output file extension must be a correct file extension for the new format.</p>
+<p>Note : this verb uses FFmpeg and is not available int the LITE flavor of Flutter Sound.</p>
+    </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; convertFile(
-    String inputFile, Codec inputCodec, String outputFile, Codec outputCodec) async {
-  int rc = 0;
-  if (inputCodec == Codec.opusOGG &amp;&amp;
-      outputCodec == Codec.opusCAF) &#47;&#47; Do not need to re-encode. Just remux
-    rc = await flutterSoundHelper.executeFFmpegWithArguments([
-      &#39;-loglevel&#39;,
-      &#39;error&#39;,
-      &#39;-y&#39;,
-      &#39;-i&#39;,
-      inputFile,
-      &#39;-c:a&#39;,
-      &#39;copy&#39;,
-      outputFile,
-    ]); &#47;&#47; remux OGG to CAF
-  else
-    rc = await flutterSoundHelper.executeFFmpegWithArguments([
-      &#39;-loglevel&#39;,
-      &#39;error&#39;,
-      &#39;-y&#39;,
-      &#39;-i&#39;,
-      inputFile,
-      outputFile,
-    ]);
-
-  return (rc != 0);
+      <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; convertFile(String inputFile, Codec inputCodec, String outputFile, Codec outputCodec) async
+{
+        int rc = 0;
+        if (inputCodec == Codec.opusOGG &amp;&amp;
+            outputCodec == Codec.opusCAF) &#47;&#47; Do not need to re-encode. Just remux
+        {
+                rc = await flutterSoundHelper.executeFFmpegWithArguments
+                ([
+                        &#39;-loglevel&#39;,
+                        &#39;error&#39;,
+                        &#39;-y&#39;,
+                        &#39;-i&#39;,
+                        inputFile,
+                        &#39;-c:a&#39;,
+                        &#39;copy&#39;,
+                        outputFile,
+                ]); &#47;&#47; remux OGG to CAF
+        }
+        else
+        {
+                rc = await flutterSoundHelper.executeFFmpegWithArguments
+                ([
+                        &#39;-loglevel&#39;,
+                        &#39;error&#39;,
+                        &#39;-y&#39;,
+                        &#39;-i&#39;,
+                        inputFile,
+                        outputFile,
+                ]);
+        }
+        return (rc != 0);
 }</code></pre>
     </section>
 

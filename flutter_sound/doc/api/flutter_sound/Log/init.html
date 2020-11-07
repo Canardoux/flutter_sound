@@ -112,16 +112,18 @@
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">static void init(String currentWorkingDirectory) {
-  _self = Log._internal(currentWorkingDirectory);
+      <pre class="language-dart"><code class="language-dart">static void init(String currentWorkingDirectory)
+{
+        _self = Log._internal(currentWorkingDirectory);
 
-  var frames = StackTraceImpl();
+        var frames = StackTraceImpl();
 
-  for (var frame in frames.frames) {
-    _localPath = frame.sourceFile.path
-        .substring(frame.sourceFile.path.lastIndexOf(&quot;&#47;&quot;));
-    break;
-  }
+        for (var frame in frames.frames)
+        {
+                _localPath = frame.sourceFile.path
+                    .substring(frame.sourceFile.path.lastIndexOf(&quot;&#47;&quot;));
+                break;
+        }
 }</code></pre>
     </section>
 
