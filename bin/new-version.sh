@@ -13,16 +13,17 @@ VERSION_CODE=${VERSION_CODE//+/}
 bin/flavor FULL
 bin/reldev.sh REL
 bin/setver.sh $VERSION
-
-cd flutter_sound
-dartdoc --pretty-index-json
-cd ..
+bin/doc.sh
 
 git add .
 git commit -m "TAU : Version $VERSION"
 git push
 git tag -f $1
 git push --tag -f
+git checkout gh-pages
+git merge master
+git push
+git checkout master
 
 
 cd flutter_sound_platform_interface/
