@@ -9,7 +9,7 @@ dartdoc --pretty-index-json --input flutter_sound --output doc/flutter_sound/api
 git add .
 git commit -m "TAU : Version $VERSION"
 git push
-if [ ! -z "$VERSION" ]
+if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push --tag -f
 fi
