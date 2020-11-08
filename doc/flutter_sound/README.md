@@ -30,6 +30,9 @@ This plugin provides simple recorder and player functionalities for
 
  [riri](https://canardoux.github.io/tau/doc/flutter_sound/book/api/index.html)
 
+ [riri](/tau/doc/flutter_sound/book/api/index.html)
+
+
 -----------------------------------------------------------------------------------------------------------------------------------
 
 # Flutter Sound V6.x is OUT
