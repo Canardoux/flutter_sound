@@ -10,7 +10,8 @@ This plugin provides simple recorder and player functionalities for
 - iOS
 - Flutter Web
 
-[toto](book/index.html)
+[zozo](book/index.html)
+[toto](api/index.html)
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
