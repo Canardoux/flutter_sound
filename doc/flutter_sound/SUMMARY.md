@@ -9,5 +9,5 @@
       - [subsub2](recorder.md)
       - [subsub2](recorder.md)
 * [Chapter 3](recorder.md)
-* [The API](api.md)
+* [The API](https://canardoux.github.io/tau/doc/flutter_sound/book/api/index.html)
 
