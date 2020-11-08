@@ -1748,18 +1748,6 @@
   }
  },
  {
-  "name": "isInited",
-  "qualifiedName": "flutter_sound.FlutterSoundRecorder.isInited",
-  "href": "flutter_sound/FlutterSoundRecorder/isInited.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flutter_sound",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
   "name": "isOpen",
   "qualifiedName": "flutter_sound.FlutterSoundRecorder.isOpen",
   "href": "flutter_sound/FlutterSoundRecorder/isOpen.html",
