@@ -1,3 +1,3 @@
-[The very API](_book/api/index.html)
+[The very API](book/api/index.html)
 
 
