@@ -26,6 +26,9 @@ This plugin provides simple recorder and player functionalities for
 
  <a href="api/index.html">Visit W3Schools.com!</a>
 
+ [riri](api/flutter_sound/black.html)
+
+ [riri](https://canardoux.github.io/tau/doc/flutter_sound/book/api/index.html)
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
