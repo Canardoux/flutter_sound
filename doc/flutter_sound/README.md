@@ -10,7 +10,7 @@ This plugin provides simple recorder and player functionalities for
 - iOS
 - Flutter Web
 
-[toto](_book/index.html)
+[toto](book/index.html)
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
