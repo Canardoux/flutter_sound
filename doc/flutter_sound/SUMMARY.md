@@ -10,4 +10,5 @@
       - [subsub2](recorder.md)
 * [Chapter 3](recorder.md)
 * [The API](https://canardoux.github.io/tau/doc/flutter_sound/book/api/index.html)
+* [The API](https://canardoux.github.io/tau/doc/flutter_sound/api/index.html)
 
