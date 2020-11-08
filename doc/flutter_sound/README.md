@@ -14,6 +14,8 @@ This plugin provides simple recorder and player functionalities for
 
 [toto](api/index.html)
 
+[toto](player.html)
+
 -----------------------------------------------------------------------------------------------------------------------------------
 
 # Flutter Sound V6.x is OUT
