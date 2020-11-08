@@ -75,7 +75,7 @@ The [sources are here](https://github.com/Canardoux/tau)
 
 ## Documentation
 
-The [documentation is here](https://canardoux.github.io/tau/doc/api/)
+The [documentation is here](https://canardoux.github.io/tau/doc/flutter_sound)
 
 ## SDK requirements
 
