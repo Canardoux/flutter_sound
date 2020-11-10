@@ -130,7 +130,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
 
 // -------------------------------------------------------------  deprecated  --------------------------------------------------------------
 
-        /// Obsolete.
+        /// @nodoc.
         @deprecated
         Initialized get isInited => _openState;
         Initialized _openState = Initialized.notInitialized;

@@ -30,11 +30,11 @@ typedef OnStart = void Function();
 /// Callback fn type
 typedef OnDelete = void Function();
 /// Callback fn type
-typedef OnProgress = void Function(_RecordedAudio media);
+typedef OnProgress = void Function(RecordedAudio media);
 /// Callback fn type
-typedef OnStop = void Function(_RecordedAudio media);
+typedef OnStop = void Function(RecordedAudio media);
 /// Callback fn type
-typedef OnPaused = void Function(_RecordedAudio media, bool isPaused);
+typedef OnPaused = void Function(RecordedAudio media, bool isPaused);
 
 
 /// The states possible of the recorder
@@ -53,10 +53,10 @@ enum _RecorderState
 
 
 
-/// [_RecordedAudio] is used to track the audio media
+/// [RecordedAudio] is used to track the audio media
 /// created during a recording session via the SoundRecorderUI.
 ///
-class _RecordedAudio 
+class RecordedAudio
 {
         /// The length of the recording (so far)
         Duration duration = Duration.zero;
@@ -64,9 +64,9 @@ class _RecordedAudio
         /// The track we are recording audio to.
         Track track;
       
-        /// Creates a [_RecordedAudio] that will store
+        /// Creates a [RecordedAudio] that will store
         /// the recording to the given pay.
-        _RecordedAudio.toTrack(this.track);
+        RecordedAudio.toTrack(this.track);
 }
 
 
@@ -107,7 +107,7 @@ class SoundRecorderUI extends StatefulWidget
         final OnDelete onDelete;
 
         /// Stores and Tracks the recorded audio.
-        final _RecordedAudio audio;
+        final RecordedAudio audio;
 
         final bool showTrashCan;
 
@@ -194,7 +194,7 @@ class SoundRecorderUI extends StatefulWidget
                 this.recordingTitle = 'Recorder is recording',
                 this.stoppedTitle = 'Recorder is stopped',
                 Key key,
-        })  : audio = _RecordedAudio.toTrack(track),
+        })  : audio = RecordedAudio.toTrack(track),
               super(key: key);
 
 

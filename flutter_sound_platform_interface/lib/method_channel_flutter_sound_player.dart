@@ -261,7 +261,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
   @override
   Future<int> setUIProgressBar(FlutterSoundPlayerCallback callback, {Duration duration, Duration progress,})
   {
-    return invokeMethod( callback, 'setUIProgressBar', {'duration': duration.inMilliseconds, 'progress': progress,}) ;
+    return invokeMethod( callback, 'setUIProgressBar', {'duration': duration.inMilliseconds, 'progress': progress.inMilliseconds,}) ;
 
   }
 

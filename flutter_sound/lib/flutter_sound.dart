@@ -44,9 +44,9 @@ export 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform
 
 // The Widgets UI
 // --------------
-export 'src/ui/sound_player_ui.dart' show SoundPlayerUI;
-export 'src/ui/sound_recorder_ui.dart' show SoundRecorderUI;
-export 'src/ui/recorder_playback_controller.dart' ;
+export 'src/ui/sound_player_ui.dart';
+export 'src/ui/sound_recorder_ui.dart' ;
+//export 'src/ui/recorder_playback_controller.dart' ;
 
 
 // The main modules

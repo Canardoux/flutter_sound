@@ -368,10 +368,10 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
 
 
 
-        /// This method is used by the [RecorderPlaybackController] to attached
+        /// This method is used by the RecorderPlaybackController to attached
         /// the [_localController] to the [SoundRecordUI]'s stream.
         /// This is only done when this player is attached to a
-        /// [RecorderPlaybackController].
+        /// RecorderPlaybackController.
         ///
         /// When recording starts we are attached to the recorderStream.
         /// When recording finishes this method is called with a null and we
@@ -902,7 +902,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
 
 
 
-        /// Specialised method that allows the [RecorderPlaybackController]
+        /// Specialised method that allows the RecorderPlaybackController
         /// to update our duration as a recording occurs.
         ///
         /// This method should be used for no other purposes.
