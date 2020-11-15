@@ -97,7 +97,7 @@
       <span class="name ">SoundPlayerUI.fromLoader</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="fromLoader-param-onLoad"><span class="type-annotation"><a href="../../flutter_sound/OnLoad.html">OnLoad</a></span> <span class="parameter-name">onLoad</span>, </span></li>
 <li><span class="parameter" id="fromLoader-param-showTitle">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">showTitle</span>: <span class="default-value">false</span>, </span></li>
 <li><span class="parameter" id="fromLoader-param-enabled"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enabled</span>: <span class="default-value">true</span>, </span></li>
-<li><span class="parameter" id="fromLoader-param-audioFocus"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/AudioFocus-class.html">AudioFocus</a></span> <span class="parameter-name">audioFocus</span>: <span class="default-value">AudioFocus.requestFocusAndKeepOthers</span>, </span></li>
+<li><span class="parameter" id="fromLoader-param-audioFocus"><span class="type-annotation">dynamic</span> <span class="parameter-name">audioFocus</span>: <span class="default-value">AudioFocus.requestFocusAndKeepOthers</span>, </span></li>
 <li><span class="parameter" id="fromLoader-param-backgroundColor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a></span> <span class="parameter-name">backgroundColor</span>: <span class="default-value">null</span>, </span></li>
 <li><span class="parameter" id="fromLoader-param-iconColor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a></span> <span class="parameter-name">iconColor</span>: <span class="default-value">Colors.black</span>, </span></li>
 <li><span class="parameter" id="fromLoader-param-disabledIconColor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a></span> <span class="parameter-name">disabledIconColor</span>: <span class="default-value">Colors.grey</span>, </span></li>
@@ -123,7 +123,7 @@ If <code>enabled</code> is false then the player will be disabled and the user
 will not be able to click the play button.
 The <code>audioFocus</code> allows you to control what happens to other
 media that is playing when our player starts.
-By default we use <a href="https://pub.dev/documentation/flutter_sound_platform_interface/6.4.0+3/flutter_sound_platform_interface/AudioFocus-class.html">AudioFocus.requestFocusAndDuckOthers</a> which will
+By default we use <code>AudioFocus.requestFocusAndDuckOthers</code> which will
 reduce the volume of any other players.</p>
     </section>
     
@@ -167,7 +167,7 @@ reduce the volume of any other players.</p>
 <footer>
   <span class="no-break">
     flauto
-      0.0.1+10
+      0.0.1+11
   </span>
 
 </footer>
