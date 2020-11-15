@@ -1,8 +1,8 @@
 {
         "name": "tau_engine",
-        "version": "6.4.2+1",
+        "version": "0.0.1+10",
         "description": "The Tau Engine for Web App",
-        "homepage": "https://github.com/dooboolab/flutter_sound",
+        "homepage": "https://github.com/Canardoux/tau",
         "keywords": [
                 "flauto",
                 "flutter_sound",
@@ -19,7 +19,7 @@
         "author": "Larpoux <larpoux@gmail.com> (https://github.com/orgs/Canardoux/people/Larpoux)",
         "repository": {
                 "type": "git",
-                "url": "https://github.com/dooboolab/flutter_sound.git"
+                "url": "https://github.com/Canardoux/tau.git"
         },
         "devDependencies": {
                 "uglify-js": "2.x"

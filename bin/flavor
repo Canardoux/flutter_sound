@@ -51,6 +51,14 @@ check_actual_flavor()
 		echo "Current flavor is FULL $(tput setaf 2) [OK]$(tput sgr 0)"
 		FLAVOR=FULL
 		return 0
+  elif grep '^name: flauto_lite$' pubspec.yaml > /dev/null ; then
+    echo "Current flavor is LITE $(tput setaf 2) [OK]$(tput sgr 0)"
+    FLAVOR=LITE
+    return 0
+  elif  grep '^name: flauto$' pubspec.yaml > /dev/null ; then
+    echo "Current flavor is FULL $(tput setaf 2) [OK]$(tput sgr 0)"
+    FLAVOR=FULL
+    return 0
 	else
 		FLAVOR=""
 		echo "Cannot determine your current flavor in file ./pubspec.yaml $(tput setaf 1) [NOK]$(tput sgr 0)"
@@ -571,6 +579,7 @@ FULL)
 
 	if [ $? == 0 ] || [ "$2" == 'force' ]; then
 		gsed -i  's/^name: flutter_sound_lite$/name: flutter_sound/' pubspec.yaml
+    gsed -i  's/^name: flauto_lite$/name: flauto/' pubspec.yaml
 		gsed -i  's/^\( *\)flutter_sound_lite:/\1flutter_sound:/' example/pubspec.yaml
 		mv ios/flutter_sound_lite.podspec ios/flutter_sound.podspec 2>/dev/null
 		gsed -i  "s/^ *s.name *=* 'flutter_sound_lite'$/s.name = 'flutter_sound'/"  ios/flutter_sound.podspec
@@ -673,6 +682,7 @@ LITE)
 
 	if [ $? == 0 ] || [ "$2" == 'force' ]; then
 		gsed -i  's/^name: flutter_sound$/name: flutter_sound_lite/' pubspec.yaml
+    gsed -i  's/^name: flauto$/name: flauto_lite/' pubspec.yaml
 		gsed -i  's/^\( *\)flutter_sound:/\1flutter_sound_lite:/' example/pubspec.yaml
 		mv ios/flutter_sound.podspec ios/flutter_sound_lite.podspec 2>/dev/null
 		gsed -i  "s/^ *s.name *=* 'flutter_sound'$/s.name = 'flutter_sound_lite'/"  ios/flutter_sound_lite.podspec

@@ -79,6 +79,24 @@ cd ../..
 
 
 cd flutter_sound/example
+flutter build web
+cd ../..
+rm -r doc/flutter_sound/web_example
+cp -a flutter_sound/example/build/web doc/flutter_sound/
+
+
+git checkout gh-pages
+git merge master
+git push
+if [ ! -z "$VERSION" ]; then
+        git tag -f $VERSION
+        git push --tag -f
+fi
+git checkout master
+
+
+
+cd flutter_sound/example
 flutter pub get
 flutter clean
 cd ios
