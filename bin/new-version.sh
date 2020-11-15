@@ -80,6 +80,7 @@ cd ../..
 
 cd flutter_sound/example
 flutter pub get
+flutter clean
 cd ios
 pod cache clean --all
 rm Podfile.lock

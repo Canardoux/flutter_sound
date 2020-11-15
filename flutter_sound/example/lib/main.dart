@@ -321,8 +321,8 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
           ),
           child: Row ( mainAxisAlignment: MainAxisAlignment.end, children:
           [
-                  Text( (selectedExample.flags & NOT_WEB != 0) ? 'Not supported on Flutter Web ' : ''),
-                  RaisedButton(  onPressed: (kIsWeb && (selectedExample.flags & NOT_WEB != 0) ) ? null :() =>selectedExample.go(context), color: Colors.indigo, child: Text('GO', style: TextStyle(color: Colors.white),),)
+                  Text( (kIsWeb && (selectedExample.flags & NOT_WEB != 0)) ? 'Not supported on Flutter Web ' : ''),
+                  RaisedButton(  onPressed: (selectedExample.flags & NOT_WEB != 0) ? null :() =>selectedExample.go(context), color: Colors.indigo, child: Text('GO', style: TextStyle(color: Colors.white),),)
           ],)
         ),
       ),

@@ -6,6 +6,15 @@
 - The Flutter Sound documentation is now handled by gitbook.
 - Fix bug in `setUIProgressBar()`
 
+## 6.4.2
+
+- Syntaxe error in flutter_sound_web.podspec [#509](https://github.com/dooboolab/flutter_sound/issues/509)
+
+## 6.4.1
+
+- Little mistake in the Podspec file name for flutter_sound_web [#509](https://github.com/dooboolab/flutter_sound/issues/509)
+>>>>>>> FS/master:CHANGELOG.md
+
 ## 6.4.0
 
 - Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://www.canardoux.space/tau/flutter_sound_example) (still cannot record with Safari or any web browser on iOS : thank you Apple). You can [read this](flutter_sound/doc/codec.md#flutter-sound-on-flutter-web). Issues : [#494](https://github.com/dooboolab/flutter_sound/issues/494), [#468](https://github.com/dooboolab/flutter_sound/issues/468) and [#297](https://github.com/dooboolab/flutter_sound/issues/297)
