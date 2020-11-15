@@ -22,7 +22,7 @@ dependencies:
 #    path: ../../flutter_sound_web # flutter_sound_web Dir
 # ============================================================================
 
-  flutter_sound: ^0.0.1+10
+  flauto: ^0.0.1+10
 #    path: ../ # Flutter Sound Dir
 
   intl: ^0.16.1

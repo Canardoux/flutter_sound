@@ -20,13 +20,13 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
 This plugin provides simple recorder and player functionalities for both Android and iOS platforms.
 This code was originally inside the flutter_sound/ios directory.
-It has been extracted to be isolated from Flutter ans can be used with other frameworks.
+It has been extracted to be isolated from Flutter and can be used with other frameworks.
                        DESC
 
-  s.homepage         = 'https://github.com/dooboolab/flutter_sound'
+  s.homepage         = 'https://github.com/Canardoux/tau'
   s.license          = { :type => 'LGPL', :file => 'LICENSE' }
-  s.author           = { 'larpoux' => 'larpoux@canardoux.xyz' }
-  s.source           = { :git => 'https://github.com/dooboolab/flutter_sound.git', :tag => '' + s.version.to_s }
+  s.author           = { 'larpoux' => 'larpoux@gmail.com' }
+  s.source           = { :git => 'https://github.com/Canardoux/tau.git', :tag => '' + s.version.to_s }
 
   s.ios.deployment_target = '10.0'
 

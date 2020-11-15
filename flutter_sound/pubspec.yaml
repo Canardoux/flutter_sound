@@ -46,6 +46,10 @@ flutter:
         pluginClass: FlutterSound
       ios:
         pluginClass: FlutterSound
+      web:
+        pluginClass: FlutterSound
+        fileName: flutter_sound_web.dart
+
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

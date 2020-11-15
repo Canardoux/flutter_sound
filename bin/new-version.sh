@@ -36,7 +36,7 @@ cd ..
 bin/flavor LITE
 
 cd flutter_sound
-flutter pub publish
+##########flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
@@ -84,6 +84,9 @@ cd ../..
 rm -r doc/flutter_sound/web_example
 cp -a flutter_sound/example/build/web doc/flutter_sound/
 
+git add .
+git commit -m "Release Version: $VERSION"
+git push
 
 git checkout gh-pages
 git merge master
