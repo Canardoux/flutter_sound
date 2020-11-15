@@ -140,11 +140,13 @@
                                         ^{
                                                 NSLog(@"IOS: ^beginReceivingRemoteControlEvents");
                                                 [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+                                                [self setupRemoteCommandCenter: canPause canSkipForward: canSkipForward   canSkipBackward: canSkipBackward ];
+
                                         });
 
                                         [[self getPlayer] play];
                                         [self startTimer];
-                                        [self setupRemoteCommandCenter: canPause canSkipForward: canSkipForward   canSkipBackward: canSkipBackward ];
+                                        //[self setupRemoteCommandCenter: canPause canSkipForward: canSkipForward   canSkipBackward: canSkipBackward ];
                                         NSNumber* _duration ;
                                         NSNumber* _progress ;
                                          if ( (progress == nil) || (progress.class == NSNull.class) )
@@ -245,6 +247,7 @@
 // notification to control the media playback.
 - (void)setupNowPlaying: (NSNumber*) progress duration: (NSNumber*)duration
 {
+// Progress and duration are in seconds
         NSLog(@"IOS:--> setupNowPlaying");
 
         // Initialize the MPNowPlayingInfoCenter
@@ -388,12 +391,12 @@
                                 // If the caller wants to control the pause button, just call him
                                 if (b)
                                 {
-                                        if (self ->m_removeUIWhenStopped)
+                                        if (self ->m_defaultPauseResume)
                                                 [self pausePlayer];
                                         [self ->m_callBack pause];
                                 } else
                                 {
-                                        if ( self ->m_removeUIWhenStopped)
+                                        if ( self ->m_defaultPauseResume)
                                                 [self resumePlayer];
                                         [self ->m_callBack resume];
                                 }
@@ -408,12 +411,13 @@
                         dispatch_async(dispatch_get_main_queue(),
                                 ^{
                                         bool b = [[self getPlayer] isPlaying];
-                                        // If the caller wants to control the pause button, just call him
                                         if (b)
                                         {
-                                                if (self ->m_removeUIWhenStopped)
+                                                if (self ->m_defaultPauseResume)
                                                         [self pausePlayer];
-                                                [self ->m_callBack pause];                                }
+                                                [self ->m_callBack pause];
+                                                
+                                        }
                                 }
                         );
                         return MPRemoteCommandHandlerStatusSuccess;
@@ -437,7 +441,7 @@
                                         // If the caller wants to control the pause button, just call him
                                         if (!b)
                                         {
-                                                if (self ->m_removeUIWhenStopped)
+                                                if (self ->m_defaultPauseResume)
                                                         [self resumePlayer];
                                                [self ->m_callBack resume];
                                         }
@@ -448,19 +452,7 @@
                 }];
         }
 
-        commandCenter.togglePlayPauseCommand.enabled = canPause;
-        commandCenter.playCommand.enabled = canPause;
-        commandCenter.stopCommand.enabled = canPause;
-        commandCenter.pauseCommand.enabled = canPause;
-
-        [commandCenter.togglePlayPauseCommand setEnabled: canPause]; // If the caller does not want to control pause button, we will use our default action
-        [commandCenter.playCommand setEnabled: canPause]; // If the caller does not want to control pause button, we will use our default action
-        [commandCenter.stopCommand setEnabled: canPause]; // If the caller does not want to control pause button, we will use our default action
-        [commandCenter.pauseCommand setEnabled: canPause]; // If the caller does not want to control pause button, we will use our default action
-
-        [commandCenter.nextTrackCommand setEnabled:canSkipForward];
-        [commandCenter.previousTrackCommand setEnabled:canSkipBackward];
-
+    
 
         if (canSkipForward)
         {
@@ -483,11 +475,26 @@
                         }
                 ];
         }
+        
+        commandCenter.togglePlayPauseCommand.enabled = canPause;
+        commandCenter.playCommand.enabled = canPause;
+        commandCenter.stopCommand.enabled = canPause;
+        commandCenter.pauseCommand.enabled = canPause;
+
+        [commandCenter.togglePlayPauseCommand setEnabled: canPause]; // If the caller does not want to control pause button, we will use our default action
+        [commandCenter.playCommand setEnabled: canPause]; // If the caller does not want to control pause button, we will use our default action
+        [commandCenter.stopCommand setEnabled: canPause]; // If the caller does not want to control pause button, we will use our default action
+        [commandCenter.pauseCommand setEnabled: canPause]; // If the caller does not want to control pause button, we will use our default action
+
+        [commandCenter.nextTrackCommand setEnabled:canSkipForward];
+        [commandCenter.previousTrackCommand setEnabled:canSkipBackward];
+
        NSLog(@"IOS:<-- setupRemoteCommandCenter");
  }
 
 - (void)setUIProgressBar: (NSNumber*)progress duration: (NSNumber*)duration
 {
+// Progress and duration are in seconds
         NSLog(@"IOS:--> setUIProgressBar");
         NSMutableDictionary* songInfo = [[NSMutableDictionary alloc] init];
         /*

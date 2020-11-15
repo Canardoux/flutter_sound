@@ -89,7 +89,8 @@ FlutterSoundRecorderManager* flutterSoundRecorderManager; // Singleton
          
         if ([@"releaseFlautoRecorder" isEqualToString:call.method])
         {
-                [aFlautoRecorder releaseFlautoRecorder:call result:result];
+                if (aFlautoRecorder != [NSNull null])
+                        [aFlautoRecorder releaseFlautoRecorder:call result:result];
         } else
          
         if ([@"isEncoderSupported" isEqualToString:call.method])
