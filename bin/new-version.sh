@@ -87,7 +87,10 @@ cp -a flutter_sound/example/build/web doc/flutter_sound/
 git add .
 git commit -m "Release Version: $VERSION"
 git push
-
+if [ ! -z "$VERSION" ]; then
+        git tag -f $VERSION
+        git push --tag -f
+fi
 git checkout gh-pages
 git merge master
 git push
