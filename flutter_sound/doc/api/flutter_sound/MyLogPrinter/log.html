@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the log method from the MyLogPrinter class, for the Dart programming language.">
+  <title>log method - MyLogPrinter class - flutter_sound library - Dart API</title>
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="../../static-assets/github.css">
+  <link rel="stylesheet" href="../../static-assets/styles.css">
+  <link rel="icon" href="../../static-assets/favicon.png">
+
+</head>
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">flutter_sound</a></li>
+    <li><a href="../../flutter_sound/flutter_sound-library.html">flutter_sound</a></li>
+    <li><a href="../../flutter_sound/MyLogPrinter-class.html">MyLogPrinter</a></li>
+    <li class="self-crumb">log method</li>
+  </ol>
+  <div class="self-name">log</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="../../index.html">flutter_sound</a></li>
+      <li><a href="../../flutter_sound/flutter_sound-library.html">flutter_sound</a></li>
+      <li><a href="../../flutter_sound/MyLogPrinter-class.html">MyLogPrinter</a></li>
+      <li class="self-crumb">log method</li>
+    </ol>
+    
+    <h5>MyLogPrinter class</h5>
+    <ol>
+    
+        <li class="section-title"><a href="../../flutter_sound/MyLogPrinter-class.html#constructors">Constructors</a></li>
+        <li><a href="../../flutter_sound/MyLogPrinter/MyLogPrinter.html">MyLogPrinter</a></li>
+    
+        <li class="section-title">
+            <a href="../../flutter_sound/MyLogPrinter-class.html#instance-properties">Properties</a>
+        </li>
+        <li><a href="../../flutter_sound/MyLogPrinter/colors.html">colors</a></li>
+        <li><a href="../../flutter_sound/MyLogPrinter/currentWorkingDirectory.html">currentWorkingDirectory</a></li>
+        <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+        <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    
+        <li class="section-title"><a href="../../flutter_sound/MyLogPrinter-class.html#instance-methods">Methods</a></li>
+        <li><a href="../../flutter_sound/MyLogPrinter/color.html">color</a></li>
+        <li class="inherited"><a href="https://pub.dev/documentation/logger/0.7.0+2/logger/LogPrinter/destroy.html">destroy</a></li>
+        <li class="inherited"><a href="https://pub.dev/documentation/logger/0.7.0+2/logger/LogPrinter/init.html">init</a></li>
+        <li><a href="../../flutter_sound/MyLogPrinter/log.html">log</a></li>
+        <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+        <li class="inherited"><a href="https://pub.dev/documentation/logger/0.7.0+2/logger/LogPrinter/println.html">println</a></li>
+        <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+    
+        <li class="section-title inherited"><a href="../../flutter_sound/MyLogPrinter-class.html#operators">Operators</a></li>
+        <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+    
+    
+    
+    
+    
+    </ol>
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <div><h1><span class="kind-method">log</span> method </h1></div>
+
+    <section class="multi-line-signature">
+      <div>
+        <ol class="annotation-list">
+          <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
+        </ol>
+      </div>
+      <span class="returntype">void</span>
+            <span class="name ">log</span>
+(<wbr><ol class="parameter-list"><li><span class="parameter" id="log-param-event"><span class="type-annotation"><a href="https://pub.dev/documentation/logger/0.7.0+2/logger/LogEvent-class.html">LogEvent</a></span> <span class="parameter-name">event</span></span></li>
+</ol>)
+      <div class="features">override</div>
+    </section>
+    <section class="desc markdown">
+      <p>Is called every time a new <a href="https://pub.dev/documentation/logger/0.7.0+2/logger/LogEvent-class.html">LogEvent</a> is sent and handles printing or
+storing the message.</p>
+    </section>
+    
+    <section class="summary source-code" id="source">
+      <h2><span>Implementation</span></h2>
+      <pre class="language-dart"><code class="language-dart">@override
+void log(LogEvent event) {
+  if (EnumHelper.getIndexOf(Level.values, Log.loggingLevel) &gt;
+      EnumHelper.getIndexOf(Level.values, event.level)) {
+    &#47;&#47; don&#39;t log events where the log level is set higher
+    return;
+  }
+  var formatter = DateFormat(&#39;dd HH:mm:ss.&#39;);
+  var now = DateTime.now();
+  var formattedDate = formatter.format(now) + now.millisecond.toString();
+
+  var frames = StackTraceImpl();
+  var i = 0;
+  var depth = 0;
+  for (var frame in frames.frames) {
+    i++;
+    var path2 = frame.sourceFile.path;
+    if (!path2.contains(Log._localPath) &amp;&amp; !path2.contains(&quot;logger.dart&quot;)) {
+      depth = i - 1;
+      break;
+    }
+  }
+
+  print(color(
+      event.level,
+      &quot;$formattedDate ${EnumHelper.getName(event.level)} &quot;
+      &quot;${StackTraceImpl(skipFrames: depth).formatStackTrace(methodCount: 1)} &quot;
+      &quot;::: ${event.message}&quot;));
+
+  if (event.error != null) {
+    print(color(event.level, &quot;${event.error}&quot;));
+  }
+
+  if (event.stackTrace != null) {
+    if (event.stackTrace.runtimeType == StackTraceImpl) {
+      var st = event.stackTrace as StackTraceImpl;
+      print(color(event.level, &quot;$st&quot;));
+    } else {
+      print(color(event.level, &quot;${event.stackTrace}&quot;));
+    }
+  }
+}</code></pre>
+    </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    flutter_sound
+      6.4.2+1
+  </span>
+
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="../../static-assets/typeahead.bundle.min.js"></script>
+<script src="../../static-assets/highlight.pack.js"></script>
+<script src="../../static-assets/URI.js"></script>
+<script src="../../static-assets/script.js"></script>
+
+
+</body>
+
+</html>

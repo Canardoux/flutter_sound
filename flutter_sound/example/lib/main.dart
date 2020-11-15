@@ -25,6 +25,7 @@ import 'livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.dart';
 import 'soundEffect/soundEffect.dart';
 import 'streamLoop/streamLoop.dart';
 import 'speechToText/speechToTextExample.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 /*
     This APP is just a driver to call the various Flutter Sound examples.
@@ -320,7 +321,7 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
           ),
           child: Row ( mainAxisAlignment: MainAxisAlignment.end, children:
           [
-                  Text( (selectedExample.flags & NOT_WEB != 0) ? 'This example is not supported on Flutter Web   ' : ''),
+                  Text( (kIsWeb && (selectedExample.flags & NOT_WEB != 0)) ? 'Not supported on Flutter Web ' : ''),
                   RaisedButton(  onPressed: (selectedExample.flags & NOT_WEB != 0) ? null :() =>selectedExample.go(context), color: Colors.indigo, child: Text('GO', style: TextStyle(color: Colors.white),),)
           ],)
         ),

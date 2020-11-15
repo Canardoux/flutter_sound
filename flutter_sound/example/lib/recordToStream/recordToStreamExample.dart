@@ -104,7 +104,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
               {
                 if (buffer is FoodData)
                   sink.add(buffer.data);
-              }
+                }
             );
     await _mRecorder.startRecorder(
         toStream: recordingDataController.sink,
