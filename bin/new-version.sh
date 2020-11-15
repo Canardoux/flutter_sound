@@ -43,7 +43,7 @@ if [ $? -ne 0 ]; then
 fi
 cd ..
 
-bin/flavor FULL
+########bin/flavor FULL
 
 cd flutter_sound_web
 flutter pub publish
