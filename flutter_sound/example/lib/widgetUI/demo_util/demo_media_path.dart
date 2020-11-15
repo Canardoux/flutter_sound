@@ -17,7 +17,7 @@
  */
 
 
-import 'package:flauto/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 
 import 'demo_common.dart';
 

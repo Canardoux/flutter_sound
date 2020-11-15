@@ -5,7 +5,7 @@
   "href": "flutter_sound/flutter_sound-library.html",
   "type": "library",
   "overriddenDepth": 0,
-  "packageName": "flauto"
+  "packageName": "flutter_sound"
  },
  {
   "name": "AnsiColor",
@@ -13,7 +13,7 @@
   "href": "flutter_sound/AnsiColor-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -25,7 +25,7 @@
   "href": "flutter_sound/AnsiColor/AnsiColor.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -37,7 +37,7 @@
   "href": "flutter_sound/AnsiColor/apply.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -49,7 +49,7 @@
   "href": "flutter_sound/AnsiColor/bgColor-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -61,7 +61,7 @@
   "href": "flutter_sound/AnsiColor/bgReset.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -73,7 +73,7 @@
   "href": "flutter_sound/AnsiColor/bgResetCode-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -85,7 +85,7 @@
   "href": "flutter_sound/AnsiColor/black-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -97,7 +97,7 @@
   "href": "flutter_sound/AnsiColor/blue-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -109,7 +109,7 @@
   "href": "flutter_sound/AnsiColor/code.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -121,7 +121,7 @@
   "href": "flutter_sound/AnsiColor/cyan-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -133,7 +133,7 @@
   "href": "flutter_sound/AnsiColor/esc-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -145,7 +145,7 @@
   "href": "flutter_sound/AnsiColor/fgColor-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -157,7 +157,7 @@
   "href": "flutter_sound/AnsiColor/fgReset.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -169,7 +169,7 @@
   "href": "flutter_sound/AnsiColor/fgResetCode-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -181,7 +181,7 @@
   "href": "flutter_sound/AnsiColor/green-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -193,7 +193,7 @@
   "href": "flutter_sound/AnsiColor/grey.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -205,7 +205,7 @@
   "href": "flutter_sound/AnsiColor/magenta-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -217,7 +217,7 @@
   "href": "flutter_sound/AnsiColor/none-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -229,7 +229,7 @@
   "href": "flutter_sound/AnsiColor/orange-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -241,7 +241,7 @@
   "href": "flutter_sound/AnsiColor/red-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -253,7 +253,7 @@
   "href": "flutter_sound/AnsiColor/reset.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -265,7 +265,7 @@
   "href": "flutter_sound/AnsiColor/resetCode-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -277,7 +277,7 @@
   "href": "flutter_sound/AnsiColor/white-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -289,7 +289,7 @@
   "href": "flutter_sound/AnsiColor/yellow-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "AnsiColor",
    "type": "class"
@@ -301,7 +301,7 @@
   "href": "flutter_sound/BLOCK_SIZE-constant.html",
   "type": "top-level constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -313,7 +313,7 @@
   "href": "flutter_sound/FlutterFFmpeg-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -325,7 +325,7 @@
   "href": "flutter_sound/FlutterFFmpeg/FlutterFFmpeg.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpeg",
    "type": "class"
@@ -337,7 +337,7 @@
   "href": "flutter_sound/FlutterFFmpeg/cancel.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpeg",
    "type": "class"
@@ -349,7 +349,7 @@
   "href": "flutter_sound/FlutterFFmpeg/execute.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpeg",
    "type": "class"
@@ -361,7 +361,7 @@
   "href": "flutter_sound/FlutterFFmpeg/executeWithArguments.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpeg",
    "type": "class"
@@ -373,7 +373,7 @@
   "href": "flutter_sound/FlutterFFmpeg/parseArguments.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpeg",
    "type": "class"
@@ -385,7 +385,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -397,7 +397,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/FlutterFFmpegConfig.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -409,7 +409,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/disableLogs.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -421,7 +421,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/disableRedirection.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -433,7 +433,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/disableStatistics.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -445,7 +445,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/enableLogCallback.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -457,7 +457,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/enableLogs.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -469,7 +469,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/enableRedirection.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -481,7 +481,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/enableStatistics.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -493,7 +493,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/enableStatisticsCallback.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -505,7 +505,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/getExternalLibraries.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -517,7 +517,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/getFFmpegVersion.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -529,7 +529,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/getLastCommandOutput.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -541,7 +541,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/getLastReceivedStatistics.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -553,7 +553,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/getLastReturnCode.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -565,7 +565,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/getLogLevel.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -577,7 +577,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/getPackageName.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -589,7 +589,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/getPlatform.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -601,7 +601,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/logCallback.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -613,7 +613,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/registerNewFFmpegPipe.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -625,7 +625,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/resetStatistics.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -637,7 +637,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/setFontDirectory.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -649,7 +649,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/setFontconfigConfigurationPath.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -661,7 +661,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/setLogLevel.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -673,7 +673,7 @@
   "href": "flutter_sound/FlutterFFmpegConfig/statisticsCallback.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFmpegConfig",
    "type": "class"
@@ -685,7 +685,7 @@
   "href": "flutter_sound/FlutterFFprobe-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -697,7 +697,7 @@
   "href": "flutter_sound/FlutterFFprobe/FlutterFFprobe.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFprobe",
    "type": "class"
@@ -709,7 +709,7 @@
   "href": "flutter_sound/FlutterFFprobe/execute.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFprobe",
    "type": "class"
@@ -721,7 +721,7 @@
   "href": "flutter_sound/FlutterFFprobe/executeWithArguments.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFprobe",
    "type": "class"
@@ -733,7 +733,7 @@
   "href": "flutter_sound/FlutterFFprobe/getMediaInformation.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterFFprobe",
    "type": "class"
@@ -745,7 +745,7 @@
   "href": "flutter_sound/FlutterSound-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -757,7 +757,7 @@
   "href": "flutter_sound/FlutterSound/FlutterSound.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSound",
    "type": "class"
@@ -769,7 +769,7 @@
   "href": "flutter_sound/FlutterSound/internalOpenSessionForRecording.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSound",
    "type": "class"
@@ -781,7 +781,7 @@
   "href": "flutter_sound/FlutterSound/releaseEverything.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSound",
    "type": "class"
@@ -793,7 +793,7 @@
   "href": "flutter_sound/FlutterSound/setAudioFocus.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSound",
    "type": "class"
@@ -805,7 +805,7 @@
   "href": "flutter_sound/FlutterSound/setIOSSessionParameters.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSound",
    "type": "class"
@@ -817,7 +817,7 @@
   "href": "flutter_sound/FlutterSound/thePlayer.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSound",
    "type": "class"
@@ -829,7 +829,7 @@
   "href": "flutter_sound/FlutterSoundHelper-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -841,7 +841,7 @@
   "href": "flutter_sound/FlutterSoundHelper/FFmpegGetMediaInformation.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundHelper",
    "type": "class"
@@ -853,7 +853,7 @@
   "href": "flutter_sound/FlutterSoundHelper/FlutterSoundHelper.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundHelper",
    "type": "class"
@@ -865,7 +865,7 @@
   "href": "flutter_sound/FlutterSoundHelper/convertFile.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundHelper",
    "type": "class"
@@ -877,7 +877,7 @@
   "href": "flutter_sound/FlutterSoundHelper/duration.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundHelper",
    "type": "class"
@@ -889,7 +889,7 @@
   "href": "flutter_sound/FlutterSoundHelper/executeFFmpegWithArguments.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundHelper",
    "type": "class"
@@ -901,7 +901,7 @@
   "href": "flutter_sound/FlutterSoundHelper/flutterFFmpeg.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundHelper",
    "type": "class"
@@ -913,7 +913,7 @@
   "href": "flutter_sound/FlutterSoundHelper/getLastFFmpegCommandOutput.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundHelper",
    "type": "class"
@@ -925,7 +925,7 @@
   "href": "flutter_sound/FlutterSoundHelper/getLastFFmpegReturnCode.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundHelper",
    "type": "class"
@@ -937,7 +937,7 @@
   "href": "flutter_sound/FlutterSoundHelper/isFFmpegAvailable.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundHelper",
    "type": "class"
@@ -949,7 +949,7 @@
   "href": "flutter_sound/FlutterSoundHelper/pcmToWave.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundHelper",
    "type": "class"
@@ -961,7 +961,7 @@
   "href": "flutter_sound/FlutterSoundHelper/pcmToWaveBuffer.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundHelper",
    "type": "class"
@@ -973,7 +973,7 @@
   "href": "flutter_sound/FlutterSoundHelper/waveToPCM.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundHelper",
    "type": "class"
@@ -985,7 +985,7 @@
   "href": "flutter_sound/FlutterSoundHelper/waveToPCMBuffer.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundHelper",
    "type": "class"
@@ -997,7 +997,7 @@
   "href": "flutter_sound/FlutterSoundPlayer-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -1009,7 +1009,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/FlutterSoundPlayer.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1020,8 +1020,8 @@
   "qualifiedName": "flutter_sound.FlutterSoundPlayer.audioPlayerFinished",
   "href": "flutter_sound/FlutterSoundPlayer/audioPlayerFinished.html",
   "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
+  "overriddenDepth": 1,
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1033,7 +1033,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/audioPlayerFinishedPlaying.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1045,7 +1045,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/closeAudioSession.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1057,7 +1057,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/dispositionStream.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1069,7 +1069,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/feed.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1081,7 +1081,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/feedFromStream.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1093,7 +1093,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/foodSink.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1105,7 +1105,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/foodStreamController.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1117,7 +1117,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/foodStreamSubscription.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1129,7 +1129,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/getPlayerState.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1141,7 +1141,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/getProgress.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1153,7 +1153,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/getResourcePath.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1165,7 +1165,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/isDecoderSupported.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1177,7 +1177,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/isInited.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1189,7 +1189,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/isOpen.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1201,7 +1201,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/isPaused.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1213,7 +1213,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/isPlaying.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1225,7 +1225,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/isStopped.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1236,8 +1236,8 @@
   "qualifiedName": "flutter_sound.FlutterSoundPlayer.needSomeFood",
   "href": "flutter_sound/FlutterSoundPlayer/needSomeFood.html",
   "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
+  "overriddenDepth": 1,
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1249,7 +1249,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/needSomeFoodCompleter.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1261,7 +1261,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/needToConvert.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1273,7 +1273,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/nowPlaying.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1285,7 +1285,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/onPaused.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1297,7 +1297,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/onProgress.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1309,7 +1309,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/onSkipBackward.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1321,7 +1321,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/onSkipForward.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1333,7 +1333,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/openAudioSession.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1344,8 +1344,8 @@
   "qualifiedName": "flutter_sound.FlutterSoundPlayer.openAudioSessionCompleted",
   "href": "flutter_sound/FlutterSoundPlayer/openAudioSessionCompleted.html",
   "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
+  "overriddenDepth": 1,
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1357,7 +1357,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/openAudioSessionCompleter.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1369,7 +1369,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/openAudioSessionWithUI.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1380,8 +1380,8 @@
   "qualifiedName": "flutter_sound.FlutterSoundPlayer.pause",
   "href": "flutter_sound/FlutterSoundPlayer/pause.html",
   "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
+  "overriddenDepth": 1,
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1393,7 +1393,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/pausePlayer.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1405,7 +1405,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/playerState.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1416,8 +1416,8 @@
   "qualifiedName": "flutter_sound.FlutterSoundPlayer.resume",
   "href": "flutter_sound/FlutterSoundPlayer/resume.html",
   "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
+  "overriddenDepth": 1,
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1429,7 +1429,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/resumePlayer.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1441,7 +1441,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/seekToPlayer.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1453,7 +1453,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/setAudioFocus.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1465,7 +1465,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/setPlayerCallback.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1477,7 +1477,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/setSubscriptionDuration.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1489,7 +1489,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/setUIProgressBar.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1501,7 +1501,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/setVolume.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1512,8 +1512,8 @@
   "qualifiedName": "flutter_sound.FlutterSoundPlayer.skipBackward",
   "href": "flutter_sound/FlutterSoundPlayer/skipBackward.html",
   "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
+  "overriddenDepth": 1,
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1524,8 +1524,8 @@
   "qualifiedName": "flutter_sound.FlutterSoundPlayer.skipForward",
   "href": "flutter_sound/FlutterSoundPlayer/skipForward.html",
   "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
+  "overriddenDepth": 1,
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1537,7 +1537,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/startPlayer.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1548,8 +1548,8 @@
   "qualifiedName": "flutter_sound.FlutterSoundPlayer.startPlayerCompleted",
   "href": "flutter_sound/FlutterSoundPlayer/startPlayerCompleted.html",
   "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
+  "overriddenDepth": 1,
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1561,7 +1561,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/startPlayerCompleter.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1573,7 +1573,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/startPlayerFromStream.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1585,7 +1585,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/startPlayerFromTrack.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1597,7 +1597,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/stop.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1609,7 +1609,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/stopPlayer.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1621,7 +1621,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/tabAndroidConvert-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1633,7 +1633,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/tabIosConvert-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1645,7 +1645,7 @@
   "href": "flutter_sound/FlutterSoundPlayer/tabWebConvert-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1656,8 +1656,8 @@
   "qualifiedName": "flutter_sound.FlutterSoundPlayer.updatePlaybackState",
   "href": "flutter_sound/FlutterSoundPlayer/updatePlaybackState.html",
   "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
+  "overriddenDepth": 1,
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1668,8 +1668,8 @@
   "qualifiedName": "flutter_sound.FlutterSoundPlayer.updateProgress",
   "href": "flutter_sound/FlutterSoundPlayer/updateProgress.html",
   "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
+  "overriddenDepth": 1,
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
    "type": "class"
@@ -1681,7 +1681,7 @@
   "href": "flutter_sound/FlutterSoundRecorder-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -1693,7 +1693,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/FlutterSoundRecorder.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1705,7 +1705,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/closeAudioSession.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1717,7 +1717,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/defaultRecorder.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1729,7 +1729,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/dispositionStream.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1741,7 +1741,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/isEncoderSupported.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1753,7 +1753,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/isOpen.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1765,7 +1765,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/isPaused.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1777,7 +1777,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/isRecording.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1789,7 +1789,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/isStopped.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1801,7 +1801,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/onProgress.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1813,7 +1813,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/openAudioSession.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1825,7 +1825,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/pauseRecorder.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1837,7 +1837,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/recorderState.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1848,8 +1848,8 @@
   "qualifiedName": "flutter_sound.FlutterSoundRecorder.recordingData",
   "href": "flutter_sound/FlutterSoundRecorder/recordingData.html",
   "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
+  "overriddenDepth": 1,
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1861,7 +1861,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/releaseRecorder.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1873,7 +1873,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/resumeRecorder.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1885,7 +1885,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/setAudioFocus.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1897,7 +1897,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/setSubscriptionDuration.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1909,7 +1909,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/startRecorder.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1921,7 +1921,7 @@
   "href": "flutter_sound/FlutterSoundRecorder/stopRecorder.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1932,8 +1932,8 @@
   "qualifiedName": "flutter_sound.FlutterSoundRecorder.updateRecorderProgress",
   "href": "flutter_sound/FlutterSoundRecorder/updateRecorderProgress.html",
   "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
+  "overriddenDepth": 1,
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
    "type": "class"
@@ -1945,7 +1945,7 @@
   "href": "flutter_sound/Food-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -1957,7 +1957,7 @@
   "href": "flutter_sound/Food/Food.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Food",
    "type": "class"
@@ -1969,7 +1969,7 @@
   "href": "flutter_sound/Food/exec.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Food",
    "type": "class"
@@ -1981,7 +1981,7 @@
   "href": "flutter_sound/FoodData-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -1993,7 +1993,7 @@
   "href": "flutter_sound/FoodData/FoodData.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FoodData",
    "type": "class"
@@ -2005,7 +2005,7 @@
   "href": "flutter_sound/FoodData/data.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FoodData",
    "type": "class"
@@ -2017,7 +2017,7 @@
   "href": "flutter_sound/FoodData/exec.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FoodData",
    "type": "class"
@@ -2029,7 +2029,7 @@
   "href": "flutter_sound/FoodEvent-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2041,7 +2041,7 @@
   "href": "flutter_sound/FoodEvent/FoodEvent.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FoodEvent",
    "type": "class"
@@ -2053,7 +2053,7 @@
   "href": "flutter_sound/FoodEvent/exec.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FoodEvent",
    "type": "class"
@@ -2065,7 +2065,7 @@
   "href": "flutter_sound/FoodEvent/on.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "FoodEvent",
    "type": "class"
@@ -2077,7 +2077,7 @@
   "href": "flutter_sound/Initialized-class.html",
   "type": "enum",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2089,7 +2089,7 @@
   "href": "flutter_sound/Initialized/toString.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Initialized",
    "type": "enum"
@@ -2101,7 +2101,7 @@
   "href": "flutter_sound/Log-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2113,7 +2113,7 @@
   "href": "flutter_sound/Log/autoInit.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Log",
    "type": "class"
@@ -2125,7 +2125,7 @@
   "href": "flutter_sound/Log/Log.color.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Log",
    "type": "class"
@@ -2137,7 +2137,7 @@
   "href": "flutter_sound/Log/color.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Log",
    "type": "class"
@@ -2149,7 +2149,7 @@
   "href": "flutter_sound/Log/Log.d.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Log",
    "type": "class"
@@ -2161,7 +2161,7 @@
   "href": "flutter_sound/Log/debug.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Log",
    "type": "class"
@@ -2173,7 +2173,7 @@
   "href": "flutter_sound/Log/Log.e.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Log",
    "type": "class"
@@ -2185,7 +2185,7 @@
   "href": "flutter_sound/Log/error.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Log",
    "type": "class"
@@ -2197,7 +2197,7 @@
   "href": "flutter_sound/Log/Log.i.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Log",
    "type": "class"
@@ -2209,7 +2209,7 @@
   "href": "flutter_sound/Log/info.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Log",
    "type": "class"
@@ -2221,7 +2221,7 @@
   "href": "flutter_sound/Log/init.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Log",
    "type": "class"
@@ -2233,7 +2233,7 @@
   "href": "flutter_sound/Log/loggingLevel.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Log",
    "type": "class"
@@ -2245,7 +2245,7 @@
   "href": "flutter_sound/Log/Log.w.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Log",
    "type": "class"
@@ -2257,7 +2257,7 @@
   "href": "flutter_sound/Log/warn.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Log",
    "type": "class"
@@ -2269,7 +2269,7 @@
   "href": "flutter_sound/LogLevel-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2281,7 +2281,7 @@
   "href": "flutter_sound/LogLevel/AV_LOG_DEBUG-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "LogLevel",
    "type": "class"
@@ -2293,7 +2293,7 @@
   "href": "flutter_sound/LogLevel/AV_LOG_ERROR-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "LogLevel",
    "type": "class"
@@ -2305,7 +2305,7 @@
   "href": "flutter_sound/LogLevel/AV_LOG_FATAL-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "LogLevel",
    "type": "class"
@@ -2317,7 +2317,7 @@
   "href": "flutter_sound/LogLevel/AV_LOG_INFO-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "LogLevel",
    "type": "class"
@@ -2329,7 +2329,7 @@
   "href": "flutter_sound/LogLevel/AV_LOG_PANIC-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "LogLevel",
    "type": "class"
@@ -2341,7 +2341,7 @@
   "href": "flutter_sound/LogLevel/AV_LOG_QUIET-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "LogLevel",
    "type": "class"
@@ -2353,7 +2353,7 @@
   "href": "flutter_sound/LogLevel/AV_LOG_STDERR-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "LogLevel",
    "type": "class"
@@ -2365,7 +2365,7 @@
   "href": "flutter_sound/LogLevel/AV_LOG_TRACE-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "LogLevel",
    "type": "class"
@@ -2377,7 +2377,7 @@
   "href": "flutter_sound/LogLevel/AV_LOG_VERBOSE-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "LogLevel",
    "type": "class"
@@ -2389,7 +2389,7 @@
   "href": "flutter_sound/LogLevel/AV_LOG_WARNING-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "LogLevel",
    "type": "class"
@@ -2401,7 +2401,7 @@
   "href": "flutter_sound/LogLevel/LogLevel.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "LogLevel",
    "type": "class"
@@ -2413,7 +2413,7 @@
   "href": "flutter_sound/LogLevel/levelToString.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "LogLevel",
    "type": "class"
@@ -2425,7 +2425,7 @@
   "href": "flutter_sound/MyLogPrinter-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2437,7 +2437,7 @@
   "href": "flutter_sound/MyLogPrinter/MyLogPrinter.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "MyLogPrinter",
    "type": "class"
@@ -2449,7 +2449,7 @@
   "href": "flutter_sound/MyLogPrinter/color.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "MyLogPrinter",
    "type": "class"
@@ -2461,7 +2461,7 @@
   "href": "flutter_sound/MyLogPrinter/colors.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "MyLogPrinter",
    "type": "class"
@@ -2473,7 +2473,7 @@
   "href": "flutter_sound/MyLogPrinter/currentWorkingDirectory.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "MyLogPrinter",
    "type": "class"
@@ -2485,7 +2485,7 @@
   "href": "flutter_sound/MyLogPrinter/log.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "MyLogPrinter",
    "type": "class"
@@ -2497,7 +2497,7 @@
   "href": "flutter_sound/OnDelete.html",
   "type": "typedef",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2509,7 +2509,7 @@
   "href": "flutter_sound/OnLoad.html",
   "type": "typedef",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2521,7 +2521,7 @@
   "href": "flutter_sound/OnPaused.html",
   "type": "typedef",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2533,7 +2533,7 @@
   "href": "flutter_sound/OnProgress.html",
   "type": "typedef",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2545,7 +2545,7 @@
   "href": "flutter_sound/OnStart.html",
   "type": "typedef",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2557,7 +2557,7 @@
   "href": "flutter_sound/OnStop.html",
   "type": "typedef",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2569,7 +2569,7 @@
   "href": "flutter_sound/PlaybackDisposition-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2581,7 +2581,7 @@
   "href": "flutter_sound/PlaybackDisposition/PlaybackDisposition.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "PlaybackDisposition",
    "type": "class"
@@ -2593,7 +2593,7 @@
   "href": "flutter_sound/PlaybackDisposition/duration.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "PlaybackDisposition",
    "type": "class"
@@ -2605,7 +2605,7 @@
   "href": "flutter_sound/PlaybackDisposition/position.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "PlaybackDisposition",
    "type": "class"
@@ -2617,7 +2617,7 @@
   "href": "flutter_sound/PlaybackDisposition/toString.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "PlaybackDisposition",
    "type": "class"
@@ -2629,7 +2629,7 @@
   "href": "flutter_sound/PlaybackDisposition/PlaybackDisposition.zero.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "PlaybackDisposition",
    "type": "class"
@@ -2641,7 +2641,7 @@
   "href": "flutter_sound/PlaybarSlider-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2653,7 +2653,7 @@
   "href": "flutter_sound/PlaybarSlider/PlaybarSlider.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "PlaybarSlider",
    "type": "class"
@@ -2665,7 +2665,7 @@
   "href": "flutter_sound/PlaybarSlider/createState.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "PlaybarSlider",
    "type": "class"
@@ -2677,7 +2677,7 @@
   "href": "flutter_sound/PlaybarSlider/stream.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "PlaybarSlider",
    "type": "class"
@@ -2689,7 +2689,7 @@
   "href": "flutter_sound/PlayerRunningException-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2701,7 +2701,7 @@
   "href": "flutter_sound/PlayerRunningException/PlayerRunningException.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "PlayerRunningException",
    "type": "class"
@@ -2713,7 +2713,7 @@
   "href": "flutter_sound/PlayerRunningException/message.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "PlayerRunningException",
    "type": "class"
@@ -2725,7 +2725,7 @@
   "href": "flutter_sound/PlayerState-class.html",
   "type": "enum",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2737,7 +2737,7 @@
   "href": "flutter_sound/PlayerState/toString.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "PlayerState",
    "type": "enum"
@@ -2749,7 +2749,7 @@
   "href": "flutter_sound/RecordedAudio-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2761,7 +2761,7 @@
   "href": "flutter_sound/RecordedAudio/duration.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "RecordedAudio",
    "type": "class"
@@ -2773,7 +2773,7 @@
   "href": "flutter_sound/RecordedAudio/RecordedAudio.toTrack.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "RecordedAudio",
    "type": "class"
@@ -2785,7 +2785,7 @@
   "href": "flutter_sound/RecordedAudio/track.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "RecordedAudio",
    "type": "class"
@@ -2797,7 +2797,7 @@
   "href": "flutter_sound/RecorderPlaybackController-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2809,7 +2809,7 @@
   "href": "flutter_sound/RecorderPlaybackController/RecorderPlaybackController.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "RecorderPlaybackController",
    "type": "class"
@@ -2821,7 +2821,7 @@
   "href": "flutter_sound/RecorderPlaybackController/of.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "RecorderPlaybackController",
    "type": "class"
@@ -2833,7 +2833,7 @@
   "href": "flutter_sound/RecorderPlaybackController/stop.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "RecorderPlaybackController",
    "type": "class"
@@ -2845,7 +2845,7 @@
   "href": "flutter_sound/RecorderPlaybackController/updateShouldNotify.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "RecorderPlaybackController",
    "type": "class"
@@ -2857,7 +2857,7 @@
   "href": "flutter_sound/RecordingDisposition-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2869,7 +2869,7 @@
   "href": "flutter_sound/RecordingDisposition/RecordingDisposition.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "RecordingDisposition",
    "type": "class"
@@ -2881,7 +2881,7 @@
   "href": "flutter_sound/RecordingDisposition/decibels.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "RecordingDisposition",
    "type": "class"
@@ -2893,7 +2893,7 @@
   "href": "flutter_sound/RecordingDisposition/duration.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "RecordingDisposition",
    "type": "class"
@@ -2905,7 +2905,7 @@
   "href": "flutter_sound/RecordingDisposition/toString.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "RecordingDisposition",
    "type": "class"
@@ -2917,7 +2917,7 @@
   "href": "flutter_sound/RecordingDisposition/RecordingDisposition.zero.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "RecordingDisposition",
    "type": "class"
@@ -2929,7 +2929,7 @@
   "href": "flutter_sound/RecordingPermissionException-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2941,7 +2941,7 @@
   "href": "flutter_sound/RecordingPermissionException/RecordingPermissionException.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "RecordingPermissionException",
    "type": "class"
@@ -2953,7 +2953,7 @@
   "href": "flutter_sound/RecordingPermissionException/message.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "RecordingPermissionException",
    "type": "class"
@@ -2965,7 +2965,7 @@
   "href": "flutter_sound/SoundPlayerUI-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -2977,7 +2977,7 @@
   "href": "flutter_sound/SoundPlayerUI/createState.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUI",
    "type": "class"
@@ -2989,7 +2989,7 @@
   "href": "flutter_sound/SoundPlayerUI/SoundPlayerUI.fromLoader.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUI",
    "type": "class"
@@ -3001,7 +3001,7 @@
   "href": "flutter_sound/SoundPlayerUI/SoundPlayerUI.fromTrack.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUI",
    "type": "class"
@@ -3013,7 +3013,7 @@
   "href": "flutter_sound/SoundPlayerUI/standardCodec-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUI",
    "type": "class"
@@ -3025,7 +3025,7 @@
   "href": "flutter_sound/SoundPlayerUI/zero-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUI",
    "type": "class"
@@ -3037,7 +3037,7 @@
   "href": "flutter_sound/SoundPlayerUIState-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3049,7 +3049,7 @@
   "href": "flutter_sound/SoundPlayerUIState/SoundPlayerUIState.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUIState",
    "type": "class"
@@ -3061,7 +3061,7 @@
   "href": "flutter_sound/SoundPlayerUIState/build.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUIState",
    "type": "class"
@@ -3073,7 +3073,7 @@
   "href": "flutter_sound/SoundPlayerUIState/canPlay.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUIState",
    "type": "class"
@@ -3085,7 +3085,7 @@
   "href": "flutter_sound/SoundPlayerUIState/connectRecorderStream.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUIState",
    "type": "class"
@@ -3097,7 +3097,7 @@
   "href": "flutter_sound/SoundPlayerUIState/dispose.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUIState",
    "type": "class"
@@ -3109,7 +3109,7 @@
   "href": "flutter_sound/SoundPlayerUIState/pause.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUIState",
    "type": "class"
@@ -3121,7 +3121,7 @@
   "href": "flutter_sound/SoundPlayerUIState/play.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUIState",
    "type": "class"
@@ -3133,7 +3133,7 @@
   "href": "flutter_sound/SoundPlayerUIState/playbackEnabled.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUIState",
    "type": "class"
@@ -3145,7 +3145,7 @@
   "href": "flutter_sound/SoundPlayerUIState/reassemble.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUIState",
    "type": "class"
@@ -3157,7 +3157,7 @@
   "href": "flutter_sound/SoundPlayerUIState/resume.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUIState",
    "type": "class"
@@ -3169,7 +3169,7 @@
   "href": "flutter_sound/SoundPlayerUIState/stop.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundPlayerUIState",
    "type": "class"
@@ -3181,7 +3181,7 @@
   "href": "flutter_sound/SoundRecorderUI-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3193,7 +3193,7 @@
   "href": "flutter_sound/SoundRecorderUI/SoundRecorderUI.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUI",
    "type": "class"
@@ -3205,7 +3205,7 @@
   "href": "flutter_sound/SoundRecorderUI/audio.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUI",
    "type": "class"
@@ -3217,7 +3217,7 @@
   "href": "flutter_sound/SoundRecorderUI/backgroundColor.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUI",
    "type": "class"
@@ -3229,7 +3229,7 @@
   "href": "flutter_sound/SoundRecorderUI/createState.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUI",
    "type": "class"
@@ -3241,7 +3241,7 @@
   "href": "flutter_sound/SoundRecorderUI/onDelete.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUI",
    "type": "class"
@@ -3253,7 +3253,7 @@
   "href": "flutter_sound/SoundRecorderUI/onPaused.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUI",
    "type": "class"
@@ -3265,7 +3265,7 @@
   "href": "flutter_sound/SoundRecorderUI/onStart.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUI",
    "type": "class"
@@ -3277,7 +3277,7 @@
   "href": "flutter_sound/SoundRecorderUI/onStopped.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUI",
    "type": "class"
@@ -3289,7 +3289,7 @@
   "href": "flutter_sound/SoundRecorderUI/pausedTitle.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUI",
    "type": "class"
@@ -3301,7 +3301,7 @@
   "href": "flutter_sound/SoundRecorderUI/recordingTitle.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUI",
    "type": "class"
@@ -3313,7 +3313,7 @@
   "href": "flutter_sound/SoundRecorderUI/requestPermissions.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUI",
    "type": "class"
@@ -3325,7 +3325,7 @@
   "href": "flutter_sound/SoundRecorderUI/showTrashCan.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUI",
    "type": "class"
@@ -3337,7 +3337,7 @@
   "href": "flutter_sound/SoundRecorderUI/stoppedTitle.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUI",
    "type": "class"
@@ -3349,7 +3349,7 @@
   "href": "flutter_sound/SoundRecorderUIState-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3361,7 +3361,7 @@
   "href": "flutter_sound/SoundRecorderUIState/SoundRecorderUIState.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUIState",
    "type": "class"
@@ -3373,7 +3373,7 @@
   "href": "flutter_sound/SoundRecorderUIState/backgroundColor.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUIState",
    "type": "class"
@@ -3385,7 +3385,7 @@
   "href": "flutter_sound/SoundRecorderUIState/build.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUIState",
    "type": "class"
@@ -3397,7 +3397,7 @@
   "href": "flutter_sound/SoundRecorderUIState/deactivate.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUIState",
    "type": "class"
@@ -3409,7 +3409,7 @@
   "href": "flutter_sound/SoundRecorderUIState/dispose.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUIState",
    "type": "class"
@@ -3421,7 +3421,7 @@
   "href": "flutter_sound/SoundRecorderUIState/dispositionStream.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUIState",
    "type": "class"
@@ -3433,7 +3433,7 @@
   "href": "flutter_sound/SoundRecorderUIState/initState.html",
   "type": "method",
   "overriddenDepth": 1,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUIState",
    "type": "class"
@@ -3445,7 +3445,7 @@
   "href": "flutter_sound/SoundRecorderUIState/pause.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUIState",
    "type": "class"
@@ -3457,7 +3457,7 @@
   "href": "flutter_sound/SoundRecorderUIState/resume.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUIState",
    "type": "class"
@@ -3469,7 +3469,7 @@
   "href": "flutter_sound/SoundRecorderUIState/stop.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "SoundRecorderUIState",
    "type": "class"
@@ -3481,7 +3481,7 @@
   "href": "flutter_sound/TWhenFinished.html",
   "type": "typedef",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3493,7 +3493,7 @@
   "href": "flutter_sound/TonPaused.html",
   "type": "typedef",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3505,7 +3505,7 @@
   "href": "flutter_sound/TonSkip.html",
   "type": "typedef",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3517,7 +3517,7 @@
   "href": "flutter_sound/Track-class.html",
   "type": "class",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3529,7 +3529,7 @@
   "href": "flutter_sound/Track/Track.html",
   "type": "constructor",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Track",
    "type": "class"
@@ -3541,7 +3541,7 @@
   "href": "flutter_sound/Track/albumArtAsset.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Track",
    "type": "class"
@@ -3553,7 +3553,7 @@
   "href": "flutter_sound/Track/albumArtFile.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Track",
    "type": "class"
@@ -3565,7 +3565,7 @@
   "href": "flutter_sound/Track/albumArtUrl.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Track",
    "type": "class"
@@ -3577,7 +3577,7 @@
   "href": "flutter_sound/Track/codec.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Track",
    "type": "class"
@@ -3589,7 +3589,7 @@
   "href": "flutter_sound/Track/dataBuffer.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Track",
    "type": "class"
@@ -3601,7 +3601,7 @@
   "href": "flutter_sound/Track/toMap.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Track",
    "type": "class"
@@ -3613,7 +3613,7 @@
   "href": "flutter_sound/Track/trackAuthor.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Track",
    "type": "class"
@@ -3625,7 +3625,7 @@
   "href": "flutter_sound/Track/trackPath.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Track",
    "type": "class"
@@ -3637,7 +3637,7 @@
   "href": "flutter_sound/Track/trackTitle.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "Track",
    "type": "class"
@@ -3649,7 +3649,7 @@
   "href": "flutter_sound/UIRequestPermission.html",
   "type": "typedef",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3661,7 +3661,7 @@
   "href": "flutter_sound/black.html",
   "type": "function",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3673,7 +3673,7 @@
   "href": "flutter_sound/blue.html",
   "type": "function",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3685,7 +3685,7 @@
   "href": "flutter_sound/connectPlayerToRecorderStream.html",
   "type": "function",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3697,7 +3697,7 @@
   "href": "flutter_sound/cyan.html",
   "type": "function",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3709,7 +3709,7 @@
   "href": "flutter_sound/ext-constant.html",
   "type": "top-level constant",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3721,7 +3721,7 @@
   "href": "flutter_sound/fileExtension.html",
   "type": "function",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3733,7 +3733,7 @@
   "href": "flutter_sound/flutterSoundHelper.html",
   "type": "top-level property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3745,7 +3745,7 @@
   "href": "flutter_sound/green.html",
   "type": "function",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3757,7 +3757,7 @@
   "href": "flutter_sound/grey.html",
   "type": "function",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3769,7 +3769,7 @@
   "href": "flutter_sound/magenta.html",
   "type": "function",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3781,7 +3781,7 @@
   "href": "flutter_sound/orange.html",
   "type": "function",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3793,7 +3793,7 @@
   "href": "flutter_sound/red.html",
   "type": "function",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3805,7 +3805,7 @@
   "href": "flutter_sound/registerPlayer.html",
   "type": "function",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3817,7 +3817,7 @@
   "href": "flutter_sound/white.html",
   "type": "function",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"
@@ -3829,7 +3829,7 @@
   "href": "flutter_sound/yellow.html",
   "type": "function",
   "overriddenDepth": 0,
-  "packageName": "flauto",
+  "packageName": "flutter_sound",
   "enclosedBy": {
    "name": "flutter_sound",
    "type": "library"

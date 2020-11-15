@@ -30,16 +30,16 @@ import 'dart:typed_data' show Uint8List;
 import 'package:synchronized/synchronized.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
-import 'package:flauto_platform_interface/flutter_sound_player_platform_interface.dart';
-//export 'package:flauto_platform_interface/flutter_sound_recorder_platform_interface.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
+//export 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-//import 'package:flauto/src/food.dart';
+//import 'package:flutter_sound/src/food.dart';
 
 
 import 'package:flutter/services.dart';
-import 'package:flauto/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 
 /// Sont dans un bateau
 

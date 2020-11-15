@@ -25,13 +25,13 @@ import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flauto/flutter_sound.dart';
-import 'package:flauto/src/flutter_sound_helper.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound/src/flutter_sound_helper.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
-import 'package:flauto_platform_interface/flutter_sound_recorder_platform_interface.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:synchronized/synchronized.dart';
 
 /// ----------------------------------------------------------------------------------------------------
