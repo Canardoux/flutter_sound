@@ -306,7 +306,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   /// as the audio is played.
   /// The duration may start out as zero until the
   /// media becomes available.
-  /// The [interval] dictates the minimum interval between events
+  /// The `interval` dictates the minimum interval between events
   /// being sent to the stream.
   ///
   /// The minimum interval supported is 100ms.
@@ -1129,7 +1129,7 @@ class Track {
   //final String albumArtImage;
 
   /// The codec of the audio file to play. If this parameter's value is null
-  /// it will be set to [t_CODEC.DEFAULT].
+  /// it will be set to `t_CODEC.DEFAULT`.
   Codec codec;
 
   Track({

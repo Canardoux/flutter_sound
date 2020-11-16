@@ -122,12 +122,12 @@ class SoundRecorderUI extends StatefulWidget
         /// This callback gives you the opportunity to display a suitable
         /// notice and then request permissions.
         ///
-        /// Return [true] to indicate that the user has given permission
+        /// Return `true` to indicate that the user has given permission
         /// to record and that you have made the necessary calls to
         /// grant those permissions.
         ///
-        /// If [true] is returned the recording will proceed.
-        /// If [false] is returned then recording will not start.
+        /// If `true` is returned the recording will proceed.
+        /// If `false` is returned then recording will not start.
         ///
         /// This method will be called even if we have the necessary permissions
         /// as we make no checks.
@@ -142,15 +142,15 @@ class SoundRecorderUI extends StatefulWidget
         ///  progresses.
         ///
         /// The [track] specifies the file we are recording to.
-        /// At the moment the [track] must be constructued using [Track.fromFile] as
+        /// At the moment the [track] must be constructued using `Track.fromFile` as
         /// recording to a databuffer is not currently supported.
         ///
         /// The [onStart] callback is called user starts recording. This method will
         /// be called each time the user clicks the 'record' button.
         ///
-        /// The [onStopped] callback is called when the user stops recording. This
+        /// The `onStopped` callback is called when the user stops recording. This
         /// method will be each time the user clicks the 'stop' button. It can
-        /// also be called if the [stop] method is called.
+        /// also be called if the `stop` method is called.
         ///
         /// The [requestPermissions] callback allows you to request
         /// permissions just before they are required and if desired
@@ -432,8 +432,8 @@ class SoundRecorderUIState extends State<SoundRecorderUI>
                 super.dispose();
         }
 
-        /// The [stop] methods stops the recording and calls
-        /// the [onStopped] callback.
+        /// The `stop` methods stops the recording and calls
+        /// the `onStopped` callback.
         ///
         void stop()
         {

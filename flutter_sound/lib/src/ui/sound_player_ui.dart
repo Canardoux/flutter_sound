@@ -115,18 +115,18 @@ class SoundPlayerUI extends StatefulWidget
 
         ///
         /// [SoundPlayerUI.fromTrack] Constructs a Playbar with a Track.
-        /// [track] is the Track that contains the audio to play.
+        /// `track` is the Track that contains the audio to play.
         ///
         /// When the user clicks the play the audio held by the Track will
         /// be played.
-        /// If [showTitle] is true (default is false) then the play bar will also
+        /// If `showTitle` is true (default is false) then the play bar will also
         /// display the track name and album (if set).
-        /// If [enabled] is true (the default) then the Player will be enabled.
-        /// If [enabled] is false then the player will be disabled and the user
+        /// If `enabled` is true (the default) then the Player will be enabled.
+        /// If `enabled` is false then the player will be disabled and the user
         /// will not be able to click the play button.
-        /// The [audioFocus] allows you to control what happens to other
+        /// The `audioFocus` allows you to control what happens to other
         /// media that is playing when our player starts.
-        /// By default we use [AudioFocus.focusAndHushOthers] which will
+        /// By default we use 'AudioFocus.focusAndHushOthers` which will
         /// reduce the volume of any other players.
         SoundPlayerUI.fromTrack(Track track,
         {
@@ -369,7 +369,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
 
 
         /// This method is used by the RecorderPlaybackController to attached
-        /// the [_localController] to the [SoundRecordUI]'s stream.
+        /// the [_localController] to the `SoundRecordUI`'s stream.
         /// This is only done when this player is attached to a
         /// RecorderPlaybackController.
         ///

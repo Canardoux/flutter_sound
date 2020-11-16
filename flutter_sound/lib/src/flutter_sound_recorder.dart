@@ -43,18 +43,18 @@ import 'package:synchronized/synchronized.dart';
 /// This is optional, and most of the time, APP will use the pre-built [defaultRecorder]
 /// instead of creating a new object
 ///
-/// 2. Start your record with [startRecording()].
-/// [startRecording()] returns a future, but you do not need
+/// 2. Start your record with `startRecording()`.
+/// `startRecording()` returns a future, but you do not need
 /// to wait for this future completed before working with your record.
 ///
 /// 3. Use the various verbs (optional):
-///    - [pauseRecorder()]
-///    - [resumeRecorder()]
+///    - `pauseRecorder()`
+///    - `resumeRecorder()`
 ///
-/// 5. Stop your recorder : [stopRecorder]
+/// 5. Stop your recorder : `stopRecorder`
 ///
-/// 6. Release your recorder when you have finished with it : [releaseRecorder()].
-/// This verb will call to [stopRecorder()] will be done if necessary.
+/// 6. Release your recorder when you have finished with it : `releaseRecorder()`.
+/// This verb will call to `stopRecorder()` will be done if necessary.
 ///
 /// ----------------------------------------------------------------------------------------------------
 class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
