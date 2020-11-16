@@ -27,7 +27,7 @@
 /// Flutter Sound is composed with four main modules/classes
 
 /// ------------------------------------------------------------------
-library flutter_sound;
+//***library flutter_sound;
 
 // The interfaces to the platforms specific implementations
 // --------------------------------------------------------
