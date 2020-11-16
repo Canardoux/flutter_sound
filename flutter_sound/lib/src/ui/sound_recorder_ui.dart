@@ -19,11 +19,11 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-//import '../../flutter_sound.dart';
-//import '../flutter_sound_recorder.dart';
-//import '../flutter_sound_player.dart';
-//import '../util/log.dart';
-//import 'sound_player_ui.dart';
+import '../../flutter_sound.dart';
+import '../flutter_sound_recorder.dart';
+import '../flutter_sound_player.dart';
+import '../util/log.dart';
+import 'sound_player_ui.dart';
 
 /// Callback fn type
 typedef OnStart = void Function();
@@ -620,9 +620,10 @@ void connectPlayerToRecorderStream(SoundPlayerUIState playerState, Stream<Playba
 
 
 
+/*
 
-
-class RecorderPlaybackController extends InheritedWidget {
+class RecorderPlaybackController extends InheritedWidget
+{
         final _RecordPlaybackControllerState _state;
 
         ///
@@ -643,6 +644,8 @@ class RecorderPlaybackController extends InheritedWidget {
         static RecorderPlaybackController of(BuildContext context) =>
             context.dependOnInheritedWidgetOfExactType<RecorderPlaybackController>();
 }
+
+ */
 
 class _RecordPlaybackControllerState {
         SoundRecorderUIState _recorderState;
