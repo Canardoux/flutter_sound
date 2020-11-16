@@ -622,6 +622,28 @@ void connectPlayerToRecorderStream(SoundPlayerUIState playerState, Stream<Playba
 
 
 
+class RecorderPlaybackController extends InheritedWidget {
+        final _RecordPlaybackControllerState _state;
+
+        ///
+        RecorderPlaybackController({@required Widget child, Key key})
+            : _state = _RecordPlaybackControllerState(),
+                    super(child: child);
+
+        @override
+        bool updateShouldNotify(InheritedWidget oldWidget) {
+                return true;
+        }
+
+        /// stops both the player and the recorder.
+        void stop() => _state.stop();
+
+        /// of - find the nearest RecorderPlaybackController in the parent widget
+        /// tree.
+        static RecorderPlaybackController of(BuildContext context) =>
+            context.dependOnInheritedWidgetOfExactType<RecorderPlaybackController>();
+}
+
 class _RecordPlaybackControllerState {
         SoundRecorderUIState _recorderState;
         SoundPlayerUIState _playerState;

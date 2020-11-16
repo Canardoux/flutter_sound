@@ -2792,6 +2792,66 @@
   }
  },
  {
+  "name": "RecorderPlaybackController",
+  "qualifiedName": "flutter_sound.RecorderPlaybackController",
+  "href": "flutter_sound/RecorderPlaybackController-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "flutter_sound",
+   "type": "library"
+  }
+ },
+ {
+  "name": "RecorderPlaybackController",
+  "qualifiedName": "flutter_sound.RecorderPlaybackController.RecorderPlaybackController",
+  "href": "flutter_sound/RecorderPlaybackController/RecorderPlaybackController.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecorderPlaybackController",
+   "type": "class"
+  }
+ },
+ {
+  "name": "of",
+  "qualifiedName": "flutter_sound.RecorderPlaybackController.of",
+  "href": "flutter_sound/RecorderPlaybackController/of.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecorderPlaybackController",
+   "type": "class"
+  }
+ },
+ {
+  "name": "stop",
+  "qualifiedName": "flutter_sound.RecorderPlaybackController.stop",
+  "href": "flutter_sound/RecorderPlaybackController/stop.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecorderPlaybackController",
+   "type": "class"
+  }
+ },
+ {
+  "name": "updateShouldNotify",
+  "qualifiedName": "flutter_sound.RecorderPlaybackController.updateShouldNotify",
+  "href": "flutter_sound/RecorderPlaybackController/updateShouldNotify.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecorderPlaybackController",
+   "type": "class"
+  }
+ },
+ {
   "name": "RecordingDisposition",
   "qualifiedName": "flutter_sound.RecordingDisposition",
   "href": "flutter_sound/RecordingDisposition-class.html",
