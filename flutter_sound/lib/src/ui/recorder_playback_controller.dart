@@ -47,6 +47,7 @@ import 'sound_recorder_ui.dart';
 /// updates to the Player so that it can show the duration of the recording
 /// as it grows.
 ///
+/*
 class RecorderPlaybackController extends InheritedWidget
 {
         final _RecordPlaybackControllerState _state;
@@ -71,6 +72,8 @@ class RecorderPlaybackController extends InheritedWidget
             context.dependOnInheritedWidgetOfExactType<RecorderPlaybackController>();
 }
 
+
+ */
 class _RecordPlaybackControllerState
 {
         SoundRecorderUIState _recorderState;
