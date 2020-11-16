@@ -19,7 +19,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flauto/flutter_sound.dart';
+import '../../flutter_sound.dart';
 import '../flutter_sound_recorder.dart';
 import '../flutter_sound_player.dart';
 import '../util/log.dart';
