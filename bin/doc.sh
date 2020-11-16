@@ -16,7 +16,7 @@ cd ..
 
 git add .
 git commit -m "TAU : documentation Version $VERSION"
-#git push
+git push
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push --tag -f
