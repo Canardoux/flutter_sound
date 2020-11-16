@@ -15,6 +15,7 @@
 - [React Native](react_native/README.md)
 - [Cordova](cordova/README.md)
 - [Solar2D](solar2D/README.md)
-- [CHANGELOG](CHANGELOG.md)
+- [Changelog](CHANGELOG.md)
+- [Problem Report](https://github.com/Canardoux/tau/issues)
 - [Sources](https://github.com/Canardoux/tau)
 - [License](LICENSE.md)
