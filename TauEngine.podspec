@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TauEngine'
-  s.version          = '0.0.1+14'
+  s.version          = '0.0.1+15'
   s.summary          = 'Provides simple recorder and player functionalities for both Android and iOS platforms.'
 
 # This description is used to generate tags and improve search results.
