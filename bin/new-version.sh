@@ -71,10 +71,7 @@ cd ../../..
 
 cd TauEngine/web
 npm publish .
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
+
 cd ../..
 
 
@@ -108,6 +105,7 @@ flutter clean
 cd ios
 pod cache clean --all
 rm Podfile.lock
+rm -rf .symlinks/
 pod repo update
 pod install
 cd ../../..
