@@ -107,8 +107,9 @@ pod cache clean --all
 rm Podfile.lock
 rm -rf .symlinks/
 pod repo update
-pod install
-cd ../../..
+cd ..
+flutter build ios
+cd ../..
 
 
 

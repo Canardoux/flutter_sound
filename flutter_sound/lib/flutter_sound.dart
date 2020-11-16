@@ -66,6 +66,7 @@ import 'dart:typed_data' show Uint8List;
 import 'src/flutter_sound_player.dart';
 import 'src/flutter_sound_recorder.dart';
 import 'src/util/log.dart';
+import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 
 
 
