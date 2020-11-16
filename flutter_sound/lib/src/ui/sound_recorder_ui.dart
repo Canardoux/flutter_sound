@@ -74,7 +74,7 @@ class RecordedAudio
 
 
 
-/// The [requestPermissions] callback allows you to provide an
+/// The `requestPermissions` callback allows you to provide an
 /// UI informing the user that we are about to ask for a permission.
 ///
 typedef UIRequestPermission = Future<bool> Function(BuildContext context, Track track);
@@ -111,10 +111,10 @@ class SoundRecorderUI extends StatefulWidget
 
         final bool showTrashCan;
 
-        /// The [requestPermissions] callback allows you to request
+        /// The `requestPermissions` callback allows you to request
         /// the necessary permissions to record a track.
         ///
-        /// If [requestPermissions] is null then no permission checks
+        /// If `requestPermissions` is null then no permission checks
         /// will be performed.
         ///
         /// It is sometimes useful to explain to the user why we are asking
