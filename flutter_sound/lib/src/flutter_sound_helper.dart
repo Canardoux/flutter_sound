@@ -80,7 +80,7 @@ class FlutterSoundHelper
         /// so that the developers not interested by ffmpeg can use Flutter Sound without the flutter_ffmpeg plugin
         /// and without any complain from the link-editor.
         ///
-        /// Executes FFmpeg with [commandArguments] provided.
+        /// Executes FFmpeg with `commandArguments` provided.
         Future<int> executeFFmpegWithArguments(List<String> arguments)
         {
                 if (flutterFFmpeg == null) flutterFFmpeg = FlutterFFmpeg();
