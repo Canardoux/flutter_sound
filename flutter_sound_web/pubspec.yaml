@@ -1,5 +1,5 @@
 name: flauto_web
-version: 0.0.1+17
+version: 0.0.1+18
 description: Flutter plugin that relates to sound like audio and recorder.
 #author: dooboolab<dooboolab@gmail.com>
 homepage: https://github.com/dooboolab/flutter_sound
@@ -8,11 +8,11 @@ homepage: https://github.com/dooboolab/flutter_sound
 # See more details: https://github.com/flutter/flutter/wiki/Package-migration-to-1.0.0
 
 flutter:
-  plugin:
-    platforms:
-      web:
-        pluginClass: FlutterSoundPlugin
-        fileName: flutter_sound_web.dart
+  #!!!!!!!plugin:
+    #!!!!!!!platforms:
+      #!!!!!!!web:
+        #!!!!!!!pluginClass: FlutterSoundPlugin
+        #!!!!!!!fileName: flutter_sound_web.dart
   assets:
   - js/
   - js/howler/
@@ -24,7 +24,7 @@ flutter:
 
 
 dependencies:
-  flauto_platform_interface: 0.0.1+17
+  flauto_platform_interface: 0.0.1+18
 #    path: ../flutter_sound_platform_interface # Flutter Sound Dir
   flutter:
     sdk: flutter
