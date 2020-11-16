@@ -87,7 +87,7 @@ rm -rf .symlinks/
 pod repo update
 cd ..
 flutter build ios
-flutter build android
+flutter build apk
 flutter build web
 cd ../..
 rm -r doc/flutter_sound/web_example
