@@ -152,11 +152,11 @@ class SoundRecorderUI extends StatefulWidget
         /// method will be each time the user clicks the 'stop' button. It can
         /// also be called if the `stop` method is called.
         ///
-        /// The [requestPermissions] callback allows you to request
+        /// The `requestPermissions` callback allows you to request
         /// permissions just before they are required and if desired
         /// display your own dialog explaining why the permissions are required.
         ///
-        /// If you do not provide [requestPermissions] then you must ensure
+        /// If you do not provide `requestPermissions` then you must ensure
         /// that all required permissions are granted before the
         /// [SoundRecorderUI] widgets starts recording.
         ///

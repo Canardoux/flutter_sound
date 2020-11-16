@@ -353,7 +353,7 @@ class FlutterFFmpeg {
   static const MethodChannel _methodChannel =
       const MethodChannel('flutter_ffmpeg');
 
-  /// Executes FFmpeg with [commandArguments] provided.
+  /// Executes FFmpeg with `commandArguments` provided.
   Future<int> executeWithArguments(List<String> arguments) async {
     try {
       final Map<dynamic, dynamic> result = await _methodChannel
@@ -446,7 +446,7 @@ class FlutterFFprobe {
   static const MethodChannel _methodChannel =
       const MethodChannel('flutter_ffmpeg');
 
-  /// Executes FFprobe with [commandArguments] provided.
+  /// Executes FFprobe with `commandArguments` provided.
   Future<int> executeWithArguments(List<String> arguments) async {
     try {
       final Map<dynamic, dynamic> result = await _methodChannel.invokeMethod(

@@ -111,7 +111,7 @@ class FlutterSoundHelper
         ///
         /// Returns log output of last executed command. Please note that disabling redirection using
         /// This method does not support executing multiple concurrent commands. If you execute multiple commands at the same time, this method will return output from all executions.
-        /// [disableRedirection()] method also disables this functionality.
+        /// `disableRedirection()` method also disables this functionality.
         Future<String> getLastFFmpegCommandOutput() async
         {
                 await isFFmpegAvailable();

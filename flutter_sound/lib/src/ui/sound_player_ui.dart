@@ -79,7 +79,7 @@ class SoundPlayerUI extends StatefulWidget
         /// will not be able to click the play button.
         /// The [audioFocus] allows you to control what happens to other
         /// media that is playing when our player starts.
-        /// By default we use [AudioFocus.requestFocusAndDuckOthers] which will
+        /// By default we use `AudioFocus.requestFocusAndDuckOthers` which will
         /// reduce the volume of any other players.
         SoundPlayerUI.fromLoader(OnLoad onLoad,
         {

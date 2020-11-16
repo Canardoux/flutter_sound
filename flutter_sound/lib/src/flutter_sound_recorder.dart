@@ -154,7 +154,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
       
 
 
-        /// Obsolete. Please use [openRecorder()] instead
+        /// Obsolete. Please use `openRecorder()` instead
         @deprecated     
         Future<FlutterSoundRecorder> openAudioSession( {
                                                          AudioFocus focus = AudioFocus.requestFocusTransient,
@@ -515,8 +515,8 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
 
 /// Holds point in time details of the recording disposition
 /// including the current duration and decibels.
-/// Use the [dispositionStream] method to subscribe to a stream
-/// of [RecordingDisposition] will be emmmited while recording.
+/// Use the `dispositionStream` method to subscribe to a stream
+/// of `RecordingDisposition` will be emmmited while recording.
 class RecordingDisposition 
 {
         /// The total duration of the recording at this point in time.
@@ -531,7 +531,7 @@ class RecordingDisposition
         RecordingDisposition(this.duration, this.decibels);
       
         /// use this ctor to as the initial value when building
-        /// a [StreamBuilder]
+        /// a `StreamBuilder`
         RecordingDisposition.zero()
                     : duration = Duration(seconds: 0),
                       decibels = 0;
