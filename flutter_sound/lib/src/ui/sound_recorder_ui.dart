@@ -19,11 +19,11 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../flutter_sound.dart';
-import '../flutter_sound_recorder.dart';
-import '../flutter_sound_player.dart';
-import '../util/log.dart';
-import 'sound_player_ui.dart';
+//import '../../flutter_sound.dart';
+//import '../flutter_sound_recorder.dart';
+//import '../flutter_sound_player.dart';
+//import '../util/log.dart';
+//import 'sound_player_ui.dart';
 
 /// Callback fn type
 typedef OnStart = void Function();
