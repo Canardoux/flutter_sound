@@ -12,13 +12,13 @@ VERSION_CODE=${VERSION_CODE//+/}
 
 
 gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/"                                     TauEngine.podspec
-gsed -i  "s/^\( *s.dependency *'TauEngine', *\).*$/\1'$VERSION'/"                       flutter_sound/ios/flutter_sound.podspec
-gsed -i  "s/^\( *s.dependency *'TauEngine', *\).*$/\1'$VERSION'/"                       flutter_sound/ios/flauto.podspec
+gsed -i  "s/^\( *s.dependency *'TauEngine', *\).*$/\1'$VERSION'/"                       flutter_sound/ios/flutter_sound.podspec 2>/dev/null
+gsed -i  "s/^\( *s.dependency *'TauEngine', *\).*$/\1'$VERSION'/"                       flutter_sound/ios/flauto.podspec 2>/dev/null
 gsed -i  "s/^\( *versionName *\).*$/\1'$VERSION'/"                                      TauEngine/android/TauEngine/build.gradle
 gsed -i  "s/^\( *versionCode *\).*$/\11$VERSION_CODE/"                                  TauEngine/android/TauEngine/build.gradle
 gsed -i  "s/^\( *implementation 'xyz.canardoux:TauEngine:\).*$/\1$VERSION'/"            flutter_sound/android/build.gradle
-gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/"                                     flutter_sound/ios/flutter_sound.podspec
-gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/"                                     flutter_sound/ios/flauto.podspec
+gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/"                                     flutter_sound/ios/flutter_sound.podspec 2>/dev/null
+gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/"                                     flutter_sound/ios/flauto.podspec 2>/dev/null
 gsed -i  "s/^\( *version *\).*$/\1'$VERSION'/"                                          flutter_sound/android/build.gradle
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/"                                           flutter_sound/pubspec.yaml
 gsed -i  "s/^\( *flutter_sound_platform_interface: *#* *\).*$/\1$VERSION/"              flutter_sound/pubspec.yaml
