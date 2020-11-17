@@ -144,11 +144,11 @@ elif [ "_$1" = "_DEV" ]; then
 
 # ---
 
-        gsed -i  "s/^ *flauto: *#* *\(.*\)$/  fflauto: # \1/"                                                                                              flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^ *flauto: *#* *\(.*\)$/  flauto: # \1/"                                                                                              flutter_sound/example/pubspec.yaml
         gsed -i  "s/^ *flauto_lite: *#* *\(.*\)$/  flauto_lite: # \1/"                                                                                    flutter_sound/example/pubspec.yaml
 
         gsed -i  "s/^ *#* *flauto_platform_interface: *#* *\(.*\)$/  flauto_platform_interface: # \1/"                                                    flutter_sound/example/pubspec.yaml
-        gsed -i  "s/^# *path: \.\.\/\.\.\/flauto_platform_interface # flauto_platform_interface Dir$/    path: \.\.\/\.\.\/fflauto_platform_interface # fflauto_platform_interface Dir/" flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^# *path: \.\.\/\.\.\/flauto_platform_interface # flauto_platform_interface Dir$/    path: \.\.\/\.\.\/flauto_platform_interface # flauto_platform_interface Dir/" flutter_sound/example/pubspec.yaml
 
         gsed -i  "s/^ *#* *flauto_web: *#* *\(.*\)$/  flauto_web: # \1/"                                                                                  flutter_sound/example/pubspec.yaml
         gsed -i  "s/^# *path: \.\.\/\.\.\/flauto_web # flutter_sound_web Dir$/    path: \.\.\/\.\.\/flauto_web # flutter_sound_web Dir/"                  flutter_sound/example/pubspec.yaml

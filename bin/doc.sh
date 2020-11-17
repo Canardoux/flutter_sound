@@ -11,7 +11,7 @@ dartdoc --pretty-index-json --input flutter_sound --output doc/flutter_sound/api
 cd  doc
 rm -r _book book 2>/dev/null
 gitbook build
-mv _book book
+mv _book ../book
 cd ..
 
 git add .

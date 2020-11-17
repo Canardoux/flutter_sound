@@ -151,7 +151,7 @@ Pull Requests are welcome and will be considered very carefully.
 
 ## Bugs, Features Requests, documentation inaccurate, help needed, ...
 
-We use [Github](https://github.com/dooboolab/flutter_sound/issues) actively.
+We use [Github](https://github.com/canardoux/tau/issues) actively.
 
 When you fill an issue, we try to answer something in less than 48h. Of course, this will not mean that your issue will be fixed in 48h. But you will know that we confirm (or not) your issue and what answer you can expect. Maintenance is our priority. We try to make it perfect.
 
