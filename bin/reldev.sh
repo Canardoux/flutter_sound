@@ -35,17 +35,31 @@ if [ "_$1" = "_REL" ] ; then
 # flutter_sound_web/pubspec.yaml
 #-------------------------------
         gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: \1/"                                                          flutter_sound_web/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir$/#    path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir/"            flutter_sound_web/pubspec.yaml
+
+# ---
+
         gsed -i  "s/^ *flauto_platform_interface: *#* *\(.*\)$/  flauto_platform_interface: \1/"                                                                        flutter_sound_web/pubspec.yaml
-    gsed -i  "s/^ *path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir$/#    path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir/"            flutter_sound_web/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/flauto_platform_interface # Flutter Sound Dir$/#    path: \.\.\/flauto_platform_interface # Flutter Sound Dir/"            flutter_sound_web/pubspec.yaml
+
+
 
 # flutter_sound/pubspec.yaml
 #---------------------------
         gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: \1/"                                                          flutter_sound/pubspec.yaml
-        gsed -i  "s/^ *flauto_platform_interface: *#* *\(.*\)$/  flauto_platform_interface: \1/"                                                                        flutter_sound/pubspec.yaml
         gsed -i  "s/^ *path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir$/#    path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir/"        flutter_sound/pubspec.yaml
         gsed -i  "s/^ *flutter_sound_web: *#* *\(.*\)$/  flutter_sound_web: \1/"                                                                                        flutter_sound/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/flutter_sound_web # Flutter Sound Dir$/#    path: \.\.\/flutter_sound_web # Flutter Sound Dir/"                                       flutter_sound/pubspec.yaml
+
+
+# ---
+        gsed -i  "s/^ *flauto_platform_interface: *#* *\(.*\)$/  flauto_platform_interface: \1/"                                                                        flutter_sound/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/flauto_platform_interface # Flutter Sound Dir$/#    path: \.\.\/flauto_platform_interface # Flutter Sound Dir/"                      flutter_sound/pubspec.yaml
         gsed -i  "s/^ *flauto_web: *#* *\(.*\)$/  flauto_web: \1/"                                                                                                      flutter_sound/pubspec.yaml
-        gsed -i  "s/^ *path: \.\.\/flutter_sound_web # Flutter Sound Dir$/#    path: \.\.\/flutter_sound_web # Flutter Sound Dir/"                                      flutter_sound/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/flauto_web # Flutter Sound Dir$/#    path: \.\.\/flauto_web # Flutter Sound Dir/"                                                    flutter_sound/pubspec.yaml
+
+
+
 
 # flutter_sound/example/pubspec.yaml
 #-----------------------------------
@@ -59,6 +73,18 @@ if [ "_$1" = "_REL" ] ; then
 
         gsed -i  "s/^ *#* *flutter_sound_web: *#* *\(.*\)$/#  flutter_sound_web: \1/"                                                                                   flutter_sound/example/pubspec.yaml
         gsed -i  "s/^ *path: \.\.\/\.\.\/flutter_sound_web # flutter_sound_web Dir$/#    path: \.\.\/\.\.\/flutter_sound_web # flutter_sound_web Dir/"                  flutter_sound/example/pubspec.yaml
+
+# ---
+
+        gsed -i  "s/^ *flauto: *#* *\(.*\)$/  flauto: \1/"                                                                                                flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^ *flauto_lite: *#* *\(.*\)$/  flauto_lite: \1/"                                                                                      flutter_sound/example/pubspec.yaml
+
+        gsed -i  "s/^ *#* *flauto_platform_interface: *#* *\(.*\)$/#  flauto_platform_interface: \1/"                                                     flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/\.\.\/flauto_platform_interface # flauto_platform_interface Dir$/#    path: \.\.\/\.\.\/flauto_platform_interface # flauto_platform_interface Dir/" flutter_sound/example/pubspec.yaml
+
+        gsed -i  "s/^ *#* *flauto_web: *#* *\(.*\)$/#  flauto_web: \1/"                                                                                   flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/\.\.\/flauto_web # flutter_sound_web Dir$/#    path: \.\.\/\.\.\/flauto_web # flutter_sound_web Dir/"                  flutter_sound/example/pubspec.yaml
+
 
         exit 0
 
@@ -80,16 +106,28 @@ elif [ "_$1" = "_DEV" ]; then
 
 # flutter_sound_web/pubspec.yaml
 #-------------------------------
-       gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: # \1/"                                                         flutter_sound_web/pubspec.yaml
+        gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: # \1/"                                                         flutter_sound_web/pubspec.yaml
         gsed -i  "s/^# *path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir$/    path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir/"            flutter_sound_web/pubspec.yaml
+
+# ---
+
+        gsed -i  "s/^ *flauto_platform_interface: *#* *\(.*\)$/  flauto_platform_interface: # \1/"                                                         flutter_sound_web/pubspec.yaml
+        gsed -i  "s/^# *path: \.\.\/flauto_platform_interface # Flutter Sound Dir$/    path: \.\.\/flauto_platform_interface # Flutter Sound Dir/"            flutter_sound_web/pubspec.yaml
+
 
 # flutter_sound/pubspec.yaml
 #---------------------------
         gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: # \1/"                                                        flutter_sound/pubspec.yaml
         gsed -i  "s/^# *path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir$/    path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir/"        flutter_sound/pubspec.yaml
-        gsed -i  "s/^ *flutter_sound_web: *#* *\(.*\)$/  flutter_sound_web: # \1/" flutter_sound/pubspec.yaml
+        gsed -i  "s/^ *flutter_sound_web: *#* *\(.*\)$/  flutter_sound_web: # \1/"                                                                                      flutter_sound/pubspec.yaml
         gsed -i  "s/^# *path: \.\.\/flutter_sound_web # Flutter Sound Dir$/    path: \.\.\/flutter_sound_web # Flutter Sound Dir/"                                      flutter_sound/pubspec.yaml
 
+# ---
+
+        gsed -i  "s/^ *fflauto_platform_interface: *#* *\(.*\)$/  flauto_platform_interface: # \1/"                                                        flutter_sound/pubspec.yaml
+        gsed -i  "s/^# *path: \.\.\/flauto_platform_interface # Flutter Sound Dir$/    path: \.\.\/flauto_platform_interface # Flutter Sound Dir/"        flutter_sound/pubspec.yaml
+        gsed -i  "s/^ *flauto_web: *#* *\(.*\)$/  flauto_web: # \1/" flutter_sound/pubspec.yaml
+        gsed -i  "s/^# *path: \.\.\/flauto_web # Flutter Sound Dir$/    path: \.\.\/flauto_web # Flutter Sound Dir/"                                      flutter_sound/pubspec.yaml
 
 # flutter_sound/example/pubspec.yaml
 #-----------------------------------
@@ -103,6 +141,18 @@ elif [ "_$1" = "_DEV" ]; then
 
         gsed -i  "s/^ *#* *flutter_sound_web: *#* *\(.*\)$/  flutter_sound_web: # \1/"                                                                                  flutter_sound/example/pubspec.yaml
         gsed -i  "s/^# *path: \.\.\/\.\.\/flutter_sound_web # flutter_sound_web Dir$/    path: \.\.\/\.\.\/flutter_sound_web # flutter_sound_web Dir/"                  flutter_sound/example/pubspec.yaml
+
+# ---
+
+        gsed -i  "s/^ *flauto: *#* *\(.*\)$/  fflauto: # \1/"                                                                                              flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^ *flauto_lite: *#* *\(.*\)$/  flauto_lite: # \1/"                                                                                    flutter_sound/example/pubspec.yaml
+
+        gsed -i  "s/^ *#* *flauto_platform_interface: *#* *\(.*\)$/  flauto_platform_interface: # \1/"                                                    flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^# *path: \.\.\/\.\.\/flauto_platform_interface # flauto_platform_interface Dir$/    path: \.\.\/\.\.\/fflauto_platform_interface # fflauto_platform_interface Dir/" flutter_sound/example/pubspec.yaml
+
+        gsed -i  "s/^ *#* *flauto_web: *#* *\(.*\)$/  flauto_web: # \1/"                                                                                  flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^# *path: \.\.\/\.\.\/flauto_web # flutter_sound_web Dir$/    path: \.\.\/\.\.\/flauto_web # flutter_sound_web Dir/"                  flutter_sound/example/pubspec.yaml
+
 
         exit 0
 
