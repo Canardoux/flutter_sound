@@ -45,8 +45,8 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 100120
-        versionName '0.0.1+20'
+        versionCode 100121
+        versionName '0.0.1+21'
         //versionName project.getProperty(“libraryVersion”)
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -68,10 +68,10 @@ android {
 }
 
 dependencies {
-    //implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation 'androidx.core:core:1.0.0'
-    implementation 'androidx.media:media:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.core:core:1.3.2'
+    implementation 'androidx.media:media:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.android.support:support-v4:+'
 
 }
 ext {

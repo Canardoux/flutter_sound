@@ -67,7 +67,7 @@ public class FlautoMediaBrowserHelper
 				// null);
 
 			}
-			catch ( RemoteException e )
+			catch ( Exception e )
 			{
 				Log.e( "MediaBrowserHelper", "The following error occurred while" + " initializing the media controller.", e );
 			}
