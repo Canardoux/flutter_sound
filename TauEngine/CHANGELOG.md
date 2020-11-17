@@ -1,4 +1,3 @@
+## 0.0.1+20
 
-## 0.1.1
-
-- Initial beta version.
+- Please [look to this]((https://canardoux.github.io/tau/doc/book/CHANGELOG.html))

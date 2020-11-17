@@ -1,4 +1,4 @@
-## 0.0.1+19
+## 0.0.1+20
 
-- Please [look to this](../CHANGELOG.md)
+- Please [look to this]((https://canardoux.github.io/tau/doc/book/CHANGELOG.html))
 

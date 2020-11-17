@@ -31,13 +31,14 @@ gsed -i  "s/^\( *flutter_sound: *#* *\^*\).*$/\1$VERSION/"                      
 gsed -i  "s/^\( *#* *flutter_sound_platform_interface: *#* *\^*\).*$/\1$VERSION/"       flutter_sound/example/pubspec.yaml
 gsed -i  "s/^\( *#* *flutter_sound_web: *#* *\^*\).*$/\1$VERSION/"                      flutter_sound/example/pubspec.yaml
 
-gsed -i  "s/^\( *flauto: *#* *\^*\).*$/\1$VERSION/"                              flutter_sound/example/pubspec.yaml
-gsed -i  "s/^\( *#* *flauto_platform_interface: *#* *\^*\).*$/\1$VERSION/"       flutter_sound/example/pubspec.yaml
-gsed -i  "s/^\( *#* *flauto_web: *#* *\^*\).*$/\1$VERSION/"                      flutter_sound/example/pubspec.yaml
+gsed -i  "s/^\( *flauto: *#* *\^*\).*$/\1$VERSION/"                                     flutter_sound/example/pubspec.yaml
+gsed -i  "s/^\( *#* *flauto_platform_interface: *#* *\^*\).*$/\1$VERSION/"              flutter_sound/example/pubspec.yaml
+gsed -i  "s/^\( *#* *flauto_web: *#* *\^*\).*$/\1$VERSION/"                             flutter_sound/example/pubspec.yaml
 
 gsed -i  "s/^\( *libraryVersion = \).*$/\1$VERSION/"                                    TauEngine/android/TauEngine/gradle.properties
 gsed -i  "s/^\( *flutter_sound_lite: *#* *\^*\).*$/\1$VERSION/"                         flutter_sound/example/pubspec.yaml
 gsed -i  "s/^\( *## \).*$/\1$VERSION/"                                                  flutter_sound/CHANGELOG.md
+gsed -i  "s/^\( *## \).*$/\1$VERSION/"                                                  TauEngine/CHANGELOG.md
 gsed -i  "s/^\( *## \).*$/\1$VERSION/"                                                  flutter_sound_platform_interface/CHANGELOG.md
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/"                                           flutter_sound_platform_interface/pubspec.yaml
 gsed -i  "s/^\( *version *= *\).*$/\1'$VERSION'/"                                       TauEngine/android/TauEngine/bintray.gradle
