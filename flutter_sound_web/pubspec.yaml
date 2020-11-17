@@ -25,7 +25,7 @@ flutter:
 
 dependencies:
   flauto_platform_interface: 0.0.1+21
-#    path: ../flutter_sound_platform_interface # Flutter Sound Dir
+    path: ../flutter_sound_platform_interface # Flutter Sound Dir
   flutter:
     sdk: flutter
   flutter_web_plugins:

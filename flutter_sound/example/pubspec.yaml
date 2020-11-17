@@ -17,13 +17,13 @@ dependencies:
 # The following instructions are just for developing/debugging Flutter Sound
 # Do not put them in a real App
 #  flauto_platform_interface: 0.0.1+21
-#    path: ../../flutter_sound_platform_interface # flutter_sound_platform_interface Dir
+    path: ../../flutter_sound_platform_interface # flutter_sound_platform_interface Dir
 #  flauto_web: 0.0.1+21
-#    path: ../../flutter_sound_web # flutter_sound_web Dir
+    path: ../../flutter_sound_web # flutter_sound_web Dir
 # ============================================================================
 
   flauto: ^0.0.1+21
-#    path: ../ # Flutter Sound Dir
+    path: ../ # Flutter Sound Dir
 
   intl: ^0.16.1
   cupertino_icons: ^0.1.3
