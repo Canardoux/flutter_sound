@@ -16,6 +16,12 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/// ------------------------------------------------------------------
+/// # The Flutter Sound UIWidget
+///
+///
+/// ------------------------------------------------------------------
+library UI_Widget;
 
 import 'dart:async';
 

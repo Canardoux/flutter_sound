@@ -17,6 +17,14 @@
  */
 
 
+/// ------------------------------------------------------------------
+/// # The Flutter Sound UIWidget 2
+///
+///
+/// ------------------------------------------------------------------
+library UI_Widget;
+
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
