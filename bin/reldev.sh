@@ -124,7 +124,7 @@ elif [ "_$1" = "_DEV" ]; then
 
 # ---
 
-        gsed -i  "s/^ *fflauto_platform_interface: *#* *\(.*\)$/  flauto_platform_interface: # \1/"                                                        flutter_sound/pubspec.yaml
+        gsed -i  "s/^ *flauto_platform_interface: *#* *\(.*\)$/  flauto_platform_interface: # \1/"                                                        flutter_sound/pubspec.yaml
         gsed -i  "s/^# *path: \.\.\/flauto_platform_interface # Flutter Sound Dir$/    path: \.\.\/flauto_platform_interface # Flutter Sound Dir/"        flutter_sound/pubspec.yaml
         gsed -i  "s/^ *flauto_web: *#* *\(.*\)$/  flauto_web: # \1/" flutter_sound/pubspec.yaml
         gsed -i  "s/^# *path: \.\.\/flauto_web # Flutter Sound Dir$/    path: \.\.\/flauto_web # Flutter Sound Dir/"                                      flutter_sound/pubspec.yaml
