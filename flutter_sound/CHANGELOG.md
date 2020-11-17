@@ -1,4 +1,4 @@
-## 6.4.2+2
+## 6.4.2+3
 
 - Please [look to this](https://canardoux.github.io/tau/book/CHANGELOG.html)
 

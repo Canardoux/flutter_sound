@@ -34,7 +34,7 @@ if [ $? -ne 0 ]; then
 fi
 cd ..
 
-bin/flavor LITE
+bin/flavor.sh LITE
 
 cd flutter_sound
 flutter pub publish
@@ -44,7 +44,7 @@ if [ $? -ne 0 ]; then
 fi
 cd ..
 
-bin/flavor FULL
+bin/flavor.sh FULL
 
 cd flutter_sound_web
 flutter pub publish
