@@ -13,7 +13,6 @@ VERSION_CODE=${VERSION_CODE//+/}
 bin/flavor FULL
 bin/reldev.sh REL
 bin/setver.sh $VERSION
-bin/doc.sh $VERSION
 
 
 cd flutter_sound_platform_interface/
@@ -23,6 +22,8 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 cd ..
+
+bin/doc.sh $VERSION
 
 
 cd flutter_sound

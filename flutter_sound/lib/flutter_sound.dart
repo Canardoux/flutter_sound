@@ -17,6 +17,7 @@
  */
 
 
+
 // The three interfaces to the platform
 // ------------------------------------
 
@@ -37,13 +38,9 @@
 
 // The interfaces to the platforms specific implementations
 // --------------------------------------------------------
-export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart' show
-        Codec,
-        SessionCategory,
-        SessionMode,
-        AudioFocus,
-        AudioDevice,
-        AndroidFocusGain;
+//export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
+export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
+
 //!!!!!!!!!!export 'package:flauto_platform_interface/flutter_sound_player_platform_interface.dart';
 //!!!!!!!!!!export 'package:flauto_platform_interface/flutter_sound_recorder_platform_interface.dart';
 
