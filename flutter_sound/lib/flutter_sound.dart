@@ -38,7 +38,7 @@
 
 // The interfaces to the platforms specific implementations
 // --------------------------------------------------------
-//export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
+//export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 
 //!!!!!!!!!!export 'package:flauto_platform_interface/flutter_sound_player_platform_interface.dart';
