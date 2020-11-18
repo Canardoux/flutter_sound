@@ -66,7 +66,7 @@ bin/flavor.sh FULL
 git add .
 git commit -m "TAU : Version $VERSION"
 git push
-git tag -f $1
+git tag -f $VERSION
 git push --tag -f
 
 
