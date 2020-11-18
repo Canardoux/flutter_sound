@@ -331,7 +331,8 @@ public class FlautoBackgroundAudioService
 
 		// Start the service
 		// The two following instructions probably do no work
-		//assert (Flauto.androidActivity != null);
+		if (Flauto.androidActivity == null)
+			throw new RuntimeException();
 		//startService( new Intent( Flauto.androidActivity, BackgroundAudioService.class ) );
 
 		// Update the playback state

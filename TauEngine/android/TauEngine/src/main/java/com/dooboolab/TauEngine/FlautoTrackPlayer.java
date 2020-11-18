@@ -69,7 +69,8 @@ public class FlautoTrackPlayer extends FlautoPlayer
 	public boolean initializeFlautoPlayer(t_AUDIO_FOCUS focus, t_SESSION_CATEGORY category, t_SESSION_MODE sessionMode, int audioFlags, t_AUDIO_DEVICE audioDevice)
 	{
 		audioManager = ( AudioManager ) Flauto.androidContext.getSystemService ( Context.AUDIO_SERVICE );
-		assert(Flauto.androidActivity != null);
+		if (Flauto.androidActivity == null)
+			throw new RuntimeException();
 
 		// Initialize the media browser if it hasn't already been initialized
 		if ( mMediaBrowserHelper == null )
@@ -539,7 +540,8 @@ public class FlautoTrackPlayer extends FlautoPlayer
 
 		if (position > duration)
 		{
-			assert(position <= duration);
+			if (position > duration)
+				throw new RuntimeException();
 		}
 
 		Map<String, Object> dic = new HashMap<String, Object> ();

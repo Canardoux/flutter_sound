@@ -88,7 +88,8 @@ class FlautoPlayerEngine extends FlautoPlayerEngineInterface
 					return;
 				}
 			}
-			assert (total >= 0);
+			if (total < 0)
+				throw new RuntimeException();
 
 			mSession.needSomeFood(total);
 			blockThread = null;

@@ -58,7 +58,8 @@ public class FlautoMediaBrowserHelper
 			// start the audio playback.
 			try
 			{
-				assert(Flauto.androidActivity != null);
+				if (Flauto.androidActivity == null)
+					throw new RuntimeException();
 				mediaControllerCompat = new MediaControllerCompat( Flauto.androidActivity, mMediaBrowserCompat.getSessionToken() );
 				MediaControllerCompat.setMediaController( Flauto.androidActivity, mediaControllerCompat );
 
@@ -132,7 +133,8 @@ public class FlautoMediaBrowserHelper
 	 */
 	private void initMediaBrowser()
 	{
-		assert(Flauto.androidActivity != null);
+		if (Flauto.androidActivity == null)
+			throw new RuntimeException();
 		// Create and connect a MediaBrowserCompat
 		mMediaBrowserCompat = new MediaBrowserCompat
 		(

@@ -136,7 +136,8 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 			return t_PLAYER_STATE.PLAYER_IS_STOPPED;
 		if (player._isPlaying())
 		{
-			assert(!pauseMode);
+			if (pauseMode)
+				throw new RuntimeException();
 			return t_PLAYER_STATE.PLAYER_IS_PLAYING;
 		}
 		return pauseMode ? t_PLAYER_STATE.PLAYER_IS_PAUSED : t_PLAYER_STATE.PLAYER_IS_STOPPED;
@@ -209,7 +210,8 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 
 	public void needSomeFood(int ln)
 	{
-		assert(ln >= 0);
+		if (ln < 0)
+			throw new RuntimeException();
 		mainHandler.post(new Runnable()
 		{
 			@Override
@@ -252,7 +254,8 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 			 */
 			Log.d(TAG, "Playback completed.");
 			stopPlayer();
-			assert(getPlayerState() == t_PLAYER_STATE.PLAYER_IS_STOPPED);
+			if (getPlayerState() != t_PLAYER_STATE.PLAYER_IS_STOPPED)
+				throw new RuntimeException();
 			m_callBack.audioPlayerDidFinishPlaying(true);
 	}
 
@@ -488,13 +491,13 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 		int duration
 	)
 	{
-		assert(false); // TODO
+		throw new RuntimeException(); // TODO
 	}
 
 
 	public void setUIProgressBar (int progress, int duration)
 	{
-		assert(false); // TODO
+		throw new RuntimeException(); // TODO
 	}
 
 }
