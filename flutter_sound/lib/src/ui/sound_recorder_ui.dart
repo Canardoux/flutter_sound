@@ -631,9 +631,27 @@ void connectPlayerToRecorderStream(SoundPlayerUIState playerState, Stream<Playba
 
 
 
-
-
-class RecorderPlaybackController extends InheritedWidget {
+/// This class is a Provider style widget designed to
+/// co-ordinate a [SoundRecorderUI] and a [SoundPlayerUI]
+/// so that a user can record and playback in a co-ordinated manner.
+///
+/// All instances of [SoundRecorderUI] and a [SoundPlayerUI] will
+/// search the widget tree looking for a [RecorderPlaybackController].
+/// This can cause unintended links. Always place the
+/// [RecorderPlaybackController] as close to the [SoundRecorderUI] and
+/// [SoundPlayerUI] as possible to avoid unintended links.
+///
+/// The [RecorderPlaybackController] will disable the [SoundPlayerUI]
+/// whilst recording is running and re-enable it once recording has stopped.
+///
+/// If recording is started whilst the [SoundPlayerUI] is playing then the
+/// recorder will cause the playback to stop.
+///
+/// The [RecorderPlaybackController] will also stream duration
+/// updates to the Player so that it can show the duration of the recording
+/// as it grows.
+class RecorderPlaybackController extends InheritedWidget
+{
         final _RecordPlaybackControllerState _state;
 
         ///
@@ -642,7 +660,8 @@ class RecorderPlaybackController extends InheritedWidget {
                     super(child: child);
 
         @override
-        bool updateShouldNotify(InheritedWidget oldWidget) {
+        bool updateShouldNotify(InheritedWidget oldWidget)
+        {
                 return true;
         }
 
@@ -654,6 +673,8 @@ class RecorderPlaybackController extends InheritedWidget {
         static RecorderPlaybackController of(BuildContext context) =>
             context.dependOnInheritedWidgetOfExactType<RecorderPlaybackController>();
 }
+
+
 
 class _RecordPlaybackControllerState {
         SoundRecorderUIState _recorderState;

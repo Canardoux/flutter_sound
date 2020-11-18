@@ -33,49 +33,6 @@ import '../util/log.dart';
 import 'sound_player_ui.dart';
 import 'sound_recorder_ui.dart';
 
-/// This class is a Provider style widget designed to
-/// co-ordinate a [SoundRecorderUI] and a [SoundPlayerUI]
-/// so that a user can record and playback in a co-ordinated manner.
-///
-/// All instances of [SoundRecorderUI] and a [SoundPlayerUI] will
-/// search the widget tree looking for a [RecorderPlaybackController].
-/// This can cause unintended links. Always place the
-/// [RecorderPlaybackController] as close to the [SoundRecorderUI] and
-/// [SoundPlayerUI] as possible to avoid unintended links.
-///
-/// The [RecorderPlaybackController] will disable the [SoundPlayerUI]
-/// whilst recording is running and re-enable it once recording has stopped.
-///
-/// If recording is started whilst the [SoundPlayerUI] is playing then the
-/// recorder will cause the playback to stop.
-///
-/// The [RecorderPlaybackController] will also stream duration
-/// updates to the Player so that it can show the duration of the recording
-/// as it grows.
-class RecorderPlaybackController extends InheritedWidget
-{
-        final _RecordPlaybackControllerState _state;
-
-        ///
-        RecorderPlaybackController({@required Widget child, Key key})
-            : _state = _RecordPlaybackControllerState(),
-              super(child: child);
-
-        @override
-        bool updateShouldNotify(InheritedWidget oldWidget)
-        {
-                return true;
-        }
-
-        /// stops both the player and the recorder.
-        void stop() => _state.stop();
-
-        /// of - find the nearest RecorderPlaybackController in the parent widget
-        /// tree.
-        static RecorderPlaybackController of(BuildContext context) =>
-            context.dependOnInheritedWidgetOfExactType<RecorderPlaybackController>();
-}
-
 class _RecordPlaybackControllerState
 {
         SoundRecorderUIState _recorderState;

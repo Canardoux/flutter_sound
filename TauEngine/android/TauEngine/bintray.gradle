@@ -1,6 +1,6 @@
 apply plugin: 'com.jfrog.bintray'
 
-version = '6.4.2+7'
+version = '6.4.2+8'
 
 task sourcesJar(type: Jar) {
    from android.sourceSets.main.java.srcDirs
@@ -11,21 +11,23 @@ task sourcesJar(type: Jar) {
    //source = android.sourceSets.main.java.srcDirs
    //classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 //}
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    destinationDir = file("../javadoc/")
-    failOnError false
-}
+// task javadoc(type: Javadoc) {
+//     source = android.sourceSets.main.java.srcDirs
+//     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//     destinationDir = file("../javadoc/")
+//     failOnError false
+// }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-   classifier = 'javadoc'
-   from javadoc.destinationDir
-}
+// task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+// }
 
 artifacts {
    archives javadocJar
    archives sourcesJar
+   archives androidSourcesJar
+
 }
 
 Properties properties = new Properties()

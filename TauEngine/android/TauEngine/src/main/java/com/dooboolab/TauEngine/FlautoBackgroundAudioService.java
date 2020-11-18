@@ -350,12 +350,9 @@ public class FlautoBackgroundAudioService
 	}
 
 	// Not important for general audio service, required for class
-	@Nullable
 	@Override
 	public BrowserRoot onGetRoot(
-		@NonNull
 			String clientPackageName, int clientUid,
-		@Nullable
 			Bundle rootHints
 	                            )
 	{
@@ -382,9 +379,7 @@ public class FlautoBackgroundAudioService
 	// Not important for general audio service, required for class
 	@Override
 	public void onLoadChildren(
-		@NonNull
 			String parentId,
-		@NonNull
 			Result<List<MediaBrowserCompat.MediaItem>> result
 	                          )
 	{

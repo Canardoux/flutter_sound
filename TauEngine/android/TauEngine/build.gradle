@@ -45,8 +45,8 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 16427
-        versionName '6.4.2+7'
+        versionCode 16428
+        versionName '6.4.2+8'
         //versionName project.getProperty(“libraryVersion”)
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -99,6 +99,19 @@ apply plugin: 'signing'
 
 group = PUBLISH_GROUP_ID
 version = PUBLISH_VERSION
+
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    destinationDir = file("../javadoc/")
+    failOnError false
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+   classifier = 'javadoc'
+   from javadoc.destinationDir
+}
 
 
 // =========================================================================================================================================================

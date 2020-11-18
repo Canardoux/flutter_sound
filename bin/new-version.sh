@@ -16,8 +16,8 @@ bin/setver.sh $VERSION
 
 
 cd flutter_sound_platform_interface/
-flutter clean
-flutter pub get
+#flutter clean
+#flutter pub get
 
 flutter pub publish
 if [ $? -ne 0 ]; then
@@ -38,12 +38,10 @@ cd ..
 
 
 
-bin/doc.sh $VERSION
-
 
 cd flutter_sound
-flutter clean
-flutter pub get
+#flutter clean
+#flutter pub get
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
@@ -54,8 +52,8 @@ cd ..
 bin/flavor.sh LITE
 
 cd flutter_sound
-flutter clean
-flutter pub get
+#flutter clean
+#flutter pub get
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
@@ -65,6 +63,11 @@ cd ..
 
 bin/flavor.sh FULL
 
+git add .
+git commit -m "TAU : Version $VERSION"
+git push
+git tag -f $1
+git push --tag -f
 
 
 pod trunk push TauEngine.podspec
@@ -104,6 +107,10 @@ flutter build web
 cd ../..
 rm -r doc/flutter_sound/web_example
 cp -a flutter_sound/example/build/web doc/flutter_sound/
+
+
+bin/doc.sh $VERSION
+
 
 git add .
 git commit -m "Release Version: $VERSION"
