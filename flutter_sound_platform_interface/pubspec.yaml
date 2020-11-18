@@ -5,6 +5,9 @@ description: The Dart interface to Flutter Sound.
 # NOTE: We strongly prefer non-breaking changes, even at the expense of a
 # less-clean API. See https://flutter.dev/go/platform-interface-breaking-changes
 homepage: https://github.com/Canardoux/tau
+environment:
+    sdk: ">=2.1.0 <3.0.0"
+    flutter: ">=1.12.0 <2.0.0"
 
 
 dependencies:

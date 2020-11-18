@@ -16,6 +16,9 @@ bin/setver.sh $VERSION
 
 
 cd flutter_sound_platform_interface/
+flutter clean
+flutter pub get
+
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
@@ -27,6 +30,8 @@ bin/doc.sh $VERSION
 
 
 cd flutter_sound
+flutter clean
+flutter pub get
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
@@ -37,6 +42,8 @@ cd ..
 bin/flavor.sh LITE
 
 cd flutter_sound
+flutter clean
+flutter pub get
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
@@ -47,6 +54,8 @@ cd ..
 bin/flavor.sh FULL
 
 cd flutter_sound_web
+flutter clean
+flutter pub get
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"

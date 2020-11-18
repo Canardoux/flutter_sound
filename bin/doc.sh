@@ -3,13 +3,16 @@
 VERSION=$1
 
 
-rm -r doc/flutter_sound/api/*
-dartdoc --pretty-index-json --input flutter_sound --output doc/flutter_sound/api
-
+rm -r doc/flutter_sound/api
+cd flutter_sound
+flutter clean
+flutter pub get
+dartdoc --pretty-index-json  --output doc/flutter_sound/api
+cd ..
 
 
 cd  doc
-rm -r _book book 2>/dev/null
+rm -r _book book ../book 2>/dev/null
 gitbook build
 mv _book ../book
 cd ..
