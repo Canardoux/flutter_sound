@@ -3,9 +3,11 @@ version: 6.4.2+6
 description: Flutter plugin that relates to sound like audio and recorder.
 #author: dooboolab<dooboolab@gmail.com>
 homepage: https://github.com/canardoux/tau/blob/master/flutter_sound/
+
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.10.0 <3.0.0"
   flutter: ">=1.12.0 <2.0.0"
+
 dependencies:
   path_provider: ">=1.0.0 <2.0.0"
   logger: ^0.7.0+2

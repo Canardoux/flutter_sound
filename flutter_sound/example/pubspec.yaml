@@ -9,6 +9,14 @@ description: Driver for the various Flutter Sound examples
 # Read more about versioning at semver.org.
 version: 6.4.2+6
 
+homepage: https://github.com/canardoux/tau/blob/master/flutter_sound/
+
+environment:
+  sdk: ">=2.10.0 <3.0.0"
+  flutter: ">=1.12.0 <2.0.0"
+
+
+
 dependencies:
   flutter:
     sdk: flutter
