@@ -145,6 +145,23 @@
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <div><h1><span class="kind-class">RecorderPlaybackController</span> class  </h1></div>
 
+    <section class="desc markdown">
+      <p>This class is a Provider style widget designed to
+co-ordinate a <a href="../flutter_sound/SoundRecorderUI-class.html">SoundRecorderUI</a> and a <a href="../flutter_sound/SoundPlayerUI-class.html">SoundPlayerUI</a>
+so that a user can record and playback in a co-ordinated manner.</p>
+<p>All instances of <a href="../flutter_sound/SoundRecorderUI-class.html">SoundRecorderUI</a> and a <a href="../flutter_sound/SoundPlayerUI-class.html">SoundPlayerUI</a> will
+search the widget tree looking for a <a href="../flutter_sound/RecorderPlaybackController-class.html">RecorderPlaybackController</a>.
+This can cause unintended links. Always place the
+<a href="../flutter_sound/RecorderPlaybackController-class.html">RecorderPlaybackController</a> as close to the <a href="../flutter_sound/SoundRecorderUI-class.html">SoundRecorderUI</a> and
+<a href="../flutter_sound/SoundPlayerUI-class.html">SoundPlayerUI</a> as possible to avoid unintended links.</p>
+<p>The <a href="../flutter_sound/RecorderPlaybackController-class.html">RecorderPlaybackController</a> will disable the <a href="../flutter_sound/SoundPlayerUI-class.html">SoundPlayerUI</a>
+whilst recording is running and re-enable it once recording has stopped.</p>
+<p>If recording is started whilst the <a href="../flutter_sound/SoundPlayerUI-class.html">SoundPlayerUI</a> is playing then the
+recorder will cause the playback to stop.</p>
+<p>The <a href="../flutter_sound/RecorderPlaybackController-class.html">RecorderPlaybackController</a> will also stream duration
+updates to the Player so that it can show the duration of the recording
+as it grows.</p>
+    </section>
     
     <section>
       <dl class="dl-horizontal">

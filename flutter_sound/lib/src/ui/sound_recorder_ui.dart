@@ -242,6 +242,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI>
                 this.backgroundColor = backgroundColor;
         }
 
+        ///
         @override
         void initState()
         {
@@ -261,6 +262,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI>
 
 
 
+        ///
         @override
         void deactivate( )
         {
@@ -272,12 +274,20 @@ class SoundRecorderUIState extends State<SoundRecorderUI>
 
 
 
+        ///
         @override
         Widget build(BuildContext context)
         {
                 return _buildButtons();
         }
 
+        ///
+        @override
+        void dispose()
+        {
+                _recorder.closeAudioSession();
+                super.dispose();
+        }
 
 
 
@@ -433,14 +443,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI>
         bool get _isRecording => _state == _RecorderState.isRecording;
         bool get _isPaused => _state == _RecorderState.isPaused;
         bool get _isStopped => _state == _RecorderState.isStopped;
-
-        void dispose()
-        {
-                _recorder.closeAudioSession();
-                super.dispose();
-        }
-
-        /// The `stop` methods stops the recording and calls
+    /// The `stop` methods stops the recording and calls
         /// the `onStopped` callback.
         ///
         void stop()
@@ -537,7 +540,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI>
                 setState(()
                 {
                         _state = _RecorderState.isRecording;
-                        
+
                         if (widget.onStart != null)
                         {
                                 widget.onStart();

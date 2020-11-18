@@ -110,29 +110,6 @@
 (<wbr>)
       <div class="features">override</div>
     </section>
-    <section class="desc markdown">
-      <p>Called when this object is removed from the tree.</p>
-<p>The framework calls this method whenever it removes this <a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a> object
-from the tree. In some cases, the framework will reinsert the <a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a>
-object into another part of the tree (e.g., if the subtree containing this
-<a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a> object is grafted from one location in the tree to another). If
-that happens, the framework will ensure that it calls <a href="../../flutter_sound/SoundRecorderUIState/build.html">build</a> to give the
-<a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a> object a chance to adapt to its new location in the tree. If
-the framework does reinsert this subtree, it will do so before the end of
-the animation frame in which the subtree was removed from the tree. For
-this reason, <a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a> objects can defer releasing most resources until the
-framework calls their <a href="../../flutter_sound/SoundRecorderUIState/dispose.html">dispose</a> method.</p>
-<p>Subclasses should override this method to clean up any links between
-this object and other elements in the tree (e.g. if you have provided an
-ancestor with a pointer to a descendant's <a href="https://api.flutter.dev/flutter/rendering/RenderObject-class.html">RenderObject</a>).</p>
-<p>If you override this, make sure to end your method with a call to
-super.deactivate().</p>
-<p>See also:</p>
-<ul>
-<li><a href="../../flutter_sound/SoundRecorderUIState/dispose.html">dispose</a>, which is called after <a href="../../flutter_sound/SoundRecorderUIState/deactivate.html">deactivate</a> if the widget is removed
-from the tree permanently.</li>
-</ul>
-    </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>

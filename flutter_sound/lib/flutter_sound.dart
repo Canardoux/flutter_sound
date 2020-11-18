@@ -46,7 +46,7 @@ export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart'
 // --------------
 export 'src/ui/sound_player_ui.dart';
 export 'src/ui/sound_recorder_ui.dart' ;
-//export 'src/ui/recorder_playback_controller.dart' ;
+export 'src/ui/recorder_playback_controller.dart' ;
 
 
 // The main modules
