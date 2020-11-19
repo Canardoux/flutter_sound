@@ -53,9 +53,7 @@ class AssetPlayer extends StatelessWidget {
     return SoundPlayerUI.fromLoader(
       (_) => createAssetTrack(),
       showTitle: true,
-      audioFocus: true // TODO
-          ? AudioFocus.requestFocusAndDuckOthers
-          : AudioFocus.requestFocusAndDuckOthers,
+      audioFocus: AudioFocus.requestFocusAndDuckOthers,
     );
   }
 

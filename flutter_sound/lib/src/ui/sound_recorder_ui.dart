@@ -521,15 +521,6 @@ class SoundRecorderUIState extends State<SoundRecorderUI>
 
 
 
-        /// as recording progresses we update the media's duration.
-        void _updateDuration(Duration duration)
-        {
-                widget.audio.duration = duration;
-        }
-
-
-
-
 
 
         void _onStarted({bool wasUser}) async
@@ -692,21 +683,6 @@ class _RecordPlaybackControllerState {
                 _recorderState?.stop();
         }
 
-        void _onRecorderStarted() {
-                Log.d('_onRecorderStarted');
-                if (_playerState != null) {
-                        _playerState.stop().then((_) {
-                                _playerState.playbackEnabled(enabled: false);
-
-                                // attach the player to the recorder stream so it can
-                                // show the duration updating
-                                connectPlayerToRecorderStream(_playerState, _localController.stream);
-                                // reset the duration and position of the player
-                                _localController.add(PlaybackDisposition.zero());
-                        });
-                }
-        }
-
         void _onRecorderStopped(Duration duration) {
                 Log.d('_onRecorderStopped');
                 if (_playerState != null) {
@@ -770,12 +746,6 @@ void registerPlayer(BuildContext context, SoundPlayerUIState player)
         {
                 controller._playerState = player;
         }
-}
-
-///
-void _onRecordingStarted(BuildContext context)
-{
-        RecorderPlaybackController.of(context)._state._onRecorderStarted();
 }
 
 ///

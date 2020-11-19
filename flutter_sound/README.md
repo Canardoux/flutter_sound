@@ -1,9 +1,9 @@
 ## Flutter Sound
 
-<img src="doc/flutter_sound/Logotype primary.png" width="70%" height="70%" />
+<img src="Logotype primary.png" width="70%" height="70%" />
 
 <p align="left">
-  <a href="https://pub.dartlang.org/packages/flauto"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
+  <a href="https://canardoux.github.io/tau/book/flauto"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
 </p>
 
 -------------------------------------------------------------------------------------
@@ -19,11 +19,11 @@ This plugin provides simple recorder and player functionalities for
 - iOS
 - Flutter Web
 
-[zozo](api/flutter_sound/black.html)
+[coco](api/flutter_sound/black.html)
 
-[toto](api/index.html)
+[popo](api/index.html)
 
-[toto](player.html)
+[nono](player.html)
 
 [I'm an inline-style link](https://www.google.com)
 
@@ -35,11 +35,11 @@ This plugin provides simple recorder and player functionalities for
 
  <a href="api/index.html">Visit W3Schools.com!</a>
 
- [riri](api/flutter_sound/black.html)
+ [tutu](api/flutter_sound/black.html)
 
- [riri](https://canardoux.github.io/tau/doc/flutter_sound/book/api/index.html)
+ [lulu](https://canardoux.github.io/tau/doc/flutter_sound/book/api/index.html)
 
- [papa](/api/index.html)
+ [maman](/api/index.html)
 
 
 -----------------------------------------------------------------------------------------------------------------------------------
@@ -88,30 +88,18 @@ Maybe, one day, we will be supported by Linux, Macos, and even (why not) Windows
 
 ## Changelog
 
-You can find the [changes here](https://canardoux.github.io/tau/doc/flutter_sound/web)
+You can find the [changes here](https://canardoux.github.io/tau/book/CHANGELOG.html)
 
 
 ## Documentation
 
-The [documentation is here](https://canardoux.github.io/tau/doc/flutter_sound)
+The [documentation is here](https://canardoux.github.io/tau/book/flutter_sound/)
 
 
 ## License
 
 Flutter Sound is copyrighted by Dooboolab (2018, 2019, 2020).
 Flutter Sound is released under a license with a *copyleft* clause: the LGPL-V3 license. This means that if you modify some of Flutter Sound code you must publish your modifications under the LGPL license too.
-
-## Contributions
-
-Flutter Sound is a free and Open Source project. Several contributors have already contributed to Flutter Sound. Specially :
-- @hyochan who is the Flutter Sound father
-- @salvatore373 who wrote the Track Player
-- @bsutton who wrote the UI Widgets
-- @larpoux who add several codec supports
-
-**We really need your contributions.**
-Pull Requests are welcome and will be considered very carefully.
-
 
 
 ## Help Maintenance

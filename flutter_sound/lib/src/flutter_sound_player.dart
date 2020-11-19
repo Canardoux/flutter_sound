@@ -32,18 +32,9 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flauto_platform_interface/flutter_sound_player_platform_interface.dart';
-//export 'package:flauto_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-
-//import 'package:flauto/src/food.dart';
-
-
-import 'package:flutter/services.dart';
 import 'package:flauto/flutter_sound.dart';
 
-/// Sont dans un bateau
-
-/// toto tombe a l'eau
 const BLOCK_SIZE = 4096;
 
 enum PlayerState {
@@ -69,13 +60,6 @@ String fileExtension(String path) {
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
-
-/// toto
-
-
-///titi
-///
-/// tutu
 
 class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 {
@@ -301,6 +285,13 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   Stream<PlaybackDisposition> get onProgress =>
               _playerController != null ? _playerController.stream : null;
 
+
+  bool isOpen()
+  {
+      return (isInited == Initialized.fullyInitializedWithUI || isInited == Initialized.fullyInitialized );
+  }
+
+
   /// Provides a stream of dispositions which
   /// provide updated position and duration
   /// as the audio is played.
@@ -338,7 +329,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
   FlutterSoundPlayer();
 
-  @deprecated
   Future<FlutterSoundPlayer> openAudioSession( {
                                                  AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
                                                  SessionCategory category = SessionCategory.playAndRecord,
@@ -378,7 +368,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
 
 
-  @deprecated
   Future<FlutterSoundPlayer> openAudioSessionWithUI( {
                                                        AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
                                                        SessionCategory category = SessionCategory.playAndRecord,
@@ -393,7 +382,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
 
 
-  @deprecated
   Future<void> setAudioFocus( {
                                 AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
                                 SessionCategory category = SessionCategory.playback,
@@ -413,7 +401,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       if ( isInited != Initialized.fullyInitialized)
       {
         throw (
-                    _notOpen( )
+            _NotOpen( )
         );
       }
 
@@ -424,12 +412,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   }
 
 
-  bool isOpen()
-  {
-    // TODO !!!!!!
-  }
 
-  @deprecated
   Future<void> closeAudioSession() async {
     print('FS:---> closeAudioSession ');
     await _lock.synchronized(() async {
@@ -462,7 +445,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       throw (_InitializationInProgress());
     }
     if ( isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
+      throw (_NotOpen());
     }
     int state = await FlutterSoundPlayerPlatform.instance.getPlayerState(this);
     playerState = PlayerState.values[state];
@@ -481,7 +464,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       if (isInited != Initialized.fullyInitialized)
       {
         throw (
-                    _notOpen( )
+            _NotOpen( )
         );
       }
 
@@ -512,7 +495,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
+      throw (_NotOpen());
     }
     // For decoding ogg/opus on ios, we need to support two steps :
     // - remux OGG file format to CAF file format (with ffmpeg)
@@ -540,7 +523,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
+      throw (_NotOpen());
     }
     int state = await FlutterSoundPlayerPlatform.instance.setSubscriptionDuration(this, duration: duration);
     playerState = PlayerState.values[state];
@@ -589,7 +572,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     print('FS:---> _convert ');
     Codec codec = what['codec'] as Codec;
     if (needToConvert(codec)) {
-      String fromURI = what['path'] as String;
       Uint8List fromDataBuffer = what['fromDataBuffer'] as Uint8List;
 
       if (fromDataBuffer != null) {
@@ -624,7 +606,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
+      throw (_NotOpen());
     }
 
      if (codec == Codec.pcm16 && fromURI != null) {
@@ -650,7 +632,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         await stop( ); // Just in case
 
         //playerState = PlayerState.isPlaying;
-        Map<String, dynamic> what = {'codec': codec, 'path': fromURI, 'fromDataBuffer': fromDataBuffer,} as Map<String, dynamic>;
+        Map<String, dynamic> what = <String, dynamic>{'codec': codec, 'path': fromURI, 'fromDataBuffer': fromDataBuffer,} ;
         await _convert( what );
         codec = what['codec'] as Codec;
         fromURI = what['path'] as String;
@@ -686,7 +668,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       throw (_InitializationInProgress());
     }
     if ( isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
+      throw (_NotOpen());
     }
 
       await _lock.synchronized(() async {
@@ -727,7 +709,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       }
       if ( isInited != Initialized.fullyInitialized )
       {
-        throw (_notOpen());
+        throw (_NotOpen());
       }
       if (isStopped)
         return 0;
@@ -772,7 +754,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitialized ) {
-      throw (_notOpen());
+      throw (_NotOpen());
     }
      //Map retMap;
      await _lock.synchronized(() async {
@@ -788,7 +770,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         this.onPaused = onPaused;
         Map<String, dynamic> trackDico = track.toMap( );
         //playerState = PlayerState.isPlaying;
-        Map<String, dynamic> what = {'codec': track.codec, 'path': track.trackPath, 'fromDataBuffer': track.dataBuffer,} as Map<String, dynamic>;
+        Map<String, dynamic> what = <String, dynamic>{'codec': track.codec, 'path': track.trackPath, 'fromDataBuffer': track.dataBuffer,}  ;
         await _convert( what );
         Codec codec = what['codec'] as Codec;
         trackDico['bufferCodecIndex'] = codec.index;
@@ -857,7 +839,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       if (isInited != Initialized.fullyInitialized)
       {
         throw (
-                    _notOpen( )
+            _NotOpen( )
         );
       }
       this.onSkipForward = onSkipForward;
@@ -897,7 +879,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         throw (_InitializationInProgress());
       }
       if (isInited != Initialized.fullyInitialized) {
-        throw (_notOpen());
+        throw (_NotOpen());
       }
 
     // REALLY ? // audioPlayerFinishedPlaying = null;
@@ -948,7 +930,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
+      throw (_NotOpen());
     }
     await _lock.synchronized(() async {
         playerState = PlayerState.values[await FlutterSoundPlayerPlatform.instance.pausePlayer(this)];
@@ -967,7 +949,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
+      throw (_NotOpen());
     }
     await _lock.synchronized(() async {
          int state = await FlutterSoundPlayerPlatform.instance.resumePlayer(this);
@@ -988,7 +970,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       throw (_InitializationInProgress());
     }
     if (isInited != Initialized.fullyInitialized) {
-      throw (_notOpen());
+      throw (_NotOpen());
     }
     await _lock.synchronized(() async
     {
@@ -1011,7 +993,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       if (isInited != Initialized.fullyInitialized)
       {
         throw (
-                    _notOpen( )
+            _NotOpen( )
         );
       }
       var indexedVolume = (!kIsWeb) && Platform.isIOS ? volume * 100 : volume;
@@ -1095,8 +1077,8 @@ class _InitializationInProgress implements Exception {
   }
 }
 
-class _notOpen implements Exception {
-  _notOpen() {
+class _NotOpen implements Exception {
+  _NotOpen() {
     print('Audio session is not open');
   }
 }

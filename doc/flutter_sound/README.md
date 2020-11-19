@@ -3,7 +3,7 @@
 <img src="Logotype primary.png" width="70%" height="70%" />
 
 <p align="left">
-  <a href="https://pub.dartlang.org/packages/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square"></a>
+  <a href="https://canardoux.github.io/tau/book/flauto"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
 </p>
 
 This plugin provides simple recorder and player functionalities for
@@ -36,6 +36,7 @@ This plugin provides simple recorder and player functionalities for
 
 ------------------------------------------------------------------------------------------------------------------------------------
 
+![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
 
 ## Features
 

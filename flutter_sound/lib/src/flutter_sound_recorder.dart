@@ -128,15 +128,12 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
         }
 
 
-// -------------------------------------------------------------  deprecated  --------------------------------------------------------------
 
         /// @nodoc.
-        @deprecated
         Initialized get isInited => _openState;
         Initialized _openState = Initialized.notInitialized;
       
         /// True if the recorder has been open
-        @deprecated
         bool get _isOpen =>  (_openState == Initialized.fullyInitialized || _openState == Initialized.fullyInitializedWithUI);
       
         bool get isOpen => (isInited == Initialized.fullyInitialized);
@@ -144,7 +141,6 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
       
         /// The Stream of the progress informations.
         /// Obsolete. Use [onProgress] instead
-        @deprecated
         Stream<RecordingDisposition> dispositionStream()
         {
           return (_recorderController != null) ? _recorderController.stream : null;
@@ -155,7 +151,6 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
 
 
         /// Obsolete. Please use `openRecorder()` instead
-        @deprecated     
         Future<FlutterSoundRecorder> openAudioSession( {
                                                          AudioFocus focus = AudioFocus.requestFocusTransient,
                                                          SessionCategory category = SessionCategory.playAndRecord,
@@ -196,8 +191,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
         /// Sets the frequency at which duration updates are sent to
         /// duration listeners. Zero means "no callbacks".
         /// The default is zero.
-        @deprecated
-        Future<void> setSubscriptionDuration(Duration duration) async 
+        Future<void> setSubscriptionDuration(Duration duration) async
         {
                 if (isInited == Initialized.initializationInProgress) 
                 {
@@ -205,7 +199,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
                 }
                 if (isInited != Initialized.fullyInitialized) 
                 {
-                        throw (_notOpen());
+                        throw (_NotOpen());
                 }
                 await  FlutterSoundRecorderPlatform.instance.setSubscriptionDuration( this,  duration: duration);
         }
@@ -213,7 +207,6 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
 
 
 
-        @deprecated
         Future<void> setAudioFocus
           ({
                   AudioFocus focus = AudioFocus.requestFocusTransient,
@@ -228,13 +221,12 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
           }
           if (isInited != Initialized.fullyInitialized)
           {
-                  throw (_notOpen());
+                  throw (_NotOpen());
           }
           await FlutterSoundRecorderPlatform.instance.setAudioFocus(this, focus: focus, category: category, mode: mode, device: device, );
         }
 
 
-        @deprecated
         Future<void> closeAudioSession() async
         {
                 if (isInited == Initialized.notInitialized)
@@ -301,7 +293,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
 
 
       
-        Future<void> _setRecorderCallback()  
+        void _setRecorderCallback()
         {
                 if (_recorderController == null) 
                 {
@@ -375,7 +367,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
                 }
                 if (isInited != Initialized.fullyInitialized)
                 {
-                        throw (_notOpen());
+                        throw (_NotOpen());
                 }
                 // Request Microphone permission if needed
                 /*
@@ -488,7 +480,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
                 await _lock.synchronized(() async
                 {
                         if (!_isOpen)
-                                throw _notOpen();
+                                throw _NotOpen();
                         await FlutterSoundRecorderPlatform.instance.pauseRecorder(this);
                         _recorderState = RecorderState.isPaused;
                 });
@@ -503,7 +495,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
                 await _lock.synchronized(() async
                 {
                         if (!_isOpen)
-                                throw _notOpen();
+                                throw _NotOpen();
                         await FlutterSoundRecorderPlatform.instance.resumeRecorder(this);
                          _recorderState = RecorderState.isRecording;
                 });
@@ -579,9 +571,9 @@ class _InitializationInProgress implements Exception
 }
 
 
-class _notOpen implements Exception 
+class _NotOpen implements Exception
 {
-        _notOpen() 
+        _NotOpen()
         {
                 print('Audio session is not open');
         }

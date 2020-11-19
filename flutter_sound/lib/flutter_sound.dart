@@ -46,7 +46,7 @@ export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart'
 // --------------
 export 'src/ui/sound_player_ui.dart';
 export 'src/ui/sound_recorder_ui.dart' ;
-export 'src/ui/recorder_playback_controller.dart' ;
+//export 'src/ui/recorder_playback_controller.dart' ;
 
 
 // The main modules
@@ -178,8 +178,6 @@ class FlutterSound
         AudioDevice _mAudioDevice = AudioDevice.speaker;
         int _mAudioFlags =  outputToSpeaker | allowBlueTooth | allowBlueToothA2DP | allowEarPiece;
         bool _mWithUI = false;
-        bool _mSetAudioFocusDone = false; // To remember if the App wants to manage itself the focus
-        bool _mSetIOSSessionParametersDone = false; // Not sure if useful
 
       // ---------------------------------------------------------------------------------------------------------------------
 
@@ -226,7 +224,6 @@ class FlutterSound
         {
                 Log.i('FS:---> setAudioFocus ');
                 _mFocus = focus;
-                _mSetAudioFocusDone = true;
 
                 // For legacy reason, we need to have an open player to set the Audio Focus
                 // This is not very clean, and should be improved...
@@ -264,7 +261,6 @@ class FlutterSound
                 Log.i('FS:---> setIOSSessionParameters ');
                 _mSessionCategory = category;
                 _mSessionMode = mode;
-                _mSetIOSSessionParametersDone = true; // Not sure if useful
                 // For legacy reason, we need to have an open player to set the Audio Focus
                 // This is not very clean, and should be improved...
                 if (!thePlayer.isOpen())
@@ -282,15 +278,5 @@ class FlutterSound
 
 
 
-
-        /// releaseEverything() is actually not yet implemented.
-        /// It is supposed to :
-        /// - Release the Audio Focus if it has been aquired
-        /// - Release all the current players
-        /// - Release all the current recorders
-        Future<void> releaseEverything()
-        {
-          // TODO
-        }
 
 }

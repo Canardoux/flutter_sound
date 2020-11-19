@@ -22,7 +22,6 @@
 ///
 ///
 /// ------------------------------------------------------------------
-library UI_Widget;
 
 
 import 'dart:async';
@@ -32,7 +31,7 @@ import '../../flutter_sound.dart';
 import '../util/log.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'sound_recorder_ui.dart';
-import 'recorder_playback_controller.dart';
+//import 'recorder_playback_controller.dart';
 
 
 typedef OnLoad = Future<Track> Function(BuildContext context);
@@ -62,12 +61,12 @@ class SoundPlayerUI extends StatefulWidget
 
         final bool _enabled;
 
-        Color _backgroundColor;
-        Color _iconColor;
-        Color _disabledIconColor;
-        TextStyle _textStyle;
-        TextStyle _titleStyle;
-        SliderThemeData _sliderThemeData;
+        final Color _backgroundColor;
+        final Color _iconColor;
+        final Color _disabledIconColor;
+        final TextStyle _textStyle;
+        final TextStyle _titleStyle;
+        final SliderThemeData _sliderThemeData;
 
 
 // -----------------------------------------------------------------------------------------------------------
@@ -105,15 +104,13 @@ class SoundPlayerUI extends StatefulWidget
                 _showTitle = showTitle,
                 _track = null,
                 _enabled = enabled,
-                _backgroundColor = backgroundColor,
+                _backgroundColor = (backgroundColor == null) ?  Color( 0xFFFAF0E6 ): backgroundColor,
                 _iconColor = iconColor,
                 _disabledIconColor = disabledIconColor,
                 _textStyle = textStyle,
                 _titleStyle = titleStyle,
                 _sliderThemeData = sliderThemeData
         {
-                if (backgroundColor == null)
-                        _backgroundColor = backgroundColor = Color( 0xFFFAF0E6 );
         }
 
 
@@ -339,18 +336,6 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
         }
 
 
-
-
-
-        /// This can occur:
-        /// When the user clicks play and the [SoundPlayer] sends
-        /// an event to indicate the player is up.
-        /// When the app is paused/resume by the user switching away.
-        void _onStarted()
-        {
-                _loading = false;
-                _playState = _PlayState.playing;
-        }
 
 
 
@@ -783,8 +768,6 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
                                           ),
                                           builder: (context, asyncData)
                                           {
-                                                  var disposition = asyncData.data;
-                                                  var progress = 0.0;
                                                   return Padding
                                                   (
                                                           padding: const EdgeInsets.all(8.0),

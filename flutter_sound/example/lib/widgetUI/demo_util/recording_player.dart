@@ -78,7 +78,7 @@ class RecordingPlayer extends StatelessWidget {
             backgroundColor: Colors.red,
             content: Text('You must make a recording first with the '
                 'selected codec first.'));
-        Scaffold.of(context).showSnackBar(error);
+        ScaffoldMessenger.of(context).showSnackBar(error);
       }
     } on Object catch (err) {
       Log.d('error: $err');

@@ -20,8 +20,6 @@
 import 'package:flutter/material.dart';
 import 'package:flauto/flutter_sound.dart';
 import 'dart:async';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle;
 

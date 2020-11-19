@@ -22,7 +22,6 @@ import 'package:flauto/flutter_sound.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'dart:typed_data' show Uint8List;
 
 /*
  * This is an example showing how to record to a Dart Stream.
@@ -36,7 +35,7 @@ import 'dart:typed_data' show Uint8List;
 
 
 const int SAMPLE_RATE = 8000;
-typedef fn();
+typedef _Fn();
 
 
 /// Example app.
@@ -130,7 +129,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     _mplaybackReady = true;
   }
 
-  fn getRecorderFn()
+  _Fn getRecorderFn()
   {
     if (!_mRecorderIsInited  || !_mPlayer.isStopped)
       return null;
@@ -150,7 +149,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     await _mPlayer.stopPlayer();
   }
 
-  fn getPlaybackFn()
+  _Fn getPlaybackFn()
   {
     if (!_mPlayerIsInited || !_mplaybackReady || !_mRecorder.isStopped)
       return null;

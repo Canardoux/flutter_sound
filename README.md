@@ -3,7 +3,7 @@
 <img src="doc/flutter_sound/Logotype primary.png" width="70%" height="70%" />
 
 <p align="left">
-  <a href="https://pub.dartlang.org/packages/flauto"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
+  <a href="https://canardoux.github.io/tau/book/flauto"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
 </p>
 
 -------------------------------------------------------------------------------------

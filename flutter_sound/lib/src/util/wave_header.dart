@@ -20,8 +20,6 @@
 
 import 'dart:async';
 import 'dart:core';
-import 'dart:io' show Platform;
-import 'dart:typed_data' show Uint8List;
 
 /// This class represents the header of a WAVE format audio file, which usually
 /// have a .wav suffix.  The following integer valued fields are contained:

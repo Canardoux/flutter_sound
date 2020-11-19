@@ -53,7 +53,7 @@ class RemotePlayer extends StatelessWidget {
           backgroundColor: Colors.red,
           content: Text('You must set the Codec to MP3 to '
               'play the "Remote Example File"'));
-      Scaffold.of(context).showSnackBar(error);
+      ScaffoldMessenger.of(context).showSnackBar(error);
     } else {
       // We have to play an example audio file loaded via a URL
       track = Track(trackPath: exampleAudioFilePath, codec: ActiveCodec().codec);

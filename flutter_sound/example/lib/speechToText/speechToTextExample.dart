@@ -190,7 +190,7 @@ class _SpeechToTextExampleState extends State {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(50)),
                           ),
-                          child: IconButton(icon: Icon(Icons.mic)),
+                          child: IconButton(icon: Icon(Icons.mic) , onPressed: null,),
                         ),
                       ),
                     ),

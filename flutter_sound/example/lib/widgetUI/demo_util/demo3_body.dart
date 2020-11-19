@@ -159,9 +159,7 @@ void _clean() async
               track,
               enabled: false,
               showTitle: true,
-              audioFocus: true
-                  ? AudioFocus.requestFocusAndDuckOthers
-                  : AudioFocus.requestFocusAndDuckOthers,
+              audioFocus: AudioFocus.requestFocusAndDuckOthers,
             ),
           ],
         )));
