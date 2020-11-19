@@ -5,6 +5,7 @@
 <p align="left">
   <a href="https://pub.dartlang.org/packages/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square"></a>
 </p>
+
 This plugin provides simple recorder and player functionalities for
 - Android
 - iOS
@@ -32,28 +33,6 @@ This plugin provides simple recorder and player functionalities for
 
  [papa](/api/index.html)
 
-
------------------------------------------------------------------------------------------------------------------------------------
-
-# Flutter Sound V6.x is OUT
-
-Please refer to the [CHANGELOG.md file](../CHANGELOG.md) to get learn all the great new features. It has especially the following :
-
-## Flutter Web support
-
-Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://www.canardoux.space/tau/flutter_sound_example) (still cannot record with Safari or any web browser on iOS). You can [read this](doc/codec.md#flutter-sound-on-flutter-web).
-
-## Record to Dart Stream
-
-This feature has been requested from many months from many, many, many Flutter Sound users. This open doors to things like feeding a Speech-to-Text engine.
-
-You can refer to the [Getting Started with Record-to-Stream](doc/codec.md#recording-pcm-16-to-a-dart-stream) notice.
-
-## Playback from a live Dart Stream
-
-This feature has also been requested from many months from many Flutter Sound users.
-
-You can refer to the [Getting Started with Playback-from-Stream](doc/codec.md#playing-pcm-16-from-a-dart-stream) notice.
 
 ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -88,17 +67,11 @@ We actually maintain two branches for Flutter Sound :
 
 See [the migration guide](doc/migration.md) to migrate from an anterious version (V5, V4 or V3)
 
-## Changelog
-
-You can find the [changes here](../CHANGELOG.md)
 
 ## Sources
 
 The [sources are here](https://github.com/Canardoux/tau)
 
-## Documentation
-
-The [documentation is here](https://canardoux.github.io/tau/doc/flutter_sound)
 
 ## SDK requirements
 
@@ -171,10 +144,3 @@ When you fill an issue, we try to answer something in less than 48h. Of course, 
 - [ ] Better UI Widget
 - [ ] Lock screen control between two sounds (Done on iOS).
 
-
-## Help Maintenance
-
-My friend Hyo has been maintaining quite many repos these days and he is burning out slowly. If you could help him cheer up, buy him a cup of coffee will make his life really happy and get much energy out of it. As a side effect, we will know that Flutter Sound is important for you, that you appreciate our job and that you can show it with a little money.
-
-<a href="https://www.buymeacoffee.com/dooboolab" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/purple_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
-[![Paypal](https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png)](https://paypal.me/dooboolab)

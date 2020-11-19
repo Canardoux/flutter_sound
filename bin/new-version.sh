@@ -14,6 +14,8 @@ bin/flavor FULL
 bin/reldev.sh REL
 bin/setver.sh $VERSION
 
+rm flutter_sound/Logotype\ primary.png
+ln -s doc/flutter_sound/Logotype\ primary.png flutter_sound/
 
 cd flutter_sound_platform_interface/
 #flutter clean
@@ -102,7 +104,8 @@ rm -rf .symlinks/
 pod repo update
 cd ..
 flutter build ios
-flutter build apk
+# Bug in flutter tools : if "flutter build --release" we must first "--debug" and then "--profile" before "--release"
+flutter build apk --debug
 flutter build web
 cd ../..
 rm -r doc/flutter_sound/web_example
