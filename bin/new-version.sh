@@ -15,7 +15,7 @@ bin/reldev.sh REL
 bin/setver.sh $VERSION
 
 rm flutter_sound/Logotype\ primary.png
-ln -s doc/flutter_sound/Logotype\ primary.png flutter_sound/
+ln -s ../doc/flutter_sound/Logotype\ primary.png flutter_sound/
 
 cd flutter_sound_platform_interface/
 #flutter clean
