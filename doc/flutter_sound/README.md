@@ -37,8 +37,6 @@ This plugin provides simple recorder and player functionalities for
 ------------------------------------------------------------------------------------------------------------------------------------
 
 
-![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
-
 ## Features
 
 - Play and Record sounds or music with various codecs. (See [the supported codecs here](doc/codec.md#actually-the-following-codecs-are-supported-by-flutter_sound))

@@ -46,23 +46,23 @@ This plugin provides simple recorder and player functionalities for
 
 # Flutter Sound V6.x is OUT
 
-Please refer to the [CHANGELOG.md file](../CHANGELOG.md) to get learn all the great new features. It has especially the following :
+Please refer to the [CHANGELOG.md file](https://canardoux.github.io/tau/book/CHANGELOG.html) to get learn all the great new features. It has especially the following :
 
 ## Flutter Web support
 
-Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://www.canardoux.space/tau/flutter_sound_example) (still cannot record with Safari or any web browser on iOS). You can [read this](doc/codec.md#flutter-sound-on-flutter-web).
+Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://canardoux.github.io/tau/doc/flutter_sound/web) (still cannot record with Safari or any web browser on iOS). You can [read this](https://canardoux.github.io/tau/book/flutter_sound/codec.html#flutter-sound-on-flutter-web).
 
 ## Record to Dart Stream
 
 This feature has been requested from many months from many, many, many Flutter Sound users. This open doors to things like feeding a Speech-to-Text engine.
 
-You can refer to the [Getting Started with Record-to-Stream](doc/codec.md#recording-pcm-16-to-a-dart-stream) notice.
+You can refer to the [Getting Started with Record-to-Stream](https://canardoux.github.io/tau/book/flutter_sound/codec.html#recording-pcm-16-to-a-dart-stream) notice.
 
 ## Playback from a live Dart Stream
 
 This feature has also been requested from many months from many Flutter Sound users.
 
-You can refer to the [Getting Started with Playback-from-Stream](doc/codec.md#playing-pcm-16-from-a-dart-stream) notice.
+You can refer to the [Getting Started with Playback-from-Stream](https://canardoux.github.io/tau/book/flutter_sound/codec.html#playing-pcm-16-from-a-dart-stream) notice.
 
 ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -71,7 +71,7 @@ You can refer to the [Getting Started with Playback-from-Stream](doc/codec.md#pl
 
 ## Features
 
-- Play and Record sounds or music with various codecs. (See [the supported codecs here](doc/codec.md#actually-the-following-codecs-are-supported-by-flutter_sound))
+- Play and Record sounds or music with various codecs. (See [the supported codecs here](https://canardoux.github.io/tau/book/flutter_sound/codec.html#flutter-sound-codecs))
 - Play local or remote files specified by their URL.
 - Record to a Dart Stream
 - Playback from a Dart Stream
@@ -88,7 +88,7 @@ Maybe, one day, we will be supported by Linux, Macos, and even (why not) Windows
 
 ## Changelog
 
-You can find the [changes here](../CHANGELOG.md)
+You can find the [changes here](https://canardoux.github.io/tau/doc/flutter_sound/web)
 
 
 ## Documentation
