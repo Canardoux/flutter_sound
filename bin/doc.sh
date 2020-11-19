@@ -18,7 +18,7 @@ mv _book ../book
 cd ..
 
 git add .
-git commit -m "TAU : documentation Version $VERSION"
+git commit -m "TAU : Version $VERSION"
 git push
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
