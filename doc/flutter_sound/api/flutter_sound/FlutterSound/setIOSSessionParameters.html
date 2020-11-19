@@ -67,7 +67,6 @@
         <li class="section-title"><a href="../../flutter_sound/FlutterSound-class.html#instance-methods">Methods</a></li>
         <li><a href="../../flutter_sound/FlutterSound/internalOpenSessionForRecording.html">internalOpenSessionForRecording</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
-        <li><a href="../../flutter_sound/FlutterSound/releaseEverything.html">releaseEverything</a></li>
         <li><a href="../../flutter_sound/FlutterSound/setAudioFocus.html">setAudioFocus</a></li>
         <li><a href="../../flutter_sound/FlutterSound/setIOSSessionParameters.html">setIOSSessionParameters</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
@@ -88,8 +87,8 @@
     <section class="multi-line-signature">
       <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
             <span class="name ">setIOSSessionParameters</span>
-(<wbr><ol class="parameter-list"><li><span class="parameter" id="setIOSSessionParameters-param-category">{<span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.2+10/flutter_sound_platform_interface/SessionCategory-class.html">SessionCategory</a></span> <span class="parameter-name">category</span>: <span class="default-value">SessionCategory.playback</span>, </span></li>
-<li><span class="parameter" id="setIOSSessionParameters-param-mode"><span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.2+10/flutter_sound_platform_interface/SessionMode-class.html">SessionMode</a></span> <span class="parameter-name">mode</span>: <span class="default-value">SessionMode.modeDefault</span>}</span></li>
+(<wbr><ol class="parameter-list"><li><span class="parameter" id="setIOSSessionParameters-param-category">{<span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.2+11/flutter_sound_platform_interface/SessionCategory-class.html">SessionCategory</a></span> <span class="parameter-name">category</span>: <span class="default-value">SessionCategory.playback</span>, </span></li>
+<li><span class="parameter" id="setIOSSessionParameters-param-mode"><span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.2+11/flutter_sound_platform_interface/SessionMode-class.html">SessionMode</a></span> <span class="parameter-name">mode</span>: <span class="default-value">SessionMode.modeDefault</span>}</span></li>
 </ol>)
       
     </section>
@@ -115,7 +114,6 @@ default parameters for the Audio Session.</p>
         Log.i(&#39;FS:---&gt; setIOSSessionParameters &#39;);
         _mSessionCategory = category;
         _mSessionMode = mode;
-        _mSetIOSSessionParametersDone = true; &#47;&#47; Not sure if useful
         &#47;&#47; For legacy reason, we need to have an open player to set the Audio Focus
         &#47;&#47; This is not very clean, and should be improved...
         if (!thePlayer.isOpen())
@@ -140,7 +138,7 @@ default parameters for the Audio Session.</p>
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+10
+      6.4.2+11
   </span>
 
 </footer>

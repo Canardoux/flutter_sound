@@ -118,7 +118,7 @@
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; setLogLevel(int logLevel) async {
   try {
-    await _methodChannel.invokeMethod(&#39;setLogLevel&#39;, {&#39;level&#39;: logLevel});
+    await _methodChannel.invokeMethod&lt;void&gt;(&#39;setLogLevel&#39;, {&#39;level&#39;: logLevel});
   } on PlatformException catch (e) {
     print(&quot;Plugin error: ${e.message}&quot;);
   }
@@ -135,7 +135,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+10
+      6.4.2+11
   </span>
 
 </footer>

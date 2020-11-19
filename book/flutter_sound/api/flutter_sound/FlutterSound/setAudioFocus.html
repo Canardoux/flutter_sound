@@ -67,7 +67,6 @@
         <li class="section-title"><a href="../../flutter_sound/FlutterSound-class.html#instance-methods">Methods</a></li>
         <li><a href="../../flutter_sound/FlutterSound/internalOpenSessionForRecording.html">internalOpenSessionForRecording</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
-        <li><a href="../../flutter_sound/FlutterSound/releaseEverything.html">releaseEverything</a></li>
         <li><a href="../../flutter_sound/FlutterSound/setAudioFocus.html">setAudioFocus</a></li>
         <li><a href="../../flutter_sound/FlutterSound/setIOSSessionParameters.html">setIOSSessionParameters</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
@@ -88,7 +87,7 @@
     <section class="multi-line-signature">
       <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
             <span class="name ">setAudioFocus</span>
-(<wbr><ol class="parameter-list"><li><span class="parameter" id="setAudioFocus-param-focus"><span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.2+10/flutter_sound_platform_interface/AudioFocus-class.html">AudioFocus</a></span> <span class="parameter-name">focus</span></span></li>
+(<wbr><ol class="parameter-list"><li><span class="parameter" id="setAudioFocus-param-focus"><span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.2+11/flutter_sound_platform_interface/AudioFocus-class.html">AudioFocus</a></span> <span class="parameter-name">focus</span></span></li>
 </ol>)
       
     </section>
@@ -112,7 +111,6 @@ the player is Stopped. So very often, the APP will not use this verb.</p>
 {
         Log.i(&#39;FS:---&gt; setAudioFocus &#39;);
         _mFocus = focus;
-        _mSetAudioFocusDone = true;
 
         &#47;&#47; For legacy reason, we need to have an open player to set the Audio Focus
         &#47;&#47; This is not very clean, and should be improved...
@@ -138,7 +136,7 @@ the player is Stopped. So very often, the APP will not use this verb.</p>
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+10
+      6.4.2+11
   </span>
 
 </footer>

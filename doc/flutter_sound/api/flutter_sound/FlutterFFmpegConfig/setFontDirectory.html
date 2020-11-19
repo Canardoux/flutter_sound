@@ -119,15 +119,15 @@
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; setFontDirectory(
     String fontDirectory, Map&lt;String, String&gt; fontNameMap) async {
-  var parameters;
+  Map&lt;String, dynamic&gt;  parameters;
   if (fontNameMap == null) {
-    parameters = {&#39;fontDirectory&#39;: fontDirectory};
+    parameters = &lt;String, dynamic&gt;{&#39;fontDirectory&#39;: fontDirectory};
   } else {
-    parameters = {&#39;fontDirectory&#39;: fontDirectory, &#39;fontNameMap&#39;: fontNameMap};
+    parameters = &lt;String, dynamic&gt;{&#39;fontDirectory&#39;: fontDirectory, &#39;fontNameMap&#39;: fontNameMap};
   }
 
   try {
-    await _methodChannel.invokeMethod(&#39;setFontDirectory&#39;, parameters);
+    await _methodChannel.invokeMethod&lt;void&gt;(&#39;setFontDirectory&#39;, parameters);
   } on PlatformException catch (e) {
     print(&quot;Plugin error: ${e.message}&quot;);
   }
@@ -144,7 +144,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+10
+      6.4.2+11
   </span>
 
 </footer>

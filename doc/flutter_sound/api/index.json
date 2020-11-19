@@ -776,18 +776,6 @@
   }
  },
  {
-  "name": "releaseEverything",
-  "qualifiedName": "flutter_sound.FlutterSound.releaseEverything",
-  "href": "flutter_sound/FlutterSound/releaseEverything.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSound",
-   "type": "class"
-  }
- },
- {
   "name": "setAudioFocus",
   "qualifiedName": "flutter_sound.FlutterSound.setAudioFocus",
   "href": "flutter_sound/FlutterSound/setAudioFocus.html",

@@ -121,7 +121,7 @@ This method does not support executing multiple concurrent commands. If you exec
   try {
     final Map&lt;dynamic, dynamic&gt; result =
         await _methodChannel.invokeMethod(&#39;getLastCommandOutput&#39;);
-    return result[&#39;lastCommandOutput&#39;];
+    return result[&#39;lastCommandOutput&#39;] as String;
   } on PlatformException catch (e) {
     print(&quot;Plugin error: ${e.message}&quot;);
     return null;
@@ -139,7 +139,7 @@ This method does not support executing multiple concurrent commands. If you exec
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+10
+      6.4.2+11
   </span>
 
 </footer>
