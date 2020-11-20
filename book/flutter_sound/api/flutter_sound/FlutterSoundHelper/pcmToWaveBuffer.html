@@ -138,7 +138,7 @@ It adds a <code>Wave</code> envelop in front of the PCM buffer, so that the file
                 var x = e.toList();
                 buffer.addAll(x);
         });
-        await header.write( sink);
+        header.write( sink);
         sink.add(inputBuffer);
         await sink.close();
         await controller.close();
@@ -156,7 +156,7 @@ It adds a <code>Wave</code> envelop in front of the PCM buffer, so that the file
 <footer>
   <span class="no-break">
     flauto
-      6.4.3+4
+      6.4.3+5
   </span>
 
 </footer>

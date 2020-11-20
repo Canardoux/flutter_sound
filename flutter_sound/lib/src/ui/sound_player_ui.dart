@@ -661,7 +661,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
                         {
                                 if (_playerSubscription != null)
                                 {
-                                        _playerSubscription.cancel;
+                                        _playerSubscription.cancel();
                                         _playerSubscription = null;
                                 }
                                 setState(()

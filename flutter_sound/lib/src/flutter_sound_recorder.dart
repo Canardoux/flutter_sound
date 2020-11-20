@@ -281,13 +281,14 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
                                 if (!_isOpen) // This could have been changed during waiting for the semaphore
                                 {
                                         needToClose = true;
-                                        await FlutterSound().internalOpenSessionForRecording();  
+                                        FlutterSound().internalOpenSessionForRecording();
                                 }
                         });
                 }
                 
                 var result = await FlutterSoundRecorderPlatform.instance.isEncoderSupported(this, codec: codec);
-                if (needToClose) {
+                if (needToClose)
+                {
                         await closeAudioSession();
                 }
                 return result;
