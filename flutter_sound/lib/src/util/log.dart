@@ -162,7 +162,7 @@ class MyLogPrinter extends LogPrinter
         MyLogPrinter(this.currentWorkingDirectory);
 
         @override
-        void log(LogEvent event)
+        List<String> log(LogEvent event)
         {
                 if (EnumHelper.getIndexOf(Level.values, Log.loggingLevel) >
                     EnumHelper.getIndexOf(Level.values, event.level))
