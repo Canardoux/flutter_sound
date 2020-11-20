@@ -46,9 +46,9 @@ enum PlayerState {
   isPaused,
 }
 
-typedef void TWhenFinished();
-typedef void TonPaused(bool paused);
-typedef void TonSkip();
+typedef TWhenFinished =  void Function();
+typedef TonPaused = void Function(bool paused);
+typedef TonSkip = void Function();
 
 
 /// Return the file extension for the given path.
@@ -66,7 +66,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   TonSkip onSkipForward; // User callback "onPaused:"
   TonSkip onSkipBackward; // User callback "onPaused:"
   TonPaused onPaused; // user callback "whenPause:"
-  var _lock = new Lock();
+  final _lock = Lock();
   StreamSubscription<Food> foodStreamSubscription ;
   StreamController <Food> foodStreamController;
 
@@ -194,12 +194,15 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   {
 
       print( 'FS:---> skipBackward ' );
-      await _lock.synchronized(() async {
+      await _lock.synchronized(() async
+      {
         assert (state != null);
         playerState = PlayerState.values[state];
 
         if (onSkipBackward != null)
-          onSkipBackward( );
+        {
+          onSkipBackward();
+        }
       });
       print( 'FS:<--- skipBackward ' );
   }
@@ -212,8 +215,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       await _lock.synchronized(() async {
         assert (state != null);
         playerState = PlayerState.values[state];
-        if (onSkipForward != null)
-          onSkipForward( );
+        if (onSkipForward != null) {
+          onSkipForward();
+        }
       });
       print( 'FS:<--- skipForward ' );
   }
@@ -245,8 +249,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         assert (state != null);
         playerState = PlayerState.values[state];
 
-        if (audioPlayerFinishedPlaying != null)
-          audioPlayerFinishedPlaying( );
+        if (audioPlayerFinishedPlaying != null) {
+          audioPlayerFinishedPlaying();
+        }
       });
       print('FS:<--- audioPlayerFinished');
   }
@@ -355,8 +360,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
         FlutterSoundPlayerPlatform.instance.openSession( this);
         setPlayerCallback( );
-        openAudioSessionCompleter = new Completer<FlutterSoundPlayer>();
-        int state = await FlutterSoundPlayerPlatform.instance.initializeMediaPlayer(this, focus: focus, category: category, mode: mode, audioFlags: audioFlags, device: device, withUI: withUI );
+        openAudioSessionCompleter = Completer<FlutterSoundPlayer>();
+        var state = await FlutterSoundPlayerPlatform.instance.initializeMediaPlayer(this, focus: focus, category: category, mode: mode, audioFlags: audioFlags, device: device, withUI: withUI );
         playerState = PlayerState.values[state];
         //isInited = success ?  Initialized.fullyInitialized : Initialized.notInitialized;
 
@@ -405,7 +410,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         );
       }
 
-      int state = await FlutterSoundPlayerPlatform.instance.setAudioFocus(this, focus: focus, category: category, mode: mode, audioFlags: audioFlags, device: device, ) ;
+      var state = await FlutterSoundPlayerPlatform.instance.setAudioFocus(this, focus: focus, category: category, mode: mode, audioFlags: audioFlags, device: device, ) ;
       playerState = PlayerState.values[state];
     });
     print( 'FS:<--- setAudioFocus ' );
@@ -430,7 +435,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       await stop( );
 
       //_removePlayerCallback(); // playerController is closed by this function
-      int state = await FlutterSoundPlayerPlatform.instance.releaseMediaPlayer( this ) ;
+      var state = await FlutterSoundPlayerPlatform.instance.releaseMediaPlayer( this ) ;
       playerState = PlayerState.values[state];
       _removePlayerCallback( );
       FlutterSoundPlayerPlatform.instance.closeSession( this);
@@ -447,7 +452,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     if ( isInited != Initialized.fullyInitialized) {
       throw (_NotOpen());
     }
-    int state = await FlutterSoundPlayerPlatform.instance.getPlayerState(this);
+    var state = await FlutterSoundPlayerPlatform.instance.getPlayerState(this);
     playerState = PlayerState.values[state];
     return playerState;
   }
@@ -477,7 +482,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   bool needToConvert(Codec codec) {
     print('FS:---> needToConvert ');
     if (codec == null) return false;
-    Codec convert =
+    var convert =
         (kIsWeb) ? tabWebConvert[codec.index]
         : (Platform.isIOS) ? tabIosConvert[codec.index]
         : (Platform.isAndroid) ? tabAndroidConvert[codec.index]
@@ -503,7 +508,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
     if (needToConvert(codec)) {
       if (!await flutterSoundHelper.isFFmpegAvailable()) return false;
-      Codec convert = kIsWeb ? tabWebConvert[codec.index]
+      var convert = kIsWeb ? tabWebConvert[codec.index]
           : (Platform.isIOS) ? tabIosConvert[codec.index]
           : (Platform.isAndroid) ? tabAndroidConvert[codec.index]
           : null;
@@ -525,15 +530,13 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     if (isInited != Initialized.fullyInitialized) {
       throw (_NotOpen());
     }
-    int state = await FlutterSoundPlayerPlatform.instance.setSubscriptionDuration(this, duration: duration);
+    var state = await FlutterSoundPlayerPlatform.instance.setSubscriptionDuration(this, duration: duration);
     playerState = PlayerState.values[state];
     print('FS:<---- setSubscriptionDuration ');
   }
 
   void setPlayerCallback() {
-    if (_playerController == null) {
-      _playerController = StreamController<PlaybackDisposition>.broadcast();
-    }
+      _playerController ??= StreamController<PlaybackDisposition>.broadcast();
   }
 
   void _removePlayerCallback() {
@@ -550,14 +553,14 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     // We use FFmpeg for that task.
     print('FS:---> _convertAudio ');
     var tempDir = await getTemporaryDirectory();
-    Codec codec = what['codec'] as Codec;
-    Codec convert = kIsWeb ? tabWebConvert[codec.index]
+    var codec = what['codec'] as Codec;
+    var convert = kIsWeb ? tabWebConvert[codec.index]
         : (Platform.isIOS) ? tabIosConvert[codec.index]
         : (Platform.isAndroid) ? tabAndroidConvert[codec.index]
         : null;
-    String fout =
+    var fout =
         '${tempDir.path}/flutter_sound-tmp2${ext[convert.index]}';
-    String path = what['path'] as String;
+    var path = what['path'] as String;
     await flutterSoundHelper.convertFile(path, codec, fout, convert);
 
     // Now we can play Apple CAF/OPUS
@@ -570,13 +573,13 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   Future<void> _convert ( Map<String, dynamic> what) async
   {
     print('FS:---> _convert ');
-    Codec codec = what['codec'] as Codec;
+    var codec = what['codec'] as Codec;
     if (needToConvert(codec)) {
-      Uint8List fromDataBuffer = what['fromDataBuffer'] as Uint8List;
+      var fromDataBuffer = what['fromDataBuffer'] as Uint8List;
 
       if (fromDataBuffer != null) {
         var tempDir = await getTemporaryDirectory();
-        File inputFile = File('${tempDir.path}/flutter_sound-tmp');
+        var inputFile = File('${tempDir.path}/flutter_sound-tmp');
 
         if (inputFile.existsSync()) {
           await inputFile.delete();
@@ -594,12 +597,12 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
   Future<Duration> startPlayer(
    {
-     String fromURI = null,
-     Uint8List fromDataBuffer = null,
+     String fromURI ,
+     Uint8List fromDataBuffer,
      Codec codec = Codec.aacADTS,
      int sampleRate = 16000, // Used only with codec == Codec.pcm16
      int numChannels = 1, // Used only with codec == Codec.pcm16
-     TWhenFinished whenFinished = null,
+     TWhenFinished whenFinished,
   }) async {
      print('FS:---> startPlayer ');
      if (isInited == Initialized.initializationInProgress) {
@@ -610,8 +613,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     }
 
      if (codec == Codec.pcm16 && fromURI != null) {
-       Directory tempDir = await getTemporaryDirectory();
-       String path =
+       var tempDir = await getTemporaryDirectory();
+       var path =
            '${tempDir.path}/flutter_sound_tmp.wav';
        await flutterSoundHelper.pcmToWave(
          inputFile: fromURI,
@@ -632,7 +635,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         await stop( ); // Just in case
 
         //playerState = PlayerState.isPlaying;
-        Map<String, dynamic> what = <String, dynamic>{'codec': codec, 'path': fromURI, 'fromDataBuffer': fromDataBuffer,} ;
+        var what = <String, dynamic>{'codec': codec, 'path': fromURI, 'fromDataBuffer': fromDataBuffer,} ;
         await _convert( what );
         codec = what['codec'] as Codec;
         fromURI = what['path'] as String;
@@ -646,8 +649,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
           print('FS: !whenFinished()');
           whenFinished();
         };
-        startPlayerCompleter = new Completer<Duration>();
-        int state = await FlutterSoundPlayerPlatform.instance.startPlayer(this, codec: codec, fromDataBuffer: fromDataBuffer, fromURI: fromURI,) ;
+        startPlayerCompleter = Completer<Duration>();
+        var state = await FlutterSoundPlayerPlatform.instance.startPlayer(this, codec: codec, fromDataBuffer: fromDataBuffer, fromURI: fromURI,) ;
         playerState = PlayerState.values[state];
    } );
      //Duration duration = Duration(milliseconds: retMap['duration'] as int);
@@ -678,7 +681,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       {
             foodStreamSubscription.pause(food.exec(this));
       }) ;
-      int state  = await FlutterSoundPlayerPlatform.instance.startPlayer(this,
+      var state  = await FlutterSoundPlayerPlatform.instance.startPlayer(this,
             codec: codec,
             fromDataBuffer: null,
             fromURI: null,
@@ -692,12 +695,12 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
     Future<void> feedFromStream(Uint8List buffer) async
     {
-      int lnData = 0;
-      int totalLength = buffer.length;
+      var lnData = 0;
+      var totalLength = buffer.length;
       while (totalLength > 0 && !isStopped)
       {
-        int bsize = totalLength > BLOCK_SIZE ? BLOCK_SIZE : totalLength;
-        int ln = await feed(buffer.sublist(lnData, lnData + bsize));
+        var bsize = totalLength > BLOCK_SIZE ? BLOCK_SIZE : totalLength;
+        var ln = await feed(buffer.sublist(lnData, lnData + bsize));
         lnData += ln;
         totalLength -= ln;
       }
@@ -711,12 +714,13 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       {
         throw (_NotOpen());
       }
-      if (isStopped)
+      if (isStopped) {
         return 0;
-      needSomeFoodCompleter = new Completer<int>();
+      }
+      needSomeFoodCompleter = Completer<int>();
       try
       {
-        int ln = await FlutterSoundPlayerPlatform.instance.feed(this, data: data,);
+        var ln = await FlutterSoundPlayerPlatform.instance.feed(this, data: data,);
         if (ln != 0)
         {
           needSomeFoodCompleter = null;
@@ -725,8 +729,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       } catch(e)
       {
         needSomeFoodCompleter = null;
-        if (isStopped)
+        if (isStopped) {
           return 0;
+        }
         rethrow;
       }
 
@@ -739,13 +744,13 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
   Future<Duration> startPlayerFromTrack( Track track,
               {
-                TonSkip onSkipForward = null,
-                TonSkip onSkipBackward = null,
-                TonPaused onPaused = null,
-                TWhenFinished whenFinished = null,
-                Duration progress = null,
-                Duration duration = null,
-                bool defaultPauseResume = null,
+                TonSkip onSkipForward,
+                TonSkip onSkipBackward,
+                TonPaused onPaused,
+                TWhenFinished whenFinished,
+                Duration progress,
+                Duration duration,
+                bool defaultPauseResume,
                 bool removeUIWhenStopped = true,
               }) async {
 
@@ -768,26 +773,24 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         this.onSkipForward = onSkipForward;
         this.onSkipBackward = onSkipBackward;
         this.onPaused = onPaused;
-        Map<String, dynamic> trackDico = track.toMap( );
-        //playerState = PlayerState.isPlaying;
-        Map<String, dynamic> what = <String, dynamic>{'codec': track.codec, 'path': track.trackPath, 'fromDataBuffer': track.dataBuffer,}  ;
+        var trackDico = track.toMap( );
+        var what = <String, dynamic>{'codec': track.codec, 'path': track.trackPath, 'fromDataBuffer': track.dataBuffer,}  ;
         await _convert( what );
-        Codec codec = what['codec'] as Codec;
+        var codec = what['codec'] as Codec;
         trackDico['bufferCodecIndex'] = codec.index;
         trackDico['path'] = what['path'];
         trackDico['dataBuffer'] = what['fromDataBuffer'];
         trackDico['codec'] = codec.index;
 
-        if (defaultPauseResume == null)
-          defaultPauseResume = (
-                      onPaused == null
+          defaultPauseResume ??= (
+              onPaused == null
           );
         if (playerState != PlayerState.isStopped)
         {
           throw Exception( 'Player is not stopped' );
         }
-        startPlayerCompleter = new Completer<Duration>();
-        int state = await FlutterSoundPlayerPlatform.instance.startPlayerFromTrack(this,
+        startPlayerCompleter =  Completer<Duration>();
+        var state = await FlutterSoundPlayerPlatform.instance.startPlayerFromTrack(this,
           progress: progress,
           duration: duration,
           track: trackDico,
@@ -825,7 +828,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
                 TonSkip onSkipForward,
                 TonSkip onSkipBackward,
                 TonPaused onPaused,
-                bool defaultPauseResume = null,
+                bool defaultPauseResume,
 
               }) async {
     print('FS:---> nowPlaying ');
@@ -846,14 +849,13 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       this.onSkipBackward = onSkipBackward;
       this.onPaused = onPaused;
 
-      Map<String, dynamic> trackDico = (
+      var trackDico = (
                   track != null
       ) ? track.toMap( ) : null;
-      if (defaultPauseResume == null)
-        defaultPauseResume = (
-                    onPaused == null
+        defaultPauseResume ??= (
+            onPaused == null
         );
-      int state = await FlutterSoundPlayerPlatform.instance.nowPlaying(this,
+      var state = await FlutterSoundPlayerPlatform.instance.nowPlaying(this,
         track: trackDico,
         duration: duration,
         progress: progress,
@@ -911,7 +913,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         await foodStreamController.close();
         foodStreamController = null;
       }
-    int state = await FlutterSoundPlayerPlatform.instance.stopPlayer(this);
+    var state = await FlutterSoundPlayerPlatform.instance.stopPlayer(this);
 
     playerState = PlayerState.values[state];
     if (playerState != PlayerState.isStopped)
@@ -952,7 +954,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       throw (_NotOpen());
     }
     await _lock.synchronized(() async {
-         int state = await FlutterSoundPlayerPlatform.instance.resumePlayer(this);
+         var state = await FlutterSoundPlayerPlatform.instance.resumePlayer(this);
         playerState = PlayerState.values[state];
         if (playerState != PlayerState.isPlaying)
         {
@@ -974,7 +976,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     }
     await _lock.synchronized(() async
     {
-        int state = await FlutterSoundPlayerPlatform.instance.seekToPlayer( this, duration: duration,);
+        var state = await FlutterSoundPlayerPlatform.instance.seekToPlayer( this, duration: duration,);
         playerState = PlayerState.values[state];
     });
     //print('FS:<--- seekToPlayer ');
@@ -1002,7 +1004,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         throw RangeError( 'Value of volume should be between 0.0 and 1.0.' );
       }
 
-      int state = await FlutterSoundPlayerPlatform.instance.setVolume(this, volume: indexedVolume,);
+      var state = await FlutterSoundPlayerPlatform.instance.setVolume(this, volume: indexedVolume,);
       playerState = PlayerState.values[state];
     });
     print('FS:<--- setVolume ');
@@ -1014,7 +1016,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
                                   }) async {
     print('FS:---> setUIProgressBar : duration=$duration  progress=$progress');
     await _lock.synchronized(() async {
-      int state = await FlutterSoundPlayerPlatform.instance.setUIProgressBar( this, duration: duration, progress: progress);
+      var state = await FlutterSoundPlayerPlatform.instance.setUIProgressBar( this, duration: duration, progress: progress);
       playerState = PlayerState.values[state];
     });
       print('FS:<--- setUIProgressBar ');
@@ -1022,13 +1024,15 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
 
   Future<String> getResourcePath() async {
-    if (kIsWeb)
+    if (kIsWeb) {
       return null;
+    }
     else if (Platform.isIOS) {
-      String s = await FlutterSoundPlayerPlatform.instance.getResourcePath(this);
+      var s = await FlutterSoundPlayerPlatform.instance.getResourcePath(this);
       return s;
-    } else
+    } else {
       return (await getApplicationDocumentsDirectory()).path;
+    }
   }
 }
 
@@ -1133,14 +1137,14 @@ class Track {
   /// as values.
   Map<String, dynamic> toMap() {
     final map = {
-      "path": trackPath,
-      "dataBuffer": dataBuffer,
-      "title": trackTitle,
-      "author": trackAuthor,
-      "albumArtUrl": albumArtUrl,
-      "albumArtAsset": albumArtAsset,
-      "albumArtFile": albumArtFile,
-      "bufferCodecIndex": codec?.index,
+      'path': trackPath,
+      'dataBuffer': dataBuffer,
+      'title': trackTitle,
+      'author': trackAuthor,
+      'albumArtUrl': albumArtUrl,
+      'albumArtAsset': albumArtAsset,
+      'albumArtFile': albumArtFile,
+      'bufferCodecIndex': codec?.index,
     };
 
     return map;

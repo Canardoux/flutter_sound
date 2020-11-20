@@ -35,7 +35,7 @@ import 'package:path_provider/path_provider.dart';
 
 
 const int SAMPLE_RATE = 8000;
-typedef _Fn();
+typedef _Fn = void Function();
 
 
 /// Example app.
@@ -79,12 +79,14 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
 
   Future<IOSink>  createFile() async
   {
-    Directory tempDir = await getTemporaryDirectory();
+    var tempDir = await getTemporaryDirectory();
     _mPath =
         '${tempDir.path}/flutter_sound_example.pcm';
-    File outputFile = File(_mPath);
+    var outputFile = File(_mPath);
     if (outputFile.existsSync())
+    {
       await outputFile.delete();
+    }
     return outputFile.openWrite();
   }
 
@@ -95,15 +97,17 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   Future<void> record() async
   {
     assert (_mRecorderIsInited &&  _mPlayer.isStopped);
-    IOSink sink = await createFile();
-    StreamController<Food> recordingDataController = StreamController<Food>();
+    var sink = await createFile();
+    var recordingDataController = StreamController<Food>();
     _mRecordingDataSubscription =
           recordingDataController.stream.listen
             ((Food buffer)
               {
                 if (buffer is FoodData)
+                {
                   sink.add(buffer.data);
                 }
+              }
             );
     await _mRecorder.startRecorder(
         toStream: recordingDataController.sink,
@@ -132,7 +136,9 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   _Fn getRecorderFn()
   {
     if (!_mRecorderIsInited  || !_mPlayer.isStopped)
+    {
       return null;
+    }
     return _mRecorder.isStopped ? record : (){stopRecorder().then((value) => setState((){}));};
 
   }
@@ -152,7 +158,9 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   _Fn getPlaybackFn()
   {
     if (!_mPlayerIsInited || !_mplaybackReady || !_mRecorder.isStopped)
+    {
       return null;
+    }
     return _mPlayer.isStopped ? play : (){stopPlayer().then((value) => setState((){}));};
   }
 

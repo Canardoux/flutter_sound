@@ -63,13 +63,18 @@ class RecordingPlayer extends StatelessWidget {
 
         if (track != null) {
           track.trackTitle = title;
-          track.trackAuthor = "By flutter_sound";
+          track.trackAuthor = 'By flutter_sound';
 
           if (kIsWeb)
+          {
             track.albumArtAsset = null;
-          else if (Platform.isIOS) {
+          } else
+          if (Platform.isIOS)
+          {
             track.albumArtAsset = 'AppIcon';
-          } else if (Platform.isAndroid) {
+          } else
+          if (Platform.isAndroid)
+          {
             track.albumArtAsset = 'AppIcon.png';
           }
         }

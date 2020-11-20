@@ -67,7 +67,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
         String _savedUri; // Used by startRecorder/stopRecorder to keep the caller wanted uri
         String _tmpUri; // Used by startRecorder/stopRecorder to keep the temporary uri to record CAF
         RecorderState _recorderState = RecorderState.isStopped;
-        Lock _lock = new Lock();
+        final Lock _lock = Lock();
 
 
 
@@ -173,7 +173,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
                 _setRecorderCallback();
                 if (_userStreamSink != null) 
                 {
-                        _userStreamSink.close();
+                        await _userStreamSink.close();
                         _userStreamSink = null;
                 }
                 FlutterSoundRecorderPlatform.instance.openSession(this);
@@ -242,7 +242,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
                 _removeRecorderCallback(); // _recorderController will be closed by this function
                 if (_userStreamSink != null)
                 {
-                        _userStreamSink.close();
+                        await _userStreamSink.close();
                         _userStreamSink = null;
                 }
                 await FlutterSoundRecorderPlatform.instance.releaseFlautoRecorder(this);
@@ -264,12 +264,13 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
                 // - remux CAF file format to OPUS file format (with ffmpeg)
                 if ((codec == Codec.opusOGG) && (!kIsWeb) && (Platform.isIOS))
                 {
-                        if (!await FlutterSoundHelper().isFFmpegAvailable( ))
+                        if (!await FlutterSoundHelper().isFFmpegAvailable( )) {
                                 return false;
+                        }
                         codec = Codec.opusCAF ;
                 } 
 
-                bool needToClose = false;
+                var needToClose = false;
                 if (!_isOpen) // We must open a session for legacy reason. this is not clean and should be improved
                 {
                         await _lock.synchronized(() async
@@ -282,9 +283,10 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
                         });
                 }
                 
-                bool result = await FlutterSoundRecorderPlatform.instance.isEncoderSupported(this, codec: codec);
-                if (needToClose)
-                        closeAudioSession();
+                var result = await FlutterSoundRecorderPlatform.instance.isEncoderSupported(this, codec: codec);
+                if (needToClose) {
+                        await closeAudioSession();
+                }
                 return result;
         }
 
@@ -295,10 +297,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
       
         void _setRecorderCallback()
         {
-                if (_recorderController == null) 
-                {
-                        _recorderController = StreamController.broadcast();
-                }
+                        _recorderController ??= StreamController.broadcast();
         }
         
         
@@ -331,14 +330,15 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
         {
                 await _lock.synchronized(() async
                 {
-                        if (!_isOpen)
+                        if (!_isOpen) {
                                 return null;
+                        }
                         await stopRecorder();
                         _openState = Initialized.initializationInProgress;
                         _removeRecorderCallback(); // _recorderController will be closed by this function
                         if (_userStreamSink != null)
                         {
-                                _userStreamSink.close();
+                                await _userStreamSink.close();
                                 _userStreamSink = null;
                         }
                         await FlutterSoundRecorderPlatform.instance.releaseFlautoRecorder(this);
@@ -353,8 +353,8 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
         Future<void> startRecorder
         ({
                   Codec codec = Codec.defaultCodec,
-                  String toFile = null,
-                  StreamSink<Food> toStream = null,
+                  String toFile,
+                  StreamSink<Food> toStream,
                   int sampleRate = 16000,
                   int numChannels = 1,
                   int bitRate = 16000,
@@ -387,11 +387,13 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
                         throw _CodecNotSupportedException('Codec not supported.');
                 }
 
-                if ( (toFile == null && toStream == null) || (toFile != null && toStream != null))
+                if ( (toFile == null && toStream == null) || (toFile != null && toStream != null)) {
                         throw Exception('One, and only one parameter "toFile"/"toStream" must be provided');
+                }
 
-                if (toStream != null && codec != Codec.pcm16)
-                        throw Exception ('toStream can only be used with codec == Codec.pcm16');
+                if (toStream != null && codec != Codec.pcm16) {
+                        throw Exception('toStream can only be used with codec == Codec.pcm16');
+                }
 
                 _userStreamSink = toStream;
 
@@ -437,26 +439,28 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
         {
                 await _lock.synchronized(() async
                 {
-                        if (!_isOpen)
+                        if (!_isOpen) {
                                 return null;
+                        }
                         await FlutterSoundRecorderPlatform.instance.stopRecorder(this);
                         _userStreamSink = null;
 
                         _recorderState = RecorderState.isStopped;
-                        closeAudioSession();
+                        await closeAudioSession();
 
                         if (_isOggOpus)
                         {
                                 // delete the target if it exists
                                 // (ffmpeg gives an error if the output file already exists)
-                                File f = File(_savedUri);
-                                if (f.existsSync())
+                                var f = File(_savedUri);
+                                if (f.existsSync()) {
                                         await f.delete();
+                                }
                                 // The following ffmpeg instruction re-encode the Apple CAF to OPUS.
                                 // Unfortunately we cannot just remix the OPUS data,
                                 // because Apple does not set the "extradata" in its private OPUS format.
                                 // It will be good if we can improve this...
-                                int rc = await flutterSoundHelper.executeFFmpegWithArguments
+                                var rc = await flutterSoundHelper.executeFFmpegWithArguments
                                 ([
                                         '-loglevel',
                                         'error',
@@ -467,8 +471,9 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
                                         'libopus',
                                         _savedUri,
                                 ]); // remux CAF to OGG
-                                if (rc != 0)
+                                if (rc != 0) {
                                         return null;
+                                }
                                 return _savedUri;
                         }
                 });
@@ -479,8 +484,9 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
         {
                 await _lock.synchronized(() async
                 {
-                        if (!_isOpen)
+                        if (!_isOpen) {
                                 throw _NotOpen();
+                        }
                         await FlutterSoundRecorderPlatform.instance.pauseRecorder(this);
                         _recorderState = RecorderState.isPaused;
                 });
@@ -494,8 +500,9 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
         {
                 await _lock.synchronized(() async
                 {
-                        if (!_isOpen)
+                        if (!_isOpen) {
                                 throw _NotOpen();
+                        }
                         await FlutterSoundRecorderPlatform.instance.resumeRecorder(this);
                          _recorderState = RecorderState.isRecording;
                 });

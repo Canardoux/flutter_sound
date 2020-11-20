@@ -69,12 +69,13 @@ class AssetPlayer extends StatelessWidget {
       codec: ActiveCodec().codec,
     );
 
-    track.trackTitle = "Asset playback.";
-    track.trackAuthor = "By flutter_sound";
+    track.trackTitle = 'Asset playback.';
+    track.trackAuthor = 'By flutter_sound';
 
     if (kIsWeb)
+    {
       track.albumArtAsset = null;
-    else if (Platform.isIOS) {
+    } else if (Platform.isIOS) {
       track.albumArtAsset = 'AppIcon';
     } else if (Platform.isAndroid) {
       track.albumArtAsset = 'AppIcon.png';

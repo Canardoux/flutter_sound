@@ -49,10 +49,10 @@ class _SpeechToTextExampleState extends State {
   double level = 0.0;
   double minSoundLevel = 50000;
   double maxSoundLevel = -50000;
-  String lastWords = "";
-  String lastError = "";
-  String lastStatus = "";
-  String _currentLocaleId = "";
+  String lastWords = '';
+  String lastError = '';
+  String lastStatus = '';
+  String _currentLocaleId = '';
   List<LocaleName> _localeNames = [];
   final SpeechToText speech = SpeechToText();
 
@@ -69,7 +69,7 @@ class _SpeechToTextExampleState extends State {
 
   // stt
   Future initSpeechState() async {
-  bool hasSpeech = await speech.initialize(
+  var hasSpeech = await speech.initialize(
   onError: errorListener, onStatus: statusListener);
   if (hasSpeech) {
     _localeNames = await speech.locales();
@@ -96,7 +96,7 @@ class _SpeechToTextExampleState extends State {
   {
     DropdownMenuItem<String> items(LocaleName localeName)
     {
-      DropdownMenuItem<String> r = DropdownMenuItem<String>(
+      var r = DropdownMenuItem<String>(
         value: localeName.localeId,
         child: Text(localeName.name),
       );
@@ -222,7 +222,7 @@ class _SpeechToTextExampleState extends State {
           child: Center(
             child: speech.isListening
                 ? Text(
-                    "I'm listening...",
+                    'listening...',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 : Text(
@@ -249,8 +249,8 @@ class _SpeechToTextExampleState extends State {
   // tts
 
   void startListening() {
-    lastWords = "";
-    lastError = "";
+    lastWords = '';
+    lastError = '';
     speech.listen(
     onResult: resultListener,
     listenFor: Duration(seconds: 60),
@@ -277,31 +277,31 @@ class _SpeechToTextExampleState extends State {
 
   void resultListener(SpeechRecognitionResult result) {
     setState(() {
-      lastWords = "${result.recognizedWords} - ${result.finalResult}";
+      lastWords = '${result.recognizedWords} - ${result.finalResult}';
     });
   }
 
   void soundLevelListener(double level) {
     minSoundLevel = min(minSoundLevel, level);
     maxSoundLevel = max(maxSoundLevel, level);
-    // print("sound level $level: $minSoundLevel - $maxSoundLevel ");
+    // print('sound level $level: $minSoundLevel - $maxSoundLevel ');
     setState(() {
       this.level = level;
     });
   }
 
   void errorListener(SpeechRecognitionError error) {
-    // print("Received error status: $error, listening: ${speech.isListening}");
+    // print('Received error status: $error, listening: ${speech.isListening}');
     setState(() {
-      lastError = "${error.errorMsg} - ${error.permanent}";
+      lastError = '${error.errorMsg} - ${error.permanent}';
     });
   }
 
   void statusListener(String status) {
     // print(
-    // "Received listener status: $status, listening: ${speech.isListening}");
+    // 'Received listener status: $status, listening: ${speech.isListening}');
     setState(() {
-      lastStatus = "$status";
+      lastStatus = '$status';
     });
   }
 

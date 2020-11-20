@@ -93,12 +93,12 @@ class SoundPlayerUI extends StatefulWidget
                 bool showTitle = false,
                 bool enabled = true,
                 AudioFocus audioFocus = AudioFocus.requestFocusAndKeepOthers,
-                Color backgroundColor =null,
+                Color backgroundColor,
                 Color iconColor = Colors.black,
                 Color disabledIconColor = Colors.grey,
-                TextStyle textStyle = null,
-                TextStyle titleStyle = null,
-                SliderThemeData sliderThemeData = null,
+                TextStyle textStyle,
+                TextStyle titleStyle,
+                SliderThemeData sliderThemeData,
         })
             :   _onLoad = onLoad,
                 _showTitle = showTitle,
@@ -110,8 +110,7 @@ class SoundPlayerUI extends StatefulWidget
                 _textStyle = textStyle,
                 _titleStyle = titleStyle,
                 _sliderThemeData = sliderThemeData
-        {
-        }
+        ;
 
 
 
@@ -138,12 +137,12 @@ class SoundPlayerUI extends StatefulWidget
                 bool showTitle = false,
                 bool enabled = true,
                 AudioFocus audioFocus = AudioFocus.requestFocusAndKeepOthers,
-                Color backgroundColor = null,
+                Color backgroundColor,
                 Color iconColor = Colors.black,
                 Color disabledIconColor = Colors.grey,
-                TextStyle textStyle = null,
-                TextStyle titleStyle = null,
-                SliderThemeData sliderThemeData = null,
+                TextStyle textStyle,
+                TextStyle titleStyle,
+                SliderThemeData sliderThemeData,
         })
             :   _track = track,
                 _showTitle = showTitle,
@@ -227,7 +226,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
 
         StreamSubscription _playerSubscription;
 
-        SliderThemeData _sliderThemeData;
+        final SliderThemeData _sliderThemeData;
 
         ///
         SoundPlayerUIState(this._track, this._onLoad,
@@ -390,7 +389,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
         @override
         void dispose()
         {
-                print("stopping Player on dispose");
+                print('stopping Player on dispose');
                 _stop(supressState: true);
                 _player.closeAudioSession();
                 super.dispose();
@@ -521,7 +520,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
                     .then((_) => _transitioning = false)
                     .catchError((dynamic e)
                     {
-                            Log.w("Error calling resume ${e.toString()}");
+                            Log.w('Error calling resume ${e.toString()}');
                             _playState = _PlayState.stopped;
                             _player.stopPlayer();
                             return null;
@@ -544,7 +543,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
 
                 _player.pausePlayer().then((_) => _transitioning = false).catchError((dynamic e)
                 {
-                        Log.w("Error calling pause ${e.toString()}");
+                        Log.w('Error calling pause ${e.toString()}');
                         _playState = _PlayState.playing;
                         _playState = _PlayState.stopped;
                         _player.stopPlayer();
@@ -561,13 +560,13 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
         {
                 _transitioning = true;
                 _loading = true;
-                Log.d("Loading starting");
+                Log.d('Loading starting');
 
-                Log.d("Calling play");
+                Log.d('Calling play');
 
                 if (_track != null && _player.isPlaying)
                 {
-                        Log.d("play called whilst player running. Stopping Player first.");
+                        Log.d('play called whilst player running. Stopping Player first.');
                         await _stop();
                 }
 
@@ -592,9 +591,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
                 /// can display appropriate errors.
                 if (newTrack != null)
                 {
-                        newTrack.then((track)
-                        {
-                                _track = track;
+                        _track = await newTrack;
                                 if (_track != null)
                                 {
                                         _start();
@@ -603,21 +600,12 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
                                         _loading = false;
                                         _transitioning = false;
                                 }
-                        }).catchError((dynamic exception)
-                        {
-                                // errors throw by _onLoad are captured here in the .then
-                                // handler for newTrack.
-                                Log.d(green('Transitioning = false'));
-                                _loading = false;
-                                _transitioning = false;
-                                Log.e("Error occured loading the track: ${exception.toString()}");
-                        });
-                } else
+               } else
                 {
                         Log.d(green('Transitioning = false'));
                         _loading = false;
                         _transitioning = false;
-                        Log.w("No Track provided by _onLoad. Call to start has been ignored");
+                        Log.w('No Track provided by _onLoad. Call to start has been ignored');
                 }
         }
 
@@ -629,12 +617,12 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
         /// internal start method.
         void _start() async
         {
-                _player.startPlayerFromTrack(_track, whenFinished: _onStopped).then((_)
+                await _player.startPlayerFromTrack(_track, whenFinished: _onStopped).then((_)
                 {
                         _playState = _PlayState.playing;
                 }).catchError((dynamic e)
                 {
-                        Log.w("Error calling play() ${e.toString()}");
+                        Log.w('Error calling play() ${e.toString()}');
                         _playState = _PlayState.stopped;
 
                         return null;
@@ -655,7 +643,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
         ///
         Future<void> stop() async
         {
-                _stop();
+                await _stop();
         }
 
 
@@ -669,7 +657,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
         {
                 if (_player.isPlaying || _player.isPaused)
                 {
-                        _player.stopPlayer().then<void>((_)
+                        await _player.stopPlayer().then<void>((_)
                         {
                                 if (_playerSubscription != null)
                                 {
@@ -820,27 +808,26 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
 
         Widget _buildPlayButtonIcon(Widget widget)
         {
-                  if (_playState == _PlayState.disabled)
+                  if (_playState == _PlayState.disabled) {
                           widget = _GrayedOut
-                          (
-                                  grayedOut: true,
-                                  child: widget = Icon(Icons.play_arrow, color: _disabledIconColor)
+                                  (
+                              grayedOut: true,
+                              child: widget = Icon(Icons.play_arrow, color: _disabledIconColor)
                           );
-                  else
-                  widget = FutureBuilder<bool>
-                  (
-                            future: canPlay,
-                            builder: (context, asyncData)
-                            {
-                                    var canPlay = false;
-                                    if (asyncData.connectionState == ConnectionState.done)
-                                    {
-                                            canPlay = asyncData.data;
-                                    }
-                                    return Icon(_player.isStopped ? Icons.play_arrow : Icons.stop,
-                                        color: canPlay ? _iconColor : _disabledIconColor);
-                            }
-                  );
+                  } else {
+                          widget = FutureBuilder<bool>
+                                  (
+                              future: canPlay,
+                              builder: (context, asyncData) {
+                                      var canPlay = false;
+                                      if (asyncData.connectionState == ConnectionState.done) {
+                                              canPlay = asyncData.data;
+                                      }
+                                      return Icon(_player.isStopped ? Icons.play_arrow : Icons.stop,
+                                          color: canPlay ? _iconColor : _disabledIconColor);
+                              }
+                          );
+                  }
                     //break;
                   return  SizedBox
                   (
@@ -864,12 +851,12 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
                         builder: (context, snapshot)
                         {
                                 var disposition = snapshot.data;
-                                DateTime positionDate = new DateTime.fromMillisecondsSinceEpoch
+                                var positionDate = DateTime.fromMillisecondsSinceEpoch
                                 (
                                     disposition.position.inMilliseconds,
                                     isUtc: true
                                 );
-                                DateTime durationDate = new DateTime.fromMillisecondsSinceEpoch
+                                var durationDate = DateTime.fromMillisecondsSinceEpoch
                                 (
                                     disposition.duration.inMilliseconds,
                                     isUtc: true
@@ -922,8 +909,9 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
                                 (position)
                                 {
                                         _sliderPosition.position = position;
-                                        if (_player.isPlaying || _player.isPaused)
+                                        if (_player.isPlaying || _player.isPaused) {
                                                 _player.seekToPlayer(position);
+                                        }
                                 },
                                 _sliderThemeData,
                         )
@@ -1057,10 +1045,11 @@ class _PlaybarSliderState extends State<PlaybarSlider>
         Widget build(BuildContext context)
         {
                 SliderThemeData sliderThemeData;
-                if (widget._sliderThemeData == null)
+                if (widget._sliderThemeData == null) {
                         sliderThemeData = SliderTheme.of(context);
-                else
+                } else {
                         sliderThemeData = widget._sliderThemeData;
+                }
                 return SliderTheme
                 (
                         data: sliderThemeData.copyWith
@@ -1113,6 +1102,7 @@ class _SliderPosition extends ChangeNotifier
                 if (!_disposed) notifyListeners();
         }
 
+        @override
         void dispose()
         {
                 _disposed = true;

@@ -33,15 +33,12 @@ enum TempFileLocations
 class TempFiles
 {
         static TempFiles _self;
-        static const _rootDir = "square_phone";
+        static const _rootDir = 'square_phone';
 
         ///
         factory TempFiles()
         {
-                if (_self == null)
-                {
-                        _self = TempFiles._internal();
-                }
+                        _self ??= TempFiles._internal();
                 return _self;
         }
 
@@ -61,7 +58,7 @@ class TempFiles
         ///    File tmpRecording = await TempFiles()
         ///        .create(TempFileLocations.RECORDINGS);
         ///
-        Future<File> create(TempFileLocations location, [String prefix = ""]) async
+        Future<File> create(TempFileLocations location, [String prefix = '']) async
         {
                 var derivedPath = '${Directory.systemTemp.path}'
                     '/'

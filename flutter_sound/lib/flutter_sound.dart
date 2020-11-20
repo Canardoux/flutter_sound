@@ -136,9 +136,10 @@ class FoodData extends Food
         Uint8List data;
 
         /// The constructor, specifying the data to be sent or that has been received
-        /* ctor */ FoodData(Uint8List this.data){}
+        /* ctor */ FoodData( this.data);
 
         /// Used internally by Flutter Sound
+        @override
         Future<void> exec(FlutterSoundPlayer player) => player.feedFromStream(data);
 }
 
@@ -154,9 +155,10 @@ class FoodEvent extends Food
         Function on;
 
         /// The constructor, specifying the callback which must be fired when synchronization is done
-        /* ctor */ FoodEvent(Function this.on){}
+        /* ctor */ FoodEvent( this.on);
 
         /// Used internally by Flutter Sound
+        @override
         Future<void> exec(FlutterSoundPlayer player) async => on();
 }
 
@@ -175,9 +177,9 @@ class FlutterSound
         AudioFocus _mFocus = AudioFocus.requestFocusAndKeepOthers;
         SessionMode _mSessionMode = SessionMode.modeDefault;
         SessionCategory _mSessionCategory = SessionCategory.playback;
-        AudioDevice _mAudioDevice = AudioDevice.speaker;
-        int _mAudioFlags =  outputToSpeaker | allowBlueTooth | allowBlueToothA2DP | allowEarPiece;
-        bool _mWithUI = false;
+        final _mAudioDevice = AudioDevice.speaker;
+        final _mAudioFlags =  outputToSpeaker | allowBlueTooth | allowBlueToothA2DP | allowEarPiece;
+        final _mWithUI = false;
 
       // ---------------------------------------------------------------------------------------------------------------------
 

@@ -56,12 +56,12 @@ class _MainBodyState extends State<MainBody> {
   {
               if (!kIsWeb)
               {
-                      Future<PermissionStatus> status = Permission.microphone.request();
+                      var status = Permission.microphone.request();
                       status.then((stat)
                       {
                               if (stat != PermissionStatus.granted)
                               {
-                                        throw RecordingPermissionException("Microphone permission not granted");
+                                        throw RecordingPermissionException('Microphone permission not granted');
                               }
                 }     );
               }
@@ -77,7 +77,7 @@ class _MainBodyState extends State<MainBody> {
 
   Future<bool> init()  async {
     if (!initialized) {
-      initializeDateFormatting();
+      await initializeDateFormatting();
       await UtilRecorder().init();
       ActiveCodec().recorderModule = UtilRecorder().recorderModule;
       ActiveCodec().setCodec(withUI: false, codec: Codec.aacADTS);
@@ -100,6 +100,7 @@ void _clean() async
   }
 }
 
+  @override
   void dispose() {
     _clean();
      super.dispose();
@@ -138,9 +139,9 @@ void _clean() async
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Left("Asset Playback"),
+            Left('Asset Playback'),
             AssetPlayer(),
-            Left("Remote Track Playback"),
+            Left('Remote Track Playback'),
             RemotePlayer(),
           ],
         ));
@@ -152,9 +153,9 @@ void _clean() async
         child: RecorderPlaybackController(
             child: Column(
           children: [
-            Left("Recorder"),
+            Left('Recorder'),
             SoundRecorderUI(track),
-            Left("Recording Playback"),
+            Left('Recording Playback'),
             SoundPlayerUI.fromTrack(
               track,
               enabled: false,

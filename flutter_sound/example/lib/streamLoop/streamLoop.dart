@@ -35,7 +35,7 @@ import 'dart:async';
 const int SAMPLE_RATE_RECORDER = 16000;
 const int SAMPLE_RATE_PLAYER =   16000; // same speed than the recorder
 
-typedef void Fn();
+typedef Fn = void Function();
 
 
 /// Example app.
@@ -104,7 +104,9 @@ class _StreamLoopState extends State<StreamLoop> {
   Future<void> stopRecorder()
   {
           if (_mRecorder != null)
-                  return _mRecorder.stopRecorder();
+          {
+            return _mRecorder.stopRecorder();
+          }
           return null;
   }
 
@@ -112,7 +114,9 @@ class _StreamLoopState extends State<StreamLoop> {
   Future<void> stopPlayer()
   {
           if (_mPlayer != null)
-                  return _mPlayer.stopPlayer();
+          {
+            return _mPlayer.stopPlayer();
+          }
           return null;
   }
 
@@ -142,16 +146,22 @@ class _StreamLoopState extends State<StreamLoop> {
   Future<void> stop() async
   {
           if (_mRecorder != null)
-                await _mRecorder.stopRecorder();
+          {
+            await _mRecorder.stopRecorder();
+          }
           if (_mPlayer != null)
-                await _mPlayer.stopPlayer();
+          {
+            await _mPlayer.stopPlayer();
+          }
           setState(() {});
   }
 
   Fn getRecFn()
   {
           if (!_isInited )
-                return null;
+          {
+            return null;
+          }
           return _mRecorder.isRecording ? stop : record;
   }
 

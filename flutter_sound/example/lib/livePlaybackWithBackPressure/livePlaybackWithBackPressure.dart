@@ -42,7 +42,7 @@ import 'package:flutter/services.dart' show rootBundle;
 
 
 const int SAMPLE_RATE = 44100;
-typedef void Fn();
+typedef Fn = void Function();
 
 
 /// Example app.
@@ -87,7 +87,7 @@ class _LivePlaybackWithBackPressureState extends State<LivePlaybackWithBackPress
       sampleRate: SAMPLE_RATE,
     );
     setState(() {});
-    Uint8List data = await getAssetData('assets/samples/sample.pcm');
+    var data = await getAssetData('assets/samples/sample.pcm');
     await feedHim(data);
     if (_mPlayer != null) {
       await stopPlayer();
@@ -107,11 +107,11 @@ class _LivePlaybackWithBackPressureState extends State<LivePlaybackWithBackPress
 
   Future<void> feedHim(Uint8List buffer) async
   {
-    int lnData = 0;
-    int totalLength = buffer.length;
+    var lnData = 0;
+    var totalLength = buffer.length;
     while (totalLength > 0 && !_mPlayer.isStopped)
     {
-      int bsize = totalLength > BLOCK_SIZE ?  BLOCK_SIZE : totalLength;
+      var bsize = totalLength > BLOCK_SIZE ?  BLOCK_SIZE : totalLength;
       await _mPlayer.feedFromStream(buffer.sublist(lnData, lnData + bsize)); // await !!!!
       lnData += bsize;
       totalLength -= bsize;
@@ -124,20 +124,24 @@ class _LivePlaybackWithBackPressureState extends State<LivePlaybackWithBackPress
 
   Future<Uint8List> getAssetData(String path) async
   {
-    ByteData asset = await rootBundle.load(path);
+    var asset = await rootBundle.load(path);
     return asset.buffer.asUint8List();
   }
 
   Future<void> stopPlayer() async
   {
     if (_mPlayer != null)
+    {
       await _mPlayer.stopPlayer();
+    }
   }
 
   Fn getPlaybackFn()
   {
     if (!_mPlayerIsInited)
+    {
       return null;
+    }
     return _mPlayer.isStopped ? play : (){stopPlayer().then((value) => setState((){}));};
   }
 

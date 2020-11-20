@@ -61,8 +61,8 @@ class FlutterSoundHelper
                 if (_flutterFFmpegConfig == null)
                 {
                         _flutterFFmpegConfig = FlutterFFmpegConfig();
-                        String version = await _flutterFFmpegConfig.getFFmpegVersion();
-                        String platform = await _flutterFFmpegConfig.getPlatform();
+                        var version = await _flutterFFmpegConfig.getFFmpegVersion();
+                        var platform = await _flutterFFmpegConfig.getPlatform();
                         _ffmpegAvailable = (version != null && platform != null);
                 }
                 return _ffmpegAvailable;
@@ -83,8 +83,8 @@ class FlutterSoundHelper
         /// Executes FFmpeg with `commandArguments` provided.
         Future<int> executeFFmpegWithArguments(List<String> arguments)
         {
-                if (flutterFFmpeg == null) flutterFFmpeg = FlutterFFmpeg();
-                return flutterFFmpeg.executeWithArguments(arguments);
+                        flutterFFmpeg ??= FlutterFFmpeg();
+                        return flutterFFmpeg.executeWithArguments(arguments);
         }
 
 
@@ -127,7 +127,7 @@ class FlutterSoundHelper
         Future<Map<dynamic, dynamic>> FFmpegGetMediaInformation(String uri) async
         {
                 if (uri == null) return null;
-                if (_flutterFFprobe == null) _flutterFFprobe = FlutterFFprobe();
+                        _flutterFFprobe ??= FlutterFFprobe();
                 try
                 {
                         return await _flutterFFprobe.getMediaInformation(uri);
@@ -146,10 +146,11 @@ class FlutterSoundHelper
         Future<Duration> duration(String uri) async
         {
                 if (uri == null) return null;
-                Map<dynamic, dynamic> info = await FFmpegGetMediaInformation(uri);
-                if (info == null)
+                var info = await FFmpegGetMediaInformation(uri);
+                if (info == null) {
                         return null;
-                int duration = info['duration'] as int;
+                }
+                var duration = info['duration'] as int;
                 return (duration == null) ? null : Duration(milliseconds: duration);
         }
 
@@ -164,11 +165,11 @@ class FlutterSoundHelper
         ///Note that this verb is not asynchronous and does not return a Future.
         Future<void> waveToPCM({String inputFile,String outputFile,}) async
         {
-                File filIn = File(inputFile);
-                File filOut = File(outputFile);
-                IOSink sink = filOut.openWrite();
+                var filIn = File(inputFile);
+                var filOut = File(outputFile);
+                var sink = filOut.openWrite();
                 await filIn.open();
-                Uint8List buffer = filIn.readAsBytesSync();
+                var buffer = filIn.readAsBytesSync();
                 sink.add(buffer.sublist(WaveHeader.HEADER_LENGTH));
                 await sink.close();
         }
@@ -205,13 +206,13 @@ class FlutterSoundHelper
                 int sampleRate = 16000,
         }) async
         {
-                File filIn = File(inputFile);
-                File filOut = File(outputFile);
-                int size = filIn.lengthSync();
+                var filIn = File(inputFile);
+                var filOut = File(outputFile);
+                var size = filIn.lengthSync();
                 Log.i('pcmToWave() : input = $inputFile,  output = $outputFile,  size = $size');
-                IOSink sink = filOut.openWrite();
+                var sink = filOut.openWrite();
 
-                WaveHeader header = new WaveHeader
+                var header = WaveHeader
                 (
                         WaveHeader.FORMAT_PCM ,
                         numChannels = numChannels, //
@@ -221,7 +222,7 @@ class FlutterSoundHelper
                 );
                 await header.write( sink);
                 await filIn.open();
-                Uint8List buffer = filIn.readAsBytesSync();
+                var buffer = filIn.readAsBytesSync();
                 sink.add(buffer.toList());
                 await sink.close();
         }
@@ -244,8 +245,8 @@ class FlutterSoundHelper
         }) async
         {
 
-                int size = inputBuffer.length;
-                WaveHeader header = new WaveHeader
+                var size = inputBuffer.length;
+                var header = WaveHeader
                 (
                         WaveHeader.FORMAT_PCM ,
                         numChannels,
@@ -254,10 +255,10 @@ class FlutterSoundHelper
                         size, // total number of bytes
                 );
 
-                List<int> buffer = List<int>();
+                var buffer = <int>[];
                 StreamController controller  = StreamController<List<int>>();
-                StreamSink<List<int>> sink = controller.sink as StreamSink<List<int>> ;
-                Stream<List<int>> stream = controller.stream as Stream<List<int>>;
+                var sink = controller.sink as StreamSink<List<int>> ;
+                var stream = controller.stream as Stream<List<int>>;
                 stream.listen( ( e)
                 {
                         var x = e.toList();
@@ -287,7 +288,7 @@ class FlutterSoundHelper
         /// Note : this verb uses FFmpeg and is not available int the LITE flavor of Flutter Sound.
         Future<bool> convertFile(String inputFile, Codec inputCodec, String outputFile, Codec outputCodec) async
         {
-                int rc = 0;
+                var rc = 0;
                 if (inputCodec == Codec.opusOGG &&
                     outputCodec == Codec.opusCAF) // Do not need to re-encode. Just remux
                 {

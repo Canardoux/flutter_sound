@@ -33,15 +33,15 @@ import 'dart:core';
 class WaveHeader
 {
         // follows WAVE format in http://ccrma.stanford.edu/courses/422/projects/WaveFormat
-        static final String TAG = "WaveHeader";
+        static final String TAG = 'WaveHeader';
 
         static final int HEADER_LENGTH = 44;
 
-        /** Indicates PCM format. */
+        /// Indicates PCM format.
         static final int FORMAT_PCM = 1;
-        /** Indicates ALAW format. */
+        /// Indicates ALAW format.
         static final int FORMAT_ALAW = 6;
-        /** Indicates ULAW format. */
+        /// Indicates ULAW format.
         static final int FORMAT_ULAW = 7;
 
         int mFormat;
@@ -199,12 +199,12 @@ class WaveHeader
         int read(InputStream in)
         {
                 /* RIFF header */
-                readId(in, "RIFF");
+                readId(in, 'RIFF');
                 int numBytes = readInt(in) - 36;
-                readId(in, "WAVE");
+                readId(in, 'WAVE');
                 /* fmt chunk */
-                readId(in, "fmt ");
-                if (16 != readInt(in)) throw new Exception("fmt chunk length not 16");
+                readId(in, 'fmt ');
+                if (16 != readInt(in)) throw new Exception('fmt chunk length not 16');
                 mFormat = readint(in);
                 mNumChannels = readint(in);
                 mSampleRate = readInt(in);
@@ -213,14 +213,14 @@ class WaveHeader
                 mBitsPerSample = readint(in);
                 if (byteRate != mNumChannels * mSampleRate * mBitsPerSample / 8)
                 {
-                        throw new Exception("fmt.ByteRate field inconsistent");
+                        throw new Exception('fmt.ByteRate field inconsistent');
                 }
                 if (blockAlign != mNumChannels * mBitsPerSample / 8)
                 {
-                        throw new Exception("fmt.BlockAlign field inconsistent");
+                        throw new Exception('fmt.BlockAlign field inconsistent');
                 }
                 /* data chunk */
-                readId(in, "data");
+                readId(in, 'data');
                 mNumBytes = readInt(in);
 
                 return HEADER_LENGTH;
@@ -230,7 +230,7 @@ class WaveHeader
         {
                 for (int i = 0; i < id.length(); i++)
                 {
-                        if (id.charAt(i) != in.read()) throw Exception( id + " tag not present");
+                        if (id.charAt(i) != in.read()) throw Exception( id + ' tag not present');
                 }
         }
 
@@ -254,11 +254,11 @@ class WaveHeader
         int write(EventSink<List<int>> out)
         {
                 /* RIFF header */
-                writeId(out, "RIFF");
+                writeId(out, 'RIFF');
                 writeInt(out, 36 + mNumBytes);
-                writeId(out, "WAVE");
+                writeId(out, 'WAVE');
                 /* fmt chunk */
-                writeId(out, "fmt ");
+                writeId(out, 'fmt ');
                 writeInt(out, 16);
                 writeint(out, mFormat);
                 writeint(out, mNumChannels);
@@ -267,7 +267,7 @@ class WaveHeader
                 writeint(out, (mNumChannels * mBitsPerSample / 8).floor());
                 writeint(out, mBitsPerSample);
                 /* data chunk */
-                writeId(out, "data");
+                writeId(out, 'data');
                 writeInt(out, mNumBytes);
 
                 return HEADER_LENGTH;
@@ -295,8 +295,9 @@ class WaveHeader
         }
 
         /// Push a String info of this header
+        @override
         String toString()
         {
-                return "WaveHeader format=$mFormat numChannels=$mNumChannels sampleRate=$mSampleRate bitsPerSample=$mBitsPerSample numBytes=$mNumBytes";
+                return 'WaveHeader format=$mFormat numChannels=$mNumChannels sampleRate=$mSampleRate bitsPerSample=$mBitsPerSample numBytes=$mNumBytes';
         }
 }

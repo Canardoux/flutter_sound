@@ -129,7 +129,7 @@ class Log extends Logger
         static void autoInit()
         {
                 if (_self == null) {
-                        init(".");
+                        init('.');
           }
         }
 
@@ -143,7 +143,7 @@ class Log extends Logger
                 for (var frame in frames.frames)
                 {
                         _localPath = frame.sourceFile.path
-                            .substring(frame.sourceFile.path.lastIndexOf("/"));
+                            .substring(frame.sourceFile.path.lastIndexOf('/'));
                         break;
                 }
         }
@@ -181,7 +181,7 @@ class MyLogPrinter extends LogPrinter
                 {
                         i++;
                         var path2 = frame.sourceFile.path;
-                        if (!path2.contains(Log._localPath) && !path2.contains("logger.dart"))
+                        if (!path2.contains(Log._localPath) && !path2.contains('logger.dart'))
                         {
                                 depth = i - 1;
                                 break;
@@ -193,15 +193,15 @@ class MyLogPrinter extends LogPrinter
                         color
                         (
                                 event.level,
-                                "$formattedDate ${EnumHelper.getName(event.level)} "
-                                "${StackTraceImpl(skipFrames: depth).formatStackTrace(methodCount: 1)} "
-                                "::: ${event.message}"
+                                '$formattedDate ${EnumHelper.getName(event.level)} '
+                                '${StackTraceImpl(skipFrames: depth).formatStackTrace(methodCount: 1)} '
+                                '::: ${event.message}'
                         )
                 );
 
                 if (event.error != null)
                 {
-                        print(color(event.level, "${event.error}"));
+                        print(color(event.level, '${event.error}'));
                 }
 
                 if (event.stackTrace != null)
@@ -209,10 +209,10 @@ class MyLogPrinter extends LogPrinter
                         if (event.stackTrace.runtimeType == StackTraceImpl)
                         {
                                 var st = event.stackTrace as StackTraceImpl;
-                                print(color(event.level, "$st"));
+                                print(color(event.level, '$st'));
                         } else
                         {
-                                print(color(event.level, "${event.stackTrace}"));
+                                print(color(event.level, '${event.stackTrace}'));
                         }
                 }
         }
@@ -220,7 +220,7 @@ class MyLogPrinter extends LogPrinter
         ///
         String color(Level level, String line)
         {
-                var result = "";
+                var result = '';
 
                 switch (level)
                 {
@@ -296,26 +296,26 @@ class LogLevel
                 switch (level)
                 {
                         case LogLevel.AV_LOG_TRACE:
-                          return "TRACE";
+                          return 'TRACE';
                         case LogLevel.AV_LOG_DEBUG:
-                          return "DEBUG";
+                          return 'DEBUG';
                         case LogLevel.AV_LOG_VERBOSE:
-                          return "VERBOSE";
+                          return 'VERBOSE';
                         case LogLevel.AV_LOG_INFO:
-                          return "INFO";
+                          return 'INFO';
                         case LogLevel.AV_LOG_WARNING:
-                          return "WARNING";
+                          return 'WARNING';
                         case LogLevel.AV_LOG_ERROR:
-                          return "ERROR";
+                          return 'ERROR';
                         case LogLevel.AV_LOG_FATAL:
-                          return "FATAL";
+                          return 'FATAL';
                         case LogLevel.AV_LOG_PANIC:
-                          return "PANIC";
+                          return 'PANIC';
                         case LogLevel.AV_LOG_STDERR:
-                          return "STDERR";
+                          return 'STDERR';
                         case LogLevel.AV_LOG_QUIET:
                         default:
-                          return "";
+                          return '';
                 }
         }
 }
@@ -393,13 +393,13 @@ class AnsiColor
         {
                 String output;
 
-                output = "${_fg(color.code)}${_bg(bgcolor?.code)}$text$_reset";
+                output = '${_fg(color.code)}${_bg(bgcolor?.code)}$text$_reset';
                 return output;
         }
 
         static String get _reset
         {
-                return "$esc${resetCode}m";
+                return '$esc${resetCode}m';
         }
 
         static String _fg(int code)
@@ -408,13 +408,13 @@ class AnsiColor
 
                 if (code == none.code)
                 {
-                        output = "";
+                        output = '';
                 } else if (code > 39)
                 {
-                        output = "$esc$fgColor${code}m";
+                        output = '$esc$fgColor${code}m';
                 } else
                 {
-                        output = "$esc${code}m";
+                        output = '$esc${code}m';
                 }
                 return output;
         }
@@ -426,20 +426,20 @@ class AnsiColor
 
                 if (code == none.code)
                 {
-                        output = "";
+                        output = '';
                 } else if (code > 49)
                 {
-                        output = "$esc$bgColor${code + 10}m";
+                        output = '$esc$bgColor${code + 10}m';
                 } else
                 {
-                        output = "$esc${code + 10}m";
+                        output = '$esc${code + 10}m';
                 }
                 return output;
         }
 
         static String _emmit(String ansicode)
         {
-                return "$esc${ansicode}m";
+                return '$esc${ansicode}m';
         }
 
         /// ANSI Control Sequence Introducer, signals the terminal for new settings.
@@ -448,19 +448,19 @@ class AnsiColor
         /// Resets
 
         /// Reset fg and bg colors
-        static const String resetCode = "0";
+        static const String resetCode = '0';
 
         /// Defaults the terminal's fg color without altering the bg.
-        static const String fgResetCode = "39";
+        static const String fgResetCode = '39';
 
         /// Defaults the terminal's bg color without altering the fg.
-        static const String bgResetCode = "49";
+        static const String bgResetCode = '49';
 
         /// emmit this code followed by a color code to set the fg color
-        static const String fgColor = "38;5;";
+        static const String fgColor = '38;5;';
 
         /// emmit this code followed by a color code to set the fg color
-        static const String bgColor = "48;5;";
+        static const String bgColor = '48;5;';
 
         /// Colors
         static const AnsiColor black = AnsiColor(30);

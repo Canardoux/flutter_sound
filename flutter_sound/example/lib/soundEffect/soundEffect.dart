@@ -39,7 +39,7 @@ const BIM = 'assets/noises/bim.wav';
 const BAM = 'assets/noises/bam.wav';
 const BOUM = 'assets/noises/boum.wav';
 
-typedef Fn();
+typedef Fn = void Function();
 
 
 /// Example app.
@@ -52,7 +52,7 @@ class _SoundEffectState extends State<SoundEffect>
 {
 
         FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
-        bool _mPlayerIsInited = false;
+        bool _mPlayerIsInited;
         Uint8List bimData;
         Uint8List bamData;
         Uint8List boumData;
@@ -61,7 +61,7 @@ class _SoundEffectState extends State<SoundEffect>
 
         Future<Uint8List> getAssetData(String path) async
         {
-                ByteData asset = await rootBundle.load(path);
+                var asset = await rootBundle.load(path);
                 return asset.buffer.asUint8List();
         }
 
@@ -105,7 +105,7 @@ class _SoundEffectState extends State<SoundEffect>
                 if (!busy && _mPlayerIsInited)
                 {
                           busy = true;
-                          _mPlayer.feedFromStream(data).then((value) => busy = false);
+                          await _mPlayer.feedFromStream(data).then((value) => busy = false);
                 }
         }
 

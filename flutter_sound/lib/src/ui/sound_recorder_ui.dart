@@ -22,7 +22,6 @@
 ///
 ///
 /// ------------------------------------------------------------------
-library UI_Widget;
 
 
 import 'dart:async';
@@ -213,7 +212,7 @@ class SoundRecorderUI extends StatefulWidget
         @override
         State<StatefulWidget> createState()
         {
-                return SoundRecorderUIState(backgroundColor != null ? backgroundColor : Color( 0xFFFAF0E6 ));
+                return SoundRecorderUIState(backgroundColor ?? Color( 0xFFFAF0E6 ));
         }
 }
 
@@ -340,8 +339,9 @@ class SoundRecorderUIState extends State<SoundRecorderUI>
                                 {
                                         var disposition = streamData.data;
                                         var min = _minDbCircle;
-                                        if (disposition.decibels == 0)
+                                        if (disposition.decibels == 0) {
                                                 min = 0;
+                                        }
                                         //      onRecorderProgress(context, this, disposition.duration);
                                         return Stack(alignment: Alignment.center, children:
                                         [
