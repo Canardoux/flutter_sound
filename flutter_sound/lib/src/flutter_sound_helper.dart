@@ -220,7 +220,7 @@ class FlutterSoundHelper
                         16, // 16 bits per byte
                         size, // total number of bytes
                 );
-                await header.write( sink);
+                header.write( sink);
                 await filIn.open();
                 var buffer = filIn.readAsBytesSync();
                 sink.add(buffer.toList());
@@ -264,7 +264,7 @@ class FlutterSoundHelper
                         var x = e.toList();
                         buffer.addAll(x);
                 });
-                await header.write( sink);
+                header.write( sink);
                 sink.add(inputBuffer);
                 await sink.close();
                 await controller.close();
