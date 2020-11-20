@@ -168,7 +168,7 @@ class MyLogPrinter extends LogPrinter
                     EnumHelper.getIndexOf(Level.values, event.level))
                 {
                         // don't log events where the log level is set higher
-                        return;
+                        return null;
                 }
                 var formatter = DateFormat('dd HH:mm:ss.');
                 var now = DateTime.now();
@@ -215,6 +215,7 @@ class MyLogPrinter extends LogPrinter
                                 print(color(event.level, '${event.stackTrace}'));
                         }
                 }
+                return null; // TODO
         }
 
         ///
@@ -252,68 +253,69 @@ class MyLogPrinter extends LogPrinter
 
 
 
+///
 class LogLevel
 {
         ///
         /// This log level is used to specify logs printed to stderr by ffmpeg.
         /// Logs that has this level are not filtered and always redirected.
-        static const int AV_LOG_STDERR = -16;
+        static const int avLogStderr = -16;
 
         /// Print no output.
-        static const int AV_LOG_QUIET = -8;
+        static const int avLogQuiet = -8;
 
         /// Something went really wrong and we will crash now.
-        static const int AV_LOG_PANIC = 0;
+        static const int avLogPanic = 0;
 
         /// Something went wrong and recovery is not possible.
         /// For example, no header was found for a format which depends
         /// on headers or an illegal combination of parameters is used.
-        static const int AV_LOG_FATAL = 8;
+        static const int avLogFatal = 8;
 
         /// Something went wrong and cannot losslessly be recovered.
         /// However, not all future data is affected.
-        static const int AV_LOG_ERROR = 16;
+        static const int avLogError = 16;
 
         /// Something somehow does not look correct. This may or may not
         /// lead to problems. An example would be the use of '-vstrict -2'.
-        static const int AV_LOG_WARNING = 24;
+        static const int avLogWarning = 24;
 
         /// int Standard information.
-        static const int AV_LOG_INFO = 32;
+        static const int avLogInfo = 32;
 
         /// Detailed information.
-        static const int AV_LOG_VERBOSE = 40;
+        static const int avLogVerbose = 40;
 
         /// Stuff which is only useful for libav* developers.
-        static const int AV_LOG_DEBUG = 48;
+        static const int avLogDebug = 48;
 
         /// Extremely verbose debugging, useful for libav* development.
-        static const int AV_LOG_TRACE = 56;
+        static const int avLogTrace = 56;
 
         /// Returns log level string from int
         static String levelToString(int level)
         {
                 switch (level)
                 {
-                        case LogLevel.AV_LOG_TRACE:
+                        case LogLevel.avLogTrace:
                           return 'TRACE';
-                        case LogLevel.AV_LOG_DEBUG:
+                        case LogLevel.avLogDebug:
                           return 'DEBUG';
-                        case LogLevel.AV_LOG_VERBOSE:
+                        case LogLevel.avLogVerbose:
                           return 'VERBOSE';
-                        case LogLevel.AV_LOG_INFO:
+                        case LogLevel.avLogInfo:
                           return 'INFO';
-                        case LogLevel.AV_LOG_WARNING:
+                        case LogLevel.avLogWarning:
                           return 'WARNING';
-                        case LogLevel.AV_LOG_ERROR:
+                        case LogLevel.avLogError:
                           return 'ERROR';
-                        case LogLevel.AV_LOG_FATAL:
+                        case LogLevel.avLogFatal:
                           return 'FATAL';
-                        case LogLevel.AV_LOG_PANIC:
+                        case LogLevel.avLogPanic:
                           return 'PANIC';
-                        case LogLevel.AV_LOG_STDERR:
+                        case LogLevel.avLogStderr:
                           return 'STDERR';
-                        case LogLevel.AV_LOG_QUIET:
+                        case LogLevel.avLogQuiet:
                         default:
                           return '';
                 }

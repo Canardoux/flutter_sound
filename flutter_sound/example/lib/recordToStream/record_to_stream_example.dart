@@ -17,10 +17,10 @@
  */
 
 
-import 'package:flutter/material.dart';
-import 'package:flauto/flutter_sound.dart';
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flauto/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
 
 /*
@@ -34,7 +34,8 @@ import 'package:path_provider/path_provider.dart';
  */
 
 
-const int SAMPLE_RATE = 8000;
+///
+const int tSampleRate = 8000;
 typedef _Fn = void Function();
 
 
@@ -101,7 +102,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     var recordingDataController = StreamController<Food>();
     _mRecordingDataSubscription =
           recordingDataController.stream.listen
-            ((Food buffer)
+            (( buffer)
               {
                 if (buffer is FoodData)
                 {
@@ -113,7 +114,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
         toStream: recordingDataController.sink,
         codec: Codec.pcm16,
         numChannels: 1,
-        sampleRate: SAMPLE_RATE,
+        sampleRate: tSampleRate,
     );
     setState(() {});
   }
@@ -146,7 +147,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   void play() async
   {
     assert (_mPlayerIsInited && _mplaybackReady && _mRecorder.isStopped && _mPlayer.isStopped);
-    await _mPlayer.startPlayer(fromURI: _mPath, sampleRate: SAMPLE_RATE, codec: Codec.pcm16, numChannels: 1,whenFinished: (){setState((){});}); // The readability of Dart is very special :-(
+    await _mPlayer.startPlayer(fromURI: _mPath, sampleRate: tSampleRate, codec: Codec.pcm16, numChannels: 1,whenFinished: (){setState((){});}); // The readability of Dart is very special :-(
     setState(() {});
   }
 

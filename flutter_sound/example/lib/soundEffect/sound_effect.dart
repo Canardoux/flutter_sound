@@ -17,10 +17,10 @@
  */
 
 
-import 'package:flutter/material.dart';
-import 'package:flauto/flutter_sound.dart';
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
+import 'package:flauto/flutter_sound.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 
@@ -33,13 +33,13 @@ import 'package:flutter/services.dart' show rootBundle;
  */
 
 
-const int SAMPLE_RATE = 44100;
-const int NUM_CHANNELS = 1;
-const BIM = 'assets/noises/bim.wav';
-const BAM = 'assets/noises/bam.wav';
-const BOUM = 'assets/noises/boum.wav';
 
-typedef Fn = void Function();
+const int _tSampleRate = 44100;
+const int _tNumChannels = 1;
+const _bim = 'assets/noises/bim.wav';
+const _bam = 'assets/noises/bam.wav';
+const _boum = 'assets/noises/boum.wav';
+
 
 
 /// Example app.
@@ -69,13 +69,13 @@ class _SoundEffectState extends State<SoundEffect>
         Future<void> init() async
         {
                 await _mPlayer.openAudioSession();
-                bimData = await FlutterSoundHelper().waveToPCMBuffer(inputBuffer: await getAssetData(BIM), );
-                bamData = await FlutterSoundHelper().waveToPCMBuffer(inputBuffer: await getAssetData(BAM), );
-                boumData = await FlutterSoundHelper().waveToPCMBuffer(inputBuffer: await getAssetData(BOUM), );
+                bimData = await FlutterSoundHelper().waveToPCMBuffer(inputBuffer: await getAssetData(_bim), );
+                bamData = await FlutterSoundHelper().waveToPCMBuffer(inputBuffer: await getAssetData(_bam), );
+                boumData = await FlutterSoundHelper().waveToPCMBuffer(inputBuffer: await getAssetData(_boum), );
                 await _mPlayer.startPlayerFromStream(
                   codec:  Codec.pcm16,
-                  numChannels: NUM_CHANNELS,
-                  sampleRate: SAMPLE_RATE,
+                  numChannels: _tNumChannels,
+                  sampleRate: _tSampleRate,
                 );
 
         }

@@ -21,13 +21,17 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
+///
 class FlutterFFmpegConfig {
   static const MethodChannel _methodChannel =
        MethodChannel('flutter_ffmpeg');
   static const EventChannel _eventChannel =
        EventChannel('flutter_ffmpeg_event');
 
+  ///
   Function(int level, String message) logCallback;
+
+  ///
   Function(
       int time,
       int size,
@@ -37,6 +41,7 @@ class FlutterFFmpegConfig {
       double videoQuality,
       double videoFps) statisticsCallback;
 
+  ///
   FlutterFFmpegConfig() {
     logCallback = null;
     statisticsCallback = null;
@@ -349,6 +354,7 @@ class FlutterFFmpegConfig {
   }
 }
 
+///
 class FlutterFFmpeg {
   static const MethodChannel _methodChannel =
        MethodChannel('flutter_ffmpeg');
@@ -442,6 +448,7 @@ class FlutterFFmpeg {
   }
 }
 
+///
 class FlutterFFprobe {
   static const MethodChannel _methodChannel =
        MethodChannel('flutter_ffmpeg');

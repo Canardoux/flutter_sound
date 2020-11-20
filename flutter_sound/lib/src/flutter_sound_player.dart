@@ -33,10 +33,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flauto_platform_interface/flutter_sound_player_platform_interface.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flauto/flutter_sound.dart';
+import '../flutter_sound.dart';
 
-const BLOCK_SIZE = 4096;
+///
+const blockSize = 4096;
 
+///
 enum PlayerState {
   /// Player is stopped
   isStopped,
@@ -46,8 +48,11 @@ enum PlayerState {
   isPaused,
 }
 
+///
 typedef TWhenFinished =  void Function();
+///
 typedef TonPaused = void Function(bool paused);
+///
 typedef TonSkip = void Function();
 
 
@@ -61,21 +66,31 @@ String fileExtension(String path) {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
+///
 class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 {
+  ///
   TonSkip onSkipForward; // User callback "onPaused:"
+  ///
   TonSkip onSkipBackward; // User callback "onPaused:"
+  ///
   TonPaused onPaused; // user callback "whenPause:"
   final _lock = Lock();
+  ///
   StreamSubscription<Food> foodStreamSubscription ;
+  ///
   StreamController <Food> foodStreamController;
 
+  ///
   Completer<int> needSomeFoodCompleter;
+  ///
   Completer<FlutterSoundPlayer> openAudioSessionCompleter;
+  ///
   Completer<Duration> startPlayerCompleter;
 
 
 
+  ///
   static const List<Codec> tabAndroidConvert = [
     Codec.defaultCodec, // defaultCodec
     Codec.defaultCodec, // aacADTS
@@ -99,6 +114,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
   ];
 
+  ///
   static const List<Codec> tabIosConvert = [
     Codec.defaultCodec, // defaultCodec
     Codec.defaultCodec, // aacADTS
@@ -122,6 +138,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   ];
 
 
+  ///
   static const List<Codec> tabWebConvert = [
     Codec.defaultCodec, // defaultCodec
     Codec.defaultCodec, // aacADTS
@@ -279,18 +296,23 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
   //===============================================================================================================
 
+  ///
   Initialized isInited = Initialized.notInitialized;
 
+  ///
   PlayerState playerState = PlayerState.isStopped;
   // The stream source
   StreamController<PlaybackDisposition> _playerController ;
 
+  ///
   StreamSink<Food> get foodSink => foodStreamController != null ? foodStreamController.sink : null;
 
+  ///
   Stream<PlaybackDisposition> get onProgress =>
               _playerController != null ? _playerController.stream : null;
 
 
+  ///
   bool isOpen()
   {
       return (isInited == Initialized.fullyInitializedWithUI || isInited == Initialized.fullyInitialized );
@@ -321,19 +343,25 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     return _playerController != null ? _playerController.stream : null;
   }
 
+  ///
   TWhenFinished audioPlayerFinishedPlaying; // User callback "whenFinished:"
   //TonPaused whenPause; // User callback "whenPaused:"
   //TupdateProgress onUpdateProgress;
 
 
+  ///
   bool get isPlaying => playerState == PlayerState.isPlaying;
 
+  ///
   bool get isPaused => playerState == PlayerState.isPaused;
 
+  ///
   bool get isStopped => playerState == PlayerState.isStopped;
 
+  ///
   FlutterSoundPlayer();
 
+  ///
   Future<FlutterSoundPlayer> openAudioSession( {
                                                  AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
                                                  SessionCategory category = SessionCategory.playAndRecord,
@@ -373,7 +401,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
 
 
-  Future<FlutterSoundPlayer> openAudioSessionWithUI( {
+    ///
+    Future<FlutterSoundPlayer> openAudioSessionWithUI( {
                                                        AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
                                                        SessionCategory category = SessionCategory.playAndRecord,
                                                        SessionMode mode = SessionMode.modeDefault,
@@ -387,6 +416,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
 
 
+  ///
   Future<void> setAudioFocus( {
                                 AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
                                 SessionCategory category = SessionCategory.playback,
@@ -418,6 +448,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
 
 
+  ///
   Future<void> closeAudioSession() async {
     print('FS:---> closeAudioSession ');
     await _lock.synchronized(() async {
@@ -444,6 +475,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     print('FS:<--- closeAudioSession ');
   }
 
+  ///
   Future<PlayerState> getPlayerState() async
   {
     if (isInited == Initialized.initializationInProgress) {
@@ -458,6 +490,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   }
 
 
+  ///
   Future<Map<String, Duration>> getProgress() async
   {
       if (isInited == Initialized.initializationInProgress)
@@ -479,6 +512,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
 
 
+  ///
   bool needToConvert(Codec codec) {
     print('FS:---> needToConvert ');
     if (codec == null) return false;
@@ -521,6 +555,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   }
 
 
+  ///
   Future<void> setSubscriptionDuration(Duration duration) async {
 
     print('FS:---> setSubscriptionDuration ');
@@ -535,6 +570,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     print('FS:<---- setSubscriptionDuration ');
   }
 
+  ///
   void setPlayerCallback() {
       _playerController ??= StreamController<PlaybackDisposition>.broadcast();
   }
@@ -548,6 +584,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     }
   }
 
+  ///
   Future<void> _convertAudio(Map<String, dynamic> what) async {
      // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
     // We use FFmpeg for that task.
@@ -570,6 +607,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     print('FS:<--- _convertAudio ');
   }
 
+  
   Future<void> _convert ( Map<String, dynamic> what) async
   {
     print('FS:---> _convert ');
@@ -595,6 +633,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
   }
 
+  ///
   Future<Duration> startPlayer(
    {
      String fromURI ,
@@ -660,6 +699,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   }
 
 
+  ///
   Future<void> startPlayerFromStream ({
     Codec codec = Codec.pcm16,
     int numChannels = 1,
@@ -677,7 +717,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
       await _lock.synchronized(() async {
       await stop( ); // Just in case
       foodStreamController = StreamController();
-      foodStreamSubscription = foodStreamController.stream.listen((Food food)
+      foodStreamSubscription = foodStreamController.stream.listen(( food)
       {
             foodStreamSubscription.pause(food.exec(this));
       }) ;
@@ -693,19 +733,21 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     print('FS:<--- startPlayerFromStream ');
     }
 
+    ///
     Future<void> feedFromStream(Uint8List buffer) async
     {
       var lnData = 0;
       var totalLength = buffer.length;
       while (totalLength > 0 && !isStopped)
       {
-        var bsize = totalLength > BLOCK_SIZE ? BLOCK_SIZE : totalLength;
+        var bsize = totalLength > blockSize ? blockSize : totalLength;
         var ln = await feed(buffer.sublist(lnData, lnData + bsize));
         lnData += ln;
         totalLength -= ln;
       }
     }
 
+    ///
     Future<int> feed(Uint8List data) async {
       if (isInited == Initialized.initializationInProgress) {
         throw (_InitializationInProgress());
@@ -726,7 +768,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
           needSomeFoodCompleter = null;
           return (ln);
         }
-      } catch(e)
+      } on Exception
       {
         needSomeFoodCompleter = null;
         if (isStopped) {
@@ -742,6 +784,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
     }
 
+    ///
   Future<Duration> startPlayerFromTrack( Track track,
               {
                 TonSkip onSkipForward,
@@ -807,7 +850,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
           removeUIWhenStopped: removeUIWhenStopped,);
         playerState = PlayerState.values[state];
       }
-      catch (e)
+      on Exception
       {
         rethrow;
       }
@@ -821,6 +864,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
 
 
 
+  ///
   Future<void> nowPlaying( Track track,
               {
                 Duration duration,
@@ -875,6 +919,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     });
   }
 
+  ///
     Future<void> stopPlayer() async {
       print('FS:---> stopPlayer ');
       if (isInited == Initialized.initializationInProgress) {
@@ -891,13 +936,14 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
         //_removePlayerCallback(); // playerController is closed by this function
         await stop( );
       }
-      catch (e)
+      on Exception catch (e)
       {
         print( e );
       }
       print('FS:<--- stopPlayer ');
     }
 
+    ///
   Future<void> stop() async {
     print('FS:---> stop ');
     if (foodStreamSubscription != null)
@@ -926,6 +972,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   }
 
 
+  ///
   Future<void> pausePlayer() async {
     print('FS:---> pausePlayer ');
     if (isInited == Initialized.initializationInProgress) {
@@ -945,6 +992,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     print('FS:<--- pausePlayer ');
   }
 
+  ///
   Future<void> resumePlayer() async {
     print('FS:---> resumePlayer ');
     if (isInited == Initialized.initializationInProgress) {
@@ -965,6 +1013,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     print('FS:<--- resumePlayer ');
   }
 
+  ///
   Future<void> seekToPlayer(Duration duration) async {
 
     //print('FS:---> seekToPlayer ');
@@ -982,6 +1031,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     //print('FS:<--- seekToPlayer ');
   }
 
+  
+  ///
   Future<void> setVolume(double volume) async {
 
     print('FS:---> setVolume ');
@@ -1010,6 +1061,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
     print('FS:<--- setVolume ');
   }
 
+  ///
   Future<void> setUIProgressBar ( {
                                     Duration duration,
                                     Duration progress,
@@ -1023,6 +1075,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback
   }
 
 
+  ///
   Future<String> getResourcePath() async {
     if (kIsWeb) {
       return null;
@@ -1053,6 +1106,7 @@ class PlaybackDisposition {
               : position = Duration(seconds: 0),
                 duration = Duration(seconds: 0);
 
+  ///
   PlaybackDisposition(
                {
                 this.position = Duration.zero,
@@ -1069,9 +1123,12 @@ class PlaybackDisposition {
 }
 
 
+///
 class PlayerRunningException implements Exception {
+  ///
   final String message;
 
+  ///
   PlayerRunningException(this.message);
 }
 
@@ -1118,6 +1175,7 @@ class Track {
   /// it will be set to `t_CODEC.DEFAULT`.
   Codec codec;
 
+  ///
   Track({
           this.trackPath,
           this.dataBuffer,

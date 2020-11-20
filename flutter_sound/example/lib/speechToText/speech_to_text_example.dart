@@ -17,11 +17,9 @@
 */
 
 
-import 'package:flutter/material.dart';
 import 'dart:async';
-
-// stt
 import 'dart:math';
+import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -140,7 +138,7 @@ class _SpeechToTextExampleState extends State {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   DropdownButton<String>(
-                    onChanged: (String selectedVal) => _switchLang(selectedVal),
+                    onChanged: _switchLang,
                     value: _currentLocaleId,
                     items:  _localeNames.map(items).toList() ,
                   ),

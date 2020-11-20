@@ -17,11 +17,11 @@
  */
 
 
-import 'dart:typed_data';
-import 'package:flauto/flutter_sound.dart';
 import 'dart:async';
 import 'dart:io';
-import 'package:flauto/src/util/wave_header.dart';
+import 'dart:typed_data';
+import '../flutter_sound.dart';
+import './util/wave_header.dart';
 import 'util/log.dart';
 
 
@@ -124,14 +124,14 @@ class FlutterSoundHelper
 
         /// Returns various informations about the Audio specified by the `uri` parameter.
         /// The informations Map got with FFmpegGetMediaInformation() are [documented here](https://pub.dev/packages/flutter_ffmpeg).
-        Future<Map<dynamic, dynamic>> FFmpegGetMediaInformation(String uri) async
+        Future<Map<dynamic, dynamic>> ffMpegGetMediaInformation(String uri) async
         {
                 if (uri == null) return null;
                         _flutterFFprobe ??= FlutterFFprobe();
                 try
                 {
                         return await _flutterFFprobe.getMediaInformation(uri);
-                } catch (e)
+                } on Exception
                 {
                         return null;
                 }
@@ -146,7 +146,7 @@ class FlutterSoundHelper
         Future<Duration> duration(String uri) async
         {
                 if (uri == null) return null;
-                var info = await FFmpegGetMediaInformation(uri);
+                var info = await ffMpegGetMediaInformation(uri);
                 if (info == null) {
                         return null;
                 }
@@ -170,7 +170,7 @@ class FlutterSoundHelper
                 var sink = filOut.openWrite();
                 await filIn.open();
                 var buffer = filIn.readAsBytesSync();
-                sink.add(buffer.sublist(WaveHeader.HEADER_LENGTH));
+                sink.add(buffer.sublist(WaveHeader.headerLength));
                 await sink.close();
         }
 
@@ -183,7 +183,7 @@ class FlutterSoundHelper
         /// Note that this verb is not asynchronous and does not return a Future.
         Uint8List waveToPCMBuffer({Uint8List inputBuffer,})
         {
-                return inputBuffer.sublist(WaveHeader.HEADER_LENGTH);
+                return inputBuffer.sublist(WaveHeader.headerLength);
         }
 
 
@@ -214,7 +214,7 @@ class FlutterSoundHelper
 
                 var header = WaveHeader
                 (
-                        WaveHeader.FORMAT_PCM ,
+                        WaveHeader.formatPCM ,
                         numChannels = numChannels, //
                         sampleRate = sampleRate,
                         16, // 16 bits per byte
@@ -248,7 +248,7 @@ class FlutterSoundHelper
                 var size = inputBuffer.length;
                 var header = WaveHeader
                 (
-                        WaveHeader.FORMAT_PCM ,
+                        WaveHeader.formatPCM ,
                         numChannels,
                         sampleRate,
                         16,

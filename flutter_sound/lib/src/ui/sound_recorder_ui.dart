@@ -27,8 +27,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../flutter_sound.dart';
-import '../flutter_sound_recorder.dart';
 import '../flutter_sound_player.dart';
+import '../flutter_sound_recorder.dart';
 import '../util/log.dart';
 import 'sound_player_ui.dart';
 
@@ -96,10 +96,16 @@ class SoundRecorderUI extends StatefulWidget
 {
         static const int _barHeight = 60;
 
+        ///
         final Color backgroundColor;
 
+        ///
         final String pausedTitle;
+
+        ///
         final String recordingTitle;
+
+        ///
         final String stoppedTitle;
 
         /// Callback to be notified when the recording stops
@@ -111,11 +117,13 @@ class SoundRecorderUI extends StatefulWidget
         /// Callback to be notified when the recording pause.
         final OnPaused onPaused;
 
+        ///
         final OnDelete onDelete;
 
         /// Stores and Tracks the recorded audio.
         final RecordedAudio audio;
 
+        ///
         final bool showTrashCan;
 
         /// The `requestPermissions` callback allows you to request
@@ -230,16 +238,12 @@ class SoundRecorderUIState extends State<SoundRecorderUI>
         _RecorderState _state = _RecorderState.isStopped;
 
         FlutterSoundRecorder _recorder;
+
+        ///
         Color backgroundColor;
 
         ///
-        SoundRecorderUIState(Color backgroundColor,)
-        {
-                //_recorder.openAudioSession();
-                //_recorder.onStarted = _onStarted;
-                //_recorder.onStopped = _onStopped;
-                this.backgroundColor = backgroundColor;
-        }
+        SoundRecorderUIState(this.backgroundColor,);
 
         ///
         @override
@@ -451,11 +455,13 @@ class SoundRecorderUIState extends State<SoundRecorderUI>
                 _stop();
         }
 
+        ///
         void pause()
         {
                 _pause();
         }
 
+        ///
         void resume()
         {
                 _resume();

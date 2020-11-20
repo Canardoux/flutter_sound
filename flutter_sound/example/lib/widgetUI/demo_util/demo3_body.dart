@@ -23,16 +23,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flauto/flutter_sound.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:example/widgetUI/demo_util/temp_file.dart';
-
 import 'package:permission_handler/permission_handler.dart';
+
+import '../demo_util/temp_file.dart';
+
 
 import 'demo_active_codec.dart';
 import 'demo_asset_player.dart';
 import 'demo_drop_downs.dart';
 import 'recorder_state.dart';
 import 'remote_player.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 ///
 class MainBody extends StatefulWidget {
@@ -93,7 +93,7 @@ void _clean() async
   if (recordingFile != null) {
     try {
       await File(recordingFile).delete();
-    } catch (e)
+    } on Exception
     {
       // ignore
     }

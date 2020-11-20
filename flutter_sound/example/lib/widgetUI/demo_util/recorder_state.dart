@@ -22,8 +22,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flauto/flutter_sound.dart';
 
-import 'package:flauto/src/util/log.dart';
-import 'package:example/widgetUI/demo_util/temp_file.dart';
+import '../demo_util/temp_file.dart';
 import 'demo_active_codec.dart';
 import 'demo_media_path.dart';
 

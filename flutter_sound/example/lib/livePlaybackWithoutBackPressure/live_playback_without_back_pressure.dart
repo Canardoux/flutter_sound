@@ -17,41 +17,49 @@
  */
 
 
-import 'package:flutter/material.dart';
-import 'package:flauto/flutter_sound.dart';
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
+import 'package:flauto/flutter_sound.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 
 /*
  *
- * A very simple example showing how to play Live Data with back pressure.
- * It feeds a live stream, waiting that the Futures are completed for each block.
+ * A very simple example showing how to play Live Data without back pressure.
+ * A very simple example showing how to play Live Data without back pressure.
+ * It feeds a live stream, without waiting that the Futures are completed for each block.
+ * This is simpler because the App does not need to await the playback for each block before playing another one.
+ *
  *
  * This example get the data from an asset file, which is completely stupid :
  * if an App wants to play an asset file he must use "StartPlayerFromBuffer().
  *
- * If you do not need any back pressure, you can see another simple example : "LivePlaybackWithoutbackPressure.dart".
- * This other example is a little bit simpler because the App does not need to await the playback for each block before playing another one.
- * But if you do not use any back pressure, you will be front of two problems :
+ * Feeding Flutter Sound without back pressure is very simple but you can have two problems :
  * - If your App is too fast feeding the audio channel, it can have problems with the Stream memory used.
- * - The App does not have any knowledge of when the provided block is really played. If he does a "stopPlayer()" it will loose all the buffered data.
+ * - The App does not have any knowledge of when the provided block is really played.
+ * If he does a "stopPlayer()" it will loose all the buffered data.
+ *
+ * This example uses the ```foodEvent``` object to resynchronize the output stream before doing a ```stop()```
  *
  */
 
 
-const int SAMPLE_RATE = 44100;
+///
+const int tSampleRate = 44100;
+///
+const int tBlockSize = 4096;
+///
 typedef Fn = void Function();
 
 
 /// Example app.
-class LivePlaybackWithBackPressure extends StatefulWidget {
+class LivePlaybackWithoutBackPressure extends StatefulWidget {
   @override
-  _LivePlaybackWithBackPressureState createState() => _LivePlaybackWithBackPressureState();
+  _LivePlaybackWithoutBackPressureState createState() => _LivePlaybackWithoutBackPressureState();
 }
 
-class _LivePlaybackWithBackPressureState extends State<LivePlaybackWithBackPressure> {
+class _LivePlaybackWithoutBackPressureState extends State<LivePlaybackWithoutBackPressure> {
 
   FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
@@ -78,45 +86,39 @@ class _LivePlaybackWithBackPressureState extends State<LivePlaybackWithBackPress
   // -------  Here is the code to play Live data with back-pressure ------------
 
 
+  void feedHim(Uint8List data)
+  {
+    var start = 0;
+    var totalLength = data.length;
+    while (totalLength > 0 && _mPlayer != null && !_mPlayer.isStopped)
+    {
+      var ln = totalLength > tBlockSize ? tBlockSize : totalLength;
+      _mPlayer.foodSink.add(FoodData(data.sublist(start,start + ln)) );
+      totalLength -= ln;
+      start += ln;
+    }
+  }
+
+
   void play() async
   {
     assert (_mPlayerIsInited && _mPlayer.isStopped);
     await _mPlayer.startPlayerFromStream(
       codec:  Codec.pcm16,
       numChannels: 1,
-      sampleRate: SAMPLE_RATE,
+      sampleRate: tSampleRate,
     );
     setState(() {});
     var data = await getAssetData('assets/samples/sample.pcm');
-    await feedHim(data);
+    feedHim(data);
     if (_mPlayer != null) {
-      await stopPlayer();
+      // We must not do stopPlayer() directely //await stopPlayer();
+      _mPlayer.foodSink.add(FoodEvent(() async{await _mPlayer.stopPlayer();
       setState(() {});
+      }));
     }
   }
 
-  // Here we call the verb "await feedFromStream()" (with await!!!) for each block of BLOCK_SIZE size.
-  // This is just for demonstration of calling sequentially several "await feedFromStream()" (with await!!!!).
-  // Of course this is just for demo. The following code is exactly what there is in the procedure ```feedForStream()```
-  // so in a real app, you will call simply ```await feedForStream()``` (with await !!!!)
-  // Be very careful not calling a second `feedFromStream()` when the previous one has not completed his future.
-  //
-  // **You may not have two calls two calls to `feedFromStream()` simultaneously.**
-  // ******************************************************************************
-  // And, of course, you may not mix those verbs with the real output food Stream.
-
-  Future<void> feedHim(Uint8List buffer) async
-  {
-    var lnData = 0;
-    var totalLength = buffer.length;
-    while (totalLength > 0 && !_mPlayer.isStopped)
-    {
-      var bsize = totalLength > BLOCK_SIZE ?  BLOCK_SIZE : totalLength;
-      await _mPlayer.feedFromStream(buffer.sublist(lnData, lnData + bsize)); // await !!!!
-      lnData += bsize;
-      totalLength -= bsize;
-    }
-  }
 
   // --------------------- (it was very simple, wasn't it ?) -------------------
 
@@ -182,7 +184,7 @@ class _LivePlaybackWithBackPressureState extends State<LivePlaybackWithBackPress
 
     return Scaffold(backgroundColor: Colors.blue,
       appBar: AppBar(
-        title: const Text('Live playback with back pressure'),
+        title: const Text('Live playback without back pressure'),
       ),
       body: makeBody(),
     );

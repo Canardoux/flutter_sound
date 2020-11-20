@@ -20,6 +20,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flauto/flutter_sound.dart';
 
@@ -28,7 +29,6 @@ import 'package:flauto/flutter_sound.dart';
 import 'demo_active_codec.dart';
 import 'demo_common.dart';
 import 'demo_media_path.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 ///
 class RecordingPlayer extends StatelessWidget {

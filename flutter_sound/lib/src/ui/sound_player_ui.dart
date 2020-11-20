@@ -25,15 +25,15 @@
 
 
 import 'dart:async';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../flutter_sound.dart';
 import '../util/log.dart';
-import 'package:intl/intl.dart' show DateFormat;
 import 'sound_recorder_ui.dart';
-//import 'recorder_playback_controller.dart';
 
 
+///
 typedef OnLoad = Future<Track> Function(BuildContext context);
 
 /// A HTML 5 style audio play bar.
@@ -851,11 +851,6 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
                         builder: (context, snapshot)
                         {
                                 var disposition = snapshot.data;
-                                var positionDate = DateTime.fromMillisecondsSinceEpoch
-                                (
-                                    disposition.position.inMilliseconds,
-                                    isUtc: true
-                                );
                                 var durationDate = DateTime.fromMillisecondsSinceEpoch
                                 (
                                     disposition.duration.inMilliseconds,
@@ -863,11 +858,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI>
                                 );
                                 return Text
                                 (
-                                        DateFormat('mm:ss:SS', 'en_GB').format(positionDate) +
-                                        //'${Format.duration(disposition.position, showSuffix: false)}'
-                                        ' / ' +
-                                        DateFormat('mm:ss:SS', 'en_GB').format(durationDate),
-                                        //'${Format.duration(disposition.duration)}',
+                                        '{DateFormat("mm:ss:SS", "en_GB").format(positionDate)} / ${DateFormat('mm:ss:SS', 'en_GB').format(durationDate)}',
                                         style: _textStyle,
                                 );
                         }

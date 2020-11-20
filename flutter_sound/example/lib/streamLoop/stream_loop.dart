@@ -17,9 +17,9 @@
  */
 
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flauto/flutter_sound.dart';
-import 'dart:async';
 
 /*
  *
@@ -32,9 +32,10 @@ import 'dart:async';
  */
 
 
-const int SAMPLE_RATE_RECORDER = 16000;
-const int SAMPLE_RATE_PLAYER =   16000; // same speed than the recorder
+const int _sampleRateRecorder = 16000;
+const int _sampleRatePlayer =   16000; // same speed than the recorder
 
+///
 typedef Fn = void Function();
 
 
@@ -127,7 +128,7 @@ class _StreamLoopState extends State<StreamLoop> {
         (
                   codec:  Codec.pcm16,
                   numChannels: 1,
-                  sampleRate: SAMPLE_RATE_PLAYER,
+                  sampleRate: _sampleRatePlayer,
 
         );
 
@@ -135,7 +136,7 @@ class _StreamLoopState extends State<StreamLoop> {
               (
                       codec:  Codec.pcm16,
                       toStream: _mPlayer.foodSink, // ***** THIS IS THE LOOP !!! *****
-                      sampleRate: SAMPLE_RATE_RECORDER,
+                      sampleRate: _sampleRateRecorder,
                       numChannels: 1,
               );
         setState(()

@@ -16,16 +16,16 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'demo/demo.dart';
-import 'widgetUI/widgetUIDemo.dart';
-import 'recordToStream/recordToStreamExample.dart';
-import 'livePlaybackWithBackPressure/livePlaybackWithBackPressure.dart';
-import 'livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.dart';
-import 'soundEffect/soundEffect.dart';
-import 'streamLoop/streamLoop.dart';
-import 'speechToText/speechToTextExample.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'livePlaybackWithBackPressure/live_playback_with_back_pressure.dart';
+import 'livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart';
+import 'recordToStream/record_to_stream_example.dart';
+import 'soundEffect/sound_effect.dart';
+import 'speechToText/speech_to_text_example.dart';
+import 'streamLoop/stream_loop.dart';
+import 'widgetUI/widget_ui_demo.dart';
 
 /*
     This APP is just a driver to call the various Flutter Sound examples.
@@ -36,21 +36,31 @@ void main() {
   runApp(ExamplesApp());
 }
 
-const int NOT_WEB = 1;
+///
+const int tNotWeb = 1;
 
+///
 class Example
 {
+    ///
     final String title;
+    ///
     final String subTitle;
+    ///
     final String description;
+    ///
     final WidgetBuilder route;
+    ///
     final int flags;
 
+    ///
     /* ctor */ Example({ this.title, this.subTitle, this.description, this.flags, this.route});
 
+    ///
     void go(BuildContext context) => Navigator.push(context, MaterialPageRoute<void>( builder: route));
 }
 
+///
 final List<Example> exampleTable =
     [
       // If you update the following test, please update also the Examples/README.md file and the comment inside the dart file.
@@ -87,7 +97,7 @@ I really hope that someone will write soon another simpler Demo App.
 ''',
       ),
 
-      Example(title: 'recordToStream', subTitle: 'Example of recording to Stream', flags: NOT_WEB,  route: (_) => RecordToStreamExample(), description:
+      Example(title: 'recordToStream', subTitle: 'Example of recording to Stream', flags: tNotWeb,  route: (_) => RecordToStreamExample(), description:
 '''
 This is an example showing how to record to a Dart Stream.
 It writes all the recorded data from a Stream to a File, which is completely stupid:
@@ -97,7 +107,7 @@ The real interest of recording to a Stream is for example to feed a Speech-to-Te
 ''',
       ),
 
-      Example(title: 'livePlaybackWithoutBackPressure', subTitle: 'Live Playback without BackPressure', flags: NOT_WEB,  route: (_) => LivePlaybackWithoutBackPressure(), description:
+      Example(title: 'livePlaybackWithoutBackPressure', subTitle: 'Live Playback without BackPressure', flags: tNotWeb,  route: (_) => LivePlaybackWithoutBackPressure(), description:
 '''A very simple example showing how to play Live Data without back pressure.
 A very simple example showing how to play Live Data without back pressure.
 It feeds a live stream, without waiting that the Futures are completed for each block.
@@ -116,7 +126,7 @@ This example uses the ```foodEvent``` object to resynchronize the output stream 
 ''',
       ),
 
-      Example(title: 'livePlaybackWithBackPressure', subTitle: 'Live Playback with BackPressure', flags: NOT_WEB,  route: (_) => LivePlaybackWithBackPressure(), description:
+      Example(title: 'livePlaybackWithBackPressure', subTitle: 'Live Playback with BackPressure', flags: tNotWeb,  route: (_) => LivePlaybackWithBackPressure(), description:
 '''
 A very simple example showing how to play Live Data with back pressure.
 It feeds a live stream, waiting that the Futures are completed for each block.
@@ -130,7 +140,7 @@ playing another one.
 ''',
       ),
 
-      Example(title: 'soundEffect', subTitle: 'Sound Effect', flags: NOT_WEB,  route: (_) => SoundEffect(), description:
+      Example(title: 'soundEffect', subTitle: 'Sound Effect', flags: tNotWeb,  route: (_) => SoundEffect(), description:
 '''
 ```startPlayerFromStream()``` can be very efficient to play sound effects. For example in a game App.
 The App open the Audio Session and call ```startPlayerFromStream()``` during initialization.
@@ -139,7 +149,7 @@ When it want to play a noise, it has just to call the verb ```feed```
       ),
 
 
-      Example(title: 'streamLoop', subTitle: 'Loop from recorder to player', flags: NOT_WEB,  route: (_) => StreamLoop(), description:
+      Example(title: 'streamLoop', subTitle: 'Loop from recorder to player', flags: tNotWeb,  route: (_) => StreamLoop(), description:
       '''
 ```streamLoop()``` is a very simple example which connect the FlutterSoundRecorder sink 
 to the FlutterSoundPlayer Stream.
@@ -151,7 +161,7 @@ from flutter_sound_player.dart.
 ''',
       ),
 
-      Example(title: 'SpeechToText', subTitle: 'Speech to Text example', flags: NOT_WEB,  route: (_) => SpeechToTextExample(), description:
+      Example(title: 'SpeechToText', subTitle: 'Speech to Text example', flags: tNotWeb,  route: (_) => SpeechToTextExample(), description:
       '''
 This is an example showing how to do Speech To Text.
 This is just for FUN :-D, because this example does not use the Flutter Sound library.
@@ -165,6 +175,7 @@ This example was provided by @jtkeyva. Thanks to him :-) '''
 
 
 
+///
 class ExamplesApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -192,7 +203,10 @@ class ExamplesApp extends StatelessWidget {
   }
 }
 
+///
 class ExamplesAppHomePage extends StatefulWidget {
+
+  ///
   ExamplesAppHomePage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -204,6 +218,7 @@ class ExamplesAppHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
+  ///
   final String title;
 
   @override
@@ -321,8 +336,8 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
           ),
           child: Row ( mainAxisAlignment: MainAxisAlignment.end, children:
           [
-                  Text( (kIsWeb && (selectedExample.flags & NOT_WEB != 0)) ? 'Not supported on Flutter Web ' : ''),
-                  RaisedButton(  onPressed: (selectedExample.flags & NOT_WEB != 0) ? null :() =>selectedExample.go(context), color: Colors.indigo, child: Text('GO', style: TextStyle(color: Colors.white),),)
+                  Text( (kIsWeb && (selectedExample.flags & tNotWeb != 0)) ? 'Not supported on Flutter Web ' : ''),
+                  RaisedButton(  onPressed: (selectedExample.flags & tNotWeb != 0) ? null :() =>selectedExample.go(context), color: Colors.indigo, child: Text('GO', style: TextStyle(color: Colors.white),),)
           ],)
         ),
       ),

@@ -25,14 +25,14 @@ import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flauto/flutter_sound.dart';
-import 'package:flauto/src/flutter_sound_helper.dart';
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flauto_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:synchronized/synchronized.dart';
+import '../flutter_sound.dart';
+import 'flutter_sound_helper.dart';
 
 /// ----------------------------------------------------------------------------------------------------
 ///
@@ -135,7 +135,8 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
       
         /// True if the recorder has been open
         bool get _isOpen =>  (_openState == Initialized.fullyInitialized || _openState == Initialized.fullyInitializedWithUI);
-      
+
+        ///
         bool get isOpen => (isInited == Initialized.fullyInitialized);
       
       
@@ -207,6 +208,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
 
 
 
+        ///
         Future<void> setAudioFocus
           ({
                   AudioFocus focus = AudioFocus.requestFocusTransient,
@@ -227,6 +229,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
         }
 
 
+        ///
         Future<void> closeAudioSession() async
         {
                 if (isInited == Initialized.notInitialized)
@@ -326,6 +329,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
         }
 
 
+        ///
         Future<void> releaseRecorder() async
         {
                 await _lock.synchronized(() async
@@ -349,7 +353,8 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
 
       
       
-      
+
+        ///
         Future<void> startRecorder
         ({
                   Codec codec = Codec.defaultCodec,
@@ -425,7 +430,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
                         {
                                 return _savedUri;
                         }
-                } catch (err)
+                } on Exception catch(err)
                 {
                         throw Exception(err);
                 }
@@ -435,6 +440,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
 
 
 
+        ///
         Future<void> stopRecorder() async
         {
                 await _lock.synchronized(() async
@@ -480,6 +486,7 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
         }
 
 
+        ///
         Future<void> pauseRecorder() async
         {
                 await _lock.synchronized(() async
@@ -495,7 +502,8 @@ class FlutterSoundRecorder  implements FlutterSoundRecorderCallback
 
 
 
-      
+
+        ///
         Future<void> resumeRecorder() async
         {
                 await _lock.synchronized(() async
@@ -566,6 +574,7 @@ class _CodecNotSupportedException extends _RecorderException
 /// Permission to record was not granted
 class RecordingPermissionException extends _RecorderException 
 {
+        ///
         RecordingPermissionException(String message) : super(message);
 }
 

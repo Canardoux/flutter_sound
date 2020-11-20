@@ -23,7 +23,6 @@ import 'dart:typed_data';
 import 'package:flauto/flutter_sound.dart';
 import 'package:intl/intl.dart';
 
-import 'package:flauto/src/util/log.dart';
 import 'demo_media_path.dart';
 
 /// Describes how the media is stored.

@@ -32,22 +32,29 @@ import 'dart:core';
 /// </ul>
 class WaveHeader
 {
-        // follows WAVE format in http://ccrma.stanford.edu/courses/422/projects/WaveFormat
-        static final String TAG = 'WaveHeader';
+        /// follows WAVE format in http://ccrma.stanford.edu/courses/422/projects/WaveFormat
+        static final String tag = 'WaveHeader';
 
-        static final int HEADER_LENGTH = 44;
+        ///
+        static final int headerLength = 44;
 
         /// Indicates PCM format.
-        static final int FORMAT_PCM = 1;
+        static final int formatPCM = 1;
         /// Indicates ALAW format.
-        static final int FORMAT_ALAW = 6;
+        static final int formatALAW = 6;
         /// Indicates ULAW format.
-        static final int FORMAT_ULAW = 7;
+        static final int formatULAW = 7;
 
+        ///
         int mFormat;
+
+        ///
         int mNumChannels;
+        ///
         int mSampleRate;
+        ///
         int mBitsPerSample;
+        ///
         int mNumBytes;
 
 
@@ -63,133 +70,8 @@ class WaveHeader
         /// @param bitsPerSample usually 16 for PCM, 8 for ULAW or 8 for ALAW.
         /// @param numBytes size of audio data after this header, in bytes.
         ///
-        WaveHeader(int format, int numChannels, int sampleRate, int bitsPerSample, int numBytes)
-        {
-                mFormat = format;
-                mSampleRate = sampleRate;
-                mNumChannels = numChannels;
-                mBitsPerSample = bitsPerSample;
-                mNumBytes = numBytes;
-        }
+        WaveHeader(this.mFormat, this.mNumChannels, this.mSampleRate, this.mBitsPerSample, this.mNumBytes);
 
-
-
-
-
-        /// Get the format field.
-        /// @return format field,
-        /// one of {@link #FORMAT_PCM}, {@link #FORMAT_ULAW}, or {@link #FORMAT_ALAW}.
-        int getFormat()
-        {
-                return mFormat;
-        }
-
-
-
-
-
-        /// Set the format field.
-        /// @param format
-        /// one of {@link #FORMAT_PCM}, {@link #FORMAT_ULAW}, or {@link #FORMAT_ALAW}.
-        /// @return reference to this WaveHeader instance.
-        WaveHeader setFormat(int format)
-        {
-                mFormat = format;
-                return this;
-        }
-
-
-
-
-
-        /// Get the number of channels.
-        /// @return number of channels, 1 for mono, 2 for stereo.
-        int getNumChannels()
-        {
-                return mNumChannels;
-        }
-
-
-
-
-        /// Set the number of channels.
-        /// @param numChannels 1 for mono, 2 for stereo.
-        /// @return reference to this WaveHeader instance.
-        WaveHeader setNumChannels(int numChannels)
-        {
-                mNumChannels = numChannels;
-                return this;
-        }
-
-
-
-
-
-         /// Get the sample rate.
-         /// @return sample rate, typically 8000, 11025, 16000, 22050, or 44100 hz.
-        int getSampleRate()
-        {
-                return mSampleRate;
-        }
-
-
-
-
-        /// Set the sample rate.
-        /// @param sampleRate sample rate, typically 8000, 11025, 16000, 22050, or 44100 hz.
-        /// @return reference to this WaveHeader instance.
-        WaveHeader setSampleRate(int sampleRate)
-        {
-                mSampleRate = sampleRate;
-                return this;
-        }
-
-
-
-
-        /// Get the number of bits per sample.
-        /// @return number of bits per sample,
-        /// usually 16 for PCM, 8 for ULAW or 8 for ALAW.
-        int getBitsPerSample()
-        {
-                return mBitsPerSample;
-        }
-
-
-
-
-
-        /// Set the number of bits per sample.
-        /// @param bitsPerSample number of bits per sample,
-        /// usually 16 for PCM, 8 for ULAW or 8 for ALAW.
-        /// @return reference to this WaveHeader instance.
-        WaveHeader setBitsPerSample(int bitsPerSample)
-        {
-                mBitsPerSample = bitsPerSample;
-                return this;
-        }
-
-
-
-
-        /// Get the size of audio data after this header, in bytes.
-        /// @return size of audio data after this header, in bytes.
-        int getNumBytes()
-        {
-                return mNumBytes;
-        }
-
-
-
-
-        /// Set the size of audio data after this header, in bytes.
-        /// @param numBytes size of audio data after this header, in bytes.
-        /// @return reference to this WaveHeader instance.
-        WaveHeader setNumBytes(int numBytes)
-        {
-                mNumBytes = numBytes;
-                return this;
-        }
 
         /*
          * Read and initialize a WaveHeader.
@@ -270,7 +152,7 @@ class WaveHeader
                 writeId(out, 'data');
                 writeInt(out, mNumBytes);
 
-                return HEADER_LENGTH;
+                return headerLength;
         }
 
 

@@ -54,33 +54,57 @@ import 'package:flutter/foundation.dart' show kIsWeb;
  *
  */
 
-const int SAMPLE_RATE = 8000;
-const int BLOCK_SIZE = 4096;
+///
+const int tSAMPLERATE = 8000;
 
+///
+const int tBLOCKSIZE = 4096;
+
+///
 enum Media {
+///
   file,
-  buffer,
-  asset,
+///
+  buffer, 
+///
+  asset, 
+///
   stream,
+///
   remoteExampleFile,
 }
+
+///
 enum AudioState {
+///
   isPlaying,
+///
   isPaused,
+///
   isStopped,
+///
   isRecording,
+///
   isRecordingPaused,
 }
 
+///
 final exampleAudioFilePathWave =
     'http://5.189.150.137:5000/download_audio/CantinaBand3.wav';
+
+///
 final exampleAudioFilePathMP3 =
     'https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3';
+
+///
 final exampleAudioFilePathOPUS =
     'https://whatsapp-inbox-server.clare.ai/api/file/showFile?fileName=data/audios/e3f16eb2-10c3-45c9-b0fa-900c94cbe805.opus&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxMWI5YjQ3Zi1jMzBjLTRlZDMtYTFhNy1iNmYxNzRkMWQ1NTYiLCJ1bmlxdWVfbmFtZSI6InZlcm5hbEBjbGFyZS5haSIsIm5hbWVpZCI6InZlcm5hbEBjbGFyZS5haSIsImVtYWlsIjoidmVybmFsQGNsYXJlLmFpIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiRVhURVJOQUxfQURNSU5JU1RSQVRPUiIsImV4cCI6MjUzNDAyMzAwODAwLCJpc3MiOiJDbGFyZV9BSSIsImF1ZCI6IkNsYXJlX0FJIn0.yXVZ3n_lYYvJ1rGyF2mVh-80HuS0EEp7sQepxn9rGcY';
+
+///
 final albumArtPath =
     'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
 
+///
 class Demo extends StatefulWidget {
   @override
   _MyAppState createState() =>  _MyAppState();
@@ -191,11 +215,11 @@ class _MyAppState extends State<Demo> {
   Future<void> copyAssets() async {
     var dataBuffer =
         (await rootBundle.load('assets/canardo.png')).buffer.asUint8List();
-    var path = await playerModule.getResourcePath() + '/assets';
+    var path = await '${playerModule.getResourcePath()}/assets';
     if (!await Directory(path).exists()) {
       await Directory(path).create(recursive: true);
     }
-    await File(path + '/canardo.png').writeAsBytes(dataBuffer);
+    await File('$path/canardo.png').writeAsBytes(dataBuffer);
   }
 
   @override
@@ -243,9 +267,8 @@ class _MyAppState extends State<Demo> {
     try {
       await playerModule.closeAudioSession();
       await recorderModule.closeAudioSession();
-    } catch (e) {
+    } on Exception {
       print('Released unsuccessful');
-      print(e);
     }
   }
 
@@ -286,7 +309,7 @@ class _MyAppState extends State<Demo> {
                                 sink = IOSink(null);// TODO !!!!!
                         }
                         recordingDataController = StreamController<Food>();
-                        _recordingDataSubscription = recordingDataController.stream.listen((Food buffer)
+                        _recordingDataSubscription = recordingDataController.stream.listen(( buffer)
                         {
                                 if (buffer is FoodData)
                                 {
@@ -298,7 +321,7 @@ class _MyAppState extends State<Demo> {
                                   toStream: recordingDataController.sink,
                                   codec: _codec,
                                   numChannels: 1,
-                                  sampleRate: SAMPLE_RATE,
+                                  sampleRate: tSAMPLERATE,
                         );
               } else
               {
@@ -308,7 +331,7 @@ class _MyAppState extends State<Demo> {
                                   codec: _codec,
                                   bitRate: 8000,
                                   numChannels: 1,
-                                  sampleRate: SAMPLE_RATE,
+                                  sampleRate: tSAMPLERATE,
                           );
               }
               print('startRecorder');
@@ -331,7 +354,7 @@ class _MyAppState extends State<Demo> {
                 _isRecording = true;
                 _path[_codec.index] = path;
               });
-    } catch (err) {
+    } on Exception catch (err) {
       print('startRecorder error: $err');
       setState(() {
         stopRecorder();
@@ -368,7 +391,7 @@ class _MyAppState extends State<Demo> {
       cancelRecorderSubscriptions();
       cancelRecordingDataSubscription();
       await getDuration();
-    } catch (err) {
+    } on Exception catch (err) {
       print('stopRecorder error: $err');
     }
     setState(() {
@@ -389,7 +412,7 @@ class _MyAppState extends State<Demo> {
       var contents = await file.readAsBytes();
       print('The file is ${contents.length} bytes long.');
       return contents;
-    } catch (e) {
+    } on Exception catch (e) {
       print(e);
       return null;
     }
@@ -487,7 +510,7 @@ class _MyAppState extends State<Demo> {
                           } else
                           if (!kIsWeb)
                           {
-                                  albumArtFile = await playerModule.getResourcePath() + '/assets/canardo.png';
+                                  albumArtFile = '${await playerModule.getResourcePath()}/assets/canardo.png';
                                   print(albumArtFile);
                           } else
                           {
@@ -518,7 +541,7 @@ class _MyAppState extends State<Demo> {
                             print('Skip forward');
                             stopPlayer();
                             startPlayer();
-                          }, onPaused: (bool b)
+                          }, onPaused: ( b)
                           {
                                 if (b) {
                                   playerModule.pausePlayer();
@@ -533,7 +556,7 @@ class _MyAppState extends State<Demo> {
                             await playerModule.startPlayerFromStream(
                               codec: _codec,
                               numChannels: 1,
-                              sampleRate: SAMPLE_RATE,
+                              sampleRate: tSAMPLERATE,
                             );
                             _addListeners();
                             setState(() {});
@@ -549,7 +572,7 @@ class _MyAppState extends State<Demo> {
                             await playerModule.startPlayer(
                                 fromURI: audioFilePath,
                                 codec: codec,
-                                sampleRate:  SAMPLE_RATE,
+                                sampleRate:  tSAMPLERATE,
                                 whenFinished: () {
                                   print('Play finished');
                                   setState(() {});
@@ -559,13 +582,13 @@ class _MyAppState extends State<Demo> {
                               dataBuffer = await flutterSoundHelper.pcmToWaveBuffer(
                                 inputBuffer: dataBuffer,
                                 numChannels: 1,
-                                sampleRate: (_codec == Codec.pcm16 && _media == Media.asset)? 48000 : SAMPLE_RATE,
+                                sampleRate: (_codec == Codec.pcm16 && _media == Media.asset)? 48000 : tSAMPLERATE,
                               );
                               codec = Codec.pcm16WAV;
                             }
                             await playerModule.startPlayer(
                                 fromDataBuffer: dataBuffer,
-                                sampleRate:   SAMPLE_RATE,
+                                sampleRate:   tSAMPLERATE,
 
                                 codec: codec,
                                 whenFinished: () {
@@ -577,7 +600,7 @@ class _MyAppState extends State<Demo> {
             _addListeners();
             setState(() {});
             print('<--- startPlayer');
-    } catch (err)
+    } on Exception catch (err)
     {
       print('error: $err');
     }
@@ -593,7 +616,7 @@ class _MyAppState extends State<Demo> {
         _playerSubscription = null;
       }
       sliderCurrentPosition = 0.0;
-    } catch (err) {
+    } on Exception catch (err) {
       print('error: $err');
     }
     setState(() {
@@ -887,7 +910,7 @@ class _MyAppState extends State<Demo> {
       try {
         await _initializeExample(newVal);
         setState(() {});
-      } catch (err) {
+      } on Exception catch (err) {
         print(err);
       }
     });
@@ -1050,7 +1073,7 @@ class _MyAppState extends State<Demo> {
                 value: min(sliderCurrentPosition, maxDuration),
                 min: 0.0,
                 max: maxDuration,
-                onChanged: (double value) async {
+                onChanged: ( value) async {
                   await seekToPlayer( value.toInt());
                 },
                 divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt())),

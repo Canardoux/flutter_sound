@@ -39,34 +39,25 @@
 // The interfaces to the platforms specific implementations
 // --------------------------------------------------------
 //export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
-export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
-
-
-// The Widgets UI
-// --------------
-export 'src/ui/sound_player_ui.dart';
-export 'src/ui/sound_recorder_ui.dart' ;
-//export 'src/ui/recorder_playback_controller.dart' ;
-
-
-// The main modules
-// ----------------
-export 'src/flutter_sound_player.dart';
-export 'src/flutter_sound_recorder.dart';
-export 'src/flutter_sound_helper.dart';
-
-
-// Utilities
-// ---------
-export 'src/util/log.dart';
-export 'src/flutter_ffmpeg.dart';
-
 
 import 'dart:typed_data' show Uint8List;
+import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 import 'src/flutter_sound_player.dart';
 import 'src/flutter_sound_recorder.dart';
 import 'src/util/log.dart';
-import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
+
+export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
+
+
+export 'src/flutter_ffmpeg.dart';
+export 'src/flutter_sound_helper.dart';
+export 'src/flutter_sound_player.dart';
+export 'src/flutter_sound_recorder.dart';
+export 'src/ui/sound_player_ui.dart';
+export 'src/ui/sound_recorder_ui.dart' ;
+export 'src/util/log.dart';
+
+
 
 
 
@@ -122,6 +113,10 @@ abstract class Food
 {
         /// use internally by Flutter Sound
         Future<void> exec(FlutterSoundPlayer player);
+
+        /// use internally by Flutter Sound
+        void dummy(FlutterSoundPlayer player){} // Just to satisfy `dartanalyzer`
+
 }
 
 
@@ -200,6 +195,7 @@ class FlutterSound
         /// The Apps can use this instance without having to create a [FlutterSoundPlayer] themselves.
         FlutterSoundPlayer thePlayer = FlutterSoundPlayer();
 
+        /// TODO
         void internalOpenSessionForRecording()
         {
                 //todo
