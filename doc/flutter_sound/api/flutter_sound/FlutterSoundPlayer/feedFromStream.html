@@ -152,7 +152,7 @@
   var totalLength = buffer.length;
   while (totalLength &gt; 0 &amp;&amp; !isStopped)
   {
-    var bsize = totalLength &gt; BLOCK_SIZE ? BLOCK_SIZE : totalLength;
+    var bsize = totalLength &gt; blockSize ? blockSize : totalLength;
     var ln = await feed(buffer.sublist(lnData, lnData + bsize));
     lnData += ln;
     totalLength -= ln;
@@ -170,7 +170,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.3+3
+      6.4.3+4
   </span>
 
 </footer>

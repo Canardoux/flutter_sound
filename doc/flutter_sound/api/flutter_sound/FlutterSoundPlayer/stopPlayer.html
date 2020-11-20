@@ -146,27 +146,27 @@
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; stopPlayer() async {
-  print(&#39;FS:---&gt; stopPlayer &#39;);
-  if (isInited == Initialized.initializationInProgress) {
-    throw (_InitializationInProgress());
-  }
-  if (isInited != Initialized.fullyInitialized) {
-    throw (_NotOpen());
-  }
+    print(&#39;FS:---&gt; stopPlayer &#39;);
+    if (isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (isInited != Initialized.fullyInitialized) {
+      throw (_NotOpen());
+    }
 
-&#47;&#47; REALLY ? &#47;&#47; audioPlayerFinishedPlaying = null;
+  &#47;&#47; REALLY ? &#47;&#47; audioPlayerFinishedPlaying = null;
 
-  try
-  {
-    &#47;&#47;_removePlayerCallback(); &#47;&#47; playerController is closed by this function
-    await stop( );
-  }
-  catch (e)
-  {
-    print( e );
-  }
-  print(&#39;FS:&lt;--- stopPlayer &#39;);
-}</code></pre>
+    try
+    {
+      &#47;&#47;_removePlayerCallback(); &#47;&#47; playerController is closed by this function
+      await stop( );
+    }
+    on Exception catch (e)
+    {
+      print( e );
+    }
+    print(&#39;FS:&lt;--- stopPlayer &#39;);
+  }</code></pre>
     </section>
 
   </div> <!-- /.main-content -->
@@ -179,7 +179,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.3+3
+      6.4.3+4
   </span>
 
 </footer>

@@ -155,81 +155,81 @@
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;Duration&gt; startPlayerFromTrack( Track track,
-            {
-              TonSkip onSkipForward,
-              TonSkip onSkipBackward,
-              TonPaused onPaused,
-              TWhenFinished whenFinished,
-              Duration progress,
-              Duration duration,
-              bool defaultPauseResume,
-              bool removeUIWhenStopped = true,
-            }) async {
+          {
+            TonSkip onSkipForward,
+            TonSkip onSkipBackward,
+            TonPaused onPaused,
+            TWhenFinished whenFinished,
+            Duration progress,
+            Duration duration,
+            bool defaultPauseResume,
+            bool removeUIWhenStopped = true,
+          }) async {
 
-   print(&#39;FS:---&gt; startPlayerFromTrack &#39;);
-  if (isInited == Initialized.initializationInProgress) {
-    throw (_InitializationInProgress());
-  }
-  if (isInited != Initialized.fullyInitialized ) {
-    throw (_NotOpen());
-  }
-   &#47;&#47;Map retMap;
-   await _lock.synchronized(() async {
-    try
+ print(&#39;FS:---&gt; startPlayerFromTrack &#39;);
+if (isInited == Initialized.initializationInProgress) {
+  throw (_InitializationInProgress());
+}
+if (isInited != Initialized.fullyInitialized ) {
+  throw (_NotOpen());
+}
+ &#47;&#47;Map retMap;
+ await _lock.synchronized(() async {
+  try
+  {
+    await stop( ); &#47;&#47; Just in case
+    audioPlayerFinishedPlaying = ()
     {
-      await stop( ); &#47;&#47; Just in case
-      audioPlayerFinishedPlaying = ()
-      {
-        whenFinished();
-      };
-      this.onSkipForward = onSkipForward;
-      this.onSkipBackward = onSkipBackward;
-      this.onPaused = onPaused;
-      var trackDico = track.toMap( );
-      var what = &lt;String, dynamic&gt;{&#39;codec&#39;: track.codec, &#39;path&#39;: track.trackPath, &#39;fromDataBuffer&#39;: track.dataBuffer,}  ;
-      await _convert( what );
-      var codec = what[&#39;codec&#39;] as Codec;
-      trackDico[&#39;bufferCodecIndex&#39;] = codec.index;
-      trackDico[&#39;path&#39;] = what[&#39;path&#39;];
-      trackDico[&#39;dataBuffer&#39;] = what[&#39;fromDataBuffer&#39;];
-      trackDico[&#39;codec&#39;] = codec.index;
+      whenFinished();
+    };
+    this.onSkipForward = onSkipForward;
+    this.onSkipBackward = onSkipBackward;
+    this.onPaused = onPaused;
+    var trackDico = track.toMap( );
+    var what = &lt;String, dynamic&gt;{&#39;codec&#39;: track.codec, &#39;path&#39;: track.trackPath, &#39;fromDataBuffer&#39;: track.dataBuffer,}  ;
+    await _convert( what );
+    var codec = what[&#39;codec&#39;] as Codec;
+    trackDico[&#39;bufferCodecIndex&#39;] = codec.index;
+    trackDico[&#39;path&#39;] = what[&#39;path&#39;];
+    trackDico[&#39;dataBuffer&#39;] = what[&#39;fromDataBuffer&#39;];
+    trackDico[&#39;codec&#39;] = codec.index;
 
-        defaultPauseResume ??= (
-            onPaused == null
-        );
-      if (playerState != PlayerState.isStopped)
-      {
-        throw Exception( &#39;Player is not stopped&#39; );
-      }
-      startPlayerCompleter =  Completer&lt;Duration&gt;();
-      var state = await FlutterSoundPlayerPlatform.instance.startPlayerFromTrack(this,
-        progress: progress,
-        duration: duration,
-        track: trackDico,
-        canPause: (
-                    onPaused != null || defaultPauseResume
-        ),
-        canSkipForward: (
-                    onSkipForward != null
-        ),
-        canSkipBackward: (
-                    onSkipBackward != null
-        ),
-        defaultPauseResume: defaultPauseResume,
-        removeUIWhenStopped: removeUIWhenStopped,);
-      playerState = PlayerState.values[state];
-    }
-    catch (e)
+      defaultPauseResume ??= (
+          onPaused == null
+      );
+    if (playerState != PlayerState.isStopped)
     {
-      rethrow;
+      throw Exception( &#39;Player is not stopped&#39; );
     }
-  });
-   &#47;&#47;Duration d = Duration(milliseconds: retMap[&#39;duration&#39;] as int);
-   &#47;&#47;int state = retMap[&#39;state&#39;] as int;
-   &#47;&#47;playerState = PlayerState.values[state];
-   print(&#39;FS:&lt;--- startPlayerFromTrack &#39;);
-   return startPlayerCompleter.future;
-}</code></pre>
+    startPlayerCompleter =  Completer&lt;Duration&gt;();
+    var state = await FlutterSoundPlayerPlatform.instance.startPlayerFromTrack(this,
+      progress: progress,
+      duration: duration,
+      track: trackDico,
+      canPause: (
+                  onPaused != null || defaultPauseResume
+      ),
+      canSkipForward: (
+                  onSkipForward != null
+      ),
+      canSkipBackward: (
+                  onSkipBackward != null
+      ),
+      defaultPauseResume: defaultPauseResume,
+      removeUIWhenStopped: removeUIWhenStopped,);
+    playerState = PlayerState.values[state];
+  }
+  on Exception
+  {
+    rethrow;
+  }
+});
+ &#47;&#47;Duration d = Duration(milliseconds: retMap[&#39;duration&#39;] as int);
+ &#47;&#47;int state = retMap[&#39;state&#39;] as int;
+ &#47;&#47;playerState = PlayerState.values[state];
+ print(&#39;FS:&lt;--- startPlayerFromTrack &#39;);
+ return startPlayerCompleter.future;
+  }</code></pre>
     </section>
 
   </div> <!-- /.main-content -->
@@ -242,7 +242,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.3+3
+      6.4.3+4
   </span>
 
 </footer>

@@ -296,18 +296,6 @@
   }
  },
  {
-  "name": "BLOCK_SIZE",
-  "qualifiedName": "flutter_sound.BLOCK_SIZE",
-  "href": "flutter_sound/BLOCK_SIZE-constant.html",
-  "type": "top-level constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "flutter_sound",
-   "type": "library"
-  }
- },
- {
   "name": "FlutterFFmpeg",
   "qualifiedName": "flutter_sound.FlutterFFmpeg",
   "href": "flutter_sound/FlutterFFmpeg-class.html",
@@ -824,18 +812,6 @@
   }
  },
  {
-  "name": "FFmpegGetMediaInformation",
-  "qualifiedName": "flutter_sound.FlutterSoundHelper.FFmpegGetMediaInformation",
-  "href": "flutter_sound/FlutterSoundHelper/FFmpegGetMediaInformation.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundHelper",
-   "type": "class"
-  }
- },
- {
   "name": "FlutterSoundHelper",
   "qualifiedName": "flutter_sound.FlutterSoundHelper.FlutterSoundHelper",
   "href": "flutter_sound/FlutterSoundHelper/FlutterSoundHelper.html",
@@ -875,6 +851,18 @@
   "name": "executeFFmpegWithArguments",
   "qualifiedName": "flutter_sound.FlutterSoundHelper.executeFFmpegWithArguments",
   "href": "flutter_sound/FlutterSoundHelper/executeFFmpegWithArguments.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "ffMpegGetMediaInformation",
+  "qualifiedName": "flutter_sound.FlutterSoundHelper.ffMpegGetMediaInformation",
+  "href": "flutter_sound/FlutterSoundHelper/ffMpegGetMediaInformation.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1952,6 +1940,18 @@
   }
  },
  {
+  "name": "dummy",
+  "qualifiedName": "flutter_sound.Food.dummy",
+  "href": "flutter_sound/Food/dummy.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Food",
+   "type": "class"
+  }
+ },
+ {
   "name": "exec",
   "qualifiedName": "flutter_sound.Food.exec",
   "href": "flutter_sound/Food/exec.html",
@@ -2264,130 +2264,130 @@
   }
  },
  {
-  "name": "AV_LOG_DEBUG",
-  "qualifiedName": "flutter_sound.LogLevel.AV_LOG_DEBUG",
-  "href": "flutter_sound/LogLevel/AV_LOG_DEBUG-constant.html",
-  "type": "constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "LogLevel",
-   "type": "class"
-  }
- },
- {
-  "name": "AV_LOG_ERROR",
-  "qualifiedName": "flutter_sound.LogLevel.AV_LOG_ERROR",
-  "href": "flutter_sound/LogLevel/AV_LOG_ERROR-constant.html",
-  "type": "constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "LogLevel",
-   "type": "class"
-  }
- },
- {
-  "name": "AV_LOG_FATAL",
-  "qualifiedName": "flutter_sound.LogLevel.AV_LOG_FATAL",
-  "href": "flutter_sound/LogLevel/AV_LOG_FATAL-constant.html",
-  "type": "constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "LogLevel",
-   "type": "class"
-  }
- },
- {
-  "name": "AV_LOG_INFO",
-  "qualifiedName": "flutter_sound.LogLevel.AV_LOG_INFO",
-  "href": "flutter_sound/LogLevel/AV_LOG_INFO-constant.html",
-  "type": "constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "LogLevel",
-   "type": "class"
-  }
- },
- {
-  "name": "AV_LOG_PANIC",
-  "qualifiedName": "flutter_sound.LogLevel.AV_LOG_PANIC",
-  "href": "flutter_sound/LogLevel/AV_LOG_PANIC-constant.html",
-  "type": "constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "LogLevel",
-   "type": "class"
-  }
- },
- {
-  "name": "AV_LOG_QUIET",
-  "qualifiedName": "flutter_sound.LogLevel.AV_LOG_QUIET",
-  "href": "flutter_sound/LogLevel/AV_LOG_QUIET-constant.html",
-  "type": "constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "LogLevel",
-   "type": "class"
-  }
- },
- {
-  "name": "AV_LOG_STDERR",
-  "qualifiedName": "flutter_sound.LogLevel.AV_LOG_STDERR",
-  "href": "flutter_sound/LogLevel/AV_LOG_STDERR-constant.html",
-  "type": "constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "LogLevel",
-   "type": "class"
-  }
- },
- {
-  "name": "AV_LOG_TRACE",
-  "qualifiedName": "flutter_sound.LogLevel.AV_LOG_TRACE",
-  "href": "flutter_sound/LogLevel/AV_LOG_TRACE-constant.html",
-  "type": "constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "LogLevel",
-   "type": "class"
-  }
- },
- {
-  "name": "AV_LOG_VERBOSE",
-  "qualifiedName": "flutter_sound.LogLevel.AV_LOG_VERBOSE",
-  "href": "flutter_sound/LogLevel/AV_LOG_VERBOSE-constant.html",
-  "type": "constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "LogLevel",
-   "type": "class"
-  }
- },
- {
-  "name": "AV_LOG_WARNING",
-  "qualifiedName": "flutter_sound.LogLevel.AV_LOG_WARNING",
-  "href": "flutter_sound/LogLevel/AV_LOG_WARNING-constant.html",
-  "type": "constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "LogLevel",
-   "type": "class"
-  }
- },
- {
   "name": "LogLevel",
   "qualifiedName": "flutter_sound.LogLevel.LogLevel",
   "href": "flutter_sound/LogLevel/LogLevel.html",
   "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogDebug",
+  "qualifiedName": "flutter_sound.LogLevel.avLogDebug",
+  "href": "flutter_sound/LogLevel/avLogDebug-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogError",
+  "qualifiedName": "flutter_sound.LogLevel.avLogError",
+  "href": "flutter_sound/LogLevel/avLogError-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogFatal",
+  "qualifiedName": "flutter_sound.LogLevel.avLogFatal",
+  "href": "flutter_sound/LogLevel/avLogFatal-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogInfo",
+  "qualifiedName": "flutter_sound.LogLevel.avLogInfo",
+  "href": "flutter_sound/LogLevel/avLogInfo-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogPanic",
+  "qualifiedName": "flutter_sound.LogLevel.avLogPanic",
+  "href": "flutter_sound/LogLevel/avLogPanic-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogQuiet",
+  "qualifiedName": "flutter_sound.LogLevel.avLogQuiet",
+  "href": "flutter_sound/LogLevel/avLogQuiet-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogStderr",
+  "qualifiedName": "flutter_sound.LogLevel.avLogStderr",
+  "href": "flutter_sound/LogLevel/avLogStderr-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogTrace",
+  "qualifiedName": "flutter_sound.LogLevel.avLogTrace",
+  "href": "flutter_sound/LogLevel/avLogTrace-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogVerbose",
+  "qualifiedName": "flutter_sound.LogLevel.avLogVerbose",
+  "href": "flutter_sound/LogLevel/avLogVerbose-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogWarning",
+  "qualifiedName": "flutter_sound.LogLevel.avLogWarning",
+  "href": "flutter_sound/LogLevel/avLogWarning-constant.html",
+  "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
@@ -3648,6 +3648,18 @@
   "qualifiedName": "flutter_sound.black",
   "href": "flutter_sound/black.html",
   "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "flutter_sound",
+   "type": "library"
+  }
+ },
+ {
+  "name": "blockSize",
+  "qualifiedName": "flutter_sound.blockSize",
+  "href": "flutter_sound/blockSize-constant.html",
+  "type": "top-level constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {

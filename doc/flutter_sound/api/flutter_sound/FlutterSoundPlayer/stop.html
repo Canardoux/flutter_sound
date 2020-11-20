@@ -146,31 +146,31 @@
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; stop() async {
-  print(&#39;FS:---&gt; stop &#39;);
-  if (foodStreamSubscription != null)
-    {
-      await foodStreamSubscription.cancel();
-      foodStreamSubscription = null;
-    }
-  needSomeFoodCompleter = null;
-  if (foodStreamController != null)
-    {
-      await foodStreamController.sink.close();
-      &#47;&#47;await foodStreamController.stream.drain&lt;bool&gt;();
-      await foodStreamController.close();
-      foodStreamController = null;
-    }
-  var state = await FlutterSoundPlayerPlatform.instance.stopPlayer(this);
-
-  playerState = PlayerState.values[state];
-  if (playerState != PlayerState.isStopped)
+print(&#39;FS:---&gt; stop &#39;);
+if (foodStreamSubscription != null)
   {
-    throw Exception( &#39;Player is not stopped&#39; );
+    await foodStreamSubscription.cancel();
+    foodStreamSubscription = null;
   }
+needSomeFoodCompleter = null;
+if (foodStreamController != null)
+  {
+    await foodStreamController.sink.close();
+    &#47;&#47;await foodStreamController.stream.drain&lt;bool&gt;();
+    await foodStreamController.close();
+    foodStreamController = null;
+  }
+var state = await FlutterSoundPlayerPlatform.instance.stopPlayer(this);
 
-  print(&#39;FS:&lt;--- stop &#39;);
+playerState = PlayerState.values[state];
+if (playerState != PlayerState.isStopped)
+{
+  throw Exception( &#39;Player is not stopped&#39; );
+}
 
-}</code></pre>
+print(&#39;FS:&lt;--- stop &#39;);
+
+  }</code></pre>
     </section>
 
   </div> <!-- /.main-content -->
@@ -183,7 +183,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.3+3
+      6.4.3+4
   </span>
 
 </footer>

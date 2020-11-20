@@ -68,7 +68,7 @@
         <li><a href="../../flutter_sound/FlutterSoundHelper/convertFile.html">convertFile</a></li>
         <li><a href="../../flutter_sound/FlutterSoundHelper/duration.html">duration</a></li>
         <li><a href="../../flutter_sound/FlutterSoundHelper/executeFFmpegWithArguments.html">executeFFmpegWithArguments</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundHelper/FFmpegGetMediaInformation.html">FFmpegGetMediaInformation</a></li>
+        <li><a href="../../flutter_sound/FlutterSoundHelper/ffMpegGetMediaInformation.html">ffMpegGetMediaInformation</a></li>
         <li><a href="../../flutter_sound/FlutterSoundHelper/getLastFFmpegCommandOutput.html">getLastFFmpegCommandOutput</a></li>
         <li><a href="../../flutter_sound/FlutterSoundHelper/getLastFFmpegReturnCode.html">getLastFFmpegReturnCode</a></li>
         <li><a href="../../flutter_sound/FlutterSoundHelper/isFFmpegAvailable.html">isFFmpegAvailable</a></li>
@@ -122,7 +122,7 @@ It adds a <code>Wave</code> envelop in front of the PCM buffer, so that the file
         var size = inputBuffer.length;
         var header = WaveHeader
         (
-                WaveHeader.FORMAT_PCM ,
+                WaveHeader.formatPCM ,
                 numChannels,
                 sampleRate,
                 16,
@@ -156,7 +156,7 @@ It adds a <code>Wave</code> envelop in front of the PCM buffer, so that the file
 <footer>
   <span class="no-break">
     flauto
-      6.4.3+3
+      6.4.3+4
   </span>
 
 </footer>
