@@ -100,12 +100,12 @@
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;int&gt; execute(String command) async {
   try {
-    final Map&lt;dynamic, dynamic&gt; result = await _methodChannel.invokeMethod(
+    final result = await _methodChannel.invokeMethod&lt;Map&lt;dynamic, dynamic&gt; &gt;(
         &#39;executeFFmpegWithArguments&#39;,
         {&#39;arguments&#39;: FlutterFFmpeg.parseArguments(command)});
     return result[&#39;rc&#39;] as int;
   } on PlatformException catch (e) {
-    print(&quot;Plugin error: ${e.message}&quot;);
+    print(&#39;Plugin error: ${e.message}&#39;);
     return -1;
   }
 }</code></pre>
@@ -121,7 +121,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

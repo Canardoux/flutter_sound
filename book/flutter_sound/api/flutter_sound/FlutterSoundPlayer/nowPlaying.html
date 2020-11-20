@@ -145,7 +145,7 @@
 <li><span class="parameter" id="nowPlaying-param-onSkipForward"><span class="type-annotation"><a href="../../flutter_sound/TonSkip.html">TonSkip</a></span> <span class="parameter-name">onSkipForward</span>, </span></li>
 <li><span class="parameter" id="nowPlaying-param-onSkipBackward"><span class="type-annotation"><a href="../../flutter_sound/TonSkip.html">TonSkip</a></span> <span class="parameter-name">onSkipBackward</span>, </span></li>
 <li><span class="parameter" id="nowPlaying-param-onPaused"><span class="type-annotation"><a href="../../flutter_sound/TonPaused.html">TonPaused</a></span> <span class="parameter-name">onPaused</span>, </span></li>
-<li><span class="parameter" id="nowPlaying-param-defaultPauseResume"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">defaultPauseResume</span>: <span class="default-value">null</span>}</span></li>
+<li><span class="parameter" id="nowPlaying-param-defaultPauseResume"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">defaultPauseResume</span>}</span></li>
 </ol>)
       
     </section>
@@ -159,7 +159,7 @@
               TonSkip onSkipForward,
               TonSkip onSkipBackward,
               TonPaused onPaused,
-              bool defaultPauseResume = null,
+              bool defaultPauseResume,
 
             }) async {
   print(&#39;FS:---&gt; nowPlaying &#39;);
@@ -180,14 +180,13 @@
     this.onSkipBackward = onSkipBackward;
     this.onPaused = onPaused;
 
-    Map&lt;String, dynamic&gt; trackDico = (
+    var trackDico = (
                 track != null
     ) ? track.toMap( ) : null;
-    if (defaultPauseResume == null)
-      defaultPauseResume = (
-                  onPaused == null
+      defaultPauseResume ??= (
+          onPaused == null
       );
-    int state = await FlutterSoundPlayerPlatform.instance.nowPlaying(this,
+    var state = await FlutterSoundPlayerPlatform.instance.nowPlaying(this,
       track: trackDico,
       duration: duration,
       progress: progress,
@@ -218,7 +217,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

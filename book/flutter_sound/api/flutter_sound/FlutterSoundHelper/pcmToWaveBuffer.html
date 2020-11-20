@@ -119,8 +119,8 @@ It adds a <code>Wave</code> envelop in front of the PCM buffer, so that the file
 }) async
 {
 
-        int size = inputBuffer.length;
-        WaveHeader header = new WaveHeader
+        var size = inputBuffer.length;
+        var header = WaveHeader
         (
                 WaveHeader.FORMAT_PCM ,
                 numChannels,
@@ -129,10 +129,10 @@ It adds a <code>Wave</code> envelop in front of the PCM buffer, so that the file
                 size, &#47;&#47; total number of bytes
         );
 
-        List&lt;int&gt; buffer = List&lt;int&gt;();
+        var buffer = &lt;int&gt;[];
         StreamController controller  = StreamController&lt;List&lt;int&gt;&gt;();
-        StreamSink&lt;List&lt;int&gt;&gt; sink = controller.sink as StreamSink&lt;List&lt;int&gt;&gt; ;
-        Stream&lt;List&lt;int&gt;&gt; stream = controller.stream as Stream&lt;List&lt;int&gt;&gt;;
+        var sink = controller.sink as StreamSink&lt;List&lt;int&gt;&gt; ;
+        var stream = controller.stream as Stream&lt;List&lt;int&gt;&gt;;
         stream.listen( ( e)
         {
                 var x = e.toList();
@@ -156,7 +156,7 @@ It adds a <code>Wave</code> envelop in front of the PCM buffer, so that the file
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

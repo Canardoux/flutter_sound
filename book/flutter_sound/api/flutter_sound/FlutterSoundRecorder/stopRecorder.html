@@ -114,26 +114,28 @@
 {
         await _lock.synchronized(() async
         {
-                if (!_isOpen)
+                if (!_isOpen) {
                         return null;
+                }
                 await FlutterSoundRecorderPlatform.instance.stopRecorder(this);
                 _userStreamSink = null;
 
                 _recorderState = RecorderState.isStopped;
-                closeAudioSession();
+                await closeAudioSession();
 
                 if (_isOggOpus)
                 {
                         &#47;&#47; delete the target if it exists
                         &#47;&#47; (ffmpeg gives an error if the output file already exists)
-                        File f = File(_savedUri);
-                        if (f.existsSync())
+                        var f = File(_savedUri);
+                        if (f.existsSync()) {
                                 await f.delete();
+                        }
                         &#47;&#47; The following ffmpeg instruction re-encode the Apple CAF to OPUS.
                         &#47;&#47; Unfortunately we cannot just remix the OPUS data,
                         &#47;&#47; because Apple does not set the &quot;extradata&quot; in its private OPUS format.
                         &#47;&#47; It will be good if we can improve this...
-                        int rc = await flutterSoundHelper.executeFFmpegWithArguments
+                        var rc = await flutterSoundHelper.executeFFmpegWithArguments
                         ([
                                 &#39;-loglevel&#39;,
                                 &#39;error&#39;,
@@ -144,8 +146,9 @@
                                 &#39;libopus&#39;,
                                 _savedUri,
                         ]); &#47;&#47; remux CAF to OGG
-                        if (rc != 0)
+                        if (rc != 0) {
                                 return null;
+                        }
                         return _savedUri;
                 }
         });
@@ -162,7 +165,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

@@ -124,7 +124,7 @@
 
         _player.pausePlayer().then((_) =&gt; _transitioning = false).catchError((dynamic e)
         {
-                Log.w(&quot;Error calling pause ${e.toString()}&quot;);
+                Log.w(&#39;Error calling pause ${e.toString()}&#39;);
                 _playState = _PlayState.playing;
                 _playState = _PlayState.stopped;
                 _player.stopPlayer();
@@ -143,7 +143,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

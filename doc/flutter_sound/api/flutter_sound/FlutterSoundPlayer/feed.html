@@ -154,12 +154,13 @@
   {
     throw (_NotOpen());
   }
-  if (isStopped)
+  if (isStopped) {
     return 0;
-  needSomeFoodCompleter = new Completer&lt;int&gt;();
+  }
+  needSomeFoodCompleter = Completer&lt;int&gt;();
   try
   {
-    int ln = await FlutterSoundPlayerPlatform.instance.feed(this, data: data,);
+    var ln = await FlutterSoundPlayerPlatform.instance.feed(this, data: data,);
     if (ln != 0)
     {
       needSomeFoodCompleter = null;
@@ -168,8 +169,9 @@
   } catch(e)
   {
     needSomeFoodCompleter = null;
-    if (isStopped)
+    if (isStopped) {
       return 0;
+    }
     rethrow;
   }
 
@@ -191,7 +193,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

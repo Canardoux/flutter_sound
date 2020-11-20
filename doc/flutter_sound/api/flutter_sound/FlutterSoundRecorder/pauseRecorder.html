@@ -114,8 +114,9 @@
 {
         await _lock.synchronized(() async
         {
-                if (!_isOpen)
+                if (!_isOpen) {
                         throw _NotOpen();
+                }
                 await FlutterSoundRecorderPlatform.instance.pauseRecorder(this);
                 _recorderState = RecorderState.isPaused;
         });
@@ -132,7 +133,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

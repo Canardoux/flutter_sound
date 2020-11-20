@@ -153,7 +153,7 @@
   if ( isInited != Initialized.fullyInitialized) {
     throw (_NotOpen());
   }
-  int state = await FlutterSoundPlayerPlatform.instance.getPlayerState(this);
+  var state = await FlutterSoundPlayerPlatform.instance.getPlayerState(this);
   playerState = PlayerState.values[state];
   return playerState;
 }</code></pre>
@@ -169,7 +169,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

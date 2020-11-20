@@ -117,11 +117,11 @@
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;dynamic&gt;&gt; getExternalLibraries() async {
   try {
-    final List&lt;dynamic&gt; result =
-        await _methodChannel.invokeMethod(&#39;getExternalLibraries&#39;);
+    final result =
+        await _methodChannel.invokeMethod&lt;List&lt;dynamic&gt; &gt;(&#39;getExternalLibraries&#39;);
     return result;
   } on PlatformException catch (e) {
-    print(&quot;Plugin error: ${e.message}&quot;);
+    print(&#39;Plugin error: ${e.message}&#39;);
     return null;
   }
 }</code></pre>
@@ -137,7 +137,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

@@ -161,8 +161,9 @@ void audioPlayerFinished(int state) async
       assert (state != null);
       playerState = PlayerState.values[state];
 
-      if (audioPlayerFinishedPlaying != null)
-        audioPlayerFinishedPlaying( );
+      if (audioPlayerFinishedPlaying != null) {
+        audioPlayerFinishedPlaying();
+      }
     });
     print(&#39;FS:&lt;--- audioPlayerFinished&#39;);
 }</code></pre>
@@ -178,7 +179,7 @@ void audioPlayerFinished(int state) async
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

@@ -126,7 +126,7 @@
             .then((_) =&gt; _transitioning = false)
             .catchError((dynamic e)
             {
-                    Log.w(&quot;Error calling resume ${e.toString()}&quot;);
+                    Log.w(&#39;Error calling resume ${e.toString()}&#39;);
                     _playState = _PlayState.stopped;
                     _player.stopPlayer();
                     return null;
@@ -144,7 +144,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

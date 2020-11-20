@@ -109,7 +109,7 @@ The informations Map got with FFmpegGetMediaInformation() are <a href="https://p
       <pre class="language-dart"><code class="language-dart">Future&lt;Map&lt;dynamic, dynamic&gt;&gt; FFmpegGetMediaInformation(String uri) async
 {
         if (uri == null) return null;
-        if (_flutterFFprobe == null) _flutterFFprobe = FlutterFFprobe();
+                _flutterFFprobe ??= FlutterFFprobe();
         try
         {
                 return await _flutterFFprobe.getMediaInformation(uri);
@@ -130,7 +130,7 @@ The informations Map got with FFmpegGetMediaInformation() are <a href="https://p
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

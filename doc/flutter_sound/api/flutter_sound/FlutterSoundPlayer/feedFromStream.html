@@ -148,12 +148,12 @@
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; feedFromStream(Uint8List buffer) async
 {
-  int lnData = 0;
-  int totalLength = buffer.length;
+  var lnData = 0;
+  var totalLength = buffer.length;
   while (totalLength &gt; 0 &amp;&amp; !isStopped)
   {
-    int bsize = totalLength &gt; BLOCK_SIZE ? BLOCK_SIZE : totalLength;
-    int ln = await feed(buffer.sublist(lnData, lnData + bsize));
+    var bsize = totalLength &gt; BLOCK_SIZE ? BLOCK_SIZE : totalLength;
+    var ln = await feed(buffer.sublist(lnData, lnData + bsize));
     lnData += ln;
     totalLength -= ln;
   }
@@ -170,7 +170,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

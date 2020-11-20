@@ -122,13 +122,13 @@ It adds a <code>Wave</code> envelop to the PCM file, so that the file can be pla
         int sampleRate = 16000,
 }) async
 {
-        File filIn = File(inputFile);
-        File filOut = File(outputFile);
-        int size = filIn.lengthSync();
+        var filIn = File(inputFile);
+        var filOut = File(outputFile);
+        var size = filIn.lengthSync();
         Log.i(&#39;pcmToWave() : input = $inputFile,  output = $outputFile,  size = $size&#39;);
-        IOSink sink = filOut.openWrite();
+        var sink = filOut.openWrite();
 
-        WaveHeader header = new WaveHeader
+        var header = WaveHeader
         (
                 WaveHeader.FORMAT_PCM ,
                 numChannels = numChannels, &#47;&#47;
@@ -138,7 +138,7 @@ It adds a <code>Wave</code> envelop to the PCM file, so that the file can be pla
         );
         await header.write( sink);
         await filIn.open();
-        Uint8List buffer = filIn.readAsBytesSync();
+        var buffer = filIn.readAsBytesSync();
         sink.add(buffer.toList());
         await sink.close();
 }</code></pre>
@@ -154,7 +154,7 @@ It adds a <code>Wave</code> envelop to the PCM file, so that the file can be pla
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

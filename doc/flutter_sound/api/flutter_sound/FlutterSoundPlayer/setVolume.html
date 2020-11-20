@@ -168,7 +168,7 @@
       throw RangeError( &#39;Value of volume should be between 0.0 and 1.0.&#39; );
     }
 
-    int state = await FlutterSoundPlayerPlatform.instance.setVolume(this, volume: indexedVolume,);
+    var state = await FlutterSoundPlayerPlatform.instance.setVolume(this, volume: indexedVolume,);
     playerState = PlayerState.values[state];
   });
   print(&#39;FS:&lt;--- setVolume &#39;);
@@ -185,7 +185,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

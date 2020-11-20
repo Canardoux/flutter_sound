@@ -162,7 +162,7 @@
     await stop( );
 
     &#47;&#47;_removePlayerCallback(); &#47;&#47; playerController is closed by this function
-    int state = await FlutterSoundPlayerPlatform.instance.releaseMediaPlayer( this ) ;
+    var state = await FlutterSoundPlayerPlatform.instance.releaseMediaPlayer( this ) ;
     playerState = PlayerState.values[state];
     _removePlayerCallback( );
     FlutterSoundPlayerPlatform.instance.closeSession( this);
@@ -182,7 +182,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

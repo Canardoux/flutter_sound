@@ -154,7 +154,7 @@
     throw (_NotOpen());
   }
   await _lock.synchronized(() async {
-       int state = await FlutterSoundPlayerPlatform.instance.resumePlayer(this);
+       var state = await FlutterSoundPlayerPlatform.instance.resumePlayer(this);
       playerState = PlayerState.values[state];
       if (playerState != PlayerState.isPlaying)
       {
@@ -176,7 +176,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

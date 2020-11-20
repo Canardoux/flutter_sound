@@ -117,13 +117,13 @@
 {
         _transitioning = true;
         _loading = true;
-        Log.d(&quot;Loading starting&quot;);
+        Log.d(&#39;Loading starting&#39;);
 
-        Log.d(&quot;Calling play&quot;);
+        Log.d(&#39;Calling play&#39;);
 
         if (_track != null &amp;&amp; _player.isPlaying)
         {
-                Log.d(&quot;play called whilst player running. Stopping Player first.&quot;);
+                Log.d(&#39;play called whilst player running. Stopping Player first.&#39;);
                 await _stop();
         }
 
@@ -148,9 +148,7 @@
         &#47;&#47;&#47; can display appropriate errors.
         if (newTrack != null)
         {
-                newTrack.then((track)
-                {
-                        _track = track;
+                _track = await newTrack;
                         if (_track != null)
                         {
                                 _start();
@@ -159,21 +157,12 @@
                                 _loading = false;
                                 _transitioning = false;
                         }
-                }).catchError((dynamic exception)
-                {
-                        &#47;&#47; errors throw by _onLoad are captured here in the .then
-                        &#47;&#47; handler for newTrack.
-                        Log.d(green(&#39;Transitioning = false&#39;));
-                        _loading = false;
-                        _transitioning = false;
-                        Log.e(&quot;Error occured loading the track: ${exception.toString()}&quot;);
-                });
-        } else
+       } else
         {
                 Log.d(green(&#39;Transitioning = false&#39;));
                 _loading = false;
                 _transitioning = false;
-                Log.w(&quot;No Track provided by _onLoad. Call to start has been ignored&quot;);
+                Log.w(&#39;No Track provided by _onLoad. Call to start has been ignored&#39;);
         }
 }</code></pre>
     </section>
@@ -188,7 +177,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

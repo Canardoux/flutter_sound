@@ -67,11 +67,10 @@
     
         <li class="section-title"><a href="../../flutter_sound/MyLogPrinter-class.html#instance-methods">Methods</a></li>
         <li><a href="../../flutter_sound/MyLogPrinter/color.html">color</a></li>
-        <li class="inherited"><a href="https://pub.dev/documentation/logger/0.7.0+2/logger/LogPrinter/destroy.html">destroy</a></li>
-        <li class="inherited"><a href="https://pub.dev/documentation/logger/0.7.0+2/logger/LogPrinter/init.html">init</a></li>
+        <li class="inherited"><a href="https://pub.dev/documentation/logger/0.9.4/logger/LogPrinter/destroy.html">destroy</a></li>
+        <li class="inherited"><a href="https://pub.dev/documentation/logger/0.9.4/logger/LogPrinter/init.html">init</a></li>
         <li><a href="../../flutter_sound/MyLogPrinter/log.html">log</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
-        <li class="inherited"><a href="https://pub.dev/documentation/logger/0.7.0+2/logger/LogPrinter/println.html">println</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
     
         <li class="section-title inherited"><a href="../../flutter_sound/MyLogPrinter-class.html#operators">Operators</a></li>
@@ -95,12 +94,12 @@
       </div>
       <span class="returntype">void</span>
             <span class="name ">log</span>
-(<wbr><ol class="parameter-list"><li><span class="parameter" id="log-param-event"><span class="type-annotation"><a href="https://pub.dev/documentation/logger/0.7.0+2/logger/LogEvent-class.html">LogEvent</a></span> <span class="parameter-name">event</span></span></li>
+(<wbr><ol class="parameter-list"><li><span class="parameter" id="log-param-event"><span class="type-annotation"><a href="https://pub.dev/documentation/logger/0.9.4/logger/LogEvent-class.html">LogEvent</a></span> <span class="parameter-name">event</span></span></li>
 </ol>)
       <div class="features">override</div>
     </section>
     <section class="desc markdown">
-      <p>Is called every time a new <a href="https://pub.dev/documentation/logger/0.7.0+2/logger/LogEvent-class.html">LogEvent</a> is sent and handles printing or
+      <p>Is called every time a new <a href="https://pub.dev/documentation/logger/0.9.4/logger/LogEvent-class.html">LogEvent</a> is sent and handles printing or
 storing the message.</p>
     </section>
     
@@ -126,7 +125,7 @@ void log(LogEvent event)
         {
                 i++;
                 var path2 = frame.sourceFile.path;
-                if (!path2.contains(Log._localPath) &amp;&amp; !path2.contains(&quot;logger.dart&quot;))
+                if (!path2.contains(Log._localPath) &amp;&amp; !path2.contains(&#39;logger.dart&#39;))
                 {
                         depth = i - 1;
                         break;
@@ -138,15 +137,15 @@ void log(LogEvent event)
                 color
                 (
                         event.level,
-                        &quot;$formattedDate ${EnumHelper.getName(event.level)} &quot;
-                        &quot;${StackTraceImpl(skipFrames: depth).formatStackTrace(methodCount: 1)} &quot;
-                        &quot;::: ${event.message}&quot;
+                        &#39;$formattedDate ${EnumHelper.getName(event.level)} &#39;
+                        &#39;${StackTraceImpl(skipFrames: depth).formatStackTrace(methodCount: 1)} &#39;
+                        &#39;::: ${event.message}&#39;
                 )
         );
 
         if (event.error != null)
         {
-                print(color(event.level, &quot;${event.error}&quot;));
+                print(color(event.level, &#39;${event.error}&#39;));
         }
 
         if (event.stackTrace != null)
@@ -154,10 +153,10 @@ void log(LogEvent event)
                 if (event.stackTrace.runtimeType == StackTraceImpl)
                 {
                         var st = event.stackTrace as StackTraceImpl;
-                        print(color(event.level, &quot;$st&quot;));
+                        print(color(event.level, &#39;$st&#39;));
                 } else
                 {
-                        print(color(event.level, &quot;${event.stackTrace}&quot;));
+                        print(color(event.level, &#39;${event.stackTrace}&#39;));
                 }
         }
 }</code></pre>
@@ -173,7 +172,7 @@ void log(LogEvent event)
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

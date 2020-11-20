@@ -160,7 +160,7 @@
       await foodStreamController.close();
       foodStreamController = null;
     }
-  int state = await FlutterSoundPlayerPlatform.instance.stopPlayer(this);
+  var state = await FlutterSoundPlayerPlatform.instance.stopPlayer(this);
 
   playerState = PlayerState.values[state];
   if (playerState != PlayerState.isStopped)
@@ -183,7 +183,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

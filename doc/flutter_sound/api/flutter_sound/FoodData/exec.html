@@ -83,6 +83,11 @@
       <div><h1><span class="kind-method">exec</span> method </h1></div>
 
     <section class="multi-line-signature">
+      <div>
+        <ol class="annotation-list">
+          <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
+        </ol>
+      </div>
       <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
             <span class="name ">exec</span>
 (<wbr><ol class="parameter-list"><li><span class="parameter" id="exec-param-player"><span class="type-annotation"><a href="../../flutter_sound/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></span> <span class="parameter-name">player</span></span></li>
@@ -95,7 +100,8 @@
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; exec(FlutterSoundPlayer player) =&gt; player.feedFromStream(data);</code></pre>
+      <pre class="language-dart"><code class="language-dart">@override
+Future&lt;void&gt; exec(FlutterSoundPlayer player) =&gt; player.feedFromStream(data);</code></pre>
     </section>
 
   </div> <!-- /.main-content -->
@@ -108,7 +114,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

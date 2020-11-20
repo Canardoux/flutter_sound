@@ -113,8 +113,8 @@ and without any complain from the link-editor.</p>
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;int&gt; executeFFmpegWithArguments(List&lt;String&gt; arguments)
 {
-        if (flutterFFmpeg == null) flutterFFmpeg = FlutterFFmpeg();
-        return flutterFFmpeg.executeWithArguments(arguments);
+                flutterFFmpeg ??= FlutterFFmpeg();
+                return flutterFFmpeg.executeWithArguments(arguments);
 }</code></pre>
     </section>
 
@@ -128,7 +128,7 @@ and without any complain from the link-editor.</p>
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

@@ -140,13 +140,13 @@
       <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a></span>&gt;</span></span>
             <span class="name ">startPlayerFromTrack</span>
 (<wbr><ol class="parameter-list"><li><span class="parameter" id="startPlayerFromTrack-param-track"><span class="type-annotation"><a href="../../flutter_sound/Track-class.html">Track</a></span> <span class="parameter-name">track</span>, </span></li>
-<li><span class="parameter" id="startPlayerFromTrack-param-onSkipForward">{<span class="type-annotation"><a href="../../flutter_sound/TonSkip.html">TonSkip</a></span> <span class="parameter-name">onSkipForward</span>: <span class="default-value">null</span>, </span></li>
-<li><span class="parameter" id="startPlayerFromTrack-param-onSkipBackward"><span class="type-annotation"><a href="../../flutter_sound/TonSkip.html">TonSkip</a></span> <span class="parameter-name">onSkipBackward</span>: <span class="default-value">null</span>, </span></li>
-<li><span class="parameter" id="startPlayerFromTrack-param-onPaused"><span class="type-annotation"><a href="../../flutter_sound/TonPaused.html">TonPaused</a></span> <span class="parameter-name">onPaused</span>: <span class="default-value">null</span>, </span></li>
-<li><span class="parameter" id="startPlayerFromTrack-param-whenFinished"><span class="type-annotation"><a href="../../flutter_sound/TWhenFinished.html">TWhenFinished</a></span> <span class="parameter-name">whenFinished</span>: <span class="default-value">null</span>, </span></li>
-<li><span class="parameter" id="startPlayerFromTrack-param-progress"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">progress</span>: <span class="default-value">null</span>, </span></li>
-<li><span class="parameter" id="startPlayerFromTrack-param-duration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">duration</span>: <span class="default-value">null</span>, </span></li>
-<li><span class="parameter" id="startPlayerFromTrack-param-defaultPauseResume"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">defaultPauseResume</span>: <span class="default-value">null</span>, </span></li>
+<li><span class="parameter" id="startPlayerFromTrack-param-onSkipForward">{<span class="type-annotation"><a href="../../flutter_sound/TonSkip.html">TonSkip</a></span> <span class="parameter-name">onSkipForward</span>, </span></li>
+<li><span class="parameter" id="startPlayerFromTrack-param-onSkipBackward"><span class="type-annotation"><a href="../../flutter_sound/TonSkip.html">TonSkip</a></span> <span class="parameter-name">onSkipBackward</span>, </span></li>
+<li><span class="parameter" id="startPlayerFromTrack-param-onPaused"><span class="type-annotation"><a href="../../flutter_sound/TonPaused.html">TonPaused</a></span> <span class="parameter-name">onPaused</span>, </span></li>
+<li><span class="parameter" id="startPlayerFromTrack-param-whenFinished"><span class="type-annotation"><a href="../../flutter_sound/TWhenFinished.html">TWhenFinished</a></span> <span class="parameter-name">whenFinished</span>, </span></li>
+<li><span class="parameter" id="startPlayerFromTrack-param-progress"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">progress</span>, </span></li>
+<li><span class="parameter" id="startPlayerFromTrack-param-duration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">duration</span>, </span></li>
+<li><span class="parameter" id="startPlayerFromTrack-param-defaultPauseResume"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">defaultPauseResume</span>, </span></li>
 <li><span class="parameter" id="startPlayerFromTrack-param-removeUIWhenStopped"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">removeUIWhenStopped</span>: <span class="default-value">true</span>}</span></li>
 </ol>)
       
@@ -156,13 +156,13 @@
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;Duration&gt; startPlayerFromTrack( Track track,
             {
-              TonSkip onSkipForward = null,
-              TonSkip onSkipBackward = null,
-              TonPaused onPaused = null,
-              TWhenFinished whenFinished = null,
-              Duration progress = null,
-              Duration duration = null,
-              bool defaultPauseResume = null,
+              TonSkip onSkipForward,
+              TonSkip onSkipBackward,
+              TonPaused onPaused,
+              TWhenFinished whenFinished,
+              Duration progress,
+              Duration duration,
+              bool defaultPauseResume,
               bool removeUIWhenStopped = true,
             }) async {
 
@@ -185,26 +185,24 @@
       this.onSkipForward = onSkipForward;
       this.onSkipBackward = onSkipBackward;
       this.onPaused = onPaused;
-      Map&lt;String, dynamic&gt; trackDico = track.toMap( );
-      &#47;&#47;playerState = PlayerState.isPlaying;
-      Map&lt;String, dynamic&gt; what = &lt;String, dynamic&gt;{&#39;codec&#39;: track.codec, &#39;path&#39;: track.trackPath, &#39;fromDataBuffer&#39;: track.dataBuffer,}  ;
+      var trackDico = track.toMap( );
+      var what = &lt;String, dynamic&gt;{&#39;codec&#39;: track.codec, &#39;path&#39;: track.trackPath, &#39;fromDataBuffer&#39;: track.dataBuffer,}  ;
       await _convert( what );
-      Codec codec = what[&#39;codec&#39;] as Codec;
+      var codec = what[&#39;codec&#39;] as Codec;
       trackDico[&#39;bufferCodecIndex&#39;] = codec.index;
       trackDico[&#39;path&#39;] = what[&#39;path&#39;];
       trackDico[&#39;dataBuffer&#39;] = what[&#39;fromDataBuffer&#39;];
       trackDico[&#39;codec&#39;] = codec.index;
 
-      if (defaultPauseResume == null)
-        defaultPauseResume = (
-                    onPaused == null
+        defaultPauseResume ??= (
+            onPaused == null
         );
       if (playerState != PlayerState.isStopped)
       {
         throw Exception( &#39;Player is not stopped&#39; );
       }
-      startPlayerCompleter = new Completer&lt;Duration&gt;();
-      int state = await FlutterSoundPlayerPlatform.instance.startPlayerFromTrack(this,
+      startPlayerCompleter =  Completer&lt;Duration&gt;();
+      var state = await FlutterSoundPlayerPlatform.instance.startPlayerFromTrack(this,
         progress: progress,
         duration: duration,
         track: trackDico,
@@ -244,7 +242,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

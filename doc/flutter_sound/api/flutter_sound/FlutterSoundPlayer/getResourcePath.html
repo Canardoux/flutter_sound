@@ -146,13 +146,15 @@
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; getResourcePath() async {
-  if (kIsWeb)
+  if (kIsWeb) {
     return null;
+  }
   else if (Platform.isIOS) {
-    String s = await FlutterSoundPlayerPlatform.instance.getResourcePath(this);
+    var s = await FlutterSoundPlayerPlatform.instance.getResourcePath(this);
     return s;
-  } else
+  } else {
     return (await getApplicationDocumentsDirectory()).path;
+  }
 }</code></pre>
     </section>
 
@@ -166,7 +168,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

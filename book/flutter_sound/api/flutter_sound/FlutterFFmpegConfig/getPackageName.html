@@ -117,11 +117,11 @@
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; getPackageName() async {
   try {
-    final Map&lt;dynamic, dynamic&gt; result =
-        await _methodChannel.invokeMethod(&#39;getPackageName&#39;);
+    final result =
+        await _methodChannel.invokeMethod&lt; Map&lt;dynamic, dynamic&gt; &gt;(&#39;getPackageName&#39;);
     return result[&#39;packageName&#39;] as String;
   } on PlatformException catch (e) {
-    print(&quot;Plugin error: ${e.message}&quot;);
+    print(&#39;Plugin error: ${e.message}&#39;);
     return null;
   }
 }</code></pre>
@@ -137,7 +137,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

@@ -157,7 +157,7 @@
   }
   await _lock.synchronized(() async
   {
-      int state = await FlutterSoundPlayerPlatform.instance.seekToPlayer( this, duration: duration,);
+      var state = await FlutterSoundPlayerPlatform.instance.seekToPlayer( this, duration: duration,);
       playerState = PlayerState.values[state];
   });
   &#47;&#47;print(&#39;FS:&lt;--- seekToPlayer &#39;);
@@ -174,7 +174,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

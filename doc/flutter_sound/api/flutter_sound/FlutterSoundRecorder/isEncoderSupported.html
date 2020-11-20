@@ -104,7 +104,7 @@
     <section class="multi-line-signature">
       <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
             <span class="name ">isEncoderSupported</span>
-(<wbr><ol class="parameter-list"><li><span class="parameter" id="isEncoderSupported-param-codec"><span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.2+11/flutter_sound_platform_interface/Codec-class.html">Codec</a></span> <span class="parameter-name">codec</span></span></li>
+(<wbr><ol class="parameter-list"><li><span class="parameter" id="isEncoderSupported-param-codec"><span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+1/flutter_sound_platform_interface/Codec-class.html">Codec</a></span> <span class="parameter-name">codec</span></span></li>
 </ol>)
       
     </section>
@@ -122,12 +122,13 @@
         &#47;&#47; - remux CAF file format to OPUS file format (with ffmpeg)
         if ((codec == Codec.opusOGG) &amp;&amp; (!kIsWeb) &amp;&amp; (Platform.isIOS))
         {
-                if (!await FlutterSoundHelper().isFFmpegAvailable( ))
+                if (!await FlutterSoundHelper().isFFmpegAvailable( )) {
                         return false;
+                }
                 codec = Codec.opusCAF ;
         }
 
-        bool needToClose = false;
+        var needToClose = false;
         if (!_isOpen) &#47;&#47; We must open a session for legacy reason. this is not clean and should be improved
         {
                 await _lock.synchronized(() async
@@ -140,9 +141,10 @@
                 });
         }
 
-        bool result = await FlutterSoundRecorderPlatform.instance.isEncoderSupported(this, codec: codec);
-        if (needToClose)
-                closeAudioSession();
+        var result = await FlutterSoundRecorderPlatform.instance.isEncoderSupported(this, codec: codec);
+        if (needToClose) {
+                await closeAudioSession();
+        }
         return result;
 }</code></pre>
     </section>
@@ -157,7 +159,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>

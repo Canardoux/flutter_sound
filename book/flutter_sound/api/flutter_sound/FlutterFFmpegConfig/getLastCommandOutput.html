@@ -119,11 +119,11 @@ This method does not support executing multiple concurrent commands. If you exec
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; getLastCommandOutput() async {
   try {
-    final Map&lt;dynamic, dynamic&gt; result =
-        await _methodChannel.invokeMethod(&#39;getLastCommandOutput&#39;);
+    final result =
+        await _methodChannel.invokeMethod&lt; Map&lt;dynamic, dynamic&gt; &gt;(&#39;getLastCommandOutput&#39;);
     return result[&#39;lastCommandOutput&#39;] as String;
   } on PlatformException catch (e) {
-    print(&quot;Plugin error: ${e.message}&quot;);
+    print(&#39;Plugin error: ${e.message}&#39;);
     return null;
   }
 }</code></pre>
@@ -139,7 +139,7 @@ This method does not support executing multiple concurrent commands. If you exec
 <footer>
   <span class="no-break">
     flauto
-      6.4.2+11
+      6.4.3+1
   </span>
 
 </footer>
