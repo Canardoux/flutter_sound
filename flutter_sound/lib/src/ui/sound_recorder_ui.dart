@@ -239,7 +239,6 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   @override
   void deactivate() {
     _recorder.stopRecorder();
-    ;
     super.deactivate();
   }
 
