@@ -16,7 +16,6 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -29,11 +28,12 @@ import 'demo_active_codec.dart';
 
 /// path to remote auido file.
 const String exampleAudioFilePath =
-	'https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3';
+    'https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3';
 
 /// path to remote auido file artwork.
 final String albumArtPath =
-	'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
+    'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
+
 ///
 class RemotePlayer extends StatelessWidget {
   @override
@@ -56,14 +56,14 @@ class RemotePlayer extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(error);
     } else {
       // We have to play an example audio file loaded via a URL
-      track = Track(trackPath: exampleAudioFilePath, codec: ActiveCodec().codec);
+      track =
+          Track(trackPath: exampleAudioFilePath, codec: ActiveCodec().codec);
 
       track.trackTitle = 'Remote mpeg playback.';
       track.trackAuthor = 'By flutter_sound';
       track.albumArtUrl = albumArtPath;
 
-      if (kIsWeb)
-      {
+      if (kIsWeb) {
         track.albumArtAsset = null;
       } else if (Platform.isIOS) {
         track.albumArtAsset = 'AppIcon';

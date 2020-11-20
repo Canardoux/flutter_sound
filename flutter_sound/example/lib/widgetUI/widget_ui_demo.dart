@@ -16,7 +16,6 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 import 'package:flutter/material.dart';
 
 import 'demo_util/demo3_body.dart';
@@ -40,12 +39,12 @@ class WidgetUIDemo extends StatefulWidget {
 class _WidgetUIDemoState extends State<WidgetUIDemo> {
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(backgroundColor: Colors.blue,
-        appBar: AppBar(
-          title: const Text('Widget UI Demo'),
-        ),
-        body: MainBody(),
+    return Scaffold(
+      backgroundColor: Colors.blue,
+      appBar: AppBar(
+        title: const Text('Widget UI Demo'),
+      ),
+      body: MainBody(),
     );
   }
 

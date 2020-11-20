@@ -16,7 +16,6 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -42,7 +41,7 @@ class UtilRecorder {
     return _self;
   }
 
-  UtilRecorder._internal()  {
+  UtilRecorder._internal() {
     recorderModule = FlutterSoundRecorder();
   }
 
@@ -54,7 +53,8 @@ class UtilRecorder {
 
   /// required to initialize the recording subsystem.
   void init() async {
-    await recorderModule.openAudioSession(focus: AudioFocus.requestFocusAndDuckOthers);
+    await recorderModule.openAudioSession(
+        focus: AudioFocus.requestFocusAndDuckOthers);
     ActiveCodec().recorderModule = recorderModule;
   }
 
@@ -90,7 +90,8 @@ class UtilRecorder {
       /// TODO put this back iin
       /// await PlayerState().stopPlayer();
 
-      var track = Track(trackPath: await tempFile(), codec: ActiveCodec().codec);
+      var track =
+          Track(trackPath: await tempFile(), codec: ActiveCodec().codec);
       await recorderModule.startRecorder(toFile: track.trackPath);
 
       Log.d('startRecorder: $track');

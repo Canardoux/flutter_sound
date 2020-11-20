@@ -16,14 +16,12 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flauto/flutter_sound.dart';
-
 
 //import 'util/log.dart';
 import 'demo_active_codec.dart';
@@ -65,16 +63,11 @@ class RecordingPlayer extends StatelessWidget {
           track.trackTitle = title;
           track.trackAuthor = 'By flutter_sound';
 
-          if (kIsWeb)
-          {
+          if (kIsWeb) {
             track.albumArtAsset = null;
-          } else
-          if (Platform.isIOS)
-          {
+          } else if (Platform.isIOS) {
             track.albumArtAsset = 'AppIcon';
-          } else
-          if (Platform.isAndroid)
-          {
+          } else if (Platform.isAndroid) {
             track.albumArtAsset = 'AppIcon.png';
           }
         }

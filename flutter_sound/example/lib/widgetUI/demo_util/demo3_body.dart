@@ -16,7 +16,6 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -26,7 +25,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../demo_util/temp_file.dart';
-
 
 import 'demo_active_codec.dart';
 import 'demo_asset_player.dart';
@@ -52,30 +50,25 @@ class _MainBodyState extends State<MainBody> {
   Track track;
 
   @override
-  void initState()
-  {
-              if (!kIsWeb)
-              {
-                      var status = Permission.microphone.request();
-                      status.then((stat)
-                      {
-                              if (stat != PermissionStatus.granted)
-                              {
-                                        throw RecordingPermissionException('Microphone permission not granted');
-                              }
-                }     );
-              }
-              super.initState();
-              tempFile(suffix: '.aac').then( (path)
-              {
-                       recordingFile = path;
-                       track = Track(trackPath: recordingFile);
-                       setState(() {
-                       });
-              });
+  void initState() {
+    if (!kIsWeb) {
+      var status = Permission.microphone.request();
+      status.then((stat) {
+        if (stat != PermissionStatus.granted) {
+          throw RecordingPermissionException(
+              'Microphone permission not granted');
+        }
+      });
+    }
+    super.initState();
+    tempFile(suffix: '.aac').then((path) {
+      recordingFile = path;
+      track = Track(trackPath: recordingFile);
+      setState(() {});
+    });
   }
 
-  Future<bool> init()  async {
+  Future<bool> init() async {
     if (!initialized) {
       await initializeDateFormatting();
       await UtilRecorder().init();
@@ -87,23 +80,20 @@ class _MainBodyState extends State<MainBody> {
     return initialized;
   }
 
-
-void _clean() async
-{
-  if (recordingFile != null) {
-    try {
-      await File(recordingFile).delete();
-    } on Exception
-    {
-      // ignore
+  void _clean() async {
+    if (recordingFile != null) {
+      try {
+        await File(recordingFile).delete();
+      } on Exception {
+        // ignore
+      }
     }
   }
-}
 
   @override
   void dispose() {
     _clean();
-     super.dispose();
+    super.dispose();
   }
 
   @override
@@ -165,7 +155,6 @@ void _clean() async
           ],
         )));
   }
-
 }
 
 ///
@@ -185,5 +174,3 @@ class Left extends StatelessWidget {
     );
   }
 }
-
-

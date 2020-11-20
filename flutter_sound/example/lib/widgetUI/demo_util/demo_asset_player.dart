@@ -24,8 +24,6 @@ import 'package:flauto/flutter_sound.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-
-
 import 'demo_active_codec.dart';
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
@@ -72,8 +70,7 @@ class AssetPlayer extends StatelessWidget {
     track.trackTitle = 'Asset playback.';
     track.trackAuthor = 'By flutter_sound';
 
-    if (kIsWeb)
-    {
+    if (kIsWeb) {
       track.albumArtAsset = null;
     } else if (Platform.isIOS) {
       track.albumArtAsset = 'AppIcon';

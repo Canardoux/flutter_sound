@@ -16,8 +16,6 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
-
 import 'dart:async';
 import 'dart:core';
 
@@ -30,50 +28,49 @@ import 'dart:core';
 /// <li> bitsPerSample - usually 16 for PCM, 8 for ALAW, or 8 for ULAW.
 /// <li> numBytes - size of audio data after this header, in bytes.
 /// </ul>
-class WaveHeader
-{
-        /// follows WAVE format in http://ccrma.stanford.edu/courses/422/projects/WaveFormat
-        static final String tag = 'WaveHeader';
+class WaveHeader {
+  /// follows WAVE format in http://ccrma.stanford.edu/courses/422/projects/WaveFormat
+  static final String tag = 'WaveHeader';
 
-        ///
-        static final int headerLength = 44;
+  ///
+  static final int headerLength = 44;
 
-        /// Indicates PCM format.
-        static final int formatPCM = 1;
-        /// Indicates ALAW format.
-        static final int formatALAW = 6;
-        /// Indicates ULAW format.
-        static final int formatULAW = 7;
+  /// Indicates PCM format.
+  static final int formatPCM = 1;
 
-        ///
-        int mFormat;
+  /// Indicates ALAW format.
+  static final int formatALAW = 6;
 
-        ///
-        int mNumChannels;
-        ///
-        int mSampleRate;
-        ///
-        int mBitsPerSample;
-        ///
-        int mNumBytes;
+  /// Indicates ULAW format.
+  static final int formatULAW = 7;
 
+  ///
+  int mFormat;
 
+  ///
+  int mNumChannels;
 
+  ///
+  int mSampleRate;
 
+  ///
+  int mBitsPerSample;
 
-   
-        /// Construct a WaveHeader, with fields initialized.
-        /// @param format format of audio data,
-        /// one of {@link #FORMAT_PCM}, {@link #FORMAT_ULAW}, or {@link #FORMAT_ALAW}.
-        /// @param numChannels 1 for mono, 2 for stereo.
-        /// @param sampleRate typically 8000, 11025, 16000, 22050, or 44100 hz.
-        /// @param bitsPerSample usually 16 for PCM, 8 for ULAW or 8 for ALAW.
-        /// @param numBytes size of audio data after this header, in bytes.
-        ///
-        WaveHeader(this.mFormat, this.mNumChannels, this.mSampleRate, this.mBitsPerSample, this.mNumBytes);
+  ///
+  int mNumBytes;
 
+  /// Construct a WaveHeader, with fields initialized.
+  /// @param format format of audio data,
+  /// one of {@link #FORMAT_PCM}, {@link #FORMAT_ULAW}, or {@link #FORMAT_ALAW}.
+  /// @param numChannels 1 for mono, 2 for stereo.
+  /// @param sampleRate typically 8000, 11025, 16000, 22050, or 44100 hz.
+  /// @param bitsPerSample usually 16 for PCM, 8 for ULAW or 8 for ALAW.
+  /// @param numBytes size of audio data after this header, in bytes.
+  ///
+  WaveHeader(this.mFormat, this.mNumChannels, this.mSampleRate,
+      this.mBitsPerSample, this.mNumBytes);
 
-        /*
+  /*
          * Read and initialize a WaveHeader.
          * @param in {@link java.io.InputStream} to read from.
          * @return number of bytes consumed.
@@ -129,57 +126,49 @@ class WaveHeader
 
          */
 
-        /// Write a WAVE file header.
-        /// @param out {@link java.io.OutputStream} to receive the header.
-        /// @return number of bytes written.
-        /// @throws IOException
-        int write(EventSink<List<int>> out)
-        {
-                /* RIFF header */
-                writeId(out, 'RIFF');
-                writeInt(out, 36 + mNumBytes);
-                writeId(out, 'WAVE');
-                /* fmt chunk */
-                writeId(out, 'fmt ');
-                writeInt(out, 16);
-                writeint(out, mFormat);
-                writeint(out, mNumChannels);
-                writeInt(out, mSampleRate);
-                writeInt(out, (mNumChannels * mSampleRate * mBitsPerSample / 8).floor());
-                writeint(out, (mNumChannels * mBitsPerSample / 8).floor());
-                writeint(out, mBitsPerSample);
-                /* data chunk */
-                writeId(out, 'data');
-                writeInt(out, mNumBytes);
+  /// Write a WAVE file header.
+  /// @param out {@link java.io.OutputStream} to receive the header.
+  /// @return number of bytes written.
+  /// @throws IOException
+  int write(EventSink<List<int>> out) {
+    /* RIFF header */
+    writeId(out, 'RIFF');
+    writeInt(out, 36 + mNumBytes);
+    writeId(out, 'WAVE');
+    /* fmt chunk */
+    writeId(out, 'fmt ');
+    writeInt(out, 16);
+    writeint(out, mFormat);
+    writeint(out, mNumChannels);
+    writeInt(out, mSampleRate);
+    writeInt(out, (mNumChannels * mSampleRate * mBitsPerSample / 8).floor());
+    writeint(out, (mNumChannels * mBitsPerSample / 8).floor());
+    writeint(out, mBitsPerSample);
+    /* data chunk */
+    writeId(out, 'data');
+    writeInt(out, mNumBytes);
 
-                return headerLength;
-        }
+    return headerLength;
+  }
 
+  /// Push a String to the header
+  static void writeId(EventSink<List<int>> out, String id) {
+    out.add(id.codeUnits);
+  }
 
+  /// Push an int32 in the header
+  static void writeInt(EventSink<List<int>> out, int val) {
+    out.add([val >> 0, val >> 8, val >> 16, val >> 24]);
+  }
 
-        /// Push a String to the header
-        static void writeId(EventSink<List<int>> out, String id)
-        {
-                out.add(id.codeUnits);
-        }
+  /// Push an Int16 in the header
+  static void writeint(EventSink<List<int>> out, int val) async {
+    out.add([val >> 0, val >> 8]);
+  }
 
-        /// Push an int32 in the header
-        static void writeInt(EventSink<List<int>>  out, int val)
-        {
-                out.add([val >> 0 , val >> 8 , val >> 16 , val >> 24]);
-        }
-
-
-        /// Push an Int16 in the header
-        static void writeint(EventSink<List<int>> out, int val) async
-        {
-                out.add( [val >> 0 , val >> 8]);
-        }
-
-        /// Push a String info of this header
-        @override
-        String toString()
-        {
-                return 'WaveHeader format=$mFormat numChannels=$mNumChannels sampleRate=$mSampleRate bitsPerSample=$mBitsPerSample numBytes=$mNumBytes';
-        }
+  /// Push a String info of this header
+  @override
+  String toString() {
+    return 'WaveHeader format=$mFormat numChannels=$mNumChannels sampleRate=$mSampleRate bitsPerSample=$mBitsPerSample numBytes=$mNumBytes';
+  }
 }
