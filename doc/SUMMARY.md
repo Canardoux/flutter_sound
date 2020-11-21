@@ -1,8 +1,8 @@
 # The &tau; Project
 
 - [&tau;](tau/README.md)
-   - [&tau; Architecture](tau/architecture.md)
-   - [&tau; Architecture](tau/architecture.html)
+   - [The &tau; Architecture](tau/architecture.md)
+   - [The &tau; Architecture](tau/architecture.html)
 - [Flutter Sound](flutter_sound/README.md)
    - [Getting Started]()
       - [Supported Codecs](flutter_sound/codec.md#flutter-sound-codecs)
