@@ -5,7 +5,7 @@
 - Fix a bug in Pause/Resume on the lock screen
 - The Flutter Sound documentation is now handled by gitbook.
 - Fix bug in `setUIProgressBar()`
-- The output of `dartanalyzer` is now clean
+- The output of `dartanalyzer` is now clean. The pub.dev score is 110/110 !
 
 ## 6.4.2
 
