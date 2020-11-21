@@ -114,18 +114,19 @@
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">@override
-void initState()
-{
-        _recorder =  FlutterSoundRecorder();
-        _recorder.openAudioSession
-        (
-                focus: AudioFocus.requestFocusAndDuckOthers,
-                category: SessionCategory.playAndRecord,
-                mode:  SessionMode.modeDefault,
-                device: AudioDevice.speaker,
-                audioFlags: outputToSpeaker |  allowBlueToothA2DP  | allowAirPlay
-        ).then((toto){_registerRecorder(context, this);});
-        super.initState();
+void initState() {
+  _recorder = FlutterSoundRecorder();
+  _recorder
+      .openAudioSession(
+          focus: AudioFocus.requestFocusAndDuckOthers,
+          category: SessionCategory.playAndRecord,
+          mode: SessionMode.modeDefault,
+          device: AudioDevice.speaker,
+          audioFlags: outputToSpeaker | allowBlueToothA2DP | allowAirPlay)
+      .then((toto) {
+    _registerRecorder(context, this);
+  });
+  super.initState();
 }</code></pre>
     </section>
 
@@ -139,7 +140,7 @@ void initState()
 <footer>
   <span class="no-break">
     flauto
-      6.4.3+5
+      6.4.3+8
   </span>
 
 </footer>

@@ -158,19 +158,19 @@ that all required permissions are granted before the
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">SoundRecorderUI( Track track,
-{
-        this.backgroundColor,
-        this.onStart,
-        this.onStopped,
-        this.onPaused,
-        this.onDelete,
-        this.requestPermissions,
-        this.showTrashCan = true,
-        this.pausedTitle = &#39;Recorder is paused&#39;,
-        this.recordingTitle = &#39;Recorder is recording&#39;,
-        this.stoppedTitle = &#39;Recorder is stopped&#39;,
-        Key key,
+      <pre class="language-dart"><code class="language-dart">SoundRecorderUI(
+  Track track, {
+  this.backgroundColor,
+  this.onStart,
+  this.onStopped,
+  this.onPaused,
+  this.onDelete,
+  this.requestPermissions,
+  this.showTrashCan = true,
+  this.pausedTitle = &#39;Recorder is paused&#39;,
+  this.recordingTitle = &#39;Recorder is recording&#39;,
+  this.stoppedTitle = &#39;Recorder is stopped&#39;,
+  Key key,
 })  : audio = RecordedAudio.toTrack(track),
       super(key: key);</code></pre>
     </section>
@@ -185,7 +185,7 @@ that all required permissions are granted before the
 <footer>
   <span class="no-break">
     flauto
-      6.4.3+5
+      6.4.3+8
   </span>
 
 </footer>
