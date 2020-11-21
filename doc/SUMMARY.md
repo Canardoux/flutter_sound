@@ -13,6 +13,7 @@
    - [Live Example](https://canardoux.github.io/tau/doc/flutter_sound/web/)
    - [Examples]
    - [API](https://canardoux.github.io/tau/doc/flutter_sound/api/index.html)
+   - [API](flutter_sound/api/flutter_sound/flutter_sound-library.html)
 - [React Native](react_native/README.md)
 - [Cordova](cordova/README.md)
 - [Solar2D](solar2D/README.md)
