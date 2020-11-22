@@ -29,6 +29,7 @@ if [ "_$1" = "_REL" ] ; then
         gsed -i  "s/^ *pod 'TauEngine',\(.*\)$/# pod 'TauEngine',\1/"  flutter_sound/example/ios/Podfile
         gsed -i  "s/^ *implementation project(':TauEngine')$/    \/\/ implementation project(':TauEngine')/" flutter_sound/android/build.gradle
         gsed -i  "s/^ *project(':TauEngine').projectDir\(.*\)$/\/\/ project(':TauEngine').projectDir\1/" flutter_sound/android/settings.gradle
+        gsed -i  "s/^ *\/\/ implementation 'xyz.canardoux:TauEngine/    implementation 'xyz.canardoux:TauEngine/" flutter_sound/android/build.gradle
         gsed -i  "s/^\( *<\!-- static\) -->$/\1/" flutter_sound/example/web/index.html
         gsed -i  "s/^\( *<\!-- dynamic\)$/\1 -->/" flutter_sound/example/web/index.html
 
@@ -40,7 +41,7 @@ if [ "_$1" = "_REL" ] ; then
 # ---
 
         gsed -i  "s/^ *flauto_platform_interface: *#* *\(.*\)$/  flauto_platform_interface: \1/"                                                                        flutter_sound_web/pubspec.yaml
-        gsed -i  "s/^ *path: \.\.\/flauto_platform_interface # Flutter Sound Dir$/#    path: \.\.\/flauto_platform_interface # Flutter Sound Dir/"            flutter_sound_web/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/flauto_platform_interface # Flutter Sound Dir$/#    path: \.\.\/flauto_platform_interface # Flutter Sound Dir/"                      flutter_sound_web/pubspec.yaml
 
 
 
@@ -100,7 +101,8 @@ elif [ "_$1" = "_DEV" ]; then
         gsed -i  "s/^ *\/\/ *include 'TauEngine'$/   include 'TauEngine'/" flutter_sound/example/android/settings.gradle
         gsed -i  "s/^ *# pod 'TauEngine',\(.*\)$/pod 'TauEngine',\1/" flutter_sound/example/ios/Podfile
         gsed -i  "s/^ *\/\/ implementation project(':TauEngine')$/    implementation project(':TauEngine')/" flutter_sound/android/build.gradle
-        gsed -i  "s/^ *\/\/ *project(':TauEngine').projectDir\(.*\)$/   project(':TauEngine').projectDir\1/" flutter_sound/android/settings.gradle
+        gsed -i  "s/^ *\/\/ implementation project(':TauEngine')$/    implementation project(':TauEngine')/" flutter_sound/android/build.gradle
+        gsed -i  "s/^ *implementation 'xyz.canardoux:TauEngine/    \/\/ implementation 'xyz.canardoux:TauEngine/" flutter_sound/android/build.gradle
         gsed -i  "s/^\( *<\!-- dynamic\) -->$/\1/" flutter_sound/example/web/index.html
         gsed -i  "s/^\( *<\!-- static\)$/\1 -->/" flutter_sound/example/web/index.html
 

@@ -19,7 +19,9 @@ if [ "_$1" = "_TAU" ] ; then
         gsed -i  "s/^\( *s.name = \)'flutter_sound'$/\1'flauto'/" flutter_sound/ios/flauto.podspec 2>/dev/null
         gsed -i  "s/^\( *s.name = \)'flutter_sound_lite'$/\1'flauto_lite'/" flutter_sound/ios/flauto.podspec 2>/dev/null
         gsed -i  "s/^\( *s.name = \)'flutter_sound'$/\1'flauto'/" flutter_sound/ios/flauto_lite.podspec 2>/dev/null
-        gsed -i  "s/^\( *s.name = \)'flutter_sound_lite'$/\1'flauto_lite'/" flutter_sound_lite/ios/flauto.podspec 2>/dev/null
+        gsed -i  "s/^\( *s.name = \)'flutter_sound_lite'$/\1'flauto_lite'/" flutter_sound/ios/flauto.podspec 2>/dev/null
+        gsed -i  "s/^\( *s.name = \)'flutter_sound_lite'$/\1'flauto_lite'/" flutter_sound/ios/flauto_lite.podspec 2>/dev/null
+        gsed -i  "s/^\( *rootProject.name *= *\).*$/\1'flauto'/" flutter_sound/android/settings.gradle
 
 
         for f in flutter_sound/lib/*.dart
@@ -129,6 +131,7 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
         gsed -i  "s/^\( *s.name = \)'flauto_lite'$/\1'flutter_sound_lite'/" flutter_sound/ios/flutter_sound.podspec 2>/dev/null
         gsed -i  "s/^\( *s.name = \)'flauto'$/\1'flutter_sound'/" flutter_sound/ios/flutter_sound_lite.podspec 2>/dev/null
         gsed -i  "s/^\( *s.name = \)'flauto_lite'$/\1'flutter_sound_lite'/" flutter_sound/ios/flutter_sound_lite.podspec 2>/dev/null
+        gsed -i  "s/^\( *rootProject.name *= *\).*$/\1'flutter_sound'/" flutter_sound/android/settings.gradle
 
         for f in flutter_sound/lib/*.dart
         do

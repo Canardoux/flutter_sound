@@ -1,23 +1,21 @@
 ext.flutterFFmpegPackage = 'audio'
 
 group 'com.dooboolab.fluttersound'
-version '6.4.3+8'
+version '6.4.3+9'
 
 buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-        maven { url "https://oss.sonatype.org/content/repositories/releases" }
-        maven { url "https://oss.sonatype.org/content/groups/public" }
-        maven { url 'https://bintray.com/larpoux/CanardouxMaven' }
+        //maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        //maven { url "https://oss.sonatype.org/content/repositories/releases" }
+        //maven { url "https://oss.sonatype.org/content/groups/public" }
+        //maven { url 'https://bintray.com/larpoux/CanardouxMaven' }
         jcenter()
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.1'
-        //classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
-        //classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
     }
 }
 
@@ -25,10 +23,10 @@ rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-        maven { url "https://oss.sonatype.org/content/repositories/releases" }
-        maven { url "https://oss.sonatype.org/content/groups/public" }
-        maven { url 'https://bintray.com/larpoux/CanardouxMaven' }
+        //maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        //maven { url "https://oss.sonatype.org/content/repositories/releases" }
+        //maven { url "https://oss.sonatype.org/content/groups/public" }
+        //maven { url 'https://bintray.com/larpoux/CanardouxMaven' }
         jcenter()
     }
 }
@@ -61,12 +59,12 @@ dependencies {
     implementation 'androidx.core:core:1.3.2'
     implementation 'androidx.media:media:1.2.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'xyz.canardoux:TauEngine:6.4.3+8'
 
     // -------------------------------------------------------------------------------------
     // CAUTION: The following instruction is for developping and debugging the Flauto Engine
     // DO NOT INCLUDE THE FOLLOWING LINE IN A REAL APP !!!
     // implementation project(':TauEngine')
+    implementation 'xyz.canardoux:TauEngine:6.4.3+9'
     // -------------------------------------------------------------------------------------
 
 }
