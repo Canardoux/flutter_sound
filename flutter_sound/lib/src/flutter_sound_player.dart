@@ -28,8 +28,8 @@ import 'dart:typed_data' show Uint8List;
 import 'package:synchronized/synchronized.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
-import 'package:flauto_platform_interface/flutter_sound_player_platform_interface.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import '../flutter_sound.dart';
 

@@ -3,7 +3,7 @@
 <img src="Logotype primary.png" width="70%" height="70%" />
 
 <p align="left">
-  <a href="https://canardoux.github.io/tau/book/flauto"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
+  <a href="https://dooboolab.github.io/flutter_sound/book/flauto"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
 </p>
 
 This plugin provides simple recorder and player functionalities for
@@ -100,7 +100,7 @@ Pull Requests are welcome and will be considered very carefully.
 
 ## Bugs, Features Requests, documentation inaccurate, help needed, ...
 
-We use [Github](https://github.com/canardoux/tau/issues) actively.
+We use [Github](https://github.com/dooboolab/flutter_sound/issues) actively.
 
 When you fill an issue, we try to answer something in less than 48h. Of course, this will not mean that your issue will be fixed in 48h. But you will know that we confirm (or not) your issue and what answer you can expect. Maintenance is our priority. We try to make it perfect.
 
