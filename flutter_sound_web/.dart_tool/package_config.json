@@ -45,7 +45,7 @@
     },
     {
       "name": "flauto_platform_interface",
-      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/flauto_platform_interface-6.4.3+9",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/flauto_platform_interface-6.4.3+10",
       "packageUri": "lib/",
       "languageVersion": "2.1"
     },
@@ -164,7 +164,7 @@
       "languageVersion": "2.1"
     }
   ],
-  "generated": "2020-11-22T09:35:08.532694Z",
+  "generated": "2020-11-22T10:24:09.254876Z",
   "generator": "pub",
   "generatorVersion": "2.12.0-29.10.beta"
 }
