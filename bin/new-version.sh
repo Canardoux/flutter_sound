@@ -72,7 +72,7 @@ git tag -f $VERSION
 git push --tag -f
 
 
-pod trunk push TauEngine.podspec
+pod trunk push tau_core.podspec
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
