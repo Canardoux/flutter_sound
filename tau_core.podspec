@@ -30,7 +30,7 @@ It has been extracted to be isolated from Flutter and can be used with other fra
 
   s.ios.deployment_target = '10.0'
 
-  s.source_files = 'tau_core/ios/tau_core/Classes/*'
+  s.source_files = 'tau_core/ios/Classes/*'
   s.frameworks = 'AVFoundation', 'MediaPlayer'
 
 
