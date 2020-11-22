@@ -72,7 +72,11 @@ git tag -f $VERSION
 git push --tag -f
 
 
-pod trunk push tau_core.podspec
+if test -f "tau_core.podspec"; then
+    pod trunk push tau_core.podspec
+else
+    pod trunk push tau_sound_core.podspec
+fi
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
