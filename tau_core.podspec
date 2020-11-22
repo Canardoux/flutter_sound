@@ -7,7 +7,7 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'TauEngine'
+  s.name             = 'tau_core'
   s.version          = '6.4.3+10'
   s.summary          = 'Provides simple recorder and player functionalities for both Android and iOS platforms.'
 
@@ -23,10 +23,10 @@ This code was originally inside the flutter_sound/ios directory.
 It has been extracted to be isolated from Flutter and can be used with other frameworks.
                        DESC
 
-  s.homepage         = 'https://github.com/Canardoux/tau'
+  s.homepage         = 'https://github.com/canardoux/tau'
   s.license          = { :type => 'LGPL', :file => 'LICENSE' }
   s.author           = { 'larpoux' => 'larpoux@gmail.com' }
-  s.source           = { :git => 'https://github.com/Canardoux/tau.git', :tag => '' + s.version.to_s }
+  s.source           = { :git => 'https://github.com/canardoux/tau.git', :tag => '' + s.version.to_s }
 
   s.ios.deployment_target = '10.0'
 

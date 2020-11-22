@@ -10,7 +10,10 @@ if [ "_$1" = "_TAU" ] ; then
         gsed -i  "s/^\( *name: \).*$/\1flauto_platform_interface/" flutter_sound_platform_interface/pubspec.yaml
         gsed -i  "s/^\( *name: \).*$/\1flauto_web/" flutter_sound_web/pubspec.yaml
         gsed -i  "s/^ *flutter_sound_platform_interface: \(.*\)$/  flauto_platform_interface: \1/" flutter_sound_web/pubspec.yaml
-        gsed -i  "s/'https:\/\/github.com\/dooboolab\/flutter_sound.git'/'https:\/\/github.com\/Canardoux\/tau.git'/" TauEngine.podspec
+        gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/g" tau_core.podspec
+        gsed -i  "s/^\( *s.name *= *\)'tau_sound_core'$/\1'tau_core'/" tau_core.podspec
+
+
         gsed -i  "s/^ *flutter_sound: \(.*\)$/  flauto: \1/" flutter_sound/example/pubspec.yaml
         gsed -i  "s/^\( *#* *\)flutter_sound_platform_interface/\1flauto_platform_interface/" flutter_sound/example/pubspec.yaml
         gsed -i  "s/^\( *#* *\)flutter_sound_web/\1flauto_web/" flutter_sound/example/pubspec.yaml
@@ -22,6 +25,8 @@ if [ "_$1" = "_TAU" ] ; then
         gsed -i  "s/^\( *s.name = \)'flutter_sound_lite'$/\1'flauto_lite'/" flutter_sound/ios/flauto.podspec 2>/dev/null
         gsed -i  "s/^\( *s.name = \)'flutter_sound_lite'$/\1'flauto_lite'/" flutter_sound/ios/flauto_lite.podspec 2>/dev/null
         gsed -i  "s/^\( *rootProject.name *= *\).*$/\1'flauto'/" flutter_sound/android/settings.gradle
+        gsed -i  "s/^\( *\"name\": \)\"tau_sound_core\"/\1\"tau_core\"/" tau_core/web/package.json
+        gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound\.git/https:\/\/github.com\/canardoux\/tau\.git/" tau_core/web/package.json
 
 
         for f in flutter_sound/lib/*.dart
@@ -107,6 +112,7 @@ if [ "_$1" = "_TAU" ] ; then
                 done
         done
 
+
         exit 0
 
 #========================================================================================================================================================================================================
@@ -121,7 +127,9 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
         gsed -i  "s/^\( *name: \).*$/\1flutter_sound_platform_interface/" flutter_sound_platform_interface/pubspec.yaml
         gsed -i  "s/^\( *name: \).*$/\1flutter_sound_web/" flutter_sound_web/pubspec.yaml
         gsed -i  "s/^ *flauto_platform_interface: \(.*\)$/  flutter_sound_platform_interface: \1/" flutter_sound_web/pubspec.yaml
-        gsed -i  "s/'https:\/\/github.com\/Canardoux\/tau.git'/'https:\/\/github.com\/dooboolab\/flutter_sound.git'/" TauEngine.podspec
+        gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/g" tau_core.podspec
+        gsed -i  "s/^\( *s.name *= *\)'tau_core'$/\1'tau_sound_core'/" tau_core.podspec
+
         gsed -i  "s/^ *flauto: \(.*\)$/  flutter_sound: \1/" flutter_sound/example/pubspec.yaml
         gsed -i  "s/^\( *#* *\)flauto_platform_interface/\1flutter_sound_platform_interface/" flutter_sound/example/pubspec.yaml
         gsed -i  "s/^\( *#* *\)flauto_web/\1flutter_sound_web/" flutter_sound/example/pubspec.yaml
@@ -132,6 +140,9 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
         gsed -i  "s/^\( *s.name = \)'flauto'$/\1'flutter_sound'/" flutter_sound/ios/flutter_sound_lite.podspec 2>/dev/null
         gsed -i  "s/^\( *s.name = \)'flauto_lite'$/\1'flutter_sound_lite'/" flutter_sound/ios/flutter_sound_lite.podspec 2>/dev/null
         gsed -i  "s/^\( *rootProject.name *= *\).*$/\1'flutter_sound'/" flutter_sound/android/settings.gradle
+        gsed -i  "s/^\( *\"name\": \)\"tau_core\"/\1\"tau_sound_core\"/" tau_core/web/package.json
+        gsed -i  "s/https:\/\/github.com\/canardoux\/tau\.git/https:\/\/github.com\/dooboolab\/flutter_sound\.git/" tau_core/web/package.json
+
 
         for f in flutter_sound/lib/*.dart
         do
