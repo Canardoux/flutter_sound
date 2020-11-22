@@ -17,23 +17,6 @@ This plugin provides simple recorder and player functionalities for
 
 [toto](player.html)
 
-[I'm an inline-style link](https://www.google.com)
-
-[I'm an inline-style link with title](https://www.google.com "Google's Homepage")
-
-[I'm a reference-style link][Arbitrary case-insensitive reference text]
-
-[I'm a relative reference to a repository file](../flutter_sound/api/index.html)
-
- <a href="api/index.html">Visit W3Schools.com!</a>
-
- [riri](api/flutter_sound/black.html)
-
- [riri](https://canardoux.github.io/tau/doc/flutter_sound/book/api/index.html)
-
- [papa](/api/index.html)
-
-
 ------------------------------------------------------------------------------------------------------------------------------------
 
 ![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
