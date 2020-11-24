@@ -24,8 +24,8 @@ Actually, the following codecs are supported by flutter_sound:
 | Edge encoder      | No       | No       | No          | No  | No         | No     | No      | No       | No      | No      | no      | No     | No     | No        | No       | No       | Yes         | No          |
 | Edge decoder      | Yes      | Yes      | No          | Yes | Yes        | Yes    | Yes     | No       | No      | Yes     | Yes     | No     | No     | No        | No       | no       | Yes         | Yes         |
 |                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
-| Webkit (Safari)   | No       | No       | No          | No  | No         | No     | No      | No       | No      | No      | No      | No     | No     | No        | No       | No       | No          | No          |
-| Webkit (Safari)   | Yes      | No       | Yes         | Yes | No         | No     | No      | No       | Yes     | Yes     | Yes     | No     | No     | No        | No       | No       | No          | No          |
+| Webkit encoder (Safari)   | No       | No       | No          | No  | No         | No     | No      | No       | No      | No      | No      | No     | No     | No        | No       | No       | No          | No          |
+| Webkit decoder (Safari)   | Yes      | No       | Yes         | Yes | No         | No     | No      | No       | Yes     | Yes     | Yes     | No     | No     | No        | No       | No       | No          | No          |
 |                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
 
 

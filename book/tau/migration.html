@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>API · GitBook</title>
+        <title>Migration · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -58,7 +58,7 @@
 
     
     
-    <link rel="prev" href="codec.html" />
+    <link rel="prev" href="../CHANGELOG.html" />
     
 
     </head>
@@ -100,9 +100,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../tau/architecture.html">
+        <li class="chapter " data-level="1.2" data-path="architecture.html">
             
-                <a href="../tau/architecture.html">
+                <a href="architecture.html">
             
                     
                     The τ Architecture
@@ -113,14 +113,14 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" >
+        <li class="chapter " data-level="1.3" data-path="getting-started.html">
             
-                <span>
+                <a href="getting-started.html">
             
                     
                     Getting Started
             
-                </span>
+                </a>
             
 
             
@@ -210,7 +210,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.4" data-path="api.html">
+        <li class="chapter " data-level="1.4" data-path="api.html">
             
                 <a href="api.html">
             
@@ -268,9 +268,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5" data-path="./">
+        <li class="chapter " data-level="1.5" data-path="../flutter_sound/">
             
-                <a href="./">
+                <a href="../flutter_sound/">
             
                     
                     Flutter Sound
@@ -282,9 +282,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.5.1" data-path="install.html">
+        <li class="chapter " data-level="1.5.1" data-path="../flutter_sound/install.html">
             
-                <a href="install.html">
+                <a href="../flutter_sound/install.html">
             
                     
                     Installation
@@ -308,7 +308,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.3" data-path="example/exampkle.md">
+        <li class="chapter " data-level="1.5.3" data-path="../flutter_sound/example/exampkle.md">
             
                 <span>
             
@@ -501,7 +501,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.8" data-path="migration.html">
+        <li class="chapter active" data-level="1.8" data-path="migration.html">
             
                 <a href="migration.html">
             
@@ -583,7 +583,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >API</a>
+        <a href=".." >Migration</a>
     </h1>
 </div>
 
@@ -598,7 +598,98 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <p><a href="api/index.html">The very API</a></p>
+                                <hr>
+<h1 id="migration-form-5xx-to-6xx">Migration form 5.x.x to 6.x.x</h1>
+<ul>
+<li>Flutter Sound 6.0 <strong>FULL</strong> flavor is now linked with <code>mobile-ffmpeg-audio 4.3.1.LTS</code></li>
+<li>Flutter Sound 6.2 is linked with flutter_sound_interface 2.0.0</li>
+<li>Flutter Sound 6.2 is linked with the Pod TauEngine 1.0.0</li>
+</ul>
+<p>You must delete the file <code>ios/Pofile.lock</code> in your App directory and execute the command :</p>
+<pre><code class="lang-sh">pod cache clean --all
+pod install --repo-update
+</code></pre>
+<hr>
+<h1 id="migration-form-4xx-to-5xx">Migration form 4.x.x to 5.x.x</h1>
+<p>Several changes are necessary to migrate from 4.x.x :</p>
+<h2 id="imports">Imports</h2>
+<p>To be compliant with Google recommandations, Flutter Sound has now a main dart file that the App must import : <code>flutter_sound.dart</code>.
+This file is just a list of &quot;exports&quot; from the various dart files present in the &quot;src&quot; sub-directory.</p>
+<h2 id="global-enums-and-function-types">Global enums and Function types</h2>
+<p>Global enums are renamed to be compliant with the Google CamelCase recommandations :</p>
+<ul>
+<li><p><code>t_CODECS</code> is renamed <code>Codec</code>. The <code>Codec</code> values are LowerCase, followed by the File Format in Uppercase when there is ambiguity :</p>
+<ul>
+<li>aacADTS</li>
+<li>opusOGG</li>
+<li>opusCAF</li>
+<li>mp3</li>
+<li>vorbisOGG</li>
+<li>pcm16</li>
+<li>pcm16WAV</li>
+<li>pcm16AIFF</li>
+<li>pcm16CAF</li>
+<li>flac</li>
+<li>aacMP4</li>
+</ul>
+</li>
+<li><p>The Player State is renamed <code>PlayerState</code></p>
+</li>
+<li>The Recorder State is renamed <code>RecorderState</code></li>
+<li>The iOS Session Category is renamed <code>SessionCategory</code></li>
+<li>The iOS Session Mode is rename <code>SessionMode</code></li>
+<li>The Android Focus Gain is renamed <code>AndroidFocusGain</code></li>
+</ul>
+<h2 id="flutter-sound-does-not-manage-any-more-the-recording-permissions">Flutter Sound does not manage any more the recording permissions.</h2>
+<p>Now this is the App responsability to request the Recording permission if needed. This change was necessary for several reasons :</p>
+<ul>
+<li>Several App want to manage themselves the permission</li>
+<li>We had some problems with the Flutter Android Embedded V2</li>
+<li>We had problems when Flutter Sound uses permission_handler 4.x and the App needs permission_handler 5.x</li>
+<li>We had problems when Flutter Sound uses permission_handler 5.x and the App needs permission_handler 4.x</li>
+<li>This is not Flutter Sound role to do UI interface</li>
+</ul>
+<p>The parameter <code>requestPermission</code> is removed from the <code>startRecorder()</code> parameters.
+The permission_handler dependency is removed from Flutter Sound pubspec.yaml</p>
+<h2 id="the-startrecorder-path-parameter-is-now-mandatory">The StartRecorder() <strong>&quot;path&quot;</strong> parameter is now mandatory</h2>
+<p>Flutter Sound does not create anymore files without the App specifying its path.
+This was a legacy parameter. The first versions of Flutter Sound created files on the SD-card volume.
+This was really bad for many reasons and later versions of Flutter Sound stored its files in a temporary directory.</p>
+<p>Flutter Sound Version 5.x.x does not try any more to store files in a temporary directory by itself. Thanks to that, Flutter Sound does not have any more a dependency to <code>path_provider</code>. It is now the App responsability to depend on <code>path_provider</code> if it wants to access the Temporary Storage.</p>
+<h2 id="startrecorder-os-specific-parameters-are-removed">StartRecorder() OS specific parameters are removed</h2>
+<p>We removed OS specific parameters passed during <code>startRecorder()</code> :</p>
+<ul>
+<li>AndroidEncoder</li>
+<li>AndroidAudioSource</li>
+<li>AndroidOutputFormat</li>
+<li>IosQuality</li>
+</ul>
+<h2 id="flutter-sound-does-not-post-null-to-player-and-recorder-subscriptions">Flutter Sound does not post <code>NULL</code> to Player and Recorder subscriptions.</h2>
+<p>This <code>NULL</code> parameter sent when the Recorder or the Player was closed was ugly, and caused many bugs to some Apps.</p>
+<h2 id="the-audio-focus-is-not-automaticaly-abandoned-between-two-startplayer-or-two-startrecorder">The Audio Focus is not automaticaly abandoned between two startPlayer() or two startRecorder()</h2>
+<p>The Audio Focus is just abandoned automaticaly when the App does a <code>release()</code></p>
+<h2 id="some-verbs-are-renamed-">Some verbs are renamed :</h2>
+<ul>
+<li>The ancient verb <code>setActive</code> is now replaced by <code>setAudioFocus</code></li>
+<li><code>initialized()</code> and <code>release()</code> are rename <code>openAudioSession()</code> and <code>closeAudioSession()</code>)</li>
+</ul>
+<h2 id="openaudiosessionwithui">openAudioSessionWithUI</h2>
+<p><code>openAudioSessionWithUI</code> is a new verb to open an Audio Session if the App wants to be controlled from the lock-screen. This replace the module <code>TrackPlayer</code> which does not exists anymore.</p>
+<hr>
+<h1 id="migration-from-3xx-to-4xx">Migration from 3.x.x to 4.x.x</h1>
+<p>There is no changes in the 4.x.x version API.
+But some modifications are necessary in your configuration files</p>
+<p>The <code>FULL</code> flavor of Flutter Sound makes use of flutter_ffmpeg. In contrary to Flutter Sound Version 3.x.x, in Version 4.0.x your App can be built without any Flutter-FFmpeg dependency.</p>
+<p>If you come from Flutter Sound Version 3.x.x, you must :</p>
+<ul>
+<li>Remove this dependency from your <code>pubspec.yaml</code>.</li>
+<li>You must also delete the line <code>ext.flutterFFmpegPackage = &apos;audio-lts&apos;</code> from your <code>android/build.gradle</code></li>
+<li>And the special line <code>pod name+&apos;/audio-lts&apos;, :path =&gt; File.join(symlink, &apos;ios&apos;)</code> in your Podfile.</li>
+</ul>
+<p>If you do not do that, you will have duplicates modules during your App building.</p>
+<p><code>flutter_ffmpeg audio-lts</code> is now embedding inside the <code>FULL</code> flavor of Flutter Sound. If your App needs to use FFmpeg, you must use the embedded version inside flutter_sound
+instead of adding a new dependency in your pubspec.yaml.</p>
+<hr>
 
                                 
                                 </section>
@@ -626,7 +717,7 @@
 
             
                 
-                <a href="codec.html#flutter-sound-on-flutter-web" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Flutter Sound on Flutter Web">
+                <a href="../CHANGELOG.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Changelog">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -638,7 +729,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"API","level":"1.4","depth":1,"next":{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"ref":"","articles":[]},"previous":{"title":"Flutter Sound on Flutter Web","level":"1.3.6","depth":2,"anchor":"#flutter-sound-on-flutter-web","path":"flutter_sound/codec.md","ref":"flutter_sound/codec.md#flutter-sound-on-flutter-web","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"flutter_sound/api.md","mtime":"2020-11-23T16:20:23.882Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-24T15:23:41.752Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Migration","level":"1.8","depth":1,"next":{"title":"Problem Report","level":"1.9","depth":1,"url":"https://github.com/Canardoux/tau/issues","ref":"https://github.com/Canardoux/tau/issues","articles":[]},"previous":{"title":"Changelog","level":"1.7","depth":1,"path":"CHANGELOG.md","ref":"CHANGELOG.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/migration.md","mtime":"2020-11-24T08:05:58.740Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-24T16:02:41.966Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
