@@ -58,7 +58,7 @@ class FlutterFFmpegConfig {
 
   void _onEvent(Object event) {
     if (event is Map<dynamic, dynamic>) {
-      final eventMap = event ;
+      final eventMap = event;
       final logEvent =
           eventMap['FlutterFFmpegLogCallback'] as Map<dynamic, dynamic>;
       final statisticsEvent =

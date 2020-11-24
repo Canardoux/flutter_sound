@@ -1,9 +1,9 @@
 ## Flutter Sound
 
-<img src="Logotype primary.png" width="70%" height="70%" />
+<img src="../doc/flutter_sound/Logotype primary.png" width="70%" height="70%" />
 
 <p align="left">
-  <a href="https://canardoux.github.io/tau/book/flauto"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
+  <a href="https://canardoux.github.io/tau/book/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
 </p>
 
 -------------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ Please refer to the [CHANGELOG.md file](https://canardoux.github.io/tau/book/CHA
 
 ## Flutter Web support
 
-Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://canardoux.github.io/tau/doc/flutter_sound/web) (still cannot record with Safari or any web browser on iOS). You can [read this](https://canardoux.github.io/tau/book/flutter_sound/codec.html#flutter-sound-on-flutter-web).
+Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://canardoux.github.io/tau/doc/flutter_sound/web_example) (still cannot record with Safari or any web browser on iOS). You can [read this](https://canardoux.github.io/tau/book/flutter_sound/codec.html#flutter-sound-on-flutter-web).
 
 ## Record to Dart Stream
 

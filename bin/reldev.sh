@@ -3,10 +3,9 @@
 
 # Podfile sometimes disapeers !???!
 if [ ! -f flutter_sound/example/ios/Podfile ]; then
-    echo "Podfile not found!"
+    echo "Podfile not found."
     cp flutter_sound/example/ios/Podfile.keep flutter_sound/example/ios/Podfile
 fi
-
 
 grep "pod 'tau_core'," flutter_sound/example/ios/Podfile > /dev/null
 if [ $? -ne 0 ]; then

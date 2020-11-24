@@ -10,14 +10,20 @@ VERSION=$1
 VERSION_CODE=${VERSION//./}
 VERSION_CODE=${VERSION_CODE//+/}
 
-bin/flavor FULL
+bin/flavor.sh FULL
 bin/reldev.sh REL
 bin/setver.sh $VERSION
 
-rm flutter_sound/Logotype\ primary.png
-ln -s ../doc/flutter_sound/Logotype\ primary.png flutter_sound/
+#rm flutter_sound/Logotype\ primary.png
+#ln -s ../doc/flutter_sound/Logotype\ primary.png flutter_sound/
 rm flutter_sound_web/js
-ln -s ../tau_core/web/js flutter_sound_web/js
+if [  -f tau_core/web/js ]; then
+    ln -s ../tau_core/web/js flutter_sound_web/js
+else
+   ln -s ../tau_sound_core/web/js flutter_sound_web/js
+fi
+
+
 
 cd flutter_sound_platform_interface/
 #flutter clean
@@ -41,9 +47,20 @@ fi
 cd ..
 
 
-
-
 cd flutter_sound
+flutter analyze
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+dartanalyzer lib
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+
+
+
 #flutter clean
 #flutter pub get
 flutter pub publish

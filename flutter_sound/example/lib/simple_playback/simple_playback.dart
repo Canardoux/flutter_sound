@@ -17,10 +17,8 @@
  */
 
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flauto/flutter_sound.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
 /*
  *

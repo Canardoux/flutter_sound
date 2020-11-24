@@ -252,14 +252,14 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   void audioPlayerFinished(int state) async {
     print('FS:---> audioPlayerFinished');
     //await _lock.synchronized(() async {
-      //playerState = PlayerState.isStopped;
-      //int state = call['arg'] as int;
-      assert(state != null);
-      playerState = PlayerState.values[state];
+    //playerState = PlayerState.isStopped;
+    //int state = call['arg'] as int;
+    assert(state != null);
+    playerState = PlayerState.values[state];
 
-      if (audioPlayerFinishedPlaying != null) {
-        audioPlayerFinishedPlaying();
-      }
+    if (audioPlayerFinishedPlaying != null) {
+      audioPlayerFinishedPlaying();
+    }
     //});
     print('FS:<--- audioPlayerFinished');
   }

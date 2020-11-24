@@ -1,7 +1,7 @@
 ext.flutterFFmpegPackage = 'audio'
 
 group 'com.dooboolab.fluttersound'
-version '6.4.3+11'
+version '6.4.3+12'
 
 buildscript {
     repositories {
