@@ -109,7 +109,7 @@ When you have finished with it, **you must** close the session. A god place to p
 
 ### 3. Record something
 
-To something you call  `startRecorder()`. To stop the recorder you call `stopRecorder()` 
+To record something you call  `startRecorder()`. To stop the recorder you call `stopRecorder()` 
 
 ```dart
   Future<void> record() async {
