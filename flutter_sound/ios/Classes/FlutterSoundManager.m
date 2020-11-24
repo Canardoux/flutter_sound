@@ -27,7 +27,7 @@
 
 #import <Foundation/Foundation.h>
 #import "FlutterSoundManager.h"
-#import <TauEngine/Flauto.h>
+#import <tau_core/Flauto.h>
 
 
 @implementation FlutterSoundManager

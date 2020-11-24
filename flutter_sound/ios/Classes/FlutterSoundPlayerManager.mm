@@ -22,7 +22,7 @@
 
 #import "FlutterSoundPlayer.h"
 #import "FlutterSoundPlayerManager.h"
-#import "FlautoTrackPlayer.h"
+//#import "FlautoTrackPlayer.h"
 #import <AVFoundation/AVFoundation.h>
 
 

@@ -3,13 +3,13 @@
 <img src="Logotype primary.png" width="70%" height="70%" />
 
 <p align="left">
-  <a href="https://dooboolab.github.io/flutter_sound/book/flauto"><img alt="pub version" src="https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square"></a>
+  <a href="https://canardoux.github.io/tau/book/flauto"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
 </p>
 
 -------------------------------------------------------------------------------------
 
-# Flutter Sound user: your [documentation is there](https://dooboolab.github.io/flutter_sound/book/flutter_sound/)
-# The [CHANGELOG file is here](https://dooboolab.github.io/flutter_sound/book/CHANGELOG.html)
+# Flutter Sound user: your [documentation is there](https://canardoux.github.io/tau/book/flutter_sound/)
+# The [CHANGELOG file is here](https://canardoux.github.io/tau/book/CHANGELOG.html)
 
 -------------------------------------------------------------------------------------
 
@@ -24,23 +24,23 @@ This plugin provides simple recorder and player functionalities for
 
 # Flutter Sound V6.x is OUT
 
-Please refer to the [CHANGELOG.md file](https://dooboolab.github.io/flutter_sound/book/CHANGELOG.html) to get learn all the great new features. It has especially the following :
+Please refer to the [CHANGELOG.md file](https://canardoux.github.io/tau/book/CHANGELOG.html) to get learn all the great new features. It has especially the following :
 
 ## Flutter Web support
 
-Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/web) (still cannot record with Safari or any web browser on iOS). You can [read this](https://dooboolab.github.io/flutter_sound/book/flutter_sound/codec.html#flutter-sound-on-flutter-web).
+Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://canardoux.github.io/tau/doc/flutter_sound/web) (still cannot record with Safari or any web browser on iOS). You can [read this](https://canardoux.github.io/tau/book/flutter_sound/codec.html#flutter-sound-on-flutter-web).
 
 ## Record to Dart Stream
 
 This feature has been requested from many months from many, many, many Flutter Sound users. This open doors to things like feeding a Speech-to-Text engine.
 
-You can refer to the [Getting Started with Record-to-Stream](https://dooboolab.github.io/flutter_sound/book/flutter_sound/codec.html#recording-pcm-16-to-a-dart-stream) notice.
+You can refer to the [Getting Started with Record-to-Stream](https://canardoux.github.io/tau/book/flutter_sound/codec.html#recording-pcm-16-to-a-dart-stream) notice.
 
 ## Playback from a live Dart Stream
 
 This feature has also been requested from many months from many Flutter Sound users.
 
-You can refer to the [Getting Started with Playback-from-Stream](https://dooboolab.github.io/flutter_sound/book/flutter_sound/codec.html#playing-pcm-16-from-a-dart-stream) notice.
+You can refer to the [Getting Started with Playback-from-Stream](https://canardoux.github.io/tau/book/flutter_sound/codec.html#playing-pcm-16-from-a-dart-stream) notice.
 
 ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -49,7 +49,7 @@ You can refer to the [Getting Started with Playback-from-Stream](https://doobool
 
 ## Features
 
-- Play and Record sounds or music with various codecs. (See [the supported codecs here](https://dooboolab.github.io/flutter_sound/book/flutter_sound/codec.html#flutter-sound-codecs))
+- Play and Record sounds or music with various codecs. (See [the supported codecs here](https://canardoux.github.io/tau/book/flutter_sound/codec.html#flutter-sound-codecs))
 - Play local or remote files specified by their URL.
 - Record to a Dart Stream
 - Playback from a Dart Stream
@@ -66,12 +66,12 @@ Maybe, one day, we will be supported by Linux, Macos, and even (why not) Windows
 
 ## Changelog
 
-You can find the [changes here](https://dooboolab.github.io/flutter_sound/book/CHANGELOG.html)
+You can find the [changes here](https://canardoux.github.io/tau/book/CHANGELOG.html)
 
 
 ## Documentation
 
-The [documentation is here](https://dooboolab.github.io/flutter_sound/book/flutter_sound/)
+The [documentation is here](https://canardoux.github.io/tau/book/flutter_sound/)
 
 
 ## License

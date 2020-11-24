@@ -10,9 +10,9 @@
       - [Recording PCM-16 to a Dart Stream](flutter_sound/codec.md#recording-pcm-16-to-a-dart-stream)
       - [Playing PCM-16 from a Dart Stream](flutter_sound/codec.md#playing-pcm-16-from-a-dart-stream)
       - [Flutter Sound on Flutter Web](flutter_sound/codec.md#flutter-sound-on-flutter-web)
-   - [Live Example](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/web/)
+   - [Live Example](https://canardoux.github.io/tau/doc/flutter_sound/web/)
    - [Examples]
-   - [API](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/index.html)
+   - [API](https://canardoux.github.io/tau/doc/flutter_sound/api/index.html)
 - [React Native](react_native/README.md)
 - [Cordova](cordova/README.md)
 - [Solar2D](solar2D/README.md)

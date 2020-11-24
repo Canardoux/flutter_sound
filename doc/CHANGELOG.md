@@ -6,6 +6,7 @@
 - The Flutter Sound documentation is now handled by gitbook.
 - Fix bug in `setUIProgressBar()`
 - The output of `dartanalyzer` is now clean. The pub.dev score is 110/110 !
+- Two new very simple examples for Flutter Sound beginners
 
 ## 6.4.2
 

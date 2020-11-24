@@ -44,7 +44,7 @@ bintray {
        configurations = ['archives']
        desc = 'An android library.'
        websiteUrl = 'https://github.com/Canardoux/tau'
-       vcsUrl = 'https://github.com/canardoux/tau/tau_core/android'
+       vcsUrl = 'https://github.com/canardoux/tau/tree/master/tau_core/android'
        licenses = ["LGPL-3.0"]
        publish = true
        publicDownloadNumbers = true

@@ -28,8 +28,8 @@ import 'dart:typed_data' show Uint8List;
 import 'package:synchronized/synchronized.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
-import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
+import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
+import 'package:flauto_platform_interface/flutter_sound_player_platform_interface.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import '../flutter_sound.dart';
 
@@ -251,7 +251,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   @override
   void audioPlayerFinished(int state) async {
     print('FS:---> audioPlayerFinished');
-    await _lock.synchronized(() async {
+    //await _lock.synchronized(() async {
       //playerState = PlayerState.isStopped;
       //int state = call['arg'] as int;
       assert(state != null);
@@ -260,7 +260,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       if (audioPlayerFinishedPlaying != null) {
         audioPlayerFinishedPlaying();
       }
-    });
+    //});
     print('FS:<--- audioPlayerFinished');
   }
 
@@ -659,10 +659,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       if (playerState != PlayerState.isStopped) {
         throw Exception('Player is not stopped');
       }
-      audioPlayerFinishedPlaying = () {
-        print('FS: !whenFinished()');
-        whenFinished();
-      };
+      audioPlayerFinishedPlaying = whenFinished;
       startPlayerCompleter = Completer<Duration>();
       var state = await FlutterSoundPlayerPlatform.instance.startPlayer(
         this,

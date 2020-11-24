@@ -28,7 +28,7 @@
 #import <Foundation/Foundation.h>
 
 #import "FlutterSoundRecorder.h"
-#import <TauEngine/FlautoRecorder.h>
+#import <tau_core/FlautoRecorder.h>
 
 
 @implementation FlutterSoundRecorder

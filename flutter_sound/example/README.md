@@ -4,6 +4,8 @@ Flutter Sound comes with several Demo/Examples. All the examples are called from
 
 - [Demo](#demo) is a demonstration of what we can do with Flutter Sound. This Demo App is a kind of exerciser which try to implement the major Flutter Sound features. This Demo does not use the Flutter Sound UI Widgets
 - [WidgetUIDemo](#widgetuidemo) is an example of what can be done using the Flutter Sound UI Widgets
+- [SimplePlayback](#simpleplayback) is a very basic example for Flutter Sound beginners, that shows how to playback a remote file.
+- [SimpleRecorder](#simplerecorder) is a very basic example for Flutter Sound beginners, that shows how to record a file and then play it back.
 - [RecordToStream](#recordtostream) is an example showing how to record to a live Dart Stream
 - [livePlaybackWithBackPressure](#liveplaybackwithbackpressure) is an example showing how to play live data synchronously
 - [livePlaybackWithoutBackPressure](#liveplaybackwithoutbackpressure) is an example showing how to play live data asynchronously
@@ -22,6 +24,8 @@ if Someone update this README.md, please update also the code inside Examples/li
 
 This is a Demo of what it is possible to do with Flutter Sound.
 The code of this Demo app is not so simple and unfortunately not very clean :-( .
+
+Flutter Sound beginners : you probably should look to [SimplePlayback](#simpleplayback)  and [SimpleRecorder](#simplerecorder) 
 
 The biggest interest of this Demo is that it shows most of the features of Flutter Sound :
 
@@ -48,6 +52,28 @@ My own feeling is that this Demo is really too much complicated for doing someth
 There is too many dependencies and too many sources.
 
 I really hope that someone will write soon another simpler Demo App.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+## [SimplePlayback](lib/simple_playback/simple_playback.dart)
+
+<img src="lib/simple_playback/simple_playback.png" width="70%" height="70%" />
+
+This is a very simple example for Flutter Sound beginners,
+that shows how to play a remote file.
+
+This example is really basic.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+## [SimpleRecorder](lib/simple_recorder/simple_recorder.dart)
+
+<img src="lib/simple_recorder/simple_recorder.png" width="70%" height="70%" />
+
+This is a very simple example for Flutter Sound beginners,
+that shows how to record, and then playback a file.
+
+This example is really basic.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -123,6 +149,8 @@ from flutter_sound_player.dart.
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## [speechtotext](lib/speechToText/speechToTextExample.dart)
+
+<img src="lib/speechToText/speech_to_text_example.png" width="40%" height="40%"/>
 
 This is an example showing how to do Speech To Text.
 This is just for FUN :-D, because this example does not use the Flutter Sound library.

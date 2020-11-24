@@ -26,15 +26,17 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart' show DateFormat;
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flauto/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-//import 'package:flutter_sound/src/food.dart';
+//import 'package:flauto/src/food.dart';
 
 // If someone update the following comment, please update also the Examples/README.md file and the code inside Examples/lib/demo/main.dart
 /*
  * This is a Demo of what it is possible to do with Flutter Sound.
  * The code of this Demo app is not so simple and unfortunately not very clean :-( .
+ *
+ * Flutter Sound beginners : you probably should look to `[SimplePlayback]`  and `[SimpleRecorder]`
  *
  * The biggest interest of this Demo is that it shows most of the features of Flutter Sound :
  *
@@ -220,7 +222,7 @@ class _MyAppState extends State<Demo> {
   Future<void> copyAssets() async {
     var dataBuffer =
         (await rootBundle.load('assets/canardo.png')).buffer.asUint8List();
-    var path = await '${playerModule.getResourcePath()}/assets';
+    var path = '${await playerModule.getResourcePath()}/assets';
     if (!await Directory(path).exists()) {
       await Directory(path).create(recursive: true);
     }

@@ -10,13 +10,14 @@ if [ "_$1" = "_TAU" ] ; then
         gsed -i  "s/^\( *name: \).*$/\1flauto_platform_interface/" flutter_sound_platform_interface/pubspec.yaml
         gsed -i  "s/^\( *name: \).*$/\1flauto_web/" flutter_sound_web/pubspec.yaml
         gsed -i  "s/^ *flutter_sound_platform_interface: \(.*\)$/  flauto_platform_interface: \1/" flutter_sound_web/pubspec.yaml
-        mv  tau_sound_core.podspec  tau_core.podspec
+        mv  tau_sound_core.podspec  tau_core.podspec 2>/dev/null
         gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/g" tau_core.podspec
         gsed -i  "s/^\( *s.name *= *\)'tau_sound_core'$/\1'tau_core'/" tau_core.podspec
-        gsed -i  s"/^\( *rootProject.name = \).*$/\1'tau_core'/" tau_core/android/settings.gradle
-        gsed -i  s"/^\( *libraryName = \).*$/\1tau_core/" tau_core/android/gradle.properties
-        gsed -i  s"/^\( *PUBLISH_ARTIFACT_ID = \).*$/\1'tau_core'/" tau_core/android/build.gradle
-        gsed -i  s"/^\( *artifactId = \).*$/\1'tau_core'/" tau_core/android/build.gradle
+        gsed -i  "s/^\( *rootProject.name = \).*$/\1'tau_core'/" tau_core/android/settings.gradle
+        gsed -i  "s/^\( *libraryName = \).*$/\1tau_core/" tau_core/android/gradle.properties
+        gsed -i  "s/^\( *PUBLISH_ARTIFACT_ID = \).*$/\1'tau_core'/" tau_core/android/build.gradle
+        gsed -i  "s/^\( *artifactId = \).*$/\1'tau_core'/" tau_core/android/build.gradle
+        gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" tau_core/android/bintray.gradle
 
 
         gsed -i  "s/^ *flutter_sound: \(.*\)$/  flauto: \1/" flutter_sound/example/pubspec.yaml
@@ -32,6 +33,8 @@ if [ "_$1" = "_TAU" ] ; then
         gsed -i  "s/^\( *rootProject.name *= *\).*$/\1'flauto'/" flutter_sound/android/settings.gradle
         gsed -i  "s/^\( *\"name\": \)\"tau_sound_core\"/\1\"tau_core\"/" tau_core/web/package.json
         gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound\.git/https:\/\/github.com\/canardoux\/tau\.git/" tau_core/web/package.json
+
+        gsed -i  "s/^pod 'tau_sound_core',/pod 'tau_core',/" flutter_sound/example/ios/Podfile
 
 
         for f in flutter_sound/lib/*.dart
@@ -132,13 +135,14 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
         gsed -i  "s/^\( *name: \).*$/\1flutter_sound_platform_interface/" flutter_sound_platform_interface/pubspec.yaml
         gsed -i  "s/^\( *name: \).*$/\1flutter_sound_web/" flutter_sound_web/pubspec.yaml
         gsed -i  "s/^ *flauto_platform_interface: \(.*\)$/  flutter_sound_platform_interface: \1/" flutter_sound_web/pubspec.yaml
-        mv  tau_core.podspec  tau_sound_core.podspec
+        mv  tau_core.podspec  tau_sound_core.podspec 2>/dev/null
         gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/g" tau_sound_core.podspec
         gsed -i  "s/^\( *s.name *= *\)'tau_core'$/\1'tau_sound_core'/" tau_sound_core.podspec
-        gsed -i  s"/^\( *rootProject.name = \).*$/\1'tau_sound_core'/" tau_core/android/settings.gradle
-        gsed -i  s"/^\( *libraryName = \).*$/\1tau_sound_core/" tau_core/android/gradle.properties
-        gsed -i  s"/^\( *PUBLISH_ARTIFACT_ID = \).*$/\1'tau_sound_core'/" tau_core/android/build.gradle
-        gsed -i  s"/^\( *artifactId = \).*$/\1'tau_sound_core'/" tau_core/android/build.gradle
+        gsed -i  "s/^\( *rootProject.name = \).*$/\1'tau_sound_core'/" tau_core/android/settings.gradle
+        gsed -i  "s/^\( *libraryName = \).*$/\1tau_sound_core/" tau_core/android/gradle.properties
+        gsed -i  "s/^\( *PUBLISH_ARTIFACT_ID = \).*$/\1'tau_sound_core'/" tau_core/android/build.gradle
+        gsed -i  "s/^\( *artifactId = \).*$/\1'tau_sound_core'/" tau_core/android/build.gradle
+        gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/" tau_core/android/bintray.gradle
 
 
         gsed -i  "s/^ *flauto: \(.*\)$/  flutter_sound: \1/" flutter_sound/example/pubspec.yaml
@@ -153,6 +157,9 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
         gsed -i  "s/^\( *rootProject.name *= *\).*$/\1'flutter_sound'/" flutter_sound/android/settings.gradle
         gsed -i  "s/^\( *\"name\": \)\"tau_core\"/\1\"tau_sound_core\"/" tau_core/web/package.json
         gsed -i  "s/https:\/\/github.com\/canardoux\/tau\.git/https:\/\/github.com\/dooboolab\/flutter_sound\.git/" tau_core/web/package.json
+
+        gsed -i  "s/^pod 'tau_core',/pod 'tau_sound_core',/" flutter_sound/example/ios/Podfile
+
 
 
         for f in flutter_sound/lib/*.dart

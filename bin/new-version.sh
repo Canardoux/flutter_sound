@@ -16,6 +16,8 @@ bin/setver.sh $VERSION
 
 rm flutter_sound/Logotype\ primary.png
 ln -s ../doc/flutter_sound/Logotype\ primary.png flutter_sound/
+rm flutter_sound_web/js
+ln -s ../tau_core/web/js flutter_sound_web/js
 
 cd flutter_sound_platform_interface/
 #flutter clean
@@ -82,7 +84,7 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 
-cd TauEngine/android
+cd tau_core/android
 ./gradlew clean build bintrayUpload
 if [ $? -ne 0 ]; then
     echo "Error"
@@ -90,7 +92,7 @@ if [ $? -ne 0 ]; then
 fi
 cd ../../..
 
-cd TauEngine/web
+cd tau_core/web
 npm publish .
 
 cd ../..

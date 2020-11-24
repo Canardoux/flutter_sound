@@ -35,15 +35,15 @@
 
 // The interfaces to the platforms specific implementations
 // --------------------------------------------------------
-//export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
+//export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 
 import 'dart:typed_data' show Uint8List;
-import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
+import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 import 'src/flutter_sound_player.dart';
 import 'src/flutter_sound_recorder.dart';
 import 'src/util/log.dart';
 
-export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
+export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 
 export 'src/flutter_ffmpeg.dart';
 export 'src/flutter_sound_helper.dart';

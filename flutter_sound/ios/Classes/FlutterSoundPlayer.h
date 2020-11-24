@@ -25,9 +25,9 @@
 
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
-#import "FlautoPlayerEngine.h"
-#import <TauEngine/FlautoPlayer.h>
-#import <TauEngine/Flauto.h>
+//#import "FlautoPlayerEngine.h"
+#import <tau_core/FlautoPlayer.h>
+#import <tau_core/Flauto.h>
 #include "FlutterSoundManager.h"
 #include "FlutterSoundPlayerManager.h"
 

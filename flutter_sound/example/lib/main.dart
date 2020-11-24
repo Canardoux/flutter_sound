@@ -22,6 +22,8 @@ import 'demo/demo.dart';
 import 'livePlaybackWithBackPressure/live_playback_with_back_pressure.dart';
 import 'livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart';
 import 'recordToStream/record_to_stream_example.dart';
+import 'simple_playback/simple_playback.dart';
+import 'simple_recorder/simple_recorder.dart';
 import 'soundEffect/sound_effect.dart';
 import 'speechToText/speech_to_text_example.dart';
 import 'streamLoop/stream_loop.dart';
@@ -78,6 +80,8 @@ final List<Example> exampleTable = [
           '''This is a Demo of what it is possible to do with Flutter Sound.
 The code of this Demo app is not so simple and unfortunately not very clean :-( .
 
+Flutter Sound beginners : you probably should look to `[SimplePlayback]`  and `[SimpleRecorder]` 
+
 The biggest interest of this Demo is that it shows most of the features of Flutter Sound :
 
 - Plays from various media with various codecs
@@ -109,6 +113,35 @@ There is too many dependencies and too many sources.
 I really hope that someone will write soon another simpler Demo App.
 ''',
   ),
+
+
+  Example(
+    title: 'simplePlayback',
+    subTitle: 'A very simple example',
+    flags: 0,
+    route: (_) => SimplePlayback(),
+    description: '''
+This is a very simple example for Flutter Sound beginners,
+that shows how to play a remote file.
+
+This example is really basic.
+''',
+  ),
+
+
+  Example(
+    title: 'simpleRecorder',
+    subTitle: 'A very simple example',
+    flags: 0,
+    route: (_) => SimpleRecorder(),
+    description: '''
+This is a very simple example for Flutter Sound beginners,
+that shows how to record, and then playback a file.
+
+This example is really basic.
+''',
+  ),
+
 
   Example(
     title: 'recordToStream',
@@ -372,7 +405,7 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
                     ? 'Not supported on Flutter Web '
                     : ''),
                 RaisedButton(
-                  onPressed: (selectedExample.flags & tNotWeb != 0)
+                  onPressed: (kIsWeb && (selectedExample.flags & tNotWeb != 0))
                       ? null
                       : () => selectedExample.go(context),
                   color: Colors.indigo,

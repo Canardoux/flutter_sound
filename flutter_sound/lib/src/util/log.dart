@@ -150,7 +150,7 @@ class MyLogPrinter extends LogPrinter {
     if (EnumHelper.getIndexOf(Level.values, Log.loggingLevel) >
         EnumHelper.getIndexOf(Level.values, event.level)) {
       // don't log events where the log level is set higher
-      return null;
+      return [];
     }
     var formatter = DateFormat('dd HH:mm:ss.');
     var now = DateTime.now();
@@ -186,7 +186,7 @@ class MyLogPrinter extends LogPrinter {
         print(color(event.level, '${event.stackTrace}'));
       }
     }
-    return null; // TODO
+    return []; // TODO
   }
 
   ///
