@@ -110,7 +110,7 @@ List&lt;String&gt; log(LogEvent event) {
   if (EnumHelper.getIndexOf(Level.values, Log.loggingLevel) &gt;
       EnumHelper.getIndexOf(Level.values, event.level)) {
     &#47;&#47; don&#39;t log events where the log level is set higher
-    return null;
+    return [];
   }
   var formatter = DateFormat(&#39;dd HH:mm:ss.&#39;);
   var now = DateTime.now();
@@ -146,7 +146,7 @@ List&lt;String&gt; log(LogEvent event) {
       print(color(event.level, &#39;${event.stackTrace}&#39;));
     }
   }
-  return null; &#47;&#47; TODO
+  return []; &#47;&#47; TODO
 }</code></pre>
     </section>
 
@@ -160,7 +160,7 @@ List&lt;String&gt; log(LogEvent event) {
 <footer>
   <span class="no-break">
     flauto
-      6.4.3+10
+      6.4.3+11
   </span>
 
 </footer>

@@ -61,7 +61,7 @@
             <a href="../../flutter_sound/FlutterSoundRecorder-class.html#instance-properties">Properties</a>
         </li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/isOpen.html">isOpen</a></li>
+        <li><a href="../../flutter_sound/FlutterSoundRecorder/isInited.html">isInited</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/isPaused.html">isPaused</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/isRecording.html">isRecording</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/isStopped.html">isStopped</a></li>
@@ -77,7 +77,6 @@
         <li><a href="../../flutter_sound/FlutterSoundRecorder/openAudioSession.html">openAudioSession</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/pauseRecorder.html">pauseRecorder</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/recordingData.html">recordingData</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/releaseRecorder.html">releaseRecorder</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/resumeRecorder.html">resumeRecorder</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/setAudioFocus.html">setAudioFocus</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/setSubscriptionDuration.html">setSubscriptionDuration</a></li>
@@ -89,8 +88,6 @@
         <li class="section-title inherited"><a href="../../flutter_sound/FlutterSoundRecorder-class.html#operators">Operators</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
     
-        <li class="section-title"><a href="../../flutter_sound/FlutterSoundRecorder-class.html#static-properties">Static properties</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/defaultRecorder.html">defaultRecorder</a></li>
     
     
     
@@ -111,20 +108,25 @@
     <section class="desc markdown">
       <p>Sets the frequency at which duration updates are sent to
 duration listeners. Zero means "no callbacks".
-The default is zero.</p>
+The default is zero.
+Sets the frequency at which duration updates are sent to
+duration listeners.
+The default is every 10 milliseconds.</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; setSubscriptionDuration(Duration duration) async {
+      <pre class="language-dart"><code class="language-dart">&#47;&#47;&#47; Sets the frequency at which duration updates are sent to
+&#47;&#47;&#47; duration listeners.
+&#47;&#47;&#47; The default is every 10 milliseconds.
+Future&lt;void&gt; setSubscriptionDuration(Duration duration) async {
   if (isInited == Initialized.initializationInProgress) {
     throw (_InitializationInProgress());
   }
   if (isInited != Initialized.fullyInitialized) {
     throw (_NotOpen());
   }
-  await FlutterSoundRecorderPlatform.instance
-      .setSubscriptionDuration(this, duration: duration);
+  await  FlutterSoundRecorderPlatform.instance.setSubscriptionDuration( this,  duration: duration);
 }</code></pre>
     </section>
 
@@ -138,7 +140,7 @@ The default is zero.</p>
 <footer>
   <span class="no-break">
     flauto
-      6.4.3+10
+      6.4.3+11
   </span>
 
 </footer>

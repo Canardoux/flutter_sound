@@ -1,19 +1,3 @@
-[Back to the README](../README.md#migration-guides)
-
------------------------------------------------------------------------------------------------------------------------
-
-# Migration from 6.4 to 6.5
-
-Flutter Sound 6.5 API is backward compatible with previous versions. But the API has been (once again) cleaned.
-
-Here are the changes :
-- FlutterSoundPlayer.openAudioSession(), FlutterSoundPlayer.openAudioSessionWithUI(), FlutterSoundPlayer.setAudioFocus(),
-  FlutterSoundRecorder.openAudioSession() and FlutterSoundRecorder.setAudioFocus() are deprecated. Those 5 verbs are now replaced
-  by a simple global `FlutterSound.setAudioFocus()`. `FlutterSound.setAudioFocus()` returns a Future, but the App does not need
-  to wait for the Future to be completed. This is really much simpler that the previous API! and this is correctely handled by iOS,
-  unlike the previous behavior.
-
-- the API for the Flutter Sound Recorder has been cleaned. [See the new doc](api/flutter_sound/FlutterSoundRecorder-class.html)
 
 -----------------------------------------------------------------------------------------------------------------------
 
@@ -133,6 +117,3 @@ If you do not do that, you will have duplicates modules during your App building
 instead of adding a new dependency in your pubspec.yaml.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-[Back to the README](../README.md#migration-guides)

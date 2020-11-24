@@ -61,7 +61,7 @@
             <a href="../../flutter_sound/FlutterSoundRecorder-class.html#instance-properties">Properties</a>
         </li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/isOpen.html">isOpen</a></li>
+        <li><a href="../../flutter_sound/FlutterSoundRecorder/isInited.html">isInited</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/isPaused.html">isPaused</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/isRecording.html">isRecording</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/isStopped.html">isStopped</a></li>
@@ -77,7 +77,6 @@
         <li><a href="../../flutter_sound/FlutterSoundRecorder/openAudioSession.html">openAudioSession</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/pauseRecorder.html">pauseRecorder</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/recordingData.html">recordingData</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/releaseRecorder.html">releaseRecorder</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/resumeRecorder.html">resumeRecorder</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/setAudioFocus.html">setAudioFocus</a></li>
         <li><a href="../../flutter_sound/FlutterSoundRecorder/setSubscriptionDuration.html">setSubscriptionDuration</a></li>
@@ -89,8 +88,6 @@
         <li class="section-title inherited"><a href="../../flutter_sound/FlutterSoundRecorder-class.html#operators">Operators</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
     
-        <li class="section-title"><a href="../../flutter_sound/FlutterSoundRecorder-class.html#static-properties">Static properties</a></li>
-        <li><a href="../../flutter_sound/FlutterSoundRecorder/defaultRecorder.html">defaultRecorder</a></li>
     
     
     
@@ -104,13 +101,13 @@
     <section class="multi-line-signature">
       <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
             <span class="name ">startRecorder</span>
-(<wbr><ol class="parameter-list"><li><span class="parameter" id="startRecorder-param-codec">{<span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+10/flutter_sound_platform_interface/Codec-class.html">Codec</a></span> <span class="parameter-name">codec</span>: <span class="default-value">Codec.defaultCodec</span>, </span></li>
+(<wbr><ol class="parameter-list"><li><span class="parameter" id="startRecorder-param-codec">{<span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+11/flutter_sound_platform_interface/Codec-class.html">Codec</a></span> <span class="parameter-name">codec</span>: <span class="default-value">Codec.defaultCodec</span>, </span></li>
 <li><span class="parameter" id="startRecorder-param-toFile"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">toFile</span>, </span></li>
 <li><span class="parameter" id="startRecorder-param-toStream"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-async/StreamSink-class.html">StreamSink</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../flutter_sound/Food-class.html">Food</a></span>&gt;</span></span> <span class="parameter-name">toStream</span>, </span></li>
 <li><span class="parameter" id="startRecorder-param-sampleRate"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">sampleRate</span>: <span class="default-value">16000</span>, </span></li>
 <li><span class="parameter" id="startRecorder-param-numChannels"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">numChannels</span>: <span class="default-value">1</span>, </span></li>
 <li><span class="parameter" id="startRecorder-param-bitRate"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">bitRate</span>: <span class="default-value">16000</span>, </span></li>
-<li><span class="parameter" id="startRecorder-param-audioSource"><span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+10/flutter_sound_recorder_platform_interface/AudioSource-class.html">AudioSource</a></span> <span class="parameter-name">audioSource</span>: <span class="default-value">AudioSource.defaultSource</span>}</span></li>
+<li><span class="parameter" id="startRecorder-param-audioSource"><span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+11/flutter_sound_recorder_platform_interface/AudioSource-class.html">AudioSource</a></span> <span class="parameter-name">audioSource</span>: <span class="default-value">AudioSource.defaultSource</span>}</span></li>
 </ol>)
       
     </section>
@@ -141,7 +138,7 @@
                 }
               }
               *&#47;
-  if (_recorderState != null &amp;&amp; _recorderState != RecorderState.isStopped) {
+  if (recorderState != null &amp;&amp; recorderState != RecorderState.isStopped) {
     throw _RecorderRunningException(&#39;Recorder is not stopped.&#39;);
   }
   if (!await isEncoderSupported(codec)) {
@@ -186,7 +183,7 @@
         toStream: toStream != null,
         audioSource: audioSource);
 
-    _recorderState = RecorderState.isRecording;
+    recorderState = RecorderState.isRecording;
     &#47;&#47; if the caller wants OGG&#47;OPUS we must remux the temporary file
     if (_isOggOpus) {
       return _savedUri;
@@ -207,7 +204,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.3+10
+      6.4.3+11
   </span>
 
 </footer>

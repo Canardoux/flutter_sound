@@ -110,12 +110,27 @@ rm -rf .symlinks/
 pod repo update
 cd ..
 flutter build ios
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+
 # Bug in flutter tools : if "flutter build --release" we must first "--debug" and then "--profile" before "--release"
 flutter build apk --debug
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+
 flutter build web
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+
 cd ../..
 rm -r doc/flutter_sound/web_example
-cp -a flutter_sound/example/build/web doc/flutter_sound/
+cp -a flutter_sound/example/build/web doc/flutter_sound/web_example
 
 
 bin/doc.sh $VERSION
