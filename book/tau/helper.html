@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Getting Started · GitBook</title>
+        <title>FlutterSoundHelper · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="codec.html" />
+    <link rel="next" href="ui_widget.html" />
     
     
-    <link rel="prev" href="architecture.html" />
+    <link rel="prev" href="recorder.html" />
     
 
     </head>
@@ -115,7 +115,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.3" data-path="getting-started.html">
+        <li class="chapter " data-level="1.3" data-path="getting-started.html">
             
                 <a href="getting-started.html">
             
@@ -252,7 +252,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.3" data-path="helper.html">
+        <li class="chapter active" data-level="1.4.3" data-path="helper.html">
             
                 <a href="helper.html">
             
@@ -598,7 +598,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Getting Started</a>
+        <a href=".." >FlutterSoundHelper</a>
     </h1>
 </div>
 
@@ -613,99 +613,192 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="getting-started-on-&#x3C4;">Getting Started on &#x3C4;</h1>
-<h2 id="playback">Playback</h2>
-<p>The complete running example <a href="https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/simple_playback/simple_playback.dart" target="_blank">is there</a></p>
-<h3 id="1-fluttersoundplayer-instanciation">1. FlutterSoundPlayer instanciation</h3>
-<p>To play back something you must instanciate a player. Most of the time, you will need just one player, and you can place this instanciation in the variables initialisation of your class :</p>
-<pre><code class="lang-dart">  FlutterSoundPlayer _myPlayer = FlutterSoundPlayer();
+                                <h1 id="flutter-sound-helper-api">Flutter Sound Helper API</h1>
+<p>Flutter Sound offers some tools that can be convenient to work with sound :</p>
+<ul>
+<li><a href="#module-instanciation">Module instanciation</a></li>
+<li><a href="#convertfile">convertFile()</a> to convert an audio file to another format</li>
+<li><a href="#pcmtowave">pcmToWave()</a>  to add a WAVE header in front of a Raw PCM record</li>
+<li><a href="#pcmtowavebuffer">pcmToWaveBuffer()</a>  to add a WAVE header in front of a Raw PCM buffer</li>
+<li><a href="#wavetopcm">waveToPCM()</a>  to remove a WAVE header in front of a Wave record</li>
+<li><a href="#wavetopcmbuffer">waveToPCMBuffer()</a>  to remove a WAVE header in front of a Wave buffer</li>
+<li><a href="#duration">duration()</a> to know the appoximate duration of a sound</li>
+<li><a href="#isffmpegavailable">isFFmpegAvailable()</a> to know if the current App is linked with FFmpeg</li>
+<li><a href="#executeffmpegwitharguments">executeFFmpegWithArguments()</a> to execute an FFmpeg command</li>
+<li><a href="#getlastffmpegreturncode">getLastFFmpegReturnCode()</a> to get the return code of an FFmpeg command</li>
+<li><a href="#getlastffmpegcommandoutput">getLastFFmpegCommandOutput()</a> to get ouput of the last FFmpeg command</li>
+<li><a href="#ffmpeggetmediainformation--informations-on-a-record">FFmpegGetMediaInformation()</a> to get various informations on a sound file</li>
+</ul>
+<hr>
+<h2 id="module-instanciation">Module <code>instanciation</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre><code>FlutterSoundHelper flutterSoundHelper = FlutterSoundHelper(); // Singleton
+</code></pre><p>You do not need to instanciate the Flutter Sound Helper module.
+To use this module, you can just use the singleton offers by the module : <code>flutterSoundHelper</code>.</p>
+<p><em>Example:</em></p>
+<pre><code class="lang-dart"><span class="hljs-built_in">Duration</span> t = <span class="hljs-keyword">await</span> flutterSoundHelper.duration(aPathFile);
 </code></pre>
-<h3 id="2-open-and-close-the-audio-session">2. Open and close the audio session</h3>
-<p>Before calling <code>startPlayer()</code> you must open the Session.</p>
-<p>When you have finished with it, <strong>you must</strong> close the session. A god place to pute those verbs is in the procedures <code>initState()</code> and <code>dispose()</code>.</p>
-<pre><code class="lang-dart"><span class="hljs-meta">@override</span>
-  <span class="hljs-keyword">void</span> initState() {
-    <span class="hljs-keyword">super</span>.initState();
-    <span class="hljs-comment">// Be careful : openAudioSession return a Future.</span>
-    <span class="hljs-comment">// Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future</span>
-    _myPlayer.openAudioSession().then((value) {
-      setState(() {
-        _mPlayerIsInited = <span class="hljs-keyword">true</span>;
-      });
-    });
-  }
-
-
-
-  <span class="hljs-meta">@override</span>
-  <span class="hljs-keyword">void</span> dispose() {
-    <span class="hljs-comment">// Be careful : you must `close` the audio session when you have finished with it.</span>
-    _myPlayer.closeAudioSession();
-    _myPlayer = <span class="hljs-keyword">null</span>;
-    <span class="hljs-keyword">super</span>.dispose();
-  }
+<hr>
+<h2 id="convertfile"><code>convertFile()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre><code>Future&lt;bool&gt; convertFile
+(
+        String infile,
+        Codec codecin,
+        String outfile,
+        Codec codecout
+) async
+</code></pre><p>This verb is useful to convert a sound file to a new format.</p>
+<ul>
+<li><code>infile</code> is the file path of the file you want to convert</li>
+<li><code>codecin</code> is the actual file format</li>
+<li><code>outfile</code> is the path of the file you want to create</li>
+<li><code>codecout</code> is the new file format</li>
+</ul>
+<p>Be careful : <code>outfile</code> and <code>codecout</code> must be compatible. The output file extension must be a correct file extension for the new format.</p>
+<p>Note : this verb uses FFmpeg and is not available int the LITE flavor of Flutter Sound.</p>
+<p><em>Example:</em></p>
+<pre><code class="lang-dart">        <span class="hljs-built_in">String</span> inputFile = <span class="hljs-string">&apos;$myInputPath/bar.wav&apos;</span>;
+        <span class="hljs-keyword">var</span> tempDir = <span class="hljs-keyword">await</span> getTemporaryDirectory();
+        <span class="hljs-built_in">String</span> outpufFile = <span class="hljs-string">&apos;<span class="hljs-subst">${tempDir.path}</span>/$foo.mp3&apos;</span>;
+        <span class="hljs-keyword">await</span> flutterSoundHelper.convertFile(inputFile, codec.pcm16WAV, outputFile, Codec.mp3)
 </code></pre>
-<h3 id="3-play-your-sound">3. Play your sound</h3>
-<p>To play a sound you call  <code>startPlayer()</code>. To stop a sound you call <code>stopPlayer()</code> </p>
-<pre><code class="lang-dart"><span class="hljs-keyword">void</span> play() <span class="hljs-keyword">async</span> {
-    <span class="hljs-keyword">await</span> _myPlayer.startPlayer(
-      fromURI: _exampleAudioFilePathMP3,
-      codec: Codec.mp3,
-      whenFinished: (){setState((){});}
-    );
-    setState(() {});
-  }
-
-  Future&lt;<span class="hljs-keyword">void</span>&gt; stopPlayer() <span class="hljs-keyword">async</span> {
-    <span class="hljs-keyword">if</span> (_myPlayer != <span class="hljs-keyword">null</span>) {
-      <span class="hljs-keyword">await</span> _myPlayer.stopPlayer();
-    }
-  }
+<hr>
+<h2 id="pcmtowave"><code>pcmToWave()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre><code>Future&lt;void&gt; pcmToWave
+(
+      {
+          String inputFile,
+          String outputFile,
+          int numChannels,
+          int sampleRate,
+      }
+) async
+</code></pre><p>This verb is usefull to convert a Raw PCM file to a Wave file.</p>
+<p>It adds a <code>Wave</code> envelop to the PCM file, so that the file can be played back with <code>startPlayer()</code>.</p>
+<p>Note: the parameters <code>numChannels</code> and <code>sampleRate</code> <strong>are mandatory, and must match the actual PCM data</strong>. <a href="doc/codec.md#note-on-raw-pcm-and-wave-files">See here</a> a discussion about <code>Raw PCM</code> and <code>WAVE</code> file format.</p>
+<p><em>Example:</em></p>
+<pre><code class="lang-dart">        <span class="hljs-built_in">String</span> inputFile = <span class="hljs-string">&apos;$myInputPath/bar.pcm&apos;</span>;
+        <span class="hljs-keyword">var</span> tempDir = <span class="hljs-keyword">await</span> getTemporaryDirectory();
+        <span class="hljs-built_in">String</span> outpufFile = <span class="hljs-string">&apos;<span class="hljs-subst">${tempDir.path}</span>/$foo.wav&apos;</span>;
+        <span class="hljs-keyword">await</span> flutterSoundHelper.pcmToWave(inputFile: inputFile, outpoutFile: outputFile, numChannels: <span class="hljs-number">1</span>, sampleRate: <span class="hljs-number">8000</span>);
 </code></pre>
-<h2 id="recording">Recording</h2>
-<p>The complete running example <a href="https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/simple_recorder/simple_recorder.dart" target="_blank">is there</a></p>
-<h3 id="1-fluttersoundrecorder-instanciation">1. FlutterSoundRecorder instanciation</h3>
-<p>To play back something you must instanciate a recorder. Most of the time, you will need just one recorder, and you can place this instanciation in the variables initialisation of your class :</p>
-<pre><code class="lang-dart">  FlutterSoundRecorder _myRecorder = FlutterSoundRecorder();
+<hr>
+<h2 id="pcmtowavebuffer"><code>pcmToWaveBuffer()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre><code>Future&lt;Uint8List&gt; pcmToWaveBuffer
+(
+      {
+        Uint8List inputBuffer,
+        int numChannels,
+        int sampleRate,
+      }
+) async
+</code></pre><p>This verb is usefull to convert a Raw PCM buffer to a Wave buffer.</p>
+<p>It adds a <code>Wave</code> envelop in front of the PCM buffer, so that the file can be played back with <code>startPlayerFromBuffer()</code>.</p>
+<p>Note: the parameters <code>numChannels</code> and <code>sampleRate</code> <strong>are mandatory, and must match the actual PCM data</strong>. <a href="doc/codec.md#note-on-raw-pcm-and-wave-files">See here</a> a discussion about <code>Raw PCM</code> and <code>WAVE</code> file format.</p>
+<p><em>Example:</em></p>
+<pre><code class="lang-dart">        Uint8List myWavBuffer = <span class="hljs-keyword">await</span> flutterSoundHelper.pcmToWaveBuffer(inputBuffer: myPCMBuffer, numChannels: <span class="hljs-number">1</span>, sampleRate: <span class="hljs-number">8000</span>);
 </code></pre>
-<h3 id="2-open-and-close-the-audio-session">2. Open and close the audio session</h3>
-<p>Before calling <code>startRecorder()</code> you must open the Session.</p>
-<p>When you have finished with it, <strong>you must</strong> close the session. A god place to pute those verbs is in the procedures <code>initState()</code> and <code>dispose()</code>.</p>
-<pre><code class="lang-dart"><span class="hljs-meta">@override</span>
-  <span class="hljs-keyword">void</span> initState() {
-    <span class="hljs-keyword">super</span>.initState();
-    <span class="hljs-comment">// Be careful : openAudioSession return a Future.</span>
-    <span class="hljs-comment">// Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future</span>
-    _myRecorder.openAudioSession().then((value) {
-      setState(() {
-        _mRecorderIsInited = <span class="hljs-keyword">true</span>;
-      });
-    });
-  }
-
-
-
-  <span class="hljs-meta">@override</span>
-  <span class="hljs-keyword">void</span> dispose() {
-    <span class="hljs-comment">// Be careful : you must `close` the audio session when you have finished with it.</span>
-    _myRecorder.closeAudioSession();
-    _myRecorder = <span class="hljs-keyword">null</span>;
-    <span class="hljs-keyword">super</span>.dispose();
-  }
+<hr>
+<h2 id="wavetopcm"><code>waveToPCM()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre><code>Future&lt;void&gt; waveToPCM
+(
+      {
+          String inputFile,
+          String outputFile,
+       }
+) async
+</code></pre><p>This verb is usefull to convert a Wave file to a Raw PCM file.</p>
+<p>It removes the <code>Wave</code> envelop from the PCM file.</p>
+<p><em>Example:</em></p>
+<pre><code class="lang-dart">        <span class="hljs-built_in">String</span> inputFile = <span class="hljs-string">&apos;$myInputPath/bar.pcm&apos;</span>;
+        <span class="hljs-keyword">var</span> tempDir = <span class="hljs-keyword">await</span> getTemporaryDirectory();
+        <span class="hljs-built_in">String</span> outpufFile = <span class="hljs-string">&apos;<span class="hljs-subst">${tempDir.path}</span>/$foo.wav&apos;</span>;
+        <span class="hljs-keyword">await</span> flutterSoundHelper.waveToPCM(inputFile: inputFile, outpoutFile: outputFile);
 </code></pre>
-<h3 id="3-record-something">3. Record something</h3>
-<p>To record something you call  <code>startRecorder()</code>. To stop the recorder you call <code>stopRecorder()</code> </p>
-<pre><code class="lang-dart">  Future&lt;<span class="hljs-keyword">void</span>&gt; record() <span class="hljs-keyword">async</span> {
-    <span class="hljs-keyword">await</span> _myRecorder.startRecorder(
-      toFile: _mPath,
-      codec: Codec.aacADTS,
-    );
-  }
+<hr>
+<h2 id="wavetopcmbuffer"><code>waveToPCMBuffer()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre><code>Uint8List waveToPCMBuffer (Uint8List inputBuffer)
+</code></pre><p>This verb is usefull to convert a Wave buffer to a Raw PCM buffer.
+Note that this verb is not asynchronous and does not return a Future.</p>
+<p>It removes the <code>Wave</code> envelop from the PCM buffer.</p>
+<p><em>Example:</em></p>
+<pre><code class="lang-dart">        Uint8List pcmBuffer flutterSoundHelper.waveToPCMBuffer(inputBuffer: aWaveBuffer);
+</code></pre>
+<hr>
+<h2 id="duration"><code>duration()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre><code> Future&lt;Duration&gt; duration(String uri) async
+</code></pre><p>This verb is used to get an estimation of the duration of a sound file.
+Be aware that it is just an estimation, based on the Codec used and the sample rate.</p>
+<p>Note : this verb uses FFmpeg and is not available int the LITE flavor of Flutter Sound.</p>
+<p><em>Example:</em></p>
+<pre><code class="lang-dart">        <span class="hljs-built_in">Duration</span> d = flutterSoundHelper.duration(<span class="hljs-string">&quot;$myFilePath/bar.wav&quot;</span>);
+</code></pre>
+<hr>
+<h2 id="isffmpegavailable"><code>isFFmpegAvailable()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre><code>Future&lt;bool&gt; isFFmpegAvailable() async
+</code></pre><p>This verb is used to know during runtime if FFmpeg is linked with the App.</p>
+<p><em>Example:</em></p>
+<pre><code class="lang-dart">        <span class="hljs-keyword">if</span> ( <span class="hljs-keyword">await</span> flutterSoundHelper.isFFmpegAvailable() )
+        {
+                <span class="hljs-built_in">Duration</span> d = flutterSoundHelper.duration(<span class="hljs-string">&quot;$myFilePath/bar.wav&quot;</span>);
+        }
+</code></pre>
+<hr>
+<h2 id="executeffmpegwitharguments"><code>executeFFmpegWithArguments()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre><code>Future&lt;int&gt; executeFFmpegWithArguments(List&lt;String&gt; arguments)
+</code></pre><p>This verb is a wrapper for the great FFmpeg application.
+The command <em>&quot;man ffmpeg&quot;</em> (if you have installed ffmpeg on your computer) will give you many informations.
+If you do not have <code>ffmpeg</code> on your computer you will find easyly on internet many documentation on this great program.</p>
+<p><em>Example:</em></p>
+<pre><code class="lang-dart"> <span class="hljs-built_in">int</span> rc = <span class="hljs-keyword">await</span> flutterSoundHelper.executeFFmpegWithArguments
+ ([
+        <span class="hljs-string">&apos;-loglevel&apos;</span>,
+        <span class="hljs-string">&apos;error&apos;</span>,
+        <span class="hljs-string">&apos;-y&apos;</span>,
+        <span class="hljs-string">&apos;-i&apos;</span>,
+        infile,
+        <span class="hljs-string">&apos;-c:a&apos;</span>,
+        <span class="hljs-string">&apos;copy&apos;</span>,
+        outfile,
+]); <span class="hljs-comment">// remux OGG to CAF</span>
+</code></pre>
+<pre><code>
+---------------------------------------------------------------------------------------------------------------------------
 
+## `getLastFFmpegReturnCode()`
 
-  Future&lt;<span class="hljs-keyword">void</span>&gt; stopRecorder() <span class="hljs-keyword">async</span> {
-    <span class="hljs-keyword">await</span> _myRecorder.stopRecorder();
-  }
+*Dart definition (prototype) :*
+</code></pre><p>Future<int> getLastFFmpegReturnCode() async</int></p>
+<pre><code>
+This simple verb is used to get the result of the last FFmpeg command
+
+*Example:*
+```dart
+        int result = await getLastFFmpegReturnCode();
+</code></pre><hr>
+<h2 id="getlastffmpegcommandoutput"><code>getLastFFmpegCommandOutput()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre><code>Future&lt;String&gt; getLastFFmpegCommandOutput() async
+</code></pre><p>This simple verb is used to get the output of the last FFmpeg command</p>
+<p><em>Example:</em></p>
+<pre><code class="lang-dart">        <span class="hljs-built_in">print</span>( <span class="hljs-keyword">await</span> getLastFFmpegCommandOutput() );
+</code></pre>
+<hr>
+<h2 id="ffmpeggetmediainformation--informations-on-a-record"><code>FFmpegGetMediaInformation</code> : Informations on a record</h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre><code>Future&lt;Map&lt;dynamic, dynamic&gt;&gt; FFmpegGetMediaInformation(String uri) async
+</code></pre><p>This verb is used to get various informations on a file.</p>
+<p>The informations got with FFmpegGetMediaInformation() are <a href="https://pub.dev/packages/flutter_ffmpeg" target="_blank">documented here</a>.</p>
+<p><em>Example:</em></p>
+<pre><code class="lang-dart"><span class="hljs-built_in">Map</span>&lt;<span class="hljs-keyword">dynamic</span>, <span class="hljs-keyword">dynamic</span>&gt; info = <span class="hljs-keyword">await</span> flutterSoundHelper.FFmpegGetMediaInformation( uri );
 </code></pre>
 
                                 
@@ -734,12 +827,12 @@
 
             
                 
-                <a href="architecture.html" class="navigation navigation-prev " aria-label="Previous page: The τ Architecture">
+                <a href="recorder.html#flutter-sound-recorder-api" class="navigation navigation-prev " aria-label="Previous page: FlutterSoundRecorder">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="codec.html#flutter-sound-codecs" class="navigation navigation-next " aria-label="Next page: Supported Codecs">
+                <a href="ui_widget.html" class="navigation navigation-next " aria-label="Next page: FlutterSoundUI">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -750,7 +843,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Getting Started","level":"1.3","depth":1,"next":{"title":"Supported Codecs","level":"1.3.1","depth":2,"anchor":"#flutter-sound-codecs","path":"tau/codec.md","ref":"tau/codec.md#flutter-sound-codecs","articles":[]},"previous":{"title":"The τ Architecture","level":"1.2","depth":1,"path":"tau/architecture.md","ref":"tau/architecture.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/getting-started.md","mtime":"2020-11-24T16:14:09.743Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-24T16:36:14.093Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"FlutterSoundHelper","level":"1.4.3","depth":2,"next":{"title":"FlutterSoundUI","level":"1.4.4","depth":2,"path":"tau/ui_widget.md","ref":"tau/ui_widget.md","articles":[]},"previous":{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"anchor":"#flutter-sound-recorder-api","path":"tau/recorder.md","ref":"tau/recorder.md#flutter-sound-recorder-api","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/helper.md","mtime":"2020-11-24T16:31:58.164Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-24T16:36:14.093Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

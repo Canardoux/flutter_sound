@@ -1,6 +1,3 @@
-[Back to the README](../README.md#flutter-sound-api)
-
------------------------------------------------------------------------------------------------------------------------
 
 # Flutter Sound Helper API
 
@@ -290,7 +287,3 @@ The informations got with FFmpegGetMediaInformation() are [documented here](http
 ```dart
 Map<dynamic, dynamic> info = await flutterSoundHelper.FFmpegGetMediaInformation( uri );
 ```
-
------------------------------------------------------------------------------------------------------------------------
-
-[Back to the README](../README.md#flutter-sound-api)
