@@ -613,9 +613,7 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <p><a href="../#flutter-sound-api">Back to the README</a></p>
-<hr>
-<h1 id="flutter-sound-player-api">Flutter Sound Player API</h1>
+                                <h1 id="flutter-sound-player-api">Flutter Sound Player API</h1>
 <p>The verbs offered by the Flutter Sound Player module are :</p>
 <ul>
 <li><a href="#creating-the-player-instance">Default constructor</a></li>
@@ -1162,12 +1160,10 @@ Remark <code>setUIProgressBar()</code> is implemented only on iOS.</p>
 <p><em>Dart definition (prototype) :</em></p>
 <pre><code>Future&lt;void&gt; setSubscriptionDuration(Duration duration)
 </code></pre><p>This verb is used to change the default interval between two post on the &quot;Update Progress&quot; stream. (The default interval is 10ms)</p>
-<p><em>Example:</em></p>
-<pre><code class="lang-dart"><span class="hljs-comment">// 0.010s. is default</span>
-myPlayer.setSubscriptionDuration(<span class="hljs-built_in">Duration</span>(milliseconds: <span class="hljs-number">20</span>));
-</code></pre>
-<hr>
-<p><a href="../#flutter-sound-api">Back to the README</a></p>
+<p><em>Example:</em>
+```dart
+// 0.010s. is default
+myPlayer.setSubscriptionDuration(Duration(milliseconds: 20));</p>
 
                                 
                                 </section>
@@ -1211,7 +1207,7 @@ myPlayer.setSubscriptionDuration(<span class="hljs-built_in">Duration</span>(mil
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"next":{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"anchor":"#flutter-sound-recorder-api","path":"tau/recorder.md","ref":"tau/recorder.md#flutter-sound-recorder-api","articles":[]},"previous":{"title":"API","level":"1.4","depth":1,"path":"tau/api.md","ref":"tau/api.md","articles":[{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"anchor":"#flutter-sound-player-api","path":"tau/player.md","ref":"tau/player.md#flutter-sound-player-api","articles":[]},{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"anchor":"#flutter-sound-recorder-api","path":"tau/recorder.md","ref":"tau/recorder.md#flutter-sound-recorder-api","articles":[]},{"title":"FlutterSoundHelper","level":"1.4.3","depth":2,"path":"tau/helper.md","ref":"tau/helper.md","articles":[]},{"title":"FlutterSoundUI","level":"1.4.4","depth":2,"path":"tau/ui_widget.md","ref":"tau/ui_widget.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/player.md","mtime":"2020-11-24T16:02:49.782Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-24T16:36:14.093Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"next":{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"anchor":"#flutter-sound-recorder-api","path":"tau/recorder.md","ref":"tau/recorder.md#flutter-sound-recorder-api","articles":[]},"previous":{"title":"API","level":"1.4","depth":1,"path":"tau/api.md","ref":"tau/api.md","articles":[{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"anchor":"#flutter-sound-player-api","path":"tau/player.md","ref":"tau/player.md#flutter-sound-player-api","articles":[]},{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"anchor":"#flutter-sound-recorder-api","path":"tau/recorder.md","ref":"tau/recorder.md#flutter-sound-recorder-api","articles":[]},{"title":"FlutterSoundHelper","level":"1.4.3","depth":2,"path":"tau/helper.md","ref":"tau/helper.md","articles":[]},{"title":"FlutterSoundUI","level":"1.4.4","depth":2,"path":"tau/ui_widget.md","ref":"tau/ui_widget.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/player.md","mtime":"2020-11-24T16:38:04.182Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-24T16:40:59.442Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

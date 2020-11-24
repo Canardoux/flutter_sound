@@ -1,8 +1,3 @@
-
-[Back to the README](../README.md#flutter-sound-api)
-
------------------------------------------------------------------------------------------------------------------------
-
 # Flutter Sound Recorder API
 
 The verbs offered by the Flutter Sound Player module are :
@@ -337,8 +332,3 @@ This verb is used to change the default interval between two post on the "Update
 // 0.010s. is default
 myRecorder.setSubscriptionDuration(0.010);
 ```
-
----------------------------------------------------------------------------------------------------------------------------------
-
-[Back to the README](../README.md#flutter-sound-api)
-

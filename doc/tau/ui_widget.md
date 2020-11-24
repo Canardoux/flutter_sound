@@ -1,7 +1,3 @@
-[Back to the README](../README.md#flutter-sound-api)
-
------------------------------------------------------------------------------------------------------------------------
-
 # Flutter Sound UI Widgets API
 
 The Widgets offered by the Flutter Sound UI Widgets module are :
@@ -42,7 +38,3 @@ The two constructors of the `SoundPlayerUI` widget have 6 optional parameters fo
 
 ## `SoundRecorderUI`
 ...working on documentation.
-
------------------------------------------------------------------------------------------------------------------------
-
-[Back to the README](../README.md#flutter-sound-api)
