@@ -2,3 +2,46 @@
 
 <img src="architecture.svg" width="100%" height="100%" />
 
+
+On this diagram, we casn see clearly the three layers :
+
+## The Platform layer
+
+This is the highest layer. This layer must implement the various platforms/frameworks that &tau; wants to support.
+
+Actually the only platform is Flutter. Maybe in the future we will have others :
+
+- React Native
+- Native Script
+- Cordova
+- Solar 2D
+- ...
+
+This alyer is independant of the target OS. The API is general enough to accomodate various target OS.
+
+
+## The OS layer
+
+This is the lowest layer. this layer must implement the various target OS that &tau; wants to support.
+
+Actually the OS supported are :
+
+- Android
+- iOS
+- Web
+
+Maybe in the future we will have others :
+
+- Linux
+- Windows
+- MacOS
+
+
+## Where are published all those blocs ?
+
+- Flutter Sound is published on `pub.dev` under the project `flutter_sound`  (or `flauto`)
+- The Flutter Sound Platform Interface is published on `pub.dev` under the project `flutter_sound_platform_interface` (or `flauto_platform_interface` )
+- The Flutter Web plugin is published on `pub.dev` under the project `flutter_sound_web` (or `flauto_web`)
+- The &tau; Core for Android is published on `Bintray` (`jcenter()`) under the project `tau_sound_core` (or `tau_core`)
+- The &tau; Core for iOS is published on `Cocoapods` under the project `tau_sound_core` (or `tau_core`)
+- The &tau; Core for Web is published on `npm` under the project `tau_sound_core` (or `tau_core`)
