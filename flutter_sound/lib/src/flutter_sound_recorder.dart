@@ -37,7 +37,7 @@ import 'flutter_sound_helper.dart';
 /// Using a recorder is very simple :
 ///
 /// 1. Create a new `FlutterSoundRecorder` (optional).
-/// This is optional, and most of the time, APP will use the pre-built [defaultRecorder]
+/// This is optional, and most of the time, APP will use the pre-built 
 /// instead of creating a new object
 ///
 /// 2. Start your record with `startRecording()`.
