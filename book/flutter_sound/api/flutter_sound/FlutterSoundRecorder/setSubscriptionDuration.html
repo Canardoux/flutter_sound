@@ -126,7 +126,8 @@ Future&lt;void&gt; setSubscriptionDuration(Duration duration) async {
   if (isInited != Initialized.fullyInitialized) {
     throw (_NotOpen());
   }
-  await  FlutterSoundRecorderPlatform.instance.setSubscriptionDuration( this,  duration: duration);
+  await FlutterSoundRecorderPlatform.instance
+      .setSubscriptionDuration(this, duration: duration);
 }</code></pre>
     </section>
 
@@ -140,7 +141,7 @@ Future&lt;void&gt; setSubscriptionDuration(Duration duration) async {
 <footer>
   <span class="no-break">
     flauto
-      6.4.3+11
+      6.4.3+12
   </span>
 
 </footer>

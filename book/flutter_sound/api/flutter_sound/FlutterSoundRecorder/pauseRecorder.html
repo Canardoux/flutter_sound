@@ -111,7 +111,7 @@
   if (isInited == Initialized.initializationInProgress) {
     throw (_InitializationInProgress());
   }
- if (isInited != Initialized.fullyInitialized) {
+  if (isInited != Initialized.fullyInitialized) {
     throw (_NotOpen());
   }
   await FlutterSoundRecorderPlatform.instance.pauseRecorder(this);
@@ -129,7 +129,7 @@
 <footer>
   <span class="no-break">
     flauto
-      6.4.3+11
+      6.4.3+12
   </span>
 
 </footer>
