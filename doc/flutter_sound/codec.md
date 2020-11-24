@@ -1,10 +1,10 @@
-[Back to the README](../README.md#flutter-sound)
+# Getting Started
 
 -------------------------------------------------------------------------------------------------------------------------------------
 
 # Flutter Sound Codecs
 
-## Actually, the following codecs are supported by flutter_sound:
+Actually, the following codecs are supported by flutter_sound:
 
 |                   | AAC ADTS | Opus OGG | Opus CAF    | MP3 | Vorbis OGG | PCM16  | PCM WAV | PCM AIFF | PCM CAF | FLAC    | AAC MP4 | AMR-NB | AMR-WB | PCM-8     | PCM F32  | PCM WEBM | Opus WEBM   | Vorbis WEBM |
 | :---------------- | :------: | :------: | :---------: | :-: | :--------: | :----: | :-----: | :------: | :-----: | :-----: | :-----: | :----: | :----: | :-------: | :------: | :------: | :---------: | :---------: |
@@ -40,7 +40,7 @@ This table will eventually be upgraded when more codecs will be added.
 - Webkit is bull shit : you cannot record anything with Safari, or Firefox/Chrome on iOS.
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Raw PCM and Wave files
+# Raw PCM and Wave files
 
 Raw PCM is not an audio format. Raw PCM files store the raw data **without** any envelope.
 A simple way for playing a Raw PCM file, is to add a `Wave` header in front of the data before playing it. To do that, the helper verb `pcmToWave()` is convenient. You can also call directely the `startPlayer()` verb. If you do that, do not forget to provide the `sampleRate` and `numChannels` parameters.
@@ -58,7 +58,7 @@ Note the following limitations in the current Flutter Sound version :
 
 -------------------------------------------------------------------------------------------------------------------------------------
 
-## Recording or playing Raw PCM INT-Linerar 16 files
+# Recording or playing Raw PCM INT-Linerar 16 files
 
 Please, remember that actually, Flutter Sound does not support Floating Point PCM data, nor records with more that one audio channel.
 
@@ -96,7 +96,7 @@ await myPlayer.startPlayer
 
 -------------------------------------------------------------------------------------------------------------------------------------
 
-## Recording PCM-16 to a Dart Stream
+# Recording PCM-16 to a Dart Stream
 
 Please, remember that actually, Flutter Sound does not support Floating Point PCM data, nor records with more that one audio channel.
 On Flutter Sound, **Raw PCM is only PCM-LINEAR 16 monophony**
@@ -105,7 +105,7 @@ This works only with [openAudioSession()](recorder#openAudioSession-and-closeAud
 To record a Live PCM file, when calling the verb [startRecorder()](recorder.md#startrecorder), you specify the parameter `toStream:` with you Stream sink, instead of the parameter `toFile:`.
 This parameter is a StreamSink that you can listen to, for processing the input data.
 
-## Notes :
+# Notes :
 
 - This new functionnality needs, at least, an Android SDK >= 21
 - This new functionnality works better with Android minSdk >= 23, because previous SDK was not able to do UNBLOCKING `write`.
@@ -135,7 +135,7 @@ You can look to the [simple example](../example/README.md#recordtostream) provid
 
 -------------------------------------------------------------------------------------------------------------------------------------
 
-## Playing PCM-16 from a Dart Stream
+# Playing PCM-16 from a Dart Stream
 
 Please, remember that actually, Flutter Sound does not support Floating Point PCM data, nor records with more that one audio channel.
 
@@ -230,7 +230,7 @@ You can look to the three provided examples :
 
 -------------------------------------------------------------------------------------------------------------------------------------
 
-## Flutter Sound on Flutter Web
+# Flutter Sound on Flutter Web
 
 Flutter Sound is now supported by Flutter Web (with some limitations). Please [go to there](install.md#flutter-web) to have informations on how to setup your App for web.
 
@@ -273,6 +273,4 @@ Limitations :
 
 Actually, Flutter Sound on Web does not support FFmpeg. We are still actually not sure if we should support it or if the code weight would be too high for a Web App.
 
----------------------------------------------------------------------------------------------------------------------------------------
 
-[Back to the README](../README.md#flutter-sound)

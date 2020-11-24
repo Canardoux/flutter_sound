@@ -3,7 +3,7 @@
 <img src="architecture.svg" width="100%" height="100%" />
 
 
-On this diagram, we casn see clearly the three layers :
+On this diagram, we can see clearly the three layers :
 
 ## The Platform layer
 
@@ -17,7 +17,7 @@ Actually the only platform is Flutter. Maybe in the future we will have others :
 - Solar 2D
 - ...
 
-This alyer is independant of the target OS. The API is general enough to accomodate various target OS.
+This layer is independant of the target OS. The API is general enough to accomodate various target OS.
 
 
 ## The OS layer
@@ -36,6 +36,7 @@ Maybe in the future we will have others :
 - Windows
 - MacOS
 
+This layer is independant of the platforms/frameworks that &tau; wants to support.
 
 ## Where are published all those blocs ?
 
