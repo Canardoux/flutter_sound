@@ -9,7 +9,7 @@
    - [Playing PCM-16 from a Dart Stream](tau/codec.md#playing-pcm-16-from-a-dart-stream)
    - [Flutter Sound on Flutter Web](tau/codec.md#flutter-sound-on-flutter-web)
 - [API](tau/api.md)
-   - [FlutterSoundPlayer](FlutterSoundPlayer](player.md#flutter-sound-player-api))
+   - [FlutterSoundPlayer](player.md#flutter-sound-player-api)
    - [FlutterSoundRecorder](recorder.md#flutter-sound-recorder-api)
    - [FlutterSoundHelper](helper.md)
    - [FlutterSoundUI](ui_widget.md)
