@@ -1,6 +1,6 @@
 ## Flutter Sound
 
-<img src="../doc/flutter_sound/Logotype primary.png" width="70%" height="70%" />
+<img src="https://canardoux.github.io/tau/doc/flutter_sound/Logotype primary.png" width="70%" height="70%" />
 
 <p align="left">
   <a href="https://canardoux.github.io/tau/book/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>

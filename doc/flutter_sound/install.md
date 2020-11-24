@@ -1,5 +1,3 @@
-[Back to the README](../README.md#Installation)
-
 --------------------------------------------------------------------------------------------------------------
 
 # Install
@@ -30,24 +28,24 @@ Those numbers include everything (flutter library, application, ...) and not onl
 Add `flutter_sound` or `flutter_sound_lite` as a dependency in pubspec.yaml.
 
 The actual versions are :
-- flutter_sound_lite: ^4.0.0  (the LTS version without FFmpeg)
-- flutter_sound: ^4.0.0       (the LTS version with FFmpeg embedded)
+- flutter_sound_lite: ^5.0.0  (the LTS version without FFmpeg)
+- flutter_sound: ^5.0.0       (the LTS version with FFmpeg embedded)
 
-- flutter_sound_lite: ^5.0.0  (the current version without FFmpeg)
-- flutter_sound: ^5.0.0       (the current version with FFmpeg)
+- flutter_sound_lite: ^6.0.0  (the current version without FFmpeg)
+- flutter_sound: ^6.0.0       (the current version with FFmpeg)
 
 ```
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sound: ^5.0.0
+  flutter_sound: ^6.0.0
 ```
 or
 ```
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sound_lite: ^5.0.0
+  flutter_sound_lite: ^6.0.0
 ```
 
 ## Linking your App with Flutter Sound sources
@@ -168,5 +166,3 @@ Add those 4 lines at the end of the `<head>` section of your `index.html` file :
 Please [read this](https://www.jsdelivr.com/features) to understand how you can specify the interval of the versions you are interested by.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-[Back to the README](../README.md#Installation)

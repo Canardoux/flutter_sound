@@ -270,7 +270,7 @@ LITE)
 esac
 
 rm -rf flutter_sound/example/ios/DerivedData 2>/dev/null
-rm -rf flutter_sound/example/ios/Podfile 2>/dev/null
+#rm -rf flutter_sound/example/ios/Podfile 2>/dev/null
 
 exit 0
 
