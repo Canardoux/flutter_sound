@@ -79,7 +79,7 @@ This example is really basic.
 
 ## [RecordToStream](lib/recordToStream/recordToStreamExample.dart)
 
-<img src="recordToStreamExample.png" width="40%" height="40%"/>
+<img src="record_to_stream.png" width="40%" height="40%"/>
 
 This is an example showing how to record to a Dart Stream.
 It writes all the recorded data from a Stream to a File, which is completely stupid:
@@ -92,7 +92,7 @@ Speech-to-Text engine, or for processing the Live data in Dart in real time.
 
 ## [livePlaybackWithoutBackPressure](lib/livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.dart)
 
-<img src="livePlaybackWithoutBackPressure.png" width="40%" height="40%"/>
+<img src="live_playback_without_back_pressure.png" width="40%" height="40%"/>
 
 A very simple example showing how to play Live Data without back pressure.
 It feeds a live stream, without waiting that the Futures are completed for each block.
@@ -112,7 +112,7 @@ This example uses the [FoodEvent](#food) object to resynchronize the output stre
 
 ## [livePlaybackWithBackPressure](lib/livePlaybackWithBackPressure/livePlaybackWithBackPressure.dart)
 
-<img src="livePlaybackWithBackPressure.png" width="40%" height="40%"/>
+<img src="live_playback_with_back_pressure.png" width="40%" height="40%"/>
 
 A very simple example showing how to play Live Data with back pressure.
 It feeds a live stream, waiting that the Futures are completed for each block.
@@ -128,7 +128,7 @@ playing another one.
 
 ## [soundEffect](lib/soundEffect/soundEffect.dart)
 
-<img src="soundEffect.png" width="40%" height="40%"/>
+<img src="sound_effect.png" width="40%" height="40%"/>
 
 [startPlayerFromStream](#startplayerfromstream) can be very efficient to play sound effects in real time. For example in a game App.
 In this example, the App open the Audio Session and call ```startPlayerFromStream()``` during initialization.
@@ -138,7 +138,7 @@ When it want to play a noise, it has just to call the synchronous verb ```feed``
 
 ## [streamLoop](lib/streamLoop/streamLoop.dart)
 
-<img src="streamLoop.png" width="40%" height="40%"/>
+<img src="stream_loop.png" width="40%" height="40%"/>
 
 ```streamLoop()``` is a very simple example which connect the FlutterSoundRecorder sink
 to the FlutterSoundPlayer Stream.
