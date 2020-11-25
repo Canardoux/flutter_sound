@@ -64,7 +64,7 @@ This table will eventually be upgraded when more codecs will be added.
 
 - Webkit is bull shit : you cannot record anything with Safari, or even Firefox/Chrome on iOS.
 - Opus WEBM is a great Codec. It works on everything (mobile and Web Browsers), except Apple
-- Edge is same than Chrome
+- Edge is same as Chrome
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
