@@ -101,7 +101,7 @@ The complete example source [is there](https://github.com/Canardoux/tau/blob/mas
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [livePlaybackWithoutBackPressure](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/liveplaybackwithoutbackpressure/live_playback_without_back_pressure.dart)
+## [livePlaybackWithoutBackPressure](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart)
 
 <img src="live_playback_without_back_pressure.png" width="40%" height="40%"/>
 
@@ -119,11 +119,11 @@ For example, if it does a "stopPlayer()" it will loose all the buffered data.
 
 This example uses the [FoodEvent](#food) object to resynchronize the output stream before doing a [stopPlayer()](#stopplayer)
 
-The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/liveplaybackwithoutbackpressure/live_playback_without_back_pressure.dart)
+The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart)
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [livePlaybackWithBackPressure](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/liveplaybackwithbackpressure/live_playback_with_back_pressure.dart)
+## [livePlaybackWithBackPressure](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithBackPressure/live_playback_with_back_pressure.dart)
 
 <img src="live_playback_with_back_pressure.png" width="40%" height="40%"/>
 
@@ -137,7 +137,7 @@ If you do not need any back pressure, you can see another simple example : [Live
 This other example is a little bit simpler because the App does not need to await the playback for each block before
 playing another one.
 
-The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/liveplaybackwithbackpressure/live_playback_with_back_pressure.dart)
+The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithBackPressure/live_playback_with_back_pressure.dart)
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -153,7 +153,7 @@ The complete example source [is there](https://github.com/Canardoux/tau/blob/mas
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [streamLoop](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/streamloop/stream_loop.dart)
+## [streamLoop](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/streamLoop/stream_loop.dart)
 
 <img src="stream_loop.png" width="40%" height="40%"/>
 
@@ -163,11 +163,11 @@ Of course, we do not play to the loudspeaker to avoid a very unpleasant Larsen e
 this example does not use a new StreamController, but use directely `foodStreamController`
 from flutter_sound_player.dart.
 
-The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/streamloop/stream_loop.dart)
+The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/streamLoop/stream_loop.dart)
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [speechtotext](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/speechtotext/speech_to_text.dart)
+## [speechtotext](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/speechtotext/speech_to_text_example.dart)
 
 <img src="speech_to_text_example.png" width="40%" height="40%"/>
 
@@ -178,4 +178,4 @@ to deal with Sounds on Flutter.
 
 This example was provided by @jtkeyva. Thanks to him :-) '''
 
-The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/speechtotext/speech_to_text.dart)
+The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/speechtotext/speech_to_text_example.dart)
