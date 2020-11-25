@@ -219,13 +219,12 @@ You probably will `await` or use `then()` for each call to `feedFromStream()`.
 - This new functionnality works better with Android minSdk >= 23, because previous SDK was not able to do UNBLOCKING `write`.
 
 *Examples*
-You can look to the three provided examples :
+You can look to the  provided examples :
 
-- [This example](../example/README.md#recordtostream) shows how to record to a Dart Stream
-- [This example](../example/README.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
-- [This example](../example/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
-- [This example](../example/README.md#soundeffect) shows how to play some real time sound effects.
-- [This example](../example/README.md#streamloop) play live stream what is recorded from the microphone.
+- [This example](../flutter_sound/example/example.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
+- [This example](../flutter_sound/example/example.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
+- [This example](../flutter_sound/example/example.md#soundeffect) shows how to play some real time sound effects.
+- [This example](../flutter_sound/example/example.md#streamloop) play live stream what is recorded from the microphone.
 
 
 -------------------------------------------------------------------------------------------------------------------------------------
