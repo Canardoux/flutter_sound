@@ -1,6 +1,6 @@
 # The &tau; Project
 
-##  The &tau; Project
+##  The TAU Project
 
 - [The &tau; Architecture](tau/architecture.md)
 - [Getting Started](tau/getting-started.md)
@@ -10,9 +10,9 @@
    - [Recording PCM-16 to a Dart Stream](tau/codec.md#recording-pcm-16-to-a-dart-stream)
    - [Playing PCM-16 from a Dart Stream](tau/codec.md#playing-pcm-16-from-a-dart-stream)
 
-## The &tau; API
+## API
 
-- [API](tau/api.md)
+- [The &tau; API](tau/api.md)
    - [FlutterSoundPlayer](tau/player.md)
    - [FlutterSoundRecorder](tau/recorder.md)
    - [FlutterSoundHelper](tau/helper.md)
@@ -20,7 +20,7 @@
 
 ## Flutter Sound
 
-- [Flutter Sound](flutter_sound/README.md)
+- [&tau; under Flutter](flutter_sound/README.md)
    - [Installation](flutter_sound/install.md)
    - [Flutter Sound on Flutter Web](flutter_sound/flutter_sound_on_web.md)
    - [Live Example](https://canardoux.github.io/tau/doc/flutter_sound/web_example/)
