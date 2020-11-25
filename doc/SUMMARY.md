@@ -1,6 +1,6 @@
 # The &tau; Project
 
-## [The &tau; Architecture](tau/architecture.md)
+##  The &tau; Project
 
 - [The &tau; Architecture](tau/architecture.md)
 - [Getting Started](tau/getting-started.md)
@@ -10,16 +10,16 @@
    - [Recording PCM-16 to a Dart Stream](tau/codec.md#recording-pcm-16-to-a-dart-stream)
    - [Playing PCM-16 from a Dart Stream](tau/codec.md#playing-pcm-16-from-a-dart-stream)
 
-## [API](tau/api.md)
+## The &tau; API
 
 - [API](tau/api.md)
    - [FlutterSoundPlayer](tau/player.md)
    - [FlutterSoundRecorder](tau/recorder.md)
    - [FlutterSoundHelper](tau/helper.md)
    - [FlutterSoundUI](tau/ui_widget.md)
-   
-   ## [Flutter Sound](flutter_sound/README.md)
-   
+
+## Flutter Sound
+
 - [Flutter Sound](flutter_sound/README.md)
    - [Installation](flutter_sound/install.md)
    - [Flutter Sound on Flutter Web](flutter_sound/flutter_sound_on_web.md)
@@ -36,8 +36,13 @@
       - [Stream Loop](flutter_sound/example/example.md#streamloop)
       - [Speech To Text](flutter_sound/example/example.md#speechtotext)
    - [API Reference](https://canardoux.github.io/tau/doc/flutter_sound/api/index.html)
-   
+
+## React Native
+
 - [React Native](react_native/README.md)
+
+## Links
+
 - [Changelog](CHANGELOG.md)
 - [Migration](tau/migration.md)
 - [Problem Report](https://github.com/Canardoux/tau/issues)
