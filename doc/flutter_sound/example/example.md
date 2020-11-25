@@ -1,6 +1,8 @@
 # Examples
 
-Flutter Sound comes with several Demo/Examples. All the examples are called from a [driver App](lib/main.dart)
+Flutter Sound comes with several Demo/Examples. 
+
+All the examples are called from a [driver App](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/main.dart)
 
 - [Demo](#demo) is a demonstration of what we can do with Flutter Sound. This Demo App is a kind of exerciser which try to implement the major Flutter Sound features. This Demo does not use the Flutter Sound UI Widgets
 - [WidgetUIDemo](#widgetuidemo) is an example of what can be done using the Flutter Sound UI Widgets
