@@ -40,14 +40,14 @@ The biggest interest of this Demo is that it shows most of the features of Flutt
 
 It would be really great if someone rewrite this demo soon
 
-The complete running example [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/demo/demo.dart)
+The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/demo/demo.dart)
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## [WidgetUIDemo](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/widgetUI/widget_ui_demo.dart)
 
-<img src="widgetUI.png" width="70%" height="70%" />
+<img src="widget_ui.png" width="70%" height="70%" />
 
 This is a Demo of an App which uses the Flutter Sound UI Widgets.
 
@@ -56,11 +56,11 @@ There is too many dependencies and too many sources.
 
 I really hope that someone will write soon another simpler Demo App.
 
-The complete running example [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/widgetUI/widget_ui_demo.dart)
+The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/widgetUI/widget_ui_demo.dart)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [SimplePlayback](lib/simple_playback/simple_playback.dart)
+## [SimplePlayback](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/simple_playback/simple_playback.dart)
 
 <img src="simple_playback.png" width="70%" height="70%" />
 
@@ -69,9 +69,11 @@ that shows how to play a remote file.
 
 This example is really basic.
 
+The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/simple_playback/simple_playback.dart)
+
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [SimpleRecorder](lib/simple_recorder/simple_recorder.dart)
+## [SimpleRecorder](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/simple_recorder/simple_recorder.dart)
 
 <img src="simple_recorder.png" width="70%" height="70%" />
 
@@ -80,9 +82,11 @@ that shows how to record, and then playback a file.
 
 This example is really basic.
 
+The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/simple_recorder/simple_recorder.dart)
+
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [RecordToStream](lib/recordToStream/recordToStreamExample.dart)
+## [RecordToStream](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/recordToStream/record_to_stream_example.dart)
 
 <img src="record_to_stream.png" width="40%" height="40%"/>
 
@@ -93,9 +97,11 @@ if an App wants to record something to a File, it must not use Streams.
 The real interest of recording to a Stream is for example to feed a
 Speech-to-Text engine, or for processing the Live data in Dart in real time.
 
+The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/recordToStream/record_to_stream_example.dart)
+
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [livePlaybackWithoutBackPressure](lib/livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.dart)
+## [livePlaybackWithoutBackPressure](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/liveplaybackwithoutbackpressure/live_playback_without_back_pressure.dart)
 
 <img src="live_playback_without_back_pressure.png" width="40%" height="40%"/>
 
@@ -113,9 +119,11 @@ For example, if it does a "stopPlayer()" it will loose all the buffered data.
 
 This example uses the [FoodEvent](#food) object to resynchronize the output stream before doing a [stopPlayer()](#stopplayer)
 
+The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/liveplaybackwithoutbackpressure/live_playback_without_back_pressure.dart)
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [livePlaybackWithBackPressure](lib/livePlaybackWithBackPressure/livePlaybackWithBackPressure.dart)
+## [livePlaybackWithBackPressure](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/liveplaybackwithbackpressure/live_playback_with_back_pressure.dart)
 
 <img src="live_playback_with_back_pressure.png" width="40%" height="40%"/>
 
@@ -129,9 +137,11 @@ If you do not need any back pressure, you can see another simple example : [Live
 This other example is a little bit simpler because the App does not need to await the playback for each block before
 playing another one.
 
+The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/liveplaybackwithbackpressure/live_playback_with_back_pressure.dart)
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [soundEffect](lib/soundEffect/soundEffect.dart)
+## [soundEffect](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/soundEffect/sound_effect.dart)
 
 <img src="sound_effect.png" width="40%" height="40%"/>
 
@@ -139,9 +149,11 @@ playing another one.
 In this example, the App open the Audio Session and call ```startPlayerFromStream()``` during initialization.
 When it want to play a noise, it has just to call the synchronous verb ```feed```. Very fast.
 
+The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/soundEffect/sound_effect.dart)
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [streamLoop](lib/streamLoop/streamLoop.dart)
+## [streamLoop](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/streamloop/stream_loop.dart)
 
 <img src="stream_loop.png" width="40%" height="40%"/>
 
@@ -151,9 +163,11 @@ Of course, we do not play to the loudspeaker to avoid a very unpleasant Larsen e
 this example does not use a new StreamController, but use directely `foodStreamController`
 from flutter_sound_player.dart.
 
+The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/streamloop/stream_loop.dart)
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [speechtotext](lib/speechToText/speechToTextExample.dart)
+## [speechtotext](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/speechtotext/speech_to_text.dart)
 
 <img src="speech_to_text_example.png" width="40%" height="40%"/>
 
@@ -163,3 +177,5 @@ But it is included in Flutter Sound examples because it shows how easy it is
 to deal with Sounds on Flutter.
 
 This example was provided by @jtkeyva. Thanks to him :-) '''
+
+The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/speechtotext/speech_to_text.dart)
