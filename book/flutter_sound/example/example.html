@@ -426,9 +426,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.3.8" data-path="example.md#example/example.md">
+        <li class="chapter " data-level="1.5.3.8" data-path="example.html">
             
-                <span>
+                <a href="example.html#soundeffect">
             
                     
                     Sound Effects
@@ -452,9 +452,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.3.10" data-path="../../speechtotext">
+        <li class="chapter " data-level="1.5.3.10" data-path="example.html">
             
-                <span>
+                <a href="example.html#speechtotext">
             
                     
                     Speech To Text
@@ -540,9 +540,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.10" data-path="../../tau/contribution.md">
+        <li class="chapter " data-level="1.10" data-path="../../tau/contribution.html">
             
-                <span>
+                <a href="../../tau/contribution.html">
             
                     
                     Contributions
@@ -641,7 +641,7 @@
 <p>if Someone update this README.md, please update also the code inside Examples/lib/demo/main.dart and the comment in the header of the demo or example dart file.</p>
 <hr>
 <h2 id="demo"><a href="lib/demo/demo.dart">Demo</a></h2>
-<p><img src="lib/demo/demo.png" width="70%" height="70%"></p>
+<p><img src="demo.png" width="70%" height="70%"></p>
 <p>This is a Demo of what it is possible to do with Flutter Sound.
 The code of this Demo app is not so simple and unfortunately not very clean :-( .</p>
 <p>Flutter Sound beginners : you probably should look to <a href="#simpleplayback">SimplePlayback</a>  and <a href="#simplerecorder">SimpleRecorder</a> </p>
@@ -659,26 +659,26 @@ The code of this Demo app is not so simple and unfortunately not very clean :-( 
 <p>It would be really great if someone rewrite this demo soon</p>
 <hr>
 <h2 id="widgetuidemo"><a href="lib/widgetUI/widgetUI.dart">WidgetUIDemo</a></h2>
-<p><img src="lib/widgetUI/widgetUI.png" width="70%" height="70%"></p>
+<p><img src="widgetUI.png" width="70%" height="70%"></p>
 <p>This is a Demo of an App which uses the Flutter Sound UI Widgets.</p>
 <p>My own feeling is that this Demo is really too much complicated for doing something very simple.
 There is too many dependencies and too many sources.</p>
 <p>I really hope that someone will write soon another simpler Demo App.</p>
 <hr>
 <h2 id="simpleplayback"><a href="lib/simple_playback/simple_playback.dart">SimplePlayback</a></h2>
-<p><img src="lib/simple_playback/simple_playback.png" width="70%" height="70%"></p>
+<p><img src="simple_playback.png" width="70%" height="70%"></p>
 <p>This is a very simple example for Flutter Sound beginners,
 that shows how to play a remote file.</p>
 <p>This example is really basic.</p>
 <hr>
 <h2 id="simplerecorder"><a href="lib/simple_recorder/simple_recorder.dart">SimpleRecorder</a></h2>
-<p><img src="lib/simple_recorder/simple_recorder.png" width="70%" height="70%"></p>
+<p><img src="simple_recorder.png" width="70%" height="70%"></p>
 <p>This is a very simple example for Flutter Sound beginners,
 that shows how to record, and then playback a file.</p>
 <p>This example is really basic.</p>
 <hr>
 <h2 id="recordtostream"><a href="lib/recordToStream/recordToStreamExample.dart">RecordToStream</a></h2>
-<p><img src="lib/recordToStream/recordToStreamExample.png" width="40%" height="40%"></p>
+<p><img src="recordToStreamExample.png" width="40%" height="40%"></p>
 <p>This is an example showing how to record to a Dart Stream.
 It writes all the recorded data from a Stream to a File, which is completely stupid:
 if an App wants to record something to a File, it must not use Streams.</p>
@@ -686,7 +686,7 @@ if an App wants to record something to a File, it must not use Streams.</p>
 Speech-to-Text engine, or for processing the Live data in Dart in real time.</p>
 <hr>
 <h2 id="liveplaybackwithoutbackpressure"><a href="lib/livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.dart">livePlaybackWithoutBackPressure</a></h2>
-<p><img src="lib/livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.png" width="40%" height="40%"></p>
+<p><img src="livePlaybackWithoutBackPressure.png" width="40%" height="40%"></p>
 <p>A very simple example showing how to play Live Data without back pressure.
 It feeds a live stream, without waiting that the Futures are completed for each block.
 This is simpler than playing buffers synchronously because the App does not need to await that the playback for each block is completed playing another one.</p>
@@ -701,7 +701,7 @@ For example, if it does a &quot;stopPlayer()&quot; it will loose all the buffere
 <p>This example uses the <a href="#food">FoodEvent</a> object to resynchronize the output stream before doing a <a href="#stopplayer">stopPlayer()</a></p>
 <hr>
 <h2 id="liveplaybackwithbackpressure"><a href="lib/livePlaybackWithBackPressure/livePlaybackWithBackPressure.dart">livePlaybackWithBackPressure</a></h2>
-<p><img src="lib/livePlaybackWithBackPressure/livePlaybackWithBackPressure.png" width="40%" height="40%"></p>
+<p><img src="livePlaybackWithBackPressure.png" width="40%" height="40%"></p>
 <p>A very simple example showing how to play Live Data with back pressure.
 It feeds a live stream, waiting that the Futures are completed for each block.</p>
 <p>This example get the data from an asset file, which is completely stupid :
@@ -711,13 +711,13 @@ This other example is a little bit simpler because the App does not need to awai
 playing another one.</p>
 <hr>
 <h2 id="soundeffect"><a href="lib/soundEffect/soundEffect.dart">soundEffect</a></h2>
-<p><img src="lib/soundEffect/soundEffect.png" width="40%" height="40%"></p>
+<p><img src="soundEffect.png" width="40%" height="40%"></p>
 <p><a href="#startplayerfromstream">startPlayerFromStream</a> can be very efficient to play sound effects in real time. For example in a game App.
 In this example, the App open the Audio Session and call <code>startPlayerFromStream()</code> during initialization.
 When it want to play a noise, it has just to call the synchronous verb <code>feed</code>. Very fast.</p>
 <hr>
 <h2 id="streamloop"><a href="lib/streamLoop/streamLoop.dart">streamLoop</a></h2>
-<p><img src="lib/streamLoop/streamLoop.png" width="40%" height="40%"></p>
+<p><img src="streamLoop.png" width="40%" height="40%"></p>
 <p><code>streamLoop()</code> is a very simple example which connect the FlutterSoundRecorder sink
 to the FlutterSoundPlayer Stream.
 Of course, we do not play to the loudspeaker to avoid a very unpleasant Larsen effect.
@@ -725,7 +725,7 @@ this example does not use a new StreamController, but use directely <code>foodSt
 from flutter_sound_player.dart.</p>
 <hr>
 <h2 id="speechtotext"><a href="lib/speechToText/speechToTextExample.dart">speechtotext</a></h2>
-<p><img src="lib/speechToText/speech_to_text_example.png" width="40%" height="40%"></p>
+<p><img src="speech_to_text_example.png" width="40%" height="40%"></p>
 <p>This is an example showing how to do Speech To Text.
 This is just for FUN :-D, because this example does not use the Flutter Sound library.
 But it is included in Flutter Sound examples because it shows how easy it is
@@ -770,7 +770,7 @@ to deal with Sounds on Flutter.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Examples","level":"1.5.3","depth":2,"next":{"title":"Demo","level":"1.5.3.1","depth":3,"anchor":"#demo","path":"flutter_sound/example/example.md","ref":"flutter_sound/example/example.md#demo","articles":[]},"previous":{"title":"Live Example","level":"1.5.2","depth":2,"url":"https://canardoux.github.io/tau/doc/flutter_sound/web_example/","ref":"https://canardoux.github.io/tau/doc/flutter_sound/web_example/","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"flutter_sound/example/example.md","mtime":"2020-11-25T10:54:37.993Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-25T10:59:14.924Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Examples","level":"1.5.3","depth":2,"next":{"title":"Demo","level":"1.5.3.1","depth":3,"anchor":"#demo","path":"flutter_sound/example/example.md","ref":"flutter_sound/example/example.md#demo","articles":[]},"previous":{"title":"Live Example","level":"1.5.2","depth":2,"url":"https://canardoux.github.io/tau/doc/flutter_sound/web_example/","ref":"https://canardoux.github.io/tau/doc/flutter_sound/web_example/","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"flutter_sound/example/example.md","mtime":"2020-11-25T11:07:39.695Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-25T11:08:59.536Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

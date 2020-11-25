@@ -20,7 +20,7 @@ if Someone update this README.md, please update also the code inside Examples/li
 
 ## [Demo](lib/demo/demo.dart)
 
-<img src="lib/demo/demo.png" width="70%" height="70%" />
+<img src="demo.png" width="70%" height="70%" />
 
 This is a Demo of what it is possible to do with Flutter Sound.
 The code of this Demo app is not so simple and unfortunately not very clean :-( .
@@ -44,7 +44,7 @@ It would be really great if someone rewrite this demo soon
 
 ## [WidgetUIDemo](lib/widgetUI/widgetUI.dart)
 
-<img src="lib/widgetUI/widgetUI.png" width="70%" height="70%" />
+<img src="widgetUI.png" width="70%" height="70%" />
 
 This is a Demo of an App which uses the Flutter Sound UI Widgets.
 
@@ -57,7 +57,7 @@ I really hope that someone will write soon another simpler Demo App.
 
 ## [SimplePlayback](lib/simple_playback/simple_playback.dart)
 
-<img src="lib/simple_playback/simple_playback.png" width="70%" height="70%" />
+<img src="simple_playback.png" width="70%" height="70%" />
 
 This is a very simple example for Flutter Sound beginners,
 that shows how to play a remote file.
@@ -68,7 +68,7 @@ This example is really basic.
 
 ## [SimpleRecorder](lib/simple_recorder/simple_recorder.dart)
 
-<img src="lib/simple_recorder/simple_recorder.png" width="70%" height="70%" />
+<img src="simple_recorder.png" width="70%" height="70%" />
 
 This is a very simple example for Flutter Sound beginners,
 that shows how to record, and then playback a file.
@@ -79,7 +79,7 @@ This example is really basic.
 
 ## [RecordToStream](lib/recordToStream/recordToStreamExample.dart)
 
-<img src="lib/recordToStream/recordToStreamExample.png" width="40%" height="40%"/>
+<img src="recordToStreamExample.png" width="40%" height="40%"/>
 
 This is an example showing how to record to a Dart Stream.
 It writes all the recorded data from a Stream to a File, which is completely stupid:
@@ -92,7 +92,7 @@ Speech-to-Text engine, or for processing the Live data in Dart in real time.
 
 ## [livePlaybackWithoutBackPressure](lib/livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.dart)
 
-<img src="lib/livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.png" width="40%" height="40%"/>
+<img src="livePlaybackWithoutBackPressure.png" width="40%" height="40%"/>
 
 A very simple example showing how to play Live Data without back pressure.
 It feeds a live stream, without waiting that the Futures are completed for each block.
@@ -112,7 +112,7 @@ This example uses the [FoodEvent](#food) object to resynchronize the output stre
 
 ## [livePlaybackWithBackPressure](lib/livePlaybackWithBackPressure/livePlaybackWithBackPressure.dart)
 
-<img src="lib/livePlaybackWithBackPressure/livePlaybackWithBackPressure.png" width="40%" height="40%"/>
+<img src="livePlaybackWithBackPressure.png" width="40%" height="40%"/>
 
 A very simple example showing how to play Live Data with back pressure.
 It feeds a live stream, waiting that the Futures are completed for each block.
@@ -128,7 +128,7 @@ playing another one.
 
 ## [soundEffect](lib/soundEffect/soundEffect.dart)
 
-<img src="lib/soundEffect/soundEffect.png" width="40%" height="40%"/>
+<img src="soundEffect.png" width="40%" height="40%"/>
 
 [startPlayerFromStream](#startplayerfromstream) can be very efficient to play sound effects in real time. For example in a game App.
 In this example, the App open the Audio Session and call ```startPlayerFromStream()``` during initialization.
@@ -138,7 +138,7 @@ When it want to play a noise, it has just to call the synchronous verb ```feed``
 
 ## [streamLoop](lib/streamLoop/streamLoop.dart)
 
-<img src="lib/streamLoop/streamLoop.png" width="40%" height="40%"/>
+<img src="streamLoop.png" width="40%" height="40%"/>
 
 ```streamLoop()``` is a very simple example which connect the FlutterSoundRecorder sink
 to the FlutterSoundPlayer Stream.
@@ -150,7 +150,7 @@ from flutter_sound_player.dart.
 
 ## [speechtotext](lib/speechToText/speechToTextExample.dart)
 
-<img src="lib/speechToText/speech_to_text_example.png" width="40%" height="40%"/>
+<img src="speech_to_text_example.png" width="40%" height="40%"/>
 
 This is an example showing how to do Speech To Text.
 This is just for FUN :-D, because this example does not use the Flutter Sound library.
