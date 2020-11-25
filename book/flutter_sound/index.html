@@ -312,7 +312,7 @@
     
         <li class="chapter " data-level="1.5.2" >
             
-                <a target="_blank" href="https://canardoux.github.io/tau/doc/flutter_sound/web/">
+                <a target="_blank" href="https://canardoux.github.io/tau/doc/flutter_sound/web_example/">
             
                     
                     Live Example
@@ -323,9 +323,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.3" data-path="example/exampkle.md">
+        <li class="chapter " data-level="1.5.3" data-path="example/example.html">
             
-                <span>
+                <a href="example/example.html">
             
                     
                     Examples
@@ -337,14 +337,14 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.5.3.1" >
+        <li class="chapter " data-level="1.5.3.1" data-path="example/example.html">
             
-                <span>
+                <a href="example/example.html#">
             
                     
                     Demo
             
-                </span>
+                </a>
             
 
             
@@ -542,7 +542,20 @@
             
         </li>
     
-        <li class="chapter " data-level="1.10" >
+        <li class="chapter " data-level="1.10" data-path="../tau/contribution.md">
+            
+                <span>
+            
+                    
+                    Contributions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" >
             
                 <a target="_blank" href="https://github.com/Canardoux/tau">
             
@@ -555,7 +568,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.11" data-path="../LICENSE.html">
+        <li class="chapter " data-level="1.12" data-path="../LICENSE.html">
             
                 <a href="../LICENSE.html">
             
@@ -616,96 +629,34 @@
                                 <h1 id="flutter-sound">Flutter Sound</h1>
 <p><img src="Logotype primary.png" width="70%" height="70%"></p>
 <p align="left">
-  <a href="https://canardoux.github.io/tau/book/flauto" target="_blank"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
+  <a href="https://canardoux.github.io/tau/book" target="_blank"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
 </p>
 
-<p>This plugin provides simple recorder and player functionalities for</p>
+<p>Flutter Sound is the first (and actually the only) implementation of the &#x3C4; Project.
+This Flutter plugin is supported by :</p>
 <ul>
-<li>Android</li>
 <li>iOS</li>
-<li>Flutter Web</li>
-</ul>
-<hr>
-<p><img src="https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif" alt="Demo"></p>
-<h2 id="features">Features</h2>
-<ul>
-<li>Play and Record sounds or music with various codecs. (See <a href="doc/codec.md#actually-the-following-codecs-are-supported-by-flutter_sound">the supported codecs here</a>)</li>
-<li>Play local or remote files specified by their URL.</li>
-<li>Record to a Dart Stream</li>
-<li>Playback from a Dart Stream</li>
-<li>The App playback can be controled from the device lock screen or from an Apple watch</li>
-</ul>
-<h2 id="supported-platforms">Supported platforms</h2>
-<p>Flutter Sound is actually supported by :</p>
-<ul>
 <li>Android</li>
-<li>iOS</li>
 <li>Flutter Web</li>
 </ul>
 <p>Maybe, one day, we will be supported by Linux, Macos, and even (why not) Windows. But this is not top of our priorities.</p>
+<hr>
+<p><img src="https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif" alt="Demo"></p>
 <h2 id="flutter-sound-branches">Flutter Sound branches</h2>
 <p>We actually maintain two branches for Flutter Sound :</p>
 <ul>
 <li>The V5 branch (the version ^5.0.0)</li>
 <li>The master branch (actually the version ^6.0.0)</li>
 </ul>
-<h2 id="migration-guides">Migration Guides</h2>
-<p>See <a href="doc/migration.md">the migration guide</a> to migrate from an anterious version (V5, V4 or V3)</p>
-<h2 id="sources">Sources</h2>
-<p>The <a href="https://github.com/Canardoux/tau" target="_blank">sources are here</a></p>
 <h2 id="sdk-requirements">SDK requirements</h2>
 <ul>
 <li>Flutter Sound requires an iOS 10.0 SDK (or later)</li>
 <li>Flutter Sound requires an Android 21 (or later)</li>
 </ul>
-<h2 id="installation">Installation</h2>
-<p><a href="doc/install.md#install">Here is a guide</a> for Flutter Sound installation</p>
-<h2 id="flutter-sound-api">Flutter Sound API</h2>
-<p>Flutter Sound is composed with 4 modules :</p>
-<ul>
-<li><a href="doc/player.md#flutter-sound-player-api">FlutterSoundPlayer</a>, wich deal with everything about playbacks</li>
-<li><a href="doc/recorder.md#flutter-sound-recorder-api">FlutterSoundRecorder</a>, which deal with everything about recording</li>
-<li><a href="doc/helper.md">FlutterSoundHelper</a>, which offers some convenients tools</li>
-<li><a href="doc/ui_widget.md">FlutterSoundUI</a>, which offer some Widget ready to be used out of the box</li>
-</ul>
-<p>To use Flutter Sound you just do :</p>
-<pre><code>import &apos;package:flutter_sound/flutter_sound.dart&apos;;
-</code></pre><p>This will import all the necessaries dart interfaces.</p>
 <h2 id="examples-demo-apps">Examples (Demo Apps)</h2>
 <p>Flutter Sound comes with several Demo/Examples :</p>
 <p>Please refer to <a href="example/README.md">the README.md</a> to have a preview of those examples.
 <a href="example/lib/main.dart">The <code>examples App</code></a> is a driver which can call all the various examples.</p>
-<h2 id="license">License</h2>
-<p>Flutter Sound is copyrighted by Dooboolab (2018, 2019, 2020).
-Flutter Sound is released under a license with a <em>copyleft</em> clause: the LGPL-V3 license. This means that if you modify some of Flutter Sound code you must publish your modifications under the LGPL license too.</p>
-<h2 id="contributions">Contributions</h2>
-<p>Flutter Sound is a free and Open Source project. Several contributors have already contributed to Flutter Sound. Specially :</p>
-<ul>
-<li>@hyochan who is the Flutter Sound father</li>
-<li>@salvatore373 who wrote the Track Player</li>
-<li>@bsutton who wrote the UI Widgets</li>
-<li>@larpoux who add several codec supports</li>
-</ul>
-<p><strong>We really need your contributions.</strong>
-Pull Requests are welcome and will be considered very carefully.</p>
-<h2 id="bugs-features-requests-documentation-inaccurate-help-needed-">Bugs, Features Requests, documentation inaccurate, help needed, ...</h2>
-<p>We use <a href="https://github.com/canardoux/tau/issues" target="_blank">Github</a> actively.</p>
-<p>When you fill an issue, we try to answer something in less than 48h. Of course, this will not mean that your issue will be fixed in 48h. But you will know that we confirm (or not) your issue and what answer you can expect. Maintenance is our priority. We try to make it perfect.</p>
-<h2 id="todo">TODO</h2>
-<ul>
-<li>[x] Record raw PCM both on Android and iOS</li>
-<li>[ ] Record OPUS on Android</li>
-<li>[ ] Record MP3 both on Android and iOS</li>
-<li>[x] Record raw PCM to a Dart Stream instead of a file</li>
-<li>[x] Playback raw PCM from a Dart Stream instead of a file</li>
-<li>[x] Streaming records</li>
-<li>[ ] More support for the Apple Watch</li>
-<li>[ ] Tests unit to avoid any regression</li>
-<li>[x] Flutter Web App support</li>
-<li>[ ] Flutter Sound port to React Native</li>
-<li>[ ] Better UI Widget</li>
-<li>[ ] Lock screen control between two sounds (Done on iOS).</li>
-</ul>
 
                                 
                                 </section>
@@ -749,7 +700,7 @@ Pull Requests are welcome and will be considered very carefully.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Flutter Sound","level":"1.5","depth":1,"next":{"title":"Installation","level":"1.5.1","depth":2,"path":"flutter_sound/install.md","ref":"flutter_sound/install.md","articles":[]},"previous":{"title":"FlutterSoundUI","level":"1.4.4","depth":2,"path":"tau/ui_widget.md","ref":"tau/ui_widget.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"flutter_sound/README.md","mtime":"2020-11-24T16:46:14.982Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-25T10:18:45.897Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Flutter Sound","level":"1.5","depth":1,"next":{"title":"Installation","level":"1.5.1","depth":2,"path":"flutter_sound/install.md","ref":"flutter_sound/install.md","articles":[]},"previous":{"title":"FlutterSoundUI","level":"1.4.4","depth":2,"path":"tau/ui_widget.md","ref":"tau/ui_widget.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"flutter_sound/README.md","mtime":"2020-11-25T10:34:19.816Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-25T10:45:12.441Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
