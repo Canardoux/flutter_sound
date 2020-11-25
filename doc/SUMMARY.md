@@ -15,7 +15,7 @@
    - [FlutterSoundUI](tau/ui_widget.md)
 - [Flutter Sound](flutter_sound/README.md)
    - [Installation](flutter_sound/install.md)
-   - [Flutter Sound on Flutter Web](tau/codec.md#flutter-sound-on-flutter-web)
+   - [Flutter Sound on Flutter Web](flutter_sound/flutter_sound_on_web.md)
    - [Live Example](https://canardoux.github.io/tau/doc/flutter_sound/web_example/)
    - [Examples](flutter_sound/example/example.md)
       - [Demo](flutter_sound/example/example.md#demo)
