@@ -235,7 +235,7 @@ If you do not have `ffmpeg` on your computer you will find easyly on internet ma
         '-c:a',
         'copy',
         outfile,
-]); // remux OGG to CAF```
+]); // remux OGG to CAF
 ```
 
 ---------------------------------------------------------------------------------------------------------------------------

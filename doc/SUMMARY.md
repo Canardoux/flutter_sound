@@ -7,7 +7,7 @@
    - [Recording or playing Raw PCM](tau/codec.md#recording-or-playing-raw-pcm-int-linerar-16-files)
    - [Recording PCM-16 to a Dart Stream](tau/codec.md#recording-pcm-16-to-a-dart-stream)
    - [Playing PCM-16 from a Dart Stream](tau/codec.md#playing-pcm-16-from-a-dart-stream)
-   - [Flutter Sound on Flutter Web](tau/codec.md#flutter-sound-on-flutter-web)
+
 - [API](tau/api.md)
    - [FlutterSoundPlayer](tau/player.md)
    - [FlutterSoundRecorder](tau/recorder.md)
@@ -15,6 +15,7 @@
    - [FlutterSoundUI](tau/ui_widget.md)
 - [Flutter Sound](flutter_sound/README.md)
    - [Installation](flutter_sound/install.md)
+   - [Flutter Sound on Flutter Web](tau/codec.md#flutter-sound-on-flutter-web)
    - [Live Example](https://canardoux.github.io/tau/doc/flutter_sound/web_example/)
    - [Examples](flutter_sound/example/example.md)
       - [Demo](flutter_sound/example/example.md#demo)
