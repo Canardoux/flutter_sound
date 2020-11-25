@@ -696,14 +696,14 @@ Speech-to-Text engine, or for processing the Live data in Dart in real time.</p>
 It feeds a live stream, without waiting that the Futures are completed for each block.
 This is simpler than playing buffers synchronously because the App does not need to await that the playback for each block is completed playing another one.</p>
 <p>This example get the data from an asset file, which is completely stupid :
-if an App wants to play a long asset file he must use <a href="#startplayer">startPlayer()</a>.</p>
+if an App wants to play a long asset file he must use <a href="../../tau/player.html#startplayer">startPlayer()</a>.</p>
 <p>Feeding Flutter Sound without back pressure is very simple but you can have two problems :</p>
 <ul>
 <li>If your App is too fast feeding the audio channel, it can have problems with the Stream memory used.</li>
 <li>The App does not have any knowledge of when the provided block is really played.
 For example, if it does a &quot;stopPlayer()&quot; it will loose all the buffered data.</li>
 </ul>
-<p>This example uses the <a href="#food">FoodEvent</a> object to resynchronize the output stream before doing a <a href="#stopplayer">stopPlayer()</a></p>
+<p>This example uses the <a href="../../tau/player.html#food">FoodEvent</a> object to resynchronize the output stream before doing a <a href="../../tau/player.html##stopplayer">stopPlayer()</a></p>
 <p>The complete example source <a href="https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart" target="_blank">is there</a></p>
 <hr>
 <h2 id="liveplaybackwithbackpressure"><a href="https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithBackPressure/live_playback_with_back_pressure.dart" target="_blank">livePlaybackWithBackPressure</a></h2>
@@ -712,14 +712,14 @@ For example, if it does a &quot;stopPlayer()&quot; it will loose all the buffere
 It feeds a live stream, waiting that the Futures are completed for each block.</p>
 <p>This example get the data from an asset file, which is completely stupid :
 if an App wants to play an asset file he must use &quot;StartPlayerFromBuffer().</p>
-<p>If you do not need any back pressure, you can see another simple example : <a href="#liveplaybackwithoutbackpressure">LivePlaybackWithoutBackPressure.dart</a>.
+<p>If you do not need any back pressure, you can see another simple example : <a href="../../tau/player.html##liveplaybackwithoutbackpressure">LivePlaybackWithoutBackPressure.dart</a>.
 This other example is a little bit simpler because the App does not need to await the playback for each block before
 playing another one.</p>
 <p>The complete example source <a href="https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithBackPressure/live_playback_with_back_pressure.dart" target="_blank">is there</a></p>
 <hr>
 <h2 id="soundeffect"><a href="https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/soundEffect/sound_effect.dart" target="_blank">soundEffect</a></h2>
 <p><img src="sound_effect.png" width="40%" height="40%"></p>
-<p><a href="#startplayerfromstream">startPlayerFromStream</a> can be very efficient to play sound effects in real time. For example in a game App.
+<p><a href="../../tau/player.html##startplayerfromstream">startPlayerFromStream</a> can be very efficient to play sound effects in real time. For example in a game App.
 In this example, the App open the Audio Session and call <code>startPlayerFromStream()</code> during initialization.
 When it want to play a noise, it has just to call the synchronous verb <code>feed</code>. Very fast.</p>
 <p>The complete example source <a href="https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/soundEffect/sound_effect.dart" target="_blank">is there</a></p>
@@ -780,7 +780,7 @@ to deal with Sounds on Flutter.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Examples","level":"1.5.3","depth":2,"next":{"title":"Demo","level":"1.5.3.1","depth":3,"anchor":"#demo","path":"flutter_sound/example/example.md","ref":"flutter_sound/example/example.md#demo","articles":[]},"previous":{"title":"Live Example","level":"1.5.2","depth":2,"url":"https://canardoux.github.io/tau/doc/flutter_sound/web_example/","ref":"https://canardoux.github.io/tau/doc/flutter_sound/web_example/","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"flutter_sound/example/example.md","mtime":"2020-11-25T12:58:28.381Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-25T13:01:45.383Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Examples","level":"1.5.3","depth":2,"next":{"title":"Demo","level":"1.5.3.1","depth":3,"anchor":"#demo","path":"flutter_sound/example/example.md","ref":"flutter_sound/example/example.md#demo","articles":[]},"previous":{"title":"Live Example","level":"1.5.2","depth":2,"url":"https://canardoux.github.io/tau/doc/flutter_sound/web_example/","ref":"https://canardoux.github.io/tau/doc/flutter_sound/web_example/","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"flutter_sound/example/example.md","mtime":"2020-11-25T13:11:33.739Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-25T13:12:53.278Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

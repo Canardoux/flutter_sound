@@ -110,14 +110,14 @@ It feeds a live stream, without waiting that the Futures are completed for each 
 This is simpler than playing buffers synchronously because the App does not need to await that the playback for each block is completed playing another one.
 
 This example get the data from an asset file, which is completely stupid :
-if an App wants to play a long asset file he must use [startPlayer()](#startplayer).
+if an App wants to play a long asset file he must use [startPlayer()](../../tau/player.md#startplayer).
 
 Feeding Flutter Sound without back pressure is very simple but you can have two problems :
 - If your App is too fast feeding the audio channel, it can have problems with the Stream memory used.
 - The App does not have any knowledge of when the provided block is really played.
 For example, if it does a "stopPlayer()" it will loose all the buffered data.
 
-This example uses the [FoodEvent](#food) object to resynchronize the output stream before doing a [stopPlayer()](#stopplayer)
+This example uses the [FoodEvent](../../tau/player.md#food) object to resynchronize the output stream before doing a [stopPlayer()](../../tau/player.md##stopplayer)
 
 The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart)
 
@@ -133,7 +133,7 @@ It feeds a live stream, waiting that the Futures are completed for each block.
 This example get the data from an asset file, which is completely stupid :
 if an App wants to play an asset file he must use "StartPlayerFromBuffer().
 
-If you do not need any back pressure, you can see another simple example : [LivePlaybackWithoutBackPressure.dart](#liveplaybackwithoutbackpressure).
+If you do not need any back pressure, you can see another simple example : [LivePlaybackWithoutBackPressure.dart](../../tau/player.md##liveplaybackwithoutbackpressure).
 This other example is a little bit simpler because the App does not need to await the playback for each block before
 playing another one.
 
@@ -145,7 +145,7 @@ The complete example source [is there](https://github.com/Canardoux/tau/blob/mas
 
 <img src="sound_effect.png" width="40%" height="40%"/>
 
-[startPlayerFromStream](#startplayerfromstream) can be very efficient to play sound effects in real time. For example in a game App.
+[startPlayerFromStream](../../tau/player.md##startplayerfromstream) can be very efficient to play sound effects in real time. For example in a game App.
 In this example, the App open the Audio Session and call ```startPlayerFromStream()``` during initialization.
 When it want to play a noise, it has just to call the synchronous verb ```feed```. Very fast.
 
@@ -176,6 +176,6 @@ This is just for FUN :-D, because this example does not use the Flutter Sound li
 But it is included in Flutter Sound examples because it shows how easy it is
 to deal with Sounds on Flutter.
 
-This example was provided by @jtkeyva. Thanks to him :-) '''
+This example was provided by @jtkeyva. Thanks to him :-)  :+1
 
 The complete example source [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/speechtotext/speech_to_text_example.dart)
