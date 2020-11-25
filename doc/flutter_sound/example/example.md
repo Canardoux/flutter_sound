@@ -10,7 +10,7 @@ Flutter Sound comes with several Demo/Examples. All the examples are called from
 - [livePlaybackWithBackPressure](#liveplaybackwithbackpressure) is an example showing how to play live data synchronously
 - [livePlaybackWithoutBackPressure](#liveplaybackwithoutbackpressure) is an example showing how to play live data asynchronously
 - [soundEffect](#soundeffect) is an example showing to play sound effects synchronously
-- [streamLoop](#streamLoop) is an example which connect the microphone to a earphone or headset
+- [streamLoop](#streamloop) is an example which connect the microphone to a earphone or headset
 - [speechToText](#speechtotext) is an example showing how to do Speech to Text recognition.
 
 
@@ -18,7 +18,7 @@ if Someone update this README.md, please update also the code inside Examples/li
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [Demo](lib/demo/demo.dart)
+## [Demo](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/demo/demo.dart)
 
 <img src="demo.png" width="70%" height="70%" />
 
@@ -40,9 +40,12 @@ The biggest interest of this Demo is that it shows most of the features of Flutt
 
 It would be really great if someone rewrite this demo soon
 
+The complete running example [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/demo/demo.dart)
+
+
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
-## [WidgetUIDemo](lib/widgetUI/widgetUI.dart)
+## [WidgetUIDemo](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/widgetUI/widget_ui_demo.dart)
 
 <img src="widgetUI.png" width="70%" height="70%" />
 
@@ -52,6 +55,8 @@ My own feeling is that this Demo is really too much complicated for doing someth
 There is too many dependencies and too many sources.
 
 I really hope that someone will write soon another simpler Demo App.
+
+The complete running example [is there](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/widgetUI/widget_ui_demo.dart)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
