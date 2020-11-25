@@ -6,22 +6,6 @@
 
 Actually, the following codecs are supported by flutter_sound:
 
-|                   | AAC ADTS | Opus OGG | Opus CAF    | MP3 | Vorbis OGG | PCM16  | PCM WAV | PCM AIFF | PCM CAF | FLAC    | AAC MP4 | AMR-NB | AMR-WB | PCM-8     | PCM F32  | PCM WEBM | Opus WEBM   | Vorbis WEBM |
-| :---------------- | :------: | :------: | :---------: | :-: | :--------: | :----: | :-----: | :------: | :-----: | :-----: | :-----: | :----: | :----: | :-------: | :------: | :------: | :---------: | :---------: |
-| Chrome encoder    | No       | No       | No          | No  | No         | No     | No      | No       | No      | No      | No      | No     | No     | No        | No       | No       | Yes         | No          |
-| Chrome decoder    | Yes      | Yes      | No          | Yes | Yes        | Yes    | Yes     | No       | No      | Yes     | Yes     | No     | No     | No        | No       | No       | Yes         | Yes         |
-|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
-| Firefox encoder   | No       | Yes      | No          | No  | No         | No     | No      | No       | No      | No      | No      | No     | No     | No        | No       | No       | Yes         | No          |
-| Firefox decoder   | Yes      | Yes      | No          | Yes | Yes        | Yes    | Yes     | No       | No      | Yes     | Yes     | No     | No     | No        | No       | No       | Yes         | yes         |
-|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
-| Edge encoder      | No       | No       | No          | No  | No         | No     | No      | No       | No      | No      | no      | No     | No     | No        | No       | No       | Yes         | No          |
-| Edge decoder      | Yes      | Yes      | No          | Yes | Yes        | Yes    | Yes     | No       | No      | Yes     | Yes     | No     | No     | No        | No       | no       | Yes         | Yes         |
-|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
-| Webkit encoder (Safari)   | No       | No       | No          | No  | No         | No     | No      | No       | No      | No      | No      | No     | No     | No        | No       | No       | No          | No          |
-| Webkit decoder (Safari)   | Yes      | No       | Yes         | Yes | No         | No     | No      | No       | Yes     | Yes     | Yes     | No     | No     | No        | No       | No       | No          | No          |
-|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
-
-
 |             | iOS encoder | iOS decoder | Android encoder | Android decoder |
 | :-------- : | :---------: | :---------: | :-------------: | :-------------: |
 | AAC ADTS    | ✅          | ✅         | ✅ (1)          | ✅              |
@@ -46,11 +30,32 @@ Actually, the following codecs are supported by flutter_sound:
 
 This table will eventually be upgraded when more codecs will be added.
 
-- Yes(*) : The codec is supported by Flutter Sound, but with a File Format Conversion. This has several drawbacks :
+- ✅(*) : The codec is supported by Flutter Sound, but with a File Format Conversion. This has several drawbacks :
    - Needs FFmpeg. FFmpeg is not included in the LITE flavor of Flutter Sound
    - Can add some delay before Playing Back the file, or after stopping the recording. This delay can be substancial for very large records.
 
-- Yes(1) : needs MinSDK >=23
+- ✅(1) : needs MinSDK >=23
+
+|              | Chrome encoder | Chrome decoder | Firefox encoder | Firefox decoder | Edge encoder | Edge Decoder | Webkit encoder (safari) | Webkit decoder   (Safari) |
+| :----------- | :------------: | :------------: | :-------------: | :-------------: | :----------: | :----------: | :---------------------: | :-----------------------: |
+| AAC ADTS     | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ✅                        |
+| Opus OGG     | ❌             | ✅            | ✅              | ✅              | ❌           | ✅          | ❌                      | ❌                        |
+| Opus CAF     | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ✅                        |
+| MP3          | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ✅                        |
+| Vorbis OGG   | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ❌                        |
+| PCM16        | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ❌                        | (must be verified)
+| PCM Wave     | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ❌                        |
+| PCM AIFF     | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ❌                        |
+| PCM CAF      | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ✅                        |
+| FLAC         | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ✅                        |
+| AAC MP4      | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ✅                        |
+| AMR NB       | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ❌                        |
+| AMR WB       | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ❌                        |
+| PCM8         | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ❌                        |
+| PCM F32      | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ❌                        |
+| PCM WEBM     | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ❌                        |
+| Opus WEBM    | ✅             | ✅            | ✅              | ✅              | ✅           | ✅          | ❌                      | ❌                        |
+| Vorbis WEBM  | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ❌                        |
 
 - Webkit is bull shit : you cannot record anything with Safari, or Firefox/Chrome on iOS.
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
