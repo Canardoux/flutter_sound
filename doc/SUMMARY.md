@@ -1,6 +1,6 @@
 # The &tau; Project
 
-##  The TAU Project
+###  The TAU Project
 
 - [The &tau; Architecture](tau/architecture.md)
 - [Getting Started](tau/getting-started.md)
@@ -39,7 +39,7 @@
 
 ## React Native
 
-- [React Native](react_native/README.md)
+- [&tau; under React Native](react_native/README.md)
 
 ## Links
 
