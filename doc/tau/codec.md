@@ -4,6 +4,8 @@
 
 # Flutter Sound Codecs
 
+## On mobile OS
+
 Actually, the following codecs are supported by flutter_sound:
 
 |             | iOS encoder | iOS decoder | Android encoder | Android decoder |
@@ -37,30 +39,32 @@ This table will eventually be upgraded when more codecs will be added.
 - ✅ (1) : needs MinSDK >=23
 
 
+## On Web browsers
 
-
-|              |Chrome encoder  |Chrome decoder |Firefox encoder   |Firefox decoder  |Edge encoder  |Edge decoder  |Webkit encoder (safari)  |Webkit decoder   (Safari)  |
-| :----------- |:--------------:|:-------------:|:----------------:|:---------------:|:------------:| :----------: |:-----------------------:|:-------------------------:|
-| AAC ADTS     | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ✅                        |
-| Opus OGG     | ❌             | ✅            | ✅              | ✅              | ❌           | ✅          | ❌                      | ❌                        |
-| Opus CAF     | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ✅                        |
-| MP3          | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ✅                        |
-| Vorbis OGG   | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ❌                        |
-| PCM16        | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ❌                        | (must be verified)
-| PCM Wave     | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ❌                        |
-| PCM AIFF     | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ❌                        |
-| PCM CAF      | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ✅                        |
-| FLAC         | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ✅                        |
-| AAC MP4      | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ✅                        |
-| AMR NB       | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ❌                        |
-| AMR WB       | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ❌                        |
-| PCM8         | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ❌                        |
-| PCM F32      | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ❌                        |
-| PCM WEBM     | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ❌                        |
-| Opus WEBM    | ✅             | ✅            | ✅              | ✅              | ✅           | ✅          | ❌                      | ❌                        |
-| Vorbis WEBM  | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ❌                        |
+|              |Chrome encoder  |Chrome decoder |Firefox encoder   |Firefox decoder  |Webkit encoder (safari)  |Webkit decoder   (Safari)  |
+| :----------- |:--------------:|:-------------:|:----------------:|:---------------:|:-----------------------:|:-------------------------:|
+| AAC ADTS     | ❌             | ✅            | ❌              | ✅              | ❌                      | ✅                        |
+| Opus OGG     | ❌             | ✅            | ✅              | ✅              | ❌                      | ❌                        |
+| Opus CAF     | ❌             | ❌            | ❌              | ❌              | ❌                      | ✅                        |
+| MP3          | ❌             | ✅            | ❌              | ✅              | ❌                      | ✅                        |
+| Vorbis OGG   | ❌             | ✅            | ❌              | ✅              | ❌                      | ❌                        |
+| PCM16        | ❌             | ✅            | ❌              | ✅              | ❌                      | ❌                        | (must be verified)
+| PCM Wave     | ❌             | ✅            | ❌              | ✅              | ❌                      | ❌                        |
+| PCM AIFF     | ❌             | ❌            | ❌              | ❌              | ❌                      | ❌                        |
+| PCM CAF      | ❌             | ❌            | ❌              | ❌              | ❌                      | ✅                        |
+| FLAC         | ❌             | ✅            | ❌              | ✅              | ❌                      | ✅                        |
+| AAC MP4      | ❌             | ✅            | ❌              | ✅              | ❌                      | ✅                        |
+| AMR NB       | ❌             | ❌            | ❌              | ❌              | ❌                      | ❌                        |
+| AMR WB       | ❌             | ❌            | ❌              | ❌              | ❌                      | ❌                        |
+| PCM8         | ❌             | ❌            | ❌              | ❌              | ❌                      | ❌                        |
+| PCM F32      | ❌             | ❌            | ❌              | ❌              | ❌                      | ❌                        |
+| PCM WEBM     | ❌             | ❌            | ❌              | ❌              | ❌                      | ❌                        |
+| Opus WEBM    | ✅             | ✅            | ✅              | ✅              | ❌                      | ❌                        |
+| Vorbis WEBM  | ❌             | ✅            | ❌              | ✅              | ❌                      | ❌                        |
 
 - Webkit is bull shit : you cannot record anything with Safari, or even Firefox/Chrome on iOS.
+- Opus WEBM is a great Codec. It works on everything (mobile and Web Browsers), except Apple
+- Edge is same than Chrome
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
