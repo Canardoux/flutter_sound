@@ -30,14 +30,17 @@ Actually, the following codecs are supported by flutter_sound:
 
 This table will eventually be upgraded when more codecs will be added.
 
-- ✅(*) : The codec is supported by Flutter Sound, but with a File Format Conversion. This has several drawbacks :
+- ✅ (*) : The codec is supported by Flutter Sound, but with a File Format Conversion. This has several drawbacks :
    - Needs FFmpeg. FFmpeg is not included in the LITE flavor of Flutter Sound
    - Can add some delay before Playing Back the file, or after stopping the recording. This delay can be substancial for very large records.
 
-- ✅(1) : needs MinSDK >=23
+- ✅ (1) : needs MinSDK >=23
 
-|              | Chrome encoder | Chrome decoder | Firefox encoder | Firefox decoder | Edge encoder | Edge Decoder | Webkit encoder (safari) | Webkit decoder   (Safari) |
-| :----------- | :------------: | :------------: | :-------------: | :-------------: | :----------: | :----------: | :---------------------: | :-----------------------: |
+
+
+
+|              |Chrome encoder  |Chrome decoder |Firefox encoder   |Firefox decoder  |Edge encoder  |Edge decoder  |Webkit encoder (safari)  |Webkit decoder   (Safari)  |
+| :----------- |:--------------:|:-------------:|:----------------:|:---------------:|:------------:| :----------: |:-----------------------:|:-------------------------:|
 | AAC ADTS     | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ✅                        |
 | Opus OGG     | ❌             | ✅            | ✅              | ✅              | ❌           | ✅          | ❌                      | ❌                        |
 | Opus CAF     | ❌             | ❌            | ❌              | ❌              | ❌           | ❌          | ❌                      | ✅                        |
@@ -57,7 +60,8 @@ This table will eventually be upgraded when more codecs will be added.
 | Opus WEBM    | ✅             | ✅            | ✅              | ✅              | ✅           | ✅          | ❌                      | ❌                        |
 | Vorbis WEBM  | ❌             | ✅            | ❌              | ✅              | ❌           | ✅          | ❌                      | ❌                        |
 
-- Webkit is bull shit : you cannot record anything with Safari, or Firefox/Chrome on iOS.
+- Webkit is bull shit : you cannot record anything with Safari, or even Firefox/Chrome on iOS.
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Raw PCM and Wave files
