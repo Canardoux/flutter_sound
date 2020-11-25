@@ -870,26 +870,26 @@ But this parameter is necessary when Flutter Sound must do format conversion (fo
     })
 </code></pre><p>Use this verb to play data from a track specification and display controls on the lock screen or an Apple Watch. The Audio Session must have been open with the parameter <code>withUI</code>.</p>
 <ul>
-<li><p><code>track</code> parameter is a simple structure which describe the sound to play. Please see <a href="track">here the Track structure specification</a></p>
+<li><p><code>track</code> parameter is a simple structure which describe the sound to play. Please see <a href="track.md">here the Track structure specification</a></p>
 </li>
 <li><p><code>whenFinished:()</code> : A function for specifying what to do when the playback will be finished.</p>
 </li>
 <li><p><code>onPaused:()</code> : this parameter can be :</p>
 <ul>
 <li>a call back function to call when the user hit the Skip Pause button on the lock screen</li>
-<li><null> : The pause button will be handled by Flutter Sound internal</null></li>
+<li><code>null</code> : The pause button will be handled by Flutter Sound internal</li>
 </ul>
 </li>
 <li><p><code>onSkipForward:()</code> : this parameter can be :</p>
 <ul>
 <li>a call back function to call when the user hit the Skip Forward button on the lock screen</li>
-<li><null> : The Skip Forward button will be disabled</null></li>
+<li><code>null</code> : The Skip Forward button will be disabled</li>
 </ul>
 </li>
 <li><p><code>onSkipBackward:()</code> : this parameter can be :</p>
 <ul>
 <li>a call back function to call when the user hit the Skip Backward button on the lock screen</li>
-<li><null> : The Skip Backwqrd button will be disabled</null></li>
+<li><null> : The Skip Backward button will be disabled</null></li>
 </ul>
 </li>
 <li><p><code>removeUIWhenStopped</code> : is a boolean to specify if the UI on the lock screen must be removed when the sound is finished or when the App does a <code>stopPlayer()</code>. Most of the time this parameter must be true. It is used only for the rare cases where the App wants to control the lock screen between two playbacks. Be aware that if the UI is not removed, the button Pause/Resume, Skip Backward and Skip Forward remain active between two playbacks. If you want to disable those button, use the API verb <code>nowPlaying()</code>.
@@ -1221,7 +1221,7 @@ Remark <code>setUIProgressBar()</code> is implemented only on iOS.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"next":{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"path":"tau/recorder.md","ref":"tau/recorder.md","articles":[]},"previous":{"title":"API","level":"1.4","depth":1,"path":"tau/api.md","ref":"tau/api.md","articles":[{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"path":"tau/player.md","ref":"tau/player.md","articles":[]},{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"path":"tau/recorder.md","ref":"tau/recorder.md","articles":[]},{"title":"FlutterSoundHelper","level":"1.4.3","depth":2,"path":"tau/helper.md","ref":"tau/helper.md","articles":[]},{"title":"FlutterSoundUI","level":"1.4.4","depth":2,"path":"tau/ui_widget.md","ref":"tau/ui_widget.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/player.md","mtime":"2020-11-25T13:44:30.719Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-25T13:47:55.267Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"next":{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"path":"tau/recorder.md","ref":"tau/recorder.md","articles":[]},"previous":{"title":"API","level":"1.4","depth":1,"path":"tau/api.md","ref":"tau/api.md","articles":[{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"path":"tau/player.md","ref":"tau/player.md","articles":[]},{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"path":"tau/recorder.md","ref":"tau/recorder.md","articles":[]},{"title":"FlutterSoundHelper","level":"1.4.3","depth":2,"path":"tau/helper.md","ref":"tau/helper.md","articles":[]},{"title":"FlutterSoundUI","level":"1.4.4","depth":2,"path":"tau/ui_widget.md","ref":"tau/ui_widget.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/player.md","mtime":"2020-11-25T14:03:25.695Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-25T14:06:45.821Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
