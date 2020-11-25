@@ -3,7 +3,7 @@
 The verbs offered by the Flutter Sound Player module are :
 
 - [Default constructor](#creating-the-player-instance)
-- [openAudioSession](#openaudiosession-and-closeaudiosession) and [closeAudioSession()](#openAudioSession-and-closeAudioSession) to open or close an audio session
+- [openAudioSession](#openaudiosession-and-closeaudiosession) and [closeAudioSession()](#openaudiosession-and-closeaudiosession) to open or close an audio session
 - [setAudioFocus()](#setaudiofocus) to manage the session Audio Focus
 - [startPlayer()](#startplayer) to play an audio file or  a buffer.
 - [startPlayerFromTrack](#startplayerfromtrack) to play data from a track specification and display controls on the lock screen or an Apple Watch
@@ -11,7 +11,6 @@ The verbs offered by the Flutter Sound Player module are :
 - [feedFromStream](#feedfromstream) to play live PCM data synchronously.  Please look to the [following notice](codec.md#playing-pcm-16-from-a-dart-stream).
 - [foodSink](#foodsink) is the output stream when you want to play asynchronously live data
 - [FoodData and FoodEvent](#food) are the two kinds of food that you can provide to the ```foodSink``` Stream.
-- [stopPlayer()](#stopplayer) to stop a current playback
 - [stopPlayer()](#stopplayer) to stop a current playback
 - [pausePlayer()](#pauseplayer) to pause the current playback
 - [resumePlayer()](#resumeplayer) to resume a paused playback
@@ -359,9 +358,9 @@ Please look to [the following notice](codec.md#playing-pcm-16-from-a-dart-stream
 *Example*
 You can look to the three provided examples :
 
-- [This example](../example/README.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
-- [This example](../example/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
-- [This example](../example/README.md#soundeffect) shows how to play some real time sound effects.
+- [This example](../flutter_sound/example/example.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
+- [This example](../flutter_sound/example/example.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
+- [This example](../flutter_sound/example/example.md#soundeffect) shows how to play some real time sound effects.
 
 *Example 1:*
 ```dart
@@ -398,8 +397,8 @@ This procedure returns a Future. It is very important that you wait that this Fu
 
 *Example:*
 
-- [This example](../example/README.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
-- [This example](../example/README.md#soundeffect) shows how to play some real time sound effects synchronously.
+- [This example](../flutter_sound/example/example.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
+- [This example](../flutter_sound/example/example.md#soundeffect) shows how to play some real time sound effects synchronously.
 
 ```dart
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
@@ -726,5 +725,5 @@ This verb is used to change the default interval between two post on the "Update
 
 *Example:*
 ```dart
-// 0. is default
 myPlayer.setSubscriptionDuration(Duration(milliseconds: 100));
+```

@@ -630,7 +630,7 @@
 <p>The verbs offered by the Flutter Sound Player module are :</p>
 <ul>
 <li><a href="#creating-the-player-instance">Default constructor</a></li>
-<li><a href="#openaudiosession-and-closeaudiosession">openAudioSession</a> and <a href="#openAudioSession-and-closeAudioSession">closeAudioSession()</a> to open or close an audio session</li>
+<li><a href="#openaudiosession-and-closeaudiosession">openAudioSession</a> and <a href="#openaudiosession-and-closeaudiosession">closeAudioSession()</a> to open or close an audio session</li>
 <li><a href="#setaudiofocus">setAudioFocus()</a> to manage the session Audio Focus</li>
 <li><a href="#startplayer">startPlayer()</a> to play an audio file or  a buffer.</li>
 <li><a href="#startplayerfromtrack">startPlayerFromTrack</a> to play data from a track specification and display controls on the lock screen or an Apple Watch</li>
@@ -638,7 +638,6 @@
 <li><a href="#feedfromstream">feedFromStream</a> to play live PCM data synchronously.  Please look to the <a href="codec.html#playing-pcm-16-from-a-dart-stream">following notice</a>.</li>
 <li><a href="#foodsink">foodSink</a> is the output stream when you want to play asynchronously live data</li>
 <li><a href="#food">FoodData and FoodEvent</a> are the two kinds of food that you can provide to the <code>foodSink</code> Stream.</li>
-<li><a href="#stopplayer">stopPlayer()</a> to stop a current playback</li>
 <li><a href="#stopplayer">stopPlayer()</a> to stop a current playback</li>
 <li><a href="#pauseplayer">pausePlayer()</a> to pause the current playback</li>
 <li><a href="#resumeplayer">resumePlayer()</a> to resume a paused playback</li>
@@ -932,9 +931,9 @@ Remark: actually this parameter is implemented only on iOS.</p>
 <p><em>Example</em>
 You can look to the three provided examples :</p>
 <ul>
-<li><a href="../example/README.md#liveplaybackwithbackpressure">This example</a> shows how to play Live data, with Back Pressure from Flutter Sound</li>
-<li><a href="../example/README.md#liveplaybackwithoutbackpressure">This example</a> shows how to play Live data, without Back Pressure from Flutter Sound</li>
-<li><a href="../example/README.md#soundeffect">This example</a> shows how to play some real time sound effects.</li>
+<li><a href="../flutter_sound/example/example.html#liveplaybackwithbackpressure">This example</a> shows how to play Live data, with Back Pressure from Flutter Sound</li>
+<li><a href="../flutter_sound/example/example.html#liveplaybackwithoutbackpressure">This example</a> shows how to play Live data, without Back Pressure from Flutter Sound</li>
+<li><a href="../flutter_sound/example/example.html#soundeffect">This example</a> shows how to play some real time sound effects.</li>
 </ul>
 <p><em>Example 1:</em></p>
 <pre><code class="lang-dart"><span class="hljs-keyword">await</span> myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: <span class="hljs-number">1</span>, sampleRate: <span class="hljs-number">48000</span>);
@@ -962,8 +961,8 @@ myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
 This procedure returns a Future. It is very important that you wait that this Future is completed before trying to play another buffer.</p>
 <p><em>Example:</em></p>
 <ul>
-<li><a href="../example/README.md#liveplaybackwithbackpressure">This example</a> shows how to play Live data, with Back Pressure from Flutter Sound</li>
-<li><a href="../example/README.md#soundeffect">This example</a> shows how to play some real time sound effects synchronously.</li>
+<li><a href="../flutter_sound/example/example.html#liveplaybackwithbackpressure">This example</a> shows how to play Live data, with Back Pressure from Flutter Sound</li>
+<li><a href="../flutter_sound/example/example.html#soundeffect">This example</a> shows how to play some real time sound effects synchronously.</li>
 </ul>
 <pre><code class="lang-dart"><span class="hljs-keyword">await</span> myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: <span class="hljs-number">1</span>, sampleRate: <span class="hljs-number">48000</span>);
 
@@ -1176,10 +1175,9 @@ Remark <code>setUIProgressBar()</code> is implemented only on iOS.</p>
 <p><em>Dart definition (prototype) :</em></p>
 <pre><code>Future&lt;void&gt; setSubscriptionDuration(Duration duration)
 </code></pre><p>This verb is used to change the default interval between two post on the &quot;Update Progress&quot; stream. (The default interval is 0 (zero) which means &quot;NO post&quot;)</p>
-<p><em>Example:</em>
-```dart
-// 0. is default
-myPlayer.setSubscriptionDuration(Duration(milliseconds: 100));</p>
+<p><em>Example:</em></p>
+<pre><code class="lang-dart">myPlayer.setSubscriptionDuration(<span class="hljs-built_in">Duration</span>(milliseconds: <span class="hljs-number">100</span>));
+</code></pre>
 
                                 
                                 </section>
@@ -1223,7 +1221,7 @@ myPlayer.setSubscriptionDuration(Duration(milliseconds: 100));</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"next":{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"path":"tau/recorder.md","ref":"tau/recorder.md","articles":[]},"previous":{"title":"API","level":"1.4","depth":1,"path":"tau/api.md","ref":"tau/api.md","articles":[{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"path":"tau/player.md","ref":"tau/player.md","articles":[]},{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"path":"tau/recorder.md","ref":"tau/recorder.md","articles":[]},{"title":"FlutterSoundHelper","level":"1.4.3","depth":2,"path":"tau/helper.md","ref":"tau/helper.md","articles":[]},{"title":"FlutterSoundUI","level":"1.4.4","depth":2,"path":"tau/ui_widget.md","ref":"tau/ui_widget.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/player.md","mtime":"2020-11-25T10:18:53.735Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-25T13:22:29.565Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"next":{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"path":"tau/recorder.md","ref":"tau/recorder.md","articles":[]},"previous":{"title":"API","level":"1.4","depth":1,"path":"tau/api.md","ref":"tau/api.md","articles":[{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"path":"tau/player.md","ref":"tau/player.md","articles":[]},{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"path":"tau/recorder.md","ref":"tau/recorder.md","articles":[]},{"title":"FlutterSoundHelper","level":"1.4.3","depth":2,"path":"tau/helper.md","ref":"tau/helper.md","articles":[]},{"title":"FlutterSoundUI","level":"1.4.4","depth":2,"path":"tau/ui_widget.md","ref":"tau/ui_widget.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/player.md","mtime":"2020-11-25T13:35:31.237Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-25T13:36:55.305Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
