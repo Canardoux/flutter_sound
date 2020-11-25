@@ -6,66 +6,8 @@
 
 Actually, the following codecs are supported by flutter_sound:
 
-<table>
-    <thead>
-        <tr align="center">
-        <td></td>
-        <td colspan="2">Recorder</td>
-        <td colspan="3">Player</td>
-    	</tr>
-    </thead>
-    <tbody>
-        <tr align="center">
-            <td> AudioDevice </td>
-            <td>blueTooth/A2DP</td>
-            <td>speaker</td>
-            <td>speaker</td>
-            <td>bluetooth/A2DP</td>
-            <td>earPiece</td>
-        </tr>
-        <tr align="center">
-            <td>expect device</td>
-            <td>bluetooth</td>
-            <td>phone</td>
-            <td>phone</td>
-            <td>bluetooth</td>
-            <td>phoneEarPiece</td>
-        </tr>
-        <tr align="center">
-            <td>actual device in iOS</td>
-            <td>:white_check_mark:bluetooth</td>
-            <td>:white_check_mark:phone</td>
-            <td>:white_check_mark:phone</td>
-            <td>:white_check_mark:bluetooth</td>
-            <td>:white_check_mark:phoneEarPiece</td>
-        </tr>
-        <tr align="center">
-            <td>actual device in Android</td>
-            <td>:white_check_mark:phone</td>
-            <td>:white_check_mark:phone</td>
-            <td>:white_check_mark:bluetooth</td>
-            <td>:white_check_mark:bluetooth</td>
-            <td>:white_check_mark:phoneEarPiece</td>
-        </tr>
-    </tbody>
-</table>
-
-
-❌ 
-```object-c
-if ( port == tabSessionPort[audioSource] )
-``` 
-✅ 
-
 |                   | AAC ADTS | Opus OGG | Opus CAF    | MP3 | Vorbis OGG | PCM16  | PCM WAV | PCM AIFF | PCM CAF | FLAC    | AAC MP4 | AMR-NB | AMR-WB | PCM-8     | PCM F32  | PCM WEBM | Opus WEBM   | Vorbis WEBM |
 | :---------------- | :------: | :------: | :---------: | :-: | :--------: | :----: | :-----: | :------: | :-----: | :-----: | :-----: | :----: | :----: | :-------: | :------: | :------: | :---------: | :---------: |
-|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
-| iOS encoder       | ✅       | ✅ (*)   | Yes         | ❌  | No         | Yes    | Yes     | No       | Yes     | Yes     | Yes     | No     | No     | No        | No       | No       | No          | No          |
-| iOS decoder       | Yes      | Yes(*)   | Yes         | Yes | No         | Yes    | Yes     | Yes      | Yes     | Yes     | Yes     | No     | No     | No        | No       | No       | No          | No          |
-|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
-| Android encoder   | Yes(1)   | No       | No          | No  | No         | Yes(1) | Yes(1)  | No       | No      | No      | Yes(1)  | Yes(1) | Yes(1) | No        | No       | No       | Yes         | No          |
-| Android decoder   | Yes      | Yes(1)   | Yes(*)(1)   | Yes | Yes        | Yes    | Yes     | Yes(*)   | Yes(*)  | Yes     | Yes     | Yes    | Yes    | No        | No       | No       | Yes         | Yes         |
-|                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
 | Chrome encoder    | No       | No       | No          | No  | No         | No     | No      | No       | No      | No      | No      | No     | No     | No        | No       | No       | Yes         | No          |
 | Chrome decoder    | Yes      | Yes      | No          | Yes | Yes        | Yes    | Yes     | No       | No      | Yes     | Yes     | No     | No     | No        | No       | No       | Yes         | Yes         |
 |                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
@@ -78,6 +20,28 @@ if ( port == tabSessionPort[audioSource] )
 | Webkit encoder (Safari)   | No       | No       | No          | No  | No         | No     | No      | No       | No      | No      | No      | No     | No     | No        | No       | No       | No          | No          |
 | Webkit decoder (Safari)   | Yes      | No       | Yes         | Yes | No         | No     | No      | No       | Yes     | Yes     | Yes     | No     | No     | No        | No       | No       | No          | No          |
 |                   |          |          |             |     |            |        |         |          |         |         |         |        |        |           |          |          |             |             |
+
+
+|             | iOS encoder | iOS decoder | Android encoder | Android decoder |
+| :-------- : | :---------: | :---------: | :-------------: | :-------------: |
+| AAC ADTS    | ✅          | ✅         | ✅ (1)          | ✅              |
+| Opus OGG    | ✅ (*)      | ✅ (*)     | ❌              | ✅ (1)          |
+| Opus CAF    | ✅          | ✅         | ❌              | ✅ (*) (1)      |
+| MP3         | ❌          | ✅         | ❌              | ✅              |
+| Vorbis OGG  | ❌          | ❌         | ❌              | ✅              |
+| PCM16       | ✅          | ✅         | ✅ (1)          | ✅              |
+| PCM Wave    | ✅          | ✅         | ✅ (1)          | ✅              |
+| PCM AIFF    | ❌          | ✅         | ❌              | ✅ (*)          |
+| PCM CAF     | ✅          | ✅         | ❌              | ✅ (*)          |
+| FLAC        | ✅          | ✅         | ❌              | ✅              |
+| AAC MP4     | ✅          | ✅         | ✅ (1)          | ✅              |
+| AMR NB      | ❌          | ❌         | ✅ (1)          | ✅              |
+| AMR WB      | ❌          | ❌         | ✅ (1)          | ✅              |
+| PCM8        | ❌          | ❌         | ❌              | ❌              |
+| PCM F32     | ❌          | ❌         | ❌              | ❌              |
+| PCM WEBM    | ❌          | ❌         | ❌              | ❌              |
+| Opus WEBM   | ❌          | ❌         | ✅              | ✅              |
+| Vorbis WEBM | ❌          | ❌         | ❌              | ✅              |
 
 
 This table will eventually be upgraded when more codecs will be added.
