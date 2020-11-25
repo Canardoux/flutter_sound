@@ -38,6 +38,13 @@ Maybe in the future we will have others :
 
 This layer is independant of the platforms/frameworks that &tau; wants to support.
 
+
+## The Interface layer
+
+The middle layer is the interface between the two other layers. This middle layer must be as thin as possible.
+Its purpose is just for doing an interface. No real processing mus be done in this layer
+
+
 ## Where are published all those blocs ?
 
 - Flutter Sound is published on `pub.dev` under the project `flutter_sound`  (or `flauto`)

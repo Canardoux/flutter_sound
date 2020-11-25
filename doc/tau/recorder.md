@@ -325,10 +325,10 @@ You may listen to this Stream to have feedback on the current recording.
 Future<void> setSubscriptionDuration(double sec)
 ```
 
-This verb is used to change the default interval between two post on the "Update Progress" stream. (The default interval is 10ms)
+This verb is used to change the default interval between two post on the "Update Progress" stream. (The default interval is 0 (zero) which means "NO post")
 
 *Example:*
 ```dart
-// 0.010s. is default
+// 0. is default
 myRecorder.setSubscriptionDuration(0.010);
 ```

@@ -228,7 +228,7 @@
     
         <li class="chapter " data-level="1.4.1" data-path="player.html">
             
-                <a href="player.html#flutter-sound-player-api">
+                <a href="player.html">
             
                     
                     FlutterSoundPlayer
@@ -239,9 +239,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.2" data-path="recorder.html">
+        <li class="chapter active" data-level="1.4.2" data-path="recorder.html">
             
-                <a href="recorder.html#flutter-sound-recorder-api">
+                <a href="recorder.html">
             
                     
                     FlutterSoundRecorder
@@ -845,9 +845,9 @@ You may listen to this Stream to have feedback on the current recording.</p>
 <h2 id="setsubscriptionduration"><code>setSubscriptionDuration()</code></h2>
 <p><em>Dart definition (prototype) :</em></p>
 <pre><code>Future&lt;void&gt; setSubscriptionDuration(double sec)
-</code></pre><p>This verb is used to change the default interval between two post on the &quot;Update Progress&quot; stream. (The default interval is 10ms)</p>
+</code></pre><p>This verb is used to change the default interval between two post on the &quot;Update Progress&quot; stream. (The default interval is 0 (zero) which means &quot;NO post&quot;)</p>
 <p><em>Example:</em></p>
-<pre><code class="lang-dart"><span class="hljs-comment">// 0.010s. is default</span>
+<pre><code class="lang-dart"><span class="hljs-comment">// 0. is default</span>
 myRecorder.setSubscriptionDuration(<span class="hljs-number">0.010</span>);
 </code></pre>
 
@@ -877,7 +877,7 @@ myRecorder.setSubscriptionDuration(<span class="hljs-number">0.010</span>);
 
             
                 
-                <a href="player.html#flutter-sound-player-api" class="navigation navigation-prev " aria-label="Previous page: FlutterSoundPlayer">
+                <a href="player.html" class="navigation navigation-prev " aria-label="Previous page: FlutterSoundPlayer">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -893,7 +893,7 @@ myRecorder.setSubscriptionDuration(<span class="hljs-number">0.010</span>);
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"next":{"title":"FlutterSoundHelper","level":"1.4.3","depth":2,"path":"tau/helper.md","ref":"tau/helper.md","articles":[]},"previous":{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"anchor":"#flutter-sound-player-api","path":"tau/player.md","ref":"tau/player.md#flutter-sound-player-api","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/recorder.md","mtime":"2020-11-24T16:38:23.905Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-24T16:40:59.442Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"next":{"title":"FlutterSoundHelper","level":"1.4.3","depth":2,"path":"tau/helper.md","ref":"tau/helper.md","articles":[]},"previous":{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"path":"tau/player.md","ref":"tau/player.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/recorder.md","mtime":"2020-11-24T16:50:36.593Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-25T10:18:45.897Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

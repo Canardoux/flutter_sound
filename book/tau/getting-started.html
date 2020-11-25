@@ -228,7 +228,7 @@
     
         <li class="chapter " data-level="1.4.1" data-path="player.html">
             
-                <a href="player.html#flutter-sound-player-api">
+                <a href="player.html">
             
                     
                     FlutterSoundPlayer
@@ -241,7 +241,7 @@
     
         <li class="chapter " data-level="1.4.2" data-path="recorder.html">
             
-                <a href="recorder.html#flutter-sound-recorder-api">
+                <a href="recorder.html">
             
                     
                     FlutterSoundRecorder
@@ -618,7 +618,9 @@
 <p>The complete running example <a href="https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/simple_playback/simple_playback.dart" target="_blank">is there</a></p>
 <h3 id="1-fluttersoundplayer-instanciation">1. FlutterSoundPlayer instanciation</h3>
 <p>To play back something you must instanciate a player. Most of the time, you will need just one player, and you can place this instanciation in the variables initialisation of your class :</p>
-<pre><code class="lang-dart">  FlutterSoundPlayer _myPlayer = FlutterSoundPlayer();
+<pre><code class="lang-dart">  <span class="hljs-keyword">import</span> <span class="hljs-string">&apos;package:flauto/flutter_sound.dart&apos;</span>;
+...
+  FlutterSoundPlayer _myPlayer = FlutterSoundPlayer();
 </code></pre>
 <h3 id="2-open-and-close-the-audio-session">2. Open and close the audio session</h3>
 <p>Before calling <code>startPlayer()</code> you must open the Session.</p>
@@ -750,7 +752,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Getting Started","level":"1.3","depth":1,"next":{"title":"Supported Codecs","level":"1.3.1","depth":2,"anchor":"#flutter-sound-codecs","path":"tau/codec.md","ref":"tau/codec.md#flutter-sound-codecs","articles":[]},"previous":{"title":"The τ Architecture","level":"1.2","depth":1,"path":"tau/architecture.md","ref":"tau/architecture.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/getting-started.md","mtime":"2020-11-24T16:14:09.743Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-24T16:40:59.442Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Getting Started","level":"1.3","depth":1,"next":{"title":"Supported Codecs","level":"1.3.1","depth":2,"anchor":"#flutter-sound-codecs","path":"tau/codec.md","ref":"tau/codec.md#flutter-sound-codecs","articles":[]},"previous":{"title":"The τ Architecture","level":"1.2","depth":1,"path":"tau/architecture.md","ref":"tau/architecture.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/getting-started.md","mtime":"2020-11-24T20:14:29.141Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-25T10:18:45.897Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

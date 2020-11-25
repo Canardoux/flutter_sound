@@ -226,9 +226,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.4.1" data-path="player.html">
+        <li class="chapter active" data-level="1.4.1" data-path="player.html">
             
-                <a href="player.html#flutter-sound-player-api">
+                <a href="player.html">
             
                     
                     FlutterSoundPlayer
@@ -241,7 +241,7 @@
     
         <li class="chapter " data-level="1.4.2" data-path="recorder.html">
             
-                <a href="recorder.html#flutter-sound-recorder-api">
+                <a href="recorder.html">
             
                     
                     FlutterSoundRecorder
@@ -705,7 +705,8 @@ This parameter can have the following values :</p>
 <li>modeVoicePrompt</li>
 </ul>
 <p>See <a href="https://developer.apple.com/documentation/avfoundation/avaudiosessionmode?language=objc" target="_blank">iOS documentation</a> to understand the meaning of this parameter.</p>
-<h3 id="audioflags-are-a-set-of-optional-flags-used-on-ios"><code>audioFlags</code> are a set of optional flags (used on iOS):</h3>
+<h3 id="audioflags"><code>audioFlags</code></h3>
+<p> are a set of optional flags (used on iOS):</p>
 <ul>
 <li>outputToSpeaker</li>
 <li>allowHeadset</li>
@@ -714,7 +715,8 @@ This parameter can have the following values :</p>
 <li>allowAirPlay</li>
 <li>allowBlueToothA2DP</li>
 </ul>
-<h3 id="device-is-the-output-device-used-on-android"><code>device</code> is the output device (used on Android)</h3>
+<h3 id="device"><code>device</code></h3>
+<p> is the output device (used on Android)</p>
 <ul>
 <li>speaker</li>
 <li>headset,</li>
@@ -723,7 +725,8 @@ This parameter can have the following values :</p>
 <li>blueToothA2DP,</li>
 <li>airPlay</li>
 </ul>
-<h2 id="withui-is-a-boolean-that-you-set-to-true-if-you-want-to-control-your-app-from-the-lock-screen-using-startplayerfromtrack-during-your-audio-session"><code>withUI</code> is a boolean that you set to <code>true</code> if you want to control your App from the lock-screen (using <a href="player.html#startplayerfromtrack">startPlayerFromTrack()</a> during your Audio Session).</h2>
+<h3 id="withui"><code>withUI</code></h3>
+<p>is a boolean that you set to <code>true</code> if you want to control your App from the lock-screen (using <a href="player.html#startplayerfromtrack">startPlayerFromTrack()</a> during your Audio Session).</p>
 <p>You MUST ensure that the player has been closed when your widget is detached from the UI.
 Overload your widget&apos;s <code>dispose()</code> method to closeAudioSession the player when your widget is disposed.
 In this way you will reset the player and clean up the device resources, but the player will be no longer usable.</p>
@@ -1159,11 +1162,11 @@ Remark <code>setUIProgressBar()</code> is implemented only on iOS.</p>
 <h2 id="setsubscriptionduration"><code>setSubscriptionDuration()</code></h2>
 <p><em>Dart definition (prototype) :</em></p>
 <pre><code>Future&lt;void&gt; setSubscriptionDuration(Duration duration)
-</code></pre><p>This verb is used to change the default interval between two post on the &quot;Update Progress&quot; stream. (The default interval is 10ms)</p>
+</code></pre><p>This verb is used to change the default interval between two post on the &quot;Update Progress&quot; stream. (The default interval is 0 (zero) which means &quot;NO post&quot;)</p>
 <p><em>Example:</em>
 ```dart
-// 0.010s. is default
-myPlayer.setSubscriptionDuration(Duration(milliseconds: 20));</p>
+// 0. is default
+myPlayer.setSubscriptionDuration(Duration(milliseconds: 100));</p>
 
                                 
                                 </section>
@@ -1196,7 +1199,7 @@ myPlayer.setSubscriptionDuration(Duration(milliseconds: 20));</p>
                 </a>
                 
                 
-                <a href="recorder.html#flutter-sound-recorder-api" class="navigation navigation-next " aria-label="Next page: FlutterSoundRecorder">
+                <a href="recorder.html" class="navigation navigation-next " aria-label="Next page: FlutterSoundRecorder">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -1207,7 +1210,7 @@ myPlayer.setSubscriptionDuration(Duration(milliseconds: 20));</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"next":{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"anchor":"#flutter-sound-recorder-api","path":"tau/recorder.md","ref":"tau/recorder.md#flutter-sound-recorder-api","articles":[]},"previous":{"title":"API","level":"1.4","depth":1,"path":"tau/api.md","ref":"tau/api.md","articles":[{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"anchor":"#flutter-sound-player-api","path":"tau/player.md","ref":"tau/player.md#flutter-sound-player-api","articles":[]},{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"anchor":"#flutter-sound-recorder-api","path":"tau/recorder.md","ref":"tau/recorder.md#flutter-sound-recorder-api","articles":[]},{"title":"FlutterSoundHelper","level":"1.4.3","depth":2,"path":"tau/helper.md","ref":"tau/helper.md","articles":[]},{"title":"FlutterSoundUI","level":"1.4.4","depth":2,"path":"tau/ui_widget.md","ref":"tau/ui_widget.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/player.md","mtime":"2020-11-24T16:38:04.182Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-24T16:40:59.442Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"next":{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"path":"tau/recorder.md","ref":"tau/recorder.md","articles":[]},"previous":{"title":"API","level":"1.4","depth":1,"path":"tau/api.md","ref":"tau/api.md","articles":[{"title":"FlutterSoundPlayer","level":"1.4.1","depth":2,"path":"tau/player.md","ref":"tau/player.md","articles":[]},{"title":"FlutterSoundRecorder","level":"1.4.2","depth":2,"path":"tau/recorder.md","ref":"tau/recorder.md","articles":[]},{"title":"FlutterSoundHelper","level":"1.4.3","depth":2,"path":"tau/helper.md","ref":"tau/helper.md","articles":[]},{"title":"FlutterSoundUI","level":"1.4.4","depth":2,"path":"tau/ui_widget.md","ref":"tau/ui_widget.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/player.md","mtime":"2020-11-24T16:53:58.265Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-25T10:18:45.897Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

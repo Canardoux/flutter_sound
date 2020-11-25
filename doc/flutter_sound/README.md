@@ -51,7 +51,7 @@ The [sources are here](https://github.com/Canardoux/tau)
 
 ## SDK requirements
 
-- Flutter Sound requires an iOS 9.3 SDK (or later)
+- Flutter Sound requires an iOS 10.0 SDK (or later)
 - Flutter Sound requires an Android 21 (or later)
 
 ## Installation

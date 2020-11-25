@@ -108,7 +108,8 @@ This parameter can have the following values :
 
 See [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosessionmode?language=objc) to understand the meaning of this parameter.
 
-### `audioFlags` are a set of optional flags (used on iOS):
+### `audioFlags`
+ are a set of optional flags (used on iOS):
 
 - outputToSpeaker
 - allowHeadset
@@ -117,7 +118,8 @@ See [iOS documentation](https://developer.apple.com/documentation/avfoundation/a
 - allowAirPlay
 - allowBlueToothA2DP
 
-### `device` is the output device (used on Android)
+### `device`
+ is the output device (used on Android)
 
 - speaker
 - headset,
@@ -126,7 +128,8 @@ See [iOS documentation](https://developer.apple.com/documentation/avfoundation/a
 - blueToothA2DP,
 - airPlay
 
-## `withUI` is a boolean that you set to `true` if you want to control your App from the lock-screen (using [startPlayerFromTrack()](player.md#startplayerfromtrack) during your Audio Session).
+### `withUI` 
+is a boolean that you set to `true` if you want to control your App from the lock-screen (using [startPlayerFromTrack()](player.md#startplayerfromtrack) during your Audio Session).
 
 You MUST ensure that the player has been closed when your widget is detached from the UI.
 Overload your widget's `dispose()` method to closeAudioSession the player when your widget is disposed.
@@ -719,9 +722,9 @@ Remark `setUIProgressBar()` is implemented only on iOS.
 Future<void> setSubscriptionDuration(Duration duration)
 ```
 
-This verb is used to change the default interval between two post on the "Update Progress" stream. (The default interval is 10ms)
+This verb is used to change the default interval between two post on the "Update Progress" stream. (The default interval is 0 (zero) which means "NO post")
 
 *Example:*
 ```dart
-// 0.010s. is default
-myPlayer.setSubscriptionDuration(Duration(milliseconds: 20));
+// 0. is default
+myPlayer.setSubscriptionDuration(Duration(milliseconds: 100));

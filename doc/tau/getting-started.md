@@ -9,6 +9,8 @@ The complete running example [is there](https://github.com/Canardoux/tau/blob/ma
 To play back something you must instanciate a player. Most of the time, you will need just one player, and you can place this instanciation in the variables initialisation of your class :
 
 ```dart
+  import 'package:flauto/flutter_sound.dart';
+...
   FlutterSoundPlayer _myPlayer = FlutterSoundPlayer();
 ```
 
