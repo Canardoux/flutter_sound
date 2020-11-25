@@ -1,4 +1,4 @@
-# Examples/Demo
+# Examples
 
 Flutter Sound comes with several Demo/Examples. All the examples are called from a [driver App](lib/main.dart)
 
