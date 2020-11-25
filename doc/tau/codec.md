@@ -139,7 +139,7 @@ You can look to the [simple example](../example/README.md#recordtostream) provid
 
 Please, remember that actually, Flutter Sound does not support Floating Point PCM data, nor records with more that one audio channel.
 
-This works only with [openAudioSession](player.md.#openaudiosession-and-closeaudiosession) and does not work with `openAudioSessionWithUI()`.
+This works only with [openAudioSession](player.md#openaudiosession-and-closeaudiosession) and does not work with `openAudioSessionWithUI()`.
 To play live stream, you start playing with the verb [startPlayerFromStream](player.md#startplayerfromstream) instead of the regular `startPlayer()` verb:
 ```
 await myPlayer.startPlayerFromStream
@@ -201,7 +201,7 @@ It is really very important not to call another `feedFromStream()` before the co
 
 *Example:*
 
-You can look to this [example](../example/README.md#liveplaybackwithbackpressure) and [this example](../example/README.md#soundeffect)
+You can look to this [example](../flutter_sound/example/example.md#liveplaybackwithbackpressure) and [this example](../flutter_sound/example/example.md#soundeffect)
 ```
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
 
@@ -225,6 +225,5 @@ You can look to the  provided examples :
 - [This example](../flutter_sound/example/example.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
 - [This example](../flutter_sound/example/example.md#soundeffect) shows how to play some real time sound effects.
 - [This example](../flutter_sound/example/example.md#streamloop) play live stream what is recorded from the microphone.
-
 
 -------------------------------------------------------------------------------------------------------------------------------------

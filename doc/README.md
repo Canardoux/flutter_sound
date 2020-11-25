@@ -11,7 +11,7 @@ The &tau; project is a set of libraries which deal with audio :
 
 ## Features
 
-- Play and Record sounds or music with various codecs. (See [the supported codecs here](flutter_sound/codec.html#flutter-sound-codecs))
+- Play and Record sounds or music with various codecs. (See [the supported codecs here](tau/codec.md#flutter-sound-codecs))
 - Play local or remote files specified by their URL.
 - Record to a live stream Stream
 - Playback from a live Stream
