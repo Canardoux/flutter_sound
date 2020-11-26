@@ -63,16 +63,21 @@ export 'ui/sound_player_ui.dart';
 export 'ui/sound_recorder_ui.dart';
 
 ///
-library lib2;
-export 'zozo.dart';
-
-///
 /// @nodoc
 library util;
 export 'flutter_ffmpeg.dart';
 export 'flutter_sound_helper.dart';
 export 'src/util/log.dart';
 
+/// Toto et titi
+
+/// Un joli commmentaire
+library FlutterSound;
+
+
+
+///
+///
 /// The possible states of the players and recorders
 enum Initialized {
   /// The object has been created but is not initialized

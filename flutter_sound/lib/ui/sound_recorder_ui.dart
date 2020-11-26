@@ -21,6 +21,11 @@
 ///
 ///
 /// ------------------------------------------------------------------
+/// Toto et titi
+
+/// Un joli commmentaire
+library player;
+
 
 import 'dart:async';
 import 'package:flutter/material.dart';

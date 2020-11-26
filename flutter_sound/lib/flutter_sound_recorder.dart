@@ -15,6 +15,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
+/// Toto et titi
+
+/// Un joli commmentaire
+library recorder;
+
 
 import 'dart:async';
 import 'dart:convert';

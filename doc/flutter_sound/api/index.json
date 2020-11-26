@@ -1,5 +1,289 @@
 [
  {
+  "name": "UI",
+  "qualifiedName": "UI",
+  "href": "UI/UI-library.html",
+  "type": "library",
+  "overriddenDepth": 0,
+  "packageName": "flauto"
+ },
+ {
+  "name": "OnLoad",
+  "qualifiedName": "UI.OnLoad",
+  "href": "UI/OnLoad.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "UI",
+   "type": "library"
+  }
+ },
+ {
+  "name": "PlaybarSlider",
+  "qualifiedName": "UI.PlaybarSlider",
+  "href": "UI/PlaybarSlider-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "UI",
+   "type": "library"
+  }
+ },
+ {
+  "name": "PlaybarSlider",
+  "qualifiedName": "UI.PlaybarSlider.PlaybarSlider",
+  "href": "UI/PlaybarSlider/PlaybarSlider.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "PlaybarSlider",
+   "type": "class"
+  }
+ },
+ {
+  "name": "createState",
+  "qualifiedName": "UI.PlaybarSlider.createState",
+  "href": "UI/PlaybarSlider/createState.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "PlaybarSlider",
+   "type": "class"
+  }
+ },
+ {
+  "name": "stream",
+  "qualifiedName": "UI.PlaybarSlider.stream",
+  "href": "UI/PlaybarSlider/stream.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "PlaybarSlider",
+   "type": "class"
+  }
+ },
+ {
+  "name": "SoundPlayerUI",
+  "qualifiedName": "UI.SoundPlayerUI",
+  "href": "UI/SoundPlayerUI-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "UI",
+   "type": "library"
+  }
+ },
+ {
+  "name": "createState",
+  "qualifiedName": "UI.SoundPlayerUI.createState",
+  "href": "UI/SoundPlayerUI/createState.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "SoundPlayerUI.fromLoader",
+  "qualifiedName": "UI.SoundPlayerUI.fromLoader",
+  "href": "UI/SoundPlayerUI/SoundPlayerUI.fromLoader.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "SoundPlayerUI.fromTrack",
+  "qualifiedName": "UI.SoundPlayerUI.fromTrack",
+  "href": "UI/SoundPlayerUI/SoundPlayerUI.fromTrack.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "standardCodec",
+  "qualifiedName": "UI.SoundPlayerUI.standardCodec",
+  "href": "UI/SoundPlayerUI/standardCodec-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "zero",
+  "qualifiedName": "UI.SoundPlayerUI.zero",
+  "href": "UI/SoundPlayerUI/zero-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "SoundPlayerUIState",
+  "qualifiedName": "UI.SoundPlayerUIState",
+  "href": "UI/SoundPlayerUIState-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "UI",
+   "type": "library"
+  }
+ },
+ {
+  "name": "SoundPlayerUIState",
+  "qualifiedName": "UI.SoundPlayerUIState.SoundPlayerUIState",
+  "href": "UI/SoundPlayerUIState/SoundPlayerUIState.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "build",
+  "qualifiedName": "UI.SoundPlayerUIState.build",
+  "href": "UI/SoundPlayerUIState/build.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "canPlay",
+  "qualifiedName": "UI.SoundPlayerUIState.canPlay",
+  "href": "UI/SoundPlayerUIState/canPlay.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "connectRecorderStream",
+  "qualifiedName": "UI.SoundPlayerUIState.connectRecorderStream",
+  "href": "UI/SoundPlayerUIState/connectRecorderStream.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "dispose",
+  "qualifiedName": "UI.SoundPlayerUIState.dispose",
+  "href": "UI/SoundPlayerUIState/dispose.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "pause",
+  "qualifiedName": "UI.SoundPlayerUIState.pause",
+  "href": "UI/SoundPlayerUIState/pause.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "play",
+  "qualifiedName": "UI.SoundPlayerUIState.play",
+  "href": "UI/SoundPlayerUIState/play.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "playbackEnabled",
+  "qualifiedName": "UI.SoundPlayerUIState.playbackEnabled",
+  "href": "UI/SoundPlayerUIState/playbackEnabled.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "reassemble",
+  "qualifiedName": "UI.SoundPlayerUIState.reassemble",
+  "href": "UI/SoundPlayerUIState/reassemble.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "resume",
+  "qualifiedName": "UI.SoundPlayerUIState.resume",
+  "href": "UI/SoundPlayerUIState/resume.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "stop",
+  "qualifiedName": "UI.SoundPlayerUIState.stop",
+  "href": "UI/SoundPlayerUIState/stop.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
   "name": "flutter_ffmpeg",
   "qualifiedName": "flutter_ffmpeg",
   "href": "flutter_ffmpeg/flutter_ffmpeg-library.html",
@@ -628,404 +912,12 @@
   }
  },
  {
-  "name": "flutter_sound_recorder",
-  "qualifiedName": "flutter_sound_recorder",
-  "href": "flutter_sound_recorder/flutter_sound_recorder-library.html",
+  "name": "player",
+  "qualifiedName": "player",
+  "href": "player/player-library.html",
   "type": "library",
   "overriddenDepth": 0,
   "packageName": "flauto"
- },
- {
-  "name": "FlutterSoundRecorder",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder-class.html",
-  "type": "class",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "flutter_sound_recorder",
-   "type": "library"
-  }
- },
- {
-  "name": "FlutterSoundRecorder",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.FlutterSoundRecorder",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/FlutterSoundRecorder.html",
-  "type": "constructor",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "closeAudioSession",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.closeAudioSession",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/closeAudioSession.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "dispositionStream",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.dispositionStream",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/dispositionStream.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "isEncoderSupported",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.isEncoderSupported",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/isEncoderSupported.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "isInited",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.isInited",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/isInited.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "isPaused",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.isPaused",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/isPaused.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "isRecording",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.isRecording",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/isRecording.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "isStopped",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.isStopped",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/isStopped.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "onProgress",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.onProgress",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/onProgress.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "openAudioSession",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.openAudioSession",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/openAudioSession.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "pauseRecorder",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.pauseRecorder",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/pauseRecorder.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "recorderState",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.recorderState",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/recorderState.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "recordingData",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.recordingData",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/recordingData.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "resumeRecorder",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.resumeRecorder",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/resumeRecorder.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "setAudioFocus",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.setAudioFocus",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/setAudioFocus.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "setSubscriptionDuration",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.setSubscriptionDuration",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/setSubscriptionDuration.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "startRecorder",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.startRecorder",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/startRecorder.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "stopRecorder",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.stopRecorder",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/stopRecorder.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "updateRecorderProgress",
-  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.updateRecorderProgress",
-  "href": "flutter_sound_recorder/FlutterSoundRecorder/updateRecorderProgress.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "RecordingDisposition",
-  "qualifiedName": "flutter_sound_recorder.RecordingDisposition",
-  "href": "flutter_sound_recorder/RecordingDisposition-class.html",
-  "type": "class",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "flutter_sound_recorder",
-   "type": "library"
-  }
- },
- {
-  "name": "RecordingDisposition",
-  "qualifiedName": "flutter_sound_recorder.RecordingDisposition.RecordingDisposition",
-  "href": "flutter_sound_recorder/RecordingDisposition/RecordingDisposition.html",
-  "type": "constructor",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "RecordingDisposition",
-   "type": "class"
-  }
- },
- {
-  "name": "decibels",
-  "qualifiedName": "flutter_sound_recorder.RecordingDisposition.decibels",
-  "href": "flutter_sound_recorder/RecordingDisposition/decibels.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "RecordingDisposition",
-   "type": "class"
-  }
- },
- {
-  "name": "duration",
-  "qualifiedName": "flutter_sound_recorder.RecordingDisposition.duration",
-  "href": "flutter_sound_recorder/RecordingDisposition/duration.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "RecordingDisposition",
-   "type": "class"
-  }
- },
- {
-  "name": "toString",
-  "qualifiedName": "flutter_sound_recorder.RecordingDisposition.toString",
-  "href": "flutter_sound_recorder/RecordingDisposition/toString.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "RecordingDisposition",
-   "type": "class"
-  }
- },
- {
-  "name": "RecordingDisposition.zero",
-  "qualifiedName": "flutter_sound_recorder.RecordingDisposition.zero",
-  "href": "flutter_sound_recorder/RecordingDisposition/RecordingDisposition.zero.html",
-  "type": "constructor",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "RecordingDisposition",
-   "type": "class"
-  }
- },
- {
-  "name": "RecordingPermissionException",
-  "qualifiedName": "flutter_sound_recorder.RecordingPermissionException",
-  "href": "flutter_sound_recorder/RecordingPermissionException-class.html",
-  "type": "class",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "flutter_sound_recorder",
-   "type": "library"
-  }
- },
- {
-  "name": "RecordingPermissionException",
-  "qualifiedName": "flutter_sound_recorder.RecordingPermissionException.RecordingPermissionException",
-  "href": "flutter_sound_recorder/RecordingPermissionException/RecordingPermissionException.html",
-  "type": "constructor",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "RecordingPermissionException",
-   "type": "class"
-  }
- },
- {
-  "name": "message",
-  "qualifiedName": "flutter_sound_recorder.RecordingPermissionException.message",
-  "href": "flutter_sound_recorder/RecordingPermissionException/message.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "RecordingPermissionException",
-   "type": "class"
-  }
- },
- {
-  "name": "papa",
-  "qualifiedName": "papa",
-  "href": "papa/papa-library.html",
-  "type": "library",
-  "overriddenDepth": 0,
-  "packageName": "flauto"
- },
- {
-  "name": "Zozo",
-  "qualifiedName": "papa.Zozo",
-  "href": "papa/Zozo-class.html",
-  "type": "class",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "papa",
-   "type": "library"
-  }
- },
- {
-  "name": "Zozo",
-  "qualifiedName": "papa.Zozo.Zozo",
-  "href": "papa/Zozo/Zozo.html",
-  "type": "constructor",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "Zozo",
-   "type": "class"
-  }
- },
- {
-  "name": "zozop",
-  "qualifiedName": "papa.Zozo.zozop",
-  "href": "papa/Zozo/zozop.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "Zozo",
-   "type": "class"
-  }
  },
  {
   "name": "player",
@@ -1720,6 +1612,66 @@
   }
  },
  {
+  "name": "OnDelete",
+  "qualifiedName": "player.OnDelete",
+  "href": "player/OnDelete.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "OnPaused",
+  "qualifiedName": "player.OnPaused",
+  "href": "player/OnPaused.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "OnProgress",
+  "qualifiedName": "player.OnProgress",
+  "href": "player/OnProgress.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "OnStart",
+  "qualifiedName": "player.OnStart",
+  "href": "player/OnStart.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "OnStop",
+  "qualifiedName": "player.OnStop",
+  "href": "player/OnStop.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
   "name": "PlaybackDisposition",
   "qualifiedName": "player.PlaybackDisposition",
   "href": "player/PlaybackDisposition-class.html",
@@ -1849,6 +1801,414 @@
   "enclosedBy": {
    "name": "PlayerState",
    "type": "enum"
+  }
+ },
+ {
+  "name": "RecordedAudio",
+  "qualifiedName": "player.RecordedAudio",
+  "href": "player/RecordedAudio-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "duration",
+  "qualifiedName": "player.RecordedAudio.duration",
+  "href": "player/RecordedAudio/duration.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordedAudio",
+   "type": "class"
+  }
+ },
+ {
+  "name": "RecordedAudio.toTrack",
+  "qualifiedName": "player.RecordedAudio.toTrack",
+  "href": "player/RecordedAudio/RecordedAudio.toTrack.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordedAudio",
+   "type": "class"
+  }
+ },
+ {
+  "name": "track",
+  "qualifiedName": "player.RecordedAudio.track",
+  "href": "player/RecordedAudio/track.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordedAudio",
+   "type": "class"
+  }
+ },
+ {
+  "name": "RecorderPlaybackController",
+  "qualifiedName": "player.RecorderPlaybackController",
+  "href": "player/RecorderPlaybackController-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "RecorderPlaybackController",
+  "qualifiedName": "player.RecorderPlaybackController.RecorderPlaybackController",
+  "href": "player/RecorderPlaybackController/RecorderPlaybackController.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecorderPlaybackController",
+   "type": "class"
+  }
+ },
+ {
+  "name": "of",
+  "qualifiedName": "player.RecorderPlaybackController.of",
+  "href": "player/RecorderPlaybackController/of.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecorderPlaybackController",
+   "type": "class"
+  }
+ },
+ {
+  "name": "stop",
+  "qualifiedName": "player.RecorderPlaybackController.stop",
+  "href": "player/RecorderPlaybackController/stop.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecorderPlaybackController",
+   "type": "class"
+  }
+ },
+ {
+  "name": "updateShouldNotify",
+  "qualifiedName": "player.RecorderPlaybackController.updateShouldNotify",
+  "href": "player/RecorderPlaybackController/updateShouldNotify.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecorderPlaybackController",
+   "type": "class"
+  }
+ },
+ {
+  "name": "SoundRecorderUI",
+  "qualifiedName": "player.SoundRecorderUI",
+  "href": "player/SoundRecorderUI-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "SoundRecorderUI",
+  "qualifiedName": "player.SoundRecorderUI.SoundRecorderUI",
+  "href": "player/SoundRecorderUI/SoundRecorderUI.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "audio",
+  "qualifiedName": "player.SoundRecorderUI.audio",
+  "href": "player/SoundRecorderUI/audio.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "backgroundColor",
+  "qualifiedName": "player.SoundRecorderUI.backgroundColor",
+  "href": "player/SoundRecorderUI/backgroundColor.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "createState",
+  "qualifiedName": "player.SoundRecorderUI.createState",
+  "href": "player/SoundRecorderUI/createState.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "onDelete",
+  "qualifiedName": "player.SoundRecorderUI.onDelete",
+  "href": "player/SoundRecorderUI/onDelete.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "onPaused",
+  "qualifiedName": "player.SoundRecorderUI.onPaused",
+  "href": "player/SoundRecorderUI/onPaused.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "onStart",
+  "qualifiedName": "player.SoundRecorderUI.onStart",
+  "href": "player/SoundRecorderUI/onStart.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "onStopped",
+  "qualifiedName": "player.SoundRecorderUI.onStopped",
+  "href": "player/SoundRecorderUI/onStopped.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "pausedTitle",
+  "qualifiedName": "player.SoundRecorderUI.pausedTitle",
+  "href": "player/SoundRecorderUI/pausedTitle.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "recordingTitle",
+  "qualifiedName": "player.SoundRecorderUI.recordingTitle",
+  "href": "player/SoundRecorderUI/recordingTitle.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "requestPermissions",
+  "qualifiedName": "player.SoundRecorderUI.requestPermissions",
+  "href": "player/SoundRecorderUI/requestPermissions.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "showTrashCan",
+  "qualifiedName": "player.SoundRecorderUI.showTrashCan",
+  "href": "player/SoundRecorderUI/showTrashCan.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "stoppedTitle",
+  "qualifiedName": "player.SoundRecorderUI.stoppedTitle",
+  "href": "player/SoundRecorderUI/stoppedTitle.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "SoundRecorderUIState",
+  "qualifiedName": "player.SoundRecorderUIState",
+  "href": "player/SoundRecorderUIState-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "SoundRecorderUIState",
+  "qualifiedName": "player.SoundRecorderUIState.SoundRecorderUIState",
+  "href": "player/SoundRecorderUIState/SoundRecorderUIState.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "backgroundColor",
+  "qualifiedName": "player.SoundRecorderUIState.backgroundColor",
+  "href": "player/SoundRecorderUIState/backgroundColor.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "build",
+  "qualifiedName": "player.SoundRecorderUIState.build",
+  "href": "player/SoundRecorderUIState/build.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "deactivate",
+  "qualifiedName": "player.SoundRecorderUIState.deactivate",
+  "href": "player/SoundRecorderUIState/deactivate.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "dispose",
+  "qualifiedName": "player.SoundRecorderUIState.dispose",
+  "href": "player/SoundRecorderUIState/dispose.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "dispositionStream",
+  "qualifiedName": "player.SoundRecorderUIState.dispositionStream",
+  "href": "player/SoundRecorderUIState/dispositionStream.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "initState",
+  "qualifiedName": "player.SoundRecorderUIState.initState",
+  "href": "player/SoundRecorderUIState/initState.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "pause",
+  "qualifiedName": "player.SoundRecorderUIState.pause",
+  "href": "player/SoundRecorderUIState/pause.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "resume",
+  "qualifiedName": "player.SoundRecorderUIState.resume",
+  "href": "player/SoundRecorderUIState/resume.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "stop",
+  "qualifiedName": "player.SoundRecorderUIState.stop",
+  "href": "player/SoundRecorderUIState/stop.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
   }
  },
  {
@@ -2020,10 +2380,34 @@
   }
  },
  {
+  "name": "UIRequestPermission",
+  "qualifiedName": "player.UIRequestPermission",
+  "href": "player/UIRequestPermission.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
   "name": "blockSize",
   "qualifiedName": "player.blockSize",
   "href": "player/blockSize-constant.html",
   "type": "top-level constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "connectPlayerToRecorderStream",
+  "qualifiedName": "player.connectPlayerToRecorderStream",
+  "href": "player/connectPlayerToRecorderStream.html",
+  "type": "function",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
@@ -2044,799 +2428,371 @@
   }
  },
  {
-  "name": "sound_player_ui",
-  "qualifiedName": "sound_player_ui",
-  "href": "ui_sound_player_ui/ui_sound_player_ui-library.html",
+  "name": "registerPlayer",
+  "qualifiedName": "player.registerPlayer",
+  "href": "player/registerPlayer.html",
+  "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "recorder",
+  "qualifiedName": "recorder",
+  "href": "recorder/recorder-library.html",
   "type": "library",
   "overriddenDepth": 0,
   "packageName": "flauto"
  },
  {
-  "name": "OnLoad",
-  "qualifiedName": "sound_player_ui.OnLoad",
-  "href": "ui_sound_player_ui/OnLoad.html",
-  "type": "typedef",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "sound_player_ui",
-   "type": "library"
-  }
- },
- {
-  "name": "PlaybarSlider",
-  "qualifiedName": "sound_player_ui.PlaybarSlider",
-  "href": "ui_sound_player_ui/PlaybarSlider-class.html",
+  "name": "FlutterSoundRecorder",
+  "qualifiedName": "recorder.FlutterSoundRecorder",
+  "href": "recorder/FlutterSoundRecorder-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "sound_player_ui",
+   "name": "recorder",
    "type": "library"
   }
  },
  {
-  "name": "PlaybarSlider",
-  "qualifiedName": "sound_player_ui.PlaybarSlider.PlaybarSlider",
-  "href": "ui_sound_player_ui/PlaybarSlider/PlaybarSlider.html",
+  "name": "FlutterSoundRecorder",
+  "qualifiedName": "recorder.FlutterSoundRecorder.FlutterSoundRecorder",
+  "href": "recorder/FlutterSoundRecorder/FlutterSoundRecorder.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "PlaybarSlider",
+   "name": "FlutterSoundRecorder",
    "type": "class"
   }
  },
  {
-  "name": "createState",
-  "qualifiedName": "sound_player_ui.PlaybarSlider.createState",
-  "href": "ui_sound_player_ui/PlaybarSlider/createState.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "PlaybarSlider",
-   "type": "class"
-  }
- },
- {
-  "name": "stream",
-  "qualifiedName": "sound_player_ui.PlaybarSlider.stream",
-  "href": "ui_sound_player_ui/PlaybarSlider/stream.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "PlaybarSlider",
-   "type": "class"
-  }
- },
- {
-  "name": "SoundPlayerUI",
-  "qualifiedName": "sound_player_ui.SoundPlayerUI",
-  "href": "ui_sound_player_ui/SoundPlayerUI-class.html",
-  "type": "class",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "sound_player_ui",
-   "type": "library"
-  }
- },
- {
-  "name": "createState",
-  "qualifiedName": "sound_player_ui.SoundPlayerUI.createState",
-  "href": "ui_sound_player_ui/SoundPlayerUI/createState.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundPlayerUI",
-   "type": "class"
-  }
- },
- {
-  "name": "SoundPlayerUI.fromLoader",
-  "qualifiedName": "sound_player_ui.SoundPlayerUI.fromLoader",
-  "href": "ui_sound_player_ui/SoundPlayerUI/SoundPlayerUI.fromLoader.html",
-  "type": "constructor",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundPlayerUI",
-   "type": "class"
-  }
- },
- {
-  "name": "SoundPlayerUI.fromTrack",
-  "qualifiedName": "sound_player_ui.SoundPlayerUI.fromTrack",
-  "href": "ui_sound_player_ui/SoundPlayerUI/SoundPlayerUI.fromTrack.html",
-  "type": "constructor",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundPlayerUI",
-   "type": "class"
-  }
- },
- {
-  "name": "standardCodec",
-  "qualifiedName": "sound_player_ui.SoundPlayerUI.standardCodec",
-  "href": "ui_sound_player_ui/SoundPlayerUI/standardCodec-constant.html",
-  "type": "constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundPlayerUI",
-   "type": "class"
-  }
- },
- {
-  "name": "zero",
-  "qualifiedName": "sound_player_ui.SoundPlayerUI.zero",
-  "href": "ui_sound_player_ui/SoundPlayerUI/zero-constant.html",
-  "type": "constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundPlayerUI",
-   "type": "class"
-  }
- },
- {
-  "name": "SoundPlayerUIState",
-  "qualifiedName": "sound_player_ui.SoundPlayerUIState",
-  "href": "ui_sound_player_ui/SoundPlayerUIState-class.html",
-  "type": "class",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "sound_player_ui",
-   "type": "library"
-  }
- },
- {
-  "name": "SoundPlayerUIState",
-  "qualifiedName": "sound_player_ui.SoundPlayerUIState.SoundPlayerUIState",
-  "href": "ui_sound_player_ui/SoundPlayerUIState/SoundPlayerUIState.html",
-  "type": "constructor",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundPlayerUIState",
-   "type": "class"
-  }
- },
- {
-  "name": "build",
-  "qualifiedName": "sound_player_ui.SoundPlayerUIState.build",
-  "href": "ui_sound_player_ui/SoundPlayerUIState/build.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundPlayerUIState",
-   "type": "class"
-  }
- },
- {
-  "name": "canPlay",
-  "qualifiedName": "sound_player_ui.SoundPlayerUIState.canPlay",
-  "href": "ui_sound_player_ui/SoundPlayerUIState/canPlay.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundPlayerUIState",
-   "type": "class"
-  }
- },
- {
-  "name": "connectRecorderStream",
-  "qualifiedName": "sound_player_ui.SoundPlayerUIState.connectRecorderStream",
-  "href": "ui_sound_player_ui/SoundPlayerUIState/connectRecorderStream.html",
+  "name": "closeAudioSession",
+  "qualifiedName": "recorder.FlutterSoundRecorder.closeAudioSession",
+  "href": "recorder/FlutterSoundRecorder/closeAudioSession.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "SoundPlayerUIState",
-   "type": "class"
-  }
- },
- {
-  "name": "dispose",
-  "qualifiedName": "sound_player_ui.SoundPlayerUIState.dispose",
-  "href": "ui_sound_player_ui/SoundPlayerUIState/dispose.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundPlayerUIState",
-   "type": "class"
-  }
- },
- {
-  "name": "pause",
-  "qualifiedName": "sound_player_ui.SoundPlayerUIState.pause",
-  "href": "ui_sound_player_ui/SoundPlayerUIState/pause.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundPlayerUIState",
-   "type": "class"
-  }
- },
- {
-  "name": "play",
-  "qualifiedName": "sound_player_ui.SoundPlayerUIState.play",
-  "href": "ui_sound_player_ui/SoundPlayerUIState/play.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundPlayerUIState",
-   "type": "class"
-  }
- },
- {
-  "name": "playbackEnabled",
-  "qualifiedName": "sound_player_ui.SoundPlayerUIState.playbackEnabled",
-  "href": "ui_sound_player_ui/SoundPlayerUIState/playbackEnabled.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundPlayerUIState",
-   "type": "class"
-  }
- },
- {
-  "name": "reassemble",
-  "qualifiedName": "sound_player_ui.SoundPlayerUIState.reassemble",
-  "href": "ui_sound_player_ui/SoundPlayerUIState/reassemble.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundPlayerUIState",
-   "type": "class"
-  }
- },
- {
-  "name": "resume",
-  "qualifiedName": "sound_player_ui.SoundPlayerUIState.resume",
-  "href": "ui_sound_player_ui/SoundPlayerUIState/resume.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundPlayerUIState",
-   "type": "class"
-  }
- },
- {
-  "name": "stop",
-  "qualifiedName": "sound_player_ui.SoundPlayerUIState.stop",
-  "href": "ui_sound_player_ui/SoundPlayerUIState/stop.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundPlayerUIState",
-   "type": "class"
-  }
- },
- {
-  "name": "sound_recorder_ui",
-  "qualifiedName": "sound_recorder_ui",
-  "href": "ui_sound_recorder_ui/ui_sound_recorder_ui-library.html",
-  "type": "library",
-  "overriddenDepth": 0,
-  "packageName": "flauto"
- },
- {
-  "name": "OnDelete",
-  "qualifiedName": "sound_recorder_ui.OnDelete",
-  "href": "ui_sound_recorder_ui/OnDelete.html",
-  "type": "typedef",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "sound_recorder_ui",
-   "type": "library"
-  }
- },
- {
-  "name": "OnPaused",
-  "qualifiedName": "sound_recorder_ui.OnPaused",
-  "href": "ui_sound_recorder_ui/OnPaused.html",
-  "type": "typedef",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "sound_recorder_ui",
-   "type": "library"
-  }
- },
- {
-  "name": "OnProgress",
-  "qualifiedName": "sound_recorder_ui.OnProgress",
-  "href": "ui_sound_recorder_ui/OnProgress.html",
-  "type": "typedef",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "sound_recorder_ui",
-   "type": "library"
-  }
- },
- {
-  "name": "OnStart",
-  "qualifiedName": "sound_recorder_ui.OnStart",
-  "href": "ui_sound_recorder_ui/OnStart.html",
-  "type": "typedef",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "sound_recorder_ui",
-   "type": "library"
-  }
- },
- {
-  "name": "OnStop",
-  "qualifiedName": "sound_recorder_ui.OnStop",
-  "href": "ui_sound_recorder_ui/OnStop.html",
-  "type": "typedef",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "sound_recorder_ui",
-   "type": "library"
-  }
- },
- {
-  "name": "RecordedAudio",
-  "qualifiedName": "sound_recorder_ui.RecordedAudio",
-  "href": "ui_sound_recorder_ui/RecordedAudio-class.html",
-  "type": "class",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "sound_recorder_ui",
-   "type": "library"
-  }
- },
- {
-  "name": "duration",
-  "qualifiedName": "sound_recorder_ui.RecordedAudio.duration",
-  "href": "ui_sound_recorder_ui/RecordedAudio/duration.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "RecordedAudio",
-   "type": "class"
-  }
- },
- {
-  "name": "RecordedAudio.toTrack",
-  "qualifiedName": "sound_recorder_ui.RecordedAudio.toTrack",
-  "href": "ui_sound_recorder_ui/RecordedAudio/RecordedAudio.toTrack.html",
-  "type": "constructor",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "RecordedAudio",
-   "type": "class"
-  }
- },
- {
-  "name": "track",
-  "qualifiedName": "sound_recorder_ui.RecordedAudio.track",
-  "href": "ui_sound_recorder_ui/RecordedAudio/track.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "RecordedAudio",
-   "type": "class"
-  }
- },
- {
-  "name": "RecorderPlaybackController",
-  "qualifiedName": "sound_recorder_ui.RecorderPlaybackController",
-  "href": "ui_sound_recorder_ui/RecorderPlaybackController-class.html",
-  "type": "class",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "sound_recorder_ui",
-   "type": "library"
-  }
- },
- {
-  "name": "RecorderPlaybackController",
-  "qualifiedName": "sound_recorder_ui.RecorderPlaybackController.RecorderPlaybackController",
-  "href": "ui_sound_recorder_ui/RecorderPlaybackController/RecorderPlaybackController.html",
-  "type": "constructor",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "RecorderPlaybackController",
-   "type": "class"
-  }
- },
- {
-  "name": "of",
-  "qualifiedName": "sound_recorder_ui.RecorderPlaybackController.of",
-  "href": "ui_sound_recorder_ui/RecorderPlaybackController/of.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "RecorderPlaybackController",
-   "type": "class"
-  }
- },
- {
-  "name": "stop",
-  "qualifiedName": "sound_recorder_ui.RecorderPlaybackController.stop",
-  "href": "ui_sound_recorder_ui/RecorderPlaybackController/stop.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "RecorderPlaybackController",
-   "type": "class"
-  }
- },
- {
-  "name": "updateShouldNotify",
-  "qualifiedName": "sound_recorder_ui.RecorderPlaybackController.updateShouldNotify",
-  "href": "ui_sound_recorder_ui/RecorderPlaybackController/updateShouldNotify.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "RecorderPlaybackController",
-   "type": "class"
-  }
- },
- {
-  "name": "SoundRecorderUI",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUI",
-  "href": "ui_sound_recorder_ui/SoundRecorderUI-class.html",
-  "type": "class",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "sound_recorder_ui",
-   "type": "library"
-  }
- },
- {
-  "name": "SoundRecorderUI",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.SoundRecorderUI",
-  "href": "ui_sound_recorder_ui/SoundRecorderUI/SoundRecorderUI.html",
-  "type": "constructor",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUI",
-   "type": "class"
-  }
- },
- {
-  "name": "audio",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.audio",
-  "href": "ui_sound_recorder_ui/SoundRecorderUI/audio.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUI",
-   "type": "class"
-  }
- },
- {
-  "name": "backgroundColor",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.backgroundColor",
-  "href": "ui_sound_recorder_ui/SoundRecorderUI/backgroundColor.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUI",
-   "type": "class"
-  }
- },
- {
-  "name": "createState",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.createState",
-  "href": "ui_sound_recorder_ui/SoundRecorderUI/createState.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUI",
-   "type": "class"
-  }
- },
- {
-  "name": "onDelete",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.onDelete",
-  "href": "ui_sound_recorder_ui/SoundRecorderUI/onDelete.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUI",
-   "type": "class"
-  }
- },
- {
-  "name": "onPaused",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.onPaused",
-  "href": "ui_sound_recorder_ui/SoundRecorderUI/onPaused.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUI",
-   "type": "class"
-  }
- },
- {
-  "name": "onStart",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.onStart",
-  "href": "ui_sound_recorder_ui/SoundRecorderUI/onStart.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUI",
-   "type": "class"
-  }
- },
- {
-  "name": "onStopped",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.onStopped",
-  "href": "ui_sound_recorder_ui/SoundRecorderUI/onStopped.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUI",
-   "type": "class"
-  }
- },
- {
-  "name": "pausedTitle",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.pausedTitle",
-  "href": "ui_sound_recorder_ui/SoundRecorderUI/pausedTitle.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUI",
-   "type": "class"
-  }
- },
- {
-  "name": "recordingTitle",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.recordingTitle",
-  "href": "ui_sound_recorder_ui/SoundRecorderUI/recordingTitle.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUI",
-   "type": "class"
-  }
- },
- {
-  "name": "requestPermissions",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.requestPermissions",
-  "href": "ui_sound_recorder_ui/SoundRecorderUI/requestPermissions.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUI",
-   "type": "class"
-  }
- },
- {
-  "name": "showTrashCan",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.showTrashCan",
-  "href": "ui_sound_recorder_ui/SoundRecorderUI/showTrashCan.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUI",
-   "type": "class"
-  }
- },
- {
-  "name": "stoppedTitle",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.stoppedTitle",
-  "href": "ui_sound_recorder_ui/SoundRecorderUI/stoppedTitle.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUI",
-   "type": "class"
-  }
- },
- {
-  "name": "SoundRecorderUIState",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState",
-  "href": "ui_sound_recorder_ui/SoundRecorderUIState-class.html",
-  "type": "class",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "sound_recorder_ui",
-   "type": "library"
-  }
- },
- {
-  "name": "SoundRecorderUIState",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.SoundRecorderUIState",
-  "href": "ui_sound_recorder_ui/SoundRecorderUIState/SoundRecorderUIState.html",
-  "type": "constructor",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUIState",
-   "type": "class"
-  }
- },
- {
-  "name": "backgroundColor",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.backgroundColor",
-  "href": "ui_sound_recorder_ui/SoundRecorderUIState/backgroundColor.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUIState",
-   "type": "class"
-  }
- },
- {
-  "name": "build",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.build",
-  "href": "ui_sound_recorder_ui/SoundRecorderUIState/build.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUIState",
-   "type": "class"
-  }
- },
- {
-  "name": "deactivate",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.deactivate",
-  "href": "ui_sound_recorder_ui/SoundRecorderUIState/deactivate.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUIState",
-   "type": "class"
-  }
- },
- {
-  "name": "dispose",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.dispose",
-  "href": "ui_sound_recorder_ui/SoundRecorderUIState/dispose.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "SoundRecorderUIState",
+   "name": "FlutterSoundRecorder",
    "type": "class"
   }
  },
  {
   "name": "dispositionStream",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.dispositionStream",
-  "href": "ui_sound_recorder_ui/SoundRecorderUIState/dispositionStream.html",
+  "qualifiedName": "recorder.FlutterSoundRecorder.dispositionStream",
+  "href": "recorder/FlutterSoundRecorder/dispositionStream.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isEncoderSupported",
+  "qualifiedName": "recorder.FlutterSoundRecorder.isEncoderSupported",
+  "href": "recorder/FlutterSoundRecorder/isEncoderSupported.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isInited",
+  "qualifiedName": "recorder.FlutterSoundRecorder.isInited",
+  "href": "recorder/FlutterSoundRecorder/isInited.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "SoundRecorderUIState",
+   "name": "FlutterSoundRecorder",
    "type": "class"
   }
  },
  {
-  "name": "initState",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.initState",
-  "href": "ui_sound_recorder_ui/SoundRecorderUIState/initState.html",
+  "name": "isPaused",
+  "qualifiedName": "recorder.FlutterSoundRecorder.isPaused",
+  "href": "recorder/FlutterSoundRecorder/isPaused.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isRecording",
+  "qualifiedName": "recorder.FlutterSoundRecorder.isRecording",
+  "href": "recorder/FlutterSoundRecorder/isRecording.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isStopped",
+  "qualifiedName": "recorder.FlutterSoundRecorder.isStopped",
+  "href": "recorder/FlutterSoundRecorder/isStopped.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "onProgress",
+  "qualifiedName": "recorder.FlutterSoundRecorder.onProgress",
+  "href": "recorder/FlutterSoundRecorder/onProgress.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "openAudioSession",
+  "qualifiedName": "recorder.FlutterSoundRecorder.openAudioSession",
+  "href": "recorder/FlutterSoundRecorder/openAudioSession.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "pauseRecorder",
+  "qualifiedName": "recorder.FlutterSoundRecorder.pauseRecorder",
+  "href": "recorder/FlutterSoundRecorder/pauseRecorder.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "recorderState",
+  "qualifiedName": "recorder.FlutterSoundRecorder.recorderState",
+  "href": "recorder/FlutterSoundRecorder/recorderState.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "recordingData",
+  "qualifiedName": "recorder.FlutterSoundRecorder.recordingData",
+  "href": "recorder/FlutterSoundRecorder/recordingData.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "SoundRecorderUIState",
+   "name": "FlutterSoundRecorder",
    "type": "class"
   }
  },
  {
-  "name": "pause",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.pause",
-  "href": "ui_sound_recorder_ui/SoundRecorderUIState/pause.html",
+  "name": "resumeRecorder",
+  "qualifiedName": "recorder.FlutterSoundRecorder.resumeRecorder",
+  "href": "recorder/FlutterSoundRecorder/resumeRecorder.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "SoundRecorderUIState",
+   "name": "FlutterSoundRecorder",
    "type": "class"
   }
  },
  {
-  "name": "resume",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.resume",
-  "href": "ui_sound_recorder_ui/SoundRecorderUIState/resume.html",
+  "name": "setAudioFocus",
+  "qualifiedName": "recorder.FlutterSoundRecorder.setAudioFocus",
+  "href": "recorder/FlutterSoundRecorder/setAudioFocus.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "SoundRecorderUIState",
+   "name": "FlutterSoundRecorder",
    "type": "class"
   }
  },
  {
-  "name": "stop",
-  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.stop",
-  "href": "ui_sound_recorder_ui/SoundRecorderUIState/stop.html",
+  "name": "setSubscriptionDuration",
+  "qualifiedName": "recorder.FlutterSoundRecorder.setSubscriptionDuration",
+  "href": "recorder/FlutterSoundRecorder/setSubscriptionDuration.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "SoundRecorderUIState",
+   "name": "FlutterSoundRecorder",
    "type": "class"
   }
  },
  {
-  "name": "UIRequestPermission",
-  "qualifiedName": "sound_recorder_ui.UIRequestPermission",
-  "href": "ui_sound_recorder_ui/UIRequestPermission.html",
-  "type": "typedef",
+  "name": "startRecorder",
+  "qualifiedName": "recorder.FlutterSoundRecorder.startRecorder",
+  "href": "recorder/FlutterSoundRecorder/startRecorder.html",
+  "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "sound_recorder_ui",
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "stopRecorder",
+  "qualifiedName": "recorder.FlutterSoundRecorder.stopRecorder",
+  "href": "recorder/FlutterSoundRecorder/stopRecorder.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "updateRecorderProgress",
+  "qualifiedName": "recorder.FlutterSoundRecorder.updateRecorderProgress",
+  "href": "recorder/FlutterSoundRecorder/updateRecorderProgress.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "RecordingDisposition",
+  "qualifiedName": "recorder.RecordingDisposition",
+  "href": "recorder/RecordingDisposition-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "recorder",
    "type": "library"
   }
  },
  {
-  "name": "connectPlayerToRecorderStream",
-  "qualifiedName": "sound_recorder_ui.connectPlayerToRecorderStream",
-  "href": "ui_sound_recorder_ui/connectPlayerToRecorderStream.html",
-  "type": "function",
+  "name": "RecordingDisposition",
+  "qualifiedName": "recorder.RecordingDisposition.RecordingDisposition",
+  "href": "recorder/RecordingDisposition/RecordingDisposition.html",
+  "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "sound_recorder_ui",
+   "name": "RecordingDisposition",
+   "type": "class"
+  }
+ },
+ {
+  "name": "decibels",
+  "qualifiedName": "recorder.RecordingDisposition.decibels",
+  "href": "recorder/RecordingDisposition/decibels.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordingDisposition",
+   "type": "class"
+  }
+ },
+ {
+  "name": "duration",
+  "qualifiedName": "recorder.RecordingDisposition.duration",
+  "href": "recorder/RecordingDisposition/duration.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordingDisposition",
+   "type": "class"
+  }
+ },
+ {
+  "name": "toString",
+  "qualifiedName": "recorder.RecordingDisposition.toString",
+  "href": "recorder/RecordingDisposition/toString.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordingDisposition",
+   "type": "class"
+  }
+ },
+ {
+  "name": "RecordingDisposition.zero",
+  "qualifiedName": "recorder.RecordingDisposition.zero",
+  "href": "recorder/RecordingDisposition/RecordingDisposition.zero.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordingDisposition",
+   "type": "class"
+  }
+ },
+ {
+  "name": "RecordingPermissionException",
+  "qualifiedName": "recorder.RecordingPermissionException",
+  "href": "recorder/RecordingPermissionException-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "recorder",
    "type": "library"
   }
  },
  {
-  "name": "registerPlayer",
-  "qualifiedName": "sound_recorder_ui.registerPlayer",
-  "href": "ui_sound_recorder_ui/registerPlayer.html",
-  "type": "function",
+  "name": "RecordingPermissionException",
+  "qualifiedName": "recorder.RecordingPermissionException.RecordingPermissionException",
+  "href": "recorder/RecordingPermissionException/RecordingPermissionException.html",
+  "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "sound_recorder_ui",
-   "type": "library"
+   "name": "RecordingPermissionException",
+   "type": "class"
+  }
+ },
+ {
+  "name": "message",
+  "qualifiedName": "recorder.RecordingPermissionException.message",
+  "href": "recorder/RecordingPermissionException/message.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordingPermissionException",
+   "type": "class"
   }
  }
 ]
