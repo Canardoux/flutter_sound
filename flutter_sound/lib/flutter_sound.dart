@@ -48,7 +48,7 @@ export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart'
 /// everything.dart
 /// @.....n.....odoc
 library everything;
-///
+/// Le commentaire de player
 library player;
 export 'src/flutter_sound_player.dart';
 ///

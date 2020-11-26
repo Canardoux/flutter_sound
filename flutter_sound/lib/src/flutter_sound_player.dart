@@ -17,7 +17,9 @@
  */
 
 /// Toto et titi
-library flutter_sound;
+
+/// Un joli commmentaire
+library player;
 
 import 'dart:async';
 import 'dart:convert';
