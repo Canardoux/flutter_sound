@@ -18,7 +18,7 @@ To play back something you must instanciate a player. Most of the time, you will
 
 Before calling `startPlayer()` you must open the Session.
 
-When you have finished with it, **you must** close the session. A god place to pute those verbs is in the procedures `initState()` and `dispose()`.
+When you have finished with it, **you must** close the session. A good places to put those verbs are in the procedures `initState()` and `dispose()`.
 
 ```dart
 @override
@@ -32,9 +32,9 @@ When you have finished with it, **you must** close the session. A god place to p
       });
     });
   }
-  
-  
-  
+
+
+
   @override
   void dispose() {
     // Be careful : you must `close` the audio session when you have finished with it.
@@ -46,7 +46,7 @@ When you have finished with it, **you must** close the session. A god place to p
 
 ### 3. Play your sound
 
-To play a sound you call  `startPlayer()`. To stop a sound you call `stopPlayer()` 
+To play a sound you call  `startPlayer()`. To stop a sound you call `stopPlayer()`
 
 ```dart
 void play() async {
@@ -96,9 +96,9 @@ When you have finished with it, **you must** close the session. A god place to p
       });
     });
   }
-  
-  
-  
+
+
+
   @override
   void dispose() {
     // Be careful : you must `close` the audio session when you have finished with it.
@@ -111,7 +111,7 @@ When you have finished with it, **you must** close the session. A god place to p
 
 ### 3. Record something
 
-To record something you call  `startRecorder()`. To stop the recorder you call `stopRecorder()` 
+To record something you call  `startRecorder()`. To stop the recorder you call `stopRecorder()`
 
 ```dart
   Future<void> record() async {

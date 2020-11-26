@@ -1,6 +1,6 @@
 # Examples
 
-Flutter Sound comes with several Demo/Examples. 
+Flutter Sound comes with several Demo/Examples.
 
 All the examples are called from a [driver App](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/main.dart)
 
@@ -27,7 +27,7 @@ if Someone update this README.md, please update also the code inside Examples/li
 This is a Demo of what it is possible to do with Flutter Sound.
 The code of this Demo app is not so simple and unfortunately not very clean :-( .
 
-Flutter Sound beginners : you probably should look to [SimplePlayback](#simpleplayback)  and [SimpleRecorder](#simplerecorder) 
+Flutter Sound beginners : you probably should look to [SimplePlayback](#simpleplayback)  and [SimpleRecorder](#simplerecorder)
 
 The biggest interest of this Demo is that it shows most of the features of Flutter Sound :
 
@@ -90,7 +90,7 @@ The complete example source [is there](https://github.com/Canardoux/tau/blob/mas
 
 ## [RecordToStream](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/recordToStream/record_to_stream_example.dart)
 
-<img src="record_to_stream.png" width="40%" height="40%"/>
+<img src="record_to_stream.png" width="70%" height="70%"/>
 
 This is an example showing how to record to a Dart Stream.
 It writes all the recorded data from a Stream to a File, which is completely stupid:
@@ -105,7 +105,7 @@ The complete example source [is there](https://github.com/Canardoux/tau/blob/mas
 
 ## [livePlaybackWithoutBackPressure](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart)
 
-<img src="live_playback_without_back_pressure.png" width="40%" height="40%"/>
+<img src="live_playback_without_back_pressure.png" width="70%" height="70%"/>
 
 A very simple example showing how to play Live Data without back pressure.
 It feeds a live stream, without waiting that the Futures are completed for each block.
@@ -127,7 +127,7 @@ The complete example source [is there](https://github.com/Canardoux/tau/blob/mas
 
 ## [livePlaybackWithBackPressure](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithBackPressure/live_playback_with_back_pressure.dart)
 
-<img src="live_playback_with_back_pressure.png" width="40%" height="40%"/>
+<img src="live_playback_with_back_pressure.png" width="70%" height="70%"/>
 
 A very simple example showing how to play Live Data with back pressure.
 It feeds a live stream, waiting that the Futures are completed for each block.
@@ -145,7 +145,7 @@ The complete example source [is there](https://github.com/Canardoux/tau/blob/mas
 
 ## [soundEffect](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/soundEffect/sound_effect.dart)
 
-<img src="sound_effect.png" width="40%" height="40%"/>
+<img src="sound_effect.png" width="70%" height="70%"/>
 
 [startPlayerFromStream](../../tau/player.md##startplayerfromstream) can be very efficient to play sound effects in real time. For example in a game App.
 In this example, the App open the Audio Session and call ```startPlayerFromStream()``` during initialization.
@@ -157,7 +157,7 @@ The complete example source [is there](https://github.com/Canardoux/tau/blob/mas
 
 ## [streamLoop](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/streamLoop/stream_loop.dart)
 
-<img src="stream_loop.png" width="40%" height="40%"/>
+<img src="stream_loop.png" width="70%" height="70%"/>
 
 ```streamLoop()``` is a very simple example which connect the FlutterSoundRecorder sink
 to the FlutterSoundPlayer Stream.
@@ -171,7 +171,7 @@ The complete example source [is there](https://github.com/Canardoux/tau/blob/mas
 
 ## [speechtotext](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/speechtotext/speech_to_text_example.dart)
 
-<img src="speech_to_text_example.png" width="40%" height="40%"/>
+<img src="speech_to_text_example.png" width="70%" height="70%"/>
 
 This is an example showing how to do Speech To Text.
 This is just for FUN :-D, because this example does not use the Flutter Sound library.

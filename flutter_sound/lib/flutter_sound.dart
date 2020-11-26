@@ -52,6 +52,7 @@ export 'src/flutter_sound_recorder.dart';
 export 'src/ui/sound_player_ui.dart';
 export 'src/ui/sound_recorder_ui.dart';
 export 'src/util/log.dart';
+export 'zozo.dart';
 
 /// The possible states of the players and recorders
 enum Initialized {

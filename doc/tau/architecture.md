@@ -36,7 +36,7 @@ Maybe in the future we will have others :
 - Windows
 - MacOS
 
-This layer is independant of the platforms/frameworks that &tau; wants to support.
+This layer is independant of the platforms/frameworks that &tau; wants to be supported by.
 
 
 ## The Interface layer

@@ -1,6 +1,6 @@
 name: flauto
 version: 6.4.3+12
-description: Flutter plugin that relates to sound like audio and recorder.
+description: audio player, audio recorder, media player, media recorder, sound player, sound recorder, lock-screen controls, notifications controls, flutter web.
 #author: dooboolab<dooboolab@gmail.com>
 homepage: https://canardoux.github.io/tau/book/flutter_sound/
 

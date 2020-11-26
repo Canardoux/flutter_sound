@@ -1,6 +1,6 @@
 # The &tau; Project
 
-###  The TAU Project
+##  The TAU Project
 
 - [The &tau; Architecture](tau/architecture.md)
 - [Getting Started](tau/getting-started.md)
