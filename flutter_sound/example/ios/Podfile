@@ -39,3 +39,9 @@ post_install do |installer|
     flutter_additional_ios_build_settings(target)
   end
 end
+
+# =====================================================
+# The following instruction is only for Tau debugging.
+# Do not insert such a line in a real App.
+pod 'tau_core', :path => '../../..'
+# =====================================================

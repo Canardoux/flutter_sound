@@ -49,12 +49,12 @@
     <h5 class="hidden-xs"><span class="package-name">flauto</span> <span class="package-kind">package</span></h5>
     <ol>
           <li class="section-title">Libraries</li>
-          <li><a href="UI/UI-library.html">UI</a></li>
-          <li><a href="flutter_ffmpeg/flutter_ffmpeg-library.html">flutter_ffmpeg</a></li>
-          <li><a href="flutter_sound_helper/flutter_sound_helper-library.html">flutter_sound_helper</a></li>
-          <li><a href="player/player-library.html">player</a></li>
+          <li><a href="helper/helper-library.html">helper</a></li>
           <li><a href="player/player-library.html">player</a></li>
           <li><a href="recorder/recorder-library.html">recorder</a></li>
+          <li><a href="tau/tau-library.html">tau</a></li>
+          <li><a href="ui_player/ui_player-library.html">ui_player</a></li>
+          <li><a href="ui_recorder/ui_recorder-library.html">ui_recorder</a></li>
     </ol>
   </div>
 
@@ -63,10 +63,6 @@
         <h2 id="flutter-sound">Flutter Sound</h2><img src="https://canardoux.github.io/tau/doc/flutter_sound/Logotype primary.png" width="70%" height="70%"><p align="left">
   <a href="https://canardoux.github.io/tau/book/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
 </p>
-<hr>
-<h1 id="flutter-sound-user-your-documentation-is-therehttpscanardouxgithubiotaubook">Flutter Sound user: your <a href="https://canardoux.github.io/tau/book">documentation is there</a></h1>
-<h1 id="the-changelog-file-is-herehttpscanardouxgithubiotaubookchangeloghtml">The <a href="https://canardoux.github.io/tau/book/CHANGELOG.html">CHANGELOG file is here</a></h1>
-<hr>
 <p>This plugin provides simple recorder and player functionalities for</p>
 <ul>
 <li>Android</li>
@@ -74,21 +70,24 @@
 <li>Flutter Web</li>
 </ul>
 <hr>
+<h1 id="flutter-sound-user-your-documentation-is-therehttpscanardouxgithubiotaubook">Flutter Sound user: your <a href="https://canardoux.github.io/tau/book">documentation is there</a></h1>
+<h1 id="the-changelog-file-is-herehttpscanardouxgithubiotaubookchangeloghtml">The <a href="https://canardoux.github.io/tau/book/CHANGELOG.html">CHANGELOG file is here</a></h1>
+<hr>
 <h1 id="flutter-sound-v6x-is-out">Flutter Sound V6.x is OUT</h1>
 <p>Please refer to the <a href="https://canardoux.github.io/tau/book/CHANGELOG.html">CHANGELOG.md file</a> to get learn all the great new features. It has especially the following :</p>
 <h2 id="flutter-web-support">Flutter Web support</h2>
-<p>Flutter Sound is supported by Flutter Web. You can play with <a href="https://canardoux.github.io/tau/doc/flutter_sound/web_example">this live demo on the web</a> (still cannot record with Safari or any web browser on iOS). You can <a href="https://canardoux.github.io/tau/book/flutter_sound/codec.html#flutter-sound-on-flutter-web">read this</a>.</p>
+<p>Flutter Sound is supported by Flutter Web. You can play with <a href="https://canardoux.github.io/tau/doc/flutter_sound/web_example">this live demo on the web</a> (still cannot record with Safari or any web browser on iOS). You can <a href="https://canardoux.github.io/tau/book/tau/codec.html#flutter-sound-on-flutter-web">read this</a>.</p>
 <h2 id="record-to-dart-stream">Record to Dart Stream</h2>
 <p>This feature has been requested from many months from many, many, many Flutter Sound users. This open doors to things like feeding a Speech-to-Text engine.</p>
-<p>You can refer to the <a href="https://canardoux.github.io/tau/book/flutter_sound/codec.html#recording-pcm-16-to-a-dart-stream">Getting Started with Record-to-Stream</a> notice.</p>
+<p>You can refer to the <a href="https://canardoux.github.io/tau/book/tau/codec.html#recording-pcm-16-to-a-dart-stream">Getting Started with Record-to-Stream</a> notice.</p>
 <h2 id="playback-from-a-live-dart-stream">Playback from a live Dart Stream</h2>
 <p>This feature has also been requested from many months from many Flutter Sound users.</p>
-<p>You can refer to the <a href="https://canardoux.github.io/tau/book/flutter_sound/codec.html#playing-pcm-16-from-a-dart-stream">Getting Started with Playback-from-Stream</a> notice.</p>
+<p>You can refer to the <a href="https://canardoux.github.io/tau/book/tau/codec.html#playing-pcm-16-from-a-dart-stream">Getting Started with Playback-from-Stream</a> notice.</p>
 <hr>
 <p><img src="https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif" alt="Demo"></p>
 <h2 id="features">Features</h2>
 <ul>
-<li>Play and Record sounds or music with various codecs. (See <a href="https://canardoux.github.io/tau/book/flutter_sound/codec.html#flutter-sound-codecs">the supported codecs here</a>)</li>
+<li>Play and Record sounds or music with various codecs. (See <a href="https://canardoux.github.io/tau/book/tau/codec.html#flutter-sound-codecs">the supported codecs here</a>)</li>
 <li>Play local or remote files specified by their URL.</li>
 <li>Record to a Dart Stream</li>
 <li>Playback from a Dart Stream</li>
@@ -105,7 +104,7 @@
 <h2 id="changelog">Changelog</h2>
 <p>You can find the <a href="https://canardoux.github.io/tau/book/CHANGELOG.html">changes here</a></p>
 <h2 id="documentation">Documentation</h2>
-<p>The <a href="https://canardoux.github.io/tau/book/flutter_sound/">documentation is here</a></p>
+<p>The <a href="https://canardoux.github.io/tau/book/">documentation is here</a></p>
 <h2 id="license">License</h2>
 <p>Flutter Sound is copyrighted by Dooboolab (2018, 2019, 2020).
 Flutter Sound is released under a license with a <em>copyleft</em> clause: the LGPL-V3 license. This means that if you modify some of Flutter Sound code you must publish your modifications under the LGPL license too.</p>
@@ -118,29 +117,12 @@ Flutter Sound is released under a license with a <em>copyleft</em> clause: the L
         <section class="summary">
             <h2>Libraries</h2>
           <dl>
-            <dt id="UI">
-              <span class="name"><a href="UI/UI-library.html">UI</a></span>             
+            <dt id="helper">
+              <span class="name"><a href="helper/helper-library.html">helper</a></span>             
             </dt>
             <dd>
-               <a href="UI/UI-library.html">[...]</a>
-            </dd>
-            <dt id="flutter_ffmpeg">
-              <span class="name"><a href="flutter_ffmpeg/flutter_ffmpeg-library.html">flutter_ffmpeg</a></span>             
-            </dt>
-            <dd>
-               
-            </dd>
-            <dt id="flutter_sound_helper">
-              <span class="name"><a href="flutter_sound_helper/flutter_sound_helper-library.html">flutter_sound_helper</a></span>             
-            </dt>
-            <dd>
-               
-            </dd>
-            <dt id="player">
-              <span class="name"><a href="player/player-library.html">player</a></span>             
-            </dt>
-            <dd>
-               <a href="player/player-library.html">[...]</a>
+              Toto et titi
+Un joli commmentaire 
             </dd>
             <dt id="player">
               <span class="name"><a href="player/player-library.html">player</a></span>             
@@ -155,6 +137,24 @@ Un joli commmentaire
             <dd>
               Toto et titi
 Un joli commmentaire 
+            </dd>
+            <dt id="tau">
+              <span class="name"><a href="tau/tau-library.html">tau</a></span>             
+            </dt>
+            <dd>
+               <a href="tau/tau-library.html">[...]</a>
+            </dd>
+            <dt id="ui_player">
+              <span class="name"><a href="ui_player/ui_player-library.html">ui_player</a></span>             
+            </dt>
+            <dd>
+               <a href="ui_player/ui_player-library.html">[...]</a>
+            </dd>
+            <dt id="ui_recorder">
+              <span class="name"><a href="ui_recorder/ui_recorder-library.html">ui_recorder</a></span>             
+            </dt>
+            <dd>
+               <a href="ui_recorder/ui_recorder-library.html">[...]</a>
             </dd>
           </dl>
         </section>
