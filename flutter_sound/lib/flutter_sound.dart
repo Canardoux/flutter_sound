@@ -45,27 +45,32 @@ import 'src/util/log.dart';
 
 
 /// everything.dart
-/// @.....n.....odoc
-//library everything;
+/// @nodoc
+library everything;
 export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
+
 /// Le commentaire de player
 library player;
 export 'src/flutter_sound_player.dart';
+
 ///
 library recorder;
 export 'src/flutter_sound_recorder.dart';
+
 ///
 library UI;
 export 'src/ui/sound_player_ui.dart';
 export 'src/ui/sound_recorder_ui.dart';
+
+///
+library lib2;
+export 'zozo.dart';
+
 ///
 library util;
 export 'src/flutter_ffmpeg.dart';
 export 'src/flutter_sound_helper.dart';
 export 'src/util/log.dart';
-///
-library lib2;
-export 'zozo.dart';
 
 /// The possible states of the players and recorders
 enum Initialized {
