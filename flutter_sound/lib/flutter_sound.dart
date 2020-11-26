@@ -47,10 +47,8 @@ export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart'
 
 /// everything.dart
 /// @nodoc
-@nodoc
 library everything;
 /// @nodoc
-@nodoc
 export 'src/flutter_ffmpeg.dart';
 export 'src/flutter_sound_helper.dart';
 export 'src/flutter_sound_player.dart';
