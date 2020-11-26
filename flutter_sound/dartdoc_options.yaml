@@ -5,7 +5,7 @@ dartdoc:
       markdown: ../doc/flutter_sound/flutter_sound_on_web.md
       name: Great
     "UI Widgets":
-      markdown: ../doc/tau/ui_widget.md
+      markdown: ../doc/flutter_sound/ui_widget.md
       name: UI
     "Utilities":
       markdown: ../doc/tau/ui_widget.md
