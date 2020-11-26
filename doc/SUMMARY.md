@@ -16,7 +16,7 @@
    - [FlutterSoundPlayer](tau/player.md)
    - [FlutterSoundRecorder](tau/recorder.md)
    - [FlutterSoundHelper](tau/helper.md)
-   - [FlutterSoundUI](flutter_sound/ui_widget.md)
+   - [FlutterSoundUI](https://canardoux.github.io/tau/doc/flutter_sound/api/topics/UI%20Widgets-topic.html)
 
 ## Flutter Sound
 
