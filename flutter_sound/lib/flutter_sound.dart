@@ -41,7 +41,7 @@ import 'dart:typed_data' show Uint8List;
 import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 import 'flutter_sound_player.dart';
 import 'flutter_sound_recorder.dart';
-import 'src/util/log.dart';
+import 'util/log.dart';
 
 
 /// everything.dart
@@ -59,8 +59,8 @@ export 'flutter_sound_recorder.dart';
 
 ///
 library UI;
-export 'src/ui/sound_player_ui.dart';
-export 'src/ui/sound_recorder_ui.dart';
+export 'ui/sound_player_ui.dart';
+export 'ui/sound_recorder_ui.dart';
 
 ///
 library lib2;
