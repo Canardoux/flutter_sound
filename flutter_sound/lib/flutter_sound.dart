@@ -39,8 +39,8 @@
 
 import 'dart:typed_data' show Uint8List;
 import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
-import 'src/flutter_sound_player.dart';
-import 'src/flutter_sound_recorder.dart';
+import 'flutter_sound_player.dart';
+import 'flutter_sound_recorder.dart';
 import 'src/util/log.dart';
 
 
@@ -51,11 +51,11 @@ export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart'
 
 /// Le commentaire de player
 library player;
-export 'src/flutter_sound_player.dart';
+export 'flutter_sound_player.dart';
 
 ///
 library recorder;
-export 'src/flutter_sound_recorder.dart';
+export 'flutter_sound_recorder.dart';
 
 ///
 library UI;
@@ -68,7 +68,7 @@ export 'zozo.dart';
 
 ///
 library util;
-export 'src/flutter_ffmpeg.dart';
+export 'flutter_ffmpeg.dart';
 export 'src/flutter_sound_helper.dart';
 export 'src/util/log.dart';
 
