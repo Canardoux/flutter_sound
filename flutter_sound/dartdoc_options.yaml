@@ -8,7 +8,7 @@ dartdoc:
       markdown: ../doc/flutter_sound/ui_widget.md
       name: UI
     "Utilities":
-      markdown: ../doc/tau/ui_widget.md
+      markdown: ../doc/flutter_sound/ui_widget.md
       name: util
   
   categoryOrder: [ "Amazing", "UI Widgets", "utilities"]
