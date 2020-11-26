@@ -46,8 +46,8 @@ import 'src/util/log.dart';
 export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 
 /// everything.dart
-@undocumented
 @nodoc
+@undocumented
 library everything;
 export 'src/flutter_ffmpeg.dart';
 export 'src/flutter_sound_helper.dart';
