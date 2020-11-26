@@ -46,14 +46,22 @@ import 'src/util/log.dart';
 export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 
 /// everything.dart
+/// @.....n.....odoc
 library everything;
-/// @nodoc
-export 'src/flutter_ffmpeg.dart';
-export 'src/flutter_sound_helper.dart';
+///
+library player;
 export 'src/flutter_sound_player.dart';
+///
+library recorder;
 export 'src/flutter_sound_recorder.dart';
+///
+library UI;
 export 'src/ui/sound_player_ui.dart';
 export 'src/ui/sound_recorder_ui.dart';
+///
+library util;
+export 'src/flutter_ffmpeg.dart';
+export 'src/flutter_sound_helper.dart';
 export 'src/util/log.dart';
 ///
 library lib2;
