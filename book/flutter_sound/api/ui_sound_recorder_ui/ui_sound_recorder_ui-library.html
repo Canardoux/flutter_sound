@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="sound_recorder_ui library API docs, for the Dart programming language.">
+  <title>sound_recorder_ui library - Dart API</title>
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="../static-assets/github.css">
+  <link rel="stylesheet" href="../static-assets/styles.css">
+  <link rel="icon" href="../static-assets/favicon.png">
+
+</head>
+
+<body data-base-href="../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">flauto</a></li>
+    <li class="self-crumb">sound_recorder_ui library</li>
+  </ol>
+  <div class="self-name">sound_recorder_ui</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="../index.html">flauto</a></li>
+      <li class="self-crumb">sound_recorder_ui library</li>
+    </ol>
+    
+    <h5><span class="package-name">flauto</span> <span class="package-kind">package</span></h5>
+    <ol>
+          <li class="section-title">Libraries</li>
+          <li><a href="../util_enum_helper/util_enum_helper-library.html">enum_helper</a></li>
+          <li><a href="../flutter_ffmpeg/flutter_ffmpeg-library.html">flutter_ffmpeg</a></li>
+          <li><a href="../flutter_sound_helper/flutter_sound_helper-library.html">flutter_sound_helper</a></li>
+          <li><a href="../flutter_sound_recorder/flutter_sound_recorder-library.html">flutter_sound_recorder</a></li>
+          <li><a href="../util_log/util_log-library.html">log</a></li>
+          <li><a href="../papa/papa-library.html">papa</a></li>
+          <li><a href="../player/player-library.html">player</a></li>
+          <li><a href="../ui_sound_player_ui/ui_sound_player_ui-library.html">sound_player_ui</a></li>
+          <li><a href="../ui_sound_recorder_ui/ui_sound_recorder_ui-library.html">sound_recorder_ui</a></li>
+          <li><a href="../util_stack_trace_impl/util_stack_trace_impl-library.html">stack_trace_impl</a></li>
+          <li><a href="../util_temp_file_system/util_temp_file_system-library.html">temp_file_system</a></li>
+          <li><a href="../util_wave_header/util_wave_header-library.html">wave_header</a></li>
+    </ol>
+  </div>
+
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <div><h1><span class="kind-library">sound_recorder_ui</span> library  </h1></div>
+
+    
+    <section class="summary offset-anchor" id="classes">
+      <h2>Classes</h2>
+
+      <dl>
+        <dt id="RecordedAudio">
+          <span class="name "><a href="../ui_sound_recorder_ui/RecordedAudio-class.html">RecordedAudio</a></span>         
+        </dt>
+        <dd>
+          <a href="../ui_sound_recorder_ui/RecordedAudio-class.html">RecordedAudio</a> is used to track the audio media
+created during a recording session via the SoundRecorderUI. 
+        </dd>
+        <dt id="RecorderPlaybackController">
+          <span class="name "><a href="../ui_sound_recorder_ui/RecorderPlaybackController-class.html">RecorderPlaybackController</a></span>         
+        </dt>
+        <dd>
+          This class is a Provider style widget designed to
+co-ordinate a <a href="../ui_sound_recorder_ui/SoundRecorderUI-class.html">SoundRecorderUI</a> and a <a href="../ui_sound_player_ui/SoundPlayerUI-class.html">SoundPlayerUI</a>
+so that a user can record and playback in a co-ordinated manner. <a href="../ui_sound_recorder_ui/RecorderPlaybackController-class.html">[...]</a>
+        </dd>
+        <dt id="SoundRecorderUI">
+          <span class="name "><a href="../ui_sound_recorder_ui/SoundRecorderUI-class.html">SoundRecorderUI</a></span>         
+        </dt>
+        <dd>
+          A UI for recording audio. 
+        </dd>
+        <dt id="SoundRecorderUIState">
+          <span class="name "><a href="../ui_sound_recorder_ui/SoundRecorderUIState-class.html">SoundRecorderUIState</a></span>         
+        </dt>
+        <dd>
+           
+        </dd>
+      </dl>
+    </section>
+
+
+
+
+
+    <section class="summary offset-anchor" id="functions">
+      <h2>Functions</h2>
+
+      <dl class="callables">
+        <dt id="connectPlayerToRecorderStream" class="callable">
+          <span class="name"><a href="../ui_sound_recorder_ui/connectPlayerToRecorderStream.html">connectPlayerToRecorderStream</a></span><span class="signature">(<wbr><span class="parameter" id="connectPlayerToRecorderStream-param-playerState"><span class="type-annotation"><a href="../ui_sound_player_ui/SoundPlayerUIState-class.html">SoundPlayerUIState</a></span> <span class="parameter-name">playerState</span>, </span><span class="parameter" id="connectPlayerToRecorderStream-param-recorderStream"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../player/PlaybackDisposition-class.html">PlaybackDisposition</a></span>&gt;</span></span> <span class="parameter-name">recorderStream</span></span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          Functions used to hide internal implementation details 
+                  
+</dd>
+        <dt id="registerPlayer" class="callable">
+          <span class="name"><a href="../ui_sound_recorder_ui/registerPlayer.html">registerPlayer</a></span><span class="signature">(<wbr><span class="parameter" id="registerPlayer-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span>, </span><span class="parameter" id="registerPlayer-param-player"><span class="type-annotation"><a href="../ui_sound_player_ui/SoundPlayerUIState-class.html">SoundPlayerUIState</a></span> <span class="parameter-name">player</span></span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+           
+                  
+</dd>
+      </dl>
+    </section>
+
+
+    <section class="summary offset-anchor" id="typedefs">
+      <h2>Typedefs</h2>
+
+      <dl class="callables">
+        <dt id="OnDelete" class="callable">
+          <span class="name"><a href="../ui_sound_recorder_ui/OnDelete.html">OnDelete</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          Callback fn type 
+                  
+</dd>
+        <dt id="OnPaused" class="callable">
+          <span class="name"><a href="../ui_sound_recorder_ui/OnPaused.html">OnPaused</a></span><span class="signature">(<wbr><span class="parameter" id="OnPaused-param-media"><span class="type-annotation"><a href="../ui_sound_recorder_ui/RecordedAudio-class.html">RecordedAudio</a></span> <span class="parameter-name">media</span>, </span><span class="parameter" id="OnPaused-param-isPaused"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isPaused</span></span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          Callback fn type 
+                  
+</dd>
+        <dt id="OnProgress" class="callable">
+          <span class="name"><a href="../ui_sound_recorder_ui/OnProgress.html">OnProgress</a></span><span class="signature">(<wbr><span class="parameter" id="OnProgress-param-media"><span class="type-annotation"><a href="../ui_sound_recorder_ui/RecordedAudio-class.html">RecordedAudio</a></span> <span class="parameter-name">media</span></span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          Callback fn type 
+                  
+</dd>
+        <dt id="OnStart" class="callable">
+          <span class="name"><a href="../ui_sound_recorder_ui/OnStart.html">OnStart</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          Callback fn type 
+                  
+</dd>
+        <dt id="OnStop" class="callable">
+          <span class="name"><a href="../ui_sound_recorder_ui/OnStop.html">OnStop</a></span><span class="signature">(<wbr><span class="parameter" id="OnStop-param-media"><span class="type-annotation"><a href="../ui_sound_recorder_ui/RecordedAudio-class.html">RecordedAudio</a></span> <span class="parameter-name">media</span></span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          Callback fn type 
+                  
+</dd>
+        <dt id="UIRequestPermission" class="callable">
+          <span class="name"><a href="../ui_sound_recorder_ui/UIRequestPermission.html">UIRequestPermission</a></span><span class="signature">(<wbr><span class="parameter" id="UIRequestPermission-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span>, </span><span class="parameter" id="UIRequestPermission-param-track"><span class="type-annotation"><a href="../player/Track-class.html">Track</a></span> <span class="parameter-name">track</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          The <code>requestPermissions</code> callback allows you to provide an
+UI informing the user that we are about to ask for a permission. 
+                  
+</dd>
+      </dl>
+    </section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+    <h5>sound_recorder_ui library</h5>
+    <ol>
+      <li class="section-title"><a href="../ui_sound_recorder_ui/ui_sound_recorder_ui-library.html#classes">Classes</a></li>
+      <li><a href="../ui_sound_recorder_ui/RecordedAudio-class.html">RecordedAudio</a></li>
+      <li><a href="../ui_sound_recorder_ui/RecorderPlaybackController-class.html">RecorderPlaybackController</a></li>
+      <li><a href="../ui_sound_recorder_ui/SoundRecorderUI-class.html">SoundRecorderUI</a></li>
+      <li><a href="../ui_sound_recorder_ui/SoundRecorderUIState-class.html">SoundRecorderUIState</a></li>
+    
+    
+    
+    
+    
+      <li class="section-title"><a href="../ui_sound_recorder_ui/ui_sound_recorder_ui-library.html#functions">Functions</a></li>
+      <li><a href="../ui_sound_recorder_ui/connectPlayerToRecorderStream.html">connectPlayerToRecorderStream</a></li>
+      <li><a href="../ui_sound_recorder_ui/registerPlayer.html">registerPlayer</a></li>
+    
+    
+      <li class="section-title"><a href="../ui_sound_recorder_ui/ui_sound_recorder_ui-library.html#typedefs">Typedefs</a></li>
+      <li><a href="../ui_sound_recorder_ui/OnDelete.html">OnDelete</a></li>
+      <li><a href="../ui_sound_recorder_ui/OnPaused.html">OnPaused</a></li>
+      <li><a href="../ui_sound_recorder_ui/OnProgress.html">OnProgress</a></li>
+      <li><a href="../ui_sound_recorder_ui/OnStart.html">OnStart</a></li>
+      <li><a href="../ui_sound_recorder_ui/OnStop.html">OnStop</a></li>
+      <li><a href="../ui_sound_recorder_ui/UIRequestPermission.html">UIRequestPermission</a></li>
+    
+    </ol>
+  </div><!--/sidebar-offcanvas-right-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    flauto
+      6.4.3+12
+  </span>
+
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="../static-assets/typeahead.bundle.min.js"></script>
+<script src="../static-assets/highlight.pack.js"></script>
+<script src="../static-assets/URI.js"></script>
+<script src="../static-assets/script.js"></script>
+
+
+</body>
+
+</html>

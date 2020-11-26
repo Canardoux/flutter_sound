@@ -1,0 +1,4262 @@
+[
+ {
+  "name": "enum_helper",
+  "qualifiedName": "enum_helper",
+  "href": "util_enum_helper/util_enum_helper-library.html",
+  "type": "library",
+  "overriddenDepth": 0,
+  "packageName": "flauto"
+ },
+ {
+  "name": "EnumHelper",
+  "qualifiedName": "enum_helper.EnumHelper",
+  "href": "util_enum_helper/EnumHelper-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "enum_helper",
+   "type": "library"
+  }
+ },
+ {
+  "name": "EnumHelper",
+  "qualifiedName": "enum_helper.EnumHelper.EnumHelper",
+  "href": "util_enum_helper/EnumHelper/EnumHelper.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "EnumHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getByIndex",
+  "qualifiedName": "enum_helper.EnumHelper.getByIndex",
+  "href": "util_enum_helper/EnumHelper/getByIndex.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "EnumHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getEnum",
+  "qualifiedName": "enum_helper.EnumHelper.getEnum",
+  "href": "util_enum_helper/EnumHelper/getEnum.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "EnumHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getIndexOf",
+  "qualifiedName": "enum_helper.EnumHelper.getIndexOf",
+  "href": "util_enum_helper/EnumHelper/getIndexOf.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "EnumHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getName",
+  "qualifiedName": "enum_helper.EnumHelper.getName",
+  "href": "util_enum_helper/EnumHelper/getName.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "EnumHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "reCase",
+  "qualifiedName": "enum_helper.EnumHelper.reCase",
+  "href": "util_enum_helper/EnumHelper/reCase.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "EnumHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "flutter_ffmpeg",
+  "qualifiedName": "flutter_ffmpeg",
+  "href": "flutter_ffmpeg/flutter_ffmpeg-library.html",
+  "type": "library",
+  "overriddenDepth": 0,
+  "packageName": "flauto"
+ },
+ {
+  "name": "FlutterFFmpeg",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpeg",
+  "href": "flutter_ffmpeg/FlutterFFmpeg-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "flutter_ffmpeg",
+   "type": "library"
+  }
+ },
+ {
+  "name": "FlutterFFmpeg",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpeg.FlutterFFmpeg",
+  "href": "flutter_ffmpeg/FlutterFFmpeg/FlutterFFmpeg.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpeg",
+   "type": "class"
+  }
+ },
+ {
+  "name": "cancel",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpeg.cancel",
+  "href": "flutter_ffmpeg/FlutterFFmpeg/cancel.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpeg",
+   "type": "class"
+  }
+ },
+ {
+  "name": "execute",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpeg.execute",
+  "href": "flutter_ffmpeg/FlutterFFmpeg/execute.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpeg",
+   "type": "class"
+  }
+ },
+ {
+  "name": "executeWithArguments",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpeg.executeWithArguments",
+  "href": "flutter_ffmpeg/FlutterFFmpeg/executeWithArguments.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpeg",
+   "type": "class"
+  }
+ },
+ {
+  "name": "parseArguments",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpeg.parseArguments",
+  "href": "flutter_ffmpeg/FlutterFFmpeg/parseArguments.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpeg",
+   "type": "class"
+  }
+ },
+ {
+  "name": "FlutterFFmpegConfig",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "flutter_ffmpeg",
+   "type": "library"
+  }
+ },
+ {
+  "name": "FlutterFFmpegConfig",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.FlutterFFmpegConfig",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/FlutterFFmpegConfig.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "disableLogs",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.disableLogs",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/disableLogs.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "disableRedirection",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.disableRedirection",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/disableRedirection.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "disableStatistics",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.disableStatistics",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/disableStatistics.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "enableLogCallback",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.enableLogCallback",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/enableLogCallback.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "enableLogs",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.enableLogs",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/enableLogs.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "enableRedirection",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.enableRedirection",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/enableRedirection.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "enableStatistics",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.enableStatistics",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/enableStatistics.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "enableStatisticsCallback",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.enableStatisticsCallback",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/enableStatisticsCallback.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getExternalLibraries",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.getExternalLibraries",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/getExternalLibraries.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getFFmpegVersion",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.getFFmpegVersion",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/getFFmpegVersion.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getLastCommandOutput",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.getLastCommandOutput",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/getLastCommandOutput.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getLastReceivedStatistics",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.getLastReceivedStatistics",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/getLastReceivedStatistics.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getLastReturnCode",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.getLastReturnCode",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/getLastReturnCode.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getLogLevel",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.getLogLevel",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/getLogLevel.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getPackageName",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.getPackageName",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/getPackageName.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getPlatform",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.getPlatform",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/getPlatform.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "logCallback",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.logCallback",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/logCallback.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "registerNewFFmpegPipe",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.registerNewFFmpegPipe",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/registerNewFFmpegPipe.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "resetStatistics",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.resetStatistics",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/resetStatistics.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "setFontDirectory",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.setFontDirectory",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/setFontDirectory.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "setFontconfigConfigurationPath",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.setFontconfigConfigurationPath",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/setFontconfigConfigurationPath.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "setLogLevel",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.setLogLevel",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/setLogLevel.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "statisticsCallback",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFmpegConfig.statisticsCallback",
+  "href": "flutter_ffmpeg/FlutterFFmpegConfig/statisticsCallback.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFmpegConfig",
+   "type": "class"
+  }
+ },
+ {
+  "name": "FlutterFFprobe",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFprobe",
+  "href": "flutter_ffmpeg/FlutterFFprobe-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "flutter_ffmpeg",
+   "type": "library"
+  }
+ },
+ {
+  "name": "FlutterFFprobe",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFprobe.FlutterFFprobe",
+  "href": "flutter_ffmpeg/FlutterFFprobe/FlutterFFprobe.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFprobe",
+   "type": "class"
+  }
+ },
+ {
+  "name": "execute",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFprobe.execute",
+  "href": "flutter_ffmpeg/FlutterFFprobe/execute.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFprobe",
+   "type": "class"
+  }
+ },
+ {
+  "name": "executeWithArguments",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFprobe.executeWithArguments",
+  "href": "flutter_ffmpeg/FlutterFFprobe/executeWithArguments.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFprobe",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getMediaInformation",
+  "qualifiedName": "flutter_ffmpeg.FlutterFFprobe.getMediaInformation",
+  "href": "flutter_ffmpeg/FlutterFFprobe/getMediaInformation.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterFFprobe",
+   "type": "class"
+  }
+ },
+ {
+  "name": "flutter_sound_helper",
+  "qualifiedName": "flutter_sound_helper",
+  "href": "flutter_sound_helper/flutter_sound_helper-library.html",
+  "type": "library",
+  "overriddenDepth": 0,
+  "packageName": "flauto"
+ },
+ {
+  "name": "FlutterSoundHelper",
+  "qualifiedName": "flutter_sound_helper.FlutterSoundHelper",
+  "href": "flutter_sound_helper/FlutterSoundHelper-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "flutter_sound_helper",
+   "type": "library"
+  }
+ },
+ {
+  "name": "FlutterSoundHelper",
+  "qualifiedName": "flutter_sound_helper.FlutterSoundHelper.FlutterSoundHelper",
+  "href": "flutter_sound_helper/FlutterSoundHelper/FlutterSoundHelper.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "convertFile",
+  "qualifiedName": "flutter_sound_helper.FlutterSoundHelper.convertFile",
+  "href": "flutter_sound_helper/FlutterSoundHelper/convertFile.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "duration",
+  "qualifiedName": "flutter_sound_helper.FlutterSoundHelper.duration",
+  "href": "flutter_sound_helper/FlutterSoundHelper/duration.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "executeFFmpegWithArguments",
+  "qualifiedName": "flutter_sound_helper.FlutterSoundHelper.executeFFmpegWithArguments",
+  "href": "flutter_sound_helper/FlutterSoundHelper/executeFFmpegWithArguments.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "ffMpegGetMediaInformation",
+  "qualifiedName": "flutter_sound_helper.FlutterSoundHelper.ffMpegGetMediaInformation",
+  "href": "flutter_sound_helper/FlutterSoundHelper/ffMpegGetMediaInformation.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "flutterFFmpeg",
+  "qualifiedName": "flutter_sound_helper.FlutterSoundHelper.flutterFFmpeg",
+  "href": "flutter_sound_helper/FlutterSoundHelper/flutterFFmpeg.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getLastFFmpegCommandOutput",
+  "qualifiedName": "flutter_sound_helper.FlutterSoundHelper.getLastFFmpegCommandOutput",
+  "href": "flutter_sound_helper/FlutterSoundHelper/getLastFFmpegCommandOutput.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getLastFFmpegReturnCode",
+  "qualifiedName": "flutter_sound_helper.FlutterSoundHelper.getLastFFmpegReturnCode",
+  "href": "flutter_sound_helper/FlutterSoundHelper/getLastFFmpegReturnCode.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isFFmpegAvailable",
+  "qualifiedName": "flutter_sound_helper.FlutterSoundHelper.isFFmpegAvailable",
+  "href": "flutter_sound_helper/FlutterSoundHelper/isFFmpegAvailable.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "pcmToWave",
+  "qualifiedName": "flutter_sound_helper.FlutterSoundHelper.pcmToWave",
+  "href": "flutter_sound_helper/FlutterSoundHelper/pcmToWave.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "pcmToWaveBuffer",
+  "qualifiedName": "flutter_sound_helper.FlutterSoundHelper.pcmToWaveBuffer",
+  "href": "flutter_sound_helper/FlutterSoundHelper/pcmToWaveBuffer.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "waveToPCM",
+  "qualifiedName": "flutter_sound_helper.FlutterSoundHelper.waveToPCM",
+  "href": "flutter_sound_helper/FlutterSoundHelper/waveToPCM.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "waveToPCMBuffer",
+  "qualifiedName": "flutter_sound_helper.FlutterSoundHelper.waveToPCMBuffer",
+  "href": "flutter_sound_helper/FlutterSoundHelper/waveToPCMBuffer.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundHelper",
+   "type": "class"
+  }
+ },
+ {
+  "name": "flutterSoundHelper",
+  "qualifiedName": "flutter_sound_helper.flutterSoundHelper",
+  "href": "flutter_sound_helper/flutterSoundHelper.html",
+  "type": "top-level property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "flutter_sound_helper",
+   "type": "library"
+  }
+ },
+ {
+  "name": "flutter_sound_recorder",
+  "qualifiedName": "flutter_sound_recorder",
+  "href": "flutter_sound_recorder/flutter_sound_recorder-library.html",
+  "type": "library",
+  "overriddenDepth": 0,
+  "packageName": "flauto"
+ },
+ {
+  "name": "FlutterSoundRecorder",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "flutter_sound_recorder",
+   "type": "library"
+  }
+ },
+ {
+  "name": "FlutterSoundRecorder",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.FlutterSoundRecorder",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/FlutterSoundRecorder.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "closeAudioSession",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.closeAudioSession",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/closeAudioSession.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "dispositionStream",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.dispositionStream",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/dispositionStream.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isEncoderSupported",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.isEncoderSupported",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/isEncoderSupported.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isInited",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.isInited",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/isInited.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isPaused",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.isPaused",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/isPaused.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isRecording",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.isRecording",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/isRecording.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isStopped",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.isStopped",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/isStopped.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "onProgress",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.onProgress",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/onProgress.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "openAudioSession",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.openAudioSession",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/openAudioSession.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "pauseRecorder",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.pauseRecorder",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/pauseRecorder.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "recorderState",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.recorderState",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/recorderState.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "recordingData",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.recordingData",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/recordingData.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "resumeRecorder",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.resumeRecorder",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/resumeRecorder.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "setAudioFocus",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.setAudioFocus",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/setAudioFocus.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "setSubscriptionDuration",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.setSubscriptionDuration",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/setSubscriptionDuration.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "startRecorder",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.startRecorder",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/startRecorder.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "stopRecorder",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.stopRecorder",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/stopRecorder.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "updateRecorderProgress",
+  "qualifiedName": "flutter_sound_recorder.FlutterSoundRecorder.updateRecorderProgress",
+  "href": "flutter_sound_recorder/FlutterSoundRecorder/updateRecorderProgress.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "RecordingDisposition",
+  "qualifiedName": "flutter_sound_recorder.RecordingDisposition",
+  "href": "flutter_sound_recorder/RecordingDisposition-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "flutter_sound_recorder",
+   "type": "library"
+  }
+ },
+ {
+  "name": "RecordingDisposition",
+  "qualifiedName": "flutter_sound_recorder.RecordingDisposition.RecordingDisposition",
+  "href": "flutter_sound_recorder/RecordingDisposition/RecordingDisposition.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordingDisposition",
+   "type": "class"
+  }
+ },
+ {
+  "name": "decibels",
+  "qualifiedName": "flutter_sound_recorder.RecordingDisposition.decibels",
+  "href": "flutter_sound_recorder/RecordingDisposition/decibels.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordingDisposition",
+   "type": "class"
+  }
+ },
+ {
+  "name": "duration",
+  "qualifiedName": "flutter_sound_recorder.RecordingDisposition.duration",
+  "href": "flutter_sound_recorder/RecordingDisposition/duration.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordingDisposition",
+   "type": "class"
+  }
+ },
+ {
+  "name": "toString",
+  "qualifiedName": "flutter_sound_recorder.RecordingDisposition.toString",
+  "href": "flutter_sound_recorder/RecordingDisposition/toString.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordingDisposition",
+   "type": "class"
+  }
+ },
+ {
+  "name": "RecordingDisposition.zero",
+  "qualifiedName": "flutter_sound_recorder.RecordingDisposition.zero",
+  "href": "flutter_sound_recorder/RecordingDisposition/RecordingDisposition.zero.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordingDisposition",
+   "type": "class"
+  }
+ },
+ {
+  "name": "RecordingPermissionException",
+  "qualifiedName": "flutter_sound_recorder.RecordingPermissionException",
+  "href": "flutter_sound_recorder/RecordingPermissionException-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "flutter_sound_recorder",
+   "type": "library"
+  }
+ },
+ {
+  "name": "RecordingPermissionException",
+  "qualifiedName": "flutter_sound_recorder.RecordingPermissionException.RecordingPermissionException",
+  "href": "flutter_sound_recorder/RecordingPermissionException/RecordingPermissionException.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordingPermissionException",
+   "type": "class"
+  }
+ },
+ {
+  "name": "message",
+  "qualifiedName": "flutter_sound_recorder.RecordingPermissionException.message",
+  "href": "flutter_sound_recorder/RecordingPermissionException/message.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordingPermissionException",
+   "type": "class"
+  }
+ },
+ {
+  "name": "log",
+  "qualifiedName": "log",
+  "href": "util_log/util_log-library.html",
+  "type": "library",
+  "overriddenDepth": 0,
+  "packageName": "flauto"
+ },
+ {
+  "name": "AnsiColor",
+  "qualifiedName": "log.AnsiColor",
+  "href": "util_log/AnsiColor-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "log",
+   "type": "library"
+  }
+ },
+ {
+  "name": "AnsiColor",
+  "qualifiedName": "log.AnsiColor.AnsiColor",
+  "href": "util_log/AnsiColor/AnsiColor.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "apply",
+  "qualifiedName": "log.AnsiColor.apply",
+  "href": "util_log/AnsiColor/apply.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "bgColor",
+  "qualifiedName": "log.AnsiColor.bgColor",
+  "href": "util_log/AnsiColor/bgColor-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "bgReset",
+  "qualifiedName": "log.AnsiColor.bgReset",
+  "href": "util_log/AnsiColor/bgReset.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "bgResetCode",
+  "qualifiedName": "log.AnsiColor.bgResetCode",
+  "href": "util_log/AnsiColor/bgResetCode-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "black",
+  "qualifiedName": "log.AnsiColor.black",
+  "href": "util_log/AnsiColor/black-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "blue",
+  "qualifiedName": "log.AnsiColor.blue",
+  "href": "util_log/AnsiColor/blue-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "code",
+  "qualifiedName": "log.AnsiColor.code",
+  "href": "util_log/AnsiColor/code.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "cyan",
+  "qualifiedName": "log.AnsiColor.cyan",
+  "href": "util_log/AnsiColor/cyan-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "esc",
+  "qualifiedName": "log.AnsiColor.esc",
+  "href": "util_log/AnsiColor/esc-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "fgColor",
+  "qualifiedName": "log.AnsiColor.fgColor",
+  "href": "util_log/AnsiColor/fgColor-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "fgReset",
+  "qualifiedName": "log.AnsiColor.fgReset",
+  "href": "util_log/AnsiColor/fgReset.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "fgResetCode",
+  "qualifiedName": "log.AnsiColor.fgResetCode",
+  "href": "util_log/AnsiColor/fgResetCode-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "green",
+  "qualifiedName": "log.AnsiColor.green",
+  "href": "util_log/AnsiColor/green-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "grey",
+  "qualifiedName": "log.AnsiColor.grey",
+  "href": "util_log/AnsiColor/grey.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "magenta",
+  "qualifiedName": "log.AnsiColor.magenta",
+  "href": "util_log/AnsiColor/magenta-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "none",
+  "qualifiedName": "log.AnsiColor.none",
+  "href": "util_log/AnsiColor/none-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "orange",
+  "qualifiedName": "log.AnsiColor.orange",
+  "href": "util_log/AnsiColor/orange-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "red",
+  "qualifiedName": "log.AnsiColor.red",
+  "href": "util_log/AnsiColor/red-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "reset",
+  "qualifiedName": "log.AnsiColor.reset",
+  "href": "util_log/AnsiColor/reset.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "resetCode",
+  "qualifiedName": "log.AnsiColor.resetCode",
+  "href": "util_log/AnsiColor/resetCode-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "white",
+  "qualifiedName": "log.AnsiColor.white",
+  "href": "util_log/AnsiColor/white-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "yellow",
+  "qualifiedName": "log.AnsiColor.yellow",
+  "href": "util_log/AnsiColor/yellow-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "AnsiColor",
+   "type": "class"
+  }
+ },
+ {
+  "name": "Log",
+  "qualifiedName": "log.Log",
+  "href": "util_log/Log-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "log",
+   "type": "library"
+  }
+ },
+ {
+  "name": "autoInit",
+  "qualifiedName": "log.Log.autoInit",
+  "href": "util_log/Log/autoInit.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Log",
+   "type": "class"
+  }
+ },
+ {
+  "name": "Log.color",
+  "qualifiedName": "log.Log.color",
+  "href": "util_log/Log/Log.color.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Log",
+   "type": "class"
+  }
+ },
+ {
+  "name": "color",
+  "qualifiedName": "log.Log.color",
+  "href": "util_log/Log/color.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Log",
+   "type": "class"
+  }
+ },
+ {
+  "name": "Log.d",
+  "qualifiedName": "log.Log.d",
+  "href": "util_log/Log/Log.d.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Log",
+   "type": "class"
+  }
+ },
+ {
+  "name": "debug",
+  "qualifiedName": "log.Log.debug",
+  "href": "util_log/Log/debug.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Log",
+   "type": "class"
+  }
+ },
+ {
+  "name": "Log.e",
+  "qualifiedName": "log.Log.e",
+  "href": "util_log/Log/Log.e.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Log",
+   "type": "class"
+  }
+ },
+ {
+  "name": "error",
+  "qualifiedName": "log.Log.error",
+  "href": "util_log/Log/error.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Log",
+   "type": "class"
+  }
+ },
+ {
+  "name": "Log.i",
+  "qualifiedName": "log.Log.i",
+  "href": "util_log/Log/Log.i.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Log",
+   "type": "class"
+  }
+ },
+ {
+  "name": "info",
+  "qualifiedName": "log.Log.info",
+  "href": "util_log/Log/info.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Log",
+   "type": "class"
+  }
+ },
+ {
+  "name": "init",
+  "qualifiedName": "log.Log.init",
+  "href": "util_log/Log/init.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Log",
+   "type": "class"
+  }
+ },
+ {
+  "name": "loggingLevel",
+  "qualifiedName": "log.Log.loggingLevel",
+  "href": "util_log/Log/loggingLevel.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Log",
+   "type": "class"
+  }
+ },
+ {
+  "name": "Log.w",
+  "qualifiedName": "log.Log.w",
+  "href": "util_log/Log/Log.w.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Log",
+   "type": "class"
+  }
+ },
+ {
+  "name": "warn",
+  "qualifiedName": "log.Log.warn",
+  "href": "util_log/Log/warn.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Log",
+   "type": "class"
+  }
+ },
+ {
+  "name": "LogLevel",
+  "qualifiedName": "log.LogLevel",
+  "href": "util_log/LogLevel-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "log",
+   "type": "library"
+  }
+ },
+ {
+  "name": "LogLevel",
+  "qualifiedName": "log.LogLevel.LogLevel",
+  "href": "util_log/LogLevel/LogLevel.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogDebug",
+  "qualifiedName": "log.LogLevel.avLogDebug",
+  "href": "util_log/LogLevel/avLogDebug-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogError",
+  "qualifiedName": "log.LogLevel.avLogError",
+  "href": "util_log/LogLevel/avLogError-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogFatal",
+  "qualifiedName": "log.LogLevel.avLogFatal",
+  "href": "util_log/LogLevel/avLogFatal-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogInfo",
+  "qualifiedName": "log.LogLevel.avLogInfo",
+  "href": "util_log/LogLevel/avLogInfo-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogPanic",
+  "qualifiedName": "log.LogLevel.avLogPanic",
+  "href": "util_log/LogLevel/avLogPanic-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogQuiet",
+  "qualifiedName": "log.LogLevel.avLogQuiet",
+  "href": "util_log/LogLevel/avLogQuiet-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogStderr",
+  "qualifiedName": "log.LogLevel.avLogStderr",
+  "href": "util_log/LogLevel/avLogStderr-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogTrace",
+  "qualifiedName": "log.LogLevel.avLogTrace",
+  "href": "util_log/LogLevel/avLogTrace-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogVerbose",
+  "qualifiedName": "log.LogLevel.avLogVerbose",
+  "href": "util_log/LogLevel/avLogVerbose-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "avLogWarning",
+  "qualifiedName": "log.LogLevel.avLogWarning",
+  "href": "util_log/LogLevel/avLogWarning-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "levelToString",
+  "qualifiedName": "log.LogLevel.levelToString",
+  "href": "util_log/LogLevel/levelToString.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "LogLevel",
+   "type": "class"
+  }
+ },
+ {
+  "name": "MyLogPrinter",
+  "qualifiedName": "log.MyLogPrinter",
+  "href": "util_log/MyLogPrinter-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "log",
+   "type": "library"
+  }
+ },
+ {
+  "name": "MyLogPrinter",
+  "qualifiedName": "log.MyLogPrinter.MyLogPrinter",
+  "href": "util_log/MyLogPrinter/MyLogPrinter.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "MyLogPrinter",
+   "type": "class"
+  }
+ },
+ {
+  "name": "color",
+  "qualifiedName": "log.MyLogPrinter.color",
+  "href": "util_log/MyLogPrinter/color.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "MyLogPrinter",
+   "type": "class"
+  }
+ },
+ {
+  "name": "colors",
+  "qualifiedName": "log.MyLogPrinter.colors",
+  "href": "util_log/MyLogPrinter/colors.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "MyLogPrinter",
+   "type": "class"
+  }
+ },
+ {
+  "name": "currentWorkingDirectory",
+  "qualifiedName": "log.MyLogPrinter.currentWorkingDirectory",
+  "href": "util_log/MyLogPrinter/currentWorkingDirectory.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "MyLogPrinter",
+   "type": "class"
+  }
+ },
+ {
+  "name": "log",
+  "qualifiedName": "log.MyLogPrinter.log",
+  "href": "util_log/MyLogPrinter/log.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "MyLogPrinter",
+   "type": "class"
+  }
+ },
+ {
+  "name": "black",
+  "qualifiedName": "log.black",
+  "href": "util_log/black.html",
+  "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "log",
+   "type": "library"
+  }
+ },
+ {
+  "name": "blue",
+  "qualifiedName": "log.blue",
+  "href": "util_log/blue.html",
+  "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "log",
+   "type": "library"
+  }
+ },
+ {
+  "name": "cyan",
+  "qualifiedName": "log.cyan",
+  "href": "util_log/cyan.html",
+  "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "log",
+   "type": "library"
+  }
+ },
+ {
+  "name": "green",
+  "qualifiedName": "log.green",
+  "href": "util_log/green.html",
+  "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "log",
+   "type": "library"
+  }
+ },
+ {
+  "name": "grey",
+  "qualifiedName": "log.grey",
+  "href": "util_log/grey.html",
+  "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "log",
+   "type": "library"
+  }
+ },
+ {
+  "name": "magenta",
+  "qualifiedName": "log.magenta",
+  "href": "util_log/magenta.html",
+  "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "log",
+   "type": "library"
+  }
+ },
+ {
+  "name": "orange",
+  "qualifiedName": "log.orange",
+  "href": "util_log/orange.html",
+  "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "log",
+   "type": "library"
+  }
+ },
+ {
+  "name": "red",
+  "qualifiedName": "log.red",
+  "href": "util_log/red.html",
+  "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "log",
+   "type": "library"
+  }
+ },
+ {
+  "name": "white",
+  "qualifiedName": "log.white",
+  "href": "util_log/white.html",
+  "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "log",
+   "type": "library"
+  }
+ },
+ {
+  "name": "yellow",
+  "qualifiedName": "log.yellow",
+  "href": "util_log/yellow.html",
+  "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "log",
+   "type": "library"
+  }
+ },
+ {
+  "name": "papa",
+  "qualifiedName": "papa",
+  "href": "papa/papa-library.html",
+  "type": "library",
+  "overriddenDepth": 0,
+  "packageName": "flauto"
+ },
+ {
+  "name": "Zozo",
+  "qualifiedName": "papa.Zozo",
+  "href": "papa/Zozo-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "papa",
+   "type": "library"
+  }
+ },
+ {
+  "name": "Zozo",
+  "qualifiedName": "papa.Zozo.Zozo",
+  "href": "papa/Zozo/Zozo.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Zozo",
+   "type": "class"
+  }
+ },
+ {
+  "name": "zozop",
+  "qualifiedName": "papa.Zozo.zozop",
+  "href": "papa/Zozo/zozop.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Zozo",
+   "type": "class"
+  }
+ },
+ {
+  "name": "player",
+  "qualifiedName": "player",
+  "href": "player/player-library.html",
+  "type": "library",
+  "overriddenDepth": 0,
+  "packageName": "flauto"
+ },
+ {
+  "name": "FlutterSoundPlayer",
+  "qualifiedName": "player.FlutterSoundPlayer",
+  "href": "player/FlutterSoundPlayer-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "FlutterSoundPlayer",
+  "qualifiedName": "player.FlutterSoundPlayer.FlutterSoundPlayer",
+  "href": "player/FlutterSoundPlayer/FlutterSoundPlayer.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "audioPlayerFinished",
+  "qualifiedName": "player.FlutterSoundPlayer.audioPlayerFinished",
+  "href": "player/FlutterSoundPlayer/audioPlayerFinished.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "audioPlayerFinishedPlaying",
+  "qualifiedName": "player.FlutterSoundPlayer.audioPlayerFinishedPlaying",
+  "href": "player/FlutterSoundPlayer/audioPlayerFinishedPlaying.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "closeAudioSession",
+  "qualifiedName": "player.FlutterSoundPlayer.closeAudioSession",
+  "href": "player/FlutterSoundPlayer/closeAudioSession.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "dispositionStream",
+  "qualifiedName": "player.FlutterSoundPlayer.dispositionStream",
+  "href": "player/FlutterSoundPlayer/dispositionStream.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "feed",
+  "qualifiedName": "player.FlutterSoundPlayer.feed",
+  "href": "player/FlutterSoundPlayer/feed.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "feedFromStream",
+  "qualifiedName": "player.FlutterSoundPlayer.feedFromStream",
+  "href": "player/FlutterSoundPlayer/feedFromStream.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "foodSink",
+  "qualifiedName": "player.FlutterSoundPlayer.foodSink",
+  "href": "player/FlutterSoundPlayer/foodSink.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "foodStreamController",
+  "qualifiedName": "player.FlutterSoundPlayer.foodStreamController",
+  "href": "player/FlutterSoundPlayer/foodStreamController.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "foodStreamSubscription",
+  "qualifiedName": "player.FlutterSoundPlayer.foodStreamSubscription",
+  "href": "player/FlutterSoundPlayer/foodStreamSubscription.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getPlayerState",
+  "qualifiedName": "player.FlutterSoundPlayer.getPlayerState",
+  "href": "player/FlutterSoundPlayer/getPlayerState.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getProgress",
+  "qualifiedName": "player.FlutterSoundPlayer.getProgress",
+  "href": "player/FlutterSoundPlayer/getProgress.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "getResourcePath",
+  "qualifiedName": "player.FlutterSoundPlayer.getResourcePath",
+  "href": "player/FlutterSoundPlayer/getResourcePath.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isDecoderSupported",
+  "qualifiedName": "player.FlutterSoundPlayer.isDecoderSupported",
+  "href": "player/FlutterSoundPlayer/isDecoderSupported.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isInited",
+  "qualifiedName": "player.FlutterSoundPlayer.isInited",
+  "href": "player/FlutterSoundPlayer/isInited.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isOpen",
+  "qualifiedName": "player.FlutterSoundPlayer.isOpen",
+  "href": "player/FlutterSoundPlayer/isOpen.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isPaused",
+  "qualifiedName": "player.FlutterSoundPlayer.isPaused",
+  "href": "player/FlutterSoundPlayer/isPaused.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isPlaying",
+  "qualifiedName": "player.FlutterSoundPlayer.isPlaying",
+  "href": "player/FlutterSoundPlayer/isPlaying.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isStopped",
+  "qualifiedName": "player.FlutterSoundPlayer.isStopped",
+  "href": "player/FlutterSoundPlayer/isStopped.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "needSomeFood",
+  "qualifiedName": "player.FlutterSoundPlayer.needSomeFood",
+  "href": "player/FlutterSoundPlayer/needSomeFood.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "needSomeFoodCompleter",
+  "qualifiedName": "player.FlutterSoundPlayer.needSomeFoodCompleter",
+  "href": "player/FlutterSoundPlayer/needSomeFoodCompleter.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "needToConvert",
+  "qualifiedName": "player.FlutterSoundPlayer.needToConvert",
+  "href": "player/FlutterSoundPlayer/needToConvert.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "nowPlaying",
+  "qualifiedName": "player.FlutterSoundPlayer.nowPlaying",
+  "href": "player/FlutterSoundPlayer/nowPlaying.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "onPaused",
+  "qualifiedName": "player.FlutterSoundPlayer.onPaused",
+  "href": "player/FlutterSoundPlayer/onPaused.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "onProgress",
+  "qualifiedName": "player.FlutterSoundPlayer.onProgress",
+  "href": "player/FlutterSoundPlayer/onProgress.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "onSkipBackward",
+  "qualifiedName": "player.FlutterSoundPlayer.onSkipBackward",
+  "href": "player/FlutterSoundPlayer/onSkipBackward.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "onSkipForward",
+  "qualifiedName": "player.FlutterSoundPlayer.onSkipForward",
+  "href": "player/FlutterSoundPlayer/onSkipForward.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "openAudioSession",
+  "qualifiedName": "player.FlutterSoundPlayer.openAudioSession",
+  "href": "player/FlutterSoundPlayer/openAudioSession.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "openAudioSessionCompleted",
+  "qualifiedName": "player.FlutterSoundPlayer.openAudioSessionCompleted",
+  "href": "player/FlutterSoundPlayer/openAudioSessionCompleted.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "openAudioSessionCompleter",
+  "qualifiedName": "player.FlutterSoundPlayer.openAudioSessionCompleter",
+  "href": "player/FlutterSoundPlayer/openAudioSessionCompleter.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "openAudioSessionWithUI",
+  "qualifiedName": "player.FlutterSoundPlayer.openAudioSessionWithUI",
+  "href": "player/FlutterSoundPlayer/openAudioSessionWithUI.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "pause",
+  "qualifiedName": "player.FlutterSoundPlayer.pause",
+  "href": "player/FlutterSoundPlayer/pause.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "pausePlayer",
+  "qualifiedName": "player.FlutterSoundPlayer.pausePlayer",
+  "href": "player/FlutterSoundPlayer/pausePlayer.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "playerState",
+  "qualifiedName": "player.FlutterSoundPlayer.playerState",
+  "href": "player/FlutterSoundPlayer/playerState.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "resume",
+  "qualifiedName": "player.FlutterSoundPlayer.resume",
+  "href": "player/FlutterSoundPlayer/resume.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "resumePlayer",
+  "qualifiedName": "player.FlutterSoundPlayer.resumePlayer",
+  "href": "player/FlutterSoundPlayer/resumePlayer.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "seekToPlayer",
+  "qualifiedName": "player.FlutterSoundPlayer.seekToPlayer",
+  "href": "player/FlutterSoundPlayer/seekToPlayer.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "setAudioFocus",
+  "qualifiedName": "player.FlutterSoundPlayer.setAudioFocus",
+  "href": "player/FlutterSoundPlayer/setAudioFocus.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "setPlayerCallback",
+  "qualifiedName": "player.FlutterSoundPlayer.setPlayerCallback",
+  "href": "player/FlutterSoundPlayer/setPlayerCallback.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "setSubscriptionDuration",
+  "qualifiedName": "player.FlutterSoundPlayer.setSubscriptionDuration",
+  "href": "player/FlutterSoundPlayer/setSubscriptionDuration.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "setUIProgressBar",
+  "qualifiedName": "player.FlutterSoundPlayer.setUIProgressBar",
+  "href": "player/FlutterSoundPlayer/setUIProgressBar.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "setVolume",
+  "qualifiedName": "player.FlutterSoundPlayer.setVolume",
+  "href": "player/FlutterSoundPlayer/setVolume.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "skipBackward",
+  "qualifiedName": "player.FlutterSoundPlayer.skipBackward",
+  "href": "player/FlutterSoundPlayer/skipBackward.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "skipForward",
+  "qualifiedName": "player.FlutterSoundPlayer.skipForward",
+  "href": "player/FlutterSoundPlayer/skipForward.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "startPlayer",
+  "qualifiedName": "player.FlutterSoundPlayer.startPlayer",
+  "href": "player/FlutterSoundPlayer/startPlayer.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "startPlayerCompleted",
+  "qualifiedName": "player.FlutterSoundPlayer.startPlayerCompleted",
+  "href": "player/FlutterSoundPlayer/startPlayerCompleted.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "startPlayerCompleter",
+  "qualifiedName": "player.FlutterSoundPlayer.startPlayerCompleter",
+  "href": "player/FlutterSoundPlayer/startPlayerCompleter.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "startPlayerFromStream",
+  "qualifiedName": "player.FlutterSoundPlayer.startPlayerFromStream",
+  "href": "player/FlutterSoundPlayer/startPlayerFromStream.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "startPlayerFromTrack",
+  "qualifiedName": "player.FlutterSoundPlayer.startPlayerFromTrack",
+  "href": "player/FlutterSoundPlayer/startPlayerFromTrack.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "stop",
+  "qualifiedName": "player.FlutterSoundPlayer.stop",
+  "href": "player/FlutterSoundPlayer/stop.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "stopPlayer",
+  "qualifiedName": "player.FlutterSoundPlayer.stopPlayer",
+  "href": "player/FlutterSoundPlayer/stopPlayer.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "tabAndroidConvert",
+  "qualifiedName": "player.FlutterSoundPlayer.tabAndroidConvert",
+  "href": "player/FlutterSoundPlayer/tabAndroidConvert-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "tabIosConvert",
+  "qualifiedName": "player.FlutterSoundPlayer.tabIosConvert",
+  "href": "player/FlutterSoundPlayer/tabIosConvert-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "tabWebConvert",
+  "qualifiedName": "player.FlutterSoundPlayer.tabWebConvert",
+  "href": "player/FlutterSoundPlayer/tabWebConvert-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "updatePlaybackState",
+  "qualifiedName": "player.FlutterSoundPlayer.updatePlaybackState",
+  "href": "player/FlutterSoundPlayer/updatePlaybackState.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "updateProgress",
+  "qualifiedName": "player.FlutterSoundPlayer.updateProgress",
+  "href": "player/FlutterSoundPlayer/updateProgress.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
+  "name": "PlaybackDisposition",
+  "qualifiedName": "player.PlaybackDisposition",
+  "href": "player/PlaybackDisposition-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "PlaybackDisposition",
+  "qualifiedName": "player.PlaybackDisposition.PlaybackDisposition",
+  "href": "player/PlaybackDisposition/PlaybackDisposition.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "PlaybackDisposition",
+   "type": "class"
+  }
+ },
+ {
+  "name": "duration",
+  "qualifiedName": "player.PlaybackDisposition.duration",
+  "href": "player/PlaybackDisposition/duration.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "PlaybackDisposition",
+   "type": "class"
+  }
+ },
+ {
+  "name": "position",
+  "qualifiedName": "player.PlaybackDisposition.position",
+  "href": "player/PlaybackDisposition/position.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "PlaybackDisposition",
+   "type": "class"
+  }
+ },
+ {
+  "name": "toString",
+  "qualifiedName": "player.PlaybackDisposition.toString",
+  "href": "player/PlaybackDisposition/toString.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "PlaybackDisposition",
+   "type": "class"
+  }
+ },
+ {
+  "name": "PlaybackDisposition.zero",
+  "qualifiedName": "player.PlaybackDisposition.zero",
+  "href": "player/PlaybackDisposition/PlaybackDisposition.zero.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "PlaybackDisposition",
+   "type": "class"
+  }
+ },
+ {
+  "name": "PlayerRunningException",
+  "qualifiedName": "player.PlayerRunningException",
+  "href": "player/PlayerRunningException-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "PlayerRunningException",
+  "qualifiedName": "player.PlayerRunningException.PlayerRunningException",
+  "href": "player/PlayerRunningException/PlayerRunningException.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "PlayerRunningException",
+   "type": "class"
+  }
+ },
+ {
+  "name": "message",
+  "qualifiedName": "player.PlayerRunningException.message",
+  "href": "player/PlayerRunningException/message.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "PlayerRunningException",
+   "type": "class"
+  }
+ },
+ {
+  "name": "PlayerState",
+  "qualifiedName": "player.PlayerState",
+  "href": "player/PlayerState-class.html",
+  "type": "enum",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "toString",
+  "qualifiedName": "player.PlayerState.toString",
+  "href": "player/PlayerState/toString.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "PlayerState",
+   "type": "enum"
+  }
+ },
+ {
+  "name": "TWhenFinished",
+  "qualifiedName": "player.TWhenFinished",
+  "href": "player/TWhenFinished.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "TonPaused",
+  "qualifiedName": "player.TonPaused",
+  "href": "player/TonPaused.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "TonSkip",
+  "qualifiedName": "player.TonSkip",
+  "href": "player/TonSkip.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "Track",
+  "qualifiedName": "player.Track",
+  "href": "player/Track-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "Track",
+  "qualifiedName": "player.Track.Track",
+  "href": "player/Track/Track.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Track",
+   "type": "class"
+  }
+ },
+ {
+  "name": "albumArtAsset",
+  "qualifiedName": "player.Track.albumArtAsset",
+  "href": "player/Track/albumArtAsset.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Track",
+   "type": "class"
+  }
+ },
+ {
+  "name": "albumArtFile",
+  "qualifiedName": "player.Track.albumArtFile",
+  "href": "player/Track/albumArtFile.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Track",
+   "type": "class"
+  }
+ },
+ {
+  "name": "albumArtUrl",
+  "qualifiedName": "player.Track.albumArtUrl",
+  "href": "player/Track/albumArtUrl.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Track",
+   "type": "class"
+  }
+ },
+ {
+  "name": "codec",
+  "qualifiedName": "player.Track.codec",
+  "href": "player/Track/codec.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Track",
+   "type": "class"
+  }
+ },
+ {
+  "name": "dataBuffer",
+  "qualifiedName": "player.Track.dataBuffer",
+  "href": "player/Track/dataBuffer.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Track",
+   "type": "class"
+  }
+ },
+ {
+  "name": "toMap",
+  "qualifiedName": "player.Track.toMap",
+  "href": "player/Track/toMap.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Track",
+   "type": "class"
+  }
+ },
+ {
+  "name": "trackAuthor",
+  "qualifiedName": "player.Track.trackAuthor",
+  "href": "player/Track/trackAuthor.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Track",
+   "type": "class"
+  }
+ },
+ {
+  "name": "trackPath",
+  "qualifiedName": "player.Track.trackPath",
+  "href": "player/Track/trackPath.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Track",
+   "type": "class"
+  }
+ },
+ {
+  "name": "trackTitle",
+  "qualifiedName": "player.Track.trackTitle",
+  "href": "player/Track/trackTitle.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Track",
+   "type": "class"
+  }
+ },
+ {
+  "name": "blockSize",
+  "qualifiedName": "player.blockSize",
+  "href": "player/blockSize-constant.html",
+  "type": "top-level constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "fileExtension",
+  "qualifiedName": "player.fileExtension",
+  "href": "player/fileExtension.html",
+  "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "player",
+   "type": "library"
+  }
+ },
+ {
+  "name": "sound_player_ui",
+  "qualifiedName": "sound_player_ui",
+  "href": "ui_sound_player_ui/ui_sound_player_ui-library.html",
+  "type": "library",
+  "overriddenDepth": 0,
+  "packageName": "flauto"
+ },
+ {
+  "name": "OnLoad",
+  "qualifiedName": "sound_player_ui.OnLoad",
+  "href": "ui_sound_player_ui/OnLoad.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_player_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "PlaybarSlider",
+  "qualifiedName": "sound_player_ui.PlaybarSlider",
+  "href": "ui_sound_player_ui/PlaybarSlider-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_player_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "PlaybarSlider",
+  "qualifiedName": "sound_player_ui.PlaybarSlider.PlaybarSlider",
+  "href": "ui_sound_player_ui/PlaybarSlider/PlaybarSlider.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "PlaybarSlider",
+   "type": "class"
+  }
+ },
+ {
+  "name": "createState",
+  "qualifiedName": "sound_player_ui.PlaybarSlider.createState",
+  "href": "ui_sound_player_ui/PlaybarSlider/createState.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "PlaybarSlider",
+   "type": "class"
+  }
+ },
+ {
+  "name": "stream",
+  "qualifiedName": "sound_player_ui.PlaybarSlider.stream",
+  "href": "ui_sound_player_ui/PlaybarSlider/stream.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "PlaybarSlider",
+   "type": "class"
+  }
+ },
+ {
+  "name": "SoundPlayerUI",
+  "qualifiedName": "sound_player_ui.SoundPlayerUI",
+  "href": "ui_sound_player_ui/SoundPlayerUI-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_player_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "createState",
+  "qualifiedName": "sound_player_ui.SoundPlayerUI.createState",
+  "href": "ui_sound_player_ui/SoundPlayerUI/createState.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "SoundPlayerUI.fromLoader",
+  "qualifiedName": "sound_player_ui.SoundPlayerUI.fromLoader",
+  "href": "ui_sound_player_ui/SoundPlayerUI/SoundPlayerUI.fromLoader.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "SoundPlayerUI.fromTrack",
+  "qualifiedName": "sound_player_ui.SoundPlayerUI.fromTrack",
+  "href": "ui_sound_player_ui/SoundPlayerUI/SoundPlayerUI.fromTrack.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "standardCodec",
+  "qualifiedName": "sound_player_ui.SoundPlayerUI.standardCodec",
+  "href": "ui_sound_player_ui/SoundPlayerUI/standardCodec-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "zero",
+  "qualifiedName": "sound_player_ui.SoundPlayerUI.zero",
+  "href": "ui_sound_player_ui/SoundPlayerUI/zero-constant.html",
+  "type": "constant",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "SoundPlayerUIState",
+  "qualifiedName": "sound_player_ui.SoundPlayerUIState",
+  "href": "ui_sound_player_ui/SoundPlayerUIState-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_player_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "SoundPlayerUIState",
+  "qualifiedName": "sound_player_ui.SoundPlayerUIState.SoundPlayerUIState",
+  "href": "ui_sound_player_ui/SoundPlayerUIState/SoundPlayerUIState.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "build",
+  "qualifiedName": "sound_player_ui.SoundPlayerUIState.build",
+  "href": "ui_sound_player_ui/SoundPlayerUIState/build.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "canPlay",
+  "qualifiedName": "sound_player_ui.SoundPlayerUIState.canPlay",
+  "href": "ui_sound_player_ui/SoundPlayerUIState/canPlay.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "connectRecorderStream",
+  "qualifiedName": "sound_player_ui.SoundPlayerUIState.connectRecorderStream",
+  "href": "ui_sound_player_ui/SoundPlayerUIState/connectRecorderStream.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "dispose",
+  "qualifiedName": "sound_player_ui.SoundPlayerUIState.dispose",
+  "href": "ui_sound_player_ui/SoundPlayerUIState/dispose.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "pause",
+  "qualifiedName": "sound_player_ui.SoundPlayerUIState.pause",
+  "href": "ui_sound_player_ui/SoundPlayerUIState/pause.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "play",
+  "qualifiedName": "sound_player_ui.SoundPlayerUIState.play",
+  "href": "ui_sound_player_ui/SoundPlayerUIState/play.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "playbackEnabled",
+  "qualifiedName": "sound_player_ui.SoundPlayerUIState.playbackEnabled",
+  "href": "ui_sound_player_ui/SoundPlayerUIState/playbackEnabled.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "reassemble",
+  "qualifiedName": "sound_player_ui.SoundPlayerUIState.reassemble",
+  "href": "ui_sound_player_ui/SoundPlayerUIState/reassemble.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "resume",
+  "qualifiedName": "sound_player_ui.SoundPlayerUIState.resume",
+  "href": "ui_sound_player_ui/SoundPlayerUIState/resume.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "stop",
+  "qualifiedName": "sound_player_ui.SoundPlayerUIState.stop",
+  "href": "ui_sound_player_ui/SoundPlayerUIState/stop.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundPlayerUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "sound_recorder_ui",
+  "qualifiedName": "sound_recorder_ui",
+  "href": "ui_sound_recorder_ui/ui_sound_recorder_ui-library.html",
+  "type": "library",
+  "overriddenDepth": 0,
+  "packageName": "flauto"
+ },
+ {
+  "name": "OnDelete",
+  "qualifiedName": "sound_recorder_ui.OnDelete",
+  "href": "ui_sound_recorder_ui/OnDelete.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_recorder_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "OnPaused",
+  "qualifiedName": "sound_recorder_ui.OnPaused",
+  "href": "ui_sound_recorder_ui/OnPaused.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_recorder_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "OnProgress",
+  "qualifiedName": "sound_recorder_ui.OnProgress",
+  "href": "ui_sound_recorder_ui/OnProgress.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_recorder_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "OnStart",
+  "qualifiedName": "sound_recorder_ui.OnStart",
+  "href": "ui_sound_recorder_ui/OnStart.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_recorder_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "OnStop",
+  "qualifiedName": "sound_recorder_ui.OnStop",
+  "href": "ui_sound_recorder_ui/OnStop.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_recorder_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "RecordedAudio",
+  "qualifiedName": "sound_recorder_ui.RecordedAudio",
+  "href": "ui_sound_recorder_ui/RecordedAudio-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_recorder_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "duration",
+  "qualifiedName": "sound_recorder_ui.RecordedAudio.duration",
+  "href": "ui_sound_recorder_ui/RecordedAudio/duration.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordedAudio",
+   "type": "class"
+  }
+ },
+ {
+  "name": "RecordedAudio.toTrack",
+  "qualifiedName": "sound_recorder_ui.RecordedAudio.toTrack",
+  "href": "ui_sound_recorder_ui/RecordedAudio/RecordedAudio.toTrack.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordedAudio",
+   "type": "class"
+  }
+ },
+ {
+  "name": "track",
+  "qualifiedName": "sound_recorder_ui.RecordedAudio.track",
+  "href": "ui_sound_recorder_ui/RecordedAudio/track.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecordedAudio",
+   "type": "class"
+  }
+ },
+ {
+  "name": "RecorderPlaybackController",
+  "qualifiedName": "sound_recorder_ui.RecorderPlaybackController",
+  "href": "ui_sound_recorder_ui/RecorderPlaybackController-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_recorder_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "RecorderPlaybackController",
+  "qualifiedName": "sound_recorder_ui.RecorderPlaybackController.RecorderPlaybackController",
+  "href": "ui_sound_recorder_ui/RecorderPlaybackController/RecorderPlaybackController.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecorderPlaybackController",
+   "type": "class"
+  }
+ },
+ {
+  "name": "of",
+  "qualifiedName": "sound_recorder_ui.RecorderPlaybackController.of",
+  "href": "ui_sound_recorder_ui/RecorderPlaybackController/of.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecorderPlaybackController",
+   "type": "class"
+  }
+ },
+ {
+  "name": "stop",
+  "qualifiedName": "sound_recorder_ui.RecorderPlaybackController.stop",
+  "href": "ui_sound_recorder_ui/RecorderPlaybackController/stop.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecorderPlaybackController",
+   "type": "class"
+  }
+ },
+ {
+  "name": "updateShouldNotify",
+  "qualifiedName": "sound_recorder_ui.RecorderPlaybackController.updateShouldNotify",
+  "href": "ui_sound_recorder_ui/RecorderPlaybackController/updateShouldNotify.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "RecorderPlaybackController",
+   "type": "class"
+  }
+ },
+ {
+  "name": "SoundRecorderUI",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUI",
+  "href": "ui_sound_recorder_ui/SoundRecorderUI-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_recorder_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "SoundRecorderUI",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.SoundRecorderUI",
+  "href": "ui_sound_recorder_ui/SoundRecorderUI/SoundRecorderUI.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "audio",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.audio",
+  "href": "ui_sound_recorder_ui/SoundRecorderUI/audio.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "backgroundColor",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.backgroundColor",
+  "href": "ui_sound_recorder_ui/SoundRecorderUI/backgroundColor.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "createState",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.createState",
+  "href": "ui_sound_recorder_ui/SoundRecorderUI/createState.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "onDelete",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.onDelete",
+  "href": "ui_sound_recorder_ui/SoundRecorderUI/onDelete.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "onPaused",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.onPaused",
+  "href": "ui_sound_recorder_ui/SoundRecorderUI/onPaused.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "onStart",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.onStart",
+  "href": "ui_sound_recorder_ui/SoundRecorderUI/onStart.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "onStopped",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.onStopped",
+  "href": "ui_sound_recorder_ui/SoundRecorderUI/onStopped.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "pausedTitle",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.pausedTitle",
+  "href": "ui_sound_recorder_ui/SoundRecorderUI/pausedTitle.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "recordingTitle",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.recordingTitle",
+  "href": "ui_sound_recorder_ui/SoundRecorderUI/recordingTitle.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "requestPermissions",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.requestPermissions",
+  "href": "ui_sound_recorder_ui/SoundRecorderUI/requestPermissions.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "showTrashCan",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.showTrashCan",
+  "href": "ui_sound_recorder_ui/SoundRecorderUI/showTrashCan.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "stoppedTitle",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUI.stoppedTitle",
+  "href": "ui_sound_recorder_ui/SoundRecorderUI/stoppedTitle.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUI",
+   "type": "class"
+  }
+ },
+ {
+  "name": "SoundRecorderUIState",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState",
+  "href": "ui_sound_recorder_ui/SoundRecorderUIState-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_recorder_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "SoundRecorderUIState",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.SoundRecorderUIState",
+  "href": "ui_sound_recorder_ui/SoundRecorderUIState/SoundRecorderUIState.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "backgroundColor",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.backgroundColor",
+  "href": "ui_sound_recorder_ui/SoundRecorderUIState/backgroundColor.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "build",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.build",
+  "href": "ui_sound_recorder_ui/SoundRecorderUIState/build.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "deactivate",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.deactivate",
+  "href": "ui_sound_recorder_ui/SoundRecorderUIState/deactivate.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "dispose",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.dispose",
+  "href": "ui_sound_recorder_ui/SoundRecorderUIState/dispose.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "dispositionStream",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.dispositionStream",
+  "href": "ui_sound_recorder_ui/SoundRecorderUIState/dispositionStream.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "initState",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.initState",
+  "href": "ui_sound_recorder_ui/SoundRecorderUIState/initState.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "pause",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.pause",
+  "href": "ui_sound_recorder_ui/SoundRecorderUIState/pause.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "resume",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.resume",
+  "href": "ui_sound_recorder_ui/SoundRecorderUIState/resume.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "stop",
+  "qualifiedName": "sound_recorder_ui.SoundRecorderUIState.stop",
+  "href": "ui_sound_recorder_ui/SoundRecorderUIState/stop.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "SoundRecorderUIState",
+   "type": "class"
+  }
+ },
+ {
+  "name": "UIRequestPermission",
+  "qualifiedName": "sound_recorder_ui.UIRequestPermission",
+  "href": "ui_sound_recorder_ui/UIRequestPermission.html",
+  "type": "typedef",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_recorder_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "connectPlayerToRecorderStream",
+  "qualifiedName": "sound_recorder_ui.connectPlayerToRecorderStream",
+  "href": "ui_sound_recorder_ui/connectPlayerToRecorderStream.html",
+  "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_recorder_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "registerPlayer",
+  "qualifiedName": "sound_recorder_ui.registerPlayer",
+  "href": "ui_sound_recorder_ui/registerPlayer.html",
+  "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "sound_recorder_ui",
+   "type": "library"
+  }
+ },
+ {
+  "name": "stack_trace_impl",
+  "qualifiedName": "stack_trace_impl",
+  "href": "util_stack_trace_impl/util_stack_trace_impl-library.html",
+  "type": "library",
+  "overriddenDepth": 0,
+  "packageName": "flauto"
+ },
+ {
+  "name": "StackTraceImpl",
+  "qualifiedName": "stack_trace_impl.StackTraceImpl",
+  "href": "util_stack_trace_impl/StackTraceImpl-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "stack_trace_impl",
+   "type": "library"
+  }
+ },
+ {
+  "name": "StackTraceImpl",
+  "qualifiedName": "stack_trace_impl.StackTraceImpl.StackTraceImpl",
+  "href": "util_stack_trace_impl/StackTraceImpl/StackTraceImpl.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "StackTraceImpl",
+   "type": "class"
+  }
+ },
+ {
+  "name": "formatStackTrace",
+  "qualifiedName": "stack_trace_impl.StackTraceImpl.formatStackTrace",
+  "href": "util_stack_trace_impl/StackTraceImpl/formatStackTrace.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "StackTraceImpl",
+   "type": "class"
+  }
+ },
+ {
+  "name": "frames",
+  "qualifiedName": "stack_trace_impl.StackTraceImpl.frames",
+  "href": "util_stack_trace_impl/StackTraceImpl/frames.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "StackTraceImpl",
+   "type": "class"
+  }
+ },
+ {
+  "name": "StackTraceImpl.fromStackTrace",
+  "qualifiedName": "stack_trace_impl.StackTraceImpl.fromStackTrace",
+  "href": "util_stack_trace_impl/StackTraceImpl/StackTraceImpl.fromStackTrace.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "StackTraceImpl",
+   "type": "class"
+  }
+ },
+ {
+  "name": "lineNo",
+  "qualifiedName": "stack_trace_impl.StackTraceImpl.lineNo",
+  "href": "util_stack_trace_impl/StackTraceImpl/lineNo.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "StackTraceImpl",
+   "type": "class"
+  }
+ },
+ {
+  "name": "merge",
+  "qualifiedName": "stack_trace_impl.StackTraceImpl.merge",
+  "href": "util_stack_trace_impl/StackTraceImpl/merge.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "StackTraceImpl",
+   "type": "class"
+  }
+ },
+ {
+  "name": "sourceFile",
+  "qualifiedName": "stack_trace_impl.StackTraceImpl.sourceFile",
+  "href": "util_stack_trace_impl/StackTraceImpl/sourceFile.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "StackTraceImpl",
+   "type": "class"
+  }
+ },
+ {
+  "name": "sourceFilename",
+  "qualifiedName": "stack_trace_impl.StackTraceImpl.sourceFilename",
+  "href": "util_stack_trace_impl/StackTraceImpl/sourceFilename.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "StackTraceImpl",
+   "type": "class"
+  }
+ },
+ {
+  "name": "sourcePath",
+  "qualifiedName": "stack_trace_impl.StackTraceImpl.sourcePath",
+  "href": "util_stack_trace_impl/StackTraceImpl/sourcePath.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "StackTraceImpl",
+   "type": "class"
+  }
+ },
+ {
+  "name": "toString",
+  "qualifiedName": "stack_trace_impl.StackTraceImpl.toString",
+  "href": "util_stack_trace_impl/StackTraceImpl/toString.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "StackTraceImpl",
+   "type": "class"
+  }
+ },
+ {
+  "name": "Stackframe",
+  "qualifiedName": "stack_trace_impl.Stackframe",
+  "href": "util_stack_trace_impl/Stackframe-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "stack_trace_impl",
+   "type": "library"
+  }
+ },
+ {
+  "name": "Stackframe",
+  "qualifiedName": "stack_trace_impl.Stackframe.Stackframe",
+  "href": "util_stack_trace_impl/Stackframe/Stackframe.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Stackframe",
+   "type": "class"
+  }
+ },
+ {
+  "name": "column",
+  "qualifiedName": "stack_trace_impl.Stackframe.column",
+  "href": "util_stack_trace_impl/Stackframe/column.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Stackframe",
+   "type": "class"
+  }
+ },
+ {
+  "name": "details",
+  "qualifiedName": "stack_trace_impl.Stackframe.details",
+  "href": "util_stack_trace_impl/Stackframe/details.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Stackframe",
+   "type": "class"
+  }
+ },
+ {
+  "name": "lineNo",
+  "qualifiedName": "stack_trace_impl.Stackframe.lineNo",
+  "href": "util_stack_trace_impl/Stackframe/lineNo.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Stackframe",
+   "type": "class"
+  }
+ },
+ {
+  "name": "sourceFile",
+  "qualifiedName": "stack_trace_impl.Stackframe.sourceFile",
+  "href": "util_stack_trace_impl/Stackframe/sourceFile.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "Stackframe",
+   "type": "class"
+  }
+ },
+ {
+  "name": "isExcludedSource",
+  "qualifiedName": "stack_trace_impl.isExcludedSource",
+  "href": "util_stack_trace_impl/isExcludedSource.html",
+  "type": "function",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "stack_trace_impl",
+   "type": "library"
+  }
+ },
+ {
+  "name": "temp_file_system",
+  "qualifiedName": "temp_file_system",
+  "href": "util_temp_file_system/util_temp_file_system-library.html",
+  "type": "library",
+  "overriddenDepth": 0,
+  "packageName": "flauto"
+ },
+ {
+  "name": "TempFileLocations",
+  "qualifiedName": "temp_file_system.TempFileLocations",
+  "href": "util_temp_file_system/TempFileLocations-class.html",
+  "type": "enum",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "temp_file_system",
+   "type": "library"
+  }
+ },
+ {
+  "name": "toString",
+  "qualifiedName": "temp_file_system.TempFileLocations.toString",
+  "href": "util_temp_file_system/TempFileLocations/toString.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "TempFileLocations",
+   "type": "enum"
+  }
+ },
+ {
+  "name": "TempFiles",
+  "qualifiedName": "temp_file_system.TempFiles",
+  "href": "util_temp_file_system/TempFiles-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "temp_file_system",
+   "type": "library"
+  }
+ },
+ {
+  "name": "TempFiles",
+  "qualifiedName": "temp_file_system.TempFiles.TempFiles",
+  "href": "util_temp_file_system/TempFiles/TempFiles.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "TempFiles",
+   "type": "class"
+  }
+ },
+ {
+  "name": "create",
+  "qualifiedName": "temp_file_system.TempFiles.create",
+  "href": "util_temp_file_system/TempFiles/create.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "TempFiles",
+   "type": "class"
+  }
+ },
+ {
+  "name": "generateRandomFileName",
+  "qualifiedName": "temp_file_system.TempFiles.generateRandomFileName",
+  "href": "util_temp_file_system/TempFiles/generateRandomFileName.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "TempFiles",
+   "type": "class"
+  }
+ },
+ {
+  "name": "wave_header",
+  "qualifiedName": "wave_header",
+  "href": "util_wave_header/util_wave_header-library.html",
+  "type": "library",
+  "overriddenDepth": 0,
+  "packageName": "flauto"
+ },
+ {
+  "name": "WaveHeader",
+  "qualifiedName": "wave_header.WaveHeader",
+  "href": "util_wave_header/WaveHeader-class.html",
+  "type": "class",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "wave_header",
+   "type": "library"
+  }
+ },
+ {
+  "name": "WaveHeader",
+  "qualifiedName": "wave_header.WaveHeader.WaveHeader",
+  "href": "util_wave_header/WaveHeader/WaveHeader.html",
+  "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ },
+ {
+  "name": "formatALAW",
+  "qualifiedName": "wave_header.WaveHeader.formatALAW",
+  "href": "util_wave_header/WaveHeader/formatALAW.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ },
+ {
+  "name": "formatPCM",
+  "qualifiedName": "wave_header.WaveHeader.formatPCM",
+  "href": "util_wave_header/WaveHeader/formatPCM.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ },
+ {
+  "name": "formatULAW",
+  "qualifiedName": "wave_header.WaveHeader.formatULAW",
+  "href": "util_wave_header/WaveHeader/formatULAW.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ },
+ {
+  "name": "headerLength",
+  "qualifiedName": "wave_header.WaveHeader.headerLength",
+  "href": "util_wave_header/WaveHeader/headerLength.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ },
+ {
+  "name": "mBitsPerSample",
+  "qualifiedName": "wave_header.WaveHeader.mBitsPerSample",
+  "href": "util_wave_header/WaveHeader/mBitsPerSample.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ },
+ {
+  "name": "mFormat",
+  "qualifiedName": "wave_header.WaveHeader.mFormat",
+  "href": "util_wave_header/WaveHeader/mFormat.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ },
+ {
+  "name": "mNumBytes",
+  "qualifiedName": "wave_header.WaveHeader.mNumBytes",
+  "href": "util_wave_header/WaveHeader/mNumBytes.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ },
+ {
+  "name": "mNumChannels",
+  "qualifiedName": "wave_header.WaveHeader.mNumChannels",
+  "href": "util_wave_header/WaveHeader/mNumChannels.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ },
+ {
+  "name": "mSampleRate",
+  "qualifiedName": "wave_header.WaveHeader.mSampleRate",
+  "href": "util_wave_header/WaveHeader/mSampleRate.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ },
+ {
+  "name": "tag",
+  "qualifiedName": "wave_header.WaveHeader.tag",
+  "href": "util_wave_header/WaveHeader/tag.html",
+  "type": "property",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ },
+ {
+  "name": "toString",
+  "qualifiedName": "wave_header.WaveHeader.toString",
+  "href": "util_wave_header/WaveHeader/toString.html",
+  "type": "method",
+  "overriddenDepth": 1,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ },
+ {
+  "name": "write",
+  "qualifiedName": "wave_header.WaveHeader.write",
+  "href": "util_wave_header/WaveHeader/write.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ },
+ {
+  "name": "writeId",
+  "qualifiedName": "wave_header.WaveHeader.writeId",
+  "href": "util_wave_header/WaveHeader/writeId.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ },
+ {
+  "name": "writeInt",
+  "qualifiedName": "wave_header.WaveHeader.writeInt",
+  "href": "util_wave_header/WaveHeader/writeInt.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ },
+ {
+  "name": "writeint",
+  "qualifiedName": "wave_header.WaveHeader.writeint",
+  "href": "util_wave_header/WaveHeader/writeint.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flauto",
+  "enclosedBy": {
+   "name": "WaveHeader",
+   "type": "class"
+  }
+ }
+]

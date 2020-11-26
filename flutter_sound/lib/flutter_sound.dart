@@ -69,8 +69,8 @@ export 'zozo.dart';
 ///
 library util;
 export 'flutter_ffmpeg.dart';
-export 'src/flutter_sound_helper.dart';
-export 'src/util/log.dart';
+export 'flutter_sound_helper.dart';
+export 'util/log.dart';
 
 /// The possible states of the players and recorders
 enum Initialized {
