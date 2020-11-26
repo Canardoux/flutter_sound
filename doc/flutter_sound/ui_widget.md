@@ -2,9 +2,9 @@
 
 The modules offered for the Flutter Sound UI Widgets are :
 
-- [UI Player](../ui_player/ui_player-library)
-- [UI Recorder](../ui_recorder/ui_recorder-library)
-- [UI Controller](../ui_controller/ui_controller-library)
+- [UI Player](../ui_player/ui_player-library.html)
+- [UI Recorder](../ui_recorder/ui_recorder-library.html)
+- [UI Controller](../ui_controller/ui_controller-library.html)
 
 *(This documentation is just a start. It must be completely rewriten)*
 -----------------------------------------------------------------------------------------------------------------------
@@ -15,9 +15,9 @@ First import the modules
 
 Then reference to one of the flutter sound UI widgets in your widget tree:
 
-- [UI Player](../flutter_sound/api/ui_player/ui_player-library)
-- [UI Recorder](../ui_recorder/ui_recorder-library)
-- [UI Controller](../ui_controller/ui_controller-library)
+- [UI Player](../ui_player/ui_player-library.html)
+- [UI Recorder](../ui_recorder/ui_recorder-library.html)
+- [UI Controller](../ui_controller/ui_controller-library.html)
 
 --------------------------------------------------------------------------------
 
