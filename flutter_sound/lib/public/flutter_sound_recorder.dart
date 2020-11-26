@@ -18,6 +18,7 @@
 /// Toto et titi
 
 /// Un joli commmentaire
+/// {@category Amazing}
 library recorder;
 
 
@@ -34,7 +35,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flauto_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import '../flutter_sound.dart';
-import 'flutter_sound_helper.dart';
+import 'util/flutter_sound_helper.dart';
 
 /// ----------------------------------------------------------------------------------------------------
 ///

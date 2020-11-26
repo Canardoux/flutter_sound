@@ -124,7 +124,7 @@ void initState() {
           device: AudioDevice.speaker,
           audioFlags: outputToSpeaker | allowBlueToothA2DP | allowAirPlay)
       .then((toto) {
-    _registerRecorder(context, this);
+    registerRecorder(context, this);
   });
   super.initState();
 }</code></pre>

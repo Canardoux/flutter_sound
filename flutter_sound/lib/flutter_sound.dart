@@ -45,25 +45,24 @@ export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart'
 /// Le commentaire de player
 //library player;
 export 'public/flutter_sound_player.dart';
-
-///
-//library recorder;
 export 'public/flutter_sound_recorder.dart';
+
+//library FlutterSound;
+export 'public/tau.dart';
 
 ///
 //library UI;
+export 'public/ui/recorder_playback_controller.dart';
 export 'public/ui/sound_player_ui.dart';
 export 'public/ui/sound_recorder_ui.dart';
 
 ///
 //library util;
-export 'src/flutter_ffmpeg.dart';
-export 'public/flutter_sound_helper.dart';
-export 'src/util/log.dart';
+export 'public/util/flutter_ffmpeg.dart';
+export 'public/util/flutter_sound_helper.dart';
+export 'public/util/log.dart';
 
 /// Toto et titi
 
 /// Un joli commmentaire
-//library FlutterSound;
-export 'public/tau.dart';
 

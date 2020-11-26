@@ -35,13 +35,14 @@
 /// Toto et titi
 
 /// Un joli commmentaire
+/// {@category Amazing}
 library tau;
 
 import 'dart:typed_data' show Uint8List;
 import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 import 'flutter_sound_player.dart';
 import 'flutter_sound_recorder.dart';
-import '../src/util/log.dart';
+import 'util/log.dart';
 
 export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 

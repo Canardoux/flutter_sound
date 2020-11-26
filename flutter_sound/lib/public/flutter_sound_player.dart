@@ -19,6 +19,7 @@
 /// Toto et titi
 
 /// Un joli commmentaire
+/// {@category Amazing}
 library player;
 
 import 'dart:async';

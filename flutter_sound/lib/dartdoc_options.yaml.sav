@@ -1,0 +1,12 @@
+
+dartdoc:
+  categories:
+    "Tau":
+      markdown: ../doc/flutter_sound/install.md
+      name: Awesome
+    "Amazing":
+      markdown: ../doc/flutter_sound/flutter_sound_on_web.md
+      name: Great
+  categoryOrder: ["Tau", "Amazing"]
+  linkTo:
+    url: "https://my.dartdocumentationsite.org/dev/%v%"

@@ -24,6 +24,7 @@
 /// Toto et titi
 
 /// Un joli commmentaire
+/// {@category UI Widgets}
 library ui_player;
 
 
@@ -32,8 +33,7 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../flutter_sound.dart';
-import '../../src/util/log.dart';
-import 'sound_recorder_ui.dart';
+import '../util/log.dart';
 
 ///
 typedef OnLoad = Future<Track> Function(BuildContext context);
@@ -849,3 +849,4 @@ class _SliderPosition extends ChangeNotifier {
     return _position;
   }
 }
+
