@@ -51,7 +51,10 @@ export 'src/flutter_sound_player.dart';
 export 'src/flutter_sound_recorder.dart';
 export 'src/ui/sound_player_ui.dart';
 export 'src/ui/sound_recorder_ui.dart';
+library lib1;
 export 'src/util/log.dart';
+@nodoc
+library lib2;
 export 'zozo.dart';
 
 /// The possible states of the players and recorders
