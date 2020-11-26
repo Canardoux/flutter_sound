@@ -41,7 +41,7 @@ import 'dart:typed_data' show Uint8List;
 import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 import 'flutter_sound_player.dart';
 import 'flutter_sound_recorder.dart';
-import 'util/log.dart';
+import 'src/util/log.dart';
 
 
 /// everything.dart
@@ -71,7 +71,7 @@ export 'zozo.dart';
 library util;
 export 'flutter_ffmpeg.dart';
 export 'flutter_sound_helper.dart';
-export 'util/log.dart';
+export 'src/util/log.dart';
 
 /// The possible states of the players and recorders
 enum Initialized {

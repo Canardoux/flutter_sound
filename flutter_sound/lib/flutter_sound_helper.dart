@@ -20,8 +20,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import '../flutter_sound.dart';
-import './util/wave_header.dart';
-import 'util/log.dart';
+import 'src/util/wave_header.dart';
+import 'src/util/log.dart';
 
 /// The FlutterSoundHelper singleton for accessing the helpers functions
 FlutterSoundHelper flutterSoundHelper =

@@ -27,7 +27,7 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../flutter_sound.dart';
-import '../util/log.dart';
+import '../src/util/log.dart';
 import 'sound_recorder_ui.dart';
 
 ///

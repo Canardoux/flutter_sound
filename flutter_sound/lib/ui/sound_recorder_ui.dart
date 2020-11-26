@@ -27,7 +27,7 @@ import 'package:flutter/material.dart';
 import '../../flutter_sound.dart';
 import '../flutter_sound_player.dart';
 import '../flutter_sound_recorder.dart';
-import '../util/log.dart';
+import '../src/util/log.dart';
 import 'sound_player_ui.dart';
 
 /// Callback fn type
