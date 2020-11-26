@@ -67,6 +67,7 @@ library lib2;
 export 'zozo.dart';
 
 ///
+/// @nodoc
 library util;
 export 'flutter_ffmpeg.dart';
 export 'flutter_sound_helper.dart';
