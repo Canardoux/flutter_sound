@@ -43,11 +43,11 @@ import 'src/flutter_sound_player.dart';
 import 'src/flutter_sound_recorder.dart';
 import 'src/util/log.dart';
 
-export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 
 /// everything.dart
 /// @.....n.....odoc
-library everything;
+//library everything;
+export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 /// Le commentaire de player
 library player;
 export 'src/flutter_sound_player.dart';
