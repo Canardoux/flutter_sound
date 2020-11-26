@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the SoundPlayerUIState class from the everything library, for the Dart programming language.">
+  <title>SoundPlayerUIState class - everything library - Dart API</title>
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="../static-assets/github.css">
+  <link rel="stylesheet" href="../static-assets/styles.css">
+  <link rel="icon" href="../static-assets/favicon.png">
+
+</head>
+
+<body data-base-href="../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">flauto</a></li>
+    <li><a href="../everything/everything-library.html">everything</a></li>
+    <li class="self-crumb">SoundPlayerUIState class</li>
+  </ol>
+  <div class="self-name">SoundPlayerUIState</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="../index.html">flauto</a></li>
+      <li><a href="../everything/everything-library.html">everything</a></li>
+      <li class="self-crumb">SoundPlayerUIState class</li>
+    </ol>
+    
+    <h5>everything library</h5>
+    <ol>
+      <li class="section-title"><a href="../everything/everything-library.html#classes">Classes</a></li>
+      <li><a href="../everything/AnsiColor-class.html">AnsiColor</a></li>
+      <li><a href="../everything/FlutterFFmpeg-class.html">FlutterFFmpeg</a></li>
+      <li><a href="../everything/FlutterFFmpegConfig-class.html">FlutterFFmpegConfig</a></li>
+      <li><a href="../everything/FlutterFFprobe-class.html">FlutterFFprobe</a></li>
+      <li><a href="../everything/FlutterSound-class.html">FlutterSound</a></li>
+      <li><a href="../everything/FlutterSoundHelper-class.html">FlutterSoundHelper</a></li>
+      <li><a href="../everything/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
+      <li><a href="../everything/FlutterSoundRecorder-class.html">FlutterSoundRecorder</a></li>
+      <li><a href="../everything/Food-class.html">Food</a></li>
+      <li><a href="../everything/FoodData-class.html">FoodData</a></li>
+      <li><a href="../everything/FoodEvent-class.html">FoodEvent</a></li>
+      <li><a href="../everything/Log-class.html">Log</a></li>
+      <li><a href="../everything/LogLevel-class.html">LogLevel</a></li>
+      <li><a href="../everything/MyLogPrinter-class.html">MyLogPrinter</a></li>
+      <li><a href="../everything/PlaybackDisposition-class.html">PlaybackDisposition</a></li>
+      <li><a href="../everything/PlaybarSlider-class.html">PlaybarSlider</a></li>
+      <li><a href="../everything/RecordedAudio-class.html">RecordedAudio</a></li>
+      <li><a href="../everything/RecorderPlaybackController-class.html">RecorderPlaybackController</a></li>
+      <li><a href="../everything/RecordingDisposition-class.html">RecordingDisposition</a></li>
+      <li><a href="../everything/SoundPlayerUI-class.html">SoundPlayerUI</a></li>
+      <li><a href="../everything/SoundPlayerUIState-class.html">SoundPlayerUIState</a></li>
+      <li><a href="../everything/SoundRecorderUI-class.html">SoundRecorderUI</a></li>
+      <li><a href="../everything/SoundRecorderUIState-class.html">SoundRecorderUIState</a></li>
+      <li><a href="../everything/Track-class.html">Track</a></li>
+      <li><a href="../papa/Zozo-class.html">Zozo</a></li>
+    
+    
+    
+      <li class="section-title"><a href="../everything/everything-library.html#constants">Constants</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/allowAirPlay-constant.html">allowAirPlay</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/allowBlueTooth-constant.html">allowBlueTooth</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/allowBlueToothA2DP-constant.html">allowBlueToothA2DP</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/allowEarPiece-constant.html">allowEarPiece</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/allowHeadset-constant.html">allowHeadset</a></li>
+      <li><a href="../everything/blockSize-constant.html">blockSize</a></li>
+      <li><a href="../everything/ext-constant.html">ext</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/iosAllowAirplay-constant.html">iosAllowAirplay</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/iosAllowBluetooth-constant.html">iosAllowBluetooth</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/iosAllowBluetoothA2DP-constant.html">iosAllowBluetoothA2DP</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/iosDefaultToSpeaker-constant.html">iosDefaultToSpeaker</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/iosDuckOthers-constant.html">iosDuckOthers</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/iosInterruptSpokenAudioAndMixWithOthers-constant.html">iosInterruptSpokenAudioAndMixWithOthers</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/iosMixWithOthers-constant.html">iosMixWithOthers</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/outputToSpeaker-constant.html">outputToSpeaker</a></li>
+    
+      <li class="section-title"><a href="../everything/everything-library.html#properties">Properties</a></li>
+      <li><a href="../everything/flutterSoundHelper.html">flutterSoundHelper</a></li>
+    
+      <li class="section-title"><a href="../everything/everything-library.html#functions">Functions</a></li>
+      <li><a href="../everything/black.html">black</a></li>
+      <li><a href="../everything/blue.html">blue</a></li>
+      <li><a href="../everything/connectPlayerToRecorderStream.html">connectPlayerToRecorderStream</a></li>
+      <li><a href="../everything/cyan.html">cyan</a></li>
+      <li><a href="../everything/fileExtension.html">fileExtension</a></li>
+      <li><a href="../everything/green.html">green</a></li>
+      <li><a href="../everything/grey.html">grey</a></li>
+      <li><a href="../everything/magenta.html">magenta</a></li>
+      <li><a href="../everything/orange.html">orange</a></li>
+      <li><a href="../everything/red.html">red</a></li>
+      <li><a href="../everything/registerPlayer.html">registerPlayer</a></li>
+      <li><a href="../everything/white.html">white</a></li>
+      <li><a href="../everything/yellow.html">yellow</a></li>
+    
+      <li class="section-title"><a href="../everything/everything-library.html#enums">Enums</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/AndroidFocusGain-class.html">AndroidFocusGain</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/AudioDevice-class.html">AudioDevice</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/AudioFocus-class.html">AudioFocus</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/Codec-class.html">Codec</a></li>
+      <li><a href="../everything/Initialized-class.html">Initialized</a></li>
+      <li><a href="../everything/PlayerState-class.html">PlayerState</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/SessionCategory-class.html">SessionCategory</a></li>
+      <li><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+12/flutter_sound_platform_interface/SessionMode-class.html">SessionMode</a></li>
+    
+      <li class="section-title"><a href="../everything/everything-library.html#typedefs">Typedefs</a></li>
+      <li><a href="../everything/OnDelete.html">OnDelete</a></li>
+      <li><a href="../everything/OnLoad.html">OnLoad</a></li>
+      <li><a href="../everything/OnPaused.html">OnPaused</a></li>
+      <li><a href="../everything/OnProgress.html">OnProgress</a></li>
+      <li><a href="../everything/OnStart.html">OnStart</a></li>
+      <li><a href="../everything/OnStop.html">OnStop</a></li>
+      <li><a href="../everything/TonPaused.html">TonPaused</a></li>
+      <li><a href="../everything/TonSkip.html">TonSkip</a></li>
+      <li><a href="../everything/TWhenFinished.html">TWhenFinished</a></li>
+      <li><a href="../everything/UIRequestPermission.html">UIRequestPermission</a></li>
+    
+      <li class="section-title"><a href="../everything/everything-library.html#exceptions">Exceptions</a></li>
+      <li><a href="../everything/PlayerRunningException-class.html">PlayerRunningException</a></li>
+      <li><a href="../everything/RecordingPermissionException-class.html">RecordingPermissionException</a></li>
+    </ol>
+  </div>
+
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <div><h1><span class="kind-class">SoundPlayerUIState</span> class  </h1></div>
+
+    <section class="desc markdown">
+      <p>internal state.</p>
+    </section>
+    
+    <section>
+      <dl class="dl-horizontal">
+        <dt>Inheritance</dt>
+        <dd><ul class="gt-separated dark clazz-relationships">
+          <li><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></li>
+          <li><a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../everything/SoundPlayerUI-class.html">SoundPlayerUI</a></span>&gt;</span></li>
+          <li>SoundPlayerUIState</li>
+        </ul></dd>
+
+
+
+
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="constructors">
+      <h2>Constructors</h2>
+
+      <dl class="constructor-summary-list">
+        <dt id="SoundPlayerUIState" class="callable">
+          <span class="name"><a href="../everything/SoundPlayerUIState/SoundPlayerUIState.html">SoundPlayerUIState</a></span><span class="signature">(<span class="parameter" id="-param-_track"><span class="type-annotation"><a href="../everything/Track-class.html">Track</a></span> <span class="parameter-name">_track</span>, </span><span class="parameter" id="-param-_onLoad"><span class="type-annotation"><a href="../everything/OnLoad.html">OnLoad</a></span> <span class="parameter-name">_onLoad</span>, </span><span class="parameter" id="-param-enabled">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enabled</span>, </span><span class="parameter" id="-param-backgroundColor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a></span> <span class="parameter-name">backgroundColor</span>, </span><span class="parameter" id="-param-iconColor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a></span> <span class="parameter-name">iconColor</span>, </span><span class="parameter" id="-param-disabledIconColor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a></span> <span class="parameter-name">disabledIconColor</span>, </span><span class="parameter" id="-param-textStyle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a></span> <span class="parameter-name">textStyle</span>, </span><span class="parameter" id="-param-titleStyle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a></span> <span class="parameter-name">titleStyle</span>, </span><span class="parameter" id="-param-sliderThemeData"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/material/SliderThemeData-class.html">SliderThemeData</a></span> <span class="parameter-name">sliderThemeData</span>}</span>)</span>
+        </dt>
+        <dd>
+           
+        </dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="canPlay" class="property">
+          <span class="name"><a href="../everything/SoundPlayerUIState/canPlay.html">canPlay</a></span>
+          <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>         
+        </dt>
+        <dd>
+          We can play if we have a non-zero duration or we are dynamically
+loading tracks via _onLoad. 
+                  <div class="features">read-only</div>
+</dd>
+        <dt id="context" class="property inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/widgets/State/context.html">context</a></span>
+          <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span>         
+        </dt>
+        <dd class="inherited">
+          The location in the tree where this widget builds. <a href="https://api.flutter.dev/flutter/widgets/State/context.html">[...]</a>
+                  <div class="features">read-only, inherited</div>
+</dd>
+        <dt id="hashCode" class="property inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+          <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>         
+        </dt>
+        <dd class="inherited">
+          The hash code for this object. <a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">[...]</a>
+                  <div class="features">read-only, inherited</div>
+</dd>
+        <dt id="mounted" class="property inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/widgets/State/mounted.html">mounted</a></span>
+          <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>         
+        </dt>
+        <dd class="inherited">
+          Whether this <a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a> object is currently in a tree. <a href="https://api.flutter.dev/flutter/widgets/State/mounted.html">[...]</a>
+                  <div class="features">read-only, inherited</div>
+</dd>
+        <dt id="runtimeType" class="property inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+          <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>         
+        </dt>
+        <dd class="inherited">
+          A representation of the runtime type of the object. 
+                  <div class="features">read-only, inherited</div>
+</dd>
+        <dt id="widget" class="property inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/widgets/State/widget.html">widget</a></span>
+          <span class="signature">&#8594; <a href="../everything/SoundPlayerUI-class.html">SoundPlayerUI</a></span>         
+        </dt>
+        <dd class="inherited">
+          The current configuration. <a href="https://api.flutter.dev/flutter/widgets/State/widget.html">[...]</a>
+                  <div class="features">read-only, inherited</div>
+</dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-methods">
+      <h2>Methods</h2>
+      <dl class="callables">
+        <dt id="build" class="callable">
+          <span class="name"><a href="../everything/SoundPlayerUIState/build.html">build</a></span><span class="signature">(<wbr><span class="parameter" id="build-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></span>
+          </span>
+                  </dt>
+        <dd>
+           
+                  <div class="features">override</div>
+</dd>
+        <dt id="connectRecorderStream" class="callable">
+          <span class="name"><a href="../everything/SoundPlayerUIState/connectRecorderStream.html">connectRecorderStream</a></span><span class="signature">(<wbr><span class="parameter" id="connectRecorderStream-param-recorderStream"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../everything/PlaybackDisposition-class.html">PlaybackDisposition</a></span>&gt;</span></span> <span class="parameter-name">recorderStream</span></span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          This method is used by the RecorderPlaybackController to attached
+the <code>_localController</code> to the <code>SoundRecordUI</code>'s stream.
+This is only done when this player is attached to a
+RecorderPlaybackController. <a href="../everything/SoundPlayerUIState/connectRecorderStream.html">[...]</a>
+                  
+</dd>
+        <dt id="deactivate" class="callable inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/widgets/State/deactivate.html">deactivate</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Called when this object is removed from the tree. <a href="https://api.flutter.dev/flutter/widgets/State/deactivate.html">[...]</a>
+                  <div class="features">@<a href="https://pub.dev/documentation/meta/1.3.0-nullsafety.6/meta/mustCallSuper-constant.html">mustCallSuper</a>, @<a href="https://pub.dev/documentation/meta/1.3.0-nullsafety.6/meta/protected-constant.html">protected</a>, inherited</div>
+</dd>
+        <dt id="debugFillProperties" class="callable inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/widgets/State/debugFillProperties.html">debugFillProperties</a></span><span class="signature">(<wbr><span class="parameter" id="debugFillProperties-param-properties"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticPropertiesBuilder-class.html">DiagnosticPropertiesBuilder</a></span> <span class="parameter-name">properties</span></span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Add additional properties associated with the node. <a href="https://api.flutter.dev/flutter/widgets/State/debugFillProperties.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="didChangeDependencies" class="callable inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/widgets/State/didChangeDependencies.html">didChangeDependencies</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Called when a dependency of this <a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a> object changes. <a href="https://api.flutter.dev/flutter/widgets/State/didChangeDependencies.html">[...]</a>
+                  <div class="features">@<a href="https://pub.dev/documentation/meta/1.3.0-nullsafety.6/meta/mustCallSuper-constant.html">mustCallSuper</a>, @<a href="https://pub.dev/documentation/meta/1.3.0-nullsafety.6/meta/protected-constant.html">protected</a>, inherited</div>
+</dd>
+        <dt id="didUpdateWidget" class="callable inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/widgets/State/didUpdateWidget.html">didUpdateWidget</a></span><span class="signature">(<wbr><span class="parameter" id="didUpdateWidget-param-oldWidget"><span>covariant</span> <span class="type-annotation"><a href="../everything/SoundPlayerUI-class.html">SoundPlayerUI</a></span> <span class="parameter-name">oldWidget</span></span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Called whenever the widget configuration changes. <a href="https://api.flutter.dev/flutter/widgets/State/didUpdateWidget.html">[...]</a>
+                  <div class="features">@<a href="https://pub.dev/documentation/meta/1.3.0-nullsafety.6/meta/mustCallSuper-constant.html">mustCallSuper</a>, @<a href="https://pub.dev/documentation/meta/1.3.0-nullsafety.6/meta/protected-constant.html">protected</a>, inherited</div>
+</dd>
+        <dt id="dispose" class="callable">
+          <span class="name"><a href="../everything/SoundPlayerUIState/dispose.html">dispose</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+           
+                  <div class="features">override</div>
+</dd>
+        <dt id="initState" class="callable inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/widgets/State/initState.html">initState</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Called when this object is inserted into the tree. <a href="https://api.flutter.dev/flutter/widgets/State/initState.html">[...]</a>
+                  <div class="features">@<a href="https://pub.dev/documentation/meta/1.3.0-nullsafety.6/meta/mustCallSuper-constant.html">mustCallSuper</a>, @<a href="https://pub.dev/documentation/meta/1.3.0-nullsafety.6/meta/protected-constant.html">protected</a>, inherited</div>
+</dd>
+        <dt id="noSuchMethod" class="callable inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+            <span class="returntype parameter">&#8594; dynamic</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Invoked when a non-existent method or property is accessed. <a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="pause" class="callable">
+          <span class="name"><a href="../everything/SoundPlayerUIState/pause.html">pause</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          Call <a href="../everything/SoundPlayerUIState/pause.html">pause</a> to pause playing the audio. 
+                  
+</dd>
+        <dt id="play" class="callable">
+          <span class="name"><a href="../everything/SoundPlayerUIState/play.html">play</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          start playback. 
+                  
+</dd>
+        <dt id="playbackEnabled" class="callable">
+          <span class="name"><a href="../everything/SoundPlayerUIState/playbackEnabled.html">playbackEnabled</a></span><span class="signature">(<wbr><span class="parameter" id="playbackEnabled-param-enabled">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enabled</span>}</span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          Controls whether the Play button is enabled or not.
+Can not toggle this whilst the player is playing or paused. 
+                  
+</dd>
+        <dt id="reassemble" class="callable">
+          <span class="name"><a href="../everything/SoundPlayerUIState/reassemble.html">reassemble</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          detect hot reloads when debugging and stop the player.
+If we don't the platform specific code keeps running
+and sending methodCalls to a slot that no longer exists. 
+                  <div class="features">override</div>
+</dd>
+        <dt id="resume" class="callable">
+          <span class="name"><a href="../everything/SoundPlayerUIState/resume.html">resume</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          Call <a href="../everything/SoundPlayerUIState/resume.html">resume</a> to resume playing the audio. 
+                  
+</dd>
+        <dt id="setState" class="callable inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/widgets/State/setState.html">setState</a></span><span class="signature">(<wbr><span class="parameter" id="setState-param-fn"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/VoidCallback.html">VoidCallback</a></span> <span class="parameter-name">fn</span></span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Notify the framework that the internal state of this object has changed. <a href="https://api.flutter.dev/flutter/widgets/State/setState.html">[...]</a>
+                  <div class="features">@<a href="https://pub.dev/documentation/meta/1.3.0-nullsafety.6/meta/protected-constant.html">protected</a>, inherited</div>
+</dd>
+        <dt id="stop" class="callable">
+          <span class="name"><a href="../everything/SoundPlayerUIState/stop.html">stop</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Call <a href="../everything/SoundPlayerUIState/stop.html">stop</a> to stop the audio playing. 
+                  
+</dd>
+        <dt id="toDiagnosticsNode" class="callable inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toDiagnosticsNode.html">toDiagnosticsNode</a></span><span class="signature">(<wbr><span class="parameter" id="toDiagnosticsNode-param-name">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span>, </span><span class="parameter" id="toDiagnosticsNode-param-style"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticsTreeStyle-class.html">DiagnosticsTreeStyle</a></span> <span class="parameter-name">style</span>}</span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/foundation/DiagnosticsNode-class.html">DiagnosticsNode</a></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Returns a debug representation of the object that is used by debugging
+tools and by <a href="https://api.flutter.dev/flutter/foundation/DiagnosticsNode/toStringDeep.html">DiagnosticsNode.toStringDeep</a>. <a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toDiagnosticsNode.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="toString" class="callable inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toString.html">toString</a></span><span class="signature">(<wbr><span class="parameter" id="toString-param-minLevel">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticLevel-class.html">DiagnosticLevel</a></span> <span class="parameter-name">minLevel</span>: <span class="default-value">DiagnosticLevel.info</span>}</span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Returns a string representation of this object. 
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="toStringShort" class="callable inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toStringShort.html">toStringShort</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          A brief description of this object, usually just the <a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a> and the
+<a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a>. <a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toStringShort.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor inherited" id="operators">
+      <h2>Operators</h2>
+      <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+          <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          The equality operator. <a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+      </dl>
+    </section>
+
+
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+    <ol>
+    
+      <li class="section-title"><a href="../everything/SoundPlayerUIState-class.html#constructors">Constructors</a></li>
+      <li><a href="../everything/SoundPlayerUIState/SoundPlayerUIState.html">SoundPlayerUIState</a></li>
+    
+      <li class="section-title">
+        <a href="../everything/SoundPlayerUIState-class.html#instance-properties">Properties</a>
+      </li>
+      <li><a href="../everything/SoundPlayerUIState/canPlay.html">canPlay</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/context.html">context</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/mounted.html">mounted</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/widget.html">widget</a></li>
+    
+      <li class="section-title"><a href="../everything/SoundPlayerUIState-class.html#instance-methods">Methods</a></li>
+      <li><a href="../everything/SoundPlayerUIState/build.html">build</a></li>
+      <li><a href="../everything/SoundPlayerUIState/connectRecorderStream.html">connectRecorderStream</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/deactivate.html">deactivate</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/debugFillProperties.html">debugFillProperties</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/didChangeDependencies.html">didChangeDependencies</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/didUpdateWidget.html">didUpdateWidget</a></li>
+      <li><a href="../everything/SoundPlayerUIState/dispose.html">dispose</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/initState.html">initState</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+      <li><a href="../everything/SoundPlayerUIState/pause.html">pause</a></li>
+      <li><a href="../everything/SoundPlayerUIState/play.html">play</a></li>
+      <li><a href="../everything/SoundPlayerUIState/playbackEnabled.html">playbackEnabled</a></li>
+      <li><a href="../everything/SoundPlayerUIState/reassemble.html">reassemble</a></li>
+      <li><a href="../everything/SoundPlayerUIState/resume.html">resume</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/setState.html">setState</a></li>
+      <li><a href="../everything/SoundPlayerUIState/stop.html">stop</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toDiagnosticsNode.html">toDiagnosticsNode</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toString.html">toString</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toStringShort.html">toStringShort</a></li>
+    
+      <li class="section-title inherited"><a href="../everything/SoundPlayerUIState-class.html#operators">Operators</a></li>
+      <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+    
+    
+    
+    
+    </ol>
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    flauto
+      6.4.3+12
+  </span>
+
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="../static-assets/typeahead.bundle.min.js"></script>
+<script src="../static-assets/highlight.pack.js"></script>
+<script src="../static-assets/URI.js"></script>
+<script src="../static-assets/script.js"></script>
+
+
+</body>
+
+</html>

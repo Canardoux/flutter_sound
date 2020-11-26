@@ -1,28 +1,28 @@
 [
  {
-  "name": "lib1",
-  "qualifiedName": "lib1",
-  "href": "lib1/lib1-library.html",
+  "name": "everything",
+  "qualifiedName": "everything",
+  "href": "everything/everything-library.html",
   "type": "library",
   "overriddenDepth": 0,
   "packageName": "flauto"
  },
  {
   "name": "AnsiColor",
-  "qualifiedName": "lib1.AnsiColor",
-  "href": "lib1/AnsiColor-class.html",
+  "qualifiedName": "everything.AnsiColor",
+  "href": "everything/AnsiColor-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "AnsiColor",
-  "qualifiedName": "lib1.AnsiColor.AnsiColor",
-  "href": "lib1/AnsiColor/AnsiColor.html",
+  "qualifiedName": "everything.AnsiColor.AnsiColor",
+  "href": "everything/AnsiColor/AnsiColor.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -33,8 +33,8 @@
  },
  {
   "name": "apply",
-  "qualifiedName": "lib1.AnsiColor.apply",
-  "href": "lib1/AnsiColor/apply.html",
+  "qualifiedName": "everything.AnsiColor.apply",
+  "href": "everything/AnsiColor/apply.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -45,8 +45,8 @@
  },
  {
   "name": "bgColor",
-  "qualifiedName": "lib1.AnsiColor.bgColor",
-  "href": "lib1/AnsiColor/bgColor-constant.html",
+  "qualifiedName": "everything.AnsiColor.bgColor",
+  "href": "everything/AnsiColor/bgColor-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -57,8 +57,8 @@
  },
  {
   "name": "bgReset",
-  "qualifiedName": "lib1.AnsiColor.bgReset",
-  "href": "lib1/AnsiColor/bgReset.html",
+  "qualifiedName": "everything.AnsiColor.bgReset",
+  "href": "everything/AnsiColor/bgReset.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -69,8 +69,8 @@
  },
  {
   "name": "bgResetCode",
-  "qualifiedName": "lib1.AnsiColor.bgResetCode",
-  "href": "lib1/AnsiColor/bgResetCode-constant.html",
+  "qualifiedName": "everything.AnsiColor.bgResetCode",
+  "href": "everything/AnsiColor/bgResetCode-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -81,8 +81,8 @@
  },
  {
   "name": "black",
-  "qualifiedName": "lib1.AnsiColor.black",
-  "href": "lib1/AnsiColor/black-constant.html",
+  "qualifiedName": "everything.AnsiColor.black",
+  "href": "everything/AnsiColor/black-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -93,8 +93,8 @@
  },
  {
   "name": "blue",
-  "qualifiedName": "lib1.AnsiColor.blue",
-  "href": "lib1/AnsiColor/blue-constant.html",
+  "qualifiedName": "everything.AnsiColor.blue",
+  "href": "everything/AnsiColor/blue-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -105,8 +105,8 @@
  },
  {
   "name": "code",
-  "qualifiedName": "lib1.AnsiColor.code",
-  "href": "lib1/AnsiColor/code.html",
+  "qualifiedName": "everything.AnsiColor.code",
+  "href": "everything/AnsiColor/code.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -117,8 +117,8 @@
  },
  {
   "name": "cyan",
-  "qualifiedName": "lib1.AnsiColor.cyan",
-  "href": "lib1/AnsiColor/cyan-constant.html",
+  "qualifiedName": "everything.AnsiColor.cyan",
+  "href": "everything/AnsiColor/cyan-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -129,8 +129,8 @@
  },
  {
   "name": "esc",
-  "qualifiedName": "lib1.AnsiColor.esc",
-  "href": "lib1/AnsiColor/esc-constant.html",
+  "qualifiedName": "everything.AnsiColor.esc",
+  "href": "everything/AnsiColor/esc-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -141,8 +141,8 @@
  },
  {
   "name": "fgColor",
-  "qualifiedName": "lib1.AnsiColor.fgColor",
-  "href": "lib1/AnsiColor/fgColor-constant.html",
+  "qualifiedName": "everything.AnsiColor.fgColor",
+  "href": "everything/AnsiColor/fgColor-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -153,8 +153,8 @@
  },
  {
   "name": "fgReset",
-  "qualifiedName": "lib1.AnsiColor.fgReset",
-  "href": "lib1/AnsiColor/fgReset.html",
+  "qualifiedName": "everything.AnsiColor.fgReset",
+  "href": "everything/AnsiColor/fgReset.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -165,8 +165,8 @@
  },
  {
   "name": "fgResetCode",
-  "qualifiedName": "lib1.AnsiColor.fgResetCode",
-  "href": "lib1/AnsiColor/fgResetCode-constant.html",
+  "qualifiedName": "everything.AnsiColor.fgResetCode",
+  "href": "everything/AnsiColor/fgResetCode-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -177,8 +177,8 @@
  },
  {
   "name": "green",
-  "qualifiedName": "lib1.AnsiColor.green",
-  "href": "lib1/AnsiColor/green-constant.html",
+  "qualifiedName": "everything.AnsiColor.green",
+  "href": "everything/AnsiColor/green-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -189,8 +189,8 @@
  },
  {
   "name": "grey",
-  "qualifiedName": "lib1.AnsiColor.grey",
-  "href": "lib1/AnsiColor/grey.html",
+  "qualifiedName": "everything.AnsiColor.grey",
+  "href": "everything/AnsiColor/grey.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -201,8 +201,8 @@
  },
  {
   "name": "magenta",
-  "qualifiedName": "lib1.AnsiColor.magenta",
-  "href": "lib1/AnsiColor/magenta-constant.html",
+  "qualifiedName": "everything.AnsiColor.magenta",
+  "href": "everything/AnsiColor/magenta-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -213,8 +213,8 @@
  },
  {
   "name": "none",
-  "qualifiedName": "lib1.AnsiColor.none",
-  "href": "lib1/AnsiColor/none-constant.html",
+  "qualifiedName": "everything.AnsiColor.none",
+  "href": "everything/AnsiColor/none-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -225,8 +225,8 @@
  },
  {
   "name": "orange",
-  "qualifiedName": "lib1.AnsiColor.orange",
-  "href": "lib1/AnsiColor/orange-constant.html",
+  "qualifiedName": "everything.AnsiColor.orange",
+  "href": "everything/AnsiColor/orange-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -237,8 +237,8 @@
  },
  {
   "name": "red",
-  "qualifiedName": "lib1.AnsiColor.red",
-  "href": "lib1/AnsiColor/red-constant.html",
+  "qualifiedName": "everything.AnsiColor.red",
+  "href": "everything/AnsiColor/red-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -249,8 +249,8 @@
  },
  {
   "name": "reset",
-  "qualifiedName": "lib1.AnsiColor.reset",
-  "href": "lib1/AnsiColor/reset.html",
+  "qualifiedName": "everything.AnsiColor.reset",
+  "href": "everything/AnsiColor/reset.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -261,8 +261,8 @@
  },
  {
   "name": "resetCode",
-  "qualifiedName": "lib1.AnsiColor.resetCode",
-  "href": "lib1/AnsiColor/resetCode-constant.html",
+  "qualifiedName": "everything.AnsiColor.resetCode",
+  "href": "everything/AnsiColor/resetCode-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -273,8 +273,8 @@
  },
  {
   "name": "white",
-  "qualifiedName": "lib1.AnsiColor.white",
-  "href": "lib1/AnsiColor/white-constant.html",
+  "qualifiedName": "everything.AnsiColor.white",
+  "href": "everything/AnsiColor/white-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -285,8 +285,8 @@
  },
  {
   "name": "yellow",
-  "qualifiedName": "lib1.AnsiColor.yellow",
-  "href": "lib1/AnsiColor/yellow-constant.html",
+  "qualifiedName": "everything.AnsiColor.yellow",
+  "href": "everything/AnsiColor/yellow-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -297,20 +297,20 @@
  },
  {
   "name": "FlutterFFmpeg",
-  "qualifiedName": "lib1.FlutterFFmpeg",
-  "href": "lib1/FlutterFFmpeg-class.html",
+  "qualifiedName": "everything.FlutterFFmpeg",
+  "href": "everything/FlutterFFmpeg-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "FlutterFFmpeg",
-  "qualifiedName": "lib1.FlutterFFmpeg.FlutterFFmpeg",
-  "href": "lib1/FlutterFFmpeg/FlutterFFmpeg.html",
+  "qualifiedName": "everything.FlutterFFmpeg.FlutterFFmpeg",
+  "href": "everything/FlutterFFmpeg/FlutterFFmpeg.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -321,8 +321,8 @@
  },
  {
   "name": "cancel",
-  "qualifiedName": "lib1.FlutterFFmpeg.cancel",
-  "href": "lib1/FlutterFFmpeg/cancel.html",
+  "qualifiedName": "everything.FlutterFFmpeg.cancel",
+  "href": "everything/FlutterFFmpeg/cancel.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -333,8 +333,8 @@
  },
  {
   "name": "execute",
-  "qualifiedName": "lib1.FlutterFFmpeg.execute",
-  "href": "lib1/FlutterFFmpeg/execute.html",
+  "qualifiedName": "everything.FlutterFFmpeg.execute",
+  "href": "everything/FlutterFFmpeg/execute.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -345,8 +345,8 @@
  },
  {
   "name": "executeWithArguments",
-  "qualifiedName": "lib1.FlutterFFmpeg.executeWithArguments",
-  "href": "lib1/FlutterFFmpeg/executeWithArguments.html",
+  "qualifiedName": "everything.FlutterFFmpeg.executeWithArguments",
+  "href": "everything/FlutterFFmpeg/executeWithArguments.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -357,8 +357,8 @@
  },
  {
   "name": "parseArguments",
-  "qualifiedName": "lib1.FlutterFFmpeg.parseArguments",
-  "href": "lib1/FlutterFFmpeg/parseArguments.html",
+  "qualifiedName": "everything.FlutterFFmpeg.parseArguments",
+  "href": "everything/FlutterFFmpeg/parseArguments.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -369,20 +369,20 @@
  },
  {
   "name": "FlutterFFmpegConfig",
-  "qualifiedName": "lib1.FlutterFFmpegConfig",
-  "href": "lib1/FlutterFFmpegConfig-class.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig",
+  "href": "everything/FlutterFFmpegConfig-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "FlutterFFmpegConfig",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.FlutterFFmpegConfig",
-  "href": "lib1/FlutterFFmpegConfig/FlutterFFmpegConfig.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.FlutterFFmpegConfig",
+  "href": "everything/FlutterFFmpegConfig/FlutterFFmpegConfig.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -393,8 +393,8 @@
  },
  {
   "name": "disableLogs",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.disableLogs",
-  "href": "lib1/FlutterFFmpegConfig/disableLogs.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.disableLogs",
+  "href": "everything/FlutterFFmpegConfig/disableLogs.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -405,8 +405,8 @@
  },
  {
   "name": "disableRedirection",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.disableRedirection",
-  "href": "lib1/FlutterFFmpegConfig/disableRedirection.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.disableRedirection",
+  "href": "everything/FlutterFFmpegConfig/disableRedirection.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -417,8 +417,8 @@
  },
  {
   "name": "disableStatistics",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.disableStatistics",
-  "href": "lib1/FlutterFFmpegConfig/disableStatistics.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.disableStatistics",
+  "href": "everything/FlutterFFmpegConfig/disableStatistics.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -429,8 +429,8 @@
  },
  {
   "name": "enableLogCallback",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.enableLogCallback",
-  "href": "lib1/FlutterFFmpegConfig/enableLogCallback.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.enableLogCallback",
+  "href": "everything/FlutterFFmpegConfig/enableLogCallback.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -441,8 +441,8 @@
  },
  {
   "name": "enableLogs",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.enableLogs",
-  "href": "lib1/FlutterFFmpegConfig/enableLogs.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.enableLogs",
+  "href": "everything/FlutterFFmpegConfig/enableLogs.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -453,8 +453,8 @@
  },
  {
   "name": "enableRedirection",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.enableRedirection",
-  "href": "lib1/FlutterFFmpegConfig/enableRedirection.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.enableRedirection",
+  "href": "everything/FlutterFFmpegConfig/enableRedirection.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -465,8 +465,8 @@
  },
  {
   "name": "enableStatistics",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.enableStatistics",
-  "href": "lib1/FlutterFFmpegConfig/enableStatistics.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.enableStatistics",
+  "href": "everything/FlutterFFmpegConfig/enableStatistics.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -477,8 +477,8 @@
  },
  {
   "name": "enableStatisticsCallback",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.enableStatisticsCallback",
-  "href": "lib1/FlutterFFmpegConfig/enableStatisticsCallback.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.enableStatisticsCallback",
+  "href": "everything/FlutterFFmpegConfig/enableStatisticsCallback.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -489,8 +489,8 @@
  },
  {
   "name": "getExternalLibraries",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.getExternalLibraries",
-  "href": "lib1/FlutterFFmpegConfig/getExternalLibraries.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.getExternalLibraries",
+  "href": "everything/FlutterFFmpegConfig/getExternalLibraries.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -501,8 +501,8 @@
  },
  {
   "name": "getFFmpegVersion",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.getFFmpegVersion",
-  "href": "lib1/FlutterFFmpegConfig/getFFmpegVersion.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.getFFmpegVersion",
+  "href": "everything/FlutterFFmpegConfig/getFFmpegVersion.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -513,8 +513,8 @@
  },
  {
   "name": "getLastCommandOutput",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.getLastCommandOutput",
-  "href": "lib1/FlutterFFmpegConfig/getLastCommandOutput.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.getLastCommandOutput",
+  "href": "everything/FlutterFFmpegConfig/getLastCommandOutput.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -525,8 +525,8 @@
  },
  {
   "name": "getLastReceivedStatistics",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.getLastReceivedStatistics",
-  "href": "lib1/FlutterFFmpegConfig/getLastReceivedStatistics.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.getLastReceivedStatistics",
+  "href": "everything/FlutterFFmpegConfig/getLastReceivedStatistics.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -537,8 +537,8 @@
  },
  {
   "name": "getLastReturnCode",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.getLastReturnCode",
-  "href": "lib1/FlutterFFmpegConfig/getLastReturnCode.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.getLastReturnCode",
+  "href": "everything/FlutterFFmpegConfig/getLastReturnCode.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -549,8 +549,8 @@
  },
  {
   "name": "getLogLevel",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.getLogLevel",
-  "href": "lib1/FlutterFFmpegConfig/getLogLevel.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.getLogLevel",
+  "href": "everything/FlutterFFmpegConfig/getLogLevel.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -561,8 +561,8 @@
  },
  {
   "name": "getPackageName",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.getPackageName",
-  "href": "lib1/FlutterFFmpegConfig/getPackageName.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.getPackageName",
+  "href": "everything/FlutterFFmpegConfig/getPackageName.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -573,8 +573,8 @@
  },
  {
   "name": "getPlatform",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.getPlatform",
-  "href": "lib1/FlutterFFmpegConfig/getPlatform.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.getPlatform",
+  "href": "everything/FlutterFFmpegConfig/getPlatform.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -585,8 +585,8 @@
  },
  {
   "name": "logCallback",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.logCallback",
-  "href": "lib1/FlutterFFmpegConfig/logCallback.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.logCallback",
+  "href": "everything/FlutterFFmpegConfig/logCallback.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -597,8 +597,8 @@
  },
  {
   "name": "registerNewFFmpegPipe",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.registerNewFFmpegPipe",
-  "href": "lib1/FlutterFFmpegConfig/registerNewFFmpegPipe.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.registerNewFFmpegPipe",
+  "href": "everything/FlutterFFmpegConfig/registerNewFFmpegPipe.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -609,8 +609,8 @@
  },
  {
   "name": "resetStatistics",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.resetStatistics",
-  "href": "lib1/FlutterFFmpegConfig/resetStatistics.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.resetStatistics",
+  "href": "everything/FlutterFFmpegConfig/resetStatistics.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -621,8 +621,8 @@
  },
  {
   "name": "setFontDirectory",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.setFontDirectory",
-  "href": "lib1/FlutterFFmpegConfig/setFontDirectory.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.setFontDirectory",
+  "href": "everything/FlutterFFmpegConfig/setFontDirectory.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -633,8 +633,8 @@
  },
  {
   "name": "setFontconfigConfigurationPath",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.setFontconfigConfigurationPath",
-  "href": "lib1/FlutterFFmpegConfig/setFontconfigConfigurationPath.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.setFontconfigConfigurationPath",
+  "href": "everything/FlutterFFmpegConfig/setFontconfigConfigurationPath.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -645,8 +645,8 @@
  },
  {
   "name": "setLogLevel",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.setLogLevel",
-  "href": "lib1/FlutterFFmpegConfig/setLogLevel.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.setLogLevel",
+  "href": "everything/FlutterFFmpegConfig/setLogLevel.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -657,8 +657,8 @@
  },
  {
   "name": "statisticsCallback",
-  "qualifiedName": "lib1.FlutterFFmpegConfig.statisticsCallback",
-  "href": "lib1/FlutterFFmpegConfig/statisticsCallback.html",
+  "qualifiedName": "everything.FlutterFFmpegConfig.statisticsCallback",
+  "href": "everything/FlutterFFmpegConfig/statisticsCallback.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -669,20 +669,20 @@
  },
  {
   "name": "FlutterFFprobe",
-  "qualifiedName": "lib1.FlutterFFprobe",
-  "href": "lib1/FlutterFFprobe-class.html",
+  "qualifiedName": "everything.FlutterFFprobe",
+  "href": "everything/FlutterFFprobe-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "FlutterFFprobe",
-  "qualifiedName": "lib1.FlutterFFprobe.FlutterFFprobe",
-  "href": "lib1/FlutterFFprobe/FlutterFFprobe.html",
+  "qualifiedName": "everything.FlutterFFprobe.FlutterFFprobe",
+  "href": "everything/FlutterFFprobe/FlutterFFprobe.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -693,8 +693,8 @@
  },
  {
   "name": "execute",
-  "qualifiedName": "lib1.FlutterFFprobe.execute",
-  "href": "lib1/FlutterFFprobe/execute.html",
+  "qualifiedName": "everything.FlutterFFprobe.execute",
+  "href": "everything/FlutterFFprobe/execute.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -705,8 +705,8 @@
  },
  {
   "name": "executeWithArguments",
-  "qualifiedName": "lib1.FlutterFFprobe.executeWithArguments",
-  "href": "lib1/FlutterFFprobe/executeWithArguments.html",
+  "qualifiedName": "everything.FlutterFFprobe.executeWithArguments",
+  "href": "everything/FlutterFFprobe/executeWithArguments.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -717,8 +717,8 @@
  },
  {
   "name": "getMediaInformation",
-  "qualifiedName": "lib1.FlutterFFprobe.getMediaInformation",
-  "href": "lib1/FlutterFFprobe/getMediaInformation.html",
+  "qualifiedName": "everything.FlutterFFprobe.getMediaInformation",
+  "href": "everything/FlutterFFprobe/getMediaInformation.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -729,20 +729,20 @@
  },
  {
   "name": "FlutterSound",
-  "qualifiedName": "lib1.FlutterSound",
-  "href": "lib1/FlutterSound-class.html",
+  "qualifiedName": "everything.FlutterSound",
+  "href": "everything/FlutterSound-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "FlutterSound",
-  "qualifiedName": "lib1.FlutterSound.FlutterSound",
-  "href": "lib1/FlutterSound/FlutterSound.html",
+  "qualifiedName": "everything.FlutterSound.FlutterSound",
+  "href": "everything/FlutterSound/FlutterSound.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -753,8 +753,8 @@
  },
  {
   "name": "internalOpenSessionForRecording",
-  "qualifiedName": "lib1.FlutterSound.internalOpenSessionForRecording",
-  "href": "lib1/FlutterSound/internalOpenSessionForRecording.html",
+  "qualifiedName": "everything.FlutterSound.internalOpenSessionForRecording",
+  "href": "everything/FlutterSound/internalOpenSessionForRecording.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -765,8 +765,8 @@
  },
  {
   "name": "setAudioFocus",
-  "qualifiedName": "lib1.FlutterSound.setAudioFocus",
-  "href": "lib1/FlutterSound/setAudioFocus.html",
+  "qualifiedName": "everything.FlutterSound.setAudioFocus",
+  "href": "everything/FlutterSound/setAudioFocus.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -777,8 +777,8 @@
  },
  {
   "name": "setIOSSessionParameters",
-  "qualifiedName": "lib1.FlutterSound.setIOSSessionParameters",
-  "href": "lib1/FlutterSound/setIOSSessionParameters.html",
+  "qualifiedName": "everything.FlutterSound.setIOSSessionParameters",
+  "href": "everything/FlutterSound/setIOSSessionParameters.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -789,8 +789,8 @@
  },
  {
   "name": "thePlayer",
-  "qualifiedName": "lib1.FlutterSound.thePlayer",
-  "href": "lib1/FlutterSound/thePlayer.html",
+  "qualifiedName": "everything.FlutterSound.thePlayer",
+  "href": "everything/FlutterSound/thePlayer.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -801,20 +801,20 @@
  },
  {
   "name": "FlutterSoundHelper",
-  "qualifiedName": "lib1.FlutterSoundHelper",
-  "href": "lib1/FlutterSoundHelper-class.html",
+  "qualifiedName": "everything.FlutterSoundHelper",
+  "href": "everything/FlutterSoundHelper-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "FlutterSoundHelper",
-  "qualifiedName": "lib1.FlutterSoundHelper.FlutterSoundHelper",
-  "href": "lib1/FlutterSoundHelper/FlutterSoundHelper.html",
+  "qualifiedName": "everything.FlutterSoundHelper.FlutterSoundHelper",
+  "href": "everything/FlutterSoundHelper/FlutterSoundHelper.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -825,8 +825,8 @@
  },
  {
   "name": "convertFile",
-  "qualifiedName": "lib1.FlutterSoundHelper.convertFile",
-  "href": "lib1/FlutterSoundHelper/convertFile.html",
+  "qualifiedName": "everything.FlutterSoundHelper.convertFile",
+  "href": "everything/FlutterSoundHelper/convertFile.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -837,8 +837,8 @@
  },
  {
   "name": "duration",
-  "qualifiedName": "lib1.FlutterSoundHelper.duration",
-  "href": "lib1/FlutterSoundHelper/duration.html",
+  "qualifiedName": "everything.FlutterSoundHelper.duration",
+  "href": "everything/FlutterSoundHelper/duration.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -849,8 +849,8 @@
  },
  {
   "name": "executeFFmpegWithArguments",
-  "qualifiedName": "lib1.FlutterSoundHelper.executeFFmpegWithArguments",
-  "href": "lib1/FlutterSoundHelper/executeFFmpegWithArguments.html",
+  "qualifiedName": "everything.FlutterSoundHelper.executeFFmpegWithArguments",
+  "href": "everything/FlutterSoundHelper/executeFFmpegWithArguments.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -861,8 +861,8 @@
  },
  {
   "name": "ffMpegGetMediaInformation",
-  "qualifiedName": "lib1.FlutterSoundHelper.ffMpegGetMediaInformation",
-  "href": "lib1/FlutterSoundHelper/ffMpegGetMediaInformation.html",
+  "qualifiedName": "everything.FlutterSoundHelper.ffMpegGetMediaInformation",
+  "href": "everything/FlutterSoundHelper/ffMpegGetMediaInformation.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -873,8 +873,8 @@
  },
  {
   "name": "flutterFFmpeg",
-  "qualifiedName": "lib1.FlutterSoundHelper.flutterFFmpeg",
-  "href": "lib1/FlutterSoundHelper/flutterFFmpeg.html",
+  "qualifiedName": "everything.FlutterSoundHelper.flutterFFmpeg",
+  "href": "everything/FlutterSoundHelper/flutterFFmpeg.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -885,8 +885,8 @@
  },
  {
   "name": "getLastFFmpegCommandOutput",
-  "qualifiedName": "lib1.FlutterSoundHelper.getLastFFmpegCommandOutput",
-  "href": "lib1/FlutterSoundHelper/getLastFFmpegCommandOutput.html",
+  "qualifiedName": "everything.FlutterSoundHelper.getLastFFmpegCommandOutput",
+  "href": "everything/FlutterSoundHelper/getLastFFmpegCommandOutput.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -897,8 +897,8 @@
  },
  {
   "name": "getLastFFmpegReturnCode",
-  "qualifiedName": "lib1.FlutterSoundHelper.getLastFFmpegReturnCode",
-  "href": "lib1/FlutterSoundHelper/getLastFFmpegReturnCode.html",
+  "qualifiedName": "everything.FlutterSoundHelper.getLastFFmpegReturnCode",
+  "href": "everything/FlutterSoundHelper/getLastFFmpegReturnCode.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -909,8 +909,8 @@
  },
  {
   "name": "isFFmpegAvailable",
-  "qualifiedName": "lib1.FlutterSoundHelper.isFFmpegAvailable",
-  "href": "lib1/FlutterSoundHelper/isFFmpegAvailable.html",
+  "qualifiedName": "everything.FlutterSoundHelper.isFFmpegAvailable",
+  "href": "everything/FlutterSoundHelper/isFFmpegAvailable.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -921,8 +921,8 @@
  },
  {
   "name": "pcmToWave",
-  "qualifiedName": "lib1.FlutterSoundHelper.pcmToWave",
-  "href": "lib1/FlutterSoundHelper/pcmToWave.html",
+  "qualifiedName": "everything.FlutterSoundHelper.pcmToWave",
+  "href": "everything/FlutterSoundHelper/pcmToWave.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -933,8 +933,8 @@
  },
  {
   "name": "pcmToWaveBuffer",
-  "qualifiedName": "lib1.FlutterSoundHelper.pcmToWaveBuffer",
-  "href": "lib1/FlutterSoundHelper/pcmToWaveBuffer.html",
+  "qualifiedName": "everything.FlutterSoundHelper.pcmToWaveBuffer",
+  "href": "everything/FlutterSoundHelper/pcmToWaveBuffer.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -945,8 +945,8 @@
  },
  {
   "name": "waveToPCM",
-  "qualifiedName": "lib1.FlutterSoundHelper.waveToPCM",
-  "href": "lib1/FlutterSoundHelper/waveToPCM.html",
+  "qualifiedName": "everything.FlutterSoundHelper.waveToPCM",
+  "href": "everything/FlutterSoundHelper/waveToPCM.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -957,8 +957,8 @@
  },
  {
   "name": "waveToPCMBuffer",
-  "qualifiedName": "lib1.FlutterSoundHelper.waveToPCMBuffer",
-  "href": "lib1/FlutterSoundHelper/waveToPCMBuffer.html",
+  "qualifiedName": "everything.FlutterSoundHelper.waveToPCMBuffer",
+  "href": "everything/FlutterSoundHelper/waveToPCMBuffer.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -969,20 +969,20 @@
  },
  {
   "name": "FlutterSoundPlayer",
-  "qualifiedName": "lib1.FlutterSoundPlayer",
-  "href": "lib1/FlutterSoundPlayer-class.html",
+  "qualifiedName": "everything.FlutterSoundPlayer",
+  "href": "everything/FlutterSoundPlayer-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "FlutterSoundPlayer",
-  "qualifiedName": "lib1.FlutterSoundPlayer.FlutterSoundPlayer",
-  "href": "lib1/FlutterSoundPlayer/FlutterSoundPlayer.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.FlutterSoundPlayer",
+  "href": "everything/FlutterSoundPlayer/FlutterSoundPlayer.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -993,8 +993,8 @@
  },
  {
   "name": "audioPlayerFinished",
-  "qualifiedName": "lib1.FlutterSoundPlayer.audioPlayerFinished",
-  "href": "lib1/FlutterSoundPlayer/audioPlayerFinished.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.audioPlayerFinished",
+  "href": "everything/FlutterSoundPlayer/audioPlayerFinished.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -1005,8 +1005,8 @@
  },
  {
   "name": "audioPlayerFinishedPlaying",
-  "qualifiedName": "lib1.FlutterSoundPlayer.audioPlayerFinishedPlaying",
-  "href": "lib1/FlutterSoundPlayer/audioPlayerFinishedPlaying.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.audioPlayerFinishedPlaying",
+  "href": "everything/FlutterSoundPlayer/audioPlayerFinishedPlaying.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1017,8 +1017,8 @@
  },
  {
   "name": "closeAudioSession",
-  "qualifiedName": "lib1.FlutterSoundPlayer.closeAudioSession",
-  "href": "lib1/FlutterSoundPlayer/closeAudioSession.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.closeAudioSession",
+  "href": "everything/FlutterSoundPlayer/closeAudioSession.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1029,8 +1029,8 @@
  },
  {
   "name": "dispositionStream",
-  "qualifiedName": "lib1.FlutterSoundPlayer.dispositionStream",
-  "href": "lib1/FlutterSoundPlayer/dispositionStream.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.dispositionStream",
+  "href": "everything/FlutterSoundPlayer/dispositionStream.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1041,8 +1041,8 @@
  },
  {
   "name": "feed",
-  "qualifiedName": "lib1.FlutterSoundPlayer.feed",
-  "href": "lib1/FlutterSoundPlayer/feed.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.feed",
+  "href": "everything/FlutterSoundPlayer/feed.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1053,8 +1053,8 @@
  },
  {
   "name": "feedFromStream",
-  "qualifiedName": "lib1.FlutterSoundPlayer.feedFromStream",
-  "href": "lib1/FlutterSoundPlayer/feedFromStream.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.feedFromStream",
+  "href": "everything/FlutterSoundPlayer/feedFromStream.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1065,8 +1065,8 @@
  },
  {
   "name": "foodSink",
-  "qualifiedName": "lib1.FlutterSoundPlayer.foodSink",
-  "href": "lib1/FlutterSoundPlayer/foodSink.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.foodSink",
+  "href": "everything/FlutterSoundPlayer/foodSink.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1077,8 +1077,8 @@
  },
  {
   "name": "foodStreamController",
-  "qualifiedName": "lib1.FlutterSoundPlayer.foodStreamController",
-  "href": "lib1/FlutterSoundPlayer/foodStreamController.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.foodStreamController",
+  "href": "everything/FlutterSoundPlayer/foodStreamController.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1089,8 +1089,8 @@
  },
  {
   "name": "foodStreamSubscription",
-  "qualifiedName": "lib1.FlutterSoundPlayer.foodStreamSubscription",
-  "href": "lib1/FlutterSoundPlayer/foodStreamSubscription.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.foodStreamSubscription",
+  "href": "everything/FlutterSoundPlayer/foodStreamSubscription.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1101,8 +1101,8 @@
  },
  {
   "name": "getPlayerState",
-  "qualifiedName": "lib1.FlutterSoundPlayer.getPlayerState",
-  "href": "lib1/FlutterSoundPlayer/getPlayerState.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.getPlayerState",
+  "href": "everything/FlutterSoundPlayer/getPlayerState.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1113,8 +1113,8 @@
  },
  {
   "name": "getProgress",
-  "qualifiedName": "lib1.FlutterSoundPlayer.getProgress",
-  "href": "lib1/FlutterSoundPlayer/getProgress.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.getProgress",
+  "href": "everything/FlutterSoundPlayer/getProgress.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1125,8 +1125,8 @@
  },
  {
   "name": "getResourcePath",
-  "qualifiedName": "lib1.FlutterSoundPlayer.getResourcePath",
-  "href": "lib1/FlutterSoundPlayer/getResourcePath.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.getResourcePath",
+  "href": "everything/FlutterSoundPlayer/getResourcePath.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1137,8 +1137,8 @@
  },
  {
   "name": "isDecoderSupported",
-  "qualifiedName": "lib1.FlutterSoundPlayer.isDecoderSupported",
-  "href": "lib1/FlutterSoundPlayer/isDecoderSupported.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.isDecoderSupported",
+  "href": "everything/FlutterSoundPlayer/isDecoderSupported.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1149,8 +1149,8 @@
  },
  {
   "name": "isInited",
-  "qualifiedName": "lib1.FlutterSoundPlayer.isInited",
-  "href": "lib1/FlutterSoundPlayer/isInited.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.isInited",
+  "href": "everything/FlutterSoundPlayer/isInited.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1161,8 +1161,8 @@
  },
  {
   "name": "isOpen",
-  "qualifiedName": "lib1.FlutterSoundPlayer.isOpen",
-  "href": "lib1/FlutterSoundPlayer/isOpen.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.isOpen",
+  "href": "everything/FlutterSoundPlayer/isOpen.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1173,8 +1173,8 @@
  },
  {
   "name": "isPaused",
-  "qualifiedName": "lib1.FlutterSoundPlayer.isPaused",
-  "href": "lib1/FlutterSoundPlayer/isPaused.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.isPaused",
+  "href": "everything/FlutterSoundPlayer/isPaused.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1185,8 +1185,8 @@
  },
  {
   "name": "isPlaying",
-  "qualifiedName": "lib1.FlutterSoundPlayer.isPlaying",
-  "href": "lib1/FlutterSoundPlayer/isPlaying.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.isPlaying",
+  "href": "everything/FlutterSoundPlayer/isPlaying.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1197,8 +1197,8 @@
  },
  {
   "name": "isStopped",
-  "qualifiedName": "lib1.FlutterSoundPlayer.isStopped",
-  "href": "lib1/FlutterSoundPlayer/isStopped.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.isStopped",
+  "href": "everything/FlutterSoundPlayer/isStopped.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1209,8 +1209,8 @@
  },
  {
   "name": "needSomeFood",
-  "qualifiedName": "lib1.FlutterSoundPlayer.needSomeFood",
-  "href": "lib1/FlutterSoundPlayer/needSomeFood.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.needSomeFood",
+  "href": "everything/FlutterSoundPlayer/needSomeFood.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -1221,8 +1221,8 @@
  },
  {
   "name": "needSomeFoodCompleter",
-  "qualifiedName": "lib1.FlutterSoundPlayer.needSomeFoodCompleter",
-  "href": "lib1/FlutterSoundPlayer/needSomeFoodCompleter.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.needSomeFoodCompleter",
+  "href": "everything/FlutterSoundPlayer/needSomeFoodCompleter.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1233,8 +1233,8 @@
  },
  {
   "name": "needToConvert",
-  "qualifiedName": "lib1.FlutterSoundPlayer.needToConvert",
-  "href": "lib1/FlutterSoundPlayer/needToConvert.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.needToConvert",
+  "href": "everything/FlutterSoundPlayer/needToConvert.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1245,8 +1245,8 @@
  },
  {
   "name": "nowPlaying",
-  "qualifiedName": "lib1.FlutterSoundPlayer.nowPlaying",
-  "href": "lib1/FlutterSoundPlayer/nowPlaying.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.nowPlaying",
+  "href": "everything/FlutterSoundPlayer/nowPlaying.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1257,8 +1257,8 @@
  },
  {
   "name": "onPaused",
-  "qualifiedName": "lib1.FlutterSoundPlayer.onPaused",
-  "href": "lib1/FlutterSoundPlayer/onPaused.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.onPaused",
+  "href": "everything/FlutterSoundPlayer/onPaused.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1269,8 +1269,8 @@
  },
  {
   "name": "onProgress",
-  "qualifiedName": "lib1.FlutterSoundPlayer.onProgress",
-  "href": "lib1/FlutterSoundPlayer/onProgress.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.onProgress",
+  "href": "everything/FlutterSoundPlayer/onProgress.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1281,8 +1281,8 @@
  },
  {
   "name": "onSkipBackward",
-  "qualifiedName": "lib1.FlutterSoundPlayer.onSkipBackward",
-  "href": "lib1/FlutterSoundPlayer/onSkipBackward.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.onSkipBackward",
+  "href": "everything/FlutterSoundPlayer/onSkipBackward.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1293,8 +1293,8 @@
  },
  {
   "name": "onSkipForward",
-  "qualifiedName": "lib1.FlutterSoundPlayer.onSkipForward",
-  "href": "lib1/FlutterSoundPlayer/onSkipForward.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.onSkipForward",
+  "href": "everything/FlutterSoundPlayer/onSkipForward.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1305,8 +1305,8 @@
  },
  {
   "name": "openAudioSession",
-  "qualifiedName": "lib1.FlutterSoundPlayer.openAudioSession",
-  "href": "lib1/FlutterSoundPlayer/openAudioSession.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.openAudioSession",
+  "href": "everything/FlutterSoundPlayer/openAudioSession.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1317,8 +1317,8 @@
  },
  {
   "name": "openAudioSessionCompleted",
-  "qualifiedName": "lib1.FlutterSoundPlayer.openAudioSessionCompleted",
-  "href": "lib1/FlutterSoundPlayer/openAudioSessionCompleted.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.openAudioSessionCompleted",
+  "href": "everything/FlutterSoundPlayer/openAudioSessionCompleted.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -1329,8 +1329,8 @@
  },
  {
   "name": "openAudioSessionCompleter",
-  "qualifiedName": "lib1.FlutterSoundPlayer.openAudioSessionCompleter",
-  "href": "lib1/FlutterSoundPlayer/openAudioSessionCompleter.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.openAudioSessionCompleter",
+  "href": "everything/FlutterSoundPlayer/openAudioSessionCompleter.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1341,8 +1341,8 @@
  },
  {
   "name": "openAudioSessionWithUI",
-  "qualifiedName": "lib1.FlutterSoundPlayer.openAudioSessionWithUI",
-  "href": "lib1/FlutterSoundPlayer/openAudioSessionWithUI.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.openAudioSessionWithUI",
+  "href": "everything/FlutterSoundPlayer/openAudioSessionWithUI.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1353,8 +1353,8 @@
  },
  {
   "name": "pause",
-  "qualifiedName": "lib1.FlutterSoundPlayer.pause",
-  "href": "lib1/FlutterSoundPlayer/pause.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.pause",
+  "href": "everything/FlutterSoundPlayer/pause.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -1365,8 +1365,8 @@
  },
  {
   "name": "pausePlayer",
-  "qualifiedName": "lib1.FlutterSoundPlayer.pausePlayer",
-  "href": "lib1/FlutterSoundPlayer/pausePlayer.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.pausePlayer",
+  "href": "everything/FlutterSoundPlayer/pausePlayer.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1377,8 +1377,8 @@
  },
  {
   "name": "playerState",
-  "qualifiedName": "lib1.FlutterSoundPlayer.playerState",
-  "href": "lib1/FlutterSoundPlayer/playerState.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.playerState",
+  "href": "everything/FlutterSoundPlayer/playerState.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1389,8 +1389,8 @@
  },
  {
   "name": "resume",
-  "qualifiedName": "lib1.FlutterSoundPlayer.resume",
-  "href": "lib1/FlutterSoundPlayer/resume.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.resume",
+  "href": "everything/FlutterSoundPlayer/resume.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -1401,8 +1401,8 @@
  },
  {
   "name": "resumePlayer",
-  "qualifiedName": "lib1.FlutterSoundPlayer.resumePlayer",
-  "href": "lib1/FlutterSoundPlayer/resumePlayer.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.resumePlayer",
+  "href": "everything/FlutterSoundPlayer/resumePlayer.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1413,8 +1413,8 @@
  },
  {
   "name": "seekToPlayer",
-  "qualifiedName": "lib1.FlutterSoundPlayer.seekToPlayer",
-  "href": "lib1/FlutterSoundPlayer/seekToPlayer.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.seekToPlayer",
+  "href": "everything/FlutterSoundPlayer/seekToPlayer.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1425,8 +1425,8 @@
  },
  {
   "name": "setAudioFocus",
-  "qualifiedName": "lib1.FlutterSoundPlayer.setAudioFocus",
-  "href": "lib1/FlutterSoundPlayer/setAudioFocus.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.setAudioFocus",
+  "href": "everything/FlutterSoundPlayer/setAudioFocus.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1437,8 +1437,8 @@
  },
  {
   "name": "setPlayerCallback",
-  "qualifiedName": "lib1.FlutterSoundPlayer.setPlayerCallback",
-  "href": "lib1/FlutterSoundPlayer/setPlayerCallback.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.setPlayerCallback",
+  "href": "everything/FlutterSoundPlayer/setPlayerCallback.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1449,8 +1449,8 @@
  },
  {
   "name": "setSubscriptionDuration",
-  "qualifiedName": "lib1.FlutterSoundPlayer.setSubscriptionDuration",
-  "href": "lib1/FlutterSoundPlayer/setSubscriptionDuration.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.setSubscriptionDuration",
+  "href": "everything/FlutterSoundPlayer/setSubscriptionDuration.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1461,8 +1461,8 @@
  },
  {
   "name": "setUIProgressBar",
-  "qualifiedName": "lib1.FlutterSoundPlayer.setUIProgressBar",
-  "href": "lib1/FlutterSoundPlayer/setUIProgressBar.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.setUIProgressBar",
+  "href": "everything/FlutterSoundPlayer/setUIProgressBar.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1473,8 +1473,8 @@
  },
  {
   "name": "setVolume",
-  "qualifiedName": "lib1.FlutterSoundPlayer.setVolume",
-  "href": "lib1/FlutterSoundPlayer/setVolume.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.setVolume",
+  "href": "everything/FlutterSoundPlayer/setVolume.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1485,8 +1485,8 @@
  },
  {
   "name": "skipBackward",
-  "qualifiedName": "lib1.FlutterSoundPlayer.skipBackward",
-  "href": "lib1/FlutterSoundPlayer/skipBackward.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.skipBackward",
+  "href": "everything/FlutterSoundPlayer/skipBackward.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -1497,8 +1497,8 @@
  },
  {
   "name": "skipForward",
-  "qualifiedName": "lib1.FlutterSoundPlayer.skipForward",
-  "href": "lib1/FlutterSoundPlayer/skipForward.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.skipForward",
+  "href": "everything/FlutterSoundPlayer/skipForward.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -1509,8 +1509,8 @@
  },
  {
   "name": "startPlayer",
-  "qualifiedName": "lib1.FlutterSoundPlayer.startPlayer",
-  "href": "lib1/FlutterSoundPlayer/startPlayer.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.startPlayer",
+  "href": "everything/FlutterSoundPlayer/startPlayer.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1521,8 +1521,8 @@
  },
  {
   "name": "startPlayerCompleted",
-  "qualifiedName": "lib1.FlutterSoundPlayer.startPlayerCompleted",
-  "href": "lib1/FlutterSoundPlayer/startPlayerCompleted.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.startPlayerCompleted",
+  "href": "everything/FlutterSoundPlayer/startPlayerCompleted.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -1533,8 +1533,8 @@
  },
  {
   "name": "startPlayerCompleter",
-  "qualifiedName": "lib1.FlutterSoundPlayer.startPlayerCompleter",
-  "href": "lib1/FlutterSoundPlayer/startPlayerCompleter.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.startPlayerCompleter",
+  "href": "everything/FlutterSoundPlayer/startPlayerCompleter.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1545,8 +1545,8 @@
  },
  {
   "name": "startPlayerFromStream",
-  "qualifiedName": "lib1.FlutterSoundPlayer.startPlayerFromStream",
-  "href": "lib1/FlutterSoundPlayer/startPlayerFromStream.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.startPlayerFromStream",
+  "href": "everything/FlutterSoundPlayer/startPlayerFromStream.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1557,8 +1557,8 @@
  },
  {
   "name": "startPlayerFromTrack",
-  "qualifiedName": "lib1.FlutterSoundPlayer.startPlayerFromTrack",
-  "href": "lib1/FlutterSoundPlayer/startPlayerFromTrack.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.startPlayerFromTrack",
+  "href": "everything/FlutterSoundPlayer/startPlayerFromTrack.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1569,8 +1569,8 @@
  },
  {
   "name": "stop",
-  "qualifiedName": "lib1.FlutterSoundPlayer.stop",
-  "href": "lib1/FlutterSoundPlayer/stop.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.stop",
+  "href": "everything/FlutterSoundPlayer/stop.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1581,8 +1581,8 @@
  },
  {
   "name": "stopPlayer",
-  "qualifiedName": "lib1.FlutterSoundPlayer.stopPlayer",
-  "href": "lib1/FlutterSoundPlayer/stopPlayer.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.stopPlayer",
+  "href": "everything/FlutterSoundPlayer/stopPlayer.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1593,8 +1593,8 @@
  },
  {
   "name": "tabAndroidConvert",
-  "qualifiedName": "lib1.FlutterSoundPlayer.tabAndroidConvert",
-  "href": "lib1/FlutterSoundPlayer/tabAndroidConvert-constant.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.tabAndroidConvert",
+  "href": "everything/FlutterSoundPlayer/tabAndroidConvert-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1605,8 +1605,8 @@
  },
  {
   "name": "tabIosConvert",
-  "qualifiedName": "lib1.FlutterSoundPlayer.tabIosConvert",
-  "href": "lib1/FlutterSoundPlayer/tabIosConvert-constant.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.tabIosConvert",
+  "href": "everything/FlutterSoundPlayer/tabIosConvert-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1617,8 +1617,8 @@
  },
  {
   "name": "tabWebConvert",
-  "qualifiedName": "lib1.FlutterSoundPlayer.tabWebConvert",
-  "href": "lib1/FlutterSoundPlayer/tabWebConvert-constant.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.tabWebConvert",
+  "href": "everything/FlutterSoundPlayer/tabWebConvert-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1629,8 +1629,8 @@
  },
  {
   "name": "updatePlaybackState",
-  "qualifiedName": "lib1.FlutterSoundPlayer.updatePlaybackState",
-  "href": "lib1/FlutterSoundPlayer/updatePlaybackState.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.updatePlaybackState",
+  "href": "everything/FlutterSoundPlayer/updatePlaybackState.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -1641,8 +1641,8 @@
  },
  {
   "name": "updateProgress",
-  "qualifiedName": "lib1.FlutterSoundPlayer.updateProgress",
-  "href": "lib1/FlutterSoundPlayer/updateProgress.html",
+  "qualifiedName": "everything.FlutterSoundPlayer.updateProgress",
+  "href": "everything/FlutterSoundPlayer/updateProgress.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -1653,20 +1653,20 @@
  },
  {
   "name": "FlutterSoundRecorder",
-  "qualifiedName": "lib1.FlutterSoundRecorder",
-  "href": "lib1/FlutterSoundRecorder-class.html",
+  "qualifiedName": "everything.FlutterSoundRecorder",
+  "href": "everything/FlutterSoundRecorder-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "FlutterSoundRecorder",
-  "qualifiedName": "lib1.FlutterSoundRecorder.FlutterSoundRecorder",
-  "href": "lib1/FlutterSoundRecorder/FlutterSoundRecorder.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.FlutterSoundRecorder",
+  "href": "everything/FlutterSoundRecorder/FlutterSoundRecorder.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1677,8 +1677,8 @@
  },
  {
   "name": "closeAudioSession",
-  "qualifiedName": "lib1.FlutterSoundRecorder.closeAudioSession",
-  "href": "lib1/FlutterSoundRecorder/closeAudioSession.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.closeAudioSession",
+  "href": "everything/FlutterSoundRecorder/closeAudioSession.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1689,8 +1689,8 @@
  },
  {
   "name": "dispositionStream",
-  "qualifiedName": "lib1.FlutterSoundRecorder.dispositionStream",
-  "href": "lib1/FlutterSoundRecorder/dispositionStream.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.dispositionStream",
+  "href": "everything/FlutterSoundRecorder/dispositionStream.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1701,8 +1701,8 @@
  },
  {
   "name": "isEncoderSupported",
-  "qualifiedName": "lib1.FlutterSoundRecorder.isEncoderSupported",
-  "href": "lib1/FlutterSoundRecorder/isEncoderSupported.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.isEncoderSupported",
+  "href": "everything/FlutterSoundRecorder/isEncoderSupported.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1713,8 +1713,8 @@
  },
  {
   "name": "isInited",
-  "qualifiedName": "lib1.FlutterSoundRecorder.isInited",
-  "href": "lib1/FlutterSoundRecorder/isInited.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.isInited",
+  "href": "everything/FlutterSoundRecorder/isInited.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1725,8 +1725,8 @@
  },
  {
   "name": "isPaused",
-  "qualifiedName": "lib1.FlutterSoundRecorder.isPaused",
-  "href": "lib1/FlutterSoundRecorder/isPaused.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.isPaused",
+  "href": "everything/FlutterSoundRecorder/isPaused.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1737,8 +1737,8 @@
  },
  {
   "name": "isRecording",
-  "qualifiedName": "lib1.FlutterSoundRecorder.isRecording",
-  "href": "lib1/FlutterSoundRecorder/isRecording.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.isRecording",
+  "href": "everything/FlutterSoundRecorder/isRecording.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1749,8 +1749,8 @@
  },
  {
   "name": "isStopped",
-  "qualifiedName": "lib1.FlutterSoundRecorder.isStopped",
-  "href": "lib1/FlutterSoundRecorder/isStopped.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.isStopped",
+  "href": "everything/FlutterSoundRecorder/isStopped.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1761,8 +1761,8 @@
  },
  {
   "name": "onProgress",
-  "qualifiedName": "lib1.FlutterSoundRecorder.onProgress",
-  "href": "lib1/FlutterSoundRecorder/onProgress.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.onProgress",
+  "href": "everything/FlutterSoundRecorder/onProgress.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1773,8 +1773,8 @@
  },
  {
   "name": "openAudioSession",
-  "qualifiedName": "lib1.FlutterSoundRecorder.openAudioSession",
-  "href": "lib1/FlutterSoundRecorder/openAudioSession.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.openAudioSession",
+  "href": "everything/FlutterSoundRecorder/openAudioSession.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1785,8 +1785,8 @@
  },
  {
   "name": "pauseRecorder",
-  "qualifiedName": "lib1.FlutterSoundRecorder.pauseRecorder",
-  "href": "lib1/FlutterSoundRecorder/pauseRecorder.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.pauseRecorder",
+  "href": "everything/FlutterSoundRecorder/pauseRecorder.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1797,8 +1797,8 @@
  },
  {
   "name": "recorderState",
-  "qualifiedName": "lib1.FlutterSoundRecorder.recorderState",
-  "href": "lib1/FlutterSoundRecorder/recorderState.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.recorderState",
+  "href": "everything/FlutterSoundRecorder/recorderState.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1809,8 +1809,8 @@
  },
  {
   "name": "recordingData",
-  "qualifiedName": "lib1.FlutterSoundRecorder.recordingData",
-  "href": "lib1/FlutterSoundRecorder/recordingData.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.recordingData",
+  "href": "everything/FlutterSoundRecorder/recordingData.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -1821,8 +1821,8 @@
  },
  {
   "name": "resumeRecorder",
-  "qualifiedName": "lib1.FlutterSoundRecorder.resumeRecorder",
-  "href": "lib1/FlutterSoundRecorder/resumeRecorder.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.resumeRecorder",
+  "href": "everything/FlutterSoundRecorder/resumeRecorder.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1833,8 +1833,8 @@
  },
  {
   "name": "setAudioFocus",
-  "qualifiedName": "lib1.FlutterSoundRecorder.setAudioFocus",
-  "href": "lib1/FlutterSoundRecorder/setAudioFocus.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.setAudioFocus",
+  "href": "everything/FlutterSoundRecorder/setAudioFocus.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1845,8 +1845,8 @@
  },
  {
   "name": "setSubscriptionDuration",
-  "qualifiedName": "lib1.FlutterSoundRecorder.setSubscriptionDuration",
-  "href": "lib1/FlutterSoundRecorder/setSubscriptionDuration.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.setSubscriptionDuration",
+  "href": "everything/FlutterSoundRecorder/setSubscriptionDuration.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1857,8 +1857,8 @@
  },
  {
   "name": "startRecorder",
-  "qualifiedName": "lib1.FlutterSoundRecorder.startRecorder",
-  "href": "lib1/FlutterSoundRecorder/startRecorder.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.startRecorder",
+  "href": "everything/FlutterSoundRecorder/startRecorder.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1869,8 +1869,8 @@
  },
  {
   "name": "stopRecorder",
-  "qualifiedName": "lib1.FlutterSoundRecorder.stopRecorder",
-  "href": "lib1/FlutterSoundRecorder/stopRecorder.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.stopRecorder",
+  "href": "everything/FlutterSoundRecorder/stopRecorder.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1881,8 +1881,8 @@
  },
  {
   "name": "updateRecorderProgress",
-  "qualifiedName": "lib1.FlutterSoundRecorder.updateRecorderProgress",
-  "href": "lib1/FlutterSoundRecorder/updateRecorderProgress.html",
+  "qualifiedName": "everything.FlutterSoundRecorder.updateRecorderProgress",
+  "href": "everything/FlutterSoundRecorder/updateRecorderProgress.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -1893,20 +1893,20 @@
  },
  {
   "name": "Food",
-  "qualifiedName": "lib1.Food",
-  "href": "lib1/Food-class.html",
+  "qualifiedName": "everything.Food",
+  "href": "everything/Food-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "Food",
-  "qualifiedName": "lib1.Food.Food",
-  "href": "lib1/Food/Food.html",
+  "qualifiedName": "everything.Food.Food",
+  "href": "everything/Food/Food.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1917,8 +1917,8 @@
  },
  {
   "name": "dummy",
-  "qualifiedName": "lib1.Food.dummy",
-  "href": "lib1/Food/dummy.html",
+  "qualifiedName": "everything.Food.dummy",
+  "href": "everything/Food/dummy.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1929,8 +1929,8 @@
  },
  {
   "name": "exec",
-  "qualifiedName": "lib1.Food.exec",
-  "href": "lib1/Food/exec.html",
+  "qualifiedName": "everything.Food.exec",
+  "href": "everything/Food/exec.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1941,20 +1941,20 @@
  },
  {
   "name": "FoodData",
-  "qualifiedName": "lib1.FoodData",
-  "href": "lib1/FoodData-class.html",
+  "qualifiedName": "everything.FoodData",
+  "href": "everything/FoodData-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "FoodData",
-  "qualifiedName": "lib1.FoodData.FoodData",
-  "href": "lib1/FoodData/FoodData.html",
+  "qualifiedName": "everything.FoodData.FoodData",
+  "href": "everything/FoodData/FoodData.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1965,8 +1965,8 @@
  },
  {
   "name": "data",
-  "qualifiedName": "lib1.FoodData.data",
-  "href": "lib1/FoodData/data.html",
+  "qualifiedName": "everything.FoodData.data",
+  "href": "everything/FoodData/data.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1977,8 +1977,8 @@
  },
  {
   "name": "exec",
-  "qualifiedName": "lib1.FoodData.exec",
-  "href": "lib1/FoodData/exec.html",
+  "qualifiedName": "everything.FoodData.exec",
+  "href": "everything/FoodData/exec.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -1989,20 +1989,20 @@
  },
  {
   "name": "FoodEvent",
-  "qualifiedName": "lib1.FoodEvent",
-  "href": "lib1/FoodEvent-class.html",
+  "qualifiedName": "everything.FoodEvent",
+  "href": "everything/FoodEvent-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "FoodEvent",
-  "qualifiedName": "lib1.FoodEvent.FoodEvent",
-  "href": "lib1/FoodEvent/FoodEvent.html",
+  "qualifiedName": "everything.FoodEvent.FoodEvent",
+  "href": "everything/FoodEvent/FoodEvent.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2013,8 +2013,8 @@
  },
  {
   "name": "exec",
-  "qualifiedName": "lib1.FoodEvent.exec",
-  "href": "lib1/FoodEvent/exec.html",
+  "qualifiedName": "everything.FoodEvent.exec",
+  "href": "everything/FoodEvent/exec.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -2025,8 +2025,8 @@
  },
  {
   "name": "on",
-  "qualifiedName": "lib1.FoodEvent.on",
-  "href": "lib1/FoodEvent/on.html",
+  "qualifiedName": "everything.FoodEvent.on",
+  "href": "everything/FoodEvent/on.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2037,20 +2037,20 @@
  },
  {
   "name": "Initialized",
-  "qualifiedName": "lib1.Initialized",
-  "href": "lib1/Initialized-class.html",
+  "qualifiedName": "everything.Initialized",
+  "href": "everything/Initialized-class.html",
   "type": "enum",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "toString",
-  "qualifiedName": "lib1.Initialized.toString",
-  "href": "lib1/Initialized/toString.html",
+  "qualifiedName": "everything.Initialized.toString",
+  "href": "everything/Initialized/toString.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -2061,20 +2061,20 @@
  },
  {
   "name": "Log",
-  "qualifiedName": "lib1.Log",
-  "href": "lib1/Log-class.html",
+  "qualifiedName": "everything.Log",
+  "href": "everything/Log-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "autoInit",
-  "qualifiedName": "lib1.Log.autoInit",
-  "href": "lib1/Log/autoInit.html",
+  "qualifiedName": "everything.Log.autoInit",
+  "href": "everything/Log/autoInit.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2085,8 +2085,8 @@
  },
  {
   "name": "Log.color",
-  "qualifiedName": "lib1.Log.color",
-  "href": "lib1/Log/Log.color.html",
+  "qualifiedName": "everything.Log.color",
+  "href": "everything/Log/Log.color.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2097,8 +2097,8 @@
  },
  {
   "name": "color",
-  "qualifiedName": "lib1.Log.color",
-  "href": "lib1/Log/color.html",
+  "qualifiedName": "everything.Log.color",
+  "href": "everything/Log/color.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2109,8 +2109,8 @@
  },
  {
   "name": "Log.d",
-  "qualifiedName": "lib1.Log.d",
-  "href": "lib1/Log/Log.d.html",
+  "qualifiedName": "everything.Log.d",
+  "href": "everything/Log/Log.d.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2121,8 +2121,8 @@
  },
  {
   "name": "debug",
-  "qualifiedName": "lib1.Log.debug",
-  "href": "lib1/Log/debug.html",
+  "qualifiedName": "everything.Log.debug",
+  "href": "everything/Log/debug.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2133,8 +2133,8 @@
  },
  {
   "name": "Log.e",
-  "qualifiedName": "lib1.Log.e",
-  "href": "lib1/Log/Log.e.html",
+  "qualifiedName": "everything.Log.e",
+  "href": "everything/Log/Log.e.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2145,8 +2145,8 @@
  },
  {
   "name": "error",
-  "qualifiedName": "lib1.Log.error",
-  "href": "lib1/Log/error.html",
+  "qualifiedName": "everything.Log.error",
+  "href": "everything/Log/error.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2157,8 +2157,8 @@
  },
  {
   "name": "Log.i",
-  "qualifiedName": "lib1.Log.i",
-  "href": "lib1/Log/Log.i.html",
+  "qualifiedName": "everything.Log.i",
+  "href": "everything/Log/Log.i.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2169,8 +2169,8 @@
  },
  {
   "name": "info",
-  "qualifiedName": "lib1.Log.info",
-  "href": "lib1/Log/info.html",
+  "qualifiedName": "everything.Log.info",
+  "href": "everything/Log/info.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2181,8 +2181,8 @@
  },
  {
   "name": "init",
-  "qualifiedName": "lib1.Log.init",
-  "href": "lib1/Log/init.html",
+  "qualifiedName": "everything.Log.init",
+  "href": "everything/Log/init.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2193,8 +2193,8 @@
  },
  {
   "name": "loggingLevel",
-  "qualifiedName": "lib1.Log.loggingLevel",
-  "href": "lib1/Log/loggingLevel.html",
+  "qualifiedName": "everything.Log.loggingLevel",
+  "href": "everything/Log/loggingLevel.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2205,8 +2205,8 @@
  },
  {
   "name": "Log.w",
-  "qualifiedName": "lib1.Log.w",
-  "href": "lib1/Log/Log.w.html",
+  "qualifiedName": "everything.Log.w",
+  "href": "everything/Log/Log.w.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2217,8 +2217,8 @@
  },
  {
   "name": "warn",
-  "qualifiedName": "lib1.Log.warn",
-  "href": "lib1/Log/warn.html",
+  "qualifiedName": "everything.Log.warn",
+  "href": "everything/Log/warn.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2229,20 +2229,20 @@
  },
  {
   "name": "LogLevel",
-  "qualifiedName": "lib1.LogLevel",
-  "href": "lib1/LogLevel-class.html",
+  "qualifiedName": "everything.LogLevel",
+  "href": "everything/LogLevel-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "LogLevel",
-  "qualifiedName": "lib1.LogLevel.LogLevel",
-  "href": "lib1/LogLevel/LogLevel.html",
+  "qualifiedName": "everything.LogLevel.LogLevel",
+  "href": "everything/LogLevel/LogLevel.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2253,8 +2253,8 @@
  },
  {
   "name": "avLogDebug",
-  "qualifiedName": "lib1.LogLevel.avLogDebug",
-  "href": "lib1/LogLevel/avLogDebug-constant.html",
+  "qualifiedName": "everything.LogLevel.avLogDebug",
+  "href": "everything/LogLevel/avLogDebug-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2265,8 +2265,8 @@
  },
  {
   "name": "avLogError",
-  "qualifiedName": "lib1.LogLevel.avLogError",
-  "href": "lib1/LogLevel/avLogError-constant.html",
+  "qualifiedName": "everything.LogLevel.avLogError",
+  "href": "everything/LogLevel/avLogError-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2277,8 +2277,8 @@
  },
  {
   "name": "avLogFatal",
-  "qualifiedName": "lib1.LogLevel.avLogFatal",
-  "href": "lib1/LogLevel/avLogFatal-constant.html",
+  "qualifiedName": "everything.LogLevel.avLogFatal",
+  "href": "everything/LogLevel/avLogFatal-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2289,8 +2289,8 @@
  },
  {
   "name": "avLogInfo",
-  "qualifiedName": "lib1.LogLevel.avLogInfo",
-  "href": "lib1/LogLevel/avLogInfo-constant.html",
+  "qualifiedName": "everything.LogLevel.avLogInfo",
+  "href": "everything/LogLevel/avLogInfo-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2301,8 +2301,8 @@
  },
  {
   "name": "avLogPanic",
-  "qualifiedName": "lib1.LogLevel.avLogPanic",
-  "href": "lib1/LogLevel/avLogPanic-constant.html",
+  "qualifiedName": "everything.LogLevel.avLogPanic",
+  "href": "everything/LogLevel/avLogPanic-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2313,8 +2313,8 @@
  },
  {
   "name": "avLogQuiet",
-  "qualifiedName": "lib1.LogLevel.avLogQuiet",
-  "href": "lib1/LogLevel/avLogQuiet-constant.html",
+  "qualifiedName": "everything.LogLevel.avLogQuiet",
+  "href": "everything/LogLevel/avLogQuiet-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2325,8 +2325,8 @@
  },
  {
   "name": "avLogStderr",
-  "qualifiedName": "lib1.LogLevel.avLogStderr",
-  "href": "lib1/LogLevel/avLogStderr-constant.html",
+  "qualifiedName": "everything.LogLevel.avLogStderr",
+  "href": "everything/LogLevel/avLogStderr-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2337,8 +2337,8 @@
  },
  {
   "name": "avLogTrace",
-  "qualifiedName": "lib1.LogLevel.avLogTrace",
-  "href": "lib1/LogLevel/avLogTrace-constant.html",
+  "qualifiedName": "everything.LogLevel.avLogTrace",
+  "href": "everything/LogLevel/avLogTrace-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2349,8 +2349,8 @@
  },
  {
   "name": "avLogVerbose",
-  "qualifiedName": "lib1.LogLevel.avLogVerbose",
-  "href": "lib1/LogLevel/avLogVerbose-constant.html",
+  "qualifiedName": "everything.LogLevel.avLogVerbose",
+  "href": "everything/LogLevel/avLogVerbose-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2361,8 +2361,8 @@
  },
  {
   "name": "avLogWarning",
-  "qualifiedName": "lib1.LogLevel.avLogWarning",
-  "href": "lib1/LogLevel/avLogWarning-constant.html",
+  "qualifiedName": "everything.LogLevel.avLogWarning",
+  "href": "everything/LogLevel/avLogWarning-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2373,8 +2373,8 @@
  },
  {
   "name": "levelToString",
-  "qualifiedName": "lib1.LogLevel.levelToString",
-  "href": "lib1/LogLevel/levelToString.html",
+  "qualifiedName": "everything.LogLevel.levelToString",
+  "href": "everything/LogLevel/levelToString.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2385,20 +2385,20 @@
  },
  {
   "name": "MyLogPrinter",
-  "qualifiedName": "lib1.MyLogPrinter",
-  "href": "lib1/MyLogPrinter-class.html",
+  "qualifiedName": "everything.MyLogPrinter",
+  "href": "everything/MyLogPrinter-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "MyLogPrinter",
-  "qualifiedName": "lib1.MyLogPrinter.MyLogPrinter",
-  "href": "lib1/MyLogPrinter/MyLogPrinter.html",
+  "qualifiedName": "everything.MyLogPrinter.MyLogPrinter",
+  "href": "everything/MyLogPrinter/MyLogPrinter.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2409,8 +2409,8 @@
  },
  {
   "name": "color",
-  "qualifiedName": "lib1.MyLogPrinter.color",
-  "href": "lib1/MyLogPrinter/color.html",
+  "qualifiedName": "everything.MyLogPrinter.color",
+  "href": "everything/MyLogPrinter/color.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2421,8 +2421,8 @@
  },
  {
   "name": "colors",
-  "qualifiedName": "lib1.MyLogPrinter.colors",
-  "href": "lib1/MyLogPrinter/colors.html",
+  "qualifiedName": "everything.MyLogPrinter.colors",
+  "href": "everything/MyLogPrinter/colors.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2433,8 +2433,8 @@
  },
  {
   "name": "currentWorkingDirectory",
-  "qualifiedName": "lib1.MyLogPrinter.currentWorkingDirectory",
-  "href": "lib1/MyLogPrinter/currentWorkingDirectory.html",
+  "qualifiedName": "everything.MyLogPrinter.currentWorkingDirectory",
+  "href": "everything/MyLogPrinter/currentWorkingDirectory.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2445,8 +2445,8 @@
  },
  {
   "name": "log",
-  "qualifiedName": "lib1.MyLogPrinter.log",
-  "href": "lib1/MyLogPrinter/log.html",
+  "qualifiedName": "everything.MyLogPrinter.log",
+  "href": "everything/MyLogPrinter/log.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -2457,92 +2457,92 @@
  },
  {
   "name": "OnDelete",
-  "qualifiedName": "lib1.OnDelete",
-  "href": "lib1/OnDelete.html",
+  "qualifiedName": "everything.OnDelete",
+  "href": "everything/OnDelete.html",
   "type": "typedef",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "OnLoad",
-  "qualifiedName": "lib1.OnLoad",
-  "href": "lib1/OnLoad.html",
+  "qualifiedName": "everything.OnLoad",
+  "href": "everything/OnLoad.html",
   "type": "typedef",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "OnPaused",
-  "qualifiedName": "lib1.OnPaused",
-  "href": "lib1/OnPaused.html",
+  "qualifiedName": "everything.OnPaused",
+  "href": "everything/OnPaused.html",
   "type": "typedef",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "OnProgress",
-  "qualifiedName": "lib1.OnProgress",
-  "href": "lib1/OnProgress.html",
+  "qualifiedName": "everything.OnProgress",
+  "href": "everything/OnProgress.html",
   "type": "typedef",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "OnStart",
-  "qualifiedName": "lib1.OnStart",
-  "href": "lib1/OnStart.html",
+  "qualifiedName": "everything.OnStart",
+  "href": "everything/OnStart.html",
   "type": "typedef",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "OnStop",
-  "qualifiedName": "lib1.OnStop",
-  "href": "lib1/OnStop.html",
+  "qualifiedName": "everything.OnStop",
+  "href": "everything/OnStop.html",
   "type": "typedef",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "PlaybackDisposition",
-  "qualifiedName": "lib1.PlaybackDisposition",
-  "href": "lib1/PlaybackDisposition-class.html",
+  "qualifiedName": "everything.PlaybackDisposition",
+  "href": "everything/PlaybackDisposition-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "PlaybackDisposition",
-  "qualifiedName": "lib1.PlaybackDisposition.PlaybackDisposition",
-  "href": "lib1/PlaybackDisposition/PlaybackDisposition.html",
+  "qualifiedName": "everything.PlaybackDisposition.PlaybackDisposition",
+  "href": "everything/PlaybackDisposition/PlaybackDisposition.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2553,8 +2553,8 @@
  },
  {
   "name": "duration",
-  "qualifiedName": "lib1.PlaybackDisposition.duration",
-  "href": "lib1/PlaybackDisposition/duration.html",
+  "qualifiedName": "everything.PlaybackDisposition.duration",
+  "href": "everything/PlaybackDisposition/duration.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2565,8 +2565,8 @@
  },
  {
   "name": "position",
-  "qualifiedName": "lib1.PlaybackDisposition.position",
-  "href": "lib1/PlaybackDisposition/position.html",
+  "qualifiedName": "everything.PlaybackDisposition.position",
+  "href": "everything/PlaybackDisposition/position.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2577,8 +2577,8 @@
  },
  {
   "name": "toString",
-  "qualifiedName": "lib1.PlaybackDisposition.toString",
-  "href": "lib1/PlaybackDisposition/toString.html",
+  "qualifiedName": "everything.PlaybackDisposition.toString",
+  "href": "everything/PlaybackDisposition/toString.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -2589,8 +2589,8 @@
  },
  {
   "name": "PlaybackDisposition.zero",
-  "qualifiedName": "lib1.PlaybackDisposition.zero",
-  "href": "lib1/PlaybackDisposition/PlaybackDisposition.zero.html",
+  "qualifiedName": "everything.PlaybackDisposition.zero",
+  "href": "everything/PlaybackDisposition/PlaybackDisposition.zero.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2601,20 +2601,20 @@
  },
  {
   "name": "PlaybarSlider",
-  "qualifiedName": "lib1.PlaybarSlider",
-  "href": "lib1/PlaybarSlider-class.html",
+  "qualifiedName": "everything.PlaybarSlider",
+  "href": "everything/PlaybarSlider-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "PlaybarSlider",
-  "qualifiedName": "lib1.PlaybarSlider.PlaybarSlider",
-  "href": "lib1/PlaybarSlider/PlaybarSlider.html",
+  "qualifiedName": "everything.PlaybarSlider.PlaybarSlider",
+  "href": "everything/PlaybarSlider/PlaybarSlider.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2625,8 +2625,8 @@
  },
  {
   "name": "createState",
-  "qualifiedName": "lib1.PlaybarSlider.createState",
-  "href": "lib1/PlaybarSlider/createState.html",
+  "qualifiedName": "everything.PlaybarSlider.createState",
+  "href": "everything/PlaybarSlider/createState.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -2637,8 +2637,8 @@
  },
  {
   "name": "stream",
-  "qualifiedName": "lib1.PlaybarSlider.stream",
-  "href": "lib1/PlaybarSlider/stream.html",
+  "qualifiedName": "everything.PlaybarSlider.stream",
+  "href": "everything/PlaybarSlider/stream.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2649,20 +2649,20 @@
  },
  {
   "name": "PlayerRunningException",
-  "qualifiedName": "lib1.PlayerRunningException",
-  "href": "lib1/PlayerRunningException-class.html",
+  "qualifiedName": "everything.PlayerRunningException",
+  "href": "everything/PlayerRunningException-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "PlayerRunningException",
-  "qualifiedName": "lib1.PlayerRunningException.PlayerRunningException",
-  "href": "lib1/PlayerRunningException/PlayerRunningException.html",
+  "qualifiedName": "everything.PlayerRunningException.PlayerRunningException",
+  "href": "everything/PlayerRunningException/PlayerRunningException.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2673,8 +2673,8 @@
  },
  {
   "name": "message",
-  "qualifiedName": "lib1.PlayerRunningException.message",
-  "href": "lib1/PlayerRunningException/message.html",
+  "qualifiedName": "everything.PlayerRunningException.message",
+  "href": "everything/PlayerRunningException/message.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2685,20 +2685,20 @@
  },
  {
   "name": "PlayerState",
-  "qualifiedName": "lib1.PlayerState",
-  "href": "lib1/PlayerState-class.html",
+  "qualifiedName": "everything.PlayerState",
+  "href": "everything/PlayerState-class.html",
   "type": "enum",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "toString",
-  "qualifiedName": "lib1.PlayerState.toString",
-  "href": "lib1/PlayerState/toString.html",
+  "qualifiedName": "everything.PlayerState.toString",
+  "href": "everything/PlayerState/toString.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -2709,20 +2709,20 @@
  },
  {
   "name": "RecordedAudio",
-  "qualifiedName": "lib1.RecordedAudio",
-  "href": "lib1/RecordedAudio-class.html",
+  "qualifiedName": "everything.RecordedAudio",
+  "href": "everything/RecordedAudio-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "duration",
-  "qualifiedName": "lib1.RecordedAudio.duration",
-  "href": "lib1/RecordedAudio/duration.html",
+  "qualifiedName": "everything.RecordedAudio.duration",
+  "href": "everything/RecordedAudio/duration.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2733,8 +2733,8 @@
  },
  {
   "name": "RecordedAudio.toTrack",
-  "qualifiedName": "lib1.RecordedAudio.toTrack",
-  "href": "lib1/RecordedAudio/RecordedAudio.toTrack.html",
+  "qualifiedName": "everything.RecordedAudio.toTrack",
+  "href": "everything/RecordedAudio/RecordedAudio.toTrack.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2745,8 +2745,8 @@
  },
  {
   "name": "track",
-  "qualifiedName": "lib1.RecordedAudio.track",
-  "href": "lib1/RecordedAudio/track.html",
+  "qualifiedName": "everything.RecordedAudio.track",
+  "href": "everything/RecordedAudio/track.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2757,20 +2757,20 @@
  },
  {
   "name": "RecorderPlaybackController",
-  "qualifiedName": "lib1.RecorderPlaybackController",
-  "href": "lib1/RecorderPlaybackController-class.html",
+  "qualifiedName": "everything.RecorderPlaybackController",
+  "href": "everything/RecorderPlaybackController-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "RecorderPlaybackController",
-  "qualifiedName": "lib1.RecorderPlaybackController.RecorderPlaybackController",
-  "href": "lib1/RecorderPlaybackController/RecorderPlaybackController.html",
+  "qualifiedName": "everything.RecorderPlaybackController.RecorderPlaybackController",
+  "href": "everything/RecorderPlaybackController/RecorderPlaybackController.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2781,8 +2781,8 @@
  },
  {
   "name": "of",
-  "qualifiedName": "lib1.RecorderPlaybackController.of",
-  "href": "lib1/RecorderPlaybackController/of.html",
+  "qualifiedName": "everything.RecorderPlaybackController.of",
+  "href": "everything/RecorderPlaybackController/of.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2793,8 +2793,8 @@
  },
  {
   "name": "stop",
-  "qualifiedName": "lib1.RecorderPlaybackController.stop",
-  "href": "lib1/RecorderPlaybackController/stop.html",
+  "qualifiedName": "everything.RecorderPlaybackController.stop",
+  "href": "everything/RecorderPlaybackController/stop.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2805,8 +2805,8 @@
  },
  {
   "name": "updateShouldNotify",
-  "qualifiedName": "lib1.RecorderPlaybackController.updateShouldNotify",
-  "href": "lib1/RecorderPlaybackController/updateShouldNotify.html",
+  "qualifiedName": "everything.RecorderPlaybackController.updateShouldNotify",
+  "href": "everything/RecorderPlaybackController/updateShouldNotify.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -2817,20 +2817,20 @@
  },
  {
   "name": "RecordingDisposition",
-  "qualifiedName": "lib1.RecordingDisposition",
-  "href": "lib1/RecordingDisposition-class.html",
+  "qualifiedName": "everything.RecordingDisposition",
+  "href": "everything/RecordingDisposition-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "RecordingDisposition",
-  "qualifiedName": "lib1.RecordingDisposition.RecordingDisposition",
-  "href": "lib1/RecordingDisposition/RecordingDisposition.html",
+  "qualifiedName": "everything.RecordingDisposition.RecordingDisposition",
+  "href": "everything/RecordingDisposition/RecordingDisposition.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2841,8 +2841,8 @@
  },
  {
   "name": "decibels",
-  "qualifiedName": "lib1.RecordingDisposition.decibels",
-  "href": "lib1/RecordingDisposition/decibels.html",
+  "qualifiedName": "everything.RecordingDisposition.decibels",
+  "href": "everything/RecordingDisposition/decibels.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2853,8 +2853,8 @@
  },
  {
   "name": "duration",
-  "qualifiedName": "lib1.RecordingDisposition.duration",
-  "href": "lib1/RecordingDisposition/duration.html",
+  "qualifiedName": "everything.RecordingDisposition.duration",
+  "href": "everything/RecordingDisposition/duration.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2865,8 +2865,8 @@
  },
  {
   "name": "toString",
-  "qualifiedName": "lib1.RecordingDisposition.toString",
-  "href": "lib1/RecordingDisposition/toString.html",
+  "qualifiedName": "everything.RecordingDisposition.toString",
+  "href": "everything/RecordingDisposition/toString.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -2877,8 +2877,8 @@
  },
  {
   "name": "RecordingDisposition.zero",
-  "qualifiedName": "lib1.RecordingDisposition.zero",
-  "href": "lib1/RecordingDisposition/RecordingDisposition.zero.html",
+  "qualifiedName": "everything.RecordingDisposition.zero",
+  "href": "everything/RecordingDisposition/RecordingDisposition.zero.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2889,20 +2889,20 @@
  },
  {
   "name": "RecordingPermissionException",
-  "qualifiedName": "lib1.RecordingPermissionException",
-  "href": "lib1/RecordingPermissionException-class.html",
+  "qualifiedName": "everything.RecordingPermissionException",
+  "href": "everything/RecordingPermissionException-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "RecordingPermissionException",
-  "qualifiedName": "lib1.RecordingPermissionException.RecordingPermissionException",
-  "href": "lib1/RecordingPermissionException/RecordingPermissionException.html",
+  "qualifiedName": "everything.RecordingPermissionException.RecordingPermissionException",
+  "href": "everything/RecordingPermissionException/RecordingPermissionException.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2913,8 +2913,8 @@
  },
  {
   "name": "message",
-  "qualifiedName": "lib1.RecordingPermissionException.message",
-  "href": "lib1/RecordingPermissionException/message.html",
+  "qualifiedName": "everything.RecordingPermissionException.message",
+  "href": "everything/RecordingPermissionException/message.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2925,20 +2925,20 @@
  },
  {
   "name": "SoundPlayerUI",
-  "qualifiedName": "lib1.SoundPlayerUI",
-  "href": "lib1/SoundPlayerUI-class.html",
+  "qualifiedName": "everything.SoundPlayerUI",
+  "href": "everything/SoundPlayerUI-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "createState",
-  "qualifiedName": "lib1.SoundPlayerUI.createState",
-  "href": "lib1/SoundPlayerUI/createState.html",
+  "qualifiedName": "everything.SoundPlayerUI.createState",
+  "href": "everything/SoundPlayerUI/createState.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -2949,8 +2949,8 @@
  },
  {
   "name": "SoundPlayerUI.fromLoader",
-  "qualifiedName": "lib1.SoundPlayerUI.fromLoader",
-  "href": "lib1/SoundPlayerUI/SoundPlayerUI.fromLoader.html",
+  "qualifiedName": "everything.SoundPlayerUI.fromLoader",
+  "href": "everything/SoundPlayerUI/SoundPlayerUI.fromLoader.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2961,8 +2961,8 @@
  },
  {
   "name": "SoundPlayerUI.fromTrack",
-  "qualifiedName": "lib1.SoundPlayerUI.fromTrack",
-  "href": "lib1/SoundPlayerUI/SoundPlayerUI.fromTrack.html",
+  "qualifiedName": "everything.SoundPlayerUI.fromTrack",
+  "href": "everything/SoundPlayerUI/SoundPlayerUI.fromTrack.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2973,8 +2973,8 @@
  },
  {
   "name": "standardCodec",
-  "qualifiedName": "lib1.SoundPlayerUI.standardCodec",
-  "href": "lib1/SoundPlayerUI/standardCodec-constant.html",
+  "qualifiedName": "everything.SoundPlayerUI.standardCodec",
+  "href": "everything/SoundPlayerUI/standardCodec-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2985,8 +2985,8 @@
  },
  {
   "name": "zero",
-  "qualifiedName": "lib1.SoundPlayerUI.zero",
-  "href": "lib1/SoundPlayerUI/zero-constant.html",
+  "qualifiedName": "everything.SoundPlayerUI.zero",
+  "href": "everything/SoundPlayerUI/zero-constant.html",
   "type": "constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2997,20 +2997,20 @@
  },
  {
   "name": "SoundPlayerUIState",
-  "qualifiedName": "lib1.SoundPlayerUIState",
-  "href": "lib1/SoundPlayerUIState-class.html",
+  "qualifiedName": "everything.SoundPlayerUIState",
+  "href": "everything/SoundPlayerUIState-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "SoundPlayerUIState",
-  "qualifiedName": "lib1.SoundPlayerUIState.SoundPlayerUIState",
-  "href": "lib1/SoundPlayerUIState/SoundPlayerUIState.html",
+  "qualifiedName": "everything.SoundPlayerUIState.SoundPlayerUIState",
+  "href": "everything/SoundPlayerUIState/SoundPlayerUIState.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3021,8 +3021,8 @@
  },
  {
   "name": "build",
-  "qualifiedName": "lib1.SoundPlayerUIState.build",
-  "href": "lib1/SoundPlayerUIState/build.html",
+  "qualifiedName": "everything.SoundPlayerUIState.build",
+  "href": "everything/SoundPlayerUIState/build.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -3033,8 +3033,8 @@
  },
  {
   "name": "canPlay",
-  "qualifiedName": "lib1.SoundPlayerUIState.canPlay",
-  "href": "lib1/SoundPlayerUIState/canPlay.html",
+  "qualifiedName": "everything.SoundPlayerUIState.canPlay",
+  "href": "everything/SoundPlayerUIState/canPlay.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3045,8 +3045,8 @@
  },
  {
   "name": "connectRecorderStream",
-  "qualifiedName": "lib1.SoundPlayerUIState.connectRecorderStream",
-  "href": "lib1/SoundPlayerUIState/connectRecorderStream.html",
+  "qualifiedName": "everything.SoundPlayerUIState.connectRecorderStream",
+  "href": "everything/SoundPlayerUIState/connectRecorderStream.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3057,8 +3057,8 @@
  },
  {
   "name": "dispose",
-  "qualifiedName": "lib1.SoundPlayerUIState.dispose",
-  "href": "lib1/SoundPlayerUIState/dispose.html",
+  "qualifiedName": "everything.SoundPlayerUIState.dispose",
+  "href": "everything/SoundPlayerUIState/dispose.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -3069,8 +3069,8 @@
  },
  {
   "name": "pause",
-  "qualifiedName": "lib1.SoundPlayerUIState.pause",
-  "href": "lib1/SoundPlayerUIState/pause.html",
+  "qualifiedName": "everything.SoundPlayerUIState.pause",
+  "href": "everything/SoundPlayerUIState/pause.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3081,8 +3081,8 @@
  },
  {
   "name": "play",
-  "qualifiedName": "lib1.SoundPlayerUIState.play",
-  "href": "lib1/SoundPlayerUIState/play.html",
+  "qualifiedName": "everything.SoundPlayerUIState.play",
+  "href": "everything/SoundPlayerUIState/play.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3093,8 +3093,8 @@
  },
  {
   "name": "playbackEnabled",
-  "qualifiedName": "lib1.SoundPlayerUIState.playbackEnabled",
-  "href": "lib1/SoundPlayerUIState/playbackEnabled.html",
+  "qualifiedName": "everything.SoundPlayerUIState.playbackEnabled",
+  "href": "everything/SoundPlayerUIState/playbackEnabled.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3105,8 +3105,8 @@
  },
  {
   "name": "reassemble",
-  "qualifiedName": "lib1.SoundPlayerUIState.reassemble",
-  "href": "lib1/SoundPlayerUIState/reassemble.html",
+  "qualifiedName": "everything.SoundPlayerUIState.reassemble",
+  "href": "everything/SoundPlayerUIState/reassemble.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -3117,8 +3117,8 @@
  },
  {
   "name": "resume",
-  "qualifiedName": "lib1.SoundPlayerUIState.resume",
-  "href": "lib1/SoundPlayerUIState/resume.html",
+  "qualifiedName": "everything.SoundPlayerUIState.resume",
+  "href": "everything/SoundPlayerUIState/resume.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3129,8 +3129,8 @@
  },
  {
   "name": "stop",
-  "qualifiedName": "lib1.SoundPlayerUIState.stop",
-  "href": "lib1/SoundPlayerUIState/stop.html",
+  "qualifiedName": "everything.SoundPlayerUIState.stop",
+  "href": "everything/SoundPlayerUIState/stop.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3141,20 +3141,20 @@
  },
  {
   "name": "SoundRecorderUI",
-  "qualifiedName": "lib1.SoundRecorderUI",
-  "href": "lib1/SoundRecorderUI-class.html",
+  "qualifiedName": "everything.SoundRecorderUI",
+  "href": "everything/SoundRecorderUI-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "SoundRecorderUI",
-  "qualifiedName": "lib1.SoundRecorderUI.SoundRecorderUI",
-  "href": "lib1/SoundRecorderUI/SoundRecorderUI.html",
+  "qualifiedName": "everything.SoundRecorderUI.SoundRecorderUI",
+  "href": "everything/SoundRecorderUI/SoundRecorderUI.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3165,8 +3165,8 @@
  },
  {
   "name": "audio",
-  "qualifiedName": "lib1.SoundRecorderUI.audio",
-  "href": "lib1/SoundRecorderUI/audio.html",
+  "qualifiedName": "everything.SoundRecorderUI.audio",
+  "href": "everything/SoundRecorderUI/audio.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3177,8 +3177,8 @@
  },
  {
   "name": "backgroundColor",
-  "qualifiedName": "lib1.SoundRecorderUI.backgroundColor",
-  "href": "lib1/SoundRecorderUI/backgroundColor.html",
+  "qualifiedName": "everything.SoundRecorderUI.backgroundColor",
+  "href": "everything/SoundRecorderUI/backgroundColor.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3189,8 +3189,8 @@
  },
  {
   "name": "createState",
-  "qualifiedName": "lib1.SoundRecorderUI.createState",
-  "href": "lib1/SoundRecorderUI/createState.html",
+  "qualifiedName": "everything.SoundRecorderUI.createState",
+  "href": "everything/SoundRecorderUI/createState.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -3201,8 +3201,8 @@
  },
  {
   "name": "onDelete",
-  "qualifiedName": "lib1.SoundRecorderUI.onDelete",
-  "href": "lib1/SoundRecorderUI/onDelete.html",
+  "qualifiedName": "everything.SoundRecorderUI.onDelete",
+  "href": "everything/SoundRecorderUI/onDelete.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3213,8 +3213,8 @@
  },
  {
   "name": "onPaused",
-  "qualifiedName": "lib1.SoundRecorderUI.onPaused",
-  "href": "lib1/SoundRecorderUI/onPaused.html",
+  "qualifiedName": "everything.SoundRecorderUI.onPaused",
+  "href": "everything/SoundRecorderUI/onPaused.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3225,8 +3225,8 @@
  },
  {
   "name": "onStart",
-  "qualifiedName": "lib1.SoundRecorderUI.onStart",
-  "href": "lib1/SoundRecorderUI/onStart.html",
+  "qualifiedName": "everything.SoundRecorderUI.onStart",
+  "href": "everything/SoundRecorderUI/onStart.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3237,8 +3237,8 @@
  },
  {
   "name": "onStopped",
-  "qualifiedName": "lib1.SoundRecorderUI.onStopped",
-  "href": "lib1/SoundRecorderUI/onStopped.html",
+  "qualifiedName": "everything.SoundRecorderUI.onStopped",
+  "href": "everything/SoundRecorderUI/onStopped.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3249,8 +3249,8 @@
  },
  {
   "name": "pausedTitle",
-  "qualifiedName": "lib1.SoundRecorderUI.pausedTitle",
-  "href": "lib1/SoundRecorderUI/pausedTitle.html",
+  "qualifiedName": "everything.SoundRecorderUI.pausedTitle",
+  "href": "everything/SoundRecorderUI/pausedTitle.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3261,8 +3261,8 @@
  },
  {
   "name": "recordingTitle",
-  "qualifiedName": "lib1.SoundRecorderUI.recordingTitle",
-  "href": "lib1/SoundRecorderUI/recordingTitle.html",
+  "qualifiedName": "everything.SoundRecorderUI.recordingTitle",
+  "href": "everything/SoundRecorderUI/recordingTitle.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3273,8 +3273,8 @@
  },
  {
   "name": "requestPermissions",
-  "qualifiedName": "lib1.SoundRecorderUI.requestPermissions",
-  "href": "lib1/SoundRecorderUI/requestPermissions.html",
+  "qualifiedName": "everything.SoundRecorderUI.requestPermissions",
+  "href": "everything/SoundRecorderUI/requestPermissions.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3285,8 +3285,8 @@
  },
  {
   "name": "showTrashCan",
-  "qualifiedName": "lib1.SoundRecorderUI.showTrashCan",
-  "href": "lib1/SoundRecorderUI/showTrashCan.html",
+  "qualifiedName": "everything.SoundRecorderUI.showTrashCan",
+  "href": "everything/SoundRecorderUI/showTrashCan.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3297,8 +3297,8 @@
  },
  {
   "name": "stoppedTitle",
-  "qualifiedName": "lib1.SoundRecorderUI.stoppedTitle",
-  "href": "lib1/SoundRecorderUI/stoppedTitle.html",
+  "qualifiedName": "everything.SoundRecorderUI.stoppedTitle",
+  "href": "everything/SoundRecorderUI/stoppedTitle.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3309,20 +3309,20 @@
  },
  {
   "name": "SoundRecorderUIState",
-  "qualifiedName": "lib1.SoundRecorderUIState",
-  "href": "lib1/SoundRecorderUIState-class.html",
+  "qualifiedName": "everything.SoundRecorderUIState",
+  "href": "everything/SoundRecorderUIState-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "SoundRecorderUIState",
-  "qualifiedName": "lib1.SoundRecorderUIState.SoundRecorderUIState",
-  "href": "lib1/SoundRecorderUIState/SoundRecorderUIState.html",
+  "qualifiedName": "everything.SoundRecorderUIState.SoundRecorderUIState",
+  "href": "everything/SoundRecorderUIState/SoundRecorderUIState.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3333,8 +3333,8 @@
  },
  {
   "name": "backgroundColor",
-  "qualifiedName": "lib1.SoundRecorderUIState.backgroundColor",
-  "href": "lib1/SoundRecorderUIState/backgroundColor.html",
+  "qualifiedName": "everything.SoundRecorderUIState.backgroundColor",
+  "href": "everything/SoundRecorderUIState/backgroundColor.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3345,8 +3345,8 @@
  },
  {
   "name": "build",
-  "qualifiedName": "lib1.SoundRecorderUIState.build",
-  "href": "lib1/SoundRecorderUIState/build.html",
+  "qualifiedName": "everything.SoundRecorderUIState.build",
+  "href": "everything/SoundRecorderUIState/build.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -3357,8 +3357,8 @@
  },
  {
   "name": "deactivate",
-  "qualifiedName": "lib1.SoundRecorderUIState.deactivate",
-  "href": "lib1/SoundRecorderUIState/deactivate.html",
+  "qualifiedName": "everything.SoundRecorderUIState.deactivate",
+  "href": "everything/SoundRecorderUIState/deactivate.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -3369,8 +3369,8 @@
  },
  {
   "name": "dispose",
-  "qualifiedName": "lib1.SoundRecorderUIState.dispose",
-  "href": "lib1/SoundRecorderUIState/dispose.html",
+  "qualifiedName": "everything.SoundRecorderUIState.dispose",
+  "href": "everything/SoundRecorderUIState/dispose.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -3381,8 +3381,8 @@
  },
  {
   "name": "dispositionStream",
-  "qualifiedName": "lib1.SoundRecorderUIState.dispositionStream",
-  "href": "lib1/SoundRecorderUIState/dispositionStream.html",
+  "qualifiedName": "everything.SoundRecorderUIState.dispositionStream",
+  "href": "everything/SoundRecorderUIState/dispositionStream.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3393,8 +3393,8 @@
  },
  {
   "name": "initState",
-  "qualifiedName": "lib1.SoundRecorderUIState.initState",
-  "href": "lib1/SoundRecorderUIState/initState.html",
+  "qualifiedName": "everything.SoundRecorderUIState.initState",
+  "href": "everything/SoundRecorderUIState/initState.html",
   "type": "method",
   "overriddenDepth": 1,
   "packageName": "flauto",
@@ -3405,8 +3405,8 @@
  },
  {
   "name": "pause",
-  "qualifiedName": "lib1.SoundRecorderUIState.pause",
-  "href": "lib1/SoundRecorderUIState/pause.html",
+  "qualifiedName": "everything.SoundRecorderUIState.pause",
+  "href": "everything/SoundRecorderUIState/pause.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3417,8 +3417,8 @@
  },
  {
   "name": "resume",
-  "qualifiedName": "lib1.SoundRecorderUIState.resume",
-  "href": "lib1/SoundRecorderUIState/resume.html",
+  "qualifiedName": "everything.SoundRecorderUIState.resume",
+  "href": "everything/SoundRecorderUIState/resume.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3429,8 +3429,8 @@
  },
  {
   "name": "stop",
-  "qualifiedName": "lib1.SoundRecorderUIState.stop",
-  "href": "lib1/SoundRecorderUIState/stop.html",
+  "qualifiedName": "everything.SoundRecorderUIState.stop",
+  "href": "everything/SoundRecorderUIState/stop.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3441,56 +3441,56 @@
  },
  {
   "name": "TWhenFinished",
-  "qualifiedName": "lib1.TWhenFinished",
-  "href": "lib1/TWhenFinished.html",
+  "qualifiedName": "everything.TWhenFinished",
+  "href": "everything/TWhenFinished.html",
   "type": "typedef",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "TonPaused",
-  "qualifiedName": "lib1.TonPaused",
-  "href": "lib1/TonPaused.html",
+  "qualifiedName": "everything.TonPaused",
+  "href": "everything/TonPaused.html",
   "type": "typedef",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "TonSkip",
-  "qualifiedName": "lib1.TonSkip",
-  "href": "lib1/TonSkip.html",
+  "qualifiedName": "everything.TonSkip",
+  "href": "everything/TonSkip.html",
   "type": "typedef",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "Track",
-  "qualifiedName": "lib1.Track",
-  "href": "lib1/Track-class.html",
+  "qualifiedName": "everything.Track",
+  "href": "everything/Track-class.html",
   "type": "class",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "Track",
-  "qualifiedName": "lib1.Track.Track",
-  "href": "lib1/Track/Track.html",
+  "qualifiedName": "everything.Track.Track",
+  "href": "everything/Track/Track.html",
   "type": "constructor",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3501,8 +3501,8 @@
  },
  {
   "name": "albumArtAsset",
-  "qualifiedName": "lib1.Track.albumArtAsset",
-  "href": "lib1/Track/albumArtAsset.html",
+  "qualifiedName": "everything.Track.albumArtAsset",
+  "href": "everything/Track/albumArtAsset.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3513,8 +3513,8 @@
  },
  {
   "name": "albumArtFile",
-  "qualifiedName": "lib1.Track.albumArtFile",
-  "href": "lib1/Track/albumArtFile.html",
+  "qualifiedName": "everything.Track.albumArtFile",
+  "href": "everything/Track/albumArtFile.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3525,8 +3525,8 @@
  },
  {
   "name": "albumArtUrl",
-  "qualifiedName": "lib1.Track.albumArtUrl",
-  "href": "lib1/Track/albumArtUrl.html",
+  "qualifiedName": "everything.Track.albumArtUrl",
+  "href": "everything/Track/albumArtUrl.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3537,8 +3537,8 @@
  },
  {
   "name": "codec",
-  "qualifiedName": "lib1.Track.codec",
-  "href": "lib1/Track/codec.html",
+  "qualifiedName": "everything.Track.codec",
+  "href": "everything/Track/codec.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3549,8 +3549,8 @@
  },
  {
   "name": "dataBuffer",
-  "qualifiedName": "lib1.Track.dataBuffer",
-  "href": "lib1/Track/dataBuffer.html",
+  "qualifiedName": "everything.Track.dataBuffer",
+  "href": "everything/Track/dataBuffer.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3561,8 +3561,8 @@
  },
  {
   "name": "toMap",
-  "qualifiedName": "lib1.Track.toMap",
-  "href": "lib1/Track/toMap.html",
+  "qualifiedName": "everything.Track.toMap",
+  "href": "everything/Track/toMap.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3573,8 +3573,8 @@
  },
  {
   "name": "trackAuthor",
-  "qualifiedName": "lib1.Track.trackAuthor",
-  "href": "lib1/Track/trackAuthor.html",
+  "qualifiedName": "everything.Track.trackAuthor",
+  "href": "everything/Track/trackAuthor.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3585,8 +3585,8 @@
  },
  {
   "name": "trackPath",
-  "qualifiedName": "lib1.Track.trackPath",
-  "href": "lib1/Track/trackPath.html",
+  "qualifiedName": "everything.Track.trackPath",
+  "href": "everything/Track/trackPath.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3597,8 +3597,8 @@
  },
  {
   "name": "trackTitle",
-  "qualifiedName": "lib1.Track.trackTitle",
-  "href": "lib1/Track/trackTitle.html",
+  "qualifiedName": "everything.Track.trackTitle",
+  "href": "everything/Track/trackTitle.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -3609,205 +3609,205 @@
  },
  {
   "name": "UIRequestPermission",
-  "qualifiedName": "lib1.UIRequestPermission",
-  "href": "lib1/UIRequestPermission.html",
+  "qualifiedName": "everything.UIRequestPermission",
+  "href": "everything/UIRequestPermission.html",
   "type": "typedef",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "black",
-  "qualifiedName": "lib1.black",
-  "href": "lib1/black.html",
+  "qualifiedName": "everything.black",
+  "href": "everything/black.html",
   "type": "function",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "blockSize",
-  "qualifiedName": "lib1.blockSize",
-  "href": "lib1/blockSize-constant.html",
+  "qualifiedName": "everything.blockSize",
+  "href": "everything/blockSize-constant.html",
   "type": "top-level constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "blue",
-  "qualifiedName": "lib1.blue",
-  "href": "lib1/blue.html",
+  "qualifiedName": "everything.blue",
+  "href": "everything/blue.html",
   "type": "function",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "connectPlayerToRecorderStream",
-  "qualifiedName": "lib1.connectPlayerToRecorderStream",
-  "href": "lib1/connectPlayerToRecorderStream.html",
+  "qualifiedName": "everything.connectPlayerToRecorderStream",
+  "href": "everything/connectPlayerToRecorderStream.html",
   "type": "function",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "cyan",
-  "qualifiedName": "lib1.cyan",
-  "href": "lib1/cyan.html",
+  "qualifiedName": "everything.cyan",
+  "href": "everything/cyan.html",
   "type": "function",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "ext",
-  "qualifiedName": "lib1.ext",
-  "href": "lib1/ext-constant.html",
+  "qualifiedName": "everything.ext",
+  "href": "everything/ext-constant.html",
   "type": "top-level constant",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "fileExtension",
-  "qualifiedName": "lib1.fileExtension",
-  "href": "lib1/fileExtension.html",
+  "qualifiedName": "everything.fileExtension",
+  "href": "everything/fileExtension.html",
   "type": "function",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "flutterSoundHelper",
-  "qualifiedName": "lib1.flutterSoundHelper",
-  "href": "lib1/flutterSoundHelper.html",
+  "qualifiedName": "everything.flutterSoundHelper",
+  "href": "everything/flutterSoundHelper.html",
   "type": "top-level property",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "green",
-  "qualifiedName": "lib1.green",
-  "href": "lib1/green.html",
+  "qualifiedName": "everything.green",
+  "href": "everything/green.html",
   "type": "function",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "grey",
-  "qualifiedName": "lib1.grey",
-  "href": "lib1/grey.html",
+  "qualifiedName": "everything.grey",
+  "href": "everything/grey.html",
   "type": "function",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "magenta",
-  "qualifiedName": "lib1.magenta",
-  "href": "lib1/magenta.html",
+  "qualifiedName": "everything.magenta",
+  "href": "everything/magenta.html",
   "type": "function",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "orange",
-  "qualifiedName": "lib1.orange",
-  "href": "lib1/orange.html",
+  "qualifiedName": "everything.orange",
+  "href": "everything/orange.html",
   "type": "function",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "red",
-  "qualifiedName": "lib1.red",
-  "href": "lib1/red.html",
+  "qualifiedName": "everything.red",
+  "href": "everything/red.html",
   "type": "function",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "registerPlayer",
-  "qualifiedName": "lib1.registerPlayer",
-  "href": "lib1/registerPlayer.html",
+  "qualifiedName": "everything.registerPlayer",
+  "href": "everything/registerPlayer.html",
   "type": "function",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "white",
-  "qualifiedName": "lib1.white",
-  "href": "lib1/white.html",
+  "qualifiedName": "everything.white",
+  "href": "everything/white.html",
   "type": "function",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },
  {
   "name": "yellow",
-  "qualifiedName": "lib1.yellow",
-  "href": "lib1/yellow.html",
+  "qualifiedName": "everything.yellow",
+  "href": "everything/yellow.html",
   "type": "function",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
-   "name": "lib1",
+   "name": "everything",
    "type": "library"
   }
  },

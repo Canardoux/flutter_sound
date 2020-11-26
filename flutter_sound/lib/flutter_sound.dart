@@ -45,15 +45,18 @@ import 'src/util/log.dart';
 
 export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 
+/// everything.dart
+@undocumented
+@nodoc
+library everything;
 export 'src/flutter_ffmpeg.dart';
 export 'src/flutter_sound_helper.dart';
 export 'src/flutter_sound_player.dart';
 export 'src/flutter_sound_recorder.dart';
 export 'src/ui/sound_player_ui.dart';
 export 'src/ui/sound_recorder_ui.dart';
-library lib1;
 export 'src/util/log.dart';
-@nodoc
+///
 library lib2;
 export 'zozo.dart';
 
