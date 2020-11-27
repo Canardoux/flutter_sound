@@ -4,9 +4,7 @@ A number of Platforms \(android/IOS\) support the concept of a 'Shade' or 'notif
 
 When using a Shade a Platform may also allow the user to control the media playback from the Platform's 'Lock' screen.
 
-{% hint style="info" %}
 Using a Shade does not stop you from also displaying an in app Widget to control audio. The SoundPlayerUI widget will work in conjunction with the Shade.
-{% endhint %}
 
 The Shade may also display information contained in the [Track](../api/track.md) such as Album, Artist of artwork.
 

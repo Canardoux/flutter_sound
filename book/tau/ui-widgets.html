@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Widgets · GitBook</title>
+        <title>FlutterSoundUI · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="lock-screen.html" />
+    <link rel="next" href="../flutter_sound/" />
     
     
-    <link rel="prev" href="codec.html" />
+    <link rel="prev" href="helper.html" />
     
 
     </head>
@@ -228,7 +228,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.7" data-path="widgets.html">
+        <li class="chapter " data-level="2.7" data-path="widgets.html">
             
                 <a href="widgets.html">
             
@@ -313,7 +313,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.5" data-path="ui-widgets.html">
+        <li class="chapter active" data-level="3.5" data-path="ui-widgets.html">
             
                 <a href="ui-widgets.html">
             
@@ -656,7 +656,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Widgets</a>
+        <a href=".." >FlutterSoundUI</a>
     </h1>
 </div>
 
@@ -671,31 +671,110 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="widgets">Widgets</h1>
-<p>The easiest way to start with Sounds is to use one of the built in Widgets.</p>
-<ul>
-<li>SoundPlayerUI</li>
-<li>SoundRecorderUI</li>
-<li>RecorderPlaybackController</li>
-</ul>
-<p>If you don&apos;t like any of the provided Widgets you can build your own from scratch.</p>
-<p>The Sounds widgets are all built using the public Sounds API and also provide working examples when building your own widget.</p>
-<h2 id="soundplayerui">SoundPlayerUI</h2>
-<p>The SoundPlayerUI widget provides a Playback widget styled after the HTML 5 audio player.<img src="https://raw.githubusercontent.com/bsutton/sounds/master/images/SoundPlayerUI.png" alt=""></p>
+                                <h1 id="soundplayerui">SoundPlayerUI</h1>
+<h2 id="overview">Overview</h2>
+<p>The SoundPlayerUI provides a Playback widget styled after the HTML 5 audio player.<img src="https://raw.githubusercontent.com/bsutton/sounds/master/images/SoundPlayerUI.png" alt=""></p>
+<p>Detailed SoundPlayerUI API documentation can be found on <a href="https://pub.dev/documentation/sounds/latest/sounds/sounds-library.html" target="_blank">pub.dev</a>.</p>
 <p>The player displays a loading indicator and allows the user to pause/resume/skip via the progress bar.</p>
 <p>You can also pause/resume the player via an api call to SoundPlayerUI&apos;s state using a GlobalKey.</p>
-<p>The <a href="../api/soundplayerui.md">SoundPlayerUI</a> api documentation provides examples on using the SoundPlayerUI widget.</p>
-<h2 id="soundrecorderui">SoundRecorderUI</h2>
-<p>The SoundRecorderUI  widget provide a simple UI for recording audio.</p>
-<p>The audio is recorded to a <a href="../api/track.md">Track</a>.</p>
-<p>TODO: add image here.</p>
-<p>The <a href="../api/soundrecorderui.md">SoundRecorderUI</a> api documentation provides examples on using the <a href="../api/soundrecorderui.md">SoundRecorderUI</a> widget.</p>
-<h2 id="recorderplaybackcontroller">RecorderPlaybackController</h2>
-<p>The RecorderPlaybackController is a specialised Widget which is used to co-ordinate a paired SoundPlayerUI and a SoundRecorderUI  widgets.</p>
-<p>Often when providing an interface to record audio you will want to allow the user to playback the audio after recording it. However you don&apos;t want the user to try and start the playback before the recording is complete.</p>
-<p>The RecorderPlaybackController widget does not have a UI (its actually an InheritedWidget) but rather is used to as a bridge to allow the paired SoundPlayerUI and SoundRecorderUI to communicate with each other.</p>
-<p>The RecorderPlaybackController co-ordinates the UI state between the two components so that playback and recording cannot happen at the same time.</p>
-<p>See the API documenation on <a href="../api/recorderplaybackcontroller.md">RecorderPlaybackController</a> for examples of how to use it.</p>
+<p>The SoundPlayerUI widget allows you to playback audio from multiple sources:</p>
+<ul>
+<li>File</li>
+<li>Asset</li>
+<li>URL</li>
+<li>Buffer</li>
+</ul>
+<h2 id="mediaformat">MediaFormat</h2>
+<p>When using the <code>SoundPlayerUI</code> you MUST pass a <code>Track</code> that has been initialised with a supported <code>MediaFormat</code>.</p>
+<p>The Widget needs to obtain the duration of the audio that it is play and that can only be done if we know the <code>MediaFormat</code> of the Widget.</p>
+<p>If you pass a <code>Track</code> that wasn&apos;t constructed with a <code>MediaFormat</code> then a <code>MediaFormatException</code> will be thrown.</p>
+<p>The <code>MediaFormat</code> must also be natively supported by the OS. See <a href="mediaformat.md">MediaFormat</a> for additional details on checking for a supported format.</p>
+<h3 id="example">Example:</h3>
+<pre><code class="lang-dart">Track track;
+
+<span class="hljs-comment"><span class="markdown">/// global key </span>so<span class="markdown"> we can pause/resume </span>the<span class="markdown"> player via </span>the<span class="markdown"> api.</span></span>
+<span class="hljs-keyword">var</span> playerStateKey = GlobalKey&lt;SoundPlayerUIState&gt;();
+
+<span class="hljs-keyword">void</span> initState()
+{
+   track = Track.fromAsset(<span class="hljs-string">&apos;assets/rock.mp3&apos;</span>, mediaFormat: Mp3MediaFormat());
+}
+
+Widget build(BuildContext build)
+{
+    <span class="hljs-keyword">var</span> player = SoundPlayerUI.fromTrack(track, key: playerStateKey);
+    <span class="hljs-keyword">return</span>
+        Column(child: [
+            player,
+            RaisedButton(<span class="hljs-string">&quot;Pause&quot;</span>, onPressed: () =&gt; playerState.currentState.pause()),
+            RaisedButton(<span class="hljs-string">&quot;Resume&quot;</span>, onPressed: () =&gt; playerState.currentState.resume())
+        ]);
+}
+</code></pre>
+<p><code>Sounds</code> uses <a href="track.md">Track</a> as the primary method of handing around audio data.</p>
+<p>You can also dynamically load a <code>Track</code> when the user clicks the &apos;Play&apos; button on the <code>SoundPlayerUI</code> widget. This allows you to delay the decision on what Track is going to be played until the user clicks the &apos;Play&apos; button.</p>
+<pre><code class="lang-dart">Track track;
+
+
+<span class="hljs-keyword">void</span> initState()
+{
+   track = Track.fromAsset(<span class="hljs-string">&apos;assets/rock.mp3&apos;</span>, mediaFormat: Mp3MediaFormat());
+}
+
+Widget build(BuildContext build)
+{
+    <span class="hljs-keyword">return</span> SoundPlayerUI.fromLoader((context) =&gt; loadTrack());
+}
+
+Future&lt;Track&gt; loadTrack()
+{
+    Track track;
+    track = Track.fromAsset(<span class="hljs-string">&apos;assets/rock.mp3&apos;</span>, mediaFormat: Mp3MediaFormat());
+
+    track.title = <span class="hljs-string">&quot;Asset playback.&quot;</span>;
+    track.artist = <span class="hljs-string">&quot;By sounds&quot;</span>;
+}
+</code></pre>
+<h1 id="flutter-sound-ui-widgets-api">Flutter Sound UI Widgets API</h1>
+<p>The modules offered for the Flutter Sound UI Widgets are :</p>
+<ul>
+<li><a href="#uiplayer">UI Player</a></li>
+<li><a href="#uirecorder">UI Recorder</a></li>
+<li><a href="#uicontroller">UI Controller</a></li>
+</ul>
+<p><em>(This documentation is just a start. It must be completely rewriten)</em></p>
+<h2 id="how-to-use">How to use</h2>
+<p>First import the modules
+<code>import &apos;flutter_sound.dart</code></p>
+<p>Then reference to one of the flutter sound UI widgets in your widget tree:</p>
+<ul>
+<li><a href="../ui_player/ui_player-library.html">UI Player</a></li>
+<li><a href="../ui_recorder/ui_recorder-library.html">UI Recorder</a></li>
+<li><a href="../ui_controller/ui_controller-library.html">UI Controller</a></li>
+</ul>
+<hr>
+<h2 id="ui-player"><code>UI Player</code></h2>
+<p>To use add FOREGROUND_SERVICE permission.</p>
+<h3 id="android">Android</h3>
+<p>Add this line to your AndroidManifest.xml</p>
+<pre><code>&lt;uses-permission android:name=&quot;android.permission.FOREGROUND_SERVICE&quot; /&gt;
+</code></pre><h3 id="style-of-the-soundplayerui-widget">Style of the <code>SoundPlayerUI</code> widget</h3>
+<p>The two constructors of the <code>SoundPlayerUI</code> widget have 6 optional parameters for allowing the App to tune the UI presentation:</p>
+<ul>
+<li>Color backgroundColor = Colors.grey,</li>
+<li>Color iconColor = Colors.black,</li>
+<li>Color disabledIconColor = Colors.blueGrey,</li>
+<li>TextStyle textStyle = null,</li>
+<li>TextStyle titleStyle = null,</li>
+<li>SliderThemeData sliderThemeData = null,</li>
+</ul>
+<p><em>...working on documentation.</em></p>
+<hr>
+<h2 id="ui-recorder"><code>UI Recorder</code></h2>
+<p><em>...working on documentation.</em></p>
+<hr>
+<h2 id="ui-controller"><code>UI Controller</code></h2>
+<p><em>...working on documentation.</em></p>
 
                                 
                                 </section>
@@ -723,12 +802,12 @@
 
             
                 
-                <a href="codec.html#playing-pcm-16-from-a-dart-stream" class="navigation navigation-prev " aria-label="Previous page: Playing PCM-16 from a Dart Stream">
+                <a href="helper.html" class="navigation navigation-prev " aria-label="Previous page: FlutterSoundHelper">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="lock-screen.html" class="navigation navigation-next " aria-label="Next page: Notification/Lock Screen">
+                <a href="../flutter_sound/" class="navigation navigation-next " aria-label="Next page: τ under Flutter">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -739,7 +818,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Widgets","level":"2.7","depth":1,"next":{"title":"Notification/Lock Screen","level":"2.8","depth":1,"path":"tau/lock-screen.md","ref":"tau/lock-screen.md","articles":[]},"previous":{"title":"Playing PCM-16 from a Dart Stream","level":"2.6","depth":1,"anchor":"#playing-pcm-16-from-a-dart-stream","path":"tau/codec.md","ref":"tau/codec.md#playing-pcm-16-from-a-dart-stream","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/widgets.md","mtime":"2020-11-27T01:08:24.088Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-27T02:00:53.299Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"FlutterSoundUI","level":"3.5","depth":1,"next":{"title":"τ under Flutter","level":"4.1","depth":1,"path":"flutter_sound/README.md","ref":"flutter_sound/README.md","articles":[]},"previous":{"title":"FlutterSoundHelper","level":"3.4","depth":1,"path":"tau/helper.md","ref":"tau/helper.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/ui-widgets.md","mtime":"2020-11-27T01:08:24.075Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-27T02:00:53.299Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
