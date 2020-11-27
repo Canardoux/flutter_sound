@@ -77,28 +77,32 @@
       <h1><span class="kind-category">Main</span> Topic</h1>
       <section class="desc markdown">
         <h1 id="the-main-modules">The Main modules</h1>
-<p>The two main modules of Flutter Sound are :</p>
+<p>The three main modules of Flutter Sound are :</p>
 <ul>
-<li><a href="player/player-library.html">FlutterSoundPlayer</a></li>
-<li><a href="recorder/recorder-library.html">Flutter SoundRecorder</a></li>
+<li><a href="../player/player-library.html">FlutterSoundPlayer</a>  (Everything for Playback)</li>
+<li><a href="../recorder/recorder-library.html">FlutterSoundRecorder</a>  (Everything for recording)</li>
+<li><a href="../tau/tau-library.html">tau</a></li>
 </ul>
 <h2 id="how-to-use">How to use</h2>
-<p>First import the Flutter Sound plugin
-<code>import 'flutter_sound.dart</code></p>
+<p>First import the Flutter Sound plugin</p>
+<pre class="language-dart"><code class="language-dart">import 'flutter_sound.dart
+</code></pre>
 <h2 id="playback">Playback</h2>
 <ol>
-<li>Instance one ore more players</li>
-</ol>
-<p>A good place to do that is in your <code>init()</code> function.
+<li>
+<p>Instance one ore more players
+A good place to do that is in your <code>init()</code> function.
 It is possible also to instanciate players "On the Flight", when needed.</p>
-<ol start="2">
-<li>Open it</li>
-</ol>
-<p><code>FlutterSoundPlayer.openAudioSession()</code>
+</li>
+<li>
+<p>Open it
+<code>FlutterSoundPlayer.openAudioSession()</code>
 You cannot do anything on a close Player.
 An audio-session is then created.</p>
-<ol start="3">
-<li>Use the various verbs implemented by the players</li>
+</li>
+<li>
+<p>Use the various verbs implemented by the players</p>
+</li>
 </ol>
 <ul>
 <li><code>startPlayer()</code> <code>FlutterSoundPlayer.startPlayer()</code></li>
@@ -109,9 +113,9 @@ An audio-session is then created.</p>
 <li>...</li>
 </ul>
 <ol start="4">
-<li>Close your players</li>
+<li>Close your players
+<code>FlutterSoundPlayer.closeAudioSession()</code></li>
 </ol>
-<p><code>FlutterSoundPlayer.closeAudioSession()</code></p>
 <h2 id="recording">Recording</h2>
 <ol>
 <li>
