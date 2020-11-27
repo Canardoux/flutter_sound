@@ -11,7 +11,10 @@ The &tau; project is a set of libraries which deal with audio :
 
 ## Overview
 
-&tau; is a library package allowing you to play and record audio for both the `android` and `ios` platforms.
+&tau; is a library package allowing you to play and record audio for
+- iOS
+- Android
+- Web
 
 &tau; provides both a high level API and widgets for:
 
@@ -82,10 +85,12 @@ We just changed the name of the project, because we want to encompass others fra
 
 -------------
 
+## We need help
+
 &tau; is a fundamental building block needed by almost every mobile project.
 
 I'm looking to make &tau; the go to project for mobile Audio with support for various platforms and various OS.
 
-&tau; is a large and complex project which requires me to maintain multiple hardware platforms and test environments.
+&tau; is a large and complex project which requires  to maintain multiple hardware platforms and test environments.
 
 I greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation.

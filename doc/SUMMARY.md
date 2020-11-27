@@ -20,10 +20,10 @@
 ## API
 
 - [The &tau; API](tau/api.md)
-- [FlutterSoundPlayer](tau/player.md)
-- [FlutterSoundRecorder](tau/recorder.md)
-- [FlutterSoundHelper](tau/helper.md)
-- [FlutterSoundUI](tau/ui-widgets.md)
+- [The &tau; Player](tau/player.md)
+- [The &tau; Recorder](tau/recorder.md)
+- [The utilities](tau/helper.md)
+- [The Widget UI](tau/ui-widgets.md)
 
 ## Flutter Sound
 

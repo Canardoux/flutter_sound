@@ -10,16 +10,8 @@ The Shade may also display information contained in the [Track](../api/track.md)
 
 A Shade often allows the user to pause and resume audio as well skip forward a track and skip backward to the prior Track.
 
-Sounds allows you to enable the Shade controls when you  start playback. It also allows you \(where the Platform supports it\) to control which of the media buttons are displayed \(pause, resume, skip forward, skip backwards\).
+&tau; allows you to enable the Shade controls when you  start playback. It also allows you \(where the Platform supports it\) to control which of the media buttons are displayed \(pause, resume, skip forward, skip backwards\).
 
-When you app runs on a user's device you can determine what features the Platform supports be calling one or more of the 'is' method on the [SoundPlayer](../api/soundplayer.md) class.
-
-| Method |  |
-| :--- | :--- |
-| isShadeSupported | True if the Platform supports displaying Track information on a the OS's Shade. |
-| isShadePauseSupported | True if the Platform supports a 'Pause/Resume' button on the Shade. |
-| isShadeSkipForwardSupported | True if the Platform supports a Skip Forward button on the Shade. |
-| isShadeSkipBackwardsSupported | True if the Platform supports a Skip Backwards button on the Shade. |
 
 To start audio playback using the Shade use:
 

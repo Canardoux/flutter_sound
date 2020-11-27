@@ -1,12 +1,5 @@
 [
  {
-  "name": "Amazing",
-  "qualifiedName": "Amazing",
-  "href": "topics/Amazing-topic.html",
-  "type": "Topic",
-  "overriddenDepth": 0
- },
- {
   "name": "UI Widgets",
   "qualifiedName": "UI Widgets",
   "href": "topics/UI Widgets-topic.html",

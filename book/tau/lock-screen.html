@@ -279,7 +279,7 @@
                 <a href="player.html">
             
                     
-                    FlutterSoundPlayer
+                    The τ Player
             
                 </a>
             
@@ -292,7 +292,7 @@
                 <a href="recorder.html">
             
                     
-                    FlutterSoundRecorder
+                    The τ Recorder
             
                 </a>
             
@@ -305,7 +305,7 @@
                 <a href="helper.html">
             
                     
-                    FlutterSoundHelper
+                    The utilities
             
                 </a>
             
@@ -318,7 +318,7 @@
                 <a href="ui-widgets.html">
             
                     
-                    FlutterSoundUI
+                    The Widget UI
             
                 </a>
             
@@ -677,34 +677,7 @@
 <p>Using a Shade does not stop you from also displaying an in app Widget to control audio. The SoundPlayerUI widget will work in conjunction with the Shade.</p>
 <p>The Shade may also display information contained in the <a href="../api/track.md">Track</a> such as Album, Artist of artwork.</p>
 <p>A Shade often allows the user to pause and resume audio as well skip forward a track and skip backward to the prior Track.</p>
-<p>Sounds allows you to enable the Shade controls when you  start playback. It also allows you (where the Platform supports it) to control which of the media buttons are displayed (pause, resume, skip forward, skip backwards).</p>
-<p>When you app runs on a user&apos;s device you can determine what features the Platform supports be calling one or more of the &apos;is&apos; method on the <a href="../api/soundplayer.md">SoundPlayer</a> class.</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">Method</th>
-<th style="text-align:left"></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">isShadeSupported</td>
-<td style="text-align:left">True if the Platform supports displaying Track information on a the OS&apos;s Shade.</td>
-</tr>
-<tr>
-<td style="text-align:left">isShadePauseSupported</td>
-<td style="text-align:left">True if the Platform supports a &apos;Pause/Resume&apos; button on the Shade.</td>
-</tr>
-<tr>
-<td style="text-align:left">isShadeSkipForwardSupported</td>
-<td style="text-align:left">True if the Platform supports a Skip Forward button on the Shade.</td>
-</tr>
-<tr>
-<td style="text-align:left">isShadeSkipBackwardsSupported</td>
-<td style="text-align:left">True if the Platform supports a Skip Backwards button on the Shade.</td>
-</tr>
-</tbody>
-</table>
+<p>&#x3C4; allows you to enable the Shade controls when you  start playback. It also allows you (where the Platform supports it) to control which of the media buttons are displayed (pause, resume, skip forward, skip backwards).</p>
 <p>To start audio playback using the Shade use:</p>
 <pre><code class="lang-text">SoundPlayer.withShadeUI(track);
 </code></pre>
@@ -759,7 +732,7 @@ player.onSkipForwards = () =&gt; player.startPlayer(getNextTrack());
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Notification/Lock Screen","level":"2.8","depth":1,"next":{"title":"The τ API","level":"3.1","depth":1,"path":"tau/api.md","ref":"tau/api.md","articles":[]},"previous":{"title":"Widgets","level":"2.7","depth":1,"path":"tau/widgets.md","ref":"tau/widgets.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/lock-screen.md","mtime":"2020-11-27T20:07:35.401Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-27T20:08:53.145Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Notification/Lock Screen","level":"2.8","depth":1,"next":{"title":"The τ API","level":"3.1","depth":1,"path":"tau/api.md","ref":"tau/api.md","articles":[]},"previous":{"title":"Widgets","level":"2.7","depth":1,"path":"tau/widgets.md","ref":"tau/widgets.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/lock-screen.md","mtime":"2020-11-27T20:24:15.810Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-27T20:43:25.622Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
