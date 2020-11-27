@@ -1,5 +1,5 @@
 This is the README of /flutter_sound
-## Flutter Sound
+# Flutter Sound
 
 <img src="https://canardoux.github.io/tau/doc/flutter_sound/Logotype primary.png" width="70%" height="70%" />
 
@@ -11,36 +11,38 @@ This is the README of /flutter_sound
 <img src="banner.png" width="70%" height="70%" />
 <img src="banner2.png" width="70%" height="70%" />
 
--------------------------------------------------------------------------------------
-
-- Flutter Sound user: your [documentation is there](https://canardoux.github.io/tau/book)
-- The [CHANGELOG file is here](https://canardoux.github.io/tau/book/CHANGELOG.html)
-- The [sources are here](https://github.com/Canardoux/tau)
-
------------------------------------------------------------------------------------------------------------------------------------
-
-# Introduction
-
-## Sounds
-
-[![](https://raw.githubusercontent.com/bsutton/sounds/master/SoundsLogo.png)](https://raw.githubusercontent.com/bsutton/sounds/master/SoundsLogo.png)
+![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
+![](https://raw.githubusercontent.com/bsutton/sounds/master/Flutter SoundLogo.png)](https://raw.githubusercontent.com/bsutton/sounds/master/Sounds.png)
 
 [![pub version](https://camo.githubusercontent.com/7c696da820eebbf794d24e0b1339ec1a987f8a8a/68747470733a2f2f696d672e736869656c64732e696f2f7075622f762f736f756e64732e7376673f7374796c653d666c61742d737175617265)](https://pub.dartlang.org/packages/sounds)
 
+-------------------------------------------------------------------------------------
+
+- # Flutter Sound user: your [documentation is there](https://canardoux.github.io/tau/book)
+- # The [CHANGELOG file is here](https://canardoux.github.io/tau/book/CHANGELOG.html)
+- # The [sources are here](https://github.com/Canardoux/tau)
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
 ## Overview
 
-Sounds is a Flutter package allowing you to play and record audio for both the `android` and `ios` platforms.
+Flutter Sound is a Flutter package allowing you to play and record audio for :
+- Android
+- iOS
+- Flutter Web
 
-Sounds provides both a high level API and widgets for:
+Maybe, one day, we will be supported by Linux, Macos, and even (why not) Windows. But this is not top of our priorities.
+
+Flutter Sound provides both a high level API and widgets for:
 
 * play audio
 * record audio
 
-Sounds can be used to play a beep from an asset all the way up to implementing a complete media player.
+Flutter Sound can be used to play a beep from an asset all the way up to implementing a complete media player.
 
 The API is designed so you can use the supplied widgets or roll your own.
 
-The Sounds package supports playback from:
+The Flutter Sound package supports playback from:
 
 * Assets
 * Files
@@ -48,111 +50,22 @@ The Sounds package supports playback from:
 
 ## Features
 
-The Sounds package includes the following features
+The Flutter Sound package includes the following features
 
-* Play audio without any UI
-* Play audio using the built in SoundPlayerUI Widget.
-* Play audio using the OSs' Media Player
-* Roll your own UI utilising the Sounds api.
-* Record audio without any UI
-* Record audio using the builtin SoundRecorderUI Widget.
-* Roll your own Recording UI utilising the Sounds api.
-* Support for releasing/resuming resources when the app pauses/resumes.
+- Play and Record sounds or music with various codecs. (See [the supported codecs here](https://canardoux.github.io/tau/book/tau/codec.html#flutter-sound-codecs))
+- Play local or remote files specified by their URL.
+- Play audio using the built in SoundPlayerUI Widget.
+- Roll your own UI utilising the Flutter Sound api.
+- Record audio using the builtin SoundRecorderUI Widget.
+- Roll your own Recording UI utilising the Flutter Sound api.
+- Support for releasing/resuming resources when the app pauses/resumes.
+- Record to a Dart Stream
+- Playback from a Dart Stream
+- The App playback can be controled from the device lock screen or from an Apple watch
 
-The core classes are:
 
-| Class | Usage |
-| :--- | :--- |
-| [SoundPlayerUI](api/soundplayerui.md) | A Flutter Widget Audio Player |
-| [SoundRecorderUI](api/soundrecorderui.md) | A Flutter Widget for recording |
-| [QuickPlay](api/quickplay.md) | Plays an audio file without a UI. Easiest way to play a beep. |
-| [SoundPlayer.noUI](api/soundplayer.md#headless-playback-no-ui) | API to playback audio with fine grained control |
-| [SoundPlayer.withShadeUI](api/soundplayer.md#os-shade-using-the-os-media-ui) | API to playback audio using the OS's Shade \(media player\) |
-| [SoundRecorder](api/soundrecorder.md) | API to record audio with fine grained control. |
-| [Track](api/track.md) | Container for audio used by all of the above classes. |
-| [MediaFormat](api/mediaformat.md) | Defines what MediaFormat is being used. |
-| [RecorderPlaybackController](api/recorderplaybackcontroller.md) | Flutter InheritedWidget used to co-ordinate Recording and Playback in a single UI. |
-| [Albums](api/albums.md) | Play a sequence of Tracks via the OS's Shade \(media player\) |
+---------
 
-![](.gitbook/assets/image%20%281%29.png)
-
-### Help
-
-Audio is a fundamental building block needed by almost every flutter project.
-
-I'm looking to make Sounds the go to project for Flutter Audio with support for each of the Flutter supported platforms.
-
-Sounds is a large and complex project which requires me to maintain multiple hardware platforms and test environments.
-
-I greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation.
-
-See the [Contributing](contributing/overview.md) section below for details.
-
-#### Sponsorship
-
-If you can't help out by directly contributing code maybe you could Sponsor me so I can spend more time improving Sounds.
-
-Sounds is a large commitment and I'm maintaining several other dart related projects so any support would be greatly appreciated.
-
-Key short term goals are:
-
-* Hire a graphics designer to improve the look of the widgets
-* Provide support for the web
-* Provide support for a wider range of Codecs
-* Provide support for streaming
-
-If I can get enough sponsorship I intend hiring a grad to do a chunk of the dirty work so I can focus on some of the larger features such as Web Support.
-
-You can find the purple heart Sponsor button at the top of the page.
-
-If you can't afford a coffee then show your support by 'liking' the Sounds project on the [pub.dev](https://pub.dev/packages/sounds) site.
-
-## Documentation
-
-[Install](installing.md)
-
-[Manual](https://bsutton.gitbook.io/sounds/)
-
-[API Reference](https://pub.dev/documentation/sounds/latest/)
-
-### Roadmap
-
-See the [Roadmap](roadmap.md) for details on the future of Sounds.
-
-### Contributing
-
-See the [Contributing](contributing/overview.md) guide for details on contributing to Sounds.
-
-The key classes are:
-
-### Api classes
-
-[QuickPlay](api/quickplay.md) - instantly play an audio file \(no ui\). Perfect for the odd beep.
-
-[Track](api/track.md) - Defines a track including the artist details and the audio media.
-
-[Album](api/albums.md) - play a collection of tracks via the OSs' audio UI.
-
-[SoundPlayer](api/soundplayer.md) - provides an API for playing audio including pause/resume/seek.
-
-[SoundRecorder](api/soundrecorder.md) - API for recording audio.
-
-### Widgets
-
-[SoundPlayerUI](api/soundplayerui.md) - displays an HTML 5 style audio controller widget.
-
-[SoundRecorderUI](api/soundrecorderui.md) - displays a recording widget.
-
-[RecorderPlaybackController](api/recorderplaybackcontroller.md) - pairs a SoundPlayerUI and SoundRecorderUI to provide a coordinated recording/playback UI.
-
-Note: there are some limitations on the supported [MediaFormat](api/mediaformat.md).
-
------------
-
-This plugin provides simple recorder and player functionalities for
-- Android
-- iOS
-- Flutter Web
 
 
 # Flutter Sound V6.x is OUT
@@ -175,27 +88,7 @@ This feature has also been requested from many months from many Flutter Sound us
 
 You can refer to the [Getting Started with Playback-from-Stream](https://canardoux.github.io/tau/book/tau/codec.html#playing-pcm-16-from-a-dart-stream) notice.
 
-------------------------------------------------------------------------------------------------------------------------------------
-
-
-![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
-
-## Features
-
-- Play and Record sounds or music with various codecs. (See [the supported codecs here](https://canardoux.github.io/tau/book/tau/codec.html#flutter-sound-codecs))
-- Play local or remote files specified by their URL.
-- Record to a Dart Stream
-- Playback from a Dart Stream
-- The App playback can be controled from the device lock screen or from an Apple watch
-
-## Supported platforms
-
-Flutter Sound is actually supported by :
-- Android
-- iOS
-- Flutter Web
-
-Maybe, one day, we will be supported by Linux, Macos, and even (why not) Windows. But this is not top of our priorities.
+--------------------------------------
 
 ## Changelog
 
@@ -214,6 +107,15 @@ Flutter Sound is released under a license with a *copyleft* clause: the LGPL-V3 
 
 
 ## Help Maintenance
+
+Audio is a fundamental building block needed by almost every flutter project.
+
+I'm looking to make Flutter Sound the go to project for Flutter Audio with support for each of the Flutter supported platforms.
+
+Flutter Sound is a large and complex project which requires me to maintain multiple hardware platforms and test environments.
+
+I greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation.
+
 
 My friend Hyo has been maintaining quite many repos these days and he is burning out slowly. If you could help him cheer up, buy him a cup of coffee will make his life really happy and get much energy out of it. As a side effect, we will know that Flutter Sound is important for you, that you appreciate our job and that you can show it with a little money.
 

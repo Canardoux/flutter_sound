@@ -48,8 +48,8 @@ cd ..
 
 
 cd flutter_sound
-dartfmt lib
-dartfmt example/lib
+dartfmt -w lib
+dartfmt -w example/lib
 flutter analyze
 if [ $? -ne 0 ]; then
     echo "Error"
