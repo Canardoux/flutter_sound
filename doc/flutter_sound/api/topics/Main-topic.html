@@ -85,27 +85,28 @@
 </ul>
 <h2 id="how-to-use">How to use</h2>
 <p>First import the Flutter Sound plugin</p>
-<pre class="language-dart"><code class="language-dart">import 'flutter_sound.dart
+<pre class="language-dart"><code class="language-dart">import 'flutter_sound.dart'
 </code></pre>
 <h2 id="playback">Playback</h2>
 <ol>
-<li>
-<p>Instance one ore more players
+<li>Instance one ore more players.
 A good place to do that is in your <code>init()</code> function.
-It is possible also to instanciate players "On the Flight", when needed.</p>
-</li>
-<li>
-<p>Open it
-<code>FlutterSoundPlayer.openAudioSession()</code>
+It is possible also to instanciate players "On the Flight", when needed.</li>
+</ol>
+<pre class="language-dart"><code class="language-dart">FlutterSoundPlayer myPlayer = FlutterSoundPlayer();
+</code></pre>
+<ol start="2">
+<li>Open it.
 You cannot do anything on a close Player.
-An audio-session is then created.</p>
-</li>
-<li>
-<p>Use the various verbs implemented by the players</p>
-</li>
+An audio-session is then created.</li>
+</ol>
+<pre class="language-dart"><code class="language-dart">myAudioSession.openAudioSession().then( (){ ...} );
+</code></pre>
+<ol start="3">
+<li>Use the various verbs implemented by the players</li>
 </ol>
 <ul>
-<li><code>startPlayer()</code> <code>FlutterSoundPlayer.startPlayer()</code></li>
+<li><code>startPlayer()</code></li>
 <li><code>startPlayerFromStream()</code></li>
 <li><code>startPlayerFromBuffer()</code></li>
 <li><code>setVolume()</code></li>
@@ -113,9 +114,11 @@ An audio-session is then created.</p>
 <li>...</li>
 </ul>
 <ol start="4">
-<li>Close your players
-<code>FlutterSoundPlayer.closeAudioSession()</code></li>
+<li>Close your players.
+This is important to close every player open to free the resources taken by the audio session.</li>
 </ol>
+<pre class="language-dart"><code class="language-dart">myAudioSession.closeAudioSession();
+</code></pre>
 <h2 id="recording">Recording</h2>
 <ol>
 <li>
