@@ -4,7 +4,7 @@ This is the README of /doc/flutter_sound
 <img src="Logotype primary.png" width="70%" height="70%" />
 
 <p align="left">
-  <a href="https://dooboolab.github.io/flutter_sound/book"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
+  <a href="https://canardoux.github.io/tau/book"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
 </p>
 
 Flutter Sound is the first (and actually the only) implementation of the &tau; Project.
