@@ -74,15 +74,9 @@
 
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <section class="desc markdown">
-        <p>This is the README of /flutter_sound</p>
-<h1 id="flutter-sound">Flutter Sound</h1><img src="https://canardoux.github.io/tau/doc/flutter_sound/Logotype primary.png" width="70%" height="70%"><p align="left">
+        <img src="https://raw.githubusercontent.com/canardoux/tau/master/banner.png" width="100%" height="100%"><p align="left">
   <a href="https://canardoux.github.io/tau/book/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
-  <a href="https://canardoux.github.io/tau/book/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg"></a></p>
-<img src="banner.png" width="70%" height="70%">
-<img src="banner2.png" width="70%" height="70%">
-<p><img src="https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif" alt="Demo">
-![](<a href="https://raw.githubusercontent.com/bsutton/sounds/master/Flutter">https://raw.githubusercontent.com/bsutton/sounds/master/Flutter</a> SoundLogo.png)](<a href="https://raw.githubusercontent.com/bsutton/sounds/master/Sounds.png">https://raw.githubusercontent.com/bsutton/sounds/master/Sounds.png</a>)</p>
-<p><a href="https://pub.dartlang.org/packages/sounds"><img src="https://camo.githubusercontent.com/7c696da820eebbf794d24e0b1339ec1a987f8a8a/68747470733a2f2f696d672e736869656c64732e696f2f7075622f762f736f756e64732e7376673f7374796c653d666c61742d737175617265" alt="pub version"></a></p>
+</p>
 <hr>
 <ul>
 <li>
@@ -96,6 +90,18 @@
 </li>
 </ul>
 <hr>
+<h1 id="flutter-sound-v6x-is-out">Flutter Sound V6.x is OUT</h1>
+<p>Please refer to the <a href="https://canardoux.github.io/tau/book/CHANGELOG.html">CHANGELOG.md file</a> to get learn all the great new features. It has especially the following :</p>
+<h2 id="flutter-web-support">Flutter Web support</h2>
+<p>Flutter Sound is supported by Flutter Web. You can play with <a href="https://canardoux.github.io/tau/doc/flutter_sound/web_example">this live demo on the web</a> (still cannot record with Safari or any web browser on iOS). You can <a href="https://canardoux.github.io/tau/book/tau/codec.html#flutter-sound-on-flutter-web">read this</a>.</p>
+<h2 id="record-to-dart-stream">Record to Dart Stream</h2>
+<p>This feature has been requested from many months from many, many, many Flutter Sound users. This open doors to things like feeding a Speech-to-Text engine.</p>
+<p>You can refer to the <a href="https://canardoux.github.io/tau/book/tau/codec.html#recording-pcm-16-to-a-dart-stream">Getting Started with Record-to-Stream</a> notice.</p>
+<h2 id="playback-from-a-live-dart-stream">Playback from a live Dart Stream</h2>
+<p>This feature has also been requested from many months from many Flutter Sound users.</p>
+<p>You can refer to the <a href="https://canardoux.github.io/tau/book/tau/codec.html#playing-pcm-16-from-a-dart-stream">Getting Started with Playback-from-Stream</a> notice.</p>
+<hr>
+<p><img src="https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif" alt="Demo"></p>
 <h2 id="overview">Overview</h2>
 <p>Flutter Sound is a Flutter package allowing you to play and record audio for :</p>
 <ul>
@@ -111,17 +117,12 @@
 </ul>
 <p>Flutter Sound can be used to play a beep from an asset all the way up to implementing a complete media player.</p>
 <p>The API is designed so you can use the supplied widgets or roll your own.</p>
-<p>The Flutter Sound package supports playback from:</p>
-<ul>
-<li>Assets</li>
-<li>Files</li>
-<li>URL</li>
-</ul>
 <h2 id="features">Features</h2>
 <p>The Flutter Sound package includes the following features</p>
 <ul>
-<li>Play and Record sounds or music with various codecs. (See <a href="https://canardoux.github.io/tau/book/tau/codec.html#flutter-sound-codecs">the supported codecs here</a>)</li>
+<li>Play and Record flutter sound or music with various codecs. (See <a href="https://canardoux.github.io/tau/book/tau/codec.html#flutter-sound-codecs">the supported codecs here</a>)</li>
 <li>Play local or remote files specified by their URL.</li>
+<li>Play assets.</li>
 <li>Play audio using the built in SoundPlayerUI Widget.</li>
 <li>Roll your own UI utilising the Flutter Sound api.</li>
 <li>Record audio using the builtin SoundRecorderUI Widget.</li>
@@ -131,18 +132,6 @@
 <li>Playback from a Dart Stream</li>
 <li>The App playback can be controled from the device lock screen or from an Apple watch</li>
 </ul>
-<hr>
-<h1 id="flutter-sound-v6x-is-out">Flutter Sound V6.x is OUT</h1>
-<p>Please refer to the <a href="https://canardoux.github.io/tau/book/CHANGELOG.html">CHANGELOG.md file</a> to get learn all the great new features. It has especially the following :</p>
-<h2 id="flutter-web-support">Flutter Web support</h2>
-<p>Flutter Sound is supported by Flutter Web. You can play with <a href="https://canardoux.github.io/tau/doc/flutter_sound/web_example">this live demo on the web</a> (still cannot record with Safari or any web browser on iOS). You can <a href="https://canardoux.github.io/tau/book/tau/codec.html#flutter-sound-on-flutter-web">read this</a>.</p>
-<h2 id="record-to-dart-stream">Record to Dart Stream</h2>
-<p>This feature has been requested from many months from many, many, many Flutter Sound users. This open doors to things like feeding a Speech-to-Text engine.</p>
-<p>You can refer to the <a href="https://canardoux.github.io/tau/book/tau/codec.html#recording-pcm-16-to-a-dart-stream">Getting Started with Record-to-Stream</a> notice.</p>
-<h2 id="playback-from-a-live-dart-stream">Playback from a live Dart Stream</h2>
-<p>This feature has also been requested from many months from many Flutter Sound users.</p>
-<p>You can refer to the <a href="https://canardoux.github.io/tau/book/tau/codec.html#playing-pcm-16-from-a-dart-stream">Getting Started with Playback-from-Stream</a> notice.</p>
-<hr>
 <h2 id="changelog">Changelog</h2>
 <p>You can find the <a href="https://canardoux.github.io/tau/book/CHANGELOG.html">changes here</a></p>
 <h2 id="documentation">Documentation</h2>
@@ -151,7 +140,7 @@
 <p>Flutter Sound is copyrighted by Dooboolab (2018, 2019, 2020).
 Flutter Sound is released under a license with a <em>copyleft</em> clause: the LGPL-V3 license. This means that if you modify some of Flutter Sound code you must publish your modifications under the LGPL license too.</p>
 <h2 id="help-maintenance">Help Maintenance</h2>
-<p>Audio is a fundamental building block needed by almost every flutter project.</p>
+<p>Flutter Sound is a fundamental building block needed by almost every flutter project.</p>
 <p>I'm looking to make Flutter Sound the go to project for Flutter Audio with support for each of the Flutter supported platforms.</p>
 <p>Flutter Sound is a large and complex project which requires me to maintain multiple hardware platforms and test environments.</p>
 <p>I greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation.</p>
@@ -279,7 +268,7 @@ Un joli commmentaire
 <footer>
   <span class="no-break">
     flauto
-      6.4.3+16
+      6.4.3+36
   </span>
 
 </footer>
