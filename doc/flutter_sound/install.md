@@ -50,7 +50,7 @@ dependencies:
 
 ## Linking your App with Flutter Sound sources
 
-The Flutter-Sound sources [are here](https://github.com/canardoux/tau).
+The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
 
 There is actually two branches :
 - V5. This is the Long Term Support (LTS) branch which is maintained under the version 5.x.x
@@ -60,7 +60,7 @@ If you want to generate your App from the sources with a `FULL` flavor:
 
 ```sh
 cd some/where
-git clone https://github.com/canardoux/tau
+git clone https://github.com/dooboolab/flutter_sound
 cd some/where/flutter_sound
 bin/flavor FULL
 ```
@@ -79,7 +79,7 @@ If you prefer to link your App with the `LITE` flavor :
 
 ```sh
 cd some/where
-git clone https://github.com/canardoux/tau
+git clone https://github.com/dooboolab/flutter_sound
 cd some/where/flutter_sound
 bin/flavor LITE
 ```

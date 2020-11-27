@@ -8,10 +8,10 @@ install {
            project {
                packaging 'aar'
                groupId 'xyz.canardoux'
-               artifactId 'tau_core'
-               name 'tau_core'
+               artifactId 'tau_sound_core'
+               name 'tau_sound_core'
                description 'The tau Core.'
-               url 'https://github.com/Canardoux/tau'
+               url 'https://github.com/dooboolab/flutter_sound'
 
                licenses {
                    license {
@@ -29,9 +29,9 @@ install {
                }
 
                scm {
-                   connection 'https://github.com/Canardoux/tau.git'
-                   developerConnection 'https://github.com/Canardoux.git'
-                   url 'https://github.com/Canardoux/tau/tree/master/tau_core/android'
+                   connection 'https://github.com/dooboolab/flutter_sound.git'
+                   developerConnection 'https://github.com/dooboolab/flutter_sound.git'
+                   url 'https://github.com/dooboolab/flutter_sound/tree/master/tau_core/android'
                }
            }
        }

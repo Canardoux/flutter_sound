@@ -1,7 +1,5 @@
 <img src="doc/flutter_sound/banner.png" width="70%" height="70%" />
-<img src="https://github.com/Canardoux/tau/blob/master/doc/flutter_sound/banner.png" width="70%" height="70%" />
 <p align="left">
-  <a href="https://canardoux.github.io/tau/book/flauto"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
   <a href="https://canardoux.github.io/tau/book/flauto"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg"></a>
 </p>
 

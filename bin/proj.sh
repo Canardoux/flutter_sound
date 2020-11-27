@@ -17,6 +17,9 @@ if [ "_$1" = "_TAU" ] ; then
         gsed -i  "s/^\( *libraryName = \).*$/\1tau_core/" tau_core/android/gradle.properties
         gsed -i  "s/^\( *PUBLISH_ARTIFACT_ID = \).*$/\1'tau_core'/" tau_core/android/build.gradle
         gsed -i  "s/^\( *artifactId = \).*$/\1'tau_core'/" tau_core/android/build.gradle
+        gsed -i  "s/^\( *artifactId \).*$/\1'tau_core'/" tau_core/android/install.gradle
+        gsed -i  "s/^\( *name \)'tau_sound_core'$/\1'tau_core'/" tau_core/android/install.gradle
+        gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/g" tau_core/android/install.gradle
 
         gsed -i  "s/^ *implementation 'xyz.canardoux:tau_sound_core:\(.*\)$/    implementation 'xyz.canardoux:tau_core:\1/" flutter_sound/android/build.gradle
         gsed -i  "s/^ *\/\/ implementation 'xyz.canardoux:tau_sound_core:\(.*\)$/    \/\/implementation 'xyz.canardoux:tau_core:\1/" flutter_sound/android/build.gradle
@@ -87,13 +90,16 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
         gsed -i  "s/^\( *libraryName = \).*$/\1tau_sound_core/" tau_core/android/gradle.properties
         gsed -i  "s/^\( *PUBLISH_ARTIFACT_ID = \).*$/\1'tau_sound_core'/" tau_core/android/build.gradle
         gsed -i  "s/^\( *artifactId = \).*$/\1'tau_sound_core'/" tau_core/android/build.gradle
+        gsed -i  "s/^\( *artifactId \).*$/\1'tau_sound_core'/" tau_core/android/install.gradle
         gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/" tau_core/android/bintray.gradle
         gsed -i  "s/^\( *name = \).*$/\1'xyz.canardoux.tau_sound_core'/" tau_core/android/bintray.gradle
+        gsed -i  "s/^\( *name \)'tau_core'$/\1'tau_sound_core'/" tau_core/android/install.gradle
 
         gsed -i  "s/^ *implementation 'xyz.canardoux:tau_core:\(.*\)$/    implementation 'xyz.canardoux:tau_sound_core:\1/" flutter_sound/android/build.gradle
         gsed -i  "s/^ *\/\/ implementation 'xyz.canardoux:tau_core:\(.*\)$/    \/\/implementation 'xyz.canardoux:tau_sound_core:\1/" flutter_sound/android/build.gradle
         gsed -i  "s/^bintrayName = tau_core$/bintrayName = tau_sound_core/" tau_core/android/gradle.properties
         gsed -i  "s/^artifact = tau_core$/artifact = tau_sound_core/" tau_core/android/gradle.properties
+        gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/g" tau_core/android/install.gradle
 
 
 
