@@ -26,11 +26,17 @@ gsed -i  "s/^\( *s.dependency *'tau_sound_core', *\).*$/\1'$VERSION'/"          
 
 gsed -i  "s/^\( *versionName *\).*$/\1'$VERSION'/"                                      tau_core/android/build.gradle
 gsed -i  "s/^\( *versionCode *\).*$/\11$VERSION_CODE/"                                  tau_core/android/build.gradle
-gsed -i  "s/^\( *implementation 'com.dooboolab:tau_sound_core:\).*$/\1$VERSION'/"       flutter_sound/android/build.gradle
-gsed -i  "s/^\( *implementation 'xyz.canardoux:tau_core:\).*$/\1$VERSION'/"             flutter_sound/android/build.gradle
+
+gsed -i  "s/^\( *implementation 'xyz.larpoux:tau_sound_core:\).*$/\1$VERSION'/"       flutter_sound/android/build.gradle
+gsed -i  "s/^\( *implementation 'xyz.larpoux:tau_core:\).*$/\1$VERSION'/"             flutter_sound/android/build.gradle
+
+gsed -i  "s/^\( *\/\/ implementation 'xyz.larpoux:tau_sound_core:\).*$/\1$VERSION'/"       flutter_sound/android/build.gradle
+gsed -i  "s/^\( *\/\/ implementation 'xyz.larpoux:tau_core:\).*$/\1$VERSION'/"             flutter_sound/android/build.gradle
+
+gsed -i  "s/^\( *version *\).*$/\1'$VERSION'/"                                          flutter_sound/android/build.gradle
+
 gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/"                                     flutter_sound/ios/flutter_sound.podspec 2>/dev/null
 gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/"                                     flutter_sound/ios/flauto.podspec 2>/dev/null
-gsed -i  "s/^\( *version *\).*$/\1'$VERSION'/"                                          flutter_sound/android/build.gradle
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/"                                           flutter_sound/pubspec.yaml
 gsed -i  "s/^\( *flutter_sound_platform_interface: *#* *\).*$/\1$VERSION/"              flutter_sound/pubspec.yaml
 gsed -i  "s/^\( *flauto_platform_interface: *#* *\).*$/\1$VERSION/"                     flutter_sound/pubspec.yaml

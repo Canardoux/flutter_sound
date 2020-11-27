@@ -1,6 +1,6 @@
 apply plugin: 'com.jfrog.bintray'
 
-version = '6.4.3+24'
+version = '6.4.3+25'
 
 task sourcesJar(type: Jar) {
    from android.sourceSets.main.java.srcDirs
@@ -40,7 +40,7 @@ bintray {
 
    pkg {
        repo = 'TauRepo'
-       name = 'tau_core'
+       name = 'xyz.canardoux.tau_core'
        configurations = ['archives']
        desc = 'Tau Core library.'
        websiteUrl = 'https://github.com/canardoux/tau'
