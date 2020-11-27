@@ -40,10 +40,10 @@ bintray {
 
    pkg {
        repo = 'TauRepo'
-       name = 'xyz.canardoux.TauEngine'
+       name = 'xyz.canardoux.tau_core'
        configurations = ['archives']
        desc = 'An android library.'
-       websiteUrl = 'https://github.com/Canardoux/tau'
+       websiteUrl = 'https://github.com/canardoux/tau'
        vcsUrl = 'https://github.com/canardoux/tau/tree/master/tau_core/android'
        licenses = ["LGPL-3.0"]
        publish = true

@@ -18,6 +18,7 @@ if [ "_$1" = "_TAU" ] ; then
         gsed -i  "s/^\( *PUBLISH_ARTIFACT_ID = \).*$/\1'tau_core'/" tau_core/android/build.gradle
         gsed -i  "s/^\( *artifactId = \).*$/\1'tau_core'/" tau_core/android/build.gradle
         gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" tau_core/android/bintray.gradle
+        gsed -i  "s/^\( *name = \).*$/\1'xyz.canardoux.tau_core'/" tau_core/android/bintray.gradle
 
 
         gsed -i  "s/^ *flutter_sound: \(.*\)$/  flauto: \1/" flutter_sound/example/pubspec.yaml
@@ -38,11 +39,11 @@ if [ "_$1" = "_TAU" ] ; then
 
         for f in $(find flutter_sound -name '*.dart' ); do gsed -i  "s/package\:flutter_sound/package:flauto/" $f; done
         for f in $(find flutter_sound -name '*.md' )
+        do
                 gsed -i  "s/https:\/\/dooboolab.github.io\/flutter_sound/https:\/\/canardoux.github.io\/tau/" $f
                 gsed -i  "s/https:\/\/pub.dartlang.org\/packages\/flutter_sound/https:\/\/pub.dartlang.org\/packages\/flauto/" $f
                 gsed -i  "s/https:\/\/img.shields.io\/pub\/v\/flutter_sound.svg/https:\/\/img.shields.io\/pub\/v\/flauto.svg/" $f
-         do gsed -i  "s/package\:flutter_sound/package:flauto/" $f;
-         done
+        done
 
 
         gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" flutter_sound/pubspec.yaml
@@ -81,6 +82,7 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
         gsed -i  "s/^\( *PUBLISH_ARTIFACT_ID = \).*$/\1'tau_sound_core'/" tau_core/android/build.gradle
         gsed -i  "s/^\( *artifactId = \).*$/\1'tau_sound_core'/" tau_core/android/build.gradle
         gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/" tau_core/android/bintray.gradle
+        gsed -i  "s/^\( *name = \).*$/\1'xyz.canardoux.tau_sound_core'/" tau_core/android/bintray.gradle
 
 
         gsed -i  "s/^ *flauto: \(.*\)$/  flutter_sound: \1/" flutter_sound/example/pubspec.yaml
