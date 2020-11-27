@@ -21,7 +21,6 @@
 /// {@category Amazing}
 library recorder;
 
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';

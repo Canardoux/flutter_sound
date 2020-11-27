@@ -23,8 +23,6 @@
 /// {@category Utilities}
 library ffmpeg;
 
-
-
 import 'dart:async';
 
 import 'package:flutter/services.dart';

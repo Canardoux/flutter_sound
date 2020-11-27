@@ -114,7 +114,6 @@ I really hope that someone will write soon another simpler Demo App.
 ''',
   ),
 
-
   Example(
     title: 'simplePlayback',
     subTitle: 'A very simple example',
@@ -128,7 +127,6 @@ This example is really basic.
 ''',
   ),
 
-
   Example(
     title: 'simpleRecorder',
     subTitle: 'A very simple example',
@@ -141,7 +139,6 @@ that shows how to record, and then playback a file.
 This example is really basic.
 ''',
   ),
-
 
   Example(
     title: 'recordToStream',

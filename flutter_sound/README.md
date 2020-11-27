@@ -1,11 +1,21 @@
+This is the README of /flutter_sound
 ## Flutter Sound
 
 <img src="https://canardoux.github.io/tau/doc/flutter_sound/Logotype primary.png" width="70%" height="70%" />
 
 <p align="left">
   <a href="https://canardoux.github.io/tau/book/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
-</p>
+  <a href="https://canardoux.github.io/tau/book/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg"></a>
 
+</p>
+<img src="banner.png" width="70%" height="70%" />
+-------------------------------------------------------------------------------------
+
+- Flutter Sound user: your [documentation is there](https://canardoux.github.io/tau/book)
+- The [CHANGELOG file is here](https://canardoux.github.io/tau/book/CHANGELOG.html)
+- The [sources are here](https://github.com/Canardoux/tau)
+
+-----------------------------------------------------------------------------------------------------------------------------------
 
 # Introduction
 
@@ -142,12 +152,6 @@ This plugin provides simple recorder and player functionalities for
 - iOS
 - Flutter Web
 
--------------------------------------------------------------------------------------
-
-# Flutter Sound user: your [documentation is there](https://canardoux.github.io/tau/book)
-# The [CHANGELOG file is here](https://canardoux.github.io/tau/book/CHANGELOG.html)
-
------------------------------------------------------------------------------------------------------------------------------------
 
 # Flutter Sound V6.x is OUT
 

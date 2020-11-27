@@ -27,7 +27,6 @@
 /// {@category UI Widgets}
 library ui_controller;
 
-
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../flutter_sound.dart';
@@ -132,15 +131,12 @@ class _RecordPlaybackControllerState {
   }
 }
 
-
-
 /// Functions used to hide internal implementation details
 ///
 void connectPlayerToRecorderStream(SoundPlayerUIState playerState,
     Stream<PlaybackDisposition> recorderStream) {
   playerState.connectRecorderStream(recorderStream);
 }
-
 
 ///
 void registerPlayer(BuildContext context, SoundPlayerUIState player) {
@@ -150,12 +146,10 @@ void registerPlayer(BuildContext context, SoundPlayerUIState player) {
   }
 }
 
-
 ///
 void registerRecorder(BuildContext context, SoundRecorderUIState recorder) {
   RecorderPlaybackController.of(context)?._state?.registerRecorder(recorder);
 }
-
 
 ///
 void onRecordingStopped(BuildContext context, Duration duration) {

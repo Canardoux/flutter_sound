@@ -27,7 +27,6 @@
 /// {@category UI Widgets}
 library ui_recorder;
 
-
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../flutter_sound.dart';
@@ -473,4 +472,3 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
     });
   }
 }
-

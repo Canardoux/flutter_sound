@@ -38,12 +38,10 @@ typedef Fn = void Function();
 /// Example app.
 class SimplePlayback extends StatefulWidget {
   @override
-  _SimplePlaybackState createState() =>
-      _SimplePlaybackState();
+  _SimplePlaybackState createState() => _SimplePlaybackState();
 }
 
-class _SimplePlaybackState
-    extends State<SimplePlayback> {
+class _SimplePlaybackState extends State<SimplePlayback> {
   FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
 
@@ -73,10 +71,11 @@ class _SimplePlaybackState
 
   void play() async {
     await _mPlayer.startPlayer(
-      fromURI: _exampleAudioFilePathMP3,
-      codec: Codec.mp3,
-      whenFinished: (){setState((){});}
-    );
+        fromURI: _exampleAudioFilePathMP3,
+        codec: Codec.mp3,
+        whenFinished: () {
+          setState(() {});
+        });
     setState(() {});
   }
 
@@ -88,7 +87,6 @@ class _SimplePlaybackState
 
   // --------------------- (it was very simple, wasn't it ?) -------------------
 
-
   Fn getPlaybackFn() {
     if (!_mPlayerIsInited) {
       return null;
@@ -99,7 +97,6 @@ class _SimplePlaybackState
             stopPlayer().then((value) => setState(() {}));
           };
   }
-
 
   @override
   Widget build(BuildContext context) {

@@ -46,7 +46,6 @@ import 'util/log.dart';
 
 export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 
-
 ///
 ///
 /// The possible states of the players and recorders
@@ -139,7 +138,7 @@ class FlutterSound {
   SessionCategory _mSessionCategory = SessionCategory.playback;
   final _mAudioDevice = AudioDevice.speaker;
   final _mAudioFlags =
-  outputToSpeaker | allowBlueTooth | allowBlueToothA2DP | allowEarPiece;
+      outputToSpeaker | allowBlueTooth | allowBlueToothA2DP | allowEarPiece;
   final _mWithUI = false;
 
   // ---------------------------------------------------------------------------------------------------------------------
@@ -176,9 +175,9 @@ class FlutterSound {
   ///
   /// `setAudioFocus()` is a noop on Flutter Web
   Future<void> setAudioFocus(
-      /// What to do if another App has the focus
-      AudioFocus focus,
-      ) async {
+    /// What to do if another App has the focus
+    AudioFocus focus,
+  ) async {
     Log.i('FS:---> setAudioFocus ');
     _mFocus = focus;
 

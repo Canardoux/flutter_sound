@@ -1,6 +1,5 @@
+This is the README of /doc/flutter_sound
 # Flutter Sound
-
-# toto
 
 <img src="Logotype primary.png" width="70%" height="70%" />
 

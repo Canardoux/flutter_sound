@@ -40,6 +40,7 @@
 /// everything : no documentation
 /// @nodoc
 library everything;
+
 export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 
 /// Le commentaire de player
@@ -59,4 +60,3 @@ export 'public/ui/sound_recorder_ui.dart';
 export 'public/util/flutter_ffmpeg.dart';
 export 'public/util/flutter_sound_helper.dart';
 export 'public/util/log.dart';
-

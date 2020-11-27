@@ -49,8 +49,6 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
   bool _mplaybackReady = false;
   String _mPath;
 
-
-
   @override
   void initState() {
     // Be careful : openAudioSession return a Future.
@@ -82,7 +80,6 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
       if (outputFile.existsSync()) {
         outputFile.delete();
       }
-
     }
     super.dispose();
   }
@@ -96,7 +93,6 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     }
     await _mRecorder.openAudioSession();
     _mRecorderIsInited = true;
-
   }
 
   // ----------------------  Here is the code for recording and playback -------
@@ -110,13 +106,10 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     setState(() {});
   }
 
-
   Future<void> stopRecorder() async {
     await _mRecorder.stopRecorder();
     _mplaybackReady = true;
   }
-
-
 
   void play() async {
     assert(_mPlayerIsInited &&
@@ -138,7 +131,6 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
 
 // ----------------------------- UI --------------------------------------------
 
-
   _Fn getRecorderFn() {
     if (!_mRecorderIsInited || !_mPlayer.isStopped) {
       return null;
@@ -146,8 +138,8 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     return _mRecorder.isStopped
         ? record
         : () {
-      stopRecorder().then((value) => setState(() {}));
-    };
+            stopRecorder().then((value) => setState(() {}));
+          };
   }
 
   _Fn getPlaybackFn() {
@@ -160,7 +152,6 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
             stopPlayer().then((value) => setState(() {}));
           };
   }
-
 
   @override
   Widget build(BuildContext context) {

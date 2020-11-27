@@ -33,7 +33,6 @@
 /// {@category UI Widgets}
 library ui_player;
 
-
 import 'dart:async';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter/material.dart';
@@ -61,7 +60,6 @@ class SoundPlayerUI extends StatefulWidget {
   /// then OGG_VORBIS and OPUS are supported.
   static const Codec standardCodec = Codec.aacADTS;
   static const int _barHeight = 60;
-
 
   final OnLoad _onLoad;
 
@@ -858,4 +856,3 @@ class _SliderPosition extends ChangeNotifier {
     return _position;
   }
 }
-
