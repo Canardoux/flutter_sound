@@ -35,7 +35,7 @@
 /// Toto et titi
 
 /// Un joli commmentaire
-/// {@category Amazing}
+/// {@category Main}
 library tau;
 
 import 'dart:typed_data' show Uint8List;

@@ -18,7 +18,7 @@
 /// Toto et titi
 
 /// Un joli commmentaire
-/// {@category Amazing}
+/// {@category Main}
 library recorder;
 
 import 'dart:async';
