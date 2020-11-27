@@ -52,15 +52,12 @@ if [ "_$1" = "_TAU" ] ; then
         gsed -i  "s/https:\/\/dooboolab.github.io\/flutter_sound/https:\/\/canardoux.github.io\/tau/"   doc/SUMMARY.md
         gsed -i  "s/https:\/\/dooboolab.github.io\/flutter_sound/https:\/\/canardoux.github.io\/tau/"   doc/README.md
 
-        for d in doc/*/
+
+        for f in $(find doc -name '*.md' )
         do
-                for f in $d/*.md
-                do
                         gsed -i  "s/https:\/\/dooboolab.github.io\/flutter_sound/https:\/\/canardoux.github.io\/tau/"   $f
                         gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" $f
-                done
         done
-
 
         exit 0
 

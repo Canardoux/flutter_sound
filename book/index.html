@@ -239,6 +239,19 @@
             
         </li>
     
+        <li class="chapter " data-level="2.8" data-path="tau/lock-screen.html">
+            
+                <a href="tau/lock-screen.html">
+            
+                    
+                    Notification/Lock Screen
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
         
@@ -696,9 +709,131 @@
 <li>others (Windows, MacOS)</li>
 </ul>
 <h2 id="what-about-flutter-sound-">What about Flutter Sound ?</h2>
-<p>Flutter Sound is not dead, of course. This is exactly the opposite. 
+<p>Flutter Sound is not dead, of course. This is exactly the opposite.
 Flutter Sound is a really alive project.</p>
 <p>We just changed the name of the project, because we want to encompass others frameworks than Flutter.</p>
+<h1 id="introduction">Introduction</h1>
+<h2 id="sounds">Sounds</h2>
+<p><a href="https://raw.githubusercontent.com/bsutton/sounds/master/SoundsLogo.png" target="_blank"><img src="https://raw.githubusercontent.com/bsutton/sounds/master/SoundsLogo.png" alt=""></a></p>
+<p><a href="https://pub.dartlang.org/packages/sounds" target="_blank"><img src="https://camo.githubusercontent.com/7c696da820eebbf794d24e0b1339ec1a987f8a8a/68747470733a2f2f696d672e736869656c64732e696f2f7075622f762f736f756e64732e7376673f7374796c653d666c61742d737175617265" alt="pub version"></a></p>
+<h2 id="overview">Overview</h2>
+<p>Sounds is a Flutter package allowing you to play and record audio for both the <code>android</code> and <code>ios</code> platforms.</p>
+<p>Sounds provides both a high level API and widgets for:</p>
+<ul>
+<li>play audio</li>
+<li>record audio</li>
+</ul>
+<p>Sounds can be used to play a beep from an asset all the way up to implementing a complete media player.</p>
+<p>The API is designed so you can use the supplied widgets or roll your own.</p>
+<p>The Sounds package supports playback from:</p>
+<ul>
+<li>Assets</li>
+<li>Files</li>
+<li>URL</li>
+</ul>
+<h2 id="features">Features</h2>
+<p>The Sounds package includes the following features</p>
+<ul>
+<li>Play audio without any UI</li>
+<li>Play audio using the built in SoundPlayerUI Widget.</li>
+<li>Play audio using the OSs&apos; Media Player</li>
+<li>Roll your own UI utilising the Sounds api.</li>
+<li>Record audio without any UI</li>
+<li>Record audio using the builtin SoundRecorderUI Widget.</li>
+<li>Roll your own Recording UI utilising the Sounds api.</li>
+<li>Support for releasing/resuming resources when the app pauses/resumes.</li>
+</ul>
+<p>The core classes are:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Class</th>
+<th style="text-align:left">Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><a href="api/soundplayerui.md">SoundPlayerUI</a></td>
+<td style="text-align:left">A Flutter Widget Audio Player</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="api/soundrecorderui.md">SoundRecorderUI</a></td>
+<td style="text-align:left">A Flutter Widget for recording</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="api/quickplay.md">QuickPlay</a></td>
+<td style="text-align:left">Plays an audio file without a UI. Easiest way to play a beep.</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="api/soundplayer.md#headless-playback-no-ui">SoundPlayer.noUI</a></td>
+<td style="text-align:left">API to playback audio with fine grained control</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="api/soundplayer.md#os-shade-using-the-os-media-ui">SoundPlayer.withShadeUI</a></td>
+<td style="text-align:left">API to playback audio using the OS&apos;s Shade (media player)</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="api/soundrecorder.md">SoundRecorder</a></td>
+<td style="text-align:left">API to record audio with fine grained control.</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="api/track.md">Track</a></td>
+<td style="text-align:left">Container for audio used by all of the above classes.</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="api/mediaformat.md">MediaFormat</a></td>
+<td style="text-align:left">Defines what MediaFormat is being used.</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="api/recorderplaybackcontroller.md">RecorderPlaybackController</a></td>
+<td style="text-align:left">Flutter InheritedWidget used to co-ordinate Recording and Playback in a single UI.</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="api/albums.md">Albums</a></td>
+<td style="text-align:left">Play a sequence of Tracks via the OS&apos;s Shade (media player)</td>
+</tr>
+</tbody>
+</table>
+<p><img src=".gitbook/assets/image%20%281%29.png" alt=""></p>
+<h3 id="help">Help</h3>
+<p>Audio is a fundamental building block needed by almost every flutter project.</p>
+<p>I&apos;m looking to make Sounds the go to project for Flutter Audio with support for each of the Flutter supported platforms.</p>
+<p>Sounds is a large and complex project which requires me to maintain multiple hardware platforms and test environments.</p>
+<p>I greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation.</p>
+<p>See the <a href="contributing/overview.md">Contributing</a> section below for details.</p>
+<h4 id="sponsorship">Sponsorship</h4>
+<p>If you can&apos;t help out by directly contributing code maybe you could Sponsor me so I can spend more time improving Sounds.</p>
+<p>Sounds is a large commitment and I&apos;m maintaining several other dart related projects so any support would be greatly appreciated.</p>
+<p>Key short term goals are:</p>
+<ul>
+<li>Hire a graphics designer to improve the look of the widgets</li>
+<li>Provide support for the web</li>
+<li>Provide support for a wider range of Codecs</li>
+<li>Provide support for streaming</li>
+</ul>
+<p>If I can get enough sponsorship I intend hiring a grad to do a chunk of the dirty work so I can focus on some of the larger features such as Web Support.</p>
+<p>You can find the purple heart Sponsor button at the top of the page.</p>
+<p>If you can&apos;t afford a coffee then show your support by &apos;liking&apos; the Sounds project on the <a href="https://pub.dev/packages/sounds" target="_blank">pub.dev</a> site.</p>
+<h2 id="documentation">Documentation</h2>
+<p><a href="installing.md">Install</a></p>
+<p><a href="https://bsutton.gitbook.io/sounds/" target="_blank">Manual</a></p>
+<p><a href="https://pub.dev/documentation/sounds/latest/" target="_blank">API Reference</a></p>
+<h3 id="roadmap">Roadmap</h3>
+<p>See the <a href="roadmap.md">Roadmap</a> for details on the future of Sounds.</p>
+<h3 id="contributing">Contributing</h3>
+<p>See the <a href="contributing/overview.md">Contributing</a> guide for details on contributing to Sounds.</p>
+<p>The key classes are:</p>
+<h3 id="api-classes">Api classes</h3>
+<p><a href="api/quickplay.md">QuickPlay</a> - instantly play an audio file (no ui). Perfect for the odd beep.</p>
+<p><a href="api/track.md">Track</a> - Defines a track including the artist details and the audio media.</p>
+<p><a href="api/albums.md">Album</a> - play a collection of tracks via the OSs&apos; audio UI.</p>
+<p><a href="api/soundplayer.md">SoundPlayer</a> - provides an API for playing audio including pause/resume/seek.</p>
+<p><a href="api/soundrecorder.md">SoundRecorder</a> - API for recording audio.</p>
+<h3 id="widgets">Widgets</h3>
+<p><a href="api/soundplayerui.md">SoundPlayerUI</a> - displays an HTML 5 style audio controller widget.</p>
+<p><a href="api/soundrecorderui.md">SoundRecorderUI</a> - displays a recording widget.</p>
+<p><a href="api/recorderplaybackcontroller.md">RecorderPlaybackController</a> - pairs a SoundPlayerUI and SoundRecorderUI to provide a coordinated recording/playback UI.</p>
+<p>Note: there are some limitations on the supported <a href="api/mediaformat.md">MediaFormat</a>.</p>
 
                                 
                                 </section>
@@ -738,7 +873,7 @@ Flutter Sound is a really alive project.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"1.1","depth":1,"next":{"title":"The τ Architecture","level":"1.2","depth":1,"path":"tau/architecture.md","ref":"tau/architecture.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2020-11-25T14:53:12.235Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-27T00:27:37.590Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"1.1","depth":1,"next":{"title":"The τ Architecture","level":"1.2","depth":1,"path":"tau/architecture.md","ref":"tau/architecture.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2020-11-27T01:08:23.838Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-27T01:57:40.785Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
