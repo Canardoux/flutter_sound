@@ -81,29 +81,29 @@
 <ul>
 <li><a href="../player/player-library.html">FlutterSoundPlayer</a>  (Everything for Playback)</li>
 <li><a href="../recorder/recorder-library.html">FlutterSoundRecorder</a>  (Everything for recording)</li>
-<li><a href="../tau/tau-library.html">tau</a></li>
+<li><a href="../tau/tau-library.html">tau</a> (Contains very important Type Declarations like <code>Codec</code>).</li>
 </ul>
 <h2 id="how-to-use">How to use</h2>
 <p>First import the Flutter Sound plugin</p>
-<pre class="language-dart"><code class="language-dart">import 'flutter_sound.dart'
+<pre class="language-dart"><code class="language-dart">import 'flutter_sound.dart';
 </code></pre>
 <h2 id="playback">Playback</h2>
 <ol>
-<li>Instance one ore more players.
+<li><strong>Instance one ore more players.</strong>
 A good place to do that is in your <code>init()</code> function.
-It is possible also to instanciate players "On the Flight", when needed.</li>
+It is also possible to instanciate the players "on the fly", when needed.</li>
 </ol>
 <pre class="language-dart"><code class="language-dart">FlutterSoundPlayer myPlayer = FlutterSoundPlayer();
 </code></pre>
 <ol start="2">
-<li>Open it.
+<li><strong>Open it.</strong>
 You cannot do anything on a close Player.
 An audio-session is then created.</li>
 </ol>
-<pre class="language-dart"><code class="language-dart">myAudioSession.openAudioSession().then( (){ ...} );
+<pre class="language-dart"><code class="language-dart">myPlayer.openAudioSession().then( (){ ...} );
 </code></pre>
 <ol start="3">
-<li>Use the various verbs implemented by the players</li>
+<li><strong>Use the various verbs implemented by the players.</strong></li>
 </ol>
 <ul>
 <li><code>startPlayer()</code></li>
@@ -114,26 +114,41 @@ An audio-session is then created.</li>
 <li>...</li>
 </ul>
 <ol start="4">
-<li>Close your players.
-This is important to close every player open to free the resources taken by the audio session.</li>
+<li><strong>Close your players.</strong>
+This is important to close every player open for freeing the resources taken by the audio session.</li>
 </ol>
-<pre class="language-dart"><code class="language-dart">myAudioSession.closeAudioSession();
+<pre class="language-dart"><code class="language-dart">myPlayer.closeAudioSession();
 </code></pre>
 <h2 id="recording">Recording</h2>
 <ol>
-<li>
-<p>Instance your recorder</p>
-</li>
-<li>
-<p>Open it</p>
-</li>
-<li>
-<p>Use the various verbs implemented by the recorders</p>
-</li>
-<li>
-<p>Close your recorder</p>
-</li>
+<li><strong>Instance your recorder.</strong>
+A good place to do that is in your <code>init()</code> function.</li>
 </ol>
+<pre class="language-dart"><code class="language-dart">FlutterSoundRecorder myRecorder = FlutterSoundRecorder();
+</code></pre>
+<ol start="2">
+<li><strong>Open it.</strong>
+You cannot do anything on a close Recorder.
+An audio-session is then created.</li>
+</ol>
+<pre class="language-dart"><code class="language-dart">myRecorder.openAudioSession().then( (){ ...} );
+</code></pre>
+<ol start="3">
+<li><strong>Use the various verbs implemented by the players.</strong></li>
+</ol>
+<ul>
+<li><code>startRecorder()</code></li>
+<li><code>pauseRecorder()</code></li>
+<li><code>resumeRecorder()</code></li>
+<li><code>stopRecorder()</code></li>
+<li>...</li>
+</ul>
+<ol start="4">
+<li><strong>Close your recorder.</strong>
+This is important to close it for freeing the resources taken by the audio session.</li>
+</ol>
+<pre class="language-dart"><code class="language-dart">myRecorder.closeAudioSession();
+</code></pre>
       </section>
       
         <section class="summary offset-anchor" id="libraries">

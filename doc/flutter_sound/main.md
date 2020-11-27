@@ -4,55 +4,76 @@ The three main modules of Flutter Sound are :
 
 - [FlutterSoundPlayer](../player/player-library.html)  (Everything for Playback)
 - [FlutterSoundRecorder](../recorder/recorder-library.html)  (Everything for recording)
-- [tau](../tau/tau-library.html)
+- [tau](../tau/tau-library.html) (Contains very important Type Declarations like `Codec`).
 
 ## How to use
 
 First import the Flutter Sound plugin
 ```dart
-import 'flutter_sound.dart'
+import 'flutter_sound.dart';
 ```
 
 ## Playback
 
-1. Instance one ore more players.
+1. **Instance one ore more players.**
 A good place to do that is in your `init()` function.
-It is possible also to instanciate players "On the Flight", when needed.
+It is also possible to instanciate the players "on the fly", when needed.
 ```dart
 FlutterSoundPlayer myPlayer = FlutterSoundPlayer();
 ```
 
-2. Open it.
+2. **Open it.**
 You cannot do anything on a close Player.
 An audio-session is then created.
 ```dart
-myAudioSession.openAudioSession().then( (){ ...} );
+myPlayer.openAudioSession().then( (){ ...} );
 ```
 
 
-3. Use the various verbs implemented by the players
+3. **Use the various verbs implemented by the players.**
 - `startPlayer()`
 - `startPlayerFromStream()`
 - `startPlayerFromBuffer()`
 - `setVolume()`
-- [FlutterSoundPlayer.stopPlayer()]
+- `FlutterSoundPlayer.stopPlayer()`
 - ...
 
 
-4. Close your players.
-This is important to close every player open to free the resources taken by the audio session.
+4. **Close your players.**
+This is important to close every player open for freeing the resources taken by the audio session.
 ```dart
-myAudioSession.closeAudioSession();
+myPlayer.closeAudioSession();
 ```
 
 
 ## Recording
 
-1. Instance your recorder
 
-2. Open it
+1. **Instance your recorder.**
+A good place to do that is in your `init()` function.
+```dart
+FlutterSoundRecorder myRecorder = FlutterSoundRecorder();
+```
 
-3. Use the various verbs implemented by the recorders
+2. **Open it.**
+You cannot do anything on a close Recorder.
+An audio-session is then created.
+```dart
+myRecorder.openAudioSession().then( (){ ...} );
+```
 
-4. Close your recorder
+
+3. **Use the various verbs implemented by the players.**
+- `startRecorder()`
+- `pauseRecorder()`
+- `resumeRecorder()`
+- `stopRecorder()`
+- ...
+
+
+4. **Close your recorder.**
+This is important to close it for freeing the resources taken by the audio session.
+```dart
+myRecorder.closeAudioSession();
+```
 
