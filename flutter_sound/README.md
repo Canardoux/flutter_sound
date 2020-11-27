@@ -9,6 +9,8 @@ This is the README of /flutter_sound
 
 </p>
 <img src="banner.png" width="70%" height="70%" />
+<img src="banner2.png" width="70%" height="70%" />
+
 -------------------------------------------------------------------------------------
 
 - Flutter Sound user: your [documentation is there](https://canardoux.github.io/tau/book)
