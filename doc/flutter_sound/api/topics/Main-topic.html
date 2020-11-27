@@ -76,47 +76,57 @@
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <h1><span class="kind-category">Main</span> Topic</h1>
       <section class="desc markdown">
-        <h1 id="flutter-sound-ui-widgets-api">Flutter Sound UI Widgets API</h1>
-<p>The modules offered for the Flutter Sound UI Widgets are :</p>
+        <h1 id="the-main-modules">The Main modules</h1>
+<p>The two main modules of Flutter Sound are :</p>
 <ul>
-<li><a href="#uiplayer">UI Player</a></li>
-<li><a href="#uirecorder">UI Recorder</a></li>
-<li><a href="#uicontroller">UI Controller</a></li>
+<li><a href="player/player-library.html">FlutterSoundPlayer</a></li>
+<li><a href="recorder/recorder-library.html">Flutter SoundRecorder</a></li>
 </ul>
-<p><em>(This documentation is just a start. It must be completely rewriten)</em></p>
 <h2 id="how-to-use">How to use</h2>
-<p>First import the modules
+<p>First import the Flutter Sound plugin
 <code>import 'flutter_sound.dart</code></p>
-<p>Then reference to one of the flutter sound UI widgets in your widget tree:</p>
+<h2 id="playback">Playback</h2>
+<ol>
+<li>Instance one ore more players</li>
+</ol>
+<p>A good place to do that is in your <code>init()</code> function.
+It is possible also to instanciate players "On the Flight", when needed.</p>
+<ol start="2">
+<li>Open it</li>
+</ol>
+<p><code>FlutterSoundPlayer.openAudioSession()</code>
+You cannot do anything on a close Player.
+An audio-session is then created.</p>
+<ol start="3">
+<li>Use the various verbs implemented by the players</li>
+</ol>
 <ul>
-<li><a href="../ui_player/ui_player-library.html">UI Player</a></li>
-<li><a href="../ui_recorder/ui_recorder-library.html">UI Recorder</a></li>
-<li><a href="../ui_controller/ui_controller-library.html">UI Controller</a></li>
+<li><code>startPlayer()</code> <code>FlutterSoundPlayer.startPlayer()</code></li>
+<li><code>startPlayerFromStream()</code></li>
+<li><code>startPlayerFromBuffer()</code></li>
+<li><code>setVolume()</code></li>
+<li><code>FlutterSoundPlayer.stopPlayer()</code></li>
+<li>...</li>
 </ul>
-<hr>
-<h2 id="ui-player"><code>UI Player</code></h2>
-<p>To use add FOREGROUND_SERVICE permission.</p>
-<h3 id="android">Android</h3>
-<p>Add this line to your AndroidManifest.xml</p>
-<pre class="language-dart"><code>&lt;uses-permission android:name="android.permission.FOREGROUND_SERVICE" /&gt;
-</code></pre>
-<h3 id="style-of-the-soundplayerui-widget">Style of the <code>SoundPlayerUI</code> widget</h3>
-<p>The two constructors of the <code>SoundPlayerUI</code> widget have 6 optional parameters for allowing the App to tune the UI presentation:</p>
-<ul>
-<li>Color backgroundColor = Colors.grey,</li>
-<li>Color iconColor = Colors.black,</li>
-<li>Color disabledIconColor = Colors.blueGrey,</li>
-<li>TextStyle textStyle = null,</li>
-<li>TextStyle titleStyle = null,</li>
-<li>SliderThemeData sliderThemeData = null,</li>
-</ul>
-<p><em>...working on documentation.</em></p>
-<hr>
-<h2 id="ui-recorder"><code>UI Recorder</code></h2>
-<p><em>...working on documentation.</em></p>
-<hr>
-<h2 id="ui-controller"><code>UI Controller</code></h2>
-<p><em>...working on documentation.</em></p>
+<ol start="4">
+<li>Close your players</li>
+</ol>
+<p><code>FlutterSoundPlayer.closeAudioSession()</code></p>
+<h2 id="recording">Recording</h2>
+<ol>
+<li>
+<p>Instance your recorder</p>
+</li>
+<li>
+<p>Open it</p>
+</li>
+<li>
+<p>Use the various verbs implemented by the recorders</p>
+</li>
+<li>
+<p>Close your recorder</p>
+</li>
+</ol>
       </section>
       
         <section class="summary offset-anchor" id="libraries">

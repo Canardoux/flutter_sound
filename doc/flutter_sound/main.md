@@ -1,58 +1,49 @@
-# Flutter Sound UI Widgets API
+# The Main modules
 
-The modules offered for the Flutter Sound UI Widgets are :
+The two main modules of Flutter Sound are :
 
-- [UI Player](#uiplayer)
-- [UI Recorder](#uirecorder)
-- [UI Controller](#uicontroller)
-
-*(This documentation is just a start. It must be completely rewriten)*
+- [FlutterSoundPlayer](player/player-library.html)
+- [Flutter SoundRecorder](recorder/recorder-library.html)
 
 ## How to use
-First import the modules
+
+First import the Flutter Sound plugin
 ``` import 'flutter_sound.dart```
 
-Then reference to one of the flutter sound UI widgets in your widget tree:
+## Playback
 
-- [UI Player](../ui_player/ui_player-library.html)
-- [UI Recorder](../ui_recorder/ui_recorder-library.html)
-- [UI Controller](../ui_controller/ui_controller-library.html)
+1. Instance one ore more players
 
---------------------------------------------------------------------------------
+A good place to do that is in your `init()` function.
+It is possible also to instanciate players "On the Flight", when needed.
 
-## `UI Player`
+2. Open it
 
-To use add FOREGROUND_SERVICE permission.
+[FlutterSoundPlayer.openAudioSession()]
+You cannot do anything on a close Player.
+An audio-session is then created.
 
-### Android
+3. Use the various verbs implemented by the players
 
-Add this line to your AndroidManifest.xml
-```
-<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-```
+- `startPlayer()` [FlutterSoundPlayer.startPlayer()]
+- `startPlayerFromStream()`
+- `startPlayerFromBuffer()`
+- `setVolume()`
+- [FlutterSoundPlayer.stopPlayer()]
+- ...
 
-### Style of the `SoundPlayerUI` widget
+4. Close your players
 
-The two constructors of the `SoundPlayerUI` widget have 6 optional parameters for allowing the App to tune the UI presentation:
+[FlutterSoundPlayer.closeAudioSession()]
 
-- Color backgroundColor = Colors.grey,
-- Color iconColor = Colors.black,
-- Color disabledIconColor = Colors.blueGrey,
-- TextStyle textStyle = null,
-- TextStyle titleStyle = null,
-- SliderThemeData sliderThemeData = null,
 
-*...working on documentation.*
+## Recording
 
---------------------------------------------------------------------------
+1. Instance your recorder
 
-## `UI Recorder`
+2. Open it
 
-*...working on documentation.*
+3. Use the various verbs implemented by the recorders
 
---------------------------------------------------------------------------
-
-## `UI Controller`
-
-*...working on documentation.*
+4. Close your recorder
 
