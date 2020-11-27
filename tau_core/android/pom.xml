@@ -1,0 +1,8 @@
+<plugin>
+  <groupId>xyz.canardoux</groupId>
+  <artifactId>tau_core</artifactId>
+  <configuration>
+    <source>7</source>
+    <detectJavaApiLink>false</detectJavaApiLink>
+  </configuration>
+</plugin>

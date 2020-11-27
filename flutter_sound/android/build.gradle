@@ -1,7 +1,7 @@
 ext.flutterFFmpegPackage = 'audio'
 
 group 'com.dooboolab.fluttersound'
-version '6.4.3+30'
+version '6.4.3+32'
 
 buildscript {
     repositories {
@@ -11,6 +11,7 @@ buildscript {
         //maven { url "https://oss.sonatype.org/content/repositories/releases" }
         //maven { url "https://oss.sonatype.org/content/groups/public" }
         //maven { url 'https://bintray.com/larpoux/CanardouxMaven' }
+        maven { url  "https://dl.bintray.com/larpoux/TauRepo" }
         jcenter()
     }
 
@@ -27,6 +28,7 @@ rootProject.allprojects {
         //maven { url "https://oss.sonatype.org/content/repositories/releases" }
         //maven { url "https://oss.sonatype.org/content/groups/public" }
         //maven { url 'https://bintray.com/larpoux/CanardouxMaven' }
+        maven { url  "https://dl.bintray.com/larpoux/TauRepo" }
         jcenter()
     }
 }
@@ -64,7 +66,7 @@ dependencies {
     // CAUTION: The following instruction is for developping and debugging the Flauto Engine
     // DO NOT INCLUDE THE FOLLOWING LINE IN A REAL APP !!!
     // implementation project(':tau_core')
-    implementation 'xyz.larpoux:tau_core:6.4.3+30'
+    implementation 'xyz.larpoux:tau_core:6.4.3+32'
     // -------------------------------------------------------------------------------------
 
 }
