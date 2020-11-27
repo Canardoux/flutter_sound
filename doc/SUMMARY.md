@@ -15,6 +15,7 @@
 - [Recording PCM-16 to a Dart Stream](tau/codec.md#recording-pcm-16-to-a-dart-stream)
 - [Playing PCM-16 from a Dart Stream](tau/codec.md#playing-pcm-16-from-a-dart-stream)
 - [Widgets](tau/widgets.md)
+- [Notification/Lock Screen](tau/lock-screen.md)
 
 ## API
 

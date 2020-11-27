@@ -75,70 +75,7 @@ FULL)
 		gsed -i  "/^ *#define *[A-Z]*_FLAVOR/d"   ios/Classes/FlutterFFmpegPlugin.h
 		gsed -i  "/^ *#ifdef *[A-Z]*_FLAVOR/i #define FULL_FLAVOR" ios/Classes/FlutterFFmpegPlugin.h
 
-		for f in lib/*.dart
-		do
-			process_dart_file $f FULL
-		done
-
-    for f in lib/src/*.dart
-    do
-      process_dart_file $f FULL
-    done
-
-    for f in lib/src/ui/*.dart
-    do
-      process_dart_file $f FULL
-    done
-
-    for f in lib/src/util/*.dart
-    do
-      process_dart_file $f FULL
-    done
-
-		for f in example/lib/*.dart
-		do
-			process_dart_file $f FULL
-		done
-
-    for f in example/lib/demo/*.dart
-    do
-      process_dart_file $f FULL
-    done
-
-    for f in example/lib/livePlaybackWithBackPressure/*.dart
-    do
-      process_dart_file $f FULL
-    done
-
-    for f in example/lib/livePlaybackWithoutBackPressure/*.dart
-    do
-      process_dart_file $f FULL
-    done
-
-    for f in example/lib/recordToStream/*.dart
-    do
-      process_dart_file $f FULL
-    done
-
-    for f in example/lib/soundEffect/*.dart
-    do
-      process_dart_file $f FULL
-    done
-
-    for f in example/lib/streamLoop/*.dart
-    do
-      process_dart_file $f FULL
-    done
-
-    for f in example/lib/widgetUI/*.dart
-    do
-      process_dart_file $f FULL
-    done
-
-    for f in example/lib/widgetUI/demo_util/*.dart
-    do
-      process_dart_file $f FULL
-    done
+    for f in $(find . -name '*.dart' ); do process_dart_file $f FULL $f; done
 
 		mv "android/src/main/ffmpeg.park" "android/src/main/java/com/dooboolab/ffmpeg" 2>/dev/null
 
@@ -182,70 +119,8 @@ LITE)
 		gsed -i  "/^ *#define *[A-Z]*_FLAVOR/d"   ios/Classes/FlutterFFmpegPlugin.h
 		gsed -i  "/^ *#ifdef *[A-Z]*_FLAVOR/i #define LITE_FLAVOR" ios/Classes/FlutterFFmpegPlugin.h
 
-    for f in lib/*.dart
-    do
-      process_dart_file $f LITE
-    done
+    for f in $(find . -name '*.dart' ); do process_dart_file $f LITE $f; done
 
-    for f in lib/src/*.dart
-    do
-      process_dart_file $f LITE
-    done
-
-    for f in lib/src/ui/*.dart
-    do
-      process_dart_file $f LITE
-    done
-
-    for f in lib/src/util/*.dart
-    do
-      process_dart_file $f LITE
-    done
-
-    for f in example/lib/*.dart
-    do
-      process_dart_file $f LITE
-    done
-
-    for f in example/lib/demo/*.dart
-    do
-      process_dart_file $f LITE
-    done
-
-    for f in example/lib/livePlaybackWithBackPressure/*.dart
-    do
-      process_dart_file $f LITE
-    done
-
-    for f in example/lib/livePlaybackWithoutBackPressure/*.dart
-    do
-      process_dart_file $f LITE
-    done
-
-    for f in example/lib/recordToStream/*.dart
-    do
-      process_dart_file $f LITE
-    done
-
-    for f in example/lib/soundEffect/*.dart
-    do
-      process_dart_file $f LITE
-    done
-
-    for f in example/lib/streamLoop/*.dart
-    do
-      process_dart_file $f LITE
-    done
-
-    for f in example/lib/widgetUI/*.dart
-    do
-      process_dart_file $f LITE
-    done
-
-    for f in example/lib/widgetUI/demo_util/*.dart
-    do
-      process_dart_file $f LITE
-    done
 
 		mv "android/src/main/java/com/dooboolab/ffmpeg" "android/src/main/ffmpeg.park" 2>/dev/null
 

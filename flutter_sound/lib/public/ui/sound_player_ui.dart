@@ -62,8 +62,6 @@ class SoundPlayerUI extends StatefulWidget {
   static const Codec standardCodec = Codec.aacADTS;
   static const int _barHeight = 60;
 
-  /// provides a Duration of 0 seconds.
-  static const _zero = Duration(seconds: 0);
 
   final OnLoad _onLoad;
 
