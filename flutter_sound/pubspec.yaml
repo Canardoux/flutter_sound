@@ -1,5 +1,5 @@
 name: flauto
-version: 6.4.3+26
+version: 6.4.3+28
 description: audio player, audio recorder, media player, media recorder, sound player, sound recorder, lock-screen controls, notifications controls, flutter web.
 #author: dooboolab<dooboolab@gmail.com>
 homepage: https://canardoux.github.io/tau/book/flutter_sound/
@@ -21,9 +21,9 @@ dependencies:
   flutter:
     sdk: flutter
 # ============================================================================
-  flauto_platform_interface: 6.4.3+26
+  flauto_platform_interface: 6.4.3+28
 #    path: ../flutter_sound_platform_interface # Flutter Sound Dir
-  flauto_web: 6.4.3+26
+  flauto_web: 6.4.3+28
 #    path: ../flutter_sound_web # Flutter Sound Dir
 # ============================================================================
 

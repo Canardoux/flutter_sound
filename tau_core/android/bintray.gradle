@@ -40,7 +40,7 @@ bintray {
 
    pkg {
        repo = 'TauRepo'
-       name = 'xyz.canardoux.tau_core'
+       name = 'tau_core'
        configurations = ['archives']
        desc = 'Tau Core library.'
        websiteUrl = 'https://github.com/canardoux/tau'
