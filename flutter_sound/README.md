@@ -1,5 +1,4 @@
-<img src="doc/flutter_sound/banner.png" width="70%" height="70%" />
-<img src="https://github.com/Canardoux/tau/blob/master/doc/flutter_sound/banner.png" width="70%" height="70%" />
+<img src="https://raw.githubusercontent.com/canardoux/tau/master/banner.png" width="100%" height="100%" />
 
 <p align="left">
   <a href="https://canardoux.github.io/tau/book/flutter_sound"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
