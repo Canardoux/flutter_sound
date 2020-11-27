@@ -41,8 +41,8 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 164333
-        versionName '6.4.3+33'
+        versionCode 164336
+        versionName '6.4.3+36'
         //versionName project.getProperty(“libraryVersion”)
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -132,6 +132,7 @@ signing {
     sign publishing.publications
 }
 
+apply from: 'install.gradle'
 apply from: 'bintray.gradle'
 
 
