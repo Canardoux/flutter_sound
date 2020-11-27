@@ -27,8 +27,8 @@ gsed -i  "s/^\( *s.dependency *'tau_sound_core', *\).*$/\1'$VERSION'/"          
 gsed -i  "s/^\( *versionName *\).*$/\1'$VERSION'/"                                      tau_core/android/build.gradle
 gsed -i  "s/^\( *versionCode *\).*$/\11$VERSION_CODE/"                                  tau_core/android/build.gradle
 
-gsed -i  "s/^\( *implementation 'xyz.larpoux:xyz.canardoux.tau_sound_core:\).*$/\1$VERSION'/"       flutter_sound/android/build.gradle
-gsed -i  "s/^\( *implementation 'xyz.larpoux:xyz.canardoux.tau_core:\).*$/\1$VERSION'/"             flutter_sound/android/build.gradle
+gsed -i  "s/^\( *implementation 'xyz.larpoux:tau_sound_core:\).*$/\1$VERSION'/"       flutter_sound/android/build.gradle
+gsed -i  "s/^\( *implementation 'xyz.larpoux:tau_core:\).*$/\1$VERSION'/"             flutter_sound/android/build.gradle
 
 
 
