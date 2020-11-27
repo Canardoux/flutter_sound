@@ -17,13 +17,19 @@
  */
 
 /// ------------------------------------------------------------------
-/// # The Flutter Sound UIWidget 2
 ///
+/// # [SoundPlayerUI] is a HTML 5 style audio play bar.
+/// It allows you to play/pause/resume and seek an audio track.
+///
+/// The `SoundPlayerUI` displays:
+/// -  a spinner while loading audio
+/// -  play/resume buttons
+/// -  a slider to indicate and change the current play position.
+/// -  optionally displays the album title and track if the
+///   [Track] contains those details.
 ///
 /// ------------------------------------------------------------------
-/// Toto et titi
-
-/// Un joli commmentaire
+///
 /// {@category UI Widgets}
 library ui_player;
 
@@ -38,14 +44,18 @@ import '../util/log.dart';
 ///
 typedef OnLoad = Future<Track> Function(BuildContext context);
 
-/// A HTML 5 style audio play bar.
+/// # A HTML 5 style audio play bar.
+///
 /// Allows you to play/pause/resume and seek an audio track.
-/// The [SoundPlayerUI] displays:
-///   a spinner whilst loading audio
-///   play/resume buttons
-///   a slider to indicate and change the current play position.
-///   optionally displays the album title and track if the
+/// The `SoundPlayerUI` displays:
+/// -  a spinner while loading audio
+/// -  play/resume buttons
+/// -  a slider to indicate and change the current play position.
+/// -  optionally displays the album title and track if the
 ///   [Track] contains those details.
+///
+/// -----------------------------------------------------------------
+///
 class SoundPlayerUI extends StatefulWidget {
   /// only codec support by android unless we have a minSdk of 29
   /// then OGG_VORBIS and OPUS are supported.
@@ -53,7 +63,7 @@ class SoundPlayerUI extends StatefulWidget {
   static const int _barHeight = 60;
 
   /// provides a Duration of 0 seconds.
-  static const zero = Duration(seconds: 0);
+  static const _zero = Duration(seconds: 0);
 
   final OnLoad _onLoad;
 
@@ -168,6 +178,7 @@ class SoundPlayerUI extends StatefulWidget {
 // ------------------------------------------------------------------------------------------------------------------
 
 /// internal state.
+/// @nodoc
 class SoundPlayerUIState extends State<SoundPlayerUI> {
   final FlutterSoundPlayer _player;
 

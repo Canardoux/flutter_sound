@@ -2,13 +2,11 @@
 
 The modules offered for the Flutter Sound UI Widgets are :
 
-- [UI Player](../ui_player/ui_player-library.html)
-- [UI Recorder](../ui_recorder/ui_recorder-library.html)
-- [UI Controller](../ui_controller/ui_controller-library.html)
+- [UI Player](#uiplayer)
+- [UI Recorder](#uirecorder)
+- [UI Controller](#uicontroller)
 
 *(This documentation is just a start. It must be completely rewriten)*
-
------------------------------------------------------------------------------------------------------------------------
 
 ## How to use
 First import the modules

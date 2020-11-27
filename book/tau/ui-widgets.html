@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Migration · GitBook</title>
+        <title>FlutterSoundUI · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,8 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="../flutter_sound/" />
     
-    <link rel="prev" href="../react_native/" />
+    
+    <link rel="prev" href="helper.html" />
     
 
     </head>
@@ -298,7 +300,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.5" data-path="ui-widgets.html">
+        <li class="chapter active" data-level="3.5" data-path="ui-widgets.html">
             
                 <a href="ui-widgets.html">
             
@@ -559,7 +561,7 @@
         
         
     
-        <li class="chapter active" data-level="6.1" data-path="migration.html">
+        <li class="chapter " data-level="6.1" data-path="migration.html">
             
                 <a href="migration.html">
             
@@ -641,7 +643,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Migration</a>
+        <a href=".." >FlutterSoundUI</a>
     </h1>
 </div>
 
@@ -656,98 +658,110 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <hr>
-<h1 id="migration-form-5xx-to-6xx">Migration form 5.x.x to 6.x.x</h1>
+                                <h1 id="soundplayerui">SoundPlayerUI</h1>
+<h2 id="overview">Overview</h2>
+<p>The SoundPlayerUI provides a Playback widget styled after the HTML 5 audio player.<img src="https://raw.githubusercontent.com/bsutton/sounds/master/images/SoundPlayerUI.png" alt=""></p>
+<p>Detailed SoundPlayerUI API documentation can be found on <a href="https://pub.dev/documentation/sounds/latest/sounds/sounds-library.html" target="_blank">pub.dev</a>.</p>
+<p>The player displays a loading indicator and allows the user to pause/resume/skip via the progress bar.</p>
+<p>You can also pause/resume the player via an api call to SoundPlayerUI&apos;s state using a GlobalKey.</p>
+<p>The SoundPlayerUI widget allows you to playback audio from multiple sources:</p>
 <ul>
-<li>Flutter Sound 6.0 <strong>FULL</strong> flavor is now linked with <code>mobile-ffmpeg-audio 4.3.1.LTS</code></li>
-<li>Flutter Sound 6.2 is linked with flutter_sound_interface 2.0.0</li>
-<li>Flutter Sound 6.2 is linked with the Pod TauEngine 1.0.0</li>
+<li>File</li>
+<li>Asset</li>
+<li>URL</li>
+<li>Buffer</li>
 </ul>
-<p>You must delete the file <code>ios/Pofile.lock</code> in your App directory and execute the command :</p>
-<pre><code class="lang-sh">pod cache clean --all
-pod install --repo-update
+<h2 id="mediaformat">MediaFormat</h2>
+<p>When using the <code>SoundPlayerUI</code> you MUST pass a <code>Track</code> that has been initialised with a supported <code>MediaFormat</code>.</p>
+<p>The Widget needs to obtain the duration of the audio that it is play and that can only be done if we know the <code>MediaFormat</code> of the Widget.</p>
+<p>If you pass a <code>Track</code> that wasn&apos;t constructed with a <code>MediaFormat</code> then a <code>MediaFormatException</code> will be thrown.</p>
+<p>The <code>MediaFormat</code> must also be natively supported by the OS. See <a href="mediaformat.md">MediaFormat</a> for additional details on checking for a supported format.</p>
+<h3 id="example">Example:</h3>
+<pre><code class="lang-dart">Track track;
+
+<span class="hljs-comment"><span class="markdown">/// global key </span>so<span class="markdown"> we can pause/resume </span>the<span class="markdown"> player via </span>the<span class="markdown"> api.</span></span>
+<span class="hljs-keyword">var</span> playerStateKey = GlobalKey&lt;SoundPlayerUIState&gt;();
+
+<span class="hljs-keyword">void</span> initState()
+{
+   track = Track.fromAsset(<span class="hljs-string">&apos;assets/rock.mp3&apos;</span>, mediaFormat: Mp3MediaFormat());
+}
+
+Widget build(BuildContext build)
+{
+    <span class="hljs-keyword">var</span> player = SoundPlayerUI.fromTrack(track, key: playerStateKey);
+    <span class="hljs-keyword">return</span>
+        Column(child: [
+            player,
+            RaisedButton(<span class="hljs-string">&quot;Pause&quot;</span>, onPressed: () =&gt; playerState.currentState.pause()),
+            RaisedButton(<span class="hljs-string">&quot;Resume&quot;</span>, onPressed: () =&gt; playerState.currentState.resume())
+        ]);
+}
 </code></pre>
+<p><code>Sounds</code> uses <a href="track.md">Track</a> as the primary method of handing around audio data.</p>
+<p>You can also dynamically load a <code>Track</code> when the user clicks the &apos;Play&apos; button on the <code>SoundPlayerUI</code> widget. This allows you to delay the decision on what Track is going to be played until the user clicks the &apos;Play&apos; button.</p>
+<pre><code class="lang-dart">Track track;
+
+
+<span class="hljs-keyword">void</span> initState()
+{
+   track = Track.fromAsset(<span class="hljs-string">&apos;assets/rock.mp3&apos;</span>, mediaFormat: Mp3MediaFormat());
+}
+
+Widget build(BuildContext build)
+{
+    <span class="hljs-keyword">return</span> SoundPlayerUI.fromLoader((context) =&gt; loadTrack());
+}
+
+Future&lt;Track&gt; loadTrack()
+{
+    Track track;
+    track = Track.fromAsset(<span class="hljs-string">&apos;assets/rock.mp3&apos;</span>, mediaFormat: Mp3MediaFormat());
+
+    track.title = <span class="hljs-string">&quot;Asset playback.&quot;</span>;
+    track.artist = <span class="hljs-string">&quot;By sounds&quot;</span>;
+}
+</code></pre>
+<h1 id="flutter-sound-ui-widgets-api">Flutter Sound UI Widgets API</h1>
+<p>The modules offered for the Flutter Sound UI Widgets are :</p>
+<ul>
+<li><a href="#uiplayer">UI Player</a></li>
+<li><a href="#uirecorder">UI Recorder</a></li>
+<li><a href="#uicontroller">UI Controller</a></li>
+</ul>
+<p><em>(This documentation is just a start. It must be completely rewriten)</em></p>
+<h2 id="how-to-use">How to use</h2>
+<p>First import the modules
+<code>import &apos;flutter_sound.dart</code></p>
+<p>Then reference to one of the flutter sound UI widgets in your widget tree:</p>
+<ul>
+<li><a href="../ui_player/ui_player-library.html">UI Player</a></li>
+<li><a href="../ui_recorder/ui_recorder-library.html">UI Recorder</a></li>
+<li><a href="../ui_controller/ui_controller-library.html">UI Controller</a></li>
+</ul>
 <hr>
-<h1 id="migration-form-4xx-to-5xx">Migration form 4.x.x to 5.x.x</h1>
-<p>Several changes are necessary to migrate from 4.x.x :</p>
-<h2 id="imports">Imports</h2>
-<p>To be compliant with Google recommandations, Flutter Sound has now a main dart file that the App must import : <code>flutter_sound.dart</code>.
-This file is just a list of &quot;exports&quot; from the various dart files present in the &quot;src&quot; sub-directory.</p>
-<h2 id="global-enums-and-function-types">Global enums and Function types</h2>
-<p>Global enums are renamed to be compliant with the Google CamelCase recommandations :</p>
+<h2 id="ui-player"><code>UI Player</code></h2>
+<p>To use add FOREGROUND_SERVICE permission.</p>
+<h3 id="android">Android</h3>
+<p>Add this line to your AndroidManifest.xml</p>
+<pre><code>&lt;uses-permission android:name=&quot;android.permission.FOREGROUND_SERVICE&quot; /&gt;
+</code></pre><h3 id="style-of-the-soundplayerui-widget">Style of the <code>SoundPlayerUI</code> widget</h3>
+<p>The two constructors of the <code>SoundPlayerUI</code> widget have 6 optional parameters for allowing the App to tune the UI presentation:</p>
 <ul>
-<li><p><code>t_CODECS</code> is renamed <code>Codec</code>. The <code>Codec</code> values are LowerCase, followed by the File Format in Uppercase when there is ambiguity :</p>
-<ul>
-<li>aacADTS</li>
-<li>opusOGG</li>
-<li>opusCAF</li>
-<li>mp3</li>
-<li>vorbisOGG</li>
-<li>pcm16</li>
-<li>pcm16WAV</li>
-<li>pcm16AIFF</li>
-<li>pcm16CAF</li>
-<li>flac</li>
-<li>aacMP4</li>
+<li>Color backgroundColor = Colors.grey,</li>
+<li>Color iconColor = Colors.black,</li>
+<li>Color disabledIconColor = Colors.blueGrey,</li>
+<li>TextStyle textStyle = null,</li>
+<li>TextStyle titleStyle = null,</li>
+<li>SliderThemeData sliderThemeData = null,</li>
 </ul>
-</li>
-<li><p>The Player State is renamed <code>PlayerState</code></p>
-</li>
-<li>The Recorder State is renamed <code>RecorderState</code></li>
-<li>The iOS Session Category is renamed <code>SessionCategory</code></li>
-<li>The iOS Session Mode is rename <code>SessionMode</code></li>
-<li>The Android Focus Gain is renamed <code>AndroidFocusGain</code></li>
-</ul>
-<h2 id="flutter-sound-does-not-manage-any-more-the-recording-permissions">Flutter Sound does not manage any more the recording permissions.</h2>
-<p>Now this is the App responsability to request the Recording permission if needed. This change was necessary for several reasons :</p>
-<ul>
-<li>Several App want to manage themselves the permission</li>
-<li>We had some problems with the Flutter Android Embedded V2</li>
-<li>We had problems when Flutter Sound uses permission_handler 4.x and the App needs permission_handler 5.x</li>
-<li>We had problems when Flutter Sound uses permission_handler 5.x and the App needs permission_handler 4.x</li>
-<li>This is not Flutter Sound role to do UI interface</li>
-</ul>
-<p>The parameter <code>requestPermission</code> is removed from the <code>startRecorder()</code> parameters.
-The permission_handler dependency is removed from Flutter Sound pubspec.yaml</p>
-<h2 id="the-startrecorder-path-parameter-is-now-mandatory">The StartRecorder() <strong>&quot;path&quot;</strong> parameter is now mandatory</h2>
-<p>Flutter Sound does not create anymore files without the App specifying its path.
-This was a legacy parameter. The first versions of Flutter Sound created files on the SD-card volume.
-This was really bad for many reasons and later versions of Flutter Sound stored its files in a temporary directory.</p>
-<p>Flutter Sound Version 5.x.x does not try any more to store files in a temporary directory by itself. Thanks to that, Flutter Sound does not have any more a dependency to <code>path_provider</code>. It is now the App responsability to depend on <code>path_provider</code> if it wants to access the Temporary Storage.</p>
-<h2 id="startrecorder-os-specific-parameters-are-removed">StartRecorder() OS specific parameters are removed</h2>
-<p>We removed OS specific parameters passed during <code>startRecorder()</code> :</p>
-<ul>
-<li>AndroidEncoder</li>
-<li>AndroidAudioSource</li>
-<li>AndroidOutputFormat</li>
-<li>IosQuality</li>
-</ul>
-<h2 id="flutter-sound-does-not-post-null-to-player-and-recorder-subscriptions">Flutter Sound does not post <code>NULL</code> to Player and Recorder subscriptions.</h2>
-<p>This <code>NULL</code> parameter sent when the Recorder or the Player was closed was ugly, and caused many bugs to some Apps.</p>
-<h2 id="the-audio-focus-is-not-automaticaly-abandoned-between-two-startplayer-or-two-startrecorder">The Audio Focus is not automaticaly abandoned between two startPlayer() or two startRecorder()</h2>
-<p>The Audio Focus is just abandoned automaticaly when the App does a <code>release()</code></p>
-<h2 id="some-verbs-are-renamed-">Some verbs are renamed :</h2>
-<ul>
-<li>The ancient verb <code>setActive</code> is now replaced by <code>setAudioFocus</code></li>
-<li><code>initialized()</code> and <code>release()</code> are rename <code>openAudioSession()</code> and <code>closeAudioSession()</code>)</li>
-</ul>
-<h2 id="openaudiosessionwithui">openAudioSessionWithUI</h2>
-<p><code>openAudioSessionWithUI</code> is a new verb to open an Audio Session if the App wants to be controlled from the lock-screen. This replace the module <code>TrackPlayer</code> which does not exists anymore.</p>
+<p><em>...working on documentation.</em></p>
 <hr>
-<h1 id="migration-from-3xx-to-4xx">Migration from 3.x.x to 4.x.x</h1>
-<p>There is no changes in the 4.x.x version API.
-But some modifications are necessary in your configuration files</p>
-<p>The <code>FULL</code> flavor of Flutter Sound makes use of flutter_ffmpeg. In contrary to Flutter Sound Version 3.x.x, in Version 4.0.x your App can be built without any Flutter-FFmpeg dependency.</p>
-<p>If you come from Flutter Sound Version 3.x.x, you must :</p>
-<ul>
-<li>Remove this dependency from your <code>pubspec.yaml</code>.</li>
-<li>You must also delete the line <code>ext.flutterFFmpegPackage = &apos;audio-lts&apos;</code> from your <code>android/build.gradle</code></li>
-<li>And the special line <code>pod name+&apos;/audio-lts&apos;, :path =&gt; File.join(symlink, &apos;ios&apos;)</code> in your Podfile.</li>
-</ul>
-<p>If you do not do that, you will have duplicates modules during your App building.</p>
-<p><code>flutter_ffmpeg audio-lts</code> is now embedding inside the <code>FULL</code> flavor of Flutter Sound. If your App needs to use FFmpeg, you must use the embedded version inside flutter_sound
-instead of adding a new dependency in your pubspec.yaml.</p>
+<h2 id="ui-recorder"><code>UI Recorder</code></h2>
+<p><em>...working on documentation.</em></p>
 <hr>
+<h2 id="ui-controller"><code>UI Controller</code></h2>
+<p><em>...working on documentation.</em></p>
 
                                 
                                 </section>
@@ -775,10 +789,14 @@ instead of adding a new dependency in your pubspec.yaml.</p>
 
             
                 
-                <a href="../react_native/" class="navigation navigation-prev navigation-unique" aria-label="Previous page: τ under React Native">
+                <a href="helper.html" class="navigation navigation-prev " aria-label="Previous page: FlutterSoundHelper">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="../flutter_sound/" class="navigation navigation-next " aria-label="Next page: τ under Flutter">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -787,7 +805,7 @@ instead of adding a new dependency in your pubspec.yaml.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Migration","level":"6.1","depth":1,"next":{"title":"Problem Report","level":"6.2","depth":1,"url":"https://github.com/Canardoux/tau/issues","ref":"https://github.com/Canardoux/tau/issues","articles":[]},"previous":{"title":"τ under React Native","level":"5.1","depth":1,"path":"react_native/README.md","ref":"react_native/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/migration.md","mtime":"2020-11-24T16:02:49.782Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-27T00:27:37.590Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"FlutterSoundUI","level":"3.5","depth":1,"next":{"title":"τ under Flutter","level":"4.1","depth":1,"path":"flutter_sound/README.md","ref":"flutter_sound/README.md","articles":[]},"previous":{"title":"FlutterSoundHelper","level":"3.4","depth":1,"path":"tau/helper.md","ref":"tau/helper.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/ui-widgets.md","mtime":"2020-11-27T00:22:10.531Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-27T00:27:37.590Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
