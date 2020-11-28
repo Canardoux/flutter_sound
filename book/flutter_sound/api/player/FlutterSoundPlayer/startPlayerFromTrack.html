@@ -70,10 +70,7 @@
         <li><a href="../../player/FlutterSoundPlayer/isPlaying.html">isPlaying</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isStopped.html">isStopped</a></li>
         <li><a href="../../player/FlutterSoundPlayer/needSomeFoodCompleter.html">needSomeFoodCompleter</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/onPaused.html">onPaused</a></li>
         <li><a href="../../player/FlutterSoundPlayer/onProgress.html">onProgress</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/onSkipBackward.html">onSkipBackward</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/onSkipForward.html">onSkipForward</a></li>
         <li><a href="../../player/FlutterSoundPlayer/openAudioSessionCompleter.html">openAudioSessionCompleter</a></li>
         <li><a href="../../player/FlutterSoundPlayer/playerState.html">playerState</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
@@ -179,9 +176,9 @@
       audioPlayerFinishedPlaying = () {
         whenFinished();
       };
-      this.onSkipForward = onSkipForward;
-      this.onSkipBackward = onSkipBackward;
-      this.onPaused = onPaused;
+      this._onSkipForward = onSkipForward;
+      this._onSkipBackward = onSkipBackward;
+      this._onPaused = onPaused;
       var trackDico = track.toMap();
       var what = &lt;String, dynamic&gt;{
         &#39;codec&#39;: track.codec,

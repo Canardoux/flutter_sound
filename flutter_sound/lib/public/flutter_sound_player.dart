@@ -16,9 +16,7 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/// Toto et titi
-
-/// Un joli commmentaire
+/// The Flutter Sound Player
 /// {@category Main}
 library player;
 
@@ -36,10 +34,10 @@ import 'package:flauto_platform_interface/flutter_sound_player_platform_interfac
 import 'package:flutter/foundation.dart' show kIsWeb;
 import '../flutter_sound.dart';
 
-///
-const blockSize = 4096;
+/// The default blocksize used when playing from Stream.
+const _blockSize = 4096;
 
-///
+/// The possible states of the Player.
 enum PlayerState {
   /// Player is stopped
   isStopped,
@@ -51,33 +49,40 @@ enum PlayerState {
   isPaused,
 }
 
+/// Playback function type for [FlutterSoundPlayer.startPlayer()].
 ///
+/// Note : this type must include a parameter with a reference to the FlutterSoundPlayer object involved.
 typedef TWhenFinished = void Function();
 
+/// Playback function type for [FlutterSoundPlayer.startPlayer()].
 ///
+/// Note : this type must include a parameter with a reference to the FlutterSoundPlayer object involved.
 typedef TonPaused = void Function(bool paused);
 
+/// Playback function type for [FlutterSoundPlayer.startPlayer()].
 ///
+/// Note : this type must include a parameter with a reference to the FlutterSoundPlayer object involved.
 typedef TonSkip = void Function();
 
+/*
 /// Return the file extension for the given path.
-/// path can be null. We return null in this case.
+///
+/// [path] can be null. We return null in this case.
 String fileExtension(String path) {
   if (path == null) return null;
   var r = p.extension(path);
   return r;
 }
+*/
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
-///
+/// The Flutter Sound Player object
 class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
-  ///
-  TonSkip onSkipForward; // User callback "onPaused:"
-  ///
-  TonSkip onSkipBackward; // User callback "onPaused:"
-  ///
-  TonPaused onPaused; // user callback "whenPause:"
+  
+  TonSkip _onSkipForward; // User callback "onPaused:"
+  TonSkip _onSkipBackward; // User callback "onPaused:"
+  TonPaused _onPaused; // user callback "whenPause:"
   final _lock = Lock();
 
   ///
@@ -188,9 +193,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     await _lock.synchronized(() async {
       assert(state != null);
       playerState = PlayerState.values[state];
-      if (onPaused != null) // Probably always true
+      if (_onPaused != null) // Probably always true
       {
-        onPaused(true);
+        _onPaused(true);
       }
     });
     print('FS:<--- pause ');
@@ -202,9 +207,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     await _lock.synchronized(() async {
       assert(state != null);
       playerState = PlayerState.values[state];
-      if (onPaused != null) // Probably always true
+      if (_onPaused != null) // Probably always true
       {
-        onPaused(false);
+        _onPaused(false);
       }
     });
     print('FS:<--- pause ');
@@ -217,8 +222,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       assert(state != null);
       playerState = PlayerState.values[state];
 
-      if (onSkipBackward != null) {
-        onSkipBackward();
+      if (_onSkipBackward != null) {
+        _onSkipBackward();
       }
     });
     print('FS:<--- skipBackward ');
@@ -230,8 +235,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     await _lock.synchronized(() async {
       assert(state != null);
       playerState = PlayerState.values[state];
-      if (onSkipForward != null) {
-        onSkipForward();
+      if (_onSkipForward != null) {
+        _onSkipForward();
       }
     });
     print('FS:<--- skipForward ');
@@ -713,7 +718,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     var lnData = 0;
     var totalLength = buffer.length;
     while (totalLength > 0 && !isStopped) {
-      var bsize = totalLength > blockSize ? blockSize : totalLength;
+      var bsize = totalLength > _blockSize ? _blockSize : totalLength;
       var ln = await feed(buffer.sublist(lnData, lnData + bsize));
       lnData += ln;
       totalLength -= ln;
@@ -781,9 +786,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         audioPlayerFinishedPlaying = () {
           whenFinished();
         };
-        this.onSkipForward = onSkipForward;
-        this.onSkipBackward = onSkipBackward;
-        this.onPaused = onPaused;
+        this._onSkipForward = onSkipForward;
+        this._onSkipBackward = onSkipBackward;
+        this._onPaused = onPaused;
         var trackDico = track.toMap();
         var what = <String, dynamic>{
           'codec': track.codec,
@@ -844,9 +849,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       if (isInited != Initialized.fullyInitialized) {
         throw (_NotOpen());
       }
-      this.onSkipForward = onSkipForward;
-      this.onSkipBackward = onSkipBackward;
-      this.onPaused = onPaused;
+      this._onSkipForward = onSkipForward;
+      this._onSkipBackward = onSkipBackward;
+      this._onPaused = onPaused;
 
       var trackDico = (track != null) ? track.toMap() : null;
       defaultPauseResume ??= (onPaused == null);

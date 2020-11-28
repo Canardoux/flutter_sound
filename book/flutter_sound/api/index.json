@@ -1849,45 +1849,9 @@
   }
  },
  {
-  "name": "onPaused",
-  "qualifiedName": "player.FlutterSoundPlayer.onPaused",
-  "href": "player/FlutterSoundPlayer/onPaused.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
   "name": "onProgress",
   "qualifiedName": "player.FlutterSoundPlayer.onProgress",
   "href": "player/FlutterSoundPlayer/onProgress.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "onSkipBackward",
-  "qualifiedName": "player.FlutterSoundPlayer.onSkipBackward",
-  "href": "player/FlutterSoundPlayer/onSkipBackward.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "onSkipForward",
-  "qualifiedName": "player.FlutterSoundPlayer.onSkipForward",
-  "href": "player/FlutterSoundPlayer/onSkipForward.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -2542,30 +2506,6 @@
   "enclosedBy": {
    "name": "Track",
    "type": "class"
-  }
- },
- {
-  "name": "blockSize",
-  "qualifiedName": "player.blockSize",
-  "href": "player/blockSize-constant.html",
-  "type": "top-level constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "player",
-   "type": "library"
-  }
- },
- {
-  "name": "fileExtension",
-  "qualifiedName": "player.fileExtension",
-  "href": "player/fileExtension.html",
-  "type": "function",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "player",
-   "type": "library"
   }
  },
  {
