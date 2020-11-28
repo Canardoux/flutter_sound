@@ -23,7 +23,7 @@
 - [The &tau; Player](tau/player.md)
 - [The &tau; Recorder](tau/recorder.md)
 - [The utilities](tau/helper.md)
-- [The Widget UI](flutter_sound/ui-widget.md)
+- [The Widget UI](flutter_sound/ui_widget.md)
 
 ## Flutter Sound
 
