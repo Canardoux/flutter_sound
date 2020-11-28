@@ -69,8 +69,6 @@
       <li><a href="../player/TonSkip.html">TonSkip</a></li>
       <li><a href="../player/TWhenFinished.html">TWhenFinished</a></li>
     
-      <li class="section-title"><a href="../player/player-library.html#exceptions">Exceptions</a></li>
-      <li><a href="../player/PlayerRunningException-class.html">PlayerRunningException</a></li>
     </ol>
   </div>
 
@@ -127,24 +125,8 @@
           <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/StreamSink-class.html">StreamSink</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../tau/Food-class.html">Food</a></span>&gt;</span></span>         
         </dt>
         <dd>
-           
+          The sink side of the Food Controller <a href="../player/FlutterSoundPlayer/foodSink.html">[...]</a>
                   <div class="features">read-only</div>
-</dd>
-        <dt id="foodStreamController" class="property">
-          <span class="name"><a href="../player/FlutterSoundPlayer/foodStreamController.html">foodStreamController</a></span>
-          <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-async/StreamController-class.html">StreamController</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../tau/Food-class.html">Food</a></span>&gt;</span></span>         
-        </dt>
-        <dd>
-           
-                  <div class="features">read / write</div>
-</dd>
-        <dt id="foodStreamSubscription" class="property">
-          <span class="name"><a href="../player/FlutterSoundPlayer/foodStreamSubscription.html">foodStreamSubscription</a></span>
-          <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-async/StreamSubscription-class.html">StreamSubscription</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../tau/Food-class.html">Food</a></span>&gt;</span></span>         
-        </dt>
-        <dd>
-           
-                  <div class="features">read / write</div>
 </dd>
         <dt id="hashCode" class="property inherited">
           <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
@@ -153,14 +135,6 @@
         <dd class="inherited">
           The hash code for this object. <a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">[...]</a>
                   <div class="features">read-only, inherited</div>
-</dd>
-        <dt id="isInited" class="property">
-          <span class="name"><a href="../player/FlutterSoundPlayer/isInited.html">isInited</a></span>
-          <span class="signature">&#8596; <a href="../tau/Initialized-class.html">Initialized</a></span>         
-        </dt>
-        <dd>
-           
-                  <div class="features">read / write</div>
 </dd>
         <dt id="isPaused" class="property">
           <span class="name"><a href="../player/FlutterSoundPlayer/isPaused.html">isPaused</a></span>
@@ -186,29 +160,13 @@
            
                   <div class="features">read-only</div>
 </dd>
-        <dt id="needSomeFoodCompleter" class="property">
-          <span class="name"><a href="../player/FlutterSoundPlayer/needSomeFoodCompleter.html">needSomeFoodCompleter</a></span>
-          <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-async/Completer-class.html">Completer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>         
-        </dt>
-        <dd>
-           
-                  <div class="features">read / write</div>
-</dd>
         <dt id="onProgress" class="property">
           <span class="name"><a href="../player/FlutterSoundPlayer/onProgress.html">onProgress</a></span>
           <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../player/PlaybackDisposition-class.html">PlaybackDisposition</a></span>&gt;</span></span>         
         </dt>
         <dd>
-           
+          The stream side of the Food Controller 
                   <div class="features">read-only</div>
-</dd>
-        <dt id="openAudioSessionCompleter" class="property">
-          <span class="name"><a href="../player/FlutterSoundPlayer/openAudioSessionCompleter.html">openAudioSessionCompleter</a></span>
-          <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-async/Completer-class.html">Completer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../player/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></span>&gt;</span></span>         
-        </dt>
-        <dd>
-           
-                  <div class="features">read / write</div>
 </dd>
         <dt id="playerState" class="property">
           <span class="name"><a href="../player/FlutterSoundPlayer/playerState.html">playerState</a></span>
@@ -226,29 +184,12 @@
           A representation of the runtime type of the object. 
                   <div class="features">read-only, inherited</div>
 </dd>
-        <dt id="startPlayerCompleter" class="property">
-          <span class="name"><a href="../player/FlutterSoundPlayer/startPlayerCompleter.html">startPlayerCompleter</a></span>
-          <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-async/Completer-class.html">Completer</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a></span>&gt;</span></span>         
-        </dt>
-        <dd>
-           
-                  <div class="features">read / write</div>
-</dd>
       </dl>
     </section>
 
     <section class="summary offset-anchor" id="instance-methods">
       <h2>Methods</h2>
       <dl class="callables">
-        <dt id="audioPlayerFinished" class="callable">
-          <span class="name"><a href="../player/FlutterSoundPlayer/audioPlayerFinished.html">audioPlayerFinished</a></span><span class="signature">(<wbr><span class="parameter" id="audioPlayerFinished-param-state"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">state</span></span>)
-            <span class="returntype parameter">&#8594; void</span>
-          </span>
-                  </dt>
-        <dd>
-           
-                  <div class="features">override</div>
-</dd>
         <dt id="closeAudioSession" class="callable">
           <span class="name"><a href="../player/FlutterSoundPlayer/closeAudioSession.html">closeAudioSession</a></span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
@@ -333,17 +274,8 @@ being sent to the stream. <a href="../player/FlutterSoundPlayer/dispositionStrea
           </span>
                   </dt>
         <dd>
-           
+          Return true if the Player has been open 
                   
-</dd>
-        <dt id="needSomeFood" class="callable">
-          <span class="name"><a href="../player/FlutterSoundPlayer/needSomeFood.html">needSomeFood</a></span><span class="signature">(<wbr><span class="parameter" id="needSomeFood-param-ln"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">ln</span></span>)
-            <span class="returntype parameter">&#8594; void</span>
-          </span>
-                  </dt>
-        <dd>
-           
-                  <div class="features">override</div>
 </dd>
         <dt id="needToConvert" class="callable">
           <span class="name"><a href="../player/FlutterSoundPlayer/needToConvert.html">needToConvert</a></span><span class="signature">(<wbr><span class="parameter" id="needToConvert-param-codec"><span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+36/flutter_sound_platform_interface/Codec-class.html">Codec</a></span> <span class="parameter-name">codec</span></span>)
@@ -381,15 +313,6 @@ being sent to the stream. <a href="../player/FlutterSoundPlayer/dispositionStrea
            
                   
 </dd>
-        <dt id="openAudioSessionCompleted" class="callable">
-          <span class="name"><a href="../player/FlutterSoundPlayer/openAudioSessionCompleted.html">openAudioSessionCompleted</a></span><span class="signature">(<wbr><span class="parameter" id="openAudioSessionCompleted-param-success"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">success</span></span>)
-            <span class="returntype parameter">&#8594; void</span>
-          </span>
-                  </dt>
-        <dd>
-           
-                  <div class="features">override</div>
-</dd>
         <dt id="openAudioSessionWithUI" class="callable">
           <span class="name"><a href="../player/FlutterSoundPlayer/openAudioSessionWithUI.html">openAudioSessionWithUI</a></span><span class="signature">(<wbr><span class="parameter" id="openAudioSessionWithUI-param-focus">{<span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+36/flutter_sound_platform_interface/AudioFocus-class.html">AudioFocus</a></span> <span class="parameter-name">focus</span>: <span class="default-value">AudioFocus.requestFocusAndKeepOthers</span>, </span><span class="parameter" id="openAudioSessionWithUI-param-category"><span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+36/flutter_sound_platform_interface/SessionCategory-class.html">SessionCategory</a></span> <span class="parameter-name">category</span>: <span class="default-value">SessionCategory.playAndRecord</span>, </span><span class="parameter" id="openAudioSessionWithUI-param-mode"><span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+36/flutter_sound_platform_interface/SessionMode-class.html">SessionMode</a></span> <span class="parameter-name">mode</span>: <span class="default-value">SessionMode.modeDefault</span>, </span><span class="parameter" id="openAudioSessionWithUI-param-device"><span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+36/flutter_sound_platform_interface/AudioDevice-class.html">AudioDevice</a></span> <span class="parameter-name">device</span>: <span class="default-value">AudioDevice.speaker</span>, </span><span class="parameter" id="openAudioSessionWithUI-param-audioFlags"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">audioFlags</span>: <span class="default-value">outputToSpeaker | allowBlueToothA2DP | allowAirPlay</span>}</span>)
             <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../player/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></span>&gt;</span></span>
@@ -399,15 +322,6 @@ being sent to the stream. <a href="../player/FlutterSoundPlayer/dispositionStrea
            
                   
 </dd>
-        <dt id="pause" class="callable">
-          <span class="name"><a href="../player/FlutterSoundPlayer/pause.html">pause</a></span><span class="signature">(<wbr><span class="parameter" id="pause-param-state"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">state</span></span>)
-            <span class="returntype parameter">&#8594; void</span>
-          </span>
-                  </dt>
-        <dd>
-           
-                  <div class="features">override</div>
-</dd>
         <dt id="pausePlayer" class="callable">
           <span class="name"><a href="../player/FlutterSoundPlayer/pausePlayer.html">pausePlayer</a></span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
@@ -416,15 +330,6 @@ being sent to the stream. <a href="../player/FlutterSoundPlayer/dispositionStrea
         <dd>
            
                   
-</dd>
-        <dt id="resume" class="callable">
-          <span class="name"><a href="../player/FlutterSoundPlayer/resume.html">resume</a></span><span class="signature">(<wbr><span class="parameter" id="resume-param-state"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">state</span></span>)
-            <span class="returntype parameter">&#8594; void</span>
-          </span>
-                  </dt>
-        <dd>
-           
-                  <div class="features">override</div>
 </dd>
         <dt id="resumePlayer" class="callable">
           <span class="name"><a href="../player/FlutterSoundPlayer/resumePlayer.html">resumePlayer</a></span><span class="signature">(<wbr>)
@@ -489,24 +394,6 @@ being sent to the stream. <a href="../player/FlutterSoundPlayer/dispositionStrea
            
                   
 </dd>
-        <dt id="skipBackward" class="callable">
-          <span class="name"><a href="../player/FlutterSoundPlayer/skipBackward.html">skipBackward</a></span><span class="signature">(<wbr><span class="parameter" id="skipBackward-param-state"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">state</span></span>)
-            <span class="returntype parameter">&#8594; void</span>
-          </span>
-                  </dt>
-        <dd>
-           
-                  <div class="features">override</div>
-</dd>
-        <dt id="skipForward" class="callable">
-          <span class="name"><a href="../player/FlutterSoundPlayer/skipForward.html">skipForward</a></span><span class="signature">(<wbr><span class="parameter" id="skipForward-param-state"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">state</span></span>)
-            <span class="returntype parameter">&#8594; void</span>
-          </span>
-                  </dt>
-        <dd>
-           
-                  <div class="features">override</div>
-</dd>
         <dt id="startPlayer" class="callable">
           <span class="name"><a href="../player/FlutterSoundPlayer/startPlayer.html">startPlayer</a></span><span class="signature">(<wbr><span class="parameter" id="startPlayer-param-fromURI">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">fromURI</span>, </span><span class="parameter" id="startPlayer-param-fromDataBuffer"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-typed_data/Uint8List-class.html">Uint8List</a></span> <span class="parameter-name">fromDataBuffer</span>, </span><span class="parameter" id="startPlayer-param-codec"><span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+36/flutter_sound_platform_interface/Codec-class.html">Codec</a></span> <span class="parameter-name">codec</span>: <span class="default-value">Codec.aacADTS</span>, </span><span class="parameter" id="startPlayer-param-sampleRate"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">sampleRate</span>: <span class="default-value">16000</span>, </span><span class="parameter" id="startPlayer-param-numChannels"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">numChannels</span>: <span class="default-value">1</span>, </span><span class="parameter" id="startPlayer-param-whenFinished"><span class="type-annotation"><a href="../player/TWhenFinished.html">TWhenFinished</a></span> <span class="parameter-name">whenFinished</span>}</span>)
             <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a></span>&gt;</span></span>
@@ -515,15 +402,6 @@ being sent to the stream. <a href="../player/FlutterSoundPlayer/dispositionStrea
         <dd>
            
                   
-</dd>
-        <dt id="startPlayerCompleted" class="callable">
-          <span class="name"><a href="../player/FlutterSoundPlayer/startPlayerCompleted.html">startPlayerCompleted</a></span><span class="signature">(<wbr><span class="parameter" id="startPlayerCompleted-param-duration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">duration</span></span>)
-            <span class="returntype parameter">&#8594; void</span>
-          </span>
-                  </dt>
-        <dd>
-           
-                  <div class="features">override</div>
 </dd>
         <dt id="startPlayerFromStream" class="callable">
           <span class="name"><a href="../player/FlutterSoundPlayer/startPlayerFromStream.html">startPlayerFromStream</a></span><span class="signature">(<wbr><span class="parameter" id="startPlayerFromStream-param-codec">{<span class="type-annotation"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+36/flutter_sound_platform_interface/Codec-class.html">Codec</a></span> <span class="parameter-name">codec</span>: <span class="default-value">Codec.pcm16</span>, </span><span class="parameter" id="startPlayerFromStream-param-numChannels"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">numChannels</span>: <span class="default-value">1</span>, </span><span class="parameter" id="startPlayerFromStream-param-sampleRate"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">sampleRate</span>: <span class="default-value">16000</span>}</span>)
@@ -570,24 +448,6 @@ being sent to the stream. <a href="../player/FlutterSoundPlayer/dispositionStrea
           Returns a string representation of this object. 
                   <div class="features">inherited</div>
 </dd>
-        <dt id="updatePlaybackState" class="callable">
-          <span class="name"><a href="../player/FlutterSoundPlayer/updatePlaybackState.html">updatePlaybackState</a></span><span class="signature">(<wbr><span class="parameter" id="updatePlaybackState-param-state"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">state</span></span>)
-            <span class="returntype parameter">&#8594; void</span>
-          </span>
-                  </dt>
-        <dd>
-           
-                  <div class="features">override</div>
-</dd>
-        <dt id="updateProgress" class="callable">
-          <span class="name"><a href="../player/FlutterSoundPlayer/updateProgress.html">updateProgress</a></span><span class="signature">(<wbr><span class="parameter" id="updateProgress-param-duration">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">duration</span>, </span><span class="parameter" id="updateProgress-param-position"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">position</span>}</span>)
-            <span class="returntype parameter">&#8594; void</span>
-          </span>
-                  </dt>
-        <dd>
-           
-                  <div class="features">override</div>
-</dd>
       </dl>
     </section>
 
@@ -608,45 +468,6 @@ being sent to the stream. <a href="../player/FlutterSoundPlayer/dispositionStrea
 
 
 
-    <section class="summary offset-anchor" id="constants">
-      <h2>Constants</h2>
-
-      <dl class="properties">
-        <dt id="tabAndroidConvert" class="constant">
-          <span class="name "><a href="../player/FlutterSoundPlayer/tabAndroidConvert-constant.html">tabAndroidConvert</a></span>
-          <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+36/flutter_sound_platform_interface/Codec-class.html">Codec</a></span>&gt;</span></span>
-                  </dt>
-        <dd>
-           
-                  
-  <div>
-            <span class="signature"><code>const [Codec.defaultCodec, Codec.defaultCodec, Codec.defaultCodec, Codec.opusOGG, Codec.defaultCodec, Codec.defaultCodec, Codec.defaultCodec, Codec.defaultCodec, Codec.pcm16WAV, Codec.pcm16WAV, Codec.…</code></span>
-          </div>
-        </dd>
-        <dt id="tabIosConvert" class="constant">
-          <span class="name "><a href="../player/FlutterSoundPlayer/tabIosConvert-constant.html">tabIosConvert</a></span>
-          <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+36/flutter_sound_platform_interface/Codec-class.html">Codec</a></span>&gt;</span></span>
-                  </dt>
-        <dd>
-           
-                  
-  <div>
-            <span class="signature"><code>const [Codec.defaultCodec, Codec.defaultCodec, Codec.opusCAF, Codec.defaultCodec, Codec.defaultCodec, Codec.defaultCodec, Codec.defaultCodec, Codec.defaultCodec, Codec.defaultCodec, Codec.defaultCodec…</code></span>
-          </div>
-        </dd>
-        <dt id="tabWebConvert" class="constant">
-          <span class="name "><a href="../player/FlutterSoundPlayer/tabWebConvert-constant.html">tabWebConvert</a></span>
-          <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+36/flutter_sound_platform_interface/Codec-class.html">Codec</a></span>&gt;</span></span>
-                  </dt>
-        <dd>
-           
-                  
-  <div>
-            <span class="signature"><code>const [Codec.defaultCodec, Codec.defaultCodec, Codec.defaultCodec, Codec.defaultCodec, Codec.defaultCodec, Codec.defaultCodec, Codec.defaultCodec, Codec.defaultCodec, Codec.defaultCodec, Codec.default…</code></span>
-          </div>
-        </dd>
-      </dl>
-    </section>
 
   </div> <!-- /.main-content -->
 
@@ -661,22 +482,15 @@ being sent to the stream. <a href="../player/FlutterSoundPlayer/dispositionStrea
       </li>
       <li><a href="../player/FlutterSoundPlayer/audioPlayerFinishedPlaying.html">audioPlayerFinishedPlaying</a></li>
       <li><a href="../player/FlutterSoundPlayer/foodSink.html">foodSink</a></li>
-      <li><a href="../player/FlutterSoundPlayer/foodStreamController.html">foodStreamController</a></li>
-      <li><a href="../player/FlutterSoundPlayer/foodStreamSubscription.html">foodStreamSubscription</a></li>
       <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
-      <li><a href="../player/FlutterSoundPlayer/isInited.html">isInited</a></li>
       <li><a href="../player/FlutterSoundPlayer/isPaused.html">isPaused</a></li>
       <li><a href="../player/FlutterSoundPlayer/isPlaying.html">isPlaying</a></li>
       <li><a href="../player/FlutterSoundPlayer/isStopped.html">isStopped</a></li>
-      <li><a href="../player/FlutterSoundPlayer/needSomeFoodCompleter.html">needSomeFoodCompleter</a></li>
       <li><a href="../player/FlutterSoundPlayer/onProgress.html">onProgress</a></li>
-      <li><a href="../player/FlutterSoundPlayer/openAudioSessionCompleter.html">openAudioSessionCompleter</a></li>
       <li><a href="../player/FlutterSoundPlayer/playerState.html">playerState</a></li>
       <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
-      <li><a href="../player/FlutterSoundPlayer/startPlayerCompleter.html">startPlayerCompleter</a></li>
     
       <li class="section-title"><a href="../player/FlutterSoundPlayer-class.html#instance-methods">Methods</a></li>
-      <li><a href="../player/FlutterSoundPlayer/audioPlayerFinished.html">audioPlayerFinished</a></li>
       <li><a href="../player/FlutterSoundPlayer/closeAudioSession.html">closeAudioSession</a></li>
       <li><a href="../player/FlutterSoundPlayer/dispositionStream.html">dispositionStream</a></li>
       <li><a href="../player/FlutterSoundPlayer/feed.html">feed</a></li>
@@ -686,16 +500,12 @@ being sent to the stream. <a href="../player/FlutterSoundPlayer/dispositionStrea
       <li><a href="../player/FlutterSoundPlayer/getResourcePath.html">getResourcePath</a></li>
       <li><a href="../player/FlutterSoundPlayer/isDecoderSupported.html">isDecoderSupported</a></li>
       <li><a href="../player/FlutterSoundPlayer/isOpen.html">isOpen</a></li>
-      <li><a href="../player/FlutterSoundPlayer/needSomeFood.html">needSomeFood</a></li>
       <li><a href="../player/FlutterSoundPlayer/needToConvert.html">needToConvert</a></li>
       <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
       <li><a href="../player/FlutterSoundPlayer/nowPlaying.html">nowPlaying</a></li>
       <li><a href="../player/FlutterSoundPlayer/openAudioSession.html">openAudioSession</a></li>
-      <li><a href="../player/FlutterSoundPlayer/openAudioSessionCompleted.html">openAudioSessionCompleted</a></li>
       <li><a href="../player/FlutterSoundPlayer/openAudioSessionWithUI.html">openAudioSessionWithUI</a></li>
-      <li><a href="../player/FlutterSoundPlayer/pause.html">pause</a></li>
       <li><a href="../player/FlutterSoundPlayer/pausePlayer.html">pausePlayer</a></li>
-      <li><a href="../player/FlutterSoundPlayer/resume.html">resume</a></li>
       <li><a href="../player/FlutterSoundPlayer/resumePlayer.html">resumePlayer</a></li>
       <li><a href="../player/FlutterSoundPlayer/seekToPlayer.html">seekToPlayer</a></li>
       <li><a href="../player/FlutterSoundPlayer/setAudioFocus.html">setAudioFocus</a></li>
@@ -703,27 +513,18 @@ being sent to the stream. <a href="../player/FlutterSoundPlayer/dispositionStrea
       <li><a href="../player/FlutterSoundPlayer/setSubscriptionDuration.html">setSubscriptionDuration</a></li>
       <li><a href="../player/FlutterSoundPlayer/setUIProgressBar.html">setUIProgressBar</a></li>
       <li><a href="../player/FlutterSoundPlayer/setVolume.html">setVolume</a></li>
-      <li><a href="../player/FlutterSoundPlayer/skipBackward.html">skipBackward</a></li>
-      <li><a href="../player/FlutterSoundPlayer/skipForward.html">skipForward</a></li>
       <li><a href="../player/FlutterSoundPlayer/startPlayer.html">startPlayer</a></li>
-      <li><a href="../player/FlutterSoundPlayer/startPlayerCompleted.html">startPlayerCompleted</a></li>
       <li><a href="../player/FlutterSoundPlayer/startPlayerFromStream.html">startPlayerFromStream</a></li>
       <li><a href="../player/FlutterSoundPlayer/startPlayerFromTrack.html">startPlayerFromTrack</a></li>
       <li><a href="../player/FlutterSoundPlayer/stop.html">stop</a></li>
       <li><a href="../player/FlutterSoundPlayer/stopPlayer.html">stopPlayer</a></li>
       <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
-      <li><a href="../player/FlutterSoundPlayer/updatePlaybackState.html">updatePlaybackState</a></li>
-      <li><a href="../player/FlutterSoundPlayer/updateProgress.html">updateProgress</a></li>
     
       <li class="section-title inherited"><a href="../player/FlutterSoundPlayer-class.html#operators">Operators</a></li>
       <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
     
     
     
-      <li class="section-title"><a href="../player/FlutterSoundPlayer-class.html#constants">Constants</a></li>
-      <li><a href="../player/FlutterSoundPlayer/tabAndroidConvert-constant.html">tabAndroidConvert</a></li>
-      <li><a href="../player/FlutterSoundPlayer/tabIosConvert-constant.html">tabIosConvert</a></li>
-      <li><a href="../player/FlutterSoundPlayer/tabWebConvert-constant.html">tabWebConvert</a></li>
     
     </ol>
   </div><!--/.sidebar-offcanvas-->

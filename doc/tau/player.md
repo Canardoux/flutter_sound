@@ -127,7 +127,7 @@ See [iOS documentation](https://developer.apple.com/documentation/avfoundation/a
 - blueToothA2DP,
 - airPlay
 
-### `withUI` 
+### `withUI`
 is a boolean that you set to `true` if you want to control your App from the lock-screen (using [startPlayerFromTrack()](player.md#startplayerfromtrack) during your Audio Session).
 
 You MUST ensure that the player has been closed when your widget is detached from the UI.
@@ -414,7 +414,8 @@ await myPlayer.stopPlayer();
 
 ## `foodSink`
 
-*Dart definition (prototype) :*
+[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayerfoodSink.html)
+
 ```
 StreamSink<Food> get foodSink
 ```
@@ -434,6 +435,32 @@ myPlayer.foodSink.add(FoodData(aBuffer));
 myPlayer.foodSink.add(FoodData(anotherBuffer));
 myPlayer.foodSink.add(FoodData(myOtherBuffer));
 myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
+```
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `onProgress`
+
+*Dart definition (prototype) :*
+```
+Stream<PlaybackDisposition> get onProgress => playerController != null ? playerController.stream : null;
+```
+
+The attribut `onProgress` is a stream on which FlutterSound will post the player progression.
+You may listen to this Stream to have feedback on the current playback.
+
+PlaybackDisposition has two fields :
+- Duration duration  (the total playback duration)
+- Duration position  (the current playback position)
+
+*Example:*
+```dart
+        _playerSubscription = myPlayer.onProgress.listen((e)
+        {
+                Duration maxDuration = e.duration;
+                Duration position = e.position;
+                ...
+        }
 ```
 
 ----------------------------------------------------------------------------------------------------------------------------------
@@ -614,32 +641,6 @@ Returns a Future<bool>.
 *Example:*
 ```dart
         if ( await myPlayer.isDecoderSupported(Codec.opusOGG) ) doSomething;
-```
-
----------------------------------------------------------------------------------------------------------------------------------
-
-## `onProgress`
-
-*Dart definition (prototype) :*
-```
-Stream<PlaybackDisposition> get onProgress => playerController != null ? playerController.stream : null;
-```
-
-The attribut `onProgress` is a stream on which FlutterSound will post the player progression.
-You may listen to this Stream to have feedback on the current playback.
-
-PlaybackDisposition has two fields :
-- Duration duration  (the total playback duration)
-- Duration position  (the current playback position)
-
-*Example:*
-```dart
-        _playerSubscription = myPlayer.onProgress.listen((e)
-        {
-                Duration maxDuration = e.duration;
-                Duration position = e.position;
-                ...
-        }
 ```
 
 ---------------------------------------------------------------------------------------------------------------------------------

@@ -1019,7 +1019,7 @@ This procedure returns a Future. It is very important that you wait that this Fu
 </code></pre>
 <hr>
 <h2 id="foodsink"><code>foodSink</code></h2>
-<p><em>Dart definition (prototype) :</em></p>
+<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayerfoodSink.html" target="_blank">Dart API</a></p>
 <pre><code>StreamSink&lt;Food&gt; get foodSink
 </code></pre><p>This the output stream that you use when you want to play asynchronously live data.
 This StreamSink accept two kinds of objects :</p>
@@ -1035,6 +1035,25 @@ myPlayer.foodSink.add(FoodData(aBuffer));
 myPlayer.foodSink.add(FoodData(anotherBuffer));
 myPlayer.foodSink.add(FoodData(myOtherBuffer));
 myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
+</code></pre>
+<hr>
+<h2 id="onprogress"><code>onProgress</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre><code>Stream&lt;PlaybackDisposition&gt; get onProgress =&gt; playerController != null ? playerController.stream : null;
+</code></pre><p>The attribut <code>onProgress</code> is a stream on which FlutterSound will post the player progression.
+You may listen to this Stream to have feedback on the current playback.</p>
+<p>PlaybackDisposition has two fields :</p>
+<ul>
+<li>Duration duration  (the total playback duration)</li>
+<li>Duration position  (the current playback position)</li>
+</ul>
+<p><em>Example:</em></p>
+<pre><code class="lang-dart">        _playerSubscription = myPlayer.onProgress.listen((e)
+        {
+                <span class="hljs-built_in">Duration</span> maxDuration = e.duration;
+                <span class="hljs-built_in">Duration</span> position = e.position;
+                ...
+        }
 </code></pre>
 <hr>
 <h2 id="food"><code>Food</code></h2>
@@ -1151,25 +1170,6 @@ Returns a Future<bool>.</bool></p>
 <pre><code class="lang-dart">        <span class="hljs-keyword">if</span> ( <span class="hljs-keyword">await</span> myPlayer.isDecoderSupported(Codec.opusOGG) ) doSomething;
 </code></pre>
 <hr>
-<h2 id="onprogress"><code>onProgress</code></h2>
-<p><em>Dart definition (prototype) :</em></p>
-<pre><code>Stream&lt;PlaybackDisposition&gt; get onProgress =&gt; playerController != null ? playerController.stream : null;
-</code></pre><p>The attribut <code>onProgress</code> is a stream on which FlutterSound will post the player progression.
-You may listen to this Stream to have feedback on the current playback.</p>
-<p>PlaybackDisposition has two fields :</p>
-<ul>
-<li>Duration duration  (the total playback duration)</li>
-<li>Duration position  (the current playback position)</li>
-</ul>
-<p><em>Example:</em></p>
-<pre><code class="lang-dart">        _playerSubscription = myPlayer.onProgress.listen((e)
-        {
-                <span class="hljs-built_in">Duration</span> maxDuration = e.duration;
-                <span class="hljs-built_in">Duration</span> position = e.position;
-                ...
-        }
-</code></pre>
-<hr>
 <h2 id="getprogress"><code>getProgress()</code></h2>
 <p><em>Dart definition (prototype) :</em></p>
 <pre><code>Future&lt;Map&gt; getProgress() async
@@ -1266,7 +1266,7 @@ Remark <code>setUIProgressBar()</code> is implemented only on iOS.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"The τ Player","level":"3.2","depth":1,"next":{"title":"The τ Recorder","level":"3.3","depth":1,"path":"tau/recorder.md","ref":"tau/recorder.md","articles":[]},"previous":{"title":"The τ API","level":"3.1","depth":1,"path":"tau/main.md","ref":"tau/main.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/player.md","mtime":"2020-11-27T20:07:35.341Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-28T10:55:11.511Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"The τ Player","level":"3.2","depth":1,"next":{"title":"The τ Recorder","level":"3.3","depth":1,"path":"tau/recorder.md","ref":"tau/recorder.md","articles":[]},"previous":{"title":"The τ API","level":"3.1","depth":1,"path":"tau/main.md","ref":"tau/main.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/player.md","mtime":"2020-11-28T14:17:11.491Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-28T14:19:31.385Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

@@ -1585,18 +1585,6 @@
   }
  },
  {
-  "name": "audioPlayerFinished",
-  "qualifiedName": "player.FlutterSoundPlayer.audioPlayerFinished",
-  "href": "player/FlutterSoundPlayer/audioPlayerFinished.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
   "name": "audioPlayerFinishedPlaying",
   "qualifiedName": "player.FlutterSoundPlayer.audioPlayerFinishedPlaying",
   "href": "player/FlutterSoundPlayer/audioPlayerFinishedPlaying.html",
@@ -1669,30 +1657,6 @@
   }
  },
  {
-  "name": "foodStreamController",
-  "qualifiedName": "player.FlutterSoundPlayer.foodStreamController",
-  "href": "player/FlutterSoundPlayer/foodStreamController.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "foodStreamSubscription",
-  "qualifiedName": "player.FlutterSoundPlayer.foodStreamSubscription",
-  "href": "player/FlutterSoundPlayer/foodStreamSubscription.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
   "name": "getPlayerState",
   "qualifiedName": "player.FlutterSoundPlayer.getPlayerState",
   "href": "player/FlutterSoundPlayer/getPlayerState.html",
@@ -1741,18 +1705,6 @@
   }
  },
  {
-  "name": "isInited",
-  "qualifiedName": "player.FlutterSoundPlayer.isInited",
-  "href": "player/FlutterSoundPlayer/isInited.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
   "name": "isOpen",
   "qualifiedName": "player.FlutterSoundPlayer.isOpen",
   "href": "player/FlutterSoundPlayer/isOpen.html",
@@ -1792,30 +1744,6 @@
   "name": "isStopped",
   "qualifiedName": "player.FlutterSoundPlayer.isStopped",
   "href": "player/FlutterSoundPlayer/isStopped.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "needSomeFood",
-  "qualifiedName": "player.FlutterSoundPlayer.needSomeFood",
-  "href": "player/FlutterSoundPlayer/needSomeFood.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "needSomeFoodCompleter",
-  "qualifiedName": "player.FlutterSoundPlayer.needSomeFoodCompleter",
-  "href": "player/FlutterSoundPlayer/needSomeFoodCompleter.html",
   "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1873,47 +1801,11 @@
   }
  },
  {
-  "name": "openAudioSessionCompleted",
-  "qualifiedName": "player.FlutterSoundPlayer.openAudioSessionCompleted",
-  "href": "player/FlutterSoundPlayer/openAudioSessionCompleted.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "openAudioSessionCompleter",
-  "qualifiedName": "player.FlutterSoundPlayer.openAudioSessionCompleter",
-  "href": "player/FlutterSoundPlayer/openAudioSessionCompleter.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
   "name": "openAudioSessionWithUI",
   "qualifiedName": "player.FlutterSoundPlayer.openAudioSessionWithUI",
   "href": "player/FlutterSoundPlayer/openAudioSessionWithUI.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "pause",
-  "qualifiedName": "player.FlutterSoundPlayer.pause",
-  "href": "player/FlutterSoundPlayer/pause.html",
-  "type": "method",
-  "overriddenDepth": 1,
   "packageName": "flauto",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
@@ -1938,18 +1830,6 @@
   "href": "player/FlutterSoundPlayer/playerState.html",
   "type": "property",
   "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "resume",
-  "qualifiedName": "player.FlutterSoundPlayer.resume",
-  "href": "player/FlutterSoundPlayer/resume.html",
-  "type": "method",
-  "overriddenDepth": 1,
   "packageName": "flauto",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
@@ -2041,58 +1921,10 @@
   }
  },
  {
-  "name": "skipBackward",
-  "qualifiedName": "player.FlutterSoundPlayer.skipBackward",
-  "href": "player/FlutterSoundPlayer/skipBackward.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "skipForward",
-  "qualifiedName": "player.FlutterSoundPlayer.skipForward",
-  "href": "player/FlutterSoundPlayer/skipForward.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
   "name": "startPlayer",
   "qualifiedName": "player.FlutterSoundPlayer.startPlayer",
   "href": "player/FlutterSoundPlayer/startPlayer.html",
   "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "startPlayerCompleted",
-  "qualifiedName": "player.FlutterSoundPlayer.startPlayerCompleted",
-  "href": "player/FlutterSoundPlayer/startPlayerCompleted.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "startPlayerCompleter",
-  "qualifiedName": "player.FlutterSoundPlayer.startPlayerCompleter",
-  "href": "player/FlutterSoundPlayer/startPlayerCompleter.html",
-  "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
@@ -2142,66 +1974,6 @@
   "href": "player/FlutterSoundPlayer/stopPlayer.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "tabAndroidConvert",
-  "qualifiedName": "player.FlutterSoundPlayer.tabAndroidConvert",
-  "href": "player/FlutterSoundPlayer/tabAndroidConvert-constant.html",
-  "type": "constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "tabIosConvert",
-  "qualifiedName": "player.FlutterSoundPlayer.tabIosConvert",
-  "href": "player/FlutterSoundPlayer/tabIosConvert-constant.html",
-  "type": "constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "tabWebConvert",
-  "qualifiedName": "player.FlutterSoundPlayer.tabWebConvert",
-  "href": "player/FlutterSoundPlayer/tabWebConvert-constant.html",
-  "type": "constant",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "updatePlaybackState",
-  "qualifiedName": "player.FlutterSoundPlayer.updatePlaybackState",
-  "href": "player/FlutterSoundPlayer/updatePlaybackState.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "updateProgress",
-  "qualifiedName": "player.FlutterSoundPlayer.updateProgress",
-  "href": "player/FlutterSoundPlayer/updateProgress.html",
-  "type": "method",
-  "overriddenDepth": 1,
   "packageName": "flauto",
   "enclosedBy": {
    "name": "FlutterSoundPlayer",
@@ -2277,42 +2049,6 @@
   "packageName": "flauto",
   "enclosedBy": {
    "name": "PlaybackDisposition",
-   "type": "class"
-  }
- },
- {
-  "name": "PlayerRunningException",
-  "qualifiedName": "player.PlayerRunningException",
-  "href": "player/PlayerRunningException-class.html",
-  "type": "class",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "player",
-   "type": "library"
-  }
- },
- {
-  "name": "PlayerRunningException",
-  "qualifiedName": "player.PlayerRunningException.PlayerRunningException",
-  "href": "player/PlayerRunningException/PlayerRunningException.html",
-  "type": "constructor",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "PlayerRunningException",
-   "type": "class"
-  }
- },
- {
-  "name": "message",
-  "qualifiedName": "player.PlayerRunningException.message",
-  "href": "player/PlayerRunningException/message.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "PlayerRunningException",
    "type": "class"
   }
  },
