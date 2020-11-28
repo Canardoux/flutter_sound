@@ -19,11 +19,11 @@
 
 ## API
 
-- [The &tau; API](flutter_sound/main.md)
+- [The &tau; API](tau/main.md)
 - [The &tau; Player](tau/player.md)
 - [The &tau; Recorder](tau/recorder.md)
-- [The utilities](flutter_sound/utilities.md)
-- [The Widget UI](flutter_sound/ui_widget.md)
+- [The utilities](tau/utilities.md)
+- [The Widget UI](tau/ui_widget.md)
 
 ## Flutter Sound
 
