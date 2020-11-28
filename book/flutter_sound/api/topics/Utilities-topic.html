@@ -76,47 +76,201 @@
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <h1><span class="kind-category">Utilities</span> Topic</h1>
       <section class="desc markdown">
-        <h1 id="flutter-sound-ui-widgets-api">Flutter Sound UI Widgets API</h1>
-<p>The modules offered for the Flutter Sound UI Widgets are :</p>
+        <h1 id="flutter-sound-helper-api">Flutter Sound Helper API</h1>
+<p>Flutter Sound offers some tools that can be convenient to work with sound :</p>
 <ul>
-<li><a href="#uiplayer">UI Player</a></li>
-<li><a href="#uirecorder">UI Recorder</a></li>
-<li><a href="#uicontroller">UI Controller</a></li>
-</ul>
-<p><em>(This documentation is just a start. It must be completely rewriten)</em></p>
-<h2 id="how-to-use">How to use</h2>
-<p>First import the modules
-<code>import 'flutter_sound.dart</code></p>
-<p>Then reference to one of the flutter sound UI widgets in your widget tree:</p>
-<ul>
-<li><a href="../ui_player/ui_player-library.html">UI Player</a></li>
-<li><a href="../ui_recorder/ui_recorder-library.html">UI Recorder</a></li>
-<li><a href="../ui_controller/ui_controller-library.html">UI Controller</a></li>
+<li><a href="#module-instanciation">Module instanciation</a></li>
+<li><a href="#convertfile">convertFile()</a> to convert an audio file to another format</li>
+<li><a href="#pcmtowave">pcmToWave()</a>  to add a WAVE header in front of a Raw PCM record</li>
+<li><a href="#pcmtowavebuffer">pcmToWaveBuffer()</a>  to add a WAVE header in front of a Raw PCM buffer</li>
+<li><a href="#wavetopcm">waveToPCM()</a>  to remove a WAVE header in front of a Wave record</li>
+<li><a href="#wavetopcmbuffer">waveToPCMBuffer()</a>  to remove a WAVE header in front of a Wave buffer</li>
+<li><a href="#duration">duration()</a> to know the appoximate duration of a sound</li>
+<li><a href="#isffmpegavailable">isFFmpegAvailable()</a> to know if the current App is linked with FFmpeg</li>
+<li><a href="#executeffmpegwitharguments">executeFFmpegWithArguments()</a> to execute an FFmpeg command</li>
+<li><a href="#getlastffmpegreturncode">getLastFFmpegReturnCode()</a> to get the return code of an FFmpeg command</li>
+<li><a href="#getlastffmpegcommandoutput">getLastFFmpegCommandOutput()</a> to get ouput of the last FFmpeg command</li>
+<li><a href="#ffmpeggetmediainformation--informations-on-a-record">FFmpegGetMediaInformation()</a> to get various informations on a sound file</li>
 </ul>
 <hr>
-<h2 id="ui-player"><code>UI Player</code></h2>
-<p>To use add FOREGROUND_SERVICE permission.</p>
-<h3 id="android">Android</h3>
-<p>Add this line to your AndroidManifest.xml</p>
-<pre class="language-dart"><code>&lt;uses-permission android:name="android.permission.FOREGROUND_SERVICE" /&gt;
+<h2 id="module-instanciation">Module <code>instanciation</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre class="language-dart"><code>FlutterSoundHelper flutterSoundHelper = FlutterSoundHelper(); // Singleton
 </code></pre>
-<h3 id="style-of-the-soundplayerui-widget">Style of the <code>SoundPlayerUI</code> widget</h3>
-<p>The two constructors of the <code>SoundPlayerUI</code> widget have 6 optional parameters for allowing the App to tune the UI presentation:</p>
+<p>You do not need to instanciate the Flutter Sound Helper module.
+To use this module, you can just use the singleton offers by the module : <code>flutterSoundHelper</code>.</p>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart">Duration t = await flutterSoundHelper.duration(aPathFile);
+</code></pre>
+<hr>
+<h2 id="convertfile"><code>convertFile()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre class="language-dart"><code>Future&lt;bool&gt; convertFile
+(
+        String infile,
+        Codec codecin,
+        String outfile,
+        Codec codecout
+) async
+</code></pre>
+<p>This verb is useful to convert a sound file to a new format.</p>
 <ul>
-<li>Color backgroundColor = Colors.grey,</li>
-<li>Color iconColor = Colors.black,</li>
-<li>Color disabledIconColor = Colors.blueGrey,</li>
-<li>TextStyle textStyle = null,</li>
-<li>TextStyle titleStyle = null,</li>
-<li>SliderThemeData sliderThemeData = null,</li>
+<li><code>infile</code> is the file path of the file you want to convert</li>
+<li><code>codecin</code> is the actual file format</li>
+<li><code>outfile</code> is the path of the file you want to create</li>
+<li><code>codecout</code> is the new file format</li>
 </ul>
-<p><em>...working on documentation.</em></p>
+<p>Be careful : <code>outfile</code> and <code>codecout</code> must be compatible. The output file extension must be a correct file extension for the new format.</p>
+<p>Note : this verb uses FFmpeg and is not available int the LITE flavor of Flutter Sound.</p>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart">        String inputFile = '$myInputPath/bar.wav';
+        var tempDir = await getTemporaryDirectory();
+        String outpufFile = '${tempDir.path}/$foo.mp3';
+        await flutterSoundHelper.convertFile(inputFile, codec.pcm16WAV, outputFile, Codec.mp3)
+</code></pre>
 <hr>
-<h2 id="ui-recorder"><code>UI Recorder</code></h2>
-<p><em>...working on documentation.</em></p>
+<h2 id="pcmtowave"><code>pcmToWave()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre class="language-dart"><code>Future&lt;void&gt; pcmToWave
+(
+      {
+          String inputFile,
+          String outputFile,
+          int numChannels,
+          int sampleRate,
+      }
+) async
+</code></pre>
+<p>This verb is usefull to convert a Raw PCM file to a Wave file.</p>
+<p>It adds a <code>Wave</code> envelop to the PCM file, so that the file can be played back with <code>startPlayer()</code>.</p>
+<p>Note: the parameters <code>numChannels</code> and <code>sampleRate</code> <strong>are mandatory, and must match the actual PCM data</strong>. <a href="codec.md#note-on-raw-pcm-and-wave-files">See here</a> a discussion about <code>Raw PCM</code> and <code>WAVE</code> file format.</p>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart">        String inputFile = '$myInputPath/bar.pcm';
+        var tempDir = await getTemporaryDirectory();
+        String outpufFile = '${tempDir.path}/$foo.wav';
+        await flutterSoundHelper.pcmToWave(inputFile: inputFile, outpoutFile: outputFile, numChannels: 1, sampleRate: 8000);
+</code></pre>
 <hr>
-<h2 id="ui-controller"><code>UI Controller</code></h2>
-<p><em>...working on documentation.</em></p>
+<h2 id="pcmtowavebuffer"><code>pcmToWaveBuffer()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre class="language-dart"><code>Future&lt;Uint8List&gt; pcmToWaveBuffer
+(
+      {
+        Uint8List inputBuffer,
+        int numChannels,
+        int sampleRate,
+      }
+) async
+
+</code></pre>
+<p>This verb is usefull to convert a Raw PCM buffer to a Wave buffer.</p>
+<p>It adds a <code>Wave</code> envelop in front of the PCM buffer, so that the file can be played back with <code>startPlayerFromBuffer()</code>.</p>
+<p>Note: the parameters <code>numChannels</code> and <code>sampleRate</code> <strong>are mandatory, and must match the actual PCM data</strong>. <a href="codec.md#note-on-raw-pcm-and-wave-files">See here</a> a discussion about <code>Raw PCM</code> and <code>WAVE</code> file format.</p>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart">        Uint8List myWavBuffer = await flutterSoundHelper.pcmToWaveBuffer(inputBuffer: myPCMBuffer, numChannels: 1, sampleRate: 8000);
+</code></pre>
+<hr>
+<h2 id="wavetopcm"><code>waveToPCM()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre class="language-dart"><code>Future&lt;void&gt; waveToPCM
+(
+      {
+          String inputFile,
+          String outputFile,
+       }
+) async
+</code></pre>
+<p>This verb is usefull to convert a Wave file to a Raw PCM file.</p>
+<p>It removes the <code>Wave</code> envelop from the PCM file.</p>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart">        String inputFile = '$myInputPath/bar.pcm';
+        var tempDir = await getTemporaryDirectory();
+        String outpufFile = '${tempDir.path}/$foo.wav';
+        await flutterSoundHelper.waveToPCM(inputFile: inputFile, outpoutFile: outputFile);
+</code></pre>
+<hr>
+<h2 id="wavetopcmbuffer"><code>waveToPCMBuffer()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre class="language-dart"><code>Uint8List waveToPCMBuffer (Uint8List inputBuffer)
+</code></pre>
+<p>This verb is usefull to convert a Wave buffer to a Raw PCM buffer.
+Note that this verb is not asynchronous and does not return a Future.</p>
+<p>It removes the <code>Wave</code> envelop from the PCM buffer.</p>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart">        Uint8List pcmBuffer flutterSoundHelper.waveToPCMBuffer(inputBuffer: aWaveBuffer);
+</code></pre>
+<hr>
+<h2 id="duration"><code>duration()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre class="language-dart"><code> Future&lt;Duration&gt; duration(String uri) async
+</code></pre>
+<p>This verb is used to get an estimation of the duration of a sound file.
+Be aware that it is just an estimation, based on the Codec used and the sample rate.</p>
+<p>Note : this verb uses FFmpeg and is not available int the LITE flavor of Flutter Sound.</p>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart">        Duration d = flutterSoundHelper.duration("$myFilePath/bar.wav");
+</code></pre>
+<hr>
+<h2 id="isffmpegavailable"><code>isFFmpegAvailable()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre class="language-dart"><code>Future&lt;bool&gt; isFFmpegAvailable() async
+</code></pre>
+<p>This verb is used to know during runtime if FFmpeg is linked with the App.</p>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart">        if ( await flutterSoundHelper.isFFmpegAvailable() )
+        {
+                Duration d = flutterSoundHelper.duration("$myFilePath/bar.wav");
+        }
+</code></pre>
+<hr>
+<h2 id="executeffmpegwitharguments"><code>executeFFmpegWithArguments()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre class="language-dart"><code>Future&lt;int&gt; executeFFmpegWithArguments(List&lt;String&gt; arguments)
+</code></pre>
+<p>This verb is a wrapper for the great FFmpeg application.
+The command <em>"man ffmpeg"</em> (if you have installed ffmpeg on your computer) will give you many informations.
+If you do not have <code>ffmpeg</code> on your computer you will find easyly on internet many documentation on this great program.</p>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart"> int rc = await flutterSoundHelper.executeFFmpegWithArguments
+ ([
+        '-loglevel',
+        'error',
+        '-y',
+        '-i',
+        infile,
+        '-c:a',
+        'copy',
+        outfile,
+]); // remux OGG to CAF
+</code></pre>
+<hr>
+<h2 id="getlastffmpegreturncode"><code>getLastFFmpegReturnCode()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre class="language-dart"><code>Future&lt;int&gt; getLastFFmpegReturnCode() async
+</code></pre>
+<p>This simple verb is used to get the result of the last FFmpeg command</p>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart">        int result = await getLastFFmpegReturnCode();
+</code></pre>
+<hr>
+<h2 id="getlastffmpegcommandoutput"><code>getLastFFmpegCommandOutput()</code></h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre class="language-dart"><code>Future&lt;String&gt; getLastFFmpegCommandOutput() async
+</code></pre>
+<p>This simple verb is used to get the output of the last FFmpeg command</p>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart">        print( await getLastFFmpegCommandOutput() );
+</code></pre>
+<hr>
+<h2 id="ffmpeggetmediainformation--informations-on-a-record"><code>FFmpegGetMediaInformation</code> : Informations on a record</h2>
+<p><em>Dart definition (prototype) :</em></p>
+<pre class="language-dart"><code>Future&lt;Map&lt;dynamic, dynamic&gt;&gt; FFmpegGetMediaInformation(String uri) async
+</code></pre>
+<p>This verb is used to get various informations on a file.</p>
+<p>The informations got with FFmpegGetMediaInformation() are <a href="https://pub.dev/packages/flutter_ffmpeg">documented here</a>.</p>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart">Map&lt;dynamic, dynamic&gt; info = await flutterSoundHelper.FFmpegGetMediaInformation( uri );
+</code></pre>
       </section>
       
         <section class="summary offset-anchor" id="libraries">
