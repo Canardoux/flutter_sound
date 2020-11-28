@@ -19,7 +19,7 @@
 
 ## API
 
-- [The &tau; API](tau/api.md)
+- [The &tau; API](flutter_sound/main.md)
 - [The &tau; Player](tau/player.md)
 - [The &tau; Recorder](tau/recorder.md)
 - [The utilities](tau/helper.md)

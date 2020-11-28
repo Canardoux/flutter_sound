@@ -1,17 +1,20 @@
 # The Main modules
 
-The three main modules of Flutter Sound are :
 
-- [FlutterSoundPlayer](../player/player-library.html)  (Everything for Playback)
-- [FlutterSoundRecorder](../recorder/recorder-library.html)  (Everything for recording)
-- [tau](../tau/tau-library.html) (Contains very important Type Declarations like `Codec`).
+Flutter Sound is composed with 4 modules :
 
-## How to use
+- [FlutterSoundPlayer](player.md#flutter-sound-player-api), wich deal with everything about playbacks
+- [FlutterSoundRecorder](recorder.md#flutter-sound-recorder-api), which deal with everything about recording
+- [FlutterSoundHelper](helper.md), which offers some convenients tools
+- [FlutterSoundUI](ui_widget.md), which offer some Widget ready to be used out of the box
 
-First import the Flutter Sound plugin
-```dart
-import 'flutter_sound.dart';
+To use Flutter Sound you just do :
 ```
+import 'package:flutter_sound/flutter_sound.dart';
+```
+
+This will import all the necessaries dart interfaces.
+
 
 ## Playback
 
