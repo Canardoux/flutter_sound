@@ -60,7 +60,6 @@
         <li class="section-title">
             <a href="../../player/FlutterSoundPlayer-class.html#instance-properties">Properties</a>
         </li>
-        <li><a href="../../player/FlutterSoundPlayer/audioPlayerFinishedPlaying.html">audioPlayerFinishedPlaying</a></li>
         <li><a href="../../player/FlutterSoundPlayer/foodSink.html">foodSink</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isPaused.html">isPaused</a></li>
@@ -73,30 +72,25 @@
         <li class="section-title"><a href="../../player/FlutterSoundPlayer-class.html#instance-methods">Methods</a></li>
         <li><a href="../../player/FlutterSoundPlayer/closeAudioSession.html">closeAudioSession</a></li>
         <li><a href="../../player/FlutterSoundPlayer/dispositionStream.html">dispositionStream</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/feed.html">feed</a></li>
         <li><a href="../../player/FlutterSoundPlayer/feedFromStream.html">feedFromStream</a></li>
         <li><a href="../../player/FlutterSoundPlayer/getPlayerState.html">getPlayerState</a></li>
         <li><a href="../../player/FlutterSoundPlayer/getProgress.html">getProgress</a></li>
         <li><a href="../../player/FlutterSoundPlayer/getResourcePath.html">getResourcePath</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isDecoderSupported.html">isDecoderSupported</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isOpen.html">isOpen</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/needToConvert.html">needToConvert</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
         <li><a href="../../player/FlutterSoundPlayer/nowPlaying.html">nowPlaying</a></li>
         <li><a href="../../player/FlutterSoundPlayer/openAudioSession.html">openAudioSession</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/openAudioSessionWithUI.html">openAudioSessionWithUI</a></li>
         <li><a href="../../player/FlutterSoundPlayer/pausePlayer.html">pausePlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/resumePlayer.html">resumePlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/seekToPlayer.html">seekToPlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setAudioFocus.html">setAudioFocus</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/setPlayerCallback.html">setPlayerCallback</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setSubscriptionDuration.html">setSubscriptionDuration</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setUIProgressBar.html">setUIProgressBar</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setVolume.html">setVolume</a></li>
         <li><a href="../../player/FlutterSoundPlayer/startPlayer.html">startPlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/startPlayerFromStream.html">startPlayerFromStream</a></li>
         <li><a href="../../player/FlutterSoundPlayer/startPlayerFromTrack.html">startPlayerFromTrack</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/stop.html">stop</a></li>
         <li><a href="../../player/FlutterSoundPlayer/stopPlayer.html">stopPlayer</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
     
@@ -122,6 +116,41 @@
 </ol>)
       
     </section>
+    <section class="desc markdown">
+      <p>Used to play something froma Dart stream</p>
+<p><strong>This functionnality needs, at least, and Android SDK &gt;= 21</strong></p>
+<ul>
+<li>The only codec supported is actually <code>Codec.pcm16</code>.</li>
+<li>The only value possible for <code>numChannels</code> is actually 1.</li>
+<li>SampleRate is the sample rate of the data you want to play.</li>
+</ul>
+<p>Please look to <a href="codec.md#playing-pcm-16-from-a-dart-stream">the following notice</a></p>
+<p><em>Example</em>
+  You can look to the three provided examples :</p>
+<ul>
+<li><a href="../flutter_sound/example/example.md#liveplaybackwithbackpressure">This example</a> shows how to play Live data, with Back Pressure from Flutter Sound</li>
+<li><a href="../flutter_sound/example/example.md#liveplaybackwithoutbackpressure">This example</a> shows how to play Live data, without Back Pressure from Flutter Sound</li>
+<li><a href="../flutter_sound/example/example.md#soundeffect">This example</a> shows how to play some real time sound effects.</li>
+</ul>
+<p><em>Example 1:</em></p>
+<pre class="language-dart"><code class="language-dart">  await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
+
+  await myPlayer.feedFromStream(aBuffer);
+  await myPlayer.feedFromStream(anotherBuffer);
+  await myPlayer.feedFromStream(myOtherBuffer);
+
+  await myPlayer.stopPlayer();
+</code></pre>
+<p><em>Example 2:</em></p>
+<pre class="language-dart"><code class="language-dart">  await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
+
+  myPlayer.foodSink.add(FoodData(aBuffer));
+ myPlayer.foodSink.add(FoodData(anotherBuffer));
+  myPlayer.foodSink.add(FoodData(myOtherBuffer));
+
+  myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
+</code></pre>
+    </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
@@ -139,7 +168,7 @@
   }
 
   await _lock.synchronized(() async {
-    await stop(); &#47;&#47; Just in case
+    await _stop(); &#47;&#47; Just in case
     _foodStreamController = StreamController();
     _foodStreamSubscription = _foodStreamController.stream.listen((food) {
       _foodStreamSubscription.pause(food.exec(this));
@@ -150,7 +179,7 @@
         fromURI: null,
         numChannels: numChannels,
         sampleRate: sampleRate);
-    playerState = PlayerState.values[state];
+    _playerState = PlayerState.values[state];
   });
   print(&#39;FS:&lt;--- startPlayerFromStream &#39;);
 }</code></pre>

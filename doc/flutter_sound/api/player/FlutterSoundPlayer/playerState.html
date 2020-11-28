@@ -60,7 +60,6 @@
         <li class="section-title">
             <a href="../../player/FlutterSoundPlayer-class.html#instance-properties">Properties</a>
         </li>
-        <li><a href="../../player/FlutterSoundPlayer/audioPlayerFinishedPlaying.html">audioPlayerFinishedPlaying</a></li>
         <li><a href="../../player/FlutterSoundPlayer/foodSink.html">foodSink</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isPaused.html">isPaused</a></li>
@@ -73,30 +72,25 @@
         <li class="section-title"><a href="../../player/FlutterSoundPlayer-class.html#instance-methods">Methods</a></li>
         <li><a href="../../player/FlutterSoundPlayer/closeAudioSession.html">closeAudioSession</a></li>
         <li><a href="../../player/FlutterSoundPlayer/dispositionStream.html">dispositionStream</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/feed.html">feed</a></li>
         <li><a href="../../player/FlutterSoundPlayer/feedFromStream.html">feedFromStream</a></li>
         <li><a href="../../player/FlutterSoundPlayer/getPlayerState.html">getPlayerState</a></li>
         <li><a href="../../player/FlutterSoundPlayer/getProgress.html">getProgress</a></li>
         <li><a href="../../player/FlutterSoundPlayer/getResourcePath.html">getResourcePath</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isDecoderSupported.html">isDecoderSupported</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isOpen.html">isOpen</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/needToConvert.html">needToConvert</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
         <li><a href="../../player/FlutterSoundPlayer/nowPlaying.html">nowPlaying</a></li>
         <li><a href="../../player/FlutterSoundPlayer/openAudioSession.html">openAudioSession</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/openAudioSessionWithUI.html">openAudioSessionWithUI</a></li>
         <li><a href="../../player/FlutterSoundPlayer/pausePlayer.html">pausePlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/resumePlayer.html">resumePlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/seekToPlayer.html">seekToPlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setAudioFocus.html">setAudioFocus</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/setPlayerCallback.html">setPlayerCallback</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setSubscriptionDuration.html">setSubscriptionDuration</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setUIProgressBar.html">setUIProgressBar</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setVolume.html">setVolume</a></li>
         <li><a href="../../player/FlutterSoundPlayer/startPlayer.html">startPlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/startPlayerFromStream.html">startPlayerFromStream</a></li>
         <li><a href="../../player/FlutterSoundPlayer/startPlayerFromTrack.html">startPlayerFromTrack</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/stop.html">stop</a></li>
         <li><a href="../../player/FlutterSoundPlayer/stopPlayer.html">stopPlayer</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
     
@@ -113,18 +107,24 @@
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <div><h1><span class="kind-property">playerState</span> property </h1></div>
 
+
+        <section id="getter">
+        
         <section class="multi-line-signature">
           <span class="returntype"><a href="../../player/PlayerState-class.html">PlayerState</a></span>
-          <span class="name ">playerState</span>
-          <div class="features">read / write</div>
+                  <span class="name ">playerState</span>
+          
+</section>
+        
+                <section class="desc markdown">
+          <p>The current state of the Player</p>
         </section>
                 <section class="summary source-code" id="source">
           <h2><span>Implementation</span></h2>
-          <pre class="language-dart"><code class="language-dart">PlayerState playerState = PlayerState.isStopped
-
-</code></pre>
+          <pre class="language-dart"><code class="language-dart">PlayerState get playerState =&gt; _playerState;</code></pre>
         </section>
-
+</section>
+        
   </div> <!-- /.main-content -->
 
   <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">

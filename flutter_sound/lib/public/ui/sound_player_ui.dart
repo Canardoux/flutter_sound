@@ -246,12 +246,13 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       __playState = _PlayState.disabled;
     }
     _player
-        .openAudioSessionWithUI(
+        .openAudioSession(
             focus: AudioFocus.requestFocusAndDuckOthers,
             category: SessionCategory.playAndRecord,
             mode: SessionMode.modeDefault,
             device: AudioDevice.speaker,
-            audioFlags: outputToSpeaker | allowBlueToothA2DP | allowAirPlay)
+            audioFlags: outputToSpeaker | allowBlueToothA2DP | allowAirPlay,
+            withUI: true)
         .then((_) {
       _setCallbacks();
       _player.setSubscriptionDuration(Duration(milliseconds: 100));

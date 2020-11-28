@@ -84,7 +84,6 @@ class _SoundEffectState extends State<SoundEffect> {
   @override
   void dispose() {
     _mPlayer.stopPlayer();
-    _mPlayer.stop();
     _mPlayer.closeAudioSession();
     _mPlayer = null;
 

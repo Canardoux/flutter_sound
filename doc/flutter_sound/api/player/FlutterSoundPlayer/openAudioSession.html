@@ -60,7 +60,6 @@
         <li class="section-title">
             <a href="../../player/FlutterSoundPlayer-class.html#instance-properties">Properties</a>
         </li>
-        <li><a href="../../player/FlutterSoundPlayer/audioPlayerFinishedPlaying.html">audioPlayerFinishedPlaying</a></li>
         <li><a href="../../player/FlutterSoundPlayer/foodSink.html">foodSink</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isPaused.html">isPaused</a></li>
@@ -73,30 +72,25 @@
         <li class="section-title"><a href="../../player/FlutterSoundPlayer-class.html#instance-methods">Methods</a></li>
         <li><a href="../../player/FlutterSoundPlayer/closeAudioSession.html">closeAudioSession</a></li>
         <li><a href="../../player/FlutterSoundPlayer/dispositionStream.html">dispositionStream</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/feed.html">feed</a></li>
         <li><a href="../../player/FlutterSoundPlayer/feedFromStream.html">feedFromStream</a></li>
         <li><a href="../../player/FlutterSoundPlayer/getPlayerState.html">getPlayerState</a></li>
         <li><a href="../../player/FlutterSoundPlayer/getProgress.html">getProgress</a></li>
         <li><a href="../../player/FlutterSoundPlayer/getResourcePath.html">getResourcePath</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isDecoderSupported.html">isDecoderSupported</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isOpen.html">isOpen</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/needToConvert.html">needToConvert</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
         <li><a href="../../player/FlutterSoundPlayer/nowPlaying.html">nowPlaying</a></li>
         <li><a href="../../player/FlutterSoundPlayer/openAudioSession.html">openAudioSession</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/openAudioSessionWithUI.html">openAudioSessionWithUI</a></li>
         <li><a href="../../player/FlutterSoundPlayer/pausePlayer.html">pausePlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/resumePlayer.html">resumePlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/seekToPlayer.html">seekToPlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setAudioFocus.html">setAudioFocus</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/setPlayerCallback.html">setPlayerCallback</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setSubscriptionDuration.html">setSubscriptionDuration</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setUIProgressBar.html">setUIProgressBar</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setVolume.html">setVolume</a></li>
         <li><a href="../../player/FlutterSoundPlayer/startPlayer.html">startPlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/startPlayerFromStream.html">startPlayerFromStream</a></li>
         <li><a href="../../player/FlutterSoundPlayer/startPlayerFromTrack.html">startPlayerFromTrack</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/stop.html">stop</a></li>
         <li><a href="../../player/FlutterSoundPlayer/stopPlayer.html">stopPlayer</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
     
@@ -125,6 +119,29 @@
 </ol>)
       
     </section>
+    <section class="desc markdown">
+      <p>Open the Player.</p>
+<p>A player must be opened before used. A player correspond to an Audio Session. With other words, you must <em>open</em> the Audio Session before using it.
+When you have finished with a Player, you must close it. With other words, you must close your Audio Session.
+Opening a player takes resources inside the OS. Those resources are freed with the verb <code>closeAudioSession()</code>.</p>
+<ul>
+<li><code>focus</code> : What to do with others App if they have already the Focus</li>
+<li><code>Category</code> : An optional parameter for iOS. See <a href="https://developer.apple.com/documentation/avfoundation/avaudiosessioncategory?language=objc">iOS documentation</a>.</li>
+<li><code>mode</code> : an optional parameter for iOS. See <a href="https://developer.apple.com/documentation/avfoundation/avaudiosessionmode?language=objc">iOS documentation</a> to understand the meaning of this parameter.</li>
+<li><code>audioFlags</code> : an optional parameter for iOS</li>
+<li><code>withUI</code> : true if the App plan to use <a href="../../player/FlutterSoundPlayer/startPlayerFromTrack.html">startPlayerFromTrack</a> later.</li>
+</ul>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart">    myPlayer = await FlutterSoundPlayer().openAudioSession(focus: Focus.requestFocusAndDuckOthers, outputToSpeaker | allowBlueTooth);
+
+    ...
+    (do something with myPlayer)
+    ...
+
+    await myPlayer.closeAudioSession();
+    myPlayer = null;
+</code></pre>
+    </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
@@ -148,7 +165,7 @@
     _isInited = Initialized.initializationInProgress;
 
     FlutterSoundPlayerPlatform.instance.openSession(this);
-    setPlayerCallback();
+    _setPlayerCallback();
     _openAudioSessionCompleter = Completer&lt;FlutterSoundPlayer&gt;();
     var state = await FlutterSoundPlayerPlatform.instance
         .initializeMediaPlayer(this,
@@ -158,7 +175,7 @@
             audioFlags: audioFlags,
             device: device,
             withUI: withUI);
-    playerState = PlayerState.values[state];
+    _playerState = PlayerState.values[state];
     &#47;&#47;isInited = success ?  Initialized.fullyInitialized : Initialized.notInitialized;
   });
   print(&#39;FS:&lt;--- openAudioSession &#39;);

@@ -60,7 +60,6 @@
         <li class="section-title">
             <a href="../../player/FlutterSoundPlayer-class.html#instance-properties">Properties</a>
         </li>
-        <li><a href="../../player/FlutterSoundPlayer/audioPlayerFinishedPlaying.html">audioPlayerFinishedPlaying</a></li>
         <li><a href="../../player/FlutterSoundPlayer/foodSink.html">foodSink</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isPaused.html">isPaused</a></li>
@@ -73,30 +72,25 @@
         <li class="section-title"><a href="../../player/FlutterSoundPlayer-class.html#instance-methods">Methods</a></li>
         <li><a href="../../player/FlutterSoundPlayer/closeAudioSession.html">closeAudioSession</a></li>
         <li><a href="../../player/FlutterSoundPlayer/dispositionStream.html">dispositionStream</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/feed.html">feed</a></li>
         <li><a href="../../player/FlutterSoundPlayer/feedFromStream.html">feedFromStream</a></li>
         <li><a href="../../player/FlutterSoundPlayer/getPlayerState.html">getPlayerState</a></li>
         <li><a href="../../player/FlutterSoundPlayer/getProgress.html">getProgress</a></li>
         <li><a href="../../player/FlutterSoundPlayer/getResourcePath.html">getResourcePath</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isDecoderSupported.html">isDecoderSupported</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isOpen.html">isOpen</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/needToConvert.html">needToConvert</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
         <li><a href="../../player/FlutterSoundPlayer/nowPlaying.html">nowPlaying</a></li>
         <li><a href="../../player/FlutterSoundPlayer/openAudioSession.html">openAudioSession</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/openAudioSessionWithUI.html">openAudioSessionWithUI</a></li>
         <li><a href="../../player/FlutterSoundPlayer/pausePlayer.html">pausePlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/resumePlayer.html">resumePlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/seekToPlayer.html">seekToPlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setAudioFocus.html">setAudioFocus</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/setPlayerCallback.html">setPlayerCallback</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setSubscriptionDuration.html">setSubscriptionDuration</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setUIProgressBar.html">setUIProgressBar</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setVolume.html">setVolume</a></li>
         <li><a href="../../player/FlutterSoundPlayer/startPlayer.html">startPlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/startPlayerFromStream.html">startPlayerFromStream</a></li>
         <li><a href="../../player/FlutterSoundPlayer/startPlayerFromTrack.html">startPlayerFromTrack</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/stop.html">stop</a></li>
         <li><a href="../../player/FlutterSoundPlayer/stopPlayer.html">stopPlayer</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
     
@@ -124,6 +118,21 @@
         
                 <section class="desc markdown">
           <p>The stream side of the Food Controller</p>
+<p>This is a stream on which FlutterSound will post the player progression.
+You may listen to this Stream to have feedback on the current playback.</p>
+<p>PlaybackDisposition has two fields :</p>
+<ul>
+<li>Duration duration  (the total playback duration)</li>
+<li>Duration position  (the current playback position)</li>
+</ul>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart">        _playerSubscription = myPlayer.onProgress.listen((e)
+        {
+                Duration maxDuration = e.duration;
+                Duration position = e.position;
+                ...
+        }
+</code></pre>
         </section>
                 <section class="summary source-code" id="source">
           <h2><span>Implementation</span></h2>

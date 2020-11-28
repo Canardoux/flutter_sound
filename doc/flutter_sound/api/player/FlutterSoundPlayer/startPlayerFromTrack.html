@@ -60,7 +60,6 @@
         <li class="section-title">
             <a href="../../player/FlutterSoundPlayer-class.html#instance-properties">Properties</a>
         </li>
-        <li><a href="../../player/FlutterSoundPlayer/audioPlayerFinishedPlaying.html">audioPlayerFinishedPlaying</a></li>
         <li><a href="../../player/FlutterSoundPlayer/foodSink.html">foodSink</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isPaused.html">isPaused</a></li>
@@ -73,30 +72,25 @@
         <li class="section-title"><a href="../../player/FlutterSoundPlayer-class.html#instance-methods">Methods</a></li>
         <li><a href="../../player/FlutterSoundPlayer/closeAudioSession.html">closeAudioSession</a></li>
         <li><a href="../../player/FlutterSoundPlayer/dispositionStream.html">dispositionStream</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/feed.html">feed</a></li>
         <li><a href="../../player/FlutterSoundPlayer/feedFromStream.html">feedFromStream</a></li>
         <li><a href="../../player/FlutterSoundPlayer/getPlayerState.html">getPlayerState</a></li>
         <li><a href="../../player/FlutterSoundPlayer/getProgress.html">getProgress</a></li>
         <li><a href="../../player/FlutterSoundPlayer/getResourcePath.html">getResourcePath</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isDecoderSupported.html">isDecoderSupported</a></li>
         <li><a href="../../player/FlutterSoundPlayer/isOpen.html">isOpen</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/needToConvert.html">needToConvert</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
         <li><a href="../../player/FlutterSoundPlayer/nowPlaying.html">nowPlaying</a></li>
         <li><a href="../../player/FlutterSoundPlayer/openAudioSession.html">openAudioSession</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/openAudioSessionWithUI.html">openAudioSessionWithUI</a></li>
         <li><a href="../../player/FlutterSoundPlayer/pausePlayer.html">pausePlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/resumePlayer.html">resumePlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/seekToPlayer.html">seekToPlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setAudioFocus.html">setAudioFocus</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/setPlayerCallback.html">setPlayerCallback</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setSubscriptionDuration.html">setSubscriptionDuration</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setUIProgressBar.html">setUIProgressBar</a></li>
         <li><a href="../../player/FlutterSoundPlayer/setVolume.html">setVolume</a></li>
         <li><a href="../../player/FlutterSoundPlayer/startPlayer.html">startPlayer</a></li>
         <li><a href="../../player/FlutterSoundPlayer/startPlayerFromStream.html">startPlayerFromStream</a></li>
         <li><a href="../../player/FlutterSoundPlayer/startPlayerFromTrack.html">startPlayerFromTrack</a></li>
-        <li><a href="../../player/FlutterSoundPlayer/stop.html">stop</a></li>
         <li><a href="../../player/FlutterSoundPlayer/stopPlayer.html">stopPlayer</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
     
@@ -128,6 +122,66 @@
 </ol>)
       
     </section>
+    <section class="desc markdown">
+      <p>Play data from a track specification and display controls on the lock screen or an Apple Watch.</p>
+<p>The Audio Session must have been open with the parameter <code>withUI</code>.</p>
+<ul>
+<li>
+<p><code>track</code> parameter is a simple structure which describe the sound to play. Please see <a href="track.md">here the Track structure specification</a></p>
+<ul>
+<li><code>whenFinished:()</code> : A function for specifying what to do when the playback will be finished.</li>
+</ul>
+</li>
+<li>
+<p><code>onPaused:()</code> : this parameter can be :</p>
+</li>
+<li>
+<p>a call back function to call when the user hit the Skip Pause button on the lock screen</p>
+</li>
+<li>
+<p><code>null</code> : The pause button will be handled by Flutter Sound internal</p>
+</li>
+<li>
+<p><code>onSkipForward:()</code> : this parameter can be :</p>
+</li>
+<li>
+<p>a call back function to call when the user hit the Skip Forward button on the lock screen</p>
+</li>
+<li>
+<p><code>null</code> : The Skip Forward button will be disabled</p>
+</li>
+<li>
+<p><code>onSkipBackward:()</code> : this parameter can be :</p>
+</li>
+<li>
+<p>a call back function to call when the user hit the Skip Backward button on the lock screen</p>
+</li>
+<li>
+<p><null> : The Skip Backward button will be disabled</null></p>
+</li>
+<li>
+<p><code>removeUIWhenStopped</code> : is a boolean to specify if the UI on the lock screen must be removed when the sound is finished or when the App does a <code>stopPlayer()</code>. Most of the time this parameter must be true. It is used only for the rare cases where the App wants to control the lock screen between two playbacks. Be aware that if the UI is not removed, the button Pause/Resume, Skip Backward and Skip Forward remain active between two playbacks. If you want to disable those button, use the API verb <code>nowPlaying()</code>.
+  Remark: actually this parameter is implemented only on iOS.</p>
+</li>
+<li>
+<p><code>defaultPauseResume</code> : is a boolean value to specify if Flutter Sound must pause/resume the playback by itself when the user hit the pause/resume button. Set this parameter to <em>FALSE</em> if the App wants to manage itself the pause/resume button. If you do not specify this parameter and the <code>onPaused</code> parameter is specified then Flutter Sound will assume <code>FALSE</code>. If you do not specify this parameter and the <code>onPaused</code> parameter is not specified then Flutter Sound will assume <code>TRUE</code>.
+  Remark: actually this parameter is implemented only on iOS.</p>
+</li>
+</ul>
+<p><code>startPlayerFromTrack()</code> returns a Duration Future, which is the record duration.</p>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart">  final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
+  Track track = Track( codec: Codec.opusOGG, trackPath: fileUri, trackAuthor: '3 Inches of Blood', trackTitle: 'Axes of Evil', albumArtAsset: albumArt )
+  Duration d = await myPlayer.startPlayerFromTrack
+  (
+  track,
+  whenFinished: ()
+  {
+    print( 'I hope you enjoyed listening to this song' );
+  },
+  );
+</code></pre>
+    </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
@@ -152,13 +206,13 @@
   &#47;&#47;Map retMap;
   await _lock.synchronized(() async {
     try {
-      await stop(); &#47;&#47; Just in case
-      audioPlayerFinishedPlaying = () {
+      await _stop(); &#47;&#47; Just in case
+      _audioPlayerFinishedPlaying = () {
         whenFinished();
       };
-      this._onSkipForward = onSkipForward;
-      this._onSkipBackward = onSkipBackward;
-      this._onPaused = onPaused;
+      _onSkipForward = onSkipForward;
+      _onSkipBackward = onSkipBackward;
+      _onPaused = onPaused;
       var trackDico = track.toMap();
       var what = &lt;String, dynamic&gt;{
         &#39;codec&#39;: track.codec,
@@ -173,7 +227,7 @@
       trackDico[&#39;codec&#39;] = codec.index;
 
       defaultPauseResume ??= (onPaused == null);
-      if (playerState != PlayerState.isStopped) {
+      if (_playerState != PlayerState.isStopped) {
         throw Exception(&#39;Player is not stopped&#39;);
       }
       _startPlayerCompleter = Completer&lt;Duration&gt;();
@@ -189,7 +243,7 @@
         defaultPauseResume: defaultPauseResume,
         removeUIWhenStopped: removeUIWhenStopped,
       );
-      playerState = PlayerState.values[state];
+      _playerState = PlayerState.values[state];
     } on Exception {
       rethrow;
     }

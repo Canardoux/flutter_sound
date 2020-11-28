@@ -1585,18 +1585,6 @@
   }
  },
  {
-  "name": "audioPlayerFinishedPlaying",
-  "qualifiedName": "player.FlutterSoundPlayer.audioPlayerFinishedPlaying",
-  "href": "player/FlutterSoundPlayer/audioPlayerFinishedPlaying.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
   "name": "closeAudioSession",
   "qualifiedName": "player.FlutterSoundPlayer.closeAudioSession",
   "href": "player/FlutterSoundPlayer/closeAudioSession.html",
@@ -1612,18 +1600,6 @@
   "name": "dispositionStream",
   "qualifiedName": "player.FlutterSoundPlayer.dispositionStream",
   "href": "player/FlutterSoundPlayer/dispositionStream.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "feed",
-  "qualifiedName": "player.FlutterSoundPlayer.feed",
-  "href": "player/FlutterSoundPlayer/feed.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1753,18 +1729,6 @@
   }
  },
  {
-  "name": "needToConvert",
-  "qualifiedName": "player.FlutterSoundPlayer.needToConvert",
-  "href": "player/FlutterSoundPlayer/needToConvert.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
   "name": "nowPlaying",
   "qualifiedName": "player.FlutterSoundPlayer.nowPlaying",
   "href": "player/FlutterSoundPlayer/nowPlaying.html",
@@ -1792,18 +1756,6 @@
   "name": "openAudioSession",
   "qualifiedName": "player.FlutterSoundPlayer.openAudioSession",
   "href": "player/FlutterSoundPlayer/openAudioSession.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "openAudioSessionWithUI",
-  "qualifiedName": "player.FlutterSoundPlayer.openAudioSessionWithUI",
-  "href": "player/FlutterSoundPlayer/openAudioSessionWithUI.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1864,18 +1816,6 @@
   "name": "setAudioFocus",
   "qualifiedName": "player.FlutterSoundPlayer.setAudioFocus",
   "href": "player/FlutterSoundPlayer/setAudioFocus.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "setPlayerCallback",
-  "qualifiedName": "player.FlutterSoundPlayer.setPlayerCallback",
-  "href": "player/FlutterSoundPlayer/setPlayerCallback.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
@@ -1948,18 +1888,6 @@
   "name": "startPlayerFromTrack",
   "qualifiedName": "player.FlutterSoundPlayer.startPlayerFromTrack",
   "href": "player/FlutterSoundPlayer/startPlayerFromTrack.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundPlayer",
-   "type": "class"
-  }
- },
- {
-  "name": "stop",
-  "qualifiedName": "player.FlutterSoundPlayer.stop",
-  "href": "player/FlutterSoundPlayer/stop.html",
   "type": "method",
   "overriddenDepth": 0,
   "packageName": "flauto",
