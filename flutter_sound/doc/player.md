@@ -16,7 +16,6 @@ The verbs offered by the Flutter Sound Player module are :
 - [foodSink](#foodsink) is the output stream when you want to play asynchronously live data
 - [FoodData and FoodEvent](#food) are the two kinds of food that you can provide to the ```foodSink``` Stream.
 - [stopPlayer()](#stopplayer) to stop a current playback
-- [stopPlayer()](#stopplayer) to stop a current playback
 - [pausePlayer()](#pauseplayer) to pause the current playback
 - [resumePlayer()](#resumeplayer) to resume a paused playback
 - [seekPlayer()](#seekplayer) to position directely inside the current playback
@@ -152,7 +151,7 @@ void dispose()
 You may not open many Audio Sessions without closing them.
 You will be very bad if you try something like :
 ```dart
-    while (aCondition)  // *DO'NT DO THAT*
+    while (aCondition)  // *DON'T DO THAT*
     {
             flutterSound = FlutterSoundPlayer().openAudioSession(); // A **new** Flutter Sound instance is created and opened
             flutterSound.startPlayer(bipSound);
