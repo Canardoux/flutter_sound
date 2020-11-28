@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Flutter Sound on Flutter Web · GitBook</title>
+        <title>The Widget UI · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,8 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="./" />
     
-    <link rel="prev" href="install.html" />
+    
+    <link rel="prev" href="../tau/helper.html" />
     
 
     </head>
@@ -311,7 +313,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.5" data-path="ui-widgets.html">
+        <li class="chapter active" data-level="3.5" data-path="ui-widgets.html">
             
                 <a href="ui-widgets.html">
             
@@ -357,7 +359,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="4.3" data-path="flutter_sound_on_web.html">
+        <li class="chapter " data-level="4.3" data-path="flutter_sound_on_web.html">
             
                 <a href="flutter_sound_on_web.html">
             
@@ -654,7 +656,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Flutter Sound on Flutter Web</a>
+        <a href=".." >The Widget UI</a>
     </h1>
 </div>
 
@@ -669,37 +671,78 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="flutter-sound-on-flutter-web">Flutter Sound on Flutter Web</h1>
-<p>Flutter Sound is now supported by Flutter Web (with some limitations). Please <a href="install.html#flutter-web">go to there</a> to have informations on how to setup your App for web.</p>
-<p>The big problem (as usual) is Apple. Webkit is bull shit : you cannot use MediaRecorder to record anything with it. It means that Flutter Sound on Safari cannot record.
-And because Apple forces Firefox and Chrome to use also Webkit on iOS, you cannot record anything on iOS with Flutter Sound. Apple really sucks :-(.</p>
-<p>You can play with <a href="https://www.canardoux.space/tau/flutter_sound_example" target="_blank">this live demo on the web</a>, but better if not Safari and not iOS if you want to record something.</p>
-<h3 id="player">Player</h3>
+                                <h1 id="soundplayerui">SoundPlayerUI</h1>
+<h2 id="overview">Overview</h2>
+<p>The modules offered for the Flutter Sound UI Widgets are :</p>
 <ul>
-<li>Flutter Sound can play buffers with <code>startPlayerFromBuffer()</code>, exactly like with other platforms. Please refer to <a href="../tau/codec#flutter-sound-codecs">the codecs compatibility table</a></li>
-<li>Flutter Sound can play remote URL with <code>startPlayer()</code>, exactly like with other platforms. Again, refer to <a href="../tau/codec#flutter-sound-codecs">the codecs compatibility table</a></li>
-<li>Playing from a Dart Stream with <code>startPlayerFromStream()</code>is not yet implemented.</li>
-<li>Playing with UI is obviously not implemented, because we do not have control to the lock screen inside a web app.</li>
-<li>Flutter Sound does not have control of the audio-focus.</li>
+<li><a href="#uiplayer">UI Player</a></li>
+<li><a href="#uirecorder">UI Recorder</a></li>
+<li><a href="#uicontroller">UI Controller</a></li>
 </ul>
-<p>The web App does not have access to any file system. But you can store an URL into your local SessionStorage, and use the key as if it was an audio file.
-This is compatible with the Flutter Sound recorder.</p>
-<h3 id="recorder">Recorder</h3>
-<p>Flutter Sound on web cannot have access to any file system. You can use <code>startRecorder()</code> like others platforms, but the recorded data will be stored inside an internal HTTP object.
-When the recorder is stopped, <code>startRecorder</code> stores the URL of this object into your local sessionStorage.</p>
-<p>Please refer to <a href="../tau/codec#flutter-sound-codecs">the codecs compatibility table</a> : Flutter Sound Recorder does not work on Safari nor iOS.</p>
-<pre><code>await startRecorder(codec: opusWebM, toFile: &apos;foo&apos;); // the LocalSessionStorage key `foo` will contain the URL of the recorded object
-...
-await stopRecorder();
-await startPlayer(&apos;foo&apos;); // (&apos;foo&apos; is the LocalSessionStorage key of the recorded sound URL object)
-</code></pre><p>Limitations :</p>
+<h2 id="how-to-use">How to use</h2>
+<p>First import the modules
+<code>import &apos;flutter_sound.dart</code></p>
+<p>The SoundPlayerUI provides a Playback widget styled after the HTML 5 audio player.<img src="https://raw.githubusercontent.com/bsutton/sounds/master/images/SoundPlayerUI.png" alt=""></p>
+<p>The player displays a loading indicator and allows the user to pause/resume/skip via the progress bar.</p>
+<p>You can also pause/resume the player via an api call to SoundPlayerUI&apos;s state using a GlobalKey.</p>
+<p>The SoundPlayerUI widget allows you to playback audio from multiple sources:</p>
 <ul>
-<li>Recording to a Dart Stream is not yet implemented</li>
-<li>Flutter Sound does not have access to the audio focus</li>
-<li>Flutter Sound does not provide the audio peak level in the Recorder Progress events.</li>
+<li>File</li>
+<li>Asset</li>
+<li>URL</li>
+<li>Buffer</li>
 </ul>
-<h3 id="ffmpeg">FFmpeg</h3>
-<p>Actually, Flutter Sound on Web does not support FFmpeg. We are still actually not sure if we should support it or if the code weight would be too high for a Web App.</p>
+<h2 id="mediaformat">MediaFormat</h2>
+<p>When using the <code>SoundPlayerUI</code> you MUST pass a <code>Track</code> that has been initialised with a supported <code>MediaFormat</code>.</p>
+<p>The Widget needs to obtain the duration of the audio that it is play and that can only be done if we know the <code>MediaFormat</code> of the Widget.</p>
+<p>If you pass a <code>Track</code> that wasn&apos;t constructed with a <code>MediaFormat</code> then a <code>MediaFormatException</code> will be thrown.</p>
+<p>The <code>MediaFormat</code> must also be natively supported by the OS. See <a href="mediaformat.md">MediaFormat</a> for additional details on checking for a supported format.</p>
+<h3 id="example">Example:</h3>
+<pre><code class="lang-dart">Track track;
+
+<span class="hljs-comment"><span class="markdown">/// global key </span>so<span class="markdown"> we can pause/resume </span>the<span class="markdown"> player via </span>the<span class="markdown"> api.</span></span>
+<span class="hljs-keyword">var</span> playerStateKey = GlobalKey&lt;SoundPlayerUIState&gt;();
+
+<span class="hljs-keyword">void</span> initState()
+{
+   track = Track.fromAsset(<span class="hljs-string">&apos;assets/rock.mp3&apos;</span>, mediaFormat: Mp3MediaFormat());
+}
+
+Widget build(BuildContext build)
+{
+    <span class="hljs-keyword">var</span> player = SoundPlayerUI.fromTrack(track, key: playerStateKey);
+    <span class="hljs-keyword">return</span>
+        Column(child: [
+            player,
+            RaisedButton(<span class="hljs-string">&quot;Pause&quot;</span>, onPressed: () =&gt; playerState.currentState.pause()),
+            RaisedButton(<span class="hljs-string">&quot;Resume&quot;</span>, onPressed: () =&gt; playerState.currentState.resume())
+        ]);
+}
+</code></pre>
+<p><code>Sounds</code> uses <a href="track.md">Track</a> as the primary method of handing around audio data.</p>
+<p>You can also dynamically load a <code>Track</code> when the user clicks the &apos;Play&apos; button on the <code>SoundPlayerUI</code> widget. This allows you to delay the decision on what Track is going to be played until the user clicks the &apos;Play&apos; button.</p>
+<pre><code class="lang-dart">Track track;
+
+
+<span class="hljs-keyword">void</span> initState()
+{
+   track = Track.fromAsset(<span class="hljs-string">&apos;assets/rock.mp3&apos;</span>, mediaFormat: Mp3MediaFormat());
+}
+
+Widget build(BuildContext build)
+{
+    <span class="hljs-keyword">return</span> SoundPlayerUI.fromLoader((context) =&gt; loadTrack());
+}
+
+Future&lt;Track&gt; loadTrack()
+{
+    Track track;
+    track = Track.fromAsset(<span class="hljs-string">&apos;assets/rock.mp3&apos;</span>, mediaFormat: Mp3MediaFormat());
+
+    track.title = <span class="hljs-string">&quot;Asset playback.&quot;</span>;
+    track.artist = <span class="hljs-string">&quot;By sounds&quot;</span>;
+}
+</code></pre>
 
                                 
                                 </section>
@@ -727,10 +770,14 @@ await startPlayer(&apos;foo&apos;); // (&apos;foo&apos; is the LocalSessionStora
 
             
                 
-                <a href="install.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Installation">
+                <a href="../tau/helper.html" class="navigation navigation-prev " aria-label="Previous page: The utilities">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="./" class="navigation navigation-next " aria-label="Next page: τ under Flutter">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -739,7 +786,7 @@ await startPlayer(&apos;foo&apos;); // (&apos;foo&apos; is the LocalSessionStora
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Flutter Sound on Flutter Web","level":"4.3","depth":1,"next":{"title":"Live Example","level":"4.4","depth":1,"url":"https://canardoux.github.io/tau/doc/flutter_sound/web_example/","ref":"https://canardoux.github.io/tau/doc/flutter_sound/web_example/","articles":[]},"previous":{"title":"Installation","level":"4.2","depth":1,"path":"flutter_sound/install.md","ref":"flutter_sound/install.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"flutter_sound/flutter_sound_on_web.md","mtime":"2020-11-27T20:07:35.267Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-28T10:02:34.837Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"The Widget UI","level":"3.5","depth":1,"next":{"title":"τ under Flutter","level":"4.1","depth":1,"path":"flutter_sound/README.md","ref":"flutter_sound/README.md","articles":[]},"previous":{"title":"The utilities","level":"3.4","depth":1,"path":"tau/helper.md","ref":"tau/helper.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"flutter_sound/ui-widgets.md","mtime":"2020-11-27T22:26:43.128Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-28T10:02:34.837Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

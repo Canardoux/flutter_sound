@@ -41,6 +41,7 @@ myPlayer.openAudioSession().then( (){ ...} );
 
 4. **Close your players.**
 This is important to close every player open for freeing the resources taken by the audio session.
+A good place to do that is in the `dispose()` procedure.
 ```dart
 myPlayer.closeAudioSession();
 ```
@@ -73,6 +74,7 @@ myRecorder.openAudioSession().then( (){ ...} );
 
 4. **Close your recorder.**
 This is important to close it for freeing the resources taken by the audio session.
+A good place to do that is in the `dispose()` procedure.
 ```dart
 myRecorder.closeAudioSession();
 ```
