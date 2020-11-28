@@ -8,7 +8,7 @@ environment:
     flutter: ">=1.12.0 <2.0.0"
 dependencies:
   path_provider: ">=1.0.0 <2.0.0"
-  logger: ^0.7.0+2
+  logger: ^0.9.4
   intl: ^0.16.1
   recase: ^3.0.0
   uuid: ^2.0.4

@@ -16,9 +16,8 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
+import 'package:logger/logger.dart' hide AnsiColor;
 
 import 'ansi_color.dart';
 import 'enum_helper.dart';
@@ -148,11 +147,11 @@ class MyLogPrinter extends LogPrinter {
   MyLogPrinter(this.currentWorkingDirectory);
 
   @override
-  void log(LogEvent event) {
+  List<String> log(LogEvent event) {
     if (EnumHelper.getIndexOf(Level.values, Log.loggingLevel) >
         EnumHelper.getIndexOf(Level.values, event.level)) {
       // don't log events where the log level is set higher
-      return;
+      return null;
     }
     var formatter = DateFormat('dd HH:mm:ss.');
     var now = DateTime.now();
