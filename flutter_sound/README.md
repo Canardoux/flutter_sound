@@ -11,7 +11,7 @@ This plugin provides simple recorder and player functionalities for both Android
 
 # Flutter Sound V6.x is OUT
 
-Please refer to the [CHANGELOG.md file](../CHANGELOG.md) to get learn all the great new features. It has especially the following :
+Please refer to the [CHANGELOG.md file](../CHANGELOG.md) to learn about all the great new features. It has the following:
 
 ## Flutter Web support
 
@@ -19,13 +19,13 @@ Flutter Sound is supported by Flutter Web. You can play with [this live demo on 
 
 ## Record to Dart Stream
 
-This feature has been requested from many months from many, many, many Flutter Sound users. This open doors to things like feeding a Speech-to-Text engine.
+This feature has been requested for many months from many, many, many Flutter Sound users. This opens doors to things like feeding a Speech-to-Text engine.
 
 You can refer to the [Getting Started with Record-to-Stream](doc/codec.md#recording-pcm-16-to-a-dart-stream) notice.
 
 ## Playback from a live Dart Stream
 
-This feature has also been requested from many months from many Flutter Sound users.
+This feature has also been requested for many months from many Flutter Sound users.
 
 You can refer to the [Getting Started with Playback-from-Stream](doc/codec.md#playing-pcm-16-from-a-dart-stream) notice.
 
@@ -45,19 +45,19 @@ You can refer to the [Getting Started with Playback-from-Stream](doc/codec.md#pl
 
 ## Flutter Sound branches
 
-We actually maintain two branches for Flutter Sound :
+We maintain two branches for Flutter Sound :
 
 - The V5 branch (the version ^5.0.0)
-- The master branch (actually the version ^6.0.0)
+- The master branch (the version ^6.0.0)
 
 ## Migration Guides
 
-See [the migration guide](doc/migration.md) to migrate from an anterious version (V5, V4 or V3)
+See [the migration guide](doc/migration.md) to migrate from a previous version (V5, V4 or V3)
 
 ## SDK requirements
 
 - Flutter Sound requires an iOS 9.3 SDK (or later)
-- Flutter Sound requires an Android 21 (or later)
+- Flutter Sound requires an Android API level 21 (or later)
 
 ## Installation
 
@@ -67,23 +67,23 @@ See [the migration guide](doc/migration.md) to migrate from an anterious version
 
 Flutter Sound is composed with 4 modules :
 
-- [FlutterSoundPlayer](doc/player.md#flutter-sound-player-api), wich deal with everything about playbacks
-- [FlutterSoundRecorder](doc/recorder.md#flutter-sound-recorder-api), which deal with everything about recording
+- [FlutterSoundPlayer](doc/player.md#flutter-sound-player-api), which deals with everything about playbacks
+- [FlutterSoundRecorder](doc/recorder.md#flutter-sound-recorder-api), which deals with everything about recording
 - [FlutterSoundHelper](doc/helper.md), which offers some convenients tools
-- [FlutterSoundUI](doc/ui_widget.md), which offer some Widget ready to be used out of the box
+- [FlutterSoundUI](doc/ui_widget.md), which offers some Widgets ready to be used out of the box
 
-To use Flutter Sound you just do :
+To use Flutter Sound you can just:
 ```
 import 'package:flutter_sound/flutter_sound.dart';
 ```
 
-This will import all the necessaries dart interfaces.
+This will import all the neccessary Dart interfaces.
 
 ## Examples (Demo Apps)
 
 Flutter Sound comes with several Demo/Examples :
 
-Please refer to [the README.md](example/README.md) to have a preview of those examples.
+Please refer to [the example README.md](example/README.md) to have a preview of those examples.
 [The `examples App`](example/lib/main.dart) is a driver which can call all the various examples.
 
 ## License
