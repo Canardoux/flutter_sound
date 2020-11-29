@@ -2217,34 +2217,10 @@
   }
  },
  {
-  "name": "dispositionStream",
-  "qualifiedName": "recorder.FlutterSoundRecorder.dispositionStream",
-  "href": "recorder/FlutterSoundRecorder/dispositionStream.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
   "name": "isEncoderSupported",
   "qualifiedName": "recorder.FlutterSoundRecorder.isEncoderSupported",
   "href": "recorder/FlutterSoundRecorder/isEncoderSupported.html",
   "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "isInited",
-  "qualifiedName": "recorder.FlutterSoundRecorder.isInited",
-  "href": "recorder/FlutterSoundRecorder/isInited.html",
-  "type": "property",
   "overriddenDepth": 0,
   "packageName": "flauto",
   "enclosedBy": {
@@ -2325,30 +2301,6 @@
   }
  },
  {
-  "name": "recorderState",
-  "qualifiedName": "recorder.FlutterSoundRecorder.recorderState",
-  "href": "recorder/FlutterSoundRecorder/recorderState.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "recordingData",
-  "qualifiedName": "recorder.FlutterSoundRecorder.recordingData",
-  "href": "recorder/FlutterSoundRecorder/recordingData.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
   "name": "resumeRecorder",
   "qualifiedName": "recorder.FlutterSoundRecorder.resumeRecorder",
   "href": "recorder/FlutterSoundRecorder/resumeRecorder.html",
@@ -2402,18 +2354,6 @@
   "href": "recorder/FlutterSoundRecorder/stopRecorder.html",
   "type": "method",
   "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSoundRecorder",
-   "type": "class"
-  }
- },
- {
-  "name": "updateRecorderProgress",
-  "qualifiedName": "recorder.FlutterSoundRecorder.updateRecorderProgress",
-  "href": "recorder/FlutterSoundRecorder/updateRecorderProgress.html",
-  "type": "method",
-  "overriddenDepth": 1,
   "packageName": "flauto",
   "enclosedBy": {
    "name": "FlutterSoundRecorder",
@@ -2761,78 +2701,6 @@
   "packageName": "flauto"
  },
  {
-  "name": "FlutterSound",
-  "qualifiedName": "tau.FlutterSound",
-  "href": "tau/FlutterSound-class.html",
-  "type": "class",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "tau",
-   "type": "library"
-  }
- },
- {
-  "name": "FlutterSound",
-  "qualifiedName": "tau.FlutterSound.FlutterSound",
-  "href": "tau/FlutterSound/FlutterSound.html",
-  "type": "constructor",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSound",
-   "type": "class"
-  }
- },
- {
-  "name": "internalOpenSessionForRecording",
-  "qualifiedName": "tau.FlutterSound.internalOpenSessionForRecording",
-  "href": "tau/FlutterSound/internalOpenSessionForRecording.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSound",
-   "type": "class"
-  }
- },
- {
-  "name": "setAudioFocus",
-  "qualifiedName": "tau.FlutterSound.setAudioFocus",
-  "href": "tau/FlutterSound/setAudioFocus.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSound",
-   "type": "class"
-  }
- },
- {
-  "name": "setIOSSessionParameters",
-  "qualifiedName": "tau.FlutterSound.setIOSSessionParameters",
-  "href": "tau/FlutterSound/setIOSSessionParameters.html",
-  "type": "method",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSound",
-   "type": "class"
-  }
- },
- {
-  "name": "thePlayer",
-  "qualifiedName": "tau.FlutterSound.thePlayer",
-  "href": "tau/FlutterSound/thePlayer.html",
-  "type": "property",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "FlutterSound",
-   "type": "class"
-  }
- },
- {
   "name": "Food",
   "qualifiedName": "tau.Food",
   "href": "tau/Food-class.html",
@@ -2974,30 +2842,6 @@
   "enclosedBy": {
    "name": "FoodEvent",
    "type": "class"
-  }
- },
- {
-  "name": "Initialized",
-  "qualifiedName": "tau.Initialized",
-  "href": "tau/Initialized-class.html",
-  "type": "enum",
-  "overriddenDepth": 0,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "tau",
-   "type": "library"
-  }
- },
- {
-  "name": "toString",
-  "qualifiedName": "tau.Initialized.toString",
-  "href": "tau/Initialized/toString.html",
-  "type": "method",
-  "overriddenDepth": 1,
-  "packageName": "flauto",
-  "enclosedBy": {
-   "name": "Initialized",
-   "type": "enum"
   }
  },
  {

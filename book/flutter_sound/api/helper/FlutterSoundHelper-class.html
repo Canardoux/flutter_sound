@@ -129,7 +129,7 @@ Most of those utilities use FFmpeg, so are not available in the LITE flavor of F
           </span>
                   </dt>
         <dd>
-          This verb is useful to convert a sound file to a new format. <a href="../helper/FlutterSoundHelper/convertFile.html">[...]</a>
+          Convert a sound file to a new format. <a href="../helper/FlutterSoundHelper/convertFile.html">[...]</a>
                   
 </dd>
         <dt id="duration" class="callable">
@@ -138,8 +138,7 @@ Most of those utilities use FFmpeg, so are not available in the LITE flavor of F
           </span>
                   </dt>
         <dd>
-          This verb is used to get an estimation of the duration of a sound file.
-Be aware that it is just an estimation, based on the Codec used and the sample rate. 
+          Get the duration of a sound file. <a href="../helper/FlutterSoundHelper/duration.html">[...]</a>
                   
 </dd>
         <dt id="executeFFmpegWithArguments" class="callable">
@@ -148,9 +147,7 @@ Be aware that it is just an estimation, based on the Codec used and the sample r
           </span>
                   </dt>
         <dd>
-          This verb is a wrapper for the great FFmpeg application.
-The command <code>man ffmpeg</code> (if you have installed ffmpeg on your computer) will give you many informations.
-If you do not have <code>ffmpeg</code> on your computer you will find easyly on internet many documentation on this great program. <a href="../helper/FlutterSoundHelper/executeFFmpegWithArguments.html">[...]</a>
+          A wrapper for the great FFmpeg application. <a href="../helper/FlutterSoundHelper/executeFFmpegWithArguments.html">[...]</a>
                   
 </dd>
         <dt id="ffMpegGetMediaInformation" class="callable">
@@ -159,8 +156,7 @@ If you do not have <code>ffmpeg</code> on your computer you will find easyly on 
           </span>
                   </dt>
         <dd>
-          Returns various informations about the Audio specified by the <code>uri</code> parameter.
-The informations Map got with FFmpegGetMediaInformation() are <a href="https://pub.dev/packages/flutter_ffmpeg">documented here</a>. 
+          Various informations about the Audio specified by the <code>uri</code> parameter. <a href="../helper/FlutterSoundHelper/ffMpegGetMediaInformation.html">[...]</a>
                   
 </dd>
         <dt id="getLastFFmpegCommandOutput" class="callable">
@@ -169,9 +165,7 @@ The informations Map got with FFmpegGetMediaInformation() are <a href="https://p
           </span>
                   </dt>
         <dd>
-          We use here our own ffmpeg "getLastCommandOutput" procedure instead of the one provided by the flutter_ffmpeg plugin,
-so that the developers not interested by ffmpeg can use Flutter Sound without the flutter_ffmpeg plugin
-and without any complain from the link-editor. <a href="../helper/FlutterSoundHelper/getLastFFmpegCommandOutput.html">[...]</a>
+          Get the log code output by <a href="../helper/FlutterSoundHelper/executeFFmpegWithArguments.html">executeFFmpegWithArguments()</a>. <a href="../helper/FlutterSoundHelper/getLastFFmpegCommandOutput.html">[...]</a>
                   
 </dd>
         <dt id="getLastFFmpegReturnCode" class="callable">
@@ -180,9 +174,7 @@ and without any complain from the link-editor. <a href="../helper/FlutterSoundHe
           </span>
                   </dt>
         <dd>
-          We use here our own ffmpeg "getLastReturnCode" procedure instead of the one provided by the flutter_ffmpeg plugin,
-so that the developers not interested by ffmpeg can use Flutter Sound without the flutter_ffmpeg plugin
-and without any complain from the link-editor. <a href="../helper/FlutterSoundHelper/getLastFFmpegReturnCode.html">[...]</a>
+          Get the error code returned by <a href="../helper/FlutterSoundHelper/executeFFmpegWithArguments.html">executeFFmpegWithArguments()</a>. <a href="../helper/FlutterSoundHelper/getLastFFmpegReturnCode.html">[...]</a>
                   
 </dd>
         <dt id="isFFmpegAvailable" class="callable">
@@ -191,8 +183,7 @@ and without any complain from the link-editor. <a href="../helper/FlutterSoundHe
           </span>
                   </dt>
         <dd>
-          This verb is used to know during runtime if FFmpeg is linked with the App.
-returns true if FFmpeg is available (probably the FULL version of Flutter Sound) 
+          To know during runtime if FFmpeg is linked with the App. <a href="../helper/FlutterSoundHelper/isFFmpegAvailable.html">[...]</a>
                   
 </dd>
         <dt id="noSuchMethod" class="callable inherited">
@@ -210,10 +201,7 @@ returns true if FFmpeg is available (probably the FULL version of Flutter Sound)
           </span>
                   </dt>
         <dd>
-          Converts a raw PCM file to a WAVE file.
-Add a WAVE header in front of the PCM data
-This verb is usefull to convert a Raw PCM file to a Wave file.
-It adds a <code>Wave</code> envelop to the PCM file, so that the file can be played back with <code>startPlayer()</code>. <a href="../helper/FlutterSoundHelper/pcmToWave.html">[...]</a>
+          Converts a raw PCM file to a WAVE file. <a href="../helper/FlutterSoundHelper/pcmToWave.html">[...]</a>
                   
 </dd>
         <dt id="pcmToWaveBuffer" class="callable">
@@ -222,9 +210,7 @@ It adds a <code>Wave</code> envelop to the PCM file, so that the file can be pla
           </span>
                   </dt>
         <dd>
-          Convert a raw PCM buffer to a WAVE buffer.
-Adds a WAVE header in front of the PCM data
-It adds a <code>Wave</code> envelop in front of the PCM buffer, so that the file can be played back with <code>startPlayerFromBuffer()</code>. <a href="../helper/FlutterSoundHelper/pcmToWaveBuffer.html">[...]</a>
+          Convert a raw PCM buffer to a WAVE buffer. <a href="../helper/FlutterSoundHelper/pcmToWaveBuffer.html">[...]</a>
                   
 </dd>
         <dt id="toString" class="callable inherited">
@@ -242,8 +228,7 @@ It adds a <code>Wave</code> envelop in front of the PCM buffer, so that the file
           </span>
                   </dt>
         <dd>
-          Convert a WAVE file to a Raw PCM file.
-Remove the WAVE header in front of the Wave file <a href="../helper/FlutterSoundHelper/waveToPCM.html">[...]</a>
+          Convert a WAVE file to a Raw PCM file. <a href="../helper/FlutterSoundHelper/waveToPCM.html">[...]</a>
                   
 </dd>
         <dt id="waveToPCMBuffer" class="callable">
@@ -252,9 +237,7 @@ Remove the WAVE header in front of the Wave file <a href="../helper/FlutterSound
           </span>
                   </dt>
         <dd>
-          Convert a WAVE buffer to a Raw PCM buffer.
-Remove WAVE header in front of the Wave buffer.
-Note that this verb is not asynchronous and does not return a Future. 
+          Convert a WAVE buffer to a Raw PCM buffer. <a href="../helper/FlutterSoundHelper/waveToPCMBuffer.html">[...]</a>
                   
 </dd>
       </dl>

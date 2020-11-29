@@ -18,10 +18,6 @@ The verbs offered by the Flutter Sound Player module are :
 
 ## Creating the `Recorder` instance.
 
-*Dart definition (prototype) :*
-```
-/* ctor */ FlutterSoundRecorder()
-```
 
 This is the first thing to do, if you want to deal with recording. The instanciation of a new recorder does not do many thing. You are safe if you put this instanciation inside a global or instance variable initialization.
 
@@ -34,18 +30,9 @@ myPlayer = FlutterSoundRecorder();
 
 ## `openAudioSession()` and `closeAudioSession()`
 
-*Dart definition (prototype) :*
-```
-Future<FlutterSoundRecorder> openAudioSession
-({
-        AudioFocus focus = AudioFocus.requestFocusTransient,
-        SessionCategory category = SessionCategory.playAndRecord,
-        SessionMode mode = SessionMode.modeDefault,
-        int audioFlags = outputToSpeaker
-})
+-[Dart API: openAudioSession](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/openAudioSession.html)
+-[Dart API: closeAudioSession](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/closeAudioSession.html)
 
-Future<void> closeAudioSession()
-```
 
 A recorder must be opened before used. A recorder correspond to an Audio Session. With other words, you must *open* the Audio Session before using it.
 When you have finished with a Recorder, you must close it. With other words, you must close your Audio Session.
@@ -98,17 +85,7 @@ The four optional parameters are used if you want to control the Audio Focus. Pl
 
 ## `setAudioFocus()`
 
-*Dart definition (prototype) :*
-```
-Future<void> setAudioFocus
-({
-        AudioFocus focus = AudioFocus.requestFocusTransient,
-        SessionCategory category = SessionCategory.playAndRecord,
-        SessionMode mode = SessionMode.modeDefault,
-        int audioFlags = outputToSpeaker,
-        AudioDevice device = AudioDevice.speaker,
-})
-```
+[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/setAudioFocus.html)
 
 ### `focus:` parameter possible values are
 - AudioFocus.requestFocus (request focus, but do not do anything special with others App)
@@ -134,19 +111,7 @@ Please look to [openAudioSession()](player.md#openaudiosession-and-closeaudioses
 
 ## `startRecorder()`
 
-*Dart definition (prototype) :*
-```
-    Future<void> startRecorder(
-        {
-                Codec codec = Codec.aacADTS,
-                String toFile,
-                StreamSink toStream,
-                int sampleRate = 16000,
-                int numChannels = 1,
-                int bitRate = 16000,
-                AudioSource audioSource = AudioSource.DefaultSource,
-        })
-```
+[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/startRecorder.html)
 
 You use `startRecorder()` to start recording in an open session. `startRecorder()` has the destination file path as parameter.
 It has also 7 optional parameters to specify :
@@ -182,12 +147,7 @@ Flutter Sound does not take care of the recording permission. It is the App resp
 
 ## `StopRecorder()`
 
-*Dart definition (prototype) :*
-```
-await startRecorder( codec: Codec.opusWebM, toFile: 'foo' );
-
-
-```
+[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/StopRecorder.html)
 
 Use this verb to stop a record. This verb never throws any exception. It is safe to call it everywhere,
 for example when the App is not sure of the current Audio State and want to recover a clean reset state.
@@ -207,10 +167,7 @@ for example when the App is not sure of the current Audio State and want to reco
 
 ## PauseRecorder()
 
-*Dart definition (prototype) :*
-```
-Future<void> pauseRecorder( )
-```
+Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/PauseRecorder.html)
 
 On Android this API verb needs al least SDK-24.
 An exception is thrown if the Recorder is not currently recording.
@@ -225,10 +182,7 @@ await myRecorder.pauseRecorder();
 ## ResumeRecorder()
 
 
-*Dart definition (prototype) :*
-```
-Future<void> resumeRecorder( )
-```
+Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/ResumeRecorder.html)
 
 On Android this API verb needs al least SDK-24.
 An exception is thrown if the Recorder is not currently paused.
@@ -242,13 +196,10 @@ await myRecorder.resumeRecorder();
 
 ## `recorderState`, `isRecording`, `isPaused`, `isStopped`
 
-*Dart definition (prototype) :*
-```
-    RecorderState recorderState;
-    bool get isrecording => recorderState == RecorderState.isRecording;
-    bool get isPaused => recorderState == RecorderState.isPaused;
-    bool get isStopped => recorderState == RecorderState.isStopped;
-```
+-[Dart API: isRecording](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/isRecording.html)
+-[Dart API: isStopped](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/isStopped.html)
+-[Dart API: isPaused](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/isPaused.html)
+-[Dart API: recorderState](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/RecorderState.html)
 
 This four verbs is used when the app wants to get the current Audio State of the recorder.
 
@@ -281,10 +232,7 @@ This four verbs is used when the app wants to get the current Audio State of the
 
 ## `isEncoderSupported()`
 
-*Dart definition (prototype) :*
-```
- Future<bool> isEncoderSupported(Codec codec)
-```
+[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/isEncoderSupported.html)
 
 This verb is useful to know if a particular codec is supported on the current platform;
 Return a Future<bool>.
@@ -298,10 +246,7 @@ Return a Future<bool>.
 
 ## `onProgress`
 
-*Dart definition (prototype) :*
-```
-Stream<RecorderStatus> get onProgress => recorderController != null ? recorderController.stream : null;
-```
+[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/onProgress.html)
 
 The attribut `onProgress` is a stream on which FlutterSound will post the recorder progression.
 You may listen to this Stream to have feedback on the current recording.
@@ -320,10 +265,7 @@ You may listen to this Stream to have feedback on the current recording.
 
 ## `setSubscriptionDuration()`
 
-*Dart definition (prototype) :*
-```
-Future<void> setSubscriptionDuration(double sec)
-```
+[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/setSubscriptionDuration.html)
 
 This verb is used to change the default interval between two post on the "Update Progress" stream. (The default interval is 0 (zero) which means "NO post")
 

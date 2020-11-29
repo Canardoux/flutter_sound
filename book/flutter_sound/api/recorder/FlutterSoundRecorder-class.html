@@ -71,33 +71,33 @@
       <div><h1><span class="kind-class">FlutterSoundRecorder</span> class  </h1></div>
 
     <section class="desc markdown">
-      <hr>
-<p>A recorder is an object that can record from various sources.
-Using a recorder is very simple :</p>
+      <p>A Recorder is an object that can playback from various sources.</p>
+<hr>
+<p>Using a recorder is very simple :</p>
 <ol>
 <li>
-<p>Create a new <code>FlutterSoundRecorder</code> (optional).
-This is optional, and most of the time, APP will use the pre-built
-instead of creating a new object</p>
+<p>Create a new <code>FlutterSoundRecorder</code> </p>
 </li>
 <li>
-<p>Start your record with <code>startRecording()</code>.
-<code>startRecording()</code> returns a future, but you do not need
-to wait for this future completed before working with your record.</p>
+<p>Open it with <a href="../recorder/FlutterSoundRecorder/openAudioSession.html">openAudioSession()</a></p>
+</li>
+<li>
+<p>Start your recording with <a href="../recorder/FlutterSoundRecorder/startRecorder.html">startRecorder()</a>.</p>
 </li>
 <li>
 <p>Use the various verbs (optional):</p>
 <ul>
-<li><code>pauseRecorder()</code></li>
-<li><code>resumeRecorder()</code></li>
+<li><a href="../recorder/FlutterSoundRecorder/pauseRecorder.html">pauseRecorder()</a></li>
+<li><a href="../recorder/FlutterSoundRecorder/resumeRecorder.html">resumeRecorder()</a></li>
+<li>...</li>
 </ul>
 </li>
 <li>
-<p>Stop your recorder : <code>stopRecorder</code></p>
+<p>Stop your recorder : <a href="../recorder/FlutterSoundRecorder/stopRecorder.html">stopRecorder()</a></p>
 </li>
 <li>
-<p>Release your recorder when you have finished with it : <code>releaseRecorder()</code>.
-This verb will call to <code>stopRecorder()</code> will be done if necessary.</p>
+<p>Release your recorder when you have finished with it : <a href="../recorder/FlutterSoundRecorder/closeAudioSession.html">closeAudioSession()</a>.
+This verb will call <a href="../recorder/FlutterSoundRecorder/stopRecorder.html">stopRecorder()</a> if necessary.</p>
 </li>
 </ol>
 <hr>
@@ -144,14 +144,6 @@ This verb will call to <code>stopRecorder()</code> will be done if necessary.</p
           The hash code for this object. <a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">[...]</a>
                   <div class="features">read-only, inherited</div>
 </dd>
-        <dt id="isInited" class="property">
-          <span class="name"><a href="../recorder/FlutterSoundRecorder/isInited.html">isInited</a></span>
-          <span class="signature">&#8596; <a href="../tau/Initialized-class.html">Initialized</a></span>         
-        </dt>
-        <dd>
-           
-                  <div class="features">read / write</div>
-</dd>
         <dt id="isPaused" class="property">
           <span class="name"><a href="../recorder/FlutterSoundRecorder/isPaused.html">isPaused</a></span>
           <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>         
@@ -181,16 +173,9 @@ This verb will call to <code>stopRecorder()</code> will be done if necessary.</p
           <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../recorder/RecordingDisposition-class.html">RecordingDisposition</a></span>&gt;</span></span>         
         </dt>
         <dd>
-           
+          A stream on which FlutterSound will post the recorder progression.
+You may listen to this Stream to have feedback on the current recording. <a href="../recorder/FlutterSoundRecorder/onProgress.html">[...]</a>
                   <div class="features">read-only</div>
-</dd>
-        <dt id="recorderState" class="property">
-          <span class="name"><a href="../recorder/FlutterSoundRecorder/recorderState.html">recorderState</a></span>
-          <span class="signature">&#8596; <a href="https://pub.dev/documentation/flauto_platform_interface/6.4.3+36/flutter_sound_recorder_platform_interface/RecorderState-class.html">RecorderState</a></span>         
-        </dt>
-        <dd>
-           
-                  <div class="features">read / write</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
           <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
@@ -212,16 +197,7 @@ This verb will call to <code>stopRecorder()</code> will be done if necessary.</p
           </span>
                   </dt>
         <dd>
-           
-                  
-</dd>
-        <dt id="dispositionStream" class="callable">
-          <span class="name"><a href="../recorder/FlutterSoundRecorder/dispositionStream.html">dispositionStream</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../recorder/RecordingDisposition-class.html">RecordingDisposition</a></span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-           
+          Close a Recorder <a href="../recorder/FlutterSoundRecorder/closeAudioSession.html">[...]</a>
                   
 </dd>
         <dt id="isEncoderSupported" class="callable">
@@ -230,8 +206,7 @@ This verb will call to <code>stopRecorder()</code> will be done if necessary.</p
           </span>
                   </dt>
         <dd>
-          Returns true if the specified encoder is supported by flutter_sound on this platform
-<code>isEncoderSupported</code> is a method for legacy reason, but should be a static function. 
+          Returns true if the specified encoder is supported by flutter_sound on this platform. <a href="../recorder/FlutterSoundRecorder/isEncoderSupported.html">[...]</a>
                   
 </dd>
         <dt id="noSuchMethod" class="callable inherited">
@@ -249,7 +224,7 @@ This verb will call to <code>stopRecorder()</code> will be done if necessary.</p
           </span>
                   </dt>
         <dd>
-           
+          Open a Recorder <a href="../recorder/FlutterSoundRecorder/openAudioSession.html">[...]</a>
                   
 </dd>
         <dt id="pauseRecorder" class="callable">
@@ -258,17 +233,8 @@ This verb will call to <code>stopRecorder()</code> will be done if necessary.</p
           </span>
                   </dt>
         <dd>
-           
+          Pause the recorder <a href="../recorder/FlutterSoundRecorder/pauseRecorder.html">[...]</a>
                   
-</dd>
-        <dt id="recordingData" class="callable">
-          <span class="name"><a href="../recorder/FlutterSoundRecorder/recordingData.html">recordingData</a></span><span class="signature">(<wbr><span class="parameter" id="recordingData-param-data">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-typed_data/Uint8List-class.html">Uint8List</a></span> <span class="parameter-name">data</span>}</span>)
-            <span class="returntype parameter">&#8594; void</span>
-          </span>
-                  </dt>
-        <dd>
-           
-                  <div class="features">override</div>
 </dd>
         <dt id="resumeRecorder" class="callable">
           <span class="name"><a href="../recorder/FlutterSoundRecorder/resumeRecorder.html">resumeRecorder</a></span><span class="signature">(<wbr>)
@@ -276,7 +242,7 @@ This verb will call to <code>stopRecorder()</code> will be done if necessary.</p
           </span>
                   </dt>
         <dd>
-           
+          Resume a paused Recorder <a href="../recorder/FlutterSoundRecorder/resumeRecorder.html">[...]</a>
                   
 </dd>
         <dt id="setAudioFocus" class="callable">
@@ -285,7 +251,7 @@ This verb will call to <code>stopRecorder()</code> will be done if necessary.</p
           </span>
                   </dt>
         <dd>
-           
+          Changes the audio focus in an open Recorder <a href="../recorder/FlutterSoundRecorder/setAudioFocus.html">[...]</a>
                   
 </dd>
         <dt id="setSubscriptionDuration" class="callable">
@@ -295,11 +261,7 @@ This verb will call to <code>stopRecorder()</code> will be done if necessary.</p
                   </dt>
         <dd>
           Sets the frequency at which duration updates are sent to
-duration listeners. Zero means "no callbacks".
-The default is zero.
-Sets the frequency at which duration updates are sent to
-duration listeners.
-The default is every 10 milliseconds. 
+duration listeners. <a href="../recorder/FlutterSoundRecorder/setSubscriptionDuration.html">[...]</a>
                   
 </dd>
         <dt id="startRecorder" class="callable">
@@ -308,7 +270,7 @@ The default is every 10 milliseconds.
           </span>
                   </dt>
         <dd>
-           
+          <code>startRecorder()</code> starts recording with an open session. <a href="../recorder/FlutterSoundRecorder/startRecorder.html">[...]</a>
                   
 </dd>
         <dt id="stopRecorder" class="callable">
@@ -317,7 +279,7 @@ The default is every 10 milliseconds.
           </span>
                   </dt>
         <dd>
-           
+          Stop a record. <a href="../recorder/FlutterSoundRecorder/stopRecorder.html">[...]</a>
                   
 </dd>
         <dt id="toString" class="callable inherited">
@@ -328,15 +290,6 @@ The default is every 10 milliseconds.
         <dd class="inherited">
           Returns a string representation of this object. 
                   <div class="features">inherited</div>
-</dd>
-        <dt id="updateRecorderProgress" class="callable">
-          <span class="name"><a href="../recorder/FlutterSoundRecorder/updateRecorderProgress.html">updateRecorderProgress</a></span><span class="signature">(<wbr><span class="parameter" id="updateRecorderProgress-param-duration">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">duration</span>, </span><span class="parameter" id="updateRecorderProgress-param-dbPeakLevel"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">dbPeakLevel</span>}</span>)
-            <span class="returntype parameter">&#8594; void</span>
-          </span>
-                  </dt>
-        <dd>
-           
-                  <div class="features">override</div>
 </dd>
       </dl>
     </section>
@@ -371,29 +324,24 @@ The default is every 10 milliseconds.
         <a href="../recorder/FlutterSoundRecorder-class.html#instance-properties">Properties</a>
       </li>
       <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
-      <li><a href="../recorder/FlutterSoundRecorder/isInited.html">isInited</a></li>
       <li><a href="../recorder/FlutterSoundRecorder/isPaused.html">isPaused</a></li>
       <li><a href="../recorder/FlutterSoundRecorder/isRecording.html">isRecording</a></li>
       <li><a href="../recorder/FlutterSoundRecorder/isStopped.html">isStopped</a></li>
       <li><a href="../recorder/FlutterSoundRecorder/onProgress.html">onProgress</a></li>
-      <li><a href="../recorder/FlutterSoundRecorder/recorderState.html">recorderState</a></li>
       <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
     
       <li class="section-title"><a href="../recorder/FlutterSoundRecorder-class.html#instance-methods">Methods</a></li>
       <li><a href="../recorder/FlutterSoundRecorder/closeAudioSession.html">closeAudioSession</a></li>
-      <li><a href="../recorder/FlutterSoundRecorder/dispositionStream.html">dispositionStream</a></li>
       <li><a href="../recorder/FlutterSoundRecorder/isEncoderSupported.html">isEncoderSupported</a></li>
       <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
       <li><a href="../recorder/FlutterSoundRecorder/openAudioSession.html">openAudioSession</a></li>
       <li><a href="../recorder/FlutterSoundRecorder/pauseRecorder.html">pauseRecorder</a></li>
-      <li><a href="../recorder/FlutterSoundRecorder/recordingData.html">recordingData</a></li>
       <li><a href="../recorder/FlutterSoundRecorder/resumeRecorder.html">resumeRecorder</a></li>
       <li><a href="../recorder/FlutterSoundRecorder/setAudioFocus.html">setAudioFocus</a></li>
       <li><a href="../recorder/FlutterSoundRecorder/setSubscriptionDuration.html">setSubscriptionDuration</a></li>
       <li><a href="../recorder/FlutterSoundRecorder/startRecorder.html">startRecorder</a></li>
       <li><a href="../recorder/FlutterSoundRecorder/stopRecorder.html">stopRecorder</a></li>
       <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
-      <li><a href="../recorder/FlutterSoundRecorder/updateRecorderProgress.html">updateRecorderProgress</a></li>
     
       <li class="section-title inherited"><a href="../recorder/FlutterSoundRecorder-class.html#operators">Operators</a></li>
       <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>

@@ -16,9 +16,13 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/// Toto et titi
-
-/// Un joli commmentaire
+/// ------------------------------------------------------------------
+///
+/// Provides a collection of methods that help when working with
+/// enums.
+///
+/// --------------------------------------------------------------------
+///
 /// {@category Utilities}
 library enum_helper;
 

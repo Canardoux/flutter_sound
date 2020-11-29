@@ -15,9 +15,14 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
-/// Toto et titi
-
-/// Un joli commmentaire
+/// ----------
+///
+/// FlutterSoundHelper module is for handling audio files and buffers.
+///
+/// Most of those utilities use FFmpeg, so are not available in the LITE flavor of Flutter Sound.
+///
+/// --------------------
+///
 /// {@category Utilities}
 library helper;
 
@@ -54,7 +59,8 @@ class FlutterSoundHelper {
 
 //-------------------------------------------------------------------------------------------------------------
 
-  /// This verb is used to know during runtime if FFmpeg is linked with the App.
+  /// To know during runtime if FFmpeg is linked with the App.
+  ///
   /// returns true if FFmpeg is available (probably the FULL version of Flutter Sound)
   Future<bool> isFFmpegAvailable() async {
     if (_flutterFFmpegConfig == null) {
@@ -66,7 +72,10 @@ class FlutterSoundHelper {
     return _ffmpegAvailable;
   }
 
-  /// This verb is a wrapper for the great FFmpeg application.
+
+
+  /// A wrapper for the great FFmpeg application.
+  ///
   /// The command `man ffmpeg` (if you have installed ffmpeg on your computer) will give you many informations.
   /// If you do not have `ffmpeg` on your computer you will find easyly on internet many documentation on this great program.
   ///
@@ -80,6 +89,8 @@ class FlutterSoundHelper {
     return flutterFFmpeg.executeWithArguments(arguments);
   }
 
+  /// Get the error code returned by [executeFFmpegWithArguments()].
+  ///
   /// We use here our own ffmpeg "getLastReturnCode" procedure instead of the one provided by the flutter_ffmpeg plugin,
   /// so that the developers not interested by ffmpeg can use Flutter Sound without the flutter_ffmpeg plugin
   /// and without any complain from the link-editor.
@@ -90,6 +101,11 @@ class FlutterSoundHelper {
     return _flutterFFmpegConfig.getLastReturnCode();
   }
 
+
+
+
+  /// Get the log code output by [executeFFmpegWithArguments()].
+  ///
   /// We use here our own ffmpeg "getLastCommandOutput" procedure instead of the one provided by the flutter_ffmpeg plugin,
   /// so that the developers not interested by ffmpeg can use Flutter Sound without the flutter_ffmpeg plugin
   /// and without any complain from the link-editor.
@@ -102,7 +118,11 @@ class FlutterSoundHelper {
     return _flutterFFmpegConfig.getLastCommandOutput();
   }
 
-  /// Returns various informations about the Audio specified by the `uri` parameter.
+
+
+
+  /// Various informations about the Audio specified by the `uri` parameter.
+  ///
   /// The informations Map got with FFmpegGetMediaInformation() are [documented here](https://pub.dev/packages/flutter_ffmpeg).
   Future<Map<dynamic, dynamic>> ffMpegGetMediaInformation(String uri) async {
     if (uri == null) return null;
@@ -114,6 +134,10 @@ class FlutterSoundHelper {
     }
   }
 
+
+
+  /// Get the duration of a sound file.
+  ///
   /// This verb is used to get an estimation of the duration of a sound file.
   /// Be aware that it is just an estimation, based on the Codec used and the sample rate.
   Future<Duration> duration(String uri) async {
@@ -126,11 +150,15 @@ class FlutterSoundHelper {
     return (duration == null) ? null : Duration(milliseconds: duration);
   }
 
+
+
   /// Convert a WAVE file to a Raw PCM file.
+  ///
   /// Remove the WAVE header in front of the Wave file
   ///
-  ///This verb is usefull to convert a Wave file to a Raw PCM file.
-  ///Note that this verb is not asynchronous and does not return a Future.
+  /// This verb is usefull to convert a Wave file to a Raw PCM file.
+  ///
+  /// Note that this verb is not asynchronous and does not return a Future.
   Future<void> waveToPCM({
     String inputFile,
     String outputFile,
@@ -144,8 +172,13 @@ class FlutterSoundHelper {
     await sink.close();
   }
 
+
+
+
   /// Convert a WAVE buffer to a Raw PCM buffer.
+  ///
   /// Remove WAVE header in front of the Wave buffer.
+  ///
   /// Note that this verb is not asynchronous and does not return a Future.
   Uint8List waveToPCMBuffer({
     Uint8List inputBuffer,
@@ -153,12 +186,17 @@ class FlutterSoundHelper {
     return inputBuffer.sublist(WaveHeader.headerLength);
   }
 
+
+
+
   /// Converts a raw PCM file to a WAVE file.
+  ///
   /// Add a WAVE header in front of the PCM data
   /// This verb is usefull to convert a Raw PCM file to a Wave file.
   /// It adds a `Wave` envelop to the PCM file, so that the file can be played back with `startPlayer()`.
   ///
   /// Note: the parameters `numChannels` and `sampleRate` **are mandatory, and must match the actual PCM data**.
+  ///
   /// [See here](doc/codec.md#note-on-raw-pcm-and-wave-files) a discussion about `Raw PCM` and `WAVE` file format.
   Future<void> pcmToWave({
     String inputFile,
@@ -189,7 +227,11 @@ class FlutterSoundHelper {
     await sink.close();
   }
 
+
+
+
   /// Convert a raw PCM buffer to a WAVE buffer.
+  ///
   /// Adds a WAVE header in front of the PCM data
   /// It adds a `Wave` envelop in front of the PCM buffer, so that the file can be played back with `startPlayerFromBuffer()`.
   ///
@@ -224,7 +266,10 @@ class FlutterSoundHelper {
     return Uint8List.fromList(buffer);
   }
 
-  /// This verb is useful to convert a sound file to a new format.
+
+
+
+  /// Convert a sound file to a new format.
   ///
   /// - `inputFile` is the file path of the file you want to convert
   /// - `inputCodec` is the actual file format

@@ -15,9 +15,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
-/// Toto et titi
-
-/// Un joli commmentaire
+/// -----
+///
+/// Used by the Log module to print the stack of callers
+///
+/// --------------
+///
 /// {@category Utilities}
 library stack_trace;
 

@@ -16,7 +16,7 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/// The Flutter Sound Player
+/// **THE** Flutter Sound Player
 /// {@category Main}
 library player;
 
@@ -76,7 +76,29 @@ String fileExtension(String path) {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
-/// The Flutter Sound Player object
+/// A Player is an object that can playback from various sources.
+///
+/// ----------------------------------------------------------------------------------------------------
+///
+/// Using a player is very simple :
+///
+/// 1. Create a new `FlutterSoundPlayer`
+///
+/// 2. Open it with [openAudioSession()]
+///
+/// 3. Start your playback with [startPlayer()].
+///
+/// 4. Use the various verbs (optional):
+///    - [pausePlayer()]
+///    - [resumePlayer()]
+///    - ...
+///
+/// 5. Stop your player : [stopPlayer()]
+///
+/// 6. Release your player when you have finished with it : [closeAudioSession()].
+/// This verb will call [stopPlayer()] if necessary.
+///
+/// ----------------------------------------------------------------------------------------------------
 class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   
   TonSkip _onSkipForward; // User callback "onPaused:"
@@ -454,7 +476,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   /// Open the Player.
   ///
-  ///
   /// A player must be opened before used. A player correspond to an Audio Session. With other words, you must *open* the Audio Session before using it.
   /// When you have finished with a Player, you must close it. With other words, you must close your Audio Session.
   /// Opening a player takes resources inside the OS. Those resources are freed with the verb `closeAudioSession()`.
@@ -599,27 +620,17 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///
   /// example:
   /// ```dart
-  // @override
-  // void dispose()
-  // {
-  //         if (myPlayer != null)
-  //         {
-  //             myPlayer.closeAudioSession();
-  //             myPlayer = null;
-  //         }
-  //         super.dispose();
-  // }
-  // ```
-  //
-  // You may not open many Audio Sessions without closing them.
-  // You will be very bad if you try something like :
-  // ```dart
-  //     while (aCondition)  // *DON'T DO THAT*
-  //     {
-  //             flutterSound = FlutterSoundPlayer().openAudioSession(); // A **new** Flutter Sound instance is created and opened
-  //             flutterSound.startPlayer(bipSound);
-  //     }
-  // ```
+  /// @override
+  /// void dispose()
+  /// {
+  ///         if (myPlayer != null)
+  ///         {
+  ///             myPlayer.closeAudioSession();
+  ///             myPlayer = null;
+  ///         }
+  ///         super.dispose();
+  /// }
+  /// ```
   Future<void> closeAudioSession() async {
     print('FS:---> closeAudioSession ');
     await _lock.synchronized(() async {
@@ -677,7 +688,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
 
 
-  ///
   /// Get the current progress of a playback.
   /// 
   /// It returns a `Map` with two Duration entries : `'progress'` and `'duration'`.
@@ -1079,8 +1089,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
 
 
+  ///  Used when you want to play live PCM data synchronously.
   ///
-  ///  This is the verb that you use when you want to play live PCM data synchronously.
   ///  This procedure returns a Future. It is very important that you wait that this Future is completed before trying to play another buffer.
   ///
   ///  *Example:*
@@ -1179,7 +1189,10 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///   - a call back function to call when the user hit the Skip Backward button on the lock screen
   ///   - <null> : The Skip Backward button will be disabled
   ///
-  ///   - `removeUIWhenStopped` : is a boolean to specify if the UI on the lock screen must be removed when the sound is finished or when the App does a `stopPlayer()`. Most of the time this parameter must be true. It is used only for the rare cases where the App wants to control the lock screen between two playbacks. Be aware that if the UI is not removed, the button Pause/Resume, Skip Backward and Skip Forward remain active between two playbacks. If you want to disable those button, use the API verb ```nowPlaying()```.
+  ///   - `removeUIWhenStopped` : is a boolean to specify if the UI on the lock screen must be removed when the sound is finished or when the App does a `stopPlayer()`.
+  ///   Most of the time this parameter must be true. It is used only for the rare cases where the App wants to control the lock screen between two playbacks.
+  ///   Be aware that if the UI is not removed, the button Pause/Resume, Skip Backward and Skip Forward remain active between two playbacks.
+  ///   If you want to disable those button, use the API verb ```nowPlaying()```.
   ///   Remark: actually this parameter is implemented only on iOS.
   ///
   ///   - `defaultPauseResume` : is a boolean value to specify if Flutter Sound must pause/resume the playback by itself when the user hit the pause/resume button. Set this parameter to *FALSE* if the App wants to manage itself the pause/resume button. If you do not specify this parameter and the `onPaused` parameter is specified then Flutter Sound will assume `FALSE`. If you do not specify this parameter and the `onPaused` parameter is not specified then Flutter Sound will assume `TRUE`.
@@ -1280,6 +1293,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
 
   /// Set the Lock screen fields without starting a new playback.
+  ///
   /// The fields 'dataBuffer' and 'trackPath' of the Track parameter are not used.
   /// Please refer to 'startPlayerFromTrack' for the meaning of the others parameters.
   /// Remark `setUIProgressBar()` is implemented only on iOS.

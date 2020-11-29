@@ -68,7 +68,8 @@
       <div><h1><span class="kind-class">WaveHeader</span> class  </h1></div>
 
     <section class="desc markdown">
-      <p>This class represents the header of a WAVE format audio file, which usually
+      <p>A Wave header.</p>
+<p>This class represents the header of a WAVE format audio file, which usually
 have a .wav suffix.  The following integer valued fields are contained:</p><ul>
 <li> format - usually PCM, ALAW or ULAW.
 </li><li> numChannels - 1 for mono, 2 for stereo.
@@ -87,13 +88,7 @@ have a .wav suffix.  The following integer valued fields are contained:</p><ul>
           <span class="name"><a href="../wave_header/WaveHeader/WaveHeader.html">WaveHeader</a></span><span class="signature">(<span class="parameter" id="-param-mFormat"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">mFormat</span>, </span><span class="parameter" id="-param-mNumChannels"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">mNumChannels</span>, </span><span class="parameter" id="-param-mSampleRate"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">mSampleRate</span>, </span><span class="parameter" id="-param-mBitsPerSample"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">mBitsPerSample</span>, </span><span class="parameter" id="-param-mNumBytes"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">mNumBytes</span></span>)</span>
         </dt>
         <dd>
-          Construct a WaveHeader, with fields initialized.
-@param format format of audio data,
-one of {@link #FORMAT_PCM}, {@link #FORMAT_ULAW}, or {@link #FORMAT_ALAW}.
-@param numChannels 1 for mono, 2 for stereo.
-@param sampleRate typically 8000, 11025, 16000, 22050, or 44100 hz.
-@param bitsPerSample usually 16 for PCM, 8 for ULAW or 8 for ALAW.
-@param numBytes size of audio data after this header, in bytes. 
+          Construct a WaveHeader, with fields initialized. <a href="../wave_header/WaveHeader/WaveHeader.html">[...]</a>
         </dd>
       </dl>
     </section>
@@ -188,10 +183,7 @@ one of {@link #FORMAT_PCM}, {@link #FORMAT_ULAW}, or {@link #FORMAT_ALAW}.
           </span>
                   </dt>
         <dd>
-          Write a WAVE file header.
-@param out {@link java.io.OutputStream} to receive the header.
-@return number of bytes written.
-@throws IOException 
+          Write a WAVE file header. <a href="../wave_header/WaveHeader/write.html">[...]</a>
                   
 </dd>
       </dl>

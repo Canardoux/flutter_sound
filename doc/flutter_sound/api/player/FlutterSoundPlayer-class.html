@@ -76,7 +76,36 @@
       <div><h1><span class="kind-class">FlutterSoundPlayer</span> class  </h1></div>
 
     <section class="desc markdown">
-      <p>The Flutter Sound Player object</p>
+      <p>A Player is an object that can playback from various sources.</p>
+<hr>
+<p>Using a player is very simple :</p>
+<ol>
+<li>
+<p>Create a new <code>FlutterSoundPlayer</code></p>
+</li>
+<li>
+<p>Open it with <a href="../player/FlutterSoundPlayer/openAudioSession.html">openAudioSession()</a></p>
+</li>
+<li>
+<p>Start your playback with <a href="../player/FlutterSoundPlayer/startPlayer.html">startPlayer()</a>.</p>
+</li>
+<li>
+<p>Use the various verbs (optional):</p>
+<ul>
+<li><a href="../player/FlutterSoundPlayer/pausePlayer.html">pausePlayer()</a></li>
+<li><a href="../player/FlutterSoundPlayer/resumePlayer.html">resumePlayer()</a></li>
+<li>...</li>
+</ul>
+</li>
+<li>
+<p>Stop your player : <a href="../player/FlutterSoundPlayer/stopPlayer.html">stopPlayer()</a></p>
+</li>
+<li>
+<p>Release your player when you have finished with it : <a href="../player/FlutterSoundPlayer/closeAudioSession.html">closeAudioSession()</a>.
+This verb will call <a href="../player/FlutterSoundPlayer/stopPlayer.html">stopPlayer()</a> if necessary.</p>
+</li>
+</ol>
+<hr>
     </section>
     
     <section>
@@ -208,8 +237,7 @@ as the audio is played. <a href="../player/FlutterSoundPlayer/dispositionStream.
           </span>
                   </dt>
         <dd>
-          This is the verb that you use when you want to play live PCM data synchronously.
-This procedure returns a Future. It is very important that you wait that this Future is completed before trying to play another buffer. <a href="../player/FlutterSoundPlayer/feedFromStream.html">[...]</a>
+          Used when you want to play live PCM data synchronously. <a href="../player/FlutterSoundPlayer/feedFromStream.html">[...]</a>
                   
 </dd>
         <dt id="getPlayerState" class="callable">
@@ -272,10 +300,7 @@ This procedure returns a Future. It is very important that you wait that this Fu
           </span>
                   </dt>
         <dd>
-          Set the Lock screen fields without starting a new playback.
-The fields 'dataBuffer' and 'trackPath' of the Track parameter are not used.
-Please refer to 'startPlayerFromTrack' for the meaning of the others parameters.
-Remark <code>setUIProgressBar()</code> is implemented only on iOS. <a href="../player/FlutterSoundPlayer/nowPlaying.html">[...]</a>
+          Set the Lock screen fields without starting a new playback. <a href="../player/FlutterSoundPlayer/nowPlaying.html">[...]</a>
                   
 </dd>
         <dt id="openAudioSession" class="callable">

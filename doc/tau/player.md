@@ -408,9 +408,9 @@ PlaybackDisposition has two fields :
 
 ##`Food`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/tau/Food/Food.html)
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/tau/FoodDataFoodData.html.html)
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/tau/FoodEvent/FoodEvent.html)
+- [Dart API: Food](https://canardoux.github.io/tau/doc/flutter_sound/api/tau/Food/Food.html)
+- [Dart API: FoodData](https://canardoux.github.io/tau/doc/flutter_sound/api/tau/FoodData/FoodData.html.html)
+- [Dart API: FoodEvent](https://canardoux.github.io/tau/doc/flutter_sound/api/tau/FoodEvent/FoodEvent.html)
 
 
 This are the objects that you can `add` to `foodSink`

@@ -17,9 +17,15 @@
  * along with FlutterFFmpeg.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/// Toto et titi
-
-/// Un joli commmentaire
+/// ------------------------
+///
+/// Flutter Sound uses its own ffmpeg module
+/// instead of depends on `flutter_ffmpeg` plugin,
+/// because we wanted to simplify the App dependencies declarations
+///  specially on Android.
+///
+/// -------------------------
+///
 /// {@category Utilities}
 library ffmpeg;
 
@@ -27,7 +33,10 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
-///
+/// Flutter Sound uses its own ffmpeg module
+/// instead of depends on `flutter_ffmpeg` plugin,
+/// because we wanted to simplify the App dependencies declarations
+///  specially on Android.
 class FlutterFFmpegConfig {
   static const MethodChannel _methodChannel = MethodChannel('flutter_ffmpeg');
   static const EventChannel _eventChannel =

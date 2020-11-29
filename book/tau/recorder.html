@@ -688,25 +688,15 @@
 </ul>
 <hr>
 <h2 id="creating-the-recorder-instance">Creating the <code>Recorder</code> instance.</h2>
-<p><em>Dart definition (prototype) :</em></p>
-<pre><code>/* ctor */ FlutterSoundRecorder()
-</code></pre><p>This is the first thing to do, if you want to deal with recording. The instanciation of a new recorder does not do many thing. You are safe if you put this instanciation inside a global or instance variable initialization.</p>
+<p>This is the first thing to do, if you want to deal with recording. The instanciation of a new recorder does not do many thing. You are safe if you put this instanciation inside a global or instance variable initialization.</p>
 <p><em>Example:</em></p>
 <pre><code class="lang-dart">myPlayer = FlutterSoundRecorder();
 </code></pre>
 <hr>
 <h2 id="openaudiosession-and-closeaudiosession"><code>openAudioSession()</code> and <code>closeAudioSession()</code></h2>
-<p><em>Dart definition (prototype) :</em></p>
-<pre><code>Future&lt;FlutterSoundRecorder&gt; openAudioSession
-({
-        AudioFocus focus = AudioFocus.requestFocusTransient,
-        SessionCategory category = SessionCategory.playAndRecord,
-        SessionMode mode = SessionMode.modeDefault,
-        int audioFlags = outputToSpeaker
-})
-
-Future&lt;void&gt; closeAudioSession()
-</code></pre><p>A recorder must be opened before used. A recorder correspond to an Audio Session. With other words, you must <em>open</em> the Audio Session before using it.
+<p>-<a href="https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/openAudioSession.html" target="_blank">Dart API: openAudioSession</a>
+-<a href="https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/closeAudioSession.html" target="_blank">Dart API: closeAudioSession</a></p>
+<p>A recorder must be opened before used. A recorder correspond to an Audio Session. With other words, you must <em>open</em> the Audio Session before using it.
 When you have finished with a Recorder, you must close it. With other words, you must close your Audio Session.
 Opening a recorder takes resources inside the OS. Those resources are freed with the verb <code>closeAudioSession()</code>.</p>
 <p>You MUST ensure that the recorder has been closed when your widget is detached from the UI.
@@ -745,16 +735,8 @@ You will be very bad if you try something like :</p>
 </code></pre>
 <hr>
 <h2 id="setaudiofocus"><code>setAudioFocus()</code></h2>
-<p><em>Dart definition (prototype) :</em></p>
-<pre><code>Future&lt;void&gt; setAudioFocus
-({
-        AudioFocus focus = AudioFocus.requestFocusTransient,
-        SessionCategory category = SessionCategory.playAndRecord,
-        SessionMode mode = SessionMode.modeDefault,
-        int audioFlags = outputToSpeaker,
-        AudioDevice device = AudioDevice.speaker,
-})
-</code></pre><h3 id="focus-parameter-possible-values-are"><code>focus:</code> parameter possible values are</h3>
+<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/setAudioFocus.html" target="_blank">Dart API</a></p>
+<h3 id="focus-parameter-possible-values-are"><code>focus:</code> parameter possible values are</h3>
 <ul>
 <li>AudioFocus.requestFocus (request focus, but do not do anything special with others App)</li>
 <li>AudioFocus.requestFocusAndStopOthers (your app will have <strong>exclusive use</strong> of the output audio)</li>
@@ -772,18 +754,8 @@ You will be very bad if you try something like :</p>
 </code></pre>
 <hr>
 <h2 id="startrecorder"><code>startRecorder()</code></h2>
-<p><em>Dart definition (prototype) :</em></p>
-<pre><code>    Future&lt;void&gt; startRecorder(
-        {
-                Codec codec = Codec.aacADTS,
-                String toFile,
-                StreamSink toStream,
-                int sampleRate = 16000,
-                int numChannels = 1,
-                int bitRate = 16000,
-                AudioSource audioSource = AudioSource.DefaultSource,
-        })
-</code></pre><p>You use <code>startRecorder()</code> to start recording in an open session. <code>startRecorder()</code> has the destination file path as parameter.
+<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/startRecorder.html" target="_blank">Dart API</a></p>
+<p>You use <code>startRecorder()</code> to start recording in an open session. <code>startRecorder()</code> has the destination file path as parameter.
 It has also 7 optional parameters to specify :</p>
 <ul>
 <li>codec: The codec to be used. Please refer to the <a href="codec.html#actually-the-following-codecs-are-supported-by-flutter_sound">Codec compatibility Table</a> to know which codecs are currently supported.</li>
@@ -814,9 +786,8 @@ It has also 7 optional parameters to specify :</p>
 </code></pre>
 <hr>
 <h2 id="stoprecorder"><code>StopRecorder()</code></h2>
-<p><em>Dart definition (prototype) :</em></p>
-<pre><code>await startRecorder( codec: Codec.opusWebM, toFile: &apos;foo&apos; );
-</code></pre><p>Use this verb to stop a record. This verb never throws any exception. It is safe to call it everywhere,
+<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/StopRecorder.html" target="_blank">Dart API</a></p>
+<p>Use this verb to stop a record. This verb never throws any exception. It is safe to call it everywhere,
 for example when the App is not sure of the current Audio State and want to recover a clean reset state.</p>
 <p><em>Example:</em></p>
 <pre><code class="lang-dart">        <span class="hljs-keyword">await</span> myRecorder.stopRecorder();
@@ -829,30 +800,27 @@ for example when the App is not sure of the current Audio State and want to reco
 </code></pre>
 <hr>
 <h2 id="pauserecorder">PauseRecorder()</h2>
-<p><em>Dart definition (prototype) :</em></p>
-<pre><code>Future&lt;void&gt; pauseRecorder( )
-</code></pre><p>On Android this API verb needs al least SDK-24.
+<p>Dart API](<a href="https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/PauseRecorder.html" target="_blank">https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/PauseRecorder.html</a>)</p>
+<p>On Android this API verb needs al least SDK-24.
 An exception is thrown if the Recorder is not currently recording.</p>
 <p><em>Example:</em></p>
 <pre><code class="lang-dart"><span class="hljs-keyword">await</span> myRecorder.pauseRecorder();
 </code></pre>
 <hr>
 <h2 id="resumerecorder">ResumeRecorder()</h2>
-<p><em>Dart definition (prototype) :</em></p>
-<pre><code>Future&lt;void&gt; resumeRecorder( )
-</code></pre><p>On Android this API verb needs al least SDK-24.
+<p>Dart API](<a href="https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/ResumeRecorder.html" target="_blank">https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/ResumeRecorder.html</a>)</p>
+<p>On Android this API verb needs al least SDK-24.
 An exception is thrown if the Recorder is not currently paused.</p>
 <p><em>Example:</em></p>
 <pre><code class="lang-dart"><span class="hljs-keyword">await</span> myRecorder.resumeRecorder();
 </code></pre>
 <hr>
 <h2 id="recorderstate-isrecording-ispaused-isstopped"><code>recorderState</code>, <code>isRecording</code>, <code>isPaused</code>, <code>isStopped</code></h2>
-<p><em>Dart definition (prototype) :</em></p>
-<pre><code>    RecorderState recorderState;
-    bool get isrecording =&gt; recorderState == RecorderState.isRecording;
-    bool get isPaused =&gt; recorderState == RecorderState.isPaused;
-    bool get isStopped =&gt; recorderState == RecorderState.isStopped;
-</code></pre><p>This four verbs is used when the app wants to get the current Audio State of the recorder.</p>
+<p>-<a href="https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/isRecording.html" target="_blank">Dart API: isRecording</a>
+-<a href="https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/isStopped.html" target="_blank">Dart API: isStopped</a>
+-<a href="https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/isPaused.html" target="_blank">Dart API: isPaused</a>
+-<a href="https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/RecorderState.html" target="_blank">Dart API: recorderState</a></p>
+<p>This four verbs is used when the app wants to get the current Audio State of the recorder.</p>
 <p><code>recorderState</code> is an attribut which can have the following values :</p>
 <ul>
 <li>isStopped   /// Recorder is stopped</li>
@@ -878,18 +846,16 @@ An exception is thrown if the Recorder is not currently paused.</p>
 </code></pre>
 <hr>
 <h2 id="isencodersupported"><code>isEncoderSupported()</code></h2>
-<p><em>Dart definition (prototype) :</em></p>
-<pre><code> Future&lt;bool&gt; isEncoderSupported(Codec codec)
-</code></pre><p>This verb is useful to know if a particular codec is supported on the current platform;
+<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/isEncoderSupported.html" target="_blank">Dart API</a></p>
+<p>This verb is useful to know if a particular codec is supported on the current platform;
 Return a Future<bool>.</bool></p>
 <p><em>Example:</em></p>
 <pre><code class="lang-dart">        <span class="hljs-keyword">if</span> ( <span class="hljs-keyword">await</span> myRecorder.isEncoderSupported(Codec.opusOGG) ) doSomething;
 </code></pre>
 <hr>
 <h2 id="onprogress"><code>onProgress</code></h2>
-<p><em>Dart definition (prototype) :</em></p>
-<pre><code>Stream&lt;RecorderStatus&gt; get onProgress =&gt; recorderController != null ? recorderController.stream : null;
-</code></pre><p>The attribut <code>onProgress</code> is a stream on which FlutterSound will post the recorder progression.
+<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/onProgress.html" target="_blank">Dart API</a></p>
+<p>The attribut <code>onProgress</code> is a stream on which FlutterSound will post the recorder progression.
 You may listen to this Stream to have feedback on the current recording.</p>
 <p><em>Example:</em></p>
 <pre><code class="lang-dart">        _recorderSubscription = myrecorder.onProgress.listen((e)
@@ -901,9 +867,8 @@ You may listen to this Stream to have feedback on the current recording.</p>
 </code></pre>
 <hr>
 <h2 id="setsubscriptionduration"><code>setSubscriptionDuration()</code></h2>
-<p><em>Dart definition (prototype) :</em></p>
-<pre><code>Future&lt;void&gt; setSubscriptionDuration(double sec)
-</code></pre><p>This verb is used to change the default interval between two post on the &quot;Update Progress&quot; stream. (The default interval is 0 (zero) which means &quot;NO post&quot;)</p>
+<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/setSubscriptionDuration.html" target="_blank">Dart API</a></p>
+<p>This verb is used to change the default interval between two post on the &quot;Update Progress&quot; stream. (The default interval is 0 (zero) which means &quot;NO post&quot;)</p>
 <p><em>Example:</em></p>
 <pre><code class="lang-dart"><span class="hljs-comment">// 0. is default</span>
 myRecorder.setSubscriptionDuration(<span class="hljs-number">0.010</span>);
@@ -951,7 +916,7 @@ myRecorder.setSubscriptionDuration(<span class="hljs-number">0.010</span>);
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"The τ Recorder","level":"3.3","depth":1,"next":{"title":"The utilities","level":"3.4","depth":1,"path":"tau/utilities.md","ref":"tau/utilities.md","articles":[]},"previous":{"title":"The τ Player","level":"3.2","depth":1,"path":"tau/player.md","ref":"tau/player.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/recorder.md","mtime":"2020-11-27T20:07:35.393Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-28T17:02:45.336Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"The τ Recorder","level":"3.3","depth":1,"next":{"title":"The utilities","level":"3.4","depth":1,"path":"tau/utilities.md","ref":"tau/utilities.md","articles":[]},"previous":{"title":"The τ Player","level":"3.2","depth":1,"path":"tau/player.md","ref":"tau/player.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/recorder.md","mtime":"2020-11-29T14:01:26.805Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-29T15:02:39.133Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

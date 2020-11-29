@@ -16,9 +16,12 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/// Toto et titi
-
-/// Un joli commmentaire
+/// -------
+///
+/// A very basic module to access temporary files.
+///
+/// ----------
+///
 /// {@category Utilities}
 library temp_file_system;
 

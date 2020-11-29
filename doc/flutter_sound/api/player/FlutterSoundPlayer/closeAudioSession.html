@@ -122,33 +122,22 @@ It is safe to call this procedure at any time.</p>
 <li>If the Player is currently in play or pause mode, it will be stopped before.</li>
 </ul>
 <p>example:</p>
-<pre class="language-dart"><code class="language-dart"></code></pre>
+<pre class="language-dart"><code class="language-dart">@override
+void dispose()
+{
+        if (myPlayer != null)
+        {
+            myPlayer.closeAudioSession();
+            myPlayer = null;
+        }
+        super.dispose();
+}
+</code></pre>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">&#47;&#47; @override
-&#47;&#47; void dispose()
-&#47;&#47; {
-&#47;&#47;         if (myPlayer != null)
-&#47;&#47;         {
-&#47;&#47;             myPlayer.closeAudioSession();
-&#47;&#47;             myPlayer = null;
-&#47;&#47;         }
-&#47;&#47;         super.dispose();
-&#47;&#47; }
-&#47;&#47; ```
-&#47;&#47;
-&#47;&#47; You may not open many Audio Sessions without closing them.
-&#47;&#47; You will be very bad if you try something like :
-&#47;&#47; ```dart
-&#47;&#47;     while (aCondition)  &#47;&#47; *DON&#39;T DO THAT*
-&#47;&#47;     {
-&#47;&#47;             flutterSound = FlutterSoundPlayer().openAudioSession(); &#47;&#47; A **new** Flutter Sound instance is created and opened
-&#47;&#47;             flutterSound.startPlayer(bipSound);
-&#47;&#47;     }
-&#47;&#47; ```
-Future&lt;void&gt; closeAudioSession() async {
+      <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; closeAudioSession() async {
   print(&#39;FS:---&gt; closeAudioSession &#39;);
   await _lock.synchronized(() async {
     if (_isInited == Initialized.notInitialized) {

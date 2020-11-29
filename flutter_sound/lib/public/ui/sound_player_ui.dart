@@ -43,6 +43,7 @@ import '../util/log.dart';
 ///
 typedef OnLoad = Future<Track> Function(BuildContext context);
 
+/// -----------------------------------------------------------------
 /// # A HTML 5 style audio play bar.
 ///
 /// Allows you to play/pause/resume and seek an audio track.

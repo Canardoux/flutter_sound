@@ -16,9 +16,12 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/// Toto et titi
-
-/// Un joli commmentaire
+/// ---------
+///
+/// A module to print traces for info or debugging purpose
+///
+/// --------------
+///
 /// {@category Utilities}
 library log;
 

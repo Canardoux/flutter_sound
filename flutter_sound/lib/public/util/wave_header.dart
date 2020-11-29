@@ -16,15 +16,20 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/// Toto et titi
-
-/// Un joli commmentaire
+/// --------
+///
+/// A module for manipulation of Wav headers
+///
+/// ----------
+///
 /// {@category Utilities}
 library wave_header;
 
 import 'dart:async';
 import 'dart:core';
 
+/// A Wave header.
+///
 /// This class represents the header of a WAVE format audio file, which usually
 /// have a .wav suffix.  The following integer valued fields are contained:
 /// <ul>
@@ -66,6 +71,7 @@ class WaveHeader {
   int mNumBytes;
 
   /// Construct a WaveHeader, with fields initialized.
+  ///
   /// @param format format of audio data,
   /// one of {@link #FORMAT_PCM}, {@link #FORMAT_ULAW}, or {@link #FORMAT_ALAW}.
   /// @param numChannels 1 for mono, 2 for stereo.
@@ -133,6 +139,7 @@ class WaveHeader {
          */
 
   /// Write a WAVE file header.
+  /// 
   /// @param out {@link java.io.OutputStream} to receive the header.
   /// @return number of bytes written.
   /// @throws IOException

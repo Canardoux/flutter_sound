@@ -22,7 +22,7 @@
 /// ------------------------------------------------------------------
 /// # The Flutter Sound library
 ///
-/// Flutter Sound is composed with four main modules/classes
+/// Flutter Sound is composed with six main modules/classes
 /// - [FlutterSound]. This is the main Flutter Sound module.
 /// - [FlutterSoundPlayer]. Everything about the playback functions
 /// - [FlutterSoundRecorder]. Everything about the recording functions
@@ -31,10 +31,6 @@
 /// - [SoundPlayerUI]
 /// - [SoundRecorderUI]
 /// ------------------------------------------------------------------
-
-/// Toto et titi
-
-/// Un joli commmentaire
 /// {@category Main}
 library tau;
 
@@ -46,9 +42,10 @@ import 'util/log.dart';
 
 export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 
-///
+/// For internal code. Do not use.
 ///
 /// The possible states of the players and recorders
+/// @nodoc
 enum Initialized {
   /// The object has been created but is not initialized
   notInitialized,
@@ -62,6 +59,9 @@ enum Initialized {
   /// The object is initialized with UI and can be fully used
   fullyInitializedWithUI,
 }
+
+
+
 
 /// The usual file extensions used for each codecs
 const List<String> ext = [
@@ -85,10 +85,17 @@ const List<String> ext = [
   '.opus', // codec.opusWebM,
 ];
 
+
+
+
+
 /// Food is an abstract class which represents objects that can be sent
 /// to a player when playing data from astream or received by a recorder
 /// when recording to a Dart Stream.
-/// This class is extended by [FoodData] and [FoodEvent].
+///
+/// This class is extended by
+/// - [FoodData] and
+/// - [FoodEvent].
 abstract class Food {
   /// use internally by Flutter Sound
   Future<void> exec(FlutterSoundPlayer player);
@@ -97,6 +104,9 @@ abstract class Food {
   void dummy(FlutterSoundPlayer player) {} // Just to satisfy `dartanalyzer`
 
 }
+
+
+
 
 /// FoodData are the regular objects received from a recorder when recording to a Dart Stream
 /// or sent to a player when playing from a Dart Stream
@@ -112,6 +122,9 @@ class FoodData extends Food {
   Future<void> exec(FlutterSoundPlayer player) => player.feedFromStream(data);
 }
 
+
+
+
 /// foodEvent is a special kin of food which allows to re-synchronize a stream
 /// with a player that play from a Dart Stream
 class FoodEvent extends Food {
@@ -126,12 +139,18 @@ class FoodEvent extends Food {
   Future<void> exec(FlutterSoundPlayer player) async => on();
 }
 
+
+
+
 /// This is **THE** main Flutter Sound class.
+///
+/// For future expansion. Do not use.
 /// This class is not instanciable. Use the expression [FlutterSound()] when you want to get the Singleton.
 ///
 /// This class is used to access the main functionalities of Flutter Sound. It declares also
 /// a default [FlutterSoundPlayer] and a default [FlutterSoundRecorder] that can be used
 /// by the App, without having to build such objects themselves.
+/// @nodoc
 class FlutterSound {
   AudioFocus _mFocus = AudioFocus.requestFocusAndKeepOthers;
   SessionMode _mSessionMode = SessionMode.modeDefault;

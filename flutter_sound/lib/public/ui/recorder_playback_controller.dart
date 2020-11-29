@@ -17,13 +17,16 @@
  */
 
 /// ------------------------------------------------------------------
-/// # The Flutter Sound UIWidget3
+/// # The Flutter Sound UI controller
 ///
+///The RecorderPlaybackController is a specialised Widget which is used to co-ordinate a paired SoundPlayerUI and a SoundRecorderUI  widgets.
 ///
+///Often when providing an interface to record audio you will want to allow the user to playback the audio after recording it. However you don't want the user to try and start the playback before the recording is complete.
+///
+///The RecorderPlaybackController widget does not have a UI \(its actually an InheritedWidget\) but rather is used to as a bridge to allow the paired SoundPlayerUI and SoundRecorderUI to communicate with each other.
+///
+///The RecorderPlaybackController co-ordinates the UI state between the two components so that playback and recording cannot happen at the same time.
 /// ------------------------------------------------------------------
-/// Toto et titi
-
-/// Un joli commmentaire
 /// {@category UI Widgets}
 library ui_controller;
 

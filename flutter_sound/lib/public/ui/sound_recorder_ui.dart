@@ -17,13 +17,15 @@
  */
 
 /// ------------------------------------------------------------------
-/// # The Flutter Sound UIWidget3
+/// # The Flutter Sound UI recorder
 ///
+/// The SoundRecorderUI  widget provide a simple UI for recording audio.
+///
+/// The audio is recorded to a [Track](../api/track.md).
+///
+// TODO: add image here.
 ///
 /// ------------------------------------------------------------------
-/// Toto et titi
-
-/// Un joli commmentaire
 /// {@category UI Widgets}
 library ui_recorder;
 

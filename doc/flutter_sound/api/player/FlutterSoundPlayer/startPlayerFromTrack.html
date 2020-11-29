@@ -160,7 +160,10 @@
 <p><null> : The Skip Backward button will be disabled</null></p>
 </li>
 <li>
-<p><code>removeUIWhenStopped</code> : is a boolean to specify if the UI on the lock screen must be removed when the sound is finished or when the App does a <code>stopPlayer()</code>. Most of the time this parameter must be true. It is used only for the rare cases where the App wants to control the lock screen between two playbacks. Be aware that if the UI is not removed, the button Pause/Resume, Skip Backward and Skip Forward remain active between two playbacks. If you want to disable those button, use the API verb <code>nowPlaying()</code>.
+<p><code>removeUIWhenStopped</code> : is a boolean to specify if the UI on the lock screen must be removed when the sound is finished or when the App does a <code>stopPlayer()</code>.
+  Most of the time this parameter must be true. It is used only for the rare cases where the App wants to control the lock screen between two playbacks.
+  Be aware that if the UI is not removed, the button Pause/Resume, Skip Backward and Skip Forward remain active between two playbacks.
+  If you want to disable those button, use the API verb <code>nowPlaying()</code>.
   Remark: actually this parameter is implemented only on iOS.</p>
 </li>
 <li>
