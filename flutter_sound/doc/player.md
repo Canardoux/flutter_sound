@@ -265,7 +265,7 @@ Hint: [path_provider](https://pub.dev/packages/path_provider) can be useful if y
 
     Duration d = await myPlayer.startPlayer
     (
-                fileUri,
+                fromURI: fileUri,
                 codec: Codec.mp3,
                 whenFinished: ()
                 {
