@@ -60,9 +60,6 @@ enum Initialized {
   fullyInitializedWithUI,
 }
 
-
-
-
 /// The usual file extensions used for each codecs
 const List<String> ext = [
   '.aac', // defaultCodec
@@ -85,10 +82,6 @@ const List<String> ext = [
   '.opus', // codec.opusWebM,
 ];
 
-
-
-
-
 /// Food is an abstract class which represents objects that can be sent
 /// to a player when playing data from astream or received by a recorder
 /// when recording to a Dart Stream.
@@ -105,9 +98,6 @@ abstract class Food {
 
 }
 
-
-
-
 /// FoodData are the regular objects received from a recorder when recording to a Dart Stream
 /// or sent to a player when playing from a Dart Stream
 class FoodData extends Food {
@@ -122,9 +112,6 @@ class FoodData extends Food {
   Future<void> exec(FlutterSoundPlayer player) => player.feedFromStream(data);
 }
 
-
-
-
 /// foodEvent is a special kin of food which allows to re-synchronize a stream
 /// with a player that play from a Dart Stream
 class FoodEvent extends Food {
@@ -138,9 +125,6 @@ class FoodEvent extends Food {
   @override
   Future<void> exec(FlutterSoundPlayer player) async => on();
 }
-
-
-
 
 /// This is **THE** main Flutter Sound class.
 ///

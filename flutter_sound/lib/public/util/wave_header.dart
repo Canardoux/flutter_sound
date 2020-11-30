@@ -139,7 +139,7 @@ class WaveHeader {
          */
 
   /// Write a WAVE file header.
-  /// 
+  ///
   /// @param out {@link java.io.OutputStream} to receive the header.
   /// @return number of bytes written.
   /// @throws IOException

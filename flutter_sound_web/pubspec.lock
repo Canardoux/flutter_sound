@@ -50,18 +50,18 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0-nullsafety.3"
-  flauto_platform_interface:
-    dependency: "direct main"
-    description:
-      name: flauto_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "6.4.3+36"
   flutter:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_sound_platform_interface:
+    dependency: "direct main"
+    description:
+      name: flutter_sound_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.4.3+42"
   flutter_test:
     dependency: "direct dev"
     description: flutter

@@ -1,5 +1,5 @@
 name: flutter_sound
-version: 6.4.3+37
+version: 6.4.3+42
 description: audio player, audio recorder, media player, media recorder, sound player, sound recorder, lock-screen controls, notifications controls, flutter web.
 #author: dooboolab<dooboolab@gmail.com>
 homepage: https://canardoux.github.io/tau/book/flutter_sound/
@@ -22,10 +22,10 @@ dependencies:
   flutter:
     sdk: flutter
 # ============================================================================
-  flutter_sound_platform_interface: # 6.4.3+37
-    path: ../flutter_sound_platform_interface # Flutter Sound Dir
-  flutter_sound_web: # 6.4.3+37
-    path: ../flutter_sound_web # Flutter Sound Dir
+  flutter_sound_platform_interface: 6.4.3+42
+#    path: ../flutter_sound_platform_interface # Flutter Sound Dir
+  flutter_sound_web: 6.4.3+42
+#    path: ../flutter_sound_web # Flutter Sound Dir
 # ============================================================================
 
 dev_dependencies:

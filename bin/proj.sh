@@ -163,7 +163,7 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
 
         gsed -i  "s/^pod 'tau_core',/pod 'tau_sound_core',/" flutter_sound/example/ios/Podfile
 
-        for f in $(find flutter_sound -name '*.dart' )
+        for f in $(find . -name '*.dart' )
         do
                 gsed -i  "s/package\:flauto/package:flutter_sound/" $f
         done

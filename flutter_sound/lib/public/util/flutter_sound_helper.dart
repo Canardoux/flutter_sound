@@ -72,8 +72,6 @@ class FlutterSoundHelper {
     return _ffmpegAvailable;
   }
 
-
-
   /// A wrapper for the great FFmpeg application.
   ///
   /// The command `man ffmpeg` (if you have installed ffmpeg on your computer) will give you many informations.
@@ -101,9 +99,6 @@ class FlutterSoundHelper {
     return _flutterFFmpegConfig.getLastReturnCode();
   }
 
-
-
-
   /// Get the log code output by [executeFFmpegWithArguments()].
   ///
   /// We use here our own ffmpeg "getLastCommandOutput" procedure instead of the one provided by the flutter_ffmpeg plugin,
@@ -118,9 +113,6 @@ class FlutterSoundHelper {
     return _flutterFFmpegConfig.getLastCommandOutput();
   }
 
-
-
-
   /// Various informations about the Audio specified by the `uri` parameter.
   ///
   /// The informations Map got with FFmpegGetMediaInformation() are [documented here](https://pub.dev/packages/flutter_ffmpeg).
@@ -133,8 +125,6 @@ class FlutterSoundHelper {
       return null;
     }
   }
-
-
 
   /// Get the duration of a sound file.
   ///
@@ -149,8 +139,6 @@ class FlutterSoundHelper {
     var duration = info['duration'] as int;
     return (duration == null) ? null : Duration(milliseconds: duration);
   }
-
-
 
   /// Convert a WAVE file to a Raw PCM file.
   ///
@@ -172,9 +160,6 @@ class FlutterSoundHelper {
     await sink.close();
   }
 
-
-
-
   /// Convert a WAVE buffer to a Raw PCM buffer.
   ///
   /// Remove WAVE header in front of the Wave buffer.
@@ -185,9 +170,6 @@ class FlutterSoundHelper {
   }) {
     return inputBuffer.sublist(WaveHeader.headerLength);
   }
-
-
-
 
   /// Converts a raw PCM file to a WAVE file.
   ///
@@ -227,9 +209,6 @@ class FlutterSoundHelper {
     await sink.close();
   }
 
-
-
-
   /// Convert a raw PCM buffer to a WAVE buffer.
   ///
   /// Adds a WAVE header in front of the PCM data
@@ -265,9 +244,6 @@ class FlutterSoundHelper {
     await controller.close();
     return Uint8List.fromList(buffer);
   }
-
-
-
 
   /// Convert a sound file to a new format.
   ///
