@@ -1,5 +1,5 @@
-name: flauto_platform_interface
-version: 6.4.3+36
+name: flutter_sound_platform_interface
+version: 6.4.3+37
 description: The Dart interface to Flutter Sound.
 #author: dooboolab<dooboolab@gmail.com>
 # NOTE: We strongly prefer non-breaking changes, even at the expense of a

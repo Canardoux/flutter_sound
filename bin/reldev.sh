@@ -38,7 +38,7 @@ if [ "_$1" = "_REL" ] ; then
         gsed -i  "s/^ *project(':tau_sound_core').projectDir\(.*\)$/\/\/ project(':tau_sound_core').projectDir\1/" flutter_sound/example/android/settings.gradle
 
         gsed -i  "s/^ *include 'tau_core'$/\/\/ include 'tau_core'/" flutter_sound/example/android/settings.gradle
-        gsed -i  "s/^ *include 'tau_sound_core'$/\/\/ include 'tau_core'/" flutter_sound/example/android/settings.gradle
+        gsed -i  "s/^ *include 'tau_sound_core'$/\/\/ include 'tau_sound_core'/" flutter_sound/example/android/settings.gradle
 
         gsed -i  "s/^ *project(':tau_core').projectDir = /\/\/project(':tau_core').projectDir = /" flutter_sound/android/settings.gradle
         gsed -i  "s/^ *project(':tau_sound_core').projectDir = /\/\/project(':tau_sound_core').projectDir = /" flutter_sound/android/settings.gradle

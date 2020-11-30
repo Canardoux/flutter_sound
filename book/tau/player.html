@@ -374,7 +374,7 @@
     
         <li class="chapter " data-level="4.4" >
             
-                <a target="_blank" href="https://canardoux.github.io/tau/doc/flutter_sound/web_example/">
+                <a target="_blank" href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/web_example/">
             
                     
                     Live Example
@@ -536,7 +536,7 @@
     
         <li class="chapter " data-level="4.6" >
             
-                <a target="_blank" href="https://canardoux.github.io/tau/doc/flutter_sound/api/index.html">
+                <a target="_blank" href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/index.html">
             
                     
                     API Reference
@@ -706,8 +706,8 @@
 </code></pre>
 <hr>
 <h2 id="openaudiosession-and-closeaudiosession"><code>openAudioSession()</code> and <code>closeAudioSession()</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/openAudioSession.html" target="_blank">Dart API: openAudioSession</a>
-<a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/closeAudioSession.html" target="_blank">Dart API: closeAudioSession</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/openAudioSession.html" target="_blank">Dart API: openAudioSession</a>
+<a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/closeAudioSession.html" target="_blank">Dart API: closeAudioSession</a></p>
 <p>A player must be opened before used. A player correspond to an Audio Session. With other words, you must <em>open</em> the Audio Session before using it.
 When you have finished with a Player, you must close it. With other words, you must close your Audio Session.
 Opening a player takes resources inside the OS. Those resources are freed with the verb <code>closeAudioSession()</code>.
@@ -814,7 +814,7 @@ You will be very bad if you try something like :</p>
 </code></pre>
 <hr>
 <h2 id="setaudiofocus"><code>setAudioFocus()</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/setAudiFocus.html" target="_blank">Dart API</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/setAudiFocus.html" target="_blank">Dart API</a></p>
 <h3 id="focus-parameter-possible-values-are"><code>focus:</code> parameter possible values are</h3>
 <ul>
 <li>AudioFocus.requestFocus (request focus, but do not do anything special with others App)</li>
@@ -833,7 +833,7 @@ You will be very bad if you try something like :</p>
 </code></pre>
 <hr>
 <h2 id="startplayer"><code>startPlayer()</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayer.html" target="_blank">Dart API</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayer.html" target="_blank">Dart API</a></p>
 <p>You can use <code>startPlayer</code> to play a sound.</p>
 <ul>
 <li><code>startPlayer()</code> has three optional parameters, depending on your sound source :<ul>
@@ -870,7 +870,7 @@ But this parameter is necessary when Flutter Sound must do format conversion (fo
 
     <span class="hljs-built_in">Duration</span> d = <span class="hljs-keyword">await</span> myPlayer.startPlayer
     (
-                fileUri,
+                fromURI: fileUri,
                 codec: Codec.mp3,
                 whenFinished: ()
                 {
@@ -880,7 +880,7 @@ But this parameter is necessary when Flutter Sound must do format conversion (fo
 </code></pre>
 <hr>
 <h2 id="startplayerfromtrack"><code>startPlayerFromTrack()</code></h2>
-<p>Dart API](<a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayerFromTrack.html" target="_blank">https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayerFromTrack.html</a>)</p>
+<p>Dart API](<a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayerFromTrack.html" target="_blank">https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayerFromTrack.html</a>)</p>
 <p>Use this verb to play data from a track specification and display controls on the lock screen or an Apple Watch. The Audio Session must have been open with the parameter <code>withUI</code>.</p>
 <ul>
 <li><p><code>track</code> parameter is a simple structure which describe the sound to play. Please see <a href="track.md">here the Track structure specification</a></p>
@@ -927,7 +927,7 @@ Remark: actually this parameter is implemented only on iOS.</p>
 </code></pre>
 <hr>
 <h2 id="startplayerfromstream"><code>startPlayerFromStream()</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayerFromStream.html" target="_blank">Dart API</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayerFromStream.html" target="_blank">Dart API</a></p>
 <p><strong>This functionnality needs, at least, and Android SDK &gt;= 21</strong></p>
 <ul>
 <li>The only codec supported is actually <code>Codec.pcm16</code>.</li>
@@ -962,7 +962,7 @@ myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
 </code></pre>
 <hr>
 <h2 id="feedfromstream"><code>feedFromStream</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/feedFromStream.html" target="_blank">Dart API</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/feedFromStream.html" target="_blank">Dart API</a></p>
 <p>This is the verb that you use when you want to play live PCM data synchronously.
 This procedure returns a Future. It is very important that you wait that this Future is completed before trying to play another buffer.</p>
 <p><em>Example:</em></p>
@@ -980,7 +980,7 @@ This procedure returns a Future. It is very important that you wait that this Fu
 </code></pre>
 <hr>
 <h2 id="foodsink"><code>foodSink</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/foodSink.html" target="_blank">Dart API</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/foodSink.html" target="_blank">Dart API</a></p>
 <p>The sink side of the Food Controller that you use when you want to play asynchronously live data.
 This StreamSink accept two kinds of objects :</p>
 <ul>
@@ -998,7 +998,7 @@ myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
 </code></pre>
 <hr>
 <h2 id="onprogress"><code>onProgress</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/onProgress.html" target="_blank">Dart API</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/onProgress.html" target="_blank">Dart API</a></p>
 <p>The stream side of the Food Controller : this is a stream on which FlutterSound will post the player progression.
 You may listen to this Stream to have feedback on the current playback.</p>
 <p>PlaybackDisposition has two fields :</p>
@@ -1017,9 +1017,9 @@ You may listen to this Stream to have feedback on the current playback.</p>
 <hr>
 <h2 id="food"><code>Food</code></h2>
 <ul>
-<li><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/tau/Food/Food.html" target="_blank">Dart API: Food</a></li>
-<li><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/tau/FoodData/FoodData.html.html" target="_blank">Dart API: FoodData</a></li>
-<li><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/tau/FoodEvent/FoodEvent.html" target="_blank">Dart API: FoodEvent</a></li>
+<li><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/tau/Food/Food.html" target="_blank">Dart API: Food</a></li>
+<li><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/tau/FoodData/FoodData.html.html" target="_blank">Dart API: FoodData</a></li>
+<li><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/tau/FoodEvent/FoodEvent.html" target="_blank">Dart API: FoodEvent</a></li>
 </ul>
 <p>This are the objects that you can <code>add</code> to <code>foodSink</code>
 The Food class has two others inherited classes :</p>
@@ -1038,7 +1038,7 @@ myPlayer.foodSink.add(FoodEvent(()<span class="hljs-keyword">async</span> {<span
 </code></pre>
 <hr>
 <h2 id="stopplayer"><code>stopPlayer()</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/stopPlayer.html" target="_blank">Dart API</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/stopPlayer.html" target="_blank">Dart API</a></p>
 <p>Use this verb to stop a playback. This verb never throw any exception. It is safe to call it everywhere,
 for example when the App is not sure of the current Audio State and want to recover a clean reset state.</p>
 <p><em>Example:</em></p>
@@ -1051,28 +1051,28 @@ for example when the App is not sure of the current Audio State and want to reco
 </code></pre>
 <hr>
 <h2 id="pauseplayer"><code>pausePlayer()</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/pausePlayer.html" target="_blank">Dart API</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/pausePlayer.html" target="_blank">Dart API</a></p>
 <p>Use this verbe to pause the current playback. An exception is thrown if the player is not in the &quot;playing&quot; state.</p>
 <p><em>Example:</em></p>
 <pre><code class="lang-dart"><span class="hljs-keyword">await</span> myPlayer.pausePlayer();
 </code></pre>
 <hr>
 <h2 id="resumeplayer"><code>resumePlayer()</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/resumePlayer.html" target="_blank">Dart API</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/resumePlayer.html" target="_blank">Dart API</a></p>
 <p>Use this verbe to resume the current playback. An exception is thrown if the player is not in the &quot;paused&quot; state.</p>
 <p><em>Example:</em></p>
 <pre><code class="lang-dart"><span class="hljs-keyword">await</span> myPlayer.resumePlayer();
 </code></pre>
 <hr>
 <h2 id="seekplayer"><code>seekPlayer()</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/seekPlayer.html" target="_blank">Dart API</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/seekPlayer.html" target="_blank">Dart API</a></p>
 <p>To seek to a new location. The player must already be playing or paused. If not, an exception is thrown.</p>
 <p><em>Example:</em></p>
 <pre><code class="lang-dart"><span class="hljs-keyword">await</span> myPlayer.seekToPlayer(<span class="hljs-built_in">Duration</span>(milliseconds: milliSecs));
 </code></pre>
 <hr>
 <h2 id="setvolume"><code>setVolume()</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/setVolume.html" target="_blank">Dart API</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/setVolume.html" target="_blank">Dart API</a></p>
 <p>The parameter is a floating point number between 0 and 1.
 Volume can be changed when player is running. Manage this after player starts.</p>
 <p><em>Example:</em></p>
@@ -1080,11 +1080,11 @@ Volume can be changed when player is running. Manage this after player starts.</
 </code></pre>
 <hr>
 <h2 id="playerstate-isplaying-ispaused-isstopped-getplayerstate"><code>playerState</code>, <code>isPlaying</code>, <code>isPaused</code>, <code>isStopped</code>. <code>getPlayerState()</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/playerState.html" target="_blank">Dart API: playerState</a>
-<a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/getPlayerState.html" target="_blank">Dart API: getPlayerState()</a>
-<a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/isPlaying.html" target="_blank">Dart API: isPlaying()</a>
-<a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/isPaused.html" target="_blank">Dart API: isPaused()</a>
-<a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/isStopped.html" target="_blank">Dart API: isStopped()</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/playerState.html" target="_blank">Dart API: playerState</a>
+<a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/getPlayerState.html" target="_blank">Dart API: getPlayerState()</a>
+<a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/isPlaying.html" target="_blank">Dart API: isPlaying()</a>
+<a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/isPaused.html" target="_blank">Dart API: isPaused()</a>
+<a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/isStopped.html" target="_blank">Dart API: isStopped()</a></p>
 <p>This four verbs is used when the app wants to get the current Audio State of the player.</p>
 <p><code>playerState</code> is an attribut which can have the following values :</p>
 <ul>
@@ -1117,7 +1117,7 @@ Acutually <code>getPlayerState()</code> is only implemented on iOS.</p>
 </code></pre>
 <hr>
 <h2 id="isdecodersupported"><code>isDecoderSupported()</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/isDecoderSupported.html" target="_blank">Dart API: isStopped()</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/isDecoderSupported.html" target="_blank">Dart API: isStopped()</a></p>
 <p>This verb is useful to know if a particular codec is supported on the current platform.
 Returns a Future<bool>.</bool></p>
 <p><em>Example:</em></p>
@@ -1125,7 +1125,7 @@ Returns a Future<bool>.</bool></p>
 </code></pre>
 <hr>
 <h2 id="getprogress"><code>getProgress()</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/getProgress.html" target="_blank">Dart API: isStopped()</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/getProgress.html" target="_blank">Dart API: isStopped()</a></p>
 <p>This verb is used to get the current progress of a playback.
 It returns a <code>Map</code> with two Duration entries : <code>&apos;progress&apos;</code> and <code>&apos;duration&apos;</code>.
 Remark : actually only implemented on iOS.</p>
@@ -1135,7 +1135,7 @@ Remark : actually only implemented on iOS.</p>
 </code></pre>
 <hr>
 <h2 id="setuiprogressbar"><code>setUIProgressBar()</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/setUIProgressBar.html" target="_blank">Dart API: isStopped()</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/setUIProgressBar.html" target="_blank">Dart API: isStopped()</a></p>
 <p>This verb is used if the App wants to control itself the Progress Bar on the lock screen. By default, this progress bar is handled automaticaly by Flutter Sound.
 Remark <code>setUIProgressBar()</code> is implemented only on iOS.</p>
 <p><em>Example:</em></p>
@@ -1147,7 +1147,7 @@ Remark <code>setUIProgressBar()</code> is implemented only on iOS.</p>
 </code></pre>
 <hr>
 <h2 id="nowplaying"><code>nowPlaying()</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/nowPlaying.html" target="_blank">Dart API: isStopped()</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/nowPlaying.html" target="_blank">Dart API: isStopped()</a></p>
 <p>This verb is used to set the Lock screen fields without starting a new playback.
 The fields &apos;dataBuffer&apos; and &apos;trackPath&apos; of the Track parameter are not used.
 Please refer to &apos;startPlayerFromTrack&apos; for the meaning of the others parameters.
@@ -1158,7 +1158,7 @@ Remark <code>setUIProgressBar()</code> is implemented only on iOS.</p>
 </code></pre>
 <hr>
 <h2 id="setsubscriptionduration"><code>setSubscriptionDuration()</code></h2>
-<p><a href="https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/setSubscriptionDuration.html" target="_blank">Dart API: isStopped()</a></p>
+<p><a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/setSubscriptionDuration.html" target="_blank">Dart API: isStopped()</a></p>
 <p>This verb is used to change the default interval between two post on the &quot;Update Progress&quot; stream. (The default interval is 0 (zero) which means &quot;NO post&quot;)</p>
 <p><em>Example:</em></p>
 <pre><code class="lang-dart">myPlayer.setSubscriptionDuration(<span class="hljs-built_in">Duration</span>(milliseconds: <span class="hljs-number">100</span>));
@@ -1206,7 +1206,7 @@ Remark <code>setUIProgressBar()</code> is implemented only on iOS.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"The τ Player","level":"3.2","depth":1,"next":{"title":"The τ Recorder","level":"3.3","depth":1,"path":"tau/recorder.md","ref":"tau/recorder.md","articles":[]},"previous":{"title":"The τ API","level":"3.1","depth":1,"path":"tau/main.md","ref":"tau/main.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/player.md","mtime":"2020-11-29T15:02:48.122Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-30T09:24:13.564Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"The τ Player","level":"3.2","depth":1,"next":{"title":"The τ Recorder","level":"3.3","depth":1,"path":"tau/recorder.md","ref":"tau/recorder.md","articles":[]},"previous":{"title":"The τ API","level":"3.1","depth":1,"path":"tau/main.md","ref":"tau/main.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"tau/player.md","mtime":"2020-11-30T16:57:29.738Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-30T17:19:17.823Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
