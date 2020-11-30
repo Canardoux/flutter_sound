@@ -16,14 +16,12 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
-import 'package:flutter_sound/src/util/log.dart';
-import 'package:example/widgetUI/demo_util/temp_file.dart';
+import '../demo_util/temp_file.dart';
 import 'demo_active_codec.dart';
 import 'demo_media_path.dart';
 
@@ -43,7 +41,7 @@ class UtilRecorder {
     return _self;
   }
 
-  UtilRecorder._internal()  {
+  UtilRecorder._internal() {
     recorderModule = FlutterSoundRecorder();
   }
 
@@ -55,7 +53,8 @@ class UtilRecorder {
 
   /// required to initialize the recording subsystem.
   void init() async {
-    await recorderModule.openAudioSession(focus: AudioFocus.requestFocusAndDuckOthers);
+    await recorderModule.openAudioSession(
+        focus: AudioFocus.requestFocusAndDuckOthers);
     ActiveCodec().recorderModule = recorderModule;
   }
 
@@ -91,19 +90,20 @@ class UtilRecorder {
       /// TODO put this back iin
       /// await PlayerState().stopPlayer();
 
-      var track = Track(trackPath: await tempFile(), codec: ActiveCodec().codec);
+      var track =
+          Track(trackPath: await tempFile(), codec: ActiveCodec().codec);
       await recorderModule.startRecorder(toFile: track.trackPath);
 
       Log.d('startRecorder: $track');
 
       MediaPath().setCodecPath(ActiveCodec().codec, track.trackPath);
-    } on RecorderException catch (err) {
+    } on Exception catch (err) {
       Log.d('startRecorder error: $err');
 
       var error = SnackBar(
           backgroundColor: Colors.red,
           content: Text('Failed to start recording: $err'));
-      Scaffold.of(context).showSnackBar(error);
+      ScaffoldMessenger.of(context).showSnackBar(error);
 
       stopRecorder();
     }

@@ -1,0 +1,39 @@
+apply plugin: 'com.github.dcendents.android-maven'
+
+group  'xyz.canardoux'
+
+install {
+   repositories.mavenInstaller {
+       pom {
+           project {
+               packaging 'aar'
+               groupId 'xyz.canardoux'
+               artifactId 'tau_sound_core'
+               name 'tau_sound_core'
+               description 'The tau Core.'
+               url 'https://github.com/dooboolab/flutter_sound'
+
+               licenses {
+                   license {
+                       name 'The Lesser GNU Public License - Version 3'
+                       url 'https://www.gnu.org/licenses/lgpl-3.0.en.html'
+                   }
+               }
+
+               developers {
+                   developer {
+                       id 'larpoux'
+                       name 'Larpoux'
+                       email 'larpoux@gmail.com'
+                   }
+               }
+
+               scm {
+                   connection 'https://github.com/dooboolab/flutter_sound.git'
+                   developerConnection 'https://github.com/dooboolab/flutter_sound.git'
+                   url 'https://github.com/dooboolab/flutter_sound/tree/master/tau_core/android'
+               }
+           }
+       }
+   }
+}

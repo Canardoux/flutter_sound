@@ -16,19 +16,17 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-
 
 //import 'util/log.dart';
 import 'demo_active_codec.dart';
 import 'demo_common.dart';
 import 'demo_media_path.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 ///
 class RecordingPlayer extends StatelessWidget {
@@ -63,11 +61,11 @@ class RecordingPlayer extends StatelessWidget {
 
         if (track != null) {
           track.trackTitle = title;
-          track.trackAuthor = "By flutter_sound";
+          track.trackAuthor = 'By flutter_sound';
 
-          if (kIsWeb)
+          if (kIsWeb) {
             track.albumArtAsset = null;
-          else if (Platform.isIOS) {
+          } else if (Platform.isIOS) {
             track.albumArtAsset = 'AppIcon';
           } else if (Platform.isAndroid) {
             track.albumArtAsset = 'AppIcon.png';
@@ -78,7 +76,7 @@ class RecordingPlayer extends StatelessWidget {
             backgroundColor: Colors.red,
             content: Text('You must make a recording first with the '
                 'selected codec first.'));
-        Scaffold.of(context).showSnackBar(error);
+        ScaffoldMessenger.of(context).showSnackBar(error);
       }
     } on Object catch (err) {
       Log.d('error: $err');

@@ -1,0 +1,296 @@
+{
+  "configVersion": 2,
+  "packages": [
+    {
+      "name": "_fe_analyzer_shared",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/_fe_analyzer_shared-12.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
+    },
+    {
+      "name": "analyzer",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/analyzer-0.40.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
+    },
+    {
+      "name": "args",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/args-1.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.3"
+    },
+    {
+      "name": "async",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/async-2.5.0-nullsafety.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "boolean_selector",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/boolean_selector-2.1.0-nullsafety.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "build",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/build-1.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.9"
+    },
+    {
+      "name": "built_collection",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/built_collection-4.3.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.6"
+    },
+    {
+      "name": "built_value",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/built_value-7.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.3"
+    },
+    {
+      "name": "characters",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/characters-1.1.0-nullsafety.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "charcode",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/charcode-1.2.0-nullsafety.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "cli_util",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/cli_util-0.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "clock",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/clock-1.1.0-nullsafety.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "code_builder",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/code_builder-3.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
+    },
+    {
+      "name": "collection",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/collection-1.15.0-nullsafety.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "convert",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/convert-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "1.17"
+    },
+    {
+      "name": "crypto",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/crypto-2.1.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.3"
+    },
+    {
+      "name": "dart_style",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/dart_style-1.3.9",
+      "packageUri": "lib/",
+      "languageVersion": "2.9"
+    },
+    {
+      "name": "fake_async",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0-nullsafety.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "fixnum",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/fixnum-0.10.11",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
+      "name": "flutter",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/flutter/packages/flutter",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_test",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/flutter/packages/flutter_test",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "glob",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/glob-1.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
+      "name": "js",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/js-0.6.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "logging",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/logging-0.11.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "matcher",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/matcher-0.12.10-nullsafety.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "meta",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/meta-1.3.0-nullsafety.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "mockito",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/mockito-4.1.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
+    },
+    {
+      "name": "node_interop",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/node_interop-1.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.9"
+    },
+    {
+      "name": "node_io",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/node_io-1.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
+    },
+    {
+      "name": "package_config",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/package_config-1.9.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
+    },
+    {
+      "name": "path",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/path-1.8.0-nullsafety.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "pedantic",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/pedantic-1.9.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
+      "name": "plugin_platform_interface",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-1.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
+      "name": "pub_semver",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/pub_semver-1.4.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "quiver",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/quiver-2.1.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "sky_engine",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/flutter/bin/cache/pkg/sky_engine",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "source_gen",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/source_gen-0.9.8",
+      "packageUri": "lib/",
+      "languageVersion": "2.10"
+    },
+    {
+      "name": "source_span",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/source_span-1.8.0-nullsafety.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "stack_trace",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.10.0-nullsafety.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "stream_channel",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/stream_channel-2.1.0-nullsafety.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "string_scanner",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/string_scanner-1.1.0-nullsafety.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "term_glyph",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.2.0-nullsafety.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "test_api",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/test_api-0.2.19-nullsafety.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "typed_data",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/typed_data-1.3.0-nullsafety.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "vector_math",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.0-nullsafety.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "watcher",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/watcher-0.9.7+15",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
+    },
+    {
+      "name": "yaml",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/yaml-2.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.4"
+    },
+    {
+      "name": "flauto_platform_interface",
+      "rootUri": "../",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    }
+  ],
+  "generated": "2020-11-18T16:29:44.382216Z",
+  "generator": "pub",
+  "generatorVersion": "2.12.0-29.7.beta"
+}

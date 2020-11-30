@@ -37,13 +37,15 @@ class ActiveCodec {
 
   /// Set the active code for the the recording and player modules.
   void setCodec({bool withUI, Codec codec}) async {
-     FlutterSoundPlayer player = FlutterSoundPlayer();
+    var player = FlutterSoundPlayer();
     if (withUI) {
-      await player.openAudioSessionWithUI(focus: AudioFocus.requestFocusAndDuckOthers);
+      await player.openAudioSessionWithUI(
+          focus: AudioFocus.requestFocusAndDuckOthers);
       _encoderSupported = await recorderModule.isEncoderSupported(codec);
       _decoderSupported = await player.isDecoderSupported(codec);
     } else {
-      await player.openAudioSession(focus: AudioFocus.requestFocusAndDuckOthers);
+      await player.openAudioSession(
+          focus: AudioFocus.requestFocusAndDuckOthers);
       _encoderSupported = await recorderModule.isEncoderSupported(codec);
       _decoderSupported = await player.isDecoderSupported(codec);
     }

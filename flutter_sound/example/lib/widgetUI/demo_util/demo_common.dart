@@ -16,14 +16,12 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:intl/intl.dart';
 
-import 'package:flutter_sound/src/util/log.dart';
 import 'demo_media_path.dart';
 
 /// Describes how the media is stored.

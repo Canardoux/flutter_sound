@@ -1,3 +1,21 @@
+/*
+ * Copyright 2018, 2019, 2020 Dooboolab.
+ *
+ * This file is part of Flutter-Sound.
+ *
+ * Flutter-Sound is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
+ * the Free Software Foundation.
+ *
+ * Flutter-Sound is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import 'dart:async';
 
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
@@ -97,7 +115,7 @@ enum SessionMode
   modeVoicePrompt, // 'AVAudioSessionModeVoicePrompt',
 }
 
-/// Used by [AudioPlayer.audioFocus]
+/// Used by [FlutterSound.setAudioFocus]
 /// to control the focus mode.
 enum AudioFocus {
   requestFocus,
@@ -113,15 +131,19 @@ enum AudioFocus {
   /// In the Android world this is know as 'Duck Others'.
   requestFocusAndDuckOthers,
 
+  /// Probably not to be used
   requestFocusAndInterruptSpokenAudioAndMixWithOthers,
 
+  /// Probably not to be used
   requestFocusTransient,
-  requestFocusTransientExclusive,
 
+  /// Probably not to be used
+  requestFocusTransientExclusive,
 
   /// relinquish the audio focus.
   abandonFocus,
 
+  /// Deprecated. Do not use
   doNotRequestFocus,
 }
 

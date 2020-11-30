@@ -24,8 +24,6 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-
-
 import 'demo_active_codec.dart';
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
@@ -53,9 +51,7 @@ class AssetPlayer extends StatelessWidget {
     return SoundPlayerUI.fromLoader(
       (_) => createAssetTrack(),
       showTitle: true,
-      audioFocus: true // TODO
-          ? AudioFocus.requestFocusAndDuckOthers
-          : AudioFocus.requestFocusAndDuckOthers,
+      audioFocus: AudioFocus.requestFocusAndDuckOthers,
     );
   }
 
@@ -71,12 +67,12 @@ class AssetPlayer extends StatelessWidget {
       codec: ActiveCodec().codec,
     );
 
-    track.trackTitle = "Asset playback.";
-    track.trackAuthor = "By flutter_sound";
+    track.trackTitle = 'Asset playback.';
+    track.trackAuthor = 'By flutter_sound';
 
-    if (kIsWeb)
+    if (kIsWeb) {
       track.albumArtAsset = null;
-    else if (Platform.isIOS) {
+    } else if (Platform.isIOS) {
       track.albumArtAsset = 'AppIcon';
     } else if (Platform.isAndroid) {
       track.albumArtAsset = 'AppIcon.png';

@@ -16,23 +16,21 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:example/widgetUI/demo_util/temp_file.dart';
-
 import 'package:permission_handler/permission_handler.dart';
+
+import '../demo_util/temp_file.dart';
 
 import 'demo_active_codec.dart';
 import 'demo_asset_player.dart';
 import 'demo_drop_downs.dart';
 import 'recorder_state.dart';
 import 'remote_player.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 ///
 class MainBody extends StatefulWidget {
@@ -52,32 +50,27 @@ class _MainBodyState extends State<MainBody> {
   Track track;
 
   @override
-  void initState()
-  {
-              if (!kIsWeb)
-              {
-                      Future<PermissionStatus> status = Permission.microphone.request();
-                      status.then((stat)
-                      {
-                              if (stat != PermissionStatus.granted)
-                              {
-                                        throw RecordingPermissionException("Microphone permission not granted");
-                              }
-                }     );
-              }
-              super.initState();
-              tempFile(suffix: '.aac').then( (path)
-              {
-                       recordingFile = path;
-                       track = Track(trackPath: recordingFile);
-                       setState(() {
-                       });
-              });
+  void initState() {
+    if (!kIsWeb) {
+      var status = Permission.microphone.request();
+      status.then((stat) {
+        if (stat != PermissionStatus.granted) {
+          throw RecordingPermissionException(
+              'Microphone permission not granted');
+        }
+      });
+    }
+    super.initState();
+    tempFile(suffix: '.aac').then((path) {
+      recordingFile = path;
+      track = Track(trackPath: recordingFile);
+      setState(() {});
+    });
   }
 
-  Future<bool> init()  async {
+  Future<bool> init() async {
     if (!initialized) {
-      initializeDateFormatting();
+      await initializeDateFormatting();
       await UtilRecorder().init();
       ActiveCodec().recorderModule = UtilRecorder().recorderModule;
       ActiveCodec().setCodec(withUI: false, codec: Codec.aacADTS);
@@ -87,22 +80,20 @@ class _MainBodyState extends State<MainBody> {
     return initialized;
   }
 
-
-void _clean() async
-{
-  if (recordingFile != null) {
-    try {
-      await File(recordingFile).delete();
-    } catch (e)
-    {
-      // ignore
+  void _clean() async {
+    if (recordingFile != null) {
+      try {
+        await File(recordingFile).delete();
+      } on Exception {
+        // ignore
+      }
     }
   }
-}
 
+  @override
   void dispose() {
     _clean();
-     super.dispose();
+    super.dispose();
   }
 
   @override
@@ -138,9 +129,9 @@ void _clean() async
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Left("Asset Playback"),
+            Left('Asset Playback'),
             AssetPlayer(),
-            Left("Remote Track Playback"),
+            Left('Remote Track Playback'),
             RemotePlayer(),
           ],
         ));
@@ -152,21 +143,18 @@ void _clean() async
         child: RecorderPlaybackController(
             child: Column(
           children: [
-            Left("Recorder"),
+            Left('Recorder'),
             SoundRecorderUI(track),
-            Left("Recording Playback"),
+            Left('Recording Playback'),
             SoundPlayerUI.fromTrack(
               track,
               enabled: false,
               showTitle: true,
-              audioFocus: true
-                  ? AudioFocus.requestFocusAndDuckOthers
-                  : AudioFocus.requestFocusAndDuckOthers,
+              audioFocus: AudioFocus.requestFocusAndDuckOthers,
             ),
           ],
         )));
   }
-
 }
 
 ///

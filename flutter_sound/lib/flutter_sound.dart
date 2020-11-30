@@ -16,52 +16,47 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+// The three interfaces to the platform
+// ------------------------------------
+
+/// ------------------------------------------------------------------
+/// # The Flutter Sound library
+///
+/// Flutter Sound is composed with four main modules/classes
+/// - [FlutterSound]. This is the main Flutter Sound module.
+/// - [FlutterSoundPlayer]. Everything about the playback functions
+/// - [FlutterSoundRecorder]. Everything about the recording functions
+/// - [FlutterSoundHelper]. Some utilities to manage audio data.
+/// And two modules for the Widget UI
+/// - [SoundPlayerUI]
+/// - [SoundRecorderUI]
+/// ------------------------------------------------------------------
+//library flutter_sound;
+
+// The interfaces to the platforms specific implementations
+// --------------------------------------------------------
+//export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
+
+/// everything : no documentation
+/// @nodoc
+library everything;
+
 export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
-export 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
-export 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
-export 'src/flutter_ffmpeg.dart';
-export 'src/flutter_sound_player.dart';
-export 'src/flutter_sound_recorder.dart';
-export 'src/food.dart';
-export 'src/flutter_sound_helper.dart';
-export 'src/util/log.dart';
-export 'src/util/recorded_audio.dart';
-export 'src/util/ansi_color.dart';
-export 'src/ui/grayed_out.dart';
-export 'src/food.dart';
 
-export 'src/ui/recorder_playback_controller.dart'
-            show RecorderPlaybackController;
-export 'src/ui/sound_player_ui.dart' show SoundPlayerUI;
-export 'src/ui/sound_recorder_ui.dart' show SoundRecorderUI;
+/// Le commentaire de player
+///library tau;
+export 'public/flutter_sound_player.dart';
+export 'public/flutter_sound_recorder.dart';
+export 'public/tau.dart';
 
+///
+///library UI;
+export 'public/ui/recorder_playback_controller.dart';
+export 'public/ui/sound_player_ui.dart';
+export 'public/ui/sound_recorder_ui.dart';
 
-const List<String> ext = [
-  '.aac', // defaultCodec
-  '.aac', // aacADTS
-  '.opus', // opusOGG
-  '_opus.caf', // opusCAF
-  '.mp3', // mp3
-  '.ogg', // vorbisOGG
-  '.pcm', // pcm16
-  '.wav', // pcm16WAV
-  '.aiff', // pcm16AIFF
-  '_pcm.caf', // pcm16CAF
-  '.flac', // flac
-  '.mp4', // aacMP4
-  '.amr', // AMR-NB
-  '.amr', // amr-WB
-  '.pcm', // pcm8
-  '.pcm', // pcmFloat32
-  '.pcm', //codec.pcmWebM,
-  '.opus', // codec.opusWebM,
-
-];
-
-
-enum Initialized {
-  notInitialized,
-  initializationInProgress,
-  fullyInitialized,
-}
-
+///
+///library util;
+export 'public/util/flutter_ffmpeg.dart';
+export 'public/util/flutter_sound_helper.dart';
+export 'public/util/log.dart';

@@ -22,9 +22,9 @@
 
 #import "FlutterSoundPlayer.h"
 #import <AVFoundation/AVFoundation.h>
-#import <TauEngine/FlautoPlayer.h>
-#import <TauEngine/FlautoTrackPlayer.h>
-#import <TauEngine/FlautoTrack.h>
+#import <tau_core/FlautoPlayer.h>
+#import <tau_core/FlautoTrackPlayer.h>
+#import <tau_core/FlautoTrack.h>
 #import "FlutterSoundPlayerManager.h"
          
  
@@ -316,15 +316,24 @@
                                 errorWithCode:@"Audio Player"
                                 message:@"Now Playing failure"
                                 details:nil]);
+                                
+                               // - (void)nowPlaying: (FlautoTrack*)track canPause: (bool)canPause canSkipForward: (bool)canSkipForward canSkipBackward: (bool)canSkipBackward
+               // defaultPauseResume: (bool)defaultPauseResume progress: (NSNumber*)progress duration: (NSNumber*)duration
 }
 
 
 - (void)setUIProgressBar:(FlutterMethodCall*)call result: (FlutterResult)result;
 {
-                       result([FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"setUIProgressBar failure"
-                                details:nil]);
+         NSNumber* progress = (NSNumber*)call.arguments[@"progress"];
+         NSNumber* duration = (NSNumber*)call.arguments[@"duration"];
+         double x = [ progress doubleValue];
+         progress = [NSNumber numberWithFloat: x/1000.0];
+         double y = [ duration doubleValue];
+         duration = [NSNumber numberWithFloat: y/1000.0];
+
+
+         [flautoPlayer setUIProgressBar: progress duration:duration];
+         result([self getPlayerStatus]);
 }
 
 

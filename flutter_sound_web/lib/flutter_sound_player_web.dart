@@ -24,8 +24,8 @@ import 'dart:html' as html;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:meta/meta.dart';
-import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
-import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
+import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
+import 'package:flauto_platform_interface/flutter_sound_player_platform_interface.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 //import 'package:path/path.dart' as p;
 //import 'package:path_provider/path_provider.dart';
@@ -129,7 +129,7 @@ List<Function> callbackTable =
 
 /// The web implementation of [FlutterSoundPlatform].
 ///
-/// This class implements the `package:flutter_sound_player` functionality for the web.
+/// This class implements the `package:flauto_player` functionality for the web.
 ///
 
 class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements FlutterSoundPlayerCallback

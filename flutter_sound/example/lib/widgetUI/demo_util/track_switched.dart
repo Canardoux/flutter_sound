@@ -16,7 +16,6 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 import 'package:flutter/material.dart';
 
 import 'demo_player_state.dart';

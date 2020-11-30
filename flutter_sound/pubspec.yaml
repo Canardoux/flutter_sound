@@ -1,35 +1,38 @@
 name: flutter_sound
-version: 6.4.2+1
-description: Flutter plugin that relates to sound like audio and recorder.
+version: 6.4.3+37
+description: audio player, audio recorder, media player, media recorder, sound player, sound recorder, lock-screen controls, notifications controls, flutter web.
 #author: dooboolab<dooboolab@gmail.com>
-homepage: https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/
+homepage: https://canardoux.github.io/tau/book/flutter_sound/
+
 environment:
-    sdk: ">=2.1.0 <3.0.0"
-    flutter: ">=1.12.0 <2.0.0"
+  sdk: ">=2.10.0 <3.0.0"
+  flutter: ">=1.12.0 <2.0.0"
+
 dependencies:
-  path_provider: ">=1.0.0 <2.0.0"
-  logger: ^0.7.0+2
+  path_provider: ^1.6.24
+  #path_provider: ">=1.0.0 <2.0.0"
+  logger: ^0.9.4
   intl: ^0.16.1
-  recase: ^3.0.0
-  uuid: ^2.0.4
-  provider: ^4.1.0
+  recase: ^3.0.1
+  uuid: ^2.2.2
+  provider: ^4.3.2
   flutter_spinkit: ^4.0.0
   path: ">=1.0.0 <2.0.0"
   synchronized: ^2.2.0
   flutter:
     sdk: flutter
 # ============================================================================
-  flutter_sound_platform_interface: 6.4.2+1
-#    path: ../flutter_sound_platform_interface # Flutter Sound Dir
-  flutter_sound_web: 6.4.2+1
-#    path: ../flutter_sound_web # Flutter Sound Dir
+  flutter_sound_platform_interface: # 6.4.3+37
+    path: ../flutter_sound_platform_interface # Flutter Sound Dir
+  flutter_sound_web: # 6.4.3+37
+    path: ../flutter_sound_web # Flutter Sound Dir
 # ============================================================================
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  #pedantic: ^1.9.0
-  effective_dart: ^1.0.0
+  pedantic: ^1.9.0
+  effective_dart: ^1.3.0
   #lint: ^1.1.1
 
 
@@ -46,6 +49,10 @@ flutter:
         pluginClass: FlutterSound
       ios:
         pluginClass: FlutterSound
+      web:
+        default_package: flauto_web
+        ####fileName: flutter_sound_web.dart
+
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

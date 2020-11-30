@@ -84,7 +84,6 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 
 	public void needSomeFood (int ln)
 	{
-		assert(ln >= 0);
 		invokeMethodWithInteger("needSomeFood", ln);
 	}
 

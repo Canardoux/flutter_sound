@@ -60,7 +60,8 @@ public class FlutterSoundManager
 
 	void init(MethodChannel aChannel)
 	{
-		assert ( slots == null );
+		if ( slots != null )
+			throw new RuntimeException();
 		slots   = new ArrayList<FlutterSoundSession>();
 		channel = aChannel;
 	}
@@ -80,7 +81,8 @@ public class FlutterSoundManager
 	FlutterSoundSession getSession(final MethodCall call)
 	{
 		int slotNo = call.argument ( "slotNo" );
-		assert ( ( slotNo >= 0 ) && ( slotNo <= slots.size () ) );
+		if ( ( slotNo < 0 ) || ( slotNo > slots.size () ) )
+			throw new RuntimeException();
 
 		if ( slotNo == slots.size () )
 		{

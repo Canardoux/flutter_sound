@@ -16,16 +16,18 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'demo/demo.dart';
-import 'widgetUI/widgetUIDemo.dart';
-import 'recordToStream/recordToStreamExample.dart';
-import 'livePlaybackWithBackPressure/livePlaybackWithBackPressure.dart';
-import 'livePlaybackWithoutBackPressure/livePlaybackWithoutBackPressure.dart';
-import 'soundEffect/soundEffect.dart';
-import 'streamLoop/streamLoop.dart';
-import 'speechToText/speechToTextExample.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'livePlaybackWithBackPressure/live_playback_with_back_pressure.dart';
+import 'livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart';
+import 'recordToStream/record_to_stream_example.dart';
+import 'simple_playback/simple_playback.dart';
+import 'simple_recorder/simple_recorder.dart';
+import 'soundEffect/sound_effect.dart';
+import 'speechToText/speech_to_text_example.dart';
+import 'streamLoop/stream_loop.dart';
+import 'widgetUI/widget_ui_demo.dart';
 
 /*
     This APP is just a driver to call the various Flutter Sound examples.
@@ -36,28 +38,49 @@ void main() {
   runApp(ExamplesApp());
 }
 
-const int NOT_WEB = 1;
+///
+const int tNotWeb = 1;
 
-class Example
-{
-    final String title;
-    final String subTitle;
-    final String description;
-    final WidgetBuilder route;
-    final int flags;
+///
+class Example {
+  ///
+  final String title;
 
-    /* ctor */ Example({ this.title, this.subTitle, this.description, this.flags, this.route}){}
+  ///
+  final String subTitle;
 
-    void go(BuildContext context) => Navigator.push(context, MaterialPageRoute<void>( builder: route));
+  ///
+  final String description;
+
+  ///
+  final WidgetBuilder route;
+
+  ///
+  final int flags;
+
+  ///
+  /* ctor */ Example(
+      {this.title, this.subTitle, this.description, this.flags, this.route});
+
+  ///
+  void go(BuildContext context) =>
+      Navigator.push(context, MaterialPageRoute<void>(builder: route));
 }
 
-final List<Example> exampleTable =
-    [
-      // If you update the following test, please update also the Examples/README.md file and the comment inside the dart file.
+///
+final List<Example> exampleTable = [
+  // If you update the following test, please update also the Examples/README.md file and the comment inside the dart file.
 
-      Example(title: 'Demo', subTitle: 'Flutter Sound capabilities', flags: 0, route: (BuildContext) => Demo(), description:
-'''This is a Demo of what it is possible to do with Flutter Sound.
+  Example(
+      title: 'Demo',
+      subTitle: 'Flutter Sound capabilities',
+      flags: 0,
+      route: (_) => Demo(),
+      description:
+          '''This is a Demo of what it is possible to do with Flutter Sound.
 The code of this Demo app is not so simple and unfortunately not very clean :-( .
+
+Flutter Sound beginners : you probably should look to `[SimplePlayback]`  and `[SimpleRecorder]` 
 
 The biggest interest of this Demo is that it shows most of the features of Flutter Sound :
 
@@ -72,12 +95,16 @@ The biggest interest of this Demo is that it shows most of the features of Flutt
 
 This Demo does not make use of the Flutter Sound UI Widgets.
 
-It would be really great if someone rewrite this demo soon'''
-      ),
+It would be really great if someone rewrite this demo soon'''),
 
-      Example(title: 'WidgetUIDemo', subTitle: 'Demonstration of the UI Widget', flags: 0,  route: (BuildContext) => WidgetUIDemo(), description:
+  Example(
+    title: 'WidgetUIDemo',
+    subTitle: 'Demonstration of the UI Widget',
+    flags: 0,
+    route: (_) => WidgetUIDemo(),
+    description:
 // If you update the following test, please update also the Examples/README.md file and the comment inside the dart file.
-'''
+        '''
 This is a Demo of an App which uses the Flutter Sound UI Widgets.
 
 My own feeling is that this Demo is really too much complicated for doing something very simple.
@@ -85,20 +112,55 @@ There is too many dependencies and too many sources.
 
 I really hope that someone will write soon another simpler Demo App.
 ''',
-      ),
+  ),
 
-      Example(title: 'recordToStream', subTitle: 'Example of recording to Stream', flags: NOT_WEB,  route: (BuildContext) => RecordToStreamExample(), description:
-'''
+  Example(
+    title: 'simplePlayback',
+    subTitle: 'A very simple example',
+    flags: 0,
+    route: (_) => SimplePlayback(),
+    description: '''
+This is a very simple example for Flutter Sound beginners,
+that shows how to play a remote file.
+
+This example is really basic.
+''',
+  ),
+
+  Example(
+    title: 'simpleRecorder',
+    subTitle: 'A very simple example',
+    flags: 0,
+    route: (_) => SimpleRecorder(),
+    description: '''
+This is a very simple example for Flutter Sound beginners,
+that shows how to record, and then playback a file.
+
+This example is really basic.
+''',
+  ),
+
+  Example(
+    title: 'recordToStream',
+    subTitle: 'Example of recording to Stream',
+    flags: tNotWeb,
+    route: (_) => RecordToStreamExample(),
+    description: '''
 This is an example showing how to record to a Dart Stream.
 It writes all the recorded data from a Stream to a File, which is completely stupid:
 if an App wants to record something to a File, it must not use Streams.
 
 The real interest of recording to a Stream is for example to feed a Speech-to-Text engine, or for processing the Live data in Dart in real time.
 ''',
-      ),
+  ),
 
-      Example(title: 'livePlaybackWithoutBackPressure', subTitle: 'Live Playback without BackPressure', flags: NOT_WEB,  route: (BuildContext) => LivePlaybackWithoutBackPressure(), description:
-'''A very simple example showing how to play Live Data without back pressure.
+  Example(
+    title: 'livePlaybackWithoutBackPressure',
+    subTitle: 'Live Playback without BackPressure',
+    flags: tNotWeb,
+    route: (_) => LivePlaybackWithoutBackPressure(),
+    description:
+        '''A very simple example showing how to play Live Data without back pressure.
 A very simple example showing how to play Live Data without back pressure.
 It feeds a live stream, without waiting that the Futures are completed for each block.
 This is simpler because the App does not need to await the playback for each block before playing another one.
@@ -114,10 +176,14 @@ If he does a "stopPlayer()" it will loose all the buffered data.
 
 This example uses the ```foodEvent``` object to resynchronize the output stream before doing a ```stop()```
 ''',
-      ),
+  ),
 
-      Example(title: 'livePlaybackWithBackPressure', subTitle: 'Live Playback with BackPressure', flags: NOT_WEB,  route: (BuildContext) => LivePlaybackWithBackPressure(), description:
-'''
+  Example(
+    title: 'livePlaybackWithBackPressure',
+    subTitle: 'Live Playback with BackPressure',
+    flags: tNotWeb,
+    route: (_) => LivePlaybackWithBackPressure(),
+    description: '''
 A very simple example showing how to play Live Data with back pressure.
 It feeds a live stream, waiting that the Futures are completed for each block.
 
@@ -128,19 +194,26 @@ If you do not need any back pressure, you can see another simple example : "Live
 This other example is a little bit simpler because the App does not need to await the playback for each block before
 playing another one.
 ''',
-      ),
+  ),
 
-      Example(title: 'soundEffect', subTitle: 'Sound Effect', flags: NOT_WEB,  route: (BuildContext) => SoundEffect(), description:
-'''
+  Example(
+    title: 'soundEffect',
+    subTitle: 'Sound Effect',
+    flags: tNotWeb,
+    route: (_) => SoundEffect(),
+    description: '''
 ```startPlayerFromStream()``` can be very efficient to play sound effects. For example in a game App.
 The App open the Audio Session and call ```startPlayerFromStream()``` during initialization.
 When it want to play a noise, it has just to call the verb ```feed```
 ''',
-      ),
+  ),
 
-
-      Example(title: 'streamLoop', subTitle: 'Loop from recorder to player', flags: NOT_WEB,  route: (BuildContext) => StreamLoop(), description:
-      '''
+  Example(
+    title: 'streamLoop',
+    subTitle: 'Loop from recorder to player',
+    flags: tNotWeb,
+    route: (_) => StreamLoop(),
+    description: '''
 ```streamLoop()``` is a very simple example which connect the FlutterSoundRecorder sink 
 to the FlutterSoundPlayer Stream.
 
@@ -149,22 +222,23 @@ Of course, we do not play to the loudspeaker to avoid a very unpleasant Larsen e
 This example does not use a new StreamController, but use directly `foodStreamController`
 from flutter_sound_player.dart.
 ''',
-      ),
+  ),
 
-      Example(title: 'SpeechToText', subTitle: 'Speech to Text example', flags: NOT_WEB,  route: (BuildContext) => SpeechToTextExample(), description:
-      '''
+  Example(
+      title: 'SpeechToText',
+      subTitle: 'Speech to Text example',
+      flags: tNotWeb,
+      route: (_) => SpeechToTextExample(),
+      description: '''
 This is an example showing how to do Speech To Text.
 This is just for FUN :-D, because this example does not use the Flutter Sound library.
 But it is included in Flutter Sound examples because it shows how easy it is
 to deal with Sounds on Flutter.
 
-This example was provided by @jtkeyva. Thanks to him :-) '''
-      ),
+This example was provided by @jtkeyva. Thanks to him :-) '''),
+];
 
-    ];
-
-
-
+///
 class ExamplesApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -192,7 +266,9 @@ class ExamplesApp extends StatelessWidget {
   }
 }
 
+///
 class ExamplesAppHomePage extends StatefulWidget {
+  ///
   ExamplesAppHomePage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -204,6 +280,7 @@ class ExamplesAppHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
+  ///
   final String title;
 
   @override
@@ -214,119 +291,129 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
   Example selectedExample;
 
   @override
-  void initState( ) {
+  void initState() {
     selectedExample = exampleTable[0];
     super.initState();
     //_scrollController = ScrollController( );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    Widget cardBuilder(BuildContext context, int index)
-    {
-        bool isSelected = (exampleTable[index] == selectedExample);
-        return     GestureDetector
-        (
-            onTap: ( ) => setState( (){selectedExample = exampleTable[index];}),
-            child: Card(shape: RoundedRectangleBorder(),
-              child: Container
-              (
-                margin: const EdgeInsets.all( 3 ),
-                padding: const EdgeInsets.all( 3 ),
-                decoration: BoxDecoration
-                  (
-                  color:  isSelected ? Colors.indigo : Color( 0xFFFAF0E6),
-                  border: Border.all( color: Colors.white, width: 3, ),
-                ),
-
-                height: 50,
-
-                //color: isSelected ? Colors.indigo : Colors.cyanAccent,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children:[
-                      Text(exampleTable[index].title, style: TextStyle(color: isSelected ? Colors.white : Colors.black)),
-                      Text(exampleTable[index].subTitle, style: TextStyle(color: isSelected ? Colors.white : Colors.black)),
-                    ]
-                ) ,
+    Widget cardBuilder(BuildContext context, int index) {
+      var isSelected = (exampleTable[index] == selectedExample);
+      return GestureDetector(
+        onTap: () => setState(() {
+          selectedExample = exampleTable[index];
+        }),
+        child: Card(
+          shape: RoundedRectangleBorder(),
+          child: Container(
+            margin: const EdgeInsets.all(3),
+            padding: const EdgeInsets.all(3),
+            decoration: BoxDecoration(
+              color: isSelected ? Colors.indigo : Color(0xFFFAF0E6),
+              border: Border.all(
+                color: Colors.white,
+                width: 3,
               ),
-              borderOnForeground: false, elevation: 3.0,
             ),
-        );
+
+            height: 50,
+
+            //color: isSelected ? Colors.indigo : Colors.cyanAccent,
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(exampleTable[index].title,
+                  style: TextStyle(
+                      color: isSelected ? Colors.white : Colors.black)),
+              Text(exampleTable[index].subTitle,
+                  style: TextStyle(
+                      color: isSelected ? Colors.white : Colors.black)),
+            ]),
+          ),
+          borderOnForeground: false,
+          elevation: 3.0,
+        ),
+      );
     }
 
-    Widget makeBody()
-    {
+    Widget makeBody() {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>
-        [
-          Expanded(
-              child: Container(
-              margin: const EdgeInsets.all( 3 ),
-              padding: const EdgeInsets.all( 3 ),
-              decoration: BoxDecoration
-                (
-                color:  Color( 0xFFFAF0E6 ),
-                border: Border.all( color: Colors.indigo, width: 3, ),
-              ),
-              child:
-              ListView.builder(
-                itemCount: exampleTable.length,
-                itemBuilder:  cardBuilder
-              ),
-            ),
-          ),
-
+        children: <Widget>[
           Expanded(
             child: Container(
-              margin: const EdgeInsets.all( 3 ),
-              padding: const EdgeInsets.all( 3 ),
-
-              decoration: BoxDecoration
-                (
-                color: Color( 0xFFFAF0E6 ),
-                border: Border.all( color: Colors.indigo, width: 3, ),
+              margin: const EdgeInsets.all(3),
+              padding: const EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                color: Color(0xFFFAF0E6),
+                border: Border.all(
+                  color: Colors.indigo,
+                  width: 3,
+                ),
               ),
-              child: SingleChildScrollView(
-                child:Text( selectedExample.description
-                    ), ),
+              child: ListView.builder(
+                  itemCount: exampleTable.length, itemBuilder: cardBuilder),
             ),
           ),
-
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.all(3),
+              padding: const EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                color: Color(0xFFFAF0E6),
+                border: Border.all(
+                  color: Colors.indigo,
+                  width: 3,
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Text(selectedExample.description),
+              ),
+            ),
+          ),
         ],
       );
-
     }
 
-    return Scaffold(backgroundColor: Colors.blue,
+    return Scaffold(
+      backgroundColor: Colors.blue,
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: makeBody(),
-            bottomNavigationBar: BottomAppBar
-      (
+      bottomNavigationBar: BottomAppBar(
         color: Colors.blue,
-        child: Container
-        (
-          margin: const EdgeInsets.all( 3 ),
-          padding: const EdgeInsets.all( 3 ),
-          height: 40,
-          decoration: BoxDecoration
-          (
-            color:  Color( 0xFFFAF0E6 ),
-            border: Border.all( color: Colors.indigo, width: 3, ),
-          ),
-          child: Row ( mainAxisAlignment: MainAxisAlignment.end, children:
-          [
-                  Text( (kIsWeb && (selectedExample.flags & NOT_WEB != 0)) ? 'Not supported on Flutter Web ' : ''),
-                  RaisedButton(  onPressed: (selectedExample.flags & NOT_WEB != 0) ? null :() =>selectedExample.go(context), color: Colors.indigo, child: Text('GO', style: TextStyle(color: Colors.white),),)
-          ],)
-        ),
+        child: Container(
+            margin: const EdgeInsets.all(3),
+            padding: const EdgeInsets.all(3),
+            height: 40,
+            decoration: BoxDecoration(
+              color: Color(0xFFFAF0E6),
+              border: Border.all(
+                color: Colors.indigo,
+                width: 3,
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text((kIsWeb && (selectedExample.flags & tNotWeb != 0))
+                    ? 'Not supported on Flutter Web '
+                    : ''),
+                RaisedButton(
+                  onPressed: (kIsWeb && (selectedExample.flags & tNotWeb != 0))
+                      ? null
+                      : () => selectedExample.go(context),
+                  color: Colors.indigo,
+                  child: Text(
+                    'GO',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            )),
       ),
-
     );
   }
 }

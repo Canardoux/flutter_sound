@@ -1,4 +1,4 @@
-## 6.4.2+1
+## 6.4.3+37
 
-- Please [look to this](../CHANGELOG.md)
+- Please [look to this](https://dooboolab.github.io/flutter_sound/book/CHANGELOG.html)
 

@@ -16,7 +16,6 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 /// Used to track the State of the UI
 enum AudioState {
   ///
