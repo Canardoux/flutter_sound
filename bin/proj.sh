@@ -163,11 +163,17 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
 
         gsed -i  "s/^pod 'tau_core',/pod 'tau_sound_core',/" flutter_sound/example/ios/Podfile
 
-        for f in $(find flutter_sound -name '*.dart' ); do gsed -i  "s/package\:flauto/package:flutter_sound/" $f; done
+        for f in $(find flutter_sound -name '*.dart' )
+        do
+                gsed -i  "s/package\:flauto/package:flutter_sound/" $f
+        done
+
         for f in $(find . -name '*.md' )
         do
                 gsed -i  "s/https:\/\/canardoux.github.io\/tau/https:\/\/dooboolab.github.io\/flutter_sound/" $f
                 gsed -i  "s/https:\/\/Canardoux.github.io\/tau/https:\/\/dooboolab.github.io\/flutter_sound/" $f
+                gsed -i  "s/https:\/\/github.com\/Canardoux\/tau\//https:\/\/github.com\/dooboolab\/flutter_sound\//" $f
+                gsed -i  "s/https:\/\/github.com\/canardoux\/tau\//https:\/\/github.com\/dooboolab\/flutter_sound\//" $f
                 gsed -i  "s/https:\/\/pub.dartlang.org\/packages\/flauto/https:\/\/pub.dartlang.org\/packages\/flutter_sound/" $f
                 gsed -i  "s/https:\/\/img.shields.io\/pub\/v\/flauto.svg/https:\/\/img.shields.io\/pub\/v\/flutter_sound.svg/" $f
                 gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  $f

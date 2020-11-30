@@ -44,8 +44,8 @@ FlutterSoundPlayer myPlayer = FlutterSoundPlayer();
 
 ## `openAudioSession()` and `closeAudioSession()`
 
-[Dart API: openAudioSession](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/openAudioSession.html)
-[Dart API: closeAudioSession](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/closeAudioSession.html)
+[Dart API: openAudioSession](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/openAudioSession.html)
+[Dart API: closeAudioSession](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/closeAudioSession.html)
 
 A player must be opened before used. A player correspond to an Audio Session. With other words, you must *open* the Audio Session before using it.
 When you have finished with a Player, you must close it. With other words, you must close your Audio Session.
@@ -167,7 +167,7 @@ You will be very bad if you try something like :
 
 ## `setAudioFocus()`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/setAudiFocus.html)
+[Dart API](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/setAudiFocus.html)
 
 ### `focus:` parameter possible values are
 - AudioFocus.requestFocus (request focus, but do not do anything special with others App)
@@ -193,7 +193,7 @@ Please look to [openAudioSession()](player.md#openaudiosession-and-closeaudioses
 
 ## `startPlayer()`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayer.html)
+[Dart API](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayer.html)
 
 You can use `startPlayer` to play a sound.
 
@@ -248,7 +248,7 @@ Hint: [path_provider](https://pub.dev/packages/path_provider) can be useful if y
 
 ## `startPlayerFromTrack()`
 
-Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayerFromTrack.html)
+Dart API](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayerFromTrack.html)
 
 Use this verb to play data from a track specification and display controls on the lock screen or an Apple Watch. The Audio Session must have been open with the parameter `withUI`.
 
@@ -296,7 +296,7 @@ Remark: actually this parameter is implemented only on iOS.
 
 ## `startPlayerFromStream()`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayerFromStream.html)
+[Dart API](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayerFromStream.html)
 
 **This functionnality needs, at least, and Android SDK >= 21**
 
@@ -338,7 +338,7 @@ myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
 
 ## `feedFromStream`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/feedFromStream.html)
+[Dart API](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/feedFromStream.html)
 
 This is the verb that you use when you want to play live PCM data synchronously.
 This procedure returns a Future. It is very important that you wait that this Future is completed before trying to play another buffer.
@@ -362,7 +362,7 @@ await myPlayer.stopPlayer();
 
 ## `foodSink`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/foodSink.html)
+[Dart API](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/foodSink.html)
 
 The sink side of the Food Controller that you use when you want to play asynchronously live data.
 This StreamSink accept two kinds of objects :
@@ -385,7 +385,7 @@ myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
 
 ## `onProgress`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/onProgress.html)
+[Dart API](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/onProgress.html)
 
 The stream side of the Food Controller : this is a stream on which FlutterSound will post the player progression.
 You may listen to this Stream to have feedback on the current playback.
@@ -408,9 +408,9 @@ PlaybackDisposition has two fields :
 
 ##`Food`
 
-- [Dart API: Food](https://canardoux.github.io/tau/doc/flutter_sound/api/tau/Food/Food.html)
-- [Dart API: FoodData](https://canardoux.github.io/tau/doc/flutter_sound/api/tau/FoodData/FoodData.html.html)
-- [Dart API: FoodEvent](https://canardoux.github.io/tau/doc/flutter_sound/api/tau/FoodEvent/FoodEvent.html)
+- [Dart API: Food](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/tau/Food/Food.html)
+- [Dart API: FoodData](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/tau/FoodData/FoodData.html.html)
+- [Dart API: FoodEvent](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/tau/FoodEvent/FoodEvent.html)
 
 
 This are the objects that you can `add` to `foodSink`
@@ -435,7 +435,7 @@ myPlayer.foodSink.add(FoodEvent(()async {await _mPlayer.stopPlayer(); setState((
 
 ## `stopPlayer()`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/stopPlayer.html)
+[Dart API](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/stopPlayer.html)
 
 Use this verb to stop a playback. This verb never throw any exception. It is safe to call it everywhere,
 for example when the App is not sure of the current Audio State and want to recover a clean reset state.
@@ -454,7 +454,7 @@ for example when the App is not sure of the current Audio State and want to reco
 
 ## `pausePlayer()`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/pausePlayer.html)
+[Dart API](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/pausePlayer.html)
 
 Use this verbe to pause the current playback. An exception is thrown if the player is not in the "playing" state.
 
@@ -467,7 +467,7 @@ await myPlayer.pausePlayer();
 
 ## `resumePlayer()`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/resumePlayer.html)
+[Dart API](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/resumePlayer.html)
 
 Use this verbe to resume the current playback. An exception is thrown if the player is not in the "paused" state.
 
@@ -479,7 +479,7 @@ await myPlayer.resumePlayer();
 -------------------------------------------------------------------------------------------------------------------------------
 ## `seekPlayer()`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/seekPlayer.html)
+[Dart API](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/seekPlayer.html)
 
 To seek to a new location. The player must already be playing or paused. If not, an exception is thrown.
 
@@ -492,7 +492,7 @@ await myPlayer.seekToPlayer(Duration(milliseconds: milliSecs));
 
 ## `setVolume()`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/setVolume.html)
+[Dart API](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/setVolume.html)
 
 The parameter is a floating point number between 0 and 1.
 Volume can be changed when player is running. Manage this after player starts.
@@ -506,11 +506,11 @@ await myPlayer.setVolume(0.1);
 
 ## `playerState`, `isPlaying`, `isPaused`, `isStopped`. `getPlayerState()`
 
-[Dart API: playerState](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/playerState.html)
-[Dart API: getPlayerState()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/getPlayerState.html)
-[Dart API: isPlaying()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/isPlaying.html)
-[Dart API: isPaused()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/isPaused.html)
-[Dart API: isStopped()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/isStopped.html)
+[Dart API: playerState](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/playerState.html)
+[Dart API: getPlayerState()](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/getPlayerState.html)
+[Dart API: isPlaying()](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/isPlaying.html)
+[Dart API: isPaused()](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/isPaused.html)
+[Dart API: isStopped()](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/isStopped.html)
 
 This four verbs is used when the app wants to get the current Audio State of the player.
 
@@ -551,7 +551,7 @@ Acutually `getPlayerState()` is only implemented on iOS.
 ## `isDecoderSupported()`
 
 
-[Dart API: isStopped()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/isDecoderSupported.html)
+[Dart API: isStopped()](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/isDecoderSupported.html)
 
 This verb is useful to know if a particular codec is supported on the current platform.
 Returns a Future<bool>.
@@ -565,7 +565,7 @@ Returns a Future<bool>.
 
 ## `getProgress()`
 
-[Dart API: isStopped()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/getProgress.html)
+[Dart API: isStopped()](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/getProgress.html)
 
 This verb is used to get the current progress of a playback.
 It returns a `Map` with two Duration entries : `'progress'` and `'duration'`.
@@ -581,7 +581,7 @@ Remark : actually only implemented on iOS.
 
 ## `setUIProgressBar()`
 
-[Dart API: isStopped()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/setUIProgressBar.html)
+[Dart API: isStopped()](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/setUIProgressBar.html)
 
 This verb is used if the App wants to control itself the Progress Bar on the lock screen. By default, this progress bar is handled automaticaly by Flutter Sound.
 Remark `setUIProgressBar()` is implemented only on iOS.
@@ -598,7 +598,7 @@ Remark `setUIProgressBar()` is implemented only on iOS.
 
 ## `nowPlaying()`
 
-[Dart API: isStopped()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/nowPlaying.html)
+[Dart API: isStopped()](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/nowPlaying.html)
 
 This verb is used to set the Lock screen fields without starting a new playback.
 The fields 'dataBuffer' and 'trackPath' of the Track parameter are not used.
@@ -615,7 +615,7 @@ Remark `setUIProgressBar()` is implemented only on iOS.
 
 ## `setSubscriptionDuration()`
 
-[Dart API: isStopped()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/setSubscriptionDuration.html)
+[Dart API: isStopped()](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/player/FlutterSoundPlayer/setSubscriptionDuration.html)
 
 This verb is used to change the default interval between two post on the "Update Progress" stream. (The default interval is 0 (zero) which means "NO post")
 
