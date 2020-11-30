@@ -2,8 +2,8 @@
 
 The verbs offered by the Flutter Sound Player module are :
 
-- [Default constructor](#creating-the-player-instance)
-- [openAudioSession() and closeAudioSession()](#openAudioSession-and-closeAudioSession) to open or close and audio session
+- [Default constructor](#creating-the-recorder-instance)
+- [openAudioSession() and closeAudioSession()](#openaudiosession-and-closeaudiosession) to open or close and audio session
 - [setAudioFocus()](#setaudiofocus) to manage the session Audio Focus
 - [startRecorder()](#startrecorder) to start your recorder
 - [stopRecorder()](#stoprecorder) to stop your current record.
@@ -30,8 +30,8 @@ myPlayer = FlutterSoundRecorder();
 
 ## `openAudioSession()` and `closeAudioSession()`
 
--[Dart API: openAudioSession](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/openAudioSession.html)
--[Dart API: closeAudioSession](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/closeAudioSession.html)
+- [Dart API: openAudioSession](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/openAudioSession.html)
+- [Dart API: closeAudioSession](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/closeAudioSession.html)
 
 
 A recorder must be opened before used. A recorder correspond to an Audio Session. With other words, you must *open* the Audio Session before using it.
