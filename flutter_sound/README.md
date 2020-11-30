@@ -15,7 +15,7 @@
 
 # Flutter Sound V6.x is OUT
 
-Please refer to the [CHANGELOG.md file](https://canardoux.github.io/tau/book/CHANGELOG.html) to get learn all the great new features. It has especially the following :
+Please refer to the [CHANGELOG.md file](https://canardoux.github.io/tau/book/CHANGELOG.html) to learn about all the great new features. It has the following :
 
 ## Flutter Web support
 
@@ -23,13 +23,13 @@ Flutter Sound is supported by Flutter Web. You can play with [this live demo on 
 
 ## Record to Dart Stream
 
-This feature has been requested from many months from many, many, many Flutter Sound users. This open doors to things like feeding a Speech-to-Text engine.
+This feature has been requested for many months from many, many, many Flutter Sound users. This opens doors to things like feeding a Speech-to-Text engine.
 
 You can refer to the [Getting Started with Record-to-Stream](https://canardoux.github.io/tau/book/tau/codec.html#recording-pcm-16-to-a-dart-stream) notice.
 
 ## Playback from a live Dart Stream
 
-This feature has also been requested from many months from many Flutter Sound users.
+This feature has also been requested for many months from many Flutter Sound users.
 
 You can refer to the [Getting Started with Playback-from-Stream](https://canardoux.github.io/tau/book/tau/codec.html#playing-pcm-16-from-a-dart-stream) notice.
 
@@ -55,6 +55,9 @@ Flutter Sound can be used to play a beep from an asset all the way up to impleme
 
 The API is designed so you can use the supplied widgets or roll your own.
 
+- Flutter Sound requires an iOS 9.3 SDK (or later)
+- Flutter Sound requires an Android API level 21 (or later)
+
 ## Features
 
 The Flutter Sound package includes the following features
@@ -75,11 +78,9 @@ The Flutter Sound package includes the following features
 
 You can find the [changes here](https://canardoux.github.io/tau/book/CHANGELOG.html)
 
-
 ## Documentation
 
 The [documentation is here](https://canardoux.github.io/tau/book/)
-
 
 ## License
 
