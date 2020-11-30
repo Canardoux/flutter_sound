@@ -667,12 +667,20 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
           var durationDate = DateTime.fromMillisecondsSinceEpoch(
               disposition.duration.inMilliseconds,
               isUtc: true);
+          var positionDate = DateTime.fromMillisecondsSinceEpoch(
+              disposition.position.inMilliseconds,
+              isUtc: true);
           return Text(
-            '{DateFormat("mm:ss:SS", "en_GB").format(positionDate)} / ${DateFormat('mm:ss:SS', 'en_GB').format(durationDate)}',
+            '${DateFormat('mm:ss:SS', 'en_GB').format(positionDate)} / ${DateFormat('mm:ss:SS', 'en_GB').format(durationDate)}',
             style: _textStyle,
           );
         });
   }
+
+  //'${Format.duration(disposition.position, showSuffix: false)}'
+  //' / '
+  //'${Format.duration(disposition.duration)}',
+
 
   /// Specialised method that allows the RecorderPlaybackController
   /// to update our duration as a recording occurs.
