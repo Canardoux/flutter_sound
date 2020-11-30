@@ -4,7 +4,7 @@
 
 - [The &tau; Architecture](tau/architecture.md)
 - [Changelog](CHANGELOG.md)
-- [Sources](https://github.com/Canardoux/tau)
+- [Sources](https://github.com/dooboolab/flutter_sound)
 
 ## Guides
 
@@ -51,6 +51,6 @@
 ## Links
 
 - [Migration](tau/migration.md)
-- [Problem Report](https://github.com/Canardoux/tau/issues)
+- [Problem Report](https://github.com/dooboolab/flutter_sound/issues)
 - [Contributions](tau/contribution.md)
 - [License](LICENSE.md)

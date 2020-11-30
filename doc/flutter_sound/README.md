@@ -4,7 +4,7 @@ This is the README of /doc/flutter_sound
 <img src="Logotype primary.png" width="70%" height="70%" />
 
 <p align="left">
-  <a href="https://dooboolab.github.io/flutter_sound/book"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
+  <a href="https://dooboolab.github.io/flutter_sound/book"><img alt="pub version" src="https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square"></a>
 </p>
 
 Flutter Sound is the first (and actually the only) implementation of the &tau; Project.
@@ -39,6 +39,6 @@ We actually maintain two branches for Flutter Sound :
 Flutter Sound comes with several Demo/Examples :
 
 Please refer to [README](example/example.md) to have a preview of those examples.
-[The `examples App`](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/main.dart) is a driver which can call all the various examples.
+[The `examples App`](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/main.dart) is a driver which can call all the various examples.
 
 
