@@ -4,7 +4,7 @@
 
 - [The &tau; Architecture](tau/architecture.md)
 - [Changelog](CHANGELOG.md)
-- [Sources](https://github.com/dooboolab/flutter_sound)
+- [Sources](https://github.com/Canardoux/tau)
 
 ## Guides
 
@@ -30,7 +30,7 @@
 - [&tau; under Flutter](flutter_sound/README.md)
 - [Installation](flutter_sound/install.md)
 - [Flutter Sound on Flutter Web](flutter_sound/flutter_sound_on_web.md)
-- [Live Example](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/web_example/)
+- [Live Example](https://canardoux.github.io/tau/doc/flutter_sound/web_example/)
 - [Examples](flutter_sound/example/example.md)
    - [Demo](flutter_sound/example/example.md#demo)
    - [Widget UI](flutter_sound/example/example.md#widgetuidemo)
@@ -42,7 +42,7 @@
    - [Sound Effects](flutter_sound/example/example.md#soundeffect)
    - [Stream Loop](flutter_sound/example/example.md#streamloop)
    - [Speech To Text](flutter_sound/example/example.md#speechtotext)
-- [API Reference](https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/index.html)
+- [API Reference](https://canardoux.github.io/tau/doc/flutter_sound/api/index.html)
 
 ## React Native
 
@@ -51,6 +51,6 @@
 ## Links
 
 - [Migration](tau/migration.md)
-- [Problem Report](https://github.com/dooboolab/flutter_sound/issues)
+- [Problem Report](https://github.com/Canardoux/tau/issues)
 - [Contributions](tau/contribution.md)
 - [License](LICENSE.md)

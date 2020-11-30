@@ -1,0 +1,785 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>τ under Flutter · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="install.html" />
+    
+    
+    <link rel="prev" href="../tau/ui_widget.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        <li class="header">The TAU Project</li>
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../tau/architecture.html">
+            
+                <a href="../tau/architecture.html">
+            
+                    
+                    The τ Architecture
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../CHANGELOG.html">
+            
+                <a href="../CHANGELOG.html">
+            
+                    
+                    Changelog
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" >
+            
+                <a target="_blank" href="https://github.com/Canardoux/tau">
+            
+                    
+                    Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Guides</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../tau/getting-started.html">
+            
+                <a href="../tau/getting-started.html">
+            
+                    
+                    Getting Started
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../tau/codec.html">
+            
+                <a href="../tau/codec.html#flutter-sound-codecs">
+            
+                    
+                    Supported Codecs
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../tau/codec.html">
+            
+                <a href="../tau/codec.html#raw-pcm-and-wave-files">
+            
+                    
+                    Raw PCM and Wave files
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../tau/codec.html">
+            
+                <a href="../tau/codec.html#recording-or-playing-raw-pcm-int-linerar-16-files">
+            
+                    
+                    Recording or playing Raw PCM
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="../tau/codec.html">
+            
+                <a href="../tau/codec.html#recording-pcm-16-to-a-dart-stream">
+            
+                    
+                    Recording PCM-16 to a Dart Stream
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="../tau/codec.html">
+            
+                <a href="../tau/codec.html#playing-pcm-16-from-a-dart-stream">
+            
+                    
+                    Playing PCM-16 from a Dart Stream
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="../tau/widgets.html">
+            
+                <a href="../tau/widgets.html">
+            
+                    
+                    Widgets
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="../tau/lock-screen.html">
+            
+                <a href="../tau/lock-screen.html">
+            
+                    
+                    Notification/Lock Screen
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">API</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../tau/main.html">
+            
+                <a href="../tau/main.html">
+            
+                    
+                    The τ API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../tau/player.html">
+            
+                <a href="../tau/player.html">
+            
+                    
+                    The τ Player
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="../tau/recorder.html">
+            
+                <a href="../tau/recorder.html">
+            
+                    
+                    The τ Recorder
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="../tau/utilities.html">
+            
+                <a href="../tau/utilities.html">
+            
+                    
+                    The utilities
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.5" data-path="../tau/ui_widget.html">
+            
+                <a href="../tau/ui_widget.html">
+            
+                    
+                    The Widget UI
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Flutter Sound</li>
+        
+        
+    
+        <li class="chapter active" data-level="4.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    τ under Flutter
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="install.html">
+            
+                <a href="install.html">
+            
+                    
+                    Installation
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" data-path="flutter_sound_on_web.html">
+            
+                <a href="flutter_sound_on_web.html">
+            
+                    
+                    Flutter Sound on Flutter Web
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" >
+            
+                <a target="_blank" href="https://canardoux.github.io/tau/doc/flutter_sound/web_example/">
+            
+                    
+                    Live Example
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5" data-path="example/example.html">
+            
+                <a href="example/example.html">
+            
+                    
+                    Examples
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.5.1" data-path="example/example.html">
+            
+                <a href="example/example.html#demo">
+            
+                    
+                    Demo
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.2" data-path="example/example.html">
+            
+                <a href="example/example.html#widgetuidemo">
+            
+                    
+                    Widget UI
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.3" data-path="example/example.html">
+            
+                <a href="example/example.html#simpleplayback">
+            
+                    
+                    Simple Playback
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.4" data-path="example/example.html">
+            
+                <a href="example/example.html#simplerecorder">
+            
+                    
+                    Simple Recorder
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.5" data-path="example/example.html">
+            
+                <a href="example/example.html#recordtostream">
+            
+                    
+                    Record To Stream
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.6" data-path="example/example.html">
+            
+                <a href="example/example.html#liveplaybackwithoutbackpressure">
+            
+                    
+                    Play From Stream (1)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.7" data-path="example/example.html">
+            
+                <a href="example/example.html#liveplaybackwithbackpressure">
+            
+                    
+                    Play From Stream (2)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.8" data-path="example/example.html">
+            
+                <a href="example/example.html#soundeffect">
+            
+                    
+                    Sound Effects
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.9" data-path="example/example.html">
+            
+                <a href="example/example.html#streamloop">
+            
+                    
+                    Stream Loop
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5.10" data-path="example/example.html">
+            
+                <a href="example/example.html#speechtotext">
+            
+                    
+                    Speech To Text
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6" >
+            
+                <a target="_blank" href="https://canardoux.github.io/tau/doc/flutter_sound/api/index.html">
+            
+                    
+                    API Reference
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">React Native</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../react_native/">
+            
+                <a href="../react_native/">
+            
+                    
+                    τ under React Native
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Links</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../tau/migration.html">
+            
+                <a href="../tau/migration.html">
+            
+                    
+                    Migration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" >
+            
+                <a target="_blank" href="https://github.com/Canardoux/tau/issues">
+            
+                    
+                    Problem Report
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.3" data-path="../tau/contribution.html">
+            
+                <a href="../tau/contribution.html">
+            
+                    
+                    Contributions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.4" data-path="../LICENSE.html">
+            
+                <a href="../LICENSE.html">
+            
+                    
+                    License
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >τ under Flutter</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <p>This is the README of /doc/flutter_sound</p>
+<h1 id="flutter-sound">Flutter Sound</h1>
+<p><img src="Logotype primary.png" width="70%" height="70%"></p>
+<p align="left">
+  <a href="https://canardoux.github.io/tau/book" target="_blank"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg?style=flat-square"></a>
+</p>
+
+<p>Flutter Sound is the first (and actually the only) implementation of the &#x3C4; Project.
+This Flutter plugin is supported by :</p>
+<ul>
+<li>iOS</li>
+<li>Android</li>
+<li>Flutter Web</li>
+</ul>
+<p>Maybe, one day, we will be supported by Linux, Macos, and even (why not) Windows. But this is not top of our priorities.</p>
+<hr>
+<p><img src="https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif" alt="Demo"></p>
+<h2 id="flutter-sound-branches">Flutter Sound branches</h2>
+<p>We actually maintain two branches for Flutter Sound :</p>
+<ul>
+<li>The V5 branch (the version ^5.0.0)</li>
+<li>The master branch (actually the version ^6.0.0)</li>
+</ul>
+<h2 id="sdk-requirements">SDK requirements</h2>
+<ul>
+<li>Flutter Sound requires an iOS 10.0 SDK (or later)</li>
+<li>Flutter Sound requires an Android 21 (or later)</li>
+</ul>
+<h2 id="examples-demo-apps">Examples (Demo Apps)</h2>
+<p>Flutter Sound comes with several Demo/Examples :</p>
+<p>Please refer to <a href="example/example.html">README</a> to have a preview of those examples.
+<a href="https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/main.dart" target="_blank">The <code>examples App</code></a> is a driver which can call all the various examples.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../tau/ui_widget.html" class="navigation navigation-prev " aria-label="Previous page: The Widget UI">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="install.html" class="navigation navigation-next " aria-label="Next page: Installation">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"τ under Flutter","level":"4.1","depth":1,"next":{"title":"Installation","level":"4.2","depth":1,"path":"flutter_sound/install.md","ref":"flutter_sound/install.md","articles":[]},"previous":{"title":"The Widget UI","level":"3.5","depth":1,"path":"tau/ui_widget.md","ref":"tau/ui_widget.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"flutter_sound/README.md","mtime":"2020-11-27T20:09:02.868Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-30T18:20:26.197Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
