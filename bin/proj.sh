@@ -80,6 +80,14 @@ if [ "_$1" = "_TAU" ] ; then
         done
 
 
+
+        for f in flutter_sound/ios/Classes/*
+        do
+                gsed -i  "s/tau_sound_core\//tau_core\//" $f
+        done
+
+
+
         gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" flutter_sound/pubspec.yaml
         gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" flutter_sound_web/pubspec.yaml
         gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" flutter_sound_platform_interface/pubspec.yaml
@@ -179,6 +187,13 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
                 gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  $f
                 gsed -i  "s/https:\/\/github.com\/Canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  $f
         done
+
+        for f in flutter_sound/ios/Classes/*
+        do
+                gsed -i  "s/tau_core\//tau_sound_core\//" $f
+        done
+
+
 
 
         gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  flutter_sound/pubspec.yaml
