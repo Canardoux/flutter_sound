@@ -9,7 +9,7 @@
 
 - # Flutter Sound user: your [documentation is there](https://dooboolab.github.io/flutter_sound/book)
 - # The [CHANGELOG file is here](https://dooboolab.github.io/flutter_sound/book/CHANGELOG.html)
-- # The [sources are here](https://github.com/Canardoux/tau)
+- # The [sources are here](https://github.com/dooboolab/flutter_sound)
 
 ---------
 
