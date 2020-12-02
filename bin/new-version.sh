@@ -60,31 +60,7 @@ if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
 fi
-
-
-
-#flutter clean
-#flutter pub get
-flutter pub publish
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
 cd ..
-
-bin/flavor.sh LITE
-
-cd flutter_sound
-#flutter clean
-#flutter pub get
-flutter pub publish
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
-cd ..
-
-bin/flavor.sh FULL
 
 git add .
 git commit -m "TAU : Version $VERSION"
@@ -115,6 +91,30 @@ cd tau_core/web
 npm publish .
 
 cd ../..
+
+cd flutter_sound
+#flutter clean
+#flutter pub get
+flutter pub publish
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+cd ..
+
+bin/flavor.sh LITE
+
+cd flutter_sound
+#flutter clean
+#flutter pub get
+flutter pub publish
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+cd ..
+
+bin/flavor.sh FULL
 
 
 
@@ -156,21 +156,20 @@ cp -a flutter_sound/example/build/web doc/flutter_sound/web_example
 bin/doc.sh $VERSION
 
 
-git add .
-git commit -m "Release Version: $VERSION"
-git push
-if [ ! -z "$VERSION" ]; then
-        git tag -f $VERSION
-        git push --tag -f
-fi
-git checkout gh-pages
-git merge master
-git push
-if [ ! -z "$VERSION" ]; then
-        git tag -f $VERSION
-        git push --tag -f
-fi
-git checkout master
+#git add .
+#git commit -m "Release Version: $VERSION"
+#if [ ! -z "$VERSION" ]; then
+#        git tag -f $VERSION
+#        git push --tag -f
+#fi
+#git checkout gh-pages
+#git merge master
+#git push
+#if [ ! -z "$VERSION" ]; then
+#        git tag -f $VERSION
+ #       git push --tag -f
+#fi
+#git checkout master
 
 
 

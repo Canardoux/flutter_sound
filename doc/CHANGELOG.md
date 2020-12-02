@@ -1,6 +1,10 @@
+## 6.4.5
+
+- Fixes an other problem in `setAudioFocus()` on Android and iOS [#535](https://github.com/dooboolab/flutter_sound/issues/535)
+
 ## 6.4.4
 
-- Fix a crash in `setAudioFocus()` on Android [#535](https://github.com/dooboolab/flutter_sound/issues/535)
+- Fixes a crash in `setAudioFocus()` on Android [#535](https://github.com/dooboolab/flutter_sound/issues/535)
 
 ## 6.4.3
 

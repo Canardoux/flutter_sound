@@ -48,7 +48,7 @@ dependencies:
   flutter_sound_lite: ^6.0.0
 ```
 
-## Linking your App with Flutter Sound sources
+## Linking your App with Flutter Sound sources (optional)
 
 The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
 
@@ -93,6 +93,7 @@ dependencies:
   flutter_sound_lite:
     path: some/where/flutter_sound
 ```
+
 
 
 ## FFmpeg
@@ -164,5 +165,25 @@ Add those 4 lines at the end of the `<head>` section of your `index.html` file :
 ```
 
 Please [read this](https://www.jsdelivr.com/features) to understand how you can specify the interval of the versions you are interested by.
+
+## Troubles shooting
+
+### Problem with Cocoapods
+
+If you get this message (specially after the release of a new Flutter Version) :
+```
+Cocoapods could not find compatible versions for pod ...
+```
+
+you can try the following instructions sequence :
+```
+cd ios
+pod cache clean --all
+rm Podfile.lock
+rm -rf .symlinks/
+pod repo update
+pod install --repo-update
+cd ..
+```
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
