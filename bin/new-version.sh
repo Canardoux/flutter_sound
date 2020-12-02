@@ -119,15 +119,19 @@ bin/flavor.sh FULL
 
 
 
-cd flutter_sound/example
-flutter pub get
-flutter clean
-cd ios
+cd flutter_sound/example/ios
 pod cache clean --all
 rm Podfile.lock
 rm -rf .symlinks/
+cd ..
+flutter clean
+flutter pub get
+cd ios
+pod update
 pod repo update
 pod install --repo-update
+pod update
+pod install
 cd ..
 flutter build ios
 if [ $? -ne 0 ]; then

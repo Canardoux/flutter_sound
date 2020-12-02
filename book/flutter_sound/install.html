@@ -729,7 +729,7 @@ Those numbers include everything (flutter library, application, ...) and not onl
   flutter:
     sdk: flutter
   flutter_sound_lite: ^6.0.0
-</code></pre><h2 id="linking-your-app-with-flutter-sound-sources">Linking your App with Flutter Sound sources</h2>
+</code></pre><h2 id="linking-your-app-with-flutter-sound-sources-optional">Linking your App with Flutter Sound sources (optional)</h2>
 <p>The Flutter-Sound sources <a href="https://github.com/dooboolab/flutter_sound" target="_blank">are here</a>.</p>
 <p>There is actually two branches :</p>
 <ul>
@@ -811,6 +811,27 @@ bin/flavor LITE
   &lt;script src=&quot;https://cdn.jsdelivr.net/npm/tau_engine@6/js/flutter_sound/flutter_sound_recorder.min.js&quot;&gt;&lt;/script&gt;
   &lt;script src=&quot;https://cdn.jsdelivr.net/npm/howler@2/dist/howler.min.js&quot;&gt;&lt;/script&gt;
 </code></pre><p>Please <a href="https://www.jsdelivr.com/features" target="_blank">read this</a> to understand how you can specify the interval of the versions you are interested by.</p>
+<h2 id="troubles-shooting">Troubles shooting</h2>
+<h3 id="problem-with-cocoapods">Problem with Cocoapods</h3>
+<p>If you get this message (specially after the release of a new Flutter Version) :</p>
+<pre><code>Cocoapods could not find compatible versions for pod ...
+</code></pre><p>you can try the following instructions sequence (and ignore if some commands gives errors) :</p>
+<pre><code class="lang-sh"><span class="hljs-built_in">cd</span> ios
+pod cache clean --all
+rm Podfile.lock
+rm -rf .symlinks/
+<span class="hljs-built_in">cd</span> ..
+flutter clean
+flutter pub get
+<span class="hljs-built_in">cd</span> ios
+pod update
+pod repo update
+pod install --repo-update
+pod update
+pod install
+<span class="hljs-built_in">cd</span> ..
+</code></pre>
+<p>If everything good, the last <code>pod install</code> must not give any error.</p>
 <hr>
 
                                 
@@ -855,7 +876,7 @@ bin/flavor LITE
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Installation","level":"4.2","depth":1,"next":{"title":"Flutter Sound on Flutter Web","level":"4.3","depth":1,"path":"flutter_sound/flutter_sound_on_web.md","ref":"flutter_sound/flutter_sound_on_web.md","articles":[]},"previous":{"title":"τ under Flutter","level":"4.1","depth":1,"path":"flutter_sound/README.md","ref":"flutter_sound/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"flutter_sound/install.md","mtime":"2020-11-30T19:18:08.502Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-12-02T09:16:53.570Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Installation","level":"4.2","depth":1,"next":{"title":"Flutter Sound on Flutter Web","level":"4.3","depth":1,"path":"flutter_sound/flutter_sound_on_web.md","ref":"flutter_sound/flutter_sound_on_web.md","articles":[]},"previous":{"title":"τ under Flutter","level":"4.1","depth":1,"path":"flutter_sound/README.md","ref":"flutter_sound/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"flutter_sound/install.md","mtime":"2020-12-02T15:16:17.829Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-12-02T15:21:48.172Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

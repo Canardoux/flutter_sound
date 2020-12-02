@@ -175,15 +175,25 @@ If you get this message (specially after the release of a new Flutter Version) :
 Cocoapods could not find compatible versions for pod ...
 ```
 
-you can try the following instructions sequence :
-```
+you can try the following instructions sequence (and ignore if some commands gives errors) :
+
+```sh
 cd ios
 pod cache clean --all
 rm Podfile.lock
 rm -rf .symlinks/
+cd ..
+flutter clean
+flutter pub get
+cd ios
+pod update
 pod repo update
 pod install --repo-update
+pod update
+pod install
 cd ..
 ```
+
+If everything good, the last `pod install` must not give any error.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
