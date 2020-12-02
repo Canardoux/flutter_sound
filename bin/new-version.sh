@@ -127,6 +127,7 @@ pod cache clean --all
 rm Podfile.lock
 rm -rf .symlinks/
 pod repo update
+pod install --repo-update
 cd ..
 flutter build ios
 if [ $? -ne 0 ]; then
