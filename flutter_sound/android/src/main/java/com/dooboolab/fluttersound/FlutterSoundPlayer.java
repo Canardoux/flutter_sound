@@ -409,7 +409,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		t_AUDIO_FOCUS focus = t_AUDIO_FOCUS.values()[x1];
 		int x2 = call.argument("category");
 		t_SESSION_CATEGORY category = t_SESSION_CATEGORY.values()[x2];
-		int x3 = call.argument("sessionMode");
+		int x3 = call.argument("mode");
 		t_SESSION_MODE mode = t_SESSION_MODE.values()[x3];
 		int x4 = call.argument("device");
 		t_AUDIO_DEVICE audioDevice = t_AUDIO_DEVICE.values()[x4];
