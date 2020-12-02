@@ -43,7 +43,9 @@
   * [Sound Effects](flutter_sound/example/sound-effects.md)
   * [Stream Loop](flutter_sound/example/stream-loop.md)
   * [Speech To Text](flutter_sound/example/speech-to-text.md)
-* [API Reference](flutter_sound/api/index.html)
+* [API Reference1](flutter_sound/api/index.html)
+* [API Reference2](flutter_sound/api/player/index.html)
+* [API Reference3](flutter_sound/api/player/FlutterSoundPlayer/openAudioSession.html)
 
 ## React Native
 

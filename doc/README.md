@@ -1,3 +1,6 @@
+* [API Reference](flutter_sound/api/index.html)
+* [API Reference](flutter_sound/api/player/index.html)
+* [API Reference](flutter_sound/api/player/FlutterSoundPlayer/openAudioSession.html)
 # Introduction
 
 The τ project is a set of libraries which deal with audio :
