@@ -252,7 +252,7 @@ Use this verb to play data from a track specification and display controls on th
   * `null` : The Skip Forward button will be disabled
 * `onSkipBackward:()` : this parameter can be :
   * a call back function to call when the user hit the Skip Backward button on the lock screen
-  *  : The Skip Backward button will be disabled
+  * : The Skip Backward button will be disabled
 * `removeUIWhenStopped` : is a boolean to specify if the UI on the lock screen must be removed when the sound is finished or when the App does a `stopPlayer()`. Most of the time this parameter must be true. It is used only for the rare cases where the App wants to control the lock screen between two playbacks. Be aware that if the UI is not removed, the button Pause/Resume, Skip Backward and Skip Forward remain active between two playbacks. If you want to disable those button, use the API verb `nowPlaying()`. Remark: actually this parameter is implemented only on iOS.
 * `defaultPauseResume` : is a boolean value to specify if Flutter Sound must pause/resume the playback by itself when the user hit the pause/resume button. Set this parameter to _FALSE_ if the App wants to manage itself the pause/resume button. If you do not specify this parameter and the `onPaused` parameter is specified then Flutter Sound will assume `FALSE`. If you do not specify this parameter and the `onPaused` parameter is not specified then Flutter Sound will assume `TRUE`. Remark: actually this parameter is implemented only on iOS.
 

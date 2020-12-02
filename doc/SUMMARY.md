@@ -6,7 +6,6 @@
 
 * [The τ Architecture](the-tau-project/architecture.md)
 * [Changelog](the-tau-project/changelog.md)
-* [Sources](https://github.com/canardoux/tau)
 
 ## Guides
 
@@ -52,6 +51,7 @@
 
 ## Links
 
+* [Sources \(Github\)](https://github.com/canardoux/tau)
 * [Migration](links/migration.md)
 * [Problem Report](https://github.com/canardoux/tau/issues)
 * [Contributions](links/contribution.md)

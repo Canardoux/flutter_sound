@@ -6,7 +6,7 @@ This is the README of /doc/flutter\_sound
 
 ![](../.gitbook/assets/Logotype%20primary.png)
 
- [![pub version](https://img.shields.io/pub/v/flauto.svg?style=flat-square)](https://canardoux.github.io/tau/book)
+[![pub version](https://img.shields.io/pub/v/flauto.svg?style=flat-square)](https://canardoux.github.io/tau/book)
 
 Flutter Sound is the first \(and actually the only\) implementation of the τ Project. This Flutter plugin is supported by :
 
