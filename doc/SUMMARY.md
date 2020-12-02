@@ -43,7 +43,7 @@
   * [Sound Effects](flutter-sound/example/sound-effects.md)
   * [Stream Loop](flutter-sound/example/stream-loop.md)
   * [Speech To Text](flutter-sound/example/speech-to-text.md)
-* [API Reference](https://canardoux.github.io/tau/doc/flutter_sound/api/index.html)
+* [API Reference](flutter_sound/api/index.html)
 
 ## React Native
 
