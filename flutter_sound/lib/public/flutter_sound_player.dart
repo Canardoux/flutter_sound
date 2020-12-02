@@ -439,6 +439,10 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// - [mode] : an optional parameter for iOS. See [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosessionmode?language=objc) to understand the meaning of this parameter.
   /// - [audioFlags] : an optional parameter for iOS
   /// - [withUI] : true if the App plan to use [startPlayerFromTrack] later.
+  /// - [withUI] : true if the App plan to use [startPlayerFromTrack()] later.
+  /// - [withUI] : true if the App plan to use (toto)[startPlayerFromTrack] later.
+  /// - [withUI] : true if the App plan to use [startPlayerFromTrack.html] later.
+  /// - [withUI] : true if the App plan to use (toto)[startPlayerFromTrack] later.
   ///
   /// *Example:*
   /// ```dart
