@@ -681,7 +681,6 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   //' / '
   //'${Format.duration(disposition.duration)}',
 
-
   /// Specialised method that allows the RecorderPlaybackController
   /// to update our duration as a recording occurs.
   ///

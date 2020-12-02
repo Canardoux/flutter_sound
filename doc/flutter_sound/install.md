@@ -48,9 +48,9 @@ dependencies:
   flutter_sound_lite: ^6.0.0
 ```
 
-## Linking your App with Flutter Sound sources
+## Linking your App with Flutter Sound sources (optional)
 
-The Flutter-Sound sources [are here](https://github.com/canardoux/tau).
+The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
 
 There is actually two branches :
 - V5. This is the Long Term Support (LTS) branch which is maintained under the version 5.x.x
@@ -60,7 +60,7 @@ If you want to generate your App from the sources with a `FULL` flavor:
 
 ```sh
 cd some/where
-git clone https://github.com/canardoux/tau
+git clone https://github.com/dooboolab/flutter_sound
 cd some/where/flutter_sound
 bin/flavor FULL
 ```
@@ -79,7 +79,7 @@ If you prefer to link your App with the `LITE` flavor :
 
 ```sh
 cd some/where
-git clone https://github.com/canardoux/tau
+git clone https://github.com/dooboolab/flutter_sound
 cd some/where/flutter_sound
 bin/flavor LITE
 ```
@@ -93,6 +93,7 @@ dependencies:
   flutter_sound_lite:
     path: some/where/flutter_sound
 ```
+
 
 
 ## FFmpeg
@@ -164,5 +165,35 @@ Add those 4 lines at the end of the `<head>` section of your `index.html` file :
 ```
 
 Please [read this](https://www.jsdelivr.com/features) to understand how you can specify the interval of the versions you are interested by.
+
+## Troubles shooting
+
+### Problem with Cocoapods
+
+If you get this message (specially after the release of a new Flutter Version) :
+```
+Cocoapods could not find compatible versions for pod ...
+```
+
+you can try the following instructions sequence (and ignore if some commands gives errors) :
+
+```sh
+cd ios
+pod cache clean --all
+rm Podfile.lock
+rm -rf .symlinks/
+cd ..
+flutter clean
+flutter pub get
+cd ios
+pod update
+pod repo update
+pod install --repo-update
+pod update
+pod install
+cd ..
+```
+
+If everything good, the last `pod install` must not give any error.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------

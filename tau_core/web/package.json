@@ -1,6 +1,6 @@
 {
-        "name": "tau_core",
-        "version": "6.4.3+36",
+        "name": "tau_sound_core",
+        "version": "6.4.5+1",
         "description": "The Tau Engine for Web App",
         "homepage": "https://github.com/Canardoux/tau",
         "keywords": [
@@ -20,7 +20,7 @@
         "author": "Larpoux <larpoux@gmail.com> (https://github.com/orgs/Canardoux/people/Larpoux)",
         "repository": {
                 "type": "git",
-                "url": "https://github.com/canardoux/tau.git"
+                "url": "https://github.com/dooboolab/flutter_sound.git"
         },
         "devDependencies": {
                 "uglify-js": "2.x"

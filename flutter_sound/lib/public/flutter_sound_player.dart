@@ -28,8 +28,8 @@ import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 import 'package:synchronized/synchronized.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
-import 'package:flauto_platform_interface/flutter_sound_player_platform_interface.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import '../flutter_sound.dart';
 
@@ -100,7 +100,6 @@ String fileExtension(String path) {
 ///
 /// ----------------------------------------------------------------------------------------------------
 class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
-  
   TonSkip _onSkipForward; // User callback "onPaused:"
   TonSkip _onSkipBackward; // User callback "onPaused:"
   TonPaused _onPaused; // user callback "whenPause:"
@@ -212,7 +211,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
-   @override
+  @override
   void pause(int state) async {
     print('FS:---> pause ');
     await _lock.synchronized(() async {
@@ -344,12 +343,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// The food Controller
   StreamController<PlaybackDisposition> _playerController;
 
-
-
-
-
-
-  
   /// The sink side of the Food Controller
   ///
   /// This the output stream that you use when you want to play asynchronously live data.
@@ -371,21 +364,15 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   StreamSink<Food> get foodSink =>
       _foodStreamController != null ? _foodStreamController.sink : null;
 
-
-
-
-
-
-  
   /// The stream side of the Food Controller
-  /// 
+  ///
   /// This is a stream on which FlutterSound will post the player progression.
   /// You may listen to this Stream to have feedback on the current playback.
-  /// 
+  ///
   /// PlaybackDisposition has two fields :
   /// - Duration duration  (the total playback duration)
   /// - Duration position  (the current playback position)
-  /// 
+  ///
   /// *Example:*
   /// ```dart
   ///         _playerSubscription = myPlayer.onProgress.listen((e)
@@ -398,27 +385,16 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   Stream<PlaybackDisposition> get onProgress =>
       _playerController != null ? _playerController.stream : null;
 
-
-
-
-
-
-
-
-
   /// Return true if the Player has been open
   bool isOpen() {
     return (_isInited == Initialized.fullyInitializedWithUI ||
         _isInited == Initialized.fullyInitialized);
   }
 
-
-
-
   /// Provides a stream of dispositions which
   /// provide updated position and duration
   /// as the audio is played.
-  /// 
+  ///
   /// The duration may start out as zero until the
   /// media becomes available.
   /// The `interval` dictates the minimum interval between events
@@ -440,39 +416,17 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return _playerController != null ? _playerController.stream : null;
   }
 
-
-
-
-
-  
-  
-  
-
   /// User callback "whenFinished:"
   TWhenFinished _audioPlayerFinishedPlaying;
 
-  
-  
-  
   /// Test the Player State
   bool get isPlaying => _playerState == PlayerState.isPlaying;
-
 
   /// Test the Player State
   bool get isPaused => _playerState == PlayerState.isPaused;
 
-
   /// Test the Player State
   bool get isStopped => _playerState == PlayerState.isStopped;
-
-
-
-
-
-
-
-
-
 
   /// Open the Player.
   ///
@@ -534,15 +488,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return _openAudioSessionCompleter.future;
   }
 
-
-
-
-
-
-
-
-
-
   /// @nodoc
   @deprecated
   Future<FlutterSoundPlayer> openAudioSessionWithUI(
@@ -558,13 +503,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         device: device,
         withUI: true);
   }
-
-
-
-
-
-
-
 
   /// Set or unset the Audio Focus.
   ///
@@ -602,14 +540,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     });
     print('FS:<--- setAudioFocus ');
   }
-
-
-
-
-
-
-
-
 
   /// Close an open session.
   ///
@@ -656,14 +586,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     print('FS:<--- closeAudioSession ');
   }
 
-
-
-
-
-
-
-
-
   /// Query the current state to the Tau Core layer.
   ///
   /// Most of the time, the App will not use this verb,
@@ -682,14 +604,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return _playerState;
   }
 
-
-
-
-
-
-
   /// Get the current progress of a playback.
-  /// 
+  ///
   /// It returns a `Map` with two Duration entries : `'progress'` and `'duration'`.
   /// Remark : actually only implemented on iOS.
   ///
@@ -709,12 +625,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return FlutterSoundPlayerPlatform.instance.getProgress(this);
   }
 
-
-
-
-
-
-
   ///
   bool _needToConvert(Codec codec) {
     print('FS:---> needToConvert ');
@@ -729,12 +639,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     print('FS:<--- needToConvert ');
     return (convert != Codec.defaultCodec);
   }
-
-
-
-
-
-
 
   /// Returns true if the specified decoder is supported by flutter_sound on this platform
   ///
@@ -775,19 +679,12 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return result;
   }
 
-
-
-
-  
-  
-
-
   /// Specify the callbacks frenquency, before calling [startPlayer].
-  /// 
+  ///
   /// The default value is 0 (zero) which means that there is no callbacks.
-  /// 
+  ///
   /// This verb will be Deprecated soon.
-  /// 
+  ///
   /// *Example:*
   /// ```dart
   /// myPlayer.setSubscriptionDuration(Duration(milliseconds: 100));
@@ -806,21 +703,10 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     print('FS:<---- setSubscriptionDuration ');
   }
 
-  
-  
-  
-  
-  
-  
   ///
   void _setPlayerCallback() {
     _playerController ??= StreamController<PlaybackDisposition>.broadcast();
   }
-
-
-
-  
-
 
   void _removePlayerCallback() {
     if (_playerController != null) {
@@ -830,11 +716,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       _playerController = null;
     }
   }
-
-
-
-  
-
 
   ///
   Future<void> _convertAudio(Map<String, dynamic> what) async {
@@ -861,11 +742,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     print('FS:<--- _convertAudio ');
   }
 
-
-
-
-  
-
   Future<void> _convert(Map<String, dynamic> what) async {
     print('FS:---> _convert ');
     var codec = what['codec'] as Codec;
@@ -888,12 +764,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
     print('FS:<--- _convert ');
   }
-
-  
-
-
-
-
 
   /// Used to play a sound.
   //
@@ -1010,12 +880,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return _startPlayerCompleter.future;
   }
 
-
-
-
-
-
-
   /// Used to play something froma Dart stream
   ///
   /// **This functionnality needs, at least, and Android SDK >= 21**
@@ -1083,12 +947,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     print('FS:<--- startPlayerFromStream ');
   }
 
-
-
-
-
-
-
   ///  Used when you want to play live PCM data synchronously.
   ///
   ///  This procedure returns a Future. It is very important that you wait that this Future is completed before trying to play another buffer.
@@ -1117,14 +975,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       totalLength -= ln;
     }
   }
-
-
-
-
-
-
-
-
 
   ///
   Future<int> _feed(Uint8List data) async {
@@ -1160,14 +1010,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
     return 0;
   }
-
-
-
-
-
-
-
-  
 
   /// Play data from a track specification and display controls on the lock screen or an Apple Watch.
   ///
@@ -1285,13 +1127,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return _startPlayerCompleter.future;
   }
 
-
-
-
-
-
-
-
   /// Set the Lock screen fields without starting a new playback.
   ///
   /// The fields 'dataBuffer' and 'trackPath' of the Track parameter are not used.
@@ -1341,11 +1176,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     });
   }
 
-
-
-
-
-
   /// Stop a playback.
   ///
   /// This verb never throw any exception. It is safe to call it everywhere,
@@ -1380,11 +1210,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     print('FS:<--- stopPlayer ');
   }
 
-
-
-
-
-
   /// @nodoc
   Future<void> _stop() async {
     print('FS:---> stop ');
@@ -1408,11 +1233,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
     print('FS:<--- stop ');
   }
-
-
-
-
-
 
   /// Pause the current playback.
   ///
@@ -1442,11 +1262,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     print('FS:<--- pausePlayer ');
   }
 
-
-
-
-
-
   /// Resume the current playback.
   ///
   /// An exception is thrown if the player is not in the "paused" state.
@@ -1475,11 +1290,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     print('FS:<--- resumePlayer ');
   }
 
-
-
-
-
-
   /// To seek to a new location.
   ///
   /// The player must already be playing or paused. If not, an exception is thrown.
@@ -1505,10 +1315,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     });
     //print('FS:<--- seekToPlayer ');
   }
-
-
-
-
 
   /// Change the output volume
   ///
@@ -1542,12 +1348,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     print('FS:<--- setVolume ');
   }
 
-
-
-
-
-
-
   /// Used if the App wants to control itself the Progress Bar on the lock screen.
   ///
   /// By default, this progress bar is handled automaticaly by Flutter Sound.
@@ -1573,9 +1373,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     print('FS:<--- setUIProgressBar ');
   }
 
-
-
-
   /// Get the resource path.
   ///
   /// This verb should probably not be here...
@@ -1590,10 +1387,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
   }
 }
-
-
-
-
 
 /// Used to stream data about the position of the
 /// playback as playback proceeds.
@@ -1626,11 +1419,6 @@ class PlaybackDisposition {
   }
 }
 
-
-
-
-
-
 ///
 class _PlayerRunningException implements Exception {
   ///
@@ -1640,10 +1428,6 @@ class _PlayerRunningException implements Exception {
   _PlayerRunningException(this.message);
 }
 
-
-
-
-
 class _InitializationInProgress implements Exception {
   _InitializationInProgress() {
     print(
@@ -1651,19 +1435,11 @@ class _InitializationInProgress implements Exception {
   }
 }
 
-
-
-
-
 class _NotOpen implements Exception {
   _NotOpen() {
     print('Audio session is not open');
   }
 }
-
-
-
-
 
 /// The track to play by [FlutterSoundPlayer.startPlayerFromTrack()].
 class Track {

@@ -41,8 +41,8 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 164336
-        versionName '6.4.3+36'
+        versionCode 16451
+        versionName '6.4.5+1'
         //versionName project.getProperty(“libraryVersion”)
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -71,7 +71,7 @@ dependencies {
 }
 ext {
     PUBLISH_GROUP_ID = 'xyz.canardoux'
-    PUBLISH_ARTIFACT_ID = 'tau_core'
+    PUBLISH_ARTIFACT_ID = 'tau_sound_core'
     PUBLISH_VERSION = android.defaultConfig.versionName // '0.0.2' // project.getProperty(“libraryVersion”)
 }
 
@@ -119,7 +119,7 @@ afterEvaluate {
             release(MavenPublication) {
                 //from components.release
                 groupId = 'xyz.canardoux'
-                artifactId = 'tau_core'
+                artifactId = 'tau_sound_core'
                 version = PUBLISH_VERSION
             }
         }

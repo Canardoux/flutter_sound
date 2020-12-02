@@ -35,12 +35,12 @@
 library tau;
 
 import 'dart:typed_data' show Uint8List;
-import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 import 'flutter_sound_player.dart';
 import 'flutter_sound_recorder.dart';
 import 'util/log.dart';
 
-export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
+export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 
 /// For internal code. Do not use.
 ///
@@ -59,9 +59,6 @@ enum Initialized {
   /// The object is initialized with UI and can be fully used
   fullyInitializedWithUI,
 }
-
-
-
 
 /// The usual file extensions used for each codecs
 const List<String> ext = [
@@ -85,10 +82,6 @@ const List<String> ext = [
   '.opus', // codec.opusWebM,
 ];
 
-
-
-
-
 /// Food is an abstract class which represents objects that can be sent
 /// to a player when playing data from astream or received by a recorder
 /// when recording to a Dart Stream.
@@ -105,9 +98,6 @@ abstract class Food {
 
 }
 
-
-
-
 /// FoodData are the regular objects received from a recorder when recording to a Dart Stream
 /// or sent to a player when playing from a Dart Stream
 class FoodData extends Food {
@@ -122,9 +112,6 @@ class FoodData extends Food {
   Future<void> exec(FlutterSoundPlayer player) => player.feedFromStream(data);
 }
 
-
-
-
 /// foodEvent is a special kin of food which allows to re-synchronize a stream
 /// with a player that play from a Dart Stream
 class FoodEvent extends Food {
@@ -138,9 +125,6 @@ class FoodEvent extends Food {
   @override
   Future<void> exec(FlutterSoundPlayer player) async => on();
 }
-
-
-
 
 /// This is **THE** main Flutter Sound class.
 ///

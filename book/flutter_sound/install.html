@@ -132,7 +132,7 @@
     
         <li class="chapter " data-level="1.4" >
             
-                <a target="_blank" href="https://github.com/Canardoux/tau">
+                <a target="_blank" href="https://github.com/dooboolab/flutter_sound">
             
                     
                     Sources
@@ -374,7 +374,7 @@
     
         <li class="chapter " data-level="4.4" >
             
-                <a target="_blank" href="https://canardoux.github.io/tau/doc/flutter_sound/web_example/">
+                <a target="_blank" href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/web_example/">
             
                     
                     Live Example
@@ -536,7 +536,7 @@
     
         <li class="chapter " data-level="4.6" >
             
-                <a target="_blank" href="https://canardoux.github.io/tau/doc/flutter_sound/api/index.html">
+                <a target="_blank" href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/index.html">
             
                     
                     API Reference
@@ -589,7 +589,7 @@
     
         <li class="chapter " data-level="6.2" >
             
-                <a target="_blank" href="https://github.com/Canardoux/tau/issues">
+                <a target="_blank" href="https://github.com/dooboolab/flutter_sound/issues">
             
                     
                     Problem Report
@@ -729,8 +729,8 @@ Those numbers include everything (flutter library, application, ...) and not onl
   flutter:
     sdk: flutter
   flutter_sound_lite: ^6.0.0
-</code></pre><h2 id="linking-your-app-with-flutter-sound-sources">Linking your App with Flutter Sound sources</h2>
-<p>The Flutter-Sound sources <a href="https://github.com/canardoux/tau" target="_blank">are here</a>.</p>
+</code></pre><h2 id="linking-your-app-with-flutter-sound-sources-optional">Linking your App with Flutter Sound sources (optional)</h2>
+<p>The Flutter-Sound sources <a href="https://github.com/dooboolab/flutter_sound" target="_blank">are here</a>.</p>
 <p>There is actually two branches :</p>
 <ul>
 <li>V5. This is the Long Term Support (LTS) branch which is maintained under the version 5.x.x</li>
@@ -738,7 +738,7 @@ Those numbers include everything (flutter library, application, ...) and not onl
 </ul>
 <p>If you want to generate your App from the sources with a <code>FULL</code> flavor:</p>
 <pre><code class="lang-sh"><span class="hljs-built_in">cd</span> some/<span class="hljs-built_in">where</span>
-git <span class="hljs-built_in">clone</span> https://github.com/canardoux/tau
+git <span class="hljs-built_in">clone</span> https://github.com/dooboolab/flutter_sound
 <span class="hljs-built_in">cd</span> some/<span class="hljs-built_in">where</span>/flutter_sound
 bin/flavor FULL
 </code></pre>
@@ -750,7 +750,7 @@ bin/flavor FULL
     path: some/where/flutter_sound
 </code></pre><p>If you prefer to link your App with the <code>LITE</code> flavor :</p>
 <pre><code class="lang-sh"><span class="hljs-built_in">cd</span> some/<span class="hljs-built_in">where</span>
-git <span class="hljs-built_in">clone</span> https://github.com/canardoux/tau
+git <span class="hljs-built_in">clone</span> https://github.com/dooboolab/flutter_sound
 <span class="hljs-built_in">cd</span> some/<span class="hljs-built_in">where</span>/flutter_sound
 bin/flavor LITE
 </code></pre>
@@ -811,6 +811,27 @@ bin/flavor LITE
   &lt;script src=&quot;https://cdn.jsdelivr.net/npm/tau_engine@6/js/flutter_sound/flutter_sound_recorder.min.js&quot;&gt;&lt;/script&gt;
   &lt;script src=&quot;https://cdn.jsdelivr.net/npm/howler@2/dist/howler.min.js&quot;&gt;&lt;/script&gt;
 </code></pre><p>Please <a href="https://www.jsdelivr.com/features" target="_blank">read this</a> to understand how you can specify the interval of the versions you are interested by.</p>
+<h2 id="troubles-shooting">Troubles shooting</h2>
+<h3 id="problem-with-cocoapods">Problem with Cocoapods</h3>
+<p>If you get this message (specially after the release of a new Flutter Version) :</p>
+<pre><code>Cocoapods could not find compatible versions for pod ...
+</code></pre><p>you can try the following instructions sequence (and ignore if some commands gives errors) :</p>
+<pre><code class="lang-sh"><span class="hljs-built_in">cd</span> ios
+pod cache clean --all
+rm Podfile.lock
+rm -rf .symlinks/
+<span class="hljs-built_in">cd</span> ..
+flutter clean
+flutter pub get
+<span class="hljs-built_in">cd</span> ios
+pod update
+pod repo update
+pod install --repo-update
+pod update
+pod install
+<span class="hljs-built_in">cd</span> ..
+</code></pre>
+<p>If everything good, the last <code>pod install</code> must not give any error.</p>
 <hr>
 
                                 
@@ -855,7 +876,7 @@ bin/flavor LITE
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Installation","level":"4.2","depth":1,"next":{"title":"Flutter Sound on Flutter Web","level":"4.3","depth":1,"path":"flutter_sound/flutter_sound_on_web.md","ref":"flutter_sound/flutter_sound_on_web.md","articles":[]},"previous":{"title":"τ under Flutter","level":"4.1","depth":1,"path":"flutter_sound/README.md","ref":"flutter_sound/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"flutter_sound/install.md","mtime":"2020-11-27T20:09:03.025Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-30T09:24:13.564Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Installation","level":"4.2","depth":1,"next":{"title":"Flutter Sound on Flutter Web","level":"4.3","depth":1,"path":"flutter_sound/flutter_sound_on_web.md","ref":"flutter_sound/flutter_sound_on_web.md","articles":[]},"previous":{"title":"τ under Flutter","level":"4.1","depth":1,"path":"flutter_sound/README.md","ref":"flutter_sound/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"flutter_sound/install.md","mtime":"2020-12-02T15:16:17.829Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-12-02T15:21:48.172Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
