@@ -22,10 +22,10 @@ dependencies:
   flutter:
     sdk: flutter
 # ============================================================================
-  flauto_platform_interface: 6.4.5+1
-#    path: ../flutter_sound_platform_interface # Flutter Sound Dir
-  flauto_web: 6.4.5+1
-#    path: ../flutter_sound_web # Flutter Sound Dir
+  flauto_platform_interface: # 6.4.5+1
+    path: ../flutter_sound_platform_interface # Flutter Sound Dir
+  flauto_web: # 6.4.5+1
+    path: ../flutter_sound_web # Flutter Sound Dir
 # ============================================================================
 
 dev_dependencies:
