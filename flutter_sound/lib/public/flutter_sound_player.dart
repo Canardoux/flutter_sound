@@ -443,6 +443,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// - [withUI] : true if the App plan to use (toto)[startPlayerFromTrack] later.
   /// - [withUI] : true if the App plan to use [startPlayerFromTrack.html] later.
   /// - [withUI] : true if the App plan to use (toto)[startPlayerFromTrack.html] later.
+  /// - [API Reference 5](flutter_sound/api/player/FlutterSoundPlayer/openAudioSession.html)
+  /// - [flutter_sound/api/player/FlutterSoundPlayer/openAudioSession.html]
   ///
   /// *Example:*
   /// ```dart
