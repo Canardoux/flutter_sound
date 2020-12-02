@@ -35,13 +35,13 @@
 
 // The interfaces to the platforms specific implementations
 // --------------------------------------------------------
-//export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
+//export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 
 /// everything : no documentation
 /// @nodoc
 library everything;
 
-export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
+export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 
 /// Le commentaire de player
 ///library tau;

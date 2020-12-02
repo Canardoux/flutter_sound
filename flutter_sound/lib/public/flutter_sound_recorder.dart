@@ -30,8 +30,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
-import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
+import 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
+import 'package:flauto_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import '../flutter_sound.dart';
 import 'util/flutter_sound_helper.dart';
 

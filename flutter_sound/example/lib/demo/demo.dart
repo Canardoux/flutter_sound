@@ -26,10 +26,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart' show DateFormat;
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flauto/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-//import 'package:flutter_sound/src/food.dart';
+//import 'package:flauto/src/food.dart';
 
 // If someone update the following comment, please update also the Examples/README.md file and the code inside Examples/lib/demo/main.dart
 /*
