@@ -444,12 +444,12 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// - [withUI] : true if the App plan to use [openAudioSession.html] later.
   /// - [withUI] : true if the App plan to use (toto)[openAudioSession.html] later.
   ///
-  /// xxx [API Reference 5](flutter_sound/api/player/FlutterSoundPlayer/openAudioSession.html)
+  /// xxx [API Reference 5](API Reference 5)
   ///
-  /// yyy [flutter_sound/api/player/FlutterSoundPlayer/openAudioSession.html]
+  /// yyy [flutter_sound/api/player/FlutterSoundPlayer/openAudioSession.html](openAudioSession.html)
   ///
   /// papa
-  /// 
+  ///
   /// *Example:*
   /// ```dart
   ///     myPlayer = await FlutterSoundPlayer().openAudioSession(focus: Focus.requestFocusAndDuckOthers, outputToSpeaker | allowBlueTooth);
