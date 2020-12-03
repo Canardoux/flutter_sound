@@ -50,6 +50,16 @@
 * [API Reference 3](flutter-sound/api/player/player-library.html)
 * [API Reference 4](flutter-sound/api/player/FlutterSoundPlayer/FlutterSoundPlayer.html)
 * [API Reference 5](flutter-sound/api/player/FlutterSoundPlayer/openaudiosession.html)
+* [API Reference 1](flutter-sound/api/index)
+* [API Reference 2](flutter-sound/api/topics/Main-topic)
+* [API Reference 3](flutter-sound/api/player/player-library)
+* [API Reference 4](flutter-sound/api/player/FlutterSoundPlayer/FlutterSoundPlayer)
+* [API Reference 5](flutter-sound/api/player/FlutterSoundPlayer/openaudiosession)
+* [API Reference 1](flutter-sound/api/index.md)
+* [API Reference 2](flutter-sound/api/topics/Main-topic.md)
+* [API Reference 3](flutter-sound/api/player/player-library.md)
+* [API Reference 4](flutter-sound/api/player/FlutterSoundPlayer/FlutterSoundPlayer.md)
+* [API Reference 5](flutter-sound/api/player/FlutterSoundPlayer/openaudiosession.md)
 
 
 ## React Native
