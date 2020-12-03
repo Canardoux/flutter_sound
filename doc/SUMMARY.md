@@ -44,7 +44,7 @@
    - [Sound Effects](flutter-sound/example/example.md#soundeffect)
    - [Stream Loop](flutter-sound/example/example.md#streamloop)
    - [Speech To Text](flutter-sound/example/example.md#speechtotext)
-- [API Reference](https://canardoux.github.io/tau/doc/flutter_sound/api/index.html)
+- [API Reference](https://htmlpreview.github.io/?https://raw.githubusercontent.com/canardoux/tau/master/doc/flutter-sound/api/topics/Main-topic.html)
 * [API Reference 1](flutter-sound/api/index.html)
 * [API Reference 2](flutter-sound/api/topics/Main-topic.html)
 * [API Reference 3](flutter-sound/api/player/player-library.html)
