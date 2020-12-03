@@ -4,3 +4,5 @@ structure:
     readme: README.md
     summary: SUMMARY.md
 
+redirects:
+    help/contact: ./contact.md

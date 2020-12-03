@@ -12,7 +12,7 @@
 
 - [Getting Started](guides/getting-started.md)
 - [Supported Codecs](guides/guides.md#flutter-sound-codecs)
-- [Raw PCM and Wave files](guides/guides#raw-pcm-and-wave-files)
+- [Raw PCM and Wave files](guides/guides.md#raw-pcm-and-wave-files)
 - [Recording or playing Raw PCM](guides/guides.md#recording-or-playing-raw-pcm-int-linerar-16-files)
 - [Recording PCM-16 to a Dart Stream](guides/guides.md#recording-pcm-16-to-a-dart-stream)
 - [Playing PCM-16 from a Dart Stream](guides/guides.md#playing-pcm-16-from-a-dart-stream)
@@ -59,6 +59,12 @@
 ## Links
 
 - [Migration](tau/migration.md)
-- --- [Problem Report](https://github.com/canardoux/tau/issues)
+- [Problem Report](https://github.com/canardoux/tau/issues)
 - [Contributions](tau/contribution.md)
 - [License](LICENSE.md)
+   - [Migration](tau/migration.md)
+   - [Problem Report](https://github.com/canardoux/tau/issues)
+   - [Contributions](tau/contribution.md)
+      - [Migration](tau/migration.md)
+      - [Problem Report](https://github.com/canardoux/tau/issues)
+      - [Contributions](tau/contribution.md)
