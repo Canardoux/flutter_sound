@@ -1,11 +1,5 @@
 # Introduction
 
-* [API Reference]()
-* [API Reference](https://github.com/Canardoux/tau/tree/519c7217c3f09511cc9afc86264286785a94499a/doc/flutter_sound/api/player/index.html)
-* [API Reference]()
-
-  **Introduction**
-
 The τ project is a set of libraries which deal with audio :
 
 * A player for audio playback
