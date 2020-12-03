@@ -1,8 +1,0 @@
-{
-  "devDependencies": {
-    "graceful-fs": "^4.2.4"
-  },
-  "dependencies": {
-    "gitbook-cli": "^2.3.2"
-  }
-}
