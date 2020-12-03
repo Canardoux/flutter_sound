@@ -80,7 +80,7 @@ A player must be opened before used. A player correspond to an Audio Session. Wi
 * `withUI` : true if the App plan to use [startPlayerFromTrack](https://github.com/Canardoux/tau/tree/42dc1ecd2d46a8d09322bb54bff6067ef6f5c03e/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayerFromTrack.html)[API Reference 5](openaudiosession.md) later.
 * `withUI` : true if the App plan to use [startPlayerFromTrack\(\)](https://github.com/Canardoux/tau/tree/42dc1ecd2d46a8d09322bb54bff6067ef6f5c03e/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayerFromTrack.html) later.
 * `withUI` : true if the App plan to use \(toto\)[startPlayerFromTrack](https://github.com/Canardoux/tau/tree/42dc1ecd2d46a8d09322bb54bff6067ef6f5c03e/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayerFromTrack.html) later.
-* `withUI` : true if the App plan to use `startPlayerFromTrack.html` later.
+* `withUI` : true if the App plan to use `startPlayerFromTrack.html` [later](openaudiosession.md).
 * `withUI` : true if the App plan to use \(toto\)`startPlayerFromTrack.html` later.
 
 _Example:_
