@@ -3,7 +3,7 @@
 VERSION=$1
 
 
-rm -r doc/flutter_sound/api
+rm -r doc/flutter-sound/api
 cd flutter_sound
 flutter clean
 flutter pub get
