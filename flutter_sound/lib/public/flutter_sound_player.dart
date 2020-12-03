@@ -438,21 +438,21 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// - [Category] : An optional parameter for iOS. See [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosessioncategory?language=objc).
   /// - [mode] : an optional parameter for iOS. See [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosessionmode?language=objc) to understand the meaning of this parameter.
   /// - [audioFlags] : an optional parameter for iOS
-  /// - [withUI] : true if the App plan to use [openAudioSession] later.
-  /// - [withUI] : true if the App plan to use [openAudioSession()] later.
-  /// - [withUI] : true if the App plan to use (toto)[openAudioSession] later.
-  /// - [withUI] : true if the App plan to use [openAudioSession.html] later.
-  /// - [withUI] : true if the App plan to use (toto)[openAudioSession.html] later.
+  /// - [withUI] : true if the App plan to use [closeAudioSession] later.
+  /// - [withUI] : true if the App plan to use [closeAudioSession()] later.
+  /// - [withUI] : true if the App plan to use (toto)[closeAudioSession] later.
+  /// - [withUI] : true if the App plan to use [closeAudioSession.html] later.
+  /// - [withUI] : true if the App plan to use (toto)[closeAudioSession.html] later.
   ///
   /// xxx [API Reference 5](API Reference 5)
   ///
-  /// yyy [flutter_sound/api/player/FlutterSoundPlayer/openAudioSession.html](openAudioSession.html)
+  /// yyy [flutter_sound/api/player/FlutterSoundPlayer/closeAudioSession.html](closeAudioSession.html)
   ///
   /// papa
   ///
   /// *Example:*
   /// ```dart
-  ///     myPlayer = await FlutterSoundPlayer().openAudioSession(focus: Focus.requestFocusAndDuckOthers, outputToSpeaker | allowBlueTooth);
+  ///     myPlayer = await FlutterSoundPlayer().closeAudioSession(focus: Focus.requestFocusAndDuckOthers, outputToSpeaker | allowBlueTooth);
   ///
   ///     ...
   ///     (do something with myPlayer)

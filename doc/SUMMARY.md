@@ -11,11 +11,11 @@
 ## Guides
 
 - [Getting Started](guides/getting-started.md)
-- [Supported Codecs](guides/getting-started.md#flutter-sound-codecs)
-- [Raw PCM and Wave files](guides/getting-started.md#raw-pcm-and-wave-files)
-- [Recording or playing Raw PCM](guides/getting-started.md#recording-or-playing-raw-pcm-int-linerar-16-files)
-- [Recording PCM-16 to a Dart Stream](guides/getting-started.md#recording-pcm-16-to-a-dart-stream)
-- [Playing PCM-16 from a Dart Stream](guides/getting-started.md#playing-pcm-16-from-a-dart-stream)
+- [Supported Codecs](guides/guides.md#flutter-sound-codecs)
+- [Raw PCM and Wave files](guides/guides#raw-pcm-and-wave-files)
+- [Recording or playing Raw PCM](guides/guides.md#recording-or-playing-raw-pcm-int-linerar-16-files)
+- [Recording PCM-16 to a Dart Stream](guides/guides.md#recording-pcm-16-to-a-dart-stream)
+- [Playing PCM-16 from a Dart Stream](guides/guides.md#playing-pcm-16-from-a-dart-stream)
 - [Widgets](guides/widgets.md)
 - [Notification/Lock Screen](guides/lock-screen.md)
 

@@ -129,17 +129,17 @@ Opening a player takes resources inside the OS. Those resources are freed with t
 <li><code>Category</code> : An optional parameter for iOS. See <a href="https://developer.apple.com/documentation/avfoundation/avaudiosessioncategory?language=objc">iOS documentation</a>.</li>
 <li><code>mode</code> : an optional parameter for iOS. See <a href="https://developer.apple.com/documentation/avfoundation/avaudiosessionmode?language=objc">iOS documentation</a> to understand the meaning of this parameter.</li>
 <li><code>audioFlags</code> : an optional parameter for iOS</li>
-<li><code>withUI</code> : true if the App plan to use <a href="../../player/FlutterSoundPlayer/openAudioSession.html">openAudioSession</a> later.</li>
-<li><code>withUI</code> : true if the App plan to use <a href="../../player/FlutterSoundPlayer/openAudioSession.html">openAudioSession()</a> later.</li>
-<li><code>withUI</code> : true if the App plan to use (toto)<a href="../../player/FlutterSoundPlayer/openAudioSession.html">openAudioSession</a> later.</li>
-<li><code>withUI</code> : true if the App plan to use <code>openAudioSession.html</code> later.</li>
-<li><code>withUI</code> : true if the App plan to use (toto)<code>openAudioSession.html</code> later.</li>
+<li><code>withUI</code> : true if the App plan to use <a href="../../player/FlutterSoundPlayer/closeAudioSession.html">closeAudioSession</a> later.</li>
+<li><code>withUI</code> : true if the App plan to use <a href="../../player/FlutterSoundPlayer/closeAudioSession.html">closeAudioSession()</a> later.</li>
+<li><code>withUI</code> : true if the App plan to use (toto)<a href="../../player/FlutterSoundPlayer/closeAudioSession.html">closeAudioSession</a> later.</li>
+<li><code>withUI</code> : true if the App plan to use <code>closeAudioSession.html</code> later.</li>
+<li><code>withUI</code> : true if the App plan to use (toto)<code>closeAudioSession.html</code> later.</li>
 </ul>
 <p>xxx <code>API Reference 5</code>(API Reference 5)</p>
-<p>yyy <a href="openAudioSession.html">flutter_sound/api/player/FlutterSoundPlayer/openAudioSession.html</a></p>
+<p>yyy <a href="closeAudioSession.html">flutter_sound/api/player/FlutterSoundPlayer/closeAudioSession.html</a></p>
 <p>papa</p>
 <p><em>Example:</em></p>
-<pre class="language-dart"><code class="language-dart">    myPlayer = await FlutterSoundPlayer().openAudioSession(focus: Focus.requestFocusAndDuckOthers, outputToSpeaker | allowBlueTooth);
+<pre class="language-dart"><code class="language-dart">    myPlayer = await FlutterSoundPlayer().closeAudioSession(focus: Focus.requestFocusAndDuckOthers, outputToSpeaker | allowBlueTooth);
 
     ...
     (do something with myPlayer)
