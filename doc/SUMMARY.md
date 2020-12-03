@@ -5,8 +5,7 @@
 ##  The TAU Project
 
 - [The &tau; Architecture](the-tau-project/architecture.md)
-- [Changelog](CHANGELOG.md)
-- [Sources](https://github.com/canardoux/tau)
+- [Changelog](the-tau-project/CHANGELOG.md)
 
 ## Guides
 
@@ -62,9 +61,3 @@
 - [Problem Report](https://github.com/canardoux/tau/issues)
 - [Contributions](tau/contribution.md)
 - [License](LICENSE.md)
-   - [Migration](tau/migration.md)
-   - [Problem Report](https://github.com/canardoux/tau/issues)
-   - [Contributions](tau/contribution.md)
-      - [Migration](tau/migration.md)
-      - [Problem Report](https://github.com/canardoux/tau/issues)
-      - [Contributions](tau/contribution.md)
