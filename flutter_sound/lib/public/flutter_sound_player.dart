@@ -444,7 +444,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// - [withUI] : true if the App plan to use [closeAudioSession.html] later.
   /// - [withUI] : true if the App plan to use (toto)[closeAudioSession.html] later.
   ///
-  /// xxx [API Reference 5](API Reference 5)
+  /// xxx [API Reference 5](closeaudiosession)
   ///
   /// yyy [flutter_sound/api/player/FlutterSoundPlayer/closeAudioSession.html](closeAudioSession.html)
   ///
