@@ -1,3 +1,7 @@
+---
+description: An Audio Player and Recorder for mobiles and web.
+---
+
 # Introduction
 
 The τ project is a set of libraries which deal with audio :
@@ -8,7 +12,7 @@ The τ project is a set of libraries which deal with audio :
 
 τ is a big project. The goal is to share a maximum of the developments between various Platforms/Frameworks and various target OS.
 
-### Overview
+## Overview
 
 τ is a library package allowing you to play and record audio for
 
@@ -31,7 +35,7 @@ The τ package supports playback from:
 * Files
 * URL
 
-### Features
+## Features
 
 The τ package includes the following features :
 
@@ -50,7 +54,7 @@ The τ package includes the following features :
 * Playback from a Dart Stream
 * The App playback can be controlled from the device lock screen or from an Apple watch
 
-### Supported platforms
+## Supported platforms
 
 τ is actually supported by the following frameworks:
 
@@ -62,7 +66,7 @@ In the future, it will be \(perhaps\) supported by
 * Cordova \(Tau Cordova\).  \(Not yet. Later\).
 * Others \(Native Script, Solar 2D, ...\)
 
-### Supported targets
+## Supported targets
 
 τ is actually supported by the following OS :
 
@@ -75,13 +79,13 @@ In the future, it will be \(perhaps\) supported by
 * Linux
 * others \(Windows, MacOS\)
 
-### What about Flutter Sound ?
+## What about Flutter Sound ?
 
 Flutter Sound is not dead, of course. This is exactly the opposite. Flutter Sound is a really alive project.
 
 We just changed the name of the project, because we want to encompass others frameworks than Flutter.
 
-### We need help
+## We need help
 
 τ is a fundamental building block needed by almost every mobile project.
 

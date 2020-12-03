@@ -18,21 +18,21 @@ The player displays a loading indicator and allows the user to pause/resume/skip
 
 You can also pause/resume the player via an api call to SoundPlayerUI's state using a GlobalKey.
 
-The [SoundPlayerUI](../api/soundplayerui.md) api documentation provides examples on using the SoundPlayerUI widget.
+The [SoundPlayerUI](https://github.com/Canardoux/tau/tree/e09bcd3935cdb61ae166e1ad562b7a20512c884d/doc/api/soundplayerui.md) api documentation provides examples on using the SoundPlayerUI widget.
 
 ## SoundRecorderUI
 
-The SoundRecorderUI  widget provide a simple UI for recording audio.
+The SoundRecorderUI widget provide a simple UI for recording audio.
 
-The audio is recorded to a [Track](../api/track.md).
+The audio is recorded to a [Track](https://github.com/Canardoux/tau/tree/e09bcd3935cdb61ae166e1ad562b7a20512c884d/doc/api/track.md).
 
 TODO: add image here.
 
-The [SoundRecorderUI](../api/soundrecorderui.md) api documentation provides examples on using the [SoundRecorderUI](../api/soundrecorderui.md) widget.
+The [SoundRecorderUI](https://github.com/Canardoux/tau/tree/e09bcd3935cdb61ae166e1ad562b7a20512c884d/doc/api/soundrecorderui.md) api documentation provides examples on using the [SoundRecorderUI](https://github.com/Canardoux/tau/tree/e09bcd3935cdb61ae166e1ad562b7a20512c884d/doc/api/soundrecorderui.md) widget.
 
 ## RecorderPlaybackController
 
-The RecorderPlaybackController is a specialised Widget which is used to co-ordinate a paired SoundPlayerUI and a SoundRecorderUI  widgets.
+The RecorderPlaybackController is a specialised Widget which is used to co-ordinate a paired SoundPlayerUI and a SoundRecorderUI widgets.
 
 Often when providing an interface to record audio you will want to allow the user to playback the audio after recording it. However you don't want the user to try and start the playback before the recording is complete.
 
@@ -40,5 +40,5 @@ The RecorderPlaybackController widget does not have a UI \(its actually an Inher
 
 The RecorderPlaybackController co-ordinates the UI state between the two components so that playback and recording cannot happen at the same time.
 
-See the API documenation on [RecorderPlaybackController](../api/recorderplaybackcontroller.md) for examples of how to use it.
+See the API documenation on [RecorderPlaybackController](https://github.com/Canardoux/tau/tree/e09bcd3935cdb61ae166e1ad562b7a20512c884d/doc/api/recorderplaybackcontroller.md) for examples of how to use it.
 

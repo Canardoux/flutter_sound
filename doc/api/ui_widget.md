@@ -1,18 +1,16 @@
-# SoundPlayerUI
+# The Widget UI
 
 ## Overview
 
 The modules offered for the Flutter Sound UI Widgets are :
 
-- [UI Player](#uiplayer)
-- [UI Recorder](#uirecorder)
-- [UI Controller](#uicontroller)
-
+* [UI Player](ui_widget.md#uiplayer)
+* [UI Recorder](ui_widget.md#uirecorder)
+* [UI Controller](ui_widget.md#uicontroller)
 
 ## How to use
-First import the modules
-``` import 'flutter_sound.dart```
 
+First import the modules `import 'flutter_sound.dart`
 
 The SoundPlayerUI provides a Playback widget styled after the HTML 5 audio player.![](https://raw.githubusercontent.com/bsutton/sounds/master/images/SoundPlayerUI.png)
 
@@ -35,7 +33,7 @@ The Widget needs to obtain the duration of the audio that it is play and that ca
 
 If you pass a `Track` that wasn't constructed with a `MediaFormat` then a `MediaFormatException` will be thrown.
 
-The `MediaFormat` must also be natively supported by the OS. See [MediaFormat](mediaformat.md) for additional details on checking for a supported format.
+The `MediaFormat` must also be natively supported by the OS. See [MediaFormat](https://github.com/Canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/api/mediaformat.md) for additional details on checking for a supported format.
 
 ### Example:
 
@@ -62,7 +60,7 @@ Widget build(BuildContext build)
 }
 ```
 
-`Sounds` uses [Track](track.md) as the primary method of handing around audio data.
+`Sounds` uses [Track](https://github.com/Canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/api/track.md) as the primary method of handing around audio data.
 
 You can also dynamically load a `Track` when the user clicks the 'Play' button on the `SoundPlayerUI` widget. This allows you to delay the decision on what Track is going to be played until the user clicks the 'Play' button.
 
@@ -89,3 +87,4 @@ Future<Track> loadTrack()
     track.artist = "By sounds";
 }
 ```
+

@@ -1,4 +1,4 @@
-# Getting Started on &tau;
+# Getting Started
 
 ## Playback
 
@@ -46,7 +46,7 @@ When you have finished with it, **you must** close the session. A good places to
 
 ### 3. Play your sound
 
-To play a sound you call  `startPlayer()`. To stop a sound you call `stopPlayer()`
+To play a sound you call `startPlayer()`. To stop a sound you call `stopPlayer()`
 
 ```dart
 void play() async {
@@ -64,7 +64,6 @@ void play() async {
     }
   }
 ```
-
 
 ## Recording
 
@@ -108,10 +107,9 @@ When you have finished with it, **you must** close the session. A god place to p
   }
 ```
 
-
 ### 3. Record something
 
-To record something you call  `startRecorder()`. To stop the recorder you call `stopRecorder()`
+To record something you call `startRecorder()`. To stop the recorder you call `stopRecorder()`
 
 ```dart
   Future<void> record() async {
@@ -125,6 +123,5 @@ To record something you call  `startRecorder()`. To stop the recorder you call `
   Future<void> stopRecorder() async {
     await _myRecorder.stopRecorder();
   }
-
 ```
 

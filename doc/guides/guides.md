@@ -1,101 +1,92 @@
-# Getting Started
+# Supported Codecs
 
--------------------------------------------------------------------------------------------------------------------------------------
+## Getting Started
 
-# Flutter Sound Codecs
+## Flutter Sound Codecs
 
-## On mobile OS
+### On mobile OS
 
-Actually, the following codecs are supported by flutter_sound:
+Actually, the following codecs are supported by flutter\_sound:
 
-|             | iOS encoder | iOS decoder | Android encoder | Android decoder |
-| :-------- : | :---------: | :---------: | :-------------: | :-------------: |
-| AAC ADTS    | ✅          | ✅         | ✅ (1)          | ✅              |
-| Opus OGG    | ✅ (*)      | ✅ (*)     | ❌              | ✅ (1)          |
-| Opus CAF    | ✅          | ✅         | ❌              | ✅ (*) (1)      |
-| MP3         | ❌          | ✅         | ❌              | ✅              |
-| Vorbis OGG  | ❌          | ❌         | ❌              | ✅              |
-| PCM16       | ✅          | ✅         | ✅ (1)          | ✅              |
-| PCM Wave    | ✅          | ✅         | ✅ (1)          | ✅              |
-| PCM AIFF    | ❌          | ✅         | ❌              | ✅ (*)          |
-| PCM CAF     | ✅          | ✅         | ❌              | ✅ (*)          |
-| FLAC        | ✅          | ✅         | ❌              | ✅              |
-| AAC MP4     | ✅          | ✅         | ✅ (1)          | ✅              |
-| AMR NB      | ❌          | ❌         | ✅ (1)          | ✅              |
-| AMR WB      | ❌          | ❌         | ✅ (1)          | ✅              |
-| PCM8        | ❌          | ❌         | ❌              | ❌              |
-| PCM F32     | ❌          | ❌         | ❌              | ❌              |
-| PCM WEBM    | ❌          | ❌         | ❌              | ❌              |
-| Opus WEBM   | ❌          | ❌         | ✅              | ✅              |
-| Vorbis WEBM | ❌          | ❌         | ❌              | ✅              |
-
+|  | iOS encoder | iOS decoder | Android encoder | Android decoder |
+| :--- | :---: | :---: | :---: | :---: |
+| AAC ADTS | ✅ | ✅ | ✅ \(1\) | ✅ |
+| Opus OGG | ✅ \(\*\) | ✅ \(\*\) | ❌ | ✅ \(1\) |
+| Opus CAF | ✅ | ✅ | ❌ | ✅ \(\*\) \(1\) |
+| MP3 | ❌ | ✅ | ❌ | ✅ |
+| Vorbis OGG | ❌ | ❌ | ❌ | ✅ |
+| PCM16 | ✅ | ✅ | ✅ \(1\) | ✅ |
+| PCM Wave | ✅ | ✅ | ✅ \(1\) | ✅ |
+| PCM AIFF | ❌ | ✅ | ❌ | ✅ \(\*\) |
+| PCM CAF | ✅ | ✅ | ❌ | ✅ \(\*\) |
+| FLAC | ✅ | ✅ | ❌ | ✅ |
+| AAC MP4 | ✅ | ✅ | ✅ \(1\) | ✅ |
+| AMR NB | ❌ | ❌ | ✅ \(1\) | ✅ |
+| AMR WB | ❌ | ❌ | ✅ \(1\) | ✅ |
+| PCM8 | ❌ | ❌ | ❌ | ❌ |
+| PCM F32 | ❌ | ❌ | ❌ | ❌ |
+| PCM WEBM | ❌ | ❌ | ❌ | ❌ |
+| Opus WEBM | ❌ | ❌ | ✅ | ✅ |
+| Vorbis WEBM | ❌ | ❌ | ❌ | ✅ |
 
 This table will eventually be upgraded when more codecs will be added.
 
-- ✅ (*) : The codec is supported by Flutter Sound, but with a File Format Conversion. This has several drawbacks :
-   - Needs FFmpeg. FFmpeg is not included in the LITE flavor of Flutter Sound
-   - Can add some delay before Playing Back the file, or after stopping the recording. This delay can be substancial for very large records.
+* ✅ \(\*\) : The codec is supported by Flutter Sound, but with a File Format Conversion. This has several drawbacks :
+  * Needs FFmpeg. FFmpeg is not included in the LITE flavor of Flutter Sound
+  * Can add some delay before Playing Back the file, or after stopping the recording. This delay can be substancial for very large records.
+* ✅ \(1\) : needs MinSDK &gt;=23
 
-- ✅ (1) : needs MinSDK >=23
+### On Web browsers
 
+|  | Chrome encoder | Chrome decoder | Firefox encoder | Firefox decoder | Webkit encoder \(safari\) | Webkit decoder   \(Safari\) |  |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| AAC ADTS | ❌ | ✅ | ❌ | ✅ | ❌ | ✅ |  |
+| Opus OGG | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ |  |
+| Opus CAF | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |  |
+| MP3 | ❌ | ✅ | ❌ | ✅ | ❌ | ✅ |  |
+| Vorbis OGG | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |  |
+| PCM16 | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ | \(must be verified\) |
+| PCM Wave | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |  |
+| PCM AIFF | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |  |
+| PCM CAF | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |  |
+| FLAC | ❌ | ✅ | ❌ | ✅ | ❌ | ✅ |  |
+| AAC MP4 | ❌ | ✅ | ❌ | ✅ | ❌ | ✅ |  |
+| AMR NB | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |  |
+| AMR WB | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |  |
+| PCM8 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |  |
+| PCM F32 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |  |
+| PCM WEBM | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |  |
+| Opus WEBM | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |  |
+| Vorbis WEBM | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |  |
 
-## On Web browsers
+* Webkit is bull shit : you cannot record anything with Safari, or even Firefox/Chrome on iOS.
+* Opus WEBM is a great Codec. It works on everything \(mobile and Web Browsers\), except Apple
+* Edge is same as Chrome
 
-|              |Chrome encoder  |Chrome decoder |Firefox encoder   |Firefox decoder  |Webkit encoder (safari)  |Webkit decoder   (Safari)  |
-| :----------- |:--------------:|:-------------:|:----------------:|:---------------:|:-----------------------:|:-------------------------:|
-| AAC ADTS     | ❌             | ✅            | ❌              | ✅              | ❌                      | ✅                        |
-| Opus OGG     | ❌             | ✅            | ✅              | ✅              | ❌                      | ❌                        |
-| Opus CAF     | ❌             | ❌            | ❌              | ❌              | ❌                      | ✅                        |
-| MP3          | ❌             | ✅            | ❌              | ✅              | ❌                      | ✅                        |
-| Vorbis OGG   | ❌             | ✅            | ❌              | ✅              | ❌                      | ❌                        |
-| PCM16        | ❌             | ✅            | ❌              | ✅              | ❌                      | ❌                        | (must be verified)
-| PCM Wave     | ❌             | ✅            | ❌              | ✅              | ❌                      | ❌                        |
-| PCM AIFF     | ❌             | ❌            | ❌              | ❌              | ❌                      | ❌                        |
-| PCM CAF      | ❌             | ❌            | ❌              | ❌              | ❌                      | ✅                        |
-| FLAC         | ❌             | ✅            | ❌              | ✅              | ❌                      | ✅                        |
-| AAC MP4      | ❌             | ✅            | ❌              | ✅              | ❌                      | ✅                        |
-| AMR NB       | ❌             | ❌            | ❌              | ❌              | ❌                      | ❌                        |
-| AMR WB       | ❌             | ❌            | ❌              | ❌              | ❌                      | ❌                        |
-| PCM8         | ❌             | ❌            | ❌              | ❌              | ❌                      | ❌                        |
-| PCM F32      | ❌             | ❌            | ❌              | ❌              | ❌                      | ❌                        |
-| PCM WEBM     | ❌             | ❌            | ❌              | ❌              | ❌                      | ❌                        |
-| Opus WEBM    | ✅             | ✅            | ✅              | ✅              | ❌                      | ❌                        |
-| Vorbis WEBM  | ❌             | ✅            | ❌              | ✅              | ❌                      | ❌                        |
+## Raw PCM and Wave files
 
-- Webkit is bull shit : you cannot record anything with Safari, or even Firefox/Chrome on iOS.
-- Opus WEBM is a great Codec. It works on everything (mobile and Web Browsers), except Apple
-- Edge is same as Chrome
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-# Raw PCM and Wave files
-
-Raw PCM is not an audio format. Raw PCM files store the raw data **without** any envelope.
-A simple way for playing a Raw PCM file, is to add a `Wave` header in front of the data before playing it. To do that, the helper verb `pcmToWave()` is convenient. You can also call directely the `startPlayer()` verb. If you do that, do not forget to provide the `sampleRate` and `numChannels` parameters.
+Raw PCM is not an audio format. Raw PCM files store the raw data **without** any envelope. A simple way for playing a Raw PCM file, is to add a `Wave` header in front of the data before playing it. To do that, the helper verb `pcmToWave()` is convenient. You can also call directely the `startPlayer()` verb. If you do that, do not forget to provide the `sampleRate` and `numChannels` parameters.
 
 A Wave file is just PCM data in a specific file format.
 
-The Wave audio file format has a terrible drawback : it cannot be streamed.
-The Wave file is considered not valid, until it is closed. During the construction of the Wave file, it is considered as corrupted because the Wave header is still not written.
+The Wave audio file format has a terrible drawback : it cannot be streamed. The Wave file is considered not valid, until it is closed. During the construction of the Wave file, it is considered as corrupted because the Wave header is still not written.
 
 Note the following limitations in the current Flutter Sound version :
-- The stream is  `PCM-Integer Linear 16` with just one channel. Actually, Flutter Sound does not manipulate Raw PCM with floating point PCM data nor with more than one audio channel.
-- `FlutterSoundHelper duration()` does not work with Raw PCM file
-- `startPlayer()` does not return the record duration.
-- `withUI` parameter in `openAudioSession()` is actually incompatible with Raw PCM files.
 
--------------------------------------------------------------------------------------------------------------------------------------
+* The stream is  `PCM-Integer Linear 16` with just one channel. Actually, Flutter Sound does not manipulate Raw PCM with floating point PCM data nor with more than one audio channel.
+* `FlutterSoundHelper duration()` does not work with Raw PCM file
+* `startPlayer()` does not return the record duration.
+* `withUI` parameter in `openAudioSession()` is actually incompatible with Raw PCM files.
 
-# Recording or playing Raw PCM INT-Linerar 16 files
+## Recording or playing Raw PCM INT-Linerar 16 files
 
 Please, remember that actually, Flutter Sound does not support Floating Point PCM data, nor records with more that one audio channel.
 
-To record a Raw PCM16 file, you use the regular `startRecorder()` API verb.
-To play a Raw PCM16 file, you can either add a Wave header in front of the file with `pcm16ToWave()` verb, or call the regular `startPlayer()` API verb. If you do the later, you must provide the `sampleRate` and `numChannels` parameter during the call.
-You can look to the simple example provided with Flutter Sound. [TODO]
+To record a Raw PCM16 file, you use the regular `startRecorder()` API verb. To play a Raw PCM16 file, you can either add a Wave header in front of the file with `pcm16ToWave()` verb, or call the regular `startPlayer()` API verb. If you do the later, you must provide the `sampleRate` and `numChannels` parameter during the call. You can look to the simple example provided with Flutter Sound. \[TODO\]
 
-*Example*
-``` dart
+_Example_
+
+```dart
 Directory tempDir = await getTemporaryDirectory();
 String outputFile = '${tempDir.path}/myFile.pcm';
 
@@ -122,27 +113,22 @@ await myPlayer.startPlayer
 );
 ```
 
--------------------------------------------------------------------------------------------------------------------------------------
+## Recording PCM-16 to a Dart Stream
 
-# Recording PCM-16 to a Dart Stream
+Please, remember that actually, Flutter Sound does not support Floating Point PCM data, nor records with more that one audio channel. On Flutter Sound, **Raw PCM is only PCM-LINEAR 16 monophony**
 
-Please, remember that actually, Flutter Sound does not support Floating Point PCM data, nor records with more that one audio channel.
-On Flutter Sound, **Raw PCM is only PCM-LINEAR 16 monophony**
+This works only with [openAudioSession\(\)](https://github.com/Canardoux/tau/tree/d7b8befadb8626d34dd41290ee216ace42751e11/doc/guides/recorder/README.md#openAudioSession-and-closeAudioSession) and does not work with `openAudioSessionWithUI()`. To record a Live PCM file, when calling the verb [startRecorder\(\)](https://github.com/Canardoux/tau/tree/d7b8befadb8626d34dd41290ee216ace42751e11/doc/guides/recorder.md#startrecorder), you specify the parameter `toStream:` with you Stream sink, instead of the parameter `toFile:`. This parameter is a StreamSink that you can listen to, for processing the input data.
 
-This works only with [openAudioSession()](recorder#openAudioSession-and-closeAudioSession) and  does not work with `openAudioSessionWithUI()`.
-To record a Live PCM file, when calling the verb [startRecorder()](recorder.md#startrecorder), you specify the parameter `toStream:` with you Stream sink, instead of the parameter `toFile:`.
-This parameter is a StreamSink that you can listen to, for processing the input data.
+## Notes :
 
-# Notes :
+* This new functionnality needs, at least, an Android SDK &gt;= 21
+* This new functionnality works better with Android minSdk &gt;= 23, because previous SDK was not able to do UNBLOCKING `write`.
 
-- This new functionnality needs, at least, an Android SDK >= 21
-- This new functionnality works better with Android minSdk >= 23, because previous SDK was not able to do UNBLOCKING `write`.
+_Example_
 
-*Example*
+You can look to the [simple example](https://github.com/Canardoux/tau/tree/d7b8befadb8626d34dd41290ee216ace42751e11/doc/example/README.md#recordtostream) provided with Flutter Sound.
 
-You can look to the [simple example](../example/README.md#recordtostream) provided with Flutter Sound.
-
-``` dart
+```dart
   IOSink outputFile = await createFile();
   StreamController<Food> recordingDataController = StreamController<Food>();
   _mRecordingDataSubscription =
@@ -158,18 +144,15 @@ You can look to the [simple example](../example/README.md#recordtostream) provid
         numChannels: 1,
         sampleRate: 48000,
   );
-
 ```
 
--------------------------------------------------------------------------------------------------------------------------------------
-
-# Playing PCM-16 from a Dart Stream
+## Playing PCM-16 from a Dart Stream
 
 Please, remember that actually, Flutter Sound does not support Floating Point PCM data, nor records with more that one audio channel.
 
-This works only with [openAudioSession](player.md#openaudiosession-and-closeaudiosession) and does not work with `openAudioSessionWithUI()`.
-To play live stream, you start playing with the verb [startPlayerFromStream](player.md#startplayerfromstream) instead of the regular `startPlayer()` verb:
-```
+This works only with [openAudioSession](https://github.com/Canardoux/tau/tree/d7b8befadb8626d34dd41290ee216ace42751e11/doc/guides/player.md#openaudiosession-and-closeaudiosession) and does not work with `openAudioSessionWithUI()`. To play live stream, you start playing with the verb [startPlayerFromStream](https://github.com/Canardoux/tau/tree/d7b8befadb8626d34dd41290ee216ace42751e11/doc/guides/player.md#startplayerfromstream) instead of the regular `startPlayer()` verb:
+
+```text
 await myPlayer.startPlayerFromStream
 (
     codec: Codec.pcm16 // Actually this is the only codec possible
@@ -178,23 +161,22 @@ await myPlayer.startPlayerFromStream
 );
 ```
 
-The first thing you have to do if you want to play live audio is to answer this question:
-```Do I need back pressure from Flutter Sound, or not```?
+The first thing you have to do if you want to play live audio is to answer this question: `Do I need back pressure from Flutter Sound, or not`?
 
-### Without back pressure,
+#### Without back pressure,
 
-The App does just [myPlayer.foodSink.add( FoodData(aBuffer) )](player.md#food) each time it wants to play some data.
-No need to await, no need to verify if the previous buffers have finished to be played.
-All the buffers added to `foodSink` are buffered, an are played sequentially. The App continues to work without knowing when the buffers are really played.
+The App does just [myPlayer.foodSink.add\( FoodData\(aBuffer\) \)](https://github.com/Canardoux/tau/tree/d7b8befadb8626d34dd41290ee216ace42751e11/doc/guides/player.md#food) each time it wants to play some data. No need to await, no need to verify if the previous buffers have finished to be played. All the buffers added to `foodSink` are buffered, an are played sequentially. The App continues to work without knowing when the buffers are really played.
 
 This means two things :
-   - If the App is very fast adding buffers to `foodSink` it can consume a lot of memory for the waiting buffers.
-   - When the App has finished feeding the sink, it cannot just do `myPlayer.stopPlayer()`, because there is perhaps many buffers not yet played.
-If it does a `stopPlayer()`, all the waiting buffers will be flushed which is probably not what it wants.
 
-But there is a mechanism if the App wants to resynchronize with the output Stream. To resynchronize with the current playback, the App does [myPlayer.foodSink.add( FoodEvent(aCallback) );](player.md#food)
+* If the App is very fast adding buffers to `foodSink` it can consume a lot of memory for the waiting buffers.
+* When the App has finished feeding the sink, it cannot just do `myPlayer.stopPlayer()`, because there is perhaps many buffers not yet played.
 
-```
+  If it does a `stopPlayer()`, all the waiting buffers will be flushed which is probably not what it wants.
+
+But there is a mechanism if the App wants to resynchronize with the output Stream. To resynchronize with the current playback, the App does [myPlayer.foodSink.add\( FoodEvent\(aCallback\) \);](https://github.com/Canardoux/tau/tree/d7b8befadb8626d34dd41290ee216ace42751e11/doc/guides/player.md#food)
+
+```text
 myPlayer.foodSink.add
 ( FoodEvent
   (
@@ -207,9 +189,9 @@ myPlayer.foodSink.add
 );
 ```
 
-*Example:*
+_Example:_
 
-You can look to this simple [example](../example/README.md#liveplaybackwithoutbackpressure) provided with Flutter Sound.
+You can look to this simple [example](https://github.com/Canardoux/tau/tree/d7b8befadb8626d34dd41290ee216ace42751e11/doc/example/README.md#liveplaybackwithoutbackpressure) provided with Flutter Sound.
 
 ```dart
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
@@ -221,16 +203,15 @@ myPlayer.foodSink.add(FoodData(myOtherBuffer));
 myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
 ```
 
-### With back pressure
+#### With back pressure
 
-If the App wants to keep synchronization with what is played, it uses the verb [feedFromStream](player.md#feedfromstream) to play data.
-It is really very important not to call another `feedFromStream()` before the completion of the previous future. When each Future is completed, the App can be sure that the provided data are correctely either played, or at least put in low level internal buffers, and it knows that it is safe to do another one.
+If the App wants to keep synchronization with what is played, it uses the verb [feedFromStream](https://github.com/Canardoux/tau/tree/d7b8befadb8626d34dd41290ee216ace42751e11/doc/guides/player.md#feedfromstream) to play data. It is really very important not to call another `feedFromStream()` before the completion of the previous future. When each Future is completed, the App can be sure that the provided data are correctely either played, or at least put in low level internal buffers, and it knows that it is safe to do another one.
 
+_Example:_
 
-*Example:*
+You can look to this [example](https://github.com/Canardoux/tau/tree/d7b8befadb8626d34dd41290ee216ace42751e11/doc/flutter_sound/example/example.md#liveplaybackwithbackpressure) and [this example](https://github.com/Canardoux/tau/tree/d7b8befadb8626d34dd41290ee216ace42751e11/doc/flutter_sound/example/example.md#soundeffect)
 
-You can look to this [example](../flutter_sound/example/example.md#liveplaybackwithbackpressure) and [this example](../flutter_sound/example/example.md#soundeffect)
-```
+```text
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
 
 await myPlayer.feedFromStream(aBuffer);
@@ -239,19 +220,18 @@ await myPlayer.feedFromStream(myOtherBuffer);
 
 await myPlayer.stopPlayer();
 ```
+
 You probably will `await` or use `then()` for each call to `feedFromStream()`.
 
-### Notes :
+#### Notes :
 
-- This new functionnality needs, at least, an Android SDK >= 21
-- This new functionnality works better with Android minSdk >= 23, because previous SDK was not able to do UNBLOCKING `write`.
+* This new functionnality needs, at least, an Android SDK &gt;= 21
+* This new functionnality works better with Android minSdk &gt;= 23, because previous SDK was not able to do UNBLOCKING `write`.
 
-*Examples*
-You can look to the  provided examples :
+_Examples_ You can look to the provided examples :
 
-- [This example](../flutter_sound/example/example.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
-- [This example](../flutter_sound/example/example.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
-- [This example](../flutter_sound/example/example.md#soundeffect) shows how to play some real time sound effects.
-- [This example](../flutter_sound/example/example.md#streamloop) play live stream what is recorded from the microphone.
+* [This example](https://github.com/Canardoux/tau/tree/d7b8befadb8626d34dd41290ee216ace42751e11/doc/flutter_sound/example/example.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
+* [This example](https://github.com/Canardoux/tau/tree/d7b8befadb8626d34dd41290ee216ace42751e11/doc/flutter_sound/example/example.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
+* [This example](https://github.com/Canardoux/tau/tree/d7b8befadb8626d34dd41290ee216ace42751e11/doc/flutter_sound/example/example.md#soundeffect) shows how to play some real time sound effects.
+* [This example](https://github.com/Canardoux/tau/tree/d7b8befadb8626d34dd41290ee216ace42751e11/doc/flutter_sound/example/example.md#streamloop) play live stream what is recorded from the microphone.
 
--------------------------------------------------------------------------------------------------------------------------------------
