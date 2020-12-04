@@ -68,7 +68,7 @@
 * [API Reference](flutter-sound/api/topics/Main-topic.html)
   * [player1](flutter_sound/api/player/FlutterSoundPlayer-class.html)
   * [player2](flutter_sound/api/player/FlutterSoundPlayer/FlutterSoundPlayer.html)
-     - [openAudioSession](flutter_sound/api/player/FlutterSoundPlayer/openAudioSession.html)
+    * [openAudioSession](flutter_sound/api/player/FlutterSoundPlayer/openAudioSession.html)
 
 ## React Native
 
