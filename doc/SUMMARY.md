@@ -10,7 +10,7 @@
 ## Guides
 
 * [Getting Started](guides/getting-started.md)
-* [Supported Codecs](guides/guides.md)
+* [Supported Codecs](guides/guides.md#flutter-sound-codecs)
 * [Raw PCM and Wave files](guides/guides#raw-pcm-and-wave-files)
 * [Recording or playing Raw PCM](guides/guides#recording-or-playing-raw-pcm)
 * [Recording PCM-16 to a Dart Stream](guides/guides#recording-pcm-16-to-a-dart-stream)
