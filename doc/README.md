@@ -1,10 +1,8 @@
 ---
-description: An Audio Player and Recorder for mobiles and web.
+description: Audio Player and Recorderlibraries for mobiles and web.
 ---
 
 <img src="logo/banner5.svg" width="70%" height="70%" />
-
-# Introduction
 
 The τ project is a set of libraries which deal with audio :
 
@@ -91,9 +89,9 @@ We just changed the name of the project, because we want to encompass others fra
 
 τ is a fundamental building block needed by almost every mobile project.
 
-I'm looking to make τ the go to project for mobile Audio with support for various platforms and various OS.
+We are looking to make τ the go to project for mobile Audio with support for various platforms and various OS.
 
 τ is a large and complex project which requires to maintain multiple hardware platforms and test environments.
 
-I greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation.
+We greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation.
 
