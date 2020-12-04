@@ -1,5 +1,5 @@
 name: flauto_web
-version: 6.4.5+1
+version: 6.4.5+3
 description: Flutter plugin that relates to sound like audio and recorder.
 #author: dooboolab<dooboolab@gmail.com>
 homepage: https://github.com/canardoux/tau
@@ -28,8 +28,8 @@ flutter:
 
 
 dependencies:
-  flauto_platform_interface: # 6.4.5+1
-    path: ../flutter_sound_platform_interface # Flutter Sound Dir
+  flauto_platform_interface: 6.4.5+3
+#    path: ../flutter_sound_platform_interface # Flutter Sound Dir
   flutter:
     sdk: flutter
   flutter_web_plugins:

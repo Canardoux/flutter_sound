@@ -7,7 +7,7 @@ description: Driver for the various Flutter Sound examples
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 6.4.5+1
+version: 6.4.5+3
 
 homepage: https://github.com/canardoux/tau/blob/master/flutter_sound/
 
@@ -24,14 +24,14 @@ dependencies:
 # ============================================================================
 # The following instructions are just for developing/debugging Flutter Sound
 # Do not put them in a real App
-  flauto_platform_interface: # 6.4.5+1
-    path: ../../flutter_sound_platform_interface # flutter_sound_platform_interface Dir
-  flauto_web: # 6.4.5+1
-    path: ../../flutter_sound_web # flutter_sound_web Dir
+#  flauto_platform_interface: 6.4.5+3
+#    path: ../../flutter_sound_platform_interface # flutter_sound_platform_interface Dir
+#  flauto_web: 6.4.5+3
+#    path: ../../flutter_sound_web # flutter_sound_web Dir
 # ============================================================================
 
-  flauto: # ^6.4.5+1
-    path: ../ # Flutter Sound Dir
+  flauto: ^6.4.5+3
+#    path: ../ # Flutter Sound Dir
 
   intl: ^0.16.1
   cupertino_icons: ^0.1.3

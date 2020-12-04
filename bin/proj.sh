@@ -70,7 +70,11 @@ if [ "_$1" = "_TAU" ] ; then
 
         gsed -i  "s/^pod 'tau_sound_core',/pod 'tau_core',/" flutter_sound/example/ios/Podfile
 
-        for f in $(find flutter_sound -name '*.dart' ); do gsed -i  "s/package\:flutter_sound/package:flauto/" $f; done
+        for f in $(find . -name '*.dart' )
+        do
+                gsed -i  "s/package\:flutter_sound/package:flauto/" $f
+        done
+
         for f in $(find . -name '*.md' )
         do
                 gsed -i  "s/https:\/\/dooboolab.github.io\/flutter_sound/https:\/\/canardoux.github.io\/tau/" $f

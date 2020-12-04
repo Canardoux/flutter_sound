@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'tau_core'
-  s.version          = '6.4.5+1'
+  s.version          = '6.4.5+3'
   s.summary          = 'Provides simple recorder and player functionalities for both Android and iOS platforms.'
 
 # This description is used to generate tags and improve search results.

@@ -1,35 +1,12 @@
-<img src="doc/flutter_sound/banner.png" width="70%" height="70%" />
+<img src="doc/logo/banner5.svg" width="70%" height="70%" />
 <p align="left">
   <a href="https://canardoux.github.io/tau/book/flauto"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg"></a>
 </p>
 
 -------------------------------------------------------------------------------------
 
-- # Flutter Sound user: your [documentation is there](https://canardoux.github.io/tau/book)
-- # The [CHANGELOG file is here](https://canardoux.github.io/tau/book/CHANGELOG.html)
-- # The [sources are here](https://github.com/canardoux/tau)
-
----------
-
-# Flutter Sound V6.x is OUT
-
-Please refer to the [CHANGELOG.md file](https://canardoux.github.io/tau/book/CHANGELOG.html) to get learn all the great new features. It has especially the following :
-
-## Flutter Web support
-
-Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://canardoux.github.io/tau/doc/flutter_sound/web_example) (still cannot record with Safari or any web browser on iOS). You can [read this](https://dooboolab.github.io/flutter_sound/book/tau/codec.html#flutter-sound-on-flutter-web).
-
-## Record to Dart Stream
-
-This feature has been requested from many months from many, many, many Flutter Sound users. This open doors to things like feeding a Speech-to-Text engine.
-
-You can refer to the [Getting Started with Record-to-Stream](https://canardoux.github.io/tau/book/tau/codec.html#recording-pcm-16-to-a-dart-stream) notice.
-
-## Playback from a live Dart Stream
-
-This feature has also been requested from many months from many Flutter Sound users.
-
-You can refer to the [Getting Started with Playback-from-Stream](https://canardoux.github.io/tau/book/tau/codec.html#playing-pcm-16-from-a-dart-stream) notice.
+- ## Flutter Sound user: your [documentation is there](https://canardoux.gitbook.io/tau/)
+- ## The [CHANGELOG file is here](https://canardoux.gitbook.io/tau/the-tau-project/changelog)
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
