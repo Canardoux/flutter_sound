@@ -83,6 +83,10 @@ if [ "_$1" = "_TAU" ] ; then
                 gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" $f
         done
 
+        # We want to keep links to flutter_sound in the changelog.md
+        gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  doc/the-tau-project/changelog.md
+        gsed -i  "s/https:\/\/github.com\/Canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  doc/the-tau-project/changelog.md
+
 
 
         for f in flutter_sound/ios/Classes/*
@@ -184,8 +188,6 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
         do
                 gsed -i  "s/https:\/\/canardoux.github.io\/tau/https:\/\/dooboolab.github.io\/flutter_sound/" $f
                 gsed -i  "s/https:\/\/Canardoux.github.io\/tau/https:\/\/dooboolab.github.io\/flutter_sound/" $f
-                gsed -i  "s/https:\/\/github.com\/Canardoux\/tau\//https:\/\/github.com\/dooboolab\/flutter_sound\//" $f
-                gsed -i  "s/https:\/\/github.com\/canardoux\/tau\//https:\/\/github.com\/dooboolab\/flutter_sound\//" $f
                 gsed -i  "s/https:\/\/pub.dartlang.org\/packages\/flauto/https:\/\/pub.dartlang.org\/packages\/flutter_sound/" $f
                 gsed -i  "s/https:\/\/img.shields.io\/pub\/v\/flauto.svg/https:\/\/img.shields.io\/pub\/v\/flutter_sound.svg/" $f
                 gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  $f

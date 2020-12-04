@@ -11,10 +11,10 @@
 
 * [Getting Started](guides/getting-started.md)
 * [Supported Codecs](guides/guides.md)
-* [Raw PCM and Wave files](guides/raw-pcm-and-wave-files.md)
-* [Recording or playing Raw PCM](guides/recording-or-playing-raw-pcm.md)
-* [Recording PCM-16 to a Dart Stream](guides/recording-pcm-16-to-a-dart-stream.md)
-* [Playing PCM-16 from a Dart Stream](guides/playing-pcm-16-from-a-dart-stream.md)
+* [Raw PCM and Wave files](guides/guides.md#raw-pcm-and-wave-files)
+* [Recording or playing Raw PCM](guides/guides.md#recording-or-playing-raw-pcm)
+* [Recording PCM-16 to a Dart Stream](guides/guides.md#recording-pcm-16-to-a-dart-stream)
+* [Playing PCM-16 from a Dart Stream](guides/guides.md#playing-pcm-16-from-a-dart-stream)
 * [Widgets](guides/widgets.md)
 * [Notification/Lock Screen](guides/lock-screen.md)
 

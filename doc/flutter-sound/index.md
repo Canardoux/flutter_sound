@@ -48,7 +48,7 @@ Please refer to the [CHANGELOG.md file](https://canardoux.github.io/tau/book/CHA
 
 ### Flutter Web support <a id="flutter-web-support"></a>
 
-Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://canardoux.github.io/tau/doc/flutter_sound/web_example) \(still cannot record with Safari or any web browser on iOS\). You can [read this](https://dooboolab.github.io/flutter_sound/book/tau/codec.html#flutter-sound-on-flutter-web).
+Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://canardoux.github.io/tau/doc/flutter_sound/web_example) \(still cannot record with Safari or any web browser on iOS\). You can [read this](https://canardoux.github.io/tau/book/tau/codec.html#flutter-sound-on-flutter-web).
 
 ### Record to Dart Stream <a id="record-to-dart-stream"></a>
 
