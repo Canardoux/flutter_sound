@@ -1,10 +1,9 @@
 # τ under Flutter
 
-This is the README of /doc/flutter\_sound
 
 ## Flutter Sound
 
-![](../logo/bnnar.png)
+![](../logo/banner.png)
 
  [![pub version](https://img.shields.io/pub/v/flauto.svg?style=flat-square)](https://canardoux.github.io/tau/book)
 
