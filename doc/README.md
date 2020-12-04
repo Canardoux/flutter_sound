@@ -1,5 +1,5 @@
 ---
-description: Audio Player and Recorderlibraries for mobiles and web.
+description: Audio Player and Recorder libraries for mobiles and web.
 ---
 
 <img src="logo/banner5.svg" width="70%" height="70%" />
@@ -39,7 +39,7 @@ The τ package supports playback from:
 
 The τ package includes the following features :
 
-* Play and Record τ or music with various codecs. \(See [the supported codecs here](https://github.com/Canardoux/tau/tree/519c7217c3f09511cc9afc86264286785a94499a/doc/guides/codec.md#flutter-sound-codecs)\)
+* Play and Record τ or music with various codecs. \(See [the supported codecs here](guides/guides.md#flutter-sound-codecs)\)
 * Play local or remote files specified by their URL.
 * Play assets.
 * Record to a live stream Stream
