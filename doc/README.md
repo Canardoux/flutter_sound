@@ -2,6 +2,8 @@
 description: An Audio Player and Recorder for mobiles and web.
 ---
 
+<img src="logo/banner5.svg" width="70%" height="70%" />
+
 # Introduction
 
 The τ project is a set of libraries which deal with audio :
