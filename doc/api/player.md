@@ -3,14 +3,14 @@
 The verbs offered by the Flutter Sound Player module are :
 
 * [Default constructor](player.md#creating-the-player-instance)
-* [openAudioSession](player.md#openaudiosession-and-closeaudiosession) and [closeAudioSession\(\)](player.md#openaudiosession-and-closeaudiosession) to open or close an audio session
+* [openAudioSession\(\)](player.md#openaudiosession-and-closeaudiosession) and [closeAudioSession\(\)](player.md#openaudiosession-and-closeaudiosession) to open or close an audio session
 * [setAudioFocus\(\)](player.md#setaudiofocus) to manage the session Audio Focus
 * [startPlayer\(\)](player.md#startplayer) to play an audio file or  a buffer.
-* [startPlayerFromTrack](player.md#startplayerfromtrack) to play data from a track specification and display controls on the lock screen or an Apple Watch
-* [startPlayerFromStream](player.md#startplayerfromstream) to play live data. Please look to the [following notice](https://github.com/Canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/api/codec.md#playing-pcm-16-from-a-dart-stream).
-* [feedFromStream](player.md#feedfromstream) to play live PCM data synchronously.  Please look to the [following notice](https://github.com/Canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/api/codec.md#playing-pcm-16-from-a-dart-stream).
-* [foodSink](player.md#foodsink) is the output stream when you want to play asynchronously live data
-* [FoodData and FoodEvent](player.md#food) are the two kinds of food that you can provide to the `foodSink` Stream.
+* [startPlayerFromTrack\(\)](player.md#startplayerfromtrack) to play data from a track specification and display controls on the lock screen or an Apple Watch
+* [startPlayerFromStream\(\)](player.md#startplayerfromstream) to play live data. Please look to the [following notice](https://github.com/Canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/api/codec.md#playing-pcm-16-from-a-dart-stream).
+* [feedFromStream\(\)](player.md#feedfromstream) to play live PCM data synchronously.  Please look to the [following notice](https://github.com/Canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/api/codec.md#playing-pcm-16-from-a-dart-stream).
+* [foodSink\(\)](player.md#foodsink) is the output stream when you want to play asynchronously live data
+* [FoodData and FoodEvent\(\)](player.md#food) are the two kinds of food that you can provide to the `foodSink` Stream.
 * [stopPlayer\(\)](player.md#stopplayer) to stop a current playback
 * [pausePlayer\(\)](player.md#pauseplayer) to pause the current playback
 * [resumePlayer\(\)](player.md#resumeplayer) to resume a paused playback
