@@ -4,7 +4,7 @@ This is the README of /doc/flutter\_sound
 
 ## Flutter Sound
 
-![](../.gitbook/assets/Logotype%20primary%20%281%29.png)
+![](../logo/bnnar.png)
 
  [![pub version](https://img.shields.io/pub/v/flauto.svg?style=flat-square)](https://canardoux.github.io/tau/book)
 

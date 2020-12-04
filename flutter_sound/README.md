@@ -7,7 +7,7 @@
 
 -------------------------------------------------------------------------------------
 
-- ## Flutter Sound user: your [documentation is there](https://canardoux.gitbook.io/tau/)
+- ## Flutter Sound user: your [documentation is there](https://canardoux.gitbook.io/tau/flutter-sound/flutter-sound)
 - ## The [CHANGELOG file is here](https://canardoux.gitbook.io/tau/the-tau-project/changelog)
 
 -----------------------------------------------------------------------------------------------------------------------------------
