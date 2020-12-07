@@ -61,7 +61,7 @@ public abstract class FlautoSession
 		audioManager = ( AudioManager ) Flauto.androidContext.getSystemService( Context.AUDIO_SERVICE );
 		if ( Build.VERSION.SDK_INT >= 26 )
 		{
-			if ( focus != t_AUDIO_FOCUS.abandonFocus && focus != t_AUDIO_FOCUS.doNotRequestFocus && )
+			if ( focus != t_AUDIO_FOCUS.abandonFocus && focus != t_AUDIO_FOCUS.doNotRequestFocus && focus != t_AUDIO_FOCUS.requestFocus )
 			{
 				int focusGain = AudioManager.AUDIOFOCUS_GAIN;
 
