@@ -21,6 +21,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 /*
  * This is an example showing how to record to a Dart Stream.
@@ -51,6 +52,17 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   String _mPath;
   StreamSubscription _mRecordingDataSubscription;
 
+  Future<void> _openRecorder() async {
+    var status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      throw RecordingPermissionException('Microphone permission not granted');
+    }
+    await _mRecorder.openAudioSession();
+    setState(() {
+      _mRecorderIsInited = true;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -61,11 +73,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
         _mPlayerIsInited = true;
       });
     });
-    _mRecorder.openAudioSession().then((value) {
-      setState(() {
-        _mRecorderIsInited = true;
-      });
-    });
+    _openRecorder();
   }
 
   @override
