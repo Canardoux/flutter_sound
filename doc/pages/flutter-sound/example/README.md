@@ -88,7 +88,7 @@ The complete example source [is there](https://github.com/canardoux/tau/blob/mas
 
 A very simple example showing how to play Live Data without back pressure. It feeds a live stream, without waiting that the Futures are completed for each block. This is simpler than playing buffers synchronously because the App does not need to await that the playback for each block is completed playing another one.
 
-This example get the data from an asset file, which is completely stupid : if an App wants to play a long asset file he must use [startPlayer\(\)](https://github.com/Canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/player.md#startplayer).
+This example get the data from an asset file, which is completely stupid : if an App wants to play a long asset file he must use [startPlayer\(\)](https://github.com/canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/player.md#startplayer).
 
 Feeding Flutter Sound without back pressure is very simple but you can have two problems :
 
@@ -97,7 +97,7 @@ Feeding Flutter Sound without back pressure is very simple but you can have two 
 
   For example, if it does a "stopPlayer\(\)" it will loose all the buffered data.
 
-This example uses the [FoodEvent](https://github.com/Canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/player.md#food) object to resynchronize the output stream before doing a [stopPlayer\(\)](https://github.com/Canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/player.md##stopplayer)
+This example uses the [FoodEvent](https://github.com/canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/player.md#food) object to resynchronize the output stream before doing a [stopPlayer\(\)](https://github.com/Canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/player.md##stopplayer)
 
 The complete example source [is there](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart)
 
@@ -109,7 +109,7 @@ A very simple example showing how to play Live Data with back pressure. It feeds
 
 This example get the data from an asset file, which is completely stupid : if an App wants to play an asset file he must use "StartPlayerFromBuffer\(\).
 
-If you do not need any back pressure, you can see another simple example : [LivePlaybackWithoutBackPressure.dart](https://github.com/Canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/player.md##liveplaybackwithoutbackpressure). This other example is a little bit simpler because the App does not need to await the playback for each block before playing another one.
+If you do not need any back pressure, you can see another simple example : [LivePlaybackWithoutBackPressure.dart](https://github.com/canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/player.md##liveplaybackwithoutbackpressure). This other example is a little bit simpler because the App does not need to await the playback for each block before playing another one.
 
 The complete example source [is there](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithBackPressure/live_playback_with_back_pressure.dart)
 
@@ -117,7 +117,7 @@ The complete example source [is there](https://github.com/canardoux/tau/blob/mas
 
 ![](../../.gitbook/assets/sound_effect.png)
 
-[startPlayerFromStream](https://github.com/Canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/player.md##startplayerfromstream) can be very efficient to play sound effects in real time. For example in a game App. In this example, the App open the Audio Session and call `startPlayerFromStream()` during initialization. When it want to play a noise, it has just to call the synchronous verb `feed`. Very fast.
+[startPlayerFromStream](https://github.com/canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/player.md##startplayerfromstream) can be very efficient to play sound effects in real time. For example in a game App. In this example, the App open the Audio Session and call `startPlayerFromStream()` during initialization. When it want to play a noise, it has just to call the synchronous verb `feed`. Very fast.
 
 The complete example source [is there](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/soundEffect/sound_effect.dart)
 

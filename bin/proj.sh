@@ -68,7 +68,7 @@ if [ "_$1" = "_TAU" ] ; then
         gsed -i  "s/^\( *\"name\": \)\"tau_sound_core\"/\1\"tau_core\"/" tau_core/web/package.json
         gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound\.git/https:\/\/github.com\/canardoux\/tau\.git/" tau_core/web/package.json
 
-        gsed -i  "s/^pod 'tau_sound_core',/pod 'tau_core',/" flutter_sound/example/ios/Podfile
+        gsed -i  "s/^\(#* *pod \)'tau_sound_core',/\1'tau_core',/" flutter_sound/example/ios/Podfile
 
         for f in $(find . -name '*.dart' )
         do
@@ -84,8 +84,8 @@ if [ "_$1" = "_TAU" ] ; then
         done
 
         # We want to keep links to flutter_sound in the changelog.md
-        gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  doc/the-tau-project/changelog.md
-        gsed -i  "s/https:\/\/github.com\/Canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  doc/the-tau-project/changelog.md
+        gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  doc/CHANGELOG.md
+        gsed -i  "s/https:\/\/github.com\/Canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  doc/CHANGELOG.md
 
 
 
@@ -100,8 +100,6 @@ if [ "_$1" = "_TAU" ] ; then
         gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" flutter_sound_web/pubspec.yaml
         gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" flutter_sound_platform_interface/pubspec.yaml
 
-        gsed -i  "s/https:\/\/dooboolab.github.io\/flutter_sound/https:\/\/canardoux.github.io\/tau/"   doc/SUMMARY.md
-        gsed -i  "s/https:\/\/dooboolab.github.io\/flutter_sound/https:\/\/canardoux.github.io\/tau/"   doc/README.md
 
 
         exit 0
@@ -177,7 +175,7 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
         gsed -i  "s/^\( *\"name\": \)\"tau_core\"/\1\"tau_sound_core\"/" tau_core/web/package.json
         gsed -i  "s/https:\/\/github.com\/canardoux\/tau\.git/https:\/\/github.com\/dooboolab\/flutter_sound\.git/" tau_core/web/package.json
 
-        gsed -i  "s/^pod 'tau_core',/pod 'tau_sound_core',/" flutter_sound/example/ios/Podfile
+        gsed -i  "s/^\(#* *pod \)'tau_core',/\1'tau_sound_core',/" flutter_sound/example/ios/Podfile
 
         for f in $(find . -name '*.dart' )
         do
@@ -206,8 +204,6 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
         gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  flutter_sound_web/pubspec.yaml
         gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  flutter_sound_platform_interface/pubspec.yaml
 
-        gsed -i  "s/https:\/\/canardoux.github.io\/tau/https:\/\/dooboolab.github.io\/flutter_sound/"   doc/SUMMARY.md
-        gsed -i  "s/https:\/\/canardoux.github.io\/tau/https:\/\/dooboolab.github.io\/flutter_sound/"   doc/README.md
 
 
         exit 0
