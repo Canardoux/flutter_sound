@@ -35,7 +35,7 @@ The Widget needs to obtain the duration of the audio that it is play and that ca
 
 If you pass a `Track` that wasn't constructed with a `MediaFormat` then a `MediaFormatException` will be thrown.
 
-The `MediaFormat` must also be natively supported by the OS. See [MediaFormat](mediaformat.md) for additional details on checking for a supported format.
+The `MediaFormat` must also be natively supported by the OS. See `mediaformat.md` for additional details on checking for a supported format.
 
 ### Example:
 
