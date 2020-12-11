@@ -15,6 +15,13 @@ if [ ! -z "$VERSION" ]; then
         gsed -i  "s/^\( *version: \).*/\1$VERSION/"                                             doc/_data/sidebars/mydoc_sidebar.yml
 fi
 
+for f in $(find doc/pages/flutter_sound/api -name '*.html' )
+do
+        gsed -i  "1i ---" $f
+        gsed -i  "1i ---" $f
+done
+
+
 git add .
 git commit -m "TAU : Version $VERSION"
 git push

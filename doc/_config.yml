@@ -79,6 +79,7 @@ defaults:
       search: true
       sidebar: mydoc_sidebar
       topnav: topnav
+
   -
     scope:
       path: ""
