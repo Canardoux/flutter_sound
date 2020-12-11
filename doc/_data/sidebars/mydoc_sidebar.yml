@@ -1,0 +1,389 @@
+# This is your sidebar TOC. The sidebar code loops through sections here and provides the appropriate formatting.
+
+entries:
+- title: sidebar
+  product: The &tau; Project
+  version: 1.2.3+4
+  folders:
+
+  - title:
+    output: pdf
+    type: frontmatter
+    folderitems:
+    - title:
+      url: /titlepage.html
+      output: pdf
+      type: frontmatter
+    - title:
+      url: /tocpage.html
+      output: pdf
+      type: frontmatter
+
+  - title: The &tau; Project
+    output: web, pdf
+    folderitems:
+
+    - title: Introduction
+      url: /index.html
+      output: web, pdf
+      type: homepage
+
+    - title: the &tau; Architecture
+      url: /mydoc_introduction.html
+      output: web, pdf
+
+    - title: Changelog
+      url: /mydoc_supported_features.html
+      output: web, pdf
+
+  - title: Guides
+    output: web, pdf
+    folderitems:
+
+    - title: Getting Started
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: Supported Codecs
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: Raw PCM and Wave files
+      url: /mydoc_release_notes_50.html
+      output: web, pdf
+
+    - title: Recording or playing Raw PCM
+      url: /mydoc_release_notes_50.html
+      output: web, pdf
+
+    - title: Recording to a Dart Stream
+      url: /mydoc_release_notes_50.html
+      output: web, pdf
+
+    - title: Playback from a Dart Stream
+      url: /mydoc_release_notes_50.html
+      output: web, pdf
+
+    - title: Widgets
+      url: /mydoc_release_notes_50.html
+      output: web, pdf
+
+    - title: Notification on the lock screen
+      url: /mydoc_release_notes_50.html
+      output: web, pdf
+
+
+
+  - title: API
+    output: web, pdf
+    folderitems:
+
+    - title: The &tau; API
+      url: /mydoc_tag_archives_overview.html
+      output: web
+
+      subfolders:
+      - title: The Player
+        output: web
+        subfolderitems:
+
+        - title: Constructor
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: openAudioSession()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: setAudioFocuz()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: startPlayer()
+          output: web, pdf
+
+        - title: startPlayerFromTrack()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: startPlayerFromStream()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: feedFromStream()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: foodSink()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: FoodData and FoodEvent
+          output: web, pdf
+
+        - title: stopPlayer()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: pausePlayer()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: resumePlayer()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: seekPlayer()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: setVolume()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: getPlayerState()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: isDecoderSupported()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: onProgress()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: getProgress()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: setUIProgressBar()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: nowPlaying()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: setSubscriptionDuration()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+      - title: The Recorder
+        output: web, pdf
+        subfolderitems:
+
+        - title: Constructor
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: openAudioSession()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: setAudioFocus()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: startRecorder()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: stopRecorder()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: pauseRecorder()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: resumeRecorder()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: recorderState()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: isEncoderSupported()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: onProgress()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: setSubscriptionDuration()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+      - title: The utilities
+        output: web, pdf
+        subfolderitems:
+
+        - title: Constructor
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: convertFile()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: pcmToWave()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: pcmtoWaveBuffer()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: waveToPcm()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: waveToPcmBuffer()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: duration()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: isFFmpegAvailable()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: executeFFmpegWithArguments()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: getLastFFmpegReturnCode()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: getLastFFmpegCommandOutput()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: FFmpegGetMediaInformation()
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+      - title: The Widgets UI
+        output: web, pdf
+        subfolderitems:
+
+        - title: UI Player
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: UI Recorder
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: UI Controller
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+  - title: Flutter Sound
+    output: web, pdf
+
+    folderitems:
+    - title: "&tau; under Flutter"
+      url: /mydoc_adding_tooltips.html
+      output: web, pdf
+
+    - title: Installation
+      url: /mydoc_alerts.html
+      output: web, pdf
+
+    - title: Flutter Sound on Flutter Web
+      url: /mydoc_icons.html
+      output: web, pdf
+
+    - title: Live demo
+      url: /mydoc_images.html
+      output: web, pdf
+
+      subfolders:
+      - title: Examples
+        output: web
+        subfolderitems:
+
+        - title: demo
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: Widget UI
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: Simple Playback
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: Simple Recorder
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: Record to Stream
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: Playback from Stream (1)
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: Playback from Stream (2)
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: Sound Effects
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+        - title: Stream Loop
+          url: /mydoc_install_jekyll_on_windows.html
+          output: web, pdf
+
+    - title: API reference (dartdoc)
+      url: /mydoc_labels.html
+      output: web, pdf
+
+  - title: "&tau; React"
+    output: web, pdf
+
+    folderitems:
+    - title: "&tau; under React Native"
+      url: /mydoc_commenting_on_files.html
+      output: web, pdf
+
+    - title: "API reference"
+      url: /mydoc_commenting_on_files.html
+      output: web, pdf
+
+#    - title: Git collaboration
+#      url: /mydoc_git_collaboration
+#      output: web, pdf
+
+  - title: Links
+    output: web, pdf
+
+    folderitems:
+    - title: Migration
+      url: /mydoc_build_arguments.html
+      output: web, pdf
+
+    - title: Problem Report
+      url: /mydoc_themes.html
+      output: web, pdf
+
+    - title: Contributions
+      url: /mydoc_generating_pdfs.html
+      output: web, pdf
+
+    - title: License
+      url: /mydoc_generating_pdfs.html
+      output: web, pdf
+
+

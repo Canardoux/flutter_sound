@@ -70,3 +70,6 @@ gsed -i  "s/^\( *## \).*$/\1$VERSION/"                                          
 gsed -i  "s/^\( *\"version\": *\).*$/\1\"$VERSION\",/"                                  tau_core/web/package.json
 gsed -i  "s/^\( *<script src=\"https:\/\/cdn.jsdelivr.net\/npm\/tau_engine@\)[^\/]*/\1$VERSION/g" flutter_sound/example/web/index.html
 gsed -i  "s/^\( *s\.version *= *\).*$/\1'$VERSION'/"                                    flutter_sound_web/ios/flutter_sound_web.podspec
+
+gsed -i  "s/^tau_version:.*/tau_version: $VERSION/"                                     doc/_config.yml
+gsed -i  "s/^\( *version: \).*/\1$VERSION/"                                             doc/_data/sidebars/mydoc_sidebar.yml
