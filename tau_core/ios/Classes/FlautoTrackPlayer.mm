@@ -60,13 +60,13 @@
 
 - (AVAudioPlayer*)getPlayer
 {
-        return [(AudioPlayer*)m_playerEngine  getAudioPlayer];
-        
+        return [(AudioPlayerFlauto*)m_playerEngine  getAudioPlayer];
+
 }
 
 - (void)setPlayer:(AVAudioPlayer*) theAudioPlayer
 {
-        [(AudioPlayer*)m_playerEngine  setAudioPlayer: theAudioPlayer];
+        [(AudioPlayerFlauto*)m_playerEngine  setAudioPlayer: theAudioPlayer];
 }
 
 - (bool)startPlayerFromTrack: (FlautoTrack*)track canPause: (bool)canPause canSkipForward: (bool)canSkipForward canSkipBackward: (bool)canSkipBackward
@@ -84,8 +84,8 @@
         m_defaultPauseResume = defaultPauseResume;
         [self stopPlayer]; // to start a fresh new playback
 
-        m_playerEngine = [[AudioPlayer alloc]init: self];
- 
+        m_playerEngine = [[AudioPlayerFlauto alloc]init: self];
+
         // Check whether the audio file is stored as a path to a file or a buffer
         if([track isUsingPath])
         {
@@ -161,7 +161,7 @@
                                         [self setupNowPlaying: _progress duration: _duration];
                                         long durationLong =  (long)([_duration doubleValue] * 1000.0) ;
                                         [ self ->m_callBack startPlayerCompleted: durationLong];
-                  
+
                                 }];
                         r = true; // ??? not sure
                         [downloadTask resume];
@@ -185,7 +185,7 @@
 
                         r = [[self getPlayer] play];
                         if (![[self getPlayer] isPlaying])
-                                NSLog(@"IOS: AudioPlayer failed to play");
+                                NSLog(@"IOS: AudioPlayerFlauto failed to play");
                         else
                                 NSLog(@"IOS: !Play");
                         //[self startTimer];
@@ -213,7 +213,7 @@
                 });
                 r = [[self getPlayer] play];
                 if (![[self getPlayer] isPlaying])
-                        NSLog(@"IOS: AudioPlayer failed to play");
+                        NSLog(@"IOS: AudioPlayerFlauto failed to play");
                 else
                         NSLog(@"IOS: !Play");
         }
@@ -232,7 +232,7 @@
                                 duration = [NSNumber numberWithDouble: [duration doubleValue] / 1000.0];
                 [self setupNowPlaying: progress duration: duration];
                 //[self setUIProgressBar: progress duration: duration];
-                
+
                 long durationLong = [self getDuration];
                 [ m_callBack startPlayerCompleted: durationLong];
 
@@ -340,8 +340,8 @@
                 [commandCenter.previousTrackCommand removeTarget: backwardTarget action: nil];
                 backwardTarget = nil;
           }
-          
-      
+
+
           //albumArt = nil;
           NSLog(@"IOS:<-- cleanTarget");
  }
@@ -385,8 +385,8 @@
                         NSLog(@"IOS: toggleTarget\n");
                         dispatch_async(dispatch_get_main_queue(),
                         ^{
- 
- 
+
+
                                 bool b = [[self getPlayer] isPlaying];
                                 // If the caller wants to control the pause button, just call him
                                 if (b)
@@ -416,7 +416,7 @@
                                                 if (self ->m_defaultPauseResume)
                                                         [self pausePlayer];
                                                 [self ->m_callBack pause];
-                                                
+
                                         }
                                 }
                         );
@@ -447,12 +447,12 @@
                                         }
                                 }
                         );
-                                
+
                         return MPRemoteCommandHandlerStatusSuccess;
                 }];
         }
 
-    
+
 
         if (canSkipForward)
         {
@@ -475,7 +475,7 @@
                         }
                 ];
         }
-        
+
         commandCenter.togglePlayPauseCommand.enabled = canPause;
         commandCenter.playCommand.enabled = canPause;
         commandCenter.stopCommand.enabled = canPause;
@@ -528,7 +528,7 @@
         }
         bool b = [[self getPlayer] isPlaying];
         [songInfo setObject: [NSNumber numberWithDouble:(b ? 1.0f : 0.0f)] forKey: MPNowPlayingInfoPropertyPlaybackRate];
-        
+
 
         MPNowPlayingInfoCenter* playingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
         [playingInfoCenter setNowPlayingInfo: songInfo];
@@ -560,8 +560,8 @@
                 defaultPauseResume: (bool)defaultPauseResume progress: (NSNumber*)progress duration: (NSNumber*)duration
 {
          NSLog(@"IOS:--> nowPlaying");
-  
-   
+
+
         [self setupRemoteCommandCenter: canPause canSkipForward: canSkipForward   canSkipBackward: canSkipBackward ];
         if ( !track  )
         {
@@ -596,8 +596,8 @@
         [self updateLockScreenProgression];
         NSLog(@"IOS:<-- seekToPlayer");
   }
-  
-  
+
+
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
         NSLog(@"IOS:--> audioPlayerDidFinishPlaying");

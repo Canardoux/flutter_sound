@@ -47,10 +47,10 @@
 
 @end
 
-@interface AudioPlayer : NSObject  <FlautoPlayerEngineInterface>
+@interface AudioPlayerFlauto : NSObject  <FlautoPlayerEngineInterface>
 {
 }
-       - (AudioPlayer*) init: (NSObject*)owner; // FlutterSoundPlayer*
+       - (AudioPlayerFlauto*) init: (NSObject*)owner; // FlutterSoundPlayer*
 
        - (bool) startPlayerFromBuffer:  (NSData*)data;
        - (bool)  startPlayerFromURL: (NSURL*) url codec: (t_CODEC)codec channels: (int)numChannels sampleRate: (long)sampleRate;

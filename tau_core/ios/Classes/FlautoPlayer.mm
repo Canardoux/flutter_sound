@@ -49,7 +49,7 @@ static bool _isIosDecoderSupported [] =
                 false, // pcmWebM
                 false, // opusWebM
                 false, // vorbisWebM
-  
+
 
 };
 
@@ -60,7 +60,7 @@ static bool _isIosDecoderSupported [] =
 {
         NSTimer* timer;
         double subscriptionDuration;
-  
+
 
 }
 
@@ -166,7 +166,7 @@ static bool _isIosDecoderSupported [] =
         if ( (path == nil ||  [path class] == [NSNull class] ) && codec == pcm16)
                 m_playerEngine = [[AudioEngine alloc] init: self ];
         else
-                m_playerEngine = [[AudioPlayer alloc]init: self];
+                m_playerEngine = [[AudioPlayerFlauto alloc]init: self];
         if (dataBuffer != nil)
         {
                 b = [m_playerEngine startPlayerFromBuffer: dataBuffer ];
@@ -184,12 +184,12 @@ static bool _isIosDecoderSupported [] =
         }
 
         bool isRemote = false;
-   
+
         if (path != (id)[NSNull null])
         {
                 NSURL* remoteUrl = [NSURL URLWithString: path];
                 NSURL* audioFileURL = [NSURL URLWithString:path];
-        
+
                 if (remoteUrl && remoteUrl.scheme && remoteUrl.host)
                 {
                         audioFileURL = remoteUrl;
@@ -288,7 +288,7 @@ static bool _isIosDecoderSupported [] =
                 timer = nil;
         }
         NSLog(@"IOS:<-- stopTimer");
-        
+
 }
 
 
@@ -334,7 +334,7 @@ static bool _isIosDecoderSupported [] =
           bool b =  ( [self getStatus] == PLAYER_IS_PAUSED);
           if (!b)
           {
-                NSLog(@"IOS: AudioPlayer : cannot pause!!!");
+                NSLog(@"IOS: AudioPlayerFlauto : cannot pause!!!");
           }
 
           NSLog(@"IOS:<-- pause");
@@ -382,7 +382,7 @@ static bool _isIosDecoderSupported [] =
         bool b = ([self getStatus] == PLAYER_IS_PLAYING);
         if (!b)
         {
-                 NSLog(@"IOS: AudioPlayer : cannot resume!!!");
+                 NSLog(@"IOS: AudioPlayerFlauto : cannot resume!!!");
         }
         NSLog(@"IOS:<-- resume");
         return b;

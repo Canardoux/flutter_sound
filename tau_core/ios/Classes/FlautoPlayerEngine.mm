@@ -26,7 +26,7 @@
 #import "FlautoPlayerEngine.h"
 #import "FlautoPlayer.h"
 
-@implementation AudioPlayer
+@implementation AudioPlayerFlauto
 {
         FlautoPlayer* flautoPlayer; // Owner
         AVAudioPlayer* player;
@@ -36,20 +36,20 @@
        {
                 return player;
        }
-       
+
         - (void) setAudioPlayer: (AVAudioPlayer*)thePlayer
         {
                 player = thePlayer;
         }
 
-       
-     
-       - (AudioPlayer*)init: (FlautoPlayer*)owner
+
+
+       - (AudioPlayerFlauto*)init: (FlautoPlayer*)owner
        {
                 flautoPlayer = owner;
                 return [super init];
        }
-       
+
        -(bool) startPlayerFromBuffer: (NSData*) dataBuffer
        {
                 NSError* error = [[NSError alloc] init];
@@ -58,7 +58,7 @@
                 bool b = [[self getAudioPlayer] play];
                 return b;
        }
-       
+
        -(bool)  startPlayerFromURL: (NSURL*) url codec: (t_CODEC)codec channels: (int)numChannels sampleRate: (long)sampleRate
 
        {
@@ -68,51 +68,51 @@
                 return b;
         }
 
-       
+
        -(long)  getDuration
        {
                 double duration =  [self getAudioPlayer].duration;
                 return (long)(duration * 1000.0);
        }
-       
+
        -(long)  getPosition
        {
                 double position = [self getAudioPlayer].currentTime ;
                 return (long)( position * 1000.0);
        }
-       
+
        -(void)  stop
        {
                 [ [self getAudioPlayer] stop];
                 [self setAudioPlayer: nil];
        }
-       
+
        -(bool)  resume
        {
                 bool b = [ [self getAudioPlayer] play];
                 return b;
        }
-        
+
        -(bool)  pause
        {
                 [ [self getAudioPlayer] pause];
                 return true;
        }
-       
-             
+
+
        -(bool)  setVolume: (long) volume
        {
                 [ [self getAudioPlayer] setVolume: ((double)volume)/1000];
                 return true;
        }
- 
-       
+
+
        -(bool)  seek: (double) pos
        {
                 [self getAudioPlayer].currentTime = pos / 1000.0;
                 return true;
        }
-       
+
        -(t_PLAYER_STATE)  getStatus
        {
                 if (  [self getAudioPlayer] == nil )
@@ -121,8 +121,8 @@
                         return PLAYER_IS_PLAYING;
                 return PLAYER_IS_PAUSED;
        }
-       
-       
+
+
         - (int) feed: (NSData*)data
         {
                 return -1;
@@ -158,28 +158,28 @@
                 outputNode = [engine outputNode];
                 outputFormat = [outputNode inputFormatForBus: 0];
                 playerNode = [[AVAudioPlayerNode alloc] init];
-                
+
                 [engine attachNode: playerNode];
- 
+
                 [engine connect: playerNode to: outputNode format: outputFormat];
                 bool b = [engine startAndReturnError: nil];
                 if (!b)
                 {
                         NSLog(@"Cannot start the audio engine");
                 }
- 
+
                 mPauseTime = 0.0; // Total number of seconds in pause mode
 		mStartPauseTime = -1; // Not in paused mode
 		systemTime = CACurrentMediaTime(); // The time when started
                 return [super init];
        }
-       
+
        -(bool) startPlayerFromBuffer: (NSData*) dataBuffer
        {
                  return [self feed: dataBuffer] > 0;
        }
         static int ready = 0;
-       
+
        -(bool)  startPlayerFromURL: (NSURL*) url codec: (t_CODEC)codec channels: (int)numChannels sampleRate: (long)sampleRate
        {
                 assert(url == nil || url ==  (id)[NSNull null]);
@@ -190,12 +190,12 @@
                 return true;
        }
 
-       
+
        -(long)  getDuration
        {
 		return [self getPosition]; // It would be better if we add what is in the input buffers and not still played
        }
-       
+
        -(long)  getPosition
        {
 		double time ;
@@ -205,10 +205,10 @@
 			time = CACurrentMediaTime() - systemTime - mPauseTime;
 		return (long)(time * 1000);
        }
-       
+
        -(void)  stop
        {
- 
+
                 if (engine != nil)
                 {
                         if (playerNode != nil)
@@ -221,7 +221,7 @@
                         engine = nil;
                 }
        }
-       
+
        -(bool)  resume
        {
 		if (mStartPauseTime >= 0)
@@ -231,20 +231,20 @@
 		[playerNode play];
                 return true;
        }
-        
+
        -(bool)  pause
        {
 		mStartPauseTime = CACurrentMediaTime();
 		[playerNode pause];
                 return true;
        }
-       
-          
+
+
        -(bool)  seek: (double) pos
        {
                 return false;
        }
-       
+
        -(int)  getStatus
        {
                 if (engine == nil)
@@ -255,7 +255,7 @@
                         return PLAYER_IS_PLAYING;
                 return PLAYER_IS_PLAYING; // ??? Not sure !!!
        }
-       
+
         #define NB_BUFFERS 4
         - (int) feed: (NSData*)data
         {
@@ -264,9 +264,9 @@
                         int ln = (int)[data length];
                         int frameLn = ln/2;
                         int frameLength =  8*frameLn;// Two octets for a frame (Monophony, INT Linear 16)
-                        
+
                         playerFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: (double)m_sampleRate channels: m_numChannels interleaved: NO];
-   
+
                         AVAudioPCMBuffer* thePCMInputBuffer =  [[AVAudioPCMBuffer alloc] initWithPCMFormat: playerFormat frameCapacity: frameLn];
                         memcpy((unsigned char*)(thePCMInputBuffer.int16ChannelData[0]), [data bytes], ln);
                         thePCMInputBuffer.frameLength = frameLn;
@@ -278,7 +278,7 @@
                                 hasData = false;
                                 return thePCMInputBuffer;
                         };
-                        
+
                         AVAudioPCMBuffer* thePCMOutputBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat: outputFormat frameCapacity: frameLength];
                         thePCMOutputBuffer.frameLength = 0;
 

@@ -24,22 +24,6 @@ else
 fi
 
 
-cd flutter_sound
-dartfmt -w lib
-dartfmt -w example/lib
-flutter analyze
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
-dartanalyzer lib
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
-cd ..
-
-
 cd flutter_sound_platform_interface/
 #flutter clean
 #flutter pub get
@@ -60,6 +44,23 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 cd ..
+
+
+cd flutter_sound
+dartfmt -w lib
+dartfmt -w example/lib
+flutter analyze
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+dartanalyzer lib
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+cd ..
+
 
 
 git add .
