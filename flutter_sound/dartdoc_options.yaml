@@ -4,13 +4,15 @@ dartdoc:
     "Main":
       markdown: ../doc/pages/tau/main.md
       name: Great
-    "UI Widgets":
-      markdown: ../doc/pages/tau/ui_widget.md
+
+    "UI_Widgets":
+      markdown: ../doc/pages/tau/ui_widgets.md
       name: UI
+
     "Utilities":
       markdown: ../doc/pages/tau/utilities.md
       name: util
 
-  categoryOrder: [ "Main", "UI Widgets", "utilities"]
+  categoryOrder: [ "Main", "UI_Widgets", "Utilities"]
   linkTo:
     url: "https://my.dartdocumentationsite.org/dev/%v%"

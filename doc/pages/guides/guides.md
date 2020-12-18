@@ -1,7 +1,10 @@
 ---
-description: Guides.
-layout: page
-title: Guides
+title:  "Guides"
+description: "Various guides about The &tau; Project."
+summary: "Various guides about The &tau; Project."
+permalink: guides_guides
+tags: [guides]
+keywords: guides
 ---
 
 ## Supported Codecs

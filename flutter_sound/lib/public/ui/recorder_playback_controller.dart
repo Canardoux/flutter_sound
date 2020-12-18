@@ -27,7 +27,7 @@
 ///
 ///The RecorderPlaybackController co-ordinates the UI state between the two components so that playback and recording cannot happen at the same time.
 /// ------------------------------------------------------------------
-/// {@category UI Widgets}
+/// {@category UI_Widgets}
 library ui_controller;
 
 import 'dart:async';

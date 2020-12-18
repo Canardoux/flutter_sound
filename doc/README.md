@@ -1,13 +1,13 @@
 ---
-title: The home page of The &tau; Project documentation"
-keywords: home homepage
-tags: [getting_started]
-sidebar: mydoc_sidebar
-permalink: index.html
-summary: The &tau; Project documentation is now generated with the Free and Open Source tool : Jekyll.
+title: The &tau; Project"
+description: The d&tau; Project README
+keywords: home homepage readme
+tags: [tau_readme]
+permalink: README.html
+summary: The &tau; Project documentation.
 ---
 
-<img src="logo/banner5.svg" width="70%" height="70%" />
+{% include image.html file="banner5.png"  caption="The &tau; architecture" %}
 
 The τ project is a set of libraries which deal with audio :
 

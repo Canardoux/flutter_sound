@@ -1,7 +1,10 @@
 ---
-description: Widgets.
-layout: page
-title: Widgets
+title:  "Widgets"
+description: "The &tau; built-in widgets."
+summary: "The &tau; Project offers two built-in widgets."
+permalink: guides_ui
+tags: [UI]
+keywords: ui_widgets
 ---
 # Widgets
 

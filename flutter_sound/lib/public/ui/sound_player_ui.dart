@@ -30,7 +30,7 @@
 ///
 /// ------------------------------------------------------------------
 ///
-/// {@category UI Widgets}
+/// {@category UI_Widgets}
 library ui_player;
 
 import 'dart:async';

@@ -26,7 +26,7 @@
 // TODO: add image here.
 ///
 /// ------------------------------------------------------------------
-/// {@category UI Widgets}
+/// {@category UI_Widgets}
 library ui_recorder;
 
 import 'dart:async';

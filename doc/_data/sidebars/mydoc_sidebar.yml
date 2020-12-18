@@ -19,58 +19,70 @@ entries:
       output: pdf
       type: frontmatter
 
+
+# -------------------------------------------------
+
+
+
   - title: The &tau; Project
     output: web, pdf
     folderitems:
 
     - title: Introduction
-      url: /index.html
+      url: README.html
       output: web, pdf
       type: homepage
 
     - title: the &tau; Architecture
-      url: /mydoc_introduction.html
+      url: tau_architecture.html
       output: web, pdf
 
     - title: Changelog
-      url: /mydoc_supported_features.html
+      url: CHANGELOG.html
       output: web, pdf
+
+
+# ----------------------------------------------------------
+
 
   - title: Guides
     output: web, pdf
     folderitems:
 
     - title: Getting Started
-      url: /mydoc_release_notes_60.html
+      url: guides_getting_started.html
       output: web, pdf
 
     - title: Supported Codecs
-      url: /mydoc_release_notes_60.html
+      url: guides_guides.html#supported-codecs
       output: web, pdf
 
     - title: Raw PCM and Wave files
-      url: /mydoc_release_notes_50.html
+      url: guides_guides.html#raw-pcm-and-wave-files
       output: web, pdf
 
     - title: Recording or playing Raw PCM
-      url: /mydoc_release_notes_50.html
+      url: guides_guides.html#recording-or-playing-raw-pcm-int-linerar-16-files
       output: web, pdf
 
     - title: Recording to a Dart Stream
-      url: /mydoc_release_notes_50.html
+      url: guides_guides.html#recording-pcm-16-to-a-dart-stream
       output: web, pdf
 
     - title: Playback from a Dart Stream
-      url: /mydoc_release_notes_50.html
+      url: guides_guides.html#playing-pcm-16-from-a-dart-stream
       output: web, pdf
 
     - title: Widgets
-      url: /mydoc_release_notes_50.html
+      url: guides_ui.html
       output: web, pdf
 
     - title: Notification on the lock screen
-      url: /mydoc_release_notes_50.html
+      url: guides_lock_screen
       output: web, pdf
+
+
+# -------------------------------------------------------------
 
 
 
@@ -79,211 +91,232 @@ entries:
     folderitems:
 
     - title: The &tau; API
-      url: /mydoc_tag_archives_overview.html
+      url: tau_api_main.html
       output: web
-
       subfolders:
+
+
+# ------------
+
+
       - title: The Player
         output: web
+        url: tau_api_player.html
         subfolderitems:
 
         - title: Constructor
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_player#creating-the-player-instance
           output: web, pdf
 
         - title: openAudioSession()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_player#openaudiosession-and-closeaudiosession
           output: web, pdf
 
-        - title: setAudioFocuz()
-          url: /mydoc_install_jekyll_on_windows.html
+        - title: setAudioFocus()
+          url: tau_api_player#setaudiofocus
           output: web, pdf
 
         - title: startPlayer()
+          url: tau_api_player#startplayer
           output: web, pdf
 
         - title: startPlayerFromTrack()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_player#startplayerfromtrack
           output: web, pdf
 
         - title: startPlayerFromStream()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_player#startplayerfromstream
           output: web, pdf
 
         - title: feedFromStream()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_player#feedfromstream
           output: web, pdf
 
         - title: foodSink()
-          url: /mydoc_install_jekyll_on_windows.html
-          output: web, pdf
-
-        - title: FoodData and FoodEvent
-          output: web, pdf
-
-        - title: stopPlayer()
-          url: /mydoc_install_jekyll_on_windows.html
-          output: web, pdf
-
-        - title: pausePlayer()
-          url: /mydoc_install_jekyll_on_windows.html
-          output: web, pdf
-
-        - title: resumePlayer()
-          url: /mydoc_install_jekyll_on_windows.html
-          output: web, pdf
-
-        - title: seekPlayer()
-          url: /mydoc_install_jekyll_on_windows.html
-          output: web, pdf
-
-        - title: setVolume()
-          url: /mydoc_install_jekyll_on_windows.html
-          output: web, pdf
-
-        - title: getPlayerState()
-          url: /mydoc_install_jekyll_on_windows.html
-          output: web, pdf
-
-        - title: isDecoderSupported()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_player#foodsink
           output: web, pdf
 
         - title: onProgress()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_player#onprogress
+          output: web, pdf
+
+        - title: FoodData and FoodEvent
+          url: tau_api_player#food
+          output: web, pdf
+
+        - title: stopPlayer()
+          url: tau_api_player#stopplayer
+          output: web, pdf
+
+        - title: pausePlayer()
+          url: tau_api_player#pauseplayer
+          output: web, pdf
+
+        - title: resumePlayer()
+          url: tau_api_player#resumeplayer
+          output: web, pdf
+
+        - title: seekPlayer()
+          url: tau_api_player#seekplayer
+          output: web, pdf
+
+        - title: setVolume()
+          url: tau_api_player#setvolume
+          output: web, pdf
+
+        - title: getPlayerState()
+          url: tau_api_player#playerstate-isplaying-ispaused-isstopped-getplayerstate
+          output: web, pdf
+
+        - title: isDecoderSupported()
+          url: tau_api_player#isdecodersupported
           output: web, pdf
 
         - title: getProgress()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_player#getprogress
           output: web, pdf
 
         - title: setUIProgressBar()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_player#setuiprogressbar
           output: web, pdf
 
         - title: nowPlaying()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_player#nowplaying
           output: web, pdf
 
         - title: setSubscriptionDuration()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_player#setsubscriptionduration
           output: web, pdf
+
+# ----------
+
 
       - title: The Recorder
         output: web, pdf
         subfolderitems:
 
         - title: Constructor
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_recorder#creating-the-recorder-instance
           output: web, pdf
 
         - title: openAudioSession()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_recorder#openaudiosession-and-closeaudiosession
           output: web, pdf
 
         - title: setAudioFocus()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_recorder#setaudiofocus
           output: web, pdf
 
         - title: startRecorder()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_recorder#startrecorder
           output: web, pdf
 
         - title: stopRecorder()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_recorder#stoprecorder
           output: web, pdf
 
         - title: pauseRecorder()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_recorder#pauserecorder
           output: web, pdf
 
         - title: resumeRecorder()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_recorder#resumerecorder
           output: web, pdf
 
         - title: recorderState()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_recorder#recorderstate-isrecording-ispaused-isstopped
           output: web, pdf
 
         - title: isEncoderSupported()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_recorder#isencodersupported
           output: web, pdf
 
         - title: onProgress()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_recorder#onprogress
           output: web, pdf
 
         - title: setSubscriptionDuration()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_recorder#setsubscriptionduration
           output: web, pdf
+
+
+# -------------
+
 
       - title: The utilities
         output: web, pdf
         subfolderitems:
 
         - title: Constructor
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_utilities#module-instanciation
           output: web, pdf
 
         - title: convertFile()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_utilities#convertfile
           output: web, pdf
 
         - title: pcmToWave()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_utilities#pcmtowave
           output: web, pdf
 
         - title: pcmtoWaveBuffer()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_utilities#pcmtowavebuffer
           output: web, pdf
 
         - title: waveToPcm()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_utilities#wavetopcm
           output: web, pdf
 
         - title: waveToPcmBuffer()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_utilities#wavetopcmbuffer
           output: web, pdf
 
         - title: duration()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_utilities#duration
           output: web, pdf
 
         - title: isFFmpegAvailable()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_utilities#isffmpegavailable
           output: web, pdf
 
         - title: executeFFmpegWithArguments()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_utilities#executeffmpegwitharguments
           output: web, pdf
 
         - title: getLastFFmpegReturnCode()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_utilities#getlastffmpegreturncode
           output: web, pdf
 
         - title: getLastFFmpegCommandOutput()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_utilities#getlastffmpegcommandoutput
           output: web, pdf
 
         - title: FFmpegGetMediaInformation()
-          url: /mydoc_install_jekyll_on_windows.html
+          url: htau_api_utilities#ffmpeggetmediainformation--informations-on-a-record
           output: web, pdf
+
+
+# -----------
+
 
       - title: The Widgets UI
         output: web, pdf
         subfolderitems:
 
         - title: UI Player
-          url: /mydoc_install_jekyll_on_windows.html
+          url: tau_api_widgets # TODO
           output: web, pdf
 
         - title: UI Recorder
-          url: /mydoc_install_jekyll_on_windows.html
+          url:  tau_api_widgets # TODO
           output: web, pdf
 
         - title: UI Controller
-          url: /mydoc_install_jekyll_on_windows.html
+          url:  tau_api_widgets # TODO
           output: web, pdf
+
+# ----------------------------------------------------------
+
 
   - title: Flutter Sound
     output: web, pdf

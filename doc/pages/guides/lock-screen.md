@@ -1,7 +1,10 @@
 ---
-description: Notification/Lock Screen.
-layout: page
-title: Notification/Lock Screen
+title:  "Lock-screen"
+description: "Controls on the lock-screen."
+summary: "The &tau; Project allows the App to be controlled from the Lock Screen."
+permalink: guides_lock_screen
+tags: [lock_screen]
+keywords: lock_screen
 ---
 # Notification/Lock Screen
 

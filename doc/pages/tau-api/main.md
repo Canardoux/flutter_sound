@@ -1,7 +1,15 @@
+---
+title:  "&tau; API"
+description: "The &tau; API."
+summary: "&tau; is composed with 4 modules."
+permalink: tau_api_main
+tags: [API]
+keywords: API
+---
 # The Main modules
 
 
-Flutter Sound is composed with 4 modules :
+&tau; is composed with 4 modules :
 
 - [FlutterSoundPlayer](player.md#flutter-sound-player-api), wich deal with everything about playbacks
 - [FlutterSoundRecorder](recorder.md#flutter-sound-recorder-api), which deal with everything about recording

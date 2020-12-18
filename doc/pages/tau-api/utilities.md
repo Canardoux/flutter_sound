@@ -1,20 +1,13 @@
+---
+title:  "Utilities API"
+description: "The &tau; utilities API."
+summary: "The &tau; Project offers several helper utilities."
+permalink: tau_api_utilities
+tags: [API, utilities, helpers]
+keywords: API, utilities, helpers
+---
 
-# Flutter Sound Helper API
-
-Flutter Sound offers some tools that can be convenient to work with sound :
-
-- [Module instanciation](#module-instanciation)
-- [convertFile()](#convertfile) to convert an audio file to another format
-- [pcmToWave()](#pcmtowave)  to add a WAVE header in front of a Raw PCM record
-- [pcmToWaveBuffer()](#pcmtowavebuffer)  to add a WAVE header in front of a Raw PCM buffer
-- [waveToPCM()](#wavetopcm)  to remove a WAVE header in front of a Wave record
-- [waveToPCMBuffer()](#wavetopcmbuffer)  to remove a WAVE header in front of a Wave buffer
-- [duration()](#duration) to know the appoximate duration of a sound
-- [isFFmpegAvailable()](#isffmpegavailable) to know if the current App is linked with FFmpeg
-- [executeFFmpegWithArguments()](#executeffmpegwitharguments) to execute an FFmpeg command
-- [getLastFFmpegReturnCode()](#getlastffmpegreturncode) to get the return code of an FFmpeg command
-- [getLastFFmpegCommandOutput()](#getlastffmpegcommandoutput) to get ouput of the last FFmpeg command
-- [FFmpegGetMediaInformation()](#ffmpeggetmediainformation--informations-on-a-record) to get various informations on a sound file
+# Flutter Sound Helpers API
 
 -----------------------------------------------------------------------------------------------------------------------
 

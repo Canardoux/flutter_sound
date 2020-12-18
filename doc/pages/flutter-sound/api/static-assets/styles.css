@@ -17,7 +17,7 @@ body {
   padding: 0;
   height: 100%;
   width: 100%;
-  overflow: hidden;
+overflow: auto;
   box-sizing: border-box;
 }
 
@@ -120,7 +120,7 @@ body {
 
 /* some of this is to reset bootstrap */
 nav.navbar {
-  background-color: inherit;
+  background-color: #2196F3;
   min-height: 50px;
   border: 0;
 }

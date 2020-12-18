@@ -1,28 +1,12 @@
-# Flutter Sound Player API
-
-The verbs offered by the Flutter Sound Player module are :
-
-- [Default constructor](#creating-the-player-instance)
-- [openAudioSession](#openaudiosession-and-closeaudiosession) and [closeAudioSession()](#openaudiosession-and-closeaudiosession) to open or close an audio session
-- [setAudioFocus()](#setaudiofocus) to manage the session Audio Focus
-- [startPlayer()](#startplayer) to play an audio file or  a buffer.
-- [startPlayerFromTrack](#startplayerfromtrack) to play data from a track specification and display controls on the lock screen or an Apple Watch
-- [startPlayerFromStream](#startplayerfromstream) to play live data. Please look to the [following notice](codec.md#playing-pcm-16-from-a-dart-stream).
-- [feedFromStream](#feedfromstream) to play live PCM data synchronously.  Please look to the [following notice](codec.md#playing-pcm-16-from-a-dart-stream).
-- [foodSink](#foodsink) is the output stream when you want to play asynchronously live data
-- [FoodData and FoodEvent](#food) are the two kinds of food that you can provide to the ```foodSink``` Stream.
-- [stopPlayer()](#stopplayer) to stop a current playback
-- [pausePlayer()](#pauseplayer) to pause the current playback
-- [resumePlayer()](#resumeplayer) to resume a paused playback
-- [seekPlayer()](#seekplayer) to position directely inside the current playback
-- [setVolume()](#setvolume) to adjust the ouput volume
-- [playerState, isPlaying, isPaused, isStopped, getPlayerState()](#playerstate-isplaying-ispaused-isstopped-getplayerstate) to know the current player status
-- [isDecoderSupported()](#isdecodersupported) to know if a specific codec is supported on the current platform.
-- [onProgress()](#onprogress) to subscribe to a Stream of the Progress events
-- [getProgress()](#getprogress) to query the current progress of a playback.
-- [setUIProgressBar](#setuiprogressbar) to set the position of the progress bar on the Lock Screen
-- [nowPlaying()](#nowplaying) to specify the containt of the lock screen beetween two playbacks
-- [setSubscriptionDuration()](#setsubscriptionduration) to specify the frequence of your subscription
+---
+title:  "Player API"
+description: "The &tau; player API."
+summary: "The &tau; player API."
+permalink: tau_api_player
+tags: [API, player]
+keywords: API Player
+---
+# The &tau; Player API
 
 -------------------------------------------------------------------------------------------------------------------
 
@@ -406,7 +390,7 @@ PlaybackDisposition has two fields :
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-##`Food`
+## `Food`
 
 - [Dart API: Food](https://canardoux.github.io/tau/doc/flutter_sound/api/tau/Food/Food.html)
 - [Dart API: FoodData](https://canardoux.github.io/tau/doc/flutter_sound/api/tau/FoodData/FoodData.html.html)

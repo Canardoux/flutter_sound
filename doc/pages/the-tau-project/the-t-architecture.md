@@ -1,11 +1,16 @@
 ---
-description: The &tau; architecture.
-layout: page
-title: The &tau; architecture
+title:  "Architecture"
+description: "The &tau; architecture."
+summary: "The &tau; Project is architectured with three layers."
+permalink: tau_architecture
+tags: [architecture]
+keywords: architecture
 ---
+
 # The &tau; architecture
 
-<img src="the-t-architecture.svg" width="100%" height="100%" />
+{% include image.html file="the-t-architecture.svg"  caption="The &tau; architecture" %}
+
 
 
 On this diagram, we can see clearly the three layers :
@@ -52,9 +57,9 @@ Its purpose is just for doing an interface. No real processing mus be done in th
 
 ## Where are published all those blocs ?
 
-- Flutter Sound is published on `pub.dev` under the project `flutter_sound`  (or `flauto`)
-- The Flutter Sound Platform Interface is published on `pub.dev` under the project `flutter_sound_platform_interface` (or `flauto_platform_interface` )
-- The Flutter Web plugin is published on `pub.dev` under the project `flutter_sound_web` (or `flauto_web`)
-- The &tau; Core for Android is published on `Bintray` (`jcenter()`) under the project `tau_sound_core` (or `tau_core`)
-- The &tau; Core for iOS is published on `Cocoapods` under the project `tau_sound_core` (or `tau_core`)
-- The &tau; Core for Web is published on `npm` under the project `tau_sound_core` (or `tau_core`)
+- Flutter Sound is published on `pub.dev` under the project `flutter_sound`  (or `flauto`) and `flutter_sound_lite` (or `flauto_lite`).
+- The Flutter Sound Platform Interface is published on `pub.dev` under the project `flutter_sound_platform_interface` (or `flauto_platform_interface` ).
+- The Flutter Web plugin is published on `pub.dev` under the project `flutter_sound_web` (or `flauto_web`).
+- The &tau; Core for Android is published on `Bintray` (`jcenter()`) under the project `tau_sound_core` (or `tau_core`).
+- The &tau; Core for iOS is published on `Cocoapods` under the project `tau_sound_core` (or `tau_core`).
+- The &tau; Core for Web is published on `npm` under the project `tau_sound_core` (or `tau_core`).

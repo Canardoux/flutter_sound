@@ -43,7 +43,7 @@ library everything;
 
 export 'package:flauto_platform_interface/flutter_sound_platform_interface.dart';
 
-/// Le commentaire de player
+/// Main 
 ///library tau;
 export 'public/flutter_sound_player.dart';
 export 'public/flutter_sound_recorder.dart';

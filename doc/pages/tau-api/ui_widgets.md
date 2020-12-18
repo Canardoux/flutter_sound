@@ -1,12 +1,12 @@
+---
+title:  "UI Widgets API"
+description: "The &tau; UI Widgets."
+summary: "The &tau; Project offers several two UI Widgets."
+permalink: tau_api_widgets
+tags: [API, UI, widgets]
+keywords: API, UI, widgets
+---
 # SoundPlayerUI
-
-## Overview
-
-The modules offered for the Flutter Sound UI Widgets are :
-
-- [UI Player](#uiplayer)
-- [UI Recorder](#uirecorder)
-- [UI Controller](#uicontroller)
 
 
 ## How to use

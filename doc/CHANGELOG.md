@@ -9,7 +9,7 @@ toc: false
 ---
 ## 6.4.7
 
-The two simple examples doing recording did not ask for recording permission. [#539](https://github.com/dooboolab/flutter_sound/issues/539)
+- The two simple examples doing recording did not ask for recording permission. [#539](https://github.com/dooboolab/flutter_sound/issues/539)
 
 ## 6.4.6
 

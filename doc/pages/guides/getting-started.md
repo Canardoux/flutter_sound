@@ -1,8 +1,12 @@
 ---
-description: Getting Started.
-layout: page
-title: Getting Started
+title:  "Getting Started"
+description: "Getting Started.."
+summary: "Introduction for Flutter Sound beginners."
+permalink: guides_getting_started
+tags: [Getting Started]
+keywords: gettingStarted
 ---
+
 # Getting Started
 
 ## Playback

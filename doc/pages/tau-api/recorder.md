@@ -1,18 +1,12 @@
-# Flutter Sound Recorder API
-
-The verbs offered by the Flutter Sound Player module are :
-
-- [Default constructor](#creating-the-recorder-instance)
-- [openAudioSession() and closeAudioSession()](#openaudiosession-and-closeaudiosession) to open or close and audio session
-- [setAudioFocus()](#setaudiofocus) to manage the session Audio Focus
-- [startRecorder()](#startrecorder) to start your recorder
-- [stopRecorder()](#stoprecorder) to stop your current record.
-- [pauseRecorder()](#pauserecorder) to pause the current record
-- [resumeRecorder()](#resumerecorder) to resume a paused record
-- [recordState, isRecording, isPaused, isStopped](#recorderstate-isrecording-ispaused-isstopped) to know the current recorder status
-- [isEncoderSupported()](#isencodersupported) to know if a specific codec is supported on the current platform.
-- [onProgress()](#onprogress) to subscribe to a Stream of the Progress events
-- [setSubscriptionDuration()](#setsubscriptionduration) to specify the frequence of your subscription
+---
+title:  "Recorder API"
+description: "The &tau; recorder API."
+summary: "The &tau; recorder API."
+permalink: tau_api_recorder
+tags: [API, recorder]
+keywords: API Recorder
+---
+# The &tau; Recorder API
 
 -------------------------------------------------------------------------------------------------------------------
 
