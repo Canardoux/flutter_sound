@@ -1,3 +1,11 @@
+---
+title:  "Flutter Sound on web"
+description: "Flutter Sound on web."
+summary: "Flutter Sound on web."
+permalink: flutter_sound_web.html
+tags: [Flutter Sound, Flutter, Web]
+keywords: Flutter, Flutter Sound, Web
+---
 # Flutter Sound on Flutter Web
 
 Flutter Sound is now supported by Flutter Web \(with some limitations\). Please [go to there](install.md#flutter-web) to have informations on how to setup your App for web.

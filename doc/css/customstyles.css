@@ -358,7 +358,7 @@ a.accordion-toggle, a.accordion-collapsed {
 }
 
 .nav a:hover, .nav li.active > a {
-    background-color: #8D8D8D;
+    background-color: #00A000; /* LARPOUX */
     color: #f5f5f5;
 }
 

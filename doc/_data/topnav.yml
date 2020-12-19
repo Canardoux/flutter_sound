@@ -10,10 +10,10 @@ topnav:
       external_url: https://github.com/canardoux/tau/issues
       hint: Issues on Github
     - title: Changelog
-      url: CHANGELOG.html
+      url: /changelog.html
       hint: "Log of all changes in The &tau; Project"
     - title: News
-      url: news.html
+      url: /news.html
       hint: "The &tau; Project news"
 
 

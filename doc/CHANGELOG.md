@@ -3,7 +3,7 @@ title: "The &tau; CHANGELOG"
 keywords: changelog
 tags: [changelog]
 sidebar: mydoc_sidebar
-permalink: CHANGELOG.html
+permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---

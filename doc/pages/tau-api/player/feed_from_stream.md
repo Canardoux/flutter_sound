@@ -1,0 +1,36 @@
+---
+title:  "Player API"
+description: "feedFromStream()."
+summary: "feedFromStream()."
+permalink: tau_api_player_feed_from_stream.html
+tags: [API, player]
+keywords: API Player
+---
+# The &tau; Player API
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+## `feedFromStream()`
+
+[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/feedFromStream.html)
+
+This is the verb that you use when you want to play live PCM data synchronously.
+This procedure returns a Future. It is very important that you wait that this Future is completed before trying to play another buffer.
+
+*Example:*
+
+- [This example](../flutter_sound/example/example.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
+- [This example](../flutter_sound/example/example.md#soundeffect) shows how to play some real time sound effects synchronously.
+
+```dart
+await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
+
+await myPlayer.feedFromStream(aBuffer);
+await myPlayer.feedFromStream(anotherBuffer);
+await myPlayer.feedFromStream(myOtherBuffer);
+
+await myPlayer.stopPlayer();
+```
+
+---------------------------------------------------------------------------------------------------------------------------------

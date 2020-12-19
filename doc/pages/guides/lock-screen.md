@@ -2,7 +2,7 @@
 title:  "Lock-screen"
 description: "Controls on the lock-screen."
 summary: "The &tau; Project allows the App to be controlled from the Lock Screen."
-permalink: guides_lock_screen
+permalink: guides_lock_screen.html
 tags: [lock_screen]
 keywords: lock_screen
 ---

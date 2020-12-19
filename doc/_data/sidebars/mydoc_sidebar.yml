@@ -29,16 +29,16 @@ entries:
     folderitems:
 
     - title: Introduction
-      url: README.html
+      url: /readme.html
       output: web, pdf
       type: homepage
 
     - title: the &tau; Architecture
-      url: tau_architecture.html
+      url: /architecture.html
       output: web, pdf
 
     - title: Changelog
-      url: CHANGELOG.html
+      url: /changelog.html
       output: web, pdf
 
 
@@ -50,35 +50,35 @@ entries:
     folderitems:
 
     - title: Getting Started
-      url: guides_getting_started.html
+      url: /guides_getting_started.html
       output: web, pdf
 
     - title: Supported Codecs
-      url: guides_guides.html#supported-codecs
+      url: /guides_codec.html
       output: web, pdf
 
     - title: Raw PCM and Wave files
-      url: guides_guides.html#raw-pcm-and-wave-files
+      url: /guides_pcm_wave.html
       output: web, pdf
 
     - title: Recording or playing Raw PCM
-      url: guides_guides.html#recording-or-playing-raw-pcm-int-linerar-16-files
+      url: /guides_recording_pcm.html
       output: web, pdf
 
     - title: Recording to a Dart Stream
-      url: guides_guides.html#recording-pcm-16-to-a-dart-stream
+      url: /guides_record_stream.html
       output: web, pdf
 
     - title: Playback from a Dart Stream
-      url: guides_guides.html#playing-pcm-16-from-a-dart-stream
+      url: /guides_play_stream.html
       output: web, pdf
 
     - title: Widgets
-      url: guides_ui.html
+      url: /guides_ui.html
       output: web, pdf
 
     - title: Notification on the lock screen
-      url: guides_lock_screen
+      url: /guides_lock_screen.html
       output: web, pdf
 
 
@@ -91,7 +91,7 @@ entries:
     folderitems:
 
     - title: The &tau; API
-      url: tau_api_main.html
+      url: /tau_api_main.html
       output: web
       subfolders:
 
@@ -101,91 +101,90 @@ entries:
 
       - title: The Player
         output: web
-        url: tau_api_player.html
         subfolderitems:
 
         - title: Constructor
-          url: tau_api_player#creating-the-player-instance
+          url: /tau_api_player_constructor.html
           output: web, pdf
 
         - title: openAudioSession()
-          url: tau_api_player#openaudiosession-and-closeaudiosession
+          url: /tau_api_player_open_audio_session.html
           output: web, pdf
 
         - title: setAudioFocus()
-          url: tau_api_player#setaudiofocus
+          url: /tau_api_player_set_audio_focus.html
           output: web, pdf
 
         - title: startPlayer()
-          url: tau_api_player#startplayer
+          url: /tau_api_player_startPlayer.html
           output: web, pdf
 
         - title: startPlayerFromTrack()
-          url: tau_api_player#startplayerfromtrack
+          url: /tau_api_player_start_player_from_track.html
           output: web, pdf
 
         - title: startPlayerFromStream()
-          url: tau_api_player#startplayerfromstream
+          url: /tau_api_player_start_player_from_stream.html
           output: web, pdf
 
         - title: feedFromStream()
-          url: tau_api_player#feedfromstream
+          url: /tau_api_player_feed_from_stream.html
           output: web, pdf
 
-        - title: foodSink()
-          url: tau_api_player#foodsink
+        - title: foodSink
+          url: /tau_api_player_food_sink.html
           output: web, pdf
 
         - title: onProgress()
-          url: tau_api_player#onprogress
+          url: /tau_api_player_on_progress.html
           output: web, pdf
 
         - title: FoodData and FoodEvent
-          url: tau_api_player#food
+          url: /tau_api_player_food.html
           output: web, pdf
 
         - title: stopPlayer()
-          url: tau_api_player#stopplayer
+          url: /tau_api_player_stop_player.html
           output: web, pdf
 
         - title: pausePlayer()
-          url: tau_api_player#pauseplayer
+          url: /tau_api_player_pause_player.html
           output: web, pdf
 
         - title: resumePlayer()
-          url: tau_api_player#resumeplayer
+          url: /tau_api_player_resume_player.html
           output: web, pdf
 
         - title: seekPlayer()
-          url: tau_api_player#seekplayer
+          url: /tau_api_player_seek_player.html
           output: web, pdf
 
         - title: setVolume()
-          url: tau_api_player#setvolume
+          url: /tau_api_player_set_volume.html
           output: web, pdf
 
         - title: getPlayerState()
-          url: tau_api_player#playerstate-isplaying-ispaused-isstopped-getplayerstate
+          url: /tau_api_player_get_player_state.html
           output: web, pdf
 
         - title: isDecoderSupported()
-          url: tau_api_player#isdecodersupported
+          url: /tau_api_player_is_decoder_supported.html
           output: web, pdf
 
         - title: getProgress()
-          url: tau_api_player#getprogress
+          url: /tau_api_player_get_progress.html
           output: web, pdf
 
         - title: setUIProgressBar()
-          url: tau_api_player#setuiprogressbar
+          url: /tau_api_player_set_ui_progress_bar.html
           output: web, pdf
 
         - title: nowPlaying()
-          url: tau_api_player#nowplaying
+          url: /tau_api_player_now_playing.html
           output: web, pdf
 
         - title: setSubscriptionDuration()
-          url: tau_api_player#setsubscriptionduration
+          url: /tau_api_player_set_subscription_duration.html
           output: web, pdf
 
 # ----------
@@ -196,47 +195,47 @@ entries:
         subfolderitems:
 
         - title: Constructor
-          url: tau_api_recorder#creating-the-recorder-instance
+          url: /tau_api_recorder_constructor.html
           output: web, pdf
 
         - title: openAudioSession()
-          url: tau_api_recorder#openaudiosession-and-closeaudiosession
+          url: /tau_api_recorder_open_audio_session.html
           output: web, pdf
 
         - title: setAudioFocus()
-          url: tau_api_recorder#setaudiofocus
+          url: /tau_api_recorder_set_audio_focus.html
           output: web, pdf
 
         - title: startRecorder()
-          url: tau_api_recorder#startrecorder
+          url: /tau_api_recorder_start_recorder.html
           output: web, pdf
 
         - title: stopRecorder()
-          url: tau_api_recorder#stoprecorder
+          url: /tau_api_recorder_stop_recorder.html
           output: web, pdf
 
         - title: pauseRecorder()
-          url: tau_api_recorder#pauserecorder
+          url: /tau_api_recorder_pause_recorder.html
           output: web, pdf
 
         - title: resumeRecorder()
-          url: tau_api_recorder#resumerecorder
+          url: /tau_api_recorder_resume_recorder.html
           output: web, pdf
 
         - title: recorderState()
-          url: tau_api_recorder#recorderstate-isrecording-ispaused-isstopped
+          url: /tau_api_recorder_recorder_state.html
           output: web, pdf
 
         - title: isEncoderSupported()
-          url: tau_api_recorder#isencodersupported
+          url: /tau_api_recorder_is_encoder_supported.html
           output: web, pdf
 
         - title: onProgress()
-          url: tau_api_recorder#onprogress
+          url: /tau_api_recorder_on_progress.html
           output: web, pdf
 
         - title: setSubscriptionDuration()
-          url: tau_api_recorder#setsubscriptionduration
+          url: /tau_api_recorder_set_subscription_duration.html
           output: web, pdf
 
 
@@ -248,51 +247,51 @@ entries:
         subfolderitems:
 
         - title: Constructor
-          url: tau_api_utilities#module-instanciation
+          url: /tau_api_utilities_constructor.html
           output: web, pdf
 
         - title: convertFile()
-          url: tau_api_utilities#convertfile
+          url: /tau_api_utilities_convert_file.html
           output: web, pdf
 
         - title: pcmToWave()
-          url: tau_api_utilities#pcmtowave
+          url: /tau_api_utilities_pcm_to_wave.html
           output: web, pdf
 
         - title: pcmtoWaveBuffer()
-          url: tau_api_utilities#pcmtowavebuffer
+          url: /tau_api_utilities_pcm_to_wave_buffer.html
           output: web, pdf
 
         - title: waveToPcm()
-          url: tau_api_utilities#wavetopcm
+          url: /tau_api_utilities_wave_to_pcm.html
           output: web, pdf
 
         - title: waveToPcmBuffer()
-          url: tau_api_utilities#wavetopcmbuffer
+          url: /tau_api_utilities_wave_to_pcm_buffer.html
           output: web, pdf
 
         - title: duration()
-          url: tau_api_utilities#duration
+          url: /tau_api_utilities_duration.html
           output: web, pdf
 
         - title: isFFmpegAvailable()
-          url: tau_api_utilities#isffmpegavailable
+          url: /tau_api_utilities_is_ffmpeg_available.html
           output: web, pdf
 
         - title: executeFFmpegWithArguments()
-          url: tau_api_utilities#executeffmpegwitharguments
+          url: /tau_api_utilities_execute_ffmpeg_with_arguments.html
           output: web, pdf
 
         - title: getLastFFmpegReturnCode()
-          url: tau_api_utilities#getlastffmpegreturncode
+          url: /tau_api_utilities_get_last_ffmpeg_return_code.html
           output: web, pdf
 
         - title: getLastFFmpegCommandOutput()
-          url: tau_api_utilities#getlastffmpegcommandoutput
+          url: /tau_api_utilities_get_last_ffmpeg_command_output.html
           output: web, pdf
 
         - title: FFmpegGetMediaInformation()
-          url: htau_api_utilities#ffmpeggetmediainformation--informations-on-a-record
+          url: /tau_api_utilities_ffmpeg_get_media_information.html
           output: web, pdf
 
 
@@ -304,15 +303,15 @@ entries:
         subfolderitems:
 
         - title: UI Player
-          url: tau_api_widgets # TODO
+          url: /tau_api_widgets_ui_player.html # TODO
           output: web, pdf
 
         - title: UI Recorder
-          url:  tau_api_widgets # TODO
+          url:  /tau_api_widgets_ui_recorder.html # TODO
           output: web, pdf
 
         - title: UI Controller
-          url:  tau_api_widgets # TODO
+          url:  /tau_api_widgets_ui_controller.html # TODO
           output: web, pdf
 
 # ----------------------------------------------------------
@@ -323,100 +322,123 @@ entries:
 
     folderitems:
     - title: "&tau; under Flutter"
-      url: /mydoc_adding_tooltips.html
+      url: /flutter_sound.html
       output: web, pdf
 
     - title: Installation
-      url: /mydoc_alerts.html
+      url: /flutter_sound_install.html
       output: web, pdf
 
     - title: Flutter Sound on Flutter Web
-      url: /mydoc_icons.html
+      url: /flutter_sound_web.html
       output: web, pdf
 
     - title: Live demo
-      url: /mydoc_images.html
+      url: https://canardoux.github.io/flauto/doc/flutter_sound/web_example/
       output: web, pdf
-
       subfolders:
+
+
+# ---------------------------------------------------------------
+
+
       - title: Examples
         output: web
         subfolderitems:
 
         - title: demo
-          url: /mydoc_install_jekyll_on_windows.html
+          url: /flutter_sound_examples_demo.html
           output: web, pdf
 
         - title: Widget UI
-          url: /mydoc_install_jekyll_on_windows.html
+          url: /flutter_sound_examples_widget_ui.html
           output: web, pdf
 
         - title: Simple Playback
-          url: /mydoc_install_jekyll_on_windows.html
+          url: /flutter_sound_examples_simple_playback.html
           output: web, pdf
 
         - title: Simple Recorder
-          url: /mydoc_install_jekyll_on_windows.html
+          url: /flutter_sound_examples_simple_recorder.html
           output: web, pdf
 
         - title: Record to Stream
-          url: /mydoc_install_jekyll_on_windows.html
+          url: /flutter_sound_examples_record_to_stream.html
           output: web, pdf
 
         - title: Playback from Stream (1)
-          url: /mydoc_install_jekyll_on_windows.html
+          url: /flutter_sound_examples_playback_from_stream_1.html
           output: web, pdf
 
         - title: Playback from Stream (2)
-          url: /mydoc_install_jekyll_on_windows.html
+          url: /flutter_sound_examples_playback_from_stream_2.html
           output: web, pdf
 
         - title: Sound Effects
-          url: /mydoc_install_jekyll_on_windows.html
+          url: /flutter_sound_examples_sound_effects.html
           output: web, pdf
 
         - title: Stream Loop
-          url: /mydoc_install_jekyll_on_windows.html
+          url: /flutter_sound_examples_stream_loop.html
           output: web, pdf
 
-    - title: API reference (dartdoc)
-      url: /mydoc_labels.html
-      output: web, pdf
+
+# --------------------------------------------------------------------
+
+
+      - title: API reference (dartdoc)
+        output: web, pdf
+        subfolderitems:
+
+        - title: Player Class
+          url: /dartdoc_player.html
+          output: web, pdf
+
+        - title: Recorder Class
+          url: /dartdoc_recorder.html
+          output: web, pdf
+
+        - title: Utilities
+          url: /dartdoc_utilities.html
+          output: web, pdf
+
+        - title: Widgets UI
+          url: /dartdoc_widgets.html
+          output: web, pdf
+
+# ----------------------------------------
+
 
   - title: "&tau; React"
     output: web, pdf
 
     folderitems:
     - title: "&tau; under React Native"
-      url: /mydoc_commenting_on_files.html
       output: web, pdf
 
     - title: "API reference"
-      url: /mydoc_commenting_on_files.html
       output: web, pdf
 
-#    - title: Git collaboration
-#      url: /mydoc_git_collaboration
-#      output: web, pdf
+# ---------------------------------------------------
 
   - title: Links
     output: web, pdf
 
     folderitems:
     - title: Migration
-      url: /mydoc_build_arguments.html
+      url: /links_migration.html
       output: web, pdf
 
     - title: Problem Report
-      url: /mydoc_themes.html
+      url: https://github.com/canardoux/tau/issues
       output: web, pdf
 
     - title: Contributions
-      url: /mydoc_generating_pdfs.html
+      url: /links_contribution.html
       output: web, pdf
 
     - title: License
-      url: /mydoc_generating_pdfs.html
+      url: /links_license.html
       output: web, pdf
 
 

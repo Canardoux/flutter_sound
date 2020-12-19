@@ -265,7 +265,7 @@ This simple verb is used to get the output of the last FFmpeg command
 
 ---------------------------------------------------------------------------------------------------------------------------
 
-## `FFmpegGetMediaInformation` : Informations on a record
+## `FFmpegGetMediaInformation`
 
 *Dart definition (prototype) :*
 ```

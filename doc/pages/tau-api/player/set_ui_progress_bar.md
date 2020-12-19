@@ -1,0 +1,28 @@
+---
+title:  "Player API"
+description: "setUIProgressBar()"
+summary: "setUIProgressBar()"
+permalink: tau_api_player_set_ui_progress_bar.html
+tags: [API, player]
+keywords: API Player
+---
+# The &tau; Player API
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+## `setUIProgressBar()`
+
+[Dart API: isStopped()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/setUIProgressBar.html)
+
+This verb is used if the App wants to control itself the Progress Bar on the lock screen. By default, this progress bar is handled automaticaly by Flutter Sound.
+Remark `setUIProgressBar()` is implemented only on iOS.
+
+*Example:*
+```dart
+
+        Duration progress = (await getProgress())['progress'];
+        Duration duration = (await getProgress())['duration'];
+        setUIProgressBar(progress: Duration(milliseconds: progress.milliseconds - 500), duration: duration)
+````
+
+---------------------------------------------------------------------------------------------------------------------------------

@@ -78,22 +78,14 @@
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <h1><span class="kind-category">Utilities</span> Topic</h1>
       <section class="desc markdown">
-        <h1 id="flutter-sound-helper-api">Flutter Sound Helper API</h1>
-<p>Flutter Sound offers some tools that can be convenient to work with sound :</p>
-<ul>
-<li><a href="#module-instanciation">Module instanciation</a></li>
-<li><a href="#convertfile">convertFile()</a> to convert an audio file to another format</li>
-<li><a href="#pcmtowave">pcmToWave()</a>  to add a WAVE header in front of a Raw PCM record</li>
-<li><a href="#pcmtowavebuffer">pcmToWaveBuffer()</a>  to add a WAVE header in front of a Raw PCM buffer</li>
-<li><a href="#wavetopcm">waveToPCM()</a>  to remove a WAVE header in front of a Wave record</li>
-<li><a href="#wavetopcmbuffer">waveToPCMBuffer()</a>  to remove a WAVE header in front of a Wave buffer</li>
-<li><a href="#duration">duration()</a> to know the appoximate duration of a sound</li>
-<li><a href="#isffmpegavailable">isFFmpegAvailable()</a> to know if the current App is linked with FFmpeg</li>
-<li><a href="#executeffmpegwitharguments">executeFFmpegWithArguments()</a> to execute an FFmpeg command</li>
-<li><a href="#getlastffmpegreturncode">getLastFFmpegReturnCode()</a> to get the return code of an FFmpeg command</li>
-<li><a href="#getlastffmpegcommandoutput">getLastFFmpegCommandOutput()</a> to get ouput of the last FFmpeg command</li>
-<li><a href="#ffmpeggetmediainformation--informations-on-a-record">FFmpegGetMediaInformation()</a> to get various informations on a sound file</li>
-</ul>
+        <hr>
+<h2 id="title--utilities-apidescription-the-tau-utilities-apisummary-the-tau-project-offers-several-helper-utilitiespermalink-tau_api_utilitiestags-api-utilities-helperskeywords-api-utilities-helpers">title:  "Utilities API"
+description: "The τ utilities API."
+summary: "The τ Project offers several helper utilities."
+permalink: tau_api_utilities
+tags: <code>API, utilities, helpers</code>
+keywords: API, utilities, helpers</h2>
+<h1 id="flutter-sound-helpers-api">Flutter Sound Helpers API</h1>
 <hr>
 <h2 id="module-instanciation">Module <code>instanciation</code></h2>
 <p><em>Dart definition (prototype) :</em></p>
@@ -264,7 +256,7 @@ If you do not have <code>ffmpeg</code> on your computer you will find easyly on 
 <pre class="language-dart"><code class="language-dart">        print( await getLastFFmpegCommandOutput() );
 </code></pre>
 <hr>
-<h2 id="ffmpeggetmediainformation--informations-on-a-record"><code>FFmpegGetMediaInformation</code> : Informations on a record</h2>
+<h2 id="ffmpeggetmediainformation"><code>FFmpegGetMediaInformation</code></h2>
 <p><em>Dart definition (prototype) :</em></p>
 <pre class="language-dart"><code>Future&lt;Map&lt;dynamic, dynamic&gt;&gt; FFmpegGetMediaInformation(String uri) async
 </code></pre>

@@ -2,7 +2,7 @@
 title:  "&tau; API"
 description: "The &tau; API."
 summary: "&tau; is composed with 4 modules."
-permalink: tau_api_main
+permalink: tau_api_main.html
 tags: [API]
 keywords: API
 ---

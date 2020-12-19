@@ -41,6 +41,11 @@ echo symbolic links
 cd doc/_site
 #cp index.html home.html
 ln -s  pages/flutter-sound/api/index.html dartdoc.html
+ln -s  pages/flutter-sound/api/player/FlutterSoundPlayer-class.html dartdoc_player.html
+ln -s  pages/flutter-sound/api/recorder/FlutterSoundRecorder-class.html dartdoc_recorder.html
+ln -s  pages/flutter-sound/api/topics/Utilities-topic.html dartdoc_utilities.html
+ln -s  pages/flutter-sound/api/topics/UI_Widgets-topic.html dartdoc_widgets.html
+
 for dir in $(find pages/flutter-sound/api -type d)
 do
         rel=`realpath --relative-to=$dir .`
@@ -49,7 +54,7 @@ do
                 ln -s $rel/$f $dir
         done
 done
-ln -s README.html index.html
+ln -s readme.html index.html
 cd ../..
 
 echo done
