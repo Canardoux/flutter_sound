@@ -13,17 +13,32 @@ keywords: API, utilities, helpers
 
 ## Module `instanciation`
 
-*Dart definition (prototype) :*
-```
-FlutterSoundHelper flutterSoundHelper = FlutterSoundHelper(); // Singleton
-```
+- Dart API: [constructor](pages/flutter-sound/api/helper/FlutterSoundHelper/FlutterSoundHelper.html)
 
 You do not need to instanciate the Flutter Sound Helper module.
 To use this module, you can just use the singleton offers by the module : `flutterSoundHelper`.
 
 *Example:*
-```dart
-Duration t = await flutterSoundHelper.duration(aPathFile);
-```
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
+        Duration t = await flutterSoundHelper.duration(aPathFile);
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
 
 ------------------------------------------------------------------------------------------------------------------------

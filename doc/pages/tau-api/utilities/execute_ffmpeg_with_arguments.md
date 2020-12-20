@@ -13,18 +13,23 @@ keywords: API, utilities, helpers
 
 ## `executeFFmpegWithArguments()`
 
-*Dart definition (prototype) :*
-```
-Future<int> executeFFmpegWithArguments(List<String> arguments)
-```
+- Dart API: [executeFFmpegWithArguments()](pages/flutter-sound/api/helper/FlutterSoundHelper/executeFFmpegWithArguments.html)
 
 This verb is a wrapper for the great FFmpeg application.
 The command *"man ffmpeg"* (if you have installed ffmpeg on your computer) will give you many informations.
 If you do not have `ffmpeg` on your computer you will find easyly on internet many documentation on this great program.
 
 *Example:*
-```dart
- int rc = await flutterSoundHelper.executeFFmpegWithArguments
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
+int rc = await flutterSoundHelper.executeFFmpegWithArguments
  ([
         '-loglevel',
         'error',
@@ -35,6 +40,16 @@ If you do not have `ffmpeg` on your computer you will find easyly on internet ma
         'copy',
         outfile,
 ]); // remux OGG to CAF
-```
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
 
 ---------------------------------------------------------------------------------------------------------------------------

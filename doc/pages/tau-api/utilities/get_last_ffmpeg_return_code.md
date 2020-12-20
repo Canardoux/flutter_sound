@@ -13,16 +13,31 @@ keywords: API, utilities, helpers
 
 ## `getLastFFmpegReturnCode()`
 
-*Dart definition (prototype) :*
-```
-Future<int> getLastFFmpegReturnCode() async
-```
+- Dart API: [getLastFFmpegReturnCode()](pages/flutter-sound/api/helper/FlutterSoundHelper/getLastFFmpegReturnCode.html)
 
 This simple verb is used to get the result of the last FFmpeg command
 
 *Example:*
-```dart
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
         int result = await getLastFFmpegReturnCode();
-```
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
 
 ---------------------------------------------------------------------------------------------------------------------------

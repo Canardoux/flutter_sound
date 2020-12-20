@@ -12,7 +12,7 @@ keywords: API Player
 
 ## `setAudioFocus()`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/setAudiFocus.html)
+- Dart API: [setAudioFocus](pages/flutter-sound/api/player/FlutterSoundPlayer/setAudioFocus.html).
 
 ### `focus:` parameter possible values are
 - AudioFocus.requestFocus (request focus, but do not do anything special with others App)
@@ -30,8 +30,26 @@ Please look to [openAudioSession()](player.md#openaudiosession-and-closeaudioses
 
 
 *Example:*
-```dart
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
         myPlayer.setAudioFocus(focus: AudioFocus.requestFocusAndDuckOthers);
-```
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
 
 -----------------------------------------------------------------------------------------------------------------

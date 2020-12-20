@@ -12,12 +12,12 @@ keywords: API Recorder
 
 ## `recorderState`, `isRecording`, `isPaused`, `isStopped`
 
--[Dart API: isRecording](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/isRecording.html)
--[Dart API: isStopped](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/isStopped.html)
--[Dart API: isPaused](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/isPaused.html)
--[Dart API: recorderState](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/RecorderState.html)
+- Dart API: [recorderState](pages/flutter-sound/api/recorder/FlutterSoundRecorder/recorderState.html)
+- Dart API: [isRecording](pages/flutter-sound/api/recorder/FlutterSoundRecorder/isRecording.html)
+- Dart API: [isPaused](pages/flutter-sound/api/recorder/FlutterSoundRecorder/isPaused.html)
+- Dart API: [isStopped](pages/flutter-sound/api/recorder/FlutterSoundRecorder/isStopped.html)
 
-This four verbs is used when the app wants to get the current Audio State of the recorder.
+This four attributs is used when the app wants to get the current Audio State of the recorder.
 
 `recorderState` is an attribut which can have the following values :
 
@@ -30,8 +30,16 @@ This four verbs is used when the app wants to get the current Audio State of the
 - isStopped is a boolean atrribut which  is `true` when the recorder is in the "Stopped" mode.
 
 *Example:*
-```dart
-        swtich(myRecorder.recorderState)
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
+        switch(myRecorder.recorderState)
         {
                 case RecorderState.isRecording: doSomething; break;
                 case RecorderState.isStopped: doSomething; break;
@@ -41,7 +49,16 @@ This four verbs is used when the app wants to get the current Audio State of the
         if (myRecorder.isStopped) doSomething;
         if (myRecorder.isRecording) doSomething;
         if (myRecorder.isPaused) doSomething;
+</pre>
 
-```
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
 
 ---------------------------------------------------------------------------------------------------------------------------------

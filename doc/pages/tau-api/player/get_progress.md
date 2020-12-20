@@ -12,17 +12,35 @@ keywords: API Player
 
 ## `getProgress()`
 
-[Dart API: isStopped()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/getProgress.html)
+- Dart API: [getProgress()](pages/flutter-sound/api/player/FlutterSoundPlayer/getProgress.html).
 
 This verb is used to get the current progress of a playback.
 It returns a `Map` with two Duration entries : `'progress'` and `'duration'`.
 Remark : actually only implemented on iOS.
 
 *Example:*
-```dart
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
         Duration progress = (await getProgress())['progress'];
         Duration duration = (await getProgress())['duration'];
-```
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
 
 ---------------------------------------------------------------------------------------------------------------------------------
 

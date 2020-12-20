@@ -13,16 +13,7 @@ keywords: API, utilities, helpers
 
 ## `convertFile()`
 
-*Dart definition (prototype) :*
-```
-Future<bool> convertFile
-(
-        String infile,
-        Codec codecin,
-        String outfile,
-        Codec codecout
-) async
-```
+- Dart API: [convertFile()](pages/flutter-sound/api/helper/FlutterSoundHelper/convertFile.html)
 
 This verb is useful to convert a sound file to a new format.
 
@@ -36,11 +27,29 @@ Be careful : `outfile` and `codecout` must be compatible. The output file extens
 Note : this verb uses FFmpeg and is not available int the LITE flavor of Flutter Sound.
 
 *Example:*
-```dart
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
         String inputFile = '$myInputPath/bar.wav';
         var tempDir = await getTemporaryDirectory();
         String outpufFile = '${tempDir.path}/$foo.mp3';
         await flutterSoundHelper.convertFile(inputFile, codec.pcm16WAV, outputFile, Codec.mp3)
-```
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
 
 ------------------------------------------------------------------------------------------------------------------------

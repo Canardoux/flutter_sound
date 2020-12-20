@@ -13,14 +13,32 @@ keywords: API Recorder
 ## resumeRecorder()
 
 
-Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/ResumeRecorder.html)
+- Dart API: [resumeRecorder](pages/flutter-sound/api/recorder/FlutterSoundRecorder/resumeRecorder.html)
 
 On Android this API verb needs al least SDK-24.
 An exception is thrown if the Recorder is not currently paused.
 
 *Example:*
-```dart
-await myRecorder.resumeRecorder();
-```
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
+        await myRecorder.resumeRecorder();
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
 
 ---------------------------------------------------------------------------------------------------------------------------------

@@ -13,14 +13,32 @@ keywords: API Player
 ## `isDecoderSupported()`
 
 
-[Dart API: isStopped()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/isDecoderSupported.html)
+- Dart API: [isDecoderSupported()](pages/flutter-sound/api/player/FlutterSoundPlayer/isDecoderSupported.html).
 
 This verb is useful to know if a particular codec is supported on the current platform.
 Returns a Future<bool>.
 
 *Example:*
-```dart
-        if ( await myPlayer.isDecoderSupported(Codec.opusOGG) ) doSomething;
-```
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
+         if ( await myPlayer.isDecoderSupported(Codec.opusOGG) ) doSomething;
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
 
 ---------------------------------------------------------------------------------------------------------------------------------

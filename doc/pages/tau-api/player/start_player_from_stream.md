@@ -12,7 +12,7 @@ keywords: API Player
 
 ## `startPlayerFromStream()`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayerFromStream.html)
+- Dart API: [startPlayerFromStream()](pages/flutter-sound/api/player/FlutterSoundPlayer/startPlayerFromStream.html).
 
 **This functionnality needs, at least, and Android SDK >= 21**
 
@@ -30,7 +30,15 @@ You can look to the three provided examples :
 - [This example](../flutter_sound/example/example.md#soundeffect) shows how to play some real time sound effects.
 
 *Example 1:*
-```dart
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
 
 await myPlayer.feedFromStream(aBuffer);
@@ -38,9 +46,29 @@ await myPlayer.feedFromStream(anotherBuffer);
 await myPlayer.feedFromStream(myOtherBuffer);
 
 await myPlayer.stopPlayer();
-```
+    );
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
+
 *Example 2:*
-```dart
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
 
 myPlayer.foodSink.add(FoodData(aBuffer));
@@ -48,6 +76,17 @@ myPlayer.foodSink.add(FoodData(anotherBuffer));
 myPlayer.foodSink.add(FoodData(myOtherBuffer));
 
 myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
-```
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------------

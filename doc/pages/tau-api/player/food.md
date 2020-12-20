@@ -12,9 +12,9 @@ keywords: API Player
 
 ## `Food`
 
-- [Dart API: Food](https://canardoux.github.io/tau/doc/flutter_sound/api/tau/Food/Food.html)
-- [Dart API: FoodData](https://canardoux.github.io/tau/doc/flutter_sound/api/tau/FoodData/FoodData.html.html)
-- [Dart API: FoodEvent](https://canardoux.github.io/tau/doc/flutter_sound/api/tau/FoodEvent/FoodEvent.html)
+- Dart API: [food](pages/flutter-sound/api/tau/Food-class.html).
+- Dart API: [foodData](pages/flutter-sound/api/tau/FoodData-class.html).
+- Dart API: [food](pages/flutter-sound/api/tau/FoodEvent-class.html).
 
 
 This are the objects that you can `add` to `foodSink`
@@ -26,13 +26,32 @@ The Food class has two others inherited classes :
 *Example:*
 
 [This example](../example/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
-```dart
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
 
 myPlayer.foodSink.add(FoodData(aBuffer));
 myPlayer.foodSink.add(FoodData(anotherBuffer));
 myPlayer.foodSink.add(FoodData(myOtherBuffer));
 myPlayer.foodSink.add(FoodEvent(()async {await _mPlayer.stopPlayer(); setState((){});}));
-```
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
+
 
 ---------------------------------------------------------------------------------------------------------------------------------

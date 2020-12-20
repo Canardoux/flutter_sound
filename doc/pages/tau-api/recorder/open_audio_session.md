@@ -12,8 +12,8 @@ keywords: API Recorder
 
 ## `openAudioSession()` and `closeAudioSession()`
 
-- [Dart API: openAudioSession](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/openAudioSession.html)
-- [Dart API: closeAudioSession](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/closeAudioSession.html)
+- Dart API: [openAudioSession](pages/flutter-sound/api/recorder/FlutterSoundRecorder/openAudioSession.html)
+- Dart API: [closeAudioSession](pages/flutter-sound/api/recorder/FlutterSoundRecorder/closeAudioSession.html)
 
 
 A recorder must be opened before used. A recorder correspond to an Audio Session. With other words, you must *open* the Audio Session before using it.
@@ -47,12 +47,21 @@ You will be very bad if you try something like :
     }
 ```
 
+
 `openAudioSession()` and `closeAudioSession()` return Futures. You may not use your Recorder before the end of the initialization. So probably you will `await` the result of `openAudioSession()`. This result is the Recorder itself, so that you can collapse instanciation and initialization together with `myRecorder = await FlutterSoundPlayer().openAudioSession();`
 
 The four optional parameters are used if you want to control the Audio Focus. Please look to [FlutterSoundPlayer openAudioSession()](player.md#openaudiosession-and-closeaudiosession) to understand the meaning of those parameters
 
 *Example:*
-```dart
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
     myRecorder = await FlutterSoundRecorder().openAudioSession();
 
     ...
@@ -61,6 +70,17 @@ The four optional parameters are used if you want to control the Audio Focus. Pl
 
     myRecorder.closeAudioSession();
     myRecorder = null;
-```
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
+
 
 ------------------------------------------------------------------------------------------------------------------

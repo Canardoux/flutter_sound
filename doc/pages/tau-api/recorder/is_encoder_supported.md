@@ -12,14 +12,32 @@ keywords: API Recorder
 
 ## `isEncoderSupported()`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/isEncoderSupported.html)
+- Dart API: [isEncoderSupported](pages/flutter-sound/api/recorder/FlutterSoundRecorder/isEncoderSupported.html)
 
 This verb is useful to know if a particular codec is supported on the current platform;
 Return a Future<bool>.
 
 *Example:*
-```dart
-        if ( await myRecorder.isEncoderSupported(Codec.opusOGG) ) doSomething;
-```
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
+       if ( await myRecorder.isEncoderSupported(Codec.opusOGG) ) doSomething;
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
 
 ---------------------------------------------------------------------------------------------------------------------------------

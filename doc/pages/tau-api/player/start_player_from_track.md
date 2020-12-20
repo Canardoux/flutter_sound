@@ -13,7 +13,7 @@ keywords: API Player
 
 ## `startPlayerFromTrack()`
 
-Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayerFromTrack.html)
+- Dart API: [startPlayerFromTrack()](pages/flutter-sound/api/player/FlutterSoundPlayer/startPlayerFromTrack.html).
 
 Use this verb to play data from a track specification and display controls on the lock screen or an Apple Watch. The Audio Session must have been open with the parameter `withUI`.
 
@@ -44,7 +44,15 @@ Remark: actually this parameter is implemented only on iOS.
 
 
 *Example:*
-```dart
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
     final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
     Track track = Track( codec: Codec.opusOGG, trackPath: fileUri, trackAuthor: '3 Inches of Blood', trackTitle: 'Axes of Evil', albumArtAsset: albumArt )
     Duration d = await myPlayer.startPlayerFromTrack
@@ -55,6 +63,17 @@ Remark: actually this parameter is implemented only on iOS.
                          print( 'I hope you enjoyed listening to this song' );
                 },
     );
-```
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
+
 
 --------------------------------------------------------------------------------------------------------------------------------

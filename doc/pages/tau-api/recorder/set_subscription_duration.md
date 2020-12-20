@@ -12,12 +12,30 @@ keywords: API Recorder
 
 ## `setSubscriptionDuration()`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/setSubscriptionDuration.html)
+- Dart API: [setSubscriptionDuration](pages/flutter-sound/api/recorder/FlutterSoundRecorder/setSubscriptionDuration.html)
 
 This verb is used to change the default interval between two post on the "Update Progress" stream. (The default interval is 0 (zero) which means "NO post")
 
 *Example:*
-```dart
-// 0. is default
-myRecorder.setSubscriptionDuration(0.010);
-```
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
+        // 0 is default
+        myRecorder.setSubscriptionDuration(0.010);
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>

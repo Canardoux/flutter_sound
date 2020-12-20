@@ -12,11 +12,11 @@ keywords: API Player
 
 ## `playerState`, `isPlaying`, `isPaused`, `isStopped`. `getPlayerState()`
 
-[Dart API: playerState](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/playerState.html)
-[Dart API: getPlayerState()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/getPlayerState.html)
-[Dart API: isPlaying()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/isPlaying.html)
-[Dart API: isPaused()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/isPaused.html)
-[Dart API: isStopped()](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/isStopped.html)
+- Dart API: [getPlayerState()](pages/flutter-sound/api/player/FlutterSoundPlayer/getPlayerState.html).
+- Dart API: [isPlaying](pages/flutter-sound/api/player/FlutterSoundPlayer/isPlaying.html).
+- Dart API: [isPaused](pages/flutter-sound/api/player/FlutterSoundPlayer/isPaused.html).
+- Dart API: [isStopped](pages/flutter-sound/api/player/FlutterSoundPlayer/isStopped.html).
+- Dart API: [playerState](pages/flutter-sound/api/player/FlutterSoundPlayer/playerState.html).
 
 This four verbs is used when the app wants to get the current Audio State of the player.
 
@@ -35,7 +35,15 @@ If you want the exact background OS engine state you must use ```PlayerState the
 Acutually `getPlayerState()` is only implemented on iOS.
 
 *Example:*
-```dart
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
         swtich(myPlayer.playerState)
         {
                 case PlayerState.isPlaying: doSomething; break;
@@ -49,7 +57,17 @@ Acutually `getPlayerState()` is only implemented on iOS.
         ...
         PlayerState theState = await myPlayer.getPlayerState();
         ...
+</pre>
 
-```
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
+
 
 ---------------------------------------------------------------------------------------------------------------------------------

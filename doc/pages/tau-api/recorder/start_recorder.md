@@ -12,7 +12,7 @@ keywords: API Recorder
 
 ## `startRecorder()`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/recorder/FlutterSoundRecorder/startRecorder.html)
+- Dart API: [startRecorder](pages/flutter-sound/api/recorder/FlutterSoundRecorder/startRecorder.html)
 
 You use `startRecorder()` to start recording in an open session. `startRecorder()` has the destination file path as parameter.
 It has also 7 optional parameters to specify :
@@ -33,7 +33,15 @@ Flutter Sound does not take care of the recording permission. It is the App resp
 [Permission_handler](https://pub.dev/packages/permission_handler) is probably useful to do that.
 
 *Example:*
-```dart
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
     // Request Microphone permission if needed
     PermissionStatus status = await Permission.microphone.request();
     if (status != PermissionStatus.granted)
@@ -42,4 +50,15 @@ Flutter Sound does not take care of the recording permission. It is the App resp
     Directory tempDir = await getTemporaryDirectory();
     File outputFile = await File ('${tempDir.path}/flutter_sound-tmp.aac');
     await myRecorder.startRecorder(toFile: outputFile.path, codec: t_CODEC.CODEC_AAC,);
-```
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
+

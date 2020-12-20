@@ -12,7 +12,7 @@ keywords: API Player
 
 ## `startPlayer()`
 
-[Dart API](https://canardoux.github.io/tau/doc/flutter_sound/api/player/FlutterSoundPlayer/startPlayer.html)
+- Dart API: [startPlayer()](pages/flutter-sound/api/player/FlutterSoundPlayer/startPlayer.html).
 
 You can use `startPlayer` to play a sound.
 
@@ -36,7 +36,16 @@ Hint: [path_provider](https://pub.dev/packages/path_provider) can be useful if y
 
 
 *Example:*
-```dart
+
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
         Directory tempDir = await getTemporaryDirectory();
         File fin = await File ('${tempDir.path}/flutter_sound-tmp.aac');
         Duration d = await myPlayer.startPlayer(fin.path, codec: Codec.aacADTS);
@@ -45,11 +54,29 @@ Hint: [path_provider](https://pub.dev/packages/path_provider) can be useful if y
         {
                 // ...
         });
-}
-```
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
+
 
 *Example:*
-```dart
+<ul id="profileTabs" class="nav nav-tabs">
+    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
+    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
+</ul>
+<div class="tab-content">
+
+<div role="tabpanel" class="tab-pane active" id="dart">
+
+<pre>
     final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
 
     Duration d = await myPlayer.startPlayer
@@ -61,6 +88,16 @@ Hint: [path_provider](https://pub.dev/packages/path_provider) can be useful if y
                          print( 'I hope you enjoyed listening to this song' );
                 },
     );
-```
+</pre>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="javascript">
+<pre>
+        Lorem ipsum ...
+</pre>
+</div>
+
+</div>
 
 --------------------------------------------------------------------------------------------------------------------------------
