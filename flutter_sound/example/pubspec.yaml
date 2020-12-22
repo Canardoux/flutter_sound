@@ -33,9 +33,9 @@ dependencies:
   flutter_sound: ^6.4.8+2
 #    path: ../ # Flutter Sound Dir
 
-  intl: ^0.16.1
+  #intl: ^0.16.1
   cupertino_icons: ^0.1.3
-  path_provider: ^1.6.21
+  path_provider: ^1.0.0
   permission_handler: ^5.0.1
   path: ^1.6.4
   speech_to_text: ^2.7.0
