@@ -18,7 +18,7 @@ github_editme_path: tomjoht/documentation-theme-jekyll/blob/gh-pages/
 # gitlab_editme_path: tomjoht/documentation-theme-jekyll/blob/gh-pages/
 # if you're using GitLab, provide the basepath to the branch you've created for reviews, following the sample here. if not, leave this value blank.
 
-google_analytics: UA-66296557-1
+google_analytics: G-18YCG6TC9W # UA-66296557-1
 # if you have google-analytics ID, put it in. if not, edit this value to blank.
 
 host: 127.0.0.1
@@ -35,7 +35,7 @@ exclude:
 
 feedback_subject_line: The &tau; Project documentation
 
-feedback_email: larpoux@gmail.com
+feedback_email: tau@canardoux.xyz
 # used as a contact email for the Feedback link in the top navigation bar
 
 # feedback_disable: true
