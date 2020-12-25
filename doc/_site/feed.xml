@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>documentation-theme-jekyll</title>
+        <description>This is the documentation of the &amp;tau; Project.</description>
+        <link>/</link>
+        <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
+        <pubDate>Fri, 25 Dec 2020 18:10:07 +0100</pubDate>
+        <lastBuildDate>Fri, 25 Dec 2020 18:10:07 +0100</lastBuildDate>
+        <generator>Jekyll v3.8.5</generator>
+        
+        <item>
+            <title>A new &amp;tau; documentation</title>
+            <description>&lt;p&gt;The previous tool for the τ documentation was &lt;a href=&quot;https://www.gitbook.com/&quot;&gt;Gitbook&lt;/a&gt;.
+It was a bad choice :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Gitbook used to be Free and Open Source (Apache license). But the free project is now deprecated. It has not been maintened for three years.&lt;/li&gt;
+  &lt;li&gt;Gitbook is now developed by a little french company but is not Open Source anymore. This happens with Free software not protected with a strong Free and Open Source license (GPL). This is what happens with license like MIT or Apache which are bad licenses.&lt;/li&gt;
+  &lt;li&gt;My thinking is that Flutter Sound must &lt;strong&gt;NOT USE PROPRIETARY SOFTWARE&lt;/strong&gt;. This is a political choice.&lt;/li&gt;
+  &lt;li&gt;Gitbook is buggy. When we include an HTML page in the documentation, the page hyperlinks point to Github instead of the documentation.&lt;/li&gt;
+  &lt;li&gt;Impossible to include the pages produced by Dartdoc inside our documentation.&lt;/li&gt;
+  &lt;li&gt;The Free/Open Source version of Gitbook has High Security Alerts from Github. This is not acceptable.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The major challenge was to find a tool that can integrate smoothly the &lt;code class=&quot;highlighter-rouge&quot;&gt;Dartdoc Documentation&lt;/code&gt;. The Dartdoc documentation is just HTML pages instead of Markdown.
+I investigated many documentation tools (Hugo, Gatsby, JustTheDoc, docsy, docusaurus, …), but all those tools was not compatible with Dartdoc.&lt;/p&gt;
+
+&lt;p&gt;I really wanted the following features :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;The user can browse the API reference documentation (&lt;a href=&quot;dartdoc.html&quot;&gt;Dartdoc Documentation&lt;/a&gt;) from the Flutter Sound documentation without opening a new browser tab, and return to the flutter documentation with the Browser Back button.&lt;/li&gt;
+  &lt;li&gt;The API reference documentation must display the Flutter Sound documentation top navigation bar.&lt;/li&gt;
+  &lt;li&gt;The user can display the left navigation bar on Dartdoc pages, so that he/she will never be lost.&lt;/li&gt;
+  &lt;li&gt;The user can choice to display or hide this left navigation bar if he/she has a narrow screen&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The only tool I found which met my required features is &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;, with the &lt;a href=&quot;https://idratherbewriting.com/documentation-theme-jekyll/index.html&quot;&gt;Documentation Theme for Jekyll&lt;/a&gt;.
+This tool is not perfect. Far from that. But it allows the pages produced by Dartdoc to be integrated inside our documentation.&lt;/p&gt;
+
+&lt;p&gt;I hope that this time the choice is correct : I spent too much time on the documentation tool, instead of the documentation content itself.&lt;/p&gt;
+
+&lt;p&gt;Please, let ne know if you have remarks on this.&lt;/p&gt;
+</description>
+            <pubDate>Fri, 18 Dec 2020 00:00:00 +0100</pubDate>
+            <link>/newdoc-post.html</link>
+            <guid isPermaLink="true">/newdoc-post.html</guid>
+            
+            <category>jekyll</category>
+            
+            
+        </item>
+        
+    </channel>
+</rss>
