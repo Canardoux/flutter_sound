@@ -24,7 +24,6 @@ else
 fi
 
 
-
 cd flutter_sound_platform_interface/
 #flutter clean
 #flutter pub get
@@ -61,6 +60,8 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 cd ..
+
+
 
 git add .
 git commit -m "TAU : Version $VERSION"

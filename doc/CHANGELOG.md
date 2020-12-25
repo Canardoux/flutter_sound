@@ -7,9 +7,22 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 6.4.8
+
+- Documention is switched to Jekyll
+
 ## 6.4.7
 
 - The two simple examples doing recording did not ask for recording permission. [#539](https://github.com/dooboolab/flutter_sound/issues/539)
+
+## 6.4.8
+
+iOS : Rename `AudioPlayer` as `AudioPlayerFlauto` to avoid duplicate symbol with "just_audio: ^0.5.7". [#542](https://github.com/dooboolab/flutter_sound/issues/542)
+
+## 6.4.7
+
+The two simple examples doing recording did not ask for recording permission. [#539](https://github.com/dooboolab/flutter_sound/issues/539)
+>>>>>>> FS/master
 
 ## 6.4.6
 

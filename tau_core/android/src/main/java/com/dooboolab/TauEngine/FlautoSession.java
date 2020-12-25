@@ -113,6 +113,12 @@ public abstract class FlautoSession
 
 			if (focus != t_AUDIO_FOCUS.doNotRequestFocus)
 			{
+				if ( audioFocusRequest == null )
+				{
+					audioFocusRequest = new AudioFocusRequest.Builder ( AudioManager.AUDIOFOCUS_GAIN )
+						.build ();
+				}
+
 				hasFocus = (focus != t_AUDIO_FOCUS.abandonFocus);
 				if (hasFocus)
 					audioManager.requestAudioFocus ( audioFocusRequest );
@@ -120,14 +126,14 @@ public abstract class FlautoSession
 					audioManager.abandonAudioFocusRequest ( audioFocusRequest );
 			}
 
-		audioManager.setSpeakerphoneOn( (audioFlags &  outputToSpeaker) != 0);
-		audioManager.setBluetoothScoOn( (audioFlags & allowBlueTooth) != 0);
-		if ((audioFlags & allowBlueTooth) != 0)
-			audioManager.startBluetoothSco();
-		else
-			audioManager.stopBluetoothSco();
-		audioManager.setBluetoothA2dpOn(  (audioFlags & allowBlueToothA2DP) != 0 );
-		audioManager.setMode( AudioManager.MODE_NORMAL );
+			audioManager.setSpeakerphoneOn( (audioFlags &  outputToSpeaker) != 0);
+			audioManager.setBluetoothScoOn( (audioFlags & allowBlueTooth) != 0);
+			if ((audioFlags & allowBlueTooth) != 0)
+				audioManager.startBluetoothSco();
+			else
+				audioManager.stopBluetoothSco();
+			audioManager.setBluetoothA2dpOn(  (audioFlags & allowBlueToothA2DP) != 0 );
+			audioManager.setMode( AudioManager.MODE_NORMAL );
 		} else
 			r = true; // BOF!
 
