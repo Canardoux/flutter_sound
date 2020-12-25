@@ -24,3 +24,4 @@ flutter_export_environment*
 .last_build_id
 example/ios/Flutter/.last_build_id
 Podfile.lock
+example/ios/.symlinks
