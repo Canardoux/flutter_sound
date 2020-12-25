@@ -66,7 +66,6 @@ if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push --tag -f
 fi
-exit 0
 git checkout gh-pages
 git merge master
 git push
