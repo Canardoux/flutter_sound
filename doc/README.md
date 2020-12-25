@@ -7,7 +7,6 @@ permalink: readme.html
 summary: The &tau; Project documentation.
 ---
 
-{% include image.html %}
 
 * A player for audio playback
 * A recorder for recording audio
