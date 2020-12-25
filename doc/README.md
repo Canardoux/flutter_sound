@@ -7,7 +7,7 @@ permalink: readme.html
 summary: The &tau; Project documentation.
 ---
 
-{% include image.html file="banner5.png" caption="The architecture" %}
+{% include image.html %}
 The τ \(tau\)project is a set of libraries which deal with audio :
 
 * A player for audio playback
