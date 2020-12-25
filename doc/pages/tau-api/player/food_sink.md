@@ -3,7 +3,7 @@ title:  "Player API"
 description: "foodSink."
 summary: "foodSink."
 permalink: tau_api_player_food_sink.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API
@@ -21,7 +21,7 @@ This StreamSink accept two kinds of objects :
 
 *Example:*
 
-[This example](../example/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
+[This example](flutter_sound_examples_playback_from_stream_1) shows how to play Live data, without Back Pressure from Flutter Sound
 
 <ul id="profileTabs" class="nav nav-tabs">
     <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>

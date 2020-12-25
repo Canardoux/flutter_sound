@@ -3,7 +3,7 @@ title:  "UI Widgets API"
 description: "UIRecorder"
 summary: "UIRecorder"
 permalink: tau_api_widgets_ui_recorder.html
-tags: [API, UI, widgets]
+tags: [api,ui,widget]
 keywords: API, UI, widgets
 ---
 # SoundPlayerUI

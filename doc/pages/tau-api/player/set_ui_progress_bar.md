@@ -3,7 +3,7 @@ title:  "Player API"
 description: "setUIProgressBar()"
 summary: "setUIProgressBar()"
 permalink: tau_api_player_set_ui_progress_bar.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API

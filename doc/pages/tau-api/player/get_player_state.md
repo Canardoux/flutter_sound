@@ -3,7 +3,7 @@ title:  "Player API"
 description: "getPlayerState()"
 summary: "`playerState`, `isPlaying`, `isPaused`, `isStopped`. `getPlayerState()`"
 permalink: tau_api_player_get_player_state.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API

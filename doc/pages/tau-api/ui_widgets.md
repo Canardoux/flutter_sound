@@ -1,9 +1,9 @@
 ---
 title:  "UI Widgets API"
 description: "The &tau; UI Widgets."
-summary: "The &tau; Project offers several two UI Widgets."
+summary: "The &tau; Project offers several UI Widgets."
 permalink: tau_api_widgets
-tags: [API, UI, widgets]
+tags: [api,ui,widget]
 keywords: API, UI, widgets
 ---
 # SoundPlayerUI

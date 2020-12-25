@@ -3,7 +3,7 @@ title:  "Utilities API"
 description: "duration()"
 summary: "duration()"
 permalink: tau_api_utilities_duration.html
-tags: [API, utilities, helpers]
+tags: [api,utilities,helpers]
 keywords: API, utilities, helpers
 ---
 

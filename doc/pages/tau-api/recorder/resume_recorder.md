@@ -3,7 +3,7 @@ title:  "Recorder API"
 description: "resumeRecorder()"
 summary: "resumeRecorder"
 permalink: tau_api_recorder_resume_recorder.html
-tags: [API, recorder]
+tags: [api,recorder]
 keywords: API Recorder
 ---
 # The &tau; Recorder API

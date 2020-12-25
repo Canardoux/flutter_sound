@@ -3,7 +3,7 @@ title:  "Player API"
 description: "setVolume()"
 summary: "setVolume()"
 permalink: tau_api_player_set_volume.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API

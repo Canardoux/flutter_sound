@@ -3,7 +3,7 @@ title:  "Player API"
 description: "pausePlayer()"
 summary: "pausePlayer()"
 permalink: tau_api_player_pause_player.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API

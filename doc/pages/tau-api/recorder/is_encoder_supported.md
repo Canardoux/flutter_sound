@@ -3,7 +3,7 @@ title:  "Recorder API"
 description: "isEncoderSupported()"
 summary: "isEncoderSupported()"
 permalink: tau_api_recorder_is_encoder_supported.html
-tags: [API, recorder]
+tags: [api,recorder]
 keywords: API Recorder
 ---
 # The &tau; Recorder API

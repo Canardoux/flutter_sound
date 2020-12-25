@@ -3,7 +3,7 @@ title:  "Player API"
 description: "Food."
 summary: "Food."
 permalink: tau_api_player_food.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API
@@ -25,7 +25,7 @@ The Food class has two others inherited classes :
 
 *Example:*
 
-[This example](../example/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
+[This example](flutter_sound_examples_playback_from_stream_2) shows how to play Live data, without Back Pressure from Flutter Sound
 <ul id="profileTabs" class="nav nav-tabs">
     <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
     <li><a href="#javascript" data-toggle="tab">Javascript</a></li>

@@ -3,7 +3,7 @@ title:  "Recorder API"
 description: "setSubscriptionDuration()"
 summary: "setSubscriptionDuration()"
 permalink: tau_api_recorder_set_subscription_duration.html
-tags: [API, recorder]
+tags: [api,recorder]
 keywords: API Recorder
 ---
 # The &tau; Recorder API

@@ -3,7 +3,7 @@ title:  "Utilities API"
 description: "constructor"
 summary: "constructor"
 permalink: tau_api_utilities_constructor.html
-tags: [API, utilities, helpers]
+tags: [api,utilities,helpers]
 keywords: API, utilities, helpers
 ---
 

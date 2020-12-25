@@ -3,7 +3,7 @@ title:  "Codecs"
 description: "Supported codecs."
 summary: "Supported codecs."
 permalink: guides_codec.html
-tags: [guides]
+tags: [guide]
 keywords: guides
 ---
 

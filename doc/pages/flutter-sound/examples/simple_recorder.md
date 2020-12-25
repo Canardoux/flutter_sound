@@ -3,7 +3,7 @@ title:  "Examples"
 description: "Simple Recorder"
 summary: "Simple Recorder"
 permalink: flutter_sound_examples_simple_recorder.html
-tags: [Flutter Sound, Flutter, examples, demo]
+tags: [example,demo]
 keywords: Flutter, Flutter Sound, examples, demo
 ---
 # Examples

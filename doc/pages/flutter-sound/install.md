@@ -3,7 +3,7 @@ title:  "Installation"
 description: "Flutter Sound installation."
 summary: "Flutter Sound installation."
 permalink: flutter_sound_install.html
-tags: [Flutter Sound, Flutter, installation]
+tags: [flutter_sound,installation]
 keywords: Flutter, Flutter Sound, installation
 ---
 # Installation

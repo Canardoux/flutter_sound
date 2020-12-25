@@ -3,7 +3,7 @@ title:  "Player API"
 description: "getProgress()"
 summary: "getProgress()"
 permalink: tau_api_player_get_progress.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API

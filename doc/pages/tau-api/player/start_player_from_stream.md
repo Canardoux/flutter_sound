@@ -3,7 +3,7 @@ title:  "Player API"
 description: "startPlayerFromStream()."
 summary: "startPlayerFromStream()."
 permalink: tau_api_player_start_player_from_stream.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API
@@ -20,14 +20,14 @@ keywords: API Player
 - The only value possible for `numChannels` is actually 1.
 - SampleRate is the sample rate of the data you want to play.
 
-Please look to [the following notice](codec.md#playing-pcm-16-from-a-dart-stream)
+Please look to [the following notice](guides_play_stream)
 
 *Example*
 You can look to the three provided examples :
 
-- [This example](../flutter_sound/example/example.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
-- [This example](../flutter_sound/example/example.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
-- [This example](../flutter_sound/example/example.md#soundeffect) shows how to play some real time sound effects.
+- [This example](flutter_sound_examples_playback_from_stream_2) shows how to play Live data, with Back Pressure from Flutter Sound
+- [This example](flutter_sound_examples_playback_from_stream_1) shows how to play Live data, without Back Pressure from Flutter Sound
+- [This example](flutter_sound_examples_sound_effects) shows how to play some real time sound effects.
 
 *Example 1:*
 <ul id="profileTabs" class="nav nav-tabs">

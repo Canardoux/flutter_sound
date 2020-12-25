@@ -3,7 +3,7 @@ title:  "UI Widgets API"
 description: "UIController"
 summary: "UIController"
 permalink: tau_api_widgets_ui_controller.html
-tags: [API, UI, widgets]
+tags: [api,ui,widget]
 keywords: API, UI, widgets
 ---
 # SoundPlayerUI

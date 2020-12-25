@@ -3,7 +3,7 @@ title:  "Utilities API"
 description: "getLastFFmpegCommandOutput()"
 summary: "getLastFFmpegCommandOutput()"
 permalink: tau_api_utilities_get_last_ffmpeg_command_output.html
-tags: [API, utilities, helpers]
+tags: [api,utilities,helpers]
 keywords: API, utilities, helpers
 ---
 

@@ -3,7 +3,7 @@ title:  "Utilities API"
 description: "pcmToWave()"
 summary: "pcmToWave()"
 permalink: tau_api_utilities_pcm_to_wave.html
-tags: [API, utilities, helpers]
+tags: [api,utilities,helpers]
 keywords: API, utilities, helpers
 ---
 

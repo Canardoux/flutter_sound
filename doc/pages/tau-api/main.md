@@ -3,7 +3,7 @@ title:  "&tau; API"
 description: "The &tau; API."
 summary: "&tau; is composed with 4 modules."
 permalink: tau_api_main.html
-tags: [API]
+tags: [api,getting_started]
 keywords: API
 ---
 # The Main modules
@@ -11,10 +11,10 @@ keywords: API
 
 &tau; is composed with 4 modules :
 
-- [FlutterSoundPlayer](player.md#flutter-sound-player-api), wich deal with everything about playbacks
-- [FlutterSoundRecorder](recorder.md#flutter-sound-recorder-api), which deal with everything about recording
-- [FlutterSoundHelper](utilities.md), which offers some convenients tools
-- [FlutterSoundUI](ui_widget.md), which offer some Widget ready to be used out of the box
+- `FlutterSoundPlayer`, wich deal with everything about playbacks
+- `FlutterSoundRecorder`, which deal with everything about recording
+- `FlutterSoundHelper`, which offers some convenients tools
+- `FlutterSoundUI`, which offer some Widget ready to be used out of the box
 
 To use Flutter Sound you just do :
 ```

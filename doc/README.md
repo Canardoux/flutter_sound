@@ -2,7 +2,7 @@
 title: The &tau; Project"
 description: The d&tau; Project README
 keywords: home homepage readme
-tags: [tau_readme]
+tags: [tau]
 permalink: readme.html
 summary: The &tau; Project documentation.
 ---
@@ -44,7 +44,7 @@ The τ package supports playback from:
 
 The τ package includes the following features :
 
-* Play and Record τ or music with various codecs. \(See [the supported codecs here](guides/guides.md#flutter-sound-codecs)\)
+* Play and Record τ or music with various codecs. \(See [the supported codecs here](guides_codec)\)
 * Play local or remote files specified by their URL.
 * Play assets.
 * Record to a live stream Stream
@@ -86,7 +86,7 @@ In the future, it will be \(perhaps\) supported by
 
 ## What about Flutter Sound ?
 
-Flutter Sound is not dead, of course. This is exactly the opposite. Flutter Sound is a really alive project.
+{% include note.html content="Flutter Sound is not dead, of course. This is exactly the opposite. Flutter Sound is a really alive project."%}
 
 We just changed the name of the project, because we want to encompass others frameworks than Flutter.
 
@@ -98,5 +98,5 @@ We are looking to make τ the go to project for mobile Audio with support for va
 
 τ is a large and complex project which requires to maintain multiple hardware platforms and test environments.
 
-We greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation.
+{% include important.html content="We greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation."%}
 

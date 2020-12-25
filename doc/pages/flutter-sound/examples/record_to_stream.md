@@ -3,7 +3,7 @@ title:  "Examples"
 description: "RecordToStream"
 summary: "RecordToStream"
 permalink: flutter_sound_examples_record_to_stream.html
-tags: [Flutter Sound, Flutter, examples, demo]
+tags: [example,demo]
 keywords: Flutter, Flutter Sound, examples, demo
 ---
 # Examples

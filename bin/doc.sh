@@ -58,7 +58,7 @@ ln -s readme.html index.html
 cd ../..
 
 echo done
-exit 0
+
 git add .
 git commit -m "TAU : Version $VERSION"
 git push

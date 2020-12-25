@@ -3,7 +3,7 @@ title:  "Recorder API"
 description: "onProgress"
 summary: "onProgress"
 permalink: tau_api_recorder_on_progress.html
-tags: [API, recorder]
+tags: [api,recorder]
 keywords: API Recorder
 ---
 # The &tau; Recorder API

@@ -3,7 +3,7 @@ title:  "Getting Started"
 description: "Getting Started.."
 summary: "Introduction for Flutter Sound beginners."
 permalink: guides_getting_started.html
-tags: [Getting Started]
+tags: [getting_started,guide]
 keywords: gettingStarted
 ---
 

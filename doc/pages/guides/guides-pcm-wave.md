@@ -3,7 +3,7 @@ title:  "Raw PCM and Wave files"
 description: "Raw PCM and Wave files."
 summary: "Raw PCM and Wave files."
 permalink: guides_pcm_wave.html
-tags: [guides]
+tags: [guide]
 keywords: guides
 ---
 ---------

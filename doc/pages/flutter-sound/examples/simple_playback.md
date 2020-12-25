@@ -3,7 +3,7 @@ title:  "Examples"
 description: "Simple Playback"
 summary: "Simple Playback"
 permalink: flutter_sound_examples_simple_playback.html
-tags: [Flutter Sound, Flutter, examples, demo]
+tags: [example,demo]
 keywords: Flutter, Flutter Sound, examples, demo
 ---
 # Examples

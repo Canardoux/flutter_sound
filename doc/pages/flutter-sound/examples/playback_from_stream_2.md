@@ -3,7 +3,7 @@ title:  "Examples"
 description: "Playback From Stream (2)"
 summary: "Playback From Stream (2)"
 permalink: flutter_sound_examples_playback_from_stream_2.html
-tags: [Flutter Sound, Flutter, examples, demo]
+tags: [example,demo]
 keywords: Flutter, Flutter Sound, examples, demo
 ---
 # Examples

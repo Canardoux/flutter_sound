@@ -3,7 +3,7 @@ title:  "Examples"
 description: "Widget UI"
 summary: "Widget UI"
 permalink: flutter_sound_examples_widget_ui.html
-tags: [Flutter Sound, Flutter, examples, demo]
+tags: [example,demo]
 keywords: Flutter, Flutter Sound, examples, demo
 ---
 # Examples
@@ -23,14 +23,3 @@ I really hope that someone will write soon another simpler Demo App.
 
 The complete example source [is there](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/widgetUI/widget_ui_demo.dart)
 
-## SimplePlayback
-
-[SimplePlayback](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/simple_playback/simple_playback.dart)
-
-{% include image.html file="examples/simple_playback.png" %}
-
-This is a very simple example for Flutter Sound beginners, that shows how to play a remote file.
-
-This example is really basic.
-
-The complete example source [is there](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/simple_playback/simple_playback.dart)

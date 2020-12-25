@@ -3,7 +3,7 @@ title:  "Examples"
 description: "Stream Loop"
 summary: "Stream Loop"
 permalink: flutter_sound_examples_stream_loop.html
-tags: [Flutter Sound, Flutter, examples, demo]
+tags: [example,demo]
 keywords: Flutter, Flutter Sound, examples, demo
 ---
 # Examples

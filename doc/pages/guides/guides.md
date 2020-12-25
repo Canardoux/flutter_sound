@@ -3,7 +3,7 @@ title:  "Guides"
 description: "Various guides about The &tau; Project."
 summary: "Various guides about The &tau; Project."
 permalink: guides_guides.html
-tags: [guides]
+tags: [guide]
 keywords: guides
 ---
 

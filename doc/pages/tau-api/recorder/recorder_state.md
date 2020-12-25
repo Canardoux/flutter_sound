@@ -3,7 +3,7 @@ title:  "Recorder API"
 description: "`recorderState`, `isRecording`, `isPaused`, `isStopped`."
 summary: "`recorderState`, `isRecording`, `isPaused`, `isStopped`."
 permalink: tau_api_recorder_recorder_state.html
-tags: [API, recorder]
+tags: [api,recorder]
 keywords: API Recorder
 ---
 # The &tau; Recorder API

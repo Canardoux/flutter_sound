@@ -3,7 +3,7 @@ title:  "Examples"
 description: "Sound Effects"
 summary: "Sound Effects"
 permalink: flutter_sound_examples_sound_effects.html
-tags: [Flutter Sound, Flutter, examples, demo]
+tags: [example,demo]
 keywords: Flutter, Flutter Sound, examples, demo
 ---
 # Examples

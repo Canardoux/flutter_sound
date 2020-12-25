@@ -3,7 +3,7 @@ title:  "constructor"
 description: "constructor"
 summary: "Creating the `Recorder` instance."
 permalink: tau_api_recorder_constructor.html
-tags: [API, recorder]
+tags: [api,recorder]
 keywords: API Recorder
 ---
 # The &tau; Recorder API

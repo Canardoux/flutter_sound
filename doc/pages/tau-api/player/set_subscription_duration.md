@@ -3,7 +3,7 @@ title:  "Player API"
 description: "setSubscriptionDuration()"
 summary: "setSubscriptionDuration()"
 permalink: tau_api_player_set_subscription_duration.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API

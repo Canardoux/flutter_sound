@@ -3,7 +3,7 @@ title:  "Demo"
 description: "Flutter Sound Demo."
 summary: "A demonstration of the Flutter Sound features."
 permalink: flutter_sound_examples_demo.html
-tags: [Flutter Sound, Flutter, examples, demo]
+tags: [example,demo]
 keywords: Flutter, Flutter Sound, examples, demo
 ---
 # Examples

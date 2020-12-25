@@ -3,7 +3,7 @@ title:  "openAudioSession()"
 description: "`openAudioSession()` and `closeAudioSession()`"
 summary: "`openAudioSession()` and `closeAudioSession()`"
 permalink: tau_api_recorder_open_audio_session.html
-tags: [API, recorder]
+tags: [api,recorder]
 keywords: API Recorder
 ---
 # The &tau; Recorder API

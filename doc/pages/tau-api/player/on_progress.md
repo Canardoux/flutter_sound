@@ -3,7 +3,7 @@ title:  "Player API"
 description: "onProgress."
 summary: "onProgress."
 permalink: tau_api_player_on_progress.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API

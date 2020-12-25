@@ -3,7 +3,7 @@ title:  "Flutter Sound on web"
 description: "Flutter Sound on web."
 summary: "Flutter Sound on web."
 permalink: flutter_sound_web.html
-tags: [Flutter Sound, Flutter, Web]
+tags: [flutter_sound,web]
 keywords: Flutter, Flutter Sound, Web
 ---
 # Flutter Sound on Flutter Web
@@ -12,12 +12,12 @@ Flutter Sound is now supported by Flutter Web \(with some limitations\). Please 
 
 The big problem \(as usual\) is Apple. Webkit is bull shit : you cannot use MediaRecorder to record anything with it. It means that Flutter Sound on Safari cannot record. And because Apple forces Firefox and Chrome to use also Webkit on iOS, you cannot record anything on iOS with Flutter Sound. Apple really sucks :-\(.
 
-You can play with [this live demo on the web](https://www.canardoux.space/tau/flutter_sound_example), but better if not Safari and not iOS if you want to record something.
+You can play with [this live demo on the web](pages/flutter-sound/web_example/index.html), but better if not Safari and not iOS if you want to record something.
 
 ## Player
 
-* Flutter Sound can play buffers with `startPlayerFromBuffer()`, exactly like with other platforms. Please refer to [the codecs compatibility table](https://github.com/canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/codec/README.md#flutter-sound-codecs)
-* Flutter Sound can play remote URL with `startPlayer()`, exactly like with other platforms. Again, refer to [the codecs compatibility table](https://github.com/canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/codec/README.md#flutter-sound-codecs)
+* Flutter Sound can play buffers with `startPlayerFromBuffer()`, exactly like with other platforms. Please refer to [the codecs compatibility table](guides_codec)
+* Flutter Sound can play remote URL with `startPlayer()`, exactly like with other platforms. Again, refer to [the codecs compatibility table](guides_codec)
 * Playing from a Dart Stream with `startPlayerFromStream()`is not yet implemented.
 * Playing with UI is obviously not implemented, because we do not have control to the lock screen inside a web app.
 * Flutter Sound does not have control of the audio-focus.
@@ -28,7 +28,7 @@ The web App does not have access to any file system. But you can store an URL in
 
 Flutter Sound on web cannot have access to any file system. You can use `startRecorder()` like others platforms, but the recorded data will be stored inside an internal HTTP object. When the recorder is stopped, `startRecorder` stores the URL of this object into your local sessionStorage.
 
-Please refer to [the codecs compatibility table](https://github.com/canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/codec/README.md#flutter-sound-codecs) : Flutter Sound Recorder does not work on Safari nor iOS.
+Please refer to [the codecs compatibility table](guides_codec) : Flutter Sound Recorder does not work on Safari nor iOS.
 
 ```text
 await startRecorder(codec: opusWebM, toFile: 'foo'); // the LocalSessionStorage key `foo` will contain the URL of the recorded object

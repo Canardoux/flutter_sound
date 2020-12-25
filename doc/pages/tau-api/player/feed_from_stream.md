@@ -3,7 +3,7 @@ title:  "Player API"
 description: "feedFromStream()."
 summary: "feedFromStream()."
 permalink: tau_api_player_feed_from_stream.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API

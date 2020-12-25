@@ -3,7 +3,7 @@ title:  "Player API"
 description: "The &tau; player API."
 summary: "The &tau; player API."
 permalink: tau_api_player_constructor.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API

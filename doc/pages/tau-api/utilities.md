@@ -3,7 +3,7 @@ title:  "Utilities API"
 description: "The &tau; utilities API."
 summary: "The &tau; Project offers several helper utilities."
 permalink: tau_api_utilities
-tags: [API, utilities, helpers]
+tags: [api,utilities,helpers]
 keywords: API, utilities, helpers
 ---
 

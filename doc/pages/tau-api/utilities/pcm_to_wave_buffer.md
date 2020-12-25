@@ -3,7 +3,7 @@ title:  "Utilities API"
 description: "pcmToWaveBuffer()"
 summary: "pcmToWaveBuffer()"
 permalink: tau_api_utilities_pcm_to_wave_buffer.html
-tags: [API, utilities, helpers]
+tags: [api,utilities,helpers]
 keywords: API, utilities, helpers
 ---
 

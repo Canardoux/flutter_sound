@@ -3,7 +3,7 @@ title:  "Guides"
 description: "Recording PCM."
 summary: "Recording PCM."
 permalink: guides_recording_pcm.html
-tags: [guides]
+tags: [guide]
 keywords: guides
 ---
 

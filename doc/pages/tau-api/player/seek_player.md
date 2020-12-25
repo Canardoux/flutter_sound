@@ -3,7 +3,7 @@ title:  "Player API"
 description: "seekToPlayer()"
 summary: "seekToPlayer()"
 permalink: tau_api_player_seek_player.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API

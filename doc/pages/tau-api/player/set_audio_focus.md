@@ -3,7 +3,7 @@ title:  "Player API"
 description: "setAudioFocus."
 summary: "setAudioFocus."
 permalink: tau_api_player_set_audio_focus.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API
@@ -26,7 +26,7 @@ keywords: API Player
 
 ### Other parameters :
 
-Please look to [openAudioSession()](player.md#openaudiosession-and-closeaudiosession) to understand the meaning of the other parameters
+Please look to [openAudioSession()](tau_api_player_open_audio_session) to understand the meaning of the other parameters
 
 
 *Example:*

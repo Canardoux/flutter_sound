@@ -3,7 +3,7 @@ title:  "Player API"
 description: "resumePlayer()"
 summary: "resumePlayer()"
 permalink: tau_api_player_resume_player.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API

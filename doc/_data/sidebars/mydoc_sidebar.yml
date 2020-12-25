@@ -230,7 +230,7 @@ entries:
           url: /tau_api_recorder_is_encoder_supported.html
           output: web, pdf
 
-        - title: onProgress()
+        - title: onProgress
           url: /tau_api_recorder_on_progress.html
           output: web, pdf
 
@@ -334,7 +334,7 @@ entries:
       output: web, pdf
 
     - title: Live demo
-      url: https://canardoux.github.io/flauto/doc/flutter_sound/web_example/
+      url: pages\/flutter-sound\/web_example\/index.html
       output: web, pdf
       subfolders:
 
@@ -430,7 +430,7 @@ entries:
       output: web, pdf
 
     - title: Problem Report
-      url: https://github.com/canardoux/tau/issues
+      url: https:\/\/github.com\/dooboolab\/flutter_sound\/issues
       output: web, pdf
 
     - title: Contributions

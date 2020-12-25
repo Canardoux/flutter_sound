@@ -3,7 +3,7 @@ title:  "Player API"
 description: "isDecoderSupported()"
 summary: "isDecoderSupported()"
 permalink: tau_api_player_is_decoder_supported.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API

@@ -7,7 +7,7 @@ topnav:
       external_url: https://github.com/canardoux/tau
       hint: The sources on Github
     - title: Problem Report
-      external_url: https://github.com/canardoux/tau/issues
+      external_url: https://github.com/dooboolab/flutter_sound/issues
       hint: Issues on Github
     - title: Changelog
       url: /changelog.html

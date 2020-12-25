@@ -3,7 +3,7 @@ title:  "Contributions"
 description: "We need you!"
 summary: "We need you!"
 permalink: links_contribution.html
-tags: [Contributions]
+tags: [contributions]
 keywords: Contributions
 ---
 

@@ -3,7 +3,7 @@ title:  "Player API"
 description: "startPlayerFromTrack()."
 summary: "startPlayerFromTrack()."
 permalink: tau_api_player_start_player_from_track.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API

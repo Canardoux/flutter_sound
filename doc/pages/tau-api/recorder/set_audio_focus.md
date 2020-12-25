@@ -3,7 +3,7 @@ title:  "Recorder API"
 description: "setAudioFocus()"
 summary: "setAudioFocus()"
 permalink: tau_api_recorder_set_audio_focus.html
-tags: [API, recorder]
+tags: [api,recorder]
 keywords: API Recorder
 ---
 # The &tau; Recorder API
@@ -27,7 +27,7 @@ keywords: API Recorder
 
 ### Other parameters :
 
-Please look to [openAudioSession()](player.md#openaudiosession-and-closeaudiosession) to understand the meaning of the other parameters
+Please look to [openAudioSession()](tau_api_recorder_open_audio_session) to understand the meaning of the other parameters
 
 
 *Example:*

@@ -3,7 +3,7 @@ title:  "Widgets"
 description: "The &tau; built-in widgets."
 summary: "The &tau; Project offers two built-in widgets."
 permalink: guides_ui.html
-tags: [UI]
+tags: [guide]
 keywords: ui_widgets
 ---
 # Widgets

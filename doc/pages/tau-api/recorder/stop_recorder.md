@@ -3,7 +3,7 @@ title:  "Recorder API"
 description: "stopRecorder()"
 summary: "stopRecorder()"
 permalink: tau_api_recorder_stop_recorder.html
-tags: [API, recorder]
+tags: [api,recorder]
 keywords: API Recorder
 ---
 # The &tau; Recorder API

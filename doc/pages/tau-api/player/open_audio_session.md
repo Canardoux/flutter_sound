@@ -3,7 +3,7 @@ title:  "Player API"
 description: "`openAudioSession()` and `closeAudioSession()`."
 summary: "`openAudioSession()` and `closeAudioSession()`."
 permalink: tau_api_player_open_audio_session.html
-tags: [API, player]
+tags: [api, player]
 keywords: API Player
 ---
 # The &tau; Player API

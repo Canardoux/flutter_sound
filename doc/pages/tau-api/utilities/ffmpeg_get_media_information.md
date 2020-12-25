@@ -3,7 +3,7 @@ title:  "Utilities API"
 description: "ffMpegGetMediaInformation()"
 summary: "ffMpegGetMediaInformation()"
 permalink: tau_api_utilities_ffmpeg_get_media_information.html
-tags: [API, utilities, helpers]
+tags: [api,utilities,helpers]
 keywords: API, utilities, helpers
 ---
 
