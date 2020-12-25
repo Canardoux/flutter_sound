@@ -44,7 +44,7 @@ The τ package supports playback from:
 
 The τ package includes the following features :
 
-* Play and Record τ or music with various codecs. \(See [the supported codecs here](guides_codec)\)
+* Play and Record τ or music with various codecs. (See [the supported codecs here](guides_codec.html))
 * Play local or remote files specified by their URL.
 * Play assets.
 * Record to a live stream Stream
