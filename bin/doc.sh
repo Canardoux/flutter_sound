@@ -66,3 +66,11 @@ if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push --tag -f
 fi
+git checkout gh-pages
+git merge master
+git push
+if [ ! -z "$VERSION" ]; then
+        git tag -f $VERSION
+        git push --tag -f
+fi
+git checkout master
