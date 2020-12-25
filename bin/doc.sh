@@ -67,7 +67,8 @@ if [ ! -z "$VERSION" ]; then
         git push --tag -f
 fi
 git checkout gh-pages
-git merge master  "TAU : Version $VERSION"
+#git merge master  "TAU : Version $VERSION"
+git checkout master doc/_site
 git push
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
