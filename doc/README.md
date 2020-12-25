@@ -8,7 +8,7 @@ summary: The &tau; Project documentation.
 ---
 
 
-QWERTY
+QWERTYazerty
 
 * A player for audio playback
 * A recorder for recording audio
