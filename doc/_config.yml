@@ -115,8 +115,8 @@ description: "This is the documentation of the &tau; Project."
 # the description is used in the feed.xml file
 
 # needed for sitemap.xml file only
-url: https://canardoux.github.io
-baseurl: /tau
+#url: https://canardoux.github.io
+#baseurl: /tau
 
 
 #######github: [metadata]
