@@ -127,7 +127,7 @@ This StreamSink accept two kinds of objects :</p>
 <li>FoodEvent (a call back to be called after a resynchronisation)</li>
 </ul>
 <p><em>Example:</em></p>
-<p><a href="../example/README.md#liveplaybackwithoutbackpressure">This example</a> shows how to play Live data, without Back Pressure from Flutter Sound</p>
+<p><code>This example</code> shows how to play Live data, without Back Pressure from Flutter Sound</p>
 <pre class="language-dart"><code class="language-dart">await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
 
 myPlayer.foodSink.add(FoodData(aBuffer));

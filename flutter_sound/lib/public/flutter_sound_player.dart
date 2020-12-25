@@ -352,7 +352,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///
   /// *Example:*
   ///
-  /// [This example](../example/README.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
+  /// `This example` shows how to play Live data, without Back Pressure from Flutter Sound
   /// ```dart
   /// await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
   ///
