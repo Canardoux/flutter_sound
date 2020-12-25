@@ -15,7 +15,6 @@ The τ project is a set of libraries which deal with audio :
 * A recorder for recording audio
 * Several utilities to handle audio files
 
-{% include note.html content="τ is a big project. The goal is to share a maximum of the developments between various Platforms/Frameworks and various target OS." %}
 
 ## Overview
 
