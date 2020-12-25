@@ -15,6 +15,7 @@ The τ project is a set of libraries which deal with audio :
 * A recorder for recording audio
 * Several utilities to handle audio files
 
+{% include note.html content="τ is a big project. The goal is to share a maximum of the developments between various Platforms/Frameworks and various target OS." %}
 
 ## Overview
 
@@ -85,6 +86,7 @@ In the future, it will be \(perhaps\) supported by
 
 ## What about Flutter Sound ?
 
+{% include note.html content="Flutter Sound is not dead, of course. This is exactly the opposite. Flutter Sound is a really alive project."%}
 
 We just changed the name of the project, because we want to encompass others frameworks than Flutter.
 
