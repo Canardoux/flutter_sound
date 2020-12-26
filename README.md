@@ -1,12 +1,12 @@
-<img src="doc/logo/banner5.svg" width="70%" height="70%" />
+<img src="https://www.canardoux.xyz/tau/doc/images/banner5.svg" width="70%" height="70%" />
 <p align="left">
-  <a href="http://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/readme.html"><img alt="pub version" src="http://www.canardoux.xyz/tau/doc/images/banner5.png"></a>
+  <a href="http://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/readme.html"><img alt="pub version" src="https://img.shields.io/pub/v/flutter_sound.svg"></a>
 </p>
 
 -------------------------------------------------------------------------------------
 
-- ## Flutter Sound user: your [documentation is there](http://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/readme.html)
-- ## The [CHANGELOG file is here](http://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/changelog.html)
+- ## Flutter Sound user: your [documentation is there](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/readme.html)
+- ## The [CHANGELOG file is here](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/changelog.html)
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -48,12 +48,12 @@ The Flutter Sound package includes the following features
 
 ## Changelog
 
-You can find the [changes here](http://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/changelog.html)
+You can find the [changes here](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/changelog.html)
 
 
 ## Documentation
 
-The [documentation is here](http://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/readme.html)
+The [documentation is here](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/readme.html)
 
 
 ## License
@@ -66,7 +66,7 @@ Flutter Sound is released under a license with a *copyleft* clause: the LGPL-V3 
 
 Flutter Sound is a fundamental building block needed by almost every flutter project.
 
-We are looking to make Flutter Sound the go to project for Flutter Audio with support for each of the Flutter supported platforms.
+I'm looking to make Flutter Sound the go to project for Flutter Audio with support for each of the Flutter supported platforms.
 
 Flutter Sound is a large and complex project which requires me to maintain multiple hardware platforms and test environments.
 

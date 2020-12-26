@@ -159,8 +159,8 @@ if [ $? -ne 0 ]; then
 fi
 
 cd ../..
-rm -r doc/flutter_sound/web_example
-cp -a flutter_sound/example/build/web doc/flutter_sound/web_example
+rm -r doc/_site/pages/flutter-sound/web_example
+cp -a flutter_sound/example/build/web doc/_site/pages/flutter-sound/web_example
 
 
 bin/doc.sh $VERSION
