@@ -9,6 +9,9 @@ topnav:
     - title: Problem Report
       external_url: https://github.com/dooboolab/flutter_sound/issues
       hint: Issues on Github
+    - title: Roadmap
+      external_url: https://github.com/dooboolab/flutter_sound/projects/3
+      hint: A better &tau;
     - title: Changelog
       url: /changelog.html
       hint: "Log of all changes in The &tau; Project"
