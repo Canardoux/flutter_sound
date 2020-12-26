@@ -24,36 +24,9 @@ else
 fi
 
 
-cd flutter_sound_platform_interface/
-#flutter clean
-#flutter pub get
-
-flutter pub publish
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
-cd ..
-
-cd flutter_sound_web
-flutter clean
-flutter pub get
-flutter pub publish
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
-cd ..
-
-
 cd flutter_sound
 dartfmt -w lib
 dartfmt -w example/lib
-flutter analyze
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
 dartanalyzer lib
 if [ $? -ne 0 ]; then
     echo "Error"
@@ -118,6 +91,15 @@ cd ..
 bin/flavor.sh FULL
 
 
+cd flutter_sound
+flutter analyze
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+cd ..
+
+
 
 
 cd flutter_sound/example/ios
@@ -159,6 +141,15 @@ cp -a flutter_sound/example/build/web doc/flutter_sound/web_example
 
 
 bin/doc.sh $VERSION
+
+git add .
+git commit -m "TAU : Version $VERSION"
+git push
+if [ ! -z "$VERSION" ]; then
+        git tag -f $VERSION
+        git push --tag -f
+fi
+
 
 
 #git add .

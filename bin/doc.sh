@@ -57,24 +57,12 @@ done
 ln -s readme.html index.html
 cd ../..
 
-echo done
+echo "Upload"
+cd doc/_site
+tar czf ../../_toto.tgz *
+cd ../..
+scp _toto.tgz soft@canardoux.xyz:/home/soft
+ssh -p7822 soft@canardoux.xyz "rm -rf /home/soft/www/canardoux.xyz/tau/doc/*; tar xzf _toto.tgz -C /home/soft/www/canardoux.xyz/tau/doc; rm _toto.tgz"
+#####rm -r doc/_site _toto.tgz
 
-git add .
-git commit -m "TAU : Version $VERSION"
-git push
-if [ ! -z "$VERSION" ]; then
-        git tag -f $VERSION
-        git push --tag -f
-fi
-git checkout gh-pages
-#git merge master  "TAU : Version $VERSION"
-rm -rf doc
-git checkout master -- doc
-git add .
-git commit -m "TAU : Version $VERSION"
-git push
-if [ ! -z "$VERSION" ]; then
-        git tag -f $VERSION
-        git push --tag -f
-fi
-git checkout master
+echo "E.O.J"

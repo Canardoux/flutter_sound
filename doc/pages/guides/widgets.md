@@ -36,7 +36,7 @@ The audio is recorded to a [Track](https://github.com/canardoux/tau/tree/e09bcd3
 
 TODO: add image here.
 
-The [SoundRecorderUI](https://github.com/canardoux/tau/tree/e09bcd3935cdb61ae166e1ad562b7a20512c884d/doc/api/soundrecorderui.md) api documentation provides examples on using the [SoundRecorderUI](https://github.com/Canardoux/tau/tree/e09bcd3935cdb61ae166e1ad562b7a20512c884d/doc/api/soundrecorderui.md) widget.
+The [SoundRecorderUI](https://github.com/canardoux/tau/tree/e09bcd3935cdb61ae166e1ad562b7a20512c884d/doc/api/soundrecorderui.md) api documentation provides examples on using the [SoundRecorderUI](https://github.com/canardoux/tau/tree/e09bcd3935cdb61ae166e1ad562b7a20512c884d/doc/api/soundrecorderui.md) widget.
 
 ## RecorderPlaybackController
 

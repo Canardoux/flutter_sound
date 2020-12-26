@@ -41,5 +41,5 @@ We actually maintain two branches for Flutter Sound :
 
 Flutter Sound comes with several Demo/Examples :
 
-[The `examples App`](https://github.com/Canardoux/tau/blob/master/flutter_sound/example/lib/main.dart) is a driver which can call all the various examples.
+[The `examples App`](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/main.dart) is a driver which can call all the various examples.
 

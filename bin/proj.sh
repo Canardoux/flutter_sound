@@ -81,6 +81,7 @@ if [ "_$1" = "_TAU" ] ; then
                 gsed -i  "s/https:\/\/pub.dartlang.org\/packages\/flutter_sound/https:\/\/pub.dartlang.org\/packages\/flauto/" $f
                 gsed -i  "s/https:\/\/img.shields.io\/pub\/v\/flutter_sound.svg/https:\/\/img.shields.io\/pub\/v\/flauto.svg/" $f
                 gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" $f
+                gsed -i  "s/www.canardoux.xyz\/tau_sound\/doc/www.canardoux.xyz\/tau\/doc/g" $f
         done
 
         # We want to keep links to flutter_sound in the changelog.md
@@ -100,6 +101,7 @@ if [ "_$1" = "_TAU" ] ; then
         gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" flutter_sound_web/pubspec.yaml
         gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" flutter_sound_platform_interface/pubspec.yaml
 
+        gsed -i  "s/\/soft\/www\/canardoux.xyz\/tau_sound\/doc/\/soft\/www\/canardoux.xyz\/tau\/doc/g" bin/doc.sh
 
 
         exit 0
@@ -190,6 +192,7 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
                 gsed -i  "s/https:\/\/img.shields.io\/pub\/v\/flauto.svg/https:\/\/img.shields.io\/pub\/v\/flutter_sound.svg/" $f
                 gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  $f
                 gsed -i  "s/https:\/\/github.com\/Canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  $f
+                gsed -i  "s/www.canardoux.xyz\/tau\/doc/www.canardoux.xyz\/tau_sound\/doc/g" $f
         done
 
         for f in flutter_sound/ios/Classes/*
@@ -204,7 +207,7 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
         gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  flutter_sound_web/pubspec.yaml
         gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  flutter_sound_platform_interface/pubspec.yaml
 
-
+        gsed -i  "s/\/soft\/www\/canardoux.xyz\/tau\/doc/\/soft\/www\/canardoux.xyz\/tau_sound\/doc/g" bin/doc.sh
 
         exit 0
 

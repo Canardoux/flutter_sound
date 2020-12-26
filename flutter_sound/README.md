@@ -7,8 +7,8 @@
 
 -------------------------------------------------------------------------------------
 
-- ## Flutter Sound user: your [documentation is there](https://canardoux.gitbook.io/tau/flutter-sound/flutter-sound)
-- ## The [CHANGELOG file is here](https://canardoux.gitbook.io/tau/the-tau-project/changelog)
+- ## Flutter Sound user: your [documentation is there](http://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/readme.html)
+- ## The [CHANGELOG file is here](http://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/changelog.html)
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ The API is designed so you can use the supplied widgets or roll your own.
 
 The Flutter Sound package includes the following features
 
-- Play and Record flutter sound or music with various codecs. (See [the supported codecs here](https://canardoux.github.io/tau/book/tau/codec.html#flutter-sound-codecs))
+- Play and Record flutter sound or music with various codecs.
 - Play local or remote files specified by their URL.
 - Play assets.
 - Play audio using the built in SoundPlayerUI Widget.
@@ -53,11 +53,13 @@ The Flutter Sound package includes the following features
 
 ## Changelog
 
-You can find the [changes here](https://canardoux.github.io/tau/book/CHANGELOG.html)
+You can find the [changes here](http://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/changelog.html)
+
 
 ## Documentation
 
-The [documentation is here](https://canardoux.github.io/tau/book/)
+The [documentation is here](http://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/readme.html)
+
 
 ## License
 
