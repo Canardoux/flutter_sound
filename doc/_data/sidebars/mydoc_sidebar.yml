@@ -435,6 +435,8 @@ entries:
 
     - title: Roadmap
       url: https:\/\/github.com\/dooboolab\/flutter_sound\/projects\/3
+      output: web, pdf
+
     - title: Contributions
       url: /links_contribution.html
       output: web, pdf
