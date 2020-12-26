@@ -102,7 +102,7 @@ if [ "_$1" = "_TAU" ] ; then
         gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" flutter_sound_platform_interface/pubspec.yaml
 
         gsed -i  "s/\/soft\/www\/canardoux.xyz\/tau_sound\/doc/\/soft\/www\/canardoux.xyz\/tau\/doc/g" bin/doc.sh
-         gsed -i  "s/\/canardoux.xyz\/tau_sound\/doc\//\/canardoux.xyz\/tau\/doc\//g" flutter_sound/pubspec.yaml
+        gsed -i  "s/\/canardoux.xyz\/tau_sound\/doc\//\/canardoux.xyz\/tau\/doc\//g" flutter_sound/pubspec.yaml
 
 
         exit 0
