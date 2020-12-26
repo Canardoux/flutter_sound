@@ -224,7 +224,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">The &tau; Project - 6.4.8+8</li>
+  <li class="sidebarTitle">The &tau; Project - 7.4.9+1</li>
   
   
   
@@ -835,6 +835,11 @@
           
           
           
+          <li><a title="Roadmap" href="https:\\github.com\dooboolab\flutter_sound\projects\3">Roadmap</a></li>
+          
+          
+          
+          
           
           
           <li><a title="Contributions" href="links_contribution.html">Contributions</a></li>
@@ -892,7 +897,9 @@
         <div class="summary">The new &tau; documentation is now based on Jekyll.</div>
         
 
-        <p>The previous tool for the τ documentation was <a href="https://www.gitbook.com/">Gitbook</a>.
+        <h2 id="1-jekyll">1. Jekyll</h2>
+
+<p>The previous tool for the τ documentation was <a href="https://www.gitbook.com/">Gitbook</a>.
 It was a bad choice :</p>
 <ul>
   <li>Gitbook used to be Free and Open Source (Apache license). But the free project is now deprecated. It has not been maintened for three years.</li>
@@ -903,7 +910,7 @@ It was a bad choice :</p>
   <li>The Free/Open Source version of Gitbook has High Security Alerts from Github. This is not acceptable.</li>
 </ul>
 
-<p>The major challenge was to find a tool that can integrate smoothly the <code class="highlighter-rouge">Dartdoc Documentation</code>. The Dartdoc documentation is just HTML pages instead of Markdown.
+<p>The major challenge was to find a tool that can integrate smoothly the Dartdoc Documentation. The Dartdoc documentation is just HTML pages instead of Markdown.
 I investigated many documentation tools (Hugo, Gatsby, JustTheDoc, docsy, docusaurus, …), but all those tools was not compatible with Dartdoc.</p>
 
 <p>I really wanted the following features :</p>
@@ -920,6 +927,52 @@ This tool is not perfect. Far from that. But it allows the pages produced by Dar
 <p>I hope that this time the choice is correct : I spent too much time on the documentation tool, instead of the documentation content itself.</p>
 
 <p>Please, let ne know if you have remarks on this.</p>
+
+<h2 id="2-the-version-74">2. The Version 7.4</h2>
+
+<p>I did a terrible mistake : the master branch is now named 7.4.9 instead of 6.4.9 Impossible to correct that on pub.dev: a commit is for ever. I am confused :-( .</p>
+
+<p>I suggest that Flutter Sound users stay on 6.4 .  The version 6.4 will be the real current version released and supported.
+The version 7.x  will be the future version and will not be background compatible with V6.</p>
+
+<h2 id="3-a-roadmap">3. A Roadmap</h2>
+
+<p>Actually, the Flutter Sound issues are a complete mess.
+Everybody create new issues sometimes for bugs, sometimes for asking help, sometimes to request new features.
+But nobody can have a clear vue of the actual situation.</p>
+
+<p>Actually there is 71 issues open. And probably there will be more next week. I cannot manage that all by myself alone.
+The deficiency of Flutter Sound developers is a big problem.</p>
+
+<p>I am not satisfied with the way Github manage the <em>issues</em>. I am thinking to setup a real Bug Tracker.
+Something like Mantis, Trac, Bugzilla or Jira. But I worry that those tools are really good to manage
+a project with a real team. Actually Flutter Sound has no team. So nobody to be managed.</p>
+
+<p>I suggest that for now we keep <em>Github</em> and use <a href="https://github.com/dooboolab/flutter_sound/projects/3">the Projects feature</a> for trying
+to have a better view of</p>
+<ul>
+  <li>what must be done (first column),</li>
+  <li>what is planned (second column),</li>
+  <li>what is in progress (third column)</li>
+  <li>and what is done (fourth column).</li>
+</ul>
+
+<p>I will try to keep the number of issues planned (second column) not too high, and order this column from <strong>high</strong> priority to <strong>low</strong> priority.</p>
+
+<p>When an issue will be registered in the <em>Project</em> table, I will close it.
+An issue closed will not be necessary fixed, but we will be sure that it is entered somewhere in the planning.
+Note: the <em>Project</em> table can point to close issues, so this is not a problem to close them.</p>
+
+<p>Something not clear for me, is how the Flutter Sound users can influence the issues that are planned, and the priority of those planned issues.
+There is two possibilities :</p>
+<ul>
+  <li>The Flutter Sound user can post remarks in issues to help me to know what is important or not</li>
+  <li>The Flutter Sound user can use the <em>Discussions</em> as a forum to discuss what must me done.</li>
+</ul>
+
+<p>I do not understand why the Github <em>Discussions</em> feature is not used by Flutter Sound users.
+If necessary, we can setup a real forum like PhpBB, MyBB, or Discourse. But probably better to try to use the current tool (Github) before seting up something new.</p>
+
 
     </div>
 
