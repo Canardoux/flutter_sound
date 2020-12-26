@@ -1,4 +1,6 @@
-<img src="https://www.canardoux.xyz/tau/doc/images/banner.png" />
+<a href="http://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/readme.html">
+        <img src="https://www.canardoux.xyz/tau/doc/images/banner.svg" width="70%" height="70%" />
+</a>
 
 <p align="left">
   <a href="http://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/readme.html"><img alt="pub version" src="http://www.canardoux.xyz/tau/doc/images/banner.png"></a>
