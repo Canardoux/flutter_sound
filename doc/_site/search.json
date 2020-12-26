@@ -7,17 +7,6 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapitauAndroidFocusGain-class.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
 "url": "pagesflutter-soundapilogAnsiColor-class.html",
 "summary": ""
 }
@@ -37,44 +26,11 @@
 
 
 {
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauAudioDevice-class.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauAudioFocus-class.html",
-"summary": ""
-}
-,
-
-
-
-{
 "title": "The &amp;tau; CHANGELOG",
 "tags": "changelog",
 "keywords": "changelog",
 "url": "changelog.html",
 "summary": "The Changelog of The &tau; Project."
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauCodec-class.html",
-"summary": ""
 }
 ,
 
@@ -678,28 +634,6 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapitauSessionCategory-class.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauSessionMode-class.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
 "url": "pagesflutter-soundapiui_playerSoundPlayerUI-class.html",
 "summary": ""
 }
@@ -1008,61 +942,6 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapitauallowAirPlay-constant.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauallowBlueTooth-constant.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauallowBlueToothA2DP-constant.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauallowEarPiece-constant.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauallowHeadset-constant.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
 "url": "pagesflutter-soundapilogAnsiColorapply.html",
 "summary": ""
 }
@@ -1217,7 +1096,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapiui_recorderSoundRecorderUIbackgroundColor.html",
+"url": "pagesflutter-soundapiui_recorderSoundRecorderUIStatebackgroundColor.html",
 "summary": ""
 }
 ,
@@ -1228,7 +1107,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapiui_recorderSoundRecorderUIStatebackgroundColor.html",
+"url": "pagesflutter-soundapiui_recorderSoundRecorderUIbackgroundColor.html",
 "summary": ""
 }
 ,
@@ -1382,7 +1261,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapilogMyLogPrintercolor.html",
+"url": "pagesflutter-soundapilogLogcolor.html",
 "summary": ""
 }
 ,
@@ -1393,7 +1272,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapilogLogcolor.html",
+"url": "pagesflutter-soundapilogMyLogPrintercolor.html",
 "summary": ""
 }
 ,
@@ -1503,17 +1382,6 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapiui_recorderSoundRecorderUIcreateState.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
 "url": "pagesflutter-soundapiui_playerSoundPlayerUIcreateState.html",
 "summary": ""
 }
@@ -1526,6 +1394,17 @@
 "tags": "",
 "keywords": "",
 "url": "pagesflutter-soundapiui_playerPlaybarSlidercreateState.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "",
+"tags": "",
+"keywords": "",
+"url": "pagesflutter-soundapiui_recorderSoundRecorderUIcreateState.html",
 "summary": ""
 }
 ,
@@ -1690,7 +1569,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapiplayerFlutterSoundPlayerdispositionStream.html",
+"url": "pagesflutter-soundapiui_recorderSoundRecorderUIStatedispositionStream.html",
 "summary": ""
 }
 ,
@@ -1701,7 +1580,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapiui_recorderSoundRecorderUIStatedispositionStream.html",
+"url": "pagesflutter-soundapiplayerFlutterSoundPlayerdispositionStream.html",
 "summary": ""
 }
 ,
@@ -1723,7 +1602,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapiplayerPlaybackDispositionduration.html",
+"url": "pagesflutter-soundapirecorderRecordingDispositionduration.html",
 "summary": ""
 }
 ,
@@ -1734,7 +1613,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapirecorderRecordingDispositionduration.html",
+"url": "pagesflutter-soundapiplayerPlaybackDispositionduration.html",
 "summary": ""
 }
 ,
@@ -1877,17 +1756,6 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapitauFoodDataexec.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
 "url": "pagesflutter-soundapitauFoodexec.html",
 "summary": ""
 }
@@ -1899,7 +1767,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapiffmpegFlutterFFprobeexecute.html",
+"url": "pagesflutter-soundapitauFoodDataexec.html",
 "summary": ""
 }
 ,
@@ -1911,6 +1779,17 @@
 "tags": "",
 "keywords": "",
 "url": "pagesflutter-soundapiffmpegFlutterFFmpegexecute.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "",
+"tags": "",
+"keywords": "",
+"url": "pagesflutter-soundapiffmpegFlutterFFprobeexecute.html",
 "summary": ""
 }
 ,
@@ -2649,83 +2528,6 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapitauiosAllowAirplay-constant.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauiosAllowBluetooth-constant.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauiosAllowBluetoothA2DP-constant.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauiosDefaultToSpeaker-constant.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauiosDuckOthers-constant.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauiosInterruptSpokenAudioAndMixWithOthers-constant.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauiosMixWithOthers-constant.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
 "url": "pagesflutter-soundapiplayerFlutterSoundPlayerisDecoderSupported.html",
 "summary": ""
 }
@@ -2825,7 +2627,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapirecorderFlutterSoundRecorderisStopped.html",
+"url": "pagesflutter-soundapiplayerFlutterSoundPlayerisStopped.html",
 "summary": ""
 }
 ,
@@ -2836,7 +2638,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapiplayerFlutterSoundPlayerisStopped.html",
+"url": "pagesflutter-soundapirecorderFlutterSoundRecorderisStopped.html",
 "summary": ""
 }
 ,
@@ -3188,7 +2990,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapirecorderFlutterSoundRecorderonProgress.html",
+"url": "pagesflutter-soundapiplayerFlutterSoundPlayeronProgress.html",
 "summary": ""
 }
 ,
@@ -3199,7 +3001,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapiplayerFlutterSoundPlayeronProgress.html",
+"url": "pagesflutter-soundapirecorderFlutterSoundRecorderonProgress.html",
 "summary": ""
 }
 ,
@@ -3262,22 +3064,22 @@
 
 
 {
-"title": "Recorder API",
-"tags": "apirecorder",
-"keywords": "API Recorder",
-"url": "tau_api_recorder_on_progress.html",
-"summary": "onProgress"
+"title": "Player API",
+"tags": "apiplayer",
+"keywords": "API Player",
+"url": "tau_api_player_on_progress.html",
+"summary": "onProgress."
 }
 ,
 
 
 
 {
-"title": "Player API",
-"tags": "apiplayer",
-"keywords": "API Player",
-"url": "tau_api_player_on_progress.html",
-"summary": "onProgress."
+"title": "Recorder API",
+"tags": "apirecorder",
+"keywords": "API Recorder",
+"url": "tau_api_recorder_on_progress.html",
+"summary": "onProgress"
 }
 ,
 
@@ -3343,17 +3145,6 @@
 "tags": "",
 "keywords": "",
 "url": "pagesflutter-soundapilogorange.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauoutputToSpeaker-constant.html",
 "summary": ""
 }
 ,
@@ -3808,7 +3599,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapiplayerFlutterSoundPlayersetAudioFocus.html",
+"url": "pagesflutter-soundapirecorderFlutterSoundRecordersetAudioFocus.html",
 "summary": ""
 }
 ,
@@ -3819,7 +3610,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapirecorderFlutterSoundRecordersetAudioFocus.html",
+"url": "pagesflutter-soundapiplayerFlutterSoundPlayersetAudioFocus.html",
 "summary": ""
 }
 ,
@@ -3926,10 +3717,10 @@
 
 
 {
-"title": "Recorder API",
-"tags": "apirecorder",
-"keywords": "API Recorder",
-"url": "tau_api_recorder_set_subscription_duration.html",
+"title": "Player API",
+"tags": "apiplayer",
+"keywords": "API Player",
+"url": "tau_api_player_set_subscription_duration.html",
 "summary": "setSubscriptionDuration()"
 }
 ,
@@ -3937,10 +3728,10 @@
 
 
 {
-"title": "Player API",
-"tags": "apiplayer",
-"keywords": "API Player",
-"url": "tau_api_player_set_subscription_duration.html",
+"title": "Recorder API",
+"tags": "apirecorder",
+"keywords": "API Recorder",
+"url": "tau_api_recorder_set_subscription_duration.html",
 "summary": "setSubscriptionDuration()"
 }
 ,
@@ -4329,95 +4120,7 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapitauAudioFocustoString.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauAudioDevicetoString.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauCodectoString.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauSessionModetoString.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitauSessionCategorytoString.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapistack_traceStackTraceImpltoString.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
 "url": "pagesflutter-soundapiplayerPlayerStatetoString.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapirecorderRecordingDispositiontoString.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "",
-"tags": "",
-"keywords": "",
-"url": "pagesflutter-soundapitemp_file_systemTempFileLocationstoString.html",
 "summary": ""
 }
 ,
@@ -4439,7 +4142,18 @@
 "title": "",
 "tags": "",
 "keywords": "",
-"url": "pagesflutter-soundapitauAndroidFocusGaintoString.html",
+"url": "pagesflutter-soundapirecorderRecordingDispositiontoString.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "",
+"tags": "",
+"keywords": "",
+"url": "pagesflutter-soundapistack_traceStackTraceImpltoString.html",
 "summary": ""
 }
 ,
@@ -4451,6 +4165,17 @@
 "tags": "",
 "keywords": "",
 "url": "pagesflutter-soundapiplayerPlaybackDispositiontoString.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "",
+"tags": "",
+"keywords": "",
+"url": "pagesflutter-soundapitemp_file_systemTempFileLocationstoString.html",
 "summary": ""
 }
 ,
