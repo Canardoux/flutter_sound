@@ -10,7 +10,7 @@ toc: false
 ## 7.4.9
 
 - Documention is switched to Jekyll
-- I did a terrible mistake : the version is named 7.4.9 instead of 6.4.9 Impossible to correct that with pub.dev. I am confused :-( )
+- I did a terrible mistake : the version is named 7.4.9 instead of 6.4.9 Impossible to correct that on pub.dev: a commit is for ever. I am confused :-( .
 
 ## 6.4.8
 
