@@ -4,6 +4,6 @@ rootProject.name = 'flauto'
 // -------------------------------------------------------------------------------------
 // CAUTION: The following instruction is for developping and debugging the Flauto Engine
 // DO NOT INCLUDE THE FOLLOWING LINES IN A REAL APP !!!
-    project(':tau_core').projectDir = file('../../tau_core/android')
+//project(':tau_core').projectDir = file('../../tau_core/android')
 // -------------------------------------------------------------------------------------
 

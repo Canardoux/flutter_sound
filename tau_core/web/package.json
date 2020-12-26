@@ -1,6 +1,6 @@
 {
         "name": "tau_core",
-        "version": "0.0.1+25",
+        "version": "6.4.8+3",
         "description": "The Tau Engine for Web App",
         "homepage": "https://github.com/Canardoux/tau",
         "keywords": [

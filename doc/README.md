@@ -1,5 +1,5 @@
 ---
-title: The &tau; Project"
+title: The &tau; (tau) Project"
 description: The d&tau; Project README
 keywords: home homepage readme
 tags: [tau]
@@ -7,9 +7,9 @@ permalink: readme.html
 summary: The &tau; Project documentation.
 ---
 
-{% include image.html file="banner5.png"  caption="The &tau; architecture" %}
+{% include image.html file="banner5.png"  caption="The &tau; Project" %}
 
-The τ project is a set of libraries which deal with audio :
+The τ (tau) Project is a set of libraries which deal with audio :
 
 * A player for audio playback
 * A recorder for recording audio
@@ -44,7 +44,7 @@ The τ package supports playback from:
 
 The τ package includes the following features :
 
-* Play and Record τ or music with various codecs. \(See [the supported codecs here](guides_codec)\)
+* Play and Record τ or music with various codecs. \(See [the supported codecs here](guides_codec.html)\)
 * Play local or remote files specified by their URL.
 * Play assets.
 * Record to a live stream Stream

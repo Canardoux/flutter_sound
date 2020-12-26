@@ -22,7 +22,6 @@ iOS : Rename `AudioPlayer` as `AudioPlayerFlauto` to avoid duplicate symbol with
 ## 6.4.7
 
 The two simple examples doing recording did not ask for recording permission. [#539](https://github.com/dooboolab/flutter_sound/issues/539)
->>>>>>> FS/master
 
 ## 6.4.6
 
@@ -56,7 +55,7 @@ The two simple examples doing recording did not ask for recording permission. [#
 
 ## 6.4.0
 
-- Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://www.canardoux.space/tau/flutter_sound_example) (still cannot record with Safari or any web browser on iOS : thank you Apple). You can [read this](flutter_sound/doc/codec.md#flutter-sound-on-flutter-web). Issues : [#494](https://github.com/dooboolab/flutter_sound/issues/494), [#468](https://github.com/canardoux/tau/issues/468) and [#297](https://github.com/canardoux/tau/issues/297)
+- Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://www.canardoux.space/tau/flutter_sound_example) (still cannot record with Safari or any web browser on iOS : thank you Apple). You can [read this](flutter_sound/doc/codec.md#flutter-sound-on-flutter-web). Issues : [#494](https://github.com/dooboolab/flutter_sound/issues/494), [#468](https://github.com/dooboolab/flutter_sound/issues/468) and [#297](https://github.com/dooboolab/flutter_sound/issues/297)
 
 ## 6.3.1
 
@@ -76,7 +75,7 @@ The two simple examples doing recording did not ask for recording permission. [#
 
 - On iOS, Flutter Sound use now a Pod library : `TauEngine`
 - On iOS : `startPlayer()` from a remote URL returned too early (before downloading the file)
-- The loop example, (from the recorder to the player) has now a delay < 1 sec. [#479](https://github.com/dooboolab/flutter_sound/issues/479) and [#90](https://github.com/canardoux/tau/issues/90)
+- The loop example, (from the recorder to the player) has now a delay < 1 sec. [#479](https://github.com/dooboolab/flutter_sound/issues/479) and [#90](https://github.com/dooboolab/flutter_sound/issues/90)
 - Fix compilation errors of the examples in LITE flavor [#483](https://github.com/dooboolab/flutter_sound/issues/483)
 
 
@@ -134,8 +133,8 @@ The two simple examples doing recording did not ask for recording permission. [#
 - On iOS : Add API verb ```getPlayerState()```. (iOS only).
 - On iOS : Add API verb ```nowPlaying()```. (iOS only).
 - On iOS : Add API verb ```setUIProgressBar()```. (iOS only). [#376](https://github.com/dooboolab/flutter_sound/issues/376)
-- Fixes bug [#380](https://github.com/dooboolab/flutter_sound/issues/380), [#385](https://github.com/canardoux/tau/pull/385)
-- Fixes bug "AudioFlags and AudioSource not work as expect " [#366](https://github.com/dooboolab/flutter_sound/issues/366), [#372](https://github.com/canardoux/tau/pull/372), [#381](https://github.com/canardoux/tau/pull/381)
+- Fixes bug [#380](https://github.com/dooboolab/flutter_sound/issues/380), [#385](https://github.com/dooboolab/flutter_sound/pull/385)
+- Fixes bug "AudioFlags and AudioSource not work as expect " [#366](https://github.com/dooboolab/flutter_sound/issues/366), [#372](https://github.com/dooboolab/flutter_sound/pull/372), [#381](https://github.com/dooboolab/flutter_sound/pull/381)
 - New parameters in the `SoundPlayerUI` constructors for specifying colors, text style and slider style. [#397](https://github.com/dooboolab/flutter_sound/issues/397)
 
 ## 5.0.2
@@ -187,7 +186,7 @@ Error returns from iOS in FlutterSoundPlayer.m was wrong : [#350](https://github
 ## 4.0.0
 
 - Adds pedantic lints and major refactoring of example with bug fixes. [#279](https://github.com/dooboolab/flutter_sound/pull/279)
-- Native code is directely linked with FFmpeg. Flutter Sound App does not need any more to depends on flutter_ffmpeg [#265](https://github.com/dooboolab/flutter_sound/issues/265) and [#273](https://github.com/canardoux/tau/issues/273)
+- Native code is directely linked with FFmpeg. Flutter Sound App does not need any more to depends on flutter_ffmpeg [#265](https://github.com/dooboolab/flutter_sound/issues/265) and [#273](https://github.com/dooboolab/flutter_sound/issues/273)
 - Add a new parameter in the Track structure : albumArtFile
 - A new flutter plugin is born : `flutter_sound_lite` [#291](https://github.com/dooboolab/flutter_sound/issues/291)
 - Adds a new parameter `whenPaused:` to the `startPlayerFromTrack()` function. [#314](https://github.com/dooboolab/flutter_sound/issues/314)
@@ -217,7 +216,7 @@ Error returns from iOS in FlutterSoundPlayer.m was wrong : [#350](https://github
 - Fix a bug when initializing for Flutter Embedded V1 on Android [#267](https://github.com/dooboolab/flutter_sound/issues/267)
 - Add _removePlayerCallback, _removeRecorderCallback() and _removeDbPeakCallback() inside release() [#248](https://github.com/dooboolab/flutter_sound/pull/248)
 - Fix conflict with permission_handler 5.x.x [#274](https://github.com/dooboolab/flutter_sound/pull/274)
-- On iOS, ```setMeteringEnabled:YES``` is called during ```setDbLevelEnabled()``` [#252](https://github.com/dooboolab/flutter_sound/pull/252), [#251](https://github.com/canardoux/tau/issues/251)
+- On iOS, ```setMeteringEnabled:YES``` is called during ```setDbLevelEnabled()``` [#252](https://github.com/dooboolab/flutter_sound/pull/252), [#251](https://github.com/dooboolab/flutter_sound/issues/251)
 - The call to ```initialize()``` is now optional [#271](https://github.com/dooboolab/flutter_sound/issues/271)
 - README : [#265](https://github.com/dooboolab/flutter_sound/issues/265)
 
@@ -243,7 +242,7 @@ Error returns from iOS in FlutterSoundPlayer.m was wrong : [#350](https://github
 
 ## 3.1.0
 
-- flutter_sound modules are re-entrant [#250](https://github.com/dooboolab/flutter_sound/issues/250) and [#232](https://github.com/canardoux/tau/issues/232)
+- flutter_sound modules are re-entrant [#250](https://github.com/dooboolab/flutter_sound/issues/250) and [#232](https://github.com/dooboolab/flutter_sound/issues/232)
   - We can open several `FlutterSoundPlayer` at the same time
   - We can open several `FlutterSoundRecorder` at the same time
 - Add new API verbs : [#244](https://github.com/dooboolab/flutter_sound/issues/244)
@@ -267,7 +266,7 @@ Error returns from iOS in FlutterSoundPlayer.m was wrong : [#350](https://github
 
 ## 3.0.0
 
-- Module `flauto` for controlling flutter_sound from the lock-screen [219](https://github.com/dooboolab/flutter_sound/issues/219) and [#243](https://github.com/canardoux/tau/pull/243)
+- Module `flauto` for controlling flutter_sound from the lock-screen [219](https://github.com/dooboolab/flutter_sound/issues/219) and [#243](https://github.com/dooboolab/flutter_sound/pull/243)
   > Highly honor [Larpoux](https://github.com/Larpoux), [bsutton](https://github.com/bsutton), [salvatore373](https://github.com/salvatore373) :tada:!
 
 ## 2.1.1
