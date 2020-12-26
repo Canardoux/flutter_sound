@@ -22,7 +22,7 @@ To record a Live PCM file, when calling the verb `startRecorder()`, you specify 
 
 _Example_
 
-You can look to the [simple example](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/recordToStream/record_to_stream_example.dart) provided with Flutter Sound.
+You can look to the [simple example](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/recordToStream/record_to_stream_example.dart) provided with Flutter Sound.
 
 ```dart
   IOSink outputFile = await createFile();

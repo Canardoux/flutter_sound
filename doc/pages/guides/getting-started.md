@@ -11,7 +11,7 @@ keywords: gettingStarted
 
 ## Playback
 
-The complete running example [is there](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/simple_playback/simple_playback.dart)
+The complete running example [is there](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/simple_playback/simple_playback.dart)
 
 ### 1. FlutterSoundPlayer instanciation
 
@@ -76,7 +76,7 @@ void play() async {
 
 ## Recording
 
-The complete running example [is there](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/simple_recorder/simple_recorder.dart)
+The complete running example [is there](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/simple_recorder/simple_recorder.dart)
 
 ### 1. FlutterSoundRecorder instanciation
 

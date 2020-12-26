@@ -11,7 +11,7 @@ keywords: Flutter, Flutter Sound, examples, demo
 
 ## WidgetUIDemo
 
-[WidgetUIDemo](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/widgetUI/widget_ui_demo.dart)
+[WidgetUIDemo](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/widgetUI/widget_ui_demo.dart)
 
 {% include image.html file="examples/widget_ui.png" %}
 
@@ -21,5 +21,5 @@ My own feeling is that this Demo is really too much complicated for doing someth
 
 I really hope that someone will write soon another simpler Demo App.
 
-The complete example source [is there](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/widgetUI/widget_ui_demo.dart)
+The complete example source [is there](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/widgetUI/widget_ui_demo.dart)
 

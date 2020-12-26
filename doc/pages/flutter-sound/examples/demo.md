@@ -11,7 +11,7 @@ keywords: Flutter, Flutter Sound, examples, demo
 
 ## Demo
 
-[Demo](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/demo/demo.dart)
+[Demo](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/demo/demo.dart)
 
 {% include image.html file="examples/demo.png" %}
 
@@ -32,4 +32,4 @@ The biggest interest of this Demo is that it shows most of the features of Flutt
 
 It would be really great if someone rewrite this demo soon
 
-The complete example source [is there](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/demo/demo.dart)
+The complete example source [is there](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/demo/demo.dart)

@@ -13,7 +13,7 @@ keywords: Flutter, Flutter Sound
 
 ![](../logo/banner.png)
 
-![pub version](https://img.shields.io/pub/v/flauto.svg?style=flat-square)
+![pub version](https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square)
 
 Flutter Sound is the first \(and actually the only\) implementation of the τ Project. This Flutter plugin is supported by :
 
@@ -41,5 +41,5 @@ We actually maintain two branches for Flutter Sound :
 
 Flutter Sound comes with several Demo/Examples :
 
-[The `examples App`](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/main.dart) is a driver which can call all the various examples.
+[The `examples App`](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/main.dart) is a driver which can call all the various examples.
 

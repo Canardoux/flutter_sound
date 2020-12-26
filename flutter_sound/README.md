@@ -1,18 +1,18 @@
-<a href="https://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/readme.html">
-        <img src="https://www.canardoux.xyz/tau/doc/images/banner.png" width="70%" height="70%" />
+<a href="https://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/readme.html">
+        <img src="https://www.canardoux.xyz/tau_sound/doc/images/banner.png" width="70%" height="70%" />
 </a>
 
 <p align="left">
-  <a href="https://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/readme.html">
-        <img alt="pub version" src="https://www.canardoux.xyz/tau/doc/images/banner.png" />
+  <a href="https://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/readme.html">
+        <img alt="pub version" src="https://www.canardoux.xyz/tau_sound/doc/images/banner.png" />
   </a>
 </p>
 
 
 -------------------------------------------------------------------------------------
 
-- ## Flutter Sound user: your [documentation is there](https://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/readme.html)
-- ## The [CHANGELOG file is here](https://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/changelog.html)
+- ## Flutter Sound user: your [documentation is there](https://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/readme.html)
+- ## The [CHANGELOG file is here](https://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/changelog.html)
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -57,12 +57,12 @@ The Flutter Sound package includes the following features
 
 ## Changelog
 
-You can find the [changes here](https://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/changelog.html)
+You can find the [changes here](https://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/changelog.html)
 
 
 ## Documentation
 
-The [documentation is here](https://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/readme.html)
+The [documentation is here](https://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/readme.html)
 
 
 ## License
