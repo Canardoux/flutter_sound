@@ -11,7 +11,7 @@ keywords: Flutter, Flutter Sound, examples, demo
 
 ## RecordToStream
 
-[RecordToStream](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/recordToStream/record_to_stream_example.dart)
+[RecordToStream](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/recordToStream/record_to_stream_example.dart)
 
 {% include image.html file="examples/record_to_stream.png" %}
 
@@ -19,4 +19,4 @@ This is an example showing how to record to a Dart Stream. It writes all the rec
 
 The real interest of recording to a Stream is for example to feed a Speech-to-Text engine, or for processing the Live data in Dart in real time.
 
-The complete example source [is there](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/recordToStream/record_to_stream_example.dart)
+The complete example source [is there](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/recordToStream/record_to_stream_example.dart)

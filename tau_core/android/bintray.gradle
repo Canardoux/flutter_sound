@@ -1,6 +1,6 @@
 apply plugin: 'com.jfrog.bintray'
 
-version = '6.4.8+8'
+version = '7.4.9+1'
 
 task sourcesJar(type: Jar) {
    from android.sourceSets.main.java.srcDirs
@@ -40,11 +40,11 @@ bintray {
 
    pkg {
        repo = 'TauRepo'
-       name = 'xyz.canardoux.tau_core'
+       name = 'xyz.canardoux.tau_sound_core'
        configurations = ['archives']
        desc = 'Tau Core library.'
-       websiteUrl = 'https://github.com/canardoux/tau'
-       vcsUrl = 'https://github.com/canardoux/tau/tree/master/tau_core/android'
+       websiteUrl = 'https://github.com/dooboolab/flutter_sound'
+       vcsUrl = 'https://github.com/dooboolab/flutter_sound/tree/master/tau_core/android'
        licenses = ["LGPL-3.0"]
        publish = true
        publicDownloadNumbers = true

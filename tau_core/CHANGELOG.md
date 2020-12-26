@@ -1,3 +1,3 @@
-## 6.4.8+8
+## 7.4.9+1
 
-- Please [look to this]((https://canardoux.github.io/tau/doc/book/CHANGELOG.html))
+- Please [look to this]((https://dooboolab.github.io/flutter_sound/doc/book/CHANGELOG.html))

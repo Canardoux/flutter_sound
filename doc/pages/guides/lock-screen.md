@@ -14,7 +14,7 @@ When using a Shade a Platform may also allow the user to control the media playb
 
 Using a Shade does not stop you from also displaying an in app Widget to control audio. The SoundPlayerUI widget will work in conjunction with the Shade.
 
-The Shade may also display information contained in the [Track](https://github.com/canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/api/track.md) such as Album, Artist of artwork.
+The Shade may also display information contained in the [Track](https://github.com/dooboolab/flutter_sound/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/api/track.md) such as Album, Artist of artwork.
 
 A Shade often allows the user to pause and resume audio as well skip forward a track and skip backward to the prior Track.
 

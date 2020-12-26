@@ -41,7 +41,7 @@ gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/"                             
 gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/"                                     flutter_sound/ios/flauto.podspec 2>/dev/null
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/"                                           flutter_sound/pubspec.yaml
 gsed -i  "s/^\( *flutter_sound_platform_interface: *#* *\).*$/\1$VERSION/"              flutter_sound/pubspec.yaml
-gsed -i  "s/^\( *flauto_platform_interface: *#* *\).*$/\1$VERSION/"                     flutter_sound/pubspec.yaml
+gsed -i  "s/^\( *flauto_platform_interface2: *#* *\).*$/\1$VERSION/"                     flutter_sound/pubspec.yaml
 gsed -i  "s/^\( *flutter_sound_web: *#* *\).*$/\1$VERSION/"                             flutter_sound/pubspec.yaml
 gsed -i  "s/^\( *flauto_web: *#* *\).*$/\1$VERSION/"                                    flutter_sound/pubspec.yaml
 
@@ -51,7 +51,7 @@ gsed -i  "s/^\( *#* *flutter_sound_platform_interface: *#* *\^*\).*$/\1$VERSION/
 gsed -i  "s/^\( *#* *flutter_sound_web: *#* *\^*\).*$/\1$VERSION/"                      flutter_sound/example/pubspec.yaml
 
 gsed -i  "s/^\( *flauto: *#* *\^*\).*$/\1$VERSION/"                                     flutter_sound/example/pubspec.yaml
-gsed -i  "s/^\( *#* *flauto_platform_interface: *#* *\^*\).*$/\1$VERSION/"              flutter_sound/example/pubspec.yaml
+gsed -i  "s/^\( *#* *flauto_platform_interface2: *#* *\^*\).*$/\1$VERSION/"              flutter_sound/example/pubspec.yaml
 gsed -i  "s/^\( *#* *flauto_web: *#* *\^*\).*$/\1$VERSION/"                             flutter_sound/example/pubspec.yaml
 
 gsed -i  "s/^\( *libraryVersion = \).*$/\1$VERSION/"                                    tau_core/android/gradle.properties
@@ -65,7 +65,7 @@ gsed -i  "s/^\( *version *= *\).*$/\1'$VERSION'/"                               
 gsed -i  "s/^\( *version *= *\).*$/\1'$VERSION'/"                                       tau_core/android/bintray.gradle 2>/dev/null
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/"                                           flutter_sound_web/pubspec.yaml
 gsed -i  "s/^\( *flutter_sound_platform_interface: *#* *\).*$/\1$VERSION/"              flutter_sound_web/pubspec.yaml
-gsed -i  "s/^\( *flauto_platform_interface: *#* *\).*$/\1$VERSION/"                     flutter_sound_web/pubspec.yaml
+gsed -i  "s/^\( *flauto_platform_interface2: *#* *\).*$/\1$VERSION/"                     flutter_sound_web/pubspec.yaml
 gsed -i  "s/^\( *## \).*$/\1$VERSION/"                                                  flutter_sound_web/CHANGELOG.md
 gsed -i  "s/^\( *\"version\": *\).*$/\1\"$VERSION\",/"                                  tau_core/web/package.json
 gsed -i  "s/^\( *<script src=\"https:\/\/cdn.jsdelivr.net\/npm\/tau_engine@\)[^\/]*/\1$VERSION/g" flutter_sound/example/web/index.html

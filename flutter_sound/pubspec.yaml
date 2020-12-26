@@ -1,8 +1,8 @@
-name: flauto
-version: 6.4.8+8
+name: flutter_sound
+version: 7.4.9+1
 description: A complete api for audio playback and recording. Audio player, audio recorder, media player, media recorder, sound player, sound recorder.
 #author: dooboolab<dooboolab@gmail.com>
-homepage: https://canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/readme.html
+homepage: https://canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/readme.html
 
 environment:
   sdk: ">=2.10.0 <3.0.0"
@@ -22,9 +22,9 @@ dependencies:
   flutter:
     sdk: flutter
 # ============================================================================
-  flauto_platform_interface: 6.4.8+8
+  flutter_sound_platform_interface: 7.4.9+1
 #    path: ../flutter_sound_platform_interface # Flutter Sound Dir
-  flauto_web: 6.4.8+8
+  flutter_sound_web: 7.4.9+1
 #    path: ../flutter_sound_web # Flutter Sound Dir
 # ============================================================================
 

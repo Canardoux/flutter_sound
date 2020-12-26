@@ -11,11 +11,11 @@ keywords: Flutter, Flutter Sound, examples, demo
 
 ## streamLoop
 
-[streamLoop](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/streamLoop/stream_loop.dart)
+[streamLoop](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/streamLoop/stream_loop.dart)
 
 {% include image.html file="examples/stream_loop.png" %}
 
 `streamLoop()` is a very simple example which connect the FlutterSoundRecorder sink to the FlutterSoundPlayer Stream. Of course, we do not play to the loudspeaker to avoid a very unpleasant Larsen effect. this example does not use a new StreamController, but use directely `foodStreamController` from flutter\_sound\_player.dart.
 
-The complete example source [is there](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/streamLoop/stream_loop.dart)
+The complete example source [is there](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/streamLoop/stream_loop.dart)
 

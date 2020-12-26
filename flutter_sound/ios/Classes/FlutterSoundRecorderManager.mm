@@ -26,7 +26,7 @@
 
 
 
-#import <tau_core/FlautoRecorder.h>
+#import <tau_sound_core/FlautoRecorder.h>
 #import <AVFoundation/AVFoundation.h>
 #import <Flutter/Flutter.h>
 #import "FlutterSoundRecorder.h"

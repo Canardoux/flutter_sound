@@ -44,16 +44,16 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "flauto_platform_interface",
-      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/flauto_platform_interface-6.4.8+8",
-      "packageUri": "lib/",
-      "languageVersion": "2.1"
-    },
-    {
       "name": "flutter",
       "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/flutter/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_sound_platform_interface",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/flutter_sound_platform_interface-7.4.9+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
     },
     {
       "name": "flutter_test",
@@ -158,13 +158,13 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "flauto_web",
+      "name": "flutter_sound_web",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.1"
     }
   ],
-  "generated": "2020-12-26T18:38:55.307262Z",
+  "generated": "2020-12-26T20:21:42.863774Z",
   "generator": "pub",
   "generatorVersion": "2.12.0-141.0.dev"
 }

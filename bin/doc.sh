@@ -62,7 +62,7 @@ cd doc/_site
 tar czf ../../_toto.tgz *
 cd ../..
 scp _toto.tgz soft@canardoux.xyz:/home/soft
-ssh -p7822 soft@canardoux.xyz "rm -rf /home/soft/www/canardoux.xyz/tau/doc/*; tar xzf _toto.tgz -C /home/soft/www/canardoux.xyz/tau/doc; rm _toto.tgz"
+ssh -p7822 soft@canardoux.xyz "rm -rf /home/soft/www/canardoux.xyz/tau_sound/doc/*; tar xzf _toto.tgz -C /home/soft/www/canardoux.xyz/tau_sound/doc; rm _toto.tgz"
 #####rm -r doc/_site _toto.tgz
 
 echo "E.O.J"

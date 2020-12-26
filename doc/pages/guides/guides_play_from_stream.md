@@ -54,7 +54,7 @@ myPlayer.foodSink.add
 
 _Example:_
 
-You can look to this simple [example](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart) provided with Flutter Sound.
+You can look to this simple [example](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart) provided with Flutter Sound.
 
 ```dart
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
@@ -72,7 +72,7 @@ If the App wants to keep synchronization with what is played, it uses the verb `
 
 _Example:_
 
-You can look to this [example](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithBackPressure/live_playback_with_back_pressure.dart) and [this example](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/soundEffect/sound_effect.dart)
+You can look to this [example](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/livePlaybackWithBackPressure/live_playback_with_back_pressure.dart) and [this example](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/soundEffect/sound_effect.dart)
 
 ```text
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
@@ -93,8 +93,8 @@ You probably will `await` or use `then()` for each call to `feedFromStream()`.
 
 _Examples_ You can look to the provided examples :
 
-* [This example](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithBackPressure/live_playback_with_back_pressure.dart) shows how to play Live data, with Back Pressure from Flutter Sound
-* [This example](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart) shows how to play Live data, without Back Pressure from Flutter Sound
-* [This example](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/soundEffect/sound_effect.dart) shows how to play some real time sound effects.
-* [This example](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/streamLoop/stream_loop.dart) play live stream what is recorded from the microphone.
+* [This example](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/livePlaybackWithBackPressure/live_playback_with_back_pressure.dart) shows how to play Live data, with Back Pressure from Flutter Sound
+* [This example](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart) shows how to play Live data, without Back Pressure from Flutter Sound
+* [This example](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/soundEffect/sound_effect.dart) shows how to play some real time sound effects.
+* [This example](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/streamLoop/stream_loop.dart) play live stream what is recorded from the microphone.
 
