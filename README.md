@@ -1,6 +1,6 @@
 <img src="doc/logo/banner5.svg" width="70%" height="70%" />
 <p align="left">
-  <a href="https://canardoux.github.io/tau/book/flauto"><img alt="pub version" src="https://img.shields.io/pub/v/flauto.svg"></a>
+  <a href="http://www.canardoux.xyz/tau/doc/pages/flutter-sound/api/topics/readme.html"><img alt="pub version" src="http://www.canardoux.xyz/tau/doc/images/banner5.png"></a>
 </p>
 
 -------------------------------------------------------------------------------------
@@ -66,11 +66,11 @@ Flutter Sound is released under a license with a *copyleft* clause: the LGPL-V3 
 
 Flutter Sound is a fundamental building block needed by almost every flutter project.
 
-I'm looking to make Flutter Sound the go to project for Flutter Audio with support for each of the Flutter supported platforms.
+We are looking to make Flutter Sound the go to project for Flutter Audio with support for each of the Flutter supported platforms.
 
 Flutter Sound is a large and complex project which requires me to maintain multiple hardware platforms and test environments.
 
-I greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation.
+We greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation.
 
 
 My friend Hyo has been maintaining quite many repos these days and he is burning out slowly. If you could help him cheer up, buy him a cup of coffee will make his life really happy and get much energy out of it. As a side effect, we will know that Flutter Sound is important for you, that you appreciate our job and that you can show it with a little money.

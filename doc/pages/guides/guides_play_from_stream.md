@@ -72,7 +72,7 @@ If the App wants to keep synchronization with what is played, it uses the verb `
 
 _Example:_
 
-You can look to this [example](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithBackPressure/live_playback_with_back_pressure.dart) and [this example](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/soundEffect/sound_effect.dart)
+You can look to this [example](https://github.com/canardoux/tau/blob/master/flutter_sound/example/lib/livePlaybackWithBackPressure/live_playback_with_back_pressure.dart) and [this example](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/soundEffect/sound_effect.dart)
 
 ```text
 await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
