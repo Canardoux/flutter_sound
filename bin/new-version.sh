@@ -24,6 +24,27 @@ else
 fi
 
 
+cd flutter_sound_platform_interface/
+#flutter clean
+#flutter pub get
+flutter pub publish
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+cd ..
+
+cd flutter_sound_web
+flutter clean
+flutter pub get
+flutter pub publish
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+cd ..
+
+
 cd flutter_sound
 dartfmt -w lib
 dartfmt -w example/lib
@@ -52,6 +73,7 @@ if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
 fi
+
 
 cd tau_core/android
 ./gradlew clean build bintrayUpload
@@ -89,6 +111,7 @@ fi
 cd ..
 
 bin/flavor.sh FULL
+
 
 
 cd flutter_sound
