@@ -1,13 +1,5 @@
-<a href="https://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/readme.html">
-        <img src="https://www.canardoux.xyz/tau_sound/doc/images/banner.png" width="70%" height="70%" />
-</a>
 
-<p align="left">
-  <a href="https://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/readme.html">
-        <img alt="pub version" src="https://www.canardoux.xyz/tau_sound/doc/images/banner.png" />
-  </a>
-</p>
-
+![Banner](https://www.canardoux.xyz/tau_sound/doc/images/banner.png)
 
 -------------------------------------------------------------------------------------
 

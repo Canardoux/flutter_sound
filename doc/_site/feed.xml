@@ -5,8 +5,8 @@
         <description>This is the documentation of the &amp;tau; Project.</description>
         <link>/</link>
         <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-        <pubDate>Sat, 26 Dec 2020 22:42:50 +0100</pubDate>
-        <lastBuildDate>Sat, 26 Dec 2020 22:42:50 +0100</lastBuildDate>
+        <pubDate>Sun, 27 Dec 2020 11:45:46 +0100</pubDate>
+        <lastBuildDate>Sun, 27 Dec 2020 11:45:46 +0100</lastBuildDate>
         <generator>Jekyll v3.8.5</generator>
         
         <item>
@@ -53,7 +53,7 @@ The version 7.x  will be the future version and will not be background compatibl
 
 &lt;p&gt;Actually, the Flutter Sound issues are a complete mess.
 Everybody create new issues sometimes for bugs, sometimes for asking help, sometimes to request new features.
-But nobody can have a clear vue of the actual situation.&lt;/p&gt;
+But nobody can have a clear visibility of the actual situation.&lt;/p&gt;
 
 &lt;p&gt;Actually there is 71 issues open. And probably there will be more next week. I cannot manage that all by myself alone.
 The deficiency of Flutter Sound developers is a big problem.&lt;/p&gt;
@@ -63,7 +63,7 @@ Something like Mantis, Trac, Bugzilla or Jira. But I worry that those tools are 
 a project with a real team. Actually Flutter Sound has no team. So nobody to be managed.&lt;/p&gt;
 
 &lt;p&gt;I suggest that for now we keep &lt;em&gt;Github&lt;/em&gt; and use &lt;a href=&quot;https://github.com/dooboolab/flutter_sound/projects/3&quot;&gt;the Projects feature&lt;/a&gt; for trying
-to have a better view of&lt;/p&gt;
+to have a better visibility of&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;what must be done (first column),&lt;/li&gt;
   &lt;li&gt;what is planned (second column),&lt;/li&gt;
@@ -78,10 +78,11 @@ An issue closed will not be necessary fixed, but we will be sure that it is ente
 Note: the &lt;em&gt;Project&lt;/em&gt; table can point to close issues, so this is not a problem to close them.&lt;/p&gt;
 
 &lt;p&gt;Something not clear for me, is how the Flutter Sound users can influence the issues that are planned, and the priority of those planned issues.
-There is two possibilities :&lt;/p&gt;
+There is three possibilities :&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;The Flutter Sound user can post remarks in issues to help me to know what is important or not&lt;/li&gt;
   &lt;li&gt;The Flutter Sound user can use the &lt;em&gt;Discussions&lt;/em&gt; as a forum to discuss what must me done.&lt;/li&gt;
+  &lt;li&gt;Use the Github Wiki&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;I do not understand why the Github &lt;em&gt;Discussions&lt;/em&gt; feature is not used by Flutter Sound users.
