@@ -8,7 +8,7 @@
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
-![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
+![Demo](https://user-images.githubusercontent.com/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
 
 ## Overview
 
