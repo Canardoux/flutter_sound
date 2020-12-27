@@ -4,7 +4,7 @@ topnav:
 - title: Topnav
   items:
     - title: GitHub
-      external_url: https://github.com/canardoux/tau
+      external_url: https://github.com/dooboolab/flutter_sound
       hint: The sources on Github
     - title: Problem Report
       external_url: https://github.com/dooboolab/flutter_sound/issues

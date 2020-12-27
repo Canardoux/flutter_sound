@@ -674,13 +674,13 @@
   
   
   <url>
-    <loc>/pages/flutter-sound/api/player/FlutterSoundPlayer/closeAudioSession.html</loc>
+    <loc>/pages/flutter-sound/api/recorder/FlutterSoundRecorder/closeAudioSession.html</loc>
   </url>
   
   
   
   <url>
-    <loc>/pages/flutter-sound/api/recorder/FlutterSoundRecorder/closeAudioSession.html</loc>
+    <loc>/pages/flutter-sound/api/player/FlutterSoundPlayer/closeAudioSession.html</loc>
   </url>
   
   
@@ -698,13 +698,13 @@
   
   
   <url>
-    <loc>/pages/flutter-sound/api/log/Log/color.html</loc>
+    <loc>/pages/flutter-sound/api/log/MyLogPrinter/color.html</loc>
   </url>
   
   
   
   <url>
-    <loc>/pages/flutter-sound/api/log/MyLogPrinter/color.html</loc>
+    <loc>/pages/flutter-sound/api/log/Log/color.html</loc>
   </url>
   
   
@@ -764,12 +764,6 @@
   
   
   <url>
-    <loc>/pages/flutter-sound/api/ui_player/SoundPlayerUI/createState.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>/pages/flutter-sound/api/ui_player/PlaybarSlider/createState.html</loc>
   </url>
   
@@ -777,6 +771,12 @@
   
   <url>
     <loc>/pages/flutter-sound/api/ui_recorder/SoundRecorderUI/createState.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/pages/flutter-sound/api/ui_player/SoundPlayerUI/createState.html</loc>
   </url>
   
   
@@ -890,12 +890,6 @@
   
   
   <url>
-    <loc>/pages/flutter-sound/api/player/PlaybackDisposition/duration.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>/pages/flutter-sound/api/helper/FlutterSoundHelper/duration.html</loc>
   </url>
   
@@ -903,6 +897,12 @@
   
   <url>
     <loc>/pages/flutter-sound/api/ui_recorder/RecordedAudio/duration.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/pages/flutter-sound/api/player/PlaybackDisposition/duration.html</loc>
   </url>
   
   
@@ -962,13 +962,13 @@
   
   
   <url>
-    <loc>/pages/flutter-sound/api/tau/FoodEvent/exec.html</loc>
+    <loc>/pages/flutter-sound/api/tau/Food/exec.html</loc>
   </url>
   
   
   
   <url>
-    <loc>/pages/flutter-sound/api/tau/Food/exec.html</loc>
+    <loc>/pages/flutter-sound/api/tau/FoodEvent/exec.html</loc>
   </url>
   
   
@@ -980,13 +980,13 @@
   
   
   <url>
-    <loc>/pages/flutter-sound/api/ffmpeg/FlutterFFmpeg/execute.html</loc>
+    <loc>/pages/flutter-sound/api/ffmpeg/FlutterFFprobe/execute.html</loc>
   </url>
   
   
   
   <url>
-    <loc>/pages/flutter-sound/api/ffmpeg/FlutterFFprobe/execute.html</loc>
+    <loc>/pages/flutter-sound/api/ffmpeg/FlutterFFmpeg/execute.html</loc>
   </url>
   
   
@@ -998,13 +998,13 @@
   
   
   <url>
-    <loc>/pages/flutter-sound/api/ffmpeg/FlutterFFmpeg/executeWithArguments.html</loc>
+    <loc>/pages/flutter-sound/api/ffmpeg/FlutterFFprobe/executeWithArguments.html</loc>
   </url>
   
   
   
   <url>
-    <loc>/pages/flutter-sound/api/ffmpeg/FlutterFFprobe/executeWithArguments.html</loc>
+    <loc>/pages/flutter-sound/api/ffmpeg/FlutterFFmpeg/executeWithArguments.html</loc>
   </url>
   
   
@@ -1360,12 +1360,6 @@
   
   
   <url>
-    <loc>/pages/flutter-sound/api/</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>/pages/flutter-sound/api/log/Log/info.html</loc>
   </url>
   
@@ -1444,13 +1438,13 @@
   
   
   <url>
-    <loc>/pages/flutter-sound/api/player/FlutterSoundPlayer/isStopped.html</loc>
+    <loc>/pages/flutter-sound/api/recorder/FlutterSoundRecorder/isStopped.html</loc>
   </url>
   
   
   
   <url>
-    <loc>/pages/flutter-sound/api/recorder/FlutterSoundRecorder/isStopped.html</loc>
+    <loc>/pages/flutter-sound/api/player/FlutterSoundPlayer/isStopped.html</loc>
   </url>
   
   
@@ -1684,25 +1678,25 @@
   
   
   <url>
-    <loc>/tau_api_player_on_progress.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>/tau_api_recorder_on_progress.html</loc>
   </url>
   
   
   
   <url>
-    <loc>/pages/flutter-sound/api/player/FlutterSoundPlayer/openAudioSession.html</loc>
+    <loc>/tau_api_player_on_progress.html</loc>
   </url>
   
   
   
   <url>
     <loc>/pages/flutter-sound/api/recorder/FlutterSoundRecorder/openAudioSession.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/pages/flutter-sound/api/player/FlutterSoundPlayer/openAudioSession.html</loc>
   </url>
   
   
@@ -2006,13 +2000,13 @@
   
   
   <url>
-    <loc>/pages/flutter-sound/api/recorder/FlutterSoundRecorder/setSubscriptionDuration.html</loc>
+    <loc>/pages/flutter-sound/api/player/FlutterSoundPlayer/setSubscriptionDuration.html</loc>
   </url>
   
   
   
   <url>
-    <loc>/pages/flutter-sound/api/player/FlutterSoundPlayer/setSubscriptionDuration.html</loc>
+    <loc>/pages/flutter-sound/api/recorder/FlutterSoundRecorder/setSubscriptionDuration.html</loc>
   </url>
   
   
@@ -2042,13 +2036,13 @@
   
   
   <url>
-    <loc>/tau_api_player_set_subscription_duration.html</loc>
+    <loc>/tau_api_recorder_set_subscription_duration.html</loc>
   </url>
   
   
   
   <url>
-    <loc>/tau_api_recorder_set_subscription_duration.html</loc>
+    <loc>/tau_api_player_set_subscription_duration.html</loc>
   </url>
   
   
@@ -2092,13 +2086,13 @@
   
   
   <url>
-    <loc>/pages/flutter-sound/api/stack_trace/StackTraceImpl/sourceFile.html</loc>
+    <loc>/pages/flutter-sound/api/stack_trace/Stackframe/sourceFile.html</loc>
   </url>
   
   
   
   <url>
-    <loc>/pages/flutter-sound/api/stack_trace/Stackframe/sourceFile.html</loc>
+    <loc>/pages/flutter-sound/api/stack_trace/StackTraceImpl/sourceFile.html</loc>
   </url>
   
   
@@ -2182,13 +2176,13 @@
   
   
   <url>
-    <loc>/pages/flutter-sound/api/ui_controller/RecorderPlaybackController/stop.html</loc>
+    <loc>/pages/flutter-sound/api/ui_recorder/SoundRecorderUIState/stop.html</loc>
   </url>
   
   
   
   <url>
-    <loc>/pages/flutter-sound/api/ui_recorder/SoundRecorderUIState/stop.html</loc>
+    <loc>/pages/flutter-sound/api/ui_controller/RecorderPlaybackController/stop.html</loc>
   </url>
   
   
@@ -2268,6 +2262,18 @@
   
   
   <url>
+    <loc>/pages/flutter-sound/api/player/PlaybackDisposition/toString.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/pages/flutter-sound/api/temp_file_system/TempFileLocations/toString.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>/pages/flutter-sound/api/wave_header/WaveHeader/toString.html</loc>
   </url>
   
@@ -2281,18 +2287,6 @@
   
   <url>
     <loc>/pages/flutter-sound/api/stack_trace/StackTraceImpl/toString.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>/pages/flutter-sound/api/player/PlaybackDisposition/toString.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>/pages/flutter-sound/api/temp_file_system/TempFileLocations/toString.html</loc>
   </url>
   
   
