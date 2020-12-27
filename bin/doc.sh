@@ -9,7 +9,7 @@ flutter clean
 flutter pub get
 dartdoc --pretty-index-json  --output ../doc/pages/flutter-sound/api
 cd ..
-
+rm doc/pages/flutter-sound/api/index.html
 if [ ! -z "$VERSION" ]; then
         gsed -i  "s/^tau_version:.*/tau_version: $VERSION/"                                     doc/_config.yml
         gsed -i  "s/^\( *version: \).*/\1$VERSION/"                                             doc/_data/sidebars/mydoc_sidebar.yml
