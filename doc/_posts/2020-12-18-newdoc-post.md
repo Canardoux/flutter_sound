@@ -46,7 +46,7 @@ The version 7.x  will be the future version and will not be background compatibl
 
 Actually, the Flutter Sound issues are a complete mess.
 Everybody create new issues sometimes for bugs, sometimes for asking help, sometimes to request new features.
-But nobody can have a clear vue of the actual situation.
+But nobody can have a clear visibility of the actual situation.
 
 Actually there is 71 issues open. And probably there will be more next week. I cannot manage that all by myself alone.
 The deficiency of Flutter Sound developers is a big problem.
@@ -56,7 +56,7 @@ Something like Mantis, Trac, Bugzilla or Jira. But I worry that those tools are 
 a project with a real team. Actually Flutter Sound has no team. So nobody to be managed.
 
 I suggest that for now we keep _Github_ and use [the Projects feature](https://github.com/dooboolab/flutter_sound/projects/3) for trying
-to have a better view of
+to have a better visibility of
 - what must be done (first column),
 - what is planned (second column),
 - what is in progress (third column)
@@ -69,9 +69,10 @@ An issue closed will not be necessary fixed, but we will be sure that it is ente
 Note: the _Project_ table can point to close issues, so this is not a problem to close them.
 
 Something not clear for me, is how the Flutter Sound users can influence the issues that are planned, and the priority of those planned issues.
-There is two possibilities :
+There is three possibilities :
 - The Flutter Sound user can post remarks in issues to help me to know what is important or not
 - The Flutter Sound user can use the _Discussions_ as a forum to discuss what must me done.
+- Use the Github Wiki
 
 I do not understand why the Github _Discussions_ feature is not used by Flutter Sound users.
 If necessary, we can setup a real forum like PhpBB, MyBB, or Discourse. But probably better to try to use the current tool (Github) before seting up something new.
