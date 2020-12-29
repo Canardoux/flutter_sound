@@ -430,11 +430,11 @@ entries:
       output: web, pdf
 
     - title: Problem Report
-      url: https:\/\/github.com\/dooboolab\/flutter_sound\/issues
+      url: https://github.com/dooboolab/flutter_sound/issues
       output: web, pdf
 
     - title: Roadmap
-      url: https:\/\/github.com\/dooboolab\/flutter_sound\/projects\/3
+      url: https://github.com/dooboolab/flutter_sound/projects\/3
       output: web, pdf
 
     - title: Contributions
