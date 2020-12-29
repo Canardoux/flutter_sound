@@ -103,6 +103,8 @@ if [ "_$1" = "_TAU" ] ; then
 
         gsed -i  "s/\/soft\/www\/canardoux.xyz\/tau_sound\/doc/\/soft\/www\/canardoux.xyz\/tau\/doc/g" bin/doc.sh
         gsed -i  "s/\/canardoux.xyz\/tau_sound\/doc\//\/canardoux.xyz\/tau\/doc\//g" flutter_sound/pubspec.yaml
+        gsed -i  "s/github.com\/dooboolab\/flutter_sound/github.com\/canardoux\/tau/g" doc/_data/topnav.yml
+        gsed -i  "s/github.com\/dooboolab\/flutter_sound/github.com\/canardoux\/tau/g" doc/_data/sidebars/mydoc_sidebar.yml
 
 
         exit 0
@@ -210,6 +212,8 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
 
         gsed -i  "s/\/soft\/www\/canardoux.xyz\/tau\/doc/\/soft\/www\/canardoux.xyz\/tau_sound\/doc/g" bin/doc.sh
         gsed -i  "s/\/canardoux.xyz\/tau\/doc\//\/canardoux.xyz\/tau_sound\/doc\//g" flutter_sound/pubspec.yaml
+        gsed -i  "s/github.com\/canardoux\/tau/github.com\/dooboolab\/flutter_sound/g" doc/_data/topnav.yml
+        gsed -i  "s/github.com\/canardoux\/tau/github.com\/dooboolab\/flutter_sound/g" doc/_data/sidebars/mydoc_sidebar.yml
 
         exit 0
 

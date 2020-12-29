@@ -12,6 +12,11 @@ keywords: Flutter, Flutter Sound, installation
 
 For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).
 
+### SDK requirements
+
+* Flutter Sound requires an iOS 10.0 SDK \(or later\)
+* Flutter Sound requires an Android 21 \(or later\)
+
 ### Flutter Sound flavors
 
 Flutter Sound comes in two flavors :

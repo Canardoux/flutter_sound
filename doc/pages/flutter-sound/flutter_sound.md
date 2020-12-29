@@ -29,8 +29,8 @@ Maybe, one day, we will be supported by Linux, Macos, and even \(why not\) Windo
 
 We actually maintain two branches for Flutter Sound :
 
-* The V5 branch \(the version ^5.0.0\)
-* The master branch \(actually the version ^6.0.0\)
+* The V6 branch \(the version ^6.0.0\)
+* The master branch \(actually the version ^7.0.0\). The master branch can sometimes introduce backward compatibility issues and be sometime not completely stable.
 
 ### SDK requirements
 

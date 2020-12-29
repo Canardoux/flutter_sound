@@ -1,3 +1,5 @@
 .DS_Store
 TauEngine/android/TauEngine/.gradle/
 .gitmodules
+doc/_site/
+_toto.tgz
