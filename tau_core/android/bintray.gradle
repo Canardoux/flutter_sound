@@ -1,6 +1,6 @@
 apply plugin: 'com.jfrog.bintray'
 
-version = '7.4.9+3'
+version = '7.4.9+4'
 
 task sourcesJar(type: Jar) {
    from android.sourceSets.main.java.srcDirs

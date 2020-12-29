@@ -5,18 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b47341e-eac0-4c86-a5b4-31355370a8bc" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/javaCompile/jarAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/6.1.1/javaCompile/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/TauEngine/android/TauEngine/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/new-version.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/new-version.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/tau.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/tau.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_sound/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_sound/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_sound/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_sound/android/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_sound/example/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_sound/example/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_sound/example/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_sound/example/android/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_sound/example/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_sound/example/ios/Podfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_sound/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_sound/example/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_sound/example/web/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_sound/example/web/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_sound/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_sound/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_sound_web/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_sound_web/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
