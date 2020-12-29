@@ -1,4 +1,4 @@
-## 7.4.9+3
+## 7.4.9+4
 
-- Please [look to this](https://dooboolab.github.io/doc/CHANGELOG.html)
+- ## The [CHANGELOG file is here](https://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/changelog.html)
 
