@@ -178,7 +178,7 @@ class _MyAppState extends State<Demo> {
 
   double sliderCurrentPosition = 0.0;
   double maxDuration = 1.0;
-  Media _media = Media.file;
+  Media _media = Media.asset;
   Codec _codec = (kIsWeb) ? Codec.opusWebM : Codec.aacADTS;
 
   bool _encoderSupported = true; // Optimist
