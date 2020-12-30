@@ -3,7 +3,7 @@
 entries:
 - title: sidebar
   product: The &tau; Project
-  version: 7.4.10+2
+  version: 7.4.11+1
   folders:
 
   - title:
@@ -334,7 +334,7 @@ entries:
       output: web, pdf
 
     - title: Live demo
-      url: pages\/flutter-sound\/web_example\/index.html
+      external_url: https://www.canardoux.xyz/tau_sound/web_example/index.html
       output: web, pdf
       subfolders:
 
@@ -430,11 +430,11 @@ entries:
       output: web, pdf
 
     - title: Problem Report
-      url: https://github.com/dooboolab/flutter_sound/issues
+      external_url: https://github.com/dooboolab/flutter_sound/issues
       output: web, pdf
 
     - title: Roadmap
-      url: https://github.com/dooboolab/flutter_sound/projects\/3
+      external_url: https://github.com/dooboolab/flutter_sound/projects\/3
       output: web, pdf
 
     - title: Contributions

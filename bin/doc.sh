@@ -58,8 +58,8 @@ ln -s readme.html index.html
 cd ../..
 
 echo "Live web example"
-rm -r doc/_site/pages/flutter-sound/web_example
-cp -a flutter_sound/example/build/web doc/_site/pages/flutter-sound/web_example
+#rm -r doc/_site/pages/flutter-sound/web_example
+#cp -a flutter_sound/example/build/web doc/_site/pages/flutter-sound/web_example
 
 echo "Upload"
 cd doc/_site
@@ -67,6 +67,12 @@ tar czf ../../_toto.tgz *
 cd ../..
 scp _toto.tgz soft@canardoux.xyz:/home/soft
 ssh -p7822 soft@canardoux.xyz "rm -rf /home/soft/www/canardoux.xyz/tau_sound/doc/*; tar xzf _toto.tgz -C /home/soft/www/canardoux.xyz/tau_sound/doc; rm _toto.tgz"
+
 #####rm -r doc/_site _toto.tgz
+cd flutter_sound/example/build/web
+tar czf ../../../../_toto2.tgz *
+cd ../../../..
+scp _toto2.tgz soft@canardoux.xyz:/home/soft
+ssh -p7822 soft@canardoux.xyz "rm -rf /home/soft/www/canardoux.xyz/tau_sound/web_example/*; tar xzf _toto2.tgz -C /home/soft/www/canardoux.xyz/tau_sound/web_example; rm _toto2.tgz"
 
 echo "E.O.J"
