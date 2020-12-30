@@ -94,7 +94,7 @@ fi
 
 
 cd tau_core/web
-npm publish . --tag $VERSION
+npm publish .
 
 cd ../..
 

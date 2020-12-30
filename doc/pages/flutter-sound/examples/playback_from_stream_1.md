@@ -25,6 +25,6 @@ Feeding Flutter Sound without back pressure is very simple but you can have two 
 
   For example, if it does a "stopPlayer\(\)" it will loose all the buffered data.
 
-This example uses the [FoodEvent](https://github.com/dooboolab/flutter_sound/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/player.md#food) object to resynchronize the output stream before doing a [stopPlayer\(\)](https://github.com/canardoux/tau/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/player.md##stopplayer)
+This example uses the [FoodEvent](https://github.com/dooboolab/flutter_sound/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/player.md#food) object to resynchronize the output stream before doing a [stopPlayer\(\)](https://github.com/dooboolab/flutter_sound/tree/bb6acacc34205174a8438a13c8c0797f7bfa2143/doc/tau/player.md##stopplayer)
 
 The complete example source [is there](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart)
