@@ -72,16 +72,16 @@ if [ "_$1" = "_TAU" ] ; then
 
         for f in $(find . -name '*.dart' )
         do
-                gsed -i  "s/package\:flutter_sound/package:flauto/" $f
+                gsed -i  "s/package\:flutter_sound/package:flauto/" "$f"
         done
 
         for f in $(find . -name '*.md' )
         do
-                gsed -i  "s/https:\/\/dooboolab.github.io\/flutter_sound/https:\/\/canardoux.github.io\/tau/" $f
-                gsed -i  "s/https:\/\/pub.dartlang.org\/packages\/flutter_sound/https:\/\/pub.dartlang.org\/packages\/flauto/" $f
-                gsed -i  "s/https:\/\/img.shields.io\/pub\/v\/flutter_sound.svg/https:\/\/img.shields.io\/pub\/v\/flauto.svg/" $f
-                gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" $f
-                gsed -i  "s/www.canardoux.xyz\/tau_sound\/doc/www.canardoux.xyz\/tau\/doc/g" $f
+                gsed -i  "s/https:\/\/dooboolab.github.io\/flutter_sound/https:\/\/canardoux.github.io\/tau/" "$f"
+                gsed -i  "s/https:\/\/pub.dartlang.org\/packages\/flutter_sound/https:\/\/pub.dartlang.org\/packages\/flauto/" "$f"
+                gsed -i  "s/https:\/\/img.shields.io\/pub\/v\/flutter_sound.svg/https:\/\/img.shields.io\/pub\/v\/flauto.svg/" "$f"
+                gsed -i  "s/https:\/\/github.com\/dooboolab\/flutter_sound/https:\/\/github.com\/canardoux\/tau/" "$f"
+                gsed -i  "s/www.canardoux.xyz\/tau_sound\/doc/www.canardoux.xyz\/tau\/doc/g" "$f"
         done
 
         # We want to keep links to flutter_sound in the changelog.md
@@ -92,7 +92,7 @@ if [ "_$1" = "_TAU" ] ; then
 
         for f in flutter_sound/ios/Classes/*
         do
-                gsed -i  "s/tau_sound_core\//tau_core\//" $f
+                gsed -i  "s/tau_sound_core\//tau_core\//" "$f"
         done
 
 
@@ -105,6 +105,8 @@ if [ "_$1" = "_TAU" ] ; then
         gsed -i  "s/\/canardoux.xyz\/tau_sound\/doc\//\/canardoux.xyz\/tau\/doc\//g" flutter_sound/pubspec.yaml
         gsed -i  "s/github.com\/dooboolab\/flutter_sound/github.com\/canardoux\/tau/g" doc/_data/topnav.yml
         gsed -i  "s/github.com\/dooboolab\/flutter_sound/github.com\/canardoux\/tau/g" doc/_data/sidebars/mydoc_sidebar.yml
+
+        gsed -i  "s/^\( *<script src=\"https:\/\/cdn\.jsdelivr\.net\/npm\/\)tau_sound_core@/\1tau_core@/"  flutter_sound/example/web/index.html
 
 
         exit 0
@@ -184,23 +186,23 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
 
         for f in $(find . -name '*.dart' )
         do
-                gsed -i  "s/package\:flauto/package:flutter_sound/" $f
+                gsed -i  "s/package\:flauto/package:flutter_sound/" "$f"
         done
 
         for f in $(find . -name '*.md' )
         do
-                gsed -i  "s/https:\/\/canardoux.github.io\/tau/https:\/\/dooboolab.github.io\/flutter_sound/" $f
-                gsed -i  "s/https:\/\/Canardoux.github.io\/tau/https:\/\/dooboolab.github.io\/flutter_sound/" $f
-                gsed -i  "s/https:\/\/pub.dartlang.org\/packages\/flauto/https:\/\/pub.dartlang.org\/packages\/flutter_sound/" $f
-                gsed -i  "s/https:\/\/img.shields.io\/pub\/v\/flauto.svg/https:\/\/img.shields.io\/pub\/v\/flutter_sound.svg/" $f
-                gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  $f
-                gsed -i  "s/https:\/\/github.com\/Canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  $f
-                gsed -i  "s/www.canardoux.xyz\/tau\/doc/www.canardoux.xyz\/tau_sound\/doc/g" $f
+                gsed -i  "s/https:\/\/canardoux.github.io\/tau/https:\/\/dooboolab.github.io\/flutter_sound/" "$f"
+                gsed -i  "s/https:\/\/Canardoux.github.io\/tau/https:\/\/dooboolab.github.io\/flutter_sound/" "$f"
+                gsed -i  "s/https:\/\/pub.dartlang.org\/packages\/flauto/https:\/\/pub.dartlang.org\/packages\/flutter_sound/" "$f"
+                gsed -i  "s/https:\/\/img.shields.io\/pub\/v\/flauto.svg/https:\/\/img.shields.io\/pub\/v\/flutter_sound.svg/" "$f"
+                gsed -i  "s/https:\/\/github.com\/canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  "$f"
+                gsed -i  "s/https:\/\/github.com\/Canardoux\/tau/https:\/\/github.com\/dooboolab\/flutter_sound/"  "$f"
+                gsed -i  "s/www.canardoux.xyz\/tau\/doc/www.canardoux.xyz\/tau_sound\/doc/g" "$f"
         done
 
         for f in flutter_sound/ios/Classes/*
         do
-                gsed -i  "s/tau_core\//tau_sound_core\//" $f
+                gsed -i  "s/tau_core\//tau_sound_core\//" "$f"
         done
 
 
@@ -214,6 +216,8 @@ elif [ "_$1" = "_FLUTTER_SOUND" ]; then
         gsed -i  "s/\/canardoux.xyz\/tau\/doc\//\/canardoux.xyz\/tau_sound\/doc\//g" flutter_sound/pubspec.yaml
         gsed -i  "s/github.com\/canardoux\/tau/github.com\/dooboolab\/flutter_sound/g" doc/_data/topnav.yml
         gsed -i  "s/github.com\/canardoux\/tau/github.com\/dooboolab\/flutter_sound/g" doc/_data/sidebars/mydoc_sidebar.yml
+
+        gsed -i  "s/^\( *<script src=\"https:\/\/cdn\.jsdelivr\.net\/npm\/\)tau_core@/\1tau_sound_core@/"  flutter_sound/example/web/index.html
 
         exit 0
 
