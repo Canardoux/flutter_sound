@@ -83,8 +83,18 @@ if [ $? -ne 0 ]; then
 fi
 cd ../..
 
+
+git add .
+git commit -m "TAU : Version $VERSION"
+git push
+if [ ! -z "$VERSION" ]; then
+        git tag -f $VERSION
+        git push --tag -f
+fi
+
+
 cd tau_core/web
-npm publish .
+npm publish . --tag $VERSION
 
 cd ../..
 
@@ -159,8 +169,6 @@ if [ $? -ne 0 ]; then
 fi
 
 cd ../..
-rm -r doc/_site/pages/flutter-sound/web_example
-cp -a flutter_sound/example/build/web doc/_site/pages/flutter-sound/web_example
 
 
 bin/doc.sh $VERSION

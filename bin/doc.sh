@@ -57,6 +57,10 @@ done
 ln -s readme.html index.html
 cd ../..
 
+echo "Live web example"
+rm -r doc/_site/pages/flutter-sound/web_example
+cp -a flutter_sound/example/build/web doc/_site/pages/flutter-sound/web_example
+
 echo "Upload"
 cd doc/_site
 tar czf ../../_toto.tgz *
