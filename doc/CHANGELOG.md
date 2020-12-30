@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.4.11
+
+- Fighting with #569 : remove two naughty warnings during pod install of the example.
+
 ## 7.4.10
 
 - Fixes a bug in the live web example

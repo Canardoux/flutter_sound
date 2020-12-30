@@ -3,7 +3,7 @@ title:  "Host anavailable"
 published: true
 permalink: docunavailable-post.html
 summary: "The doc was unavailable during 12 hours."
-tags: [jekyll]
+tags: [news]
 ---
 
 I am sorry, the doc was unavailable during 12 hours.

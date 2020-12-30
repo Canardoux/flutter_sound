@@ -3,7 +3,7 @@ title:  "A new &tau; documentation"
 published: true
 permalink: newdoc-post.html
 summary: "The new &tau; documentation is now based on Jekyll."
-tags: [jekyll]
+tags: [jekyll,news]
 ---
 
 ## 1. Jekyll

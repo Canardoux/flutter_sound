@@ -22,6 +22,7 @@ if [ $? -ne 0 ]; then
             echo "# =====================================================" >> flutter_sound/example/ios/Podfile
     fi
 fi
+gsed -i  "s/^#* *platform :ios,.*$/platform :ios, '10.0'/" flutter_sound/example/ios/Podfile
 
 
 if [ "_$1" = "_REL" ] ; then
