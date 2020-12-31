@@ -21,11 +21,11 @@ import 'package:flutter/material.dart';
 import 'demo/demo.dart';
 import 'livePlaybackWithBackPressure/live_playback_with_back_pressure.dart';
 import 'livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart';
+import 'multi_playback/multi_playback.dart';
 import 'recordToStream/record_to_stream_example.dart';
 import 'simple_playback/simple_playback.dart';
 import 'simple_recorder/simple_recorder.dart';
 import 'soundEffect/sound_effect.dart';
-import 'speechToText/speech_to_text_example.dart';
 import 'streamLoop/stream_loop.dart';
 import 'widgetUI/widget_ui_demo.dart';
 
@@ -141,6 +141,16 @@ This example is really basic.
   ),
 
   Example(
+    title: 'multiPlayback',
+    subTitle: 'Playing several sound at the same time',
+    flags: 0,
+    route: (_) => MultiPlayback(),
+    description: '''
+This is a simple example that plays several sound at the same time.
+''',
+  ),
+
+  Example(
     title: 'recordToStream',
     subTitle: 'Example of recording to Stream',
     flags: tNotWeb,
@@ -223,19 +233,6 @@ This example does not use a new StreamController, but use directly `foodStreamCo
 from flutter_sound_player.dart.
 ''',
   ),
-
-  Example(
-      title: 'SpeechToText',
-      subTitle: 'Speech to Text example',
-      flags: tNotWeb,
-      route: (_) => SpeechToTextExample(),
-      description: '''
-This is an example showing how to do Speech To Text.
-This is just for FUN :-D, because this example does not use the Flutter Sound library.
-But it is included in Flutter Sound examples because it shows how easy it is
-to deal with Sounds on Flutter.
-
-This example was provided by @jtkeyva. Thanks to him :-) '''),
 ];
 
 ///

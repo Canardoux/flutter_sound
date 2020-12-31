@@ -3,7 +3,7 @@
 entries:
 - title: sidebar
   product: The &tau; Project
-  version: 7.4.11+1
+  version: 7.4.12+1
   folders:
 
   - title:
@@ -360,6 +360,10 @@ entries:
 
         - title: Simple Recorder
           url: /flutter_sound_examples_simple_recorder.html
+          output: web, pdf
+
+        - title: Multi Playbacks
+          url: /flutter_sound_examples_multi_playbacks.html
           output: web, pdf
 
         - title: Record to Stream
