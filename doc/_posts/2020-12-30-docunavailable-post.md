@@ -1,5 +1,5 @@
 ---
-title:  "Host anavailable"
+title:  "Host unavailable"
 published: true
 permalink: docunavailable-post.html
 summary: "The doc was unavailable during 12 hours."
