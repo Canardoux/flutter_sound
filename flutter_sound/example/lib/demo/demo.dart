@@ -58,6 +58,10 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 ///
 const int tSAMPLERATE = 8000;
 
+/// Sample rate used for Streams
+const int tSTREAM_SAMPLE_RATE =
+    44000; // 44100 does not work for recorder on iOS
+
 ///
 const int tBLOCKSIZE = 4096;
 
@@ -317,9 +321,10 @@ class _MyAppState extends State<Demo> {
         });
         await recorderModule.startRecorder(
           toStream: recordingDataController.sink,
+
           codec: _codec,
           numChannels: 1,
-          sampleRate: tSAMPLERATE,
+          sampleRate: tSTREAM_SAMPLE_RATE, //tSAMPLERATE,
         );
       } else {
         await recorderModule.startRecorder(
@@ -441,16 +446,38 @@ class _MyAppState extends State<Demo> {
     var myUri = Uri.parse(filePath);
     var audioFile = File.fromUri(myUri);
     Uint8List bytes;
-    await audioFile.readAsBytes().then((value) {
-      bytes = Uint8List.fromList(value);
-      print('reading of bytes is completed');
-    });
+    var b = await audioFile.readAsBytes();
+    bytes = Uint8List.fromList(b);
+    print('reading of bytes is completed');
     return bytes;
   }
 
+  Future<Uint8List> getAssetData(String path) async {
+    var asset = await rootBundle.load(path);
+    return asset.buffer.asUint8List();
+  }
+
+  /*
   Future<void> feedHim(String path) async {
     var data = await _readFileByte(path);
-    return playerModule.feedFromStream(data);
+    return await playerModule.feedFromStream(data);
+  }
+*/
+
+  final int blockSize = 4096;
+  Future<void> feedHim(String path) async {
+    var buffer = await _readFileByte(path);
+    //var buffer = await getAssetData('assets/samples/sample.pcm');
+
+    var lnData = 0;
+    var totalLength = buffer.length;
+    while (totalLength > 0 && !playerModule.isStopped) {
+      var bsize = totalLength > blockSize ? blockSize : totalLength;
+      await playerModule
+          .feedFromStream(buffer.sublist(lnData, lnData + bsize)); // await !!!!
+      lnData += bsize;
+      totalLength -= bsize;
+    }
   }
 
   Future<void> startPlayer() async {
@@ -531,9 +558,9 @@ class _MyAppState extends State<Demo> {
         });
       } else if (_media == Media.stream) {
         await playerModule.startPlayerFromStream(
-          codec: _codec,
+          codec: Codec.pcm16, //_codec,
           numChannels: 1,
-          sampleRate: tSAMPLERATE,
+          sampleRate: 44100, //tSAMPLERATE,
         );
         _addListeners();
         setState(() {});
@@ -546,7 +573,7 @@ class _MyAppState extends State<Demo> {
           await playerModule.startPlayer(
               fromURI: audioFilePath,
               codec: codec,
-              sampleRate: tSAMPLERATE,
+              sampleRate: tSTREAM_SAMPLE_RATE,
               whenFinished: () {
                 print('Play finished');
                 setState(() {});

@@ -44,6 +44,7 @@
         AVAudioFormat* inputFormat = [inputNode outputFormatForBus: 0];
         NSNumber* nbChannels = audioSettings [AVNumberOfChannelsKey];
         NSNumber* sampleRate = audioSettings [AVSampleRateKey];
+        //sampleRate = [NSNumber numberWithInt: 44000];
         AVAudioFormat* recordingFormat = [[AVAudioFormat alloc] initWithCommonFormat: AVAudioPCMFormatInt16 sampleRate: sampleRate.doubleValue channels: (unsigned int)(nbChannels.unsignedIntegerValue) interleaved: YES];
         AVAudioConverter* converter = [[AVAudioConverter alloc]initFromFormat: inputFormat toFormat: recordingFormat];
         NSFileManager* fileManager = [NSFileManager defaultManager];
@@ -60,7 +61,7 @@
         }
 
 
-        [inputNode installTapOnBus: 0 bufferSize: 2048 format: inputFormat block:
+        [inputNode installTapOnBus: 0 bufferSize: 20480 format: inputFormat block:
         ^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when)
         {
                 inputStatus = AVAudioConverterInputStatus_HaveData ;
@@ -79,7 +80,7 @@
                 if (!r)
                 {
                         NSString* s =  error.localizedDescription;
-                        NSString* f = @"%s";
+                        NSString* f = @"convertToBuffer: error %s";
                         NSLog(f, s);
                         s = error.localizedFailureReason;
                         NSLog(f, s);
