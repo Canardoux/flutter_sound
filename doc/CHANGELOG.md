@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.4.13
+
+- Fixes problems on iOS with play/record from/to stream. SampleRate=44000 is a good choice. [#484]([BUG] iOS : little clicks with streams #484).
+
 ## 7.4.12
 
 - Add an example doing several playbacks at the same time [#546]

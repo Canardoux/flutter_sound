@@ -291,14 +291,20 @@
                                 [playerNode scheduleBuffer: thePCMOutputBuffer  completionHandler:
                                 ^(void)
                                 {
-                                        --ready;
-                                        if (self ->waitingBlock != nil)
-                                        {
-                                                NSLog(@"Writing waiting block. Ready = %d", ready);
-                                                [self feed: self ->waitingBlock]; // Recursion here
-                                                self ->waitingBlock = nil;
-                                                [self ->flutterSoundPlayer needSomeFood: ln];
-                                        }
+                                        dispatch_async(dispatch_get_main_queue(),
+                                        ^{
+                                                --ready;
+                                                assert(ready < NB_BUFFERS);
+                                                if (self ->waitingBlock != nil)
+                                                {
+                                                        NSData* blk = self ->waitingBlock;
+                                                        self ->waitingBlock = nil;
+                                                        int ln = (int)[blk length];
+                                                        int l = [self feed: blk]; // Recursion here
+                                                        assert (l == ln);
+                                                        [self ->flutterSoundPlayer needSomeFood: ln];
+                                                }
+                                        });
 
                                 }];
                                 return ln;
@@ -306,10 +312,11 @@
                 } else
                 {
                         NSLog(@"Ready = %d", ready);
+                        assert (ready == NB_BUFFERS);
+                        assert(waitingBlock == nil);
+                        waitingBlock = data;
+                        return 0;
                 }
-                assert(waitingBlock == nil);
-                waitingBlock = data;
-                return 0;
          }
 
 -(bool)  setVolume: (long) volume // TODO

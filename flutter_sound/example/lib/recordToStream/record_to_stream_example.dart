@@ -34,7 +34,7 @@ import 'package:permission_handler/permission_handler.dart';
  */
 
 ///
-const int tSampleRate = 8000;
+const int tSampleRate = 44000;
 typedef _Fn = void Function();
 
 /// Example app.
