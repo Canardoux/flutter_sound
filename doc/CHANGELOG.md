@@ -10,6 +10,7 @@ toc: false
 ## 7.4.12
 
 - Add an example doing several playbacks at the same time [#546]
+
 ## 7.4.11
 
 - Fighting with #569 : remove two naughty warnings during pod install of the example.

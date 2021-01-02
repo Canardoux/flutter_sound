@@ -15,7 +15,7 @@ keywords: Flutter, Flutter Sound, examples, demo
 
 {% include image.html file="examples/multi_playback.png" %}
 
-This is a very example doing several playbacks at the same time.
+This is a simple example doing several playbacks at the same time.
 
 This example shows also :
 - The Pause/Resume feature.
