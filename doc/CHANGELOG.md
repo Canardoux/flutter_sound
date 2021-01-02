@@ -9,19 +9,19 @@ toc: false
 ---
 ## 7.4.13
 
-- Fixes problems on iOS with play/record from/to stream. SampleRate=44000 is a good choice. [#484]([BUG] iOS : little clicks with streams #484).
+- Fixes problems on iOS with play/record from/to stream. SampleRate=44000 is a good choice. [#484](https://github.com/dooboolab/flutter_sound/issues/484).
 
 ## 7.4.12
 
-- Add an example doing several playbacks at the same time [#546]
+- Add an example doing several playbacks at the same time [#546](https://github.com/dooboolab/flutter_sound/issues/546)
 
 ## 7.4.11
 
-- Fighting with #569 : remove two naughty warnings during pod install of the example.
+- Fighting with [#569](https://github.com/dooboolab/flutter_sound/issues/569) : remove two naughty warnings during pod install of the example.
 
 ## 7.4.10
 
-- Fixes a bug in the live web example
+- Fixes a bug in the live web example [#574](https://github.com/dooboolab/flutter_sound/issues/574)
 
 ## 7.4.9
 
