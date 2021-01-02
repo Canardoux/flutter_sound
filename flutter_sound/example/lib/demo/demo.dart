@@ -59,8 +59,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 const int tSAMPLERATE = 8000;
 
 /// Sample rate used for Streams
-const int tSTREAM_SAMPLE_RATE =
-    44000; // 44100 does not work for recorder on iOS
+const int tSTREAMSAMPLERATE = 44000; // 44100 does not work for recorder on iOS
 
 ///
 const int tBLOCKSIZE = 4096;
@@ -324,7 +323,7 @@ class _MyAppState extends State<Demo> {
 
           codec: _codec,
           numChannels: 1,
-          sampleRate: tSTREAM_SAMPLE_RATE, //tSAMPLERATE,
+          sampleRate: tSTREAMSAMPLERATE, //tSAMPLERATE,
         );
       } else {
         await recorderModule.startRecorder(
@@ -573,7 +572,7 @@ class _MyAppState extends State<Demo> {
           await playerModule.startPlayer(
               fromURI: audioFilePath,
               codec: codec,
-              sampleRate: tSTREAM_SAMPLE_RATE,
+              sampleRate: tSTREAMSAMPLERATE,
               whenFinished: () {
                 print('Play finished');
                 setState(() {});
