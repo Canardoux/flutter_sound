@@ -1,5 +1,5 @@
 
-![Banner](https://www.canardoux.xyz/tau_sound/doc/images/banner.png)
+![Banner](https://www.canardoux.xyz/tau_sound/web_example/banner.png)
 
 -------------------------------------------------------------------------------------
 
@@ -8,7 +8,8 @@
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
-![Demo](https://user-images.githubusercontent.com/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
+![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
+
 
 ## Overview
 
@@ -28,7 +29,7 @@ Flutter Sound can be used to play a beep from an asset all the way up to impleme
 
 The API is designed so you can use the supplied widgets or roll your own.
 
-- Flutter Sound requires an iOS 9.3 SDK (or later)
+- Flutter Sound requires an iOS 10.0 SDK (or later)
 - Flutter Sound requires an Android API level 21 (or later)
 
 ## Features
