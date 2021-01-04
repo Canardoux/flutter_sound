@@ -97,7 +97,6 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 	}
 
 
-
 	void isEncoderSupported ( final MethodCall call, final Result result )
 	{
 		int     _codec = call.argument ( "codec" );
@@ -203,6 +202,7 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 			int                             _audioSource        = call.argument ( "audioSource" );
 			t_AUDIO_SOURCE                  audioSource         = t_AUDIO_SOURCE.values()[_audioSource];
 			int 				toStream	    = call.argument ( "toStream");
+
 			boolean r = m_recorder.startRecorder(codec, sampleRate, numChannels, bitRate, path, audioSource, toStream != 0);
 			if (r)
 				result.success ( "Media Recorder is started" );

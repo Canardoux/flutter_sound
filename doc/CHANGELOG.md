@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.4.14
+
+- Now, &tau; throws a correct exception during `startRecorder()` on Android when the recording permission is not granted. [#558](https://github.com/dooboolab/flutter_sound/issues/558)
+
 ## 7.4.13
 
 - Fixes problems on iOS with play/record from/to stream. SampleRate=44000 is a good choice. [#484](https://github.com/dooboolab/flutter_sound/issues/484).
