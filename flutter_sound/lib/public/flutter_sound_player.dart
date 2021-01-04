@@ -895,7 +895,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// **This functionnality needs, at least, and Android SDK >= 21**
   ///
   ///   - The only codec supported is actually `Codec.pcm16`.
-  ///  - The only value possible for `numChannels` is actually 1.
+  ///   - The only value possible for `numChannels` is actually 1.
   ///   - SampleRate is the sample rate of the data you want to play.
   ///
   ///   Please look to [the following notice](codec.md#playing-pcm-16-from-a-dart-stream)

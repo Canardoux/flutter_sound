@@ -3,7 +3,7 @@
 entries:
 - title: sidebar
   product: The &tau; Project
-  version: 7.4.13+3
+  version: 7.4.14+1
   folders:
 
   - title:
@@ -80,6 +80,11 @@ entries:
     - title: Notification on the lock screen
       url: /guides_lock_screen.html
       output: web, pdf
+
+    - title: Running &tau; on Web
+      url: /guides_web.html
+      output: web, pdf
+
 
 
 # -------------------------------------------------------------
@@ -327,10 +332,6 @@ entries:
 
     - title: Installation
       url: /flutter_sound_install.html
-      output: web, pdf
-
-    - title: Flutter Sound on Flutter Web
-      url: /flutter_sound_web.html
       output: web, pdf
 
     - title: Live demo

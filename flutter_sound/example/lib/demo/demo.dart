@@ -101,6 +101,11 @@ enum AudioState {
 }
 
 ///
+final exampleAudioFilePathAACAdts =
+    //'https://filesamples.com/samples/audio/aac/sample1.aac';
+    'https://www.canardoux.xyz/tau_sound/web_example/sample.aac';
+
+///
 final exampleAudioFilePathWave =
     'http://5.189.150.137:5000/download_audio/CantinaBand3.wav';
 
@@ -507,6 +512,8 @@ class _MyAppState extends State<Demo> {
           audioFilePath = exampleAudioFilePathMP3;
         } else if (codec == Codec.opusOGG) {
           audioFilePath = exampleAudioFilePathOPUS;
+        } else if (codec == Codec.aacADTS) {
+          audioFilePath = exampleAudioFilePathAACAdts;
         } else if (codec == Codec.pcm16WAV) {
           exampleAudioFilePathWave;
         }
@@ -837,10 +844,8 @@ class _MyAppState extends State<Demo> {
     if (_media == Media.remoteExampleFile &&
         !(_codec == Codec.mp3 ||
             _codec == Codec.opusOGG ||
-            _codec ==
-                Codec
-                    .pcm16WAV)) // in this example we use just a remote mp3 or upus file
-    {
+            _codec == Codec.pcm16WAV ||
+            _codec == Codec.aacADTS)) {
       return null;
     }
 

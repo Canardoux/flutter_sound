@@ -172,9 +172,9 @@ Add those 4 lines at the end of the `<head>` section of your `index.html` file :
 Add those 4 lines at the end of the `<head>` section of your `index.html` file :
 
 ```text
-  <script src="https://cdn.jsdelivr.net/npm/tau_engine@6/js/flutter_sound/flutter_sound.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tau_engine@6/js/flutter_sound/flutter_sound_player.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tau_engine@6/js/flutter_sound/flutter_sound_recorder.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@7.4.13/js/flutter_sound/flutter_sound.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@7.4.13/js/flutter_sound/flutter_sound_player.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@7.4.13/js/flutter_sound/flutter_sound_recorder.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/howler@2/dist/howler.min.js"></script>
 ```
 

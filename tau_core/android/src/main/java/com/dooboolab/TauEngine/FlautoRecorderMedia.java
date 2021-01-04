@@ -18,12 +18,14 @@ package com.dooboolab.TauEngine;
  */
 
 
+import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.util.Log;
-
+import androidx.core.content.ContextCompat;
 import java.io.IOException;
 import com.dooboolab.TauEngine.Flauto.t_CODEC;
+import static android.Manifest.permission.RECORD_AUDIO;
 
 
 public class FlautoRecorderMedia
@@ -106,6 +108,13 @@ public class FlautoRecorderMedia
 
 	MediaRecorder mediaRecorder;
 
+	public boolean CheckPermissions()
+	{
+		//int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+		int result1 = ContextCompat.checkSelfPermission(Flauto.androidContext, RECORD_AUDIO);
+		return result1 == PackageManager.PERMISSION_GRANTED;
+	}
+
 
 	public void _startRecorder
 		(
@@ -118,7 +127,7 @@ public class FlautoRecorderMedia
 			FlautoRecorder session
                 )
 		throws
-		IOException
+		IOException, Exception
 	{
 		// The caller must be allowed to specify its path. We must not change it here
 		// path = PathUtils.getDataDirectory(reg.context()) + "/" + path; // SDK 29 :
@@ -132,6 +141,10 @@ public class FlautoRecorderMedia
 			mediaRecorder = new MediaRecorder ();
 		}
 
+		if (!CheckPermissions())
+		{
+			throw new Exception("Check Permission: Recording permission is not granted");
+		}
 
 		try
 		{
