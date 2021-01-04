@@ -45,7 +45,7 @@ public class FlutterSound
 		Flauto.androidContext = binding.getApplicationContext ();
 		FlutterSoundPlayerManager.attachFlautoPlayer ( Flauto.androidContext, binding.getBinaryMessenger () );
 		FlutterSoundRecorderManager.attachFlautoRecorder ( Flauto.androidContext, binding.getBinaryMessenger () );
-        	if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin( Flauto.androidContext, binding.getBinaryMessenger() );}
+        if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin( Flauto.androidContext, binding.getBinaryMessenger() );}
 	}
 
 
@@ -60,7 +60,7 @@ public class FlutterSound
 
 		FlutterSoundPlayerManager.attachFlautoPlayer ( Flauto.androidContext, registrar.messenger () );
 		FlutterSoundRecorderManager.attachFlautoRecorder ( Flauto.androidContext, registrar.messenger ()  );
-        	if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin(Flauto.androidContext,registrar.messenger ()  );}
+        if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin(Flauto.androidContext,registrar.messenger ()  );}
 	}
 
 
