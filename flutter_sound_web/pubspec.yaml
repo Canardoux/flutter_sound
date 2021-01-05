@@ -28,8 +28,8 @@ flutter:
 
 
 dependencies:
-  flutter_sound_platform_interface: 7.4.14+1
-#    path: ../flutter_sound_platform_interface # Flutter Sound Dir
+  flutter_sound_platform_interface: # 7.4.14+1
+    path: ../flutter_sound_platform_interface # Flutter Sound Dir
   flutter:
     sdk: flutter
   flutter_web_plugins:

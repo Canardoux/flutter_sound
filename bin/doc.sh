@@ -8,6 +8,11 @@ cd flutter_sound
 flutter clean
 flutter pub get
 dartdoc --pretty-index-json  --output ../doc/pages/flutter-sound/api
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+
 cd ..
 rm doc/pages/flutter-sound/api/index.html
 if [ ! -z "$VERSION" ]; then
@@ -33,6 +38,11 @@ echo jekyll build
 cd doc
 rm home.md 2>/dev/null
 bundle exec jekyll build 2>/dev/null
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+
 cd ..
 
 

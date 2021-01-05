@@ -1396,7 +1396,47 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       return (await getApplicationDocumentsDirectory()).path;
     }
   }
+
+
+  /// Starts the Microphone and plays what is recorded.
+  ///
+  /// The Speaker is directely linked to the Microphone.
+  /// There is no processing between the Microphone and the Speaker.
+  /// If you want to process the data before playing them, actually you must define a loop between a [FlutterSoundPlayer] and a [FlutterSoundRecorder].
+  /// (Please, look to [this example](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/flutter_sound_examples_stream_loop.html)).
+  ///
+  /// Later, we will implement the _Tau Audio Graph_ concept, which will be a more general object.
+  ///
+  /// - `startPlayerFromMic()` has two optional parameters :
+  ///    - `sampleRate:` the Sample Rate used. Optional. Only used on Android. The default value is probably a good choice and the App can ommit this optional parameter.
+  ///    - `numChannels:` 1 for monophony, 2 for stereophony. Optional. Actually only monophony is implemented.
+  ///
+  /// `startPlayerFromMic()` returns a Future, which is completed when the Player is really started.
+  ///
+  /// *Example:*
+  /// ```dart
+  ///     await myPlayer.startPlayerFromMic();
+  ///     ...
+  ///     myPlayer.stopPlayer();
+  /// ```
+  Future<void> startPlayerFromMic({
+    int sampleRate = 44000, // The default value is probably a good choice.
+    int numChannels = 1, // 1 for monophony, 2 for stereophony (actually only monophony is supported.
+  }) async {
+    print('FS:---> startPlayer ');
+    if (_isInited == Initialized.initializationInProgress) {
+      throw (_InitializationInProgress());
+    }
+    if (_isInited != Initialized.fullyInitialized) {
+      throw (_NotOpen());
+    }
+  }
+
+
+
 }
+
+
 
 /// Used to stream data about the position of the
 /// playback as playback proceeds.
