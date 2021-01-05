@@ -128,6 +128,10 @@ entries:
           url: /tau_api_player_start_player_from_track.html
           output: web, pdf
 
+        - title: startPlayerFromMic()
+          url: /tau_api_player_start_player_from_mic.html
+          output: web, pdf
+
         - title: startPlayerFromStream()
           url: /tau_api_player_start_player_from_stream.html
           output: web, pdf
@@ -361,6 +365,10 @@ entries:
 
         - title: Simple Recorder
           url: /flutter_sound_examples_simple_recorder.html
+          output: web, pdf
+
+        - title: Play from Mic
+          url: /flutter_sound_examples_play_from_mic.html
           output: web, pdf
 
         - title: Multi Playbacks

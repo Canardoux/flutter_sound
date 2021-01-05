@@ -22,6 +22,7 @@ import 'demo/demo.dart';
 import 'livePlaybackWithBackPressure/live_playback_with_back_pressure.dart';
 import 'livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart';
 import 'multi_playback/multi_playback.dart';
+import 'play_from_mic/play_from_mic.dart';
 import 'recordToStream/record_to_stream_example.dart';
 import 'simple_playback/simple_playback.dart';
 import 'simple_recorder/simple_recorder.dart';
@@ -149,6 +150,20 @@ This example is really basic.
 This is a simple example that plays several sound at the same time.
 ''',
   ),
+
+
+  Example(
+    title: 'Play from Mic',
+    subTitle: 'Play from microphone',
+    flags: 0,
+    route: (_) => PlayFromMic(),
+    description: '''
+Play what is recorded by the microphone.
+This example is very simple.
+''',
+  ),
+
+
 
   Example(
     title: 'recordToStream',
