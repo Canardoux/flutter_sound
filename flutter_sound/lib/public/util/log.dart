@@ -25,7 +25,7 @@
 /// {@category Utilities}
 library log;
 
-import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
 import 'enum_helper.dart';
@@ -161,9 +161,9 @@ class MyLogPrinter extends LogPrinter {
       // don't log events where the log level is set higher
       return [];
     }
-    var formatter = DateFormat('dd HH:mm:ss.');
+    //var formatter = DateFormat('dd HH:mm:ss.');
     var now = DateTime.now();
-    var formattedDate = formatter.format(now) + now.millisecond.toString();
+    //var formattedDate = formatter.format(now) + now.millisecond.toString();
 
     var frames = StackTraceImpl();
     var i = 0;
@@ -179,7 +179,7 @@ class MyLogPrinter extends LogPrinter {
 
     print(color(
         event.level,
-        '$formattedDate ${EnumHelper.getName(event.level)} '
+        '${EnumHelper.getName(event.level)} '
         '${StackTraceImpl(skipFrames: depth).formatStackTrace(methodCount: 1)} '
         '::: ${event.message}'));
 
