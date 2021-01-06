@@ -228,6 +228,13 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
   }
 
   @override
+  Future<int> startPlayerFromMic(FlutterSoundPlayerCallback callback, {int numChannels, int sampleRate})
+  {
+    return  invokeMethod( callback, 'startPlayerFromMic', { 'numChannels': numChannels, 'sampleRate': sampleRate, },) ;
+  }
+
+
+  @override
   Future<int> feed(FlutterSoundPlayerCallback callback, {Uint8List data, })
   {
     return invokeMethod( callback, 'feed', {'data': data, },) ;

@@ -69,7 +69,7 @@
         channels: (int)numChannels
         sampleRate: (long)sampleRate
         ;
-        
+- (bool)startPlayerFromMicSampleRate: (long)sampleRate nbChannels: (int)nbChannels;
 - (bool)startPlayerFromTrack: (FlautoTrack*)track canPause: (bool)canPause canSkipForward: (bool)canSkipForward canSkipBackward: (bool)canSkipBackward
         progress: (NSNumber*)progress duration: (NSNumber*)duration removeUIWhenStopped: (bool)removeUIWhenStopped defaultPauseResume: (bool)defaultPauseResume;
 

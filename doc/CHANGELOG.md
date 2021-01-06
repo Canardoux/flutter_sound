@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.4.15
+
+- Remove the `intl` dependency. [#584](https://github.com/dooboolab/flutter_sound/issues/584)
+
 ## 7.4.14
 
 - Now, &tau; throws a correct exception during `startRecorder()` on Android when the recording permission is not granted. [#558](https://github.com/dooboolab/flutter_sound/issues/558)

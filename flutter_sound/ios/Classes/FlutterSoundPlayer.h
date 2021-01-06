@@ -25,7 +25,6 @@
 
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
-//#import "FlautoPlayerEngine.h"
 #import <tau_sound_core/FlautoPlayer.h>
 #import <tau_sound_core/Flauto.h>
 #include "FlutterSoundManager.h"
@@ -43,18 +42,10 @@
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result;
 - (void)pausePlayer:(FlutterResult)result;
 - (void)resumePlayer:(FlutterResult)result;
-//- (void)audioPlayerDidFinishPlaying: (BOOL)flag;
-//- (void)updateProgress:(NSTimer *)timer;
-//- (bool)pause;
-//- (bool)resume;
-//- (NSNumber*)getPlayerStatus;
-//- (int)getStatus;
-//- (long)getPosition;
-//- (long)getDuration;
 - (void)startPlayer:(FlutterMethodCall*)path result: (FlutterResult)result;
+- (void)startPlayerFromMic:(FlutterMethodCall*)path result: (FlutterResult)result;
 - (void)getProgress:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result;
-//- (void)startPlayerFromBuffer:(FlutterStandardTypedData*)dataBuffer result: (FlutterResult)result;
 - (void)seekToPlayer:(FlutterMethodCall*) time result: (FlutterResult)result;
 - (void)setSubscriptionDuration:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)setVolume:(double) volume result: (FlutterResult)result;
@@ -67,9 +58,7 @@
 - (void)nowPlaying:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)getPlayerState:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)stopPlayer:(FlutterMethodCall*)call  result:(FlutterResult)result;
-
 - (void)feed:(FlutterMethodCall*)call result: (FlutterResult)result;
-//- (void)needSomeFood: (int) ln;
 
 @end
 

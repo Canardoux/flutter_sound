@@ -243,7 +243,7 @@
         if ([dataBuffer class] != [NSNull class])
                 data = [dataBuffer data];
         int channels = ([numChannels class] != [NSNull class]) ? [numChannels intValue] : 1;
-        long samplerateLong = ([sampleRate class] != [NSNull class]) ? [sampleRate longValue] : 44100;
+        long samplerateLong = ([sampleRate class] != [NSNull class]) ? [sampleRate longValue] : 44000;
   
         bool b =
         [
@@ -262,6 +262,34 @@
                         [FlutterError
                         errorWithCode:@"Audio Player"
                         message:@"startPlayer failure"
+                        details:nil];
+        }
+
+        NSLog(@"IOS:<-- startPlayer");
+}
+
+
+- (void)startPlayerFromMic:(FlutterMethodCall*)call result: (FlutterResult)result
+{
+        NSLog(@"IOS:--> startPlayerFromMic");
+
+        NSNumber* numChannels = (NSNumber*)call.arguments[@"numChannels"];
+        NSNumber* sampleRate = (NSNumber*)call.arguments[@"sampleRate"];
+        long samplerateLong = ([sampleRate class] != [NSNull class]) ? [sampleRate longValue] : 44000;
+        int channels = ([numChannels class] != [NSNull class]) ? [numChannels intValue] : 1;
+        bool b =
+        [
+                flautoPlayer startPlayerFromMicSampleRate: samplerateLong
+                nbChannels: channels
+        ];
+        if (b)
+        {
+                result([self getPlayerStatus]);
+        } else
+        {
+                        [FlutterError
+                        errorWithCode:@"Audio Player"
+                        message:@"startPlayerFromMic failure"
                         details:nil];
         }
 

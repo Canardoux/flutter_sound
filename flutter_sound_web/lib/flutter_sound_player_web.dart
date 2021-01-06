@@ -278,7 +278,13 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                 return getWebSession(callback).startPlayer(codec.index,  fromDataBuffer, fromURI, numChannels, sampleRate);
         }
 
+
         @override
+        Future<int> startPlayerFromMic(FlutterSoundPlayerCallback callback, {int numChannels, int sampleRate}) {
+                throw Exception('StartPlayerFromMic() is not implemented on Flutter Web');
+        }
+
+                @override
         Future<int> feed(FlutterSoundPlayerCallback callback, {Uint8List data, }) async
         {
                 return getWebSession(callback).feed(data);

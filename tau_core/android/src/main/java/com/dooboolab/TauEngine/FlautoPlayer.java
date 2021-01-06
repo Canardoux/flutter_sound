@@ -143,6 +143,26 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 		return pauseMode ? t_PLAYER_STATE.PLAYER_IS_PAUSED : t_PLAYER_STATE.PLAYER_IS_STOPPED;
 	}
 
+	public boolean startPlayerFromMic (int numChannels, int sampleRate, int blockSize )
+	{
+		//if ( ! hasFocus ) // We always require focus because it could have been abandoned by another Session
+		{
+			requestFocus ();
+		}
+		stopPlayer(); // To start a new clean playback
+
+		try
+		{
+			player = new FlautoPlayerEngineFromMic();
+			player._startPlayer(null,  sampleRate, numChannels, blockSize, this);
+		}
+		catch ( Exception e )
+		{
+			Log.e ( TAG, "startPlayer() exception" );
+			return false;
+		}
+		return true;
+	}
 
 	public boolean startPlayer (t_CODEC codec, String fromURI, byte[] dataBuffer, int numChannels, int sampleRate, int blockSize )
 	{

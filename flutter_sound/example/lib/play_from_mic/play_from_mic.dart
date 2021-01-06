@@ -19,6 +19,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 /*
  *
@@ -45,16 +46,25 @@ class _PlayFromMicState extends State<PlayFromMic> {
   FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
 
-  @override
-  void initState() {
-    super.initState();
-    // Be careful : openAudioSession return a Future.
+  Future<void> open() async {
+    var status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      throw RecordingPermissionException('Microphone permission not granted');
+    }
+
+    // Be careful : openAudioSession returns a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
     _mPlayer.openAudioSession().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    open();
   }
 
   @override
@@ -67,15 +77,10 @@ class _PlayFromMicState extends State<PlayFromMic> {
     super.dispose();
   }
 
-  // -------  Here is the code to playback a remote file -----------------------
+  // -------  Here is the code to play from the microphone -----------------------
 
   void play() async {
-    await _mPlayer.startPlayer(
-        fromURI: _exampleAudioFilePathMP3,
-        codec: Codec.mp3,
-        whenFinished: () {
-          setState(() {});
-        });
+    await _mPlayer.startPlayerFromMic();
     setState(() {});
   }
 
@@ -85,7 +90,7 @@ class _PlayFromMicState extends State<PlayFromMic> {
     }
   }
 
-  // --------------------- (it was very simple, wasn't it ?) -------------------
+  // ---------------------------------------
 
   Fn getPlaybackFn() {
     if (!_mPlayerIsInited) {
@@ -127,7 +132,7 @@ class _PlayFromMicState extends State<PlayFromMic> {
                 width: 20,
               ),
               Text(_mPlayer.isPlaying
-                  ? 'Playback in progress'
+                  ? 'Playing the microphone'
                   : 'Player is stopped'),
             ]),
           ),

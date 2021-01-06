@@ -324,8 +324,164 @@
         return true; // TODO
 }
 
+@end
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+@implementation AudioEngineFromMic
+{
+        FlautoPlayer* flutterSoundPlayer; // Owner
+        AVAudioEngine* engine;
+        AVAudioPlayerNode* playerNode;
+        AVAudioFormat* playerFormat;
+        AVAudioFormat* outputFormat;
+        AVAudioOutputNode* outputNode;
+        CFTimeInterval mStartPauseTime ; // The time when playback was paused
+	CFTimeInterval systemTime ; //The time when  StartPlayer() ;
+        double mPauseTime ; // The number of seconds during the total Pause mode
+        NSData* waitingBlock;
+        long m_sampleRate ;
+        int  m_numChannels;
+}
+
+       - (AudioEngineFromMic*)init: (FlautoPlayer*)owner
+       {
+                flutterSoundPlayer = owner;
+                waitingBlock = nil;
+                engine = [[AVAudioEngine alloc] init];
+                
+                AVAudioInputNode* inputNode = [engine inputNode];
+                //AVAudioFormat* inputFormat = [inputNode outputFormatForBus: 0];
+
+                outputNode = [engine outputNode];
+                outputFormat = [outputNode inputFormatForBus: 0];
+                
+
+                [engine connect: inputNode to: outputNode format: outputFormat];
+                return [super init];
+       }
+       
+
+       -(bool) startPlayerFromBuffer: (NSData*) dataBuffer
+       {
+                 return false;
+       }
+        static int ready2 = 0;
+
+       -(long)  getDuration
+       {
+		return [self getPosition]; // It would be better if we add what is in the input buffers and not still played
+       }
+
+       -(long)  getPosition
+       {
+		double time ;
+		if (mStartPauseTime >= 0) // In pause mode
+			time =   mStartPauseTime - systemTime - mPauseTime ;
+		else
+			time = CACurrentMediaTime() - systemTime - mPauseTime;
+		return (long)(time * 1000);
+       }
+
+       -(bool)  startPlayerFromURL: (NSURL*) url codec: (t_CODEC)codec channels: (int)numChannels sampleRate: (long)sampleRate
+       {
+                assert(url == nil || url ==  (id)[NSNull null]);
+                m_sampleRate = sampleRate;
+                m_numChannels= numChannels;
+                bool b = [engine startAndReturnError: nil];
+                if (!b)
+                {
+                        NSLog(@"Cannot start the audio engine");
+                }
+
+                mPauseTime = 0.0; // Total number of seconds in pause mode
+		mStartPauseTime = -1; // Not in paused mode
+		systemTime = CACurrentMediaTime(); // The time when started
+                //previousTS = CACurrentMediaTime() * 1000;
+                ready2 = 0;
+                //[playerNode play];
+                return true;
+       }
+
+
+       -(void)  stop
+       {
+
+                if (engine != nil)
+                {
+                        //if (playerNode != nil)
+                        {
+                                //[playerNode stop];
+                                // Does not work !!! // [engine detachNode:  playerNode];
+                                //playerNode = nil;
+                         }
+                        [engine stop];
+                        engine = nil;
+                }
+                //if (previousTS != 0)
+                {
+                        //dateCumul += CACurrentMediaTime() * 1000 - previousTS;
+                        //previousTS = 0;
+                }
+       }
+
+       -(bool)  resume
+       {
+		//if (mStartPauseTime >= 0)
+			//mPauseTime += CACurrentMediaTime() - mStartPauseTime;
+		//mStartPauseTime = -1;
+
+                //[engine startAndReturnError: nil];
+		//[playerNode play];
+                //previousTS = CACurrentMediaTime() * 1000;
+                return false;
+       }
+
+       -(bool)  pause
+       {
+		//mStartPauseTime = CACurrentMediaTime();
+		//[playerNode pause];
+                //[engine pause];
+                //if (previousTS != 0)
+                {
+                        //dateCumul += CACurrentMediaTime() * 1000 - previousTS;
+                        //previousTS = 0;
+                }
+                return false;
+       }
+
+
+       -(bool)  seek: (double) pos
+       {
+                return false;
+       }
+
+       -(int)  getStatus
+       {
+                if (engine == nil)
+                        return PLAYER_IS_STOPPED;
+                //if (mStartPauseTime > 0)
+                        //return PLAYER_IS_PAUSED;
+                //if ( [playerNode isPlaying])
+                        //return PLAYER_IS_PLAYING;
+                return PLAYER_IS_PLAYING; // ??? Not sure !!!
+       }
+
+
+        -(bool)  setVolume: (long) volume // TODO
+        {
+                return true; // TODO
+        }
+
+       - (int) feed: (NSData*)data
+       {
+        return 0;
+       }
+
+
+//-------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 @end
-
-

@@ -54,8 +54,6 @@
 
        - (bool) startPlayerFromBuffer:  (NSData*)data;
        - (bool)  startPlayerFromURL: (NSURL*) url codec: (t_CODEC)codec channels: (int)numChannels sampleRate: (long)sampleRate;
-       // TODO - (long) duration;
-       // TODO - (long) position;
        - (void) stop;
        - (bool) resume;
        - (bool) pause;
@@ -77,15 +75,31 @@
 
        - (bool) startPlayerFromBuffer:  (NSData*)data;
        - (bool)  startPlayerFromURL: (NSURL*) url codec: (t_CODEC)codec channels: (int)numChannels sampleRate: (long)sampleRate;
-       // TODO - (long) duration;
-       // TODO - (long) position;
        - (void) stop;
        - (bool) resume;
        - (bool) pause;
        - (bool) setVolume: (long) volume;
        - (bool) seek: (double) pos;
        - (int) getStatus;
-       //- (AVAudioPlayer*) getAudioPlayer;
+       - (int) feed: (NSData*)data;
+
+@end
+
+
+@interface AudioEngineFromMic  : NSObject <FlautoPlayerEngineInterface>
+{
+        // TODO FlutterSoundPlayer* flutterSoundPlayer; // Owner
+}
+       - (AudioEngineFromMic*) init: (NSObject*)owner; // FlutterSoundPlayer*
+
+       - (bool) startPlayerFromBuffer:  (NSData*)data;
+       - (bool)  startPlayerFromURL: (NSURL*) url codec: (t_CODEC)codec channels: (int)numChannels sampleRate: (long)sampleRate;
+       - (void) stop;
+       - (bool) resume;
+       - (bool) pause;
+       - (bool) setVolume: (long) volume;
+       - (bool) seek: (double) pos;
+       - (int) getStatus;
        - (int) feed: (NSData*)data;
 
 @end

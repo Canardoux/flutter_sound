@@ -1397,7 +1397,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
   }
 
-
   /// Starts the Microphone and plays what is recorded.
   ///
   /// The Speaker is directely linked to the Microphone.
@@ -1421,22 +1420,27 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// ```
   Future<void> startPlayerFromMic({
     int sampleRate = 44000, // The default value is probably a good choice.
-    int numChannels = 1, // 1 for monophony, 2 for stereophony (actually only monophony is supported.
+    int numChannels =
+        1, // 1 for monophony, 2 for stereophony (actually only monophony is supported.
   }) async {
-    print('FS:---> startPlayer ');
+    print('FS:---> startPlayerFromMic ');
     if (_isInited == Initialized.initializationInProgress) {
       throw (_InitializationInProgress());
     }
     if (_isInited != Initialized.fullyInitialized) {
       throw (_NotOpen());
     }
+    await _lock.synchronized(() async {
+      await _stop(); // Just in case
+      var state = await FlutterSoundPlayerPlatform.instance.startPlayerFromMic(
+          this,
+          numChannels: numChannels,
+          sampleRate: sampleRate);
+      _playerState = PlayerState.values[state];
+    });
+    print('FS:<--- startPlayerFromMic ');
   }
-
-
-
 }
-
-
 
 /// Used to stream data about the position of the
 /// playback as playback proceeds.

@@ -200,6 +200,32 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		return m_flautoPlayer.getPlayerState().ordinal();
 	}
 
+	public void startPlayerFromMic ( final MethodCall call, final Result result ) {
+		Integer _blockSize = 4096;
+		if (call.argument("blockSize") != null) {
+			_blockSize = call.argument("blockSize");
+		}
+
+		Integer _sampleRate = 48000;
+		if (call.argument("sampleRate") != null) {
+			_sampleRate = call.argument("sampleRate");
+		}
+		Integer _numChannels = 1;
+		if (call.argument("numChannels") != null) {
+			_numChannels = call.argument("numChannels");
+		}
+		try {
+			boolean b = m_flautoPlayer.startPlayerFromMic( _numChannels, _sampleRate, _blockSize);
+			if (b)
+				result.success(getPlayerState());
+			else
+				result.error(ERR_UNKNOWN, ERR_UNKNOWN, "startPlayer() error");
+		} catch (Exception e) {
+			Log.e(TAG, "startPlayerFromMic() exception");
+			result.error(ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage());
+		}
+	}
+
 
 	public void startPlayer ( final MethodCall call, final Result result ) {
 		Integer _codec = call.argument("codec");

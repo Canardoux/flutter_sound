@@ -145,7 +145,22 @@ static bool _isIosDecoderSupported [] =
         NSLog(@"IOS:<-- stopPlayer");
 }
 
+- (bool)startPlayerFromMicSampleRate: (long)sampleRate nbChannels: (int)nbChannels
+{
+        NSLog(@"IOS:--> startPlayerFromMicSampleRate");
+        bool b = FALSE;
+        if (!hasFocus) // We always acquire the Audio Focus (It could have been released by another session)
+        {
+                hasFocus = TRUE;
+                b = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
+        }
 
+        [self stopPlayer]; // To start a fresh new playback
+        m_playerEngine = [[AudioEngineFromMic alloc] init: self ];
+        b = [m_playerEngine startPlayerFromURL: nil codec: (t_CODEC)0 channels: nbChannels sampleRate: sampleRate];
+        NSLog(@"IOS:<-- startPlayerFromMicSampleRate");
+        return b; // TODO
+}
 
 - (bool)startPlayerCodec: (t_CODEC)codec
         fromURI: (NSString*)path
