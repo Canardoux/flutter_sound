@@ -143,6 +143,12 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         }
                         break;
 
+                        case "startPlayerFromMic":
+                        {
+                                aPlayer.startPlayerFromMic ( call, result );
+                        }
+                        break;
+
                         case "startPlayerFromTrack":
                         {
                                 aPlayer.startPlayerFromTrack ( call, result );

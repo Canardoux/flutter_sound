@@ -151,7 +151,6 @@ This is a simple example that plays several sound at the same time.
 ''',
   ),
 
-
   Example(
     title: 'Play from Mic',
     subTitle: 'Play from microphone',
@@ -162,8 +161,6 @@ Play what is recorded by the microphone.
 This example is very simple.
 ''',
   ),
-
-
 
   Example(
     title: 'recordToStream',

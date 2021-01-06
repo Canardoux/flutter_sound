@@ -105,6 +105,11 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [aFlautoPlayer startPlayer: call result: result];
         } else
 
+        if ([@"startPlayerFromMic" isEqualToString: call.method])
+        {
+                [aFlautoPlayer startPlayerFromMic: call result: result];
+        } else
+
         if ([@"startPlayerFromTrack" isEqualToString: call.method])
         {
                  [aFlautoPlayer startPlayerFromTrack: call result: result];
