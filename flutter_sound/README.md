@@ -64,18 +64,25 @@ Flutter Sound is copyrighted by Dooboolab (2018, 2019, 2020).
 Flutter Sound is released under a license with a *copyleft* clause: the LGPL-V3 license. This means that if you modify some of Flutter Sound code you must publish your modifications under the LGPL license too.
 
 
-## Help Maintenance
+## Help
 
-Flutter Sound is a fundamental building block needed by almost every flutter project.
+&tau; is a fundamental building block needed by almost every mobile project.
 
-I'm looking to make Flutter Sound the go to project for Flutter Audio with support for each of the Flutter supported platforms.
+I'm looking to make &tau; the go to project for Audio with support for each of the Flutter supported platforms and for React Native.
 
-Flutter Sound is a large and complex project which requires me to maintain multiple hardware platforms and test environments.
+&tau; is a large and complex project which requires me to maintain multiple hardware platforms and test environments.
 
 I greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation.
 
 
-My friend Hyo has been maintaining quite many repos these days and he is burning out slowly. If you could help him cheer up, buy him a cup of coffee will make his life really happy and get much energy out of it. As a side effect, we will know that Flutter Sound is important for you, that you appreciate our job and that you can show it with a little money.
+## Thanks
 
-<a href="https://www.buymeacoffee.com/dooboolab" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/purple_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
-[![Paypal](https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png)](https://paypal.me/dooboolab)
+Too many projects to manage. I am burning out slowly. If you could help me cheer up, buy me a cup of coffee will make my life really happy and get much energy out of it. As a side effect, we will know that Flutter Sound is important for you, that you appreciate our job and that you can show it with a little money.
+
+[![Paypal](https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png)](https://paypal.me/thetauproject?locale.x=fr_FR)
+
+<script data-name="BMC-Widget" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="larpoux" data-description="Support me on Buy me a coffee!" data-message="Thank you for visiting. You can now buy me a coffee!" data-color="#5F7FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
+
+<a href="https://www.buymeacoffee.com/larpoux"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=😀&slug=larpoux&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff"></a>
+
+### You can also click on the "Thumb up" button of the top of [pub.dev page](https://pub.dev/packages/flutter_sound). That will reassure me that **I do not spend most of my life for nobody**.
