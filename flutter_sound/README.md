@@ -58,10 +58,13 @@ You can find the [changes here](https://www.canardoux.xyz/tau_sound/doc/pages/fl
 The [documentation is here](https://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/readme.html)
 
 
-## License
+## Licenses
 
-Flutter Sound is copyrighted by Dooboolab (2018, 2019, 2020).
+Flutter Sound is copyrighted by Dooboolab (2018, 2019, 2020, 2021).
 Flutter Sound is released under a license with a *copyleft* clause: the LGPL-V3 license. This means that if you modify some of Flutter Sound code you must publish your modifications under the LGPL license too.
+
+Tau React is copyrighted by Canardoux (2021).
+Tau React is released under a license with a **strong** *copyleft* clause : the GPL-V3 license. This means that if you use part or all of Tau React in your App, this App must be published under the GPL-V3 license, too.
 
 
 ## Help
@@ -84,6 +87,6 @@ Too many projects to manage. I am burning out slowly. If you could help me cheer
 
 ## You can also click on the "Thumb up" button of the top of the [pub.dev page](https://pub.dev/packages/flutter_sound).
 
-That will reassure me that **I do not spend most of my life for nobody**.
+## This is free and this will reassure me that **I do not spend most of my life for nobody**.
 
 
