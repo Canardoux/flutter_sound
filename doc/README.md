@@ -118,7 +118,7 @@ Too many projects to manage. I am burning out slowly. If you could help me cheer
 <a href="https://www.buymeacoffee.com/larpoux"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=💛&slug=larpoux&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00"></a>
 [![Paypal](https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png)](https://paypal.me/thetauproject?locale.x=fr_FR)
 
-{% include note.html content="You can also click on the "Thumb up" button of the top of the [pub.dev page](https://pub.dev/packages/flutter_sound).
-This is free and this will reassure me that **I do not spend most of my life for nobody**."%}
+{% include note.html content="You can also click on the `Thumb up` button of the top of the [pub.dev page](https://pub.dev/packages/flutter_sound).
+This is free and this will reassure me that **I do not spend most of my life for nobody**." %}
 
 <script data-name="BMC-Widget" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="larpoux" data-description="Support me on Buy me a coffee!" data-message="Thank you for visiting. You can now buy me a coffee!" data-color="#5F7FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
