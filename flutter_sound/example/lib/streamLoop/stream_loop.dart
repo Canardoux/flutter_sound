@@ -30,8 +30,8 @@ import 'package:flutter_sound/flutter_sound.dart';
  *
  */
 
-const int _sampleRateRecorder = 16000;
-const int _sampleRatePlayer = 16000; // same speed than the recorder
+const int _sampleRateRecorder = 44000;
+const int _sampleRatePlayer = 44000; // same speed than the recorder
 
 ///
 typedef Fn = void Function();

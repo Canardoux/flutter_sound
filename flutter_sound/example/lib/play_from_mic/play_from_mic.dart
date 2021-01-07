@@ -24,8 +24,8 @@ import 'package:permission_handler/permission_handler.dart';
 /*
  *
  * This is a very simple example,
- * that show how to play what is recorded by the microphone.
- *
+ * that show how to play on the headset what is recorded by the microphone.
+ * Please ensure that your headset is correctly connected via bluetooth
  * This example is really basic.
  *
  */
@@ -51,12 +51,13 @@ class _PlayFromMicState extends State<PlayFromMic> {
 
     // Be careful : openAudioSession returns a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    _mPlayer.openAudioSession
-    (
+    _mPlayer
+        .openAudioSession(
       device: AudioDevice.blueToothA2DP,
       audioFlags: allowHeadset | allowEarPiece | allowBlueToothA2DP,
       category: SessionCategory.playAndRecord,
-    ).then((value) {
+    )
+        .then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });

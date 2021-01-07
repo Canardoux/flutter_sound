@@ -15,7 +15,7 @@ keywords: Flutter, Flutter Sound, examples, demo
 
 {% include image.html file="examples/play_from_mic.png" %}
 
-This example play on the speaker what is recorded by the microphone.
+This example play on the bluetooth headset what is recorded by the microphone.
 
 This example is really simple.
 
