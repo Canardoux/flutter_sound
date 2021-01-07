@@ -23,15 +23,12 @@ import 'package:permission_handler/permission_handler.dart';
 
 /*
  *
- * This is a very simple example for Flutter Sound beginners,
- * that show how to record, and then playback a file.
+ * This is a very simple example,
+ * that show how to play what is recorded by the microphone.
  *
  * This example is really basic.
  *
  */
-
-final _exampleAudioFilePathMP3 =
-    'https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3';
 
 ///
 typedef Fn = void Function();
