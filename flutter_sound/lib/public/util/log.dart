@@ -162,7 +162,7 @@ class MyLogPrinter extends LogPrinter {
       return [];
     }
     //var formatter = DateFormat('dd HH:mm:ss.');
-    var now = DateTime.now();
+    //var now = DateTime.now();
     //var formattedDate = formatter.format(now) + now.millisecond.toString();
 
     var frames = StackTraceImpl();
