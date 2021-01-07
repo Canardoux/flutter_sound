@@ -145,15 +145,25 @@ If you want to process the data before playing them, actually you must define a 
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; startPlayerFromMic({
   int sampleRate = 44000, &#47;&#47; The default value is probably a good choice.
-  int numChannels = 1, &#47;&#47; 1 for monophony, 2 for stereophony (actually only monophony is supported.
+  int numChannels =
+      1, &#47;&#47; 1 for monophony, 2 for stereophony (actually only monophony is supported.
 }) async {
-  print(&#39;FS:---&gt; startPlayer &#39;);
+  print(&#39;FS:---&gt; startPlayerFromMic &#39;);
   if (_isInited == Initialized.initializationInProgress) {
     throw (_InitializationInProgress());
   }
   if (_isInited != Initialized.fullyInitialized) {
     throw (_NotOpen());
   }
+  await _lock.synchronized(() async {
+    await _stop(); &#47;&#47; Just in case
+    var state = await FlutterSoundPlayerPlatform.instance.startPlayerFromMic(
+        this,
+        numChannels: numChannels,
+        sampleRate: sampleRate);
+    _playerState = PlayerState.values[state];
+  });
+  print(&#39;FS:&lt;--- startPlayerFromMic &#39;);
 }</code></pre>
     </section>
 
@@ -167,7 +177,7 @@ If you want to process the data before playing them, actually you must define a 
 <footer>
   <span class="no-break">
     flutter_sound
-      7.4.14+1
+      7.4.15+5
   </span>
 
 </footer>

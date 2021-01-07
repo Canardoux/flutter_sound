@@ -154,7 +154,7 @@ This is a simple example that plays several sound at the same time.
   Example(
     title: 'Play from Mic',
     subTitle: 'Play from microphone',
-    flags: 0,
+    flags: tNotWeb,
     route: (_) => PlayFromMic(),
     description: '''
 Play what is recorded by the microphone.

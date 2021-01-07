@@ -114,9 +114,9 @@ List&lt;String&gt; log(LogEvent event) {
     &#47;&#47; don&#39;t log events where the log level is set higher
     return [];
   }
-  var formatter = DateFormat(&#39;dd HH:mm:ss.&#39;);
-  var now = DateTime.now();
-  var formattedDate = formatter.format(now) + now.millisecond.toString();
+  &#47;&#47;var formatter = DateFormat(&#39;dd HH:mm:ss.&#39;);
+  &#47;&#47;var now = DateTime.now();
+  &#47;&#47;var formattedDate = formatter.format(now) + now.millisecond.toString();
 
   var frames = StackTraceImpl();
   var i = 0;
@@ -132,7 +132,7 @@ List&lt;String&gt; log(LogEvent event) {
 
   print(color(
       event.level,
-      &#39;$formattedDate ${EnumHelper.getName(event.level)} &#39;
+      &#39;${EnumHelper.getName(event.level)} &#39;
       &#39;${StackTraceImpl(skipFrames: depth).formatStackTrace(methodCount: 1)} &#39;
       &#39;::: ${event.message}&#39;));
 
@@ -162,7 +162,7 @@ List&lt;String&gt; log(LogEvent event) {
 <footer>
   <span class="no-break">
     flutter_sound
-      7.4.14+1
+      7.4.15+5
   </span>
 
 </footer>
