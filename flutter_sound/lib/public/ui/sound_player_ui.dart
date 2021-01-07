@@ -34,7 +34,7 @@
 library ui_player;
 
 import 'dart:async';
-import 'package:intl/intl.dart' show DateFormat;
+//import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../flutter_sound.dart';
@@ -671,7 +671,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
               disposition.position.inMilliseconds,
               isUtc: true);
           return Text(
-            '${DateFormat('mm:ss:SS', 'en_GB').format(positionDate)} / ${DateFormat('mm:ss:SS', 'en_GB').format(durationDate)}',
+            '${positionDate.minute.toString().padLeft(2, '0')}:${positionDate.second.toString().padLeft(2, '0')} / ${durationDate.minute.toString().padLeft(2, '0')}:${durationDate.second.toString().padLeft(2, '0')}',
             style: _textStyle,
           );
         });
