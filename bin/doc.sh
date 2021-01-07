@@ -79,7 +79,7 @@ scp _toto.tgz soft@canardoux.xyz:/home/soft
 ssh -p7822 soft@canardoux.xyz "rm -rf /home/soft/www/canardoux.xyz/tau_sound/doc/*; tar xzf _toto.tgz -C /home/soft/www/canardoux.xyz/tau_sound/doc; rm _toto.tgz"
 
 cp doc/images/banner.png flutter_sound/example/build/web
-cp flutter_sound/example/assets/samples/sample.aac flutter_sound/example/build/web
+cp -a flutter_sound/example/assets/samples flutter_sound/example/assets/extract flutter_sound/example/build/web/assets
 
 cd flutter_sound/example/build/web
 tar czf ../../../../_toto2.tgz *
