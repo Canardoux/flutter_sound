@@ -100,6 +100,7 @@ enum AudioState {
   isRecordingPaused,
 }
 
+/*
 ///
 final exampleAudioFilePathAACAdts =
     //'https://filesamples.com/samples/audio/aac/sample1.aac';
@@ -116,7 +117,7 @@ final exampleAudioFilePathMP3 =
 ///
 final exampleAudioFilePathOPUS =
     'https://whatsapp-inbox-server.clare.ai/api/file/showFile?fileName=data/audios/e3f16eb2-10c3-45c9-b0fa-900c94cbe805.opus&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxMWI5YjQ3Zi1jMzBjLTRlZDMtYTFhNy1iNmYxNzRkMWQ1NTYiLCJ1bmlxdWVfbmFtZSI6InZlcm5hbEBjbGFyZS5haSIsIm5hbWVpZCI6InZlcm5hbEBjbGFyZS5haSIsImVtYWlsIjoidmVybmFsQGNsYXJlLmFpIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiRVhURVJOQUxfQURNSU5JU1RSQVRPUiIsImV4cCI6MjUzNDAyMzAwODAwLCJpc3MiOiJDbGFyZV9BSSIsImF1ZCI6IkNsYXJlX0FJIn0.yXVZ3n_lYYvJ1rGyF2mVh-80HuS0EEp7sQepxn9rGcY';
-
+*/
 ///
 final albumArtPath =
     'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
@@ -168,9 +169,31 @@ class _MyAppState extends State<Demo> {
     'assets/samples/sample_xxx.amr', // amrWB
     'assets/samples/sample_xxx.pcm', // pcm8
     'assets/samples/sample_xxx.pcm', // pcmFloat32
-    'assets/samples/sample_xxx.pcm', // pcmWebM
+    '', // 'assets/samples/sample_xxx.pcm', // pcmWebM
     'assets/samples/sample_opus.webm', // opusWebM
     'assets/samples/sample_vorbis.webm', // vorbisWebM
+  ];
+
+  List<String> remoteSample = [
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/01.aac', // 'assets/samples/sample.aac',
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/01.aac', // 'assets/samples/sample.aac',
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/08.opus', // 'assets/samples/sample.opus',
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/04-opus.caf', // 'assets/samples/sample_opus.caf',
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/05.mp3', // 'assets/samples/sample.mp3',
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/07.ogg', // 'assets/samples/sample.ogg',
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/10-pcm16.raw', // 'assets/samples/sample.pcm',
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/13.wav', // 'assets/samples/sample.wav',
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/02.aiff', // 'assets/samples/sample.aiff',
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/01-pcm.caf', // 'assets/samples/sample_pcm.caf',
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/04.flac', // 'assets/samples/sample.flac',
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/06.mp4', // 'assets/samples/sample.mp4',
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/03.amr', // 'assets/samples/sample.amr', // amrNB
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/03.amr', // 'assets/samples/sample_xxx.amr', // amrWB
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/09-pcm8.raw', // 'assets/samples/sample_xxx.pcm', // pcm8
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/12-pcmfloat.raw', // 'assets/samples/sample_xxx.pcm', // pcmFloat32
+    '', // 'assets/samples/sample_xxx.pcm', // pcmWebM
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/02-opus.webm', // 'assets/samples/sample_opus.webm', // opusWebM
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/03-vorbis.webm', // 'assets/samples/sample_vorbis.webm', // vorbisWebM
   ];
 
   StreamSubscription _recorderSubscription;
@@ -186,7 +209,7 @@ class _MyAppState extends State<Demo> {
 
   double sliderCurrentPosition = 0.0;
   double maxDuration = 1.0;
-  Media _media = Media.asset;
+  Media _media = Media.remoteExampleFile;
   Codec _codec = (kIsWeb) ? Codec.opusWebM : Codec.aacADTS;
 
   bool _encoderSupported = true; // Optimist
@@ -508,15 +531,7 @@ class _MyAppState extends State<Demo> {
         }
       } else if (_media == Media.remoteExampleFile) {
         // We have to play an example audio file loaded via a URL
-        if (_codec == Codec.mp3) {
-          audioFilePath = exampleAudioFilePathMP3;
-        } else if (codec == Codec.opusOGG) {
-          audioFilePath = exampleAudioFilePathOPUS;
-        } else if (codec == Codec.aacADTS) {
-          audioFilePath = exampleAudioFilePathAACAdts;
-        } else if (codec == Codec.pcm16WAV) {
-          exampleAudioFilePathWave;
-        }
+        audioFilePath = remoteSample[_codec.index];
       }
 
       // Check whether the user wants to use the audio player features
@@ -840,13 +855,6 @@ class _MyAppState extends State<Demo> {
         _media == Media.buffer) // A file must be already recorded to play it
     {
       if (_path[_codec.index] == null) return null;
-    }
-    if (_media == Media.remoteExampleFile &&
-        !(_codec == Codec.mp3 ||
-            _codec == Codec.opusOGG ||
-            _codec == Codec.pcm16WAV ||
-            _codec == Codec.aacADTS)) {
-      return null;
     }
 
     if (_media == Media.stream && _codec != Codec.pcm16) {

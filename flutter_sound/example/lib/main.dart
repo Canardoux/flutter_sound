@@ -157,8 +157,10 @@ This is a simple example that plays several sound at the same time.
     flags: tNotWeb,
     route: (_) => PlayFromMic(),
     description: '''
-Play what is recorded by the microphone.
+Play on the bluetooth headset what is recorded by the microphone.
 This example is very simple.
+
+>>> Please ensure that your headset is correctly connected via bluetooth
 ''',
   ),
 

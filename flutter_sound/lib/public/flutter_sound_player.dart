@@ -1421,7 +1421,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   Future<void> startPlayerFromMic({
     int sampleRate = 44000, // The default value is probably a good choice.
     int numChannels =
-        1, // 1 for monophony, 2 for stereophony (actually only monophony is supported.
+        1, // 1 for monophony, 2 for stereophony (actually only monophony is supported).
   }) async {
     print('FS:---> startPlayerFromMic ');
     if (_isInited == Initialized.initializationInProgress) {

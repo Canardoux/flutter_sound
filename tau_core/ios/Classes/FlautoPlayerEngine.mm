@@ -311,7 +311,6 @@
                         }
                 } else
                 {
-                        NSLog(@"Ready = %d", ready);
                         assert (ready == NB_BUFFERS);
                         assert(waitingBlock == nil);
                         waitingBlock = data;

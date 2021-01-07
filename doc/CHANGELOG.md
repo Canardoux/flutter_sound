@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.4.16
+
+- Now, the demo-example can play remote files for **all** the codec **directely** supported (without using FFmpeg). And not only MP3.
+
 ## 7.4.15
 
 - Remove the `intl` dependency. [#584](https://github.com/dooboolab/flutter_sound/issues/584)
