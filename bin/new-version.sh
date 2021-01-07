@@ -61,7 +61,7 @@ git add .
 git commit -m "TAU : Version $VERSION"
 git push
 git tag -f $VERSION
-git push --tag -f origin $VERSION
+git push  -f origin $VERSION
 
 
 if test -f "tau_core.podspec"; then
@@ -89,7 +89,7 @@ git commit -m "TAU : Version $VERSION"
 git push
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
-        git push --tag -f
+        git push  -f origin $VERSION
 fi
 
 
@@ -178,7 +178,7 @@ git commit -m "TAU : Version $VERSION"
 git push
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
-        git push --tag -f
+        git push  -f origin $VERSION
 fi
 
 
