@@ -117,11 +117,14 @@ final exampleAudioFilePathMP3 =
 ///
 final exampleAudioFilePathOPUS =
     'https://whatsapp-inbox-server.clare.ai/api/file/showFile?fileName=data/audios/e3f16eb2-10c3-45c9-b0fa-900c94cbe805.opus&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxMWI5YjQ3Zi1jMzBjLTRlZDMtYTFhNy1iNmYxNzRkMWQ1NTYiLCJ1bmlxdWVfbmFtZSI6InZlcm5hbEBjbGFyZS5haSIsIm5hbWVpZCI6InZlcm5hbEBjbGFyZS5haSIsImVtYWlsIjoidmVybmFsQGNsYXJlLmFpIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiRVhURVJOQUxfQURNSU5JU1RSQVRPUiIsImV4cCI6MjUzNDAyMzAwODAwLCJpc3MiOiJDbGFyZV9BSSIsImF1ZCI6IkNsYXJlX0FJIn0.yXVZ3n_lYYvJ1rGyF2mVh-80HuS0EEp7sQepxn9rGcY';
-*/
 ///
 final albumArtPath =
     'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
-
+*/
+final albumArtPathRemote =
+    'https://https://www.canardoux.xyz/tau_sound/web_example/assets/extract/3iob.png';
+final albumArtPath =
+    'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
 ///
 class Demo extends StatefulWidget {
   @override
@@ -542,8 +545,9 @@ class _MyAppState extends State<Demo> {
         if (_media == Media.remoteExampleFile) {
           albumArtUrl = albumArtPath;
         } else if (!kIsWeb) {
-          albumArtFile =
-              '${await playerModule.getResourcePath()}/assets/canardo.png';
+          albumArtFile =(_media == Media.remoteExampleFile)
+              ? albumArtPathRemote
+              : '${await playerModule.getResourcePath()}/assets/canardo.png';
           print(albumArtFile);
         } else {}
 
