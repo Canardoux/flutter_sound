@@ -35,6 +35,22 @@ But I think that we can implement this new simple verb `startPlayerFromMic()` be
 
 Later, we will implement the _Tau Audio Graph_ concept, which will be a more general object." %}
 
+[This new example](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/flutter_sound_examples_play_from_mic.html) can be compared to [the old loop example](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/flutter_sound_examples_stream_loop.html).
+
+### 1. iOS
+
+`startPlayerFromMic()` directely links the microphone to the headset **inside the OS itself**, without any processing by &tau;
+
+The improvement is really good. The delay between what is recorded and what is played is much better.
+
+### 2. Android
+
+The link beetween the microphone and the headset is done inside &tau;-core.
+The messaging channels between Java and Dart is not involved. The audio data are just transfered from the recording-thread to the player thread.
+
+This is a great disappointment : the performances are marginally improved.
+This means that implementing data transfert from/to Dart with FFI will not benefit from using FFI.
+
 
 *Example:*
 <ul id="profileTabs" class="nav nav-tabs">
