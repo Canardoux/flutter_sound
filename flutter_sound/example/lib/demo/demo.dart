@@ -122,9 +122,10 @@ final albumArtPath =
     'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
 */
 final albumArtPathRemote =
-    'https://https://www.canardoux.xyz/tau_sound/web_example/assets/extract/3iob.png';
+    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/3iob.png';
 final albumArtPath =
     'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
+
 ///
 class Demo extends StatefulWidget {
   @override
@@ -543,11 +544,10 @@ class _MyAppState extends State<Demo> {
         String albumArtAsset;
         String albumArtFile;
         if (_media == Media.remoteExampleFile) {
-          albumArtUrl = albumArtPath;
+          albumArtUrl = albumArtPathRemote;
         } else if (!kIsWeb) {
-          albumArtFile =(_media == Media.remoteExampleFile)
-              ? albumArtPathRemote
-              : '${await playerModule.getResourcePath()}/assets/canardo.png';
+          albumArtFile =
+              '${await playerModule.getResourcePath()}/assets/canardo.png';
           print(albumArtFile);
         } else {}
 
@@ -585,7 +585,7 @@ class _MyAppState extends State<Demo> {
         await playerModule.startPlayerFromStream(
           codec: Codec.pcm16, //_codec,
           numChannels: 1,
-          sampleRate: 44100, //tSAMPLERATE,
+          sampleRate: tSTREAMSAMPLERATE, //tSAMPLERATE,
         );
         _addListeners();
         setState(() {});

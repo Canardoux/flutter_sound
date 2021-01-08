@@ -20,7 +20,7 @@ The Speaker is directely linked to the Microphone.
 There is no processing between the Microphone and the Speaker.
 
 {% include tip.html content="If you want to process the data before playing them, actually you must define a loop between a FlutterSoundPlayer and a FlutterSoundRecorder.
-(Please, look to [this example](flutter_sound_examples_stream_loop.html))." %}
+(Please, look to [this example](pages/flutter-sound/api/topics/flutter_sound_examples_play_from_mic.html))." %}
 
 
 startPlayerFromMic() has two optional parameters :
