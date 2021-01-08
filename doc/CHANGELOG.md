@@ -10,6 +10,7 @@ toc: false
 ## 7.5.0
 
 New procedure [FlutterSoundPlayer.startPlayerFromMic()](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/tau_api_player_start_player_from_mic.html). [#580](https://github.com/dooboolab/flutter_sound/issues/580)
+
 ## 7.4.16
 
 - Now, the demo-example can play remote files for **all** the codec **directely** supported (without using FFmpeg). And not only MP3.
