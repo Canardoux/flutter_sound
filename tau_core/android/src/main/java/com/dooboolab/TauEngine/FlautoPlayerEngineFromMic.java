@@ -56,7 +56,7 @@ import com.dooboolab.TauEngine.Flauto.*;
 
 class FlautoPlayerEngineFromMic extends FlautoPlayerEngineInterface
 {
-	final static String             TAG                = "FlautoPlayerEngineFromMic";
+	final static String             TAG                = "EngineFromMic";
 
 
 	int[] tabCodec =
