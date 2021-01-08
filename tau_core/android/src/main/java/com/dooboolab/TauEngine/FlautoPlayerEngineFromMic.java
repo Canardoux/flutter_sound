@@ -25,7 +25,6 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
-import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -33,17 +32,8 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.media.MediaRecorder;
 
-import android.media.AudioFocusRequest;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.lang.Thread;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -83,62 +73,85 @@ class FlautoPlayerEngineFromMic extends FlautoPlayerEngineInterface
 	long mPauseTime = 0;
 	long mStartPauseTime = -1;
 	long systemTime = 0;
-	WriteBlockThread blockThread = null;
+	int bufferSize = 0;
 	FlautoPlayer mSession = null;
 
 	AudioRecord recorder;
-	public Handler            recordHandler   ;
 	FlautoRecorderCallback m_callBack ;
-	private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor ();
-	final private Handler          mainHandler = new Handler (Looper.getMainLooper ());
-
 	public              int     subsDurationMillis    = 10;
 
-	private      Runnable      recorderTicker;
-	Runnable p;
 	private boolean isRecording = false;
+	_pollingRecordingData thePollingThread = null;
 
 
 
-	class WriteBlockThread extends Thread
+	public class _pollingRecordingData extends Thread
 	{
-		byte[] mData = null;
-		/* ctor */ WriteBlockThread(byte[] data)
+
+		void _feed(byte[] data, int ln) throws Exception
 		{
-			mData = data;
+			int lnr = 0;
+			if ( Build.VERSION.SDK_INT >= 23 )
+			{
+				 lnr = audioTrack.write(data, 0, ln, AudioTrack.WRITE_NON_BLOCKING);
+			} else
+			{
+				 lnr = audioTrack.write(data, 0, ln);
+			}
+			if (lnr != ln)
+			{
+				Log.e( TAG, "feed error: some audio data are lost");
+			}
 		}
+
 		public void run()
 		{
-			int ln =  mData.length;
-			int total = 0;
-			int written = 0;
-			while (audioTrack != null && ln > 0)
+
+			int n = 0;
+			int r = 0;
+			byte[] byteBuffer = new byte[bufferSize];
+			while (isRecording)
 			{
 				try
 				{
-					if (Build.VERSION.SDK_INT >= 23) {
-						written = audioTrack.write(mData, 0, ln, AudioTrack.WRITE_BLOCKING);
-					} else {
-						written = audioTrack.write(mData, 0, mData.length);
+					if (Build.VERSION.SDK_INT >= 23)
+					{
+						n = recorder.read(byteBuffer, 0, bufferSize, AudioRecord.READ_BLOCKING);
+					} else
+					{
+						n = recorder.read(byteBuffer, 0, bufferSize);
 					}
-					if (written > 0) {
-						ln -= written;
-						total += written;
+					final int ln = n;
+
+					if (n > 0)
+					{
+						r += n;
+
+						try
+						{
+							_feed(byteBuffer, ln);
+						} catch (Exception err)
+						{
+							Log.e(TAG, "feed error" + err.getMessage());
+						}
+					} else
+					{
+						Log.e(TAG, "feed error: ln = 0" );
+						//break;
 					}
-				} catch (Exception e )
+				} catch (Exception e)
 				{
-					System.out.println(e.toString());
-					return;
+					System.out.println(e);
+					break;
 				}
 			}
-			if (total < 0)
-				throw new RuntimeException();
-
-			mSession.needSomeFood(total);
-			blockThread = null;
-
+			thePollingThread = null; // finished for me
 		}
+
 	}
+
+
+
 
 	/* ctor */ FlautoPlayerEngineFromMic() throws Exception
 	{
@@ -188,19 +201,19 @@ class FlautoPlayerEngineFromMic extends FlautoPlayerEngineInterface
 			t_CODEC codec,
 			Integer sampleRate,
 			Integer numChannels,
-			int blockSize
+			int _blockSize
 		) throws Exception
 	{
 		if ( Build.VERSION.SDK_INT < 21)
 			throw new Exception ("Need at least SDK 21");
 		int channelConfig = (numChannels == 1) ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO;
 		int audioFormat = tabCodec[codec.ordinal()];
-		int bufferSize = AudioRecord.getMinBufferSize
+		bufferSize = AudioRecord.getMinBufferSize
 			(
 				sampleRate,
 				channelConfig,
 				tabCodec[codec.ordinal()]
-			) * 2;
+			) ;// !!!!! * 2 ???
 
 
 		recorder = new AudioRecord(
@@ -215,17 +228,9 @@ class FlautoPlayerEngineFromMic extends FlautoPlayerEngineInterface
 		{
 			recorder.startRecording();
 			isRecording = true;
-			p = new Runnable() {
-				@Override
-				public void run() {
-
-					if (isRecording) {
-						int n = writeData(bufferSize);
-
-					}
-				}
-			};
-			mainHandler.post(p);
+			assert (thePollingThread == null);
+			thePollingThread = new _pollingRecordingData();
+			thePollingThread.start();
 		} else
 		{
 			throw new Exception("Cannot initialize the AudioRecord");
@@ -278,8 +283,6 @@ class FlautoPlayerEngineFromMic extends FlautoPlayerEngineInterface
 			audioTrack.release();
 			audioTrack = null;
 		}
-		blockThread = null;
-
 	}
 
 	void _finish()
@@ -335,97 +338,10 @@ class FlautoPlayerEngineFromMic extends FlautoPlayerEngineInterface
 		return 0;
 	}
 
-
-
 	int feed(byte[] data) throws Exception
 	{
-		int ln = 0;
-		if ( Build.VERSION.SDK_INT >= 23 )
-		{
-			ln = audioTrack.write(data, 0, data.length, AudioTrack.WRITE_NON_BLOCKING);
-		} else
-		{
-			ln = 0;
-		}
-		if (ln == 0)
-		{
-			if (blockThread != null)
-			{
-				System.out.println("Audio packet Lost !");
-			}
-			blockThread = new FlautoPlayerEngineFromMic.WriteBlockThread(data);
-			blockThread.start();
-		}
-		return ln;
+		Log.e( TAG, "feed error: not implemented");
+		return -1;
 	}
-
-	int writeData(int bufferSize)
-	{
-		int n = 0;
-		int r = 0;
-		while (isRecording ) {
-			//ShortBuffer shortBuffer = ShortBuffer.allocate(bufferSize/2);
-			ByteBuffer byteBuffer = ByteBuffer.allocate(bufferSize);
-			try {
-				// gets the voice output from microphone to byte format
-				if ( Build.VERSION.SDK_INT >= 23 )
-				{
-					//n = recorder.read(shortBuffer.array(), 0, bufferSize/2, AudioRecord.READ_NON_BLOCKING);
-					n = recorder.read(byteBuffer.array(), 0, bufferSize, AudioRecord.READ_NON_BLOCKING);
-/*
-					for (int i = 0; i < n; ++ i)
-					{
-						byteBuffer.array()[2*i] = (byte)shortBuffer.array()[i];
-						byteBuffer.array()[2*i+1] = (byte)(shortBuffer.array()[i] >> 8);
-					}
-
-
- */
-					//byteBuffer.asShortBuffer().put(shortBuffer.array(), 0, n);
-					//n *= 2;
-
-				}
-				else
-				{
-					n = recorder.read(byteBuffer.array(), 0, bufferSize);
-				}
-				//System.out.println("n = " + n);
-				final int ln = n;//2 * n;
-
-				if (n > 0) {
-					r += n;
-					mainHandler.post(new Runnable() {
-						@Override
-						public void run() {
-
-							// TODO !!!!!!!! session.recordingData(Arrays.copyOfRange(byteBuffer.array(), 0, ln));
-							try {
-								feed(Arrays.copyOfRange(byteBuffer.array(), 0, ln));
-							}
-							catch(Exception err)
-							{
-								Log.e( TAG, "feed error" + err.getMessage());
-							}
-						}
-					});
-				} else
-				{
-					break;
-				}
-				if ( Build.VERSION.SDK_INT < 23 ) // We must break the loop, because n is always 1024 (READ_BLOCKING_MODE)
-					break;
-			} catch (Exception e) {
-				System.out.println(e);
-				break;
-			}
-		}
-		if (isRecording)
-			mainHandler.post(p);
-
-		return r;
-
-	}
-
-
 
 }

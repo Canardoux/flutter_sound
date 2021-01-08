@@ -212,20 +212,8 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 
 	public int feed( byte[] data)
 	{
-		if (player == null)
-		{
-			return -1;
-		}
-
-		try
-		{
-			int ln = player.feed(data);
-			return ln;
-		} catch (Exception e)
-		{
-			Log.e ( TAG, "feed() exception" );
-			return -1;
-		}
+		Log.e (TAG,  "Feed() is not available" );
+		return -1;
 	}
 
 	public void needSomeFood(int ln)
