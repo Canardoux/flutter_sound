@@ -1,4 +1,4 @@
-## 7.4.16+3
+## 7.5.0+1
 
 - ## The [CHANGELOG file is here](https://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/changelog.html)
 

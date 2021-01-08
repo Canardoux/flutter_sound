@@ -23,6 +23,7 @@ import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioFormat;
 import android.media.AudioManager;
+import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -30,18 +31,24 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
+import android.media.MediaRecorder;
 
 import android.media.AudioFocusRequest;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.lang.Thread;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-//import static androidx.core.content.ContextCompat.getSystemService;
+import com.dooboolab.TauEngine.Flauto.*;
 
 //-------------------------------------------------------------------------------------------------------------
 
@@ -49,6 +56,28 @@ import java.lang.Thread;
 
 class FlautoPlayerEngineFromMic extends FlautoPlayerEngineInterface
 {
+	final static String             TAG                = "FlautoPlayerEngineFromMic";
+
+
+	int[] tabCodec =
+		{
+			AudioFormat.ENCODING_DEFAULT, // DEFAULT
+			AudioFormat.ENCODING_AAC_LC, // aacADTS
+			0, // opusOGG
+			0, // opusCAF
+			AudioFormat.ENCODING_MP3, // MP3 // Not used
+			0, // vorbisOGG
+			AudioFormat.ENCODING_PCM_16BIT, // pcm16
+			AudioFormat.ENCODING_PCM_16BIT, // pcm16WAV
+			0, // pcm16AIFF
+			0, // pcm16CAF
+			0, // flac
+			0, // aacMP4
+			0, // amrNB
+			0, // amrWB
+		};
+
+
 	AudioTrack audioTrack = null;
 	int sessionId = 0;
 	long mPauseTime = 0;
@@ -56,6 +85,20 @@ class FlautoPlayerEngineFromMic extends FlautoPlayerEngineInterface
 	long systemTime = 0;
 	WriteBlockThread blockThread = null;
 	FlautoPlayer mSession = null;
+
+	AudioRecord recorder;
+	public Handler            recordHandler   ;
+	FlautoRecorderCallback m_callBack ;
+	private final ExecutorService taskScheduler = Executors.newSingleThreadExecutor ();
+	final private Handler          mainHandler = new Handler (Looper.getMainLooper ());
+
+	public              int     subsDurationMillis    = 10;
+
+	private      Runnable      recorderTicker;
+	Runnable p;
+	private boolean isRecording = false;
+
+
 
 	class WriteBlockThread extends Thread
 	{
@@ -110,19 +153,10 @@ class FlautoPlayerEngineFromMic extends FlautoPlayerEngineInterface
 		}
 	}
 
-
-	void _startPlayer
-		(
-			String path,
-			int sampleRate,
-			int numChannels,
-			int blockSize,
-			FlautoPlayer theSession
-		) throws Exception
+	void startPlayerSide(int sampleRate, Integer numChannels, int blockSize) throws Exception
 	{
 		if ( Build.VERSION.SDK_INT >= 21 )
 		{
-			mSession = theSession;
 			AudioAttributes attributes = new AudioAttributes.Builder()
 				.setLegacyStreamType(AudioManager.STREAM_MUSIC)
 				.setUsage(AudioAttributes.USAGE_MEDIA)
@@ -140,16 +174,104 @@ class FlautoPlayerEngineFromMic extends FlautoPlayerEngineInterface
 			systemTime = SystemClock.elapsedRealtime();
 
 			audioTrack.play();
-			theSession.onPrepared();
+			mSession.onPrepared();
 		} else
 		{
 			throw new Exception("Need SDK 21");
 		}
+
+	}
+
+
+	public void startRecorderSide
+		(
+			t_CODEC codec,
+			Integer sampleRate,
+			Integer numChannels,
+			int blockSize
+		) throws Exception
+	{
+		if ( Build.VERSION.SDK_INT < 21)
+			throw new Exception ("Need at least SDK 21");
+		int channelConfig = (numChannels == 1) ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO;
+		int audioFormat = tabCodec[codec.ordinal()];
+		int bufferSize = AudioRecord.getMinBufferSize
+			(
+				sampleRate,
+				channelConfig,
+				tabCodec[codec.ordinal()]
+			) * 2;
+
+
+		recorder = new AudioRecord(
+			MediaRecorder.AudioSource.MIC,
+			sampleRate,
+			channelConfig,
+			audioFormat,
+			bufferSize
+		);
+
+		if (recorder.getState() == AudioRecord.STATE_INITIALIZED)
+		{
+			recorder.startRecording();
+			isRecording = true;
+			p = new Runnable() {
+				@Override
+				public void run() {
+
+					if (isRecording) {
+						int n = writeData(bufferSize);
+
+					}
+				}
+			};
+			mainHandler.post(p);
+		} else
+		{
+			throw new Exception("Cannot initialize the AudioRecord");
+		}
+
+	}
+
+
+
+	void _startPlayer
+		(
+			String path,
+			int sampleRate,
+			int numChannels,
+			int blockSize,
+			FlautoPlayer theSession
+		) throws Exception
+	{
+		mSession = theSession;
+		startPlayerSide(sampleRate, numChannels, blockSize);
+		startRecorderSide(Flauto.t_CODEC.pcm16, sampleRate, numChannels, blockSize);
 	}
 
 
 	void _stop()
 	{
+
+		if (null != recorder)
+		{
+			try
+			{
+				recorder.stop();
+			} catch ( Exception e )
+			{
+			}
+
+			try
+			{
+				isRecording = false;
+				recorder.release();
+			} catch ( Exception e )
+			{
+			}
+			recorder = null;
+		}
+
 		if (audioTrack != null)
 		{
 			audioTrack.stop();
@@ -157,6 +279,7 @@ class FlautoPlayerEngineFromMic extends FlautoPlayerEngineInterface
 			audioTrack = null;
 		}
 		blockThread = null;
+
 	}
 
 	void _finish()
@@ -185,21 +308,13 @@ class FlautoPlayerEngineFromMic extends FlautoPlayerEngineInterface
 
 	void _setVolume(float volume)  throws Exception
 	{
-
-		if ( Build.VERSION.SDK_INT >= 21 )
-		{
-			audioTrack.setVolume(volume);
-		} else
-		{
-			throw new Exception("Need SDK 21");
-		}
-
+		Log.e( TAG, "setVolume: not implemented" );
 	}
 
 
 	void _seekTo(long millisec)
 	{
-
+		Log.e( TAG, "seekTo: not implemented" );
 	}
 
 
@@ -211,19 +326,15 @@ class FlautoPlayerEngineFromMic extends FlautoPlayerEngineInterface
 
 	long _getDuration()
 	{
-		return _getCurrentPosition(); // It would be better if we add what is in the input buffers and not still played
+		return 0;
 	}
 
 
 	long _getCurrentPosition()
 	{
-		long time ;
-		if (mStartPauseTime >= 0)
-			time =   mStartPauseTime - systemTime - mPauseTime ;
-		else
-			time = SystemClock.elapsedRealtime() - systemTime - mPauseTime;
-		return time;
+		return 0;
 	}
+
 
 
 	int feed(byte[] data) throws Exception
@@ -242,9 +353,79 @@ class FlautoPlayerEngineFromMic extends FlautoPlayerEngineInterface
 			{
 				System.out.println("Audio packet Lost !");
 			}
-			blockThread = new WriteBlockThread(data);
+			blockThread = new FlautoPlayerEngineFromMic.WriteBlockThread(data);
 			blockThread.start();
 		}
 		return ln;
 	}
+
+	int writeData(int bufferSize)
+	{
+		int n = 0;
+		int r = 0;
+		while (isRecording ) {
+			//ShortBuffer shortBuffer = ShortBuffer.allocate(bufferSize/2);
+			ByteBuffer byteBuffer = ByteBuffer.allocate(bufferSize);
+			try {
+				// gets the voice output from microphone to byte format
+				if ( Build.VERSION.SDK_INT >= 23 )
+				{
+					//n = recorder.read(shortBuffer.array(), 0, bufferSize/2, AudioRecord.READ_NON_BLOCKING);
+					n = recorder.read(byteBuffer.array(), 0, bufferSize, AudioRecord.READ_NON_BLOCKING);
+/*
+					for (int i = 0; i < n; ++ i)
+					{
+						byteBuffer.array()[2*i] = (byte)shortBuffer.array()[i];
+						byteBuffer.array()[2*i+1] = (byte)(shortBuffer.array()[i] >> 8);
+					}
+
+
+ */
+					//byteBuffer.asShortBuffer().put(shortBuffer.array(), 0, n);
+					//n *= 2;
+
+				}
+				else
+				{
+					n = recorder.read(byteBuffer.array(), 0, bufferSize);
+				}
+				//System.out.println("n = " + n);
+				final int ln = n;//2 * n;
+
+				if (n > 0) {
+					r += n;
+					mainHandler.post(new Runnable() {
+						@Override
+						public void run() {
+
+							// TODO !!!!!!!! session.recordingData(Arrays.copyOfRange(byteBuffer.array(), 0, ln));
+							try {
+								feed(Arrays.copyOfRange(byteBuffer.array(), 0, ln));
+							}
+							catch(Exception err)
+							{
+								Log.e( TAG, "feed error" + err.getMessage());
+							}
+						}
+					});
+				} else
+				{
+					break;
+				}
+				if ( Build.VERSION.SDK_INT < 23 ) // We must break the loop, because n is always 1024 (READ_BLOCKING_MODE)
+					break;
+			} catch (Exception e) {
+				System.out.println(e);
+				break;
+			}
+		}
+		if (isRecording)
+			mainHandler.post(p);
+
+		return r;
+
+	}
+
+
+
 }
