@@ -10,7 +10,7 @@
             </button>
 
 
-            <a href="readme.html"> <img src="images/tau11.png" width="60%" height="60%" /> </a>
+            <a href="/readme.html"> <img src="images/tau11.png" width="60%" height="60%" /> </a>
            <!--{% include inline_image.html file="tau7.svg" url="index.html" alt="tau" max-width=".5" %}-->
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -27,9 +27,9 @@
                 {% if item.external_url %}
                 <li><a href="{{item.external_url}}" target="_blank" rel="noopener"  title="{{item.hint}}" >{{item.title}}</a></li>
                 {% elsif page.url contains item.url %}
-                <li class="active"><a href="{{item.url | remove: "/"}}">{{item.title}}</a></li>
+                <li class="active"><a href="/{{item.url | remove: "/"}}">{{item.title}}</a></li>
                 {% else %}
-                <li><a href="{{item.url | remove: "/"}}"   title="{{item.hint}}" >{{item.title}}</a></li>
+                <li><a href="/{{item.url | remove: "/"}}"   title="{{item.hint}}" >{{item.title}}</a></li>
                 {% endif %}
                 {% endfor %}
                 {% endfor %}
@@ -44,9 +44,9 @@
                         {% if folderitem.external_url %}
                         <li><a href="{{folderitem.external_url}}" target="_blank" rel="noopener"  title="{{folderitem.hint}}" >{{folderitem.title}}</a></li>
                         {% elsif page.url contains folderitem.url %}
-                        <li class="dropdownActive"><a href="{{folderitem.url |  remove: "/"}}"   title="{{folderitem.hint}}" >{{folderitem.title}}</a></li>
+                        <li class="dropdownActive"><a href="/{{folderitem.url |  remove: "/"}}"   title="{{folderitem.hint}}" >{{folderitem.title}}</a></li>
                         {% else %}
-                        <li><a href="{{folderitem.url | remove: "/"}}"   title="{{folderitem.hint}}" >{{folderitem.title}}</a></li>
+                        <li><a href="/{{folderitem.url | remove: "/"}}"   title="{{folderitem.hint}}" >{{folderitem.title}}</a></li>
                         {% endif %}
                         {% endfor %}
                     </ul>

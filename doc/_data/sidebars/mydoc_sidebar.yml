@@ -3,7 +3,7 @@
 entries:
 - title: sidebar
   product: The &tau; Project
-  version: 7.5.0+2
+  version: 7.5.1+1
   folders:
 
   - title:
@@ -339,7 +339,7 @@ entries:
       output: web, pdf
 
     - title: Live demo
-      external_url: https://www.canardoux.xyz/tau_sound/web_example/index.html
+      external_url: https://tau.canardoux.xyz/web_example/
       output: web, pdf
       subfolders:
 
@@ -404,19 +404,19 @@ entries:
         subfolderitems:
 
         - title: Player Class
-          url: /dartdoc_player.html
+          url: /pages\/flutter-sound\/api\/player\/FlutterSoundPlayer-class.html
           output: web, pdf
 
         - title: Recorder Class
-          url: /dartdoc_recorder.html
+          url: /pages\/flutter-sound\/api\/recorder\/FlutterSoundRecorder-class.html
           output: web, pdf
 
         - title: Utilities
-          url: /dartdoc_utilities.html
+          url: /pages\/flutter-sound\/api\/topics\/Utilities-topic.html
           output: web, pdf
 
         - title: Widgets UI
-          url: /dartdoc_widgets.html
+          url: /pages\/flutter-sound\/api\/topics\/UI_Widgets-topic.html
           output: web, pdf
 
 # ----------------------------------------
