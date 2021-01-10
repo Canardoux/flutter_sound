@@ -13,15 +13,15 @@ keywords: API Player
 
 ## `feedFromStream()`
 
-- Dart API: [feedFromStream()](pages/flutter-sound/api/player/FlutterSoundPlayer/feedFromStream.html).
+- Dart API: [feedFromStream()](/pages/flutter-sound/api/player/FlutterSoundPlayer/feedFromStream.html).
 
 This is the verb that you use when you want to play live PCM data synchronously.
 This procedure returns a Future. It is very important that you wait that this Future is completed before trying to play another buffer.
 
 *Example:*
 
-- [This example](../flutter_sound/example/example.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
-- [This example](../flutter_sound/example/example.md#soundeffect) shows how to play some real time sound effects synchronously.
+- [This example](flutter_sound_examples_playback_from_stream_1) shows how to play Live data, with Back Pressure from Flutter Sound
+- [This example](flutter_sound_examples_playback_from_stream_2) shows how to play some real time sound effects synchronously.
 
 <ul id="profileTabs" class="nav nav-tabs">
     <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>

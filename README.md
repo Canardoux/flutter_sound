@@ -1,16 +1,16 @@
-<a href="http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/readme.html">
-        <img src="https://www.canardoux.xyz/tau_sound/doc/images/banner5.svg" width="70%" height="70%" />
+<a href="https://tau.canardoux.xyz/readme.html">
+        <img src="https://tau.canardoux.xyz/images/banner5.svg" width="70%" height="70%" />
 </a>
 <p align="left">
-  <a href="http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/readme.html">
+  <a href="https://tau.canardoux.xyz/readme.html">
         <img alt="pub version" src="https://img.shields.io/pub/v/flutter_sound.svg" />
   </a>
 </p>
 
 -------------------------------------------------------------------------------------
 
-- ## Flutter Sound user: your [documentation is there](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/readme.html)
-- ## The [CHANGELOG file is here](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/changelog.html)
+- ## Flutter Sound user: your [documentation is there](https://tau.canardoux.xyz/readme.html)
+- ## The [CHANGELOG file is here](https://tau.canardoux.xyz/changelog.html)
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -52,12 +52,12 @@ The Flutter Sound package includes the following features
 
 ## Changelog
 
-You can find the [changes here](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/changelog.html)
+You can find the [changes here](https://tau.canardoux.xyz/changelog.html)
 
 
 ## Documentation
 
-The [documentation is here](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/readme.html)
+The [documentation is here](https://tau.canardoux.xyz/readme.html)
 
 
 ## Licenses

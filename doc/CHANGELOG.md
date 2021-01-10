@@ -7,9 +7,14 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.5.1
+
+- The &tau; documentation is moved to https://tau.canardoux.xyz . Yes, HTTPS, and not anymore HTTP. [#553](https://github.com/dooboolab/flutter_sound/issues/553)
+- Jekyll : patched to allow the dartdoc support without being based on symbolic links (that produced many 404). [#553](https://github.com/dooboolab/flutter_sound/issues/553)
+
 ## 7.5.0
 
-New procedure [FlutterSoundPlayer.startPlayerFromMic()](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/tau_api_player_start_player_from_mic.html). [#580](https://github.com/dooboolab/flutter_sound/issues/580)
+- New procedure [FlutterSoundPlayer.startPlayerFromMic()](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/tau_api_player_start_player_from_mic.html). [#580](https://github.com/dooboolab/flutter_sound/issues/580)
 
 ## 7.4.16
 
