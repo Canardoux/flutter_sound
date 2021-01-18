@@ -1,11 +1,16 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: ''
-labels: enhancement
+title: "[ENH]:"
+labels: Not yet handled, enhancement
 assignees: ''
 
 ---
+
+Note: if you feel ready to improve τ, 
+perhaps you could do a Pull Request ? This would be great !
+
+------
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
