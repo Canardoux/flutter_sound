@@ -2,7 +2,7 @@
 name: Problem Report
 about: I got something wrong
 title: "[BUG]"
-labels: maybe bug, Not yet handled
+labels: Not yet handled, maybe bug
 assignees: ''
 
 ---
@@ -11,8 +11,7 @@ assignees: ''
 
 - **FULL** or **LITE** flavor ?
 
-- Result of the command **"flutter pub deps | grep flutter_sound"**
-(very important)
+- Result of the command **(important)**: ```flutter pub deps | grep flutter_sound```
 
 ----------------------------------------------------------
 
