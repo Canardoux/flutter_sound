@@ -57,6 +57,10 @@ entries:
       url: /guides_codec.html
       output: web, pdf
 
+    - title: Logs
+      url: /guides_logs.html
+      output: web, pdf
+
     - title: Raw PCM and Wave files
       url: /guides_pcm_wave.html
       output: web, pdf
@@ -85,24 +89,28 @@ entries:
       url: /guides_web.html
       output: web, pdf
 
+    - title: Graphs
+      url: /guides_graph.html
+      output: web, pdf
+
 
 
 # -------------------------------------------------------------
 
 
 
-  - title: API
+  - title: API-V5
     output: web, pdf
     folderitems:
 
-    - title: The &tau; API
+    - title: The &tau; API - V5 - Overview
       url: /tau_api_main.html
       output: web
-      subfolders:
 
 
 # ------------
 
+      subfolders:
 
       - title: The Player
         output: web
@@ -322,8 +330,96 @@ entries:
         - title: UI Controller
           url:  /tau_api_widgets_ui_controller.html # TODO
           output: web, pdf
+# -------------------------------------------------------------
 
-# ----------------------------------------------------------
+
+
+  - title: API-V7
+    output: web, pdf
+    folderitems:
+
+    - title: The &tau; API - V7 - Overview
+      url: /tau_api_v7_main.html
+      output: web
+
+# -------------
+
+
+      subfolders:
+
+      - title: The utilities
+        output: web, pdf
+        subfolderitems:
+
+        - title: Constructor
+          url: /tau_api_utilities_constructor.html
+          output: web, pdf
+
+        - title: convertFile()
+          url: /tau_api_utilities_convert_file.html
+          output: web, pdf
+
+        - title: pcmToWave()
+          url: /tau_api_utilities_pcm_to_wave.html
+          output: web, pdf
+
+        - title: pcmtoWaveBuffer()
+          url: /tau_api_utilities_pcm_to_wave_buffer.html
+          output: web, pdf
+
+        - title: waveToPcm()
+          url: /tau_api_utilities_wave_to_pcm.html
+          output: web, pdf
+
+        - title: waveToPcmBuffer()
+          url: /tau_api_utilities_wave_to_pcm_buffer.html
+          output: web, pdf
+
+        - title: duration()
+          url: /tau_api_utilities_duration.html
+          output: web, pdf
+
+        - title: isFFmpegAvailable()
+          url: /tau_api_utilities_is_ffmpeg_available.html
+          output: web, pdf
+
+        - title: executeFFmpegWithArguments()
+          url: /tau_api_utilities_execute_ffmpeg_with_arguments.html
+          output: web, pdf
+
+        - title: getLastFFmpegReturnCode()
+          url: /tau_api_utilities_get_last_ffmpeg_return_code.html
+          output: web, pdf
+
+        - title: getLastFFmpegCommandOutput()
+          url: /tau_api_utilities_get_last_ffmpeg_command_output.html
+          output: web, pdf
+
+        - title: FFmpegGetMediaInformation()
+          url: /tau_api_utilities_ffmpeg_get_media_information.html
+          output: web, pdf
+
+
+# -----------
+
+
+      - title: The Widgets UI
+        output: web, pdf
+        subfolderitems:
+
+        - title: UI Player
+          url: /tau_api_widgets_ui_player.html # TODO
+          output: web, pdf
+
+        - title: UI Recorder
+          url:  /tau_api_widgets_ui_recorder.html # TODO
+          output: web, pdf
+
+        - title: UI Controller
+          url:  /tau_api_widgets_ui_controller.html # TODO
+          output: web, pdf
+# -------------------------------------------------------------
+
 
 
   - title: Flutter Sound
@@ -341,12 +437,12 @@ entries:
     - title: Live demo
       external_url: https://tau.canardoux.xyz/web_example/
       output: web, pdf
-      subfolders:
 
 
 # ---------------------------------------------------------------
 
 
+      subfolders:
       - title: Examples
         output: web
         subfolderitems:
@@ -404,11 +500,11 @@ entries:
         subfolderitems:
 
         - title: Player Class
-          url: /pages\/flutter-sound\/api\/player\/FlutterSoundPlayer-class.html
+          url: /pages\/flutter-sound\/api\/player_v5\/FlutterSoundPlayer-class.html
           output: web, pdf
 
         - title: Recorder Class
-          url: /pages\/flutter-sound\/api\/recorder\/FlutterSoundRecorder-class.html
+          url: /pages\/flutter-sound\/api\/recorder_v5\/FlutterSoundRecorder-class.html
           output: web, pdf
 
         - title: Utilities
@@ -443,8 +539,19 @@ entries:
       output: web, pdf
 
     - title: Problem Report
-      external_url: https://github.com/dooboolab/flutter_sound/issues
       output: web, pdf
+      folderitems:
+
+        - title: issues on Gitlab
+          external_url: https://gitlab.com/canardoux/tau/-/issues
+          output: web, pdf
+
+        - title: Issues on Github
+          hint: Issues on Github
+          output: web, pdf
+          external_url: https://github.com/Canardoux/tau/issues
+
+
 
     - title: Roadmap
       external_url: https://github.com/dooboolab/flutter_sound/projects\/3
