@@ -1,7 +1,7 @@
 ---
 name: Problem Report
 about: I got something wrong
-title: "[BUG]"
+title: "[BUG]:"
 labels: Not yet handled, maybe bug
 assignees: ''
 
