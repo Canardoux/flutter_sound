@@ -11,7 +11,7 @@ assignees: ''
 
 - **FULL** or **LITE** flavor ?
 
-- Result of the command **(important)**: ```flutter pub deps | grep flutter_sound```
+- **Important**: Result of the command : ```flutter pub deps | grep flutter_sound```
 
 ----------------------------------------------------------
 
