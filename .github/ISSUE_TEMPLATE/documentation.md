@@ -1,8 +1,8 @@
 ---
 name: Documentation
 about: Documentation update requested
-title: ''
-labels: doc
+title: "[DOC] "
+labels: Not yet handled, doc
 assignees: ''
 
 ---
