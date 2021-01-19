@@ -57,7 +57,7 @@ topnav_dropdowns:
           hint: The sources on Github. Close Source Software :-(
 
         - title: bitbucket
-          external_url: https://bitbucket.org/canardoux-ws/tau
+          external_url: https://bitbucket.org/canardoux-ws/the-tau-project
           hint: Close Source Software :-(
 
         - title: Gitlab
