@@ -540,21 +540,13 @@ entries:
 
     - title: Problem Report
       output: web, pdf
-      folderitems:
-
-        - title: issues on Gitlab
-          external_url: https://gitlab.com/canardoux/tau/-/issues
-          output: web, pdf
-
-        - title: Issues on Github
-          hint: Issues on Github
-          output: web, pdf
-          external_url: https://github.com/Canardoux/tau/issues
+      hint: Issues on Github
+      external_url: https://github.com/Canardoux/tau/issues
 
 
 
     - title: Roadmap
-      external_url: https://github.com/dooboolab/flutter_sound/projects\/3
+      external_url: https://github.com/Canardoux/tau/projects/3
       output: web, pdf
 
     - title: Contributions

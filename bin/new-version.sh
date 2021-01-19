@@ -59,9 +59,15 @@ cd ..
 
 git add .
 git commit -m "TAU : Version $VERSION"
-git push
-git tag -f $VERSION
-git push  -f origin $VERSION
+git push origin
+git push gl
+git push bb
+if [ ! -z "$VERSION" ]; then
+    git tag -f $VERSION
+    git push  -f origin $VERSION
+    git push  -f gl $VERSION
+    git push  -f bb $VERSION
+fi
 
 
 if test -f "tau_core.podspec"; then
@@ -86,10 +92,14 @@ cd ../..
 
 git add .
 git commit -m "TAU : Version $VERSION"
-git push
+git push origin
+git push gl
+git push bb
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push  -f origin $VERSION
+        git push  -f gl $VERSION
+        git push  -f bb $VERSION
 fi
 
 
@@ -175,10 +185,14 @@ bin/doc.sh $VERSION
 
 git add .
 git commit -m "TAU : Version $VERSION"
-git push
+git push origin
+git push gl
+git push bb
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push  -f origin $VERSION
+        git push  -f gl $VERSION
+        git push  -f bb $VERSION
 fi
 
 
