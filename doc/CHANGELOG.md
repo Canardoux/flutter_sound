@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.5.2
+
+- Fixes a bug on Android when the plugin is attached several time to the engine. Thanks to @ed-vx for the Pull Request :-) . [#595] and [#594]
+
 ## 7.5.1
 
 - The &tau; documentation is moved to https://tau.canardoux.xyz . Yes, HTTPS, and not anymore HTTP. [#553](https://github.com/dooboolab/flutter_sound/issues/553)
