@@ -36,14 +36,15 @@
 {
 }
 
-FlutterSoundPlayerManager* flutterSoundPlayerManager; // Singleton
+FlutterSoundPlayerManager* flutterSoundPlayerManager = nil; // Singleton
 
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
 {
         FlutterMethodChannel* aChannel = [FlutterMethodChannel methodChannelWithName:@"com.dooboolab.flutter_sound_player"
                                         binaryMessenger:[registrar messenger]];
-        assert (flutterSoundPlayerManager == nil);
+        if (flutterSoundPlayerManager == nil)
+                NSLog(@"ERROR during registerWithRegistrar: flutterSoundPlayerManager == nil");
         flutterSoundPlayerManager = [[FlutterSoundPlayerManager alloc] init];
         flutterSoundPlayerManager ->channel = aChannel;
         [registrar addMethodCallDelegate: flutterSoundPlayerManager channel: aChannel];
