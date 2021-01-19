@@ -7,9 +7,11 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+
 ## 7.5.2
 
-- Fixes a bug on Android when the plugin is attached several time to the engine. Thanks to @ed-vx for the Pull Request :-) . [#595] and [#594]
+- Android : Fixes a bug when the plugin is attached several time to the engine. Thanks to @ed-vx for the Pull Request :-) . [#595](https://github.com/Canardoux/tau/pull/595) and [#594](https://github.com/Canardoux/tau/issues/594)
+- iOS : Initialization of `flutterSoundPlayerManager` and `flutterSoundRecorderManager` to NIL. [#411](https://github.com/Canardoux/tau/issues/411), [#587](https://github.com/Canardoux/tau/issues/587)
 
 ## 7.5.1
 

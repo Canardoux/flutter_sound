@@ -1,4 +1,4 @@
-## 7.5.2+1
+## 7.5.2+2
 
 - Please [look to this](https://dooboolab.github.io/flutter_sound/book/CHANGELOG.html)
 
