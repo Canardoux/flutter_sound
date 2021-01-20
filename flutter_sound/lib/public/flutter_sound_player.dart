@@ -981,6 +981,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     while (totalLength > 0 && !isStopped) {
       var bsize = totalLength > _blockSize ? _blockSize : totalLength;
       var ln = await _feed(buffer.sublist(lnData, lnData + bsize));
+      assert(ln >= 0);
       lnData += ln;
       totalLength -= ln;
     }
@@ -1003,6 +1004,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         this,
         data: data,
       );
+      assert(ln >= 0); // feedFromStream() is not happy if < 0
       if (ln != 0) {
         _needSomeFoodCompleter = null;
         return (ln);

@@ -7,6 +7,9 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.5.3
+
+- Fix a major bug during Feed(). A major regression introduced in 7.5.1. [#590](https://github.com/Canardoux/tau/issues/590)
 
 ## 7.5.2
 
