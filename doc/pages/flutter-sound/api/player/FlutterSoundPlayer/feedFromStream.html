@@ -143,6 +143,7 @@
   while (totalLength &gt; 0 &amp;&amp; !isStopped) {
     var bsize = totalLength &gt; _blockSize ? _blockSize : totalLength;
     var ln = await _feed(buffer.sublist(lnData, lnData + bsize));
+    assert(ln &gt;= 0);
     lnData += ln;
     totalLength -= ln;
   }
@@ -159,7 +160,7 @@
 <footer>
   <span class="no-break">
     flutter_sound
-      7.5.2+3
+      7.5.3+1
   </span>
 
 </footer>
