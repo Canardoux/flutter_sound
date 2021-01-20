@@ -265,6 +265,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 			byte[] data = call.argument ( "data" );
 
 			int ln = m_flautoPlayer.feed(data);
+			assert(ln >= 0);
 			result.success (ln);
 		} catch (Exception e)
 		{
