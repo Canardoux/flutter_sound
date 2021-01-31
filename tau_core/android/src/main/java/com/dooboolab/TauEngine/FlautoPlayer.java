@@ -41,9 +41,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.lang.Thread;
 
-//import static androidx.core.content.ContextCompat.getSystemService;
 import com.dooboolab.TauEngine.Flauto.*;
-
+import com.dooboolab.TauEngine.Flauto;
 
 public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorListener
 {
@@ -103,6 +102,7 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 	final private Handler          mainHandler = new Handler (Looper.getMainLooper ());
 	boolean pauseMode;
 	FlautoPlayerCallback m_callBack;
+	public		t_PLAYER_STATE 		playerState = t_PLAYER_STATE.PLAYER_IS_STOPPED;
 
 
 	static final String ERR_UNKNOWN           = "ERR_UNKNOWN";
@@ -115,20 +115,22 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 	}
 
 
-	public boolean initializeFlautoPlayer (t_AUDIO_FOCUS focus, t_SESSION_CATEGORY category, t_SESSION_MODE sessionMode, int audioFlags, t_AUDIO_DEVICE audioDevice)
+	public boolean openPlayer (t_AUDIO_FOCUS focus, t_SESSION_CATEGORY category, t_SESSION_MODE sessionMode, int audioFlags, t_AUDIO_DEVICE audioDevice)
 	{
 		boolean r = setAudioFocus(focus, category, sessionMode, audioFlags, audioDevice);
-		m_callBack.openAudioSessionCompleted(r);
+		playerState = t_PLAYER_STATE.PLAYER_IS_STOPPED;
+		m_callBack.openPlayerCompleted(r);
 		return r;
 	}
 
-	public void releaseFlautoPlayer ( )
+	public void closePlayer ( )
 	{
 		if (hasFocus)
 			abandonFocus();
 		releaseSession();
+		playerState = t_PLAYER_STATE.PLAYER_IS_STOPPED;
+		m_callBack.closePlayerCompleted(true);
 	}
-
 
 	public t_PLAYER_STATE getPlayerState()
 	{
@@ -149,7 +151,7 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 		{
 			requestFocus ();
 		}
-		stopPlayer(); // To start a new clean playback
+		stop(); // To start a new clean playback
 
 		try
 		{
@@ -187,7 +189,7 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 			}
 		}
 
-		stopPlayer(); // To start a new clean playback
+		stop(); // To start a new clean playback
 
 		try
 		{
@@ -198,9 +200,10 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 			{
 				player = new FlautoPlayerMedia();
 			}
+			String path = Flauto.getPath(fromURI);
 
 			mTimer = new Timer();
-			player._startPlayer(fromURI,  sampleRate, numChannels, blockSize, this);
+			player._startPlayer(path,  sampleRate, numChannels, blockSize, this);
 		}
 		catch ( Exception e )
 		{
@@ -274,9 +277,8 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 			 * Reset player.
 			 */
 			Log.d(TAG, "Playback completed.");
-			stopPlayer();
-			if (getPlayerState() != t_PLAYER_STATE.PLAYER_IS_STOPPED)
-				throw new RuntimeException();
+			stop();
+			playerState = t_PLAYER_STATE.PLAYER_IS_STOPPED;
 			m_callBack.audioPlayerDidFinishPlaying(true);
 	}
 
@@ -301,7 +303,9 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 				//Map<String, Object> dico = new HashMap<String, Object> ();
 				//dico.put( "duration", (int) duration);
 				//dico.put( "state",  (int)getPlayerState());
-				m_callBack.startPlayerCompleted(duration);
+				playerState = t_PLAYER_STATE.PLAYER_IS_PLAYING;
+
+				m_callBack.startPlayerCompleted(true, duration);
 			}
 		});
 		/*
@@ -353,14 +357,20 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 
 	public void stopPlayer ( )
 	{
+		stop();
+		playerState = t_PLAYER_STATE.PLAYER_IS_STOPPED;
+		m_callBack.stopPlayerCompleted(true);
+	}
+
+	void stop()
+	{
 		pauseMode = false;
 		mTimer.cancel ();
 		if (player != null)
 			player._stop();
 		player = null;
+
 	}
-
-
 
 	public boolean isDecoderSupported (t_CODEC codec )
 	{
@@ -373,6 +383,9 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 		{
 			player._pausePlayer();
 			pauseMode = true;
+			playerState = t_PLAYER_STATE.PLAYER_IS_PAUSED;
+			m_callBack.pausePlayerCompleted(true);
+
 			return true;
 		}
 		catch ( Exception e )
@@ -389,6 +402,9 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 		{
 			player._resumePlayer();
 			pauseMode = false;
+			playerState = t_PLAYER_STATE.PLAYER_IS_PLAYING;
+			m_callBack.resumePlayerCompleted(true);
+
 			return true;
 		}
 		catch ( Exception e )

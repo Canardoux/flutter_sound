@@ -54,8 +54,8 @@ FlutterSoundRecorderManager* flutterSoundRecorderManager = nil; // Singleton
 {
         FlutterMethodChannel* aChannel = [FlutterMethodChannel methodChannelWithName:@"com.dooboolab.flutter_sound_recorder"
                                         binaryMessenger:[registrar messenger]];
-        if (flutterSoundRecorderManager == nil)
-                NSLog(@"ERROR during registerWithRegistrar: flutterSoundRecorderManager == nil");
+        if (flutterSoundRecorderManager != nil)
+                NSLog(@"ERROR during registerWithRegistrar: flutterSoundRecorderManager != nil");
         flutterSoundRecorderManager = [[FlutterSoundRecorderManager alloc] init];
         flutterSoundRecorderManager ->channel = aChannel;
         [registrar addMethodCallDelegate: flutterSoundRecorderManager channel:aChannel];
@@ -75,23 +75,23 @@ FlutterSoundRecorderManager* flutterSoundRecorderManager = nil; // Singleton
 {
         FlutterSoundRecorder* aFlautoRecorder = (FlutterSoundRecorder*)[ self getSession: call];
  
-        if ([@"initializeFlautoRecorder" isEqualToString:call.method])
+        if ([@"openRecorder" isEqualToString: call.method])
         {
                 aFlautoRecorder = [[FlutterSoundRecorder alloc] init: call];
-                [aFlautoRecorder initializeFlautoRecorder: call result:result];
+                [aFlautoRecorder openRecorder: call result: result];
         } else
         
-        if ([@"setAudioFocus" isEqualToString:call.method])
+        if ([@"setAudioFocus" isEqualToString: call.method])
         {
                 [aFlautoRecorder setAudioFocus: call result:result];
         } else
 
         
          
-        if ([@"releaseFlautoRecorder" isEqualToString:call.method])
+        if ([@"closeRecorder" isEqualToString: call.method])
         {
                 if (aFlautoRecorder != [NSNull null])
-                        [aFlautoRecorder releaseFlautoRecorder:call result:result];
+                        [aFlautoRecorder closeRecorder: call result: result];
         } else
          
         if ([@"isEncoderSupported" isEqualToString:call.method])
@@ -100,31 +100,41 @@ FlutterSoundRecorderManager* flutterSoundRecorderManager = nil; // Singleton
                 [aFlautoRecorder isEncoderSupported: (t_CODEC)[codec intValue] result:result];
         } else
         
-        if ([@"startRecorder" isEqualToString:call.method])
+        if ([@"startRecorder" isEqualToString: call.method])
         {
-                     [aFlautoRecorder startRecorder:call result:result];
+                     [aFlautoRecorder startRecorder: call result:result];
         } else
         
-        if ([@"stopRecorder" isEqualToString:call.method])
+        if ([@"stopRecorder" isEqualToString: call.method])
         {
                 [aFlautoRecorder stopRecorder: result];
         } else
         
          
-        if ([@"setSubscriptionDuration" isEqualToString:call.method])
+        if ([@"setSubscriptionDuration" isEqualToString: call.method])
         {
                 //NSNumber* sec = (NSNumber*)call.arguments[@"sec"];
-                [aFlautoRecorder setSubscriptionDuration:call result:result];
+                [aFlautoRecorder setSubscriptionDuration: call result:result];
         } else
         
-        if ([@"pauseRecorder" isEqualToString:call.method])
+        if ([@"pauseRecorder" isEqualToString: call.method])
         {
-                [aFlautoRecorder pauseRecorder:call result:result];
+                [aFlautoRecorder pauseRecorder: call result:result];
         } else
         
-        if ([@"resumeRecorder" isEqualToString:call.method])
+        if ([@"resumeRecorder" isEqualToString: call.method])
         {
-                [aFlautoRecorder resumeRecorder:call result:result];
+                [aFlautoRecorder resumeRecorder: call result:result];
+        } else
+        
+        if ([@"getRecordURL" isEqualToString: call.method])
+        {
+                [aFlautoRecorder getRecordURL: call result:result];
+        } else
+        
+        if ([@"deleteRecord" isEqualToString: call.method])
+        {
+                [aFlautoRecorder deleteRecord: call result:result];
         } else
         
         {

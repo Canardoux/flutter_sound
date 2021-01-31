@@ -135,7 +135,7 @@ AudioRecInterface* audioRec;
         NSTimer* dbPeakTimer;
         NSTimer* recorderTimer;
         double subscriptionDuration;
-        NSString* path;
+        NSString* m_path;
 }
 
 - (void)recordingData: (NSData*)data
@@ -158,7 +158,7 @@ AudioRecInterface* audioRec;
                 audioDevice: (t_AUDIO_DEVICE)audioDevice
 {
         BOOL r = [self setAudioFocus: focus category: category mode: mode audioFlags: audioFlags audioDevice: audioDevice ];
-        [m_callBack openAudioSessionCompleted: r];
+        [m_callBack openRecorderCompleted: r];
         return r;
 }
 
@@ -171,10 +171,29 @@ AudioRecInterface* audioRec;
 - (void)releaseFlautoRecorder
 {
         NSLog(@"IOS:--> releaseFlautoPlayer");
+        [m_callBack closeRecorderCompleted: true];
         NSLog(@"IOS:<-- releaseFlautoPlayer");
 }
 
+- (NSString*) getpath:  (NSString*)path
+{
+        if (path == nil)
+                return nil;
+        if (![path containsString: @"/"]) // Temporary file
+        {
+                path = [NSTemporaryDirectory() stringByAppendingPathComponent: path];
+        }
+        return path;
+}
 
+- (NSString*) getUrl: (NSString*)path
+{
+        if (path == nil)
+                return NULL;
+        path = [self getpath: path];
+        NSURL* url = [NSURL URLWithString: path];
+        return [url absoluteString];
+}
 
 - (bool)startRecorderCodec: (t_CODEC)codec
                 toPath: (NSString*)path
@@ -212,6 +231,9 @@ AudioRecInterface* audioRec;
                 [audioSettings setValue:[NSNumber numberWithLong: bitRate]
                     forKey:AVEncoderBitRateKey];
         }
+ 
+        path = [self getpath: path];
+        m_path = path;
 
         if(codec == pcm16)
         {
@@ -226,6 +248,7 @@ AudioRecInterface* audioRec;
         }
         audioRec ->startRecorder();
         [self startRecorderTimer];
+        [m_callBack startRecorderCompleted: true];
 
         return true;
 }
@@ -244,6 +267,30 @@ AudioRecInterface* audioRec;
                 delete audioRec;
                 audioRec = nil;
           }
+          NSString* url = [self getUrl: m_path];
+          [m_callBack stopRecorderCompleted: url success: YES];
+          m_path = nil;
+}
+
+- (bool)deleteRecord: (NSString*)path
+{
+        NSString* url = [self getUrl: path];
+        if (url != NULL)
+        {
+                NSFileManager *fileManager = [NSFileManager defaultManager];
+                NSError *error;
+                BOOL success = [fileManager removeItemAtPath: url error: &error];
+                return success;
+        }
+        return false;
+  
+}
+
+
+- (NSString*)getRecordURL: (NSString*)path
+{
+        NSString* url = [self getUrl: path];
+        return url;
 }
 
 
@@ -289,12 +336,14 @@ AudioRecInterface* audioRec;
 {
         audioRec ->pauseRecorder();
         [self stopRecorderTimer];
+        [m_callBack pauseRecorderCompleted: true];
 }
 
 - (void)resumeRecorder
 {
         audioRec ->resumeRecorder();
         [self startRecorderTimer];
+        [m_callBack resumeRecorderCompleted: true];
 }
 
 
@@ -307,7 +356,12 @@ AudioRecInterface* audioRec;
         [m_callBack updateRecorderProgressDbPeakLevel: normalizedPeakLevel duration: duration];
 }
  
-
+- (int)getStatus
+{
+        if (audioRec == nil)
+                return 0;
+        return audioRec ->getStatus();
+}
 
 @end
 

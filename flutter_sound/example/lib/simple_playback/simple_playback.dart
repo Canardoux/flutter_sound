@@ -55,6 +55,7 @@ class _SimplePlaybackState extends State<SimplePlayback> {
         _mPlayerIsInited = true;
       });
     });
+    play(); // just for debugging
   }
 
   @override

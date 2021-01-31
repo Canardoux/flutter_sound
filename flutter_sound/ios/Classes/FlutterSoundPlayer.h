@@ -51,8 +51,8 @@
 - (void)setVolume:(double) volume result: (FlutterResult)result;
 - (void)setCategory: (FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)setActive: (FlutterMethodCall*)call result:(FlutterResult)result;
-- (void)initializeFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
-- (void)releaseFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)openPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)closePlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)setUIProgressBar:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)nowPlaying:(FlutterMethodCall*)call result: (FlutterResult)result;

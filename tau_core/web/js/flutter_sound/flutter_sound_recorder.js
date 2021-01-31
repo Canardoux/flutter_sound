@@ -16,13 +16,21 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
+const IS_RECORDER_PAUSED = 1;
+const IS_RECORDER_RECORDING = 2;
+const IS_RECORDER_STOPPED = 0;
 
 function newRecorderInstance(aCallback, callbackTable) { return new FlutterSoundRecorder(aCallback, callbackTable);}
 
 
 const CB_updateRecorderProgress = 0;
 const CB_recordingData = 1;
+const CB_startRecorderCompleted = 2;
+const CB_pauseRecorderCompleted = 3;
+const CB_resumeRecorderCompleted = 4;
+const CB_stopRecorderCompleted = 5;
+const CB_openRecorderCompleted = 6;
+const CB_closeRecorderCompleted = 7;
 
 class FlutterSoundRecorder
 {
@@ -35,7 +43,11 @@ class FlutterSoundRecorder
                 this.subscriptionDuration = 0;
                 this.timerId = null;
                 this.deltaTime = 0;
+                this.currentRecordPath = '';
                 this.localObjects = [];
+                this.instanceNo = instanceNumber;
+                console.log('Instance Number : ' + this.instanceNo.toString())
+                ++instanceNumber;
         }
 
 
@@ -43,6 +55,19 @@ class FlutterSoundRecorder
         initializeFlautoRecorder(  focus, category, mode, audioFlags, device)
         {
                 console.log( 'initializeFlautoRecorder');
+                this.callbackTable[CB_openRecorderCompleted](this.callback,  IS_RECORDER_STOPPED, true);
+
+        }
+
+
+        deleteObjects()
+        {
+                console.log('deleteObjects '  );
+                for (var url in this.localObjects)
+                {
+                        console.log('deleteRecord : ' + url);
+                        this.deleteRecord(url);
+                }
         }
 
 
@@ -50,24 +75,11 @@ class FlutterSoundRecorder
         {
                 console.log( 'releaseFlautoRecorder');
                 this.stopRecorder();
-                var myStorage = window.sessionStorage;
-                for (var url in this.localObjects)
-                {
-                        if (this.localObjects[url] != null )
-                        {
-                                var objId = myStorage.getItem(this.localObjects[url]);
-                                if ( objId != null)
-                                {
-                                        console.log( 'Deleting object ' + objId + ' : ' +  this.localObjects[url] );
-                                        URL.revokeObjectURL(objId);
-                                } else
-                                        console.log('NULL2');
-                        } else
-                                console.log('NULL1');
-                }
+                this.deleteObjects();
                 this.localObjects = [];
 
-        }
+                this.callbackTable[CB_closeRecorderCompleted](this.callback,  IS_RECORDER_STOPPED, true);
+       }
 
 
         setAudioFocus( focus, category, mode, audioFlags, device)
@@ -95,26 +107,103 @@ class FlutterSoundRecorder
         }
 
 
+        _deleteRecord( aPath,)
+        {
+                console.log('deleteRecord: ' + aPath );
+                if ((aPath == null) || (aPath == ''))
+                {
+                        path = lasturl;
+                } else
+                {
+                        var path = 'tau' + '/' + aPath;
+                }
+                var myStorage;
+                if (path.substring(0,1) == '/')
+                {
+                        myStorage = window.localStorage;
+                        console.log('localStorage');
+                } else
+                {
+                        myStorage = window.sessionStorage;
+                        console.log('sessionStorage');
+                }
+                var oldUrl = myStorage.getItem(path);
+                if (oldUrl != null && oldUrl != '')
+                {
+                        console.log( 'Deleting object  : ' + oldUrl.toString()  );
+                        URL.revokeObjectURL(oldUrl);
+                        return true;
+                }
+
+                return false;
+        }
+
+
+
+        deleteRecord(path)
+        {
+                this._deleteRecord(path);
+
+                var found = this.localObjects.findIndex(element => element == path);
+                if (found != null && found >= 0)
+                {
+                        console.log("Found : " + found);
+                        this.localObjects[found] = null;
+                }
+
+        }
+
+        setRecordURL( aPath, newUrl)
+        {
+                console.log('setRecordUrl: ' + aPath + ' <- ' + newUrl);
+                var path = 'tau' + '/' + aPath;
+                var myStorage;
+                if ((path == null) || (path == ''))
+                {
+                        return null;
+                }
+                if (path.substring(0,1) == '/')
+                {
+                        myStorage = window.localStorage;
+                        console.log('localStorage');
+                } else
+                {
+                        myStorage = window.sessionStorage;
+                        console.log('sessionStorage');
+                }
+                var oldUrl = myStorage.getItem(path);
+                if (oldUrl != null && oldUrl != '')
+                {
+                        console.log( 'Deleting object ' +  ' : ' + oldUrl.toString()  );
+                        URL.revokeObjectURL(oldUrl);
+                } else
+                {
+
+                }
+
+                lastUrl = aPath;
+
+                myStorage.setItem(path, newUrl);
+                console.log('<--- setRecordURL ( ' + path  + ' ) : ' + newUrl);
+
+        }
+
+        getRecordURL( aPath,)
+        {
+                console.log('---> getRecordURL : ' + aPath);
+                var r = getRecordURL(aPath);
+                console.log('<--- getRecordURL :' + r);
+                return r;
+        }
+
+
         startRecorder( path, sampleRate, numChannels, bitRate, codec, toStream, audioSource)
         {
                 console.log( 'startRecorder');
                 var constraints = { audio: true};
                 var chunks ;//= [];
                 var me = this;
-                var myStorage;
-                if ((path != null) && (path != ''))
-                {
-                        if (path.substring(0,1) == '_')
-                        {
-                                myStorage = window.sessionStorage;
-                                console.log('sessionStorage');
-                        } else
-                        {
-                                myStorage = window.sessionStorage;
-                                console.log('localStorage'); // Actually we do not use 'sessionStorage'
-                                //console.log('sessionStorage');
-                       }
-                }
+                this.currentRecordPath = path;
 
                 navigator.mediaDevices.getUserMedia(constraints).then
                 (function(mediaStream)
@@ -157,8 +246,8 @@ class FlutterSoundRecorder
                         var chunks = [];
                         var options =
                         {
-                              audioBitsPerSecond : bitRate,
-                              mimeType : mime_types[codec]
+                                audioBitsPerSecond : bitRate,
+                                mimeType : mime_types[codec]
                         }
 
                         var mediaRecorder = new MediaRecorder(mediaStream, options);
@@ -186,9 +275,12 @@ class FlutterSoundRecorder
 
                         mediaRecorder.onstart = function(e)
                         {
+                                console.log('---> mediaRecorder OnStart');
                                 me.deltaTime = 0;
                                 me.startTimer();
-                                console.log('mediaRecorder OnStart : ' + me.mediaRecorder.state);
+                                console.log('<---mediaRecorder OnStart : ' + me.mediaRecorder.state);
+                                me.callbackTable[CB_startRecorderCompleted](me.callback, IS_RECORDER_RECORDING, true);
+
                         }
 
                         mediaRecorder.onerror = function(e)
@@ -199,40 +291,40 @@ class FlutterSoundRecorder
 
                         mediaRecorder.onpause = function(e)
                         {
-                                console.log('mediaRecorder OnPause : ' + me.mediaRecorder.state);
+                                console.log('---> mediaRecorder onpause');
+                                me.callbackTable[CB_pauseRecorderCompleted](me.callback,  IS_RECORDER_PAUSED, true);
+                                console.log('<--- mediaRecorder onpause');
                         }
 
                         mediaRecorder.onresume = function(e)
                         {
-                                console.log('mediaRecorder OnResume : ' + me.mediaRecorder.state);
+                                console.log('---> mediaRecorder onresume');
+                                me.callbackTable[CB_resumeRecorderCompleted](me.callback,  IS_RECORDER_RECORDING, true);
+                                console.log('<--- mediaRecorder onresume');
                         }
 
-                         mediaRecorder.onstop = function(e)
+                        mediaRecorder.onstop = function(e)
                         {
-                                if (path != null && path != '')
-                                {
+
+                                        console.log('---> mediaRecorder onstop');
                                         var blob = new Blob(chunks, {'type' : mime_types[codec]} );
                                         var url = URL.createObjectURL(blob);
-                                        var objId = myStorage.getItem(path);
-                                        if (objId != null && objId != '')
+                                        console.log('Instance Number : ' + me.instanceNo.toString())
+
+                                        me.setRecordURL( path, url);
+
+                                        var found = me.localObjects.findIndex(element => element == path);
+                                        if (found != null && found >= 0)
                                         {
-                                                console.log( 'Deleting object ' +  url.toString() +  ' : ' + objId.toString()  );
-                                                URL.revokeObjectURL(objId);
-                                                var found = me.localObjects.findIndex(element => element == path);
-                                                if (found != null && found >= 0)
-                                                {
-                                                        console.log("Found : " + found);
-                                                        me.localObjects[found] = path;
-                                                } else
-                                                {
-                                                        console.log("NOT FOUND! : " + path);
-                                                        me.localObjects.push(path);
-                                                }
+                                                console.log("Found : " + found);
+                                                me.localObjects[found] = path;
                                         } else
                                         {
+                                                console.log("NOT FOUND! : " + path);
                                                 me.localObjects.push(path);
                                         }
-                                        myStorage.setItem(path, url);
+
+
 /*
                                         var xhr = new XMLHttpRequest();
                                         var blob;
@@ -272,12 +364,14 @@ class FlutterSoundRecorder
                                         }, false);
                                         // Send XHR
                                         xhr.send();
-*/
-                                }
-                                chunks = null;///[];
-                                console.log('recorder stopped' );
-                                me.mediaRecorder = null;
-                       }
+        */
+                                        chunks = null;///[];
+                                        console.log('recorder stopped' );
+                                        me.mediaRecorder = null;
+                                        me.callbackTable[CB_stopRecorderCompleted](me.callback,  IS_RECORDER_STOPPED, true, me.getRecordURL( path));
+
+                                        console.log('<--- mediaRecorder onstop');
+                }
                 });
         }
 
@@ -291,7 +385,7 @@ class FlutterSoundRecorder
                 this.stopTimer();
                 this.mediaRecorder = null;
                 console.log("recorder stopped" );
-       }
+        }
 
 
         pauseRecorder()

@@ -77,7 +77,6 @@
         [channel invokeMethod: methodName arguments: call ];
 }
 
-
 @end
 
 
@@ -119,9 +118,19 @@
 }
 
 
-- (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg
+- (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg success: (bool)success
 {
-        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": stringArg, @"state": [NSNumber numberWithInt:([self getStatus])] };
+        NSObject* obj = stringArg;
+        if (obj == nil)
+                obj = [NSNull null];
+        NSDictionary* dic =
+        @{
+                @"slotNo": [NSNumber numberWithInt: slotNo],
+                @"arg": obj,
+                @"state": [NSNumber numberWithInt:([self getStatus])],
+                @"success": [NSNumber numberWithBool: success]
+                
+        };
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 
@@ -133,16 +142,28 @@
 }
 
 
-- (void)invokeMethod: (NSString*)methodName boolArg: (Boolean)boolArg
+- (void)invokeMethod: (NSString*)methodName boolArg: (Boolean)boolArg success: (bool)success
 {
-        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": [NSNumber numberWithBool: boolArg] , @"state": [NSNumber numberWithInt:([self getStatus])]};
+        NSDictionary* dic =
+        @{
+                @"slotNo": [NSNumber numberWithInt: slotNo],
+                @"arg": [NSNumber numberWithBool: boolArg] ,
+                @"state": [NSNumber numberWithInt:([self getStatus])],
+                @"success": [NSNumber numberWithBool: success]
+        };
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 
 
-- (void)invokeMethod: (NSString*)methodName numberArg: (NSNumber*)arg
+- (void)invokeMethod: (NSString*)methodName numberArg: (NSNumber*)arg success: (bool)success
 {
-        NSDictionary* dic = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"arg": arg, @"state": [NSNumber numberWithInt:([self getStatus])]};
+        NSDictionary* dic =
+        @{
+                @"slotNo": [NSNumber numberWithInt: slotNo],
+                @"arg": arg,
+                @"state": [NSNumber numberWithInt:([self getStatus])],
+                @"success": [NSNumber numberWithBool: success]
+        };
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 

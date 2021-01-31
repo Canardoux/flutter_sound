@@ -21,8 +21,12 @@ import com.dooboolab.TauEngine.Flauto.t_PLAYER_STATE;
 
 public interface FlautoPlayerCallback
 {
-  	abstract public void openAudioSessionCompleted(boolean success);
-	abstract public void startPlayerCompleted (long duration);
+  	abstract public void openPlayerCompleted(boolean success);
+	abstract public void closePlayerCompleted(boolean success);
+	abstract public void stopPlayerCompleted(boolean success);
+	abstract public void pausePlayerCompleted(boolean success);
+	abstract public void resumePlayerCompleted(boolean success);
+	abstract public void startPlayerCompleted (boolean success, long duration);
 	abstract public void needSomeFood (int ln);
 	abstract public void updateProgress(long position, long duration);
 	abstract public void audioPlayerDidFinishPlaying (boolean flag);

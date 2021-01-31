@@ -72,6 +72,8 @@
     
         <li class="section-title"><a href="../../recorder/FlutterSoundRecorder-class.html#instance-methods">Methods</a></li>
         <li><a href="../../recorder/FlutterSoundRecorder/closeAudioSession.html">closeAudioSession</a></li>
+        <li><a href="../../recorder/FlutterSoundRecorder/deleteRecord.html">deleteRecord</a></li>
+        <li><a href="../../recorder/FlutterSoundRecorder/getRecordURL.html">getRecordURL</a></li>
         <li><a href="../../recorder/FlutterSoundRecorder/isEncoderSupported.html">isEncoderSupported</a></li>
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
         <li><a href="../../recorder/FlutterSoundRecorder/openAudioSession.html">openAudioSession</a></li>
@@ -97,7 +99,7 @@
       <div><h1><span class="kind-method">stopRecorder</span> method </h1></div>
 
     <section class="multi-line-signature">
-      <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+      <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>
             <span class="name ">stopRecorder</span>
 (<wbr>)
       
@@ -106,7 +108,8 @@
       <p>Stop a record.</p>
 <p>This verb never throws any exception. It is safe to call it everywhere,
 for example when the App is not sure of the current Audio State and want to recover a clean reset state.</p>
-<p><em>Example:</em></p>
+<p>Return a Future to an URL of the recorded sound.
+<em>Example:</em></p>
 <pre class="language-dart"><code class="language-dart">        await myRecorder.stopRecorder();
         if (_recorderSubscription != null)
         {
@@ -119,13 +122,14 @@ for example when the App is not sure of the current Audio State and want to reco
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; stopRecorder() async {
+      <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; stopRecorder() async {
   if (_isInited == Initialized.initializationInProgress) {
     throw (_InitializationInProgress());
   }
   if (_isInited != Initialized.fullyInitialized) {
     throw (_NotOpen());
   }
+  _stopRecorderCompleter = Completer&lt;String&gt;();
   await FlutterSoundRecorderPlatform.instance.stopRecorder(this);
   _userStreamSink = null;
 
@@ -155,8 +159,9 @@ for example when the App is not sure of the current Audio State and want to reco
     if (rc != 0) {
       return null;
     }
-    return _savedUri;
+    &#47;&#47;return _savedUri;
   }
+  return _stopRecorderCompleter.future;
 }</code></pre>
     </section>
 

@@ -78,17 +78,17 @@ class FlutterSoundRecorderManager extends FlutterSoundManager
                 FlutterSoundRecorder aRecorder = (FlutterSoundRecorder) getSession( call);
                 switch ( call.method )
                 {
-                        case "initializeFlautoRecorder":
+                        case "openRecorder":
                         {
                                 aRecorder = new FlutterSoundRecorder ( call );
                                 initSession( call, aRecorder );
-                                aRecorder.initializeFlautoRecorder ( call, result );
+                                aRecorder.openRecorder ( call, result );
                         }
                         break;
 
-                        case "releaseFlautoRecorder":
+                        case "closeRecorder":
                         {
-                                aRecorder.releaseFlautoRecorder ( call, result );
+                                aRecorder.closeRecorder ( call, result );
                         }
                         break;
 
@@ -136,6 +136,17 @@ class FlutterSoundRecorderManager extends FlutterSoundManager
                         }
                         break;
 
+                        case "getRecordURL":
+                        {
+                                aRecorder.getRecordURL ( call, result );
+                        }
+                        break;
+
+                        case "deleteRecord":
+                        {
+                                aRecorder.deleteRecord ( call, result );
+                        }
+                        break;
 
                         default:
                         {

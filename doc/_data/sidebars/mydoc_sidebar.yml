@@ -57,10 +57,6 @@ entries:
       url: /guides_codec.html
       output: web, pdf
 
-    - title: Logs
-      url: /guides_logs.html
-      output: web, pdf
-
     - title: Raw PCM and Wave files
       url: /guides_pcm_wave.html
       output: web, pdf
