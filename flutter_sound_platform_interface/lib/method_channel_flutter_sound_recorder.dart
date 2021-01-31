@@ -49,6 +49,7 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform
 
 Future<dynamic> channelMethodCallHandler(MethodCall call) {
     FlutterSoundRecorderCallback aRecorder = getSession(call.arguments['slotNo'] as int);
+    bool success = call.arguments['success'] as bool;
 
     switch (call.method) {
       case "updateRecorderProgress":
@@ -57,11 +58,49 @@ Future<dynamic> channelMethodCallHandler(MethodCall call) {
         }
         break;
 
-      case "recordingData":
+        case "recordingData":
         {
           aRecorder.recordingData(data: call.arguments['recordingData'] );
         }
         break;
+
+        case "startRecorderCompleted":
+        {
+          aRecorder.startRecorderCompleted(call.arguments['state'], success );
+        }
+        break;
+
+        case "stopRecorderCompleted":
+        {
+          aRecorder.stopRecorderCompleted(call.arguments['state'] , success, call.arguments['arg']);
+        }
+        break;
+
+        case "pauseRecorderCompleted":
+        {
+          aRecorder.pauseRecorderCompleted(call.arguments['state'] , success);
+        }
+        break;
+
+        case "resumeRecorderCompleted":
+        {
+          aRecorder.resumeRecorderCompleted(call.arguments['state'] , success);
+        }
+        break;
+
+        case "openRecorderCompleted":
+        {
+          aRecorder.openRecorderCompleted(call.arguments['state'], success );
+        }
+        break;
+
+       case "closeRecorderCompleted":
+        {
+          aRecorder.closeRecorderCompleted(call.arguments['state'], success );
+        }
+        break;
+
+    
 
       default:
         throw ArgumentError('Unknown method ${call.method}');
@@ -100,16 +139,16 @@ Future<dynamic> channelMethodCallHandler(MethodCall call) {
 
 
   @override
-  Future<void> initializeFlautoRecorder(FlutterSoundRecorderCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device})
+  Future<void> openRecorder(FlutterSoundRecorderCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device})
   {
-    return invokeMethodVoid( callback, 'initializeFlautoRecorder', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index ,},) ;
+    return invokeMethodVoid( callback, 'openRecorder', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index ,},) ;
   }
 
 
   @override
-  Future<void> releaseFlautoRecorder(FlutterSoundRecorderCallback callback, )
+  Future<void> closeRecorder(FlutterSoundRecorderCallback callback, )
   {
-    return invokeMethodVoid( callback, 'releaseFlautoRecorder',  Map<String, dynamic>(),);
+    return invokeMethodVoid( callback, 'closeRecorder',  Map<String, dynamic>(),);
   }
 
   @override
@@ -171,6 +210,20 @@ Future<dynamic> channelMethodCallHandler(MethodCall call) {
   {
     return invokeMethodVoid( callback, 'resumeRecorder', Map<String, dynamic>(),) ;
   }
+
+
+  @override
+  Future<bool> deleteRecord(FlutterSoundRecorderCallback callback, String path)
+  {
+    return invokeMethodBool( callback, 'deleteRecord', {'path': path});
+  }
+
+  @override
+  Future<String> getRecordURL(FlutterSoundRecorderCallback callback, String path )
+  {
+    return invokeMethodString( callback, 'getRecordURL', {'path': path});
+  }
+
 
 
 }

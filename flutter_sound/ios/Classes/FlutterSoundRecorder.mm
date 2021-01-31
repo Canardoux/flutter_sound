@@ -41,15 +41,59 @@
 - (void)updateRecorderProgressDbPeakLevel: normalizedPeakLevel duration: duration;
 {
         NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"status": [NSNumber numberWithInt: -1], @"dbPeakLevel": normalizedPeakLevel, @"duration": duration};
-        [self invokeMethod:@"updateRecorderProgress" dico: dico];
+        [self invokeMethod:@"updateRecorderProgress" dico: dico ];
 }
  
 - (void)recordingData: (NSData*)data
 {
         NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo],  @"status": [NSNumber numberWithInt: -1], @"recordingData": data};
-        [self invokeMethod:@"recordingData" dico: dico];
+        [self invokeMethod:@"recordingData" dico: dico ];
   
 }
+
+- (void)startRecorderCompleted: (bool)success
+{
+        [self invokeMethod: @"startRecorderCompleted" boolArg: success success: success];
+}
+
+- (void)stopRecorderCompleted: (NSString*)path success: (bool)success
+{
+       [self invokeMethod: @"stopRecorderCompleted" stringArg: path success: success];
+
+}
+
+- (void)resumeRecorderCompleted: (bool)success
+{
+        [self invokeMethod: @"resumeRecorderCompleted" boolArg: success success: success];
+
+}
+
+- (void)pauseRecorderCompleted: (bool)success
+{
+        [self invokeMethod: @"pauseRecorderCompleted" boolArg: success success: success];
+
+}
+
+- (void)openRecorderCompleted: (bool)success
+ {
+       [self invokeMethod: @"openRecorderCompleted" boolArg: success success: success];
+ 
+ }
+ 
+ 
+- (void)closeRecorderCompleted: (bool)success
+ {
+       [self invokeMethod: @"closeRecorderCompleted" boolArg: success success: success];
+ 
+ }
+
+ /*
+- (void)setDbPeakLevelUpdate:(double)intervalInSecs result: (FlutterResult)result
+{
+       [self invokeMethod: @"setDbPeakLevelUpdate" boolArg: false]; // TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+}
+*/
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -64,14 +108,18 @@
         return flutterSoundRecorderManager;
 }
 
-- (void)initializeFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
+- (void)openRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
 {
-        [self setAudioFocus: call result: result];}
+        [self setAudioFocus: call result: result];
+        [self openRecorderCompleted:  [NSNumber numberWithBool: YES]]; // It should not be here, but in tau_core !!!
+        result([NSNumber numberWithBool: YES]);
+}
 
-- (void)releaseFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
+- (void)closeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
 {
         [flautoRecorder releaseFlautoRecorder];
         [super releaseSession];
+        [self closeRecorderCompleted:  [NSNumber numberWithBool: YES]]; // It should not be here, but in tau_core !!!
         result([NSNumber numberWithBool: YES]);
 }
 
@@ -185,22 +233,36 @@
         result([NSNumber numberWithBool: YES]);
 }
 
-- (void)pauseRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
+- (void)pauseRecorder: (FlutterMethodCall*)call result: (FlutterResult)result
 {
         [flautoRecorder pauseRecorder];
         result([NSNumber numberWithBool: YES]);
 }
 
-- (void)resumeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
+- (void)resumeRecorder: (FlutterMethodCall*)call result: (FlutterResult)result
 {
         [flautoRecorder resumeRecorder];
         result([NSNumber numberWithBool: YES]);
 }
 
+- (void)deleteRecord: (FlutterMethodCall*)call result: (FlutterResult)result
+{
+        NSString* path =  (NSString*)call.arguments[@"path"];
+        bool b = [flautoRecorder deleteRecord: path];
+        result([NSNumber numberWithBool: b]);
+}
+
+- (void)getRecordURL: (FlutterMethodCall*)call result: (FlutterResult)result
+{
+        NSString* path =  (NSString*)call.arguments[@"path"];
+        NSString* r = [flautoRecorder getRecordURL: path];
+        result(r);
+}
+
 
 - (int)getStatus
 {
-        return -1; // not implemented
+        return [flautoRecorder getStatus];
 }
 
 

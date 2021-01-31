@@ -50,14 +50,8 @@ enum Initialized {
   /// The object has been created but is not initialized
   notInitialized,
 
-  /// The object is currently being initialized. The matching Future is not completed
-  initializationInProgress,
-
   /// The object is initialized and can be fully used
   fullyInitialized,
-
-  /// The object is initialized with UI and can be fully used
-  fullyInitializedWithUI,
 }
 
 /// The usual file extensions used for each codecs

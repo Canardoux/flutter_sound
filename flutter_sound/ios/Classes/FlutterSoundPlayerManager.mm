@@ -43,8 +43,8 @@ FlutterSoundPlayerManager* flutterSoundPlayerManager = nil; // Singleton
 {
         FlutterMethodChannel* aChannel = [FlutterMethodChannel methodChannelWithName:@"com.dooboolab.flutter_sound_player"
                                         binaryMessenger:[registrar messenger]];
-        if (flutterSoundPlayerManager == nil)
-                NSLog(@"ERROR during registerWithRegistrar: flutterSoundPlayerManager == nil");
+        if (flutterSoundPlayerManager != nil)
+                NSLog(@"ERROR during registerWithRegistrar: flutterSoundPlayerManager != nil");
         flutterSoundPlayerManager = [[FlutterSoundPlayerManager alloc] init];
         flutterSoundPlayerManager ->channel = aChannel;
         [registrar addMethodCallDelegate: flutterSoundPlayerManager channel: aChannel];
@@ -73,15 +73,15 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
          FlutterSoundPlayer* aFlautoPlayer = (FlutterSoundPlayer*)[ self getSession: call];
          //NSLog(@"IOS:--> rcv: %@", call.method);
 
-        if ([@"initializeMediaPlayer" isEqualToString:call.method])
+        if ([@"openPlayer" isEqualToString:call.method])
         {
                 aFlautoPlayer = [[FlutterSoundPlayer alloc] init: call];
-                [aFlautoPlayer initializeFlautoPlayer: call result: result];
+                [aFlautoPlayer openPlayer: call result: result];
         } else
 
-        if ([@"releaseMediaPlayer" isEqualToString:call.method])
+        if ([@"closePlayer" isEqualToString:call.method])
         {
-                [aFlautoPlayer releaseFlautoPlayer: call result: result];
+                [aFlautoPlayer closePlayer: call result: result];
          } else
 
         if ([@"getPlayerState" isEqualToString:call.method])

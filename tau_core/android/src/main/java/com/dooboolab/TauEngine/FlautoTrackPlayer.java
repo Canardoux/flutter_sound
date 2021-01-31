@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Callable;
-
+import java.lang.System;
 import com.dooboolab.TauEngine.Flauto.*;
 
 
@@ -48,7 +48,6 @@ public class FlautoTrackPlayer extends FlautoPlayer
 	private       	Timer              	mTimer      = new Timer();
 	private		long			mDuration   = 0;
 	final private 	Handler            	mainHandler = new Handler(Looper.getMainLooper ());
-	private		t_PLAYER_STATE 		playerState = t_PLAYER_STATE.PLAYER_IS_STOPPED;
 
 	/* ctor */ public FlautoTrackPlayer(FlautoPlayerCallback callBack)
 	{
@@ -66,7 +65,7 @@ public class FlautoTrackPlayer extends FlautoPlayer
 
 
 	@Override
-	public boolean initializeFlautoPlayer(t_AUDIO_FOCUS focus, t_SESSION_CATEGORY category, t_SESSION_MODE sessionMode, int audioFlags, t_AUDIO_DEVICE audioDevice)
+	public boolean openPlayer(t_AUDIO_FOCUS focus, t_SESSION_CATEGORY category, t_SESSION_MODE sessionMode, int audioFlags, t_AUDIO_DEVICE audioDevice)
 	{
 		audioManager = ( AudioManager ) Flauto.androidContext.getSystemService ( Context.AUDIO_SERVICE );
 		if (Flauto.androidActivity == null)
@@ -88,7 +87,7 @@ public class FlautoTrackPlayer extends FlautoPlayer
 	}
 
 	@Override
-	public void releaseFlautoPlayer()
+	public void closePlayer()
 	{
 		// Throw an error if the media player is not initialized
 		if ( mMediaBrowserHelper == null )
@@ -103,10 +102,28 @@ public class FlautoTrackPlayer extends FlautoPlayer
 		if (hasFocus)
 			abandonFocus();
 		releaseSession();
+		playerState = t_PLAYER_STATE.PLAYER_IS_STOPPED;
+		m_callBack.closePlayerCompleted(true);
+
 	}
 
+	public boolean startPlayer (t_CODEC codec, String fromURI, byte[] dataBuffer, int numChannels, int sampleRate, int blockSize ) {
+		//Log.e (TAG,  "Must use startPlayerFromTrack()" );
+		//return false;
+		final HashMap<String, Object> dic = new HashMap<String, Object>();
+		dic.put("trackPath", fromURI);
+		dic.put("codec", codec);
+		dic.put("dataBuffer", dataBuffer);
+		dic.put("trackTitle", "This is a record");
+		dic.put("trackAuthor", "from flutter_sound");
+		//albumArtUrl: albumArtUrl,
+		//albumArtAsset: albumArtAsset,
+		//albumArtFile: albumArtFile,
 
-	public boolean startPlayerFromTrack
+		return startPlayerFromTrack(new FlautoTrack(dic), false, false, false, -1, 0, true, true);
+	}
+
+		public boolean startPlayerFromTrack
 	(
 		FlautoTrack track,
 		boolean canPause,
@@ -133,6 +150,8 @@ public class FlautoTrackPlayer extends FlautoPlayer
 			// The audio file is stored by a String, then get the path to the file audio to
 			// play
 			path = track.getPath();
+			path = Flauto.getPath(path);
+
 		} else
 		{
 			// The audio file is stored by a buffer, then save it as a file and get the path
@@ -202,7 +221,6 @@ public class FlautoTrackPlayer extends FlautoPlayer
 
 		// A path was given, then send it to the media player
 		mMediaBrowserHelper.mediaControllerCompat.getTransportControls().playFromMediaId( path, null );
-		playerState = t_PLAYER_STATE.PLAYER_IS_PLAYING;
 		return true;
 		// The media player is started in the on prepared callback
 	}
@@ -220,12 +238,14 @@ public class FlautoTrackPlayer extends FlautoPlayer
 		{
 			// Stop the playback
 			mMediaBrowserHelper.stop();
-			playerState = t_PLAYER_STATE.PLAYER_IS_STOPPED;
 		}
 		catch ( Exception e )
 		{
+			Log.e(TAG, "stopPlayer() error" + e.getMessage());
 		}
-		return;
+		playerState = t_PLAYER_STATE.PLAYER_IS_STOPPED;
+
+		m_callBack.stopPlayerCompleted(true);
 	}
 
 	@Override
@@ -243,6 +263,9 @@ public class FlautoTrackPlayer extends FlautoPlayer
 		{
 			// Pause the media player
 			mMediaBrowserHelper.pausePlayback();
+			playerState = t_PLAYER_STATE.PLAYER_IS_PAUSED;
+
+			m_callBack.pausePlayerCompleted(true);
 			return true;
 		}
 		catch ( Exception e )
@@ -275,8 +298,10 @@ public class FlautoTrackPlayer extends FlautoPlayer
 		{
 			// Resume the player
 			mMediaBrowserHelper.resumePlayback();
-
 			playerState = t_PLAYER_STATE.PLAYER_IS_PLAYING;
+
+			m_callBack.resumePlayerCompleted(true);
+
 			// Seek the player to the last position and resume it
 			return true;
 		}
@@ -359,7 +384,7 @@ public class FlautoTrackPlayer extends FlautoPlayer
 			throws
 			Exception
 		{
-			m_callBack.openAudioSessionCompleted(mIsSuccessfulCallback);
+			m_callBack.openPlayerCompleted(mIsSuccessfulCallback);
 			return null;
 		}
 	}
@@ -507,7 +532,9 @@ public class FlautoTrackPlayer extends FlautoPlayer
 			// The content is ready to be played, then play it
 			mMediaBrowserHelper.playPlayback();
 			long trackDuration = mMediaBrowserHelper.mediaControllerCompat.getMetadata().getLong( MediaMetadataCompat.METADATA_KEY_DURATION );
-			m_callBack.startPlayerCompleted(trackDuration);
+			playerState = t_PLAYER_STATE.PLAYER_IS_PLAYING;
+
+			m_callBack.startPlayerCompleted(true, trackDuration);
 
 			updateProgress();
 			// Set timer task to send event to RN

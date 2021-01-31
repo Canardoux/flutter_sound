@@ -20,7 +20,12 @@ package com.dooboolab.TauEngine;
 
 public interface FlautoRecorderCallback
 {
-        public abstract void openAudioSessionCompleted(boolean success);
+        public abstract void openRecorderCompleted(boolean success);
+        public abstract void closeRecorderCompleted(boolean success);
+        public abstract void startRecorderCompleted(boolean success);
+        public abstract void stopRecorderCompleted(boolean success, String url);
+        public abstract void pauseRecorderCompleted(boolean success);
+        public abstract void resumeRecorderCompleted(boolean success);
         public abstract void updateRecorderProgressDbPeakLevel(double normalizedPeakLevel, long duration);
         public abstract void recordingData ( byte[] data);
 }

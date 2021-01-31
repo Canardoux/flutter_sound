@@ -54,48 +54,53 @@ public abstract class FlutterSoundSession
 	abstract int getStatus();
 
 
-	void invokeMethodWithString ( String methodName, String arg )
+	void invokeMethodWithString ( String methodName, boolean success, String arg )
 	{
 		Map<String, Object> dic = new HashMap<String, Object>();
 		dic.put ( "slotNo", slotNo );
 		dic.put ( "state", getStatus() );
 		dic.put ( "arg", arg );
+		dic.put ( "success", success );
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
 
-	void invokeMethodWithDouble ( String methodName, double arg )
+	void invokeMethodWithDouble ( String methodName, boolean success, double arg )
 	{
 		Map<String, Object> dic = new HashMap<String, Object> ();
 		dic.put ( "slotNo", slotNo );
 		dic.put ( "state", getStatus() );
 		dic.put ( "arg", arg );
+		dic.put ( "success", success );
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
 
 
-	void invokeMethodWithInteger ( String methodName, int arg )
+	void invokeMethodWithInteger ( String methodName, boolean success, int arg )
 	{
 		Map<String, Object> dic = new HashMap<String, Object> ();
 		dic.put ( "slotNo", slotNo );
 		dic.put ( "state", getStatus() );
 		dic.put ( "arg", arg );
+		dic.put ( "success", success );
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
 
 
-	void invokeMethodWithBoolean ( String methodName, boolean arg )
+	void invokeMethodWithBoolean ( String methodName, boolean success, boolean arg )
 	{
 		Map<String, Object> dic = new HashMap<String, Object> ();
 		dic.put ( "slotNo", slotNo );
 		dic.put ( "state", getStatus() );
 		dic.put ( "arg", arg );
+		dic.put ( "success", success );
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
 
-	void invokeMethodWithMap ( String methodName, Map<String, Object>  dic )
+	void invokeMethodWithMap ( String methodName, boolean success, Map<String, Object>  dic )
 	{
 		dic.put ( "slotNo", slotNo );
 		dic.put ( "state", getStatus() );
+		dic.put ( "success", success );
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
 

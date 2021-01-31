@@ -160,7 +160,7 @@
 
                                         [self setupNowPlaying: _progress duration: _duration];
                                         long durationLong =  (long)([_duration doubleValue] * 1000.0) ;
-                                        [ self ->m_callBack startPlayerCompleted: durationLong];
+                                        [ self ->m_callBack startPlayerCompleted: true duration: durationLong];
 
                                 }];
                         r = true; // ??? not sure
@@ -234,7 +234,7 @@
                 //[self setUIProgressBar: progress duration: duration];
 
                 long durationLong = [self getDuration];
-                [ m_callBack startPlayerCompleted: durationLong];
+                [ m_callBack startPlayerCompleted: true duration: durationLong];
 
         }
         return r;
@@ -364,6 +364,8 @@
                 [playingInfoCenter setNowPlayingInfo: nil];
                 playingInfoCenter.nowPlayingInfo = nil;
           }
+          [m_callBack stopPlayerCompleted: YES];
+
           NSLog(@"IOS:<-- stopPlayer");
 }
 

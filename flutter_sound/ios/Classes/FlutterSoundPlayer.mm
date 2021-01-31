@@ -36,24 +36,48 @@
 
 // ----------------------------------------------  callback ---------------------------------------------------------------------------
 
-- (void)openAudioSessionCompleted: (bool)success
+- (void)openPlayerCompleted: (bool)success
 {
-       [self invokeMethod:@"openAudioSessionCompleted" boolArg: success];
+       [self invokeMethod: @"openPlayerCompleted" boolArg: success success: success];
 }
 
-- (void)startPlayerCompleted: (long)duration
+
+- (void)closePlayerCompleted: (bool)success
+{
+       [self invokeMethod: @"closePlayerCompleted" boolArg: success success: success];
+}
+
+
+- (void)startPlayerCompleted: (bool)success duration: (long)duration
 {
      
         int d = (int)duration;
         NSNumber* nd = [NSNumber numberWithInt: d];
-        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"state":  [self getPlayerStatus], @"duration": nd };
+        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo], @"state":  [self getPlayerStatus], @"duration": nd, @"success": @YES };
         [self invokeMethod:@"startPlayerCompleted" dico: dico ];
 }
+
+- (void)pausePlayerCompleted: (bool)success
+{
+       [self invokeMethod: @"pausePlayerCompleted" boolArg: success success: success];
+}
+
+- (void)resumePlayerCompleted: (bool)success
+{
+       [self invokeMethod: @"resumePlayerCompleted" boolArg: success success: success];
+}
+
+
+- (void)stopPlayerCompleted: (bool)success
+{
+       [self invokeMethod: @"stopPlayerCompleted" boolArg: success success: success];
+}
+
 
 
 - (void)needSomeFood: (int) ln
 {
-        [self invokeMethod:@"needSomeFood" numberArg: [NSNumber numberWithInt: ln] ];
+        [self invokeMethod:@"needSomeFood" numberArg: [NSNumber numberWithInt: ln]  success: @YES ];
 }
 
 - (void)updateProgressPositon: (long)position duration: (long)duration
@@ -61,36 +85,36 @@
                 NSNumber* p = [NSNumber numberWithLong: position];
                 NSNumber* d = [NSNumber numberWithLong: duration];
                 NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: self ->slotNo], @"state": [self getPlayerStatus], @"position": p, @"duration": d, @"playerStatus": [self getPlayerStatus] };
-                [self invokeMethod:@"updateProgress" dico: dico];
+                [self invokeMethod:@"updateProgress" dico: dico  ];
 }
 
 - (void)audioPlayerDidFinishPlaying: (BOOL)flag
 {
         NSLog(@"IOS:--> @audioPlayerDidFinishPlaying");
-        [self invokeMethod:@"audioPlayerFinishedPlaying" numberArg: [self getPlayerStatus]];
+        [self invokeMethod:@"audioPlayerFinishedPlaying" numberArg: [self getPlayerStatus] success: YES];
 
         NSLog(@"IOS:<-- @audioPlayerDidFinishPlaying");
 }
 
 - (void)pause
 {
-        [self invokeMethod:@"pause" numberArg: [self getPlayerStatus] ];
+        [self invokeMethod:@"pause" numberArg: [self getPlayerStatus] success: @YES ];
 }
 
 - (void)resume
 {
-        [self invokeMethod:@"resume" numberArg: [self getPlayerStatus] ];
+        [self invokeMethod:@"resume" numberArg: [self getPlayerStatus]  success: @YES ];
 }
 
 - (void)skipForward
 {
-        [self invokeMethod:@"skipForward" numberArg: [self getPlayerStatus] ];
+        [self invokeMethod:@"skipForward" numberArg: [self getPlayerStatus]  success: @YES ];
 
 }
 
 - (void)skipBackward
 {
-        [self invokeMethod:@"skipBackward" numberArg: [self getPlayerStatus] ];
+        [self invokeMethod:@"skipBackward" numberArg: [self getPlayerStatus]  success: @YES ];
 
 }
 
@@ -129,7 +153,7 @@
 }
 
 
-- (void)initializeFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
+- (void)openPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
         NSLog(@"IOS:--> initializeFlautoPlayer");
         t_AUDIO_FOCUS focus = (t_AUDIO_FOCUS)( [(NSNumber*)call.arguments[@"focus"] intValue]);
@@ -141,10 +165,10 @@
         if (r)
                 result( [self getPlayerStatus]);
         else
-                [FlutterError
+                result([FlutterError
                                 errorWithCode:@"Audio Player"
                                 message:@"Open session failure"
-                                details:nil];
+                                details:nil]);
         NSLog(@"IOS:<-- initializeFlautoPlayer");
 }
 
@@ -161,15 +185,15 @@
         if (r)
                 result( [self getPlayerStatus]);
         else
-                [FlutterError
+                result([FlutterError
                                 errorWithCode:@"Audio Player"
                                 message:@"Open session failure"
-                                details:nil];
+                                details:nil]);
        NSLog(@"IOS:<-- setAudioFocus");
 }
 
 
-- (void)releaseFlautoPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
+- (void)closePlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
         NSLog(@"IOS:--> releaseFlautoPlayer");
         [flautoPlayer releaseFlautoPlayer];
@@ -187,10 +211,10 @@
         if (r)
                 result( [self getPlayerStatus]);
         else
-                [FlutterError
+                result([FlutterError
                                 errorWithCode:@"Audio Player"
                                 message:@"Open session failure"
-                                details:nil];
+                                details:nil]);
 }
 
 - (void)setActive: (FlutterMethodCall*)call result:(FlutterResult)result
@@ -202,10 +226,10 @@
         if (r)
                 result([self getPlayerStatus]);
         else
-                [FlutterError
+                result([FlutterError
                                 errorWithCode:@"Audio Player"
                                 message:@"setActive failure"
-                                details:nil];
+                                details:nil]);
        NSLog(@"IOS:<-- setActive");
 }
 
@@ -259,10 +283,11 @@
                         result(status);
         } else
         {
+                        result(
                         [FlutterError
                         errorWithCode:@"Audio Player"
                         message:@"startPlayer failure"
-                        details:nil];
+                        details:nil]);
         }
 
         NSLog(@"IOS:<-- startPlayer");
@@ -287,10 +312,10 @@
                 result([self getPlayerStatus]);
         } else
         {
-                        [FlutterError
+                        result([FlutterError
                         errorWithCode:@"Audio Player"
                         message:@"startPlayerFromMic failure"
-                        details:nil];
+                        details:nil]);
         }
 
         NSLog(@"IOS:<-- startPlayer");
@@ -329,10 +354,10 @@
                         result([self getPlayerStatus]);
         } else
         {
-                        [FlutterError
+                        result([FlutterError
                         errorWithCode:@"Audio Player"
                         message:@"startPlayer failure"
-                        details:nil];
+                        details:nil]);
         }
 
         NSLog(@"IOS:<-- startPlayerFromTrack");
