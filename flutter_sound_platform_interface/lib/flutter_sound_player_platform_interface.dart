@@ -39,8 +39,13 @@ abstract class FlutterSoundPlayerCallback
   void updatePlaybackState(int state);
   void needSomeFood(int ln);
   void audioPlayerFinished(int state);
-  void openAudioSessionCompleted(bool success);
-  void startPlayerCompleted(int duration);
+  void startPlayerCompleted(int state, success, int duration);
+  void pausePlayerCompleted(int state, success);
+  void resumePlayerCompleted(int state, success);
+  void stopPlayerCompleted(int state, success);
+  void openPlayerCompleted(int state, success);
+  void closePlayerCompleted(int state, success);
+
 }
 
 /// The interface that implementations of flutter_soundPlayer must implement.
@@ -118,7 +123,7 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
 
 
 
-  Future<int> initializeMediaPlayer(FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI,})
+  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI,})
   {
     throw UnimplementedError('invokeMethod() has not been implemented.');
   }
@@ -128,7 +133,7 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
     throw UnimplementedError('invokeMethod() has not been implemented.');
   }
 
-  Future<int> releaseMediaPlayer(FlutterSoundPlayerCallback callback, )
+  Future<int> closePlayer(FlutterSoundPlayerCallback callback, )
   {
     throw UnimplementedError('invokeMethod() has not been implemented.');
   }

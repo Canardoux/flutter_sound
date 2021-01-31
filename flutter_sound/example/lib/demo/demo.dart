@@ -363,7 +363,7 @@ class _MyAppState extends State<Demo> {
           codec: _codec,
           bitRate: 8000,
           numChannels: 1,
-          sampleRate: tSAMPLERATE,
+          sampleRate: (_codec == Codec.pcm16)? tSTREAMSAMPLERATE:tSAMPLERATE,
         );
       }
       print('startRecorder');

@@ -111,17 +111,20 @@ Map<String, Function> callbackTable2 =
  */
 List<Function> callbackTable =
 [
-        allowInterop( (FlutterSoundPlayerCallback cb, bool success) { cb.openAudioSessionCompleted(success);} ),
-        allowInterop( (FlutterSoundPlayerCallback cb, int position, int duration) { cb.updateProgress(duration: duration, position: position,);} ),
-        allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.pause(state,);} ),
-        allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.resume(state,);} ),
-        allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.skipBackward(state,);} ),
-        allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.skipForward(state,);} ),
-        allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.updatePlaybackState(state,);} ),
-        allowInterop( (FlutterSoundPlayerCallback cb, int ln) { cb.needSomeFood(ln,);} ),
-        allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.audioPlayerFinished(state,);} ),
-        allowInterop( (FlutterSoundPlayerCallback cb, int duration) { cb.startPlayerCompleted(duration,);} ),
-
+        allowInterop( (FlutterSoundPlayerCallback cb, int position, int duration)                       { cb.updateProgress(duration: duration, position: position,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state)                                        { cb.pause(state,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state)                                        { cb.resume(state,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state)                                        { cb.skipBackward(state,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state)                                        { cb.skipForward(state,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state)                                        { cb.updatePlaybackState(state,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int ln)                                           { cb.needSomeFood(ln,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state)                                        { cb.audioPlayerFinished(state,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state, bool success, int duration)            { cb.startPlayerCompleted(state, success, duration,);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state, bool success)                          { cb.pausePlayerCompleted(state, success);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state, bool success)                          { cb.resumePlayerCompleted(state, success);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state, bool success)                          { cb.stopPlayerCompleted(state, success);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state, bool success)                          { cb.openPlayerCompleted(state, success);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb, int state, bool success)                          { cb.closePlayerCompleted(state, success);} ),
 ];
 
 //=========================================================================================================
@@ -184,7 +187,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
 //==============================================================================================================================
 
         @override
-        Future<int> initializeMediaPlayer( FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI}) async
+        Future<int> openPlayer( FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI}) async
         {
                 // openAudioSessionCompleter = new Completer<bool>();
                 // await invokeMethod( callback, 'initializeMediaPlayer', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index, 'withUI': withUI ? 1 : 0 ,},) ;
@@ -204,13 +207,15 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
 
 
         @override
-        Future<int> releaseMediaPlayer(FlutterSoundPlayerCallback callback, ) async
+        Future<int> closePlayer(FlutterSoundPlayerCallback callback, ) async
         {
                 int slotno = findSession(callback);
                 int r = _slots[slotno].releaseMediaPlayer();
                 _slots[slotno] = null;
                 return r;
         }
+
+
 
         @override
         Future<int> setAudioFocus(FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device,} ) async

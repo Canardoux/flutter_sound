@@ -14,6 +14,36 @@ The big problem \(as usual\) is Apple. Webkit is bull shit : you cannot use Medi
 
 You can play with [this live demo on the web](pages/flutter-sound/web_example/index.html), but better if not Safari and not iOS if you want to record something.
 
+
+## Installation
+
+To use Flutter Sound in a web application, you can either :
+
+### Static reference
+
+Add those 4 lines at the end of the `<head>` section of your `index.html` file :
+
+```text
+  <script src="assets/packages/flutter_sound_web/js/flutter_sound/flutter_sound.js"></script>
+  <script src="assets/packages/flutter_sound_web/js/flutter_sound/flutter_sound_player.js"></script>
+  <script src="assets/packages/flutter_sound_web/js/flutter_sound/flutter_sound_recorder.js"></script>
+  <script src="assets/packages/flutter_sound_web/js/howler/howler.js"></script>
+```
+
+### or Dynamic reference
+
+Add those 4 lines at the end of the `<head>` section of your `index.html` file :
+
+```text
+  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@7.4.13/js/flutter_sound/flutter_sound.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@7.4.13/js/flutter_sound/flutter_sound_player.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@7.4.13/js/flutter_sound/flutter_sound_recorder.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/howler@2/dist/howler.min.js"></script>
+```
+
+Please [read this](https://www.jsdelivr.com/features) to understand how you can specify the interval of the versions you are interested by.
+
+
 ## Player
 
 * &tau; can play buffers with `startPlayerFromBuffer()`, exactly like with other platforms. Please refer to [the codecs compatibility table](guides_codec)

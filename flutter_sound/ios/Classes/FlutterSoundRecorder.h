@@ -52,13 +52,14 @@
 - (void)stopRecorder:(FlutterResult)result;
 - (void)setDbPeakLevelUpdate:(double)intervalInSecs result: (FlutterResult)result;
 //- (void)setDbLevelEnabled:(BOOL)enabled result: (FlutterResult)result;
-- (void)initializeFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
-- (void)releaseFlautoRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
+- (void)openRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
+- (void)closeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)setSubscriptionDuration:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)pauseRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)resumeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
-
+- (void)deleteRecord: (FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)getRecordURL: (FlutterMethodCall*)call result: (FlutterResult)result;
  
 @end
 

@@ -16,6 +16,8 @@ topnav:
       url: /news.html
       hint: "The &tau; Project news"
 
+    - title: issues on Gitlab
+      external_url: https://gitlab.com/canardoux/tau/-/issues
 
 #Topnav dropdowns
 topnav_dropdowns:
@@ -33,19 +35,6 @@ topnav_dropdowns:
         - title: React Native (javascript)
           hint: "For future expansion..."
           url: /api-react
-
-
-
-    - title: PR
-      folderitems:
-
-        - title: issues on Gitlab
-          external_url: https://gitlab.com/canardoux/tau/-/issues
-
-        - title: Issues on Github
-          hint: Issues on Github
-          external_url: https://github.com/Canardoux/tau/issues
-
 
 
 

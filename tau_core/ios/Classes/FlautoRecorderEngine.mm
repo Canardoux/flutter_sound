@@ -39,6 +39,7 @@
         engine = [[AVAudioEngine alloc] init];
         dateCumul = 0;
         previousTS = 0;
+        status = 0;
 
         AVAudioInputNode* inputNode = [engine inputNode];
         AVAudioFormat* inputFormat = [inputNode outputFormatForBus: 0];
@@ -117,6 +118,7 @@ void AudioRecorderEngine::startRecorder()
 {
         [engine startAndReturnError: nil];
         previousTS = CACurrentMediaTime() * 1000;
+        status = 2;
 }
 
 void AudioRecorderEngine::stopRecorder()
@@ -128,6 +130,7 @@ void AudioRecorderEngine::stopRecorder()
                 dateCumul += CACurrentMediaTime() * 1000 - previousTS;
                 previousTS = 0;
         }
+        status = 0;
         engine = nil;
 }
 
@@ -135,6 +138,7 @@ void AudioRecorderEngine::resumeRecorder()
 {
         [engine startAndReturnError: nil];
         previousTS = CACurrentMediaTime() * 1000;
+        status = 2;
  
 }
 
@@ -146,6 +150,7 @@ void AudioRecorderEngine::pauseRecorder()
                 dateCumul += CACurrentMediaTime() * 1000 - previousTS;
                 previousTS = 0;
         }
+        status = 1;
  
 }
 
@@ -185,11 +190,18 @@ NSNumber* AudioRecorderEngine::dbPeakProgress()
 }
 
 
+int AudioRecorderEngine::getStatus()
+{
+     return status;
+}
+
+
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 /* ctor */ avAudioRec::avAudioRec( t_CODEC codec, NSString* path, NSMutableDictionary *audioSettings, FlautoRecorder* owner)
 {
         flautoRecorder = owner;
+        isPaused = false;
 
         NSURL *audioFileURL;
         {
@@ -205,6 +217,7 @@ NSNumber* AudioRecorderEngine::dbPeakProgress()
 /* dtor */ avAudioRec::~avAudioRec()
 {
         [audioRecorder stop];
+        isPaused = false;
 }
 
 void avAudioRec::startRecorder()
@@ -212,21 +225,25 @@ void avAudioRec::startRecorder()
           [audioRecorder setDelegate: flautoRecorder];
           [audioRecorder record];
           [audioRecorder setMeteringEnabled: YES];
+          isPaused = false;
 }
 
 void avAudioRec::stopRecorder()
 {
+        isPaused = false;
         [audioRecorder stop];
 }
 
 void avAudioRec::resumeRecorder()
 {
         [audioRecorder record];
+        isPaused = false;
 }
 
 void avAudioRec::pauseRecorder()
 {
         [audioRecorder pause];
+        isPaused = true;
 
 }
 
@@ -244,6 +261,15 @@ NSNumber* avAudioRec::dbPeakProgress()
         NSNumber* normalizedPeakLevel = [NSNumber numberWithDouble:MIN(pow(10.0, [audioRecorder peakPowerForChannel:0] / 20.0) * 160.0, 160.0)];
         return normalizedPeakLevel;
 
+}
+
+int avAudioRec::getStatus()
+{
+     if ( [audioRecorder isRecording] )
+        return 2;
+     else if (isPaused)
+        return 1;
+     return 0;
 }
 
 
