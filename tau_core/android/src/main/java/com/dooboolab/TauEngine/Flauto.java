@@ -19,6 +19,8 @@ package com.dooboolab.TauEngine;
 
 import android.app.Activity;
 import android.content.Context;
+
+import java.io.File;
 //import androidx.annotation.NonNull;
 
 
@@ -96,6 +98,15 @@ public class Flauto
 	}
 
 
+	public enum t_RECORDER_STATE
+	{
+		RECORDER_IS_STOPPED,
+		RECORDER_IS_PAUSED,
+		RECORDER_IS_RECORDING,
+	}
+
+
+
 
 
 	public enum t_SESSION_CATEGORY
@@ -147,5 +158,23 @@ public class Flauto
 	public static Activity androidActivity;
 	public static Context androidContext;
 
+	public static String temporayFile(String radical)
+	{
+		File outputDir = Flauto.androidContext.getCacheDir(); // context being the Activity pointer
+		return outputDir + "/" + radical;
+
+	}
+
+	public static String getPath(String path)
+	{
+		if (path == null)
+			return null;
+		boolean isFound = path.contains("/");
+		if (!isFound)
+		{
+			path = temporayFile(path);
+		}
+		return path;
+	}
 
 }

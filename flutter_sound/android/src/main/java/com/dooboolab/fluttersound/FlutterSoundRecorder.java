@@ -46,24 +46,48 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 
 // =============================================================  callback ===============================================================
 
-      public void openAudioSessionCompleted(boolean success)
-      {
 
-      }
+	public void openRecorderCompleted(boolean success)
+	{
+		invokeMethodWithBoolean( "openRecorderCompleted", success, success );
+	}
+	public void closeRecorderCompleted(boolean success)
+	{
+		invokeMethodWithBoolean( "closeRecorderCompleted", success, success );
+	}
+	public void stopRecorderCompleted(boolean success, String url)
+	{
+		invokeMethodWithString( "stopRecorderCompleted", success, url );
+	}
+	public void pauseRecorderCompleted(boolean success)
+	{
+		invokeMethodWithBoolean( "pauseRecorderCompleted", success, success );
+	}
+	public void resumeRecorderCompleted(boolean success)
+	{
+		invokeMethodWithBoolean( "resumeRecorderCompleted", success, success );
+	}
 
-      public void updateRecorderProgressDbPeakLevel(double normalizedPeakLevel, long duration)
+	public void startRecorderCompleted (boolean success)
+	{
+		invokeMethodWithBoolean( "startRecorderCompleted", success, success );
+	}
+
+
+
+	public void updateRecorderProgressDbPeakLevel(double normalizedPeakLevel, long duration)
       {
 	      Map<String, Object> dic = new HashMap<String, Object>();
 	      dic.put("duration", duration);
 	      dic.put("dbPeakLevel", normalizedPeakLevel);
-	      invokeMethodWithMap("updateRecorderProgress", dic);
+	      invokeMethodWithMap("updateRecorderProgress", true, dic);
       }
 
       public void recordingData ( byte[] data)
       {
 	      Map<String, Object> dic = new HashMap<String, Object>();
 	      dic.put("recordingData", data);
-	      invokeMethodWithMap("recordingData", dic);
+	      invokeMethodWithMap("recordingData", true, dic);
 
       }
 
@@ -83,17 +107,40 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 
 
 
-	void initializeFlautoRecorder ( final MethodCall call, final Result result )
+	void openRecorder ( final MethodCall call, final Result result )
 	{
-		setAudioFocus(call, result);
-		//result.success ( true);
+		int x1 = call.argument("focus");
+		t_AUDIO_FOCUS focus = t_AUDIO_FOCUS.values()[x1];
+		int x2 = call.argument("category");
+		t_SESSION_CATEGORY category = t_SESSION_CATEGORY.values()[x2];
+		int x3 = call.argument("mode");
+		t_SESSION_MODE mode = t_SESSION_MODE.values()[x3];
+		int x4 = call.argument("device");
+		t_AUDIO_DEVICE audioDevice = t_AUDIO_DEVICE.values()[x4];
+		int audioFlags = call.argument("audioFlags");
+
+		boolean r = m_recorder.openRecorder
+			(
+				focus,
+				category,
+				mode,
+				audioFlags,
+				audioDevice
+			);
+
+		if (r)
+		{
+
+			result.success("openRecorder");
+		} else
+			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Failure to open session");
 	}
 
-	void releaseFlautoRecorder ( final MethodCall call, final Result result )
+	void closeRecorder ( final MethodCall call, final Result result )
 	{
-		m_recorder.abandonFocus();
-		m_recorder.releaseSession();
-		result.success ( "Flauto Recorder Released" );
+		m_recorder.closeRecorder();
+		result.success ( "closeRecorder" );
+
 	}
 
 
@@ -131,7 +178,7 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 
 	int getStatus()
 	{
-		return -1; // unimplemented
+		return m_recorder.getRecorderState().ordinal();
 	}
 
 	static boolean _isAudioRecorder[] = {
@@ -262,6 +309,21 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 			result.success ( r);
 		else
 			result.error ( "setFocus", "setFocus", "Failure to prepare focus");
+	}
+
+	public void getRecordURL (final MethodCall call, final MethodChannel.Result result )
+	{
+		String path =  call.argument ( "path" );
+		String r = m_recorder.temporayFile(path);
+		result.success( r );
+	}
+
+
+	public void deleteRecord (final MethodCall call, final MethodChannel.Result result )
+	{
+		String path =  call.argument ( "path" );
+		boolean r = m_recorder.deleteRecord(path);
+		result.success( r );
 	}
 
 }

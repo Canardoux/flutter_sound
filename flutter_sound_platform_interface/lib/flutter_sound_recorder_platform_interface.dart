@@ -59,6 +59,12 @@ abstract class FlutterSoundRecorderCallback
 {
   void updateRecorderProgress({int duration, double dbPeakLevel});
   void recordingData({Uint8List data} );
+  void startRecorderCompleted(int state, bool success);
+  void pauseRecorderCompleted(int state, bool success);
+  void resumeRecorderCompleted(int state, bool success);
+  void stopRecorderCompleted(int state, bool success, String url);
+  void openRecorderCompleted(int state, bool success);
+  void closeRecorderCompleted(int state, bool success);
 }
 
 
@@ -136,12 +142,12 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
 
 
 
-  Future<void> initializeFlautoRecorder(FlutterSoundRecorderCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device})
+  Future<void> openRecorder(FlutterSoundRecorderCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device})
   {
     throw UnimplementedError('invokeMethod() has not been implemented.');
   }
 
-  Future<void> releaseFlautoRecorder(FlutterSoundRecorderCallback callback, )
+  Future<void> closeRecorder(FlutterSoundRecorderCallback callback, )
   {
     throw UnimplementedError('invokeMethod() has not been implemented.');
   }
@@ -186,6 +192,16 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
   }
 
   Future<void> resumeRecorder(FlutterSoundRecorderCallback callback, )
+  {
+    throw UnimplementedError('invokeMethod() has not been implemented.');
+  }
+
+  Future<bool> deleteRecord(FlutterSoundRecorderCallback callback, String path)
+  {
+    throw UnimplementedError('invokeMethod() has not been implemented.');
+  }
+
+  Future<String> getRecordURL(FlutterSoundRecorderCallback callback, String path )
   {
     throw UnimplementedError('invokeMethod() has not been implemented.');
   }

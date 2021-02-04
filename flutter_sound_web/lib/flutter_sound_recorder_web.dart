@@ -68,13 +68,25 @@ class FlutterSoundRecorder
         @JS('resumeRecorder')
         external void resumeRecorder();
 
+        @JS('getRecordURL')
+        external String getRecordURL(String path,);
+
+        @JS('deleteRecord')
+        external bool deleteRecord(String path,);
+
 }
 
 
 List<Function> callbackTable =
 [
-        allowInterop( (FlutterSoundRecorderCallback cb, int duration, double dbPeakLevel) { cb.updateRecorderProgress(duration: duration, dbPeakLevel: dbPeakLevel);} ),
-        allowInterop( (FlutterSoundRecorderCallback cb, {Uint8List data}) { cb.recordingData(data: data);} ),
+        allowInterop( (FlutterSoundRecorderCallback cb,  int duration, double dbPeakLevel) { cb.updateRecorderProgress(duration: duration, dbPeakLevel: dbPeakLevel);} ),
+        allowInterop( (FlutterSoundRecorderCallback cb, {Uint8List data})                  { cb.recordingData(data: data);} ),
+        allowInterop( (FlutterSoundRecorderCallback cb,  int state, bool success)                        { cb.startRecorderCompleted(state, success);} ),
+        allowInterop( (FlutterSoundRecorderCallback cb,  int state, bool success)                        { cb.pauseRecorderCompleted(state, success);} ),
+        allowInterop( (FlutterSoundRecorderCallback cb,  int state, bool success)                        { cb.resumeRecorderCompleted(state, success);} ),
+        allowInterop( (FlutterSoundRecorderCallback cb,  int state, bool success, String url)            { cb.stopRecorderCompleted(state, success, url);} ),
+        allowInterop( (FlutterSoundRecorderCallback cb,  int state, bool success)                        { cb.openRecorderCompleted(state, success);} ),
+        allowInterop( (FlutterSoundRecorderCallback cb,  int state, bool success)                        { cb.closeRecorderCompleted(state, success);} ),
 ];
 
 
@@ -94,8 +106,6 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
 
 
 
-//============================================ Session manager ===================================================================
-
 
         List<FlutterSoundRecorder> _slots = [];
         FlutterSoundRecorder getWebSession(FlutterSoundRecorderCallback callback)
@@ -108,7 +118,7 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
 
 
         @override
-        Future<void> initializeFlautoRecorder(FlutterSoundRecorderCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device}) async
+        Future<void> openRecorder(FlutterSoundRecorderCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device}) async
         {
                 int slotno = findSession(callback);
                 if (slotno < _slots.length)
@@ -125,7 +135,7 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
 
 
         @override
-        Future<void> releaseFlautoRecorder(FlutterSoundRecorderCallback callback, ) async
+        Future<void> closeRecorder(FlutterSoundRecorderCallback callback, ) async
         {
                 int slotno = findSession(callback);
                 _slots[slotno].releaseFlautoRecorder();
@@ -185,6 +195,18 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
         Future<void> resumeRecorder(FlutterSoundRecorderCallback callback, ) async
         {
                 getWebSession(callback).resumeRecorder();
+        }
+
+        @override
+        Future<String> getRecordURL (FlutterSoundRecorderCallback callback, String path ) async
+        {
+                return  getWebSession(callback).getRecordURL(path);
+        }
+
+        @override
+        Future<bool> deleteRecord (FlutterSoundRecorderCallback callback, String path ) async
+        {
+                return getWebSession(callback).deleteRecord(path);
         }
 
 }
