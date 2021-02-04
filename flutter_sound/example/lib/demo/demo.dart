@@ -648,29 +648,42 @@ class _MyAppState extends State<Demo> {
   }
 
   void pauseResumePlayer() async {
+    try {
     if (playerModule.isPlaying) {
       await playerModule.pausePlayer();
     } else {
       await playerModule.resumePlayer();
     }
+    } on Exception catch (err) {
+      print('error: $err');
+    }
     setState(() {});
   }
 
   void pauseResumeRecorder() async {
-    if (recorderModule.isPaused) {
-      await recorderModule.resumeRecorder();
-    } else {
-      await recorderModule.pauseRecorder();
-      assert(recorderModule.isPaused);
+    try {
+      if (recorderModule.isPaused) {
+        await recorderModule.resumeRecorder();
+      } else {
+        await recorderModule.pauseRecorder();
+        assert(recorderModule.isPaused);
+      }
+    } on Exception catch (err) {
+      print('error: $err');
     }
     setState(() {});
   }
 
   void seekToPlayer(int milliSecs) async {
     //print('-->seekToPlayer');
+    try {
     if (playerModule.isPlaying) {
       await playerModule.seekToPlayer(Duration(milliseconds: milliSecs));
     }
+    } on Exception catch (err) {
+      print('error: $err');
+    }
+    setState(() {});
     //print('<--seekToPlayer');
   }
 

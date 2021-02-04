@@ -177,7 +177,7 @@ AudioRecInterface* audioRec;
 
 - (NSString*) getpath:  (NSString*)path
 {
-        if (path == nil)
+        if ((path == nil)|| ([path class] == [[NSNull null] class]))
                 return nil;
         if (![path containsString: @"/"]) // Temporary file
         {
@@ -188,8 +188,8 @@ AudioRecInterface* audioRec;
 
 - (NSString*) getUrl: (NSString*)path
 {
-        if (path == nil)
-                return NULL;
+        if ((path == nil)|| ([path class] == [[NSNull null] class]))
+                return nil;
         path = [self getpath: path];
         NSURL* url = [NSURL URLWithString: path];
         return [url absoluteString];

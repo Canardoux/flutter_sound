@@ -280,6 +280,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                          */
                 }
                 //js.context.callMethod('playAudioFromURL', [fromURI]);
+                print ('=============== FromURI : $fromURI');
                 return getWebSession(callback).startPlayer(codec.index,  fromDataBuffer, fromURI, numChannels, sampleRate);
         }
 
