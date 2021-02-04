@@ -30,10 +30,12 @@ import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.io.*;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import com.dooboolab.TauEngine.Flauto.*;
+import com.dooboolab.TauEngine.Flauto;
 
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------
@@ -125,10 +127,12 @@ public class FlautoRecorder extends FlautoSession
 	long mPauseTime = 0;
 	long mStartPauseTime = -1;
 	final private Handler          mainHandler = new Handler (Looper.getMainLooper ());
+	String m_path = null;
 
 	public              int     subsDurationMillis    = 10;
 
 	private      Runnable      recorderTicker;
+	t_RECORDER_STATE status = t_RECORDER_STATE.RECORDER_IS_STOPPED;
 
 	public FlautoRecorder ( FlautoRecorderCallback callback )
 	{
@@ -136,18 +140,20 @@ public class FlautoRecorder extends FlautoSession
 	}
 
 
-	public boolean initializeFlautoRecorder (t_AUDIO_FOCUS focus, t_SESSION_CATEGORY category, t_SESSION_MODE sessionMode, int audioFlags, t_AUDIO_DEVICE audioDevice)
+	public boolean openRecorder (t_AUDIO_FOCUS focus, t_SESSION_CATEGORY category, t_SESSION_MODE sessionMode, int audioFlags, t_AUDIO_DEVICE audioDevice)
 	{
 		boolean r = setAudioFocus(focus, category, sessionMode, audioFlags, audioDevice);
-		m_callBack.openAudioSessionCompleted(r);
+		m_callBack.openRecorderCompleted(r);
 		return r;
 	}
 
-	public void releaseFlautoRecorder ( )
+	public void closeRecorder ( )
 	{
 		if (hasFocus)
 			abandonFocus();
 		releaseSession();
+		status = t_RECORDER_STATE.RECORDER_IS_STOPPED;
+		m_callBack.closeRecorderCompleted(true);
 	}
 
 
@@ -165,6 +171,32 @@ public class FlautoRecorder extends FlautoSession
 		return b;
 	}
 
+
+	public t_RECORDER_STATE getRecorderState()
+	{
+		return status;
+	}
+
+
+
+	public boolean deleteRecord(String radical)
+	{
+		String path = Flauto.temporayFile(radical);
+		File fdelete = new File(path);
+		if (fdelete.exists())
+		{
+			if (fdelete.delete())
+			{
+				return true;
+			} else
+			{
+				return false;
+			}
+		} else
+			return false;
+
+	}
+
 	public boolean startRecorder
 	(
 		t_CODEC 			codec		    ,
@@ -180,9 +212,12 @@ public class FlautoRecorder extends FlautoSession
 		//audioSource =MediaRecorder.AudioSource.MIC; // Just for test
 		mPauseTime = 0;
 		mStartPauseTime = -1;
-		stopRecorder(); // To start a new clean record
+		stop(); // To start a new clean record
+		m_path = null;
 		if (_isAudioRecorder[codec.ordinal()])
 		{
+			//assert(toStream);
+			//assert(path == null);
 			if (numChannels != 1)
 			{
 				Log.e( TAG, "The number of channels supported is actually only 1" );
@@ -191,6 +226,9 @@ public class FlautoRecorder extends FlautoSession
 			recorder = new FlautoRecorderEngine();
 		} else
 		{
+			//assert(!toStream);
+			path = Flauto.getPath(path);
+			m_path = path;
 			recorder = new FlautoRecorderMedia();
 		}
 		try
@@ -255,6 +293,8 @@ public class FlautoRecorder extends FlautoSession
 
 				} );
 		recordHandler.post ( recorderTicker );
+		status = t_RECORDER_STATE.RECORDER_IS_RECORDING;
+		m_callBack.startRecorderCompleted(true);
 		return true;
 	}
 
@@ -263,7 +303,7 @@ public class FlautoRecorder extends FlautoSession
 		m_callBack.recordingData(data);
 	}
 
-	public void stopRecorder ( )
+	void stop()
 	{
 		try {
 			if (recordHandler != null)
@@ -276,6 +316,14 @@ public class FlautoRecorder extends FlautoSession
 
 		}
 		recorder = null;
+		status = t_RECORDER_STATE.RECORDER_IS_STOPPED;
+
+	}
+
+	public void stopRecorder ( )
+	{
+		stop();
+		m_callBack.stopRecorderCompleted(true, m_path);
 	}
 
 	public void pauseRecorder()
@@ -284,6 +332,8 @@ public class FlautoRecorder extends FlautoSession
 		recordHandler      = null;
 		recorder.pauseRecorder( );
 		mStartPauseTime = SystemClock.elapsedRealtime ();
+		status = t_RECORDER_STATE.RECORDER_IS_PAUSED;
+		m_callBack.pauseRecorderCompleted(true);
 	}
 
 	public void resumeRecorder( )
@@ -294,6 +344,8 @@ public class FlautoRecorder extends FlautoSession
 		if (mStartPauseTime >= 0)
 			mPauseTime += SystemClock.elapsedRealtime () - mStartPauseTime;
 		mStartPauseTime = -1;
+		status = t_RECORDER_STATE.RECORDER_IS_RECORDING;
+		m_callBack.resumeRecorderCompleted(true);
 	}
 
 	public void setSubscriptionDuration (int duration)
@@ -301,5 +353,8 @@ public class FlautoRecorder extends FlautoSession
 		this.subsDurationMillis = duration;
 	}
 
-
+	public String temporayFile(String radical)
+	{
+		return Flauto.temporayFile(radical);
+	}
 }

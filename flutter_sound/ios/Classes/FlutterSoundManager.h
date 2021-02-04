@@ -38,14 +38,14 @@
 - (int) getStatus;
 - (Session*) init: (FlutterMethodCall*)call;
 - (void) releaseSession;
-- (void)invokeMethod: (NSString*)methodName dico: (NSDictionary*)dico;
-- (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg;
-- (void)invokeMethod: (NSString*)methodName boolArg: (Boolean)boolArg;
-- (void)invokeMethod: (NSString*)methodName numberArg: (NSNumber*)arg;
+- (void)invokeMethod: (NSString*)methodName dico: (NSDictionary*)dico ;
+- (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg success: (bool)success;
+- (void)invokeMethod: (NSString*)methodName boolArg: (Boolean)boolArg success: (bool)success;
+- (void)invokeMethod: (NSString*)methodName numberArg: (NSNumber*)arg success: (bool)success;
 - (BOOL)setAudioFocus: (FlutterMethodCall*)call ;
 - (int)getSlotNo;
 - (void)freeSlot: (int)slotNo;
-- (void)invokeMethod: (NSString*)methodName arguments: (NSDictionary*)call;
+- (void)invokeMethod: (NSString*)methodName arguments: (NSDictionary*)call ;
 
 
 @end

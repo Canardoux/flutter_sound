@@ -31,8 +31,13 @@
 
 @protocol FlautoPlayerCallback <NSObject>
 
-- (void)openAudioSessionCompleted: (bool)success;
-- (void)startPlayerCompleted: (long)duration;
+- (void)openPlayerCompleted: (bool)success;
+- (void)closePlayerCompleted: (bool)success;
+- (void)startPlayerCompleted: (bool)success duration: (long)duration;
+- (void)pausePlayerCompleted: (bool)success;
+- (void)resumePlayerCompleted: (bool)success;
+- (void)stopPlayerCompleted: (bool)success;
+
 - (void)needSomeFood: (int) ln;
 - (void)updateProgressPositon: (long)position duration: (long)duration;
 - (void)audioPlayerDidFinishPlaying: (BOOL)flag;

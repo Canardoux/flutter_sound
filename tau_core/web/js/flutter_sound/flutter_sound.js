@@ -114,3 +114,39 @@ const tabFormat =
                 ];
 
 
+var instanceNumber = 0;
+var lastUrl = '';
+
+
+
+function getRecordURL( aPath,)
+{
+        console.log('getRecordUrl: ' + aPath);
+        var path ;
+        var myStorage;
+        if ((aPath == null) || (aPath == ''))
+        {
+                console.log('lastUrl = ' + lastUrl);
+                path = lastUrl;
+        } else
+        {
+                path =  aPath;
+
+        }
+        if (path.substring(0,1) == '/')
+        {
+                myStorage = window.localStorage;
+                console.log('localStorage');
+        } else
+        {
+                myStorage = window.sessionStorage;
+                console.log('sessionStorage');
+        }
+
+        var url = myStorage.getItem(path);
+        console.log('<--- getRecordUrl ( ' + path  + ' ) : ' + url);
+        return url;
+}
+
+
+

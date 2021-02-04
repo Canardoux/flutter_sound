@@ -68,23 +68,39 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 
 // =============================================================  callback ===============================================================
 
-	public void openAudioSessionCompleted(boolean success)
+	public void openPlayerCompleted(boolean success)
 	{
-		invokeMethodWithBoolean( "openAudioSessionCompleted", success );
+		invokeMethodWithBoolean( "openPlayerCompleted", success, success );
+	}
+	public void closePlayerCompleted(boolean success)
+	{
+		invokeMethodWithBoolean( "closePlayerCompleted", success, success );
+	}
+	public void stopPlayerCompleted(boolean success)
+	{
+		invokeMethodWithBoolean( "stopPlayerCompleted", success, success );
+	}
+	public void pausePlayerCompleted(boolean success)
+	{
+		invokeMethodWithBoolean( "pausePlayerCompleted", success, success );
+	}
+	public void resumePlayerCompleted(boolean success)
+	{
+		invokeMethodWithBoolean( "resumePlayerCompleted", success, success );
 	}
 
-	public void startPlayerCompleted (long duration)
+	public void startPlayerCompleted (boolean success, long duration)
 	{
 		Map<String, Object> dico = new HashMap<String, Object> ();
 		dico.put( "duration", (int) duration);
 		dico.put( "state",  (int)getPlayerState());
-		invokeMethodWithMap( "startPlayerCompleted", dico);
+		invokeMethodWithMap( "startPlayerCompleted", success, dico);
 
 	}
 
 	public void needSomeFood (int ln)
 	{
-		invokeMethodWithInteger("needSomeFood", ln);
+		invokeMethodWithInteger("needSomeFood", true, ln);
 	}
 
 	public void updateProgress(long position, long duration)
@@ -94,42 +110,42 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		dic.put("duration", duration);
 		dic.put("playerStatus", getPlayerState());
 
-		invokeMethodWithMap("updateProgress", dic);
+		invokeMethodWithMap("updateProgress", true, dic);
 
 	}
 
 	public void audioPlayerDidFinishPlaying (boolean flag)
 	{
-		invokeMethodWithInteger("audioPlayerFinishedPlaying", getPlayerState() );
+		invokeMethodWithInteger("audioPlayerFinishedPlaying", true, getPlayerState() );
 	}
 
 	public void pause()
 	{
-		invokeMethodWithInteger( "pause", getPlayerState() );
+		invokeMethodWithInteger( "pause", true, getPlayerState() );
 
 	}
 
 	public void resume()
 	{
-		invokeMethodWithInteger( "resume", getPlayerState() );
+		invokeMethodWithInteger( "resume", true, getPlayerState() );
 
 	}
 
 	public void skipForward()
 	{
-		invokeMethodWithInteger( "skipForward", getPlayerState() );
+		invokeMethodWithInteger( "skipForward", true, getPlayerState() );
 
 	}
 
 	public void skipBackward()
 	{
-		invokeMethodWithInteger( "skipBackward", getPlayerState() );
+		invokeMethodWithInteger( "skipBackward", true, getPlayerState() );
 
 	}
 
 	public void updatePlaybackState(t_PLAYER_STATE newState)
 	{
-		invokeMethodWithInteger( "updatePlaybackState", newState.ordinal() );
+		invokeMethodWithInteger( "updatePlaybackState", true, newState.ordinal() );
 	}
 
 
@@ -158,7 +174,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 	}
 
 
-	void initializeFlautoPlayer ( final MethodCall call, final Result result )
+	void openPlayer ( final MethodCall call, final Result result )
 	{
 		int x1 = call.argument("focus");
 		t_AUDIO_FOCUS focus = t_AUDIO_FOCUS.values()[x1];
@@ -170,7 +186,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		t_AUDIO_DEVICE audioDevice = t_AUDIO_DEVICE.values()[x4];
 		int audioFlags = call.argument("audioFlags");
 
-		boolean r = m_flautoPlayer.initializeFlautoPlayer
+		boolean r = m_flautoPlayer.openPlayer
 		(
 			focus,
 			category,
@@ -188,9 +204,9 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 
 	}
 
-	void releaseFlautoPlayer ( final MethodCall call, final Result result )
+	void closePlayer ( final MethodCall call, final Result result )
 	{
-		m_flautoPlayer.releaseSession();
+		m_flautoPlayer.closePlayer();
 		result.success ( getPlayerState() );
 	}
 
@@ -325,8 +341,10 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 	{
 		try
 		{
-			m_flautoPlayer.pausePlayer();
-			result.success ( getPlayerState());
+			if (m_flautoPlayer.pausePlayer())
+				result.success ( getPlayerState());
+			else
+				result.error( ERR_UNKNOWN, ERR_UNKNOWN, "Pause failure");
 		}
 		catch ( Exception e )
 		{
@@ -340,8 +358,10 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 	{
 		try
 		{
-			m_flautoPlayer.resumePlayer();
-			result.success ( getPlayerState());
+			if (m_flautoPlayer.resumePlayer())
+				result.success ( getPlayerState());
+			else
+				result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Resume failure" );
 		}
 		catch ( Exception e )
 		{

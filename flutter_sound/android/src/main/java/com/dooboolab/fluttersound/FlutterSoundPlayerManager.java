@@ -77,19 +77,19 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                 switch ( call.method )
                 {
 
-                        case "initializeMediaPlayer":
+                        case "openPlayer":
                         {
                                 //int withUI = call.argument("withUI");
                                 aPlayer = new FlutterSoundPlayer (call );
                                 initSession( call, aPlayer);
-                                aPlayer.initializeFlautoPlayer ( call, result );
+                                aPlayer.openPlayer ( call, result );
 
                         }
                         break;
 
-                        case "releaseMediaPlayer":
+                        case "closePlayer":
                         {
-                                aPlayer.releaseFlautoPlayer ( call, result );
+                                aPlayer.closePlayer ( call, result );
                         }
                         break;
 

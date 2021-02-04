@@ -96,7 +96,7 @@ static bool _isIosDecoderSupported [] =
 {
         NSLog(@"IOS:--> initializeFlautoPlayer");
         BOOL r = [self setAudioFocus: focus category: category mode: mode audioFlags: audioFlags audioDevice: audioDevice ];
-        [m_callBack openAudioSessionCompleted: r];
+        [m_callBack openPlayerCompleted: r];
         NSLog(@"IOS:<-- initializeFlautoPlayer");
         return r;
 }
@@ -105,6 +105,7 @@ static bool _isIosDecoderSupported [] =
 - (void)releaseFlautoPlayer
 {
         NSLog(@"IOS:--> releaseFlautoPlayer");
+        [m_callBack closePlayerCompleted: YES];
         NSLog(@"IOS:<-- releaseFlautoPlayer");
 }
 
@@ -131,10 +132,8 @@ static bool _isIosDecoderSupported [] =
        return b;
 }
 
-
-- (void)stopPlayer
+- (void)stop
 {
-        NSLog(@"IOS:--> stopPlayer");
         [self stopTimer];
         if ( ([self getStatus] == PLAYER_IS_PLAYING) || ([self getStatus] == PLAYER_IS_PAUSED) )
         {
@@ -142,6 +141,15 @@ static bool _isIosDecoderSupported [] =
                 [m_playerEngine stop];
         }
         m_playerEngine = nil;
+
+}
+
+
+- (void)stopPlayer
+{
+        NSLog(@"IOS:--> stopPlayer");
+        [self stop];
+        [m_callBack stopPlayerCompleted: YES];
         NSLog(@"IOS:<-- stopPlayer");
 }
 
@@ -155,12 +163,39 @@ static bool _isIosDecoderSupported [] =
                 b = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
         }
 
-        [self stopPlayer]; // To start a fresh new playback
+        [self stop]; // To start a fresh new playback
         m_playerEngine = [[AudioEngineFromMic alloc] init: self ];
         b = [m_playerEngine startPlayerFromURL: nil codec: (t_CODEC)0 channels: nbChannels sampleRate: sampleRate];
+        if (b)
+        {
+                        [ m_callBack startPlayerCompleted: true duration: 0];
+        }
         NSLog(@"IOS:<-- startPlayerFromMicSampleRate");
         return b; // TODO
 }
+
+
+
+- (NSString*) getpath:  (NSString*)path
+{
+         if ((path == nil)|| ([path class] == [[NSNull null] class]))
+                return nil;
+        if (![path containsString: @"/"]) // Temporary file
+        {
+                path = [NSTemporaryDirectory() stringByAppendingPathComponent: path];
+        }
+        return path;
+}
+
+- (NSString*) getUrl: (NSString*)path
+{
+         if ((path == nil)|| ([path class] == [[NSNull null] class]))
+                return nil;
+        path = [self getpath: path];
+        NSURL* url = [NSURL URLWithString: path];
+        return [url absoluteString];
+}
+
 
 - (bool)startPlayerCodec: (t_CODEC)codec
         fromURI: (NSString*)path
@@ -176,7 +211,7 @@ static bool _isIosDecoderSupported [] =
                 b = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
         }
 
-        [self stopPlayer]; // To start a fresh new playback
+        [self stop]; // To start a fresh new playback
 
         if ( (path == nil ||  [path class] == [NSNull class] ) && codec == pcm16)
                 m_playerEngine = [[AudioEngine alloc] init: self ];
@@ -187,17 +222,17 @@ static bool _isIosDecoderSupported [] =
                 b = [m_playerEngine startPlayerFromBuffer: dataBuffer ];
                 if (!b)
                 {
-                        [self stopPlayer];
+                        [self stop];
                 } else
                 {
                         [self startTimer];
                         long duration = [m_playerEngine getDuration];
-                        [ m_callBack startPlayerCompleted: duration];
+                        [ m_callBack startPlayerCompleted: true duration: duration];
                 }
                 NSLog(@"IOS:<-- startPlayer");
                 return b;
         }
-
+        path = [self getpath: path];
         bool isRemote = false;
 
         if (path != (id)[NSNull null])
@@ -223,12 +258,12 @@ static bool _isIosDecoderSupported [] =
                                         bool b = [self ->m_playerEngine startPlayerFromBuffer: data];
                                         if (!b)
                                         {
-                                                [self stopPlayer];
+                                                [self stop];
                                         } else
                                         {
                                                 [self startTimer];
                                                 long duration = [self ->m_playerEngine getDuration];
-                                                [ self ->m_callBack startPlayerCompleted: duration];
+                                                [ self ->m_callBack startPlayerCompleted: true duration: duration];
                                         }
                                 }];
 
@@ -250,7 +285,7 @@ static bool _isIosDecoderSupported [] =
         {
                 [self startTimer];
                 long duration = [m_playerEngine getDuration];
-                [ m_callBack startPlayerCompleted: duration];
+                [ m_callBack startPlayerCompleted: true duration: duration];
         }
         NSLog(@"IOS:<-- startPlayer");
         return b;
@@ -352,6 +387,7 @@ static bool _isIosDecoderSupported [] =
                 NSLog(@"IOS: AudioPlayerFlauto : cannot pause!!!");
           }
 
+          [m_callBack pausePlayerCompleted: YES];
           NSLog(@"IOS:<-- pause");
           return b;
 
@@ -400,6 +436,8 @@ static bool _isIosDecoderSupported [] =
                  NSLog(@"IOS: AudioPlayerFlauto : cannot resume!!!");
         }
         NSLog(@"IOS:<-- resume");
+        [m_callBack resumePlayerCompleted: b];
+
         return b;
 }
 

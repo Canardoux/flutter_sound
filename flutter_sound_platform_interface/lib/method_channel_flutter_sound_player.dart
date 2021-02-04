@@ -55,6 +55,8 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
   {
     FlutterSoundPlayerCallback aPlayer = getSession(call.arguments['slotNo'] as int);
     Map arg = call.arguments ;
+    bool success = call.arguments['success'] as bool;
+
 
     switch (call.method)
     {
@@ -115,25 +117,54 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
         }
         break;
 
-      case 'openAudioSessionCompleted':
+
+      case 'openPlayerCompleted':
         {
           print('FS:---> channelMethodCallHandler : ${call.method}');
-          bool success = arg['arg'] as bool;
-          aPlayer.updatePlaybackState(arg['state']);
-          aPlayer.openAudioSessionCompleted(success);
+          aPlayer.openPlayerCompleted(call.arguments['state'] , success);
           print('FS:<--- channelMethodCallHandler : ${call.method}');
         }
         break;
+
+
+
 
       case 'startPlayerCompleted':
         {
           print('FS:---> channelMethodCallHandler : ${call.method}');
           int duration = arg['duration'] as int;
           aPlayer.updatePlaybackState(arg['state']);
-          aPlayer.startPlayerCompleted(duration);
+          aPlayer.startPlayerCompleted(call.arguments['state'], success, duration);
           print('FS:<--- channelMethodCallHandler : ${call.method}');
         }
         break;
+
+
+      case "stopPlayerCompleted":
+        {
+          aPlayer.stopPlayerCompleted(call.arguments['state'] , success);
+        }
+        break;
+
+      case "pausePlayerCompleted":
+        {
+          aPlayer.pausePlayerCompleted(call.arguments['state'] , success);
+        }
+        break;
+
+      case "resumePlayerCompleted":
+        {
+          aPlayer.resumePlayerCompleted(call.arguments['state'] , success);
+        }
+        break;
+
+      case "closePlayerCompleted":
+        {
+          aPlayer.closePlayerCompleted(call.arguments['state'], success );
+        }
+        break;
+
+
 
       case 'needSomeFood':
         {
@@ -178,9 +209,9 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
 
 
   @override
-  Future<int> initializeMediaPlayer(FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI})
+  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI})
   {
-    return  invokeMethod( callback, 'initializeMediaPlayer', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index, 'withUI': withUI ? 1 : 0 ,},) ;
+    return  invokeMethod( callback, 'openPlayer', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index, 'withUI': withUI ? 1 : 0 ,},) ;
   }
 
   @override
@@ -190,9 +221,9 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
   }
 
   @override
-  Future<int> releaseMediaPlayer(FlutterSoundPlayerCallback callback, )
+  Future<int> closePlayer(FlutterSoundPlayerCallback callback, )
   {
-    return invokeMethod( callback, 'releaseMediaPlayer',  Map<String, dynamic>(),);
+    return invokeMethod( callback, 'closePlayer',  Map<String, dynamic>(),);
   }
 
   @override

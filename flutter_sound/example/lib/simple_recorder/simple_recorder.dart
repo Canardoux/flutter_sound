@@ -18,6 +18,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
@@ -52,13 +53,17 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
 
   @override
   void initState() {
-    // Be careful : openAudioSession return a Future.
-    // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    _mPlayer.openAudioSession().then((value) {
+    _mPlayer.openAudioSession(withUI: true).then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
     });
+    _mPlayer.openAudioSession(withUI: true).then((value) {
+      setState(() {
+        _mPlayerIsInited = true;
+      });
+    });
+
     openTheRecorder().then((value) {
       setState(() {
         _mRecorderIsInited = true;
@@ -69,70 +74,86 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
 
   @override
   void dispose() {
-    stopPlayer();
     _mPlayer.closeAudioSession();
     _mPlayer = null;
 
-    stopRecorder();
     _mRecorder.closeAudioSession();
     _mRecorder = null;
-    if (_mPath != null) {
-      var outputFile = File(_mPath);
-      if (outputFile.existsSync()) {
-        outputFile.delete();
-      }
-    }
-    super.dispose();
+     super.dispose();
   }
 
   Future<void> openTheRecorder() async {
-    var status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      throw RecordingPermissionException('Microphone permission not granted');
+    if (!kIsWeb) {
+      var status = await Permission.microphone.request();
+      if (status != PermissionStatus.granted) {
+        throw RecordingPermissionException('Microphone permission not granted');
+      }
     }
-
-    var tempDir = await getTemporaryDirectory();
-    _mPath = '${tempDir.path}/flutter_sound_example.aac';
-    var outputFile = File(_mPath);
-    if (outputFile.existsSync()) {
-      await outputFile.delete();
-    }
-    await _mRecorder.openAudioSession();
+    /*
+    if (!kIsWeb) {
+      var tempDir = await getTemporaryDirectory();
+      _mPath = '${tempDir.path}/flutter_sound_example.aac';
+      var outputFile = File(_mPath);
+      if (outputFile.existsSync()) {
+        await outputFile.delete();
+      }
+    } else {
+     */
+      _mPath = 'flutter_sound_example.aac';
+    //}
+     await _mRecorder.openAudioSession();
     _mRecorderIsInited = true;
   }
 
   // ----------------------  Here is the code for recording and playback -------
 
-  Future<void> record() async {
-    assert(_mRecorderIsInited && _mPlayer.isStopped);
-    await _mRecorder.startRecorder(
+  void record() async {
+    _mRecorder.startRecorder(
       toFile: _mPath,
-      codec: Codec.aacADTS,
-    );
-    setState(() {});
+      //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
+    ).then((value) {
+      setState(() {});
+    });
+    _mRecorder.startRecorder(
+      toFile: _mPath,
+      //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
+    ).then((value) { setState(() {});});
+
   }
 
-  Future<void> stopRecorder() async {
-    await _mRecorder.stopRecorder();
-    _mplaybackReady = true;
+  void stopRecorder() async {
+    await _mRecorder.stopRecorder().then((value) {
+      setState(() {String url = value; _mplaybackReady = true;});
+    }); // just for debugging
+    if (_mRecorder != null) {
+      String url2 = await _mRecorder.getRecordURL(path: _mPath); // just for debugging
+      //bool b = await _mRecorder.deleteRecord(path: _mPath); // just for debugging
+    }
+
   }
 
-  void play() async {
+   void play()  {
     assert(_mPlayerIsInited &&
         _mplaybackReady &&
         _mRecorder.isStopped &&
         _mPlayer.isStopped);
-    await _mPlayer.startPlayer(
-        fromURI: _mPath,
-        codec: Codec.aacADTS,
+    _mPlayer.startPlayerFromTrack(Track(trackPath:
+         _mPath),
+        //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
         whenFinished: () {
           setState(() {});
-        });
-    setState(() {});
+        }).then((value) { setState(() {});});
+    _mPlayer.startPlayerFromTrack(Track(trackPath:
+    _mPath),
+        //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
+        whenFinished: () {
+          setState(() {});
+        }).then((value) { setState(() {});});
+   //_mPlayer.stopPlayer().then((value) { setState(() {});});
   }
 
-  Future<void> stopPlayer() async {
-    await _mPlayer.stopPlayer();
+  void stopPlayer()  {
+     _mPlayer.stopPlayer().then((value) { setState(() {});});
   }
 
 // ----------------------------- UI --------------------------------------------
@@ -141,22 +162,14 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     if (!_mRecorderIsInited || !_mPlayer.isStopped) {
       return null;
     }
-    return _mRecorder.isStopped
-        ? record
-        : () {
-            stopRecorder().then((value) => setState(() {}));
-          };
+    return _mRecorder.isStopped ? record : stopRecorder;
   }
 
   _Fn getPlaybackFn() {
     if (!_mPlayerIsInited || !_mplaybackReady || !_mRecorder.isStopped) {
       return null;
     }
-    return _mPlayer.isStopped
-        ? play
-        : () {
-            stopPlayer().then((value) => setState(() {}));
-          };
+    return _mPlayer.isStopped ? play : stopPlayer;
   }
 
   @override

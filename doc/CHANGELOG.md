@@ -7,6 +7,13 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.6.0
+
+- Enhancement : Record to a temporary file. No need any more to use flutter_path_provider. `myRecorder.startRecorder('foo');` . Works on Android, iOS, and Flutter Web.
+- `stopRecorder()` returns a Future of an URL to the recorded file : `URL url = await stopRecorder();` . Useful to get the URL of a temporary record object.
+- New verb `deleteTemporaryFile('foo');`
+- All temporary files are automaticaly deleted when the session is closed
+
 ## 7.5.3
 
 - Fix a major bug during Feed(). A major regression introduced in 7.5.1. [#590](https://github.com/Canardoux/tau/issues/590)

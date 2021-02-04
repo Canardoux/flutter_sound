@@ -32,7 +32,12 @@
  
 
 @protocol FlautoRecorderCallback <NSObject>
-- (void)openAudioSessionCompleted: (bool)success;
+- (void)openRecorderCompleted: (bool)success;
+- (void)closeRecorderCompleted: (bool)success;
+- (void)startRecorderCompleted: (bool)success;
+- (void)stopRecorderCompleted: (NSString*)path success:(bool)success;
+- (void)resumeRecorderCompleted: (bool)success;
+- (void)pauseRecorderCompleted: (bool)success;
 - (void)updateRecorderProgressDbPeakLevel: normalizedPeakLevel duration: duration;
 - (void)recordingData: (NSData*)data;
 @end
@@ -63,7 +68,10 @@
 - (void)setSubscriptionDuration: (long)millisec;
 - (void)pauseRecorder;
 - (void)resumeRecorder;
+- (bool)deleteRecord: (NSString*)path;
+- (NSString*)getRecordURL: (NSString*)path;
 - (void)recordingData: (NSData*)data;
+- (int)getStatus;
 
 
 @end

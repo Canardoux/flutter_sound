@@ -42,6 +42,7 @@ public:
         virtual void pauseRecorder() = 0;
         virtual NSNumber* recorderProgress() = 0;
         virtual NSNumber* dbPeakProgress() = 0;
+        virtual int getStatus() = 0;
 
         int16_t maxAmplitude = 0;
         FlautoRecorder* flautoRecorder; // Owner
@@ -59,7 +60,7 @@ private:
         AVAudioConverterInputStatus inputStatus = AVAudioConverterInputStatus_NoDataNow;
         long dateCumul = 0;
         long previousTS;
-
+        int status;
 
 public:
 
@@ -71,6 +72,8 @@ public:
         NSNumber* recorderProgress();
         virtual void resumeRecorder();
         virtual NSNumber* dbPeakProgress();
+        virtual int getStatus();
+        
 
 
 };
@@ -81,6 +84,7 @@ class avAudioRec : public AudioRecInterface
 
 private:
         AVAudioRecorder* audioRecorder;
+        bool isPaused;
         
 public:
         /* ctor */avAudioRec( t_CODEC coder, NSString* path, NSMutableDictionary *audioSettings, FlautoRecorder* owner);
@@ -91,6 +95,8 @@ public:
         void pauseRecorder();
         NSNumber* recorderProgress();
         virtual NSNumber* dbPeakProgress();
+        virtual int getStatus();
+
 };
 
 #endif // #ifdef __cplusplus
