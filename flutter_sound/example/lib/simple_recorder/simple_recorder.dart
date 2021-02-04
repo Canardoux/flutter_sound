@@ -122,11 +122,11 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
   }
 
   void stopRecorder() async {
-    String url2 = await _mRecorder.stopRecorder().then((value) {
-      setState(() {_mplaybackReady = true;});
+    await _mRecorder.stopRecorder().then((value) {
+      setState(() {String url = value; _mplaybackReady = true;});
     }); // just for debugging
     if (_mRecorder != null) {
-      url2 = await _mRecorder.getRecordURL(path: _mPath); // just for debugging
+      String url2 = await _mRecorder.getRecordURL(path: _mPath); // just for debugging
       //bool b = await _mRecorder.deleteRecord(path: _mPath); // just for debugging
     }
 
