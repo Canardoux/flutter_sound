@@ -315,7 +315,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
-  void openPlayerCompleted(int state, success) {
+  void openPlayerCompleted(int state, bool success) {
     print('---> openPlayerCompleted: $success');
 
     _playerState = PlayerState.values[state];
@@ -338,7 +338,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
-  void closePlayerCompleted(int state, success) {
+  void closePlayerCompleted(int state, bool success) {
     print('---> closePlayerCompleted');
     _playerState = PlayerState.values[state];
     _isInited = Initialized.notInitialized;
@@ -361,7 +361,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
-  void pausePlayerCompleted(int state, success) {
+  void pausePlayerCompleted(int state, bool success) {
     print('---> pausePlayerCompleted: $success');
     assert(state != null);
     if (_pausePlayerCompleter == null) {
@@ -369,10 +369,11 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       return;
     }
     _playerState = PlayerState.values[state];
-    if (success)
+    if (success) {
       _pausePlayerCompleter.complete();
-    else
+    } else {
       _pausePlayerCompleter.completeError('pausePlayer failed');
+    }
     _pausePlayerCompleter = null;
     print('<--- pausePlayerCompleted: $success');
   }
@@ -380,7 +381,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
-  void resumePlayerCompleted(int state, success) {
+  void resumePlayerCompleted(int state, bool success) {
     print('---> resumePlayerCompleted: $success');
     assert(state != null);
     if (_resumePlayerCompleter == null) {
@@ -388,10 +389,11 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       return;
     }
     _playerState = PlayerState.values[state];
-    if (success)
+    if (success) {
       _resumePlayerCompleter.complete();
-    else
+    } else {
       _resumePlayerCompleter.completeError('resumePlayer failed');
+    }
     _resumePlayerCompleter = null;
     print('<--- resumePlayerCompleted: $success');
   }
@@ -399,7 +401,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
-  void startPlayerCompleted(int state, success, int duration) {
+  void startPlayerCompleted(int state, bool success, int duration) {
     print('---> startPlayerCompleted: $success');
     assert(state != null);
     if (_startPlayerCompleter == null) {
@@ -407,10 +409,11 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       return;
     }
     _playerState = PlayerState.values[state];
-    if (success)
+    if (success) {
       _startPlayerCompleter.complete(Duration(milliseconds: duration));
-    else
+    } else {
       _startPlayerCompleter.completeError('startPlayer() failed');
+    }
     _startPlayerCompleter = null;
     print('<--- startPlayerCompleted: $success');
   }
@@ -418,7 +421,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
-  void stopPlayerCompleted(int state, success) {
+  void stopPlayerCompleted(int state, bool success) {
     print('---> stopPlayerCompleted: $success');
     assert(state != null);
     if (_stopPlayerCompleter == null) {
@@ -427,10 +430,12 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       return;
     }
     _playerState = PlayerState.values[state];
-    if (success)
-      _stopPlayerCompleter.complete(); // stopRecorder must not gives errors
-    else
+    if (success) {
+      _stopPlayerCompleter.complete();
+    } // stopRecorder must not gives errors
+    else {
       _stopPlayerCompleter.completeError('stopPlayer failed');
+    }
     _stopPlayerCompleter = null;
     // cleanCompleters(); ????
     print('<--- stopPlayerCompleted: $success');
@@ -439,13 +444,13 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   void _cleanCompleters() {
     if (_pausePlayerCompleter != null) {
       print('Kill _pausePlayer()');
-      Completer<void> completer = _pausePlayerCompleter;
+      var completer = _pausePlayerCompleter;
       _pausePlayerCompleter = null;
       completer.completeError('killed by cleanCompleters');
     }
     if (_resumePlayerCompleter != null) {
       print('Kill _resumePlayer()');
-      Completer<void> completer = _resumePlayerCompleter;
+      var completer = _resumePlayerCompleter;
       _resumePlayerCompleter = null;
       completer.completeError('killed by cleanCompleters');
     }
@@ -459,7 +464,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
     if (_stopPlayerCompleter != null) {
       print('Kill _stopPlayer()');
-      Completer<void> completer = _stopPlayerCompleter;
+      var completer = _stopPlayerCompleter;
       _stopPlayerCompleter = null;
       completer.completeError('killed by cleanCompleters');
     }
@@ -473,7 +478,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
     if (_closePlayerCompleter != null) {
       print('Kill _closePlayer()');
-      Completer<void> completer = _closePlayerCompleter;
+      var completer = _closePlayerCompleter;
       _closePlayerCompleter = null;
       completer.completeError('killed by cleanCompleters');
     }
@@ -658,8 +663,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     Completer<FlutterSoundPlayer> completer;
     //if (_isInited != Initialized.notInitialized)
     //await closeAudioSession(); // to be in a clean state
-    if (_isInited != Initialized.notInitialized)
+    if (_isInited != Initialized.notInitialized) {
       throw Exception('Player is already initialized');
+    }
 
     FlutterSoundPlayerPlatform.instance.openSession(this);
     _setPlayerCallback();
@@ -676,7 +682,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
           withUI: withUI);
       _playerState = PlayerState.values[state];
       //isInited = success ?  Initialized.fullyInitialized : Initialized.notInitialized;
-    } catch (e) {
+    } on Exception {
       _openPlayerCompleter = null;
       rethrow;
     }
@@ -716,7 +722,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         outputToSpeaker | allowBlueTooth | allowBlueToothA2DP | allowEarPiece,
   }) async {
     await _lock.synchronized(() async {
-      await setAudioFocus(
+      await _setAudioFocus(
         focus: focus,
         category: category,
         mode: mode,
@@ -736,8 +742,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   }) async {
     print('FS:---> setAudioFocus ');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
     var state = await FlutterSoundPlayerPlatform.instance.setAudioFocus(
       this,
       focus: focus,
@@ -809,7 +816,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
       FlutterSoundPlayerPlatform.instance.closeSession(this);
       //_isInited = Initialized.notInitialized;
-    } catch (e) {
+    } on Exception {
       _closePlayerCompleter = null;
       rethrow;
     }
@@ -825,8 +832,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// an updated value the background state.
   Future<PlayerState> getPlayerState() async {
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
     var state = await FlutterSoundPlayerPlatform.instance.getPlayerState(this);
     _playerState = PlayerState.values[state];
     return _playerState;
@@ -844,8 +852,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// ```
   Future<Map<String, Duration>> getProgress() async {
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
 
     return FlutterSoundPlayerPlatform.instance.getProgress(this);
   }
@@ -875,8 +884,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     bool result;
     print('FS:---> isDecoderSupported ');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
     // For decoding ogg/opus on ios, we need to support two steps :
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
@@ -913,8 +923,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   Future<void> setSubscriptionDuration(Duration duration) async {
     print('FS:---> setSubscriptionDuration ');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
     var state = await FlutterSoundPlayerPlatform.instance
         .setSubscriptionDuration(this, duration: duration);
     _playerState = PlayerState.values[state];
@@ -1066,8 +1077,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   }) async {
     print('FS:---> startPlayer ');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
 
     if (codec == Codec.pcm16 && fromURI != null) {
       var tempDir = await getTemporaryDirectory();
@@ -1120,7 +1132,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         fromURI: fromURI,
       );
       _playerState = PlayerState.values[state];
-    } catch (e) {
+    } on Exception {
       _startPlayerCompleter = null;
       rethrow;
     }
@@ -1170,8 +1182,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   }) async {
     print('FS:---> startPlayerFromMic ');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
     Completer<Duration> completer;
     await _stop(); // Just in case
     try {
@@ -1186,7 +1199,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
           numChannels: numChannels,
           sampleRate: sampleRate);
       _playerState = PlayerState.values[state];
-    } catch (e) {
+    } on Exception {
       _startPlayerCompleter = null;
       rethrow;
     }
@@ -1252,8 +1265,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   }) async {
     print('FS:---> startPlayerFromStream ');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
     Completer<Duration> completer;
 
     await _stop(); // Just in case
@@ -1275,7 +1289,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
           numChannels: numChannels,
           sampleRate: sampleRate);
       _playerState = PlayerState.values[state];
-    } catch (e) {
+    } on Exception {
       _startPlayerCompleter = null;
       rethrow;
     }
@@ -1320,8 +1334,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///
   Future<int> _feed(Uint8List data) async {
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
     if (isStopped) {
       return 0;
     }
@@ -1437,8 +1452,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   }) async {
     print('FS:---> startPlayerFromTrack ');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
     Completer<Duration> completer;
     //Map retMap;
     try {
@@ -1540,8 +1556,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   }) async {
     print('FS:---> nowPlaying ');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
 
     _onSkipForward = onSkipForward;
     _onSkipBackward = onSkipBackward;
@@ -1626,7 +1643,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       if (_playerState != PlayerState.isStopped) {
         print('Player is not stopped!');
       }
-    } catch (e) {
+    } on Exception {
       _stopPlayerCompleter = null;
       rethrow;
     }
@@ -1654,8 +1671,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   Future<void> _pausePlayer() async {
     print('FS:---> _pausePlayer ');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
     Completer<void> completer;
     if (_pausePlayerCompleter != null) {
       print('Killing another pausePlayer()');
@@ -1670,7 +1688,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       //throw _PlayerRunningException(
       //'Player is not paused.'); // I am not sure that it is good to throw an exception here
       //}
-    } catch (e) {
+    } on Exception {
       _pausePlayerCompleter = null;
       rethrow;
     }
@@ -1697,8 +1715,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   Future<void> _resumePlayer() async {
     print('FS:---> _resumePlayer');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
     Completer<void> completer;
     if (_resumePlayerCompleter != null) {
       print('Killing another resumePlayer()');
@@ -1713,9 +1732,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       //throw _PlayerRunningException(
       //'Player is not resumed.'); // I am not sure that it is good to throw an exception here
       //}
-    } catch (e) {
+    } on Exception {
       _resumePlayerCompleter = null;
-      print(e);
       rethrow;
     }
     print('FS:<--- _resumePlayer');
@@ -1739,8 +1757,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   Future<void> _seekToPlayer(Duration duration) async {
     //print('FS:---> seekToPlayer ');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
     var state = await FlutterSoundPlayerPlatform.instance.seekToPlayer(
       this,
       duration: duration,
@@ -1767,8 +1786,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   Future<void> _setVolume(double volume) async {
     print('FS:---> setVolume ');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
     var indexedVolume = (!kIsWeb) && Platform.isIOS ? volume * 100 : volume;
     if (volume < 0.0 || volume > 1.0) {
       throw RangeError('Value of volume should be between 0.0 and 1.0.');
@@ -1809,8 +1829,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   }) async {
     print('FS:---> setUIProgressBar : duration=$duration  progress=$progress');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
     var state = await FlutterSoundPlayerPlatform.instance
         .setUIProgressBar(this, duration: duration, progress: progress);
     _playerState = PlayerState.values[state];
@@ -1822,8 +1843,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// This verb should probably not be here...
   Future<String> getResourcePath() async {
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
+    }
     if (kIsWeb) {
       return null;
     } else if (Platform.isIOS) {
@@ -1863,21 +1885,6 @@ class PlaybackDisposition {
   String toString() {
     return 'duration: $duration, '
         'position: $position';
-  }
-}
-
-///
-class _PlayerRunningException implements Exception {
-  ///
-  final String message;
-
-  ///
-  _PlayerRunningException(this.message);
-}
-
-class _NotOpen implements Exception {
-  _NotOpen() {
-    print('Audio session is not open');
   }
 }
 
