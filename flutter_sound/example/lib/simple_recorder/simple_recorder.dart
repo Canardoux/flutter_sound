@@ -17,11 +17,9 @@
  */
 
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 /*
@@ -49,7 +47,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
   bool _mplaybackReady = false;
-  String _mPath = 'flutter_sound_example.aac';
+  final String _mPath = 'flutter_sound_example.aac';
 
   @override
   void initState() {
@@ -104,7 +102,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
   void stopRecorder() async {
     await _mRecorder.stopRecorder().then((value) {
       setState(() {
-        String url = value;
+        //var url = value;
         _mplaybackReady = true;
       });
     });
@@ -168,10 +166,10 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
               ),
             ),
             child: Row(children: [
-              RaisedButton(
+              ElevatedButton(
                 onPressed: getRecorderFn(),
-                color: Colors.white,
-                disabledColor: Colors.grey,
+                //color: Colors.white,
+                //disabledColor: Colors.grey,
                 child: Text(_mRecorder.isRecording ? 'Stop' : 'Record'),
               ),
               SizedBox(
@@ -196,10 +194,10 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
               ),
             ),
             child: Row(children: [
-              RaisedButton(
+              ElevatedButton(
                 onPressed: getPlaybackFn(),
-                color: Colors.white,
-                disabledColor: Colors.grey,
+                //color: Colors.white,
+                //disabledColor: Colors.grey,
                 child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
               ),
               SizedBox(

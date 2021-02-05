@@ -118,27 +118,27 @@ class _SoundEffectState extends State<SoundEffect> {
               ),
             ),
             child: Row(children: [
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
                   play(bimData);
                 },
-                color: Colors.white,
+                //color: Colors.white,
                 child: Text('Bim!'),
               ),
               SizedBox(width: 10),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
                   play(bamData);
                 },
-                color: Colors.white,
+                //color: Colors.white,
                 child: Text('Bam!'),
               ),
               SizedBox(width: 10),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
                   play(boumData);
                 },
-                color: Colors.white,
+                //color: Colors.white,
                 child: Text('Boum!'),
               ),
             ]),

@@ -362,19 +362,19 @@ class _MultiPlaybackState extends State<MultiPlayback> {
               ),
             ),
             child: Row(children: [
-              RaisedButton(
+              ElevatedButton(
                 onPressed: getPlaybackFn1(),
-                color: Colors.white,
-                disabledColor: Colors.grey,
+                //color: Colors.white,
+                //disabledColor: Colors.grey,
                 child: Text(_mPlayer1.isStopped ? 'Play' : 'Stop'),
               ),
               SizedBox(
                 width: 20,
               ),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: getPauseResumeFn1(),
-                color: Colors.white,
-                disabledColor: Colors.grey,
+                //color: Colors.white,
+                //disabledColor: Colors.grey,
                 child: Text(_mPlayer1.isPaused ? 'Resume' : 'Pause'),
               ),
               SizedBox(
@@ -402,19 +402,19 @@ class _MultiPlaybackState extends State<MultiPlayback> {
               ),
             ),
             child: Row(children: [
-              RaisedButton(
+              ElevatedButton(
                 onPressed: getPlaybackFn2(),
-                color: Colors.white,
-                disabledColor: Colors.grey,
+                //color: Colors.white,
+                //disabledColor: Colors.grey,
                 child: Text(_mPlayer2.isStopped ? 'Play' : 'Stop'),
               ),
               SizedBox(
                 width: 20,
               ),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: getPauseResumeFn2(),
-                color: Colors.white,
-                disabledColor: Colors.grey,
+                //color: Colors.white,
+                //disabledColor: Colors.grey,
                 child: Text(_mPlayer2.isPaused ? 'Resume' : 'Pause'),
               ),
               SizedBox(
@@ -442,19 +442,19 @@ class _MultiPlaybackState extends State<MultiPlayback> {
               ),
             ),
             child: Row(children: [
-              RaisedButton(
+              ElevatedButton(
                 onPressed: getPlaybackFn3(),
-                color: Colors.white,
-                disabledColor: Colors.grey,
+                //color: Colors.white,
+                //disabledColor: Colors.grey,
                 child: Text(_mPlayer3.isStopped ? 'Play' : 'Stop'),
               ),
               SizedBox(
                 width: 20,
               ),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: getPauseResumeFn3(),
-                color: Colors.white,
-                disabledColor: Colors.grey,
+                //color: Colors.white,
+                //disabledColor: Colors.grey,
                 child: Text(_mPlayer3.isPaused ? 'Resume' : 'Pause'),
               ),
               SizedBox(
