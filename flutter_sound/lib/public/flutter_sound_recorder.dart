@@ -156,7 +156,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
-  void openRecorderCompleted(int state, success) {
+  void openRecorderCompleted(int state, bool success) {
     print('---> openRecorderCompleted: $success');
 
     _recorderState = RecorderState.values[state];
@@ -179,6 +179,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
+<<<<<<< HEAD
   void closeRecorderCompleted(int state, success) {
 =======
 
@@ -187,6 +188,9 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   void closeRecorderCompleted(int state, success)
   {
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
+=======
+  void closeRecorderCompleted(int state, bool success) {
+>>>>>>> 83d043cd... TAU : Version 7.6.0+1
     print('---> closeRecorderCompleted');
     _recorderState = RecorderState.values[state];
     _isInited = Initialized.notInitialized;
@@ -200,6 +204,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
+<<<<<<< HEAD
   void pauseRecorderCompleted(int state, success) {
 =======
     cleanCompleters();
@@ -214,13 +219,17 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   void pauseRecorderCompleted(int state, success)
   {
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
+=======
+  void pauseRecorderCompleted(int state, bool success) {
+>>>>>>> 83d043cd... TAU : Version 7.6.0+1
     print('---> pauseRecorderCompleted: $success');
     assert(state != null);
     _recorderState = RecorderState.values[state];
-    if (success)
+    if (success) {
       _pauseRecorderCompleter.complete();
-    else
+    } else {
       _pauseRecorderCompleter.completeError('pauseRecorder failed');
+    }
     _pauseRecorderCompleter = null;
     print('<--- pauseRecorderCompleted: $success');
 <<<<<<< HEAD
@@ -229,6 +238,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
+<<<<<<< HEAD
   void resumeRecorderCompleted(int state, success) {
 =======
 
@@ -239,13 +249,17 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   void resumeRecorderCompleted(int state, success)
   {
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
+=======
+  void resumeRecorderCompleted(int state, bool success) {
+>>>>>>> 83d043cd... TAU : Version 7.6.0+1
     print('---> resumeRecorderCompleted: $success');
     assert(state != null);
     _recorderState = RecorderState.values[state];
-    if (success)
+    if (success) {
       _resumeRecorderCompleter.complete();
-    else
+    } else {
       _resumeRecorderCompleter.completeError('resumeRecorder failed');
+    }
     _resumeRecorderCompleter = null;
     print('<--- resumeRecorderCompleted: $success');
 <<<<<<< HEAD
@@ -260,14 +274,15 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
-  void startRecorderCompleted(int state, success) {
+  void startRecorderCompleted(int state, bool success) {
     print('---> startRecorderCompleted: $success');
     assert(state != null);
     _recorderState = RecorderState.values[state];
-    if (success)
+    if (success) {
       _startRecorderCompleter.complete();
-    else
+    } else {
       _startRecorderCompleter.completeError('startRecorder() failed');
+    }
     _startRecorderCompleter = null;
     print('<--- startRecorderCompleted: $success');
   }
@@ -276,6 +291,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
+<<<<<<< HEAD
   void stopRecorderCompleted(int state, success, String url) {
 =======
 
@@ -293,7 +309,18 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       _stopRecorderCompleter
           .complete(url); // stopRecorder must not gives errors
     else
+=======
+  void stopRecorderCompleted(int state, bool success, String url) {
+    print('---> stopRecorderCompleted: $success');
+    assert(state != null);
+    _recorderState = RecorderState.values[state];
+    if (success) {
+      _stopRecorderCompleter.complete(url);
+    } // stopRecorder must not gives errors
+    else {
+>>>>>>> 83d043cd... TAU : Version 7.6.0+1
       _stopRecorderCompleter.completeError('stopRecorder failed');
+    }
     _stopRecorderCompleter = null;
     // _cleanCompleters(); ????
     print('<---- stopRecorderCompleted: $success');
@@ -313,20 +340,20 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
     if (_pauseRecorderCompleter != null) {
       print('Kill _pauseRecorder()');
-      Completer<void> completer = _pauseRecorderCompleter;
+      var completer = _pauseRecorderCompleter;
       _pauseRecorderCompleter = null;
       completer.completeError('killed by cleanCompleters');
     }
     if (_resumeRecorderCompleter != null) {
       print('Kill _resumeRecorder()');
-      Completer<void> completer = _resumeRecorderCompleter;
+      var completer = _resumeRecorderCompleter;
       _resumeRecorderCompleter = null;
       completer.completeError('killed by cleanCompleters');
     }
 
     if (_startRecorderCompleter != null) {
       print('Kill _startRecorder()');
-      Completer<void> completer = _startRecorderCompleter;
+      var completer = _startRecorderCompleter;
       _startRecorderCompleter = null;
       completer.completeError('killed by cleanCompleters');
     }
@@ -351,7 +378,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
     if (_closeRecorderCompleter != null) {
       print('Kill _closeRecorder()');
-      Completer<void> completer = _closeRecorderCompleter;
+      var completer = _closeRecorderCompleter;
       _closeRecorderCompleter = null;
       completer.completeError('killed by cleanCompleters');
     }
@@ -473,9 +500,9 @@ Future<FlutterSoundRecorder> _openAudioSession(
 <<<<<<< HEAD
     print('---> openAudioSession');
 
-    if (_isInited != Initialized.notInitialized)
-      throw Exception(
-          'Recorder is already initialized'); // to be in a clean state
+    if (_isInited != Initialized.notInitialized) {
+      throw Exception('Recorder is already initialized');
+    } // to be in a clean state
     Completer<FlutterSoundRecorder> completer;
 
     _setRecorderCallback();
@@ -498,7 +525,7 @@ Future<FlutterSoundRecorder> _openAudioSession(
       );
 
       //_isInited = Initialized.fullyInitialized;
-    } catch (e) {
+    } on Exception {
       _openRecorderCompleter = null;
       rethrow;
     }
@@ -581,7 +608,11 @@ Future<FlutterSoundRecorder> _openAudioSession(
         print('Another closeRecorder() in progress');
         await _closeRecorderCompleter.future;
 <<<<<<< HEAD
+<<<<<<< HEAD
       } catch (e) {}
+=======
+      } on Exception {}
+>>>>>>> 83d043cd... TAU : Version 7.6.0+1
     }
     if (_isInited == Initialized.notInitialized) {
       // Already close
@@ -593,7 +624,7 @@ Future<FlutterSoundRecorder> _openAudioSession(
 
     try {
       await _stop(); // Stop the recorder if running
-    } catch (e) {}
+    } on Exception {}
     //_isInited = Initialized.initializationInProgress; // BOF
     _removeRecorderCallback(); // _recorderController will be closed by this function
     if (_userStreamSink != null) {
@@ -608,7 +639,7 @@ Future<FlutterSoundRecorder> _openAudioSession(
       await FlutterSoundRecorderPlatform.instance.closeRecorder(this);
       FlutterSoundRecorderPlatform.instance.closeSession(this);
       //_isInited = Initialized.notInitialized;
-    } catch (e) {
+    } on Exception {
       _closeRecorderCompleter = null;
       rethrow;
     }
@@ -670,8 +701,9 @@ Future<FlutterSoundRecorder> _openAudioSession(
     // - encode CAF/OPPUS (with native Apple AVFoundation)
     // - remux CAF file format to OPUS file format (with ffmpeg)
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Recorder is not open');
+    }
 
     bool result;
     // For encoding ogg/opus on ios, we need to support two steps :
@@ -710,8 +742,9 @@ Future<FlutterSoundRecorder> _openAudioSession(
   Future<void> setSubscriptionDuration(Duration duration) async {
     print('FS:---> setSubscriptionDuration ');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Recorder is not open');
+    }
     await FlutterSoundRecorderPlatform.instance
         .setSubscriptionDuration(this, duration: duration);
     print('FS:<--- setSubscriptionDuration ');
@@ -818,8 +851,9 @@ Future<FlutterSoundRecorder> _openAudioSession(
 =======
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Recorder is not open');
+    }
     // Request Microphone permission if needed
     /*
                 if (requestPermission) {
@@ -866,9 +900,10 @@ Future<FlutterSoundRecorder> _openAudioSession(
     } else {
       _isOggOpus = false;
     }
-    if (_startRecorderCompleter != null)
+    if (_startRecorderCompleter != null) {
       _startRecorderCompleter
           .completeError('Killed by another startRecorder()');
+    }
     _startRecorderCompleter = Completer<void>();
     completer = _startRecorderCompleter;
 
@@ -887,7 +922,7 @@ Future<FlutterSoundRecorder> _openAudioSession(
       //if (_isOggOpus) {
       //return _savedUri;
       //}
-    } on Exception catch (err) {
+    } on Exception {
       _startRecorderCompleter = null;
       rethrow;
     }
@@ -898,10 +933,10 @@ Future<FlutterSoundRecorder> _openAudioSession(
   Future<String> _stop() async {
     print('FS:---> stop');
     _stopRecorderCompleter = Completer<String>();
-    Completer<String> completer = _stopRecorderCompleter;
+    var completer = _stopRecorderCompleter;
     try {
       await FlutterSoundRecorderPlatform.instance.stopRecorder(this);
-    } catch (e) {
+    } on Exception {
       _stopRecorderCompleter = null;
       rethrow;
     }
@@ -1199,8 +1234,9 @@ Future<String> _stopRecorder() async {
       AudioDevice device = AudioDevice.speaker}) async {
     print('FS:---> setAudioFocus ');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Recorder is not open');
+    }
 
     await FlutterSoundRecorderPlatform.instance.setAudioFocus(
 =======
@@ -1263,19 +1299,21 @@ Future<String> _stopRecorder() async {
 >>>>>>> d2bc728f... Ready for 7.6.0
     print('FS:---> pauseRecorder');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Recorder is not open');
+    }
     Completer<void> completer;
 <<<<<<< HEAD
 <<<<<<< HEAD
     try {
-      if (_pauseRecorderCompleter != null)
+      if (_pauseRecorderCompleter != null) {
         _pauseRecorderCompleter
             .completeError('Killed by another pauseRecorder()');
+      }
       _pauseRecorderCompleter = Completer<void>();
       completer = _pauseRecorderCompleter;
       await FlutterSoundRecorderPlatform.instance.pauseRecorder(this);
-    } catch (e) {
+    } on Exception {
       _pauseRecorderCompleter = null;
       rethrow;
     }
@@ -1338,19 +1376,21 @@ Future<String> _stopRecorder() async {
 >>>>>>> d2bc728f... Ready for 7.6.0
     print('FS:---> resumeRecorder ');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Recorder is not open');
+    }
     Completer<void> completer;
 <<<<<<< HEAD
 <<<<<<< HEAD
     try {
-      if (_resumeRecorderCompleter != null)
+      if (_resumeRecorderCompleter != null) {
         _resumeRecorderCompleter
             .completeError('Killed by another resumeRecorder()');
+      }
       _resumeRecorderCompleter = Completer<void>();
       completer = _resumeRecorderCompleter;
       await FlutterSoundRecorderPlatform.instance.resumeRecorder(this);
-    } catch (e) {
+    } on Exception {
       _resumeRecorderCompleter = null;
       rethrow;
     }
@@ -1400,10 +1440,15 @@ Future<String> _stopRecorder() async {
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
     print('FS:---> deleteRecord');
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Recorder is not open');
 <<<<<<< HEAD
+<<<<<<< HEAD
     bool b = await FlutterSoundRecorderPlatform.instance
+=======
+    }
+    var b = await FlutterSoundRecorderPlatform.instance
+>>>>>>> 83d043cd... TAU : Version 7.6.0+1
         .deleteRecord(this, fileName);
     print('FS:<--- deleteRecord');
     return b;
@@ -1418,9 +1463,10 @@ Future<String> _stopRecorder() async {
   /// of [stopRecorder()].
   Future<String> getRecordURL({String path}) async {
     await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized)
+    if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Recorder is not open');
-    String url =
+    }
+    var url =
         await FlutterSoundRecorderPlatform.instance.getRecordURL(this, path);
     return url;
 =======
@@ -1491,16 +1537,4 @@ class _CodecNotSupportedException extends _RecorderException {
 class RecordingPermissionException extends _RecorderException {
   ///  Permission to record was not granted
   RecordingPermissionException(String message) : super(message);
-}
-
-class _InitializationInProgress implements Exception {
-  _InitializationInProgress() {
-    print('An initialization is currently already in progress.');
-  }
-}
-
-class _NotOpen implements Exception {
-  _NotOpen() {
-    print('Audio session is not open');
-  }
 }
