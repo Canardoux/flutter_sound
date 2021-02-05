@@ -1,6 +1,6 @@
 {
         "name": "tau_sound_core",
-        "version": "7.5.3+1",
+        "version": "7.6.0",
         "description": "The Tau Engine for Web App",
         "homepage": "https://github.com/Canardoux/tau",
         "keywords": [
