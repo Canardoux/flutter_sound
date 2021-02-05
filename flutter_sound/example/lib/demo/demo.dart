@@ -649,21 +649,11 @@ class _MyAppState extends State<Demo> {
 
   void pauseResumePlayer() async {
     try {
-<<<<<<< HEAD
       if (playerModule.isPlaying) {
         await playerModule.pausePlayer();
       } else {
         await playerModule.resumePlayer();
       }
-    } on Exception catch (err) {
-      print('error: $err');
-=======
-    if (playerModule.isPlaying) {
-      await playerModule.pausePlayer();
-    } else {
-      await playerModule.resumePlayer();
->>>>>>> d2bc728f... Ready for 7.6.0
-    }
     } on Exception catch (err) {
       print('error: $err');
     }
@@ -687,21 +677,12 @@ class _MyAppState extends State<Demo> {
   void seekToPlayer(int milliSecs) async {
     //print('-->seekToPlayer');
     try {
-<<<<<<< HEAD
       if (playerModule.isPlaying) {
         await playerModule.seekToPlayer(Duration(milliseconds: milliSecs));
       }
     } on Exception catch (err) {
       print('error: $err');
     }
-=======
-    if (playerModule.isPlaying) {
-      await playerModule.seekToPlayer(Duration(milliseconds: milliSecs));
-    }
-    } on Exception catch (err) {
-      print('error: $err');
-    }
->>>>>>> d2bc728f... Ready for 7.6.0
     setState(() {});
     //print('<--seekToPlayer');
   }

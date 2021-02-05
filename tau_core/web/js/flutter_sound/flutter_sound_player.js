@@ -97,15 +97,10 @@ class FlutterSoundPlayer
                         {
                                 console.log('onplay');
                                 me.duration = Math.ceil(howl.duration() * 1000);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d2bc728f... Ready for 7.6.0
                                 //var stat = me.getPlayerState();
                                 //console.log('status = ' + stat);
                                 me.status = IS_PLAYER_PLAYING;
                                 if (me.pauseResume != IS_PLAYER_PAUSED) // And not IS_PLAYER_PAUSED
-<<<<<<< HEAD
                                 {
                                         me.callbackTable[CB_startPlayerCompleted](me.callback, IS_PLAYER_PLAYING, true, me.duration); // Duration is unknown
 
@@ -114,23 +109,6 @@ class FlutterSoundPlayer
                                         me.callbackTable[CB_resumePlayerCompleted](me.callback, IS_PLAYER_PLAYING, true);
 
                                 }
-=======
-                                if (me.getPlayerState() == IS_PLAYER_PLAYING) // And not IS_PLAYER_PAUSED
-=======
->>>>>>> d2bc728f... Ready for 7.6.0
-                                {
-                                        me.callbackTable[CB_startPlayerCompleted](me.callback, IS_PLAYER_PLAYING, true, me.duration); // Duration is unknown
-
-                                } else
-                                {
-                                        me.callbackTable[CB_resumePlayerCompleted](me.callback, IS_PLAYER_PLAYING, true);
-
-                                }
-<<<<<<< HEAD
-                                me.status = IS_PLAYER_PLAYING;
->>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
-=======
->>>>>>> d2bc728f... Ready for 7.6.0
                                 //me.deltaTime = 0;
                                 me.startTimer();
 
@@ -145,14 +123,7 @@ class FlutterSoundPlayer
                         onend: function()
                         {
                                console.log('onend');
-<<<<<<< HEAD
-<<<<<<< HEAD
                                //me.howl = null;
-=======
->>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
-=======
-                               //me.howl = null;
->>>>>>> d2bc728f... Ready for 7.6.0
                                me.stop();
                                me.status = IS_PLAYER_STOPPED;
                                me.callbackTable[CB_audioPlayerFinished](me.callback, me.getPlayerState());
@@ -191,14 +162,7 @@ class FlutterSoundPlayer
                 howl.play();
                 //this.callback.startPlayerCompleted(howl.duration());
                 //!!!!!!!!!!!!!this.status = IS_PLAYER_PLAYING; // Not very good : in fact the player is not really yet playing
-<<<<<<< HEAD
-<<<<<<< HEAD
                 console.log( 'JS: <--- playAudioFromURL');
-=======
->>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
-=======
-                console.log( 'JS: <--- playAudioFromURL');
->>>>>>> d2bc728f... Ready for 7.6.0
                 return this.getPlayerState();
         }
 
@@ -250,13 +214,6 @@ class FlutterSoundPlayer
                 return this.getPlayerState();
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-        /*
->>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
-=======
->>>>>>> d2bc728f... Ready for 7.6.0
 
         getRecordURL(path,)
         {
@@ -265,16 +222,8 @@ class FlutterSoundPlayer
                 {
                         return null;
                 }
-<<<<<<< HEAD
-<<<<<<< HEAD
                 if ( path.includes("/") )
                     return path;
-=======
->>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
-=======
-                if ( path.includes("/") )
-                    return path;
->>>>>>> d2bc728f... Ready for 7.6.0
                 if (path.substring(0,1) == '/')
                 {
                         myStorage = window.localStorage;
@@ -289,13 +238,6 @@ class FlutterSoundPlayer
                 return url
 
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-        */
->>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
-=======
->>>>>>> d2bc728f... Ready for 7.6.0
 
         startPlayer( codec, fromDataBuffer,  fromURI, numChannels, sampleRate)
         {
@@ -323,15 +265,7 @@ class FlutterSoundPlayer
                 }
 
                 console.log('startPlayer : ' + fromURI);
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var url = this.getRecordURL(fromURI);
-=======
-                var url = getRecordURL(fromURI);
->>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
-=======
-                var url = this.getRecordURL(fromURI);
->>>>>>> d2bc728f... Ready for 7.6.0
 
                 if (url != null)
                 {
@@ -339,19 +273,9 @@ class FlutterSoundPlayer
                         fromURI = url;
                 }
                 this.deltaTime = 0;
-<<<<<<< HEAD
-<<<<<<< HEAD
                 this.pauseResume = IS_PLAYER_PLAYING; // Maybe too early
                 this.playAudioFromURL(url, codec);
                 console.log( 'JS: <--- startPlayer');
-=======
-                this.playAudioFromURL(url, codec);
->>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
-=======
-                this.pauseResume = IS_PLAYER_PLAYING; // Maybe too early
-                this.playAudioFromURL(url, codec);
-                console.log( 'JS: <--- startPlayer');
->>>>>>> d2bc728f... Ready for 7.6.0
                 return this.getPlayerState();
         }
 
@@ -372,14 +296,7 @@ class FlutterSoundPlayer
 
         stop()
         {
-<<<<<<< HEAD
-<<<<<<< HEAD
                 console.log( 'JS: ---> stop');
-=======
->>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
-=======
-                console.log( 'JS: ---> stop');
->>>>>>> d2bc728f... Ready for 7.6.0
                this.stopTimer();
 
 
@@ -388,8 +305,6 @@ class FlutterSoundPlayer
                 this.temporaryBlob = null;
 
                 if (this.howl != null)
-<<<<<<< HEAD
-<<<<<<< HEAD
                 {
                         this.howl.stop();
                         console.log( 'JS: <--- stop');
@@ -402,52 +317,18 @@ class FlutterSoundPlayer
                         console.log( 'JS: <--- stop');
                         return false;
                 }
-=======
-                        this.howl.stop();
-                //this.status = IS_PLAYER_STOPPED; // Maybe too early
->>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
-=======
-                {
-                        this.howl.stop();
-                        console.log( 'JS: <--- stop');
-                        return true;
-                }
-                else
-                {
-                        this.status = IS_PLAYER_STOPPED; // Maybe too early ?
-                        //this.callbackTable[CB_stopPlayerCompleted](this.callback,  IS_PLAYER_STOPPED, true);
-                        console.log( 'JS: <--- stop');
-                        return false;
-                }
->>>>>>> d2bc728f... Ready for 7.6.0
 
         }
 
         stopPlayer()
         {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d2bc728f... Ready for 7.6.0
                 console.log( 'JS: ---> stopPlayer');
                 //if (this.howl == null)
                         //this.callbackTable[CB_stopPlayerCompleted](this.callback,  IS_PLAYER_STOPPED, true);
                 if (!this.stop())
-<<<<<<< HEAD
                         this.callbackTable[CB_stopPlayerCompleted](this.callback,  IS_PLAYER_STOPPED, true);
                 console.log( 'JS: <--- stopPlayer');
                 return this.getPlayerState();
-=======
-                if (this.howl == null)
-                        this.callbackTable[CB_stopPlayerCompleted](this.callback,  IS_PLAYER_STOPPED, true);
-                stop();
-               return this.getPlayerState();
->>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
-=======
-                        this.callbackTable[CB_stopPlayerCompleted](this.callback,  IS_PLAYER_STOPPED, true);
-                console.log( 'JS: <--- stopPlayer');
-                return this.getPlayerState();
->>>>>>> d2bc728f... Ready for 7.6.0
         }
 
         getPlayerState()
@@ -479,14 +360,7 @@ class FlutterSoundPlayer
 
         resumePlayer()
         {
-<<<<<<< HEAD
-<<<<<<< HEAD
                 console.log( 'JS: ---> resumePlayer');
-=======
->>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
-=======
-                console.log( 'JS: ---> resumePlayer');
->>>>>>> d2bc728f... Ready for 7.6.0
                 if (this.getPlayerState() == IS_PLAYER_PAUSED)
                 {
                         //this.status = IS_PLAYER_PLAYING; // Maybe too early
@@ -496,18 +370,9 @@ class FlutterSoundPlayer
                 {
                         this.callbackTable[CB_resumePlayerCompleted](this.callback,  this.getPlayerState(), false);
                 }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 
                 console.log( 'JS: <--- resumePlayer');
-=======
->>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
-=======
-
-
-                console.log( 'JS: <--- resumePlayer');
->>>>>>> d2bc728f... Ready for 7.6.0
                 return this.getPlayerState();
         }
 
