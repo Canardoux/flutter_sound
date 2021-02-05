@@ -49,16 +49,11 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
   bool _mplaybackReady = false;
-  String _mPath;
+  String _mPath = 'flutter_sound_example.aac';
 
   @override
   void initState() {
-    _mPlayer.openAudioSession(withUI: true).then((value) {
-      setState(() {
-        _mPlayerIsInited = true;
-      });
-    });
-    _mPlayer.openAudioSession(withUI: true).then((value) {
+    _mPlayer.openAudioSession().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
@@ -89,18 +84,6 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
         throw RecordingPermissionException('Microphone permission not granted');
       }
     }
-    /*
-    if (!kIsWeb) {
-      var tempDir = await getTemporaryDirectory();
-      _mPath = '${tempDir.path}/flutter_sound_example.aac';
-      var outputFile = File(_mPath);
-      if (outputFile.existsSync()) {
-        await outputFile.delete();
-      }
-    } else {
-     */
-      _mPath = 'flutter_sound_example.aac';
-    //}
      await _mRecorder.openAudioSession();
     _mRecorderIsInited = true;
   }
@@ -114,22 +97,13 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     ).then((value) {
       setState(() {});
     });
-    _mRecorder.startRecorder(
-      toFile: _mPath,
-      //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
-    ).then((value) { setState(() {});});
 
   }
 
   void stopRecorder() async {
     await _mRecorder.stopRecorder().then((value) {
       setState(() {String url = value; _mplaybackReady = true;});
-    }); // just for debugging
-    if (_mRecorder != null) {
-      String url2 = await _mRecorder.getRecordURL(path: _mPath); // just for debugging
-      //bool b = await _mRecorder.deleteRecord(path: _mPath); // just for debugging
-    }
-
+    });
   }
 
    void play()  {
@@ -137,19 +111,11 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
         _mplaybackReady &&
         _mRecorder.isStopped &&
         _mPlayer.isStopped);
-    _mPlayer.startPlayerFromTrack(Track(trackPath:
-         _mPath),
+    _mPlayer.startPlayer(fromURI: _mPath,
         //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
         whenFinished: () {
           setState(() {});
         }).then((value) { setState(() {});});
-    _mPlayer.startPlayerFromTrack(Track(trackPath:
-    _mPath),
-        //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
-        whenFinished: () {
-          setState(() {});
-        }).then((value) { setState(() {});});
-   //_mPlayer.stopPlayer().then((value) { setState(() {});});
   }
 
   void stopPlayer()  {

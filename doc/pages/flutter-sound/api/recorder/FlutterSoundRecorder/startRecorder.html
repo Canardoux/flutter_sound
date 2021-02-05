@@ -71,6 +71,7 @@
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
     
         <li class="section-title"><a href="../../recorder/FlutterSoundRecorder-class.html#instance-methods">Methods</a></li>
+        <li><a href="../../recorder/FlutterSoundRecorder/cleanCompleters.html">cleanCompleters</a></li>
         <li><a href="../../recorder/FlutterSoundRecorder/closeAudioSession.html">closeAudioSession</a></li>
         <li><a href="../../recorder/FlutterSoundRecorder/deleteRecord.html">deleteRecord</a></li>
         <li><a href="../../recorder/FlutterSoundRecorder/getRecordURL.html">getRecordURL</a></li>
@@ -148,85 +149,27 @@ It has also 7 optional parameters to specify :</p>
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; startRecorder({
-  Codec codec = Codec.defaultCodec,
-  String toFile,
-  StreamSink&lt;Food&gt; toStream,
-  int sampleRate = 16000,
-  int numChannels = 1,
-  int bitRate = 16000,
-  AudioSource audioSource = AudioSource.defaultSource,
-}) async {
-  if (_isInited == Initialized.initializationInProgress) {
-    throw (_InitializationInProgress());
-  }
-  if (_isInited != Initialized.fullyInitialized) {
-    throw (_NotOpen());
-  }
-  &#47;&#47; Request Microphone permission if needed
-  &#47;*
-              if (requestPermission) {
-                PermissionStatus status = await Permission.microphone.request();
-                if (status != PermissionStatus.granted) {
-                  throw RecordingPermissionException(&quot;Microphone permission not granted&quot;);
-                }
-              }
-              *&#47;
-  if (_recorderState != null &amp;&amp; _recorderState != RecorderState.isStopped) {
-    throw _RecorderRunningException(&#39;Recorder is not stopped.&#39;);
-  }
-  if (!await isEncoderSupported(codec)) {
-    throw _CodecNotSupportedException(&#39;Codec not supported.&#39;);
-  }
+     Codec codec = Codec.defaultCodec,
+     String toFile,
+     StreamSink&lt;Food&gt; toStream,
+     int sampleRate = 16000,
+     int numChannels = 1,
+     int bitRate = 16000,
+     AudioSource audioSource = AudioSource.defaultSource,
 
-  if ((toFile == null &amp;&amp; toStream == null) ||
-      (toFile != null &amp;&amp; toStream != null)) {
-    throw Exception(
-        &#39;One, and only one parameter &quot;toFile&quot;&#47;&quot;toStream&quot; must be provided&#39;);
-  }
-
-  if (toStream != null &amp;&amp; codec != Codec.pcm16) {
-    throw Exception(&#39;toStream can only be used with codec == Codec.pcm16&#39;);
-  }
-
-  _userStreamSink = toStream;
-
-  &#47;&#47; If we want to record OGG&#47;OPUS on iOS, we record with CAF&#47;OPUS and we remux the CAF file format to a regular OGG&#47;OPUS.
-  &#47;&#47; We use FFmpeg for that task.
-  if ((!kIsWeb) &amp;&amp;
-      (Platform.isIOS) &amp;&amp;
-      ((codec == Codec.opusOGG) || (_fileExtension(toFile) == &#39;.opus&#39;))) {
-    _savedUri = toFile;
-    _isOggOpus = true;
-    codec = Codec.opusCAF;
-    var tempDir = await getTemporaryDirectory();
-    var fout = File(&#39;${tempDir.path}&#47;flutter_sound-tmp.caf&#39;);
-    toFile = fout.path;
-    _tmpUri = toFile;
-  } else {
-    _isOggOpus = false;
-  }
-  _startRecorderCompleter = Completer&lt;void&gt;();
-
-  try {
-    await FlutterSoundRecorderPlatform.instance.startRecorder(this,
-        path: toFile,
-        sampleRate: sampleRate,
-        numChannels: numChannels,
-        bitRate: bitRate,
-        codec: codec,
-        toStream: toStream != null,
-        audioSource: audioSource);
-
-    _recorderState = RecorderState.isRecording;
-    &#47;&#47; if the caller wants OGG&#47;OPUS we must remux the temporary file
-    &#47;&#47;if (_isOggOpus) {
-      &#47;&#47;return _savedUri;
-    &#47;&#47;}
-  } on Exception catch (err) {
-    throw Exception(err);
-  }
-  return _startRecorderCompleter.future;
-}</code></pre>
+   }) async {
+  print(&#39;FS:---&gt; startRecorder &#39;);
+   await _lock.synchronized(() async {await _startRecorder(
+     codec: codec,
+     toFile: toFile,
+     toStream: toStream,
+     sampleRate: sampleRate,
+     numChannels: numChannels,
+     bitRate: bitRate,
+     audioSource: audioSource,
+   );});
+  print(&#39;FS:&lt;--- startRecorder &#39;);
+   }</code></pre>
     </section>
 
   </div> <!-- /.main-content -->

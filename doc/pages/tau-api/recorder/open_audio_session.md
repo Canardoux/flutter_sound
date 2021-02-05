@@ -24,6 +24,8 @@ You MUST ensure that the recorder has been closed when your widget is detached f
 Overload your widget's `dispose()` method to close the recorder when your widget is disposed.
 In this way you will reset the player and clean up the device resources, but the recorder will be no longer usable.
 
+`closeAudioSession()` delete all the temporary files created with `startRecorder()`
+
 ```dart
 @override
 void dispose()

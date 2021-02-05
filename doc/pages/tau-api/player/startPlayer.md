@@ -32,6 +32,11 @@ But this parameter is necessary when Flutter Sound must do format conversion (fo
 
 `startPlayer()` returns a Duration Future, which is the record duration.
 
+The `fromUri` parameter, if specified, can be one of three possibilities :
+- The URL of a remote file
+- The path of a local file
+- The name of a temporary file (without any slash '/')
+
 Hint: [path_provider](https://pub.dev/packages/path_provider) can be useful if you want to get access to some directories on your device.
 
 
@@ -46,9 +51,7 @@ Hint: [path_provider](https://pub.dev/packages/path_provider) can be useful if y
 <div role="tabpanel" class="tab-pane active" id="dart">
 
 <pre>
-        Directory tempDir = await getTemporaryDirectory();
-        File fin = await File ('${tempDir.path}/flutter_sound-tmp.aac');
-        Duration d = await myPlayer.startPlayer(fin.path, codec: Codec.aacADTS);
+        Duration d = await myPlayer.startPlayer(fromURI: 'foo', codec: Codec.aacADTS); // Play a temporary file
 
         _playerSubscription = myPlayer.onProgress.listen((e)
         {

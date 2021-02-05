@@ -71,6 +71,7 @@
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
     
         <li class="section-title"><a href="../../recorder/FlutterSoundRecorder-class.html#instance-methods">Methods</a></li>
+        <li><a href="../../recorder/FlutterSoundRecorder/cleanCompleters.html">cleanCompleters</a></li>
         <li><a href="../../recorder/FlutterSoundRecorder/closeAudioSession.html">closeAudioSession</a></li>
         <li><a href="../../recorder/FlutterSoundRecorder/deleteRecord.html">deleteRecord</a></li>
         <li><a href="../../recorder/FlutterSoundRecorder/getRecordURL.html">getRecordURL</a></li>
@@ -116,21 +117,21 @@ When you have finished with a Recorder, you must close it. With other words, you
 Opening a recorder takes resources inside the OS. Those resources are freed with the verb <code>closeAudioSession()</code>.</p>
 <p>You MUST ensure that the recorder has been closed when your widget is detached from the UI.
 Overload your widget's <code>dispose()</code> method to close the recorder when your widget is disposed.
-In this way you will reset the player and clean up the device resources, but the recorder will be no longer usable.</p>
+In this way you will reset the Recorder and clean up the device resources, but the recorder will be no longer usable.</p>
 <pre class="language-dart"><code class="language-dart">@override
 void dispose()
 {
         if (myRecorder != null)
         {
             myRecorder.closeAudioSession();
-            myPlayer = null;
+            myRecorder = null;
         }
         super.dispose();
 }
 </code></pre>
 <p>You may not openAudioSession many recorders without releasing them.</p>
-<p><code>openAudioSession()</code> and <code>closeAudioSession()</code> return Futures. You may not use your Recorder before the end of the initialization. So probably you will <code>await</code> the result of <code>openAudioSession()</code>. This result is the Recorder itself, so that you can collapse instanciation and initialization together with <code>myRecorder = await FlutterSoundPlayer().openAudioSession();</code></p>
-<p>The four optional parameters are used if you want to control the Audio Focus. Please look to <a href="player.md#openaudiosession-and-closeaudiosession">FlutterSoundPlayer openAudioSession()</a> to understand the meaning of those parameters</p>
+<p><code>openAudioSession()</code> and <code>closeAudioSession()</code> return Futures. You may not use your Recorder before the end of the initialization. So probably you will <code>await</code> the result of <code>openAudioSession()</code>. This result is the Recorder itself, so that you can collapse instanciation and initialization together with <code>myRecorder = await FlutterSoundRecorder().openAudioSession();</code></p>
+<p>The four optional parameters are used if you want to control the Audio Focus. Please look to <a href="Recorder.md#openaudiosession-and-closeaudiosession">FlutterSoundRecorder openAudioSession()</a> to understand the meaning of those parameters</p>
 <p><em>Example:</em></p>
 <pre class="language-dart"><code class="language-dart">    myRecorder = await FlutterSoundRecorder().openAudioSession();
 
@@ -151,33 +152,15 @@ void dispose()
     SessionMode mode = SessionMode.modeDefault,
     int audioFlags = outputToSpeaker,
     AudioDevice device = AudioDevice.speaker}) async {
-  if (_isInited == Initialized.fullyInitialized) {
-    return this;
-  }
-  if (_isInited == Initialized.initializationInProgress) {
-    throw (_InitializationInProgress());
-  }
-
-  _isInited = Initialized.initializationInProgress;
-
-  _setRecorderCallback();
-  if (_userStreamSink != null) {
-    await _userStreamSink.close();
-    _userStreamSink = null;
-  }
-  FlutterSoundRecorderPlatform.instance.openSession(this);
-  await FlutterSoundRecorderPlatform.instance.initializeFlautoRecorder(
-    this,
-    focus: focus,
-    category: category,
-    mode: mode,
-    audioFlags: audioFlags,
-    device: device,
-  );
-
-  _isInited = Initialized.fullyInitialized;
-  return this;
-}</code></pre>
+    FlutterSoundRecorder r;
+  print(&#39;FS:---&gt; openAudioSession &#39;);
+   await _lock.synchronized(() async {
+     r = await _openAudioSession(
+     focus: focus, category: category, mode: mode, audioFlags: audioFlags, device: device,
+   );});
+  print(&#39;FS:&lt;--- openAudioSession &#39;);
+  return r;
+   }</code></pre>
     </section>
 
   </div> <!-- /.main-content -->
