@@ -363,7 +363,7 @@ class _MyAppState extends State<Demo> {
           codec: _codec,
           bitRate: 8000,
           numChannels: 1,
-          sampleRate: (_codec == Codec.pcm16)? tSTREAMSAMPLERATE:tSAMPLERATE,
+          sampleRate: (_codec == Codec.pcm16) ? tSTREAMSAMPLERATE : tSAMPLERATE,
         );
       }
       print('startRecorder');
@@ -649,11 +649,11 @@ class _MyAppState extends State<Demo> {
 
   void pauseResumePlayer() async {
     try {
-    if (playerModule.isPlaying) {
-      await playerModule.pausePlayer();
-    } else {
-      await playerModule.resumePlayer();
-    }
+      if (playerModule.isPlaying) {
+        await playerModule.pausePlayer();
+      } else {
+        await playerModule.resumePlayer();
+      }
     } on Exception catch (err) {
       print('error: $err');
     }
@@ -677,9 +677,9 @@ class _MyAppState extends State<Demo> {
   void seekToPlayer(int milliSecs) async {
     //print('-->seekToPlayer');
     try {
-    if (playerModule.isPlaying) {
-      await playerModule.seekToPlayer(Duration(milliseconds: milliSecs));
-    }
+      if (playerModule.isPlaying) {
+        await playerModule.seekToPlayer(Duration(milliseconds: milliSecs));
+      }
     } on Exception catch (err) {
       print('error: $err');
     }
