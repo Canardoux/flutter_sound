@@ -9,10 +9,12 @@ toc: false
 ---
 ## 7.6.0
 
-- Enhancement : Record to a temporary file. No need any more to use flutter_path_provider. `myRecorder.startRecorder('foo');` . Works on Android, iOS, and Flutter Web.
-- `stopRecorder()` returns a Future of an URL to the recorded file : `URL url = await stopRecorder();` . Useful to get the URL of a temporary record object.
+- Enhancement : Record to a temporary file. No need any more to use flutter_path_provider. `myRecorder.startRecorder('foo');` . Works on Android, iOS, and Flutter Web. [#607](https://github.com/Canardoux/tau/issues/607)
+- `stopRecorder()` returns a Future of an URL to the recorded file : `URL url = await stopRecorder();` . Useful to get the URL of a temporary record object. [#616](https://github.com/Canardoux/tau/issues/616), [#592](https://github.com/Canardoux/tau/issues/592)
 - New verb `deleteTemporaryFile('foo');`
 - All temporary files are automaticaly deleted when the session is closed
+- No await necessary on `openAudioSession()`. [#606](https://github.com/Canardoux/tau/issues/606)
+- Exception when a verb can be processed instead of having an await stuck for ever. [#605](https://github.com/Canardoux/tau/issues/605)
 
 ## 7.5.3
 

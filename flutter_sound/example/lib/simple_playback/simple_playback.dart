@@ -48,14 +48,11 @@ class _SimplePlaybackState extends State<SimplePlayback> {
   @override
   void initState() {
     super.initState();
-    // Be careful : openAudioSession return a Future.
-    // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
     _mPlayer.openAudioSession().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
     });
-    play(); // just for debugging
   }
 
   @override
@@ -86,7 +83,7 @@ class _SimplePlaybackState extends State<SimplePlayback> {
     }
   }
 
-  // --------------------- (it was very simple, wasn't it ?) -------------------
+  // --------------------- UI -------------------
 
   Fn getPlaybackFn() {
     if (!_mPlayerIsInited) {

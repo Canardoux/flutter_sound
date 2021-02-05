@@ -13,8 +13,8 @@ keywords: API Recorder
 
 - Dart API: [stopRecorder](pages/flutter-sound/api/recorder/FlutterSoundRecorder/stopRecorder.html)
 
-Use this verb to stop a record. This verb never throws any exception. It is safe to call it everywhere,
-for example when the App is not sure of the current Audio State and want to recover a clean reset state.
+Use this verb to stop a record.
+Return a Future to an URL of the recorded sound.
 
 *Example:*
 <ul id="profileTabs" class="nav nav-tabs">
@@ -26,7 +26,7 @@ for example when the App is not sure of the current Audio State and want to reco
 <div role="tabpanel" class="tab-pane active" id="dart">
 
 <pre>
-        await myRecorder.stopRecorder();
+        String anURL = await myRecorder.stopRecorder();
         if (_recorderSubscription != null)
         {
                 _recorderSubscription.cancel();

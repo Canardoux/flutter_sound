@@ -39,7 +39,7 @@ echo "Building Jekyll doc"
 rm -rf doc/_site
 cd doc
 rm home.md 2>/dev/null
-bundle exec jekyll build 2>/dev/null
+bundle exec jekyll build
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1

@@ -6,8 +6,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the onProgress property from the FlutterSoundPlayer class, for the Dart programming language.">
-  <title>onProgress property - FlutterSoundPlayer class - player library - Dart API</title>
+  <meta name="description" content="API docs for the cleanCompleters method from the FlutterSoundPlayer class, for the Dart programming language.">
+  <title>cleanCompleters method - FlutterSoundPlayer class - player library - Dart API</title>
 
   
   <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
@@ -29,9 +29,9 @@
     <li><a href="../../index.html">flutter_sound</a></li>
     <li><a href="../../player/player-library.html">player</a></li>
     <li><a href="../../player/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
-    <li class="self-crumb">onProgress property</li>
+    <li class="self-crumb">cleanCompleters method</li>
   </ol>
-  <div class="self-name">onProgress</div>
+  <div class="self-name">cleanCompleters</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -50,7 +50,7 @@
       <li><a href="../../index.html">flutter_sound</a></li>
       <li><a href="../../player/player-library.html">player</a></li>
       <li><a href="../../player/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
-      <li class="self-crumb">onProgress property</li>
+      <li class="self-crumb">cleanCompleters method</li>
     </ol>
     
     <h5>FlutterSoundPlayer class</h5>
@@ -109,42 +109,62 @@
   </div><!--/.sidebar-offcanvas-->
 
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
-      <div><h1><span class="kind-property">onProgress</span> property </h1></div>
+      <div><h1><span class="kind-method">cleanCompleters</span> method </h1></div>
+
+    <section class="multi-line-signature">
+      <span class="returntype">void</span>
+            <span class="name ">cleanCompleters</span>
+(<wbr>)
+      
+    </section>
+    
+    <section class="summary source-code" id="source">
+      <h2><span>Implementation</span></h2>
+      <pre class="language-dart"><code class="language-dart">void cleanCompleters() {
+  if (_pausePlayerCompleter != null) {
+    print(&#39;Kill _pausePlayer()&#39;);
+    Completer&lt;void&gt; completer = _pausePlayerCompleter;
+    _pausePlayerCompleter = null;
+    completer.completeError(&#39;killed by cleanCompleters&#39;);
+  }
+  if (_resumePlayerCompleter != null) {
+    print(&#39;Kill _resumePlayer()&#39;);
+    Completer&lt;void&gt; completer = _resumePlayerCompleter;
+    _resumePlayerCompleter = null;
+    completer.completeError(&#39;killed by cleanCompleters&#39;);
+  }
+
+  if (_startPlayerCompleter != null) {
+    print(&#39;Kill _startPlayer()&#39;);
+    Completer&lt;void&gt; completer = _startPlayerCompleter;
+    _startPlayerCompleter = null;
+    completer.completeError(&#39;killed by cleanCompleters&#39;);
+  }
+
+  if (_stopPlayerCompleter != null) {
+    print(&#39;Kill _stopPlayer()&#39;);
+    Completer&lt;void&gt; completer = _stopPlayerCompleter;
+    _stopPlayerCompleter = null;
+    completer.completeError(&#39;killed by cleanCompleters&#39;);
+  }
+
+  if (_openPlayerCompleter != null) {
+    print(&#39;Kill openPlayer()&#39;);
+    Completer&lt;void&gt; completer = _openPlayerCompleter;
+    _openPlayerCompleter = null;
+    completer.completeError(&#39;killed by cleanCompleters&#39;);
+  }
 
 
-        <section id="getter">
-        
-        <section class="multi-line-signature">
-          <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../player/PlaybackDisposition-class.html">PlaybackDisposition</a></span>&gt;</span></span>
-                  <span class="name ">onProgress</span>
-          
-</section>
-        
-                <section class="desc markdown">
-          <p>The stream side of the Food Controller</p>
-<p>This is a stream on which FlutterSound will post the player progression.
-You may listen to this Stream to have feedback on the current playback.</p>
-<p>PlaybackDisposition has two fields :</p>
-<ul>
-<li>Duration duration  (the total playback duration)</li>
-<li>Duration position  (the current playback position)</li>
-</ul>
-<p><em>Example:</em></p>
-<pre class="language-dart"><code class="language-dart">        _playerSubscription = myPlayer.onProgress.listen((e)
-        {
-                Duration maxDuration = e.duration;
-                Duration position = e.position;
-                ...
-        }
-</code></pre>
-        </section>
-                <section class="summary source-code" id="source">
-          <h2><span>Implementation</span></h2>
-          <pre class="language-dart"><code class="language-dart">Stream&lt;PlaybackDisposition&gt; get onProgress =&gt;
-    _playerController != null ? _playerController.stream : null;</code></pre>
-        </section>
-</section>
-        
+  if (_closePlayerCompleter != null) {
+    print(&#39;Kill _closePlayer()&#39;);
+    Completer&lt;void&gt; completer = _closePlayerCompleter;
+    _closePlayerCompleter = null;
+    completer.completeError(&#39;killed by cleanCompleters&#39;);
+  }
+}</code></pre>
+    </section>
+
   </div> <!-- /.main-content -->
 
   <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">

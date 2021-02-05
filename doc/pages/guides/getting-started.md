@@ -33,8 +33,7 @@ When you have finished with it, **you must** close the session. A good places to
 @override
   void initState() {
     super.initState();
-    // Be careful : openAudioSession return a Future.
-    // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
+    // openAudioSession() return a Future but it is not necessary to wait its completion.
     _myPlayer.openAudioSession().then((value) {
       setState(() {
         _mPlayerIsInited = true;
