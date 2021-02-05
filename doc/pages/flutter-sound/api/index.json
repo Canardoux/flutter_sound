@@ -1585,6 +1585,18 @@
   }
  },
  {
+  "name": "cleanCompleters",
+  "qualifiedName": "player.FlutterSoundPlayer.cleanCompleters",
+  "href": "player/FlutterSoundPlayer/cleanCompleters.html",
+  "type": "method",
+  "overriddenDepth": 0,
+  "packageName": "flutter_sound",
+  "enclosedBy": {
+   "name": "FlutterSoundPlayer",
+   "type": "class"
+  }
+ },
+ {
   "name": "closeAudioSession",
   "qualifiedName": "player.FlutterSoundPlayer.closeAudioSession",
   "href": "player/FlutterSoundPlayer/closeAudioSession.html",
@@ -2209,6 +2221,18 @@
   "qualifiedName": "recorder.FlutterSoundRecorder.FlutterSoundRecorder",
   "href": "recorder/FlutterSoundRecorder/FlutterSoundRecorder.html",
   "type": "constructor",
+  "overriddenDepth": 0,
+  "packageName": "flutter_sound",
+  "enclosedBy": {
+   "name": "FlutterSoundRecorder",
+   "type": "class"
+  }
+ },
+ {
+  "name": "cleanCompleters",
+  "qualifiedName": "recorder.FlutterSoundRecorder.cleanCompleters",
+  "href": "recorder/FlutterSoundRecorder/cleanCompleters.html",
+  "type": "method",
   "overriddenDepth": 0,
   "packageName": "flutter_sound",
   "enclosedBy": {

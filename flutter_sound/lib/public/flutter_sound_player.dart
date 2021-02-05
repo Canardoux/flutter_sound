@@ -304,7 +304,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     assert(state != null);
     _playerState = PlayerState.values[state];
     await _stop(); // ??? Maybe ??? perhaps ??? //
-    cleanCompleters(); // We have problem when the record is finished and a resume is pending
+    _cleanCompleters(); // We have problem when the record is finished and a resume is pending
 
     if (_audioPlayerFinishedPlaying != null) {
       _audioPlayerFinishedPlaying();
@@ -339,6 +339,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   }
 
 
+  /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
   void closePlayerCompleted(int state, success) {
@@ -358,11 +359,12 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
     _closePlayerCompleter = null;
 
-    cleanCompleters();
+    _cleanCompleters();
     print('<--- closePlayerCompleted');
   }
 
 
+  /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
   void pausePlayerCompleted(int state, success) {
@@ -382,6 +384,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     print('<--- pausePlayerCompleted: $success');
   }
 
+  /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
   void resumePlayerCompleted(int state, success) {
@@ -423,6 +426,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   }
 
 
+  /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
   @override
   void stopPlayerCompleted(int state, success) {
@@ -444,7 +448,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     print('<--- stopPlayerCompleted: $success');
   }
 
-  void cleanCompleters() {
+  void _cleanCompleters() {
     if (_pausePlayerCompleter != null) {
       print('Kill _pausePlayer()');
       Completer<void> completer = _pausePlayerCompleter;
@@ -605,16 +609,14 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// A player must be opened before used. A player correspond to an Audio Session. With other words, you must *open* the Audio Session before using it.
   /// When you have finished with a Player, you must close it. With other words, you must close your Audio Session.
   /// Opening a player takes resources inside the OS. Those resources are freed with the verb `closeAudioSession()`.
+  /// Returns a Future, but the App does not need to wait the completion of this future before doing a [startPlayer()].
+  /// The Future will be automaticaly waited by [startPlayer()]
   ///
   /// - [focus] : What to do with others App if they have already the Focus
   /// - [Category] : An optional parameter for iOS. See [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosessioncategory?language=objc).
   /// - [mode] : an optional parameter for iOS. See [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosessionmode?language=objc) to understand the meaning of this parameter.
   /// - [audioFlags] : an optional parameter for iOS
   /// - [withUI] : true if the App plan to use [closeAudioSession] later.
-  /// - [withUI] : true if the App plan to use [closeAudioSession()] later.
-  /// - [withUI] : true if the App plan to use (toto)[closeAudioSession] later.
-  /// - [withUI] : true if the App plan to use [closeAudioSession.html] later.
-  /// - [withUI] : true if the App plan to use (toto)[closeAudioSession.html] later.
   ///
   ///
   /// *Example:*
@@ -1019,14 +1021,17 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///
   /// `startPlayer()` returns a Duration Future, which is the record duration.
   ///
+  /// The `fromUri` parameter, if specified, can be one of three posibilities :
+  /// - The URL of a remote file
+  /// - The path of a local file
+  /// - The name of a temporary file (without any slash '/')
+  ///
   /// Hint: [path_provider](https://pub.dev/packages/path_provider) can be useful if you want to get access to some directories on your device.
   ///
   ///
   /// *Example:*
   /// ```dart
-  ///         Directory tempDir = await getTemporaryDirectory();
-  ///         File fin = await File ('${tempDir.path}/flutter_sound-tmp.aac');
-  ///         Duration d = await myPlayer.startPlayer(fin.path, codec: Codec.aacADTS);
+  ///         Duration d = await myPlayer.startPlayer(fromURI: 'foo', codec: Codec.aacADTS); // Play a temporary file
   ///
   ///         _playerSubscription = myPlayer.onProgress.listen((e)
   ///         {
@@ -1041,7 +1046,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///
   ///     Duration d = await myPlayer.startPlayer
   ///     (
-  ///                 fileUri,
+  ///                 fromURI: fileUri,
   ///                 codec: Codec.mp3,
   ///                 whenFinished: ()
   ///                 {

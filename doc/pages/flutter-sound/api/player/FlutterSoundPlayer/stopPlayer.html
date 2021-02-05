@@ -72,6 +72,7 @@
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
     
         <li class="section-title"><a href="../../player/FlutterSoundPlayer-class.html#instance-methods">Methods</a></li>
+        <li><a href="../../player/FlutterSoundPlayer/cleanCompleters.html">cleanCompleters</a></li>
         <li><a href="../../player/FlutterSoundPlayer/closeAudioSession.html">closeAudioSession</a></li>
         <li><a href="../../player/FlutterSoundPlayer/dispositionStream.html">dispositionStream</a></li>
         <li><a href="../../player/FlutterSoundPlayer/feedFromStream.html">feedFromStream</a></li>
@@ -133,24 +134,10 @@ for example when the App is not sure of the current Audio State and want to reco
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; stopPlayer() async {
-  print(&#39;FS:---&gt; stopPlayer &#39;);
-  if (_isInited == Initialized.initializationInProgress) {
-    throw (_InitializationInProgress());
-  }
-  if (_isInited != Initialized.fullyInitialized) {
-    throw (_NotOpen());
-  }
-
-  &#47;&#47; REALLY ? &#47;&#47; audioPlayerFinishedPlaying = null;
-
-  try {
-    &#47;&#47;_removePlayerCallback(); &#47;&#47; playerController is closed by this function
-    await _stop();
-  } on Exception catch (e) {
-    print(e);
-  }
-  print(&#39;FS:&lt;--- stopPlayer &#39;);
-}</code></pre>
+   await _lock.synchronized(() async {
+     await _stopPlayer();
+   });
+   }</code></pre>
     </section>
 
   </div> <!-- /.main-content -->

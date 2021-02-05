@@ -72,6 +72,7 @@
         <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
     
         <li class="section-title"><a href="../../player/FlutterSoundPlayer-class.html#instance-methods">Methods</a></li>
+        <li><a href="../../player/FlutterSoundPlayer/cleanCompleters.html">cleanCompleters</a></li>
         <li><a href="../../player/FlutterSoundPlayer/closeAudioSession.html">closeAudioSession</a></li>
         <li><a href="../../player/FlutterSoundPlayer/dispositionStream.html">dispositionStream</a></li>
         <li><a href="../../player/FlutterSoundPlayer/feedFromStream.html">feedFromStream</a></li>
@@ -141,29 +142,10 @@ void dispose()
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; closeAudioSession() async {
-  print(&#39;FS:---&gt; closeAudioSession &#39;);
-  await _lock.synchronized(() async {
-    if (_isInited == Initialized.notInitialized) {
-      return this;
-    }
-    &#47;&#47; probably better not to throw an exception here
-    &#47;&#47;if (isInited == Initialized.initializationInProgress) {
-    &#47;&#47;throw (_InitializationInProgress());
-    &#47;&#47;}
-
-    _isInited = Initialized.initializationInProgress;
-    await _stop();
-
-    &#47;&#47;_removePlayerCallback(); &#47;&#47; playerController is closed by this function
-    var state =
-        await FlutterSoundPlayerPlatform.instance.releaseMediaPlayer(this);
-    _playerState = PlayerState.values[state];
-    _removePlayerCallback();
-    FlutterSoundPlayerPlatform.instance.closeSession(this);
-    _isInited = Initialized.notInitialized;
-  });
-  print(&#39;FS:&lt;--- closeAudioSession &#39;);
-}</code></pre>
+   await _lock.synchronized(() async {
+     await _closeAudioSession();
+   });
+   }</code></pre>
     </section>
 
   </div> <!-- /.main-content -->

@@ -6,8 +6,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the stopRecorder method from the FlutterSoundRecorder class, for the Dart programming language.">
-  <title>stopRecorder method - FlutterSoundRecorder class - recorder library - Dart API</title>
+  <meta name="description" content="API docs for the cleanCompleters method from the FlutterSoundRecorder class, for the Dart programming language.">
+  <title>cleanCompleters method - FlutterSoundRecorder class - recorder library - Dart API</title>
 
   
   <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
@@ -29,9 +29,9 @@
     <li><a href="../../index.html">flutter_sound</a></li>
     <li><a href="../../recorder/recorder-library.html">recorder</a></li>
     <li><a href="../../recorder/FlutterSoundRecorder-class.html">FlutterSoundRecorder</a></li>
-    <li class="self-crumb">stopRecorder method</li>
+    <li class="self-crumb">cleanCompleters method</li>
   </ol>
-  <div class="self-name">stopRecorder</div>
+  <div class="self-name">cleanCompleters</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -50,7 +50,7 @@
       <li><a href="../../index.html">flutter_sound</a></li>
       <li><a href="../../recorder/recorder-library.html">recorder</a></li>
       <li><a href="../../recorder/FlutterSoundRecorder-class.html">FlutterSoundRecorder</a></li>
-      <li class="self-crumb">stopRecorder method</li>
+      <li class="self-crumb">cleanCompleters method</li>
     </ol>
     
     <h5>FlutterSoundRecorder class</h5>
@@ -97,41 +97,60 @@
   </div><!--/.sidebar-offcanvas-->
 
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
-      <div><h1><span class="kind-method">stopRecorder</span> method </h1></div>
+      <div><h1><span class="kind-method">cleanCompleters</span> method </h1></div>
 
     <section class="multi-line-signature">
-      <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>
-            <span class="name ">stopRecorder</span>
+      <span class="returntype">void</span>
+            <span class="name ">cleanCompleters</span>
 (<wbr>)
       
-    </section>
-    <section class="desc markdown">
-      <p>Stop a record.</p>
-<p>This verb never throws any exception. It is safe to call it everywhere,
-for example when the App is not sure of the current Audio State and want to recover a clean reset state.</p>
-<p>Return a Future to an URL of the recorded sound.
-<em>Example:</em></p>
-<pre class="language-dart"><code class="language-dart">        await myRecorder.stopRecorder();
-        if (_recorderSubscription != null)
-        {
-                _recorderSubscription.cancel();
-                _recorderSubscription = null;
-        }
-}
-</code></pre>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span></h2>
-      <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; stopRecorder() async {
-  print(&#39;FS:---&gt; stopRecorder &#39;);
-  String r;
-   await _lock.synchronized(() async {
-     r = await _stopRecorder(
-   );});
-  print(&#39;FS:&lt;--- stopRecorder &#39;);
-  return r;
-   }</code></pre>
+      <pre class="language-dart"><code class="language-dart">void cleanCompleters() {
+  if (_pauseRecorderCompleter != null) {
+    print(&#39;Kill _pauseRecorder()&#39;);
+    Completer&lt;void&gt; completer = _pauseRecorderCompleter;
+    _pauseRecorderCompleter = null;
+    completer.completeError(&#39;killed by cleanCompleters&#39;);
+  }
+  if (_resumeRecorderCompleter != null) {
+    print(&#39;Kill _resumeRecorder()&#39;);
+    Completer&lt;void&gt; completer = _resumeRecorderCompleter;
+    _resumeRecorderCompleter = null;
+    completer.completeError(&#39;killed by cleanCompleters&#39;);
+  }
+
+  if (_startRecorderCompleter != null) {
+    print(&#39;Kill _startRecorder()&#39;);
+    Completer&lt;void&gt; completer = _startRecorderCompleter;
+    _startRecorderCompleter = null;
+    completer.completeError(&#39;killed by cleanCompleters&#39;);
+  }
+
+  if (_stopRecorderCompleter != null) {
+    print(&#39;Kill _stopRecorder()&#39;);
+    Completer&lt;void&gt; completer = _stopRecorderCompleter;
+    _stopRecorderCompleter = null;
+    completer.completeError(&#39;killed by cleanCompleters&#39;);
+  }
+
+  if (_openRecorderCompleter != null) {
+    print(&#39;Kill openRecorder()&#39;);
+    Completer&lt;void&gt; completer = _openRecorderCompleter;
+    _openRecorderCompleter = null;
+    completer.completeError(&#39;killed by cleanCompleters&#39;);
+  }
+
+
+  if (_closeRecorderCompleter != null) {
+    print(&#39;Kill _closeRecorder()&#39;);
+    Completer&lt;void&gt; completer = _closeRecorderCompleter;
+    _closeRecorderCompleter = null;
+    completer.completeError(&#39;killed by cleanCompleters&#39;);
+  }
+}</code></pre>
     </section>
 
   </div> <!-- /.main-content -->
