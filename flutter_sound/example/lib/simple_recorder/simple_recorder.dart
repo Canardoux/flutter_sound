@@ -74,7 +74,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
 
     _mRecorder.closeAudioSession();
     _mRecorder = null;
-     super.dispose();
+    super.dispose();
   }
 
   Future<void> openTheRecorder() async {
@@ -84,42 +84,53 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
         throw RecordingPermissionException('Microphone permission not granted');
       }
     }
-     await _mRecorder.openAudioSession();
+    await _mRecorder.openAudioSession();
     _mRecorderIsInited = true;
   }
 
   // ----------------------  Here is the code for recording and playback -------
 
   void record() async {
-    _mRecorder.startRecorder(
+    _mRecorder
+        .startRecorder(
       toFile: _mPath,
       //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
-    ).then((value) {
+    )
+        .then((value) {
       setState(() {});
     });
-
   }
 
   void stopRecorder() async {
     await _mRecorder.stopRecorder().then((value) {
-      setState(() {String url = value; _mplaybackReady = true;});
+      setState(() {
+        String url = value;
+        _mplaybackReady = true;
+      });
     });
   }
 
-   void play()  {
+  void play() {
     assert(_mPlayerIsInited &&
         _mplaybackReady &&
         _mRecorder.isStopped &&
         _mPlayer.isStopped);
-    _mPlayer.startPlayer(fromURI: _mPath,
-        //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
-        whenFinished: () {
-          setState(() {});
-        }).then((value) { setState(() {});});
+    _mPlayer
+        .startPlayer(
+            fromURI: _mPath,
+            //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
+            whenFinished: () {
+              setState(() {});
+            })
+        .then((value) {
+      setState(() {});
+    });
   }
 
-  void stopPlayer()  {
-     _mPlayer.stopPlayer().then((value) { setState(() {});});
+  void stopPlayer() {
+    _mPlayer.stopPlayer().then((value) {
+      setState(() {});
+    });
   }
 
 // ----------------------------- UI --------------------------------------------
