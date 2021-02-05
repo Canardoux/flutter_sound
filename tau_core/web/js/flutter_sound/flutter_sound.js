@@ -130,7 +130,7 @@ function getRecordURL( aPath,)
                 path = lastUrl;
         } else
         {
-                path = 'tau'  + '/' + aPath;
+                path =  aPath;
 
         }
         if (path.substring(0,1) == '/')

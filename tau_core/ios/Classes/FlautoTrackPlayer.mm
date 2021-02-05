@@ -69,6 +69,31 @@
         [(AudioPlayerFlauto*)m_playerEngine  setAudioPlayer: theAudioPlayer];
 }
 
+
+
+
+- (NSString*) getpath:  (NSString*)path
+{
+         if ((path == nil)|| ([path class] == [[NSNull null] class]))
+                return nil;
+        if (![path containsString: @"/"]) // Temporary file
+        {
+                path = [NSTemporaryDirectory() stringByAppendingPathComponent: path];
+        }
+        return path;
+}
+
+- (NSString*) getUrl: (NSString*)path
+{
+         if ((path == nil)|| ([path class] == [[NSNull null] class]))
+                return nil;
+        path = [self getpath: path];
+        NSURL* url = [NSURL URLWithString: path];
+        return [url absoluteString];
+}
+
+
+
 - (bool)startPlayerFromTrack: (FlautoTrack*)track canPause: (bool)canPause canSkipForward: (bool)canSkipForward canSkipBackward: (bool)canSkipBackward
         progress: (NSNumber*)progress duration: (NSNumber*)duration removeUIWhenStopped: (bool)removeUIWhenStopped defaultPauseResume: (bool)defaultPauseResume;
 {
@@ -82,8 +107,8 @@
         m_track = track;
         m_removeUIWhenStopped = removeUIWhenStopped;
         m_defaultPauseResume = defaultPauseResume;
-        [self stopPlayer]; // to start a fresh new playback
-
+        //[self stopPlayer]; // to start a fresh new playback
+        [self stop];
         m_playerEngine = [[AudioPlayerFlauto alloc]init: self];
 
         // Check whether the audio file is stored as a path to a file or a buffer
@@ -94,6 +119,7 @@
                 NSString *path = track.path;
 
                 bool isRemote = false;
+                path = [self getpath: path];
 
                 // A path was given, then create a NSURL with it
                 NSURL *remoteUrl = [NSURL URLWithString:path];
@@ -105,6 +131,8 @@
                         isRemote = true;
                 } else
                 {
+                        path = [self getpath: path];
+
                         audioFileURL = [NSURL URLWithString:path];
                 }
 
@@ -345,12 +373,12 @@
           //albumArt = nil;
           NSLog(@"IOS:<-- cleanTarget");
  }
-
-- (void)stopPlayer
+ 
+ 
+- (void)stop
 {
-
-          NSLog(@"IOS:--> stopPlayer");
-          [self stopTimer];
+          NSLog(@"IOS:--> stop");
+         [self stopTimer];
           if ([self getPlayer] != nil)
           {
                 NSLog(@"IOS: !stopPlayer");
@@ -364,6 +392,15 @@
                 [playingInfoCenter setNowPlayingInfo: nil];
                 playingInfoCenter.nowPlayingInfo = nil;
           }
+          NSLog(@"IOS:<-- stop");
+}
+ 
+
+- (void)stopPlayer
+{
+
+          NSLog(@"IOS:--> stopPlayer");
+          [self stop];
           [m_callBack stopPlayerCompleted: YES];
 
           NSLog(@"IOS:<-- stopPlayer");

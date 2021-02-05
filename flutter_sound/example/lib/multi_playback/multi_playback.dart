@@ -72,10 +72,10 @@ class _MultiPlaybackState extends State<MultiPlayback> {
     initializeDateFormatting();
     _getAssetData(
       'assets/samples/sample.opus',
-    ).then((value) => buffer2 = value);
+    ).then((value) => setState( (){buffer2 = value;}));
     _getAssetData(
       'assets/samples/sample.mp4',
-    ).then((value) => buffer3 = value);
+    ).then((value) => setState( (){buffer3 = value;}));
     _mPlayer1.openAudioSession().then((value) {
       setState(() {
         _mPlayer1IsInited = true;
@@ -134,23 +134,23 @@ class _MultiPlaybackState extends State<MultiPlayback> {
     cancelPlayerSubscriptions1();
     if (_mPlayer1 != null) {
       await _mPlayer1.stopPlayer();
-      setState(() {});
     }
+      setState(() {});
   }
 
   Future<void> pause1() async {
-    if (_mPlayer1 != null) {
+     if (_mPlayer1 != null) {
       await _mPlayer1.pausePlayer();
-      setState(() {});
     }
+      setState(() {});
   }
 
   Future<void> resume1() async {
     if (_mPlayer1 != null) {
       await _mPlayer1.resumePlayer();
-      setState(() {});
     }
-  }
+       setState(() {});
+ }
 
   // -------  Player2 play a OPUS file -----------------------
 
@@ -167,31 +167,33 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   }
 
   void cancelPlayerSubscriptions2() {
-    if (_playerSubscription2 != null) {
+     if (_playerSubscription2 != null) {
       _playerSubscription2.cancel();
       _playerSubscription2 = null;
     }
-  }
+   }
 
   Future<void> stopPlayer2() async {
     cancelPlayerSubscriptions2();
     if (_mPlayer2 != null) {
       await _mPlayer2.stopPlayer();
     }
+    setState(() {
+    });
   }
 
   Future<void> pause2() async {
-    if (_mPlayer2 != null) {
+     if (_mPlayer2 != null) {
       await _mPlayer2.pausePlayer();
-      setState(() {});
     }
+      setState(() {});
   }
 
   Future<void> resume2() async {
     if (_mPlayer2 != null) {
       await _mPlayer2.resumePlayer();
-      setState(() {});
     }
+      setState(() {});
   }
 
   // -------  Player3 play a MP4 file -----------------------
@@ -220,20 +222,22 @@ class _MultiPlaybackState extends State<MultiPlayback> {
     if (_mPlayer3 != null) {
       await _mPlayer3.stopPlayer();
     }
+    setState(() {
+    });
   }
 
   Future<void> pause3() async {
-    if (_mPlayer3 != null) {
+      if (_mPlayer3 != null) {
       await _mPlayer3.pausePlayer();
-      setState(() {});
     }
+      setState(() {});
   }
 
   Future<void> resume3() async {
     if (_mPlayer3 != null) {
       await _mPlayer3.resumePlayer();
-      setState(() {});
     }
+      setState(() {});
   }
 
   // ------------------------------------------------------------------------------------
@@ -254,7 +258,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   }
 
   Fn getPlaybackFn1() {
-    if (!_mPlayer1IsInited) {
+    if (!_mPlayer1IsInited ) {
       return null;
     }
     return _mPlayer1.isStopped
@@ -265,7 +269,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   }
 
   Fn getPauseResumeFn1() {
-    if (!_mPlayer1IsInited || _mPlayer1.isStopped) {
+    if (!_mPlayer1IsInited || _mPlayer1.isStopped ) {
       return null;
     }
     return _mPlayer1.isPaused ? resume1 : pause1;
@@ -287,7 +291,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   }
 
   Fn getPlaybackFn2() {
-    if (!_mPlayer2IsInited || buffer2 == null) {
+    if (!_mPlayer2IsInited || buffer2 == null ) {
       return null;
     }
     return _mPlayer2.isStopped

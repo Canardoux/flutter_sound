@@ -166,6 +166,10 @@ static bool _isIosDecoderSupported [] =
         [self stop]; // To start a fresh new playback
         m_playerEngine = [[AudioEngineFromMic alloc] init: self ];
         b = [m_playerEngine startPlayerFromURL: nil codec: (t_CODEC)0 channels: nbChannels sampleRate: sampleRate];
+        if (b)
+        {
+                        [ m_callBack startPlayerCompleted: true duration: 0];
+        }
         NSLog(@"IOS:<-- startPlayerFromMicSampleRate");
         return b; // TODO
 }
@@ -174,7 +178,7 @@ static bool _isIosDecoderSupported [] =
 
 - (NSString*) getpath:  (NSString*)path
 {
-        if (path == nil)
+         if ((path == nil)|| ([path class] == [[NSNull null] class]))
                 return nil;
         if (![path containsString: @"/"]) // Temporary file
         {
@@ -185,7 +189,7 @@ static bool _isIosDecoderSupported [] =
 
 - (NSString*) getUrl: (NSString*)path
 {
-        if (path == nil)
+         if ((path == nil)|| ([path class] == [[NSNull null] class]))
                 return nil;
         path = [self getpath: path];
         NSURL* url = [NSURL URLWithString: path];

@@ -18,6 +18,7 @@ dependencies:
   provider: ^4.3.2
   flutter_spinkit: ^4.0.0
   path: ">=1.0.0 <2.0.0"
+  #synchronized: ^2.2.0
   synchronized: ^3.0.0-nullsafety
   flutter:
     sdk: flutter

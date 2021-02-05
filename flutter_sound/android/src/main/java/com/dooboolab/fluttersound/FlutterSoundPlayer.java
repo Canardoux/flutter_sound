@@ -341,8 +341,10 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 	{
 		try
 		{
-			m_flautoPlayer.pausePlayer();
-			result.success ( getPlayerState());
+			if (m_flautoPlayer.pausePlayer())
+				result.success ( getPlayerState());
+			else
+				result.error( ERR_UNKNOWN, ERR_UNKNOWN, "Pause failure");
 		}
 		catch ( Exception e )
 		{
@@ -356,8 +358,10 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 	{
 		try
 		{
-			m_flautoPlayer.resumePlayer();
-			result.success ( getPlayerState());
+			if (m_flautoPlayer.resumePlayer())
+				result.success ( getPlayerState());
+			else
+				result.error ( ERR_UNKNOWN, ERR_UNKNOWN, "Resume failure" );
 		}
 		catch ( Exception e )
 		{

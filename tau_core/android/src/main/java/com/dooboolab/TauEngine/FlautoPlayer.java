@@ -381,6 +381,11 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 	{
 		try
 		{
+			if (player == null)
+			{
+				m_callBack.resumePlayerCompleted(false);
+				return false;
+			}
 			player._pausePlayer();
 			pauseMode = true;
 			playerState = t_PLAYER_STATE.PLAYER_IS_PAUSED;
@@ -400,6 +405,11 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 	{
 		try
 		{
+			if (player == null)
+			{
+				//m_callBack.resumePlayerCompleted(false);
+				return false;
+			}
 			player._resumePlayer();
 			pauseMode = false;
 			playerState = t_PLAYER_STATE.PLAYER_IS_PLAYING;

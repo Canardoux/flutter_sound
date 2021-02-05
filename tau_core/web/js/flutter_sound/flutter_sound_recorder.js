@@ -74,7 +74,7 @@ class FlutterSoundRecorder
         releaseFlautoRecorder()
         {
                 console.log( 'releaseFlautoRecorder');
-                this.stopRecorder();
+                this.stop();
                 this.deleteObjects();
                 this.localObjects = [];
 
@@ -115,7 +115,7 @@ class FlutterSoundRecorder
                         path = lasturl;
                 } else
                 {
-                        var path = 'tau' + '/' + aPath;
+                        var path =  aPath;
                 }
                 var myStorage;
                 if (path.substring(0,1) == '/')
@@ -156,7 +156,7 @@ class FlutterSoundRecorder
         setRecordURL( aPath, newUrl)
         {
                 console.log('setRecordUrl: ' + aPath + ' <- ' + newUrl);
-                var path = 'tau' + '/' + aPath;
+                var path = aPath;
                 var myStorage;
                 if ((path == null) || (path == ''))
                 {
@@ -375,15 +375,28 @@ class FlutterSoundRecorder
                 });
         }
 
+        stop()
+        {
+                 this.stopTimer();
+                 if (this.mediaRecorder != null)
+                {
+                      this.mediaRecorder.stop();
+                      this.mediaRecorder = null;
+               }
+        }
+
         stopRecorder()
         {
                 console.log( 'stopRecorder');
-                if (this.mediaRecorder != null)
+                this.stopTimer();
+                 if (this.mediaRecorder != null)
                 {
                         this.mediaRecorder.stop();
+                } else
+                {
+                       this.callbackTable[CB_stopRecorderCompleted](this.callback,  IS_RECORDER_STOPPED, /*false*/true, null);
                 }
-                this.stopTimer();
-                this.mediaRecorder = null;
+               this.mediaRecorder = null;
                 console.log("recorder stopped" );
         }
 
