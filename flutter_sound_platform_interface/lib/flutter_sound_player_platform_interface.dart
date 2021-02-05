@@ -39,12 +39,12 @@ abstract class FlutterSoundPlayerCallback
   void updatePlaybackState(int state);
   void needSomeFood(int ln);
   void audioPlayerFinished(int state);
-  void startPlayerCompleted(int state, success, int duration);
-  void pausePlayerCompleted(int state, success);
-  void resumePlayerCompleted(int state, success);
-  void stopPlayerCompleted(int state, success);
-  void openPlayerCompleted(int state, success);
-  void closePlayerCompleted(int state, success);
+  void startPlayerCompleted(int state, bool success, int duration);
+  void pausePlayerCompleted(int state, bool success);
+  void resumePlayerCompleted(int state, bool success);
+  void stopPlayerCompleted(int state, bool success);
+  void openPlayerCompleted(int state, bool success);
+  void closePlayerCompleted(int state, bool success);
 
 }
 
