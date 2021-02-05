@@ -125,10 +125,10 @@ class _PlayFromMicState extends State<PlayFromMic> {
               ),
             ),
             child: Row(children: [
-              RaisedButton(
+              ElevatedButton(
                 onPressed: getPlaybackFn(),
-                color: Colors.white,
-                disabledColor: Colors.grey,
+                //color: Colors.white,
+                //disabledColor: Colors.grey,
                 child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
               ),
               SizedBox(

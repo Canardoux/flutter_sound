@@ -981,9 +981,9 @@ class _MyAppState extends State<Demo> {
                 width: 56.0,
                 height: 50.0,
                 child: ClipOval(
-                  child: FlatButton(
+                  child: TextButton(
                     onPressed: onStartRecorderPressed(),
-                    padding: EdgeInsets.all(8.0),
+                    //padding: EdgeInsets.all(8.0),
                     child: Image(
                       image: recorderAssetImage(),
                     ),
@@ -994,10 +994,10 @@ class _MyAppState extends State<Demo> {
                 width: 56.0,
                 height: 50.0,
                 child: ClipOval(
-                  child: FlatButton(
+                  child: TextButton(
                     onPressed: onPauseResumeRecorderPressed(),
-                    disabledColor: Colors.white,
-                    padding: EdgeInsets.all(8.0),
+                    //disabledColor: Colors.white,
+                    //padding: EdgeInsets.all(8.0),
                     child: Image(
                       width: 36.0,
                       height: 36.0,
@@ -1034,10 +1034,10 @@ class _MyAppState extends State<Demo> {
               width: 56.0,
               height: 50.0,
               child: ClipOval(
-                child: FlatButton(
+                child: TextButton(
                   onPressed: onStartPlayerPressed(),
-                  disabledColor: Colors.white,
-                  padding: EdgeInsets.all(8.0),
+                  //disabledColor: Colors.white,
+                  //padding: EdgeInsets.all(8.0),
                   child: Image(
                     image: AssetImage(onStartPlayerPressed() != null
                         ? 'res/icons/ic_play.png'
@@ -1050,10 +1050,10 @@ class _MyAppState extends State<Demo> {
               width: 56.0,
               height: 50.0,
               child: ClipOval(
-                child: FlatButton(
+                child: TextButton(
                   onPressed: onPauseResumePlayerPressed(),
-                  disabledColor: Colors.white,
-                  padding: EdgeInsets.all(8.0),
+                  //disabledColor: Colors.white,
+                  //padding: EdgeInsets.all(8.0),
                   child: Image(
                     width: 36.0,
                     height: 36.0,
@@ -1068,10 +1068,10 @@ class _MyAppState extends State<Demo> {
               width: 56.0,
               height: 50.0,
               child: ClipOval(
-                child: FlatButton(
+                child: TextButton(
                   onPressed: onStopPlayerPressed(),
-                  disabledColor: Colors.white,
-                  padding: EdgeInsets.all(8.0),
+                  //disabledColor: Colors.white,
+                  //padding: EdgeInsets.all(8.0),
                   child: Image(
                     width: 28.0,
                     height: 28.0,
