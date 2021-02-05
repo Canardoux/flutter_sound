@@ -392,6 +392,7 @@
                 [playingInfoCenter setNowPlayingInfo: nil];
                 playingInfoCenter.nowPlayingInfo = nil;
           }
+<<<<<<< HEAD
           NSLog(@"IOS:<-- stop");
 }
  
@@ -401,6 +402,8 @@
 
           NSLog(@"IOS:--> stopPlayer");
           [self stop];
+=======
+>>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
           [m_callBack stopPlayerCompleted: YES];
 
           NSLog(@"IOS:<-- stopPlayer");
