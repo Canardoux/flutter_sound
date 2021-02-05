@@ -393,6 +393,9 @@
                 playingInfoCenter.nowPlayingInfo = nil;
           }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d2bc728f... Ready for 7.6.0
           NSLog(@"IOS:<-- stop");
 }
  
@@ -402,8 +405,11 @@
 
           NSLog(@"IOS:--> stopPlayer");
           [self stop];
+<<<<<<< HEAD
 =======
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
+=======
+>>>>>>> d2bc728f... Ready for 7.6.0
           [m_callBack stopPlayerCompleted: YES];
 
           NSLog(@"IOS:<-- stopPlayer");

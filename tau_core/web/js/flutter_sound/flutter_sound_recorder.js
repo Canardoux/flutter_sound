@@ -75,10 +75,14 @@ class FlutterSoundRecorder
         {
                 console.log( 'releaseFlautoRecorder');
 <<<<<<< HEAD
+<<<<<<< HEAD
                 this.stop();
 =======
                 this.stopRecorder();
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
+=======
+                this.stop();
+>>>>>>> d2bc728f... Ready for 7.6.0
                 this.deleteObjects();
                 this.localObjects = [];
 
@@ -120,10 +124,14 @@ class FlutterSoundRecorder
                 } else
                 {
 <<<<<<< HEAD
+<<<<<<< HEAD
                         var path =  aPath;
 =======
                         var path = 'tau' + '/' + aPath;
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
+=======
+                        var path =  aPath;
+>>>>>>> d2bc728f... Ready for 7.6.0
                 }
                 var myStorage;
                 if (path.substring(0,1) == '/')
@@ -165,10 +173,14 @@ class FlutterSoundRecorder
         {
                 console.log('setRecordUrl: ' + aPath + ' <- ' + newUrl);
 <<<<<<< HEAD
+<<<<<<< HEAD
                 var path = aPath;
 =======
                 var path = 'tau' + '/' + aPath;
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
+=======
+                var path = aPath;
+>>>>>>> d2bc728f... Ready for 7.6.0
                 var myStorage;
                 if ((path == null) || (path == ''))
                 {

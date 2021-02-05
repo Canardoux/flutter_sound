@@ -435,6 +435,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       int audioFlags = outputToSpeaker,
       AudioDevice device = AudioDevice.speaker}) async {
 <<<<<<< HEAD
+<<<<<<< HEAD
     FlutterSoundRecorder r;
     print('FS:---> openAudioSession ');
     await _lock.synchronized(() async {
@@ -451,11 +452,25 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   }
 
   Future<FlutterSoundRecorder> _openAudioSession(
+=======
+      FlutterSoundRecorder r;
+    print('FS:---> openAudioSession ');
+     await _lock.synchronized(() async {
+       r = await _openAudioSession(
+       focus: focus, category: category, mode: mode, audioFlags: audioFlags, device: device,
+     );});
+    print('FS:<--- openAudioSession ');
+    return r;
+     }
+
+Future<FlutterSoundRecorder> _openAudioSession(
+>>>>>>> d2bc728f... Ready for 7.6.0
       {AudioFocus focus = AudioFocus.requestFocusTransient,
       SessionCategory category = SessionCategory.playAndRecord,
       SessionMode mode = SessionMode.modeDefault,
       int audioFlags = outputToSpeaker,
       AudioDevice device = AudioDevice.speaker}) async {
+<<<<<<< HEAD
     print('---> openAudioSession');
 
     if (_isInited != Initialized.notInitialized)
@@ -488,13 +503,13 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       rethrow;
     }
 =======
+=======
+>>>>>>> d2bc728f... Ready for 7.6.0
     print('---> openAudioSession');
 
     if (_isInited != Initialized.notInitialized)
-      await closeAudioSession(); // to be in a clean state
+      throw Exception ('Recorder is already initialized'); // to be in a clean state
     Completer<FlutterSoundRecorder> completer;
-    await _lock.synchronized(() async {
-      assert(_isInited == Initialized.notInitialized);
 
       _setRecorderCallback();
       if (_userStreamSink != null) {
@@ -521,8 +536,11 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
         _openRecorderCompleter = null;
         rethrow;
       }
+<<<<<<< HEAD
     });
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
+=======
+>>>>>>> d2bc728f... Ready for 7.6.0
     print('<--- openAudioSession');
     return completer.future;
   }
@@ -530,6 +548,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// Close a Recorder
   ///
   /// You must close your recorder when you have finished with it, for releasing the resources.
+<<<<<<< HEAD
   /// Delete all the temporary files created with `startRecorder()`
 
   Future<void> closeAudioSession() async {
@@ -544,6 +563,16 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   Future<void> _closeAudioSession() async {
     print('FS:---> closeAudioSession ');
 =======
+=======
+     Future<void> closeAudioSession() async {
+    print('FS:---> closeAudioSession ');
+     await _lock.synchronized(() async {await _closeAudioSession(
+     );});
+    print('FS:<--- closeAudioSession ');
+     }
+
+  Future<void> _closeAudioSession() async {
+>>>>>>> d2bc728f... Ready for 7.6.0
      print('FS:---> closeAudioSession ');
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
     // If another closeRecorder() is already in progress, wait until finished
@@ -597,7 +626,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
      
      Completer<void> completer;
-     await _lock.synchronized(() async {
 
 
        try {
@@ -622,7 +650,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
          _closeRecorderCompleter = null;
          rethrow;
        }
-       });
      print('FS:<--- closeAudioSession ');
      return completer.future;
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
@@ -729,7 +756,31 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   ///
   ///     await myRecorder.startRecorder(toFile: 'foo', codec: t_CODEC.CODEC_AAC,); // A temporary file named 'foo'
   /// ```
-  Future<void> startRecorder({
+     Future<void> startRecorder({
+       Codec codec = Codec.defaultCodec,
+       String toFile,
+       StreamSink<Food> toStream,
+       int sampleRate = 16000,
+       int numChannels = 1,
+       int bitRate = 16000,
+       AudioSource audioSource = AudioSource.defaultSource,
+
+     }) async {
+    print('FS:---> startRecorder ');
+     await _lock.synchronized(() async {await _startRecorder(
+       codec: codec,
+       toFile: toFile,
+       toStream: toStream,
+       sampleRate: sampleRate,
+       numChannels: numChannels,
+       bitRate: bitRate,
+       audioSource: audioSource,
+     );});
+    print('FS:<--- startRecorder ');
+     }
+
+
+  Future<void> _startRecorder({
     Codec codec = Codec.defaultCodec,
     String toFile,
     StreamSink<Food> toStream,
@@ -795,6 +846,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       throw Exception('toStream can only be used with codec == Codec.pcm16');
     }
     Completer<void> completer;
+<<<<<<< HEAD
 <<<<<<< HEAD
     // Maybe we should stop any recording already running... (stopRecorder does that)
     _userStreamSink = toStream;
@@ -897,6 +949,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     String r;
 =======
     await _lock.synchronized(() async {
+=======
+>>>>>>> d2bc728f... Ready for 7.6.0
       // Maybe we should stop any recording already running... (stopRecorder does that)
       _userStreamSink = toStream;
 
@@ -939,7 +993,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
         _startRecorderCompleter = null;
         rethrow;
       }
-    });
     print('FS:<--- startRecorder ');
     return completer.future;
   }
@@ -958,6 +1011,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       _userStreamSink = null;
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
 
+<<<<<<< HEAD
     try {
       r = await _stop();
 
@@ -996,6 +1050,9 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 =======
       //return _savedUri;
     }
+=======
+    _recorderState = RecorderState.isStopped;
+>>>>>>> d2bc728f... Ready for 7.6.0
     print('FS:<--- stop');
     return completer.future;
 
@@ -1017,7 +1074,17 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   ///         }
   /// }
   /// ```
-  Future<String> stopRecorder() async {
+       Future<String> stopRecorder() async {
+    print('FS:---> stopRecorder ');
+    String r;
+     await _lock.synchronized(() async {
+       r = await _stopRecorder(
+     );});
+    print('FS:<--- stopRecorder ');
+    return r;
+     }
+
+Future<String> _stopRecorder() async {
     print('FS:---> stopRecorder ');
     while (_openRecorderCompleter != null) {
       print ('Waiting for the recorder being opened');
@@ -1027,15 +1094,48 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       print ('<--- stopRecorder : Recorder is not open');
       return 'Recorder is not open' ;
     }
-    await _lock.synchronized(() async {
+    String r;
 
       try {
-        await _stop();
+        r = await _stop();
+
+    if (_isOggOpus) {
+      // delete the target if it exists
+      // (ffmpeg gives an error if the output file already exists)
+      var f = File(_savedUri);
+      if (f.existsSync()) {
+        await f.delete();
+      }
+      // The following ffmpeg instruction re-encode the Apple CAF to OPUS.
+      // Unfortunately we cannot just remix the OPUS data,
+      // because Apple does not set the "extradata" in its private OPUS format.
+      // It will be good if we can improve this...
+      var rc = await flutterSoundHelper.executeFFmpegWithArguments([
+        '-loglevel',
+        'error',
+        '-y',
+        '-i',
+        _tmpUri,
+        '-c:a',
+        'libopus',
+        _savedUri,
+      ]); // remux CAF to OGG
+      if (rc != 0) {
+        return null;
+      }
+        r = _savedUri;
+    }
+
       } on Exception catch (e) {
         print(e);
       }
+<<<<<<< HEAD
     });
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
+=======
+    print('FS:<--- stopRecorder : $r');
+    return r;
+>>>>>>> d2bc728f... Ready for 7.6.0
   }
 
   /// Changes the audio focus in an open Recorder
@@ -1059,7 +1159,22 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// ```dart
   ///         myRecorder.setAudioFocus(focus: AudioFocus.requestFocusAndDuckOthers);
   /// ```
-  Future<void> setAudioFocus(
+       Future<void> setAudioFocus(
+           {AudioFocus focus = AudioFocus.requestFocusTransient,
+      SessionCategory category = SessionCategory.playAndRecord,
+      SessionMode mode = SessionMode.modeDefault,
+      AudioDevice device = AudioDevice.speaker}) async {
+    print('FS:---> setAudioFocus ');
+     await _lock.synchronized(() async {await _setAudioFocus(
+       focus: focus,
+       category: category,
+       mode: mode,
+       device: device,
+     );});
+    print('FS:<--- setAudioFocus ');
+     }
+
+  Future<void> _setAudioFocus(
       {AudioFocus focus = AudioFocus.requestFocusTransient,
       SessionCategory category = SessionCategory.playAndRecord,
       SessionMode mode = SessionMode.modeDefault,
@@ -1092,7 +1207,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     await _waitOpen();
     if (_isInited != Initialized.fullyInitialized)
       throw Exception('Recorder is not open');
-    await _lock.synchronized(() async {
 
       await FlutterSoundRecorderPlatform.instance.setAudioFocus(
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
@@ -1107,8 +1221,11 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 =======
       );
       //_recorderState = recorderState.values[state];
+<<<<<<< HEAD
     });
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
+=======
+>>>>>>> d2bc728f... Ready for 7.6.0
     print('FS:<--- setAudioFocus ');
   }
 
@@ -1121,6 +1238,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// ```dart
   /// await myRecorder.pauseRecorder();
   /// ```
+<<<<<<< HEAD
   Future<void> pauseRecorder() async {
 <<<<<<< HEAD
     print('FS:---> pauseRecorder ');
@@ -1133,11 +1251,22 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   Future<void> _pauseRecorder() async {
 =======
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
+=======
+     Future<void> pauseRecorder() async {
+    print('FS:---> pauseRecorder ');
+     await _lock.synchronized(() async {await _pauseRecorder(
+     );});
+    print('FS:<--- pauseRecorder ');
+     }
+
+  Future<void> _pauseRecorder() async {
+>>>>>>> d2bc728f... Ready for 7.6.0
     print('FS:---> pauseRecorder');
     await _waitOpen();
     if (_isInited != Initialized.fullyInitialized)
       throw Exception('Recorder is not open');
     Completer<void> completer;
+<<<<<<< HEAD
 <<<<<<< HEAD
     try {
       if (_pauseRecorderCompleter != null)
@@ -1153,6 +1282,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     _recorderState = RecorderState.isPaused;
 =======
     await _lock.synchronized(() async {
+=======
+>>>>>>> d2bc728f... Ready for 7.6.0
       try {
         if (_pauseRecorderCompleter != null)
           _pauseRecorderCompleter.completeError('Killed by another pauseRecorder()');
@@ -1164,8 +1295,11 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
         rethrow;
       }
       _recorderState = RecorderState.isPaused;
+<<<<<<< HEAD
     });
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
+=======
+>>>>>>> d2bc728f... Ready for 7.6.0
     print('FS:<--- pauseRecorder');
     return completer.future;
   }
@@ -1179,6 +1313,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// ```dart
   /// await myRecorder.resumeRecorder();
   /// ```
+<<<<<<< HEAD
   Future<void> resumeRecorder() async {
 <<<<<<< HEAD
     print('FS:---> pausePlayer ');
@@ -1191,11 +1326,22 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   Future<void> _resumeRecorder() async {
 =======
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
+=======
+     Future<void> resumeRecorder() async {
+    print('FS:---> pausePlayer ');
+     await _lock.synchronized(() async {await _resumeRecorder(
+     );});
+    print('FS:<--- resumeRecorder ');
+     }
+
+  Future<void> _resumeRecorder() async {
+>>>>>>> d2bc728f... Ready for 7.6.0
     print('FS:---> resumeRecorder ');
     await _waitOpen();
     if (_isInited != Initialized.fullyInitialized)
       throw Exception('Recorder is not open');
     Completer<void> completer;
+<<<<<<< HEAD
 <<<<<<< HEAD
     try {
       if (_resumeRecorderCompleter != null)
@@ -1211,6 +1357,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     _recorderState = RecorderState.isRecording;
 =======
     await _lock.synchronized(() async {
+=======
+>>>>>>> d2bc728f... Ready for 7.6.0
       try {
         if (_resumeRecorderCompleter != null)
           _resumeRecorderCompleter.completeError('Killed by another resumeRecorder()');
@@ -1223,8 +1371,11 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
         rethrow;
       }
       _recorderState = RecorderState.isRecording;
+<<<<<<< HEAD
     });
 >>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
+=======
+>>>>>>> d2bc728f... Ready for 7.6.0
     print('FS:<--- resumeRecorder ');
     return completer.future;
   }
