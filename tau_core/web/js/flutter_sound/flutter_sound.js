@@ -130,15 +130,7 @@ function getRecordURL( aPath,)
                 path = lastUrl;
         } else
         {
-<<<<<<< HEAD
-<<<<<<< HEAD
                 path =  aPath;
-=======
-                path = 'tau'  + '/' + aPath;
->>>>>>> 0a5e1cf3... Android=OK, iOS=NOK, Web=NOK
-=======
-                path =  aPath;
->>>>>>> d2bc728f... Ready for 7.6.0
 
         }
         if (path.substring(0,1) == '/')
