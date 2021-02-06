@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.6.1
+
+- On iOS : the audio flags was not transmitted correctely to tau_core
+
 ## 7.6.0
 
 - Enhancement : Record to a temporary file. No need any more to use flutter_path_provider. `myRecorder.startRecorder('foo');` . Works on Android, iOS, and Flutter Web. [#607](https://github.com/Canardoux/tau/issues/607). [temporary files](temporary_files.html)
