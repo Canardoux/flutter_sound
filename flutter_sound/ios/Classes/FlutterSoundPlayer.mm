@@ -159,7 +159,7 @@
         t_AUDIO_FOCUS focus = (t_AUDIO_FOCUS)( [(NSNumber*)call.arguments[@"focus"] intValue]);
         t_SESSION_CATEGORY category = (t_SESSION_CATEGORY)( [(NSNumber*)call.arguments[@"category"] intValue]);
         t_SESSION_MODE mode = (t_SESSION_MODE)( [(NSNumber*)call.arguments[@"mode"] intValue]);
-        int flags =  [(NSNumber*)call.arguments[@"flags"] intValue];
+        int flags =  [(NSNumber*)call.arguments[@"audioFlags"] intValue];
         t_AUDIO_DEVICE device = (t_AUDIO_DEVICE)( [(NSNumber*)call.arguments[@"device"] intValue]);
         BOOL r = [flautoPlayer initializeFlautoPlayerFocus: focus category: category mode: mode audioFlags: flags audioDevice:device];
         if (r)
