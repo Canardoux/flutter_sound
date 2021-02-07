@@ -16,8 +16,8 @@ topnav:
       url: /news.html
       hint: "The &tau; Project news"
 
-    - title: issues on Gitlab
-      external_url: https://gitlab.com/canardoux/tau/-/issues
+    - title: PR
+      external_url: https://github.com/Canardoux/tau/issues
 
 #Topnav dropdowns
 topnav_dropdowns:

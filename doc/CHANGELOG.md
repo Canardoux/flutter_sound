@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.6.2
+
+- On iOS : fixes a bug with pause/resume at the end of the playback [#469](https://github.com/Canardoux/tau/issues/469)
+
 ## 7.6.1
 
 - On iOS : the audio flags was not transmitted correctely to tau_core

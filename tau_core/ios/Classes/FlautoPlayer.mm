@@ -423,7 +423,9 @@ static bool _isIosDecoderSupported [] =
                        // [audioPlayer setDelegate: self]; // TRY
                         NSLog(@"IOS: play!");
                         bool b = [m_playerEngine resume];
-                        if (b){}
+                        if (!b){}
+                        long p = [m_playerEngine getPosition]; // Patch to fix Pause/Resume bug at the end of the record
+                        [self seekToPlayer: p];
                 } //else
                 {
                         //NSLog(@"IOS: ~play! (status is not paused)" );
@@ -546,10 +548,10 @@ static bool _isIosDecoderSupported [] =
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)thePlayer successfully:(BOOL)flag
 {
         NSLog(@"IOS:--> @audioPlayerDidFinishPlaying");
-        [self stopTimer];
-        [m_playerEngine stop];
-        m_playerEngine = nil;
         dispatch_async(dispatch_get_main_queue(), ^{
+                [self stopTimer];
+                [m_playerEngine stop];
+                m_playerEngine = nil;
                 NSLog(@"IOS:--> ^audioPlayerFinishedPlaying");
                 [self ->m_callBack  audioPlayerDidFinishPlaying: true];
                 NSLog(@"IOS:<-- ^audioPlayerFinishedPlaying");
