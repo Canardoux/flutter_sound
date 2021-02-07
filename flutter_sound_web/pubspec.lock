@@ -61,7 +61,7 @@ packages:
       name: flutter_sound_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.6.2+1"
+    version: "7.6.2+2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
