@@ -550,8 +550,8 @@ static bool _isIosDecoderSupported [] =
         NSLog(@"IOS:--> @audioPlayerDidFinishPlaying");
         dispatch_async(dispatch_get_main_queue(), ^{
                 [self stopTimer];
-                [m_playerEngine stop];
-                m_playerEngine = nil;
+                [ self ->m_playerEngine stop];
+                self ->m_playerEngine = nil;
                 NSLog(@"IOS:--> ^audioPlayerFinishedPlaying");
                 [self ->m_callBack  audioPlayerDidFinishPlaying: true];
                 NSLog(@"IOS:<-- ^audioPlayerFinishedPlaying");
