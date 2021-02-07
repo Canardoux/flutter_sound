@@ -9,7 +9,7 @@ toc: false
 ---
 ## 7.6.2
 
-- On iOS : fixes a bug with pause/resume at the end of the playback [#469](https://github.com/Canardoux/tau/issues/469)
+- On iOS : fixes a bug with pause/resume at the end of the playback [#469](https://github.com/dooboolab/flutter_sound/issues/469)
 
 ## 7.6.1
 
@@ -17,21 +17,21 @@ toc: false
 
 ## 7.6.0
 
-- Enhancement : Record to a temporary file. No need any more to use flutter_path_provider. `myRecorder.startRecorder('foo');` . Works on Android, iOS, and Flutter Web. [#607](https://github.com/Canardoux/tau/issues/607). [temporary files](temporary_files.html)
-- `stopRecorder()` returns a Future of an URL to the recorded file : `URL url = await stopRecorder();` . Useful to get the URL of a temporary record object. [#616](https://github.com/Canardoux/tau/issues/616), [#592](https://github.com/Canardoux/tau/issues/592)
+- Enhancement : Record to a temporary file. No need any more to use flutter_path_provider. `myRecorder.startRecorder('foo');` . Works on Android, iOS, and Flutter Web. [#607](https://github.com/dooboolab/flutter_sound/issues/607). [temporary files](temporary_files.html)
+- `stopRecorder()` returns a Future of an URL to the recorded file : `URL url = await stopRecorder();` . Useful to get the URL of a temporary record object. [#616](https://github.com/dooboolab/flutter_sound/issues/616), [#592](https://github.com/dooboolab/flutter_sound/issues/592)
 - New verb `deleteTemporaryFile('foo');`
 - All temporary files are automaticaly deleted when the session is closed
-- No await necessary on `openAudioSession()`. [#606](https://github.com/Canardoux/tau/issues/606)
-- Exception when a verb can be processed instead of having an await stuck for ever. [#605](https://github.com/Canardoux/tau/issues/605)
+- No await necessary on `openAudioSession()`. [#606](https://github.com/dooboolab/flutter_sound/issues/606)
+- Exception when a verb can be processed instead of having an await stuck for ever. [#605](https://github.com/dooboolab/flutter_sound/issues/605)
 
 ## 7.5.3
 
-- Fix a major bug during Feed(). A major regression introduced in 7.5.1. [#590](https://github.com/Canardoux/tau/issues/590)
+- Fix a major bug during Feed(). A major regression introduced in 7.5.1. [#590](https://github.com/dooboolab/flutter_sound/issues/590)
 
 ## 7.5.2
 
-- Android : Fixes a bug when the plugin is attached several time to the engine. Thanks to @ed-vx for the Pull Request :-) . [#595](https://github.com/Canardoux/tau/pull/595) and [#594](https://github.com/Canardoux/tau/issues/594)
-- iOS : Initialization of `flutterSoundPlayerManager` and `flutterSoundRecorderManager` to NIL. [#411](https://github.com/Canardoux/tau/issues/411), [#587](https://github.com/Canardoux/tau/issues/587)
+- Android : Fixes a bug when the plugin is attached several time to the engine. Thanks to @ed-vx for the Pull Request :-) . [#595](https://github.com/dooboolab/flutter_sound/pull/595) and [#594](https://github.com/dooboolab/flutter_sound/issues/594)
+- iOS : Initialization of `flutterSoundPlayerManager` and `flutterSoundRecorderManager` to NIL. [#411](https://github.com/dooboolab/flutter_sound/issues/411), [#587](https://github.com/dooboolab/flutter_sound/issues/587)
 
 ## 7.5.1
 
