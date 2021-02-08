@@ -352,33 +352,35 @@ static bool _isIosDecoderSupported [] =
 - (bool)pausePlayer
 {
         NSLog(@"IOS:--> pausePlayer");
+
+ 
         if (timer != nil)
         {
                 [timer invalidate];
                 timer = nil;
         }
-        if ([self getStatus] == PLAYER_IS_PLAYING)
+        if ([self getStatus] == PLAYER_IS_PLAYING )
         {
-                [m_playerEngine pause];
+                  long position =   [m_playerEngine getPosition];
+                  long duration =   [m_playerEngine getDuration];
+                  if (duration - position < 200) // PATCH [LARPOUX]
+                  {
+                        NSLog (@"IOS: !patch [LARPOUX]");
+                        dispatch_async(dispatch_get_main_queue(),
+                        ^{
+                                [self stop];
+                                NSLog(@"IOS:--> ^audioPlayerFinishedPlaying");
+                                [self ->m_callBack  audioPlayerDidFinishPlaying: true];
+                                NSLog(@"IOS:<-- ^audioPlayerFinishedPlaying");
+                         });
+                        //return false;
+                  } else
+
+                        [m_playerEngine pause];
         }
         else
                 NSLog(@"IOS: audioPlayer is not Playing");
 
-         /*
-         long position =   [m_playerEngine getPosition];
-         long duration =   [m_playerEngine getDuration];
-         if (duration - position < 80) // PATCH [LARPOUX]
-          {
-                NSLog (@"IOS: !patch [LARPOUX]");
-                [self stopPlayer];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                        NSLog(@"IOS:--> ^audioPlayerFinishedPlaying");
-                        [self invokeMethod:@"audioPlayerFinishedPlaying" numberArg: [self getPlayerStatus]];
-                        NSLog(@"IOS:<-- ^audioPlayerFinishedPlaying");
-                 });
-
-          }
-          */
 
 
           bool b =  ( [self getStatus] == PLAYER_IS_PAUSED);
@@ -388,6 +390,23 @@ static bool _isIosDecoderSupported [] =
           }
 
           [m_callBack pausePlayerCompleted: YES];
+          /*
+          
+          long position =   [m_playerEngine getPosition];
+          long duration =   [m_playerEngine getDuration];
+          if (duration - position < 500) // PATCH [LARPOUX]
+          {
+                NSLog (@"IOS: !patch [LARPOUX]");
+                [self stop];
+                dispatch_async(dispatch_get_main_queue(),
+                ^{
+                        NSLog(@"IOS:--> ^audioPlayerFinishedPlaying");
+                        [self ->m_callBack  audioPlayerDidFinishPlaying: true];
+                        NSLog(@"IOS:<-- ^audioPlayerFinishedPlaying");
+                 });
+
+          }
+*/
           NSLog(@"IOS:<-- pause");
           return b;
 
@@ -401,50 +420,29 @@ static bool _isIosDecoderSupported [] =
 - (bool)resumePlayer
 {
         NSLog(@"IOS:--> resume");
-        // long position =   [m_playerEngine getPosition];
-        // long duration =   [m_playerEngine getDuration];
-        /*
-        if (duration - position < 80) // PATCH [LARPOUX]
-        {
-                NSLog (@"IOS: !patch [LARPOUX]");
-                [self stopPlayer];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                        NSLog(@"IOS:--> ^audioPlayerFinishedPlaying");
-                        [self invokeMethod:@"audioPlayerFinishedPlaying" numberArg: [self getPlayerStatus]];
-                        NSLog(@"IOS:<-- ^audioPlayerFinishedPlaying");
-                 });
-
-        } else
-        */
-        {
-
-                // if ( [self getStatus] == IS_PAUSED ) // (after a long pause with the lock screen, the status is not "PAUSED"
-                {
-                       // [audioPlayer setDelegate: self]; // TRY
-                        NSLog(@"IOS: play!");
-                        bool b = [m_playerEngine resume];
-                        if (!b){}
-                        
-                        long position =   [m_playerEngine getPosition];
-                        long duration =   [m_playerEngine getDuration];
-                        //if (duration - position < 100) // PATCH [LARPOUX]
-                        {
-                                [self seekToPlayer: position + 100];
-                        }
-                } //else
-                {
-                        //NSLog(@"IOS: ~play! (status is not paused)" );
-                }
-                [self startTimer];
-        }
-        bool b = ([self getStatus] == PLAYER_IS_PLAYING);
-        if (!b)
+        NSLog(@"IOS: play!");
+        bool b = [m_playerEngine resume];
+        if (!b){}
+        
+            
+        [self startTimer];
+        bool b2 = ([self getStatus] == PLAYER_IS_PLAYING);
+        if (!b2)
         {
                  NSLog(@"IOS: AudioPlayerFlauto : cannot resume!!!");
         }
         NSLog(@"IOS:<-- resume");
         [m_callBack resumePlayerCompleted: b];
-
+        /*
+                NSLog (@"IOS: !patch [LARPOUX]");
+                [self stop];
+                dispatch_async(dispatch_get_main_queue(),
+                ^{
+                        NSLog(@"IOS:--> ^audioPlayerFinishedPlaying");
+                        [self ->m_callBack  audioPlayerDidFinishPlaying: true];
+                        NSLog(@"IOS:<-- ^audioPlayerFinishedPlaying");
+                 });
+                 */
         return b;
 }
 
