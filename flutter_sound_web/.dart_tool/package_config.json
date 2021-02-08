@@ -51,7 +51,7 @@
     },
     {
       "name": "flutter_sound_platform_interface",
-      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/flutter_sound_platform_interface-7.6.2+5",
+      "rootUri": "file:///Volumes/Macos-Ext/Users/larpoux/.pub-cache/hosted/pub.dartlang.org/flutter_sound_platform_interface-7.6.2+6",
       "packageUri": "lib/",
       "languageVersion": "2.1"
     },
@@ -164,7 +164,7 @@
       "languageVersion": "2.1"
     }
   ],
-  "generated": "2021-02-07T17:31:36.713803Z",
+  "generated": "2021-02-08T14:56:15.372846Z",
   "generator": "pub",
   "generatorVersion": "2.12.0-259.8.beta"
 }
