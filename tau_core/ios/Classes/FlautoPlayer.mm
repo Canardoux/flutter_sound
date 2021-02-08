@@ -427,9 +427,9 @@ static bool _isIosDecoderSupported [] =
                         
                         long position =   [m_playerEngine getPosition];
                         long duration =   [m_playerEngine getDuration];
-                        if (duration - position < 100) // PATCH [LARPOUX]
+                        //if (duration - position < 100) // PATCH [LARPOUX]
                         {
-                                [self seekToPlayer: duration - 100];
+                                [self seekToPlayer: position + 100];
                         }
                 } //else
                 {
