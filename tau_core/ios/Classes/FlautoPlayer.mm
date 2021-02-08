@@ -424,8 +424,13 @@ static bool _isIosDecoderSupported [] =
                         NSLog(@"IOS: play!");
                         bool b = [m_playerEngine resume];
                         if (!b){}
-                        long p = [m_playerEngine getPosition]; // Patch to fix Pause/Resume bug at the end of the record
-                        [self seekToPlayer: p];
+                        
+                        long position =   [m_playerEngine getPosition];
+                        long duration =   [m_playerEngine getDuration];
+                        if (duration - position < 100) // PATCH [LARPOUX]
+                        {
+                                [self seekToPlayer: duration];
+                        }
                 } //else
                 {
                         //NSLog(@"IOS: ~play! (status is not paused)" );
