@@ -29,6 +29,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import <tau_sound_core/Flauto.h>
 
+#define FULL_FLAVOR
+
 @interface FlutterSound : NSObject <FlutterPlugin, AVAudioPlayerDelegate>
 {
 }

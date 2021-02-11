@@ -138,7 +138,16 @@ Future<dynamic> channelMethodCallHandler(MethodCall call) {
   }
 
 
+
   @override
+  Future<void>   resetPlugin(FlutterSoundRecorderCallback callback,)
+  {
+    return _channel.invokeMethod('resetPlugin', );
+  }
+
+
+
+@override
   Future<void> openRecorder(FlutterSoundRecorderCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device})
   {
     return invokeMethodVoid( callback, 'openRecorder', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index ,},) ;

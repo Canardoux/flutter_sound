@@ -193,6 +193,15 @@
 }
 
 
+- (void)reset: (FlutterMethodCall*)call result: (FlutterResult)result
+{
+        NSLog(@"IOS:--> reset (Player)");
+        [self closePlayer: call result: result];
+        result([NSNumber numberWithInt: 0]);
+        NSLog(@"IOS:<-- reset (Player)");
+
+}
+
 - (void)closePlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
         NSLog(@"IOS:--> releaseFlautoPlayer");

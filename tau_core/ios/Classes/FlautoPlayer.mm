@@ -105,6 +105,7 @@ static bool _isIosDecoderSupported [] =
 - (void)releaseFlautoPlayer
 {
         NSLog(@"IOS:--> releaseFlautoPlayer");
+        [ self stop];
         [m_callBack closePlayerCompleted: YES];
         NSLog(@"IOS:<-- releaseFlautoPlayer");
 }

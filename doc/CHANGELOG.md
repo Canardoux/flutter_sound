@@ -7,6 +7,12 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.6.3
+
+- No dependency to `synchronized: ^3.0.0-nullsafety`. [#624](https://github.com/Canardoux/tau/issues/624)
+- Compatibility with `flutter_ffmpeg`. [#613](https://github.com/Canardoux/tau/issues/613) and [#585](https://github.com/Canardoux/tau/issues/585)
+- No crash after a Hot Restart. [#543](https://github.com/Canardoux/tau/issues/543), [#387](https://github.com/Canardoux/tau/issues/387) and [#304](https://github.com/Canardoux/tau/issues/304)
+
 ## 7.6.2
 
 - On iOS : fixes a bug with pause/resume at the end of the playback [#469](https://github.com/dooboolab/flutter_sound/issues/469)

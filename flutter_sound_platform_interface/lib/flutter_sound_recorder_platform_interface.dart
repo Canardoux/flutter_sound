@@ -142,29 +142,35 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
 
 
 
+  Future<void>   resetPlugin(FlutterSoundRecorderCallback callback,)
+  {
+    throw UnimplementedError('resetPlugin() has not been implemented.');
+  }
+
+
   Future<void> openRecorder(FlutterSoundRecorderCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device})
   {
-    throw UnimplementedError('invokeMethod() has not been implemented.');
+    throw UnimplementedError('openRecorder() has not been implemented.');
   }
 
   Future<void> closeRecorder(FlutterSoundRecorderCallback callback, )
   {
-    throw UnimplementedError('invokeMethod() has not been implemented.');
+    throw UnimplementedError('closeRecorder() has not been implemented.');
   }
 
   Future<void> setAudioFocus(FlutterSoundRecorderCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device,} )
   {
-    throw UnimplementedError('invokeMethod() has not been implemented.');
+    throw UnimplementedError('setAudioFocus() has not been implemented.');
   }
 
   Future<bool> isEncoderSupported(FlutterSoundRecorderCallback callback, {Codec codec,})
   {
-    throw UnimplementedError('invokeMethod() has not been implemented.');
+    throw UnimplementedError('isEncoderSupported() has not been implemented.');
   }
 
   Future<void> setSubscriptionDuration(FlutterSoundRecorderCallback callback, { Duration duration,})
   {
-    throw UnimplementedError('invokeMethod() has not been implemented.');
+    throw UnimplementedError('setSubscriptionDuration() has not been implemented.');
   }
 
   Future<void> startRecorder(FlutterSoundRecorderCallback callback,
@@ -178,32 +184,32 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
   AudioSource audioSource,
   })
   {
-    throw UnimplementedError('invokeMethod() has not been implemented.');
+    throw UnimplementedError('startRecorder() has not been implemented.');
   }
 
   Future<void> stopRecorder(FlutterSoundRecorderCallback callback, )
   {
-    throw UnimplementedError('invokeMethod() has not been implemented.');
+    throw UnimplementedError('stopRecorder() has not been implemented.');
   }
 
   Future<void> pauseRecorder(FlutterSoundRecorderCallback callback, )
   {
-    throw UnimplementedError('invokeMethod() has not been implemented.');
+    throw UnimplementedError('pauseRecorder() has not been implemented.');
   }
 
   Future<void> resumeRecorder(FlutterSoundRecorderCallback callback, )
   {
-    throw UnimplementedError('invokeMethod() has not been implemented.');
+    throw UnimplementedError('resumeRecorder() has not been implemented.');
   }
 
   Future<bool> deleteRecord(FlutterSoundRecorderCallback callback, String path)
   {
-    throw UnimplementedError('invokeMethod() has not been implemented.');
+    throw UnimplementedError('deleteRecord() has not been implemented.');
   }
 
   Future<String> getRecordURL(FlutterSoundRecorderCallback callback, String path )
   {
-    throw UnimplementedError('invokeMethod() has not been implemented.');
+    throw UnimplementedError('getRecordURL() has not been implemented.');
   }
 
 

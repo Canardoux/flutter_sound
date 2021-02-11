@@ -70,6 +70,12 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result
 {
+        if ([@"resetPlugin" isEqualToString:call.method])
+        {
+                [self resetPlugin: call result: result];
+                return;
+        }
+
          FlutterSoundPlayer* aFlautoPlayer = (FlutterSoundPlayer*)[ self getSession: call];
          //NSLog(@"IOS:--> rcv: %@", call.method);
 

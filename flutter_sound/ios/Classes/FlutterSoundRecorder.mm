@@ -112,15 +112,24 @@
 {
         [self setAudioFocus: call result: result];
         [self openRecorderCompleted:  [NSNumber numberWithBool: YES]]; // It should not be here, but in tau_core !!!
-        result([NSNumber numberWithBool: YES]);
+        result([NSNumber numberWithInt: [self getRecorderStatus]]);
+}
+
+- (void)reset: (FlutterMethodCall*)call result: (FlutterResult)result
+{
+        NSLog(@"iOS ---> reset (Recorder)");
+        [self closeRecorder: call result: result];
+        NSLog(@"iOS <--- reset (Recorder)");
 }
 
 - (void)closeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
 {
+        NSLog(@"iOS ---> closeRecorder");
         [flautoRecorder releaseFlautoRecorder];
         [super releaseSession];
-        [self closeRecorderCompleted:  [NSNumber numberWithBool: YES]]; // It should not be here, but in tau_core !!!
-        result([NSNumber numberWithBool: YES]);
+        //[self closeRecorderCompleted:  [NSNumber numberWithBool: YES]]; // It should not be here, but in tau_core !!!
+        result([NSNumber numberWithInt: [self getRecorderStatus]]);
+        NSLog(@"iOS <--- closeRecorder");
 }
 
 - (void)isEncoderSupported: (t_CODEC)codec result: (FlutterResult)result
@@ -140,7 +149,7 @@
         t_AUDIO_DEVICE device = (t_AUDIO_DEVICE)( [(NSNumber*)call.arguments[@"device"] intValue]);
         BOOL r = [flautoRecorder setAudioFocus: focus category: category mode: mode audioFlags: flags audioDevice:device];
         if (r)
-                result( [NSNumber numberWithBool: YES]);
+                result([NSNumber numberWithInt: [self getRecorderStatus]]);
         else
                 [FlutterError
                                 errorWithCode:@"Audio Player"
@@ -196,8 +205,7 @@
         ];
         if (b)
         {
-
-                        result([NSNumber numberWithBool: YES]);
+                result([NSNumber numberWithInt: [self getRecorderStatus]]);
         } else
         {
                         [FlutterError
@@ -211,8 +219,10 @@
 
 - (void)stopRecorder: (FlutterResult)result
 {
+        NSLog(@"iOS ---> stopRecorder");
         [flautoRecorder stopRecorder];
-        result([NSNumber numberWithBool: YES]);
+        result([NSNumber numberWithInt: [self getRecorderStatus]]);
+        NSLog(@"iOS <--- stopRecorder");
 }
 
 
@@ -230,26 +240,26 @@
 {
         NSNumber* milliSec = (NSNumber*)call.arguments[@"duration"];
         [flautoRecorder setSubscriptionDuration: [milliSec longValue] ];
-        result([NSNumber numberWithBool: YES]);
+        result([NSNumber numberWithInt: [self getRecorderStatus]]);
 }
 
 - (void)pauseRecorder: (FlutterMethodCall*)call result: (FlutterResult)result
 {
         [flautoRecorder pauseRecorder];
-        result([NSNumber numberWithBool: YES]);
+        result([NSNumber numberWithInt: [self getRecorderStatus]]);
 }
 
 - (void)resumeRecorder: (FlutterMethodCall*)call result: (FlutterResult)result
 {
         [flautoRecorder resumeRecorder];
-        result([NSNumber numberWithBool: YES]);
+        result([NSNumber numberWithInt: [self getRecorderStatus]]);
 }
 
 - (void)deleteRecord: (FlutterMethodCall*)call result: (FlutterResult)result
 {
         NSString* path =  (NSString*)call.arguments[@"path"];
         bool b = [flautoRecorder deleteRecord: path];
-        result([NSNumber numberWithBool: b]);
+        result([NSNumber numberWithInt: [self getRecorderStatus]]);
 }
 
 - (void)getRecordURL: (FlutterMethodCall*)call result: (FlutterResult)result
@@ -263,6 +273,12 @@
 - (int)getStatus
 {
         return [flautoRecorder getStatus];
+}
+
+
+- (int)getRecorderStatus
+{
+        return [self getStatus];
 }
 
 

@@ -36,6 +36,7 @@
 }
 
 
+- (void)reset: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (int)getStatus;
 - (FlutterSoundPlayerManager*) getPlugin;
 - (Session*) init: (FlutterMethodCall*)call;

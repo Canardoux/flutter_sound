@@ -142,6 +142,12 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 		result.success ( "closeRecorder" );
 
 	}
+	void reset(final MethodCall call, final MethodChannel.Result result)
+	{
+		m_recorder.closeRecorder();
+		result.success ( "reset" );
+
+	}
 
 
 	void isEncoderSupported ( final MethodCall call, final Result result )

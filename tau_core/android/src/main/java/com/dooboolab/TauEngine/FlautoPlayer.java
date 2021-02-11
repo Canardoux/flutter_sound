@@ -125,6 +125,7 @@ public class FlautoPlayer extends FlautoSession implements MediaPlayer.OnErrorLi
 
 	public void closePlayer ( )
 	{
+		stop();
 		if (hasFocus)
 			abandonFocus();
 		releaseSession();
