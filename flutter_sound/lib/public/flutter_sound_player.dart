@@ -93,7 +93,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   TonSkip _onSkipBackward; // User callback "onPaused:"
   TonPaused _onPaused; // user callback "whenPause:"
   final _lock = Lock();
-  bool _re_started = true;
+  bool _reStarted = true;
 
   ///
   StreamSubscription<Food> _foodStreamSubscription;
@@ -657,10 +657,10 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       throw Exception('Player is already initialized');
     }
 
-    if (_re_started) {
+    if (_reStarted) {
       // Perhaps a Hot Restart ?  We must reset the plugin
       print("Resetting flutter_sound Player Plugin");
-      _re_started = false;
+      _reStarted = false;
       await FlutterSoundPlayerPlatform.instance.resetPlugin(this);
     }
     FlutterSoundPlayerPlatform.instance.openSession(this);
