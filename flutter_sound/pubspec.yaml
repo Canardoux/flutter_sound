@@ -1,5 +1,5 @@
 name: flutter_sound
-version: 7.6.2+6
+version: 7.6.3+1
 description: A complete api for audio playback and recording. Audio player, audio recorder, media player, media recorder, sound player, sound recorder.
 #author: dooboolab<dooboolab@gmail.com>
 homepage: https://tau.canardoux.xyz/readme.html
@@ -10,22 +10,20 @@ environment:
 
 dependencies:
   path_provider: ^1.6.27
-  #path_provider: ">=1.0.0 <2.0.0"
   logger: ^0.9.4
-  #intl: ^0.16.1
   recase: ^3.0.1
   uuid: ^2.2.2
   provider: ^4.3.2
   flutter_spinkit: ^4.0.0
   path: ">=1.0.0 <2.0.0"
-  #synchronized: ^2.2.0
-  synchronized: ^3.0.0-nullsafety
+  synchronized: ^2.2.0
+  #flutter_ffmpeg: ^0.3.1
   flutter:
     sdk: flutter
 # ============================================================================
-  flutter_sound_platform_interface: 7.6.2+6
+  flutter_sound_platform_interface: 7.6.3+1
 #    path: ../flutter_sound_platform_interface # Flutter Sound Dir
-  flutter_sound_web: 7.6.2+6
+  flutter_sound_web: 7.6.3+1
 #    path: ../flutter_sound_web # Flutter Sound Dir
 # ============================================================================
 

@@ -209,6 +209,13 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
 
 
   @override
+  Future<void>   resetPlugin(FlutterSoundPlayerCallback callback,)
+  {
+    return _channel.invokeMethod('resetPlugin', );
+  }
+
+
+  @override
   Future<int> openPlayer(FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI})
   {
     return  invokeMethod( callback, 'openPlayer', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index, 'withUI': withUI ? 1 : 0 ,},) ;

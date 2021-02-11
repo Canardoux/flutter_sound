@@ -73,10 +73,18 @@ FlutterSoundRecorderManager* flutterSoundRecorderManager = nil; // Singleton
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result
 {
+        if ([@"resetPlugin" isEqualToString:call.method])
+        {
+                NSLog (@"@resetPlugin");
+                [self resetPlugin: call result: result];
+                return;
+        }
+
         FlutterSoundRecorder* aFlautoRecorder = (FlutterSoundRecorder*)[ self getSession: call];
  
         if ([@"openRecorder" isEqualToString: call.method])
         {
+                NSLog(@"@openRecorder");
                 aFlautoRecorder = [[FlutterSoundRecorder alloc] init: call];
                 [aFlautoRecorder openRecorder: call result: result];
         } else

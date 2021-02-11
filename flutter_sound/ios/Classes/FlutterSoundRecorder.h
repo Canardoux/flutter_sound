@@ -47,6 +47,7 @@
 - (Session*) init: (FlutterMethodCall*)call;
 - (int)getStatus;
 
+- (void)reset: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)isEncoderSupported:(t_CODEC)codec result: (FlutterResult)result;
 - (void)startRecorder :(FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)stopRecorder:(FlutterResult)result;

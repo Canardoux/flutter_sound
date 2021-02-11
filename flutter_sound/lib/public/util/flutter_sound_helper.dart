@@ -41,11 +41,11 @@ FlutterSoundHelper flutterSoundHelper =
 /// Most of those utilities use FFmpeg, so are not available in the LITE flavor of Flutter Sound.
 class FlutterSoundHelper {
   /// The Flutter FFmpeg module
-  FlutterFFmpeg flutterFFmpeg;
+  FlutterSoundFFmpeg flutterFFmpeg;
 
   bool _ffmpegAvailable;
-  FlutterFFmpegConfig _flutterFFmpegConfig;
-  FlutterFFprobe _flutterFFprobe;
+  FlutterSoundFFmpegConfig _flutterFFmpegConfig;
+  FlutterSoundFFprobe _flutterFFprobe;
 
 // -------------------------------------------------------------------------------------------------------------
 
@@ -64,7 +64,7 @@ class FlutterSoundHelper {
   /// returns true if FFmpeg is available (probably the FULL version of Flutter Sound)
   Future<bool> isFFmpegAvailable() async {
     if (_flutterFFmpegConfig == null) {
-      _flutterFFmpegConfig = FlutterFFmpegConfig();
+      _flutterFFmpegConfig = FlutterSoundFFmpegConfig();
       var version = await _flutterFFmpegConfig.getFFmpegVersion();
       var platform = await _flutterFFmpegConfig.getPlatform();
       _ffmpegAvailable = (version != null && platform != null);
@@ -83,7 +83,7 @@ class FlutterSoundHelper {
   ///
   /// Executes FFmpeg with `commandArguments` provided.
   Future<int> executeFFmpegWithArguments(List<String> arguments) {
-    flutterFFmpeg ??= FlutterFFmpeg();
+    flutterFFmpeg ??= FlutterSoundFFmpeg();
     return flutterFFmpeg.executeWithArguments(arguments);
   }
 
@@ -118,9 +118,10 @@ class FlutterSoundHelper {
   /// The informations Map got with FFmpegGetMediaInformation() are [documented here](https://pub.dev/packages/flutter_ffmpeg).
   Future<Map<dynamic, dynamic>> ffMpegGetMediaInformation(String uri) async {
     if (uri == null) return null;
-    _flutterFFprobe ??= FlutterFFprobe();
+    _flutterFFprobe ??= FlutterSoundFFprobe();
     try {
-      return await _flutterFFprobe.getMediaInformation(uri);
+      return (await _flutterFFprobe.getMediaInformation(uri))
+          .getAllProperties();
     } on Exception {
       return null;
     }

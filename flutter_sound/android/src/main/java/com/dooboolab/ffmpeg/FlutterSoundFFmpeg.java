@@ -52,7 +52,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
  * @author Taner Sener
  * @since 0.1.0
  */
-public class FlutterFFmpegPlugin implements MethodCallHandler, EventChannel.StreamHandler {
+public class FlutterSoundFFmpeg implements MethodCallHandler, EventChannel.StreamHandler {
     public static final String LIBRARY_NAME = "flutter-ffmpeg";
 
     public static final String PLATFORM_NAME = "android";
@@ -82,18 +82,18 @@ public class FlutterFFmpegPlugin implements MethodCallHandler, EventChannel.Stre
     //private final Registrar registrar;
     private final FlutterFFmpegResultHandler flutterFFmpegResultHandler;
 
-    static FlutterFFmpegPlugin flutterFFmpegPlugin; // singleton
+    static FlutterSoundFFmpeg flutterFFmpegPlugin; // singleton
     static Context              androidContext;
 
 
     public static void attachFFmpegPlugin( Context ctx, BinaryMessenger messenger )
     {
         assert ( flutterFFmpegPlugin == null );
-        flutterFFmpegPlugin = new FlutterFFmpegPlugin();
-        final MethodChannel channel = new MethodChannel(messenger, "flutter_ffmpeg");
+        flutterFFmpegPlugin = new FlutterSoundFFmpeg();
+        final MethodChannel channel = new MethodChannel(messenger, "flutter_sound_ffmpeg");
         channel.setMethodCallHandler(flutterFFmpegPlugin);
         androidContext = ctx;
-        final EventChannel eventChannel = new EventChannel(messenger, "flutter_ffmpeg_event");
+        final EventChannel eventChannel = new EventChannel(messenger, "flutter_sound_ffmpeg_event");
         eventChannel.setStreamHandler(flutterFFmpegPlugin);
     }
 
@@ -113,7 +113,7 @@ public class FlutterFFmpegPlugin implements MethodCallHandler, EventChannel.Stre
         eventChannel.setStreamHandler(flutterFFmpegPlugin);
     }
 */
-    private FlutterFFmpegPlugin() {
+    private FlutterSoundFFmpeg() {
 
 
         this.flutterFFmpegResultHandler = new FlutterFFmpegResultHandler();
@@ -333,6 +333,8 @@ public class FlutterFFmpegPlugin implements MethodCallHandler, EventChannel.Stre
     public static HashMap<String, Object> toMediaInformationMap(final MediaInformation mediaInformation) {
         final HashMap<String, Object> map = new HashMap<>();
 
+        /*
+
         if (mediaInformation != null) {
             if (mediaInformation.getFormat() != null) {
                 map.put("format", mediaInformation.getFormat());
@@ -375,7 +377,7 @@ public class FlutterFFmpegPlugin implements MethodCallHandler, EventChannel.Stre
                 map.put("streams", array);
             }
         }
-
+*/
         return map;
     }
 
@@ -398,6 +400,7 @@ public class FlutterFFmpegPlugin implements MethodCallHandler, EventChannel.Stre
             if (streamInformation.getFormat() != null) {
                 map.put("format", streamInformation.getFormat());
             }
+            /*
             if (streamInformation.getFullFormat() != null) {
                 map.put("fullFormat", streamInformation.getFullFormat());
             }
@@ -459,6 +462,8 @@ public class FlutterFFmpegPlugin implements MethodCallHandler, EventChannel.Stre
 
                 map.put("sidedata", sidedataMap);
             }
+
+             */
         }
 
         return map;

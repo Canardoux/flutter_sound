@@ -1,4 +1,4 @@
-## 7.6.2+6
+## 7.6.3+1
 
-- ## The [CHANGELOG file is here](https://tau.canardoux.xyz)
+- ## The [CHANGELOG file is here](https://tau.canardoux.xyz/changelog.html)
 

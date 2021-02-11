@@ -57,6 +57,6 @@ export 'public/ui/sound_recorder_ui.dart';
 
 ///
 ///library util;
-export 'public/util/flutter_ffmpeg.dart';
+export 'public/util/flutter_sound_ffmpeg.dart';
 export 'public/util/flutter_sound_helper.dart';
 export 'public/util/log.dart';

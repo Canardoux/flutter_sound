@@ -53,6 +53,7 @@ public abstract class FlutterSoundSession
 
 	abstract int getStatus();
 
+	abstract void reset(final MethodCall call, final MethodChannel.Result result);
 
 	void invokeMethodWithString ( String methodName, boolean success, String arg )
 	{

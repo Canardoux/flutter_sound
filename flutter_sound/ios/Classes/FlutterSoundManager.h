@@ -35,6 +35,8 @@
       int slotNo;
       BOOL hasFocus;
 }
+
+- (void)reset: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (int) getStatus;
 - (Session*) init: (FlutterMethodCall*)call;
 - (void) releaseSession;
@@ -58,6 +60,7 @@
 
 - (Session*)getSession: (FlutterMethodCall*)call;
 - (int) initPlugin: (Session*) session call:(FlutterMethodCall*)call;
+- (void) resetPlugin: (FlutterMethodCall*)call result: (FlutterResult)result ;
 
 
 

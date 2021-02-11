@@ -51,18 +51,18 @@ public class FlutterFFmpegExecuteFFprobeAsyncArgumentsTask extends AsyncTask<Str
     protected Integer doInBackground(final String... unusedArgs) {
         final String[] argumentsArray = arguments.toArray(new String[0]);
 
-        Log.d(FlutterFFmpegPlugin.LIBRARY_NAME, String.format("Running FFprobe with arguments: %s.", Arrays.toString(argumentsArray)));
+        Log.d(FlutterSoundFFmpeg.LIBRARY_NAME, String.format("Running FFprobe with arguments: %s.", Arrays.toString(argumentsArray)));
 
         int rc = FFprobe.execute(argumentsArray);
 
-        Log.d(FlutterFFmpegPlugin.LIBRARY_NAME, String.format("FFprobe exited with rc: %d", rc));
+        Log.d(FlutterSoundFFmpeg.LIBRARY_NAME, String.format("FFprobe exited with rc: %d", rc));
 
         return rc;
     }
 
     @Override
     protected void onPostExecute(final Integer rc) {
-        flutterFFmpegResultHandler.success(result, FlutterFFmpegPlugin.toIntMap(FlutterFFmpegPlugin.KEY_RC, rc));
+        flutterFFmpegResultHandler.success(result, FlutterSoundFFmpeg.toIntMap(FlutterSoundFFmpeg.KEY_RC, rc));
     }
 
 }

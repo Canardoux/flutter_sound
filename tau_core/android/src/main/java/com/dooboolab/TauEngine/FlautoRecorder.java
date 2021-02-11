@@ -147,8 +147,11 @@ public class FlautoRecorder extends FlautoSession
 		return r;
 	}
 
+
+
 	public void closeRecorder ( )
 	{
+		stop();
 		if (hasFocus)
 			abandonFocus();
 		releaseSession();

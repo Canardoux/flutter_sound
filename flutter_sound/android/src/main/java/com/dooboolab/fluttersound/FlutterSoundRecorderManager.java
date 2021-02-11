@@ -74,6 +74,14 @@ class FlutterSoundRecorderManager extends FlutterSoundManager
         @Override
         public void onMethodCall ( final MethodCall call, final Result result )
         {
+                switch ( call.method )
+                {
+                        case "resetPlugin":
+                        {
+                                resetPlugin(call, result);
+                                return;
+                        }
+                }
 
                 FlutterSoundRecorder aRecorder = (FlutterSoundRecorder) getSession( call);
                 switch ( call.method )

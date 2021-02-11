@@ -26,12 +26,12 @@
 /**
  * Flutter FFmpeg Plugin
  */
-@interface FlutterFFmpegPlugin : NSObject<FlutterPlugin,FlutterStreamHandler,LogDelegate,StatisticsDelegate> {
-        FlutterFFmpegPlugin* flutterFFmpegPlugin; // Singleton
+@interface FlutterSoundFFmpeg : NSObject<FlutterPlugin,FlutterStreamHandler,LogDelegate,StatisticsDelegate> {
+        FlutterSoundFFmpeg* flutterSoundFFmpeg; // Singleton
 }
 
 @end
 
-extern void FfmpegReg(NSObject<FlutterPluginRegistrar>* registrar);
+extern void FlutterSoundFFmpegReg(NSObject<FlutterPluginRegistrar>* registrar);
 
 #endif // FULL_FLAVOR

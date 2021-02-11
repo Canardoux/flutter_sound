@@ -1,5 +1,5 @@
 package com.dooboolab.fluttersound;
-import com.dooboolab.ffmpeg.FlutterFFmpegPlugin;
+import com.dooboolab.ffmpeg.FlutterSoundFFmpeg;
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
  *
@@ -60,7 +60,7 @@ public class FlutterSound
 
 		FlutterSoundPlayerManager.attachFlautoPlayer ( Flauto.androidContext, registrar.messenger () );
 		FlutterSoundRecorderManager.attachFlautoRecorder ( Flauto.androidContext, registrar.messenger ()  );
-        if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin(Flauto.androidContext,registrar.messenger ()  );}
+        if (FULL_FLAVOR) {FlutterSoundFFmpeg.attachFFmpegPlugin(Flauto.androidContext,registrar.messenger ()  );}
 	}
 
 
@@ -101,7 +101,7 @@ public class FlutterSound
 		Flauto.androidContext = pluginBinding.getApplicationContext ();
 		FlutterSoundPlayerManager.attachFlautoPlayer ( Flauto.androidContext, pluginBinding.getBinaryMessenger () );
 		FlutterSoundRecorderManager.attachFlautoRecorder ( Flauto.androidContext, pluginBinding.getBinaryMessenger () );
-        if (FULL_FLAVOR) {FlutterFFmpegPlugin.attachFFmpegPlugin( Flauto.androidContext, pluginBinding.getBinaryMessenger() );}
+        if (FULL_FLAVOR) {FlutterSoundFFmpeg.attachFFmpegPlugin( Flauto.androidContext, pluginBinding.getBinaryMessenger() );}
 	}
 
 

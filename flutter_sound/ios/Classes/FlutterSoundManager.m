@@ -77,6 +77,24 @@
         [channel invokeMethod: methodName arguments: call ];
 }
 
+
+- (void) resetPlugin: (FlutterMethodCall*)call result: (FlutterResult)result
+{
+        NSLog (@"iOS: ---> resetPlugin");
+        for (int i = 0; i < [flautoPlayerSlots count]; ++i)
+        {
+                if ( flautoPlayerSlots[i] != [NSNull null] )
+                {
+                        NSLog (@"iOS: calling reset");
+                        Session* session =  flautoPlayerSlots[i];
+                        [ session reset: call result: result];
+                }
+        }
+        flautoPlayerSlots = [[NSMutableArray alloc] init];
+        result( [NSNumber numberWithInt: 0]);
+        NSLog (@"iOS: <--- resetPlugin");
+}
+
 @end
 
 
@@ -110,13 +128,14 @@
 
 - (void) releaseSession
 {
+        NSLog(@"iOS: ---> releaseSession");
        if (hasFocus)
                 [[AVAudioSession sharedInstance]  setActive: FALSE error:nil] ;
  
         [[self getPlugin]freeSlot: slotNo];
+        NSLog(@"iOS: <--- releaseSession");
   
 }
-
 
 - (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg success: (bool)success
 {
@@ -131,6 +150,7 @@
                 @"success": [NSNumber numberWithBool: success]
                 
         };
+        NSLog(@"iOS: invokeMethod %@ - state=%i", methodName, [self getStatus]);
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 
@@ -151,6 +171,7 @@
                 @"state": [NSNumber numberWithInt:([self getStatus])],
                 @"success": [NSNumber numberWithBool: success]
         };
+        NSLog(@"iOS: invokeMethod %@ - state=%i", methodName, [self getStatus]);
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 
@@ -164,6 +185,7 @@
                 @"state": [NSNumber numberWithInt:([self getStatus])],
                 @"success": [NSNumber numberWithBool: success]
         };
+        NSLog(@"iOS: invokeMethod %@ - state=%i", methodName, [self getStatus]);
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 

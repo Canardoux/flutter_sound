@@ -54,39 +54,36 @@ FULL)
   cd flutter_sound
 
 		gsed -i  's/^name: flutter_sound_lite$/name: flutter_sound/' pubspec.yaml
-    gsed -i  's/^name: flauto_lite$/name: flauto/' pubspec.yaml
+                gsed -i  's/^name: flauto_lite$/name: flauto/' pubspec.yaml
 		gsed -i  's/^\( *\)flutter_sound_lite:/\1flutter_sound:/' example/pubspec.yaml
-    gsed -i  's/^\( *\)flauto_lite:/\1flauto:/' example/pubspec.yaml
+                gsed -i  's/^\( *\)flauto_lite:/\1flauto:/' example/pubspec.yaml
 
 		mv ios/flutter_sound_lite.podspec ios/flutter_sound.podspec 2>/dev/null
-    mv ios/flauto_lite.podspec ios/flauto.podspec 2>/dev/null
+                mv ios/flauto_lite.podspec ios/flauto.podspec 2>/dev/null
 # ---
 		gsed -i  "s/^ *s.name *=* 'flutter_sound_lite'$/s.name = 'flutter_sound'/"  ios/flutter_sound.podspec 2>/dev/null
-    gsed -i  "s/^ *s.name *=* 'flauto_lite'$/s.name = 'flutter_sound'/"  ios/flutter_sound.podspec 2>/dev/null
-		gsed -i  "/s.dependency *'mobile-ffmpeg-audio', *'4.3.1.LTS'$/d"   ios/flutter_sound.podspec 2>/dev/null
-    gsed -i  "/^end$/i \ \ s.dependency 'mobile-ffmpeg-audio', '4.3.1.LTS'" ios/flutter_sound.podspec 2>/dev/null
+                gsed -i  "s/^ *s.name *=* 'flauto_lite'$/s.name = 'flutter_sound'/"  ios/flutter_sound.podspec 2>/dev/null
+                gsed -i  "s/^ *#* s.dependency *'mobile-ffmpeg-/  s.dependency 'mobile-ffmpeg-/"   ios/flutter_sound.podspec 2>/dev/null
 # ---
-    gsed -i  "s/^ *s.name *=* 'flutter_sound_lite'$/s.name = 'flauto'/"  ios/flauto.podspec 2>/dev/null
-    gsed -i  "s/^ *s.name *=* 'flauto_lite'$/s.name = 'flauto'/"  ios/flauto.podspec 2>/dev/null
-    gsed -i  "/s.dependency *'mobile-ffmpeg-audio', *'4.3.1.LTS'$/d"   ios/flauto.podspec 2>/dev/null
-    gsed -i  "/^end$/i \ \ s.dependency 'mobile-ffmpeg-audio', '4.3.1.LTS'" ios/flauto.podspec 2>/dev/null
+                gsed -i  "s/^ *s.name *=* 'flutter_sound_lite'$/s.name = 'flauto'/"  ios/flauto.podspec 2>/dev/null
+                gsed -i  "s/^ *s.name *=* 'flauto_lite'$/s.name = 'flauto'/"  ios/flauto.podspec 2>/dev/null
+                gsed -i  "s/^ *#* s.dependency *'mobile-ffmpeg-/  s.dependency *'mobile-ffmpeg-/"   ios/flauto_lite.podspec 2>/dev/null
 # ---
 
-		gsed -i  "/^ *#define *[A-Z]*_FLAVOR/d"   ios/Classes/FlutterFFmpegPlugin.h
-		gsed -i  "/^ *#ifdef *[A-Z]*_FLAVOR/i #define FULL_FLAVOR" ios/Classes/FlutterFFmpegPlugin.h
+		gsed -i  "s/^ *#define *[A-Z]*_FLAVOR/#define FULL_FLAVOR/"   ios/Classes/FlutterSound.h
 
-    for f in $(find . -name '*.dart' ); do process_dart_file $f FULL $f; done
+                for f in $(find . -name '*.dart' ); do process_dart_file $f FULL $f; done
 
 		mv "android/src/main/ffmpeg.park" "android/src/main/java/com/dooboolab/ffmpeg" 2>/dev/null
 
 		gsed -i  "/ext.flutterFFmpegPackage *= *'audio'$/d"   android/build.gradle
 		#gsed -i  "/implementation *'com.arthenica:mobile-ffmpeg-/d"   android/build.gradle
 		gsed -i "1iext.flutterFFmpegPackage = 'audio'" android/build.gradle
-  	gsed -i "s/^[ \t]*\/\/implementation 'com.arthenica:mobile-ffmpeg-/    implementation 'com.arthenica:mobile-ffmpeg-/" android/build.gradle
+  	        gsed -i "s/^[ \t]*\/\/implementation 'com.arthenica:mobile-ffmpeg-/    implementation 'com.arthenica:mobile-ffmpeg-/" android/build.gradle
 
 
-  	gsed -i  "/import *com.dooboolab.ffmpeg.FlutterFFmpegPlugin;$/d"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
-		gsed -i  "1aimport com.dooboolab.ffmpeg.FlutterFFmpegPlugin;"     android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
+  	        gsed -i  "/import *com.dooboolab.ffmpeg.FlutterSoundFFmpeg;$/d"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
+		gsed -i  "1aimport com.dooboolab.ffmpeg.FlutterSoundFFmpeg;"     android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
 
  		gsed -i  "s/^[ $'\t']*public static *final *boolean *FULL_FLAVOR *= *false;$/    public static final boolean FULL_FLAVOR = true;/"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
 		gsed -i  "s/^[ $'\t']*if *( *FULL_FLAVOR *) *;\/\/\ *{/        if (FULL_FLAVOR) \{/"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
@@ -100,26 +97,25 @@ LITE)
   cd flutter_sound
 
 		gsed -i  's/^name: flutter_sound$/name: flutter_sound_lite/' pubspec.yaml
-    gsed -i  's/^name: flauto$/name: flauto_lite/' pubspec.yaml
+                gsed -i  's/^name: flauto$/name: flauto_lite/' pubspec.yaml
 		gsed -i  's/^\( *\)flutter_sound:/\1flutter_sound_lite:/' example/pubspec.yaml
-    gsed -i  's/^\( *\)flauto:/\1flauto_lite:/' example/pubspec.yaml
+                gsed -i  's/^\( *\)flauto:/\1flauto_lite:/' example/pubspec.yaml
 
-		mv ios/flutter_sound.podspec ios/flutter_sound_lite.podspec 2>/dev/null
-    mv ios/flauto.podspec        ios/flauto_lite.podspec 2>/dev/null
+		mv ios/flutter_sound.podspec ios/flutter_sound_lite.podspec
+                mv ios/flauto.podspec        ios/flauto_lite.podspec 2>/dev/null
 # ---
 		gsed -i  "s/^ *s.name *=* 'flutter_sound'$/s.name = 'flutter_sound_lite'/"  ios/flutter_sound_lite.podspec 2>/dev/null
-    gsed -i  "s/^ *s.name *=* 'flauto'$/s.name = 'flutter_sound_lite'/"  ios/flutter_sound_lite.podspec 2>/dev/null
-		gsed -i  "/s.dependency *'mobile-ffmpeg-audio', *'4.3.1.LTS'$/d"   ios/flutter_sound_lite.podspec 2>/dev/null
+                gsed -i  "s/^ *s.name *=* 'flauto'$/s.name = 'flutter_sound_lite'/"  ios/flutter_sound_lite.podspec 2>/dev/null
+                gsed -i  "s/^ *#* s.dependency *'mobile-ffmpeg-/  # s.dependency 'mobile-ffmpeg-/"   ios/flutter_sound_lite.podspec 2>/dev/null
 # ---
-    gsed -i  "s/^ *s.name *=* 'flutter_sound'$/s.name = 'flauto_lite'/"  ios/flauto_lite.podspec 2>/dev/null
-    gsed -i  "s/^ *s.name *=* 'flauto'$/s.name = 'flauto_lite'/"  ios/flauto_lite.podspec 2>/dev/null
-    gsed -i  "/s.dependency *'mobile-ffmpeg-audio', *'4.3.1.LTS'$/d"   ios/flauto_lite.podspec 2>/dev/null
+                gsed -i  "s/^ *s.name *=* 'flutter_sound'$/s.name = 'flauto_lite'/"  ios/flauto_lite.podspec 2>/dev/null
+                gsed -i  "s/^ *s.name *=* 'flauto'$/s.name = 'flauto_lite'/"  ios/flauto_lite.podspec 2>/dev/null
+                gsed -i  "/^ *#* s.dependency *'mobile-ffmpeg-/  # s.dependency *'mobile-ffmpeg-/"   ios/flauto_lite.podspec 2>/dev/null
 # ---
 
-		gsed -i  "/^ *#define *[A-Z]*_FLAVOR/d"   ios/Classes/FlutterFFmpegPlugin.h
-		gsed -i  "/^ *#ifdef *[A-Z]*_FLAVOR/i #define LITE_FLAVOR" ios/Classes/FlutterFFmpegPlugin.h
+                gsed -i  "s/^ *#define *[A-Z]*_FLAVOR/#define LITE_FLAVOR/"   ios/Classes/FlutterSound.h
 
-    for f in $(find . -name '*.dart' ); do process_dart_file $f LITE $f; done
+                for f in $(find . -name '*.dart' ); do process_dart_file $f LITE $f; done
 
 
 		mv "android/src/main/java/com/dooboolab/ffmpeg" "android/src/main/ffmpeg.park" 2>/dev/null
@@ -129,8 +125,8 @@ LITE)
  		gsed -i "s/^[ \t]*implementation 'com.arthenica:mobile-ffmpeg-/    \/\/implementation 'com.arthenica:mobile-ffmpeg-/" android/build.gradle
 
 
-  	gsed -i  "/import *com.dooboolab.ffmpeg.FlutterFFmpegPlugin;$/d"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
-		gsed -i "1a//import com.dooboolab.ffmpeg.FlutterFFmpegPlugin;"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
+                gsed -i  "/import *com.dooboolab.ffmpeg.FlutterSoundFFmpeg;$/d"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
+		gsed -i "1a//import com.dooboolab.ffmpeg.FlutterSoundFFmpeg;"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
 
 		gsed -i  "s/^[ $'\t']*public static *final *boolean *FULL_FLAVOR *= *true;$/    public static final boolean FULL_FLAVOR = false;/"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java
 		gsed -i  "s/^[ $'\t']*if *( *FULL_FLAVOR *) *{/        if (FULL_FLAVOR) ;\/\/\{/"  android/src/main/java/com/dooboolab/fluttersound/FlutterSound.java

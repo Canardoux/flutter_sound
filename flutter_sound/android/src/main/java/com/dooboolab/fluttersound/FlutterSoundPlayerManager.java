@@ -71,12 +71,18 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
         @Override
         public void onMethodCall ( final MethodCall call, final Result result )
         {
-
+                switch ( call.method )
+                {
+                        case "resetPlugin":
+                        {
+                                resetPlugin(call, result);
+                                return;
+                        }
+                }
 
                 FlutterSoundPlayer aPlayer = (FlutterSoundPlayer)getSession(call);
                 switch ( call.method )
                 {
-
                         case "openPlayer":
                         {
                                 //int withUI = call.argument("withUI");
