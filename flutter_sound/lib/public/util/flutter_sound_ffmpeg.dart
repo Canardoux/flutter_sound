@@ -35,41 +35,62 @@ import 'package:flutter/services.dart';
 
 /// Represents an ongoing FFmpeg execution.
 class FlutterSoundFFmpegExecution {
+  ///
   int executionId;
+  ///
   DateTime startTime;
+  ///
   String command;
 }
 
 /// Represents a completed FFmpeg execution.
 class FlutterSoundCompletedFFmpegExecution {
+  ///
   int executionId;
+  ///
   int returnCode;
 
+  ///
   FlutterSoundCompletedFFmpegExecution(this.executionId, this.returnCode);
 }
 
+///
 class FlutterSoundLog {
+  ///
   int executionId;
+  ///
   int level;
+  ///
   String message;
-
+///
   FlutterSoundLog(this.executionId, this.level, this.message);
 }
 
+///
 class FlutterSoundStatistics {
+  ///
   int executionId;
+  ///
   int videoFrameNumber;
+  ///
   double videoFps;
+  ///
   double videoQuality;
+  ///
   int size;
+  ///
   int time;
+  ///
   double bitrate;
+  ///
   double speed;
 
+  ///
   FlutterSoundStatistics(this.executionId, this.videoFrameNumber, this.videoFps,
       this.videoQuality, this.size, this.time, this.bitrate, this.speed);
 }
 
+///
 class FlutterSoundStreamInformation {
   final Map<dynamic, dynamic> _allProperties;
 
@@ -82,6 +103,7 @@ class FlutterSoundStreamInformation {
   }
 }
 
+///
 class FlutterSoundMediaInformation {
   final Map<dynamic, dynamic> _allProperties;
 
@@ -123,11 +145,15 @@ class FlutterSoundMediaInformation {
   }
 }
 
+///
 typedef LogCallback = void Function(FlutterSoundLog log);
+///
 typedef StatisticsCallback = void Function(FlutterSoundStatistics statistics);
+///
 typedef ExecuteCallback = void Function(
     FlutterSoundCompletedFFmpegExecution execution);
 
+///
 class FlutterSoundFFmpegConfig {
   static const MethodChannel _methodChannel =
       MethodChannel('flutter_sound_ffmpeg');
@@ -135,9 +161,12 @@ class FlutterSoundFFmpegConfig {
       EventChannel('flutter_sound_ffmpeg_event');
   static final Map<int, ExecuteCallback> _executeCallbackMap = {};
 
+  ///
   LogCallback logCallback;
+  ///
   StatisticsCallback statisticsCallback;
 
+  ///
   FlutterSoundFFmpegConfig() {
     logCallback = null;
     statisticsCallback = null;
@@ -189,6 +218,7 @@ class FlutterSoundFFmpegConfig {
     }
   }
 
+  ///
   void handleLogEvent(Map<dynamic, dynamic> logEvent) {
     int executionId = logEvent['executionId'];
     int level = logEvent['level'];
@@ -208,12 +238,14 @@ class FlutterSoundFFmpegConfig {
     }
   }
 
+  ///
   void handleStatisticsEvent(Map<dynamic, dynamic> statisticsEvent) {
     if (statisticsCallback != null) {
       statisticsCallback(eventToStatistics(statisticsEvent));
     }
   }
 
+  ///
   void handleExecuteEvent(Map<dynamic, dynamic> executeEvent) {
     int executionId = executeEvent['executionId'];
     int returnCode = executeEvent['returnCode'];
@@ -504,6 +536,7 @@ class FlutterSoundFFmpegConfig {
   }
 }
 
+///
 class FlutterSoundFFmpeg {
   static const MethodChannel _methodChannel =
       MethodChannel('flutter_sound_ffmpeg');
@@ -660,6 +693,7 @@ class FlutterSoundFFmpeg {
   }
 }
 
+///
 class FlutterSoundFFprobe {
   static const MethodChannel _methodChannel =
       MethodChannel('flutter_sound_ffmpeg');
