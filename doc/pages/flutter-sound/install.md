@@ -255,6 +255,14 @@ task clean(type: Delete) {
         <key>NSMicrophoneUsageDescription</key>
         <string>MyApp uses the microphone to record your speech and convert it to text.</string>
   ```
+If your App needs to play remote files you possibly must add :
+```markup
+       <key>NSAppTransportSecurity</key>
+       <dict>
+               <key>NSAllowsArbitraryLoads</key>
+               <true/>
+       </dict>
+```
 
 * On _Android_ you need to add a permission to `AndroidManifest.xml`:
 

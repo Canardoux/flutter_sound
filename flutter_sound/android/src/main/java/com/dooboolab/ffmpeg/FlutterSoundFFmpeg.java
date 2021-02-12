@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Taner Sener
+ * Copyright (c) 2019-2020 Taner Sener
  *
  * This file is part of FlutterFFmpeg.
  *
@@ -20,23 +20,28 @@
 package com.dooboolab.ffmpeg;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
 import com.arthenica.mobileffmpeg.AbiDetect;
 import com.arthenica.mobileffmpeg.Config;
+import com.arthenica.mobileffmpeg.ExecuteCallback;
 import com.arthenica.mobileffmpeg.FFmpeg;
+import com.arthenica.mobileffmpeg.FFmpegExecution;
 import com.arthenica.mobileffmpeg.Level;
 import com.arthenica.mobileffmpeg.LogCallback;
 import com.arthenica.mobileffmpeg.LogMessage;
 import com.arthenica.mobileffmpeg.MediaInformation;
 import com.arthenica.mobileffmpeg.Statistics;
 import com.arthenica.mobileffmpeg.StatisticsCallback;
-import com.arthenica.mobileffmpeg.StreamInformation;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.EventChannel;
@@ -54,19 +59,21 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
  */
 public class FlutterSoundFFmpeg implements MethodCallHandler, EventChannel.StreamHandler {
     public static final String LIBRARY_NAME = "flutter-ffmpeg";
-
     public static final String PLATFORM_NAME = "android";
+
     public static final String KEY_VERSION = "version";
     public static final String KEY_RC = "rc";
     public static final String KEY_PLATFORM = "platform";
     public static final String KEY_PACKAGE_NAME = "packageName";
     public static final String KEY_LAST_RC = "lastRc";
+    public static final String KEY_LAST_COMMAND_OUTPUT = "lastCommandOutput";
     public static final String KEY_PIPE = "pipe";
 
-    public static final String KEY_LAST_COMMAND_OUTPUT = "lastCommandOutput";
-    public static final String KEY_LOG_TEXT = "log";
-
+    public static final String KEY_LOG_EXECUTION_ID = "executionId";
     public static final String KEY_LOG_LEVEL = "level";
+    public static final String KEY_LOG_MESSAGE = "message";
+
+    public static final String KEY_STAT_EXECUTION_ID = "executionId";
     public static final String KEY_STAT_TIME = "time";
     public static final String KEY_STAT_SIZE = "size";
     public static final String KEY_STAT_BITRATE = "bitrate";
@@ -75,48 +82,60 @@ public class FlutterSoundFFmpeg implements MethodCallHandler, EventChannel.Strea
     public static final String KEY_STAT_VIDEO_QUALITY = "videoQuality";
     public static final String KEY_STAT_VIDEO_FPS = "videoFps";
 
+    public static final String KEY_EXECUTION_ID = "executionId";
+    public static final String KEY_EXECUTION_START_TIME = "startTime";
+    public static final String KEY_EXECUTION_COMMAND = "command";
+
     public static final String EVENT_LOG = "FlutterFFmpegLogCallback";
     public static final String EVENT_STAT = "FlutterFFmpegStatisticsCallback";
+    public static final String EVENT_EXECUTE = "FlutterFFmpegExecuteCallback";
 
     private EventChannel.EventSink eventSink;
     //private final Registrar registrar;
+    static Context            androidContext;
+
     private final FlutterFFmpegResultHandler flutterFFmpegResultHandler;
 
-    static FlutterSoundFFmpeg flutterFFmpegPlugin; // singleton
-    static Context              androidContext;
+    /**
+     * Registers plugin to registry.
+     *
+     * @param registrar receiver of plugin registration
+     */
+    public static void registerWith(Context ctx, BinaryMessenger messenger) {
+        FlutterSoundFFmpeg flutterFFmpegPlugin = new FlutterSoundFFmpeg(ctx, messenger);
 
-
-    public static void attachFFmpegPlugin( Context ctx, BinaryMessenger messenger )
-    {
-        assert ( flutterFFmpegPlugin == null );
-        flutterFFmpegPlugin = new FlutterSoundFFmpeg();
         final MethodChannel channel = new MethodChannel(messenger, "flutter_sound_ffmpeg");
         channel.setMethodCallHandler(flutterFFmpegPlugin);
-        androidContext = ctx;
+
         final EventChannel eventChannel = new EventChannel(messenger, "flutter_sound_ffmpeg_event");
         eventChannel.setStreamHandler(flutterFFmpegPlugin);
     }
 
-
-
-    /**
-     * Registers plugin to registry.
-     */
-    /*
-    public static void registerWith(final Registrar registrar) {
-        FlutterFFmpegPlugin flutterFFmpegPlugin = new FlutterFFmpegPlugin(registrar);
-
-        final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_ffmpeg");
-        channel.setMethodCallHandler(flutterFFmpegPlugin);
-
-        final EventChannel eventChannel = new EventChannel(registrar.messenger(), "flutter_ffmpeg_event");
-        eventChannel.setStreamHandler(flutterFFmpegPlugin);
-    }
-*/
-    private FlutterSoundFFmpeg() {
-
+    private FlutterSoundFFmpeg(Context ctx, BinaryMessenger messenger ) {
+        this.androidContext = ctx;
 
         this.flutterFFmpegResultHandler = new FlutterFFmpegResultHandler();
+    }
+
+
+    public static void attachFFmpegPlugin (Context ctx, BinaryMessenger messenger )
+    {
+        /*
+        assert ( flutterSoundRecorderPlugin == null );
+        flutterSoundRecorderPlugin = new FlutterSoundFFmpeg();
+        MethodChannel channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_ffmpeg" );
+        flutterSoundRecorderPlugin.init( channel);
+        channel.setMethodCallHandler ( flutterSoundRecorderPlugin );
+        androidContext = ctx;
+         */
+        FlutterSoundFFmpeg flutterFFmpegPlugin = new FlutterSoundFFmpeg(ctx, messenger);
+
+        final MethodChannel channel = new MethodChannel(messenger, "flutter_sound_ffmpeg");
+        channel.setMethodCallHandler(flutterFFmpegPlugin);
+
+        final EventChannel eventChannel = new EventChannel(messenger, "flutter_sound_ffmpeg_event");
+        eventChannel.setStreamHandler(flutterFFmpegPlugin);
+
     }
 
 
@@ -147,18 +166,44 @@ public class FlutterSoundFFmpeg implements MethodCallHandler, EventChannel.Strea
             List<String> arguments = call.argument("arguments");
 
             final FlutterFFmpegExecuteFFmpegAsyncArgumentsTask asyncTask = new FlutterFFmpegExecuteFFmpegAsyncArgumentsTask(arguments, flutterFFmpegResultHandler, result);
-            asyncTask.execute("dummy-trigger");
+            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        } else if (call.method.equals("executeFFmpegAsyncWithArguments")) {
+
+            List<String> arguments = call.argument("arguments");
+
+            long executionId = FFmpeg.executeAsync(arguments.toArray(new String[0]), new ExecuteCallback() {
+
+                @Override
+                public void apply(long executionId, int returnCode) {
+                    final HashMap<String, Object> executeMap = new HashMap<>();
+                    executeMap.put("executionId", executionId);
+                    executeMap.put("returnCode", returnCode);
+
+                    final HashMap<String, Object> eventMap = new HashMap<>();
+                    eventMap.put(EVENT_EXECUTE, executeMap);
+
+                    flutterFFmpegResultHandler.success(eventSink, eventMap);
+                }
+            });
+
+            flutterFFmpegResultHandler.success(result, FlutterSoundFFmpeg.toLongMap(FlutterSoundFFmpeg.KEY_EXECUTION_ID, executionId));
 
         } else if (call.method.equals("executeFFprobeWithArguments")) {
 
             List<String> arguments = call.argument("arguments");
 
             final FlutterFFmpegExecuteFFprobeAsyncArgumentsTask asyncTask = new FlutterFFmpegExecuteFFprobeAsyncArgumentsTask(arguments, flutterFFmpegResultHandler, result);
-            asyncTask.execute("dummy-trigger");
+            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         } else if (call.method.equals("cancel")) {
 
-            FFmpeg.cancel();
+            Integer executionId = call.argument("executionId");
+            if (executionId == null) {
+                FFmpeg.cancel();
+            } else {
+                FFmpeg.cancel(executionId);
+            }
 
         } else if (call.method.equals("enableRedirection")) {
 
@@ -193,7 +238,13 @@ public class FlutterSoundFFmpeg implements MethodCallHandler, EventChannel.Strea
 
         } else if (call.method.equals("disableLogs")) {
 
-            Config.enableLogCallback(null);
+            Config.enableLogCallback(new LogCallback() {
+
+                @Override
+                public void apply(LogMessage message) {
+                    // EMPTY LOG CALLBACK
+                }
+            });
 
         } else if (call.method.equals("enableStatistics")) {
 
@@ -251,18 +302,25 @@ public class FlutterSoundFFmpeg implements MethodCallHandler, EventChannel.Strea
 
         } else if (call.method.equals("getMediaInformation")) {
             final String path = call.argument("path");
-            Integer timeout = call.argument("timeout");
-            if (timeout == null) {
-                timeout = 10000;
-            }
 
             final FlutterFFmpegGetMediaInformationAsyncTask asyncTask = new FlutterFFmpegGetMediaInformationAsyncTask(path, flutterFFmpegResultHandler, result);
-            asyncTask.execute();
+            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         } else if (call.method.equals("registerNewFFmpegPipe")) {
 
             final String pipe = Config.registerNewFFmpegPipe(getActiveContext());
             flutterFFmpegResultHandler.success(result, toStringMap(KEY_PIPE, pipe));
+
+        } else if (call.method.equals("setEnvironmentVariable")) {
+            String variableName = call.argument("variableName");
+            String variableValue = call.argument("variableValue");
+
+            Config.setEnvironmentVariable(variableName, variableValue);
+
+        } else if (call.method.equals("listExecutions")) {
+
+            final List<Map<String, Object>> executionsList = toExecutionsList(FFmpeg.listExecutions());
+            flutterFFmpegResultHandler.success(result, executionsList);
 
         } else {
             flutterFFmpegResultHandler.notImplemented(result);
@@ -283,8 +341,9 @@ public class FlutterSoundFFmpeg implements MethodCallHandler, EventChannel.Strea
         final HashMap<String, Object> logWrapperMap = new HashMap<>();
         final HashMap<String, Object> logMap = new HashMap<>();
 
+        logMap.put(KEY_LOG_EXECUTION_ID, logMessage.getExecutionId());
         logMap.put(KEY_LOG_LEVEL, levelToInt(logMessage.getLevel()));
-        logMap.put(KEY_LOG_TEXT, logMessage.getText());
+        logMap.put(KEY_LOG_MESSAGE, logMessage.getText());
 
         logWrapperMap.put(EVENT_LOG, logMap);
 
@@ -313,10 +372,18 @@ public class FlutterSoundFFmpeg implements MethodCallHandler, EventChannel.Strea
         return map;
     }
 
+    public static HashMap<String, Long> toLongMap(final String key, final long value) {
+        final HashMap<String, Long> map = new HashMap<>();
+        map.put(key, value);
+        return map;
+    }
+
     public static Map<String, Object> toMap(final Statistics statistics) {
         final HashMap<String, Object> statisticsMap = new HashMap<>();
 
         if (statistics != null) {
+            statisticsMap.put(KEY_STAT_EXECUTION_ID, statistics.getExecutionId());
+
             statisticsMap.put(KEY_STAT_TIME, statistics.getTime());
             statisticsMap.put(KEY_STAT_SIZE, (statistics.getSize() < Integer.MAX_VALUE) ? (int) statistics.getSize() : (int) (statistics.getSize() % Integer.MAX_VALUE));
             statisticsMap.put(KEY_STAT_BITRATE, statistics.getBitrate());
@@ -330,143 +397,76 @@ public class FlutterSoundFFmpeg implements MethodCallHandler, EventChannel.Strea
         return statisticsMap;
     }
 
-    public static HashMap<String, Object> toMediaInformationMap(final MediaInformation mediaInformation) {
-        final HashMap<String, Object> map = new HashMap<>();
+    public static List<Map<String, Object>> toExecutionsList(final List<FFmpegExecution> ffmpegExecutions) {
+        final List<Map<String, Object>> executions = new ArrayList<>();
 
-        /*
+        for (int i = 0; i < ffmpegExecutions.size(); i++) {
+            FFmpegExecution execution = ffmpegExecutions.get(i);
+
+            Map<String, Object> executionMap = new HashMap<>();
+            executionMap.put(KEY_EXECUTION_ID, execution.getExecutionId());
+            executionMap.put(KEY_EXECUTION_START_TIME, execution.getStartTime().getTime());
+            executionMap.put(KEY_EXECUTION_COMMAND, execution.getCommand());
+
+            executions.add(executionMap);
+        }
+
+        return executions;
+    }
+
+    public static Map<String, Object> toMediaInformationMap(final MediaInformation mediaInformation) {
+        Map<String, Object> map = new HashMap<>();
 
         if (mediaInformation != null) {
-            if (mediaInformation.getFormat() != null) {
-                map.put("format", mediaInformation.getFormat());
-            }
-            if (mediaInformation.getPath() != null) {
-                map.put("path", mediaInformation.getPath());
-            }
-            if (mediaInformation.getStartTime() != null) {
-                map.put("startTime", mediaInformation.getStartTime().intValue());
-            }
-            if (mediaInformation.getDuration() != null) {
-                map.put("duration", mediaInformation.getDuration().intValue());
-            }
-            if (mediaInformation.getBitrate() != null) {
-                map.put("bitrate", mediaInformation.getBitrate().intValue());
-            }
-            if (mediaInformation.getRawInformation() != null) {
-                map.put("rawInformation", mediaInformation.getRawInformation());
-            }
-
-            final Set<Map.Entry<String, String>> metadata = mediaInformation.getMetadataEntries();
-            if ((metadata != null) && (metadata.size() > 0)) {
-                final HashMap<String, String> metadataMap = new HashMap<>();
-
-                for (Map.Entry<String, String> entry : metadata) {
-                    metadataMap.put(entry.getKey(), entry.getValue());
+            if (mediaInformation.getAllProperties() != null) {
+                JSONObject allProperties = mediaInformation.getAllProperties();
+                if (allProperties != null) {
+                    map = toMap(allProperties);
                 }
-
-                map.put("metadata", metadataMap);
-            }
-
-            final List<StreamInformation> streams = mediaInformation.getStreams();
-            if ((streams != null) && (streams.size() > 0)) {
-                final ArrayList<Map<String, Object>> array = new ArrayList<>();
-
-                for (StreamInformation streamInformation : streams) {
-                    array.add(toStreamInformationMap(streamInformation));
-                }
-
-                map.put("streams", array);
             }
         }
-*/
+
         return map;
     }
 
-    public static Map<String, Object> toStreamInformationMap(final StreamInformation streamInformation) {
+    public static Map<String, Object> toMap(final JSONObject jsonObject) {
         final HashMap<String, Object> map = new HashMap<>();
 
-        if (streamInformation != null) {
-            if (streamInformation.getIndex() != null) {
-                map.put("index", streamInformation.getIndex().intValue());
-            }
-            if (streamInformation.getType() != null) {
-                map.put("type", streamInformation.getType());
-            }
-            if (streamInformation.getCodec() != null) {
-                map.put("codec", streamInformation.getCodec());
-            }
-            if (streamInformation.getFullCodec() != null) {
-                map.put("fullCodec", streamInformation.getFullCodec());
-            }
-            if (streamInformation.getFormat() != null) {
-                map.put("format", streamInformation.getFormat());
-            }
-            /*
-            if (streamInformation.getFullFormat() != null) {
-                map.put("fullFormat", streamInformation.getFullFormat());
-            }
-            if (streamInformation.getWidth() != null) {
-                map.put("width", streamInformation.getWidth().intValue());
-            }
-            if (streamInformation.getHeight() != null) {
-                map.put("height", streamInformation.getHeight().intValue());
-            }
-            if (streamInformation.getBitrate() != null) {
-                map.put("bitrate", streamInformation.getBitrate().intValue());
-            }
-            if (streamInformation.getSampleRate() != null) {
-                map.put("sampleRate", streamInformation.getSampleRate().intValue());
-            }
-            if (streamInformation.getSampleFormat() != null) {
-                map.put("sampleFormat", streamInformation.getSampleFormat());
-            }
-            if (streamInformation.getChannelLayout() != null) {
-                map.put("channelLayout", streamInformation.getChannelLayout());
-            }
-            if (streamInformation.getSampleAspectRatio() != null) {
-                map.put("sampleAspectRatio", streamInformation.getSampleAspectRatio());
-            }
-            if (streamInformation.getDisplayAspectRatio() != null) {
-                map.put("displayAspectRatio", streamInformation.getDisplayAspectRatio());
-            }
-            if (streamInformation.getAverageFrameRate() != null) {
-                map.put("averageFrameRate", streamInformation.getAverageFrameRate());
-            }
-            if (streamInformation.getRealFrameRate() != null) {
-                map.put("realFrameRate", streamInformation.getRealFrameRate());
-            }
-            if (streamInformation.getTimeBase() != null) {
-                map.put("timeBase", streamInformation.getTimeBase());
-            }
-            if (streamInformation.getCodecTimeBase() != null) {
-                map.put("codecTimeBase", streamInformation.getCodecTimeBase());
-            }
-
-            final Set<Map.Entry<String, String>> metadata = streamInformation.getMetadataEntries();
-            if ((metadata != null) && (metadata.size() > 0)) {
-                final HashMap<String, String> metadataMap = new HashMap<>();
-
-                for (Map.Entry<String, String> entry : metadata) {
-                    metadataMap.put(entry.getKey(), entry.getValue());
+        if (jsonObject != null) {
+            Iterator<String> keys = jsonObject.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                Object value = jsonObject.opt(key);
+                if (value != null) {
+                    if (value instanceof JSONArray) {
+                        value = toList((JSONArray) value);
+                    } else if (value instanceof JSONObject) {
+                        value = toMap((JSONObject) value);
+                    }
+                    map.put(key, value);
                 }
-
-                map.put("metadata", metadataMap);
             }
-
-            final Set<Map.Entry<String, String>> sidedata = streamInformation.getSidedataEntries();
-            if ((sidedata != null) && (sidedata.size() > 0)) {
-                final HashMap<String, String> sidedataMap = new HashMap<>();
-
-                for (Map.Entry<String, String> entry : sidedata) {
-                    sidedataMap.put(entry.getKey(), entry.getValue());
-                }
-
-                map.put("sidedata", sidedataMap);
-            }
-
-             */
         }
 
         return map;
+    }
+
+    public static List<Object> toList(final JSONArray array) {
+        final List<Object> list = new ArrayList<>();
+
+        for (int i = 0; i < array.length(); i++) {
+            Object value = array.opt(i);
+            if (value != null) {
+                if (value instanceof JSONArray) {
+                    value = toList((JSONArray) value);
+                } else if (value instanceof JSONObject) {
+                    value = toMap((JSONObject) value);
+                }
+                list.add(value);
+            }
+        }
+
+        return list;
     }
 
 }

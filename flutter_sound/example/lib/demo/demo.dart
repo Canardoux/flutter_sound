@@ -537,6 +537,8 @@ class _MyAppState extends State<Demo> {
         // We have to play an example audio file loaded via a URL
         audioFilePath = remoteSample[_codec.index];
       }
+      //Duration toto  = await flutterSoundHelper.duration(audioFilePath);
+      //print(toto.inMilliseconds);
 
       // Check whether the user wants to use the audio player features
       if (_isAudioPlayer) {

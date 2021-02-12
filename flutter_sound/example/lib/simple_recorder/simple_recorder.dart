@@ -108,7 +108,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     });
   }
 
-  void play() {
+  void play() async {
     assert(_mPlayerIsInited &&
         _mplaybackReady &&
         _mRecorder.isStopped &&

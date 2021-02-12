@@ -37,8 +37,10 @@ import 'package:flutter/services.dart';
 class FlutterSoundFFmpegExecution {
   ///
   int executionId;
+
   ///
   DateTime startTime;
+
   ///
   String command;
 }
@@ -47,6 +49,7 @@ class FlutterSoundFFmpegExecution {
 class FlutterSoundCompletedFFmpegExecution {
   ///
   int executionId;
+
   ///
   int returnCode;
 
@@ -58,11 +61,14 @@ class FlutterSoundCompletedFFmpegExecution {
 class FlutterSoundLog {
   ///
   int executionId;
+
   ///
   int level;
+
   ///
   String message;
-///
+
+  ///
   FlutterSoundLog(this.executionId, this.level, this.message);
 }
 
@@ -70,18 +76,25 @@ class FlutterSoundLog {
 class FlutterSoundStatistics {
   ///
   int executionId;
+
   ///
   int videoFrameNumber;
+
   ///
   double videoFps;
+
   ///
   double videoQuality;
+
   ///
   int size;
+
   ///
   int time;
+
   ///
   double bitrate;
+
   ///
   double speed;
 
@@ -147,8 +160,10 @@ class FlutterSoundMediaInformation {
 
 ///
 typedef LogCallback = void Function(FlutterSoundLog log);
+
 ///
 typedef StatisticsCallback = void Function(FlutterSoundStatistics statistics);
+
 ///
 typedef ExecuteCallback = void Function(
     FlutterSoundCompletedFFmpegExecution execution);
@@ -163,6 +178,7 @@ class FlutterSoundFFmpegConfig {
 
   ///
   LogCallback logCallback;
+
   ///
   StatisticsCallback statisticsCallback;
 
@@ -738,8 +754,9 @@ class FlutterSoundFFprobe {
   /// the same time, the response of this method is not predictable.
   Future<FlutterSoundMediaInformation> getMediaInformation(String path) async {
     try {
-      return await _methodChannel.invokeMethod('getMediaInformation',
-          {'path': path}).then((value) => FlutterSoundMediaInformation(value));
+      var r = await _methodChannel
+          .invokeMethod('getMediaInformation', {'path': path});
+      return FlutterSoundMediaInformation(r);
     } on PlatformException catch (e, stack) {
       print("Plugin getMediaInformation error: ${e.message}");
       return Future.error("getMediaInformation failed for $path.", stack);
