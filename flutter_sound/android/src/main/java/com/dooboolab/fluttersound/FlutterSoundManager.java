@@ -78,7 +78,7 @@ public class FlutterSoundManager
 	}
 
 
-	FlutterSoundSession getSession(final MethodCall call)
+	public FlutterSoundSession getSession(final MethodCall call)
 	{
 		int slotNo = call.argument ( "slotNo" );
 		if ( ( slotNo < 0 ) || ( slotNo > slots.size () ) )
@@ -92,14 +92,14 @@ public class FlutterSoundManager
 		return slots.get ( slotNo );
 	}
 
-	void initSession( final MethodCall call, FlutterSoundSession aPlayer)
+	public void initSession( final MethodCall call, FlutterSoundSession aPlayer)
 	{
 		int slot =  call.argument ( "slotNo" );
 		slots.set ( slot, aPlayer );
 		aPlayer.init( slot );
 	}
 	
-	void resetPlugin( final MethodCall call, final Result result )
+	public void resetPlugin( final MethodCall call, final Result result )
 	{
 		for (int i = 0; i < slots.size () ; ++i)
 		{

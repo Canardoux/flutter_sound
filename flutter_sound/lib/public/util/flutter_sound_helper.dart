@@ -137,8 +137,12 @@ class FlutterSoundHelper {
     if (info == null) {
       return null;
     }
-    var duration = info['duration'] as int;
-    return (duration == null) ? null : Duration(milliseconds: duration);
+    var format = info['format'];
+    if (format == null) return null;
+    var duration = format['duration'];
+    if (duration == null) return null;
+    var d = (double.parse(duration) * 1000.0).round();
+    return (duration == null) ? null : Duration(milliseconds: d);
   }
 
   /// Convert a WAVE file to a Raw PCM file.
