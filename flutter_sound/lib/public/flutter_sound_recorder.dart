@@ -71,7 +71,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   Completer<FlutterSoundRecorder> _openRecorderCompleter;
 
   final _lock = Lock();
-  bool _reStarted = true;
+  static bool _reStarted = true;
 
   Initialized _isInited = Initialized.notInitialized;
   bool _isOggOpus =
