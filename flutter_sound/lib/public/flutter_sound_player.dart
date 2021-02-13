@@ -93,7 +93,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   TonSkip _onSkipBackward; // User callback "onPaused:"
   TonPaused _onPaused; // user callback "whenPause:"
   final _lock = Lock();
-  bool _reStarted = true;
+  static bool _reStarted = true;
 
   ///
   StreamSubscription<Food> _foodStreamSubscription;
