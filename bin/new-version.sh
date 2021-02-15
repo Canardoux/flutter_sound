@@ -135,11 +135,11 @@ bin/flavor.sh FULL
 
 
 cd flutter_sound
-flutter analyze
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
+#flutter analyze
+#if [ $? -ne 0 ]; then
+    #echo "Error"
+    #exit -1
+#fi
 cd ..
 
 

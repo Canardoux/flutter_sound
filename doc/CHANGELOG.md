@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.6.6
+
+- We must get the lock semaphore when calling stop() during "audioPlaybackFinished"
+
 ## 7.6.5
 
 - Local variable _restarted_ is static.
