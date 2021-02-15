@@ -292,7 +292,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     //int state = call['arg'] as int;
     assert(state != null);
     _playerState = PlayerState.values[state];
-    await _stop(); // ??? Maybe ??? perhaps ??? //
+    //await _stop(); // ??? Maybe ??? perhaps ??? //
+    await stopPlayer(); // ??? Maybe ??? perhaps ??? //
     _cleanCompleters(); // We have problem when the record is finished and a resume is pending
 
     if (_audioPlayerFinishedPlaying != null) {
