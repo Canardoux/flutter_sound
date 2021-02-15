@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.6.5
+
+- Local variable _restarted_ is static.
+
 ## 7.6.4
 
 - Fixes a problem with `FlutterSoundHelper.duration()`. (Still does not work with temporary files). [#613](https://github.com/Canardoux/tau/issues/613)
