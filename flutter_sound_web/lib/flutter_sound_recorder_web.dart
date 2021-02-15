@@ -116,6 +116,18 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
 
 //================================================================================================================
 
+        @override
+        Future<void>   resetPlugin(FlutterSoundRecorderCallback callback,)
+        {
+                print('---> resetPlugin');
+                for (int i = 0; i < _slots.length; ++i)
+                {
+                        print("Releasing slot #$i");
+                        _slots[i].releaseFlautoRecorder();
+                }
+                _slots = [];
+                print('<--- resetPlugin');
+        }
 
         @override
         Future<void> openRecorder(FlutterSoundRecorderCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device}) async

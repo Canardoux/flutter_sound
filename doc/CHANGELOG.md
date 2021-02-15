@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.6.7
+
+- The procedure "resetPlugin" was missing on Flutter Sound on Web
+
 ## 7.6.6
 
 - We must get the lock semaphore when calling stop() during "audioPlaybackFinished"

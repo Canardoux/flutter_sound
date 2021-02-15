@@ -187,6 +187,20 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
 //==============================================================================================================================
 
         @override
+        Future<void>   resetPlugin(FlutterSoundPlayerCallback callback,)
+        {
+                print('---> resetPlugin');
+                for (int i = 0; i < _slots.length; ++i)
+                {
+                        print("Releasing slot #$i");
+                        _slots[i].releaseMediaPlayer();
+                }
+                _slots = [];
+                print('<--- resetPlugin');
+        }
+
+
+        @override
         Future<int> openPlayer( FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI}) async
         {
                 // openAudioSessionCompleter = new Completer<bool>();
