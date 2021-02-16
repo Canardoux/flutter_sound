@@ -10,9 +10,7 @@ keywords: Flutter, &tau;, Web
 
 &tau; is now supported by Flutter Web \(with some limitations\). Please [go to there](install.md#flutter-web) to have informations on how to setup your App for web.
 
-The big problem \(as usual\) is Apple. Webkit is bull shit : you cannot use MediaRecorder to record anything with it. It means that &tau; on Safari cannot record. And because Apple forces Firefox and Chrome to use also Webkit on iOS, you cannot record anything on iOS with &tau;. Apple really sucks :-\(.
-
-You can play with [this live demo on the web](pages/flutter-sound/web_example/index.html), but better if not Safari and not iOS if you want to record something.
+You can play with [this live demo on the web](pages/flutter-sound/web_example/index.html).
 
 
 ## Installation

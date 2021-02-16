@@ -602,7 +602,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     int bitRate = 16000,
     AudioSource audioSource = AudioSource.defaultSource,
   }) async {
-    print('FS:---> startRecorder ');
+    print('FS:---> _startRecorder.');
     await _waitOpen();
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Recorder is not open');
@@ -635,7 +635,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     Completer<void> completer;
     // Maybe we should stop any recording already running... (stopRecorder does that)
     _userStreamSink = toStream;
-
     // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
     // We use FFmpeg for that task.
     if ((!kIsWeb) &&
@@ -657,7 +656,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     }
     _startRecorderCompleter = Completer<void>();
     completer = _startRecorderCompleter;
-
+    print('Calling instance.startRecorder');
     try {
       await FlutterSoundRecorderPlatform.instance.startRecorder(this,
           path: toFile,
@@ -677,7 +676,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       _startRecorderCompleter = null;
       rethrow;
     }
-    print('FS:<--- startRecorder ');
+    print('FS:<--- _startRecorder.');
     return completer.future;
   }
 
