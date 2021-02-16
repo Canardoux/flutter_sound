@@ -96,7 +96,12 @@ class FlutterSoundRecorder
                         console.log( "Is " + mime_types[i] + " supported? " + (MediaRecorder.isTypeSupported(mime_types[i]) ? "Maybe!" : "Nope :("));
                 }
 */
-               return MediaRecorder.isTypeSupported(mime_types[codec]);
+                var r = MediaRecorder.isTypeSupported(mime_types[codec]);
+                if (r)
+                    console.log('mime_types[codec] encoder is supported');
+                else
+                    console.log('mime_types[codec] encoder is NOT supported');
+                return r;
         }
 
 
@@ -197,17 +202,21 @@ class FlutterSoundRecorder
         }
 
 
-        startRecorder( path, sampleRate, numChannels, bitRate, codec, toStream, audioSource)
+        async startRecorder( path, sampleRate, numChannels, bitRate, codec, toStream, audioSource)
         {
                 console.log( 'startRecorder');
-                var constraints = { audio: true};
-                var chunks ;//= [];
+                //var constraints = { audio: true};
+                //var chunks ;//= [];
                 var me = this;
                 this.currentRecordPath = path;
+                var chunks = [];
+                var mediaStream;
+                mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
 
-                navigator.mediaDevices.getUserMedia(constraints).then
-                (function(mediaStream)
-                {
+
+                //navigator.mediaDevices.getUserMedia(constraints).then
+                //(function(mediaStream)
+                //{
                         /*
                                 var audioCtx = new AudioContext();
 
@@ -243,7 +252,6 @@ class FlutterSoundRecorder
 
                         // ===========================================================================
 
-                        var chunks = [];
                         var options =
                         {
                                 audioBitsPerSecond : bitRate,
@@ -261,6 +269,8 @@ class FlutterSoundRecorder
 
                         mediaRecorder.ondataavailable = function(e)
                         {
+                            if (e.data)
+                            {
                                 if (toStream) // not yet implemented !
                                 {
                                         me.callbackTable[CB_recordingData](me.callback, e.data);
@@ -271,6 +281,7 @@ class FlutterSoundRecorder
                                         console.log('On data available : ' + e.data.constructor.name);
                                         chunks.push(e.data);
                                 }
+                            }
                         }
 
                         mediaRecorder.onstart = function(e)
@@ -371,8 +382,8 @@ class FlutterSoundRecorder
                                         me.callbackTable[CB_stopRecorderCompleted](me.callback,  IS_RECORDER_STOPPED, true, me.getRecordURL( path));
 
                                         console.log('<--- mediaRecorder onstop');
-                }
-                });
+                        }
+                //});
         }
 
         stop()

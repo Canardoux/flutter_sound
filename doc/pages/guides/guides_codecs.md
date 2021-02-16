@@ -55,7 +55,7 @@ This table will eventually be upgraded when more codecs will be added.
 | PCM AIFF | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |  |
 | PCM CAF | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |  |
 | FLAC | ❌ | ✅ | ❌ | ✅ | ❌ | ✅ |  |
-| AAC MP4 | ❌ | ✅ | ❌ | ✅ | ❌ | ✅ |  |
+| AAC MP4 | ❌ | ✅ | ❌ | ✅ | ✅  | ✅ |  |
 | AMR NB | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |  |
 | AMR WB | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |  |
 | PCM8 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |  |
@@ -64,7 +64,7 @@ This table will eventually be upgraded when more codecs will be added.
 | Opus WEBM | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |  |
 | Vorbis WEBM | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |  |
 
-* Webkit is bull shit : you cannot record anything with Safari, or even Firefox/Chrome on iOS.
+* On Webkit (Safari and all browsers on iOS can only record MP4.
 * Opus WEBM is a great Codec. It works on everything \(mobile and Web Browsers\), except Apple
 * Edge is same as Chrome
 

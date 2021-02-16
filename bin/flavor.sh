@@ -71,6 +71,7 @@ FULL)
 # ---
 
 		gsed -i  "s/^ *#define *[A-Z]*_FLAVOR/#define FULL_FLAVOR/"   ios/Classes/FlutterSound.h
+                gsed -i  "s/^ *#define *[A-Z]*_FLAVOR/#define FULL_FLAVOR/"   ios/Classes/FlutterSoundFFmpeg.h
 
                 for f in $(find . -name '*.dart' ); do process_dart_file $f FULL $f; done
 
@@ -114,6 +115,7 @@ LITE)
 # ---
 
                 gsed -i  "s/^ *#define *[A-Z]*_FLAVOR/#define LITE_FLAVOR/"   ios/Classes/FlutterSound.h
+                gsed -i  "s/^ *#define *[A-Z]*_FLAVOR/#define LITE_FLAVOR/"   ios/Classes/FlutterSoundFFmpeg.h
 
                 for f in $(find . -name '*.dart' ); do process_dart_file $f LITE $f; done
 

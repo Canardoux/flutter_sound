@@ -7,6 +7,11 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 7.7.0
+
+- Flutter Sound on web : now we can record AAC-MP4 on webkit (iOS web browsers and Safari). [#559](https://github.com/Canardoux/tau/issues/559)
+- Flutter Sound LITE did not compile on iOS : [#613](https://github.com/Canardoux/tau/issues/613)
+
 ## 7.6.7
 
 - The procedure "resetPlugin" was missing on Flutter Sound on Web
