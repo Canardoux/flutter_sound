@@ -169,6 +169,12 @@
                                 errorWithCode:@"Audio Player"
                                 message:@"Open session failure"
                                 details:nil]);
+	UInt32 doChangeDefaultRoute = 1;
+        AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(doChangeDefaultRoute), &doChangeDefaultRoute);
+
+          // set up for bluetooth microphone input
+        UInt32 allowBluetoothInput = 1;
+        AudioSessionSetProperty (kAudioSessionProperty_OverrideCategoryEnableBluetoothInput,sizeof (allowBluetoothInput),&allowBluetoothInput);
         NSLog(@"IOS:<-- initializeFlautoPlayer");
 }
 
