@@ -129,6 +129,7 @@
 {
        if (hasFocus)
                 [[AVAudioSession sharedInstance]  setActive: FALSE error:nil] ;
+       hasFocus = false;
 }
 
 

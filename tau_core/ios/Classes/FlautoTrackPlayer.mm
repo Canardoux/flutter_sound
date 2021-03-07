@@ -136,7 +136,7 @@
                         audioFileURL = [NSURL URLWithString:path];
                 }
 
-                //if (!hasFocus) // We always acquire the Audio Focus (It could have been released by another session)
+                if (!hasFocus) //  (It could have been released by another session)
                 {
                         hasFocus = TRUE;
                         r = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
