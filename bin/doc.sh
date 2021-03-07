@@ -80,14 +80,14 @@ cd doc/_site
 tar czf ../../_toto.tgz *
 cd ../..
 scp _toto.tgz soft@canardoux.xyz:/home/soft
-ssh -p7822 soft@canardoux.xyz "rm -rf /home/soft/www/tau.canardoux.xyz/doc/*; tar xzf _toto.tgz -C /home/soft/www/tau.canardoux.xyz/doc; rm _toto.tgz"
+ssh -p7822 soft@canardoux.xyz "rm -rf /home/soft/www/tau.canardoux.xyz/*; tar xzf _toto.tgz -C /home/soft/www/tau.canardoux.xyz; rm _toto.tgz"
 
 ##cp doc/images/banner.png flutter_sound/example/build/web
-cp -a flutter_sound/example/assets/samples flutter_sound/example/assets/extract flutter_sound/example/build/web/assets
+cp -a -v flutter_sound/example/assets/samples flutter_sound/example/assets/extract flutter_sound/example/build/web/assets
 
 cd flutter_sound/example/build/web
 tar czf ../../../../_toto2.tgz *
 cd ../../../..
 scp _toto2.tgz soft@canardoux.xyz:/home/soft
-ssh -p7822 soft@canardoux.xyz "rm -rf /home/soft/www/tau.canardoux.xyz/web_example/*; tar xzf _toto2.tgz -C /home/soft/www/tau.canardoux.xyz/web_example; rm _toto2.tgz"
+ssh -p7822 soft@canardoux.xyz "rm -rf /home/soft/www/tau.canardoux.xyz/web_example; mkdir -p /home/soft/www/tau.canardoux.xyz/web_example; tar xzf _toto2.tgz -C /home/soft/www/tau.canardoux.xyz/web_example; rm _toto2.tgz"
 rm _toto.tgz _toto2.tgz
