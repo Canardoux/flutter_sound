@@ -231,6 +231,7 @@
         NSLog(@"IOS:--> setActive");
         BOOL enabled = [call.arguments[@"enabled"] boolValue];
         bool r = [flautoPlayer setActive: enabled];
+        hasFocus = enabled;
 
         if (r)
                 result([self getPlayerStatus]);

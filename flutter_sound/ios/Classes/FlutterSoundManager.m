@@ -129,8 +129,9 @@
 - (void) releaseSession
 {
         NSLog(@"iOS: ---> releaseSession");
-       if (hasFocus)
+        if (hasFocus)
                 [[AVAudioSession sharedInstance]  setActive: FALSE error:nil] ;
+        hasFocus = false;
  
         [[self getPlugin]freeSlot: slotNo];
         NSLog(@"iOS: <--- releaseSession");

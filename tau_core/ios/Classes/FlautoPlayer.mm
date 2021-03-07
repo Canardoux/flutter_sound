@@ -130,6 +130,7 @@ static bool _isIosDecoderSupported [] =
 - (bool)setActive: (BOOL)enabled
 {
        BOOL b = [[AVAudioSession sharedInstance]  setActive:enabled error:nil] ;
+       hasFocus = enabled;
        return b;
 }
 
@@ -158,7 +159,7 @@ static bool _isIosDecoderSupported [] =
 {
         NSLog(@"IOS:--> startPlayerFromMicSampleRate");
         bool b = FALSE;
-        if (!hasFocus) // We always acquire the Audio Focus (It could have been released by another session)
+        if (!hasFocus) //  (It could have been released by another session)
         {
                 hasFocus = TRUE;
                 b = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
@@ -206,7 +207,7 @@ static bool _isIosDecoderSupported [] =
 {
         NSLog(@"IOS:--> startPlayer");
         bool b = FALSE;
-        if (!hasFocus) // We always acquire the Audio Focus (It could have been released by another session)
+        if (!hasFocus) //  (It could have been released by another session)
         {
                 hasFocus = TRUE;
                 b = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
