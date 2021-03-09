@@ -413,9 +413,10 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
                     ? 'Not supported on Flutter Web '
                     : ''),
                 ElevatedButton(
-                  onPressed: (kIsWeb && (selectedExample!.flags! & tNotWeb != 0))
-                      ? null
-                      : () => selectedExample!.go(context),
+                  onPressed:
+                      (kIsWeb && (selectedExample!.flags! & tNotWeb != 0))
+                          ? null
+                          : () => selectedExample!.go(context),
                   //color: Colors.indigo,
                   child: Text(
                     'GO',

@@ -494,20 +494,19 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     /// no track then just silently ignore the start action.
     /// This means that _onLoad returned null and the user
     /// can display appropriate errors.
-      _track = await newTrack;
-      if (_track != null) {
-        _start();
-      } else {
-        _loading = false;
-        _transitioning = false;
-      }
-   }
+    _track = await newTrack;
+    if (_track != null) {
+      _start();
+    } else {
+      _loading = false;
+      _transitioning = false;
+    }
+  }
 
   /// internal start method.
   void _start() async {
     var trck = _track;
     if (trck != null) {
-
       await _player
           .startPlayerFromTrack(trck, whenFinished: _onStopped)
           .then((_) {

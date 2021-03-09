@@ -369,15 +369,15 @@ class _MyAppState extends State<Demo> {
       print('startRecorder');
 
       _recorderSubscription = recorderModule.onProgress!.listen((e) {
-          var date = DateTime.fromMillisecondsSinceEpoch(
-              e.duration.inMilliseconds,
-              isUtc: true);
-          var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
+        var date = DateTime.fromMillisecondsSinceEpoch(
+            e.duration.inMilliseconds,
+            isUtc: true);
+        var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
 
-          setState(() {
-            _recorderTxt = txt.substring(0, 8);
-            _dbLevel = e.decibels;
-          });
+        setState(() {
+          _recorderTxt = txt.substring(0, 8);
+          _dbLevel = e.decibels;
+        });
       });
 
       setState(() {
@@ -400,7 +400,7 @@ class _MyAppState extends State<Demo> {
       case Media.file:
       case Media.buffer:
         var path = _path[_codec.index];
-        var d = path != null ? await flutterSoundHelper.duration(path ) : null;
+        var d = path != null ? await flutterSoundHelper.duration(path) : null;
         _duration = d != null ? d.inMilliseconds / 1000.0 : null;
         break;
       case Media.asset:
@@ -451,22 +451,21 @@ class _MyAppState extends State<Demo> {
   void _addListeners() {
     cancelPlayerSubscriptions();
     _playerSubscription = playerModule.onProgress!.listen((e) {
-        maxDuration = e.duration.inMilliseconds.toDouble();
-        if (maxDuration <= 0) maxDuration = 0.0;
+      maxDuration = e.duration.inMilliseconds.toDouble();
+      if (maxDuration <= 0) maxDuration = 0.0;
 
-        sliderCurrentPosition =
-            min(e.position.inMilliseconds.toDouble(), maxDuration);
-        if (sliderCurrentPosition < 0.0) {
-          sliderCurrentPosition = 0.0;
-        }
+      sliderCurrentPosition =
+          min(e.position.inMilliseconds.toDouble(), maxDuration);
+      if (sliderCurrentPosition < 0.0) {
+        sliderCurrentPosition = 0.0;
+      }
 
-        var date = DateTime.fromMillisecondsSinceEpoch(
-            e.position.inMilliseconds,
-            isUtc: true);
-        var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
-        setState(() {
-          _playerTxt = txt.substring(0, 8);
-        });
+      var date = DateTime.fromMillisecondsSinceEpoch(e.position.inMilliseconds,
+          isUtc: true);
+      var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
+      setState(() {
+        _playerTxt = txt.substring(0, 8);
+      });
     });
   }
 

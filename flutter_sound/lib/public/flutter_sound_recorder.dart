@@ -437,7 +437,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     if (_isInited == Initialized.notInitialized) {
       // Already close
       print('Recorder already close');
-      return ;
+      return;
     }
 
     Completer<void>? completer;
@@ -509,8 +509,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   }
 
   void _removeRecorderCallback() {
-      _recorderController?.close();
-      _recorderController = null;
+    _recorderController?.close();
+    _recorderController = null;
   }
 
   /// Sets the frequency at which duration updates are sent to
@@ -618,7 +618,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     if (_recorderState != RecorderState.isStopped) {
       throw _RecorderRunningException('Recorder is not stopped.');
     }
-    if (!await (isEncoderSupported(codec) )) {
+    if (!await (isEncoderSupported(codec))) {
       throw _CodecNotSupportedException('Codec not supported.');
     }
 
