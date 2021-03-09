@@ -39,7 +39,7 @@ class RemotePlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SoundPlayerUI.fromLoader(
-      _createRemoteTrack ,
+      _createRemoteTrack,
       showTitle: true,
       audioFocus: AudioFocus.requestFocusAndDuckOthers,
     );

@@ -58,10 +58,10 @@ packages:
   flutter_sound_platform_interface:
     dependency: "direct main"
     description:
-      path: "../flutter_sound_platform_interface"
-      relative: true
-    source: path
-    version: "7.7.0+1"
+      name: flutter_sound_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "8.0.0+2"
   flutter_test:
     dependency: "direct dev"
     description: flutter

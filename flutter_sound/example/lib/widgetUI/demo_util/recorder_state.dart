@@ -53,8 +53,8 @@ class UtilRecorder {
 
   /// required to initialize the recording subsystem.
   Future<void> init() async {
-    await recorderModule!.openAudioSession(
-        focus: AudioFocus.requestFocusAndDuckOthers);
+    await recorderModule!
+        .openAudioSession(focus: AudioFocus.requestFocusAndDuckOthers);
     ActiveCodec().recorderModule = recorderModule;
   }
 

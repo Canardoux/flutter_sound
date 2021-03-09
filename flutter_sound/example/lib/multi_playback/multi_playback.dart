@@ -247,13 +247,12 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   void _addListener1() {
     cancelPlayerSubscriptions1();
     _playerSubscription1 = _mPlayer1!.onProgress!.listen((e) {
-        var date = DateTime.fromMillisecondsSinceEpoch(
-            e.position.inMilliseconds,
-            isUtc: true);
-        var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
-        setState(() {
-          _playerTxt1 = txt.substring(0, 8);
-        });
+      var date = DateTime.fromMillisecondsSinceEpoch(e.position.inMilliseconds,
+          isUtc: true);
+      var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
+      setState(() {
+        _playerTxt1 = txt.substring(0, 8);
+      });
     });
   }
 
@@ -278,13 +277,12 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   void _addListener2() {
     cancelPlayerSubscriptions2();
     _playerSubscription2 = _mPlayer2!.onProgress!.listen((e) {
-        var date = DateTime.fromMillisecondsSinceEpoch(
-            e.position.inMilliseconds,
-            isUtc: true);
-        var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
-        setState(() {
-          _playerTxt2 = txt.substring(0, 8);
-        });
+      var date = DateTime.fromMillisecondsSinceEpoch(e.position.inMilliseconds,
+          isUtc: true);
+      var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
+      setState(() {
+        _playerTxt2 = txt.substring(0, 8);
+      });
     });
   }
 
@@ -309,13 +307,12 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   void _addListener3() {
     cancelPlayerSubscriptions3();
     _playerSubscription3 = _mPlayer3!.onProgress!.listen((e) {
-        var date = DateTime.fromMillisecondsSinceEpoch(
-            e.position.inMilliseconds,
-            isUtc: true);
-        var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
-        setState(() {
-          _playerTxt3 = txt.substring(0, 8);
-        });
+      var date = DateTime.fromMillisecondsSinceEpoch(e.position.inMilliseconds,
+          isUtc: true);
+      var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
+      setState(() {
+        _playerTxt3 = txt.substring(0, 8);
+      });
     });
   }
 

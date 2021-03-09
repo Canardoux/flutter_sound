@@ -33,7 +33,7 @@ class Dropdowns extends StatefulWidget {
   const Dropdowns({
     Key? key,
     required void Function(Codec?) onCodecChanged,
-  })  : _onCodecChanged = onCodecChanged,
+  })   : _onCodecChanged = onCodecChanged,
         super(key: key);
 
   @override

@@ -30,7 +30,7 @@ class TrackSwitch extends StatefulWidget {
     Key? key,
     required bool isAudioPlayer,
     required void Function(bool userOSUI) switchPlayer,
-  })  : _isAudioPlayer = isAudioPlayer,
+  })   : _isAudioPlayer = isAudioPlayer,
         _switchPlayer = switchPlayer,
         super(key: key);
 

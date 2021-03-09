@@ -464,7 +464,7 @@ class FlutterSoundFFmpegConfig {
   Future<void> setFontDirectory(
       String fontDirectory, Map<String, String> fontNameMap) async {
     var parameters;
-      parameters = {'fontDirectory': fontDirectory, 'fontNameMap': fontNameMap};
+    parameters = {'fontDirectory': fontDirectory, 'fontNameMap': fontNameMap};
 
     try {
       await _methodChannel.invokeMethod('setFontDirectory', parameters);
