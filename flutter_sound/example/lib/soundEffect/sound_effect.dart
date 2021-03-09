@@ -43,11 +43,11 @@ class SoundEffect extends StatefulWidget {
 }
 
 class _SoundEffectState extends State<SoundEffect> {
-  FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
-  bool _mPlayerIsInited;
-  Uint8List bimData;
-  Uint8List bamData;
-  Uint8List boumData;
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
+  late bool _mPlayerIsInited;
+  Uint8List? bimData;
+  Uint8List? bamData;
+  Uint8List? boumData;
   bool busy = false;
 
   Future<Uint8List> getAssetData(String path) async {
@@ -56,7 +56,7 @@ class _SoundEffectState extends State<SoundEffect> {
   }
 
   Future<void> init() async {
-    await _mPlayer.openAudioSession();
+    await _mPlayer!.openAudioSession();
     bimData = await FlutterSoundHelper().waveToPCMBuffer(
       inputBuffer: await getAssetData(_bim),
     );
@@ -66,7 +66,7 @@ class _SoundEffectState extends State<SoundEffect> {
     boumData = await FlutterSoundHelper().waveToPCMBuffer(
       inputBuffer: await getAssetData(_boum),
     );
-    await _mPlayer.startPlayerFromStream(
+    await _mPlayer!.startPlayerFromStream(
       codec: Codec.pcm16,
       numChannels: _tNumChannels,
       sampleRate: _tSampleRate,
@@ -83,17 +83,17 @@ class _SoundEffectState extends State<SoundEffect> {
 
   @override
   void dispose() {
-    _mPlayer.stopPlayer();
-    _mPlayer.closeAudioSession();
+    _mPlayer!.stopPlayer();
+    _mPlayer!.closeAudioSession();
     _mPlayer = null;
 
     super.dispose();
   }
 
-  void play(Uint8List data) async {
+  void play(Uint8List? data) async {
     if (!busy && _mPlayerIsInited) {
       busy = true;
-      await _mPlayer.feedFromStream(data).then((value) => busy = false);
+      await _mPlayer!.feedFromStream(data!).then((value) => busy = false);
     }
   }
 

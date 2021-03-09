@@ -12,7 +12,7 @@ version: 7.7.0+1
 homepage: https://github.com/canardoux/tau/blob/master/flutter_sound/
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
   flutter: ">=1.12.0"
 
 
@@ -33,20 +33,22 @@ dependencies:
 # ============================================================================
 
 
-  cupertino_icons: ^0.1.3
-  path_provider: ^1.6.27
-  permission_handler: ^5.0.1
+  cupertino_icons: ^1.0.2
+  path_provider: ^2.0.1
+  permission_handler: ^6.0.1
   path: ^1.6.4
   #flutter_ffmpeg: ^0.3.1
-  intl: ^0.16.1
+  intl: ^0.17.0
 
 
 
 dev_dependencies:
  # flutter_test:
 #    sdk: flutter
-  pedantic: ^1.9.0
-  effective_dart: ^1.0.0
+  pedantic: ^1.11.0
+  effective_dart: ^1.3.0
+
+  #display.save( displayObject, options )effective_dart: ^1.0.0
   #lint: ^1.1.1
 
 

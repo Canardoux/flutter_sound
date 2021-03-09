@@ -41,11 +41,11 @@ FlutterSoundHelper flutterSoundHelper =
 /// Most of those utilities use FFmpeg, so are not available in the LITE flavor of Flutter Sound.
 class FlutterSoundHelper {
   /// The Flutter FFmpeg module
-  FlutterSoundFFmpeg flutterFFmpeg;
+  FlutterSoundFFmpeg? flutterFFmpeg;
 
-  bool _ffmpegAvailable;
-  FlutterSoundFFmpegConfig _flutterFFmpegConfig;
-  FlutterSoundFFprobe _flutterFFprobe;
+  bool _ffmpegAvailable = false;
+  FlutterSoundFFmpegConfig? _flutterFFmpegConfig;
+  FlutterSoundFFprobe? _flutterFFprobe;
 
 // -------------------------------------------------------------------------------------------------------------
 
@@ -65,8 +65,8 @@ class FlutterSoundHelper {
   Future<bool> isFFmpegAvailable() async {
     if (_flutterFFmpegConfig == null) {
       _flutterFFmpegConfig = FlutterSoundFFmpegConfig();
-      var version = await _flutterFFmpegConfig.getFFmpegVersion();
-      var platform = await _flutterFFmpegConfig.getPlatform();
+      var version = await _flutterFFmpegConfig!.getFFmpegVersion();
+      var platform = await _flutterFFmpegConfig!.getPlatform();
       _ffmpegAvailable = (version != null && platform != null);
     }
     return _ffmpegAvailable;
@@ -82,9 +82,9 @@ class FlutterSoundHelper {
   /// and without any complain from the link-editor.
   ///
   /// Executes FFmpeg with `commandArguments` provided.
-  Future<int> executeFFmpegWithArguments(List<String> arguments) {
+  Future<int?> executeFFmpegWithArguments(List<String?> arguments) {
     flutterFFmpeg ??= FlutterSoundFFmpeg();
-    return flutterFFmpeg.executeWithArguments(arguments);
+    return flutterFFmpeg!.executeWithArguments(arguments);
   }
 
   /// Get the error code returned by [executeFFmpegWithArguments()].
@@ -94,9 +94,9 @@ class FlutterSoundHelper {
   /// and without any complain from the link-editor.
   ///
   /// This simple verb is used to get the result of the last FFmpeg command.
-  Future<int> getLastFFmpegReturnCode() async {
+  Future<int?> getLastFFmpegReturnCode() async {
     await isFFmpegAvailable();
-    return _flutterFFmpegConfig.getLastReturnCode();
+    return _flutterFFmpegConfig!.getLastReturnCode();
   }
 
   /// Get the log code output by [executeFFmpegWithArguments()].
@@ -108,19 +108,18 @@ class FlutterSoundHelper {
   /// Returns log output of last executed command. Please note that disabling redirection using
   /// This method does not support executing multiple concurrent commands. If you execute multiple commands at the same time, this method will return output from all executions.
   /// `disableRedirection()` method also disables this functionality.
-  Future<String> getLastFFmpegCommandOutput() async {
+  Future<String?> getLastFFmpegCommandOutput() async {
     await isFFmpegAvailable();
-    return _flutterFFmpegConfig.getLastCommandOutput();
+    return _flutterFFmpegConfig!.getLastCommandOutput();
   }
 
   /// Various informations about the Audio specified by the `uri` parameter.
   ///
   /// The informations Map got with FFmpegGetMediaInformation() are [documented here](https://pub.dev/packages/flutter_ffmpeg).
-  Future<Map<dynamic, dynamic>> ffMpegGetMediaInformation(String uri) async {
-    if (uri == null) return null;
+  Future<Map<dynamic, dynamic>?> ffMpegGetMediaInformation(String uri) async {
     _flutterFFprobe ??= FlutterSoundFFprobe();
     try {
-      return (await _flutterFFprobe.getMediaInformation(uri))
+      return (await _flutterFFprobe!.getMediaInformation(uri))
           .getAllProperties();
     } on Exception {
       return null;
@@ -131,8 +130,7 @@ class FlutterSoundHelper {
   ///
   /// This verb is used to get an estimation of the duration of a sound file.
   /// Be aware that it is just an estimation, based on the Codec used and the sample rate.
-  Future<Duration> duration(String uri) async {
-    if (uri == null) return null;
+  Future<Duration?> duration(String uri) async {
     var info = await ffMpegGetMediaInformation(uri);
     if (info == null) {
       return null;
@@ -153,8 +151,8 @@ class FlutterSoundHelper {
   ///
   /// Note that this verb is not asynchronous and does not return a Future.
   Future<void> waveToPCM({
-    String inputFile,
-    String outputFile,
+    required String inputFile,
+    required String outputFile,
   }) async {
     var filIn = File(inputFile);
     var filOut = File(outputFile);
@@ -171,7 +169,7 @@ class FlutterSoundHelper {
   ///
   /// Note that this verb is not asynchronous and does not return a Future.
   Uint8List waveToPCMBuffer({
-    Uint8List inputBuffer,
+    required Uint8List inputBuffer,
   }) {
     return inputBuffer.sublist(WaveHeader.headerLength);
   }
@@ -186,8 +184,8 @@ class FlutterSoundHelper {
   ///
   /// [See here](doc/codec.md#note-on-raw-pcm-and-wave-files) a discussion about `Raw PCM` and `WAVE` file format.
   Future<void> pcmToWave({
-    String inputFile,
-    String outputFile,
+    required String inputFile,
+    required String outputFile,
 
     /// Stereophony is not yet implemented
     int numChannels = 1,
@@ -221,7 +219,7 @@ class FlutterSoundHelper {
   ///
   /// Note: the parameters `numChannels` and `sampleRate` **are mandatory, and must match the actual PCM data**. [See here](doc/codec.md#note-on-raw-pcm-and-wave-files) a discussion about `Raw PCM` and `WAVE` file format.
   Future<Uint8List> pcmToWaveBuffer({
-    Uint8List inputBuffer,
+    required Uint8List inputBuffer,
     int numChannels = 1,
     int sampleRate = 16000,
     //int bitsPerSample,
@@ -260,9 +258,9 @@ class FlutterSoundHelper {
   /// Be careful : `outfile` and `outputCodec` must be compatible. The output file extension must be a correct file extension for the new format.
   ///
   /// Note : this verb uses FFmpeg and is not available int the LITE flavor of Flutter Sound.
-  Future<bool> convertFile(String inputFile, Codec inputCodec,
+  Future<bool> convertFile(String? inputFile, Codec? inputCodec,
       String outputFile, Codec outputCodec) async {
-    var rc = 0;
+    int? rc = 0;
     if (inputCodec == Codec.opusOGG &&
         outputCodec == Codec.opusCAF) // Do not need to re-encode. Just remux
     {

@@ -59,12 +59,12 @@ class AssetPlayer extends StatelessWidget {
   Future<Track> createAssetTrack() async {
     Track track;
     var dataBuffer =
-        (await rootBundle.load(assetSample[ActiveCodec().codec.index]))
+        (await rootBundle.load(assetSample[ActiveCodec().codec!.index]))
             .buffer
             .asUint8List();
     track = Track(
       dataBuffer: dataBuffer,
-      codec: ActiveCodec().codec,
+      codec: ActiveCodec().codec!,
     );
 
     track.trackTitle = 'Asset playback.';

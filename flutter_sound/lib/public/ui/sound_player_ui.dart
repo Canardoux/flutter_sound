@@ -62,19 +62,19 @@ class SoundPlayerUI extends StatefulWidget {
   static const Codec standardCodec = Codec.aacADTS;
   static const int _barHeight = 60;
 
-  final OnLoad _onLoad;
+  final OnLoad? _onLoad;
 
-  final Track _track;
+  final Track? _track;
   final bool _showTitle;
 
   final bool _enabled;
 
-  final Color _backgroundColor;
+  final Color? _backgroundColor;
   final Color _iconColor;
   final Color _disabledIconColor;
-  final TextStyle _textStyle;
-  final TextStyle _titleStyle;
-  final SliderThemeData _sliderThemeData;
+  final TextStyle? _textStyle;
+  final TextStyle? _titleStyle;
+  final SliderThemeData? _sliderThemeData;
 
 // -----------------------------------------------------------------------------------------------------------
 
@@ -100,12 +100,12 @@ class SoundPlayerUI extends StatefulWidget {
     bool showTitle = false,
     bool enabled = true,
     AudioFocus audioFocus = AudioFocus.requestFocusAndKeepOthers,
-    Color backgroundColor,
+    Color? backgroundColor,
     Color iconColor = Colors.black,
     Color disabledIconColor = Colors.grey,
-    TextStyle textStyle,
-    TextStyle titleStyle,
-    SliderThemeData sliderThemeData,
+    TextStyle? textStyle,
+    TextStyle? titleStyle,
+    SliderThemeData? sliderThemeData,
   })  : _onLoad = onLoad,
         _showTitle = showTitle,
         _track = null,
@@ -138,12 +138,12 @@ class SoundPlayerUI extends StatefulWidget {
     bool showTitle = false,
     bool enabled = true,
     AudioFocus audioFocus = AudioFocus.requestFocusAndKeepOthers,
-    Color backgroundColor,
+    Color? backgroundColor,
     Color iconColor = Colors.black,
     Color disabledIconColor = Colors.grey,
-    TextStyle textStyle,
-    TextStyle titleStyle,
-    SliderThemeData sliderThemeData,
+    TextStyle? textStyle,
+    TextStyle? titleStyle,
+    SliderThemeData? sliderThemeData,
   })  : _track = track,
         _showTitle = showTitle,
         _onLoad = null,
@@ -201,37 +201,37 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   /// If the fromLoader ctor is used this will be null
   /// until the user clicks the Play button and onLoad
   /// returns a non null [Track]
-  Track _track;
+  Track? _track;
 
-  final OnLoad _onLoad;
+  final OnLoad? _onLoad;
 
-  final bool _enabled;
+  final bool? _enabled;
 
-  final Color _backgroundColor;
+  final Color? _backgroundColor;
 
-  final Color _iconColor;
+  final Color? _iconColor;
 
-  final Color _disabledIconColor;
+  final Color? _disabledIconColor;
 
-  final TextStyle _textStyle;
+  final TextStyle? _textStyle;
 
-  final TextStyle _titleStyle;
+  final TextStyle? _titleStyle;
 
-  StreamSubscription _playerSubscription;
+  StreamSubscription? _playerSubscription;
 
-  final SliderThemeData _sliderThemeData;
+  final SliderThemeData? _sliderThemeData;
 
   ///
   SoundPlayerUIState(
     this._track,
     this._onLoad, {
-    bool enabled,
-    Color backgroundColor,
-    Color iconColor,
-    Color disabledIconColor,
-    TextStyle textStyle,
-    TextStyle titleStyle,
-    SliderThemeData sliderThemeData,
+    bool? enabled,
+    Color? backgroundColor,
+    Color? iconColor,
+    Color? disabledIconColor,
+    TextStyle? textStyle,
+    TextStyle? titleStyle,
+    SliderThemeData? sliderThemeData,
   })  : _player = FlutterSoundPlayer(),
         _enabled = enabled,
         _backgroundColor = backgroundColor,
@@ -243,7 +243,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
         _localController = StreamController<PlaybackDisposition>.broadcast() {
     _sliderPosition.position = Duration(seconds: 0);
     _sliderPosition.maxPosition = Duration(seconds: 0);
-    if (!_enabled) {
+    if (!_enabled!) {
       __playState = _PlayState.disabled;
     }
     _player
@@ -298,7 +298,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     //_player.onStopped = ({wasUser}) => _onStopped();
 
     /// pipe the new sound players stream to our local controller.
-    _player.dispositionStream().listen(_localController.add);
+    _player.dispositionStream()!.listen(_localController.add);
   }
 
   void _onStopped() {
@@ -323,12 +323,12 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   /// When recording finishes this method is called with a null and we
   /// revert to the [_player]'s stream.
   ///
-  void connectRecorderStream(Stream<PlaybackDisposition> recorderStream) {
+  void connectRecorderStream(Stream<PlaybackDisposition>? recorderStream) {
     if (recorderStream != null) {
       recorderStream.listen(_localController.add);
     } else {
       /// revert to piping the player
-      _player.dispositionStream().listen(_localController.add);
+      _player.dispositionStream()!.listen(_localController.add);
     }
   }
 
@@ -386,7 +386,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
 
   /// Controls whether the Play button is enabled or not.
   /// Can not toggle this whilst the player is playing or paused.
-  void playbackEnabled({@required bool enabled}) {
+  void playbackEnabled({required bool enabled}) {
     assert(
         __playState != _PlayState.playing && __playState != _PlayState.paused);
     setState(() {
@@ -441,7 +441,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       Log.w('Error calling resume ${e.toString()}');
       _playState = _PlayState.stopped;
       _player.stopPlayer();
-      return null;
+      return false;
     }).whenComplete(() => _transitioning = false);
   }
 
@@ -461,7 +461,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       _playState = _PlayState.playing;
       _playState = _PlayState.stopped;
       _player.stopPlayer();
-      return null;
+      return false;
     }).whenComplete(() => _transitioning = false);
   }
 
@@ -486,7 +486,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       }
 
       /// dynamically load the player.
-      newTrack = _onLoad(context);
+      newTrack = _onLoad!(context);
     } else {
       newTrack = Future.value(_track);
     }
@@ -494,7 +494,6 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     /// no track then just silently ignore the start action.
     /// This means that _onLoad returned null and the user
     /// can display appropriate errors.
-    if (newTrack != null) {
       _track = await newTrack;
       if (_track != null) {
         _start();
@@ -502,30 +501,28 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
         _loading = false;
         _transitioning = false;
       }
-    } else {
-      Log.d(green('Transitioning = false'));
-      _loading = false;
-      _transitioning = false;
-      Log.w('No Track provided by _onLoad. Call to start has been ignored');
-    }
-  }
+   }
 
   /// internal start method.
   void _start() async {
-    await _player
-        .startPlayerFromTrack(_track, whenFinished: _onStopped)
-        .then((_) {
-      _playState = _PlayState.playing;
-    }).catchError((dynamic e) {
-      Log.w('Error calling play() ${e.toString()}');
-      _playState = _PlayState.stopped;
+    var trck = _track;
+    if (trck != null) {
 
-      return null;
-    }).whenComplete(() {
-      _loading = false;
-      _transitioning = false;
-      Log.d(green('Transitioning = false'));
-    });
+      await _player
+          .startPlayerFromTrack(trck, whenFinished: _onStopped)
+          .then((_) {
+        _playState = _PlayState.playing;
+      }).catchError((dynamic e) {
+        Log.w('Error calling play() ${e.toString()}');
+        _playState = _PlayState.stopped;
+
+        return null;
+      }).whenComplete(() {
+        _loading = false;
+        _transitioning = false;
+        Log.d(green('Transitioning = false'));
+      });
+    }
   }
 
   /// Call [stop] to stop the audio playing.
@@ -541,7 +538,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     if (_player.isPlaying || _player.isPaused) {
       await _player.stopPlayer().then<void>((_) {
         if (_playerSubscription != null) {
-          _playerSubscription.cancel();
+          _playerSubscription!.cancel();
           _playerSubscription = null;
         }
         setState(() {});
@@ -585,7 +582,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   /// Build the play button which includes the loading spinner and pause button
   ///
   Widget _buildPlayButton() {
-    Widget button;
+    Widget? button;
 
     if (_loading == true) {
       button = Container(
@@ -621,7 +618,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
                 builder: (context, asyncData) {
                   var _canPlay = false;
                   if (asyncData.connectionState == ConnectionState.done) {
-                    _canPlay = asyncData.data && !__transitioning;
+                    _canPlay = asyncData.data! && !__transitioning;
                   }
 
                   return InkWell(
@@ -637,7 +634,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
                 })));
   }
 
-  Widget _buildPlayButtonIcon(Widget widget) {
+  Widget _buildPlayButtonIcon(Widget? widget) {
     if (_playState == _PlayState.disabled) {
       widget = _GrayedOut(
           grayedOut: true,
@@ -646,12 +643,12 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       widget = FutureBuilder<bool>(
           future: canPlay,
           builder: (context, asyncData) {
-            var canPlay = false;
+            bool? canPlay = false;
             if (asyncData.connectionState == ConnectionState.done) {
               canPlay = asyncData.data;
             }
             return Icon(_player.isStopped ? Icons.play_arrow : Icons.stop,
-                color: canPlay ? _iconColor : _disabledIconColor);
+                color: canPlay! ? _iconColor : _disabledIconColor);
           });
     }
     //break;
@@ -663,7 +660,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
         stream: _localController.stream,
         initialData: PlaybackDisposition.zero(),
         builder: (context, snapshot) {
-          var disposition = snapshot.data;
+          var disposition = snapshot.data!;
           var durationDate = DateTime.fromMillisecondsSinceEpoch(
               disposition.duration.inMilliseconds,
               isUtc: true);
@@ -712,25 +709,25 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   Widget _buildTitle() {
     var columns = <Widget>[];
 
-    if (_track.trackTitle != null) {
+    if (_track!.trackTitle != null) {
       columns.add(Text(
-        _track.trackTitle,
+        _track!.trackTitle!,
         style: _titleStyle,
       ));
     }
-    if (_track.trackTitle != null && _track.trackAuthor != null) {
+    if (_track!.trackTitle != null && _track!.trackAuthor != null) {
       columns.add(Text(
         ' / ',
         style: _titleStyle,
       ));
     }
-    if (_track.trackAuthor != null) {
+    if (_track!.trackAuthor != null) {
       columns.add(Text(
-        _track.trackAuthor,
+        _track!.trackAuthor!,
         style: _titleStyle,
       ));
     }
-    return _track.trackTitle != null || _track.trackAuthor != null
+    return _track!.trackTitle != null || _track!.trackAuthor != null
         ? Container(
             margin: EdgeInsets.only(bottom: 5),
             child: Row(children: columns),
@@ -774,7 +771,7 @@ class _GrayedOut extends StatelessWidget {
   final double opacity;
 
   ///
-  _GrayedOut({@required this.child, this.grayedOut = true})
+  _GrayedOut({required this.child, this.grayedOut = true})
       : opacity = grayedOut == true ? 0.3 : 1.0;
 
   @override
@@ -791,7 +788,7 @@ class PlaybarSlider extends StatefulWidget {
   ///
   final Stream<PlaybackDisposition> stream;
 
-  final SliderThemeData _sliderThemeData;
+  final SliderThemeData? _sliderThemeData;
 
   ///
   PlaybarSlider(
@@ -810,14 +807,14 @@ class PlaybarSlider extends StatefulWidget {
 class _PlaybarSliderState extends State<PlaybarSlider> {
   @override
   Widget build(BuildContext context) {
-    SliderThemeData sliderThemeData;
+    SliderThemeData? sliderThemeData;
     if (widget._sliderThemeData == null) {
       sliderThemeData = SliderTheme.of(context);
     } else {
       sliderThemeData = widget._sliderThemeData;
     }
     return SliderTheme(
-        data: sliderThemeData.copyWith(
+        data: sliderThemeData!.copyWith(
           thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6.0),
           //thumbColor: Colors.amber,
           //inactiveTrackColor: Colors.green,
@@ -826,7 +823,7 @@ class _PlaybarSliderState extends State<PlaybarSlider> {
             stream: widget.stream,
             initialData: PlaybackDisposition.zero(),
             builder: (context, snapshot) {
-              var disposition = snapshot.data;
+              var disposition = snapshot.data!;
               return Slider(
                 max: disposition.duration.inMilliseconds.toDouble(),
                 value: disposition.position.inMilliseconds.toDouble(),

@@ -36,22 +36,22 @@ import 'package:flutter/services.dart';
 /// Represents an ongoing FFmpeg execution.
 class FlutterSoundFFmpegExecution {
   ///
-  int executionId;
+  int? executionId;
 
   ///
-  DateTime startTime;
+  DateTime? startTime;
 
   ///
-  String command;
+  String? command;
 }
 
 /// Represents a completed FFmpeg execution.
 class FlutterSoundCompletedFFmpegExecution {
   ///
-  int executionId;
+  int? executionId;
 
   ///
-  int returnCode;
+  int? returnCode;
 
   ///
   FlutterSoundCompletedFFmpegExecution(this.executionId, this.returnCode);
@@ -60,13 +60,13 @@ class FlutterSoundCompletedFFmpegExecution {
 ///
 class FlutterSoundLog {
   ///
-  int executionId;
+  int? executionId;
 
   ///
-  int level;
+  int? level;
 
   ///
-  String message;
+  String? message;
 
   ///
   FlutterSoundLog(this.executionId, this.level, this.message);
@@ -75,10 +75,10 @@ class FlutterSoundLog {
 ///
 class FlutterSoundStatistics {
   ///
-  int executionId;
+  int? executionId;
 
   ///
-  int videoFrameNumber;
+  int? videoFrameNumber;
 
   ///
   double videoFps;
@@ -87,10 +87,10 @@ class FlutterSoundStatistics {
   double videoQuality;
 
   ///
-  int size;
+  int? size;
 
   ///
-  int time;
+  int? time;
 
   ///
   double bitrate;
@@ -118,7 +118,7 @@ class FlutterSoundStreamInformation {
 
 ///
 class FlutterSoundMediaInformation {
-  final Map<dynamic, dynamic> _allProperties;
+  final Map<dynamic, dynamic>? _allProperties;
 
   /// Creates a new [MediaInformation] instance
   FlutterSoundMediaInformation(this._allProperties);
@@ -131,7 +131,7 @@ class FlutterSoundMediaInformation {
     if (_allProperties == null) {
       streamList = List.empty(growable: true);
     } else {
-      streamList = _allProperties["streams"];
+      streamList = _allProperties!["streams"];
     }
 
     if (streamList != null) {
@@ -144,16 +144,16 @@ class FlutterSoundMediaInformation {
   }
 
   /// Returns all media properties in a map or null if no media properties are found
-  Map<dynamic, dynamic> getMediaProperties() {
+  Map<dynamic, dynamic>? getMediaProperties() {
     if (_allProperties == null) {
       return {}; //Map();
     } else {
-      return _allProperties["format"];
+      return _allProperties!["format"];
     }
   }
 
   /// Returns all properties in a map or null if no properties are found
-  Map<dynamic, dynamic> getAllProperties() {
+  Map<dynamic, dynamic>? getAllProperties() {
     return _allProperties;
   }
 }
@@ -162,7 +162,7 @@ class FlutterSoundMediaInformation {
 typedef LogCallback = void Function(FlutterSoundLog log);
 
 ///
-typedef StatisticsCallback = void Function(FlutterSoundStatistics statistics);
+typedef StatisticsCallback = void Function(FlutterSoundStatistics? statistics);
 
 ///
 typedef ExecuteCallback = void Function(
@@ -177,10 +177,10 @@ class FlutterSoundFFmpegConfig {
   static final Map<int, ExecuteCallback> _executeCallbackMap = {};
 
   ///
-  LogCallback logCallback;
+  LogCallback? logCallback;
 
   ///
-  StatisticsCallback statisticsCallback;
+  StatisticsCallback? statisticsCallback;
 
   ///
   FlutterSoundFFmpegConfig() {
@@ -198,14 +198,14 @@ class FlutterSoundFFmpegConfig {
     getPlatform().then((name) => print("Loaded flutter-ffmpeg-$name."));
   }
 
-  void _onEvent(Object event) {
+  void _onEvent(Object? event) {
     if (event is Map<dynamic, dynamic>) {
       var eventMap = event.cast();
-      final Map<dynamic, dynamic> logEvent =
+      final Map<dynamic, dynamic>? logEvent =
           eventMap['FlutterFFmpegLogCallback'];
-      final Map<dynamic, dynamic> statisticsEvent =
+      final Map<dynamic, dynamic>? statisticsEvent =
           eventMap['FlutterFFmpegStatisticsCallback'];
-      final Map<dynamic, dynamic> executeEvent =
+      final Map<dynamic, dynamic>? executeEvent =
           eventMap['FlutterFFmpegExecuteCallback'];
 
       if (logEvent != null) {
@@ -226,22 +226,22 @@ class FlutterSoundFFmpegConfig {
     print('Event error: $error');
   }
 
-  double _doublePrecision(double value, int precision) {
+  double _doublePrecision(double? value, int precision) {
     if (value == null) {
       return 0;
     } else {
-      return num.parse(value.toStringAsFixed(precision));
+      return num.parse(value.toStringAsFixed(precision)) as double;
     }
   }
 
   ///
   void handleLogEvent(Map<dynamic, dynamic> logEvent) {
-    int executionId = logEvent['executionId'];
-    int level = logEvent['level'];
-    String message = logEvent['message'];
+    int? executionId = logEvent['executionId'];
+    int? level = logEvent['level'];
+    String? message = logEvent['message'];
 
     if (logCallback == null) {
-      if (message.isEmpty) {
+      if (message!.isEmpty) {
         // PRINT ALREADY ADDS A NEW LINE. SO REMOVE THE EXISTING ONE
         if (message.endsWith('\n')) {
           print(message.substring(0, message.length - 1));
@@ -250,23 +250,23 @@ class FlutterSoundFFmpegConfig {
         }
       }
     } else {
-      logCallback(FlutterSoundLog(executionId, level, message));
+      logCallback!(FlutterSoundLog(executionId, level, message));
     }
   }
 
   ///
   void handleStatisticsEvent(Map<dynamic, dynamic> statisticsEvent) {
     if (statisticsCallback != null) {
-      statisticsCallback(eventToStatistics(statisticsEvent));
+      statisticsCallback!(eventToStatistics(statisticsEvent));
     }
   }
 
   ///
   void handleExecuteEvent(Map<dynamic, dynamic> executeEvent) {
-    int executionId = executeEvent['executionId'];
-    int returnCode = executeEvent['returnCode'];
+    int? executionId = executeEvent['executionId'];
+    int? returnCode = executeEvent['returnCode'];
 
-    var executeCallback = _executeCallbackMap[executionId];
+    var executeCallback = _executeCallbackMap[executionId!];
     if (executeCallback != null) {
       executeCallback(
           FlutterSoundCompletedFFmpegExecution(executionId, returnCode));
@@ -277,16 +277,16 @@ class FlutterSoundFFmpegConfig {
   }
 
   /// Creates a new [Statistics] instance from event map.
-  FlutterSoundStatistics eventToStatistics(Map<dynamic, dynamic> eventMap) {
+  FlutterSoundStatistics? eventToStatistics(Map<dynamic, dynamic> eventMap) {
     if (eventMap.isEmpty) {
       return null;
     } else {
-      int executionId = eventMap['executionId'];
-      int videoFrameNumber = eventMap['videoFrameNumber'];
+      int? executionId = eventMap['executionId'];
+      int? videoFrameNumber = eventMap['videoFrameNumber'];
       var videoFps = _doublePrecision(eventMap['videoFps'], 2);
       var videoQuality = _doublePrecision(eventMap['videoQuality'], 2);
-      int time = eventMap['time'];
-      int size = eventMap['size'];
+      int? time = eventMap['time'];
+      int? size = eventMap['size'];
       var bitrate = _doublePrecision(eventMap['bitrate'], 2);
       var speed = _doublePrecision(eventMap['speed'], 2);
 
@@ -296,7 +296,7 @@ class FlutterSoundFFmpegConfig {
   }
 
   /// Returns FFmpeg version bundled within the library.
-  Future<String> getFFmpegVersion() async {
+  Future<String?> getFFmpegVersion() async {
     try {
       var result = await _methodChannel.invokeMethod('getFFmpegVersion');
       return result['version'];
@@ -307,7 +307,7 @@ class FlutterSoundFFmpegConfig {
   }
 
   /// Returns platform name in which library is loaded.
-  Future<String> getPlatform() async {
+  Future<String?> getPlatform() async {
     try {
       var result = await _methodChannel.invokeMethod('getPlatform');
       return result['platform'];
@@ -347,7 +347,7 @@ class FlutterSoundFFmpegConfig {
   }
 
   /// Returns log level.
-  Future<int> getLogLevel() async {
+  Future<int?> getLogLevel() async {
     try {
       var result = await _methodChannel.invokeMethod('getLogLevel');
       return result['level'];
@@ -429,7 +429,7 @@ class FlutterSoundFFmpegConfig {
   }
 
   /// Returns the last received [Statistics] instance.
-  Future<FlutterSoundStatistics> getLastReceivedStatistics() async {
+  Future<FlutterSoundStatistics?> getLastReceivedStatistics() async {
     try {
       var r = await _methodChannel.invokeMethod('getLastReceivedStatistics');
       return eventToStatistics(r);
@@ -464,11 +464,7 @@ class FlutterSoundFFmpegConfig {
   Future<void> setFontDirectory(
       String fontDirectory, Map<String, String> fontNameMap) async {
     var parameters;
-    if (fontNameMap == null) {
-      parameters = {'fontDirectory': fontDirectory};
-    } else {
       parameters = {'fontDirectory': fontDirectory, 'fontNameMap': fontNameMap};
-    }
 
     try {
       await _methodChannel.invokeMethod('setFontDirectory', parameters);
@@ -478,7 +474,7 @@ class FlutterSoundFFmpegConfig {
   }
 
   /// Returns FlutterFFmpeg package name.
-  Future<String> getPackageName() async {
+  Future<String?> getPackageName() async {
     try {
       var result = await _methodChannel.invokeMethod('getPackageName');
       return result['packageName'];
@@ -489,7 +485,7 @@ class FlutterSoundFFmpegConfig {
   }
 
   /// Returns supported external libraries.
-  Future<List<dynamic>> getExternalLibraries() async {
+  Future<List<dynamic>?> getExternalLibraries() async {
     try {
       var result = await _methodChannel.invokeMethod('getExternalLibraries');
       return result;
@@ -500,7 +496,7 @@ class FlutterSoundFFmpegConfig {
   }
 
   /// Returns return code of the last executed command.
-  Future<int> getLastReturnCode() async {
+  Future<int?> getLastReturnCode() async {
     try {
       var result = await _methodChannel.invokeMethod('getLastReturnCode');
       return result['lastRc'];
@@ -516,7 +512,7 @@ class FlutterSoundFFmpegConfig {
   /// This method does not support executing multiple concurrent commands. If
   /// you execute multiple commands at the same time, this method will return
   /// output from all executions.
-  Future<String> getLastCommandOutput() async {
+  Future<String?> getLastCommandOutput() async {
     try {
       var result = await _methodChannel.invokeMethod('getLastCommandOutput');
       return result['lastCommandOutput'];
@@ -527,7 +523,7 @@ class FlutterSoundFFmpegConfig {
   }
 
   /// Creates a new FFmpeg pipe and returns its path.
-  Future<String> registerNewFFmpegPipe() async {
+  Future<String?> registerNewFFmpegPipe() async {
     try {
       var result = await _methodChannel.invokeMethod('registerNewFFmpegPipe');
       return result['pipe'];
@@ -562,7 +558,7 @@ class FlutterSoundFFmpeg {
   ///
   /// Returns zero on successful execution, 255 on user cancel and non-zero on
   /// error.
-  Future<int> executeWithArguments(List<String> arguments) async {
+  Future<int?> executeWithArguments(List<String?> arguments) async {
     try {
       var result = await _methodChannel
           .invokeMethod('executeFFmpegWithArguments', {'arguments': arguments});
@@ -578,7 +574,7 @@ class FlutterSoundFFmpeg {
   ///
   /// Returns zero on successful execution, 255 on user cancel and non-zero on
   /// error.
-  Future<int> execute(String command) async {
+  Future<int?> execute(String command) async {
     return executeWithArguments(FlutterSoundFFmpeg.parseArguments(command));
   }
 
@@ -719,7 +715,7 @@ class FlutterSoundFFprobe {
   ///
   /// Returns zero on successful execution, 255 on user cancel and non-zero on
   /// error.
-  Future<int> executeWithArguments(List<String> arguments) async {
+  Future<int?> executeWithArguments(List<String> arguments) async {
     try {
       var result = await _methodChannel.invokeMethod(
           'executeFFprobeWithArguments', {'arguments': arguments});
@@ -735,7 +731,7 @@ class FlutterSoundFFprobe {
   ///
   /// Returns zero on successful execution, 255 on user cancel and non-zero on
   /// error.
-  Future<int> execute(String command) async {
+  Future<int?> execute(String command) async {
     try {
       var result = await _methodChannel.invokeMethod(
           'executeFFprobeWithArguments',

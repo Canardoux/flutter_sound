@@ -49,10 +49,10 @@ class FlutterSoundPlayer
         external int releaseMediaPlayer();
 
         @JS('initializeMediaPlayer')
-        external int initializeMediaPlayer( int focus, int category, int mode, int audioFlags, int device, bool withUI);
+        external int initializeMediaPlayer( int focus, int category, int mode, int? audioFlags, int device, bool? withUI);
 
         @JS('setAudioFocus')
-        external int setAudioFocus(int focus, int category, int mode, int audioFlags, int device,);
+        external int setAudioFocus(int focus, int category, int mode, int? audioFlags, int device,);
 
         @JS('getPlayerState')
         external int getPlayerState();
@@ -64,16 +64,16 @@ class FlutterSoundPlayer
         external int setSubscriptionDuration( int duration);
 
         @JS('startPlayer')
-        external int startPlayer(int codec, Uint8List fromDataBuffer, String  fromURI, int numChannels, int sampleRate);
+        external int startPlayer(int? codec, Uint8List? fromDataBuffer, String?  fromURI, int? numChannels, int? sampleRate);
 
         @JS('feed')
-        external int feed(Uint8List data,);
+        external int feed(Uint8List? data,);
 
         @JS('startPlayerFromTrack')
         external int startPlayerFromTrack(int progress, int duration, Map<String, dynamic> track, bool canPause, bool canSkipForward, bool canSkipBackward, bool defaultPauseResume, bool removeUIWhenStopped, );
 
         @JS('nowPlaying')
-        external int nowPlaying(int progress, int duration, Map<String, dynamic> track, bool canPause, bool canSkipForward, bool canSkipBackward, bool defaultPauseResume, );
+        external int nowPlaying(int progress, int duration, Map<String, dynamic>? track, bool? canPause, bool? canSkipForward, bool? canSkipBackward, bool? defaultPauseResume, );
 
         @JS('stopPlayer')
         external int stopPlayer();
@@ -88,7 +88,7 @@ class FlutterSoundPlayer
         external int seekToPlayer( int duration);
 
         @JS('setVolume')
-        external int setVolume(double volume);
+        external int setVolume(double? volume);
 
         @JS('setUIProgressBar')
         external int setUIProgressBar(int duration, int progress);
@@ -176,8 +176,8 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
 //============================================ Session manager ===================================================================
 
 
-        List<FlutterSoundPlayer> _slots = [];
-        FlutterSoundPlayer getWebSession(FlutterSoundPlayerCallback callback)
+        List<FlutterSoundPlayer?> _slots = [];
+        FlutterSoundPlayer? getWebSession(FlutterSoundPlayerCallback callback)
         {
                 return _slots[findSession(callback)];
         }
@@ -187,21 +187,22 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
 //==============================================================================================================================
 
         @override
-        Future<void>   resetPlugin(FlutterSoundPlayerCallback callback,)
+        Future<void>?   resetPlugin(FlutterSoundPlayerCallback callback,)
         {
                 print('---> resetPlugin');
                 for (int i = 0; i < _slots.length; ++i)
                 {
                         print("Releasing slot #$i");
-                        _slots[i].releaseMediaPlayer();
+                        _slots[i]!.releaseMediaPlayer();
                 }
                 _slots = [];
                 print('<--- resetPlugin');
+                return null;
         }
 
 
         @override
-        Future<int> openPlayer( FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI}) async
+        Future<int> openPlayer( FlutterSoundPlayerCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device, bool? withUI}) async
         {
                 // openAudioSessionCompleter = new Completer<bool>();
                 // await invokeMethod( callback, 'initializeMediaPlayer', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index, 'withUI': withUI ? 1 : 0 ,},) ;
@@ -216,7 +217,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                         assert(slotno == _slots.length);
                         _slots.add( newPlayerInstance(callback, callbackTable));
                 }
-                return _slots[slotno].initializeMediaPlayer( focus.index,  category.index, mode.index, audioFlags, device.index, withUI);
+                return _slots[slotno]!.initializeMediaPlayer( focus!.index,  category!.index, mode!.index, audioFlags, device!.index, withUI);
         }
 
 
@@ -224,7 +225,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
         Future<int> closePlayer(FlutterSoundPlayerCallback callback, ) async
         {
                 int slotno = findSession(callback);
-                int r = _slots[slotno].releaseMediaPlayer();
+                int r = _slots[slotno]!.releaseMediaPlayer();
                 _slots[slotno] = null;
                 return r;
         }
@@ -232,41 +233,42 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
 
 
         @override
-        Future<int> setAudioFocus(FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device,} ) async
+        Future<int> setAudioFocus(FlutterSoundPlayerCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device,} ) async
         {
-                return getWebSession(callback).setAudioFocus(focus.index, category.index, mode.index, audioFlags, device.index);
+                return getWebSession(callback)!.setAudioFocus(focus!.index, category!.index, mode!.index, audioFlags, device!.index);
         }
 
 
         @override
         Future<int> getPlayerState(FlutterSoundPlayerCallback callback, ) async
         {
-                return getWebSession(callback).getPlayerState();
+                return getWebSession(callback)!.getPlayerState();
         }
+
+
         @override
         Future<Map<String, Duration>> getProgress(FlutterSoundPlayerCallback callback, ) async
         {
                 // Map<String, int> m = await invokeMethod( callback, 'getPlayerState', null,) as Map;
-                // Map<String, Duration> r = {'duration': Duration(milliseconds: m['duration']), 'progress': Duration(milliseconds: m['progress']),};
-                // return r;
-                return null;
+                Map<String, Duration> r = {'duration': Duration.zero, 'progress': Duration.zero,};
+                return r;
         }
 
         @override
-        Future<bool> isDecoderSupported(FlutterSoundPlayerCallback callback, { Codec codec,}) async
+        Future<bool> isDecoderSupported(FlutterSoundPlayerCallback callback, { required Codec codec ,}) async
         {
-                return getWebSession(callback).isDecoderSupported(codec.index);
+                return getWebSession(callback)!.isDecoderSupported(codec.index);
         }
 
 
         @override
-        Future<int> setSubscriptionDuration(FlutterSoundPlayerCallback callback, { Duration duration,}) async
+        Future<int> setSubscriptionDuration(FlutterSoundPlayerCallback callback, { Duration? duration,}) async
         {
-                return getWebSession(callback).setSubscriptionDuration(duration.inMilliseconds);
+                return getWebSession(callback)!.setSubscriptionDuration(duration!.inMilliseconds);
         }
 
         @override
-        Future<int> startPlayer(FlutterSoundPlayerCallback callback,  {Codec codec, Uint8List fromDataBuffer, String  fromURI, int numChannels, int sampleRate}) async
+        Future<int> startPlayer(FlutterSoundPlayerCallback callback,  {Codec? codec, Uint8List? fromDataBuffer, String?  fromURI, int? numChannels, int? sampleRate}) async
         {
                 // startPlayerCompleter = new Completer<Map>();
                 // await invokeMethod( callback, 'startPlayer', {'codec': codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI, 'numChannels': numChannels, 'sampleRate': sampleRate},) ;
@@ -295,23 +297,23 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                 }
                 //js.context.callMethod('playAudioFromURL', [fromURI]);
                 print ('=============== FromURI : $fromURI');
-                return getWebSession(callback).startPlayer(codec.index,  fromDataBuffer, fromURI, numChannels, sampleRate);
+                return getWebSession(callback)!.startPlayer(codec.index,  fromDataBuffer, fromURI, numChannels, sampleRate);
         }
 
 
         @override
-        Future<int> startPlayerFromMic(FlutterSoundPlayerCallback callback, {int numChannels, int sampleRate}) {
+        Future<int> startPlayerFromMic(FlutterSoundPlayerCallback callback, {int? numChannels, int? sampleRate}) {
                 throw Exception('StartPlayerFromMic() is not implemented on Flutter Web');
         }
 
                 @override
-        Future<int> feed(FlutterSoundPlayerCallback callback, {Uint8List data, }) async
+        Future<int> feed(FlutterSoundPlayerCallback callback, {Uint8List? data, }) async
         {
-                return getWebSession(callback).feed(data);
+                return getWebSession(callback)!.feed(data);
         }
 
         @override
-        Future<int> startPlayerFromTrack(FlutterSoundPlayerCallback callback, {Duration progress, Duration duration, Map<String, dynamic> track, bool canPause, bool canSkipForward, bool canSkipBackward, bool defaultPauseResume, bool removeUIWhenStopped }) async
+        Future<int> startPlayerFromTrack(FlutterSoundPlayerCallback callback, {Duration? progress, Duration? duration, Map<String, dynamic>? track, bool? canPause, bool? canSkipForward, bool? canSkipBackward, bool? defaultPauseResume, bool? removeUIWhenStopped }) async
         {
                 // startPlayerCompleter = new Completer<Map>();
                 // await invokeMethod( callback, 'startPlayerFromTrack', {'progress': progress, 'duration': duration, 'track': track, 'canPause': canPause, 'canSkipForward': canSkipForward, 'canSkipBackward': canSkipBackward,
@@ -319,53 +321,53 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                 // return  startPlayerCompleter.future ;
                 //
                 //return getWebSession(callback).startPlayerFromTrack( progress.inMilliseconds,  duration.inMilliseconds, track, canPause, canSkipForward, canSkipBackward, defaultPauseResume, removeUIWhenStopped);
-                return getWebSession(callback).startPlayer(track['codec'],  track['dataBuffer'], track['path'], track['numChannels'], track['sampleRate']);
+                return getWebSession(callback)!.startPlayer(track!['codec'],  track['dataBuffer'], track['path'], track['numChannels'], track['sampleRate']);
           }
 
         @override
-        Future<int> nowPlaying(FlutterSoundPlayerCallback callback,  {Duration progress, Duration duration, Map<String, dynamic> track, bool canPause, bool canSkipForward, bool canSkipBackward, bool defaultPauseResume, }) async
+        Future<int> nowPlaying(FlutterSoundPlayerCallback callback,  {Duration? progress, Duration? duration, Map<String, dynamic>? track, bool? canPause, bool? canSkipForward, bool? canSkipBackward, bool? defaultPauseResume, }) async
         {
-                return getWebSession(callback).nowPlaying(progress.inMilliseconds, duration.inMilliseconds, track, canPause, canSkipForward, canSkipBackward, defaultPauseResume);
+                return getWebSession(callback)!.nowPlaying(progress!.inMilliseconds, duration!.inMilliseconds, track, canPause, canSkipForward, canSkipBackward, defaultPauseResume);
         }
 
         @override
         Future<int> stopPlayer(FlutterSoundPlayerCallback callback,  ) async
         {
-                return getWebSession(callback).stopPlayer();
+                return getWebSession(callback)!.stopPlayer();
         }
 
         @override
         Future<int> pausePlayer(FlutterSoundPlayerCallback callback,  ) async
         {
-                return getWebSession(callback).pausePlayer();
+                return getWebSession(callback)!.pausePlayer();
         }
 
         @override
         Future<int> resumePlayer(FlutterSoundPlayerCallback callback,  ) async
         {
-                return getWebSession(callback).resumePlayer();
+                return getWebSession(callback)!.resumePlayer();
         }
 
         @override
-        Future<int> seekToPlayer(FlutterSoundPlayerCallback callback,  {Duration duration}) async
+        Future<int> seekToPlayer(FlutterSoundPlayerCallback callback,  {Duration? duration}) async
         {
-                return getWebSession(callback).seekToPlayer(duration.inMilliseconds);
+                return getWebSession(callback)!.seekToPlayer(duration!.inMilliseconds);
         }
 
-        Future<int> setVolume(FlutterSoundPlayerCallback callback,  {double volume}) async
+        Future<int> setVolume(FlutterSoundPlayerCallback callback,  {double? volume}) async
         {
-                return getWebSession(callback).setVolume(volume);
+                return getWebSession(callback)!.setVolume(volume);
         }
 
         @override
-        Future<int> setUIProgressBar(FlutterSoundPlayerCallback callback, {Duration duration, Duration progress,}) async
+        Future<int> setUIProgressBar(FlutterSoundPlayerCallback callback, {Duration? duration, Duration? progress,}) async
         {
-                return getWebSession(callback).setUIProgressBar(duration.inMilliseconds, progress.inMilliseconds);
+                return getWebSession(callback)!.setUIProgressBar(duration!.inMilliseconds, progress!.inMilliseconds);
         }
 
         Future<String> getResourcePath(FlutterSoundPlayerCallback callback, ) async
         {
-                return null;
+                return '';
         }
 
  }

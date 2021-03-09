@@ -122,7 +122,7 @@ final albumArtPath =
     'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
 */
 final albumArtPathRemote =
-    'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/3iob.png';
+    'https://tau.canardoux.xyz/web_example/assets/extract/3iob.png';
 final albumArtPath =
     'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
 
@@ -134,7 +134,7 @@ class Demo extends StatefulWidget {
 
 class _MyAppState extends State<Demo> {
   bool _isRecording = false;
-  final List<String> _path = [
+  final List<String?> _path = [
     null,
     null,
     null,
@@ -200,31 +200,31 @@ class _MyAppState extends State<Demo> {
     'https://tau.canardoux.xyz/web_example/assets/extract/03-vorbis.webm', // 'assets/samples/sample_vorbis.webm', // vorbisWebM
   ];
 
-  StreamSubscription _recorderSubscription;
-  StreamSubscription _playerSubscription;
-  StreamSubscription _recordingDataSubscription;
+  StreamSubscription? _recorderSubscription;
+  StreamSubscription? _playerSubscription;
+  StreamSubscription? _recordingDataSubscription;
 
   FlutterSoundPlayer playerModule = FlutterSoundPlayer();
   FlutterSoundRecorder recorderModule = FlutterSoundRecorder();
 
   String _recorderTxt = '00:00:00';
   String _playerTxt = '00:00:00';
-  double _dbLevel;
+  double? _dbLevel;
 
   double sliderCurrentPosition = 0.0;
   double maxDuration = 1.0;
-  Media _media = Media.remoteExampleFile;
+  Media? _media = Media.remoteExampleFile;
   Codec _codec = (kIsWeb) ? Codec.opusWebM : Codec.aacADTS;
 
-  bool _encoderSupported = true; // Optimist
+  bool? _encoderSupported = true; // Optimist
   bool _decoderSupported = true; // Optimist
 
   // Whether the user wants to use the audio player features
   bool _isAudioPlayer = false;
 
-  double _duration;
-  StreamController<Food> recordingDataController;
-  IOSink sink;
+  double? _duration;
+  StreamController<Food>? recordingDataController;
+  IOSink? sink;
 
   Future<void> _initializeExample(bool withUI) async {
     await playerModule.closeAudioSession();
@@ -272,26 +272,26 @@ class _MyAppState extends State<Demo> {
 
   void cancelRecorderSubscriptions() {
     if (_recorderSubscription != null) {
-      _recorderSubscription.cancel();
+      _recorderSubscription!.cancel();
       _recorderSubscription = null;
     }
   }
 
   void cancelPlayerSubscriptions() {
     if (_playerSubscription != null) {
-      _playerSubscription.cancel();
+      _playerSubscription!.cancel();
       _playerSubscription = null;
     }
   }
 
   void cancelRecordingDataSubscription() {
     if (_recordingDataSubscription != null) {
-      _recordingDataSubscription.cancel();
+      _recordingDataSubscription!.cancel();
       _recordingDataSubscription = null;
     }
     recordingDataController = null;
     if (sink != null) {
-      sink.close();
+      sink!.close();
       sink = null;
     }
   }
@@ -341,17 +341,17 @@ class _MyAppState extends State<Demo> {
           }
           sink = outputFile.openWrite();
         } else {
-          sink = IOSink(null); // TODO !!!!!
+          sink = null; // TODO
         }
         recordingDataController = StreamController<Food>();
         _recordingDataSubscription =
-            recordingDataController.stream.listen((buffer) {
+            recordingDataController!.stream.listen((buffer) {
           if (buffer is FoodData) {
-            sink.add(buffer.data);
+            sink!.add(buffer.data!);
           }
         });
         await recorderModule.startRecorder(
-          toStream: recordingDataController.sink,
+          toStream: recordingDataController!.sink,
 
           codec: _codec,
           numChannels: 1,
@@ -368,8 +368,7 @@ class _MyAppState extends State<Demo> {
       }
       print('startRecorder');
 
-      _recorderSubscription = recorderModule.onProgress.listen((e) {
-        if (e != null && e.duration != null) {
+      _recorderSubscription = recorderModule.onProgress!.listen((e) {
           var date = DateTime.fromMillisecondsSinceEpoch(
               e.duration.inMilliseconds,
               isUtc: true);
@@ -379,7 +378,6 @@ class _MyAppState extends State<Demo> {
             _recorderTxt = txt.substring(0, 8);
             _dbLevel = e.decibels;
           });
-        }
       });
 
       setState(() {
@@ -401,16 +399,17 @@ class _MyAppState extends State<Demo> {
     switch (_media) {
       case Media.file:
       case Media.buffer:
-        var d = await flutterSoundHelper.duration(_path[_codec.index]);
+        var path = _path[_codec.index];
+        var d = path != null ? await flutterSoundHelper.duration(path ) : null;
         _duration = d != null ? d.inMilliseconds / 1000.0 : null;
         break;
       case Media.asset:
       case Media.stream:
-        _duration = null;
-        break;
       case Media.remoteExampleFile:
         _duration = null;
         break;
+      default:
+        _duration = null;
     }
     setState(() {});
   }
@@ -435,7 +434,7 @@ class _MyAppState extends State<Demo> {
   }
 
   // In this simple example, we just load a file in memory.This is stupid but just for demonstration  of startPlayerFromBuffer()
-  Future<Uint8List> makeBuffer(String path) async {
+  Future<Uint8List?> makeBuffer(String path) async {
     try {
       if (!await fileExists(path)) return null;
       var file = File(path);
@@ -451,8 +450,7 @@ class _MyAppState extends State<Demo> {
 
   void _addListeners() {
     cancelPlayerSubscriptions();
-    _playerSubscription = playerModule.onProgress.listen((e) {
-      if (e != null) {
+    _playerSubscription = playerModule.onProgress!.listen((e) {
         maxDuration = e.duration.inMilliseconds.toDouble();
         if (maxDuration <= 0) maxDuration = 0.0;
 
@@ -469,7 +467,6 @@ class _MyAppState extends State<Demo> {
         setState(() {
           _playerTxt = txt.substring(0, 8);
         });
-      }
     });
   }
 
@@ -513,8 +510,8 @@ class _MyAppState extends State<Demo> {
 
   Future<void> startPlayer() async {
     try {
-      Uint8List dataBuffer;
-      String audioFilePath;
+      Uint8List? dataBuffer;
+      String? audioFilePath;
       var codec = _codec;
       if (_media == Media.asset) {
         dataBuffer = (await rootBundle.load(assetSample[codec.index]))
@@ -522,13 +519,13 @@ class _MyAppState extends State<Demo> {
             .asUint8List();
       } else if (_media == Media.file || _media == Media.stream) {
         // Do we want to play from buffer or from file ?
-        if (kIsWeb || await fileExists(_path[codec.index])) {
+        if (kIsWeb || await fileExists(_path[codec.index]!)) {
           audioFilePath = _path[codec.index];
         }
       } else if (_media == Media.buffer) {
         // Do we want to play from buffer or from file ?
-        if (await fileExists(_path[codec.index])) {
-          dataBuffer = await makeBuffer(_path[codec.index]);
+        if (await fileExists(_path[codec.index]!)) {
+          dataBuffer = await makeBuffer(_path[codec.index]!);
           if (dataBuffer == null) {
             throw Exception('Unable to create the buffer');
           }
@@ -542,9 +539,9 @@ class _MyAppState extends State<Demo> {
 
       // Check whether the user wants to use the audio player features
       if (_isAudioPlayer) {
-        String albumArtUrl;
-        String albumArtAsset;
-        String albumArtFile;
+        String? albumArtUrl;
+        String? albumArtAsset;
+        String? albumArtFile;
         if (_media == Media.remoteExampleFile) {
           albumArtUrl = albumArtPathRemote;
         } else if (!kIsWeb) {
@@ -591,7 +588,7 @@ class _MyAppState extends State<Demo> {
         );
         _addListeners();
         setState(() {});
-        await feedHim(audioFilePath);
+        await feedHim(audioFilePath!);
         //await finishPlayer();
         await stopPlayer();
         return;
@@ -639,7 +636,7 @@ class _MyAppState extends State<Demo> {
       await playerModule.stopPlayer();
       print('stopPlayer');
       if (_playerSubscription != null) {
-        await _playerSubscription.cancel();
+        await _playerSubscription!.cancel();
         _playerSubscription = null;
       }
       sliderCurrentPosition = 0.0;
@@ -676,7 +673,7 @@ class _MyAppState extends State<Demo> {
     setState(() {});
   }
 
-  void seekToPlayer(int milliSecs) async {
+  Future<void> seekToPlayer(int milliSecs) async {
     //print('-->seekToPlayer');
     try {
       if (playerModule.isPlaying) {
@@ -742,7 +739,7 @@ class _MyAppState extends State<Demo> {
         DropdownButton<Codec>(
           value: _codec,
           onChanged: (newCodec) {
-            setCodec(newCodec);
+            setCodec(newCodec!);
             _codec = newCodec;
             getDuration();
             setState(() {});
@@ -841,31 +838,27 @@ class _MyAppState extends State<Demo> {
     );
   }
 
-  void Function() onPauseResumePlayerPressed() {
-    if (playerModule == null) return null;
+  void Function()? onPauseResumePlayerPressed() {
     if (playerModule.isPaused || playerModule.isPlaying) {
       return pauseResumePlayer;
     }
     return null;
   }
 
-  void Function() onPauseResumeRecorderPressed() {
-    if (recorderModule == null) return null;
+  void Function()? onPauseResumeRecorderPressed() {
     if (recorderModule.isPaused || recorderModule.isRecording) {
       return pauseResumeRecorder;
     }
     return null;
   }
 
-  void Function() onStopPlayerPressed() {
-    if (playerModule == null) return null;
+  void Function()? onStopPlayerPressed() {
     return (playerModule.isPlaying || playerModule.isPaused)
         ? stopPlayer
         : null;
   }
 
-  void Function() onStartPlayerPressed() {
-    if (playerModule == null) return null;
+  void Function()? onStartPlayerPressed() {
     if (_media == Media.buffer && kIsWeb) {
       return null;
     }
@@ -900,9 +893,9 @@ class _MyAppState extends State<Demo> {
     }
   }
 
-  void Function() onStartRecorderPressed() {
+  void Function()? onStartRecorderPressed() {
     // Disable the button if the selected codec is not supported
-    if (recorderModule == null || !_encoderSupported) return null;
+    if (!_encoderSupported!) return null;
     if (_media == Media.stream && _codec != Codec.pcm16) return null;
     return startStopRecorder;
   }
@@ -916,7 +909,7 @@ class _MyAppState extends State<Demo> {
         : AssetImage('res/icons/ic_stop.png');
   }
 
-  void setCodec(Codec codec) async {
+  Future<void> setCodec(Codec codec) async {
     _encoderSupported = await recorderModule.isEncoderSupported(codec);
     _decoderSupported = await playerModule.isDecoderSupported(codec);
 
@@ -925,7 +918,7 @@ class _MyAppState extends State<Demo> {
     });
   }
 
-  void Function(bool) audioPlayerSwitchChanged() {
+  void Function(bool)? audioPlayerSwitchChanged() {
     if ((!playerModule.isStopped) || (!recorderModule.isStopped)) return null;
     return ((newVal) async {
       try {

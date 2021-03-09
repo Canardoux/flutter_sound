@@ -109,7 +109,7 @@ public class FlutterSoundManager
 			}
 			slots   = new ArrayList<FlutterSoundSession>();
 		}
-		result.success(true);
+		result.success(0);
 	}
 
 }

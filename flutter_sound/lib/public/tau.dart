@@ -96,14 +96,14 @@ abstract class Food {
 /// or sent to a player when playing from a Dart Stream
 class FoodData extends Food {
   /// the data to be sent (or received)
-  Uint8List data;
+  Uint8List? data;
 
   /// The constructor, specifying the data to be sent or that has been received
   /* ctor */ FoodData(this.data);
 
   /// Used internally by Flutter Sound
   @override
-  Future<void> exec(FlutterSoundPlayer player) => player.feedFromStream(data);
+  Future<void> exec(FlutterSoundPlayer player) => player.feedFromStream(data!);
 }
 
 /// foodEvent is a special kin of food which allows to re-synchronize a stream

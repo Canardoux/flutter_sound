@@ -40,7 +40,7 @@ class PlayFromMic extends StatefulWidget {
 }
 
 class _PlayFromMicState extends State<PlayFromMic> {
-  FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
 
   Future<void> open() async {
@@ -51,7 +51,7 @@ class _PlayFromMicState extends State<PlayFromMic> {
 
     // Be careful : openAudioSession returns a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    _mPlayer
+    _mPlayer!
         .openAudioSession(
       device: AudioDevice.blueToothA2DP,
       audioFlags: allowHeadset | allowEarPiece | allowBlueToothA2DP,
@@ -74,7 +74,7 @@ class _PlayFromMicState extends State<PlayFromMic> {
   void dispose() {
     stopPlayer();
     // Be careful : you must `close` the audio session when you have finished with it.
-    _mPlayer.closeAudioSession();
+    _mPlayer!.closeAudioSession();
     _mPlayer = null;
 
     super.dispose();
@@ -83,23 +83,23 @@ class _PlayFromMicState extends State<PlayFromMic> {
   // -------  Here is the code to play from the microphone -----------------------
 
   void play() async {
-    await _mPlayer.startPlayerFromMic();
+    await _mPlayer!.startPlayerFromMic();
     setState(() {});
   }
 
   Future<void> stopPlayer() async {
     if (_mPlayer != null) {
-      await _mPlayer.stopPlayer();
+      await _mPlayer!.stopPlayer();
     }
   }
 
   // ---------------------------------------
 
-  Fn getPlaybackFn() {
+  Fn? getPlaybackFn() {
     if (!_mPlayerIsInited) {
       return null;
     }
-    return _mPlayer.isStopped
+    return _mPlayer!.isStopped
         ? play
         : () {
             stopPlayer().then((value) => setState(() {}));
@@ -129,12 +129,12 @@ class _PlayFromMicState extends State<PlayFromMic> {
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
+                child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
               ),
               SizedBox(
                 width: 20,
               ),
-              Text(_mPlayer.isPlaying
+              Text(_mPlayer!.isPlaying
                   ? 'Playing microphone to headset'
                   : 'Recorder is stopped'),
             ]),

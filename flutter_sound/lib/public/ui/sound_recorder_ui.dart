@@ -88,7 +88,7 @@ class SoundRecorderUI extends StatefulWidget {
   static const int _barHeight = 60;
 
   ///
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   ///
   final String pausedTitle;
@@ -100,16 +100,16 @@ class SoundRecorderUI extends StatefulWidget {
   final String stoppedTitle;
 
   /// Callback to be notified when the recording stops
-  final OnStop onStopped;
+  final OnStop? onStopped;
 
   /// Callback to be notified when the recording starts.
-  final OnStart onStart;
+  final OnStart? onStart;
 
   /// Callback to be notified when the recording pause.
-  final OnPaused onPaused;
+  final OnPaused? onPaused;
 
   ///
-  final OnDelete onDelete;
+  final OnDelete? onDelete;
 
   /// Stores and Tracks the recorded audio.
   final RecordedAudio audio;
@@ -138,7 +138,7 @@ class SoundRecorderUI extends StatefulWidget {
   /// This method will be called even if we have the necessary permissions
   /// as we make no checks.
   ///
-  final UIRequestPermission requestPermissions;
+  final UIRequestPermission? requestPermissions;
 
   ///
   /// Records audio from the users microphone into the given media file.
@@ -199,7 +199,7 @@ class SoundRecorderUI extends StatefulWidget {
     this.pausedTitle = 'Recorder is paused',
     this.recordingTitle = 'Recorder is recording',
     this.stoppedTitle = 'Recorder is stopped',
-    Key key,
+    Key? key,
   })  : audio = RecordedAudio.toTrack(track),
         super(key: key);
 
@@ -213,7 +213,7 @@ class SoundRecorderUI extends StatefulWidget {
 class SoundRecorderUIState extends State<SoundRecorderUI> {
   _RecorderState _state = _RecorderState.isStopped;
 
-  FlutterSoundRecorder _recorder;
+  late FlutterSoundRecorder _recorder;
 
   ///
   Color backgroundColor;
@@ -273,7 +273,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
             //SizedBox(width: 20,),
             _buildMicrophone(),
             _buildStartStopButton(),
-            widget.showTrashCan != null ? _buildTrashButton() : SizedBox(),
+            widget.showTrashCan ? _buildTrashButton() : SizedBox(),
             Text(_isPaused
                 ? widget.pausedTitle
                 : _isRecording
@@ -285,7 +285,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   }
 
   ///
-  Stream<RecordingDisposition> get dispositionStream =>
+  Stream<RecordingDisposition>? get dispositionStream =>
       _recorder.dispositionStream();
 
   static const _minDbCircle = 15;
@@ -298,7 +298,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
             stream: _recorder.dispositionStream(),
             initialData: RecordingDisposition.zero(), // was START_DECIBELS
             builder: (_, streamData) {
-              var disposition = streamData.data;
+              var disposition = streamData.data!;
               var min = _minDbCircle;
               if (disposition.decibels == 0) {
                 min = 0;
@@ -311,8 +311,8 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
                     duration: Duration(milliseconds: 20),
                     // + MIN_DB_CIRCLE so the animated circle is always a
                     // reasonable size (db ranges is typically 45 - 80db)
-                    width: disposition.decibels + min,
-                    height: disposition.decibels + min,
+                    width: disposition.decibels! + min,
+                    height: disposition.decibels! + min,
                     constraints: BoxConstraints(
                         maxHeight: 80.0 + min, maxWidth: 80.0 + min),
                     decoration: BoxDecoration(
@@ -418,7 +418,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
     }
   }
 
-  void _onStarted({bool wasUser}) async {
+  void _onStarted({bool? wasUser}) async {
     //Log.d(green('started Recording to: '
     //'${await (await widget.audio).track.identity})'));
 
@@ -426,26 +426,26 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
       _state = _RecorderState.isRecording;
 
       if (widget.onStart != null) {
-        widget.onStart();
+        widget.onStart!();
       }
       //controller(context);
     });
   }
 
-  void _onStopped({bool wasUser}) {
+  void _onStopped({bool? wasUser}) {
     setState(() {
       // TODO _updateDuration(_recorder.duration);
       _state = _RecorderState.isStopped;
 
       if (widget.onStopped != null) {
-        widget.onStopped(widget.audio);
+        widget.onStopped!(widget.audio);
       }
 
       onRecordingStopped(context, Duration(milliseconds: 2000)); // TODO
     });
   }
 
-  void _onPaused({bool wasUser}) async {
+  void _onPaused({bool? wasUser}) async {
     //Log.d(green('started Recording to: '
     //'${await (await widget.audio).track.identity})'));
 
@@ -453,14 +453,14 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
       _state = _RecorderState.isPaused;
 
       if (widget.onPaused != null) {
-        widget.onPaused(widget.audio, true);
+        widget.onPaused!(widget.audio, true);
       }
 
       onRecordingPaused(context);
     });
   }
 
-  void _onResume({bool wasUser}) async {
+  void _onResume({bool? wasUser}) async {
     //Log.d(green('started Recording to: '
     //'${await (await widget.audio).track.identity})'));
 
@@ -468,7 +468,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
       _state = _RecorderState.isRecording;
 
       if (widget.onPaused != null) {
-        widget.onPaused(widget.audio, false);
+        widget.onPaused!(widget.audio, false);
       }
       onRecordingResume(context);
     });

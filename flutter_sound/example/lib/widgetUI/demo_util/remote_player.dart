@@ -39,14 +39,14 @@ class RemotePlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SoundPlayerUI.fromLoader(
-      _createRemoteTrack,
+      _createRemoteTrack ,
       showTitle: true,
       audioFocus: AudioFocus.requestFocusAndDuckOthers,
     );
   }
 
   Future<Track> _createRemoteTrack(BuildContext context) async {
-    Track track;
+    var track = Track();
     // validate codec for example file
     if (ActiveCodec().codec != Codec.mp3) {
       var error = SnackBar(
@@ -57,7 +57,7 @@ class RemotePlayer extends StatelessWidget {
     } else {
       // We have to play an example audio file loaded via a URL
       track =
-          Track(trackPath: exampleAudioFilePath, codec: ActiveCodec().codec);
+          Track(trackPath: exampleAudioFilePath, codec: ActiveCodec().codec!);
 
       track.trackTitle = 'Remote mpeg playback.';
       track.trackAuthor = 'By flutter_sound';

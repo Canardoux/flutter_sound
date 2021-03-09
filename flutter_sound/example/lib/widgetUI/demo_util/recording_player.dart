@@ -33,16 +33,16 @@ class RecordingPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SoundPlayerUI.fromLoader(
-      createTrack,
+      createTrack as Future<Track> Function(BuildContext),
       showTitle: true,
     );
   }
 
   ///
-  Future<Track> createTrack(BuildContext context) async {
-    Track track;
+  Future<Track?> createTrack(BuildContext context) async {
+    Track? track;
 
-    String title;
+    String? title;
     try {
       if (_recordingExist(context)) {
         /// build player from file
@@ -86,30 +86,30 @@ class RecordingPlayer extends StatelessWidget {
     return track;
   }
 
-  Future<Track> _createBufferTrack() async {
-    Track track;
+  Future<Track?> _createBufferTrack() async {
+    Track? track;
     // Do we want to play from buffer or from file ?
-    if (fileExists(MediaPath().pathForCodec(ActiveCodec().codec))) {
+    if (fileExists(MediaPath().pathForCodec(ActiveCodec().codec!)!)) {
       var dataBuffer =
-          await makeBuffer(MediaPath().pathForCodec(ActiveCodec().codec));
+          await makeBuffer(MediaPath().pathForCodec(ActiveCodec().codec!)!);
       if (dataBuffer == null) {
         throw Exception('Unable to create the buffer');
       }
-      track = Track(dataBuffer: dataBuffer, codec: ActiveCodec().codec);
+      track = Track(dataBuffer: dataBuffer, codec: ActiveCodec().codec!);
     }
     return track;
   }
 
   Future<Track> _createPathTrack() async {
     Track track;
-    var audioFilePath = MediaPath().pathForCodec(ActiveCodec().codec);
-    track = Track(trackPath: audioFilePath, codec: ActiveCodec().codec);
+    var audioFilePath = MediaPath().pathForCodec(ActiveCodec().codec!);
+    track = Track(trackPath: audioFilePath, codec: ActiveCodec().codec!);
     return track;
   }
 
   bool _recordingExist(BuildContext context) {
     // Do we want to play from buffer or from file ?
-    var path = MediaPath().pathForCodec(ActiveCodec().codec);
+    var path = MediaPath().pathForCodec(ActiveCodec().codec!);
     return (path != null && fileExists(path));
   }
 }

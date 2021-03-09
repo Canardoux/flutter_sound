@@ -204,7 +204,7 @@ class FlutterSoundPlayer
 
         isDecoderSupported( codec,)
         {
-                return true;
+                return true; // TODO
         }
 
         setSubscriptionDuration( duration)

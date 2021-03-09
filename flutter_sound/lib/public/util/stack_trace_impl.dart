@@ -35,23 +35,23 @@ class StackTraceImpl implements core.StackTrace {
   static final _stackTraceRegex = RegExp(r'#[0-9]+[\s]+(.+) \(([^\s]+)\)');
   final core.StackTrace _stackTrace;
 
-  final String _workingDirectory;
+  final String? _workingDirectory;
   final int _skipFrames;
 
-  List<Stackframe> _frames;
+  List<Stackframe>? _frames;
 
   /// You can suppress call frames from showing
   /// by specifing a non-zero value for [skipFrames]
   /// If the workingDirectory is provided we will output
   /// a full file path to the dart library.
-  StackTraceImpl({int skipFrames = 0, String workingDirectory})
+  StackTraceImpl({int skipFrames = 0, String? workingDirectory})
       : _stackTrace = core.StackTrace.current,
         _skipFrames = skipFrames + 1, // always skip ourselves.
         _workingDirectory = workingDirectory;
 
   ///
   StackTraceImpl.fromStackTrace(this._stackTrace,
-      {String workingDirectory, int skipFrames = 0})
+      {String? workingDirectory, int skipFrames = 0})
       : _skipFrames = skipFrames,
         _workingDirectory = workingDirectory {
     if (_stackTrace is StackTraceImpl) {
@@ -63,7 +63,7 @@ class StackTraceImpl implements core.StackTrace {
   /// Returns a File instance for the current stackframe
   ///
   File get sourceFile {
-    return frames[0].sourceFile;
+    return frames![0].sourceFile;
   }
 
   ///
@@ -80,24 +80,24 @@ class StackTraceImpl implements core.StackTrace {
   /// Returns the filename for the current stackframe
   ///
   int get lineNo {
-    return frames[0].lineNo;
+    return frames![0].lineNo;
   }
 
   @override
   String toString() {
-    return formatStackTrace();
+    return formatStackTrace()!;
   }
 
   /// Outputs a formatted string of the current stack_trace_nj
   /// showing upto [methodCount] methods in the trace.
   /// [methodCount] defaults to 10.
 
-  String formatStackTrace(
+  String? formatStackTrace(
       {bool showPath = false, int methodCount = 10, int skipFrames = 0}) {
     var formatted = <String>[];
     var count = 0;
 
-    for (var stackFrame in frames) {
+    for (var stackFrame in frames!) {
       if (skipFrames > 0) {
         skipFrames--;
         continue;
@@ -129,7 +129,7 @@ class StackTraceImpl implements core.StackTrace {
   }
 
   ///
-  List<Stackframe> get frames {
+  List<Stackframe>? get frames {
     _frames ??= _extractFrames();
     return _frames;
   }
@@ -152,7 +152,7 @@ class StackTraceImpl implements core.StackTrace {
       // source is one of two formats
       // file:///.../package/filename.dart:column:line
       // package:/package/.path./filename.dart:column:line
-      var source = match.group(2);
+      var source = match.group(2)!;
       var sourceParts = source.split(':');
       ArgumentError.value(
           sourceParts.length == 4,
@@ -190,12 +190,12 @@ class StackTraceImpl implements core.StackTrace {
     var merged = StackTraceImpl.fromStackTrace(this);
 
     var index = 0;
-    for (var frame in _microImpl.frames) {
+    for (var frame in _microImpl.frames!) {
       // best we can do is exclude any files that are in the flutter src tree.
       if (isExcludedSource(frame)) {
         continue;
       }
-      merged.frames.insert(index++, frame);
+      merged.frames!.insert(index++, frame);
     }
     return merged;
   }
@@ -232,7 +232,7 @@ class Stackframe {
   final int column;
 
   ///
-  final String details;
+  final String? details;
 
   ///
   Stackframe(this.sourceFile, this.lineNo, this.column, this.details);

@@ -38,13 +38,13 @@ enum TempFileLocations {
 
 ///
 class TempFiles {
-  static TempFiles _self;
+  static TempFiles? _self;
   static const _rootDir = 'square_phone';
 
   ///
   factory TempFiles() {
     _self ??= TempFiles._internal();
-    return _self;
+    return _self!;
   }
 
   TempFiles._internal() {
