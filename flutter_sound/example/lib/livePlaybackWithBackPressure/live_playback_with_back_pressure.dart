@@ -56,7 +56,7 @@ class LivePlaybackWithBackPressure extends StatefulWidget {
 
 class _LivePlaybackWithBackPressureState
     extends State<LivePlaybackWithBackPressure> {
-  FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
 
   @override
@@ -64,7 +64,7 @@ class _LivePlaybackWithBackPressureState
     super.initState();
     // Be careful : openAudioSession return a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    _mPlayer.openAudioSession().then((value) {
+    _mPlayer!.openAudioSession().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
@@ -74,7 +74,7 @@ class _LivePlaybackWithBackPressureState
   @override
   void dispose() {
     stopPlayer();
-    _mPlayer.closeAudioSession();
+    _mPlayer!.closeAudioSession();
     _mPlayer = null;
 
     super.dispose();
@@ -83,8 +83,8 @@ class _LivePlaybackWithBackPressureState
   // -------  Here is the code to play Live data with back-pressure ------------
 
   void play() async {
-    assert(_mPlayerIsInited && _mPlayer.isStopped);
-    await _mPlayer.startPlayerFromStream(
+    assert(_mPlayerIsInited && _mPlayer!.isStopped);
+    await _mPlayer!.startPlayerFromStream(
       codec: Codec.pcm16,
       numChannels: 1,
       sampleRate: tSampleRate,
@@ -111,9 +111,9 @@ class _LivePlaybackWithBackPressureState
   Future<void> feedHim(Uint8List buffer) async {
     var lnData = 0;
     var totalLength = buffer.length;
-    while (totalLength > 0 && !_mPlayer.isStopped) {
+    while (totalLength > 0 && !_mPlayer!.isStopped) {
       var bsize = totalLength > blockSize ? blockSize : totalLength;
-      await _mPlayer
+      await _mPlayer!
           .feedFromStream(buffer.sublist(lnData, lnData + bsize)); // await !!!!
       lnData += bsize;
       totalLength -= bsize;
@@ -129,15 +129,15 @@ class _LivePlaybackWithBackPressureState
 
   Future<void> stopPlayer() async {
     if (_mPlayer != null) {
-      await _mPlayer.stopPlayer();
+      await _mPlayer!.stopPlayer();
     }
   }
 
-  Fn getPlaybackFn() {
+  Fn? getPlaybackFn() {
     if (!_mPlayerIsInited) {
       return null;
     }
-    return _mPlayer.isStopped
+    return _mPlayer!.isStopped
         ? play
         : () {
             stopPlayer().then((value) => setState(() {}));
@@ -169,12 +169,12 @@ class _LivePlaybackWithBackPressureState
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
+                child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
               ),
               SizedBox(
                 width: 20,
               ),
-              Text(_mPlayer.isPlaying
+              Text(_mPlayer!.isPlaying
                   ? 'Playback in progress'
                   : 'Player is stopped'),
             ]),

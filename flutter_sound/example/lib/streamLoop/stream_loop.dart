@@ -43,17 +43,17 @@ class StreamLoop extends StatefulWidget {
 }
 
 class _StreamLoopState extends State<StreamLoop> {
-  FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
-  FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
+  FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
   bool _isInited = false;
 
   Future<void> init() async {
-    await _mRecorder.openAudioSession(
+    await _mRecorder!.openAudioSession(
       device: AudioDevice.blueToothA2DP,
       audioFlags: allowHeadset | allowEarPiece | allowBlueToothA2DP,
       category: SessionCategory.playAndRecord,
     );
-    await _mPlayer.openAudioSession(
+    await _mPlayer!.openAudioSession(
       device: AudioDevice.blueToothA2DP,
       audioFlags: allowHeadset | allowEarPiece | allowBlueToothA2DP,
       category: SessionCategory.playAndRecord,
@@ -74,11 +74,11 @@ class _StreamLoopState extends State<StreamLoop> {
 
   Future<void> release() async {
     await stopPlayer();
-    await _mPlayer.closeAudioSession();
+    await _mPlayer!.closeAudioSession();
     _mPlayer = null;
 
     await stopRecorder();
-    await _mRecorder.closeAudioSession();
+    await _mRecorder!.closeAudioSession();
     _mRecorder = null;
   }
 
@@ -88,30 +88,30 @@ class _StreamLoopState extends State<StreamLoop> {
     super.dispose();
   }
 
-  Future<void> stopRecorder() {
+  Future<void>? stopRecorder() {
     if (_mRecorder != null) {
-      return _mRecorder.stopRecorder();
+      return _mRecorder!.stopRecorder();
     }
     return null;
   }
 
-  Future<void> stopPlayer() {
+  Future<void>? stopPlayer() {
     if (_mPlayer != null) {
-      return _mPlayer.stopPlayer();
+      return _mPlayer!.stopPlayer();
     }
     return null;
   }
 
   Future<void> record() async {
-    await _mPlayer.startPlayerFromStream(
+    await _mPlayer!.startPlayerFromStream(
       codec: Codec.pcm16,
       numChannels: 1,
       sampleRate: _sampleRatePlayer,
     );
 
-    await _mRecorder.startRecorder(
+    await _mRecorder!.startRecorder(
       codec: Codec.pcm16,
-      toStream: _mPlayer.foodSink, // ***** THIS IS THE LOOP !!! *****
+      toStream: _mPlayer!.foodSink, // ***** THIS IS THE LOOP !!! *****
       sampleRate: _sampleRateRecorder,
       numChannels: 1,
     );
@@ -120,19 +120,19 @@ class _StreamLoopState extends State<StreamLoop> {
 
   Future<void> stop() async {
     if (_mRecorder != null) {
-      await _mRecorder.stopRecorder();
+      await _mRecorder!.stopRecorder();
     }
     if (_mPlayer != null) {
-      await _mPlayer.stopPlayer();
+      await _mPlayer!.stopPlayer();
     }
     setState(() {});
   }
 
-  Fn getRecFn() {
+  Fn? getRecFn() {
     if (!_isInited) {
       return null;
     }
-    return _mRecorder.isRecording ? stop : record;
+    return _mRecorder!.isRecording ? stop : record;
   }
 
   // ----------------------------------------------------------------------------------------------------------------------
@@ -160,12 +160,12 @@ class _StreamLoopState extends State<StreamLoop> {
                 onPressed: getRecFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mRecorder.isRecording ? 'Stop' : 'Record'),
+                child: Text(_mRecorder!.isRecording ? 'Stop' : 'Record'),
               ),
               SizedBox(
                 width: 20,
               ),
-              Text(_mRecorder.isRecording
+              Text(_mRecorder!.isRecording
                   ? 'Playback to your headset!'
                   : 'Recorder is stopped'),
             ]),

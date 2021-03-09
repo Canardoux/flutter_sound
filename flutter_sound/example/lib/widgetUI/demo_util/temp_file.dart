@@ -24,7 +24,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 /// Creates an path to a temporary file.
-Future<String> tempFile({String suffix}) async {
+Future<String> tempFile({String? suffix}) async {
   suffix ??= 'tmp';
 
   if (!suffix.startsWith('.')) {

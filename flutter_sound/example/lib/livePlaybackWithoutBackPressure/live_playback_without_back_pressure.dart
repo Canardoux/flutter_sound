@@ -60,7 +60,7 @@ class LivePlaybackWithoutBackPressure extends StatefulWidget {
 
 class _LivePlaybackWithoutBackPressureState
     extends State<LivePlaybackWithoutBackPressure> {
-  FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
 
   @override
@@ -68,7 +68,7 @@ class _LivePlaybackWithoutBackPressureState
     super.initState();
     // Be careful : openAudioSession return a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    _mPlayer.openAudioSession().then((value) {
+    _mPlayer!.openAudioSession().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
@@ -78,7 +78,7 @@ class _LivePlaybackWithoutBackPressureState
   @override
   void dispose() {
     stopPlayer();
-    _mPlayer.closeAudioSession();
+    _mPlayer!.closeAudioSession();
     _mPlayer = null;
 
     super.dispose();
@@ -89,17 +89,17 @@ class _LivePlaybackWithoutBackPressureState
   void feedHim(Uint8List data) {
     var start = 0;
     var totalLength = data.length;
-    while (totalLength > 0 && _mPlayer != null && !_mPlayer.isStopped) {
+    while (totalLength > 0 && _mPlayer != null && !_mPlayer!.isStopped) {
       var ln = totalLength > tBlockSize ? tBlockSize : totalLength;
-      _mPlayer.foodSink.add(FoodData(data.sublist(start, start + ln)));
+      _mPlayer!.foodSink!.add(FoodData(data.sublist(start, start + ln)));
       totalLength -= ln;
       start += ln;
     }
   }
 
   void play() async {
-    assert(_mPlayerIsInited && _mPlayer.isStopped);
-    await _mPlayer.startPlayerFromStream(
+    assert(_mPlayerIsInited && _mPlayer!.isStopped);
+    await _mPlayer!.startPlayerFromStream(
       codec: Codec.pcm16,
       numChannels: 1,
       sampleRate: tSampleRate,
@@ -109,8 +109,8 @@ class _LivePlaybackWithoutBackPressureState
     feedHim(data);
     if (_mPlayer != null) {
       // We must not do stopPlayer() directely //await stopPlayer();
-      _mPlayer.foodSink.add(FoodEvent(() async {
-        await _mPlayer.stopPlayer();
+      _mPlayer!.foodSink!.add(FoodEvent(() async {
+        await _mPlayer!.stopPlayer();
         setState(() {});
       }));
     }
@@ -125,15 +125,15 @@ class _LivePlaybackWithoutBackPressureState
 
   Future<void> stopPlayer() async {
     if (_mPlayer != null) {
-      await _mPlayer.stopPlayer();
+      await _mPlayer!.stopPlayer();
     }
   }
 
-  Fn getPlaybackFn() {
+  Fn? getPlaybackFn() {
     if (!_mPlayerIsInited) {
       return null;
     }
-    return _mPlayer.isStopped
+    return _mPlayer!.isStopped
         ? play
         : () {
             stopPlayer().then((value) => setState(() {}));
@@ -165,12 +165,12 @@ class _LivePlaybackWithoutBackPressureState
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
+                child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
               ),
               SizedBox(
                 width: 20,
               ),
-              Text(_mPlayer.isPlaying
+              Text(_mPlayer!.isPlaying
                   ? 'Playback in progress'
                   : 'Player is stopped'),
             ]),

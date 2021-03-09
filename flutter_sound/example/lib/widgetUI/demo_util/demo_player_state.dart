@@ -22,7 +22,7 @@ import 'dart:async';
 class PlayerState {
   static final PlayerState _self = PlayerState._internal();
 
-  bool _hushOthers = false;
+  bool? _hushOthers = false;
 
   /// factory to retrieve a PlayerState
   factory PlayerState() {
@@ -33,7 +33,7 @@ class PlayerState {
 
   /// returns [true] if hushOthers (reduce other players volume)
   /// is enabled.
-  bool get hushOthers => _hushOthers;
+  bool? get hushOthers => _hushOthers;
 
   /// When we play something during whilst other audio is playing
   ///
@@ -46,7 +46,7 @@ class PlayerState {
   /// When passsing [true] to [setHush] the other auidio
   /// player's (e.g. spotify) sound is lowered.
   ///
-  Future<void> setHush({bool hushOthers}) async {
+  Future<void> setHush({bool? hushOthers}) async {
     _hushOthers = hushOthers;
   }
 }

@@ -45,19 +45,19 @@ const int tNotWeb = 1;
 ///
 class Example {
   ///
-  final String title;
+  final String? title;
 
   ///
-  final String subTitle;
+  final String? subTitle;
 
   ///
-  final String description;
+  final String? description;
 
   ///
-  final WidgetBuilder route;
+  final WidgetBuilder? route;
 
   ///
-  final int flags;
+  final int? flags;
 
   ///
   /* ctor */ Example(
@@ -65,7 +65,7 @@ class Example {
 
   ///
   void go(BuildContext context) =>
-      Navigator.push(context, MaterialPageRoute<void>(builder: route));
+      Navigator.push(context, MaterialPageRoute<void>(builder: route!));
 }
 
 ///
@@ -280,7 +280,7 @@ class ExamplesApp extends StatelessWidget {
 ///
 class ExamplesAppHomePage extends StatefulWidget {
   ///
-  ExamplesAppHomePage({Key key, this.title}) : super(key: key);
+  ExamplesAppHomePage({Key? key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -292,14 +292,14 @@ class ExamplesAppHomePage extends StatefulWidget {
   // always marked "final".
 
   ///
-  final String title;
+  final String? title;
 
   @override
   _ExamplesHomePageState createState() => _ExamplesHomePageState();
 }
 
 class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
-  Example selectedExample;
+  Example? selectedExample;
 
   @override
   void initState() {
@@ -334,10 +334,10 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
             //color: isSelected ? Colors.indigo : Colors.cyanAccent,
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Text(exampleTable[index].title,
+              Text(exampleTable[index].title!,
                   style: TextStyle(
                       color: isSelected ? Colors.white : Colors.black)),
-              Text(exampleTable[index].subTitle,
+              Text(exampleTable[index].subTitle!,
                   style: TextStyle(
                       color: isSelected ? Colors.white : Colors.black)),
             ]),
@@ -379,7 +379,7 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
                 ),
               ),
               child: SingleChildScrollView(
-                child: Text(selectedExample.description),
+                child: Text(selectedExample!.description!),
               ),
             ),
           ),
@@ -390,7 +390,7 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title!),
       ),
       body: makeBody(),
       bottomNavigationBar: BottomAppBar(
@@ -409,13 +409,13 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text((kIsWeb && (selectedExample.flags & tNotWeb != 0))
+                Text((kIsWeb && (selectedExample!.flags! & tNotWeb != 0))
                     ? 'Not supported on Flutter Web '
                     : ''),
                 ElevatedButton(
-                  onPressed: (kIsWeb && (selectedExample.flags & tNotWeb != 0))
+                  onPressed: (kIsWeb && (selectedExample!.flags! & tNotWeb != 0))
                       ? null
-                      : () => selectedExample.go(context),
+                      : () => selectedExample!.go(context),
                   //color: Colors.indigo,
                   child: Text(
                     'GO',

@@ -36,7 +36,7 @@ import 'remote_player.dart';
 class MainBody extends StatefulWidget {
   ///
   const MainBody({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -46,8 +46,8 @@ class MainBody extends StatefulWidget {
 class _MainBodyState extends State<MainBody> {
   bool initialized = false;
 
-  String recordingFile;
-  Track track;
+  String? recordingFile;
+  late Track track;
 
   @override
   void initState() {
@@ -83,7 +83,7 @@ class _MainBodyState extends State<MainBody> {
   void _clean() async {
     if (recordingFile != null) {
       try {
-        await File(recordingFile).delete();
+        await File(recordingFile!).delete();
       } on Exception {
         // ignore
       }

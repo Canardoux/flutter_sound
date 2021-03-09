@@ -27,12 +27,12 @@ import 'demo_media_path.dart';
 /// Media
 /// Codec
 class Dropdowns extends StatefulWidget {
-  final void Function(Codec) _onCodecChanged;
+  final void Function(Codec?) _onCodecChanged;
 
   /// ctor
   const Dropdowns({
-    Key key,
-    @required void Function(Codec) onCodecChanged,
+    Key? key,
+    required void Function(Codec?) onCodecChanged,
   })  : _onCodecChanged = onCodecChanged,
         super(key: key);
 

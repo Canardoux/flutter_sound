@@ -46,20 +46,20 @@ class MultiPlayback extends StatefulWidget {
 }
 
 class _MultiPlaybackState extends State<MultiPlayback> {
-  FlutterSoundPlayer _mPlayer1 = FlutterSoundPlayer();
-  FlutterSoundPlayer _mPlayer2 = FlutterSoundPlayer();
-  FlutterSoundPlayer _mPlayer3 = FlutterSoundPlayer();
+  FlutterSoundPlayer? _mPlayer1 = FlutterSoundPlayer();
+  FlutterSoundPlayer? _mPlayer2 = FlutterSoundPlayer();
+  FlutterSoundPlayer? _mPlayer3 = FlutterSoundPlayer();
   bool _mPlayer1IsInited = false;
   bool _mPlayer2IsInited = false;
   bool _mPlayer3IsInited = false;
-  Uint8List buffer2;
-  Uint8List buffer3;
+  Uint8List? buffer2;
+  Uint8List? buffer3;
   String _playerTxt1 = '';
   String _playerTxt2 = '';
   String _playerTxt3 = '';
-  StreamSubscription _playerSubscription1;
-  StreamSubscription _playerSubscription2;
-  StreamSubscription _playerSubscription3;
+  StreamSubscription? _playerSubscription1;
+  StreamSubscription? _playerSubscription2;
+  StreamSubscription? _playerSubscription3;
 
   Future<Uint8List> _getAssetData(String path) async {
     var asset = await rootBundle.load(path);
@@ -80,17 +80,17 @@ class _MultiPlaybackState extends State<MultiPlayback> {
     ).then((value) => setState(() {
           buffer3 = value;
         }));
-    _mPlayer1.openAudioSession().then((value) {
+    _mPlayer1!.openAudioSession().then((value) {
       setState(() {
         _mPlayer1IsInited = true;
       });
     });
-    _mPlayer2.openAudioSession().then((value) {
+    _mPlayer2!.openAudioSession().then((value) {
       setState(() {
         _mPlayer2IsInited = true;
       });
     });
-    _mPlayer3.openAudioSession().then((value) {
+    _mPlayer3!.openAudioSession().then((value) {
       setState(() {
         _mPlayer3IsInited = true;
       });
@@ -101,13 +101,13 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   void dispose() {
     // Be careful : you must `close` the audio session when you have finished with it.
     cancelPlayerSubscriptions1();
-    _mPlayer1.closeAudioSession();
+    _mPlayer1!.closeAudioSession();
     _mPlayer1 = null;
     cancelPlayerSubscriptions2();
-    _mPlayer2.closeAudioSession();
+    _mPlayer2!.closeAudioSession();
     _mPlayer2 = null;
     cancelPlayerSubscriptions3();
-    _mPlayer3.closeAudioSession();
+    _mPlayer3!.closeAudioSession();
     _mPlayer3 = null;
 
     super.dispose();
@@ -116,9 +116,9 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   // -------  Player1 play a remote file -----------------------
 
   void play1() async {
-    await _mPlayer1.setSubscriptionDuration(Duration(milliseconds: 10));
+    await _mPlayer1!.setSubscriptionDuration(Duration(milliseconds: 10));
     _addListener1();
-    await _mPlayer1.startPlayer(
+    await _mPlayer1!.startPlayer(
         fromURI: _exampleAudioFilePathMP3,
         codec: Codec.mp3,
         whenFinished: () {
@@ -129,7 +129,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
 
   void cancelPlayerSubscriptions1() {
     if (_playerSubscription1 != null) {
-      _playerSubscription1.cancel();
+      _playerSubscription1!.cancel();
       _playerSubscription1 = null;
     }
   }
@@ -137,21 +137,21 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   Future<void> stopPlayer1() async {
     cancelPlayerSubscriptions1();
     if (_mPlayer1 != null) {
-      await _mPlayer1.stopPlayer();
+      await _mPlayer1!.stopPlayer();
     }
     setState(() {});
   }
 
   Future<void> pause1() async {
     if (_mPlayer1 != null) {
-      await _mPlayer1.pausePlayer();
+      await _mPlayer1!.pausePlayer();
     }
     setState(() {});
   }
 
   Future<void> resume1() async {
     if (_mPlayer1 != null) {
-      await _mPlayer1.resumePlayer();
+      await _mPlayer1!.resumePlayer();
     }
     setState(() {});
   }
@@ -159,9 +159,9 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   // -------  Player2 play a OPUS file -----------------------
 
   void play2() async {
-    await _mPlayer2.setSubscriptionDuration(Duration(milliseconds: 10));
+    await _mPlayer2!.setSubscriptionDuration(Duration(milliseconds: 10));
     _addListener2();
-    await _mPlayer2.startPlayer(
+    await _mPlayer2!.startPlayer(
         fromDataBuffer: buffer2,
         codec: Codec.opusOGG,
         whenFinished: () {
@@ -172,7 +172,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
 
   void cancelPlayerSubscriptions2() {
     if (_playerSubscription2 != null) {
-      _playerSubscription2.cancel();
+      _playerSubscription2!.cancel();
       _playerSubscription2 = null;
     }
   }
@@ -180,21 +180,21 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   Future<void> stopPlayer2() async {
     cancelPlayerSubscriptions2();
     if (_mPlayer2 != null) {
-      await _mPlayer2.stopPlayer();
+      await _mPlayer2!.stopPlayer();
     }
     setState(() {});
   }
 
   Future<void> pause2() async {
     if (_mPlayer2 != null) {
-      await _mPlayer2.pausePlayer();
+      await _mPlayer2!.pausePlayer();
     }
     setState(() {});
   }
 
   Future<void> resume2() async {
     if (_mPlayer2 != null) {
-      await _mPlayer2.resumePlayer();
+      await _mPlayer2!.resumePlayer();
     }
     setState(() {});
   }
@@ -202,9 +202,9 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   // -------  Player3 play a MP4 file -----------------------
 
   void play3() async {
-    await _mPlayer3.setSubscriptionDuration(Duration(milliseconds: 10));
+    await _mPlayer3!.setSubscriptionDuration(Duration(milliseconds: 10));
     _addListener3();
-    await _mPlayer3.startPlayer(
+    await _mPlayer3!.startPlayer(
         fromDataBuffer: buffer3,
         codec: Codec.aacMP4,
         whenFinished: () {
@@ -215,7 +215,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
 
   void cancelPlayerSubscriptions3() {
     if (_playerSubscription3 != null) {
-      _playerSubscription3.cancel();
+      _playerSubscription3!.cancel();
       _playerSubscription3 = null;
     }
   }
@@ -223,21 +223,21 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   Future<void> stopPlayer3() async {
     cancelPlayerSubscriptions3();
     if (_mPlayer3 != null) {
-      await _mPlayer3.stopPlayer();
+      await _mPlayer3!.stopPlayer();
     }
     setState(() {});
   }
 
   Future<void> pause3() async {
     if (_mPlayer3 != null) {
-      await _mPlayer3.pausePlayer();
+      await _mPlayer3!.pausePlayer();
     }
     setState(() {});
   }
 
   Future<void> resume3() async {
     if (_mPlayer3 != null) {
-      await _mPlayer3.resumePlayer();
+      await _mPlayer3!.resumePlayer();
     }
     setState(() {});
   }
@@ -246,8 +246,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
 
   void _addListener1() {
     cancelPlayerSubscriptions1();
-    _playerSubscription1 = _mPlayer1.onProgress.listen((e) {
-      if (e != null) {
+    _playerSubscription1 = _mPlayer1!.onProgress!.listen((e) {
         var date = DateTime.fromMillisecondsSinceEpoch(
             e.position.inMilliseconds,
             isUtc: true);
@@ -255,32 +254,30 @@ class _MultiPlaybackState extends State<MultiPlayback> {
         setState(() {
           _playerTxt1 = txt.substring(0, 8);
         });
-      }
     });
   }
 
-  Fn getPlaybackFn1() {
+  Fn? getPlaybackFn1() {
     if (!_mPlayer1IsInited) {
       return null;
     }
-    return _mPlayer1.isStopped
+    return _mPlayer1!.isStopped
         ? play1
         : () {
             stopPlayer1().then((value) => setState(() {}));
           };
   }
 
-  Fn getPauseResumeFn1() {
-    if (!_mPlayer1IsInited || _mPlayer1.isStopped) {
+  Fn? getPauseResumeFn1() {
+    if (!_mPlayer1IsInited || _mPlayer1!.isStopped) {
       return null;
     }
-    return _mPlayer1.isPaused ? resume1 : pause1;
+    return _mPlayer1!.isPaused ? resume1 : pause1;
   }
 
   void _addListener2() {
     cancelPlayerSubscriptions2();
-    _playerSubscription2 = _mPlayer2.onProgress.listen((e) {
-      if (e != null) {
+    _playerSubscription2 = _mPlayer2!.onProgress!.listen((e) {
         var date = DateTime.fromMillisecondsSinceEpoch(
             e.position.inMilliseconds,
             isUtc: true);
@@ -288,32 +285,30 @@ class _MultiPlaybackState extends State<MultiPlayback> {
         setState(() {
           _playerTxt2 = txt.substring(0, 8);
         });
-      }
     });
   }
 
-  Fn getPlaybackFn2() {
+  Fn? getPlaybackFn2() {
     if (!_mPlayer2IsInited || buffer2 == null) {
       return null;
     }
-    return _mPlayer2.isStopped
+    return _mPlayer2!.isStopped
         ? play2
         : () {
             stopPlayer2().then((value) => setState(() {}));
           };
   }
 
-  Fn getPauseResumeFn2() {
-    if (!_mPlayer2IsInited || _mPlayer2.isStopped || buffer2 == null) {
+  Fn? getPauseResumeFn2() {
+    if (!_mPlayer2IsInited || _mPlayer2!.isStopped || buffer2 == null) {
       return null;
     }
-    return _mPlayer2.isPaused ? resume2 : pause2;
+    return _mPlayer2!.isPaused ? resume2 : pause2;
   }
 
   void _addListener3() {
     cancelPlayerSubscriptions3();
-    _playerSubscription3 = _mPlayer3.onProgress.listen((e) {
-      if (e != null) {
+    _playerSubscription3 = _mPlayer3!.onProgress!.listen((e) {
         var date = DateTime.fromMillisecondsSinceEpoch(
             e.position.inMilliseconds,
             isUtc: true);
@@ -321,26 +316,25 @@ class _MultiPlaybackState extends State<MultiPlayback> {
         setState(() {
           _playerTxt3 = txt.substring(0, 8);
         });
-      }
     });
   }
 
-  Fn getPlaybackFn3() {
+  Fn? getPlaybackFn3() {
     if (!_mPlayer3IsInited || buffer3 == null) {
       return null;
     }
-    return _mPlayer3.isStopped
+    return _mPlayer3!.isStopped
         ? play3
         : () {
             stopPlayer3().then((value) => setState(() {}));
           };
   }
 
-  Fn getPauseResumeFn3() {
-    if (!_mPlayer3IsInited || _mPlayer3.isStopped || buffer3 == null) {
+  Fn? getPauseResumeFn3() {
+    if (!_mPlayer3IsInited || _mPlayer3!.isStopped || buffer3 == null) {
       return null;
     }
-    return _mPlayer3.isPaused ? resume3 : pause3;
+    return _mPlayer3!.isPaused ? resume3 : pause3;
   }
 
   @override
@@ -366,7 +360,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
                 onPressed: getPlaybackFn1(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer1.isStopped ? 'Play' : 'Stop'),
+                child: Text(_mPlayer1!.isStopped ? 'Play' : 'Stop'),
               ),
               SizedBox(
                 width: 20,
@@ -375,7 +369,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
                 onPressed: getPauseResumeFn1(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer1.isPaused ? 'Resume' : 'Pause'),
+                child: Text(_mPlayer1!.isPaused ? 'Resume' : 'Pause'),
               ),
               SizedBox(
                 width: 20,
@@ -406,7 +400,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
                 onPressed: getPlaybackFn2(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer2.isStopped ? 'Play' : 'Stop'),
+                child: Text(_mPlayer2!.isStopped ? 'Play' : 'Stop'),
               ),
               SizedBox(
                 width: 20,
@@ -415,7 +409,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
                 onPressed: getPauseResumeFn2(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer2.isPaused ? 'Resume' : 'Pause'),
+                child: Text(_mPlayer2!.isPaused ? 'Resume' : 'Pause'),
               ),
               SizedBox(
                 width: 20,
@@ -446,7 +440,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
                 onPressed: getPlaybackFn3(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer3.isStopped ? 'Play' : 'Stop'),
+                child: Text(_mPlayer3!.isStopped ? 'Play' : 'Stop'),
               ),
               SizedBox(
                 width: 20,
@@ -455,7 +449,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
                 onPressed: getPauseResumeFn3(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer3.isPaused ? 'Resume' : 'Pause'),
+                child: Text(_mPlayer3!.isPaused ? 'Resume' : 'Pause'),
               ),
               SizedBox(
                 width: 20,

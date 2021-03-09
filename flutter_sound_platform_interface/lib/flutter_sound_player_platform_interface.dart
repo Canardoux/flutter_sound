@@ -1,3 +1,5 @@
+
+
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
  *
@@ -80,7 +82,7 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
   }
 
 
-  List<FlutterSoundPlayerCallback> _slots = [];
+  List<FlutterSoundPlayerCallback?> _slots = [];
 
   int findSession(FlutterSoundPlayerCallback aSession)
   {
@@ -116,23 +118,27 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
 
   FlutterSoundPlayerCallback getSession(int slotno)
   {
-    return _slots[slotno];
+    FlutterSoundPlayerCallback? cb = _slots[slotno];
+    if (cb == null)
+      throw Exception('Cannot find session');
+    else
+      return cb;
   }
 
   //===================================================================================================================================================
 
 
-  Future<void>   resetPlugin(FlutterSoundPlayerCallback callback,)
+  Future<void>?   resetPlugin(FlutterSoundPlayerCallback callback,)
   {
     throw UnimplementedError('resetPlugin() has not been implemented.');
   }
 
-  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device, bool withUI,})
+  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device, bool? withUI,})
   {
     throw UnimplementedError('openPlayer() has not been implemented.');
   }
 
-  Future<int> setAudioFocus(FlutterSoundPlayerCallback callback, {AudioFocus focus, SessionCategory category, SessionMode mode, int audioFlags, AudioDevice device,} )
+  Future<int> setAudioFocus(FlutterSoundPlayerCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device,} )
   {
     throw UnimplementedError('setAudioFocus() has not been implemented.');
   }
@@ -152,37 +158,37 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
     throw UnimplementedError('getProgress() has not been implemented.');
   }
 
-  Future<bool> isDecoderSupported(FlutterSoundPlayerCallback callback, {Codec codec} )
+  Future<bool> isDecoderSupported(FlutterSoundPlayerCallback callback, { required Codec codec} )
   {
     throw UnimplementedError('isDecoderSupported() has not been implemented.');
   }
 
-  Future<int> setSubscriptionDuration(FlutterSoundPlayerCallback callback, {Duration duration})
+  Future<int> setSubscriptionDuration(FlutterSoundPlayerCallback callback, {Duration? duration})
   {
     throw UnimplementedError('setSubscriptionDuration() has not been implemented.');
   }
 
-  Future<int> startPlayer(FlutterSoundPlayerCallback callback, {Codec codec, Uint8List fromDataBuffer, String  fromURI, int numChannels, int sampleRate})
+  Future<int> startPlayer(FlutterSoundPlayerCallback callback, {Codec? codec, Uint8List? fromDataBuffer, String?  fromURI, int? numChannels, int? sampleRate})
   {
     throw UnimplementedError('startPlayer() has not been implemented.');
   }
 
-  Future<int> startPlayerFromMic(FlutterSoundPlayerCallback callback, {int numChannels, int sampleRate})
+  Future<int> startPlayerFromMic(FlutterSoundPlayerCallback callback, {int? numChannels, int? sampleRate})
   {
     throw UnimplementedError('startPlayerFromMic() has not been implemented.');
   }
 
-  Future<int> feed(FlutterSoundPlayerCallback callback, {Uint8List data, })
+  Future<int> feed(FlutterSoundPlayerCallback callback, {Uint8List? data, })
   {
     throw UnimplementedError('feed() has not been implemented.');
   }
 
-  Future<int> startPlayerFromTrack(FlutterSoundPlayerCallback callback, {Duration progress, Duration duration, Map<String, dynamic> track, bool canPause, bool canSkipForward, bool canSkipBackward, bool defaultPauseResume, bool removeUIWhenStopped })
+  Future<int> startPlayerFromTrack(FlutterSoundPlayerCallback callback, {Duration? progress, Duration? duration, Map<String, dynamic>? track, bool? canPause, bool? canSkipForward, bool? canSkipBackward, bool? defaultPauseResume, bool? removeUIWhenStopped })
   {
     throw UnimplementedError('startPlayerFromTrack() has not been implemented.');
   }
 
-  Future<int> nowPlaying(FlutterSoundPlayerCallback callback, {Duration progress, Duration duration, Map<String, dynamic> track, bool canPause, bool canSkipForward, bool canSkipBackward, bool defaultPauseResume,})
+  Future<int> nowPlaying(FlutterSoundPlayerCallback callback, {Duration? progress, Duration? duration, Map<String, dynamic>? track, bool? canPause, bool? canSkipForward, bool? canSkipBackward, bool? defaultPauseResume,})
   {
     throw UnimplementedError('invokeMethod() has not been implemented.');
   }
@@ -202,17 +208,17 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
     throw UnimplementedError('invokeMethod() has not been implemented.');
   }
 
-  Future<int> seekToPlayer(FlutterSoundPlayerCallback callback, {Duration duration})
+  Future<int> seekToPlayer(FlutterSoundPlayerCallback callback, {Duration? duration})
   {
     throw UnimplementedError('invokeMethod() has not been implemented.');
   }
 
-  Future<int> setVolume(FlutterSoundPlayerCallback callback, {double volume})
+  Future<int> setVolume(FlutterSoundPlayerCallback callback, {double? volume})
   {
     throw UnimplementedError('invokeMethod() has not been implemented.');
   }
 
-  Future<int> setUIProgressBar(FlutterSoundPlayerCallback callback, {Duration duration, Duration progress,})
+  Future<int> setUIProgressBar(FlutterSoundPlayerCallback callback, {Duration? duration, Duration? progress,})
   {
     throw UnimplementedError('invokeMethod() has not been implemented.');
   }

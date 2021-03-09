@@ -363,6 +363,7 @@ static bool _isIosDecoderSupported [] =
         }
         if ([self getStatus] == PLAYER_IS_PLAYING )
         {
+                  /*
                   long position =   [m_playerEngine getPosition];
                   long duration =   [m_playerEngine getDuration];
                   if (duration - position < 200) // PATCH [LARPOUX]
@@ -377,6 +378,7 @@ static bool _isIosDecoderSupported [] =
                          });
                         //return false;
                   } else
+                  */
 
                         [m_playerEngine pause];
         }
@@ -385,10 +387,10 @@ static bool _isIosDecoderSupported [] =
 
 
 
-          bool b =  ( [self getStatus] == PLAYER_IS_PAUSED);
-          if (!b)
+          //bool b =  ( [self getStatus] == PLAYER_IS_PAUSED);
+          //if (!b)
           {
-                NSLog(@"IOS: AudioPlayerFlauto : cannot pause!!!");
+                //NSLog(@"IOS: AudioPlayerFlauto : cannot pause!!!");
           }
 
           [m_callBack pausePlayerCompleted: YES];
@@ -410,7 +412,7 @@ static bool _isIosDecoderSupported [] =
           }
 */
           NSLog(@"IOS:<-- pause");
-          return b;
+          return true;
 
 }
 
@@ -428,10 +430,10 @@ static bool _isIosDecoderSupported [] =
         
             
         [self startTimer];
-        bool b2 = ([self getStatus] == PLAYER_IS_PLAYING);
-        if (!b2)
+        //bool b2 = ([self getStatus] == PLAYER_IS_PLAYING);
+        //if (!b2)
         {
-                 NSLog(@"IOS: AudioPlayerFlauto : cannot resume!!!");
+                 //NSLog(@"IOS: AudioPlayerFlauto : cannot resume!!!");
         }
         NSLog(@"IOS:<-- resume");
         [m_callBack resumePlayerCompleted: b];

@@ -44,20 +44,20 @@ class RecordToStreamExample extends StatefulWidget {
 }
 
 class _RecordToStreamExampleState extends State<RecordToStreamExample> {
-  FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
-  FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
+  FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
   bool _mplaybackReady = false;
-  String _mPath;
-  StreamSubscription _mRecordingDataSubscription;
+  String? _mPath;
+  StreamSubscription? _mRecordingDataSubscription;
 
   Future<void> _openRecorder() async {
     var status = await Permission.microphone.request();
     if (status != PermissionStatus.granted) {
       throw RecordingPermissionException('Microphone permission not granted');
     }
-    await _mRecorder.openAudioSession();
+    await _mRecorder!.openAudioSession();
     setState(() {
       _mRecorderIsInited = true;
     });
@@ -68,7 +68,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     super.initState();
     // Be careful : openAudioSession return a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    _mPlayer.openAudioSession().then((value) {
+    _mPlayer!.openAudioSession().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
@@ -79,11 +79,11 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   @override
   void dispose() {
     stopPlayer();
-    _mPlayer.closeAudioSession();
+    _mPlayer!.closeAudioSession();
     _mPlayer = null;
 
     stopRecorder();
-    _mRecorder.closeAudioSession();
+    _mRecorder!.closeAudioSession();
     _mRecorder = null;
     super.dispose();
   }
@@ -91,7 +91,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   Future<IOSink> createFile() async {
     var tempDir = await getTemporaryDirectory();
     _mPath = '${tempDir.path}/flutter_sound_example.pcm';
-    var outputFile = File(_mPath);
+    var outputFile = File(_mPath!);
     if (outputFile.existsSync()) {
       await outputFile.delete();
     }
@@ -101,16 +101,16 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   // ----------------------  Here is the code to record to a Stream ------------
 
   Future<void> record() async {
-    assert(_mRecorderIsInited && _mPlayer.isStopped);
+    assert(_mRecorderIsInited && _mPlayer!.isStopped);
     var sink = await createFile();
     var recordingDataController = StreamController<Food>();
     _mRecordingDataSubscription =
         recordingDataController.stream.listen((buffer) {
       if (buffer is FoodData) {
-        sink.add(buffer.data);
+        sink.add(buffer.data!);
       }
     });
-    await _mRecorder.startRecorder(
+    await _mRecorder!.startRecorder(
       toStream: recordingDataController.sink,
       codec: Codec.pcm16,
       numChannels: 1,
@@ -121,19 +121,19 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   // --------------------- (it was very simple, wasn't it ?) -------------------
 
   Future<void> stopRecorder() async {
-    await _mRecorder.stopRecorder();
+    await _mRecorder!.stopRecorder();
     if (_mRecordingDataSubscription != null) {
-      await _mRecordingDataSubscription.cancel();
+      await _mRecordingDataSubscription!.cancel();
       _mRecordingDataSubscription = null;
     }
     _mplaybackReady = true;
   }
 
-  _Fn getRecorderFn() {
-    if (!_mRecorderIsInited || !_mPlayer.isStopped) {
+  _Fn? getRecorderFn() {
+    if (!_mRecorderIsInited || !_mPlayer!.isStopped) {
       return null;
     }
-    return _mRecorder.isStopped
+    return _mRecorder!.isStopped
         ? record
         : () {
             stopRecorder().then((value) => setState(() {}));
@@ -143,9 +143,9 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   void play() async {
     assert(_mPlayerIsInited &&
         _mplaybackReady &&
-        _mRecorder.isStopped &&
-        _mPlayer.isStopped);
-    await _mPlayer.startPlayer(
+        _mRecorder!.isStopped &&
+        _mPlayer!.isStopped);
+    await _mPlayer!.startPlayer(
         fromURI: _mPath,
         sampleRate: tSampleRate,
         codec: Codec.pcm16,
@@ -157,14 +157,14 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   }
 
   Future<void> stopPlayer() async {
-    await _mPlayer.stopPlayer();
+    await _mPlayer!.stopPlayer();
   }
 
-  _Fn getPlaybackFn() {
-    if (!_mPlayerIsInited || !_mplaybackReady || !_mRecorder.isStopped) {
+  _Fn? getPlaybackFn() {
+    if (!_mPlayerIsInited || !_mplaybackReady || !_mRecorder!.isStopped) {
       return null;
     }
-    return _mPlayer.isStopped
+    return _mPlayer!.isStopped
         ? play
         : () {
             stopPlayer().then((value) => setState(() {}));
@@ -196,12 +196,12 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
                 onPressed: getRecorderFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mRecorder.isRecording ? 'Stop' : 'Record'),
+                child: Text(_mRecorder!.isRecording ? 'Stop' : 'Record'),
               ),
               SizedBox(
                 width: 20,
               ),
-              Text(_mRecorder.isRecording
+              Text(_mRecorder!.isRecording
                   ? 'Recording in progress'
                   : 'Recorder is stopped'),
             ]),
@@ -224,12 +224,12 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
+                child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
               ),
               SizedBox(
                 width: 20,
               ),
-              Text(_mPlayer.isPlaying
+              Text(_mPlayer!.isPlaying
                   ? 'Playback in progress'
                   : 'Player is stopped'),
             ]),

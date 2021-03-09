@@ -42,8 +42,8 @@ class SimpleRecorder extends StatefulWidget {
 }
 
 class _SimpleRecorderState extends State<SimpleRecorder> {
-  FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
-  FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
+  FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
   bool _mplaybackReady = false;
@@ -51,7 +51,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
 
   @override
   void initState() {
-    _mPlayer.openAudioSession().then((value) {
+    _mPlayer!.openAudioSession().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
@@ -67,10 +67,10 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
 
   @override
   void dispose() {
-    _mPlayer.closeAudioSession();
+    _mPlayer!.closeAudioSession();
     _mPlayer = null;
 
-    _mRecorder.closeAudioSession();
+    _mRecorder!.closeAudioSession();
     _mRecorder = null;
     super.dispose();
   }
@@ -82,14 +82,14 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
         throw RecordingPermissionException('Microphone permission not granted');
       }
     }
-    await _mRecorder.openAudioSession();
+    await _mRecorder!.openAudioSession();
     _mRecorderIsInited = true;
   }
 
   // ----------------------  Here is the code for recording and playback -------
 
   void record() async {
-    _mRecorder
+    _mRecorder!
         .startRecorder(
       toFile: _mPath,
       //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
@@ -100,7 +100,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
   }
 
   void stopRecorder() async {
-    await _mRecorder.stopRecorder().then((value) {
+    await _mRecorder!.stopRecorder().then((value) {
       setState(() {
         //var url = value;
         _mplaybackReady = true;
@@ -111,9 +111,9 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
   void play() async {
     assert(_mPlayerIsInited &&
         _mplaybackReady &&
-        _mRecorder.isStopped &&
-        _mPlayer.isStopped);
-    _mPlayer
+        _mRecorder!.isStopped &&
+        _mPlayer!.isStopped);
+    _mPlayer!
         .startPlayer(
             fromURI: _mPath,
             //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
@@ -126,25 +126,25 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
   }
 
   void stopPlayer() {
-    _mPlayer.stopPlayer().then((value) {
+    _mPlayer!.stopPlayer().then((value) {
       setState(() {});
     });
   }
 
 // ----------------------------- UI --------------------------------------------
 
-  _Fn getRecorderFn() {
-    if (!_mRecorderIsInited || !_mPlayer.isStopped) {
+  _Fn? getRecorderFn() {
+    if (!_mRecorderIsInited || !_mPlayer!.isStopped) {
       return null;
     }
-    return _mRecorder.isStopped ? record : stopRecorder;
+    return _mRecorder!.isStopped ? record : stopRecorder;
   }
 
-  _Fn getPlaybackFn() {
-    if (!_mPlayerIsInited || !_mplaybackReady || !_mRecorder.isStopped) {
+  _Fn? getPlaybackFn() {
+    if (!_mPlayerIsInited || !_mplaybackReady || !_mRecorder!.isStopped) {
       return null;
     }
-    return _mPlayer.isStopped ? play : stopPlayer;
+    return _mPlayer!.isStopped ? play : stopPlayer;
   }
 
   @override
@@ -170,12 +170,12 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
                 onPressed: getRecorderFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mRecorder.isRecording ? 'Stop' : 'Record'),
+                child: Text(_mRecorder!.isRecording ? 'Stop' : 'Record'),
               ),
               SizedBox(
                 width: 20,
               ),
-              Text(_mRecorder.isRecording
+              Text(_mRecorder!.isRecording
                   ? 'Recording in progress'
                   : 'Recorder is stopped'),
             ]),
@@ -198,12 +198,12 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
+                child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
               ),
               SizedBox(
                 width: 20,
               ),
-              Text(_mPlayer.isPlaying
+              Text(_mPlayer!.isPlaying
                   ? 'Playback in progress'
                   : 'Player is stopped'),
             ]),

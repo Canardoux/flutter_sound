@@ -43,12 +43,12 @@ enum MediaStorage {
 }
 
 /// get the duration for the media with the given codec.
-Future<Duration> getDuration(Codec codec) async {
-  Future<Duration> duration;
+Future<Duration?>? getDuration(Codec? codec) async {
+  Future<Duration?>? duration;
   switch (MediaPath().media) {
     case MediaStorage.file:
     case MediaStorage.buffer:
-      duration = flutterSoundHelper.duration(MediaPath().pathForCodec(codec));
+      duration = flutterSoundHelper.duration(MediaPath().pathForCodec(codec!)!);
       break;
     case MediaStorage.asset:
       duration = null;
@@ -59,6 +59,8 @@ Future<Duration> getDuration(Codec codec) async {
     case MediaStorage.stream:
       duration = null;
       break;
+    default:
+      duration = null;
   }
   return duration;
 }
@@ -94,7 +96,7 @@ bool directoryExists(String path) {
 
 /// In this simple example, we just load a file in memory.
 /// This is stupid but just for demonstration  of startPlayerFromBuffer()
-Future<Uint8List> makeBuffer(String path) async {
+Future<Uint8List?> makeBuffer(String path) async {
   try {
     if (!fileExists(path)) return null;
     var file = File(path);

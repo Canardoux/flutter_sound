@@ -42,13 +42,13 @@ class SimplePlayback extends StatefulWidget {
 }
 
 class _SimplePlaybackState extends State<SimplePlayback> {
-  FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
 
   @override
   void initState() {
     super.initState();
-    _mPlayer.openAudioSession().then((value) {
+    _mPlayer!.openAudioSession().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
@@ -59,7 +59,7 @@ class _SimplePlaybackState extends State<SimplePlayback> {
   void dispose() {
     stopPlayer();
     // Be careful : you must `close` the audio session when you have finished with it.
-    _mPlayer.closeAudioSession();
+    _mPlayer!.closeAudioSession();
     _mPlayer = null;
 
     super.dispose();
@@ -68,7 +68,7 @@ class _SimplePlaybackState extends State<SimplePlayback> {
   // -------  Here is the code to playback a remote file -----------------------
 
   void play() async {
-    await _mPlayer.startPlayer(
+    await _mPlayer!.startPlayer(
         fromURI: _exampleAudioFilePathMP3,
         codec: Codec.mp3,
         whenFinished: () {
@@ -79,17 +79,17 @@ class _SimplePlaybackState extends State<SimplePlayback> {
 
   Future<void> stopPlayer() async {
     if (_mPlayer != null) {
-      await _mPlayer.stopPlayer();
+      await _mPlayer!.stopPlayer();
     }
   }
 
   // --------------------- UI -------------------
 
-  Fn getPlaybackFn() {
+  Fn? getPlaybackFn() {
     if (!_mPlayerIsInited) {
       return null;
     }
-    return _mPlayer.isStopped
+    return _mPlayer!.isStopped
         ? play
         : () {
             stopPlayer().then((value) => setState(() {}));
@@ -119,12 +119,12 @@ class _SimplePlaybackState extends State<SimplePlayback> {
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
+                child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
               ),
               SizedBox(
                 width: 20,
               ),
-              Text(_mPlayer.isPlaying
+              Text(_mPlayer!.isPlaying
                   ? 'Playback in progress'
                   : 'Player is stopped'),
             ]),

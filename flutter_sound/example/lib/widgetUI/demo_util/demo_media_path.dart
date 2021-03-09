@@ -35,10 +35,10 @@ class MediaPath {
     'flutter_sound_example.wav', // CODEC_PCM
   ];
 
-  final List<String> _path = [null, null, null, null, null, null, null];
+  final List<String?> _path = [null, null, null, null, null, null, null];
 
   /// The media we are storing
-  MediaStorage media = MediaStorage.file;
+  MediaStorage? media = MediaStorage.file;
 
   /// ctor
   factory MediaPath() {
@@ -59,12 +59,12 @@ class MediaPath {
   bool get isExampleFile => media == MediaStorage.remoteExampleFile;
 
   /// Sets the location of the file for the given codec.
-  void setCodecPath(Codec codec, String path) {
+  void setCodecPath(Codec codec, String? path) {
     _path[codec.index] = path;
   }
 
   /// returns the path to the file for the given codec.
-  String pathForCodec(Codec codec) {
+  String? pathForCodec(Codec codec) {
     return _path[codec.index];
   }
 

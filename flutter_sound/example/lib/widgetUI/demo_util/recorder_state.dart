@@ -30,11 +30,11 @@ class UtilRecorder {
   static final UtilRecorder _self = UtilRecorder._internal();
 
   /// primary recording module
-  FlutterSoundRecorder recorderModule;
+  FlutterSoundRecorder? recorderModule;
 
   /// secondary recording module used to show that two recordings can occur
   /// concurrently.
-  FlutterSoundRecorder recorderModule_2; // Used if REENTRANCE_CONCURENCY
+  FlutterSoundRecorder? recorderModule_2; // Used if REENTRANCE_CONCURENCY
 
   /// Factory ctor
   factory UtilRecorder() {
@@ -46,14 +46,14 @@ class UtilRecorder {
   }
 
   /// [true] if we are currently recording.
-  bool get isRecording => recorderModule != null && recorderModule.isRecording;
+  bool get isRecording => recorderModule != null && recorderModule!.isRecording;
 
   /// [true] if we are recording but currently paused.
-  bool get isPaused => recorderModule != null && recorderModule.isPaused;
+  bool get isPaused => recorderModule != null && recorderModule!.isPaused;
 
   /// required to initialize the recording subsystem.
-  void init() async {
-    await recorderModule.openAudioSession(
+  Future<void> init() async {
+    await recorderModule!.openAudioSession(
         focus: AudioFocus.requestFocusAndDuckOthers);
     ActiveCodec().recorderModule = recorderModule;
   }
@@ -69,15 +69,15 @@ class UtilRecorder {
   /// Returns a stream of [RecordingDisposition] so you can
   /// display db and duration of the recording as it records.
   /// Use this with a StreamBuilder
-  Stream<RecordingDisposition> dispositionStream(
+  Stream<RecordingDisposition>? dispositionStream(
       {Duration interval = const Duration(milliseconds: 10)}) {
-    return recorderModule.dispositionStream(/* TODO interval: interval*/);
+    return recorderModule!.dispositionStream(/* TODO interval: interval*/);
   }
 
   /// stops the recorder.
-  void stopRecorder() async {
+  Future<void> stopRecorder() async {
     try {
-      await recorderModule.stopRecorder();
+      await recorderModule!.stopRecorder();
     } on Object catch (err) {
       Log.d('stopRecorder error: $err');
       rethrow;
@@ -91,12 +91,12 @@ class UtilRecorder {
       /// await PlayerState().stopPlayer();
 
       var track =
-          Track(trackPath: await tempFile(), codec: ActiveCodec().codec);
-      await recorderModule.startRecorder(toFile: track.trackPath);
+          Track(trackPath: await tempFile(), codec: ActiveCodec().codec!);
+      await recorderModule!.startRecorder(toFile: track.trackPath);
 
       Log.d('startRecorder: $track');
 
-      MediaPath().setCodecPath(ActiveCodec().codec, track.trackPath);
+      MediaPath().setCodecPath(ActiveCodec().codec!, track.trackPath);
     } on Exception catch (err) {
       Log.d('startRecorder error: $err');
 
@@ -111,13 +111,13 @@ class UtilRecorder {
 
   /// toggles the pause/resume start of the recorder
   void pauseResumeRecorder() {
-    assert(recorderModule.isRecording || recorderModule.isPaused);
-    if (recorderModule.isPaused) {
+    assert(recorderModule!.isRecording || recorderModule!.isPaused);
+    if (recorderModule!.isPaused) {
       {
-        recorderModule.resumeRecorder();
+        recorderModule!.resumeRecorder();
       }
     } else {
-      recorderModule.pauseRecorder();
+      recorderModule!.pauseRecorder();
     }
   }
 }
