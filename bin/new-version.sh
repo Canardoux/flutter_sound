@@ -46,13 +46,17 @@ cd ..
 
 
 cd flutter_sound
-dartfmt -w lib
-dartfmt -w example/lib
-dartanalyzer lib
-#if [ $? -ne 0 ]; then
-#    echo "Error"
-#    exit -1
-#fi
+flutter analyze lib
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+dartdoc
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+rm -rf doc
 cd ..
 
 
