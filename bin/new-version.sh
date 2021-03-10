@@ -135,12 +135,30 @@ bin/flavor.sh FULL
 
 
 cd flutter_sound
-#flutter analyze
-#if [ $? -ne 0 ]; then
-    #echo "Error"
-    #exit -1
-#fi
-cd ..
+flutter analyze lib
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+dartdoc
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+rm -rf doc
+cd example
+flutter analyze lib
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+dartdoc
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+rm -rf doc
+cd ../..
 
 
 
