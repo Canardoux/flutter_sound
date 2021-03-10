@@ -68,7 +68,7 @@ class MediaPath {
     return _path[codec.index];
   }
 
-  /// [true] if a path for the give codec exists.
+  /// `true` if a path for the give codec exists.
   bool exists(Codec codec) {
     return _path[codec.index] != null;
   }

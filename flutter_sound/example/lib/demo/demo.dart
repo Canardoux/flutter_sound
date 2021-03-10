@@ -970,6 +970,8 @@ class _MyAppState extends State<Demo> {
                   backgroundColor: Colors.red)
               : Container(),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Container(
                 width: 56.0,
@@ -1003,8 +1005,6 @@ class _MyAppState extends State<Demo> {
                 ),
               ),
             ],
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
           ),
         ]);
 
@@ -1023,6 +1023,8 @@ class _MyAppState extends State<Demo> {
           ),
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
               width: 56.0,
@@ -1077,8 +1079,6 @@ class _MyAppState extends State<Demo> {
               ),
             ),
           ],
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
         ),
         Container(
             height: 30.0,

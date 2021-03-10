@@ -21,7 +21,7 @@
 ///
 /// The SoundRecorderUI  widget provide a simple UI for recording audio.
 ///
-/// The audio is recorded to a [Track](../api/track.md).
+/// The audio is recorded to a Track .
 ///
 // TODO: add image here.
 ///

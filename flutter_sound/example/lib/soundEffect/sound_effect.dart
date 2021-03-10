@@ -57,13 +57,13 @@ class _SoundEffectState extends State<SoundEffect> {
 
   Future<void> init() async {
     await _mPlayer!.openAudioSession();
-    bimData = await FlutterSoundHelper().waveToPCMBuffer(
+    bimData = FlutterSoundHelper().waveToPCMBuffer(
       inputBuffer: await getAssetData(_bim),
     );
-    bamData = await FlutterSoundHelper().waveToPCMBuffer(
+    bamData = FlutterSoundHelper().waveToPCMBuffer(
       inputBuffer: await getAssetData(_bam),
     );
-    boumData = await FlutterSoundHelper().waveToPCMBuffer(
+    boumData = FlutterSoundHelper().waveToPCMBuffer(
       inputBuffer: await getAssetData(_boum),
     );
     await _mPlayer!.startPlayerFromStream(

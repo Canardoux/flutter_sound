@@ -318,7 +318,10 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
         }),
         child: Card(
           shape: RoundedRectangleBorder(),
+          borderOnForeground: false,
+          elevation: 3.0,
           child: Container(
+            height: 50,
             margin: const EdgeInsets.all(3),
             padding: const EdgeInsets.all(3),
             decoration: BoxDecoration(
@@ -328,8 +331,6 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
                 width: 3,
               ),
             ),
-
-            height: 50,
 
             //color: isSelected ? Colors.indigo : Colors.cyanAccent,
             child:
@@ -342,8 +343,6 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
                       color: isSelected ? Colors.white : Colors.black)),
             ]),
           ),
-          borderOnForeground: false,
-          elevation: 3.0,
         ),
       );
     }

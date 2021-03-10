@@ -45,10 +45,10 @@ class UtilRecorder {
     recorderModule = FlutterSoundRecorder();
   }
 
-  /// [true] if we are currently recording.
+  /// `true` if we are currently recording.
   bool get isRecording => recorderModule != null && recorderModule!.isRecording;
 
-  /// [true] if we are recording but currently paused.
+  /// `true` if we are recording but currently paused.
   bool get isPaused => recorderModule != null && recorderModule!.isPaused;
 
   /// required to initialize the recording subsystem.
@@ -105,7 +105,7 @@ class UtilRecorder {
           content: Text('Failed to start recording: $err'));
       ScaffoldMessenger.of(context).showSnackBar(error);
 
-      stopRecorder();
+      await stopRecorder();
     }
   }
 
