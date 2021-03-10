@@ -217,7 +217,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
 
   final TextStyle? _titleStyle;
 
-  StreamSubscription? _playerSubscription;
+  StreamSubscription? _playerSubscription; // ignore: cancel_subscriptions
 
   final SliderThemeData? _sliderThemeData;
 

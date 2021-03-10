@@ -2,15 +2,15 @@
 dartdoc:
   categories:
     "Main":
-      markdown: ../doc/pages/tau-api/main.md
+      markdown: main.md
       name: Great
 
     "UI_Widgets":
-      markdown: ../doc/pages/tau-api/ui_widgets.md
+      markdown: ui_widgets.md
       name: UI
 
     "Utilities":
-      markdown: ../doc/pages/tau-api/utilities.md
+      markdown: utilities.md
       name: util
 
   categoryOrder: [ "Main", "UI_Widgets", "Utilities"]
