@@ -165,10 +165,11 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   static bool _reStarted = true;
 
   ///
-  StreamSubscription<Food>? _foodStreamSubscription;
+  StreamSubscription<Food>?
+      _foodStreamSubscription; // ignore: cancel_subscriptions
 
   ///
-  StreamController<Food>? _foodStreamController;
+  StreamController<Food>? _foodStreamController; //ignore: close_sinks
 
   ///
   Completer<int>? _needSomeFoodCompleter;
@@ -579,7 +580,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// The Future will be automaticaly waited by [startPlayer()]
   ///
   /// - [focus] : What to do with others App if they have already the Focus
-  /// - [Category] : An optional parameter for iOS. See [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosessioncategory?language=objc).
+  /// - [category] : An optional parameter for iOS. See [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosessioncategory?language=objc).
   /// - [mode] : an optional parameter for iOS. See [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosessionmode?language=objc) to understand the meaning of this parameter.
   /// - [audioFlags] : an optional parameter for iOS
   /// - [withUI] : true if the App plan to use [closeAudioSession] later.
@@ -646,7 +647,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
     if (_reStarted) {
       // Perhaps a Hot Restart ?  We must reset the plugin
-      print("Resetting flutter_sound Player Plugin");
+      print('Resetting flutter_sound Player Plugin');
       _reStarted = false;
       await FlutterSoundPlayerPlatform.instance.resetPlugin(this);
     }
@@ -1104,7 +1105,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
     _audioPlayerFinishedPlaying = whenFinished;
     if (_startPlayerCompleter != null) {
-      print("Killing another startPlayer()");
+      print('Killing another startPlayer()');
       _startPlayerCompleter!.completeError('Killed by another startPlayer()');
     }
     try {
@@ -1354,7 +1355,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///
   /// The Audio Session must have been open with the parameter `withUI`.
   ///
-  /// - `track` parameter is a simple structure which describe the sound to play. Please see [here the Track structure specification](track.md)
+  /// - `track` parameter is a simple structure which describe the sound to play.
   ///
   ///   - `whenFinished:()` : A function for specifying what to do when the playback will be finished.
   ///
@@ -1604,7 +1605,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     print('FS:<--- stopPlayer ');
   }
 
-  /// @nodoc
   Future<void> _stop() async {
     print('FS:---> stop ');
     if (_foodStreamSubscription != null) {

@@ -23,7 +23,7 @@
 /// # The Flutter Sound library
 ///
 /// Flutter Sound is composed with six main modules/classes
-/// - [FlutterSound]. This is the main Flutter Sound module.
+/// - `FlutterSound`. This is the main Flutter Sound module.
 /// - [FlutterSoundPlayer]. Everything about the playback functions
 /// - [FlutterSoundRecorder]. Everything about the recording functions
 /// - [FlutterSoundHelper]. Some utilities to manage audio data.

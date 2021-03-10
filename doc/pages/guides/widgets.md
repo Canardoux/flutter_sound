@@ -32,7 +32,7 @@ The [SoundPlayerUI](https://github.com/dooboolab/flutter_sound/tree/e09bcd3935cd
 
 The SoundRecorderUI widget provide a simple UI for recording audio.
 
-The audio is recorded to a [Track](https://github.com/dooboolab/flutter_sound/tree/e09bcd3935cdb61ae166e1ad562b7a20512c884d/doc/api/track.md).
+The audio is recorded to a Track.
 
 TODO: add image here.
 

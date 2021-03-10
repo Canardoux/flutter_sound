@@ -17,7 +17,7 @@ keywords: API Player
 
 Use this verb to play data from a track specification and display controls on the lock screen or an Apple Watch. The Audio Session must have been open with the parameter `withUI`.
 
-- `track` parameter is a simple structure which describe the sound to play. Please see [here the Track structure specification](track.md)
+- `track` parameter is a simple structure which describe the sound to play.
 
 - `whenFinished:()` : A function for specifying what to do when the playback will be finished.
 

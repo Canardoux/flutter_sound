@@ -31,7 +31,7 @@ class PlayerState {
 
   PlayerState._internal();
 
-  /// returns [true] if hushOthers (reduce other players volume)
+  /// returns `true` if hushOthers (reduce other players volume)
   /// is enabled.
   bool? get hushOthers => _hushOthers;
 
@@ -43,7 +43,7 @@ class PlayerState {
   // Play both our sound and Spotify
   // Or lower Spotify Sound during our playback.
   /// [setHush] controls option three.
-  /// When passsing [true] to [setHush] the other auidio
+  /// When passsing `true` to [setHush] the other auidio
   /// player's (e.g. spotify) sound is lowered.
   ///
   Future<void> setHush({bool? hushOthers}) async {

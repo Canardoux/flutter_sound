@@ -234,7 +234,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     print('---> stopRecorderCompleted: $success');
     assert(state != null);
     _recorderState = RecorderState.values[state!];
-    var s = url != null ? url : '';
+    var s = url ?? '';
     if (success!) {
       _stopRecorderCompleter!.complete(s);
     } // stopRecorder must not gives errors
@@ -388,7 +388,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     try {
       if (_reStarted) {
         // Perhaps a Hot Restart ?  We must reset the plugin
-        print("Resetting flutter_sound Recorder Plugin");
+        print('Resetting flutter_sound Recorder Plugin');
         _reStarted = false;
         await FlutterSoundRecorderPlatform.instance.resetPlugin(this);
       }
@@ -432,7 +432,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       try {
         print('Another closeRecorder() in progress');
         await _closeRecorderCompleter!.future;
-      } on Exception {}
+      } catch (_) {}
     }
     if (_isInited == Initialized.notInitialized) {
       // Already close
@@ -444,7 +444,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
     try {
       await _stop(); // Stop the recorder if running
-    } on Exception {}
+    } catch (_) {}
     //_isInited = Initialized.initializationInProgress; // BOF
     _removeRecorderCallback(); // _recorderController will be closed by this function
     if (_userStreamSink != null) {

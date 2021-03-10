@@ -62,7 +62,7 @@ Widget build(BuildContext build)
 }
 ```
 
-`Sounds` uses [Track](track.md) as the primary method of handing around audio data.
+`Sounds` uses Track as the primary method of handing around audio data.
 
 You can also dynamically load a `Track` when the user clicks the 'Play' button on the `SoundPlayerUI` widget. This allows you to delay the decision on what Track is going to be played until the user clicks the 'Play' button.
 

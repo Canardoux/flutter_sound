@@ -88,7 +88,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
 
   // ----------------------  Here is the code for recording and playback -------
 
-  void record() async {
+  void record() {
     _mRecorder!
         .startRecorder(
       toFile: _mPath,
@@ -108,7 +108,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     });
   }
 
-  void play() async {
+  void play() {
     assert(_mPlayerIsInited &&
         _mplaybackReady &&
         _mRecorder!.isStopped &&
