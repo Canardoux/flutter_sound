@@ -212,6 +212,7 @@ class FlutterSoundRecorder
                 var chunks = [];
                 var mediaStream;
                 mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+                me.mediaStream = mediaStream;
 
 
                 //navigator.mediaDevices.getUserMedia(constraints).then
@@ -394,6 +395,11 @@ class FlutterSoundRecorder
                       this.mediaRecorder.stop();
                       this.mediaRecorder = null;
                }
+                if (this.mediaStream != null) 
+               {
+                    this.mediaStream.getTracks().forEach( track => track.stop());
+                    this.mediaStream = null;
+               }
         }
 
         stopRecorder()
@@ -408,6 +414,12 @@ class FlutterSoundRecorder
                        this.callbackTable[CB_stopRecorderCompleted](this.callback,  IS_RECORDER_STOPPED, /*false*/true, null);
                 }
                this.mediaRecorder = null;
+                
+                if (this.mediaStream != null) 
+               {
+                    this.mediaStream.getTracks().forEach( track => track.stop());
+                    this.mediaStream = null;
+               }
                 console.log("recorder stopped" );
         }
 
