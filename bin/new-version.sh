@@ -51,12 +51,12 @@ if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
 fi
-#dartdoc
-#if [ $? -ne 0 ]; then
-#    echo "Error"
-##    exit -1
-#fi
-#rm -rf doc
+dartdoc
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+rm -rf doc
 cd ..
 
 
@@ -64,13 +64,13 @@ cd ..
 git add .
 git commit -m "TAU : Version $VERSION"
 git push origin
-#git push gl
-#git push bb
+git push gl
+git push bb
 if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
     git push  -f origin $VERSION
-#    git push  -f gl $VERSION
-#    git push  -f bb $VERSION
+    git push  -f gl $VERSION
+    git push  -f bb $VERSION
 fi
 
 
@@ -97,13 +97,13 @@ cd ../..
 git add .
 git commit -m "TAU : Version $VERSION"
 git push origin
-#git push gl
-#git push bb
+git push gl
+git push bb
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push  -f origin $VERSION
-#        git push  -f gl $VERSION
-#        git push  -f bb $VERSION
+        git push  -f gl $VERSION
+        git push  -f bb $VERSION
 fi
 
 
@@ -208,13 +208,13 @@ bin/doc.sh $VERSION
 git add .
 git commit -m "TAU : Version $VERSION"
 git push origin
-#git push gl
-#git push bb
+git push gl
+git push bb
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push  -f origin $VERSION
-#        git push  -f gl $VERSION
-#        git push  -f bb $VERSION
+        git push  -f gl $VERSION
+        git push  -f bb $VERSION
 fi
 
 
