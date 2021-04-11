@@ -64,8 +64,8 @@ cd ..
 git add .
 git commit -m "TAU : Version $VERSION"
 git push origin
-git push gl
-git push bb
+#git push gl
+#git push bb
 if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
     git push  -f origin $VERSION
