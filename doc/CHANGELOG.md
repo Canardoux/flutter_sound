@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 8.0.1
+
+- Flutter Sound on Web : Stop mediaStream tracks after recording ends. [#656](https://github.com/Canardoux/tau/pull/656), [#655]https://github.com/Canardoux/tau/issues/655. Contribution from @osaxma. Thanks to him.
+
 ## 8.0.0
 
 - Null Safety
