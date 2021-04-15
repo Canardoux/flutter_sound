@@ -7,10 +7,10 @@ rm -r doc/pages/flutter-sound/api
 cd flutter_sound
 flutter clean
 flutter pub get
-dartdoc --pretty-index-json  --output ../doc/pages/flutter-sound/api
+dartdoc --pretty-index-json  --output ../doc/pages/flutter-sound/api lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 cd ..
 
@@ -79,8 +79,8 @@ echo "Upload"
 cd doc/_site
 tar czf ../../_toto.tgz *
 cd ../..
-scp _toto.tgz soft@canardoux.xyz:/home/soft
-ssh -p7822 soft@canardoux.xyz "rm -rf /home/soft/www/tau.canardoux.xyz/*; tar xzf _toto.tgz -C /home/soft/www/tau.canardoux.xyz; rm _toto.tgz"
+scp _toto.tgz canardoux@canardoux.xyz:/var/www/vhosts/canardoux.xyz/
+ssh -p7822 canardoux@canardoux.xyz "rm -rf /var/www/vhosts/canardoux.xyz/tau.canardoux.xyz/*; tar xzf _toto.tgz -C /var/www/vhosts/canardoux.xyz/tau.canardoux.xyz/; rm _toto.tgz"
 
 ##cp doc/images/banner.png flutter_sound/example/build/web
 cp -a -v flutter_sound/example/assets/samples flutter_sound/example/assets/extract flutter_sound/example/build/web/assets
@@ -88,6 +88,6 @@ cp -a -v flutter_sound/example/assets/samples flutter_sound/example/assets/extra
 cd flutter_sound/example/build/web
 tar czf ../../../../_toto2.tgz *
 cd ../../../..
-scp _toto2.tgz soft@canardoux.xyz:/home/soft
-ssh -p7822 soft@canardoux.xyz "rm -rf /home/soft/www/tau.canardoux.xyz/web_example; mkdir -p /home/soft/www/tau.canardoux.xyz/web_example; tar xzf _toto2.tgz -C /home/soft/www/tau.canardoux.xyz/web_example; rm _toto2.tgz"
+scp _toto2.tgz canardoux@canardoux.xyz:/var/www/vhosts/canardoux.xyz/
+ssh -p7822 canardoux@canardoux.xyz "rm -rf /var/www/vhosts/canardoux.xyz/tau.canardoux.xyz/web_example; mkdir -p /var/www/vhosts/canardoux.xyz/tau.canardoux.xyz/web_example; tar xzf _toto2.tgz -C /var/www/vhosts/canardoux.xyz/tau.canardoux.xyz/web_example; rm _toto2.tgz"
 rm _toto.tgz _toto2.tgz

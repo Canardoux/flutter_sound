@@ -26,7 +26,7 @@ rootProject.allprojects {
 }
 
 def properties = new Properties()
-properties.load(new FileInputStream("local.properties"))
+properties.load(new FileInputStream("/Volumes/home/larpoux/projmac/tau/tau_core/android/local.properties"))
 //user = properties.getProperty("bintray.user")
 //key = properties.getProperty("bintray.apikey")
 
@@ -41,8 +41,8 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 180111
-        versionName '8.0.1+11'
+        versionCode 18021
+        versionName '8.0.2+1'
         //versionName project.getProperty(“libraryVersion”)
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

@@ -1,6 +1,6 @@
 apply plugin: 'com.jfrog.bintray'
 
-version = '8.0.1+11'
+version = '8.0.2+1'
 
 task sourcesJar(type: Jar) {
    from android.sourceSets.main.java.srcDirs
@@ -31,7 +31,7 @@ artifacts {
 }
 
 Properties properties = new Properties()
-properties.load( new FileInputStream("local.properties"))
+properties.load( new FileInputStream("/Volumes/home/larpoux/projmac/tau/tau_core/android/local.properties"))
 
 // Bintray
 bintray {
