@@ -469,7 +469,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		int audioFlags = call.argument("audioFlags");
 		boolean r = m_flautoPlayer.setAudioFocus(focus, category, mode, audioFlags, audioDevice);
 		if (r)
-			result.success ( r);
+			result.success ( getPlayerState());
 		else
 			result.error ( "setFocus", "setFocus", "Failure to prepare focus");
 	}
