@@ -21,7 +21,7 @@ rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter()
+        //jcenter()
     }
 }
 
@@ -31,8 +31,10 @@ properties.load(new FileInputStream("/Volumes/home/larpoux/projmac/tau/tau_core/
 //key = properties.getProperty("bintray.apikey")
 
 apply plugin: 'com.android.library'
-apply plugin: 'com.jfrog.bintray'
+//apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
+apply plugin: 'com.github.dcendents.android-maven'
+group='com.github.canardoux'
 
 android {
     compileSdkVersion 30

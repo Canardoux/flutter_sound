@@ -7,8 +7,9 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url  "https://dl.bintray.com/larpoux/TauRepo" }
-        jcenter()
+        //maven { url  "https://dl.bintray.com/larpoux/TauRepo" }
+        //jcenter()
+        maven { url 'https://jitpack.io' }
     }
 
     dependencies {
