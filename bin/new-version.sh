@@ -73,6 +73,19 @@ if [ ! -z "$VERSION" ]; then
     git push  -f bb $VERSION
 fi
 
+cd tau_core
+git add .
+git commit -m "TAU : Version $VERSION"
+git push origin
+git push gl
+git push bb
+if [ ! -z "$VERSION" ]; then
+    git tag -f $VERSION
+    git push  -f origin $VERSION
+    git push  -f gl $VERSION
+    git push  -f bb $VERSION
+fi
+cd ..
 
 if test -f "tau_core.podspec"; then
     pod trunk push tau_core.podspec
