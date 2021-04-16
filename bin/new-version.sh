@@ -85,13 +85,13 @@ if [ $? -ne 0 ]; then
 fi
 
 
-cd tau_core/android
-./gradlew clean build bintrayUpload
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
-cd ../..
+#cd tau_core/android
+#./gradlew clean build bintrayUpload
+#if [ $? -ne 0 ]; then
+#    echo "Error"
+#    exit -1
+#fi
+#cd ../..
 
 
 git add .
