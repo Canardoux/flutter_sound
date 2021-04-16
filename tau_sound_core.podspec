@@ -7,7 +7,7 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'tau_core'
+  s.name             = 'tau_sound_core'
   s.version          = '8.0.24'
   s.summary          = 'Provides simple recorder and player functionalities for both Android and iOS platforms.'
 
