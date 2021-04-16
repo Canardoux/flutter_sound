@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- the google_analytics_id gets auto inserted from the config file
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','G-DPDLW922EP','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+-->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DPDLW922EP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-1YL444CW83');
+</script>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The Changelog of The &tau; Project.">
+<meta name="keywords" content="changelog,  changelog">
+<title>The &tau; CHANGELOG | The &tau; Project documentation.</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+<link rel="manifest" href="images/site.webmanifest">
+<link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="images/favicon.ico">
+<!--<link rel="shortcut icon" href="images/favicon.ico"> -->
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-config" content="images/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">
+
+
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="documentation-theme-jekyll" href="/feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true, // LARPOUX
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right // LARPOUX
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-10');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $("#tg-dark-link").click(function() {
+                $("#tg-dark-mode").toggle();
+                $("#tg-dark-icon").toggleClass('fa-toggle-on');
+                $("#tg-dark-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+
+
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+
+            <a href="/readme.html"> <img src="images/tau11.png" width="60%" height="60%" /> </a>
+           <!--<img class="inline" src="images/tau7.svg" alt="tau" />
+-->
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#" title="Show the left navigation bar"><i id="tg-sb-icon" class="fa fa-toggle-on" ></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/dooboolab/flutter_sound/projects/3" target="_blank" rel="noopener"  title="A better &tau;" >Roadmap</a></li>
+                
+                
+                
+                <li class="active"><a href="/changelog.html">Changelog</a></li>
+                
+                
+                
+                <li><a href="/news.html"   title="The &tau; Project news" >News</a></li>
+                
+                
+                
+                <li><a href="https://github.com/Canardoux/tau/issues" target="_blank" rel="noopener"  title="" >PR</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">API<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="/pages\flutter-sound\api\topics\Main-topic.html"   title="The API documentation generated by Dartdoc" >Flutter (dart)</a></li>
+                        
+                        
+                        
+                        <li><a href="/api-react"   title="For future expansion..." >React Native (javascript)</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Repo<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://github.com/Canardoux/tau" target="_blank" rel="noopener"  title="The sources on Github. Close Source Software :-(" >Github</a></li>
+                        
+                        
+                        
+                        <li><a href="https://bitbucket.org/canardoux-ws/the-tau-project" target="_blank" rel="noopener"  title="Close Source Software :-(" >bitbucket</a></li>
+                        
+                        
+                        
+                        <li><a href="https://gitlab.com/canardoux/tau" target="_blank" rel="noopener"  title="A great FOSS (Free and Open Source Software) alternative to Github" >Gitlab</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sharing<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://tau-t7l7803.slack.com" target="_blank" rel="noopener"  title="Slack is not Open Source Software :-(" >Slack</a></li>
+                        
+                        
+                        
+                        <li><a href="https://app.element.io/#/room/#tau:matrix.org" target="_blank" rel="noopener"  title="Free and Open Source. Based on Open Source Protocols" >Element</a></li>
+                        
+                        
+                        
+                        <li><a href="https://discord.com/channels/799683099473870848/799683099473870852" target="_blank" rel="noopener"  title="Unfortunately not Open Source" >Discord</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+			<li>
+
+
+
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:tau@canardoux.xyz?subject=The &tau; Project documentation feedback&body=I have some feedback about the The &tau; CHANGELOG page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+
+</li>
+
+		
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="The &amp;tau; CHANGELOG">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+
+<!-- Page Content -->
+<!-- <div class="container"> -->
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+             
+            <!-- Sidebar Column -->
+            <div class="col-md-2" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">The &tau; Project - 8.0.2+1</li>
+  
+  
+  
+      
+  
+  <li>
+      <a title="The &tau; Project" href="#">The &tau; Project</a>
+      <ul>
+          
+          
+          
+          <li><a title="Introduction" href="/readme.html">Introduction</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="the &tau; Architecture" href="/architecture.html">the &tau; Architecture</a></li>
+          
+          
+          
+          
+          
+           <!-- Here -->
+          <li class="active"><a title="/Changelog" href="changelog.html">Changelog</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Guides" href="#">Guides</a>
+      <ul>
+          
+          
+          
+          <li><a title="Getting Started" href="/guides_getting_started.html">Getting Started</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Supported Codecs" href="/guides_codec.html">Supported Codecs</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Temporary files" href="/temporary_files.html">Temporary files</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Raw PCM and Wave files" href="/guides_pcm_wave.html">Raw PCM and Wave files</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Recording or playing Raw PCM" href="/guides_recording_pcm.html">Recording or playing Raw PCM</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Recording to a Dart Stream" href="/guides_record_stream.html">Recording to a Dart Stream</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Playback from a Dart Stream" href="/guides_play_stream.html">Playback from a Dart Stream</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Widgets" href="/guides_ui.html">Widgets</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Notification on the lock screen" href="/guides_lock_screen.html">Notification on the lock screen</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Running &tau; on Web" href="/guides_web.html">Running &tau; on Web</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Graphs" href="/guides_graph.html">Graphs</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="API" href="#">API</a>
+      <ul>
+          
+          
+          
+          <li><a title="The &tau; API - Overview" href="/tau_api_main.html">The &tau; API - Overview</a></li>
+          
+          
+          
+          <li class="subfolders">
+              <a title="The Player" href="#">The Player</a>
+              <ul>
+                  
+                  
+                  
+                  <li><a title="Constructor" href="/tau_api_player_constructor.html">Constructor</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="openAudioSession()" href="/tau_api_player_open_audio_session.html">openAudioSession()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="setAudioFocus()" href="/tau_api_player_set_audio_focus.html">setAudioFocus()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="startPlayer()" href="/tau_api_player_startPlayer.html">startPlayer()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="startPlayerFromTrack()" href="/tau_api_player_start_player_from_track.html">startPlayerFromTrack()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="startPlayerFromMic()" href="/tau_api_player_start_player_from_mic.html">startPlayerFromMic()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="startPlayerFromStream()" href="/tau_api_player_start_player_from_stream.html">startPlayerFromStream()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="feedFromStream()" href="/tau_api_player_feed_from_stream.html">feedFromStream()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="foodSink" href="/tau_api_player_food_sink.html">foodSink</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="onProgress()" href="/tau_api_player_on_progress.html">onProgress()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="FoodData and FoodEvent" href="/tau_api_player_food.html">FoodData and FoodEvent</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="stopPlayer()" href="/tau_api_player_stop_player.html">stopPlayer()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="pausePlayer()" href="/tau_api_player_pause_player.html">pausePlayer()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="resumePlayer()" href="/tau_api_player_resume_player.html">resumePlayer()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="seekPlayer()" href="/tau_api_player_seek_player.html">seekPlayer()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="setVolume()" href="/tau_api_player_set_volume.html">setVolume()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="getPlayerState()" href="/tau_api_player_get_player_state.html">getPlayerState()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="isDecoderSupported()" href="/tau_api_player_is_decoder_supported.html">isDecoderSupported()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="getProgress()" href="/tau_api_player_get_progress.html">getProgress()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="setUIProgressBar()" href="/tau_api_player_set_ui_progress_bar.html">setUIProgressBar()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="nowPlaying()" href="/tau_api_player_now_playing.html">nowPlaying()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="setSubscriptionDuration()" href="/tau_api_player_set_subscription_duration.html">setSubscriptionDuration()</a></li>
+                  
+                  
+                  
+              </ul>
+          </li>
+          
+          
+          
+          <li class="subfolders">
+              <a title="The Recorder" href="#">The Recorder</a>
+              <ul>
+                  
+                  
+                  
+                  <li><a title="Constructor" href="/tau_api_recorder_constructor.html">Constructor</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="openAudioSession()" href="/tau_api_recorder_open_audio_session.html">openAudioSession()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="setAudioFocus()" href="/tau_api_recorder_set_audio_focus.html">setAudioFocus()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="startRecorder()" href="/tau_api_recorder_start_recorder.html">startRecorder()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="stopRecorder()" href="/tau_api_recorder_stop_recorder.html">stopRecorder()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="pauseRecorder()" href="/tau_api_recorder_pause_recorder.html">pauseRecorder()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="resumeRecorder()" href="/tau_api_recorder_resume_recorder.html">resumeRecorder()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="recorderState()" href="/tau_api_recorder_recorder_state.html">recorderState()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="isEncoderSupported()" href="/tau_api_recorder_is_encoder_supported.html">isEncoderSupported()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="onProgress" href="/tau_api_recorder_on_progress.html">onProgress</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="setSubscriptionDuration()" href="/tau_api_recorder_set_subscription_duration.html">setSubscriptionDuration()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="deleteRecord()" href="/tau_api_recorder_delete_record.html">deleteRecord()</a></li>
+                  
+                  
+                  
+              </ul>
+          </li>
+          
+          
+          
+          <li class="subfolders">
+              <a title="The utilities" href="#">The utilities</a>
+              <ul>
+                  
+                  
+                  
+                  <li><a title="Constructor" href="/tau_api_utilities_constructor.html">Constructor</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="convertFile()" href="/tau_api_utilities_convert_file.html">convertFile()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="pcmToWave()" href="/tau_api_utilities_pcm_to_wave.html">pcmToWave()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="pcmtoWaveBuffer()" href="/tau_api_utilities_pcm_to_wave_buffer.html">pcmtoWaveBuffer()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="waveToPcm()" href="/tau_api_utilities_wave_to_pcm.html">waveToPcm()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="waveToPcmBuffer()" href="/tau_api_utilities_wave_to_pcm_buffer.html">waveToPcmBuffer()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="duration()" href="/tau_api_utilities_duration.html">duration()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="isFFmpegAvailable()" href="/tau_api_utilities_is_ffmpeg_available.html">isFFmpegAvailable()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="executeFFmpegWithArguments()" href="/tau_api_utilities_execute_ffmpeg_with_arguments.html">executeFFmpegWithArguments()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="getLastFFmpegReturnCode()" href="/tau_api_utilities_get_last_ffmpeg_return_code.html">getLastFFmpegReturnCode()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="getLastFFmpegCommandOutput()" href="/tau_api_utilities_get_last_ffmpeg_command_output.html">getLastFFmpegCommandOutput()</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="FFmpegGetMediaInformation()" href="/tau_api_utilities_ffmpeg_get_media_information.html">FFmpegGetMediaInformation()</a></li>
+                  
+                  
+                  
+              </ul>
+          </li>
+          
+          
+          
+          <li class="subfolders">
+              <a title="The Widgets UI" href="#">The Widgets UI</a>
+              <ul>
+                  
+                  
+                  
+                  <li><a title="UI Player" href="/tau_api_widgets_ui_player.html">UI Player</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="UI Recorder" href="/tau_api_widgets_ui_recorder.html">UI Recorder</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="UI Controller" href="/tau_api_widgets_ui_controller.html">UI Controller</a></li>
+                  
+                  
+                  
+              </ul>
+          </li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Flutter Sound" href="#">Flutter Sound</a>
+      <ul>
+          
+          
+          
+          <li><a title="&tau; under Flutter" href="/flutter_sound.html">&tau; under Flutter</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Installation" href="/flutter_sound_install.html">Installation</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Live demo" href="https://tau.canardoux.xyz/web_example/" target="_blank" rel="noopener">Live demo</a></li>
+          
+          
+          
+          <li class="subfolders">
+              <a title="Examples" href="#">Examples</a>
+              <ul>
+                  
+                  
+                  
+                  <li><a title="demo" href="/flutter_sound_examples_demo.html">demo</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="Widget UI" href="/flutter_sound_examples_widget_ui.html">Widget UI</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="Simple Playback" href="/flutter_sound_examples_simple_playback.html">Simple Playback</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="Simple Recorder" href="/flutter_sound_examples_simple_recorder.html">Simple Recorder</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="Play from Mic" href="/flutter_sound_examples_play_from_mic.html">Play from Mic</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="Multi Playbacks" href="/flutter_sound_examples_multi_playbacks.html">Multi Playbacks</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="Record to Stream" href="/flutter_sound_examples_record_to_stream.html">Record to Stream</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="Playback from Stream (1)" href="/flutter_sound_examples_playback_from_stream_1.html">Playback from Stream (1)</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="Playback from Stream (2)" href="/flutter_sound_examples_playback_from_stream_2.html">Playback from Stream (2)</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="Sound Effects" href="/flutter_sound_examples_sound_effects.html">Sound Effects</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="Stream Loop" href="/flutter_sound_examples_stream_loop.html">Stream Loop</a></li>
+                  
+                  
+                  
+              </ul>
+          </li>
+          
+          
+          
+          <li class="subfolders">
+              <a title="API reference (dartdoc)" href="#">API reference (dartdoc)</a>
+              <ul>
+                  
+                  
+                  
+                  <li><a title="Player Class" href="/pages\flutter-sound\api\player_v5\FlutterSoundPlayer-class.html">Player Class</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="Recorder Class" href="/pages\flutter-sound\api\recorder_v5\FlutterSoundRecorder-class.html">Recorder Class</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="Utilities" href="/pages\flutter-sound\api\topics\Utilities-topic.html">Utilities</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="Widgets UI" href="/pages\flutter-sound\api\topics\UI_Widgets-topic.html">Widgets UI</a></li>
+                  
+                  
+                  
+              </ul>
+          </li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="&tau; React" href="#">&tau; React</a>
+      <ul>
+          
+          
+          
+          <li><a title="&tau; under React Native" href="/">&tau; under React Native</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="API reference" href="/">API reference</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Links" href="#">Links</a>
+      <ul>
+          
+          
+          
+          <li><a title="Migration" href="/links_migration.html">Migration</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Problem Report" href="https://github.com/Canardoux/tau/issues" target="_blank" rel="noopener">Problem Report</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Roadmap" href="https://github.com/Canardoux/tau/projects/3" target="_blank" rel="noopener">Roadmap</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Contributions" href="/links_contribution.html">Contributions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="License" href="/links_license.html">License</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- LARPOUX
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+       -->
+
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+        
+
+        <!-- Content Column -->
+        <div class="col-md-10" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">The &tau; CHANGELOG</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+    <div class="summary">The Changelog of The &tau; Project.</div>
+   
+
+    
+
+
+
+   <h2 id="802">8.0.2</h2>
+
+<ul>
+  <li>SetAudioFocus must return an int. Not a boolean. <a href="https://github.com/Canardoux/tau/issues/631">#631</a></li>
+</ul>
+
+<h2 id="801">8.0.1</h2>
+
+<ul>
+  <li>Flutter Sound on Web : Stop mediaStream tracks after recording ends. <a href="https://github.com/Canardoux/tau/pull/656">#656</a>, <a href="https://github.com/Canardoux/tau/issues/655">#655</a>. Contribution from @osaxma. Thanks to him.</li>
+</ul>
+
+<h2 id="800">8.0.0</h2>
+
+<ul>
+  <li>Null Safety</li>
+</ul>
+
+<h2 id="770">7.7.0</h2>
+
+<ul>
+  <li>Flutter Sound on web : now we can record AAC-MP4 on webkit (iOS web browsers and Safari). <a href="https://github.com/Canardoux/tau/issues/559">#559</a></li>
+  <li>Flutter Sound LITE did not compile on iOS : <a href="https://github.com/Canardoux/tau/issues/613">#613</a></li>
+</ul>
+
+<h2 id="767">7.6.7</h2>
+
+<ul>
+  <li>The procedure “resetPlugin” was missing on Flutter Sound on Web</li>
+</ul>
+
+<h2 id="766">7.6.6</h2>
+
+<ul>
+  <li>We must get the lock semaphore when calling stop() during “audioPlaybackFinished”</li>
+</ul>
+
+<h2 id="765">7.6.5</h2>
+
+<ul>
+  <li>Local variable <em>restarted</em> is static.</li>
+</ul>
+
+<h2 id="764">7.6.4</h2>
+
+<ul>
+  <li>Fixes a problem with <code class="language-plaintext highlighter-rouge">FlutterSoundHelper.duration()</code>. (Still does not work with temporary files). <a href="https://github.com/Canardoux/tau/issues/613">#613</a></li>
+</ul>
+
+<h2 id="763">7.6.3</h2>
+
+<ul>
+  <li>No dependency to <code class="language-plaintext highlighter-rouge">synchronized: ^3.0.0-nullsafety</code>. <a href="https://github.com/Canardoux/tau/issues/624">#624</a></li>
+  <li>Compatibility with <code class="language-plaintext highlighter-rouge">flutter_ffmpeg</code>. <a href="https://github.com/Canardoux/tau/issues/613">#613</a> and <a href="https://github.com/Canardoux/tau/issues/585">#585</a></li>
+  <li>No crash after a Hot Restart. <a href="https://github.com/Canardoux/tau/issues/543">#543</a>, <a href="https://github.com/Canardoux/tau/issues/387">#387</a> and <a href="https://github.com/Canardoux/tau/issues/304">#304</a></li>
+</ul>
+
+<h2 id="762">7.6.2</h2>
+
+<ul>
+  <li>On iOS : fixes a bug with pause/resume at the end of the playback <a href="https://github.com/dooboolab/flutter_sound/issues/469">#469</a></li>
+</ul>
+
+<h2 id="761">7.6.1</h2>
+
+<ul>
+  <li>On iOS : the audio flags was not transmitted correctely to tau_core</li>
+</ul>
+
+<h2 id="760">7.6.0</h2>
+
+<ul>
+  <li>Enhancement : Record to a temporary file. No need any more to use flutter_path_provider. <code class="language-plaintext highlighter-rouge">myRecorder.startRecorder('foo');</code> . Works on Android, iOS, and Flutter Web. <a href="https://github.com/dooboolab/flutter_sound/issues/607">#607</a>. <a href="temporary_files.html">temporary files</a></li>
+  <li><code class="language-plaintext highlighter-rouge">stopRecorder()</code> returns a Future of an URL to the recorded file : <code class="language-plaintext highlighter-rouge">URL url = await stopRecorder();</code> . Useful to get the URL of a temporary record object. <a href="https://github.com/dooboolab/flutter_sound/issues/616">#616</a>, <a href="https://github.com/dooboolab/flutter_sound/issues/592">#592</a></li>
+  <li>New verb <code class="language-plaintext highlighter-rouge">deleteTemporaryFile('foo');</code></li>
+  <li>All temporary files are automaticaly deleted when the session is closed</li>
+  <li>No await necessary on <code class="language-plaintext highlighter-rouge">openAudioSession()</code>. <a href="https://github.com/dooboolab/flutter_sound/issues/606">#606</a></li>
+  <li>Exception when a verb can be processed instead of having an await stuck for ever. <a href="https://github.com/dooboolab/flutter_sound/issues/605">#605</a></li>
+</ul>
+
+<h2 id="753">7.5.3</h2>
+
+<ul>
+  <li>Fix a major bug during Feed(). A major regression introduced in 7.5.1. <a href="https://github.com/dooboolab/flutter_sound/issues/590">#590</a></li>
+</ul>
+
+<h2 id="752">7.5.2</h2>
+
+<ul>
+  <li>Android : Fixes a bug when the plugin is attached several time to the engine. Thanks to @ed-vx for the Pull Request :-) . <a href="https://github.com/dooboolab/flutter_sound/pull/595">#595</a> and <a href="https://github.com/dooboolab/flutter_sound/issues/594">#594</a></li>
+  <li>iOS : Initialization of <code class="language-plaintext highlighter-rouge">flutterSoundPlayerManager</code> and <code class="language-plaintext highlighter-rouge">flutterSoundRecorderManager</code> to NIL. <a href="https://github.com/dooboolab/flutter_sound/issues/411">#411</a>, <a href="https://github.com/dooboolab/flutter_sound/issues/587">#587</a></li>
+</ul>
+
+<h2 id="751">7.5.1</h2>
+
+<ul>
+  <li>The τ documentation is moved to https://tau.canardoux.xyz . Yes, HTTPS, and not anymore HTTP. <a href="https://github.com/dooboolab/flutter_sound/issues/553">#553</a></li>
+  <li>Jekyll : patched to allow the dartdoc support without being based on symbolic links (that produced many 404). <a href="https://github.com/dooboolab/flutter_sound/issues/553">#553</a></li>
+</ul>
+
+<h2 id="750">7.5.0</h2>
+
+<ul>
+  <li>New procedure <a href="http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/tau_api_player_start_player_from_mic.html">FlutterSoundPlayer.startPlayerFromMic()</a>. <a href="https://github.com/dooboolab/flutter_sound/issues/580">#580</a></li>
+</ul>
+
+<h2 id="7416">7.4.16</h2>
+
+<ul>
+  <li>Now, the demo-example can play remote files for <strong>all</strong> the codec <strong>directely</strong> supported (without using FFmpeg). And not only MP3.</li>
+</ul>
+
+<h2 id="7415">7.4.15</h2>
+
+<ul>
+  <li>Remove the <code class="language-plaintext highlighter-rouge">intl</code> dependency. <a href="https://github.com/dooboolab/flutter_sound/issues/584">#584</a></li>
+</ul>
+
+<h2 id="7414">7.4.14</h2>
+
+<ul>
+  <li>Now, τ throws a correct exception during <code class="language-plaintext highlighter-rouge">startRecorder()</code> on Android when the recording permission is not granted. <a href="https://github.com/dooboolab/flutter_sound/issues/558">#558</a></li>
+</ul>
+
+<h2 id="7413">7.4.13</h2>
+
+<ul>
+  <li>Fixes problems on iOS with play/record from/to stream. SampleRate=44000 is a good choice. <a href="https://github.com/dooboolab/flutter_sound/issues/484">#484</a>.</li>
+</ul>
+
+<h2 id="7412">7.4.12</h2>
+
+<ul>
+  <li>Add an example doing several playbacks at the same time <a href="https://github.com/dooboolab/flutter_sound/issues/546">#546</a></li>
+</ul>
+
+<h2 id="7411">7.4.11</h2>
+
+<ul>
+  <li>Fighting with <a href="https://github.com/dooboolab/flutter_sound/issues/569">#569</a> : remove two naughty warnings during pod install of the example.</li>
+</ul>
+
+<h2 id="7410">7.4.10</h2>
+
+<ul>
+  <li>Fixes a bug in the live web example <a href="https://github.com/dooboolab/flutter_sound/issues/574">#574</a></li>
+</ul>
+
+<h2 id="749">7.4.9</h2>
+
+<ul>
+  <li>Documention is switched to Jekyll</li>
+  <li>I did a terrible mistake : the version is named 7.4.9 instead of 6.4.9 Impossible to correct that on pub.dev: a commit is for ever. I am confused :-( .</li>
+</ul>
+
+<h2 id="648">6.4.8</h2>
+
+<p>iOS : Rename <code class="language-plaintext highlighter-rouge">AudioPlayer</code> as <code class="language-plaintext highlighter-rouge">AudioPlayerFlauto</code> to avoid duplicate symbol with “just_audio: ^0.5.7”. <a href="https://github.com/dooboolab/flutter_sound/issues/542">#542</a></p>
+
+<h2 id="647">6.4.7</h2>
+
+<p>The two simple examples doing recording did not ask for recording permission. <a href="https://github.com/dooboolab/flutter_sound/issues/539">#539</a></p>
+
+<h2 id="646">6.4.6</h2>
+
+<ul>
+  <li>Fixes a bug in <code class="language-plaintext highlighter-rouge">setAudioFocus()</code> when  the focus parameter is <code class="language-plaintext highlighter-rouge">t_AUDIO_FOCUS.requestFocus</code> <a href="https://github.com/dooboolab/flutter_sound/issues/537">#537</a></li>
+</ul>
+
+<h2 id="645">6.4.5</h2>
+
+<ul>
+  <li>Fixes an other problem in <code class="language-plaintext highlighter-rouge">setAudioFocus()</code> on Android and iOS <a href="https://github.com/dooboolab/flutter_sound/issues/535">#535</a></li>
+</ul>
+
+<h2 id="644">6.4.4</h2>
+
+<ul>
+  <li>Fixes a crash in <code class="language-plaintext highlighter-rouge">setAudioFocus()</code> on Android <a href="https://github.com/dooboolab/flutter_sound/issues/535">#535</a></li>
+</ul>
+
+<h2 id="643">6.4.3</h2>
+
+<ul>
+  <li>The documentation of the API is now generated by <code class="language-plaintext highlighter-rouge">dartdoc</code>. <a href="https://dooboolab.github.io/flutter_sound/doc/flutter_sound/api/index.html">Here it is</a></li>
+  <li>The various traces done by Flutter Sound with the Dart code are now handled by ‘util/log.dart’. (The traces done by iOS and Android are still hard coded).;</li>
+  <li>Fix a bug in Pause/Resume on the lock screen</li>
+  <li>The Flutter Sound documentation is now handled by gitbook.</li>
+  <li>Fix bug in <code class="language-plaintext highlighter-rouge">setUIProgressBar()</code></li>
+  <li>The output of <code class="language-plaintext highlighter-rouge">dartanalyzer</code> is now clean. The pub.dev score is 110/110 !</li>
+  <li>Two new very simple examples for Flutter Sound beginners</li>
+</ul>
+
+<h2 id="642">6.4.2</h2>
+
+<ul>
+  <li>Syntaxe error in flutter_sound_web.podspec <a href="https://github.com/dooboolab/flutter_sound/issues/509">#509</a></li>
+</ul>
+
+<h2 id="641">6.4.1</h2>
+
+<ul>
+  <li>Little mistake in the Podspec file name for flutter_sound_web <a href="https://github.com/dooboolab/flutter_sound/issues/509">#509</a></li>
+</ul>
+
+<h2 id="640">6.4.0</h2>
+
+<ul>
+  <li>Flutter Sound is supported by Flutter Web. You can play with <a href="https://www.canardoux.space/tau/flutter_sound_example">this live demo on the web</a> (still cannot record with Safari or any web browser on iOS : thank you Apple). You can <a href="flutter_sound/doc/codec.md#flutter-sound-on-flutter-web">read this</a>. Issues : <a href="https://github.com/dooboolab/flutter_sound/issues/494">#494</a>, <a href="https://github.com/dooboolab/flutter_sound/issues/468">#468</a> and <a href="https://github.com/dooboolab/flutter_sound/issues/297">#297</a></li>
+</ul>
+
+<h2 id="631">6.3.1</h2>
+
+<ul>
+  <li>Fix a syntax error in the TauEngine build.gradle <a href="https://github.com/dooboolab/flutter_sound/issues/499">499</a></li>
+  <li>English in the UI widget is now configurable <a href="https://github.com/dooboolab/flutter_sound/pull/498">498</a></li>
+</ul>
+
+<h2 id="630">6.3.0</h2>
+
+<ul>
+  <li>On Android : Flutter Sound is now a wrapper around <code class="language-plaintext highlighter-rouge">TauEngine</code></li>
+  <li>Add a new example doing Speech-To-Text. Thanks to @jtkeyva :-) . <a href="https://github.com/dooboolab/flutter_sound/issues/210">#210</a></li>
+</ul>
+
+<h2 id="620">6.2.0</h2>
+
+<ul>
+  <li>Publication on JCenter</li>
+</ul>
+
+<h2 id="620-1">6.2.0</h2>
+
+<ul>
+  <li>On iOS, Flutter Sound use now a Pod library : <code class="language-plaintext highlighter-rouge">TauEngine</code></li>
+  <li>On iOS : <code class="language-plaintext highlighter-rouge">startPlayer()</code> from a remote URL returned too early (before downloading the file)</li>
+  <li>The loop example, (from the recorder to the player) has now a delay &lt; 1 sec. <a href="https://github.com/dooboolab/flutter_sound/issues/479">#479</a> and <a href="https://github.com/dooboolab/flutter_sound/issues/90">#90</a></li>
+  <li>Fix compilation errors of the examples in LITE flavor <a href="https://github.com/dooboolab/flutter_sound/issues/483">#483</a></li>
+</ul>
+
+<h2 id="612">6.1.2</h2>
+
+<ul>
+  <li>Playback from a remote URL <a href="https://github.com/dooboolab/flutter_sound/issues/470">#470</a></li>
+</ul>
+
+<h2 id="611">6.1.1</h2>
+
+<ul>
+  <li>Volume control with the volume buttons, on Android. <a href="https://github.com/dooboolab/flutter_sound/issues/457">#457</a></li>
+</ul>
+
+<h2 id="610">6.1.0</h2>
+
+<ul>
+  <li>Re-design the modules architecture to be Google recommandations compliant. (We use a new dependency : <code class="language-plaintext highlighter-rouge">flutter_sound_platform_interface</code>)</li>
+  <li><code class="language-plaintext highlighter-rouge">openAudioSessionWithUI</code> is now deprecated. Use the parameter <code class="language-plaintext highlighter-rouge">withUI</code> in <code class="language-plaintext highlighter-rouge">openAudioSession()</code> instead.</li>
+  <li>Upgrade “recase” version dependency (thanks to @CRJFisher) <a href="https://github.com/dooboolab/flutter_sound/pull/471">#471</a></li>
+</ul>
+
+<h2 id="601">6.0.1</h2>
+
+<ul>
+  <li>Little bug in the Demo App : 48000 is not a valid Sample rate for AAC/ADTS <a href="https://github.com/dooboolab/flutter_sound/issues/460">#460</a></li>
+</ul>
+
+<h2 id="600">6.0.0</h2>
+
+<ul>
+  <li>Modification to the Widget Recorder UI, to be homogeneous with the Widget Player UI</li>
+  <li>Fix two severe bugs on Android in openAudioSessionWithUI and startPlayerFromTrack : those two functions returned too early instead of a future. <a href="https://github.com/dooboolab/flutter_sound/issues/425">#425</a></li>
+  <li>On iOS, the device did not go to sleep when idle, with the Flutter Sound default parameters. <a href="https://github.com/dooboolab/flutter_sound/issues/439">#439</a></li>
+  <li>startPlayer() and startPlayerFromTrack() return a Future to the record duration instead of a void.</li>
+  <li>Flutter Sound <strong>FULL</strong> is now linked (again) with mobile-ffmpeg-audio 4.3.1.LTS. Please, look to <a href="doc/migration_6.x.x.md#migration-from-5xx-to-6xx">the migration guide</a></li>
+  <li>Fix a concurrency bug between <code class="language-plaintext highlighter-rouge">whenFinished()</code> and <code class="language-plaintext highlighter-rouge">updateProgress()</code> <a href="https://github.com/dooboolab/flutter_sound/issues/441">#441</a></li>
+  <li>Android : minAndroidSdk is 18. (Tested on a SDK 18 emulator). SDK 18 is fine for the FlutterSoundPlayer, but the FlutterSoundRecorder needs at least 23. <a href="https://github.com/dooboolab/flutter_sound/issues/400">#400</a></li>
+  <li>New helper API verb : <a href="doc/helper.md#pcmtowave">pcmToWave()</a>  to add a WAVE header in front of a Raw PCM record</li>
+  <li>New helper API verb : <a href="doc/helper.md#pcmtowavebuffer">pcmToWaveBuffer()</a>  to add a WAVE header in front of a Raw PCM buffer</li>
+  <li>New helper API verb : <a href="doc/helper.md#waveToPCM">waveToPCM()</a>  to remove a WAVE header in front of a Wave record</li>
+  <li>New helper API verb : <a href="doc/helper.md#waveToPCMBuffer">waveToPCMBuffer()</a>  to remove a WAVE header in front of a Wave buffer</li>
+  <li><a href="doc/recorder.md#startrecorder">startRecorder()</a> can now record <strong>Raw PCM Integers/Linear 16</strong> files, both on iOS and Android (Look to a <a href="doc/codec.md#note-on-raw-pcm-and-wave-files">PCM discussion, here</a>)</li>
+  <li><a href="doc/recorder.md#startplayer">startplayer()</a> can now play <strong>Raw PCM Integers/Linear 16</strong> files, both on iOS and Android (Look to a <a href="doc/codec.md#note-on-raw-pcm-and-wave-files">PCM discussion, here</a>)</li>
+  <li>Fix concurrency bug, when the App does a <code class="language-plaintext highlighter-rouge">stopRecorder()</code> or <code class="language-plaintext highlighter-rouge">pauseRecorder()</code> during <code class="language-plaintext highlighter-rouge">recorderTicker()</code> processing, <a href="https://github.com/dooboolab/flutter_sound/issues/443">#443</a></li>
+  <li>Fix a bug when we keep the device in pause mode on the iOS lock screen more than 30 seconds <a href="https://github.com/dooboolab/flutter_sound/issues/451">#451</a></li>
+  <li>Recording PCM-Linear 16 to a live Stream (many, many, many requesters). <a href="doc/codec.md#recording-pcm-16-to-a-dart-stream">Here a GettingStarted notice</a></li>
+  <li>Playback PCM-Linear 16 from a live Stream (many, many, many requesters). <a href="doc/codec.md#playing-pcm-16-from-a-dart-stream">Here a GettingStarted notice</a></li>
+</ul>
+
+<h2 id="511">5.1.1</h2>
+
+<ul>
+  <li>Fix various bugs in UI Widget <a href="https://github.com/dooboolab/flutter_sound/issues/407">#407</a></li>
+  <li>Add a button Pause/Resume in UI Widget Recorder</li>
+  <li>Add a button Pause/Resume in UI Widget Player</li>
+</ul>
+
+<h2 id="510">5.1.0</h2>
+
+<ul>
+  <li>Add a semaphore so that the App cannot do several call to Flutter Sound at the same time <a href="https://github.com/dooboolab/flutter_sound/issues/374">#374</a></li>
+  <li>On iOS : the “NowPlaying” info on the lockscreen is removed when the sound is finished or when the App does a <code class="language-plaintext highlighter-rouge">stopPlayer()</code>. Add parameter <code class="language-plaintext highlighter-rouge">removeUIWhenStopped</code> to <code class="language-plaintext highlighter-rouge">startPlayerFromTrack()</code>. (iOS only).</li>
+  <li>On iOS : the “NowPlaying” progress bar on the lockscreen is uptodated when the App does a <code class="language-plaintext highlighter-rouge">seekToPlayer()</code> <a href="https://github.com/dooboolab/flutter_sound/issues/364">#364</a></li>
+  <li>On iOS : Add parameter <code class="language-plaintext highlighter-rouge">defaultPauseResume</code> to <code class="language-plaintext highlighter-rouge">startPlayerFromTrack()</code>. (iOS only).</li>
+  <li>On iOS : Add API verb <code class="language-plaintext highlighter-rouge">getProgress()</code>. (iOS only).</li>
+  <li>On iOS : Add API verb <code class="language-plaintext highlighter-rouge">getPlayerState()</code>. (iOS only).</li>
+  <li>On iOS : Add API verb <code class="language-plaintext highlighter-rouge">nowPlaying()</code>. (iOS only).</li>
+  <li>On iOS : Add API verb <code class="language-plaintext highlighter-rouge">setUIProgressBar()</code>. (iOS only). <a href="https://github.com/dooboolab/flutter_sound/issues/376">#376</a></li>
+  <li>Fixes bug <a href="https://github.com/dooboolab/flutter_sound/issues/380">#380</a>, <a href="https://github.com/dooboolab/flutter_sound/pull/385">#385</a></li>
+  <li>Fixes bug “AudioFlags and AudioSource not work as expect “ <a href="https://github.com/dooboolab/flutter_sound/issues/366">#366</a>, <a href="https://github.com/dooboolab/flutter_sound/pull/372">#372</a>, <a href="https://github.com/dooboolab/flutter_sound/pull/381">#381</a></li>
+  <li>New parameters in the <code class="language-plaintext highlighter-rouge">SoundPlayerUI</code> constructors for specifying colors, text style and slider style. <a href="https://github.com/dooboolab/flutter_sound/issues/397">#397</a></li>
+</ul>
+
+<h2 id="502">5.0.2</h2>
+
+<p>Error returns from iOS in FlutterSoundPlayer.m was wrong : <a href="https://github.com/dooboolab/flutter_sound/pull/350">#350</a></p>
+
+<h2 id="501">5.0.1</h2>
+
+<ul>
+  <li>Flutter Sound V5 is published under the LGPL license.</li>
+</ul>
+
+<h2 id="500">5.0.0</h2>
+
+<ul>
+  <li>New API documentation</li>
+  <li>Changed the global enums names to CamelCase, to be conform with Google recommandations</li>
+  <li>Remove the OS dependant parameters from startRecorder()</li>
+  <li>Add a new parameter to <code class="language-plaintext highlighter-rouge">startPlayer()</code> : the Audio Focus requested</li>
+  <li>Support of <a href="doc/codec.md#actually-the-following-codecs-are-supported-by-flutter_sound">new codecs</a>, both for Android and iOS.</li>
+  <li>Remove the authorization request from <code class="language-plaintext highlighter-rouge">startRecorder()</code></li>
+  <li>Remove the NULL posted when the player or the recorder is closed.</li>
+  <li>The Audio Focus is <strong>NOT</strong> automaticaly abandoned between two <code class="language-plaintext highlighter-rouge">startPlayer()</code> or two <code class="language-plaintext highlighter-rouge">startRecorder()</code></li>
+</ul>
+
+<h2 id="407">4.0.7</h2>
+
+<ul>
+  <li>Patch to avoid problems when the App does a <code class="language-plaintext highlighter-rouge">stopPlayer()</code> during a <code class="language-plaintext highlighter-rouge">startPlayer()</code> <a href="https://github.com/dooboolab/flutter_sound/issues/374">#374</a></li>
+</ul>
+
+<h2 id="406">4.0.6</h2>
+
+<ul>
+  <li>Error returns from iOS in FlutterSoundPlayer.m was wrong : <a href="https://github.com/dooboolab/flutter_sound/pull/350">#350</a></li>
+</ul>
+
+<h2 id="405">4.0.5</h2>
+
+<ul>
+  <li>Fix as bug in the Focus gain, on iOS <a href="https://github.com/dooboolab/flutter_sound/issues/324#issuecomment-630970336">#324</a></li>
+</ul>
+
+<h2 id="4041">4.0.4+1</h2>
+
+<ul>
+  <li>Fix a bug in <code class="language-plaintext highlighter-rouge">resumeRecorder()</code> on Android : the dbPeak Stream was not restored after a resume()</li>
+  <li>Fix a bug in <code class="language-plaintext highlighter-rouge">resumeRecorder()</code> : the returned value was sometimes a boolean instead of a String.</li>
+</ul>
+
+<h2 id="4031">4.0.3+1</h2>
+
+<ul>
+  <li>Check the Initialization Status, before accessing Flutter Sound Modules <a href="https://github.com/dooboolab/flutter_sound/issues/307">#307</a></li>
+  <li>Fixes : Pausing a recording doesn’t ‘pause’ the duration. <a href="https://github.com/dooboolab/flutter_sound/issues/278">#278</a></li>
+  <li>Fix a crash that we had when accessing the global variable AndroidActivity from <code class="language-plaintext highlighter-rouge">BackGroundAudioSerice.java</code> <a href="https://github.com/dooboolab/flutter_sound/issues/317">#317</a></li>
+</ul>
+
+<h2 id="4011">4.0.1+1</h2>
+
+<ul>
+  <li>”s.static_framework = true” in flutter_sound.podspec</li>
+</ul>
+
+<h2 id="400">4.0.0</h2>
+
+<ul>
+  <li>Adds pedantic lints and major refactoring of example with bug fixes. <a href="https://github.com/dooboolab/flutter_sound/pull/279">#279</a></li>
+  <li>Native code is directely linked with FFmpeg. Flutter Sound App does not need any more to depends on flutter_ffmpeg <a href="https://github.com/dooboolab/flutter_sound/issues/265">#265</a> and <a href="https://github.com/dooboolab/flutter_sound/issues/273">#273</a></li>
+  <li>Add a new parameter in the Track structure : albumArtFile</li>
+  <li>A new flutter plugin is born : <code class="language-plaintext highlighter-rouge">flutter_sound_lite</code> <a href="https://github.com/dooboolab/flutter_sound/issues/291">#291</a></li>
+  <li>Adds a new parameter <code class="language-plaintext highlighter-rouge">whenPaused:</code> to the <code class="language-plaintext highlighter-rouge">startPlayerFromTrack()</code> function. <a href="https://github.com/dooboolab/flutter_sound/issues/314">#314</a></li>
+  <li>Fix bug for displaying a remote albumArt on Android. <a href="https://github.com/dooboolab/flutter_sound/issues/290">#290</a></li>
+</ul>
+
+<h2 id="3110">3.1.10</h2>
+
+<ul>
+  <li>Trying to catch Android crash during a dirty Timer. <a href="https://github.com/dooboolab/flutter_sound/issues/289">#289</a></li>
+</ul>
+
+<h2 id="319">3.1.9</h2>
+
+<ul>
+  <li>Trying to fix the Android crash when AndroidActivity is null <a href="https://github.com/dooboolab/flutter_sound/issues/296">#296</a></li>
+</ul>
+
+<h2 id="318">3.1.8</h2>
+
+<ul>
+  <li>Fix a bug (‘async’) when the app forget to initalize its Flutter Sound module. <a href="https://github.com/dooboolab/flutter_sound/issues/287">#287</a></li>
+</ul>
+
+<h2 id="317">3.1.7</h2>
+
+<ul>
+  <li>Codec PCM for recorder on iOS</li>
+  <li>Optional argument <code class="language-plaintext highlighter-rouge">requestPermission</code> before <code class="language-plaintext highlighter-rouge">startRecorder()</code> so that the App can control itself the recording permissions. <a href="https://github.com/dooboolab/flutter_sound/pull/283">#283</a></li>
+</ul>
+
+<h2 id="3161">3.1.6+1</h2>
+
+<ul>
+  <li>Fix a bug when initializing for Flutter Embedded V1 on Android <a href="https://github.com/dooboolab/flutter_sound/issues/267">#267</a></li>
+  <li>Add _removePlayerCallback, _removeRecorderCallback() and _removeDbPeakCallback() inside release() <a href="https://github.com/dooboolab/flutter_sound/pull/248">#248</a></li>
+  <li>Fix conflict with permission_handler 5.x.x <a href="https://github.com/dooboolab/flutter_sound/pull/274">#274</a></li>
+  <li>On iOS, <code class="language-plaintext highlighter-rouge">setMeteringEnabled:YES</code> is called during <code class="language-plaintext highlighter-rouge">setDbLevelEnabled()</code> <a href="https://github.com/dooboolab/flutter_sound/pull/252">#252</a>, <a href="https://github.com/dooboolab/flutter_sound/issues/251">#251</a></li>
+  <li>The call to <code class="language-plaintext highlighter-rouge">initialize()</code> is now optional <a href="https://github.com/dooboolab/flutter_sound/issues/271">#271</a></li>
+  <li>README : <a href="https://github.com/dooboolab/flutter_sound/issues/265">#265</a></li>
+</ul>
+
+<h2 id="315">3.1.5</h2>
+
+<ul>
+  <li>Fix README : <a href="https://github.com/dooboolab/flutter_sound/pull/268">#268</a></li>
+</ul>
+
+<h2 id="314">3.1.4</h2>
+
+<ul>
+  <li>Change dependecies in range
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>permission_handler: "&gt;=4.0.0 &lt;5.0.0"
+flutter_ffmpeg: "&gt;=0.2.0 &lt;1.0.0"
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="313">3.1.3</h2>
+
+<ul>
+  <li>The <code class="language-plaintext highlighter-rouge">isRecording</code> variable is false when the recorder is paused <a href="https://github.com/dooboolab/flutter_sound/issues/266">#266</a></li>
+</ul>
+
+<h2 id="312">3.1.2</h2>
+
+<ul>
+  <li>Flutter Sound depends on permission_handler: ^4.4.0 <a href="https://github.com/dooboolab/flutter_sound/issues/263">#263</a></li>
+</ul>
+
+<h2 id="310">3.1.0</h2>
+
+<ul>
+  <li>flutter_sound modules are re-entrant <a href="https://github.com/dooboolab/flutter_sound/issues/250">#250</a> and <a href="https://github.com/dooboolab/flutter_sound/issues/232">#232</a>
+    <ul>
+      <li>We can open several <code class="language-plaintext highlighter-rouge">FlutterSoundPlayer</code> at the same time</li>
+      <li>We can open several <code class="language-plaintext highlighter-rouge">FlutterSoundRecorder</code> at the same time</li>
+    </ul>
+  </li>
+  <li>Add new API verbs : <a href="https://github.com/dooboolab/flutter_sound/issues/244">#244</a>
+    <ul>
+      <li>flutterSoundHelper.getLastFFmpegReturnCode()</li>
+      <li>flutterSoundHelper.getLastFFmpegCommandOutput()</li>
+      <li>flutterSoundHelper.FFmpegGetMediaInformation() which return info on the given record</li>
+      <li>flutterSoundHelper.duration() which return the number of milli-seconds for the given record</li>
+    </ul>
+  </li>
+  <li>Add new API verbs : <a href="https://github.com/dooboolab/flutter_sound/issues/242">##242</a>
+    <ul>
+      <li>FlutterSoundRecorder.pauseRecorder()</li>
+      <li>FlutterSoundRecorder.resumeRecorder()</li>
+    </ul>
+  </li>
+  <li>flutter_sound is now compatible with permission_handler 5.x.x <a href="https://github.com/dooboolab/flutter_sound/issues/259">#259</a></li>
+  <li>API to control the <code class="language-plaintext highlighter-rouge">audiofocus</code> <a href="https://github.com/dooboolab/flutter_sound/issues/219">#219</a></li>
+  <li>API to set the <code class="language-plaintext highlighter-rouge">audio-category</code> (i.e. duck-others) <a href="https://github.com/dooboolab/flutter_sound/issues/219">#219</a></li>
+  <li>AndroidX and Android embbeded-V2 support <a href="https://github.com/dooboolab/flutter_sound/issues/203">#203</a></li>
+  <li>Add a parameter to <code class="language-plaintext highlighter-rouge">startPlayer</code> to specify a callback when the song is finished <a href="https://github.com/dooboolab/flutter_sound/issues/215">#215</a></li>
+  <li>License is now LGPL 3.0 instead of MIT</li>
+</ul>
+
+<h2 id="3001">3.0.0+1</h2>
+
+<ul>
+  <li>bugfix <a href="https://github.com/dooboolab/flutter_sound/issues/254">#254</a></li>
+</ul>
+
+<h2 id="300">3.0.0</h2>
+
+<ul>
+  <li>Module <code class="language-plaintext highlighter-rouge">flauto</code> for controlling flutter_sound from the lock-screen <a href="https://github.com/dooboolab/flutter_sound/issues/219">219</a> and <a href="https://github.com/dooboolab/flutter_sound/pull/243">#243</a>
+    <blockquote>
+      <p>Highly honor <a href="https://github.com/Larpoux">Larpoux</a>, <a href="https://github.com/bsutton">bsutton</a>, <a href="https://github.com/salvatore373">salvatore373</a> :tada:!</p>
+    </blockquote>
+  </li>
+</ul>
+
+<h2 id="211">2.1.1</h2>
+
+<ul>
+  <li>Handle custom audio path from <a href="https://pub.dev/packages/path_provider">path_provider</a>.</li>
+</ul>
+
+<h2 id="205">2.0.5</h2>
+
+<ul>
+  <li>Hotfix <a href="https://github.com/dooboolab/flutter_sound/issues/221">#221</a></li>
+  <li>Use AAC-LC format instead of MPEG-4 <a href="https://github.com/dooboolab/flutter_sound/pull/209">#209</a></li>
+</ul>
+
+<h2 id="204">2.0.4</h2>
+
+<ul>
+  <li>OGG/OPUS support on iOS <a href="https://github.com/dooboolab/flutter_sound/pull/199">#199</a></li>
+</ul>
+
+<h2 id="203">2.0.3</h2>
+
+<ul>
+  <li>Resolve <a href="https://github.com/dooboolab/flutter_sound/issues/194">#194</a>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">stopReocorder</code> resolve path.</li>
+    </ul>
+  </li>
+  <li>Resolve <a href="https://github.com/dooboolab/flutter_sound/issues/198">#198</a>
+    <ul>
+      <li>Improve static handler in android.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="201">2.0.1</h2>
+
+<ul>
+  <li>Add compatibility for android sdk 19.</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">androidx</code> compatibility.</li>
+  <li>Resolve <a href="https://github.com/dooboolab/flutter_sound/issues/193">#193</a>
+    <ul>
+      <li>Restore default <code class="language-plaintext highlighter-rouge">startRecorder</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="190">1.9.0</h2>
+
+<ul>
+  <li>Fix issue <a href="https://github.com/dooboolab/flutter_sound/issues/175">#175</a>
+    <ul>
+      <li>add functions
+. isEncoderSupported(t_CODEC codec);
+. isDecoderSupported(t_CODEC codec);</li>
+      <li>add property ‘audioState’</li>
+      <li>check if codec is really supported before doing ‘startRecorder’</li>
+      <li>modify the example app : disable buttons when the button is not compatible with the current state</li>
+      <li>in the example, add sound assets encoded with the various encoder</li>
+      <li>modify the example to play from assets</li>
+      <li>modify the example to allow selection of various codec</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="170">1.7.0</h2>
+
+<ul>
+  <li>startPlayerFromBuffer, to play from a buffer <a href="https://github.com/dooboolab/flutter_sound/pull/170">#170</a></li>
+</ul>
+
+<h2 id="160">1.6.0</h2>
+
+<ul>
+  <li>Set android default encoding option to <code class="language-plaintext highlighter-rouge">AAC</code>.</li>
+  <li>Fix android default poor sound.
+    <ul>
+      <li>Resolve <a href="https://github.com/dooboolab/flutter_sound/issues/155">#155</a></li>
+      <li>Resolve <a href="https://github.com/dooboolab/flutter_sound/issues/95">#95</a></li>
+      <li>Resolve <a href="https://github.com/dooboolab/flutter_sound/issues/79">#75</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="152">1.5.2</h2>
+
+<ul>
+  <li>Postfix <code class="language-plaintext highlighter-rouge">GetDirectoryType</code> to avoid conflicts <a href="https://github.com/dooboolab/flutter_sound/pull/147">#147</a></li>
+</ul>
+
+<h2 id="151">1.5.1</h2>
+
+<ul>
+  <li>Set android recorder encoder default value to <code class="language-plaintext highlighter-rouge">AndroidEncoder.DEFAULT</code>.</li>
+</ul>
+
+<h2 id="150">1.5.0</h2>
+
+<ul>
+  <li>Use <code class="language-plaintext highlighter-rouge">NSCachesDirectory</code> instead of <code class="language-plaintext highlighter-rouge">NSTemporaryDirectory</code> <a href="https://github.com/dooboolab/flutter_sound/pull/141">#141</a></li>
+</ul>
+
+<h2 id="148">1.4.8</h2>
+
+<ul>
+  <li>Resolve <a href="https://github.com/dooboolab/flutter_sound/issues/129">#129</a></li>
+</ul>
+
+<h2 id="147">1.4.7</h2>
+
+<ul>
+  <li>Resolve few issues on <code class="language-plaintext highlighter-rouge">ios</code> record path.</li>
+  <li>Resolve issue <code class="language-plaintext highlighter-rouge">playing</code> status so player can resume.</li>
+  <li>Resolve <a href="https://github.com/dooboolab/flutter_sound/issues/134">#134</a></li>
+  <li>Resolve <a href="https://github.com/dooboolab/flutter_sound/issues/135">#135</a></li>
+</ul>
+
+<h2 id="144">1.4.4</h2>
+
+<ul>
+  <li>Stopped recording generating infinite db values <a href="https://github.com/dooboolab/flutter_sound/pull/131">#131</a></li>
+</ul>
+
+<h2 id="143">1.4.3</h2>
+
+<ul>
+  <li>Improved db calcs <a href="https://github.com/dooboolab/flutter_sound/pull/123">#123</a></li>
+</ul>
+
+<h2 id="142">1.4.2</h2>
+
+<ul>
+  <li>Fixed ‘mediaplayer went away with unhandled events’ bug <a href="https://github.com/dooboolab/flutter_sound/pull/104">#104</a></li>
+</ul>
+
+<h2 id="141">1.4.1</h2>
+
+<ul>
+  <li>Fixed ‘mediaplayer went away with unhandled events’ bug <a href="https://github.com/dooboolab/flutter_sound/pull/83">#83</a></li>
+</ul>
+
+<h2 id="140">1.4.0</h2>
+
+<ul>
+  <li>AndroidX compatibility improved <a href="https://github.com/dooboolab/flutter_sound/pull/68">#68</a></li>
+  <li>iOS: Fixes for seekToPlayer <a href="https://github.com/dooboolab/flutter_sound/pull/72">#72</a></li>
+  <li>iOS: Setup configuration for using bluetooth microphone recording input <a href="https://github.com/dooboolab/flutter_sound/pull/73">#73</a></li>
+</ul>
+
+<h2 id="136">1.3.6</h2>
+
+<ul>
+  <li>Android: Adds a single threaded command scheduler for all recording related
+commands.</li>
+  <li>Switch source &amp; target compability to Java 8</li>
+  <li>Bump gradle plugin version dependencies</li>
+</ul>
+
+<h2 id="13">1.3.+</h2>
+
+<ul>
+  <li>Support db/meter <a href="https://github.com/dooboolab/flutter_sound/pull/41">#41</a></li>
+  <li>Show wrong recorder timer text <a href="https://github.com/dooboolab/flutter_sound/pull/47">#47</a></li>
+  <li>Add ability to specify Android &amp; iOS encoder <a href="https://github.com/dooboolab/flutter_sound/pull/49">#49</a></li>
+  <li>Adjust db range and fix nullable check in ios <a href="https://github.com/dooboolab/flutter_sound/pull/59">#59</a></li>
+  <li>Android: Recording operations on a separate command queue <a href="https://github.com/dooboolab/flutter_sound/pull/66">#66</a></li>
+  <li>Android: Remove reference to non-AndroidX classes which improves compatibility</li>
+</ul>
+
+<h2 id="12">1.2.+</h2>
+
+<ul>
+  <li>Fixed sound distorting when playing recorded audio again. Issue <a href="https://github.com/dooboolab/flutter_sound/issues/14">#14</a>.</li>
+  <li>
+    <p>Fixed <code class="language-plaintext highlighter-rouge">seekToPlayer</code> for android. Issue <a href="https://github.com/dooboolab/flutter_sound/issues/10">#10</a>.</p>
+  </li>
+  <li>Expose recorder <code class="language-plaintext highlighter-rouge">sampleRate</code> and <code class="language-plaintext highlighter-rouge">numChannel</code>.</li>
+  <li>Do not append <code class="language-plaintext highlighter-rouge">tmp</code> when filePath provided in <code class="language-plaintext highlighter-rouge">ios</code>.</li>
+  <li>Resolve <code class="language-plaintext highlighter-rouge">regression</code> issue in <code class="language-plaintext highlighter-rouge">1.2.3</code> which caused in <code class="language-plaintext highlighter-rouge">1.2.2</code>.</li>
+  <li>Reduce the size of audio file in <code class="language-plaintext highlighter-rouge">1.2.4</code>. Related <a href="https://github.com/dooboolab/flutter_sound/issues/26">#26</a>.</li>
+  <li>Fixed <code class="language-plaintext highlighter-rouge">recording</code> issue in android in <code class="language-plaintext highlighter-rouge">1.2.5</code>.</li>
+  <li>Changed <code class="language-plaintext highlighter-rouge">seekToPlayer</code> to place exact <code class="language-plaintext highlighter-rouge">secs</code> instead adding it.</li>
+  <li>Fix file URI for recording and playing in iOS.</li>
+</ul>
+
+<h2 id="11">1.1.+</h2>
+
+<ul>
+  <li>Released 1.1.0 with beautiful logo from mansa.</li>
+  <li>Improved readme.</li>
+  <li>Resolve #7.</li>
+  <li>Fixed missing break in switch statement.</li>
+</ul>
+
+<h2 id="109">1.0.9</h2>
+
+<ul>
+  <li>Reimport <code class="language-plaintext highlighter-rouge">intl</code> which is needed to format date in Dart.</li>
+</ul>
+
+<h2 id="108">1.0.8</h2>
+
+<ul>
+  <li>Implemented <code class="language-plaintext highlighter-rouge">setVolume</code> method.</li>
+  <li>Specific error messages given in android.</li>
+  <li>Manage ios player thread when audio is not loaded.</li>
+</ul>
+
+<h2 id="107">1.0.7</h2>
+
+<ul>
+  <li>Safer handling of progressUpdate in ios when audio is invalid.</li>
+</ul>
+
+<h2 id="106">1.0.6</h2>
+
+<ul>
+  <li>Fixed bug in platform specific code.</li>
+</ul>
+
+<h2 id="105">1.0.5</h2>
+
+<ul>
+  <li>Fixed pug in <code class="language-plaintext highlighter-rouge">seekToPlayer</code> in <code class="language-plaintext highlighter-rouge">ios</code>.</li>
+</ul>
+
+<h2 id="103">1.0.3</h2>
+
+<ul>
+  <li>Added license.</li>
+</ul>
+
+<h2 id="100">1.0.0</h2>
+
+<ul>
+  <li>Released preview version for audio <code class="language-plaintext highlighter-rouge">recorder</code> and <code class="language-plaintext highlighter-rouge">player</code>.</li>
+</ul>
+
+
+    <div class="tags">
+        
+        <b>Tags: </b>
+        
+        
+        
+        
+        
+    </div>
+
+
+<div id="commento"></div>
+<script src="https://commento.canardoux.xyz/js/commento.js"></script>
+<noscript>Please enable JavaScript to load the comments.</noscript>
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2021 Dooboolab. Licensed under LGPL. <br />
+ Site last generated: Apr 15, 2021 <br />
+<p><img src="images/banner5.svg" alt="Company logo" max-width="10"/></p>
+                </div>
+            </div>
+</footer>
+
+
+    </div>
+    <!-- /.row -->
+    </div>
+<!-- /.container -->
+<!--</div> -->
+<!-- /#main -->
+    </div>
+
+</body>
+<!-- 
+<!-- the google_analytics_id gets auto inserted from the config file
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','G-DPDLW922EP','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+-->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DPDLW922EP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-1YL444CW83');
+</script>
+ -->
+</html>
