@@ -1,0 +1,18 @@
+
+dartdoc:
+  categories:
+    "Main":
+      markdown: main.md
+      name: Great
+
+    "UI_Widgets":
+      markdown: ui_widgets.md
+      name: UI
+
+    "Utilities":
+      markdown: utilities.md
+      name: util
+
+  categoryOrder: [ "Main", "UI_Widgets", "Utilities"]
+  linkTo:
+    url: "https://my.dartdocumentationsite.org/dev/%v%"

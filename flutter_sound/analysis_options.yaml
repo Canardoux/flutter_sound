@@ -1,0 +1,7 @@
+#include: package:effective_dart/analysis_options.yaml
+include: package:pedantic/analysis_options.yaml
+
+
+linter:
+  rules:
+    lines_longer_than_80_chars: false

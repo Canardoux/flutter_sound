@@ -1,8 +1,0 @@
-.DS_Store
-TauEngine/android/TauEngine/.gradle/
-.gitmodules
-doc/_site/
-doc/pages/flutter-sound/api
-doc/pages/flutter-sound/web_example
-_toto.tgz
-_toto2.tgz

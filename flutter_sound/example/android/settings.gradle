@@ -1,0 +1,24 @@
+include ':app'
+
+def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()
+
+def plugins = new Properties()
+def pluginsFile = new File(flutterProjectRoot.toFile(), '.flutter-plugins')
+if (pluginsFile.exists()) {
+    pluginsFile.withReader('UTF-8') { reader -> plugins.load(reader) }
+}
+
+plugins.each { name, path ->
+    def pluginDirectory = flutterProjectRoot.resolve(path).resolve('android').toFile()
+    include ":$name"
+    project(":$name").projectDir = pluginDirectory
+}
+
+// -------------------------------------------------------------------------------------
+// CAUTION: The following instruction is for developping and debugging the Flauto Engine
+// DO NOT INCLUDE THE FOLLOWING LINES IN A REAL APP !!!
+// include 'tau_sound_core'
+// project(':tau_sound_core').projectDir = file('../../../tau_core/android')
+// -------------------------------------------------------------------------------------
+
+
