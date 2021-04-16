@@ -7,8 +7,8 @@ fi
 
 
 VERSION=$1
-VERSION_CODE=${VERSION//./}
-VERSION_CODE=${VERSION_CODE//+/}
+VERSION_CODE=${VERSION#./}
+VERSION_CODE=${VERSION_CODE#+/}
 
 bin/flavor.sh FULL
 bin/reldev.sh REL
@@ -65,12 +65,12 @@ git add .
 git commit -m "TAU : Version $VERSION"
 git push origin
 git push gl
-//git push bb
+#git push bb
 if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
     git push  -f origin $VERSION
     git push  -f gl $VERSION
-    //git push  -f bb $VERSION
+    #git push  -f bb $VERSION
 fi
 
 cd tau_core
@@ -78,12 +78,12 @@ git add .
 git commit -m "TAU : Version $VERSION"
 git push origin
 git push gl
-//git push bb
+#git push bb
 if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
     git push  -f origin $VERSION
     git push  -f gl $VERSION
-    //git push  -f bb $VERSION
+    #git push  -f bb $VERSION
 fi
 cd ..
 
@@ -111,12 +111,12 @@ git add .
 git commit -m "TAU : Version $VERSION"
 git push origin
 git push gl
-//git push bb
+#git push bb
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push  -f origin $VERSION
         git push  -f gl $VERSION
-        //git push  -f bb $VERSION
+        #git push  -f bb $VERSION
 fi
 
 cd tau_core
@@ -124,12 +124,12 @@ git add .
 git commit -m "TAU : Version $VERSION"
 git push origin
 git push gl
-//git push bb
+#git push bb
 if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
     git push  -f origin $VERSION
     git push  -f gl $VERSION
-    //git push  -f bb $VERSION
+    #git push  -f bb $VERSION
 fi
 cd ..
 
@@ -235,12 +235,12 @@ git add .
 git commit -m "TAU : Version $VERSION"
 git push origin
 git push gl
-//git push bb
+#git push bb
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push  -f origin $VERSION
         git push  -f gl $VERSION
-        //git push  -f bb $VERSION
+        #git push  -f bb $VERSION
 fi
 
 cd tau_core
@@ -248,12 +248,12 @@ git add .
 git commit -m "TAU : Version $VERSION"
 git push origin
 git push gl
-//git push bb
+#git push bb
 if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
     git push  -f origin $VERSION
     git push  -f gl $VERSION
-    //git push  -f bb $VERSION
+    #git push  -f bb $VERSION
 fi
 cd ..
 
