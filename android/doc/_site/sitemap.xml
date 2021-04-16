@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  
+  <url>
+    <loc>/commento-post.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/roadmap-post.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/docunavailable-post.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/better_api-post.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/newdoc-post.html</loc>
+  </url>
+  
+  
+
+
+  
+  
+  
+  
+  <url>
+    <loc>/changelog.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/links_license.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/readme.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/architecture.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_utilities_constructor.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_recorder_constructor.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/links_contribution.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_utilities_convert_file.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_recorder_delete_record.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/flutter_sound_examples_demo.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_utilities_duration.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_utilities_execute_ffmpeg_with_arguments.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_feed_from_stream.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_utilities_ffmpeg_get_media_information.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/flutter_sound.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_food.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_food_sink.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_utilities_get_last_ffmpeg_command_output.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_utilities_get_last_ffmpeg_return_code.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_get_player_state.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_get_progress.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/guides_getting_started.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/guides_codec.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/guides_pcm_wave.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/guides_guides.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/guides_codec.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/guides_getting_started.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/guides_graph.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/guides_lock_screen.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/guides_play_stream.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/guides_record_stream.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/guides_recording_pcm.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/guides_web.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/temporary_files.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/guides_ui.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/flutter_sound_install.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_is_decoder_supported.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_recorder_is_encoder_supported.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_utilities_is_ffmpeg_available.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/guides_lock_screen.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_main.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/links_migration.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/flutter_sound_examples_multi_playbacks.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/news.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/news_archive.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_now_playing.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_on_progress.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_recorder_on_progress.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_recorder_open_audio_session.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_open_audio_session.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_pause_player.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_recorder_pause_recorder.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_utilities_pcm_to_wave.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_utilities_pcm_to_wave_buffer.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/flutter_sound_examples_play_from_mic.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/flutter_sound_examples_playback_from_stream_1.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/flutter_sound_examples_playback_from_stream_2.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_constructor.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  <url>
+    <loc>/flutter_sound_examples_record_to_stream.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_recorder_recorder_state.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_resume_player.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_recorder_resume_recorder.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_seek_player.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_set_audio_focus.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_recorder_set_audio_focus.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_recorder_set_subscription_duration.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_set_subscription_duration.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_set_ui_progress_bar.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_set_volume.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/flutter_sound_examples_simple_playback.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/flutter_sound_examples_simple_recorder.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  <url>
+    <loc>/flutter_sound_examples_sound_effects.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_startPlayer.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_start_player_from_mic.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_start_player_from_stream.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_start_player_from_track.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_recorder_start_recorder.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_stop_player.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_recorder_stop_recorder.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/flutter_sound_examples_stream_loop.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  
+  
+  <url>
+    <loc>/tau_api_widgets_ui_controller.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_widgets_ui_player.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_widgets_ui_recorder.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_widgets</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_utilities</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_utilities_wave_to_pcm.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_utilities_wave_to_pcm_buffer.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/flutter_sound_examples_widget_ui.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/guides_ui.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/assets/css/style.css</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/pages/react-native/react-native.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/pages/react-native/t-under-react-native.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/pages/cordova/</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/pages/solar2D/</loc>
+  </url>
+  
+  
+</urlset>

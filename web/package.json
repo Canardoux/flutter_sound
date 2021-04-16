@@ -1,0 +1,40 @@
+{
+        "name": "tau_sound_core",
+        "version": "8.0.2+1",
+        "description": "The Tau Engine for Web App",
+        "homepage": "https://github.com/Canardoux/tau",
+        "keywords": [
+                "flauto",
+                "flutter_sound",
+                "tau",
+                "tau_engine",
+                "tau_core",
+                "audio",
+                "sound",
+                "web audio",
+                "webaudio",
+                "browser",
+                "html5",
+                "html5 audio"
+        ],
+        "author": "Larpoux <larpoux@gmail.com> (https://github.com/orgs/Canardoux/people/Larpoux)",
+        "repository": {
+                "type": "git",
+                "url": "https://github.com/dooboolab/flutter_sound.git"
+        },
+        "devDependencies": {
+                "uglify-js": "2.x"
+        },
+        "main": "js/flutter_sound/flutter_sound.js",
+        "license": "LGPL-3.0-only",
+        "files": [
+                "js/flutter_sound",
+                "js/flutter_sound/flutter_sound.js",
+                "js/flutter_sound/flutter_sound_player.js",
+                "js/flutter_sound/flutter_sound_recorder.js",
+                "LICENSE"
+        ],
+        "dependencies": {
+                "my-package": "0.0.0"
+        }
+}

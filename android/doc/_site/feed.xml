@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>documentation-theme-jekyll</title>
+        <description>This is the documentation of the &amp;tau; Project.</description>
+        <link>/</link>
+        <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
+        <pubDate>Thu, 15 Apr 2021 19:21:32 +0200</pubDate>
+        <lastBuildDate>Thu, 15 Apr 2021 19:21:32 +0200</lastBuildDate>
+        <generator>Jekyll v3.9.0</generator>
+        
+        <item>
+            <title>Happy New Year, &amp;tau;</title>
+            <description>&lt;p&gt;2021 will be a great year for τ&lt;/p&gt;
+
+&lt;p&gt;Beside the regular maintenance (I am actually spending too much time on maintenance), I want to achieve
+two major developments during 2021 :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Implement Audio-Graphs (see below)&lt;/li&gt;
+  &lt;li&gt;React Native support (see below)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If at the of the year those two major points are achieved, then I will consider τ as a succes.&lt;/p&gt;
+
+&lt;h2 id=&quot;playfrommic&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;playFromMic()&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;Several τ users need to play on the headset what is recorded by the microphone, in quasi-real-time.&lt;/p&gt;
+
+&lt;p&gt;I am convinced that implementing audio-graph will be the general solution and will be very elegant.
+Today I introduce this new simple verb &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;startPlayerFromMic()&lt;/code&gt; before the great global solution.&lt;/p&gt;
+
+&lt;p&gt;The App does not process the audio data. The App is in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pass-threw&lt;/code&gt; mode. Later we will implement a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cut-mode&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;flutter_sound_examples_play_from_mic.html&quot;&gt;This new example&lt;/a&gt; can be compared to &lt;a href=&quot;flutter_sound_examples_stream_loop.html&quot;&gt;the old loop example&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;1-ios&quot;&gt;1. iOS&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;startPlayerFromMic()&lt;/code&gt; directely links the microphone to the headset &lt;strong&gt;inside the OS&lt;/strong&gt; itself, without any processing by τ&lt;/p&gt;
+
+&lt;p&gt;The improvement is really good. The delay between what is recorded and what is played is much better.&lt;/p&gt;
+
+&lt;h3 id=&quot;2-android&quot;&gt;2. Android&lt;/h3&gt;
+
+&lt;p&gt;The link between the microphone and the headset is done inside τ-core.
+The messaging channels between Java and Dart are not involved. The audio data are just transfered from the recording-thread to the player thread.&lt;/p&gt;
+
+&lt;p&gt;This is a great disappointment : the latency is marginally improved.
+This means that implementing data transfert from/to Dart with FFI will not benefit from using FFI.&lt;/p&gt;
+
+&lt;p&gt;I am currentely working to improve this latency problem. I think that it can be possible to do better on Android&lt;/p&gt;
+
+&lt;h2 id=&quot;comments&quot;&gt;Comments&lt;/h2&gt;
+
+&lt;p&gt;τ docummentation has a Commento area at the bottom of every pages.&lt;/p&gt;
+
+&lt;p&gt;Doing a comment is very simple.
+You can login using :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Your google account (momentarily not available during a few days)&lt;/li&gt;
+  &lt;li&gt;Your Github account&lt;/li&gt;
+  &lt;li&gt;Your gitlab account&lt;/li&gt;
+  &lt;li&gt;Your Twitter account&lt;/li&gt;
+  &lt;li&gt;By providing your email address&lt;/li&gt;
+  &lt;li&gt;And now, you can even post anonymously (in this case, your post will be moderated).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;τ documentation is not so good that it cannot be improved.
+Doing a comment with Commento is so simple that I do not understand that nobody want to improve this doc.&lt;/p&gt;
+
+&lt;div class=&quot;alert alert-info&quot; role=&quot;alert&quot;&gt;&lt;i class=&quot;fa fa-info-circle&quot;&gt;&lt;/i&gt; &lt;b&gt;Note:&lt;/b&gt; I am not sure to receive correctely emails when a user makes a comment.
+Maybe there are many comments but I have not got them.&lt;/div&gt;
+
+&lt;h2 id=&quot;audio-graphs&quot;&gt;Audio-graphs&lt;/h2&gt;
+
+&lt;p&gt;Audio-graph will be several audio-nodes linked together.
+For example, you will be able to connect the Microphone node to the Equalizer node, and the Equalizer node to the Headset node.&lt;/p&gt;
+
+&lt;p&gt;I really want to do that. This project is really interesting to be developed, and I am fed up to work on uninteresting things.&lt;/p&gt;
+
+&lt;p&gt;My dream is also to create a graphic-editor to be be able to draw the audio-graph with the mouse.
+The graphic editor will generate both a Dart (or Javascript) module and a visual SVG image that the τ user will be able to insert in its own documentation.&lt;/p&gt;
+
+&lt;p&gt;It will also generate a graph representation in an external format (JSON?), that you will be able to load during run-time inside your App.&lt;/p&gt;
+
+&lt;div class=&quot;alert alert-success&quot; role=&quot;alert&quot;&gt;&lt;i class=&quot;fa fa-check-square-o&quot;&gt;&lt;/i&gt; &lt;b&gt;Tip:&lt;/b&gt; I guess that some App, will not want to &lt;strong&gt;hard code&lt;/strong&gt; their audio-graph during development time,
+but will want to allow their own end-user to define their audio-graph to be run.
+Those App will provide their own graph editor, or perhaps will provide the τ graph editor to the end user.
+The end user will &lt;em&gt;draw&lt;/em&gt; their own graph on their personal computer.&lt;/div&gt;
+
+&lt;div class=&quot;alert alert-info&quot; role=&quot;alert&quot;&gt;&lt;i class=&quot;fa fa-info-circle&quot;&gt;&lt;/i&gt; &lt;b&gt;Note:&lt;/b&gt; If we want that a normal end-user can use this editor, this editor must not be too technical.
+Something powerful but usable by someone who has no computer notion.&lt;/div&gt;
+
+&lt;h3 id=&quot;examples&quot;&gt;Examples&lt;/h3&gt;
+
+&lt;figure&gt;&lt;img class=&quot;docimage&quot; src=&quot;images/graph_examples.svg&quot; alt=&quot;&quot; /&gt;&lt;figcaption&gt;Some Audio-Graph examples&lt;/figcaption&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;react-native-support&quot;&gt;React Native support&lt;/h2&gt;
+
+&lt;p&gt;You are a Flutter developer. So you do not care very much about supporting other frameworks.&lt;/p&gt;
+
+&lt;p&gt;But I am a complete libertarian. I really believe in freedom.
+I hate jails. And Dart is a kind of jail. Dart does not exist outside Flutter.
+And Flutter is perhaps a good framework, but Flutter cannot be everything.&lt;/p&gt;
+
+&lt;p&gt;In Future it will we good if we can support&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Javascript (React-Native, Native-Script, Ionic). And more generally, all the platforms that support Cordova.&lt;/li&gt;
+  &lt;li&gt;LUA (Solar 2D). I love LUA :+1&lt;/li&gt;
+  &lt;li&gt;Pascal (Lazarus). I do love Pascal :+1&lt;/li&gt;
+  &lt;li&gt;Perhaps C# (Xamarin). Note sure : C# is another jail…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There is no limit of what could be done for τ. But I will probably die before.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-license&quot;&gt;The license&lt;/h2&gt;
+
+&lt;p&gt;When I begun to work on Flutter Sound (one year ago), this library was published under the MIT license.
+I consider Free licenses that do not include &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;copyleft&lt;/code&gt; clause as bad licenses.
+I really did not want to spend much of my life on a Software badly protected&lt;/p&gt;
+
+&lt;p&gt;I am a liberterian (I believe in Freedom which is the real meaning of anarchy).&lt;/p&gt;
+
+&lt;p&gt;The boss of Dooboolab (my friend Hyo), is a very nice man, and accepted without hesitation to change the License to LGPL.
+I am very glad of this change : recently Flutter Sound gave birth to a new fork. Being allowed to fork a Free Software is a very good thing
+and it is the base of the Freedom.&lt;/p&gt;
+
+&lt;p&gt;But because Flutter Sound (now τ) is protected by LGPL, this fork will never be Close Source with a proprietary license.
+This fork will probably die soon (if it is not already dead), but the risk having a fork becoming Close Source cannot be taken.&lt;/p&gt;
+
+&lt;p&gt;Then, I asked to Dooboolab to transform the LGPL license to GPL. I consider GPL as &lt;strong&gt;THE&lt;/strong&gt; real Free license.
+But Dooboolab did not accept that, and I understand his refusal.&lt;/p&gt;
+
+&lt;p&gt;I had then two choices :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Accept to work part of my life on a software badly protected.&lt;/li&gt;
+  &lt;li&gt;Fork Flutter Sound, me too&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I choosed the former. I thought that leaving Flutter Sound without any developer was a way to kill it.
+And I do no want the death of Flutter Sound.&lt;/p&gt;
+
+&lt;p&gt;Everything that I develop which is linked to Flutter Sound will be covered byt the current LGPL license.&lt;/p&gt;
+
+&lt;p&gt;But new developments (τ for React Native, the Audio-Graph editor, …) will be licensed under the GPL and not anymore LGPL.
+This is a political choice, and the reason I develop Free Software is a political reason.&lt;/p&gt;
+
+&lt;h2 id=&quot;happy-new-year-τ&quot;&gt;Happy New Year, τ&lt;/h2&gt;
+</description>
+            <pubDate>Sun, 10 Jan 2021 00:00:00 +0100</pubDate>
+            <link>/commento-post.html</link>
+            <guid isPermaLink="true">/commento-post.html</guid>
+            
+            <category>news</category>
+            
+            
+        </item>
+        
+        <item>
+            <title>A Roadmap</title>
+            <description>&lt;h2 id=&quot;project-management&quot;&gt;Project management&lt;/h2&gt;
+
+&lt;p&gt;I cleaned the Flutter Sound Project. It was really a mess and I was not able to manage almost 100 issues.
+Some issues was from users asking help, some users having bugs, and many enhancement requests.
+There were some duplicates, some issues not really clear, …&lt;/p&gt;
+
+&lt;p&gt;Now things are simpler :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Open issues are just new issues filled by Flutter Sound users, or issues not really understood.&lt;/li&gt;
+  &lt;li&gt;When the issues are correctly identified (issues that can be started by one of the many Flutter Sound developers 😉 ) it is registered in the TODO list of &lt;a href=&quot;/dooboolab/flutter_sound/projects/3&quot;&gt;the Flutter Sound Project&lt;/a&gt;. This list contains all the issues correctly identified but not still planned. This list has actually 31 tasks in this list. This is many, but I really worried that it were worst. This list is unordered.&lt;/li&gt;
+  &lt;li&gt;When issues are planned, they migrate to the “planned” column. When an issue is planned, Flutter Sound users can have a better hope that it will be solved soon. This list is ordered from high priority to low priority. This list should not be more than a dozen of tasks. Less would be better.&lt;/li&gt;
+  &lt;li&gt;When someone (😉 me ?) begins to work on an issue, it migrates to the “in-progress” column. Big tasks must be subdivided in sub-tasks. Github allows that.&lt;/li&gt;
+  &lt;li&gt;When finished, the issue migrate to the “done” column.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;we-need-developers&quot;&gt;We need developers&lt;/h2&gt;
+
+&lt;p&gt;I have the impression that Flutter Sound users do not understand the importance of the current situation. I am actually the only developer. And there is 43 tasks to be done !
+As I already told you, I never wanted to be the Flutter Sound project leader. In a few month, I will have to stop working on Flutter Sound because another project is waiting for me. I will stop working on Flutter Sound at least probably during a few months. The current situation is not sane.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-τ-roadmap&quot;&gt;The τ Roadmap&lt;/h2&gt;
+
+&lt;p&gt;We need more developers (or more time) to solve 43 issues. So, it is necessary to define priorities.&lt;/p&gt;
+
+&lt;p&gt;I need your help to define those priorities.
+&lt;a href=&quot;https://github.com/dooboolab/flutter_sound/discussions/563&quot;&gt;Here&lt;/a&gt; are the identified tasks. You can vote for these tasks with 👍  or 👎  .&lt;/p&gt;
+</description>
+            <pubDate>Wed, 30 Dec 2020 00:00:00 +0100</pubDate>
+            <link>/roadmap-post.html</link>
+            <guid isPermaLink="true">/roadmap-post.html</guid>
+            
+            <category>news</category>
+            
+            
+        </item>
+        
+        <item>
+            <title>Host unavailable</title>
+            <description>&lt;p&gt;I am sorry, the doc was unavailable during 12 hours.
+It is now OK.&lt;/p&gt;
+</description>
+            <pubDate>Wed, 30 Dec 2020 00:00:00 +0100</pubDate>
+            <link>/docunavailable-post.html</link>
+            <guid isPermaLink="true">/docunavailable-post.html</guid>
+            
+            <category>news</category>
+            
+            
+        </item>
+        
+        <item>
+            <title>A Better API</title>
+            <description>&lt;p&gt;I plan to begin working on the task of cleaning the API (#493) at the end of the week.&lt;/p&gt;
+
+&lt;p&gt;I really want to work soon on #479 (Running Audio Graph) and #487 (FFI for Streams), but I think that #493 must be completed before.&lt;/p&gt;
+
+&lt;p&gt;I would like that functional specifications being written before coding any line of code.
+You (the Flutter Sound users) will approve the specifications before coding.&lt;/p&gt;
+
+&lt;p&gt;I suggest to create a new page on the Wiki, for that. Everybody will be able to contribute.
+It would be great if you (the Flutter Sound users) begin to work on this page right now
+so that a first draft will exist before the end of the week (before I start working on that).&lt;/p&gt;
+
+</description>
+            <pubDate>Wed, 30 Dec 2020 00:00:00 +0100</pubDate>
+            <link>/better_api-post.html</link>
+            <guid isPermaLink="true">/better_api-post.html</guid>
+            
+            <category>news</category>
+            
+            
+        </item>
+        
+        <item>
+            <title>A new &amp;tau; documentation</title>
+            <description>&lt;h2 id=&quot;1-jekyll&quot;&gt;1. Jekyll&lt;/h2&gt;
+
+&lt;p&gt;The previous tool for the τ documentation was &lt;a href=&quot;https://www.gitbook.com/&quot;&gt;Gitbook&lt;/a&gt;.
+It was a bad choice :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Gitbook used to be Free and Open Source (Apache license). But the free project is now deprecated. It has not been maintened for three years.&lt;/li&gt;
+  &lt;li&gt;Gitbook is now developed by a little french company but is not Open Source anymore. This happens with Free software not protected with a strong Free and Open Source license (GPL). This is what happens with license like MIT or Apache which are bad licenses.&lt;/li&gt;
+  &lt;li&gt;My thinking is that Flutter Sound must &lt;strong&gt;NOT USE PROPRIETARY SOFTWARE&lt;/strong&gt;. This is a political choice.&lt;/li&gt;
+  &lt;li&gt;Gitbook is buggy. When we include an HTML page in the documentation, the page hyperlinks point to Github instead of the documentation.&lt;/li&gt;
+  &lt;li&gt;Impossible to include the pages produced by Dartdoc inside our documentation.&lt;/li&gt;
+  &lt;li&gt;The Free/Open Source version of Gitbook has High Security Alerts from Github. This is not acceptable.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The major challenge was to find a tool that can integrate smoothly the Dartdoc Documentation. The Dartdoc documentation is just HTML pages instead of Markdown.
+I investigated many documentation tools (Hugo, Gatsby, JustTheDoc, docsy, docusaurus, …), but all those tools was not compatible with Dartdoc.&lt;/p&gt;
+
+&lt;p&gt;I really wanted the following features :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;The user can browse the API reference documentation (&lt;a href=&quot;dartdoc.html&quot;&gt;Dartdoc Documentation&lt;/a&gt;) from the Flutter Sound documentation without opening a new browser tab, and return to the flutter documentation with the Browser Back button.&lt;/li&gt;
+  &lt;li&gt;The API reference documentation must display the Flutter Sound documentation top navigation bar.&lt;/li&gt;
+  &lt;li&gt;The user can display the left navigation bar on Dartdoc pages, so that he/she will never be lost.&lt;/li&gt;
+  &lt;li&gt;The user can choice to display or hide this left navigation bar if he/she has a narrow screen&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The only tool I found which met my required features is &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;, with the &lt;a href=&quot;https://idratherbewriting.com/documentation-theme-jekyll/index.html&quot;&gt;Documentation Theme for Jekyll&lt;/a&gt;.
+This tool is not perfect. Far from that. But it allows the pages produced by Dartdoc to be integrated inside our documentation.&lt;/p&gt;
+
+&lt;p&gt;I hope that this time the choice is correct : I spent too much time on the documentation tool, instead of the documentation content itself.&lt;/p&gt;
+
+&lt;p&gt;Please, let ne know if you have remarks on this.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-the-version-74&quot;&gt;2. The Version 7.4&lt;/h2&gt;
+
+&lt;p&gt;I did a terrible mistake : the master branch is now named 7.4.9 instead of 6.4.9 Impossible to correct that on pub.dev: a commit is for ever. I am confused :-( .&lt;/p&gt;
+
+&lt;p&gt;I suggest that Flutter Sound users stay on 6.4 .  The version 6.4 will be the real current version released and supported.
+The version 7.x  will be the future version and will not be background compatible with V6.&lt;/p&gt;
+
+&lt;h2 id=&quot;3-a-roadmap&quot;&gt;3. A Roadmap&lt;/h2&gt;
+
+&lt;p&gt;Actually, the Flutter Sound issues are a complete mess.
+Everybody create new issues sometimes for bugs, sometimes for asking help, sometimes to request new features.
+But nobody can have a clear visibility of the actual situation.&lt;/p&gt;
+
+&lt;p&gt;Actually there is 71 issues open. And probably there will be more next week. I cannot manage that all by myself alone.
+The deficiency of Flutter Sound developers is a big problem.&lt;/p&gt;
+
+&lt;p&gt;I am not satisfied with the way Github manage the &lt;em&gt;issues&lt;/em&gt;. I am thinking to setup a real Bug Tracker.
+Something like Mantis, Trac, Bugzilla or Jira. But I worry that those tools are really good to manage
+a project with a real team. Actually Flutter Sound has no team. So nobody to be managed.&lt;/p&gt;
+
+&lt;p&gt;I suggest that for now we keep &lt;em&gt;Github&lt;/em&gt; and use &lt;a href=&quot;https://github.com/dooboolab/flutter_sound/projects/3&quot;&gt;the Projects feature&lt;/a&gt; for trying
+to have a better visibility of&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;what must be done (first column),&lt;/li&gt;
+  &lt;li&gt;what is planned (second column),&lt;/li&gt;
+  &lt;li&gt;what is in progress (third column)&lt;/li&gt;
+  &lt;li&gt;and what is done (fourth column).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I will try to keep the number of issues planned (second column) not too high, and order this column from &lt;strong&gt;high&lt;/strong&gt; priority to &lt;strong&gt;low&lt;/strong&gt; priority.&lt;/p&gt;
+
+&lt;p&gt;When an issue will be registered in the &lt;em&gt;Project&lt;/em&gt; table, I will close it.
+An issue closed will not be necessary fixed, but we will be sure that it is entered somewhere in the planning.
+Note: the &lt;em&gt;Project&lt;/em&gt; table can point to close issues, so this is not a problem to close them.&lt;/p&gt;
+
+&lt;p&gt;Something not clear for me, is how the Flutter Sound users can influence the issues that are planned, and the priority of those planned issues.
+There is three possibilities :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;The Flutter Sound user can post remarks in issues to help me to know what is important or not&lt;/li&gt;
+  &lt;li&gt;The Flutter Sound user can use the &lt;em&gt;Discussions&lt;/em&gt; as a forum to discuss what must me done.&lt;/li&gt;
+  &lt;li&gt;Use the Github Wiki&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I do not understand why the Github &lt;em&gt;Discussions&lt;/em&gt; feature is not used by Flutter Sound users.
+If necessary, we can setup a real forum like PhpBB, MyBB, or Discourse. But probably better to try to use the current tool (Github) before seting up something new.&lt;/p&gt;
+
+</description>
+            <pubDate>Fri, 18 Dec 2020 00:00:00 +0100</pubDate>
+            <link>/newdoc-post.html</link>
+            <guid isPermaLink="true">/newdoc-post.html</guid>
+            
+            <category>jekyll</category>
+            
+            <category>news</category>
+            
+            
+        </item>
+        
+    </channel>
+</rss>
