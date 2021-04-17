@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 8.1.0
+## 8.1.1
 
 - tau_core is now published on `JitPack` and not anymore on `jfrog/bintray`.  [#658](https://github.com/Canardoux/tau/issues/658)
 
