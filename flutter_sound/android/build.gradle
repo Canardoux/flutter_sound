@@ -1,7 +1,7 @@
 ext.flutterFFmpegPackage = 'audio'
 
 group 'com.dooboolab.fluttersound'
-version '8.0.27'
+version '8.0.28'
 
 buildscript {
     repositories {
@@ -21,7 +21,8 @@ rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
-        //maven { url  "https://dl.bintray.com/larpoux/TauRepo" }
+        maven { url 'https://jitpack.io' }
+       //maven { url  "https://dl.bintray.com/larpoux/TauRepo" }
         //jcenter()
     }
 }

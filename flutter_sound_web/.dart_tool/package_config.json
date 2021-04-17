@@ -51,7 +51,7 @@
     },
     {
       "name": "flutter_sound_platform_interface",
-      "rootUri": "file:///Volumes/home/larpoux/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sound_platform_interface-8.0.27",
+      "rootUri": "file:///Volumes/home/larpoux/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sound_platform_interface-8.0.28",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -164,7 +164,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-04-17T07:55:51.283062Z",
+  "generated": "2021-04-17T08:49:25.724861Z",
   "generator": "pub",
   "generatorVersion": "2.13.0-116.0.dev"
 }
