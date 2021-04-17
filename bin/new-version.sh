@@ -87,16 +87,13 @@ if [ ! -z "$VERSION" ]; then
 fi
 cd ..
 
-if test -f "tau_core.podspec"; then
-    pod trunk push tau_core.podspec
-else
-    pod trunk push tau_sound_core.podspec
-fi
+cd tau_core
+pod trunk push tau_core.podspec
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
 fi
-
+cd ..
 
 #cd tau_core/android
 #./gradlew clean build bintrayUpload
