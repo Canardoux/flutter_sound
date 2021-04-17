@@ -18,7 +18,7 @@ grep "pod 'tau_core'," flutter_sound/example/ios/Podfile > /dev/null
             echo "# =====================================================" >> flutter_sound/example/ios/Podfile
             echo "# The following instruction is only for Tau debugging." >> flutter_sound/example/ios/Podfile
             echo "# Do not insert such a line in a real App." >> flutter_sound/example/ios/Podfile
-            echo "# pod 'tau_core', :path => '../../..'"  >> flutter_sound/example/ios/Podfile
+            echo "# pod 'tau_core', :path => '../../../tau_core'"  >> flutter_sound/example/ios/Podfile
             echo "# =====================================================" >> flutter_sound/example/ios/Podfile
     fi
 #fi
@@ -42,7 +42,7 @@ if [ "_$1" = "_REL" ] ; then
 
         gsed -i  "s/^ *\(implementation project(':tau_core'\)/    \/\/\1/" flutter_sound/android/build.gradle
 
-         gsed -i  "s/^ *\/\/ *implementation 'xyz.canardoux:tau_core:/    implementation 'xyz.canardoux:tau_core:/"  flutter_sound/android/build.gradle
+         gsed -i  "s/^ *\/\/ *implementation 'com.github.Canardoux:tau_core:/    implementation 'com.github.Canardoux:tau_core:/"  flutter_sound/android/build.gradle
 
 
 
