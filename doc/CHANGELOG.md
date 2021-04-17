@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 8.1.0
+
+- tau_core is now published on `JitPack` and not anymore on `jfrog/bintray`.  [#658](https://github.com/Canardoux/tau/issues/658)
+
 ## 8.0.2
 
 - SetAudioFocus must return an int. Not a boolean. [#631](https://github.com/Canardoux/tau/issues/631)
