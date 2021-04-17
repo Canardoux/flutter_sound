@@ -11,7 +11,7 @@ VERSION_CODE=${VERSION//./}
 VERSION_CODE=${VERSION_CODE//+/}
 
 
-gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/"                                     tau_core.podspec 2>/dev/null
+gsed -i  "s/^\( *s.version *= *\).*$/\1'$VERSION'/"                                     tau_core/tau_core.podspec 2>/dev/null
 
 gsed -i  "s/^\( *s.dependency *'tau_core', *\).*$/\1'$VERSION'/"                        flutter_sound/ios/flutter_sound.podspec 2>/dev/null
 gsed -i  "s/^\( *s.dependency *'tau_core', *\).*$/\1'$VERSION'/"                        flutter_sound/ios/flauto.podspec 2>/dev/null
