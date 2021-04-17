@@ -1,7 +1,7 @@
 ext.flutterFFmpegPackage = 'audio'
 
 group 'com.dooboolab.fluttersound'
-version '8.0.28'
+version '8.0.30'
 
 buildscript {
     repositories {
@@ -9,7 +9,7 @@ buildscript {
         mavenCentral()
         //maven { url  "https://dl.bintray.com/larpoux/TauRepo" }
         //jcenter()
-        maven { url 'https://jitpack.io' }
+        //aven { url 'https://jitpack.io' }
     }
 
     dependencies {
@@ -60,8 +60,9 @@ dependencies {
     // -------------------------------------------------------------------------------------
     // CAUTION: The following instruction is for developping and debugging the Flauto Engine
     // DO NOT INCLUDE THE FOLLOWING LINE IN A REAL APP !!!
-    //implementation project(':tau_sound_core')
-    implementation 'xyz.canardoux:tau_sound_core:8.0.24'
+    //implementation project(':tau_core')
+    implementation 'xyz.canardoux:tau_core:8.0.28'
+    implementation 'com.github.Canardoux:tau_core:8.0.30'
     // -------------------------------------------------------------------------------------
 
 }
