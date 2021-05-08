@@ -14,36 +14,6 @@ bin/flavor.sh FULL
 bin/reldev.sh REL
 bin/setver.sh $VERSION
 
-#rm flutter_sound/Logotype\ primary.png
-#ln -s ../doc/flutter_sound/Logotype\ primary.png flutter_sound/
-rm flutter_sound_web/js
-#if [  -d tau_core/web/js ]; then
-    ln -s ../tau_core/web/js flutter_sound_web/js
-#else
-#   ln -s ../tau_sound_core/web/js flutter_sound_web/js
-#fi
-
-
-cd flutter_sound_platform_interface/
-#flutter clean
-#flutter pub get
-flutter pub publish
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
-cd ..
-
-cd flutter_sound_web
-flutter clean
-flutter pub get
-flutter pub publish
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
-cd ..
-
 
 cd flutter_sound
 flutter analyze lib
