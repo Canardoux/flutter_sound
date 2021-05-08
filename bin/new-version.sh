@@ -14,54 +14,11 @@ bin/flavor.sh FULL
 bin/reldev.sh REL
 bin/setver.sh $VERSION
 
-
-cd flutter_sound
-flutter analyze lib
-if [ $? -ne 0 ]; then
-    echo "Error"
-    #exit -1
-fi
-dartdoc lib
-if [ $? -ne 0 ]; then
-    echo "Error"
-    #exit -1
-fi
-rm -rf doc
-cd ..
-
-
-
-git add .
-git commit -m "TAU : Version $VERSION"
-git push origin
-git push gl
-#git push bb
-if [ ! -z "$VERSION" ]; then
-    git tag -f $VERSION
-    git push  -f origin $VERSION
-    git push  -f gl $VERSION
-    #git push  -f bb $VERSION
-fi
-
-cd tau_core
-git add .
-git commit -m "TAU : Version $VERSION"
-git push origin
-git push gl
-#git push bb
-if [ ! -z "$VERSION" ]; then
-    git tag -f $VERSION
-    git push  -f origin $VERSION
-    git push  -f gl $VERSION
-    #git push  -f bb $VERSION
-fi
-cd ..
-
 cd tau_core
 pod trunk push tau_core.podspec
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 cd ..
 
