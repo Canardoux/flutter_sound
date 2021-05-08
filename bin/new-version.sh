@@ -49,7 +49,7 @@ cd flutter_sound
 flutter analyze lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 dartdoc lib
 if [ $? -ne 0 ]; then
@@ -203,6 +203,7 @@ pod repo update
 pod install --repo-update
 pod update
 pod install
+arch -x86_64 pod install --repo-update
 cd ..
 flutter build ios
 if [ $? -ne 0 ]; then

@@ -1,4 +1,4 @@
-## 7.7.1
+## 7.8.0
 
 - ## The [CHANGELOG file is here](https://tau.canardoux.xyz/changelog.html)
 
