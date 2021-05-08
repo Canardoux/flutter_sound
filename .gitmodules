@@ -1,0 +1,3 @@
+[submodule "tau_core"]
+	path = tau_core
+	url = ./tau_core
