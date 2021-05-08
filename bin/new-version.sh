@@ -13,54 +13,6 @@ VERSION_CODE=${VERSION_CODE#+/}
 bin/flavor.sh FULL
 bin/reldev.sh REL
 bin/setver.sh $VERSION
-
-cd tau_core
-pod trunk push tau_core.podspec
-if [ $? -ne 0 ]; then
-    echo "Error"
-    #exit -1
-fi
-cd ..
-
-#cd tau_core/android
-#./gradlew clean build bintrayUpload
-#if [ $? -ne 0 ]; then
-#    echo "Error"
-#    exit -1
-#fi
-#cd ../..
-
-
-git add .
-git commit -m "TAU : Version $VERSION"
-git push origin
-git push gl
-#git push bb
-if [ ! -z "$VERSION" ]; then
-        git tag -f $VERSION
-        git push  -f origin $VERSION
-        git push  -f gl $VERSION
-        #git push  -f bb $VERSION
-fi
-
-cd tau_core
-git add .
-git commit -m "TAU : Version $VERSION"
-git push origin
-git push gl
-#git push bb
-if [ ! -z "$VERSION" ]; then
-    git tag -f $VERSION
-    git push  -f origin $VERSION
-    git push  -f gl $VERSION
-    #git push  -f bb $VERSION
-fi
-cd ..
-
-cd tau_core/web
-npm publish .
-
-cd ../..
  
 cd flutter_sound
 #flutter clean

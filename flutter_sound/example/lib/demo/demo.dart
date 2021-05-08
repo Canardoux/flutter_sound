@@ -121,8 +121,10 @@ final exampleAudioFilePathOPUS =
 final albumArtPath =
     'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
 */
+///
 final albumArtPathRemote =
     'https://www.canardoux.xyz/tau_sound/web_example/assets/extract/3iob.png';
+///
 final albumArtPath =
     'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
 
