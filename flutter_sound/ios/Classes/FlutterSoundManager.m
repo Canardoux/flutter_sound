@@ -151,7 +151,7 @@
                 @"success": [NSNumber numberWithBool: success]
                 
         };
-        //NSLog(@"iOS: invokeMethod %@ - state=%i", methodName, [self getStatus]);
+        NSLog(@"iOS: invokeMethod %@ - state=%i", methodName, [self getStatus]);
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 
@@ -172,7 +172,7 @@
                 @"state": [NSNumber numberWithInt:([self getStatus])],
                 @"success": [NSNumber numberWithBool: success]
         };
-        //NSLog(@"iOS: invokeMethod %@ - state=%i", methodName, [self getStatus]);
+        NSLog(@"iOS: invokeMethod %@ - state=%i", methodName, [self getStatus]);
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 
@@ -186,7 +186,7 @@
                 @"state": [NSNumber numberWithInt:([self getStatus])],
                 @"success": [NSNumber numberWithBool: success]
         };
-        //NSLog(@"iOS: invokeMethod %@ - state=%i", methodName, [self getStatus]);
+        NSLog(@"iOS: invokeMethod %@ - state=%i", methodName, [self getStatus]);
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 
