@@ -23,6 +23,9 @@ rm flutter_sound_web/js
 #   ln -s ../tau_sound_core/web/js flutter_sound_web/js
 #fi
 
+cd tau_core
+pod trunk register larpoux@gmail.com Larpoux
+cd ..
 
 cd flutter_sound_platform_interface/
 #flutter clean
@@ -88,7 +91,6 @@ fi
 cd ..
 
 cd tau_core
-pod trunk register larpoux@gmail.com Larpoux
 pod trunk push tau_core.podspec
 if [ $? -ne 0 ]; then
     echo "Error"
