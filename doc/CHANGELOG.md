@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 7.8.3
+## 7.8.4
 
 - tau_core is now published on JitPack instead of Jfrog/Bintray
 
