@@ -30,7 +30,7 @@ cd flutter_sound_platform_interface/
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 cd ..
 
@@ -40,7 +40,7 @@ flutter pub get
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 cd ..
 
@@ -88,6 +88,7 @@ fi
 cd ..
 
 cd tau_core
+pod trunk register larpoux@gmail.com Larpoux
 pod trunk push tau_core.podspec
 if [ $? -ne 0 ]; then
     echo "Error"
@@ -141,7 +142,7 @@ cd flutter_sound
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 cd ..
 
@@ -153,7 +154,7 @@ cd flutter_sound
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 cd ..
 
@@ -177,7 +178,7 @@ cd example
 flutter analyze lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 dartdoc lib
 if [ $? -ne 0 ]; then
