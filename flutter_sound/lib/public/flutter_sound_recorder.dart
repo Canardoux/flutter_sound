@@ -21,18 +21,19 @@
 library recorder;
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
+import 'package:path_provider/path_provider.dart';
 import 'package:synchronized/synchronized.dart';
+
 import '../flutter_sound.dart';
 import 'util/flutter_sound_helper.dart';
 
@@ -349,6 +350,10 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       SessionMode mode = SessionMode.modeDefault,
       int audioFlags = outputToSpeaker,
       AudioDevice device = AudioDevice.speaker}) async {
+    if (_isInited != Initialized.notInitialized) {
+      return this;
+    }
+
     FlutterSoundRecorder? r;
     print('FS:---> openAudioSession ');
     await _lock.synchronized(() async {
@@ -372,9 +377,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       AudioDevice device = AudioDevice.speaker}) async {
     print('---> openAudioSession');
 
-    if (_isInited != Initialized.notInitialized) {
-      throw Exception('Recorder is already initialized');
-    } // to be in a clean state
     Completer<FlutterSoundRecorder>? completer;
 
     _setRecorderCallback();

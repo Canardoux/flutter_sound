@@ -55,8 +55,9 @@ class FlutterSoundRecorderManager extends FlutterSoundManager
 
         public static void attachFlautoRecorder ( Context ctx, BinaryMessenger messenger )
         {
-                assert ( flutterSoundRecorderPlugin == null );
-                flutterSoundRecorderPlugin = new FlutterSoundRecorderManager();
+                if (flutterSoundRecorderPlugin == null) {
+                        flutterSoundRecorderPlugin = new FlutterSoundRecorderManager();
+                }
                 MethodChannel channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_recorder" );
                 flutterSoundRecorderPlugin.init( channel);
                 channel.setMethodCallHandler ( flutterSoundRecorderPlugin );

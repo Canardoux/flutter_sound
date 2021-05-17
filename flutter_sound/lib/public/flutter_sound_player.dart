@@ -21,16 +21,17 @@
 library player;
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
-import 'package:synchronized/synchronized.dart';
-import 'package:path_provider/path_provider.dart';
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:path_provider/path_provider.dart';
+import 'package:synchronized/synchronized.dart';
+
 import '../flutter_sound.dart';
 
 /// The default blocksize used when playing from Stream.
@@ -605,6 +606,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     int audioFlags = outputToSpeaker | allowBlueToothA2DP | allowAirPlay,
     bool withUI = false,
   }) async {
+    if (_isInited != Initialized.notInitialized) {
+      return this;
+    }
     FlutterSoundPlayer? r;
     await _lock.synchronized(() async {
       r = await _openAudioSession(
