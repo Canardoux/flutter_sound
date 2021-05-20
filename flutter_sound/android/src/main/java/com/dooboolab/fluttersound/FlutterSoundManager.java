@@ -60,9 +60,9 @@ public class FlutterSoundManager
 
 	void init(MethodChannel aChannel)
 	{
-		if ( slots != null )
-			throw new RuntimeException();
-		slots   = new ArrayList<FlutterSoundSession>();
+		if ( slots == null ) {
+			slots = new ArrayList<FlutterSoundSession>();
+		}
 		channel = aChannel;
 	}
 

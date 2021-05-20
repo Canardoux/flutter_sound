@@ -53,8 +53,9 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                 Context ctx, BinaryMessenger messenger
         )
         {
-                assert ( flutterSoundPlayerPlugin == null );
-                flutterSoundPlayerPlugin = new FlutterSoundPlayerManager();
+                if (flutterSoundPlayerPlugin == null) {
+                        flutterSoundPlayerPlugin = new FlutterSoundPlayerManager();
+                }
                 MethodChannel channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_player" );
                 flutterSoundPlayerPlugin.init(channel);
                 channel.setMethodCallHandler ( flutterSoundPlayerPlugin );
