@@ -18,7 +18,9 @@ bin/setver.sh $VERSION
 #ln -s ../doc/flutter_sound/Logotype\ primary.png flutter_sound/
 rm flutter_sound_web/js
 #if [  -d tau_core/web/js ]; then
-    ln -s ../tau_core/web/js flutter_sound_web/js
+rm -rf flutter_sound_web/js
+cp -a -v tau_core/web/js flutter_sound_web
+    #ln -s ../tau_core/web/js flutter_sound_web/js
 #else
 #   ln -s ../tau_sound_core/web/js flutter_sound_web/js
 #fi
