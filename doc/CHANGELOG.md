@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 8.1.4
+## 8.1.3
 
 - Temporary fix on [#665](https://github.com/Canardoux/tau/issues/665) .  Pull Request [#677](https://github.com/Canardoux/tau/pull/677) that was provided by @aaassseee . Thanks to him :-)
 
