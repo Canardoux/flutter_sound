@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 8.1.4
+
+- Temporary fix on [#665](https://github.com/Canardoux/tau/issues/665) .  Pull Request [#677](https://github.com/Canardoux/tau/pull/677) that was provided by @aaassseee . Thanks to him :-)
+
 ## 8.1.1
 
 - tau_core is now published on `JitPack` and not anymore on `jfrog/bintray`.  [#658](https://github.com/Canardoux/tau/issues/658)

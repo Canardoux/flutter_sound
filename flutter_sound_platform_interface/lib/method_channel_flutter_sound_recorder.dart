@@ -145,7 +145,7 @@ Future<dynamic>? channelMethodCallHandler(MethodCall call) {
   @override
   Future<void>?   resetPlugin(FlutterSoundRecorderCallback callback,)
   {
-    return invokeMethodInt( callback, 'resetPlugin', Map<String, dynamic>(),);
+    return invokeMethodVoid( callback, 'resetPlugin', Map<String, dynamic>(),);
   }
 
 

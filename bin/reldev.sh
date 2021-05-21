@@ -10,7 +10,7 @@ fi
 grep "pod 'tau_core'," flutter_sound/example/ios/Podfile > /dev/null
 #if [ $? -ne 0 ]; then
 
-#    grep "pod 'tau_sound_core'," flutter_sound/example/ios/Podfile > /dev/null
+#    grep "pod 'tau_core'," flutter_sound/example/ios/Podfile > /dev/null
     if [ $? -ne 0 ]; then
 
             echo "Podfile is not patched"
