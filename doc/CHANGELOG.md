@@ -31,7 +31,7 @@ toc: false
 
 - Null Safety
 
-## 7.8.0
+## 7.8.4
 
 - tau_core is now published on JitPack instead of Jfrog/Bintray
 
