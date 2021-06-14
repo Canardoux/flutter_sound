@@ -33,13 +33,22 @@ entries:
       output: web, pdf
       type: homepage
 
+    - title: Changelog
+      url: /changelog.html
+      output: web, pdf
+
+  - title: -&tau; Maintenance & Dev
+    output: web, pdf
+    folderitems:
+
     - title: the &tau; Architecture
       url: /architecture.html
       output: web, pdf
 
-    - title: Changelog
-      url: /changelog.html
+    - title: Development Setup
+      url: /tau_dev.html
       output: web, pdf
+
 
 
 # ----------------------------------------------------------

@@ -20,9 +20,9 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Food.">
-<meta name="keywords" content="apiplayer,  API Player">
-<title>Player API | The &tau; Project documentation.</title>
+<meta name="description" content="We need you!">
+<meta name="keywords" content="contributions,  Contributions">
+<title>Contributions | The &tau; Project documentation.</title>
 <link rel="stylesheet" href="css/syntax.css">
 
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -239,7 +239,7 @@
 
 
 
-  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:tau@canardoux.xyz?subject=The &tau; Project documentation feedback&body=I have some feedback about the Player API page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
+  <a class="email" title="Submit feedback" href="#" onclick="javascript:window.location='mailto:tau@canardoux.xyz?subject=The &tau; Project documentation feedback&body=I have some feedback about the Contributions page: ' + window.location.href;"><i class="fa fa-envelope-o"></i> Feedback</a>
 
 </li>
 
@@ -257,7 +257,7 @@
                                 searchInput: document.getElementById('search-input'),
                                 resultsContainer: document.getElementById('results-container'),
                                 dataSource: 'search.json',
-                                searchResultTemplate: '<li><a href="{url}" title="Player API">{title}</a></li>',
+                                searchResultTemplate: '<li><a href="{url}" title="Contributions">{title}</a></li>',
                     noResultsText: 'No results found.',
                             limit: 10,
                             fuzzy: true,
@@ -324,8 +324,8 @@
           
           
           
-          
-          <li><a title="Development Setup" href="/tau_dev.html">Development Setup</a></li>
+           <!-- Here -->
+          <li class="active"><a title="/Development Setup" href="tau_dev.html">Development Setup</a></li>
           
           
           
@@ -497,7 +497,7 @@
                   
                   
                   
-                  <li class="active"><a title="FoodData and FoodEvent" href="/tau_api_player_food.html">FoodData and FoodEvent</a></li>
+                  <li><a title="FoodData and FoodEvent" href="/tau_api_player_food.html">FoodData and FoodEvent</a></li>
                   
                   
                   
@@ -989,7 +989,7 @@
         <!-- Content Column -->
         <div class="col-md-10" id="tg-sb-content">
             <div class="post-header">
-   <h1 class="post-title-main">Player API</h1>
+   <h1 class="post-title-main">Contributions</h1>
 </div>
 
 
@@ -997,7 +997,7 @@
 <div class="post-content">
 
    
-    <div class="summary">Food.</div>
+    <div class="summary">We need you!</div>
    
 
     
@@ -1027,57 +1027,100 @@ $('#toc').on('click', 'a', function() {
 
 
 
-   <h1 id="the-τ-player-api">The τ Player API</h1>
+   <h1 id="contributions">Contributions</h1>
+
+<p>Flutter Sound is a free and Open Source project. Several contributors have already contributed to Flutter Sound. Specially :</p>
+
+<ul>
+  <li>@hyochan who is the Flutter Sound father</li>
+  <li>@salvatore373 who wrote the Track Player</li>
+  <li>@bsutton who wrote the UI Widgets</li>
+  <li>@larpoux who add several codec supports</li>
+</ul>
+
+<p><strong>We really need your contributions.</strong>
+Pull Requests are welcome and will be considered very carefully.</p>
+
+<h2 id="setup-a-development-environment">Setup a development environment</h2>
+
+<h3 id="clone-the-τ-project">Clone the τ project</h3>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>some_where
+git clone git@github.com:Canardoux/tau.git
+</code></pre></div></div>
+
+<h3 id="setup-a-development-environment-1">setup a development environment</h3>
+
+<p>cd to the τ root dir and run the script <code class="language-plaintext highlighter-rouge">bin/reldev.sh DEV</code></p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>tau
+bin/reldev.sh DEV
+</code></pre></div></div>
+
+<p>Open tau/flutter_sound/example/ios/Runner.xcworkspace in XCode, and set your <code class="language-plaintext highlighter-rouge">Team</code> in the <code class="language-plaintext highlighter-rouge">Signing &amp; Capabilities</code> tab.</p>
+
+<h3 id="clean-your-space">Clean your space</h3>
+
+<p>Probably good to clean the space :</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>flutter_sound/example
+<span class="nb">rm</span> <span class="nt">-r</span> build ios/.symlinks ios/Podfile.lock
+flutter clean
+flutter pub get
+<span class="nb">cd </span>ios
+pod <span class="nb">install
+cd</span> ..
+</code></pre></div></div>
+
+<h3 id="debug-the-example">Debug the example</h3>
+
+<p>If everything good, you are now ready to run the example in debug mode using either Visual Studio Code, Android Studio or XCode</p>
+
+<ul>
+  <li>To debug/develop the Dart side, you open the project /tau/flutter_sound/example/ in Visual Studio Code or Android Studio.</li>
+  <li>To debug/develop the iOS side you open tau/flutter_sound/example/ios/Runner.xcworkspace in XCode.</li>
+  <li>To debug/develop the Android side, you open the project tau/flutter_sound/example/android in Android Studio</li>
+</ul>
+
+<h3 id="debug-your-own-app">Debug your own App</h3>
+
+<p>You must change the dependencies in your pubspec.yaml file and do a <code class="language-plaintext highlighter-rouge">flutter pub get</code>:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># ============================================================================</span>
+<span class="c1"># The following instructions are just for developing/debugging Flutter Sound</span>
+<span class="c1"># Do not put them in a real App</span>
+  <span class="na">flutter_sound_platform_interface</span><span class="pi">:</span>
+    <span class="na">path</span><span class="pi">:</span> <span class="s">../tau/flutter_sound_platform_interface</span> <span class="c1"># flutter_sound_platform_interface Dir</span>
+  <span class="na">flutter_sound_web</span><span class="pi">:</span>
+    <span class="na">path</span><span class="pi">:</span> <span class="s">../tau/flutter_sound_web</span> <span class="c1"># flutter_sound_web Dir</span>
+  <span class="na">flutter_sound</span><span class="pi">:</span> 
+    <span class="na">path</span><span class="pi">:</span> <span class="s">../tau/flutter_sound</span>
+<span class="c1"># ============================================================================</span>
+</code></pre></div></div>
+
+<h2 id="update-the-documentation">Update the documentation</h2>
+
+<p>τ uses the Jekyll tool with a “Documentation Theme” to generate the documentation.
+<a href="https://idratherbewriting.com/documentation-theme-jekyll/">Here</a> is the Jekyll documentation.</p>
+
+<p>All the τ documentation is in markdown files under tau/doc/pages.
+You can see your modifications in live doing:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>tau/doc
+jekyll serve
+</code></pre></div></div>
+
+<p>Then, if you have the necessary credentials (but you certainly do not have them), you can do:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>tau
+bin/doc.sh
+</code></pre></div></div>
 
 <hr />
 
-<h2 id="food"><code class="language-plaintext highlighter-rouge">Food</code></h2>
+<p>When you have finished your contribution, you commit and push your files, and do a Pull Request in the Github τ Project.</p>
 
-<ul>
-  <li>Dart API: <a href="pages/flutter-sound/api/tau/Food-class.html">food</a>.</li>
-  <li>Dart API: <a href="pages/flutter-sound/api/tau/FoodData-class.html">foodData</a>.</li>
-  <li>Dart API: <a href="pages/flutter-sound/api/tau/FoodEvent-class.html">food</a>.</li>
-</ul>
-
-<p>This are the objects that you can <code class="language-plaintext highlighter-rouge">add</code> to <code class="language-plaintext highlighter-rouge">foodSink</code>
-The Food class has two others inherited classes :</p>
-
-<ul>
-  <li>FoodData (the buffers that you want to play)</li>
-  <li>FoodEvent (a call back to be called after a resynchronisation)</li>
-</ul>
-
-<p><em>Example:</em></p>
-
-<p><a href="flutter_sound_examples_playback_from_stream_2">This example</a> shows how to play Live data, without Back Pressure from Flutter Sound</p>
-<ul id="profileTabs" class="nav nav-tabs">
-    <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
-    <li><a href="#javascript" data-toggle="tab">Javascript</a></li>
-</ul>
-<div class="tab-content">
-
-<div role="tabpanel" class="tab-pane active" id="dart">
-
-<pre>
-await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
-
-myPlayer.foodSink.add(FoodData(aBuffer));
-myPlayer.foodSink.add(FoodData(anotherBuffer));
-myPlayer.foodSink.add(FoodData(myOtherBuffer));
-myPlayer.foodSink.add(FoodEvent(()async {await _mPlayer.stopPlayer(); setState((){});}));
-</pre>
-
-</div>
-
-<div role="tabpanel" class="tab-pane" id="javascript">
-<pre>
-        Lorem ipsum ...
-</pre>
-</div>
-
-</div>
-
-<hr />
+<p><strong>THANK YOU FOR YOUR CONTRIBUTION</strong></p>
 
 
     <div class="tags">
@@ -1086,11 +1129,7 @@ myPlayer.foodSink.add(FoodEvent(()async {await _mPlayer.stopPlayer(); setState((
         
         
         
-        <a href="tag_api.html" class="btn btn-default navbar-btn cursorNorm" role="button">api</a>
-        
-        
-        
-        <a href="tag_player.html" class="btn btn-default navbar-btn cursorNorm" role="button">player</a>
+        <a href="tag_contributions.html" class="btn btn-default navbar-btn cursorNorm" role="button">contributions</a>
         
         
         
