@@ -7,9 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 8.1.8
+## 8.1.9
 
-- Simple example that converts an AAC file to MP# [#710](https://github.com/Canardoux/tau/issues/710)
+- Simple example that converts an AAC file to MP3 [#710](https://github.com/Canardoux/tau/issues/710)
+- Remove Jcenter and use instead MavenCentral : [#710](https://github.com/Canardoux/tau/issues/710)
 
 ## 8.1.4
 

@@ -70,7 +70,9 @@ cd ..
 
 git add .
 git commit -m "TAU : Version $VERSION"
+git pull origin
 git push origin
+git pull gl
 git push gl
 #git push bb
 if [ ! -z "$VERSION" ]; then
@@ -83,7 +85,9 @@ fi
 cd tau_core
 git add .
 git commit -m "TAU : Version $VERSION"
+git pull origin
 git push origin
+git pull gl
 git push gl
 #git push bb
 if [ ! -z "$VERSION" ]; then
@@ -113,7 +117,9 @@ cd ..
 
 git add .
 git commit -m "TAU : Version $VERSION"
+git pull origin
 git push origin
+git pull gl
 git push gl
 #git push bb
 if [ ! -z "$VERSION" ]; then
@@ -126,7 +132,9 @@ fi
 cd tau_core
 git add .
 git commit -m "TAU : Version $VERSION"
+git pull origin
 git push origin
+git pull gl
 git push gl
 #git push bb
 if [ ! -z "$VERSION" ]; then
@@ -237,7 +245,9 @@ bin/doc.sh $VERSION
 
 git add .
 git commit -m "TAU : Version $VERSION"
+git pull origin
 git push origin
+git pull gl
 git push gl
 #git push bb
 if [ ! -z "$VERSION" ]; then
@@ -250,7 +260,9 @@ fi
 cd tau_core
 git add .
 git commit -m "TAU : Version $VERSION"
+git pull origin
 git push origin
+git pull gl
 git push gl
 #git push bb
 if [ ! -z "$VERSION" ]; then
