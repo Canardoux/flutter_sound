@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 8.1.7
+
+- Simple example that converts an AAC file to MP# [#710](https://github.com/Canardoux/tau/issues/710)
+
 ## 8.1.4
 
 - Fix crash [#642](https://github.com/Canardoux/tau/issues/642) . Pull Request [#686](https://github.com/Canardoux/tau/pull/686) that was provided by [@touficzayed](https://github.com/touficzayed) . Thanks to him :-)

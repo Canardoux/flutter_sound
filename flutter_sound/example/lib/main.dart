@@ -29,6 +29,7 @@ import 'simple_recorder/simple_recorder.dart';
 import 'soundEffect/sound_effect.dart';
 import 'streamLoop/stream_loop.dart';
 import 'widgetUI/widget_ui_demo.dart';
+import 'convert_to_mp3/convert_to_mp3.dart';
 
 /*
     This APP is just a driver to call the various Flutter Sound examples.
@@ -247,6 +248,20 @@ This example does not use a new StreamController, but use directly `foodStreamCo
 from flutter_sound_player.dart.
 ''',
   ),
+
+  Example(
+    title: 'convertFile',
+    subTitle: 'Convert AAC to MP3',
+    flags: tNotWeb,
+    route: (_) => ConvertToMp3(),
+    description: '''
+```convertFile()``` is a very simple example 
+   which record an AAC audio file,
+   convert this AAC file to MP3, 
+   and then playback the MP3 file.
+''',
+  ),
+
 ];
 
 ///

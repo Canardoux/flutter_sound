@@ -1197,7 +1197,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return completer!.future;
   }
 
-  /// Used to play something froma Dart stream
+  /// Used to play something from a Dart stream
   ///
   /// **This functionnality needs, at least, and Android SDK >= 21**
   ///

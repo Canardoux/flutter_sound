@@ -32,6 +32,7 @@ import 'dart:typed_data';
 import '../../flutter_sound.dart';
 import 'log.dart';
 import 'wave_header.dart';
+import 'package:path_provider/path_provider.dart';
 
 /// The FlutterSoundHelper singleton for accessing the helpers functions
 FlutterSoundHelper flutterSoundHelper =
@@ -248,6 +249,19 @@ class FlutterSoundHelper {
     return Uint8List.fromList(buffer);
   }
 
+  Future<String> _getPath(String? path) async {
+    if (path == null) {
+      return '';
+    }
+    final index = path.indexOf('/');
+    if (index >= 0) {
+      return path;
+    }
+    var tempDir = await getTemporaryDirectory();
+    var tempPath = tempDir.path;
+    return tempPath + '/' + path;
+  }
+
   /// Convert a sound file to a new format.
   ///
   /// - `inputFile` is the file path of the file you want to convert
@@ -261,6 +275,8 @@ class FlutterSoundHelper {
   Future<bool> convertFile(String? inputFile, Codec? inputCodec,
       String outputFile, Codec outputCodec) async {
     int? rc = 0;
+    inputFile = await _getPath(inputFile);
+    outputFile =  await _getPath(outputFile);
     if (inputCodec == Codec.opusOGG &&
         outputCodec == Codec.opusCAF) // Do not need to re-encode. Just remux
     {
@@ -284,6 +300,6 @@ class FlutterSoundHelper {
         outputFile,
       ]);
     }
-    return (rc != 0);
+    return (rc == 0);
   }
 }
