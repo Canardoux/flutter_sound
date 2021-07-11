@@ -57,11 +57,8 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
       });
     });
 
-    openTheRecorder().then((value) {
-      setState(() {
-        _mRecorderIsInited = true;
-      });
-    });
+    // You already gave true to _mRecorderIsInited variable. So it's no use giving true to it again.
+    openTheRecorder();
     super.initState();
   }
 
@@ -132,19 +129,19 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
   }
 
 // ----------------------------- UI --------------------------------------------
-
-  _Fn? getRecorderFn() {
+  // If this function returns a function, it will never do anything. We need to call next function instead of returning it.
+  void getRecorderFn() {
     if (!_mRecorderIsInited || !_mPlayer!.isStopped) {
-      return null;
+      return;
     }
-    return _mRecorder!.isStopped ? record : stopRecorder;
+     _mRecorder!.isStopped ? record() : stopRecorder();
   }
 
-  _Fn? getPlaybackFn() {
+  void getPlaybackFn() {
     if (!_mPlayerIsInited || !_mplaybackReady || !_mRecorder!.isStopped) {
-      return null;
+      return;
     }
-    return _mPlayer!.isStopped ? play : stopPlayer;
+    _mPlayer!.isStopped ? play() : stopPlayer();
   }
 
   @override
