@@ -59,6 +59,6 @@ To activate the logs, you must instantiate your modules with the Log Level set t
 FlutterSoundPlayer myPlayer = FlutterSoundPlayer(logLevel: Level.debug);
 FlutterSoundRecorder myRecorder = FlutterSoundRecorder(logLevel: Level.debug);
 ```
-See [this]()
+See [this](https://tau.canardoux.xyz/logger.html)
 
 -----------------------------------------------------------------
