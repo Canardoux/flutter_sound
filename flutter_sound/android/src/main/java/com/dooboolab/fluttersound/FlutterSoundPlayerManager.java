@@ -21,19 +21,6 @@ package com.dooboolab.fluttersound;
 
 
 import android.content.Context;
-import android.media.MediaPlayer;
-import android.os.Build;
-import android.os.Handler;
-import android.util.Log;
-
-import android.media.AudioFocusRequest;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
@@ -215,6 +202,12 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         case "feed":
                         {
                                 aPlayer.feed ( call, result );
+                        }
+                        break;
+
+                        case "setLogLevel":
+                        {
+                                aPlayer.setLogLevel ( call, result );
                         }
                         break;
 

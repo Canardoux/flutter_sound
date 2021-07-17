@@ -27,10 +27,9 @@ import 'package:meta/meta.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-//import 'package:path/path.dart' as p;
-//import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:js/js.dart';
+import 'package:logger/logger.dart' show Level , Logger;
 
 
 // ====================================  JS  =======================================================
@@ -42,9 +41,6 @@ external FlutterSoundPlayer newPlayerInstance(FlutterSoundPlayerCallback theCall
 @JS('FlutterSoundPlayer')
 class FlutterSoundPlayer
 {
-        @JS('newInstance')
-        external static FlutterSoundPlayer newInstance(FlutterSoundPlayerCallback theCallBack, List<Function> callbackTable);
-
         @JS('releaseMediaPlayer')
         external int releaseMediaPlayer();
 
@@ -93,22 +89,7 @@ class FlutterSoundPlayer
         @JS('setUIProgressBar')
         external int setUIProgressBar(int duration, int progress);
 }
-/*
-Map<String, Function> callbackTable2 =
-{
-        'openAudioSessionCompleted': allowInterop( (FlutterSoundPlayerCallback cb, bool success) { cb.openAudioSessionCompleted(success);} ),
-        'updateProgress': allowInterop( (FlutterSoundPlayerCallback cb,{int duration, int position}) { cb.updateProgress(duration: duration, position: position,);} ),
-        'pause': allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.pause(state,);} ),
-        'resume': allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.resume(state,);} ),
-        'skipBackward': allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.skipBackward(state,);} ),
-        'skipForward': allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.skipForward(state,);} ),
-        'updatePlaybackState': allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.updatePlaybackState(state,);} ),
-        'needSomeFood': allowInterop( (FlutterSoundPlayerCallback cb, int ln) { cb.needSomeFood(ln,);} ),
-        'audioPlayerFinished': allowInterop( (FlutterSoundPlayerCallback cb, int state) { cb.audioPlayerFinished(state,);} ),
-        'startPlayerCompleted': allowInterop( (FlutterSoundPlayerCallback cb, int duration) { cb.startPlayerCompleted(duration,);} ),
-};
 
- */
 List<Function> callbackTable =
 [
         allowInterop( (FlutterSoundPlayerCallback cb, int position, int duration)                       { cb.updateProgress(duration: duration, position: position,);} ),
@@ -125,6 +106,7 @@ List<Function> callbackTable =
         allowInterop( (FlutterSoundPlayerCallback cb, int state, bool success)                          { cb.stopPlayerCompleted(state, success);} ),
         allowInterop( (FlutterSoundPlayerCallback cb, int state, bool success)                          { cb.openPlayerCompleted(state, success);} ),
         allowInterop( (FlutterSoundPlayerCallback cb, int state, bool success)                          { cb.closePlayerCompleted(state, success);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb,  int level, String msg)                         { cb.log(Level.values[level], msg);} ),
 ];
 
 //=========================================================================================================
@@ -189,20 +171,20 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
         @override
         Future<void>?   resetPlugin(FlutterSoundPlayerCallback callback,)
         {
-                print('---> resetPlugin');
+                callback.log(Level.debug, '---> resetPlugin');
                 for (int i = 0; i < _slots.length; ++i)
                 {
-                        print("Releasing slot #$i");
+                        callback.log(Level.debug, "Releasing slot #$i");
                         _slots[i]!.releaseMediaPlayer();
                 }
                 _slots = [];
-                print('<--- resetPlugin');
+                callback.log(Level.debug, '<--- resetPlugin');
                 return null;
         }
 
 
         @override
-        Future<int> openPlayer( FlutterSoundPlayerCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device, bool? withUI}) async
+        Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device, bool? withUI}) async
         {
                 // openAudioSessionCompleter = new Completer<bool>();
                 // await invokeMethod( callback, 'initializeMediaPlayer', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index, 'withUI': withUI ? 1 : 0 ,},) ;
@@ -296,7 +278,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                          */
                 }
                 //js.context.callMethod('playAudioFromURL', [fromURI]);
-                print ('=============== FromURI : $fromURI');
+                callback.log(Level.debug, 'startPlayer FromURI : $fromURI');
                 return getWebSession(callback)!.startPlayer(codec.index,  fromDataBuffer, fromURI, numChannels, sampleRate);
         }
 
@@ -368,6 +350,12 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
         Future<String> getResourcePath(FlutterSoundPlayerCallback callback, ) async
         {
                 return '';
+        }
+
+        @override
+        Future<void>?   setLogLeve(FlutterSoundPlayerCallback callback, Level loglevel)
+        {
+
         }
 
  }

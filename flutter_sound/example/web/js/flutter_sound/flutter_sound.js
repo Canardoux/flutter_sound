@@ -16,6 +16,17 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+const VERSION = '8.2.0'
+
+
+const VERBOSE = 0;
+const DBG = 1;
+const INFO = 2;
+const WARNING = 3;
+const ERROR = 4;
+const WTF = 5;
+const NOTHING = 6;
+
 
 
 
@@ -114,6 +125,7 @@ const tabFormat =
                 ];
 
 
+
 var instanceNumber = 0;
 var lastUrl = '';
 
@@ -121,12 +133,10 @@ var lastUrl = '';
 
 function getRecordURL( aPath,)
 {
-        console.log('getRecordUrl: ' + aPath);
         var path ;
         var myStorage;
         if ((aPath == null) || (aPath == ''))
         {
-                console.log('lastUrl = ' + lastUrl);
                 path = lastUrl;
         } else
         {
@@ -136,15 +146,12 @@ function getRecordURL( aPath,)
         if (path.substring(0,1) == '/')
         {
                 myStorage = window.localStorage;
-                console.log('localStorage');
         } else
         {
                 myStorage = window.sessionStorage;
-                console.log('sessionStorage');
         }
 
         var url = myStorage.getItem(path);
-        console.log('<--- getRecordUrl ( ' + path  + ' ) : ' + url);
         return url;
 }
 

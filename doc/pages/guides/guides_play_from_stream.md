@@ -93,8 +93,8 @@ You probably will `await` or use `then()` for each call to `feedFromStream()`.
 
 _Examples_ You can look to the provided examples :
 
-* [This example](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/livePlaybackWithBackPressure/live_playback_with_back_pressure.dart) shows how to play Live data, with Back Pressure from Flutter Sound
-* [This example](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart) shows how to play Live data, without Back Pressure from Flutter Sound
-* [This example](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/soundEffect/sound_effect.dart) shows how to play some real time sound effects.
-* [This example](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/streamLoop/stream_loop.dart) play live stream what is recorded from the microphone.
+* [This example](flutter_sound_examples_playback_from_stream_2.html) shows how to play Live data, with Back Pressure from Flutter Sound
+* [This example](flutter_sound_examples_playback_from_stream_1.html) shows how to play Live data, without Back Pressure from Flutter Sound
+* [This example](flutter_sound_examples_sound_effects.html) shows how to play some real time sound effects.
+* [This example](flutter_sound_examples_stream_loop.html) play live stream what is recorded from the microphone.
 

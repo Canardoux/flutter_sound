@@ -25,6 +25,8 @@ import android.content.Context;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.os.Build;
+import com.dooboolab.TauEngine.Flauto.*;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -105,6 +107,16 @@ public abstract class FlutterSoundSession
 		getPlugin ().invokeMethod ( methodName, dic );
 	}
 
+	public void log(t_LOG_LEVEL level, String msg)
+	{
+		Map<String, Object> dic = new HashMap<String, Object> ();
+		dic.put ( "slotNo", slotNo );
+		dic.put ( "state", getStatus() );
+		dic.put ( "level", level.ordinal() );
+		dic.put ("msg", msg);
+		dic.put ( "success", true );
+		getPlugin ().invokeMethod ( "log", dic );
 
+	}
 
 }

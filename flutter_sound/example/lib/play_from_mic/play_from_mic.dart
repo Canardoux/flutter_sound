@@ -18,7 +18,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 /*
@@ -40,7 +40,7 @@ class PlayFromMic extends StatefulWidget {
 }
 
 class _PlayFromMicState extends State<PlayFromMic> {
-  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer(logLevel: Level.debug);
   bool _mPlayerIsInited = false;
 
   Future<void> open() async {

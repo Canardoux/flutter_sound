@@ -8,7 +8,7 @@ keywords: Flutter, &tau;, Web
 ---
 # &tau; on Web
 
-&tau; is now supported by Flutter Web \(with some limitations\). Please [go to there](install.md#flutter-web) to have informations on how to setup your App for web.
+&tau; is now supported by Flutter Web \(with some limitations\). Please [go to there](flutter_sound_install.html#flutter-web) to have informations on how to setup your App for web.
 
 You can play with [this live demo on the web](pages/flutter-sound/web_example/index.html).
 
@@ -19,28 +19,38 @@ To use Flutter Sound in a web application, you can either :
 
 ### Static reference
 
-Add those 4 lines at the end of the `<head>` section of your `index.html` file :
+Either add those 4 lines at the end of the `<head>` section of your `index.html` file :
 
-```text
-  <script src="assets/packages/flutter_sound_web/js/flutter_sound/flutter_sound.js"></script>
-  <script src="assets/packages/flutter_sound_web/js/flutter_sound/flutter_sound_player.js"></script>
-  <script src="assets/packages/flutter_sound_web/js/flutter_sound/flutter_sound_recorder.js"></script>
-  <script src="assets/packages/flutter_sound_web/js/howler/howler.js"></script>
+```xml
+  <script src="js/flutter_sound/flutter_sound.js"></script>
+  <script src="js/flutter_sound/flutter_sound_player.js"></script>
+  <script src="js/flutter_sound/flutter_sound_recorder.js"></script>
+  <script src="howler/howler.js"></script>
 ```
 
-### or Dynamic reference
+(of course the .js files must be put in the correct directory : i.e. js/flutter_sound and js/howler)
 
-Add those 4 lines at the end of the `<head>` section of your `index.html` file :
+### Dynamic reference
 
-```text
-  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@7.4.13/js/flutter_sound/flutter_sound.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@7.4.13/js/flutter_sound/flutter_sound_player.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@7.4.13/js/flutter_sound/flutter_sound_recorder.min.js"></script>
+or add those 4 lines at the end of the `<head>` section of your `index.html` file :
+
+```xml
+  <script src="https://cdn.jsdelivr.net/npm/tau_core@8/js/flutter_sound/flutter_sound.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tau_core@8/js/flutter_sound/flutter_sound_player.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tau_core@8/js/flutter_sound/flutter_sound_recorder.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/howler@2/dist/howler.min.js"></script>
 ```
 
-Please [read this](https://www.jsdelivr.com/features) to understand how you can specify the interval of the versions you are interested by.
+Please [read this](https://www.jsdelivr.com/features) : replace `@8` by `@7` if you are linking with Flutter Sound v7.x.
 
+```dart
+NoSuchMethodError: tried to call a non-function, such as null: 'dart.global.newRecorderInstance'
+```
+
+{% include tip.html content=
+"If you get this error above, it probably means that the required javascript sources are not corretely loaded by your index.html file.
+Double check if your javascript source files are correct.
+" %}
 
 ## Player
 

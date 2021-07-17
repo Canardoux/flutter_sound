@@ -21,11 +21,11 @@ Pull Requests are welcome and will be considered very carefully.
 
 ## Setup a development environment
 
-### Clone the &tau; project
+### Clone the &tau; project and the tau_core module.
 
 ```sh
 cd some_where
-git clone https://github.com/Canardoux/tau.git
+git clone --recursive https://github.com/Canardoux/tau.git
 ```
 
 ### setup a development environment

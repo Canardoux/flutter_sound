@@ -19,7 +19,8 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 /*
@@ -35,6 +36,20 @@ import 'package:permission_handler/permission_handler.dart';
 ///
 typedef _Fn = void Function();
 
+/* This does not work. on Android we must have the Manifest.permission.CAPTURE_AUDIO_OUTPUT permission.
+ * But this permission is _is reserved for use by system components and is not available to third-party applications._
+ * Pleaser look to [this](https://developer.android.com/reference/android/media/MediaRecorder.AudioSource#VOICE_UPLINK)
+ *
+ * I think that the problem is because it is illegal to record a communication in many countries.
+ * Probably this stands also on iOS.
+ * Actually I am unable to record DOWNLINK on my Xiaomi Chinese phone.
+ *
+ */
+//const theSource = AudioSource.voiceUpLink;
+//const theSource = AudioSource.voiceDownlink;
+
+const theSource = AudioSource.microphone;
+
 /// Example app.
 class SimpleRecorder extends StatefulWidget {
   @override
@@ -42,8 +57,8 @@ class SimpleRecorder extends StatefulWidget {
 }
 
 class _SimpleRecorderState extends State<SimpleRecorder> {
-  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
-  FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer(logLevel: Level.debug);
+  FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder(logLevel: Level.debug);
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
   bool _mplaybackReady = false;
@@ -89,10 +104,9 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
   // ----------------------  Here is the code for recording and playback -------
 
   void record() {
-    _mRecorder!
-        .startRecorder(
+    _mRecorder!.startRecorder(
       toFile: _mPath,
-      //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
+      audioSource: theSource,
     )
         .then((value) {
       setState(() {});

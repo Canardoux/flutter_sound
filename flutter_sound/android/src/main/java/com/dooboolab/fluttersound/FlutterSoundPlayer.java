@@ -18,40 +18,17 @@ package com.dooboolab.fluttersound;
  */
 
 
-
-
-import android.content.Context;
-import android.media.AudioAttributes;
-import android.media.AudioFormat;
-import android.media.AudioManager;
-import android.media.AudioTrack;
-import android.media.MediaPlayer;
-import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.SystemClock;
-import android.util.Log;
-import android.media.AudioFocusRequest;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.lang.Thread;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.Result;
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import com.dooboolab.TauEngine.FlautoPlayer;
 import com.dooboolab.TauEngine.FlautoTrack;
 import com.dooboolab.TauEngine.FlautoTrackPlayer;
 import com.dooboolab.TauEngine.FlautoPlayerCallback;
-import com.dooboolab.TauEngine.Flauto;
 import com.dooboolab.TauEngine.Flauto.*;
 
 
@@ -243,7 +220,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 			else
 				result.error(ERR_UNKNOWN, ERR_UNKNOWN, "startPlayer() error");
 		} catch (Exception e) {
-			Log.e(TAG, "startPlayerFromMic() exception");
+			log(t_LOG_LEVEL.ERROR, "startPlayerFromMic() exception");
 			result.error(ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage());
 		}
 	}
@@ -275,7 +252,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 			else
 				result.error(ERR_UNKNOWN, ERR_UNKNOWN, "startPlayer() error");
 		} catch (Exception e) {
-			Log.e(TAG, "startPlayer() exception");
+			log(t_LOG_LEVEL.ERROR,  "startPlayer() exception");
 			result.error(ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage());
 		}
 	}
@@ -291,7 +268,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 			result.success (ln);
 		} catch (Exception e)
 		{
-			Log.e ( TAG, "feed() exception" );
+			log(t_LOG_LEVEL.ERROR,  "feed() exception" );
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 		}
 	}
@@ -354,7 +331,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		}
 		catch ( Exception e )
 		{
-			Log.e ( TAG, "pausePlay exception: " + e.getMessage () );
+			log(t_LOG_LEVEL.ERROR, "pausePlay exception: " + e.getMessage () );
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 		}
 
@@ -371,7 +348,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		}
 		catch ( Exception e )
 		{
-			Log.e ( TAG, "mediaPlayer resume: " + e.getMessage () );
+			log(t_LOG_LEVEL.ERROR, "mediaPlayer resume: " + e.getMessage () );
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 		}
 	}
@@ -472,6 +449,11 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 			result.success ( getPlayerState());
 		else
 			result.error ( "setFocus", "setFocus", "Failure to prepare focus");
+	}
+
+
+	public void setLogLevel (final MethodCall call, final MethodChannel.Result result )
+	{
 	}
 
 }

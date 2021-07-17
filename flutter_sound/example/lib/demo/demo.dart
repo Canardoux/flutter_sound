@@ -26,10 +26,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart' show DateFormat;
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-//import 'package:flutter_sound/src/food.dart';
 
 // If someone update the following comment, please update also the Examples/README.md file and the code inside Examples/lib/demo/main.dart
 /*
@@ -204,8 +203,8 @@ class _MyAppState extends State<Demo> {
   StreamSubscription? _playerSubscription;
   StreamSubscription? _recordingDataSubscription;
 
-  FlutterSoundPlayer playerModule = FlutterSoundPlayer();
-  FlutterSoundRecorder recorderModule = FlutterSoundRecorder();
+  FlutterSoundPlayer playerModule = FlutterSoundPlayer(logLevel: Level.debug);
+  FlutterSoundRecorder recorderModule = FlutterSoundRecorder(logLevel: Level.debug);
 
   String _recorderTxt = '00:00:00';
   String _playerTxt = '00:00:00';
@@ -310,7 +309,7 @@ class _MyAppState extends State<Demo> {
       await playerModule.closeAudioSession();
       await recorderModule.closeAudioSession();
     } on Exception {
-      print('Released unsuccessful');
+      playerModule.logger.e('Released unsuccessful');
     }
   }
 
@@ -366,7 +365,7 @@ class _MyAppState extends State<Demo> {
           sampleRate: (_codec == Codec.pcm16) ? tSTREAMSAMPLERATE : tSAMPLERATE,
         );
       }
-      print('startRecorder');
+      recorderModule.logger.d('startRecorder');
 
       _recorderSubscription = recorderModule.onProgress!.listen((e) {
         var date = DateTime.fromMillisecondsSinceEpoch(
@@ -385,7 +384,7 @@ class _MyAppState extends State<Demo> {
         _path[_codec.index] = path;
       });
     } on Exception catch (err) {
-      print('startRecorder error: $err');
+      recorderModule.logger.e('startRecorder error: $err');
       setState(() {
         stopRecorder();
         _isRecording = false;
@@ -417,12 +416,12 @@ class _MyAppState extends State<Demo> {
   void stopRecorder() async {
     try {
       await recorderModule.stopRecorder();
-      print('stopRecorder');
+      recorderModule.logger.d('stopRecorder');
       cancelRecorderSubscriptions();
       cancelRecordingDataSubscription();
       await getDuration();
     } on Exception catch (err) {
-      print('stopRecorder error: $err');
+      recorderModule.logger.d('stopRecorder error: $err');
     }
     setState(() {
       _isRecording = false;
@@ -440,10 +439,10 @@ class _MyAppState extends State<Demo> {
       var file = File(path);
       file.openRead();
       var contents = await file.readAsBytes();
-      print('The file is ${contents.length} bytes long.');
+      playerModule.logger.i('The file is ${contents.length} bytes long.');
       return contents;
     } on Exception catch (e) {
-      print(e);
+      playerModule.logger.e(e);
       return null;
     }
   }
@@ -475,7 +474,7 @@ class _MyAppState extends State<Demo> {
     Uint8List bytes;
     var b = await audioFile.readAsBytes();
     bytes = Uint8List.fromList(b);
-    print('reading of bytes is completed');
+    playerModule.logger.d('reading of bytes is completed');
     return bytes;
   }
 
@@ -533,8 +532,6 @@ class _MyAppState extends State<Demo> {
         // We have to play an example audio file loaded via a URL
         audioFilePath = remoteSample[_codec.index];
       }
-      //Duration toto  = await flutterSoundHelper.duration(audioFilePath);
-      //print(toto.inMilliseconds);
 
       // Check whether the user wants to use the audio player features
       if (_isAudioPlayer) {
@@ -546,7 +543,7 @@ class _MyAppState extends State<Demo> {
         } else if (!kIsWeb) {
           albumArtFile =
               '${await playerModule.getResourcePath()}/assets/canardo.png';
-          print(albumArtFile);
+          playerModule.logger.d(albumArtFile);
         } else {}
 
         final track = Track(
@@ -562,14 +559,14 @@ class _MyAppState extends State<Demo> {
         await playerModule.startPlayerFromTrack(track,
             defaultPauseResume: false,
             removeUIWhenStopped: true, whenFinished: () {
-          print('I hope you enjoyed listening to this song');
+          playerModule.logger.d('I hope you enjoyed listening to this song');
           setState(() {});
         }, onSkipBackward: () {
-          print('Skip backward');
+          playerModule.logger.d('Skip backward');
           stopPlayer();
           startPlayer();
         }, onSkipForward: () {
-          print('Skip forward');
+          playerModule.logger.d('Skip forward');
           stopPlayer();
           startPlayer();
         }, onPaused: (b) {
@@ -598,7 +595,7 @@ class _MyAppState extends State<Demo> {
               codec: codec,
               sampleRate: tSTREAMSAMPLERATE,
               whenFinished: () {
-                print('Play finished');
+                playerModule.logger.d('Play finished');
                 setState(() {});
               });
         } else if (dataBuffer != null) {
@@ -617,30 +614,30 @@ class _MyAppState extends State<Demo> {
               sampleRate: tSAMPLERATE,
               codec: codec,
               whenFinished: () {
-                print('Play finished');
+                playerModule.logger.d('Play finished');
                 setState(() {});
               });
         }
       }
       _addListeners();
       setState(() {});
-      print('<--- startPlayer');
+      playerModule.logger.d('<--- startPlayer');
     } on Exception catch (err) {
-      print('error: $err');
+      playerModule.logger.e('error: $err');
     }
   }
 
   Future<void> stopPlayer() async {
     try {
       await playerModule.stopPlayer();
-      print('stopPlayer');
+      playerModule.logger.d('stopPlayer');
       if (_playerSubscription != null) {
         await _playerSubscription!.cancel();
         _playerSubscription = null;
       }
       sliderCurrentPosition = 0.0;
     } on Exception catch (err) {
-      print('error: $err');
+      playerModule.logger.d('error: $err');
     }
     setState(() {});
   }
@@ -653,7 +650,7 @@ class _MyAppState extends State<Demo> {
         await playerModule.resumePlayer();
       }
     } on Exception catch (err) {
-      print('error: $err');
+      playerModule.logger.e('error: $err');
     }
     setState(() {});
   }
@@ -667,22 +664,22 @@ class _MyAppState extends State<Demo> {
         assert(recorderModule.isPaused);
       }
     } on Exception catch (err) {
-      print('error: $err');
+      recorderModule.logger.e('error: $err');
     }
     setState(() {});
   }
 
   Future<void> seekToPlayer(int milliSecs) async {
-    //print('-->seekToPlayer');
+    //playerModule.logger.d('-->seekToPlayer');
     try {
       if (playerModule.isPlaying) {
         await playerModule.seekToPlayer(Duration(milliseconds: milliSecs));
       }
     } on Exception catch (err) {
-      print('error: $err');
+      playerModule.logger.e('error: $err');
     }
     setState(() {});
-    //print('<--seekToPlayer');
+    //playerModule.logger.d('<--seekToPlayer');
   }
 
   Widget makeDropdowns(BuildContext context) {
@@ -924,7 +921,7 @@ class _MyAppState extends State<Demo> {
         await _initializeExample(newVal);
         setState(() {});
       } on Exception catch (err) {
-        print(err);
+        playerModule.logger.e(err);
       }
     });
   }

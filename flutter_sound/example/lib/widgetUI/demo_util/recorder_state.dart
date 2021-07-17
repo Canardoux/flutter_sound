@@ -19,7 +19,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_lite/flutter_sound.dart';
 
 import '../demo_util/temp_file.dart';
 import 'demo_active_codec.dart';
@@ -76,13 +76,8 @@ class UtilRecorder {
 
   /// stops the recorder.
   Future<void> stopRecorder() async {
-    try {
       await recorderModule!.stopRecorder();
-    } on Object catch (err) {
-      Log.d('stopRecorder error: $err');
-      rethrow;
     }
-  }
 
   /// starts the recorder.
   void startRecorder(BuildContext context) async {
@@ -94,11 +89,11 @@ class UtilRecorder {
           Track(trackPath: await tempFile(), codec: ActiveCodec().codec!);
       await recorderModule!.startRecorder(toFile: track.trackPath);
 
-      Log.d('startRecorder: $track');
+      //Log.d('startRecorder: $track');
 
       MediaPath().setCodecPath(ActiveCodec().codec!, track.trackPath);
     } on Exception catch (err) {
-      Log.d('startRecorder error: $err');
+      //Log.d('startRecorder error: $err');
 
       var error = SnackBar(
           backgroundColor: Colors.red,

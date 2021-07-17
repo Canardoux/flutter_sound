@@ -20,6 +20,7 @@
 
 import 'dart:async';
 
+import 'package:logger/logger.dart' show Level , Logger;
 import 'package:flutter/services.dart';
 
 import 'flutter_sound_platform_interface.dart';
@@ -96,13 +97,18 @@ Future<dynamic>? channelMethodCallHandler(MethodCall call) {
         }
         break;
 
-       case "closeRecorderCompleted":
+        case "closeRecorderCompleted":
         {
           aRecorder!.closeRecorderCompleted(call.arguments['state'], success );
         }
         break;
 
-    
+        case "log":
+        {
+          aRecorder!.log(Level.values[call.arguments['logLevel']], call.arguments['msg']);
+        }
+        break;
+
 
       default:
         throw ArgumentError('Unknown method ${call.method}');
@@ -141,6 +147,13 @@ Future<dynamic>? channelMethodCallHandler(MethodCall call) {
   }
 
 
+  @override
+  Future<void>?   setLogLevel(FlutterSoundRecorderCallback callback, Level logLevel)
+  {
+    invokeMethodVoid( callback, 'setLogLevel', {'logLevel': logLevel.index,});
+  }
+
+
 
   @override
   Future<void>?   resetPlugin(FlutterSoundRecorderCallback callback,)
@@ -151,9 +164,9 @@ Future<dynamic>? channelMethodCallHandler(MethodCall call) {
 
 
 @override
-  Future<void> openRecorder(FlutterSoundRecorderCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device})
+  Future<void> openRecorder( FlutterSoundRecorderCallback callback, {required Level logLevel, AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device})
   {
-    return invokeMethodVoid( callback, 'openRecorder', {'focus': focus!.index, 'category': category!.index, 'mode': mode!.index, 'audioFlags': audioFlags, 'device': device!.index ,},) ;
+    return invokeMethodVoid( callback, 'openRecorder', {'logLevel': logLevel.index, 'focus': focus!.index, 'category': category!.index, 'mode': mode!.index, 'audioFlags': audioFlags, 'device': device!.index ,},) ;
   }
 
 

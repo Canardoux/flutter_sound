@@ -29,6 +29,7 @@
 
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
+#import <tau_core/Flauto.h>
 
 @interface Session : NSObject
 {
@@ -48,6 +49,7 @@
 - (int)getSlotNo;
 - (void)freeSlot: (int)slotNo;
 - (void)invokeMethod: (NSString*)methodName arguments: (NSDictionary*)call ;
+- (void)log: (t_LOG_LEVEL)level msg: (NSString*) msg;
 
 
 @end

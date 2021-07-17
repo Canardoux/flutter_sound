@@ -30,6 +30,7 @@ import 'soundEffect/sound_effect.dart';
 import 'streamLoop/stream_loop.dart';
 import 'widgetUI/widget_ui_demo.dart';
 import 'convert_to_mp3/convert_to_mp3.dart';
+import 'loglevel/loglevel.dart';
 
 /*
     This APP is just a driver to call the various Flutter Sound examples.
@@ -259,6 +260,17 @@ from flutter_sound_player.dart.
    which record an AAC audio file,
    convert this AAC file to MP3, 
    and then playback the MP3 file.
+''',
+  ),
+
+  Example(
+    title: 'setLogLevel()',
+    subTitle: 'Dynamically change the log level',
+    flags: 0,
+    route: (_) => LogLevel(),
+    description: '''
+```
+Shows how to change the loglevel during an audio session.
 ''',
   ),
 

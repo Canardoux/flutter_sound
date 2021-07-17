@@ -16,6 +16,8 @@ keywords: API Player
 
 This is the first thing to do, if you want to deal with playbacks. The instanciation of a new player does not do many thing. You are safe if you put this instanciation inside a global or instance variable initialization.
 
+An optional parameter `logLevel:' allows you to specify the Log Level you are interested by.
+
 *Example:*
 <ul id="profileTabs" class="nav nav-tabs">
     <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
@@ -26,7 +28,7 @@ This is the first thing to do, if you want to deal with playbacks. The instancia
 <div role="tabpanel" class="tab-pane active" id="dart">
 
 <pre>
-        FlutterSoundPlayer myPlayer = FlutterSoundPlayer();
+        FlutterSoundPlayer myPlayer = FlutterSoundPlayer(logLevel: Level.debug);
 </pre>
 
 </div>

@@ -87,13 +87,6 @@
  
  }
 
- /*
-- (void)setDbPeakLevelUpdate:(double)intervalInSecs result: (FlutterResult)result
-{
-       [self invokeMethod: @"setDbPeakLevelUpdate" boolArg: false]; // TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-}
-*/
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -117,19 +110,21 @@
 
 - (void)reset: (FlutterMethodCall*)call result: (FlutterResult)result
 {
-        NSLog(@"iOS ---> reset (Recorder)");
+        [self log: DBG msg: @"iOS ---> reset (Recorder)"];
+
         [self closeRecorder: call result: result];
-        NSLog(@"iOS <--- reset (Recorder)");
+        [self log: DBG msg: @"iOS <--- reset (Recorder)"];
 }
 
 - (void)closeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
 {
-        NSLog(@"iOS ---> closeRecorder");
+        [self log: DBG msg: @"iOS ---> closeRecorder"];
         [flautoRecorder releaseFlautoRecorder];
         [super releaseSession];
         //[self closeRecorderCompleted:  [NSNumber numberWithBool: YES]]; // It should not be here, but in tau_core !!!
         result([NSNumber numberWithInt: [self getRecorderStatus]]);
-        NSLog(@"iOS <--- closeRecorder");
+        [self log: DBG msg: @"iOS <--- closeRecorder"];
+
 }
 
 - (void)isEncoderSupported: (t_CODEC)codec result: (FlutterResult)result
@@ -141,7 +136,8 @@
 
 - (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result
 {
-        NSLog(@"IOS:--> setAudioFocus");
+        [self log: DBG msg: @"IOS:--> setAudioFocus"];
+
         t_AUDIO_FOCUS focus = (t_AUDIO_FOCUS)( [(NSNumber*)call.arguments[@"focus"] intValue]);
         t_SESSION_CATEGORY category = (t_SESSION_CATEGORY)( [(NSNumber*)call.arguments[@"category"] intValue]);
         t_SESSION_MODE mode = (t_SESSION_MODE)( [(NSNumber*)call.arguments[@"mode"] intValue]);
@@ -155,7 +151,7 @@
                                 errorWithCode:@"Audio Player"
                                 message:@"Open session failure"
                                 details:nil];
-       NSLog(@"IOS:<-- setAudioFocus");
+        [self log: DBG msg: @"IOS:<-- setAudioFocus"];
 }
 
 
@@ -219,10 +215,11 @@
 
 - (void)stopRecorder: (FlutterResult)result
 {
-        NSLog(@"iOS ---> stopRecorder");
+        [self log: DBG msg: @"iOS ---> stopRecorder"];
+
         [flautoRecorder stopRecorder];
         result([NSNumber numberWithInt: [self getRecorderStatus]]);
-        NSLog(@"iOS <--- stopRecorder");
+        [self log: DBG msg: @"iOS <--- stopRecorder"];
 }
 
 
@@ -282,8 +279,12 @@
 }
 
 
-@end
+- (void)setLogLevel: (FlutterMethodCall*)call result: (FlutterResult)result
+{
+    //TODO
+}
 
+@end
 
 //---------------------------------------------------------------------------------------------
  

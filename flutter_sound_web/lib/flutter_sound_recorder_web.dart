@@ -27,6 +27,7 @@ import 'package:flutter_sound_platform_interface/flutter_sound_platform_interfac
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'dart:typed_data';
+import 'package:logger/logger.dart' show Level , Logger;
 
 import 'package:js/js.dart';
 
@@ -79,14 +80,15 @@ class FlutterSoundRecorder
 
 List<Function> callbackTable =
 [
-        allowInterop( (FlutterSoundRecorderCallback cb,  int duration, double dbPeakLevel) { cb.updateRecorderProgress(duration: duration, dbPeakLevel: dbPeakLevel);} ),
-        allowInterop( (FlutterSoundRecorderCallback cb, {Uint8List? data})                  { cb.recordingData(data: data);} ),
+        allowInterop( (FlutterSoundRecorderCallback cb,  int duration, double dbPeakLevel)               { cb.updateRecorderProgress(duration: duration, dbPeakLevel: dbPeakLevel);} ),
+        allowInterop( (FlutterSoundRecorderCallback cb, {Uint8List? data})                               { cb.recordingData(data: data);} ),
         allowInterop( (FlutterSoundRecorderCallback cb,  int state, bool success)                        { cb.startRecorderCompleted(state, success);} ),
         allowInterop( (FlutterSoundRecorderCallback cb,  int state, bool success)                        { cb.pauseRecorderCompleted(state, success);} ),
         allowInterop( (FlutterSoundRecorderCallback cb,  int state, bool success)                        { cb.resumeRecorderCompleted(state, success);} ),
         allowInterop( (FlutterSoundRecorderCallback cb,  int state, bool success, String url)            { cb.stopRecorderCompleted(state, success, url);} ),
         allowInterop( (FlutterSoundRecorderCallback cb,  int state, bool success)                        { cb.openRecorderCompleted(state, success);} ),
         allowInterop( (FlutterSoundRecorderCallback cb,  int state, bool success)                        { cb.closeRecorderCompleted(state, success);} ),
+        allowInterop( (FlutterSoundRecorderCallback cb,  int level, String msg)                          { cb.log(Level.values[level], msg);} ),
 ];
 
 
@@ -119,19 +121,19 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
         @override
         Future<void>?   resetPlugin(FlutterSoundRecorderCallback callback,) async
         {
-                print('---> resetPlugin');
+                callback.log(Level.debug, '---> resetPlugin');
                 for (int i = 0; i < _slots.length; ++i)
                 {
-                        print("Releasing slot #$i");
+                        callback.log(Level.debug, "Releasing slot #$i");
                         _slots[i]!.releaseFlautoRecorder();
                 }
                 _slots = [];
-                print('<--- resetPlugin');
+                callback.log(Level.debug, '<--- resetPlugin');
                 return null;
         }
 
         @override
-        Future<void> openRecorder(FlutterSoundRecorderCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device}) async
+        Future<void> openRecorder(FlutterSoundRecorderCallback callback, {required Level logLevel, AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device}) async
         {
                 int slotno = findSession(callback);
                 if (slotno < _slots.length)
@@ -195,7 +197,7 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
                 if (session != null)
                         session.stopRecorder();
                 else
-                        print('Recorder already stopped');
+                        callback.log(Level.debug, 'Recorder already stopped');
         }
 
         @override

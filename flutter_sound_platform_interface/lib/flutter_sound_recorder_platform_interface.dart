@@ -20,6 +20,7 @@
 
 import 'dart:async';
 
+import 'package:logger/logger.dart' show Level , Logger;
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'method_channel_flutter_sound_recorder.dart';
@@ -42,7 +43,7 @@ enum RecorderState {
 enum AudioSource {
   defaultSource,
   microphone,
-  voiceDownlink, // (if someone can explain me what it is, I will be grateful ;-) )
+  voiceDownlink, // (it does not work, at least on Android. Probably problems with the authorization )
   camCorder,
   remote_submix,
   unprocessed,
@@ -50,7 +51,7 @@ enum AudioSource {
   voice_communication,
   voice_performance,
   voice_recognition,
-  voiceUpLink,
+  voiceUpLink,// (it does not work, at least on Android. Probably problems with the authorization )
   bluetoothHFP,
   headsetMic,
   lineIn,
@@ -67,6 +68,8 @@ abstract class FlutterSoundRecorderCallback
   void stopRecorderCompleted(int? state, bool? success, String? url);
   void openRecorderCompleted(int? state, bool? success);
   void closeRecorderCompleted(int? state, bool? success);
+  void log(Level logLevel, String msg);
+
 }
 
 
@@ -144,13 +147,19 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
 
 
 
+  Future<void>?   setLogLevel(FlutterSoundRecorderCallback callback, Level loglevel)
+  {
+    throw UnimplementedError('setLogLeve() has not been implemented.');
+  }
+
+
   Future<void>?   resetPlugin(FlutterSoundRecorderCallback callback,)
   {
     throw UnimplementedError('resetPlugin() has not been implemented.');
   }
 
 
-  Future<void> openRecorder(FlutterSoundRecorderCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device})
+  Future<void> openRecorder(FlutterSoundRecorderCallback callback, {required Level logLevel, AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device})
   {
     throw UnimplementedError('openRecorder() has not been implemented.');
   }

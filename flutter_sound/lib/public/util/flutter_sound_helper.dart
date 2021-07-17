@@ -29,8 +29,9 @@ library helper;
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
+
 import '../../flutter_sound.dart';
-import 'log.dart';
 import 'wave_header.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -41,6 +42,10 @@ FlutterSoundHelper flutterSoundHelper =
 /// FlutterSoundHelper class is for handleing audio files and buffers.
 /// Most of those utilities use FFmpeg, so are not available in the LITE flavor of Flutter Sound.
 class FlutterSoundHelper {
+
+  /// The FlutterSoundHelper Logger
+  Logger logger = Logger(level: Level.info);
+
   /// The Flutter FFmpeg module
   FlutterSoundFFmpeg? flutterFFmpeg;
 
@@ -60,12 +65,20 @@ class FlutterSoundHelper {
 
 //-------------------------------------------------------------------------------------------------------------
 
+  setLogLevel(Level theNewLogLevel) {
+    logger = Logger(level: theNewLogLevel);
+  }
+
   /// To know during runtime if FFmpeg is linked with the App.
   ///
   /// returns true if FFmpeg is available (probably the FULL version of Flutter Sound)
   Future<bool> isFFmpegAvailable() async {
+    if (kIsWeb)
+      return false;
     if (_flutterFFmpegConfig == null) {
-      _flutterFFmpegConfig = FlutterSoundFFmpegConfig();
+      _flutterFFmpegConfig = FlutterSoundFFmpegConfig(logger);
+      //await _flutterFFmpegConfig!.disableLogs(); // TODO
+      //await _flutterFFmpegConfig!.disableRedirection(); // TODO
       var version = await _flutterFFmpegConfig!.getFFmpegVersion();
       var platform = await _flutterFFmpegConfig!.getPlatform();
       _ffmpegAvailable = (version != null && platform != null);
@@ -132,6 +145,7 @@ class FlutterSoundHelper {
   /// This verb is used to get an estimation of the duration of a sound file.
   /// Be aware that it is just an estimation, based on the Codec used and the sample rate.
   Future<Duration?> duration(String uri) async {
+    if (!await (flutterSoundHelper.isFFmpegAvailable())) return null;
     var info = await ffMpegGetMediaInformation(uri);
     if (info == null) {
       return null;
@@ -195,7 +209,7 @@ class FlutterSoundHelper {
     var filIn = File(inputFile);
     var filOut = File(outputFile);
     var size = filIn.lengthSync();
-    Log.i(
+    logger.i(
         'pcmToWave() : input = $inputFile,  output = $outputFile,  size = $size');
     var sink = filOut.openWrite();
 

@@ -18,7 +18,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_lite/flutter_sound.dart';
 
 /*
  *
@@ -42,7 +42,7 @@ class SimplePlayback extends StatefulWidget {
 }
 
 class _SimplePlaybackState extends State<SimplePlayback> {
-  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer(logLevel: Level.debug);
   bool _mPlayerIsInited = false;
 
   @override

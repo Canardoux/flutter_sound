@@ -11,7 +11,7 @@ keywords: gettingStarted
 
 ## Playback
 
-The complete running example [is there](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/simple_playback/simple_playback.dart)
+The complete running example [is there](flutter_sound_examples_simple_playback.html)
 
 ### 1. FlutterSoundPlayer instanciation
 
@@ -21,6 +21,12 @@ To play back something you must instanciate a player. Most of the time, you will
   import 'package:flauto/flutter_sound.dart';
 ...
   FlutterSoundPlayer _myPlayer = FlutterSoundPlayer();
+```
+
+An optional parameter allows to specify the Log Level you are interested by :
+
+```dart
+  FlutterSoundPlayer _myPlayer = FlutterSoundPlayer(logLevel: Level.debug);
 ```
 
 ### 2. Open and close the audio session
@@ -75,7 +81,7 @@ void play() async {
 
 ## Recording
 
-The complete running example [is there](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/simple_recorder/simple_recorder.dart)
+The complete running example [is there](flutter_sound_examples_simple_recorder.html)
 
 ### 1. FlutterSoundRecorder instanciation
 
@@ -83,6 +89,12 @@ To play back something you must instanciate a recorder. Most of the time, you wi
 
 ```dart
   FlutterSoundRecorder _myRecorder = FlutterSoundRecorder();
+```
+
+An optional parameter allows to specify the Log Level you are interested by :
+
+```dart
+  FlutterSoundRecorder _myRecorder = FlutterSoundPlayer(Level.debug);
 ```
 
 ### 2. Open and close the audio session

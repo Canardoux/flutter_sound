@@ -19,7 +19,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 /*
@@ -56,7 +56,7 @@ class LivePlaybackWithBackPressure extends StatefulWidget {
 
 class _LivePlaybackWithBackPressureState
     extends State<LivePlaybackWithBackPressure> {
-  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer(logLevel: Level.debug);
   bool _mPlayerIsInited = false;
 
   @override

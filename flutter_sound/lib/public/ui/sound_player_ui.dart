@@ -38,7 +38,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../flutter_sound.dart';
-import '../util/log.dart';
 
 ///
 typedef OnLoad = Future<Track> Function(BuildContext context);
@@ -177,6 +176,9 @@ class SoundPlayerUI extends StatefulWidget {
 /// internal state.
 /// @nodoc
 class SoundPlayerUIState extends State<SoundPlayerUI> {
+
+  final Logger _logger = Logger(level: Level.debug);
+
   final FlutterSoundPlayer _player;
 
   final _sliderPosition = _SliderPosition();
@@ -335,7 +337,6 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   ///
   @override
   void dispose() {
-    print('stopping Player on dispose');
     _stop(supressState: true);
     _player.closeAudioSession();
     super.dispose();
@@ -438,7 +439,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
         .resumePlayer()
         .then((_) => _transitioning = false)
         .catchError((dynamic e) {
-      Log.w('Error calling resume ${e.toString()}');
+      _logger.w('Error calling resume ${e.toString()}');
       _playState = _PlayState.stopped;
       _player.stopPlayer();
       return false;
@@ -457,7 +458,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
         .pausePlayer()
         .then((_) => _transitioning = false)
         .catchError((dynamic e) {
-      Log.w('Error calling pause ${e.toString()}');
+      _logger.w('Error calling pause ${e.toString()}');
       _playState = _PlayState.playing;
       _playState = _PlayState.stopped;
       _player.stopPlayer();
@@ -469,12 +470,12 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   void play() async {
     _transitioning = true;
     _loading = true;
-    Log.d('Loading starting');
+    _logger.d('Loading starting');
 
-    Log.d('Calling play');
+    _logger.d('Calling play');
 
     if (_track != null && _player.isPlaying) {
-      Log.d('play called whilst player running. Stopping Player first.');
+      _logger.d('play called whilst player running. Stopping Player first.');
       await _stop();
     }
 
@@ -512,14 +513,14 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
           .then((_) {
         _playState = _PlayState.playing;
       }).catchError((dynamic e) {
-        Log.w('Error calling play() ${e.toString()}');
+        _logger.w('Error calling play() ${e.toString()}');
         _playState = _PlayState.stopped;
 
         return null;
       }).whenComplete(() {
         _loading = false;
         _transitioning = false;
-        Log.d(green('Transitioning = false'));
+        _logger.d('Transitioning = false');
       });
     }
   }
@@ -574,7 +575,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   /// transitions.
   // ignore: avoid_setters_without_getters
   set _transitioning(bool value) {
-    Log.d(green('Transitioning = $value'));
+    _logger.d('Transitioning = $value');
     setState(() => __transitioning = value);
   }
 

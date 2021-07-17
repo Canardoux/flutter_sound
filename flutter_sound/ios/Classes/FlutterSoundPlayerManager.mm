@@ -80,7 +80,6 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         }
 
          FlutterSoundPlayer* aFlautoPlayer = (FlutterSoundPlayer*)[ self getSession: call];
-         //NSLog(@"IOS:--> rcv: %@", call.method);
 
         if ([@"openPlayer" isEqualToString:call.method])
         {
@@ -193,11 +192,15 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                  [aFlautoPlayer feed: call result: result];
         } else
 
+        if ([@"setLogLevel" isEqualToString: call.method])
+        {
+                 [aFlautoPlayer setLogLevel: call result: result];
+        } else
+
 
         {
                 result(FlutterMethodNotImplemented);
         }
-         //NSLog(@"IOS:<-- rcv: %@", call.method);
 }
 
 @end

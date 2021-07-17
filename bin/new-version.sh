@@ -14,6 +14,24 @@ bin/flavor.sh FULL
 bin/reldev.sh REL
 bin/setver.sh $VERSION
 
+
+cd flutter_sound
+flutter analyze lib
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+dartdoc lib
+if [ $? -ne 0 ]; then
+    echo "Error"
+    #exit -1
+fi
+rm -rf doc
+cd ..
+
+
+#cp -a -v flutter_sound_web/js/flutter_sound/* flutter_sound/example/web/js/flutter_sound
+
 #rm flutter_sound/Logotype\ primary.png
 #ln -s ../doc/flutter_sound/Logotype\ primary.png flutter_sound/
 rm flutter_sound_web/js
@@ -52,34 +70,15 @@ fi
 cd ..
 
 
-cd flutter_sound
-flutter analyze lib
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
-dartdoc lib
-if [ $? -ne 0 ]; then
-    echo "Error"
-    #exit -1
-fi
-rm -rf doc
-cd ..
-
 
 
 git add .
 git commit -m "TAU : Version $VERSION"
 git pull origin
 git push origin
-git pull gl
-git push gl
-#git push bb
 if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
     git push  -f origin $VERSION
-    git push  -f gl $VERSION
-    #git push  -f bb $VERSION
 fi
 
 cd tau_core
@@ -87,14 +86,9 @@ git add .
 git commit -m "TAU : Version $VERSION"
 git pull origin
 git push origin
-git pull gl
-git push gl
-#git push bb
 if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
     git push  -f origin $VERSION
-    git push  -f gl $VERSION
-    #git push  -f bb $VERSION
 fi
 cd ..
 
@@ -119,14 +113,9 @@ git add .
 git commit -m "TAU : Version $VERSION"
 git pull origin
 git push origin
-git pull gl
-git push gl
-#git push bb
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push  -f origin $VERSION
-        git push  -f gl $VERSION
-        #git push  -f bb $VERSION
 fi
 
 cd tau_core
@@ -134,14 +123,9 @@ git add .
 git commit -m "TAU : Version $VERSION"
 git pull origin
 git push origin
-git pull gl
-git push gl
-#git push bb
 if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
     git push  -f origin $VERSION
-    git push  -f gl $VERSION
-    #git push  -f bb $VERSION
 fi
 cd ..
 
@@ -247,14 +231,9 @@ git add .
 git commit -m "TAU : Version $VERSION"
 git pull origin
 git push origin
-git pull gl
-git push gl
-#git push bb
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push  -f origin $VERSION
-        git push  -f gl $VERSION
-        #git push  -f bb $VERSION
 fi
 
 cd tau_core
@@ -262,14 +241,9 @@ git add .
 git commit -m "TAU : Version $VERSION"
 git pull origin
 git push origin
-git pull gl
-git push gl
-#git push bb
 if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
     git push  -f origin $VERSION
-    git push  -f gl $VERSION
-    #git push  -f bb $VERSION
 fi
 cd ..
 

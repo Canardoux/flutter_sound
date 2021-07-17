@@ -19,7 +19,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:intl/intl.dart';
 
 import 'demo_media_path.dart';
@@ -102,10 +102,10 @@ Future<Uint8List?> makeBuffer(String path) async {
     var file = File(path);
     file.openRead();
     var contents = await file.readAsBytes();
-    Log.d('The file is ${contents.length} bytes long.');
+    print('The file is ${contents.length} bytes long.');
     return contents;
   } on Object catch (e) {
-    Log.d(e.toString());
+    print(e.toString());
     return null;
   }
 }

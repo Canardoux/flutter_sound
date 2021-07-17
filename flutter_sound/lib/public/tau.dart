@@ -36,9 +36,9 @@ library tau;
 
 import 'dart:typed_data' show Uint8List;
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
+import 'package:logger/logger.dart' show Level , Logger;
 import 'flutter_sound_player.dart';
 import 'flutter_sound_recorder.dart';
-import 'util/log.dart';
 
 export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 
@@ -130,6 +130,18 @@ class FoodEvent extends Food {
 /// by the App, without having to build such objects themselves.
 /// @nodoc
 class FlutterSound {
+  Logger _logger = Logger(level: Level.debug);
+
+  /// The FlutterSound Logger getter
+  Logger get logger => _logger;
+
+  /// The FlutterSound Logger setter
+  set logger(aLogger) {
+    _logger = aLogger;
+    // TODO
+    // Here we must call tau_core if necessary
+  }
+
   AudioFocus _mFocus = AudioFocus.requestFocusAndKeepOthers;
   SessionMode _mSessionMode = SessionMode.modeDefault;
   SessionCategory _mSessionCategory = SessionCategory.playback;
@@ -175,7 +187,7 @@ class FlutterSound {
     /// What to do if another App has the focus
     AudioFocus focus,
   ) async {
-    Log.i('FS:---> setAudioFocus ');
+    _logger.i('FS:---> setAudioFocus ');
     _mFocus = focus;
 
     // For legacy reason, we need to have an open player to set the Audio Focus
@@ -197,7 +209,7 @@ class FlutterSound {
           audioFlags: _mAudioFlags,
           mode: _mSessionMode);
     }
-    Log.i('FS:<--- setAudioFocus ');
+    _logger.i('FS:<--- setAudioFocus ');
   }
 
   /// setIOSSessionParameters() is for specifying the Audio session on iOS.
@@ -213,7 +225,7 @@ class FlutterSound {
     /// The mode is used by iOS and ignored on Android and Flutter Web
     SessionMode mode = SessionMode.modeDefault,
   }) async {
-    Log.i('FS:---> setIOSSessionParameters ');
+    _logger.i('FS:---> setIOSSessionParameters ');
     _mSessionCategory = category;
     _mSessionMode = mode;
     // For legacy reason, we need to have an open player to set the Audio Focus
@@ -236,6 +248,6 @@ class FlutterSound {
         mode: _mSessionMode,
       );
     }
-    Log.i('FS:<--- setIOSSessionParameters ');
+    _logger.i('FS:<--- setIOSSessionParameters ');
   }
 }

@@ -19,6 +19,14 @@ topnav:
     - title: PR
       external_url: https://github.com/Canardoux/tau/issues
 
+    - title: Repo
+      folderitems:
+      external_url: https://github.com/Canardoux/tau
+      hint: The sources on Github. Close Source Software :-(
+
+ 
+
+
 #Topnav dropdowns
 topnav_dropdowns:
 - title: Topnav dropdowns
@@ -37,18 +45,6 @@ topnav_dropdowns:
           url: /api-react
 
 
-
-    - title: Repo
-      folderitems:
-
-        - title: Github
-          external_url: https://github.com/Canardoux/tau
-          hint: The sources on Github. Close Source Software :-(
-
- 
-        - title: Gitlab
-          external_url: https://gitlab.com/canardoux/tau
-          hint: A great FOSS (Free and Open Source Software) alternative to Github
 
 
 

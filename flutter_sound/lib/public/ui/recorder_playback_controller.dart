@@ -81,6 +81,7 @@ class RecorderPlaybackController extends InheritedWidget {
 class _RecordPlaybackControllerState {
   SoundRecorderUIState? _recorderState;
   SoundPlayerUIState? _playerState;
+  final Logger _logger = Logger(level: Level.debug);
 
   /// Proxies recording events into playback events.
   /// So we can have the SoundPlayerUI update as the
@@ -95,7 +96,7 @@ class _RecordPlaybackControllerState {
   }
 
   void _onRecorderStopped(Duration duration) {
-    Log.d('_onRecorderStopped');
+    _logger.d('_onRecorderStopped');
     if (_playerState != null) {
       _playerState!.playbackEnabled(enabled: true);
 
@@ -107,7 +108,7 @@ class _RecordPlaybackControllerState {
   }
 
   void _onRecorderPaused() {
-    Log.d('_onRecorderStopped');
+    _logger.d('_onRecorderStopped');
     if (_playerState != null) {
       _playerState!.playbackEnabled(enabled: false);
       // TODO ...
@@ -115,7 +116,7 @@ class _RecordPlaybackControllerState {
   }
 
   void _onRecorderResume() {
-    Log.d('_onRecorderStopped');
+    _logger.d('_onRecorderStopped');
     if (_playerState != null) {
       _playerState!.playbackEnabled(enabled: false);
       // TODO ...

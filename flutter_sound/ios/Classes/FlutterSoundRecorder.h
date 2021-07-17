@@ -52,7 +52,6 @@
 - (void)startRecorder :(FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)stopRecorder:(FlutterResult)result;
 - (void)setDbPeakLevelUpdate:(double)intervalInSecs result: (FlutterResult)result;
-//- (void)setDbLevelEnabled:(BOOL)enabled result: (FlutterResult)result;
 - (void)openRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)closeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)setSubscriptionDuration:(FlutterMethodCall*)call result: (FlutterResult)result;
@@ -61,7 +60,8 @@
 - (void)resumeRecorder : (FlutterMethodCall*)call result:(FlutterResult)result;
 - (void)deleteRecord: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)getRecordURL: (FlutterMethodCall*)call result: (FlutterResult)result;
- 
+- (void)setLogLevel: (FlutterMethodCall*)call result: (FlutterResult)result;
+
 @end
 
 #endif /* FlutterSoundRecorder_h */

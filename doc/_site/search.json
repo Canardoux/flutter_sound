@@ -81,6 +81,17 @@
 
 
 {
+"title": "Examples",
+"tags": "example",
+"keywords": "Flutter, Flutter Sound, examples",
+"url": "flutter_sound_examples_convert.html",
+"summary": "Convert audio to MP3"
+}
+,
+
+
+
+{
 "title": "Utilities API",
 "tags": "apiutilitieshelpers",
 "keywords": "API, utilities, helpers",
@@ -325,6 +336,17 @@
 
 
 {
+"title": "Logger",
+"tags": "flutter_sound",
+"keywords": "Flutter, &tau;",
+"url": "logger.html",
+"summary": "Debugging logs."
+}
+,
+
+
+
+{
 "title": "Guides",
 "tags": "guide",
 "keywords": "guides",
@@ -440,6 +462,17 @@
 "keywords": "lock_screen",
 "url": "guides_lock_screen.html",
 "summary": "The &tau; Project allows the App to be controlled from the Lock Screen."
+}
+,
+
+
+
+{
+"title": "Logger",
+"tags": "flutter_sound",
+"keywords": "Flutter, &tau;",
+"url": "logger.html",
+"summary": "Debugging logs."
 }
 ,
 
@@ -703,11 +736,44 @@
 
 
 {
+"title": "Recorder API",
+"tags": "apirecorder",
+"keywords": "API Recorder",
+"url": "tau_api_recorder_setLogLevel.html",
+"summary": "setLogLevel()"
+}
+,
+
+
+
+{
 "title": "Player API",
 "tags": "apiplayer",
 "keywords": "API Player",
-"url": "tau_api_player_set_audio_focus.html",
-"summary": "setAudioFocus."
+"url": "tau_api_player_setLogLevel.html",
+"summary": "setLogLevel()"
+}
+,
+
+
+
+{
+"title": "Utilities API",
+"tags": "apiutilitieshelpers",
+"keywords": "API, utilities, helpers",
+"url": "tau_api_utilities_setLogLevel.html",
+"summary": "setLogLevel()"
+}
+,
+
+
+
+{
+"title": "Examples",
+"tags": "example",
+"keywords": "Flutter, Flutter Sound, examples",
+"url": "flutter_sound_examples_setLogLevel.html",
+"summary": "Set Log Level"
 }
 ,
 
@@ -725,11 +791,11 @@
 
 
 {
-"title": "Recorder API",
-"tags": "apirecorder",
-"keywords": "API Recorder",
-"url": "tau_api_recorder_set_subscription_duration.html",
-"summary": "setSubscriptionDuration()"
+"title": "Player API",
+"tags": "apiplayer",
+"keywords": "API Player",
+"url": "tau_api_player_set_audio_focus.html",
+"summary": "setAudioFocus."
 }
 ,
 
@@ -740,6 +806,17 @@
 "tags": "apiplayer",
 "keywords": "API Player",
 "url": "tau_api_player_set_subscription_duration.html",
+"summary": "setSubscriptionDuration()"
+}
+,
+
+
+
+{
+"title": "Recorder API",
+"tags": "apirecorder",
+"keywords": "API Recorder",
+"url": "tau_api_recorder_set_subscription_duration.html",
 "summary": "setSubscriptionDuration()"
 }
 ,

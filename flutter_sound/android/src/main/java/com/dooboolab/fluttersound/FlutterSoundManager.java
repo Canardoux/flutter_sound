@@ -24,32 +24,8 @@ import java.util.List;
 
 import io.flutter.plugin.common.MethodChannel;
 
-
-import android.content.Context;
-import android.media.MediaPlayer;
-import android.media.AudioManager;
-import android.os.Build;
-import android.os.Environment;
-import android.os.Handler;
-import android.util.Log;
-
-import android.media.AudioFocusRequest;
-
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
 
@@ -98,7 +74,7 @@ public class FlutterSoundManager
 		slots.set ( slot, aPlayer );
 		aPlayer.init( slot );
 	}
-	
+
 	public void resetPlugin( final MethodCall call, final Result result )
 	{
 		for (int i = 0; i < slots.size () ; ++i)

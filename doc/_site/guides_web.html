@@ -179,6 +179,10 @@
                 
                 
                 
+                <li><a href="https://github.com/Canardoux/tau" target="_blank" rel="noopener"  title="The sources on Github. Close Source Software :-(" >Repo</a></li>
+                
+                
+                
                 <!-- entries with drop-downs appear here -->
                 <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
                 
@@ -193,21 +197,6 @@
                         
                         
                         <li><a href="/api-react"   title="For future expansion..." >React Native (javascript)</a></li>
-                        
-                        
-                    </ul>
-                </li>
-                
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Repo<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        
-                        
-                        <li><a href="https://github.com/Canardoux/tau" target="_blank" rel="noopener"  title="The sources on Github. Close Source Software :-(" >Github</a></li>
-                        
-                        
-                        
-                        <li><a href="https://gitlab.com/canardoux/tau" target="_blank" rel="noopener"  title="A great FOSS (Free and Open Source Software) alternative to Github" >Gitlab</a></li>
                         
                         
                     </ul>
@@ -282,7 +271,7 @@
                 
 
 <ul id="mysidebar" class="nav">
-  <li class="sidebarTitle">The &tau; Project - 8.1.9</li>
+  <li class="sidebarTitle">The &tau; Project - 8.2.0</li>
   
   
   
@@ -312,7 +301,7 @@
       
   
   <li>
-      <a title="-&tau; Maintenance & Dev" href="#">-&tau; Maintenance & Dev</a>
+      <a title="Maintenance & Dev" href="#">Maintenance & Dev</a>
       <ul>
           
           
@@ -348,6 +337,13 @@
           
           
           <li><a title="Supported Codecs" href="/guides_codec.html">Supported Codecs</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Logger" href="/logger.html">Logger</a></li>
           
           
           
@@ -437,6 +433,12 @@
                   
                   
                   <li><a title="Constructor" href="/tau_api_player_constructor.html">Constructor</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="setLogLevel()" href="/tau_api_player_setLogLevel.html">setLogLevel()</a></li>
                   
                   
                   
@@ -583,6 +585,12 @@
                   
                   
                   
+                  <li><a title="setLogLevel()" href="/tau_api_recorder_setLogLevel.html">setLogLevel()</a></li>
+                  
+                  
+                  
+                  
+                  
                   <li><a title="openAudioSession()" href="/tau_api_recorder_open_audio_session.html">openAudioSession()</a></li>
                   
                   
@@ -659,6 +667,12 @@
                   
                   
                   <li><a title="Constructor" href="/tau_api_utilities_constructor.html">Constructor</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="setLogLevel()" href="/tau_api_utilities_setLogLevel.html">setLogLevel()</a></li>
                   
                   
                   
@@ -860,6 +874,18 @@
                   
                   
                   
+                  
+                  
+                  <li><a title="Convert" href="/flutter_sound_examples_convert.html">Convert</a></li>
+                  
+                  
+                  
+                  
+                  
+                  <li><a title="Set Log Level" href="/flutter_sound_examples_setLogLevel.html">Set Log Level</a></li>
+                  
+                  
+                  
               </ul>
           </li>
           
@@ -1028,7 +1054,7 @@ $('#toc').on('click', 'a', function() {
 
    <h1 id="τ-on-web">τ on Web</h1>
 
-<p>τ is now supported by Flutter Web (with some limitations). Please <a href="install.md#flutter-web">go to there</a> to have informations on how to setup your App for web.</p>
+<p>τ is now supported by Flutter Web (with some limitations). Please <a href="flutter_sound_install.html#flutter-web">go to there</a> to have informations on how to setup your App for web.</p>
 
 <p>You can play with <a href="pages/flutter-sound/web_example/index.html">this live demo on the web</a>.</p>
 
@@ -1038,25 +1064,34 @@ $('#toc').on('click', 'a', function() {
 
 <h3 id="static-reference">Static reference</h3>
 
-<p>Add those 4 lines at the end of the <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> section of your <code class="language-plaintext highlighter-rouge">index.html</code> file :</p>
+<p>Either add those 4 lines at the end of the <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> section of your <code class="language-plaintext highlighter-rouge">index.html</code> file :</p>
 
-<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;script src="assets/packages/flutter_sound_web/js/flutter_sound/flutter_sound.js"&gt;&lt;/script&gt;
-  &lt;script src="assets/packages/flutter_sound_web/js/flutter_sound/flutter_sound_player.js"&gt;&lt;/script&gt;
-  &lt;script src="assets/packages/flutter_sound_web/js/flutter_sound/flutter_sound_recorder.js"&gt;&lt;/script&gt;
-  &lt;script src="assets/packages/flutter_sound_web/js/howler/howler.js"&gt;&lt;/script&gt;
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">"js/flutter_sound/flutter_sound.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">"js/flutter_sound/flutter_sound_player.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">"js/flutter_sound/flutter_sound_recorder.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">"howler/howler.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 </code></pre></div></div>
 
-<h3 id="or-dynamic-reference">or Dynamic reference</h3>
+<p>(of course the .js files must be put in the correct directory : i.e. js/flutter_sound and js/howler)</p>
 
-<p>Add those 4 lines at the end of the <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> section of your <code class="language-plaintext highlighter-rouge">index.html</code> file :</p>
+<h3 id="dynamic-reference">Dynamic reference</h3>
 
-<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;script src="https://cdn.jsdelivr.net/npm/tau_sound_core@7.4.13/js/flutter_sound/flutter_sound.min.js"&gt;&lt;/script&gt;
-  &lt;script src="https://cdn.jsdelivr.net/npm/tau_sound_core@7.4.13/js/flutter_sound/flutter_sound_player.min.js"&gt;&lt;/script&gt;
-  &lt;script src="https://cdn.jsdelivr.net/npm/tau_sound_core@7.4.13/js/flutter_sound/flutter_sound_recorder.min.js"&gt;&lt;/script&gt;
-  &lt;script src="https://cdn.jsdelivr.net/npm/howler@2/dist/howler.min.js"&gt;&lt;/script&gt;
+<p>or add those 4 lines at the end of the <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> section of your <code class="language-plaintext highlighter-rouge">index.html</code> file :</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/tau_core@8/js/flutter_sound/flutter_sound.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/tau_core@8/js/flutter_sound/flutter_sound_player.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/tau_core@8/js/flutter_sound/flutter_sound_recorder.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/howler@2/dist/howler.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 </code></pre></div></div>
 
-<p>Please <a href="https://www.jsdelivr.com/features">read this</a> to understand how you can specify the interval of the versions you are interested by.</p>
+<p>Please <a href="https://www.jsdelivr.com/features">read this</a> : replace <code class="language-plaintext highlighter-rouge">@8</code> by <code class="language-plaintext highlighter-rouge">@7</code> if you are linking with Flutter Sound v7.x.</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">NoSuchMethodError:</span> <span class="n">tried</span> <span class="n">to</span> <span class="n">call</span> <span class="n">a</span> <span class="n">non</span><span class="o">-</span><span class="n">function</span><span class="o">,</span> <span class="n">such</span> <span class="k">as</span> <span class="kc">null</span><span class="o">:</span> <span class="s">'dart.global.newRecorderInstance'</span>
+</code></pre></div></div>
+
+<div class="alert alert-success" role="alert"><i class="fa fa-check-square-o"></i> <b>Tip:</b> If you get this error above, it probably means that the required javascript sources are not corretely loaded by your index.html file.
+Double check if your javascript source files are correct.
+</div>
 
 <h2 id="player">Player</h2>
 
@@ -1151,7 +1186,7 @@ I had to add :</p>
             <div class="row">
                 <div class="col-lg-12 footer">
                &copy;2021 Dooboolab. Licensed under LGPL. <br />
- Site last generated: Jul 3, 2021 <br />
+ Site last generated: Jul 17, 2021 <br />
 <p><img src="images/banner5.svg" alt="Company logo" max-width="10"/></p>
                 </div>
             </div>

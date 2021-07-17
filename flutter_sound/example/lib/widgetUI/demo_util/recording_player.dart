@@ -21,7 +21,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_lite/flutter_sound.dart';
 
 //import 'util/log.dart';
 import 'demo_active_codec.dart';
@@ -43,7 +43,6 @@ class RecordingPlayer extends StatelessWidget {
     Track? track;
 
     String? title;
-    try {
       if (_recordingExist(context)) {
         /// build player from file
         if (MediaPath().isFile) {
@@ -78,11 +77,6 @@ class RecordingPlayer extends StatelessWidget {
                 'selected codec first.'));
         ScaffoldMessenger.of(context).showSnackBar(error);
       }
-    } on Object catch (err) {
-      Log.d('error: $err');
-      rethrow;
-    }
-
     return track;
   }
 

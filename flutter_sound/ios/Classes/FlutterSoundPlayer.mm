@@ -90,10 +90,9 @@
 
 - (void)audioPlayerDidFinishPlaying: (BOOL)flag
 {
-        NSLog(@"IOS:--> @audioPlayerDidFinishPlaying");
+        [self log: DBG msg: @"IOS:--> @audioPlayerDidFinishPlaying"];
         [self invokeMethod:@"audioPlayerFinishedPlaying" numberArg: [self getPlayerStatus] success: YES];
-
-        NSLog(@"IOS:<-- @audioPlayerDidFinishPlaying");
+        [self log: DBG msg: @"IOS:<-- @audioPlayerDidFinishPlaying"];
 }
 
 - (void)pause
@@ -139,10 +138,11 @@
 
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result
 {
-        NSLog(@"IOS:--> isDecoderSupported");
+        [self log: DBG msg: @"IOS:--> isDecoderSupported"];
+
         NSNumber*  b = [NSNumber numberWithBool:[ flautoPlayer isDecoderSupported: codec] ];
         result(b);
-        NSLog(@"IOS:<-- isDecoderSupported");
+        [self log: DBG msg: @"IOS:<-- isDecoderSupported"];
 }
 
 
@@ -155,7 +155,7 @@
 
 - (void)openPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
-        NSLog(@"IOS:--> initializeFlautoPlayer");
+        [self log: DBG msg: @"IOS:--> initializeFlautoPlayer"];
         t_AUDIO_FOCUS focus = (t_AUDIO_FOCUS)( [(NSNumber*)call.arguments[@"focus"] intValue]);
         t_SESSION_CATEGORY category = (t_SESSION_CATEGORY)( [(NSNumber*)call.arguments[@"category"] intValue]);
         t_SESSION_MODE mode = (t_SESSION_MODE)( [(NSNumber*)call.arguments[@"mode"] intValue]);
@@ -169,13 +169,13 @@
                                 errorWithCode:@"Audio Player"
                                 message:@"Open session failure"
                                 details:nil]);
-        NSLog(@"IOS:<-- initializeFlautoPlayer");
+        [self log: DBG msg: @"IOS:<-- initializeFlautoPlayer"];
 }
 
 
 - (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result
 {
-        NSLog(@"IOS:--> setAudioFocus");
+        [self log: DBG msg: @"IOS:--> setAudioFocus"];
         t_AUDIO_FOCUS focus = (t_AUDIO_FOCUS)( [(NSNumber*)call.arguments[@"focus"] intValue]);
         t_SESSION_CATEGORY category = (t_SESSION_CATEGORY)( [(NSNumber*)call.arguments[@"category"] intValue]);
         t_SESSION_MODE mode = (t_SESSION_MODE)( [(NSNumber*)call.arguments[@"mode"] intValue]);
@@ -189,26 +189,27 @@
                                 errorWithCode:@"Audio Player"
                                 message:@"Open session failure"
                                 details:nil]);
-       NSLog(@"IOS:<-- setAudioFocus");
+        [self log: DBG msg: @"IOS:<-- setAudioFocus"];
+
 }
 
 
 - (void)reset: (FlutterMethodCall*)call result: (FlutterResult)result
 {
-        NSLog(@"IOS:--> reset (Player)");
+        [self log: DBG msg: @"IOS:--> reset (Player)"];
         [self closePlayer: call result: result];
         result([NSNumber numberWithInt: 0]);
-        NSLog(@"IOS:<-- reset (Player)");
-
+        [self log: DBG msg: @"IOS:<-- reset (Player)"];
 }
 
 - (void)closePlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
-        NSLog(@"IOS:--> releaseFlautoPlayer");
+        [self log: DBG msg: @"IOS:--> releaseFlautoPlayer"];
         [flautoPlayer releaseFlautoPlayer];
         [super releaseSession];
         result([self getPlayerStatus]);
-        NSLog(@"IOS:<-- releaseFlautoPlayer");
+        [self log: DBG msg: @"IOS:<-- releaseFlautoPlayer"];
+
 }
 
 - (void)setCategory: (FlutterMethodCall*)call result:(FlutterResult)result
@@ -228,7 +229,7 @@
 
 - (void)setActive: (FlutterMethodCall*)call result:(FlutterResult)result
 {
-        NSLog(@"IOS:--> setActive");
+        [self log: DBG msg: @"IOS:--> setActive"];
         BOOL enabled = [call.arguments[@"enabled"] boolValue];
         bool r = [flautoPlayer setActive: enabled];
         hasFocus = enabled;
@@ -240,18 +241,18 @@
                                 errorWithCode:@"Audio Player"
                                 message:@"setActive failure"
                                 details:nil]);
-       NSLog(@"IOS:<-- setActive");
+        [self log: DBG msg: @"IOS:<-- setActive"];
 }
 
 
 
 - (void)stopPlayer:(FlutterMethodCall*)call  result:(FlutterResult)result
 {
-        NSLog(@"IOS:--> stopPlayer");
+        [self log: DBG msg: @"IOS:--> stopPlayer"];
         [flautoPlayer stopPlayer];
         NSNumber* status = [self getPlayerStatus];
         result(status);
-        NSLog(@"IOS:<-- stopPlayer - status = %s" , [[status stringValue] cStringUsingEncoding: NSUTF8StringEncoding]);
+        [self log: DBG msg: @"IOS:<-- stopPlayer"];
 }
 
 
@@ -266,8 +267,7 @@
 
 - (void)startPlayer:(FlutterMethodCall*)call result: (FlutterResult)result
 {
-        NSLog(@"IOS:--> startPlayer");
-
+        [self log: DBG msg: @"IOS:--> startPlayer"];
         NSString* path = (NSString*)call.arguments[@"fromURI"];
         NSNumber* numChannels = (NSNumber*)call.arguments[@"numChannels"];
         NSNumber* sampleRate = (NSNumber*)call.arguments[@"sampleRate"];
@@ -299,15 +299,13 @@
                         message:@"startPlayer failure"
                         details:nil]);
         }
-
-        NSLog(@"IOS:<-- startPlayer");
+        [self log: DBG msg: @"IOS:<-- startPlayer"];
 }
 
 
 - (void)startPlayerFromMic:(FlutterMethodCall*)call result: (FlutterResult)result
 {
-        NSLog(@"IOS:--> startPlayerFromMic");
-
+        [self log: DBG msg: @"IOS:--> startPlayerFromMic"];
         NSNumber* numChannels = (NSNumber*)call.arguments[@"numChannels"];
         NSNumber* sampleRate = (NSNumber*)call.arguments[@"sampleRate"];
         long samplerateLong = ([sampleRate class] != [NSNull class]) ? [sampleRate longValue] : 44000;
@@ -327,14 +325,13 @@
                         message:@"startPlayerFromMic failure"
                         details:nil]);
         }
-
-        NSLog(@"IOS:<-- startPlayer");
+        [self log: DBG msg: @"IOS:<-- startPlayer"];
 }
 
 
 - (void)startPlayerFromTrack:(FlutterMethodCall*)call result: (FlutterResult)result
 {
-         NSLog(@"IOS:--> startPlayerFromTrack");
+         [self log: DBG msg: @"IOS:--> startPlayerFromTrack"];
          NSMutableDictionary* trackDict = (NSMutableDictionary*) call.arguments[@"track"];
          
          if ([trackDict[@"dataBuffer"] class] != [NSNull class])
@@ -369,8 +366,7 @@
                         message:@"startPlayer failure"
                         details:nil]);
         }
-
-        NSLog(@"IOS:<-- startPlayerFromTrack");
+        [self log: DBG msg: @"IOS:<-- startPlayerFromTrack"];
 }
 
 - (void)nowPlaying:(FlutterMethodCall*)call result: (FlutterResult)result
@@ -404,7 +400,8 @@
 
 - (void)pausePlayer:(FlutterResult)result
 {
-        NSLog(@"IOS:--> pausePlayer");
+        [self log: DBG msg: @"IOS:--> pausePlayer"];
+
         if ([flautoPlayer pausePlayer])
         {
                 result([self getPlayerStatus]);
@@ -416,12 +413,14 @@
                                   details:nil]);
 
         }
-        NSLog(@"IOS:<-- pausePlayer");
+        [self log: DBG msg: @"IOS:<-- pausePlayer"];
+
 }
 
 - (void)resumePlayer:(FlutterResult)result
 {
-        NSLog(@"IOS:--> resumePlayer");
+        [self log: DBG msg: @"IOS:--> resumePlayer"];
+
         if ([flautoPlayer resumePlayer])
         {
                 result([self getPlayerStatus]);
@@ -433,8 +432,7 @@
                                   details:nil]);
 
         }
-         NSLog(@"IOS:<-- resumePlayer");
-
+        [self log: DBG msg: @"IOS:<-- resumePlayer"];
 }
 
 
@@ -463,40 +461,44 @@
 
 - (void)seekToPlayer:(FlutterMethodCall*)call result: (FlutterResult)result
 {
-                NSLog(@"IOS:--> seekToPlayer");
+                [self log: DBG msg: @"IOS:--> seekToPlayer"];
+
                 NSNumber* milli = (NSNumber*)(call.arguments[@"duration"]);
                 long t = [milli longValue];
                 [flautoPlayer seekToPlayer: t];
                 result([self getPlayerStatus]);
-                NSLog(@"IOS:<-- seekToPlayer");
+                [self log: DBG msg: @"IOS:<-- seekToPlayer"];
+
 }
 
 - (void)setVolume:(double) volume result: (FlutterResult)result
 {
+                [self log: DBG msg: @"IOS:--> setVolume"];
+
                 [flautoPlayer setVolume: volume ];
                 result([self getPlayerStatus]);
-                NSLog(@"IOS:<-- setVolume");
+                [self log: DBG msg: @"IOS:<-- setVolume"];
 }
 
 
 
 - (void)getProgress:(FlutterMethodCall*)call result: (FlutterResult)result
 {
-        NSLog(@"IOS:--> getProgress");
+        [self log: DBG msg: @"IOS:--> getProgress"];
         NSDictionary* dico = [flautoPlayer getProgress];
         result(dico);
-        NSLog(@"IOS:--> getProgress");
+        [self log: DBG msg: @"IOS:--> getProgress"];
 
 }
 
 
 - (void)setSubscriptionDuration:(FlutterMethodCall*)call  result: (FlutterResult)result
 {
-        NSLog(@"IOS:--> setSubscriptionDuration");
+        [self log: DBG msg: @"IOS:--> setSubscriptionDuration"];
         NSNumber* milliSec = (NSNumber*)call.arguments[@"duration"];
         [flautoPlayer setSubscriptionDuration: [milliSec longValue]];
         result([self getPlayerStatus]);
-        NSLog(@"IOS:<-- setSubscriptionDuration");
+        [self log: DBG msg: @"IOS:<-- setSubscriptionDuration"];
 }
 
 
@@ -518,6 +520,13 @@
 {
         return [NSNumber numberWithInt: [self getStatus]];
 }
+
+
+- (void)setLogLevel: (FlutterMethodCall*)call result: (FlutterResult)result
+{
+    //TODO
+}
+
 @end
 //---------------------------------------------------------------------------------------------
 

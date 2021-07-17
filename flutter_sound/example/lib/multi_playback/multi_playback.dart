@@ -21,7 +21,7 @@ import 'dart:typed_data';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 /*
@@ -46,9 +46,9 @@ class MultiPlayback extends StatefulWidget {
 }
 
 class _MultiPlaybackState extends State<MultiPlayback> {
-  FlutterSoundPlayer? _mPlayer1 = FlutterSoundPlayer();
-  FlutterSoundPlayer? _mPlayer2 = FlutterSoundPlayer();
-  FlutterSoundPlayer? _mPlayer3 = FlutterSoundPlayer();
+  FlutterSoundPlayer? _mPlayer1 = FlutterSoundPlayer(logLevel: Level.debug);
+  FlutterSoundPlayer? _mPlayer2 = FlutterSoundPlayer(logLevel: Level.debug);
+  FlutterSoundPlayer? _mPlayer3 = FlutterSoundPlayer(logLevel: Level.debug);
   bool _mPlayer1IsInited = false;
   bool _mPlayer2IsInited = false;
   bool _mPlayer3IsInited = false;

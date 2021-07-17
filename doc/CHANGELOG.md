@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 8.2.0
+
+- &tau; uses a Logger to show the logs. Please see [this page](logger.html)
+
 ## 8.1.9
 
 - Simple example that converts an AAC file to MP3 [#710](https://github.com/Canardoux/tau/issues/710)

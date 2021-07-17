@@ -21,6 +21,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:logger/logger.dart' show Level , Logger;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
@@ -69,7 +70,8 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
       return null;
     }
 
-    print('FS:---> channelMethodCallHandler : ${call.method}');
+    aPlayer.log(Level.debug, 'FS:---> channelMethodCallHandler : ${call.method}');
+
     bool success = call.arguments['success'] as bool;
     aPlayer.updatePlaybackState(arg['state']);
 
@@ -161,14 +163,17 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
         }
         break;
 
-
-
+      case "log":
+        {
+          aPlayer.log(Level.values[call.arguments['level']], call.arguments['msg']);
+        }
+        break;
 
 
       default:
         throw ArgumentError('Unknown method ${call.method}');
     }
-    print('FS:<--- channelMethodCallHandler : ${call.method}');
+    aPlayer.log(Level.debug, 'FS:<--- channelMethodCallHandler : ${call.method}');
 
     return null;
   }
@@ -201,6 +206,13 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
 
 
   @override
+  Future<void>?   setLogLevel(FlutterSoundPlayerCallback callback, Level logLevel)
+  {
+    invokeMethod( callback, 'setLogLevel', {'logLevel': logLevel.index,});
+  }
+
+
+  @override
   Future<void>?   resetPlugin(FlutterSoundPlayerCallback callback,)
   {
     return _channel.invokeMethod('resetPlugin', );
@@ -208,9 +220,9 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
 
 
   @override
-  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device, bool? withUI})
+  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device, bool? withUI})
   {
-    return  invokeMethod( callback, 'openPlayer', {'focus': focus!.index, 'category': category!.index, 'mode': mode!.index, 'audioFlags': audioFlags, 'device': device!.index, 'withUI': withUI! ? 1 : 0 ,},) ;
+    return  invokeMethod( callback, 'openPlayer', {'logLevel': logLevel.index, 'focus': focus!.index, 'category': category!.index, 'mode': mode!.index, 'audioFlags': audioFlags, 'device': device!.index, 'withUI': withUI! ? 1 : 0 ,},) ;
   }
 
   @override

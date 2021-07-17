@@ -80,6 +80,12 @@
   
   
   <url>
+    <loc>/flutter_sound_examples_convert.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>/tau_api_utilities_convert_file.html</loc>
   </url>
   
@@ -214,6 +220,12 @@
   
   
   <url>
+    <loc>/logger.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>/guides_play_stream.html</loc>
   </url>
   
@@ -275,6 +287,12 @@
   
   <url>
     <loc>/guides_lock_screen.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/logger.html</loc>
   </url>
   
   
@@ -422,7 +440,25 @@
   
   
   <url>
-    <loc>/tau_api_player_set_audio_focus.html</loc>
+    <loc>/tau_api_recorder_setLogLevel.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_player_setLogLevel.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_utilities_setLogLevel.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/flutter_sound_examples_setLogLevel.html</loc>
   </url>
   
   
@@ -434,13 +470,19 @@
   
   
   <url>
-    <loc>/tau_api_recorder_set_subscription_duration.html</loc>
+    <loc>/tau_api_player_set_audio_focus.html</loc>
   </url>
   
   
   
   <url>
     <loc>/tau_api_player_set_subscription_duration.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_recorder_set_subscription_duration.html</loc>
   </url>
   
   

@@ -21,7 +21,7 @@ if [ ! -z "$VERSION" ]; then
         gsed -i  "s/^\( *version: \).*/\1$VERSION/"                                             doc/_data/sidebars/mydoc_sidebar.yml
 fi
 
-echo "patch css for Jekyll compatigility"
+echo "patch css for Jekyll compatibility"
 gsed -i  "0,/^  overflow: hidden;$/s//overflow: auto;/"  doc/pages/flutter-sound/api/static-assets/styles.css
 gsed -i  "s/^  background-color: inherit;$/  background-color: #2196F3;/" doc/pages/flutter-sound/api/static-assets/styles.css
 

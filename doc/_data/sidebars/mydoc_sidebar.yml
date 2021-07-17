@@ -3,7 +3,7 @@
 entries:
 - title: sidebar
   product: The &tau; Project
-  version: 8.1.9
+  version: 8.2.0
   folders:
 
   - title:
@@ -37,7 +37,7 @@ entries:
       url: /changelog.html
       output: web, pdf
 
-  - title: -&tau; Maintenance & Dev
+  - title: Maintenance & Dev
     output: web, pdf
     folderitems:
 
@@ -64,6 +64,10 @@ entries:
 
     - title: Supported Codecs
       url: /guides_codec.html
+      output: web, pdf
+
+    - title: Logger
+      url: /logger.html
       output: web, pdf
 
     - title: Temporary files
@@ -127,6 +131,10 @@ entries:
 
         - title: Constructor
           url: /tau_api_player_constructor.html
+          output: web, pdf
+
+        - title: setLogLevel()
+          url: /tau_api_player_setLogLevel.html
           output: web, pdf
 
         - title: openAudioSession()
@@ -224,6 +232,10 @@ entries:
           url: /tau_api_recorder_constructor.html
           output: web, pdf
 
+        - title: setLogLevel()
+          url: /tau_api_recorder_setLogLevel.html
+          output: web, pdf
+
         - title: openAudioSession()
           url: /tau_api_recorder_open_audio_session.html
           output: web, pdf
@@ -278,6 +290,10 @@ entries:
 
         - title: Constructor
           url: /tau_api_utilities_constructor.html
+          output: web, pdf
+
+        - title: setLogLevel()
+          url: /tau_api_utilities_setLogLevel.html
           output: web, pdf
 
         - title: convertFile()
@@ -348,7 +364,6 @@ entries:
 # -------------------------------------------------------------
 
 
-
   - title: Flutter Sound
     output: web, pdf
 
@@ -416,6 +431,14 @@ entries:
 
         - title: Stream Loop
           url: /flutter_sound_examples_stream_loop.html
+          output: web, pdf
+
+        - title: Convert
+          url: /flutter_sound_examples_convert.html
+          output: web, pdf
+
+        - title: Set Log Level
+          url: /flutter_sound_examples_setLogLevel.html
           output: web, pdf
 
 

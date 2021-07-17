@@ -91,6 +91,9 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 
       }
 
+
+
+
 //-----------------------------------------------------------------------------------------------------------------------------------------------
 
 	/* ctor */ FlutterSoundRecorder (final MethodCall call)
@@ -331,5 +334,11 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 		boolean r = m_recorder.deleteRecord(path);
 		result.success( r );
 	}
+
+	public void setLogLevel (final MethodCall call, final MethodChannel.Result result )
+	{
+	}
+
+
 
 }

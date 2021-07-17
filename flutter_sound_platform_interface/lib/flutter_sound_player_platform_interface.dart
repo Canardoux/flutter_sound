@@ -20,7 +20,9 @@
 
 import 'dart:async';
 
+import 'package:logger/logger.dart' show Level , Logger;
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
@@ -47,6 +49,7 @@ abstract class FlutterSoundPlayerCallback
   void stopPlayerCompleted(int state, bool success);
   void openPlayerCompleted(int state, bool success);
   void closePlayerCompleted(int state, bool success);
+  void log(Level logLevel, String msg);
 
 }
 
@@ -96,7 +99,7 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
     return -1;
   }
 
-  void openSession(FlutterSoundPlayerCallback aSession)
+  void openSession(FlutterSoundPlayerCallback aSession,)
   {
     assert(findSession(aSession) == -1);
 
@@ -127,13 +130,17 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
 
   //===================================================================================================================================================
 
+  Future<void>?   setLogLevel(FlutterSoundPlayerCallback callback, Level loglevel)
+  {
+    throw UnimplementedError('setLogLeve() has not been implemented.');
+  }
 
-  Future<void>?   resetPlugin(FlutterSoundPlayerCallback callback,)
+  Future<void>?   resetPlugin(FlutterSoundPlayerCallback callback)
   {
     throw UnimplementedError('resetPlugin() has not been implemented.');
   }
 
-  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device, bool? withUI,})
+  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device, bool? withUI,})
   {
     throw UnimplementedError('openPlayer() has not been implemented.');
   }

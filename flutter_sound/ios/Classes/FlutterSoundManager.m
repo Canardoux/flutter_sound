@@ -80,20 +80,21 @@
 
 - (void) resetPlugin: (FlutterMethodCall*)call result: (FlutterResult)result
 {
-        NSLog (@"iOS: ---> resetPlugin");
+
         for (int i = 0; i < [flautoPlayerSlots count]; ++i)
         {
                 if ( flautoPlayerSlots[i] != [NSNull null] )
                 {
-                        NSLog (@"iOS: calling reset");
+                        NSLog (@"iOS: resetPlugin");
                         Session* session =  flautoPlayerSlots[i];
                         [ session reset: call result: result];
                 }
         }
         flautoPlayerSlots = [[NSMutableArray alloc] init];
         result( [NSNumber numberWithInt: 0]);
-        NSLog (@"iOS: <--- resetPlugin");
+
 }
+
 
 @end
 
@@ -106,6 +107,15 @@
 @implementation Session
 {
   
+}
+
+
+- (void)log: (t_LOG_LEVEL)level msg: (NSString*) msg
+{
+        NSNumber* nlevel = [NSNumber numberWithInt: level];
+    
+        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: self ->slotNo], @"state": [NSNumber numberWithInt: -1], @"level": nlevel, @"msg": msg };
+        [self invokeMethod: @"log" dico: dico  ];
 }
 
 
@@ -128,14 +138,13 @@
 
 - (void) releaseSession
 {
-        NSLog(@"iOS: ---> releaseSession");
+        [self log: DBG msg: @"iOS: ---> releaseSession"];
         if (hasFocus)
                 [[AVAudioSession sharedInstance]  setActive: FALSE error:nil] ;
         hasFocus = false;
  
         [[self getPlugin]freeSlot: slotNo];
-        NSLog(@"iOS: <--- releaseSession");
-  
+        [self log: DBG msg: @"iOS: <--- releaseSession"];
 }
 
 - (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg success: (bool)success
@@ -151,14 +160,14 @@
                 @"success": [NSNumber numberWithBool: success]
                 
         };
-        NSLog(@"iOS: invokeMethod %@ - state=%i", methodName, [self getStatus]);
+        NSString* s = [NSString stringWithFormat: @"iOS: invokeMethod %@ - state=%i", methodName, [self getStatus] ];
+        [self log: DBG msg: s];
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 
 
 - (void)invokeMethod: (NSString*)methodName dico: (NSDictionary*)dico
 {
-        //[dico setObject:[NSNumber numberWithInt: slotNo] forKey:@"slotNo"];
         [[self getPlugin] invokeMethod: methodName arguments: dico ];
 }
 
@@ -172,7 +181,9 @@
                 @"state": [NSNumber numberWithInt:([self getStatus])],
                 @"success": [NSNumber numberWithBool: success]
         };
-        NSLog(@"iOS: invokeMethod %@ - state=%i", methodName, [self getStatus]);
+        NSString* s = [NSString stringWithFormat: @"iOS: invokeMethod %@ - state=%i", methodName, [self getStatus] ];
+        [self log: DBG msg: s];
+
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 
@@ -186,7 +197,9 @@
                 @"state": [NSNumber numberWithInt:([self getStatus])],
                 @"success": [NSNumber numberWithBool: success]
         };
-        NSLog(@"iOS: invokeMethod %@ - state=%i", methodName, [self getStatus]);
+        NSString* s = [NSString stringWithFormat: @"iOS: invokeMethod %@ - state=%i", methodName, [self getStatus] ];
+        [self log: DBG msg: s];
+
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
 }
 

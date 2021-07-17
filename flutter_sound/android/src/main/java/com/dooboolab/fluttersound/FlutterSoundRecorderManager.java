@@ -21,17 +21,6 @@ package com.dooboolab.fluttersound;
 
 
 import android.content.Context;
-import android.media.MediaRecorder;
-import android.os.Build;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.util.Log;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
@@ -154,6 +143,12 @@ class FlutterSoundRecorderManager extends FlutterSoundManager
                         case "deleteRecord":
                         {
                                 aRecorder.deleteRecord ( call, result );
+                        }
+                        break;
+
+                        case "setLogLevel":
+                        {
+                                aRecorder.setLogLevel ( call, result );
                         }
                         break;
 
