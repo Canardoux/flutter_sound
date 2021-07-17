@@ -2,7 +2,7 @@
 name: "[ENH] :"
 about: Suggest an idea for this project
 title: ''
-labels: enhancement, Not yet handled
+labels: Not yet handled, enhancement
 assignees: ''
 
 ---
