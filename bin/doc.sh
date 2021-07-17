@@ -2,6 +2,15 @@
 
 VERSION=$1
 
+cd flutter_sound/example
+
+flutter build web
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+
+cd ../..
 echo "Generate dartdoc for flutter-sound"
 rm -r doc/pages/flutter-sound/api
 cd flutter_sound
