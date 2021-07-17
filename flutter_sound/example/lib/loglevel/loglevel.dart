@@ -106,7 +106,7 @@ class _LogLevelState extends State<LogLevel> {
   @override
   Widget build(BuildContext context) {
     List<Widget> makeRadioButton() {
-      List<Widget> r = [];
+      List<Widget> r ; r = [];
 
       r.add(
         Container(
