@@ -19,7 +19,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 
 import '../demo_util/temp_file.dart';
 import 'demo_active_codec.dart';
@@ -76,8 +76,8 @@ class UtilRecorder {
 
   /// stops the recorder.
   Future<void> stopRecorder() async {
-      await recorderModule!.stopRecorder();
-    }
+    await recorderModule!.stopRecorder();
+  }
 
   /// starts the recorder.
   void startRecorder(BuildContext context) async {

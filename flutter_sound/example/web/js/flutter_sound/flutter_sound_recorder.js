@@ -16,8 +16,6 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const RECORDER_VERSION = '8.2.0'
-
 const IS_RECORDER_PAUSED = 1;
 const IS_RECORDER_RECORDING = 2;
 const IS_RECORDER_STOPPED = 0;
@@ -33,7 +31,6 @@ const CB_resumeRecorderCompleted = 4;
 const CB_stopRecorderCompleted = 5;
 const CB_openRecorderCompleted = 6;
 const CB_closeRecorderCompleted = 7;
-const CB_recorder_log = 8;
 
 class FlutterSoundRecorder
 {
@@ -49,7 +46,7 @@ class FlutterSoundRecorder
                 this.currentRecordPath = '';
                 this.localObjects = [];
                 this.instanceNo = instanceNumber;
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'Instance Number : ' + this.instanceNo.toString())
+                console.log('Instance Number : ' + this.instanceNo.toString())
                 ++instanceNumber;
         }
 
@@ -57,7 +54,7 @@ class FlutterSoundRecorder
 
         initializeFlautoRecorder(  focus, category, mode, audioFlags, device)
         {
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'initializeFlautoRecorder');
+                console.log( 'initializeFlautoRecorder');
                 this.callbackTable[CB_openRecorderCompleted](this.callback,  IS_RECORDER_STOPPED, true);
 
         }
@@ -65,31 +62,29 @@ class FlutterSoundRecorder
 
         deleteObjects()
         {
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'JS:---> deleteObjects '  );
+                console.log('deleteObjects '  );
                 for (var url in this.localObjects)
                 {
-                        this.callbackTable[CB_recorder_log](this.callback, DBG, 'deleteRecord : ' + url);
+                        console.log('deleteRecord : ' + url);
                         this.deleteRecord(url);
                 }
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'JS:<--- deleteObjects ');
-         }
+        }
 
 
         releaseFlautoRecorder()
         {
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'JS:---> releaseFlautoRecorder');
+                console.log( 'releaseFlautoRecorder');
                 this.stop();
                 this.deleteObjects();
                 this.localObjects = [];
 
                 this.callbackTable[CB_closeRecorderCompleted](this.callback,  IS_RECORDER_STOPPED, true);
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'JS:<--- releaseFlautoRecorder');
        }
 
 
         setAudioFocus( focus, category, mode, audioFlags, device)
         {
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'setAudioFocus');
+               console.log( 'setAudioFocus');
         }
 
 
@@ -98,27 +93,28 @@ class FlutterSoundRecorder
 /*
                 for (var i in mime_types)
                 {
+                        console.log( "Is " + mime_types[i] + " supported? " + (MediaRecorder.isTypeSupported(mime_types[i]) ? "Maybe!" : "Nope :("));
                 }
 */
                 var r = MediaRecorder.isTypeSupported(mime_types[codec]);
                 if (r)
-                        this.callbackTable[CB_recorder_log](this.callback, DBG, 'mime_types[codec] encoder is supported');
+                    console.log('mime_types[codec] encoder is supported');
                 else
-                        this.callbackTable[CB_recorder_log](this.callback, DBG, 'mime_types[codec] encoder is NOT supported');
+                    console.log('mime_types[codec] encoder is NOT supported');
                 return r;
         }
 
 
         setSubscriptionDuration( duration)
         {
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'setSubscriptionDuration');
+                console.log( 'setSubscriptionDuration');
                 this.subscriptionDuration = duration;
         }
 
 
         _deleteRecord( aPath,)
         {
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'deleteRecord: ' + aPath );
+                console.log('deleteRecord: ' + aPath );
                 if ((aPath == null) || (aPath == ''))
                 {
                         path = lasturl;
@@ -130,16 +126,16 @@ class FlutterSoundRecorder
                 if (path.substring(0,1) == '/')
                 {
                         myStorage = window.localStorage;
-                        this.callbackTable[CB_recorder_log](this.callback, DBG, 'localStorage');
+                        console.log('localStorage');
                 } else
                 {
                         myStorage = window.sessionStorage;
-                        this.callbackTable[CB_recorder_log](this.callback, DBG, 'sessionStorage');
+                        console.log('sessionStorage');
                 }
                 var oldUrl = myStorage.getItem(path);
                 if (oldUrl != null && oldUrl != '')
                 {
-                        this.callbackTable[CB_recorder_log](this.callback, DBG, 'Deleting object  : ' + oldUrl.toString()  );
+                        console.log( 'Deleting object  : ' + oldUrl.toString()  );
                         URL.revokeObjectURL(oldUrl);
                         return true;
                 }
@@ -156,7 +152,7 @@ class FlutterSoundRecorder
                 var found = this.localObjects.findIndex(element => element == path);
                 if (found != null && found >= 0)
                 {
-                        this.callbackTable[CB_recorder_log](this.callback, DBG, "Found : " + found);
+                        console.log("Found : " + found);
                         this.localObjects[found] = null;
                 }
 
@@ -164,7 +160,7 @@ class FlutterSoundRecorder
 
         setRecordURL( aPath, newUrl)
         {
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'setRecordUrl: ' + aPath + ' <- ' + newUrl);
+                console.log('setRecordUrl: ' + aPath + ' <- ' + newUrl);
                 var path = aPath;
                 var myStorage;
                 if ((path == null) || (path == ''))
@@ -174,16 +170,16 @@ class FlutterSoundRecorder
                 if (path.substring(0,1) == '/')
                 {
                         myStorage = window.localStorage;
-                        this.callbackTable[CB_recorder_log](this.callback, DBG, 'localStorage');
+                        console.log('localStorage');
                 } else
                 {
                         myStorage = window.sessionStorage;
-                        this.callbackTable[CB_recorder_log](this.callback, DBG, 'sessionStorage');
+                        console.log('sessionStorage');
                 }
                 var oldUrl = myStorage.getItem(path);
                 if (oldUrl != null && oldUrl != '')
                 {
-                        this.callbackTable[CB_recorder_log](this.callback, DBG, 'Deleting object ' +  ' : ' + oldUrl.toString()  );
+                        console.log( 'Deleting object ' +  ' : ' + oldUrl.toString()  );
                         URL.revokeObjectURL(oldUrl);
                 } else
                 {
@@ -193,24 +189,22 @@ class FlutterSoundRecorder
                 lastUrl = aPath;
 
                 myStorage.setItem(path, newUrl);
-                this.callbackTable[CB_recorder_log](this.callback, DBG, '<--- setRecordURL ( ' + path  + ' ) : ' + newUrl);
+                console.log('<--- setRecordURL ( ' + path  + ' ) : ' + newUrl);
 
         }
 
         getRecordURL( aPath,)
         {
-                this.callbackTable[CB_recorder_log](this.callback, DBG, '---> getRecordURL : ' + aPath);
+                console.log('---> getRecordURL : ' + aPath);
                 var r = getRecordURL(aPath);
-                if (r == null)
-                        r = ''; // stopRecorder does not like a null
-                this.callbackTable[CB_recorder_log](this.callback, DBG, '<--- getRecordURL :' + r);
+                console.log('<--- getRecordURL :' + r);
                 return r;
         }
 
 
         async startRecorder( path, sampleRate, numChannels, bitRate, codec, toStream, audioSource)
         {
-                this.callbackTable[CB_recorder_log](this.callback, DBG,  'startRecorder');
+                console.log( 'startRecorder');
                 //var constraints = { audio: true};
                 //var chunks ;//= [];
                 var me = this;
@@ -237,11 +231,17 @@ class FlutterSoundRecorder
                                 //source.start();
                                 offlineCtx.startRendering().then(function(renderedBuffer)
                                 {
+                                        console.log('Rendering completed successfully');
+                                        console.log('++++++++++' + renderedBuffer.constructor.name);
                                         //this.caller.toto(chunks);
                                         onStop(renderedBuffer);
+                                        console.log('toto done');
+
+
                                 }
                                 ).catch(function(err)
                                 {
+                                        console.log('Rendering failed: ' + err);
                                         // Note: The promise should reject when startRendering is called a second time on an OfflineAudioContext
                                 }
                                 );
@@ -265,7 +265,7 @@ class FlutterSoundRecorder
                                 mediaRecorder.start(30); // 30 milliseconds for a chunk
                         else
                                 mediaRecorder.start();
-                                me.callbackTable[CB_recorder_log](me.callback, DBG, "recorder started : " + mediaRecorder.state);
+                        console.log("recorder started : " + mediaRecorder.state);
 
 
                         mediaRecorder.ondataavailable = function(e)
@@ -279,7 +279,7 @@ class FlutterSoundRecorder
                                 }
                                 if (path != null && path != '')
                                 {
-                                        me.callbackTable[CB_recorder_log](me.callback, DBG, 'On data available : ' + e.data.constructor.name);
+                                        console.log('On data available : ' + e.data.constructor.name);
                                         chunks.push(e.data);
                                 }
                             }
@@ -287,52 +287,52 @@ class FlutterSoundRecorder
 
                         mediaRecorder.onstart = function(e)
                         {
-                                me.callbackTable[CB_recorder_log](me.callback, DBG, '---> mediaRecorder OnStart');
+                                console.log('---> mediaRecorder OnStart');
                                 me.deltaTime = 0;
                                 me.startTimer();
-                                me.callbackTable[CB_recorder_log](me.callback, DBG, '<---mediaRecorder OnStart : ' + me.mediaRecorder.state);
+                                console.log('<---mediaRecorder OnStart : ' + me.mediaRecorder.state);
                                 me.callbackTable[CB_startRecorderCompleted](me.callback, IS_RECORDER_RECORDING, true);
 
                         }
 
                         mediaRecorder.onerror = function(e)
                         {
-                                me.callbackTable[CB_recorder_log](me.callback, DBG, "mediaRecorder OnError : " + e.error);
+                                console.log("mediaRecorder OnError : " + e.error);
                                 me.stopRecorder()
                         }
 
                         mediaRecorder.onpause = function(e)
                         {
-                                me.callbackTable[CB_recorder_log](me.callback, DBG, '---> mediaRecorder onpause');
+                                console.log('---> mediaRecorder onpause');
                                 me.callbackTable[CB_pauseRecorderCompleted](me.callback,  IS_RECORDER_PAUSED, true);
-                                me.callbackTable[CB_recorder_log](me.callback, DBG, '<--- mediaRecorder onpause');
+                                console.log('<--- mediaRecorder onpause');
                         }
 
                         mediaRecorder.onresume = function(e)
                         {
-                                me.callbackTable[CB_recorder_log](me.callback, DBG, '---> mediaRecorder onresume');
+                                console.log('---> mediaRecorder onresume');
                                 me.callbackTable[CB_resumeRecorderCompleted](me.callback,  IS_RECORDER_RECORDING, true);
-                                me.callbackTable[CB_recorder_log](me.callback, DBG, '<--- mediaRecorder onresume');
+                                console.log('<--- mediaRecorder onresume');
                         }
 
                         mediaRecorder.onstop = function(e)
                         {
 
-                                        me.callbackTable[CB_recorder_log](me.callback, DBG, '---> mediaRecorder onstop');
+                                        console.log('---> mediaRecorder onstop');
                                         var blob = new Blob(chunks, {'type' : mime_types[codec]} );
                                         var url = URL.createObjectURL(blob);
-                                        me.callbackTable[CB_recorder_log](me.callback, DBG, 'Instance Number : ' + me.instanceNo.toString())
+                                        console.log('Instance Number : ' + me.instanceNo.toString())
 
                                         me.setRecordURL( path, url);
 
                                         var found = me.localObjects.findIndex(element => element == path);
                                         if (found != null && found >= 0)
                                         {
-                                                me.callbackTable[CB_recorder_log](me.callback, DBG, "Found : " + found);
+                                                console.log("Found : " + found);
                                                 me.localObjects[found] = path;
                                         } else
                                         {
-                                                me.callbackTable[CB_recorder_log](me.callback, DBG, "NOT FOUND! : " + path);
+                                                console.log("NOT FOUND! : " + path);
                                                 me.localObjects.push(path);
                                         }
 
@@ -367,6 +367,7 @@ class FlutterSoundRecorder
                                                                         myStorage.setItem(path, JSON.stringify(result));
                                                                 } catch (e)
                                                                 {
+                                                                        console.log("Storage failed: " + e);
                                                                 }
                                                         };
                                                         // Load blob as Data URL
@@ -377,20 +378,19 @@ class FlutterSoundRecorder
                                         xhr.send();
         */
                                         chunks = null;///[];
-                                        me.callbackTable[CB_recorder_log](me.callback, DBG, 'recorder stopped' );
+                                        console.log('recorder stopped' );
                                         me.mediaRecorder = null;
                                         me.callbackTable[CB_stopRecorderCompleted](me.callback,  IS_RECORDER_STOPPED, true, me.getRecordURL( path));
 
-                                        me.callbackTable[CB_recorder_log](me.callback, DBG, '<--- mediaRecorder onstop');
+                                        console.log('<--- mediaRecorder onstop');
                         }
                 //});
         }
 
         stop()
         {
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'JS:---> stop()');
-                this.stopTimer();
-                if (this.mediaRecorder != null)
+                 this.stopTimer();
+                 if (this.mediaRecorder != null)
                 {
                       this.mediaRecorder.stop();
                       this.mediaRecorder = null;
@@ -400,19 +400,18 @@ class FlutterSoundRecorder
                     this.mediaStream.getTracks().forEach( track => track.stop());
                     this.mediaStream = null;
                }
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'JS:<--- stop()');
         }
 
         stopRecorder()
         {
-                this.callbackTable[CB_recorder_log](this.callback, DBG,  'JS:---> stopRecorder');
+                console.log( 'stopRecorder');
                 this.stopTimer();
                  if (this.mediaRecorder != null)
                 {
                         this.mediaRecorder.stop();
                 } else
                 {
-                         this.callbackTable[CB_stopRecorderCompleted](this.callback, IS_RECORDER_STOPPED, /*false*/true, this.getRecordURL(this.currentRecordPath));
+                       this.callbackTable[CB_stopRecorderCompleted](this.callback,  IS_RECORDER_STOPPED, /*false*/true, null);
                 }
                this.mediaRecorder = null;
                 
@@ -421,31 +420,31 @@ class FlutterSoundRecorder
                     this.mediaStream.getTracks().forEach( track => track.stop());
                     this.mediaStream = null;
                }
-                this.callbackTable[CB_recorder_log](this.callback, DBG, "JS:<--- stopRecorder" );
+                console.log("recorder stopped" );
         }
 
 
         pauseRecorder()
         {
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'pauseRecorder');
+                console.log( 'pauseRecorder');
                 this.mediaRecorder.pause();
                 this.stopTimer();
-                this.callbackTable[CB_recorder_log](this.callback, DBG, "recorder paused : " + this.mediaRecorder.state);
+                console.log("recorder paused : " + this.mediaRecorder.state);
 
         }
 
 
         resumeRecorder()
         {
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'resumeRecorder');
+                console.log( 'resumeRecorder');
                 this.mediaRecorder.resume();
                 this.startTimer();
-                this.callbackTable[CB_recorder_log](this.callback, DBG, "recorder resumed : " + this.mediaRecorder.state);
+                console.log("recorder resumed : " + this.mediaRecorder.state);
         }
 
         startTimer()
         {
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'startTimer()');
+                console.log('startTimer()');
                 this.stopTimer();
                 var me = this;
 
@@ -458,6 +457,7 @@ class FlutterSoundRecorder
                                 {
                                         var now = new Date().getTime();
                                         var distance = now - me.countDownDate;
+                                        //console.log('top : ' + distance);
                                         me.callbackTable[CB_updateRecorderProgress](me.callback,  me.deltaTime + distance,  0);
 
                                 },
@@ -468,7 +468,7 @@ class FlutterSoundRecorder
 
         stopTimer()
         {
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'JS:---> stopTimer()');
+                console.log('stopTimer()');
                 if (this.timerId != null)
                 {
                         clearInterval(this.timerId);
@@ -477,7 +477,6 @@ class FlutterSoundRecorder
                         this.deltaTime += distance;
                         this.timerId = null;
                 }
-                this.callbackTable[CB_recorder_log](this.callback, DBG, 'JS:<--- stopTimer()');
         }
 
 }

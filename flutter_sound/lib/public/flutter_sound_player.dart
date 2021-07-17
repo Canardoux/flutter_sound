@@ -159,7 +159,6 @@ const List<Codec> _tabWebConvert = [
 ///
 /// ----------------------------------------------------------------------------------------------------
 class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
-
   /// The FlutterSoundPlayerLogger
   Logger _logger = Logger(level: Level.debug);
   Level _logLevel = Level.debug;
@@ -171,12 +170,13 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _logLevel = aLevel;
     _logger = Logger(level: aLevel);
     await _lock.synchronized(() async {
-
       if (_isInited != Initialized.notInitialized) {
-        await FlutterSoundPlayerPlatform.instance.setLogLevel(this, aLevel,);
+        await FlutterSoundPlayerPlatform.instance.setLogLevel(
+          this,
+          aLevel,
+        );
       }
     });
-
   }
 
   TonSkip? _onSkipForward; // User callback "onPaused:"
@@ -487,7 +487,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       completer!.completeError('killed by cleanCompleters');
     }
   }
-
 
   @override
   void log(Level logLevel, String msg) {
@@ -1838,7 +1837,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     Duration? duration,
     Duration? progress,
   }) async {
-    _logger.d('FS:---> setUIProgressBar : duration=$duration  progress=$progress');
+    _logger
+        .d('FS:---> setUIProgressBar : duration=$duration  progress=$progress');
     await _waitOpen();
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');

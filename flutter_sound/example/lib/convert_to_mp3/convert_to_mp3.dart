@@ -19,10 +19,9 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
-
 
 /*
  * This is an example showing how to record to a Dart Stream.
@@ -51,7 +50,8 @@ class ConvertToMp3 extends StatefulWidget {
 
 class _ConvertToMp3State extends State<ConvertToMp3> {
   FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer(logLevel: Level.debug);
-  FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder(logLevel: Level.debug);
+  FlutterSoundRecorder? _mRecorder =
+      FlutterSoundRecorder(logLevel: Level.debug);
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
   bool _mplaybackReady = false;
@@ -119,14 +119,20 @@ class _ConvertToMp3State extends State<ConvertToMp3> {
     });
   }
 
-  Future<void> play() async{
+  Future<void> play() async {
     assert(_mPlayerIsInited &&
         _mplaybackReady &&
         _mRecorder!.isStopped &&
         _mPlayer!.isStopped);
 
-    await FlutterSoundHelper().convertFile(_mPathAAC, Codec.aacADTS, _mPathMP3, Codec.mp3);
-    await _mPlayer!.startPlayer( codec: Codec.mp3, fromURI: _mPathMP3, whenFinished: () {setState(() {});});
+    await FlutterSoundHelper()
+        .convertFile(_mPathAAC, Codec.aacADTS, _mPathMP3, Codec.mp3);
+    await _mPlayer!.startPlayer(
+        codec: Codec.mp3,
+        fromURI: _mPathMP3,
+        whenFinished: () {
+          setState(() {});
+        });
     setState(() {});
   }
 
@@ -203,7 +209,9 @@ class _ConvertToMp3State extends State<ConvertToMp3> {
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Convert to MP3 and Playback'),
+                child: Text(_mPlayer!.isPlaying
+                    ? 'Stop'
+                    : 'Convert to MP3 and Playback'),
               ),
               SizedBox(
                 width: 20,

@@ -61,7 +61,6 @@ import 'util/flutter_sound_helper.dart';
 ///
 /// ----------------------------------------------------------------------------------------------------
 class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
-
   /// The FlutterSoundRecorder Logger
   Logger _logger = Logger(level: Level.debug);
   Level _logLevel = Level.debug;
@@ -73,14 +72,14 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     _logLevel = aLevel;
     _logger = Logger(level: aLevel);
     await _lock.synchronized(() async {
-
       if (_isInited != Initialized.notInitialized) {
-        await FlutterSoundRecorderPlatform.instance.setLogLevel(this, aLevel,);
+        await FlutterSoundRecorderPlatform.instance.setLogLevel(
+          this,
+          aLevel,
+        );
       }
     });
-
   }
-
 
   /// Locals
   /// ------
@@ -315,7 +314,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       completer.completeError('killed by cleanCompleters');
     }
   }
-
 
   @override
   void log(Level logLevel, String msg) {
@@ -720,10 +718,10 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     _stopRecorderCompleter = Completer<String>();
     var completer = _stopRecorderCompleter!;
     try {
-    await FlutterSoundRecorderPlatform.instance.stopRecorder(this);
-    _userStreamSink = null;
+      await FlutterSoundRecorderPlatform.instance.stopRecorder(this);
+      _userStreamSink = null;
 
-    _recorderState = RecorderState.isStopped;
+      _recorderState = RecorderState.isStopped;
     } on Exception {
       _stopRecorderCompleter = null;
       rethrow;

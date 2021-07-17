@@ -16,19 +16,18 @@ bin/setver.sh $VERSION
 
 
 cd flutter_sound
-flutter analyze lib
+dartanalyzer lib
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
 fi
-dartdoc lib
+dartfmt -w lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    #exit -1
+    exit -1
 fi
-rm -rf doc
-cd ..
 
+cd ..
 
 #cp -a -v flutter_sound_web/js/flutter_sound/* flutter_sound/example/web/js/flutter_sound
 
@@ -52,7 +51,7 @@ rm -rf _*.tgz
 cd flutter_sound_platform_interface/    
 #flutter clean
 #flutter pub get
-flutter pub publish
+#############################################################flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
@@ -69,6 +68,17 @@ if [ $? -ne 0 ]; then
 fi
 cd ..
 
+
+
+cd flutter_sound
+dartfmt -w lib
+dartfmt -w example/lib
+dartanalyzer lib
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+cd ..
 
 
 

@@ -18,7 +18,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 
 /*
  *
@@ -44,7 +44,8 @@ class StreamLoop extends StatefulWidget {
 
 class _StreamLoopState extends State<StreamLoop> {
   FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer(logLevel: Level.debug);
-  FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder(logLevel: Level.debug);
+  FlutterSoundRecorder? _mRecorder =
+      FlutterSoundRecorder(logLevel: Level.debug);
   bool _isInited = false;
 
   Future<void> init() async {

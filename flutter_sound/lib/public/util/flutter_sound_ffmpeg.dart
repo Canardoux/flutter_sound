@@ -31,7 +31,7 @@ library ffmpeg;
 
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:logger/logger.dart' show Level , Logger;
+import 'package:logger/logger.dart' show Level, Logger;
 
 /// Represents an ongoing FFmpeg execution.
 class FlutterSoundFFmpegExecution {
@@ -170,9 +170,9 @@ typedef ExecuteCallback = void Function(
 
 ///
 class FlutterSoundFFmpegConfig {
-
   /// The FlutterSoundFFmpegConfig Logger
-  Logger logger = Logger(level: Level.info); // The FlutterSoundFFmpegConfig Logger
+  Logger logger =
+      Logger(level: Level.info); // The FlutterSoundFFmpegConfig Logger
 
   static const MethodChannel _methodChannel =
       MethodChannel('flutter_sound_ffmpeg');
@@ -187,7 +187,7 @@ class FlutterSoundFFmpegConfig {
   StatisticsCallback? statisticsCallback;
 
   ///
-  FlutterSoundFFmpegConfig(Logger aLogger ) {
+  FlutterSoundFFmpegConfig(Logger aLogger) {
     //logCallback = null;
     logger = aLogger;
     statisticsCallback = null;
@@ -247,7 +247,7 @@ class FlutterSoundFFmpegConfig {
     if (message != null && message.isNotEmpty) {
       //  Logger ALREADY ADDS A NEW LINE. SO REMOVE THE EXISTING ONE
       if (message.endsWith('\n')) {
-        if ( message.length > 1) {
+        if (message.length > 1) {
           logger.v(message.substring(0, message.length - 1));
         }
       } else {
@@ -429,7 +429,7 @@ class FlutterSoundFFmpegConfig {
 
   /// Sets a callback to redirect FFmpeg logs. [newCallback] is the new log
   /// callback function, use null to disable a previously defined callback.
-    /*
+  /*
   void enableLogCallback(LogCallback newCallback) {
     try {
       logCallback = newCallback;

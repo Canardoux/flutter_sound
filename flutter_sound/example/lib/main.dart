@@ -273,7 +273,6 @@ from flutter_sound_player.dart.
 Shows how to change the loglevel during an audio session.
 ''',
   ),
-
 ];
 
 ///

@@ -42,7 +42,6 @@ FlutterSoundHelper flutterSoundHelper =
 /// FlutterSoundHelper class is for handleing audio files and buffers.
 /// Most of those utilities use FFmpeg, so are not available in the LITE flavor of Flutter Sound.
 class FlutterSoundHelper {
-
   /// The FlutterSoundHelper Logger
   Logger logger = Logger(level: Level.info);
 
@@ -65,7 +64,7 @@ class FlutterSoundHelper {
 
 //-------------------------------------------------------------------------------------------------------------
 
-  setLogLevel(Level theNewLogLevel) {
+  void setLogLevel(Level theNewLogLevel) {
     logger = Logger(level: theNewLogLevel);
   }
 
@@ -73,8 +72,7 @@ class FlutterSoundHelper {
   ///
   /// returns true if FFmpeg is available (probably the FULL version of Flutter Sound)
   Future<bool> isFFmpegAvailable() async {
-    if (kIsWeb)
-      return false;
+    if (kIsWeb) return false;
     if (_flutterFFmpegConfig == null) {
       _flutterFFmpegConfig = FlutterSoundFFmpegConfig(logger);
       //await _flutterFFmpegConfig!.disableLogs(); // TODO
@@ -290,7 +288,7 @@ class FlutterSoundHelper {
       String outputFile, Codec outputCodec) async {
     int? rc = 0;
     inputFile = await _getPath(inputFile);
-    outputFile =  await _getPath(outputFile);
+    outputFile = await _getPath(outputFile);
     if (inputCodec == Codec.opusOGG &&
         outputCodec == Codec.opusCAF) // Do not need to re-encode. Just remux
     {

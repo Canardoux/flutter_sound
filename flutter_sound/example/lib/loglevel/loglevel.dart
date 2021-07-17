@@ -18,7 +18,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 
 /*
  *
@@ -105,198 +105,160 @@ class _LogLevelState extends State<LogLevel> {
 
   @override
   Widget build(BuildContext context) {
-
-    List<Widget> makeRadioButton()
-    {
+    List<Widget> makeRadioButton() {
       List<Widget> r = [];
 
-      r.add
-        (
-          Container
-            (
-            height: 30,
-            child: Row
-              (
-
-
-              children:
-              [
-                Radio
-                  (
-                  value: Level.verbose,
-                  groupValue: theLogLevel,
-                  onChanged: setMode,
-                  activeColor: Colors.blue,
-                  focusColor: Colors.blue,
-                  hoverColor: Colors.blue,
-                ),
-                Text( 'Verbose', style: TextStyle(color: Colors.black),),
-              ],
-
-            ),
+      r.add(
+        Container(
+          height: 30,
+          child: Row(
+            children: [
+              Radio(
+                value: Level.verbose,
+                groupValue: theLogLevel,
+                onChanged: setMode,
+                activeColor: Colors.blue,
+                focusColor: Colors.blue,
+                hoverColor: Colors.blue,
+              ),
+              Text(
+                'Verbose',
+                style: TextStyle(color: Colors.black),
+              ),
+            ],
           ),
+        ),
       );
 
-        r.add
-          (
-
-            Container
-              (
-              height: 30,
-              child: Row
-                (
-
-                children:
-                [
-                  //Icon(DiglotFont.candle),
-                  Radio
-                    (
-                    value: Level.debug,
-                    groupValue: theLogLevel,
-                    onChanged: setMode,
-                    activeColor: Colors.blue,
-                    focusColor: Colors.blue,
-                    hoverColor: Colors.blue,
-                  ),
-                  Text('Debug', style: TextStyle(color: Colors.black),),
-                ],
-
-              ),
-            ),
-        );
-
-
-        r.add
-          (
-            Container
-              (
-              height: 30,
-              child: Row
-                (
-
-                children:
-                [
-                  Radio
-                    (
-                    value: Level.info,
-                    groupValue: theLogLevel,
-                    onChanged: setMode,
-                    activeColor: Colors.blue,
-                    focusColor: Colors.blue,
-                    hoverColor: Colors.blue,
-                  ),
-                  Text('Info', style: TextStyle(color: Colors.black),),
-                ],
-
-              ),
-            ),
-        );
-
-
-        r.add
-          (
-             Container
-              (
-              height: 30,
-              child: Row
-                (
-
-                children:
-                [
-                  Radio
-                    (
-                    value: Level.warning,
-                    groupValue: theLogLevel,
-                    onChanged: setMode,
-                    activeColor: Colors.blue,
-                    focusColor: Colors.blue,
-                    hoverColor: Colors.blue,
-
-                  ),
-                  Text( 'Warning', style: TextStyle(color: Colors.black),),
-                ],
-
-              ),
-            ),
-        );
-
-      r.add
-        (
-        Container
-          (
+      r.add(
+        Container(
           height: 30,
-          child: Row
-            (
+          child: Row(
+            children: [
+              //Icon(DiglotFont.candle),
+              Radio(
+                value: Level.debug,
+                groupValue: theLogLevel,
+                onChanged: setMode,
+                activeColor: Colors.blue,
+                focusColor: Colors.blue,
+                hoverColor: Colors.blue,
+              ),
+              Text(
+                'Debug',
+                style: TextStyle(color: Colors.black),
+              ),
+            ],
+          ),
+        ),
+      );
 
-            children:
-            [
-              Radio
-                (
+      r.add(
+        Container(
+          height: 30,
+          child: Row(
+            children: [
+              Radio(
+                value: Level.info,
+                groupValue: theLogLevel,
+                onChanged: setMode,
+                activeColor: Colors.blue,
+                focusColor: Colors.blue,
+                hoverColor: Colors.blue,
+              ),
+              Text(
+                'Info',
+                style: TextStyle(color: Colors.black),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      r.add(
+        Container(
+          height: 30,
+          child: Row(
+            children: [
+              Radio(
+                value: Level.warning,
+                groupValue: theLogLevel,
+                onChanged: setMode,
+                activeColor: Colors.blue,
+                focusColor: Colors.blue,
+                hoverColor: Colors.blue,
+              ),
+              Text(
+                'Warning',
+                style: TextStyle(color: Colors.black),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      r.add(
+        Container(
+          height: 30,
+          child: Row(
+            children: [
+              Radio(
                 value: Level.error,
                 groupValue: theLogLevel,
                 onChanged: setMode,
                 activeColor: Colors.blue,
                 focusColor: Colors.blue,
                 hoverColor: Colors.blue,
-
               ),
-              Text( 'Error', style: TextStyle(color: Colors.black),),
+              Text(
+                'Error',
+                style: TextStyle(color: Colors.black),
+              ),
             ],
-
           ),
         ),
       );
 
-      r.add
-        (
-        Container
-          (
+      r.add(
+        Container(
           height: 30,
-          child: Row
-            (
-
-            children:
-            [
-              Radio
-                (
+          child: Row(
+            children: [
+              Radio(
                 value: Level.wtf,
                 groupValue: theLogLevel,
                 onChanged: setMode,
                 activeColor: Colors.blue,
                 focusColor: Colors.blue,
                 hoverColor: Colors.blue,
-
               ),
-              Text( 'Wtf', style: TextStyle(color: Colors.black),),
+              Text(
+                'Wtf',
+                style: TextStyle(color: Colors.black),
+              ),
             ],
-
           ),
         ),
       );
 
-      r.add
-        (
-        Container
-          (
+      r.add(
+        Container(
           height: 30,
-          child: Row
-            (
-
-            children:
-            [
-              Radio
-                (
+          child: Row(
+            children: [
+              Radio(
                 value: Level.nothing,
                 groupValue: theLogLevel,
                 onChanged: setMode,
                 activeColor: Colors.blue,
                 focusColor: Colors.blue,
                 hoverColor: Colors.blue,
-
               ),
-              Text( 'Nothing', style: TextStyle(color: Colors.black),),
+              Text(
+                'Nothing',
+                style: TextStyle(color: Colors.black),
+              ),
             ],
-
           ),
         ),
       );
@@ -335,33 +297,27 @@ class _LogLevelState extends State<LogLevel> {
                   : 'Player is stopped'),
             ]),
           ),
-
-          Text('Log Level',  ),
-
+          Text(
+            'Log Level',
+          ),
           Expanded(
-            child: Container
-              (
+            child: Container(
               width: 120,
-
-              margin: const EdgeInsets.all( 3.0 ),
-              padding: const EdgeInsets.all( 0.0 ),
-              decoration: BoxDecoration
-                (
+              margin: const EdgeInsets.all(3.0),
+              padding: const EdgeInsets.all(0.0),
+              decoration: BoxDecoration(
                 color: Color(0xFFFAF0E6),
-                border: Border.all( color:  Colors.indigo, width: 3, ),
+                border: Border.all(
+                  color: Colors.indigo,
+                  width: 3,
+                ),
               ),
-
-
-              child: Column
-                (
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: makeRadioButton(),
               ),
             ),
           ),
-
-
-
         ],
       );
     }

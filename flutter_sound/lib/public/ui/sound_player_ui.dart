@@ -176,7 +176,6 @@ class SoundPlayerUI extends StatefulWidget {
 /// internal state.
 /// @nodoc
 class SoundPlayerUIState extends State<SoundPlayerUI> {
-
   final Logger _logger = Logger(level: Level.debug);
 
   final FlutterSoundPlayer _player;
