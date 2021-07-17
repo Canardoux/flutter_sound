@@ -2,7 +2,7 @@
 name: Help wanted
 about: Does someone can answer?
 title: "[HELP]:"
-labels: help wanted, Not yet handled
+labels: Not yet handled, help wanted
 assignees: ''
 
 ---
