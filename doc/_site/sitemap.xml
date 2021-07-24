@@ -62,13 +62,13 @@
   
   
   <url>
-    <loc>/tau_api_utilities_constructor.html</loc>
+    <loc>/tau_api_recorder_constructor.html</loc>
   </url>
   
   
   
   <url>
-    <loc>/tau_api_recorder_constructor.html</loc>
+    <loc>/tau_api_utilities_constructor.html</loc>
   </url>
   
   
@@ -334,25 +334,25 @@
   
   
   <url>
-    <loc>/tau_api_player_on_progress.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>/tau_api_recorder_on_progress.html</loc>
   </url>
   
   
   
   <url>
-    <loc>/tau_api_recorder_open_audio_session.html</loc>
+    <loc>/tau_api_player_on_progress.html</loc>
   </url>
   
   
   
   <url>
     <loc>/tau_api_player_open_audio_session.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_recorder_open_audio_session.html</loc>
   </url>
   
   
@@ -446,7 +446,7 @@
   
   
   <url>
-    <loc>/tau_api_player_setLogLevel.html</loc>
+    <loc>/flutter_sound_examples_setLogLevel.html</loc>
   </url>
   
   
@@ -458,19 +458,19 @@
   
   
   <url>
-    <loc>/flutter_sound_examples_setLogLevel.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>/tau_api_recorder_set_audio_focus.html</loc>
+    <loc>/tau_api_player_setLogLevel.html</loc>
   </url>
   
   
   
   <url>
     <loc>/tau_api_player_set_audio_focus.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/tau_api_recorder_set_audio_focus.html</loc>
   </url>
   
   
@@ -489,6 +489,12 @@
   
   <url>
     <loc>/tau_api_player_set_ui_progress_bar.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>/flutter_sound_examples_setVolume.html</loc>
   </url>
   
   
