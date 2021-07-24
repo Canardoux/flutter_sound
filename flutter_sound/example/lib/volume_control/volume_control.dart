@@ -65,7 +65,6 @@ class _VolumeControlState extends State<VolumeControl> {
         _mPlayerIsInited2 = true;
       });
     });
-
   }
 
   @override
@@ -92,7 +91,6 @@ class _VolumeControlState extends State<VolumeControl> {
     setState(() {});
   }
 
-
   Future<void> stopPlayer(FlutterSoundPlayer player) async {
     if (player != null) {
       await player.stopPlayer();
@@ -109,7 +107,6 @@ class _VolumeControlState extends State<VolumeControl> {
       v / 100,
     );
   }
-
 
   Future<void> setVolume2(double v) async // v is between 0.0 and 100.0
   {
@@ -129,8 +126,12 @@ class _VolumeControlState extends State<VolumeControl> {
       return null;
     }
     return player!.isStopped
-        ? () {play(player, uri);}
-        : () {stopPlayer(player).then((value) => setState(() {}));};
+        ? () {
+            play(player, uri);
+          }
+        : () {
+            stopPlayer(player).then((value) => setState(() {}));
+          };
   }
 
   @override
@@ -141,7 +142,7 @@ class _VolumeControlState extends State<VolumeControl> {
       return Container(
         margin: const EdgeInsets.all(3),
         padding: const EdgeInsets.all(3),
-        height: 140,
+        height: 240,
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -172,6 +173,27 @@ class _VolumeControlState extends State<VolumeControl> {
               min: 0.0,
               max: 100.0,
               onChanged: setVolume1,
+              divisions: 100),
+          Row(children: [
+            ElevatedButton(
+              onPressed: getPlaybackFn(_mPlayer2, _exampleAudioFilePathMP3_2),
+              //color: Colors.white,
+              //disabledColor: Colors.grey,
+              child: Text(_mPlayer2.isPlaying ? 'Stop' : 'Play'),
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Text(_mPlayer2.isPlaying
+                ? 'Playback #2 in progress'
+                : 'Player #2 is stopped'),
+          ]),
+          Text('Volume:'),
+          Slider(
+              value: _mVolume2,
+              min: 0.0,
+              max: 100.0,
+              onChanged: setVolume2,
               divisions: 100),
         ]),
         //),

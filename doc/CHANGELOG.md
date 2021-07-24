@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 8.2.2
+## 8.2.3
 
 - New [simple example](flutter_sound_examples_setVolume.html) showing how to set the volume
 - Fix a bug on iOS : the volume must be between 0.0 and 1.0 [733](https://github.com/Canardoux/tau/issues/733)
