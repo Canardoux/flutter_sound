@@ -37,7 +37,22 @@ cd tau
 bin/reldev.sh DEV
 ```
 
+### iOS signing
+
 Open tau/flutter_sound/example/ios/Runner.xcworkspace in XCode, and set your `Team` in the `Signing & Capabilities` tab.
+
+### Set your Flutter Sound flavor
+
+```sh
+cd tau
+
+# If you want to work on the full flavor
+bin/flavor.sh FULL
+
+# if you want to work on the lite flavor
+bin/flavor.sh LITE
+```
+
 
 ### Clean your space
 
@@ -98,6 +113,21 @@ Then, if you have the necessary credentials (but you certainly do not have them)
 cd tau
 bin/doc.sh
 ```
+
+## Build a new release
+
+if you have the necessary credentials (but you certainly do not have them), you can do:
+
+```sh
+cd tau
+newVersion.sh 8.2.0
+```
+
+(In this example, 8.2.0 is the version number that you want to build).
+
+When the script asks if OK to upload your new flutter_sound plugin,
+it is a good idea to wait something like half an hour before answering.
+This will give time to `npm` and `cocoaPod` to update their repositories (you do not want that someone will use your new build before that the repositories are updated.
 
 ------------------
 

@@ -14,7 +14,7 @@ keywords: API Player
 - Dart API: [setVolume()](pages/flutter-sound/api/player/FlutterSoundPlayer/setVolume.html).
 
 The parameter is a floating point number between 0 and 1.
-Volume can be changed when player is running. Manage this after player starts.
+Volume can be changed when player is running or before starting.
 
 *Example:*
 <ul id="profileTabs" class="nav nav-tabs">

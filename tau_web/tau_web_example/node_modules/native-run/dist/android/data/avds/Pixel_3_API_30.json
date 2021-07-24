@@ -1,0 +1,40 @@
+{
+    "id": "Pixel_3_API_30",
+    "ini": {
+        "avd.ini.encoding": "UTF-8",
+        "target": "android-30"
+    },
+    "configini": {
+        "AvdId": "Pixel_3_API_30",
+        "abi.type": "x86",
+        "avd.ini.displayname": "Pixel 3 API 30",
+        "avd.ini.encoding": "UTF-8",
+        "hw.accelerometer": "yes",
+        "hw.audioInput": "yes",
+        "hw.battery": "yes",
+        "hw.camera.back": "virtualscene",
+        "hw.camera.front": "emulated",
+        "hw.cpu.arch": "x86",
+        "hw.cpu.ncore": "4",
+        "hw.device.hash2": "MD5:8a60718609e0741c7c0cc225f49c5590",
+        "hw.device.manufacturer": "Google",
+        "hw.device.name": "pixel_3",
+        "hw.gps": "yes",
+        "hw.gpu.enabled": "yes",
+        "hw.gpu.mode": "auto",
+        "hw.initialOrientation": "Portrait",
+        "hw.keyboard": "yes",
+        "hw.lcd.density": "440",
+        "hw.lcd.height": "2160",
+        "hw.lcd.width": "1080",
+        "hw.ramSize": "1536",
+        "hw.sdCard": "yes",
+        "hw.sensors.orientation": "yes",
+        "hw.sensors.proximity": "yes",
+        "sdcard.size": "512M",
+        "showDeviceFrame": "yes",
+        "skin.dynamic": "yes",
+        "skin.name": "pixel_2",
+        "tag.display": "Google Play"
+    }
+}

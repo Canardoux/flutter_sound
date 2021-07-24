@@ -1,0 +1,50 @@
+{
+  "name": "@vue/eslint-config-typescript",
+  "version": "5.1.0",
+  "description": "eslint-config-typescript for vue-cli",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "recommended.js"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vuejs/eslint-config-typescript.git"
+  },
+  "keywords": [
+    "vue",
+    "cli"
+  ],
+  "author": "Evan You",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vuejs/eslint-config-typescript/issues"
+  },
+  "homepage": "https://github.com/vuejs/eslint-config-typescript#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/parser": "^2.7.0",
+    "eslint": "^6.6.0",
+    "eslint-plugin-vue": "^6.0.1",
+    "execa": "^3.3.0",
+    "jest": "^26.4.2",
+    "typescript": "^3.7.2",
+    "vue": "^2.6.10",
+    "vue-property-decorator": "^8.3.0"
+  },
+  "peerDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/parser": "^2.7.0",
+    "eslint": "^5.0.0 || ^6.0.0 || ^7.0.0",
+    "eslint-plugin-vue": "^5.2.3 || ^6.0.0 || ^7.0.0-0"
+  },
+  "dependencies": {
+    "vue-eslint-parser": "^7.0.0"
+  }
+}

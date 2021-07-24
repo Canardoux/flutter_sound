@@ -1,0 +1,16 @@
+{
+  "entries": [
+    "components/camera-modal/camera-modal.js",
+    "components/camera-modal/camera-modal-instance.js",
+    "components/camera/camera.js",
+    "components/toast/toast.js",
+    "components/action-sheet/action-sheet.js"
+  ],
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "1.8.11",
+    "typescriptVersion": "3.8.2"
+  },
+  "collections": [],
+  "bundles": []
+}

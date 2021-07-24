@@ -1,0 +1,14 @@
+:host ion-list {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: -1px;
+  margin-bottom: -1px;
+}
+
+:host ion-list-header,
+:host ion-label {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}

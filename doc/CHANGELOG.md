@@ -7,6 +7,12 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 8.2.1
+
+- New [simple example](flutter_sound_examples_setVolume.html) showing how to set the volume
+- Fix a bug on iOS : the volume must be between 0.0 and 1.0 [733](https://github.com/Canardoux/tau/issues/733)
+- The verb `setVolume()` can be used on a non playing Player. Android, iOS and Web. The parameter will be kept delayed and set during the next call of `startPlayer()`. [733](https://github.com/Canardoux/tau/issues/733)
+
 ## 8.2.0
 
 - &tau; uses a Logger to show the logs. Please see [this page](logger.html)

@@ -1,0 +1,29 @@
+{
+  "name": "@vue/cli-overlay",
+  "version": "4.5.13",
+  "description": "error overlay & dev server middleware for vue-cli",
+  "main": "dist/client.js",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vuejs/vue-cli.git",
+    "directory": "packages/@vue/cli-overlay"
+  },
+  "keywords": [
+    "vue",
+    "cli",
+    "cli-overlay"
+  ],
+  "author": "Evan You",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vuejs/vue-cli/issues"
+  },
+  "homepage": "https://github.com/vuejs/vue-cli/tree/dev/packages/@vue/cli-overlay#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "6e0d846b9a707f7f7c0c7a26435f467e1b4d42fe"
+}

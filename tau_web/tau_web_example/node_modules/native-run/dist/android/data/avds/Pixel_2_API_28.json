@@ -1,0 +1,40 @@
+{
+    "id": "Pixel_2_API_28",
+    "ini": {
+        "avd.ini.encoding": "UTF-8",
+        "target": "android-28"
+    },
+    "configini": {
+        "AvdId": "Pixel_2_API_28",
+        "abi.type": "x86",
+        "avd.ini.displayname": "Pixel 2 API 28",
+        "avd.ini.encoding": "UTF-8",
+        "hw.accelerometer": "yes",
+        "hw.audioInput": "yes",
+        "hw.battery": "yes",
+        "hw.camera.back": "virtualscene",
+        "hw.camera.front": "emulated",
+        "hw.cpu.arch": "x86",
+        "hw.cpu.ncore": "4",
+        "hw.device.hash2": "MD5:bc5032b2a871da511332401af3ac6bb0",
+        "hw.device.manufacturer": "Google",
+        "hw.device.name": "pixel_2",
+        "hw.gps": "yes",
+        "hw.gpu.enabled": "yes",
+        "hw.gpu.mode": "auto",
+        "hw.initialOrientation": "Portrait",
+        "hw.keyboard": "yes",
+        "hw.lcd.density": "420",
+        "hw.lcd.height": "1920",
+        "hw.lcd.width": "1080",
+        "hw.ramSize": "1536",
+        "hw.sdCard": "yes",
+        "hw.sensors.orientation": "yes",
+        "hw.sensors.proximity": "yes",
+        "sdcard.size": "100M",
+        "showDeviceFrame": "yes",
+        "skin.dynamic": "yes",
+        "skin.name": "pixel_2",
+        "tag.display": "Google APIs"
+    }
+}
