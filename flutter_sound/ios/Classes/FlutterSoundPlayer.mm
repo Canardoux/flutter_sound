@@ -471,11 +471,11 @@
 
 }
 
-- (void)setVolume:(double) volume result: (FlutterResult)result
+- (void)setVolume:(double) volume  fadeDuration: (double)fadeDuration result: (FlutterResult)result // Volume is between 0.0 and 1.0
 {
                 [self log: DBG msg: @"IOS:--> setVolume"];
 
-                [flautoPlayer setVolume: volume ];
+                [flautoPlayer setVolume: volume fadeDuration: fadeDuration];
                 result([self getPlayerStatus]);
                 [self log: DBG msg: @"IOS:<-- setVolume"];
 }

@@ -1799,14 +1799,14 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
     }
-    var indexedVolume = (!kIsWeb) && Platform.isIOS ? volume * 100 : volume;
+    //var indexedVolume = (!kIsWeb) && Platform.isIOS ? volume * 100 : volume;
     if (volume < 0.0 || volume > 1.0) {
       throw RangeError('Value of volume should be between 0.0 and 1.0.');
     }
 
     var state = await FlutterSoundPlayerPlatform.instance.setVolume(
       this,
-      volume: indexedVolume,
+      volume: volume,
     );
     _playerState = PlayerState.values[state];
     _logger.d('FS:<--- setVolume ');

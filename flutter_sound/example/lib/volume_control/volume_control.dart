@@ -29,8 +29,10 @@ import 'package:flutter_sound/flutter_sound.dart';
  *
  */
 
-final _exampleAudioFilePathMP3 =
+final _exampleAudioFilePathMP3_1 =
     'https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3';
+final _exampleAudioFilePathMP3_2 =
+    'https://tau.canardoux.xyz/web_example/assets/extract/05.mp3';
 
 ///
 typedef Fn = void Function();
@@ -42,35 +44,47 @@ class VolumeControl extends StatefulWidget {
 }
 
 class _VolumeControlState extends State<VolumeControl> {
-  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer(logLevel: Level.debug);
-  bool _mPlayerIsInited = false;
-  double _mVolume = 100.0;
+  FlutterSoundPlayer _mPlayer1 = FlutterSoundPlayer(logLevel: Level.debug);
+  FlutterSoundPlayer _mPlayer2 = FlutterSoundPlayer(logLevel: Level.debug);
+  bool _mPlayerIsInited1 = false;
+  bool _mPlayerIsInited2 = false;
+  double _mVolume1 = 100.0;
+  double _mVolume2 = 100.0;
 
   @override
   void initState() {
     super.initState();
-    _mPlayer!.openAudioSession().then((value) {
+    _mPlayer1.openAudioSession().then((value) {
       setState(() {
-        _mPlayerIsInited = true;
+        _mPlayerIsInited1 = true;
       });
     });
+
+    _mPlayer2.openAudioSession().then((value) {
+      setState(() {
+        _mPlayerIsInited2 = true;
+      });
+    });
+
   }
 
   @override
   void dispose() {
-    stopPlayer();
+    stopPlayer(_mPlayer1);
+    stopPlayer(_mPlayer2);
+
     // Be careful : you must `close` the audio session when you have finished with it.
-    _mPlayer!.closeAudioSession();
-    _mPlayer = null;
+    _mPlayer1.closeAudioSession();
+    _mPlayer2.closeAudioSession();
 
     super.dispose();
   }
 
   // -------  Here is the code to playback a remote file -----------------------
 
-  void play() async {
-    await _mPlayer!.startPlayer(
-        fromURI: _exampleAudioFilePathMP3,
+  void play(FlutterSoundPlayer? player, String uri) async {
+    await player!.startPlayer(
+        fromURI: uri,
         codec: Codec.mp3,
         whenFinished: () {
           setState(() {});
@@ -78,34 +92,45 @@ class _VolumeControlState extends State<VolumeControl> {
     setState(() {});
   }
 
-  Future<void> stopPlayer() async {
-    if (_mPlayer != null) {
-      await _mPlayer!.stopPlayer();
+
+  Future<void> stopPlayer(FlutterSoundPlayer player) async {
+    if (player != null) {
+      await player.stopPlayer();
     }
   }
 
-  Future<void> setVolume(double v) async // v is between 0.0 and 100.0
+  Future<void> setVolume1(double v) async // v is between 0.0 and 100.0
   {
     v = v > 100.0 ? 100.0 : v;
-    _mVolume = v;
+    _mVolume1 = v;
     setState(() {});
     //await _mPlayer!.setVolume(v / 100, fadeDuration: Duration(milliseconds: 5000));
-    await _mPlayer!.setVolume(
+    await _mPlayer1.setVolume(
+      v / 100,
+    );
+  }
+
+
+  Future<void> setVolume2(double v) async // v is between 0.0 and 100.0
+  {
+    v = v > 100.0 ? 100.0 : v;
+    _mVolume2 = v;
+    setState(() {});
+    //await _mPlayer!.setVolume(v / 100, fadeDuration: Duration(milliseconds: 5000));
+    await _mPlayer2.setVolume(
       v / 100,
     );
   }
 
   // --------------------- UI -------------------
 
-  Fn? getPlaybackFn() {
-    if (!_mPlayerIsInited) {
+  Fn? getPlaybackFn(FlutterSoundPlayer? player, String uri) {
+    if (!(_mPlayerIsInited1 && _mPlayerIsInited2)) {
       return null;
     }
-    return _mPlayer!.isStopped
-        ? play
-        : () {
-            stopPlayer().then((value) => setState(() {}));
-          };
+    return player!.isStopped
+        ? () {play(player, uri);}
+        : () {stopPlayer(player).then((value) => setState(() {}));};
   }
 
   @override
@@ -129,24 +154,24 @@ class _VolumeControlState extends State<VolumeControl> {
         child: Column(children: [
           Row(children: [
             ElevatedButton(
-              onPressed: getPlaybackFn(),
+              onPressed: getPlaybackFn(_mPlayer1, _exampleAudioFilePathMP3_1),
               //color: Colors.white,
               //disabledColor: Colors.grey,
-              child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
+              child: Text(_mPlayer1.isPlaying ? 'Stop' : 'Play'),
             ),
             SizedBox(
               width: 20,
             ),
-            Text(_mPlayer!.isPlaying
-                ? 'Playback in progress'
-                : 'Player is stopped'),
+            Text(_mPlayer1.isPlaying
+                ? 'Playback #1 in progress'
+                : 'Player #1 is stopped'),
           ]),
           Text('Volume:'),
           Slider(
-              value: _mVolume,
+              value: _mVolume1,
               min: 0.0,
               max: 100.0,
-              onChanged: setVolume,
+              onChanged: setVolume1,
               divisions: 100),
         ]),
         //),
