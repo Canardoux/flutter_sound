@@ -413,6 +413,10 @@ entries:
           url: /flutter_sound_examples_multi_playbacks.html
           output: web, pdf
 
+        - title: Set Volumes
+          url: /flutter_sound_examples_setVolume.html
+          output: web, pdf
+
         - title: Record to Stream
           url: /flutter_sound_examples_record_to_stream.html
           output: web, pdf

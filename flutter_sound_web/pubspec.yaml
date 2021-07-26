@@ -28,8 +28,8 @@ flutter:
 
 
 dependencies:
-  flutter_sound_platform_interface: 8.2.5
-#    path: ../flutter_sound_platform_interface # Flutter Sound Dir
+  flutter_sound_platform_interface: # 8.2.5
+    path: ../flutter_sound_platform_interface # Flutter Sound Dir
   flutter:
     sdk: flutter
   logger: ^1.0.0

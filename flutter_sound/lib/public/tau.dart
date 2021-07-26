@@ -56,10 +56,10 @@ enum Initialized {
 
 /// The usual file extensions used for each codecs
 const List<String> ext = [
-  '.aac', // defaultCodec
+  '', // defaultCodec
   '.aac', // aacADTS
   '.opus', // opusOGG
-  '_opus.caf', // opusCAF
+  '.caf', // opusCAF
   '.mp3', // mp3
   '.ogg', // vorbisOGG
   '.pcm', // pcm16
@@ -73,7 +73,31 @@ const List<String> ext = [
   '.pcm', // pcm8
   '.pcm', // pcmFloat32
   '.pcm', //codec.pcmWebM,
-  '.opus', // codec.opusWebM,
+  '.webm', // codec.opusWebM,
+  '.webm', // codec.vorbisWebM,
+];
+
+/// The valid file extensions for each codecs
+const List<List<String>> validExt = [
+  [''], // defaultCodec
+  ['.aac', '.adt', '.adts'], // aacADTS
+  ['.opus', '.ogg'], // opusOGG
+  ['.caf'], // opusCAF
+  ['.mp3'], // mp3
+  ['.ogg'], // vorbisOGG
+  ['.pcm', '.aiff'], // pcm16
+  ['.wav'], // pcm16WAV
+  ['.aiff'], // pcm16AIFF
+  ['.caf'], // pcm16CAF
+  ['.flac'], // flac
+  ['.mp4', '.aac'], // aacMP4
+  ['.amr', '.3ga'], // AMR-NB
+  ['.amr', '.3ga'], // amr-WB
+  ['.pcm', '.aiff'], // pcm8
+  ['.pcm', '.aiff'], // pcmFloat32
+  ['.pcm', '.webm'], //codec.pcmWebM,
+  ['.opus', '.webm'], // codec.opusWebM,
+  ['.webm'], // codec.vorbisWebM,
 ];
 
 /// Food is an abstract class which represents objects that can be sent
