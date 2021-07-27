@@ -341,6 +341,11 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                 return getWebSession(callback)!.setVolume(volume);
         }
 
+        Future<int> setSpeed(FlutterSoundPlayerCallback callback,  {required double speed}) async
+        {
+                return getWebSession(callback).setSpeed(speed);
+        }
+
         @override
         Future<int> setUIProgressBar(FlutterSoundPlayerCallback callback, {Duration? duration, Duration? progress,}) async
         {

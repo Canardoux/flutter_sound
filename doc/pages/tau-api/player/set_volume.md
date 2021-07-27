@@ -15,6 +15,7 @@ keywords: API Player
 
 The parameter is a floating point number between 0 and 1.
 Volume can be changed when player is running or before starting.
+If used before `startRecorder()`, the required volume is kept/delayed and set during the following call to `startRecorder()`.
 
 *Example:*
 <ul id="profileTabs" class="nav nav-tabs">

@@ -32,6 +32,7 @@ import 'widgetUI/widget_ui_demo.dart';
 import 'convert_to_mp3/convert_to_mp3.dart';
 import 'loglevel/loglevel.dart';
 import 'volume_control/volume_control.dart';
+import 'speed_control/speed_control.dart';
 
 /*
     This APP is just a driver to call the various Flutter Sound examples.
@@ -161,6 +162,18 @@ This is a simple example that plays several sound at the same time.
     route: (_) => VolumeControl(),
     description: '''
 This is a very simple example showing how to set the Volume during a playback.
+
+This example is really basic.
+''',
+  ),
+
+  Example(
+    title: 'Speed Control',
+    subTitle: 'Speed Control',
+    flags: 0,
+    route: (_) => SpeedControl(),
+    description: '''
+This is a very simple example showing how tune the speed of a playback.
 
 This example is really basic.
 ''',

@@ -7,15 +7,20 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 8.2.6
+
+- Check file extension for recording. This Pull Request [#728](https://github.com/Canardoux/tau/pull/728) was provided by [@mhstoller](https://github.com/mhstoller) . Thanks to him :-)
+- The dart API gave 404. Now OK. [#640](https://github.com/Canardoux/tau/issues/640)
+
 ## 8.2.5
 
 - New [simple example](flutter_sound_examples_setVolume.html) showing how to set the volume
-- Fix a bug on iOS : the volume must be between 0.0 and 1.0 [733](https://github.com/Canardoux/tau/issues/733)
-- The verb `setVolume()` can be used on a non playing Player. Android, iOS and Web. The parameter will be kept delayed and set during the next call of `startPlayer()`. [733](https://github.com/Canardoux/tau/issues/733)
+- Fix a bug on iOS : the volume must be between 0.0 and 1.0 [#733](https://github.com/Canardoux/tau/issues/733)
+- The verb `setVolume()` can be used on a non playing Player. Android, iOS and Web. The parameter will be kept delayed and set during the next call of `startPlayer()`. [#733](https://github.com/Canardoux/tau/issues/733)
 
 ## 8.2.0
 
-- &tau; uses a Logger to show the logs. Please see [this page](logger.html)
+- &tau; uses a Logger to show the logs. Please see [this page](logger.html) . [#528](https://github.com/Canardoux/tau/issues/528)
 
 ## 8.1.9
 
@@ -44,7 +49,7 @@ toc: false
 
 ## 8.0.0
 
-- Null Safety
+- Null Safety. [#584](https://github.com/Canardoux/tau/issues/584)
 
 ## 7.8.4
 

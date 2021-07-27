@@ -41,6 +41,7 @@ const CB_openPlayerCompleted = 12;
 const CB_closePlayerCompleted = 13;
 const CB_player_log = 14;
 
+var instanceNumber = 1;
 
 class FlutterSoundPlayer
 {

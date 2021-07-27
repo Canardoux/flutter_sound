@@ -166,6 +166,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// The FlutterSoundPlayerLogger Logger getter
   Logger get logger => _logger;
 
+  /// Used if the App wants to dynamically change the Log Level.
+  /// Seldom used. Most of the time the Log Level is specified during the constructor.
   Future<void> setLogLevel(Level aLevel) async {
     _logLevel = aLevel;
     _logger = Logger(level: aLevel);
@@ -203,6 +205,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   Completer<void>? _closePlayerCompleter;
   Completer<FlutterSoundPlayer>? _openPlayerCompleter;
 
+  /// Instanciate a new Flutter Sound player.
+  /// The optional paramater `Level logLevel` specify the Logger Level you are interested by.
   /* ctor */ FlutterSoundPlayer({Level logLevel = Level.info}) {
     _logger = Logger(level: logLevel);
     _logger.d('ctor: FlutterSoundPlayer()');
@@ -1014,7 +1018,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///
   /// You must specify one or the three parameters : `fromUri`, `fromDataBuffer`, `fromStream`.
   ///
-  /// - You use the optional parameter`codec:` for specifying the audio and file format of the file. Please refer to the [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
+  /// - You use the optional parameter`codec:` for specifying the audio and file format of the file. Please refer to the [Codec compatibility Table](/guides_codec.html) to know which codecs are currently supported.
   ///
   /// - `whenFinished:()` : A lambda function for specifying what to do when the playback will be finished.
   ///
@@ -1781,7 +1785,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// Change the output volume
   ///
   /// The parameter is a floating point number between 0 and 1.
-  /// Volume can be changed when player is running. Manage this after player starts.
+  /// Volume can be changed when player is running or before [startPlayer].
   ///
   /// *Example:*
   /// ```dart
@@ -1811,6 +1815,45 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _playerState = PlayerState.values[state];
     _logger.d('FS:<--- setVolume ');
   }
+
+
+
+  /// Change the playback speed
+  ///
+  /// The parameter is a floating point number between 0 and 1.0 to slow the speed,
+  /// or 1.0 to n to accelerate the speed.
+  ///
+  /// Speed can be changed when player is running, or before [startPlayer].
+  ///
+  /// *Example:*
+  /// ```dart
+  /// await myPlayer.setSpeed(0.8);
+  /// ```
+  Future<void> setSpeed(double speed) async {
+    await _lock.synchronized(() async {
+      await _setSpeed(speed);
+    });
+  }
+
+  Future<void> _setSpeed(double speed) async {
+    _logger.d('FS:---> _setSpeed ');
+    await _waitOpen();
+    if (_isInited != Initialized.fullyInitialized) {
+      throw Exception('Player is not open');
+    }
+    if (speed < 0.0 ) {
+      throw RangeError('Value of speed should be between 0.0 and n.');
+    }
+
+    var state = await FlutterSoundPlayerPlatform.instance.setSpeed(
+      this,
+      speed: speed,
+    );
+    _playerState = PlayerState.values[state];
+    _logger.d('FS:<--- _setSpeed ');
+  }
+
+
 
   /// Used if the App wants to control itself the Progress Bar on the lock screen.
   ///

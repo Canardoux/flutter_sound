@@ -68,6 +68,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// The FlutterSoundRecorder Logger getter
   Logger get logger => _logger;
 
+  /// Used if the App wants to dynamically change the Log Level.
+  /// Seldom used. Most of the time the Log Level is specified during the constructor.
   Future<void> setLogLevel(Level aLevel) async {
     _logLevel = aLevel;
     _logger = Logger(level: aLevel);
@@ -145,6 +147,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// True if `recorderState.isPaused`
   bool get isPaused => (_recorderState == RecorderState.isPaused);
 
+  /// Instanciate a new Flutter Sound Recorder.
+  /// The optional paramater `Level logLevel` specify the Logger Level you are interested by.
   /* ctor */ FlutterSoundRecorder({Level logLevel = Level.info}) {
     _logger = Logger(level: logLevel);
     _logger.d('ctor: FlutterSoundRecorder()');

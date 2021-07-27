@@ -23,7 +23,7 @@ You can use `startPlayer` to play a sound.
 
 You must specify one or the three parameters : `fromUri`, `fromDataBuffer`, `fromStream`.
 
-- You use the optional parameter`codec:` for specifying the audio and file format of the file. Please refer to the [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
+- You use the optional parameter`codec:` for specifying the audio and file format of the file. Please refer to the [Codec compatibility Table](guides_codec.html) to know which codecs are currently supported.
 
 - `whenFinished:()` : A lambda function for specifying what to do when the playback will be finished.
 

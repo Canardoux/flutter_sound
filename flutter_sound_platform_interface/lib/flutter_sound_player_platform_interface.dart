@@ -225,6 +225,11 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
     throw UnimplementedError('invokeMethod() has not been implemented.');
   }
 
+  Future<int> setSpeed(FlutterSoundPlayerCallback callback, {required double speed})
+  {
+    throw UnimplementedError('invokeMethod() has not been implemented.');
+  }
+
   Future<int> setUIProgressBar(FlutterSoundPlayerCallback callback, {Duration? duration, Duration? progress,})
   {
     throw UnimplementedError('invokeMethod() has not been implemented.');

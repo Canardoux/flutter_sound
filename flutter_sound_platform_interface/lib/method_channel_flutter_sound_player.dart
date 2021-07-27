@@ -320,9 +320,16 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
     return invokeMethod( callback, 'seekToPlayer', {'duration': duration!.inMilliseconds,},) ;
   }
 
+  @override
   Future<int> setVolume(FlutterSoundPlayerCallback callback,  {double? volume})
   {
     return invokeMethod( callback, 'setVolume', {'volume': volume,}) ;
+  }
+
+  @override
+  Future<int> setSpeed(FlutterSoundPlayerCallback callback,  {required double speed})
+  {
+    return invokeMethod( callback, 'setSpeed', {'speed': speed,}) ;
   }
 
   @override

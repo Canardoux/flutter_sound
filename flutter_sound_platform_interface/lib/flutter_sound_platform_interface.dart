@@ -117,8 +117,7 @@ enum SessionMode
   modeVoicePrompt, // 'AVAudioSessionModeVoicePrompt',
 }
 
-/// Used by [FlutterSound.setAudioFocus]
-/// to control the focus mode.
+/// Control the focus mode.
 enum AudioFocus {
   requestFocus,
 

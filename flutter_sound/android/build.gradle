@@ -1,4 +1,4 @@
-ext.flutterFFmpegPackage = 'audio'
+//ext.flutterFFmpegPackage = 'audio'
 
 group 'com.dooboolab.fluttersound'
 version '8.2.5'
@@ -47,7 +47,7 @@ String safeExtGet(String prop, String fallback) {
 //ext.flutterFFmpegPackage = 'full-lts'
 
 dependencies {
-    implementation 'com.arthenica:mobile-ffmpeg-full:4.4.LTS'
+    //implementation 'com.arthenica:mobile-ffmpeg-full:4.4.LTS'
     implementation 'androidx.core:core:1.3.2'
     implementation 'androidx.media:media:1.2.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'

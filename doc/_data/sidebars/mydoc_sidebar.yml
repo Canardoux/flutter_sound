@@ -70,6 +70,10 @@ entries:
       url: /logger.html
       output: web, pdf
 
+    - title: Lite vs Full
+      url: /guides_lite-full.html
+      output: web, pdf
+
     - title: Temporary files
       url: /temporary_files.html
       output: web, pdf
@@ -417,6 +421,10 @@ entries:
           url: /flutter_sound_examples_setVolume.html
           output: web, pdf
 
+        - title: Set Speed
+          url: /flutter_sound_examples_setSpeed.html
+          output: web, pdf
+
         - title: Record to Stream
           url: /flutter_sound_examples_record_to_stream.html
           output: web, pdf
@@ -454,11 +462,11 @@ entries:
         subfolderitems:
 
         - title: Player Class
-          url: /pages\/flutter-sound\/api\/player_v5\/FlutterSoundPlayer-class.html
+          url: /pages\/flutter-sound\/api\/player\/FlutterSoundPlayer-class.html
           output: web, pdf
 
         - title: Recorder Class
-          url: /pages\/flutter-sound\/api\/recorder_v5\/FlutterSoundRecorder-class.html
+          url: /pages\/flutter-sound\/api\/recorder\/FlutterSoundRecorder-class.html
           output: web, pdf
 
         - title: Utilities
