@@ -367,7 +367,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
                       : null,
               child: Icon(
                 _player.isPaused ? Icons.play_arrow : Icons.pause,
-                color: _player.isStopped ? _disabledIconColor : Colors.black,
+                color: _player.isStopped ? _disabledIconColor : _iconColor,
               ),
             ),
           ),
