@@ -51,7 +51,7 @@ rm -rf _*.tgz
 cd flutter_sound_platform_interface/    
 #flutter clean
 #flutter pub get
-################################################################flutter pub publish
+flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
@@ -61,7 +61,7 @@ cd ..
 cd flutter_sound_web
 flutter clean
 flutter pub get
-##################################################################flutter pub publish
+flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
