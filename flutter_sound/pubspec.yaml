@@ -1,5 +1,5 @@
 name: flutter_sound
-version: 8.3.2
+version: 8.3.3
 description: A complete api for audio playback and recording. Audio player, audio recorder, media player, media recorder, sound player, sound recorder.
 #author: dooboolab<dooboolab@gmail.com>
 homepage: https://tau.canardoux.xyz/readme.html
@@ -23,9 +23,9 @@ dependencies:
   flutter:
     sdk: flutter
 # ============================================================================
-  flutter_sound_platform_interface: 8.3.2
+  flutter_sound_platform_interface: 8.3.3
 #    path: ../flutter_sound_platform_interface # Flutter Sound Dir
-  flutter_sound_web: 8.3.2
+  flutter_sound_web: 8.3.3
 #    path: ../flutter_sound_web # Flutter Sound Dir
 # ============================================================================
 
