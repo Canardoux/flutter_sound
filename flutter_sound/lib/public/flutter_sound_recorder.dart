@@ -577,7 +577,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   }
 
   Codec? _getCodecFromExtension(extension) {
-    for (Codec codec in Codec.values) {
+    for (var codec in Codec.values) {
       if (ext[codec.index] == extension) {
         return codec;
       }
@@ -586,8 +586,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   }
 
   bool _isValidFileExtension(Codec codec, String extension) {
-    List<String> extList = validExt[codec.index];
-    for (String s in extList) {
+    var extList = validExt[codec.index];
+    for (var s in extList) {
       if (s == extension) return true;
     }
     return false;
@@ -676,9 +676,9 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     }
 
     if (toFile != null) {
-      String extension = _fileExtension(toFile);
+      var extension = _fileExtension(toFile);
       if (codec == Codec.defaultCodec) {
-        Codec? codecExt = _getCodecFromExtension(extension);
+        var codecExt = _getCodecFromExtension(extension);
         if (codecExt == null) {
           throw _CodecNotSupportedException(
               "File extension '$extension' not recognized.");

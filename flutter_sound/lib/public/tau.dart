@@ -40,8 +40,6 @@ import 'package:logger/logger.dart' show Level, Logger;
 import 'flutter_sound_player.dart';
 import 'flutter_sound_recorder.dart';
 
-import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
-
 /// For internal code. Do not use.
 ///
 /// The possible states of the players and recorders
