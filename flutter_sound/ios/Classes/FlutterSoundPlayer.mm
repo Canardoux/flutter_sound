@@ -480,6 +480,15 @@
                 [self log: DBG msg: @"IOS:<-- setVolume"];
 }
 
+- (void)setSpeed:(double) speed  result: (FlutterResult)result // speed is 0.0 to 1.0 to slow and 1.0 to n to speed
+{
+        [self log: DBG msg: @"IOS:--> setSpeed"];
+
+        [flautoPlayer setSpeed: speed];
+        result([self getPlayerStatus]);
+        [self log: DBG msg: @"IOS:<-- setSpeed"];
+
+}
 
 
 - (void)getProgress:(FlutterMethodCall*)call result: (FlutterResult)result

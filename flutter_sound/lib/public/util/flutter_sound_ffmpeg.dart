@@ -172,7 +172,7 @@ typedef ExecuteCallback = void Function(
 class FlutterSoundFFmpegConfig {
   /// The FlutterSoundFFmpegConfig Logger
   Logger logger =
-      Logger(level: Level.info); // The FlutterSoundFFmpegConfig Logger
+      Logger(level: Level.debug); // The FlutterSoundFFmpegConfig Logger
 
   static const MethodChannel _methodChannel =
       MethodChannel('flutter_sound_ffmpeg');

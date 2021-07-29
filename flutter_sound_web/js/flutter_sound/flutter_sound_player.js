@@ -156,8 +156,10 @@ class FlutterSoundPlayer
                });
 
                 this.howl = howl;
-                if (this.latentModule != null && this.latentModule >= 0)
-                        this.howl.volume(this.latentModule);
+                if (this.latentVolume != null && this.latentVolume >= 0)
+                        this.howl.volume(this.latentVolume);
+                if (this.latentSpeed != null && this.latentSpeed >= 0)
+                        this.howl.rate(this.latentSpeed);
                 this.pauseResume = IS_PLAYER_PLAYING;
                 howl.play();
                 //this.callback.startPlayerCompleted(howl.duration());
@@ -387,10 +389,21 @@ class FlutterSoundPlayer
         setVolume( volume)
         {
                 this.callbackTable[CB_player_log](this.callback, DBG, '---> setVolume()');
-                this.latentModule = volume;
+                this.latentVolume = volume;
                 if (this.howl != null)
                         this.howl.volume(volume);
                 this.callbackTable[CB_player_log](this.callback, DBG, '<--- setVolume()');
+                return this.getPlayerState();
+         }
+
+
+        setSpeed( speed)
+        {
+                this.callbackTable[CB_player_log](this.callback, DBG, '---> setSpeed()');
+                this.latentSpeed = speed;
+                if (this.howl != null)
+                        this.howl.rate(speed);
+                this.callbackTable[CB_player_log](this.callback, DBG, '<--- setSpeed()');
                 return this.getPlayerState();
          }
 

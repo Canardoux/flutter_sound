@@ -30,6 +30,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
+import 'package:logger/logger.dart' show Level, Logger;
 
 import '../../flutter_sound.dart';
 import 'wave_header.dart';
@@ -43,7 +44,7 @@ FlutterSoundHelper flutterSoundHelper =
 /// Most of those utilities use FFmpeg, so are not available in the LITE flavor of Flutter Sound.
 class FlutterSoundHelper {
   /// The FlutterSoundHelper Logger
-  Logger logger = Logger(level: Level.info);
+  Logger logger = Logger(level: Level.debug);
 
   /// The Flutter FFmpeg module
   FlutterSoundFFmpeg? flutterFFmpeg;

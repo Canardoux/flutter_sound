@@ -19,7 +19,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 /*
@@ -43,7 +43,7 @@ class SoundEffect extends StatefulWidget {
 }
 
 class _SoundEffectState extends State<SoundEffect> {
-  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer(logLevel: Level.debug);
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
   late bool _mPlayerIsInited;
   Uint8List? bimData;
   Uint8List? bamData;

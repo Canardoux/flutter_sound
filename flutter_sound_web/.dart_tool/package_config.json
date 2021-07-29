@@ -51,7 +51,7 @@
     },
     {
       "name": "flutter_sound_platform_interface",
-      "rootUri": "file:///Volumes/Home/larpoux/.pub-cache/hosted/pub.dartlang.org/flutter_sound_platform_interface-8.2.5",
+      "rootUri": "file:///Volumes/Home/larpoux/.pub-cache/hosted/pub.dartlang.org/flutter_sound_platform_interface-8.3.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -147,7 +147,7 @@
     },
     {
       "name": "test_api",
-      "rootUri": "file:///Volumes/Home/larpoux/.pub-cache/hosted/pub.dartlang.org/test_api-0.4.1",
+      "rootUri": "file:///Volumes/Home/larpoux/.pub-cache/hosted/pub.dartlang.org/test_api-0.4.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -170,7 +170,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-07-24T21:01:18.324846Z",
+  "generated": "2021-07-29T17:04:30.738838Z",
   "generator": "pub",
-  "generatorVersion": "2.14.0-301.0.dev"
+  "generatorVersion": "2.14.0-350.0.dev"
 }

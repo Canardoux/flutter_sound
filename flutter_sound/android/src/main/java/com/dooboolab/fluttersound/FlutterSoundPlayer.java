@@ -248,7 +248,9 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		try {
 			boolean b = m_flautoPlayer.startPlayer(codec, _path, dataBuffer, _numChannels, _sampleRate, _blockSize);
 			if (b)
+			{
 				result.success(getPlayerState());
+			}
 			else
 				result.error(ERR_UNKNOWN, ERR_UNKNOWN, "startPlayer() error");
 		} catch (Exception e) {
@@ -373,6 +375,21 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 		}
 	}
+
+
+	public void setSpeed ( final MethodCall call, final Result result )
+	{
+		try
+		{
+			double speed = call.argument("speed");
+			m_flautoPlayer.setSpeed(speed);
+			result.success(getPlayerState());
+		} catch(Exception e)
+		{
+			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
+		}
+	}
+
 
 
 	public void setSubscriptionDuration ( final MethodCall call, Result result )

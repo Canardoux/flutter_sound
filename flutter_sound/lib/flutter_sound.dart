@@ -42,7 +42,6 @@
 library everything;
 
 export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
-export 'package:logger/logger.dart' show Level, Logger;
 
 /// Main
 ///library tau;

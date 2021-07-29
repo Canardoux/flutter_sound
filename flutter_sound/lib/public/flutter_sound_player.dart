@@ -29,6 +29,7 @@ import 'dart:typed_data' show Uint8List;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
+import 'package:logger/logger.dart' show Level, Logger;
 import 'package:path_provider/path_provider.dart';
 import 'package:synchronized/synchronized.dart';
 
@@ -207,7 +208,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   /// Instanciate a new Flutter Sound player.
   /// The optional paramater `Level logLevel` specify the Logger Level you are interested by.
-  /* ctor */ FlutterSoundPlayer({Level logLevel = Level.info}) {
+  /* ctor */ FlutterSoundPlayer({Level logLevel = Level.debug}) {
     _logger = Logger(level: logLevel);
     _logger.d('ctor: FlutterSoundPlayer()');
   }
@@ -1816,8 +1817,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _logger.d('FS:<--- setVolume ');
   }
 
-
-
   /// Change the playback speed
   ///
   /// The parameter is a floating point number between 0 and 1.0 to slow the speed,
@@ -1841,7 +1840,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
     }
-    if (speed < 0.0 ) {
+    if (speed < 0.0) {
       throw RangeError('Value of speed should be between 0.0 and n.');
     }
 
@@ -1852,8 +1851,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _playerState = PlayerState.values[state];
     _logger.d('FS:<--- _setSpeed ');
   }
-
-
 
   /// Used if the App wants to control itself the Progress Bar on the lock screen.
   ///

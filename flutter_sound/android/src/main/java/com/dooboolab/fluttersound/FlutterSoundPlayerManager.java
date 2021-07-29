@@ -181,6 +181,12 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         }
                         break;
 
+                        case "setSpeed":
+                        {
+                                aPlayer.setSpeed ( call, result );
+                        }
+                        break;
+
                         case "setSubscriptionDuration":
                         {
                                 aPlayer.setSubscriptionDuration ( call, result );

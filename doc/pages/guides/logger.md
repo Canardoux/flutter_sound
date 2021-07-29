@@ -17,7 +17,7 @@ There are three loggers :
 - One in the FlutterSoundHelper module.
 
 The FlutterSoundPlayer logger and the FlutterSoundRecorder logger are instanciated when you create those modules.
-By default, the Logger has a Log Level set to `Level.info`.
+By default, the Logger has a Log Level set to `Level.debug`.
 
 The possible values for the Log Level are :
 
@@ -53,11 +53,5 @@ You probably do not need, but if exceptionaly you want to dynamicaly change the 
 ```dart
         flutterSoundHelper.setLogLevel(Level.debug);
 ```
-
-{% include note.html content="
-When you do a PR (Problem Report), the logs are areally important for us to understand it.
-Most of the time, we cannot do anything without the logs.
-**YOU MUST** run your App with the logLevel set to `Level.debug` and copy/paste the logs into your PR.
-" %}
 
 A simple example doing `setLogLevel()` [is here](flutter_sound_examples_setLogLevel).

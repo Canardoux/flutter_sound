@@ -29,6 +29,7 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
+import 'package:logger/logger.dart' show Level, Logger;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 import 'package:path_provider/path_provider.dart';
@@ -149,7 +150,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
   /// Instanciate a new Flutter Sound Recorder.
   /// The optional paramater `Level logLevel` specify the Logger Level you are interested by.
-  /* ctor */ FlutterSoundRecorder({Level logLevel = Level.info}) {
+  /* ctor */ FlutterSoundRecorder({Level logLevel = Level.debug}) {
     _logger = Logger(level: logLevel);
     _logger.d('ctor: FlutterSoundRecorder()');
   }
@@ -587,8 +588,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   bool _isValidFileExtension(Codec codec, String extension) {
     List<String> extList = validExt[codec.index];
     for (String s in extList) {
-      if (s == extension)
-        return true;
+      if (s == extension) return true;
     }
     return false;
   }
@@ -679,13 +679,15 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       String extension = _fileExtension(toFile);
       if (codec == Codec.defaultCodec) {
         Codec? codecExt = _getCodecFromExtension(extension);
-        if (codecExt == null ) {
-          throw _CodecNotSupportedException("File extension '$extension' not recognized.");
+        if (codecExt == null) {
+          throw _CodecNotSupportedException(
+              "File extension '$extension' not recognized.");
         }
-         codec = codecExt;
+        codec = codecExt;
       }
       if (!_isValidFileExtension(codec, extension)) {
-        throw _CodecNotSupportedException("File extension '$extension' is incorrect for the audio codec '$codec'");
+        throw _CodecNotSupportedException(
+            "File extension '$extension' is incorrect for the audio codec '$codec'");
       }
     }
 
@@ -709,7 +711,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     // We use FFmpeg for that task.
     if ((!kIsWeb) &&
         (Platform.isIOS) &&
-        ((codec == Codec.opusOGG) || (toFile != null && _fileExtension(toFile) == '.opus'))) {
+        ((codec == Codec.opusOGG) ||
+            (toFile != null && _fileExtension(toFile) == '.opus'))) {
       _savedUri = toFile;
       _isOggOpus = true;
       codec = Codec.opusCAF;

@@ -86,6 +86,9 @@ class FlutterSoundPlayer
         @JS('setVolume')
         external int setVolume(double? volume);
 
+        @JS('setSpeed')
+        external int setSpeed(double speed);
+
         @JS('setUIProgressBar')
         external int setUIProgressBar(int duration, int progress);
 }
@@ -343,7 +346,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
 
         Future<int> setSpeed(FlutterSoundPlayerCallback callback,  {required double speed}) async
         {
-                return getWebSession(callback).setSpeed(speed);
+                return getWebSession(callback)!.setSpeed(speed);
         }
 
         @override

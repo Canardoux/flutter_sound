@@ -36,6 +36,7 @@ library ui_player;
 import 'dart:async';
 //import 'package:intl/intl.dart' show DateFormat;
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart' show Level, Logger;
 import 'package:provider/provider.dart';
 import '../../flutter_sound.dart';
 

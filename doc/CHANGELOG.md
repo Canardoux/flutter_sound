@@ -7,10 +7,14 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 8.2.6
+## 8.3.0
 
-- Check file extension for recording. This Pull Request [#728](https://github.com/Canardoux/tau/pull/728) was provided by [@mhstoller](https://github.com/mhstoller) . Thanks to him :-)
+- Check file extension for recording. This Pull Request [#728](https://github.com/Canardoux/tau/pull/728) was provided by [@mhstoller](https://github.com/mhstoller) . Thanks to him/her :-)
 - The dart API gave 404. Now OK. [#640](https://github.com/Canardoux/tau/issues/640)
+- New verb [FlutterSoundPlayer.setSpeed](tau_api_player_set_speed.html) to change the playback speed.
+- New [simple example](flutter_sound_examples_setSpeed.html) showing how to set the playback speed. [#382](https://github.com/Canardoux/tau/issues/382)
+- Fix a color problem with the UI icons. This is a Pull Request from @cedvdb. [#735](https://github.com/Canardoux/tau/pull/735). Thanks to him/her :-)
+- The export of Level & Logger by flutter sound caused conflicts with App using other Loggers. [#734](https://github.com/Canardoux/tau/issues/734)
 
 ## 8.2.5
 

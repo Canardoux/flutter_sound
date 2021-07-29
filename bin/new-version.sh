@@ -19,12 +19,12 @@ cd flutter_sound
 dartanalyzer lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 dartfmt -w lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 
 cd ..
@@ -51,7 +51,7 @@ rm -rf _*.tgz
 cd flutter_sound_platform_interface/    
 #flutter clean
 #flutter pub get
-flutter pub publish
+################################################################flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
@@ -61,7 +61,7 @@ cd ..
 cd flutter_sound_web
 flutter clean
 flutter pub get
-flutter pub publish
+##################################################################flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
@@ -76,7 +76,7 @@ dartfmt -w example/lib
 dartanalyzer lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 cd ..
 

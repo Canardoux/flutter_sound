@@ -158,6 +158,12 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [aFlautoPlayer setVolume: [volume doubleValue] fadeDuration: [fadeDuration  doubleValue]/1000.0 result: result];
         } else
 
+        if ([@"setSpeed" isEqualToString:call.method])
+        {
+                NSNumber* speed = (NSNumber*)call.arguments[@"speed"]; // Between 0.0 and 1.0
+                [aFlautoPlayer setSpeed: [speed doubleValue] result: result];
+        } else
+
         if ([@"iosSetCategory" isEqualToString:call.method])
         {
                 [aFlautoPlayer setCategory: call result: result];

@@ -90,7 +90,7 @@ const List<List<String>> validExt = [
   ['.aiff'], // pcm16AIFF
   ['.caf'], // pcm16CAF
   ['.flac'], // flac
-  ['.mp4', '.aac'], // aacMP4
+  ['.mp4', '.aac', '.m4a'], // aacMP4
   ['.amr', '.3ga'], // AMR-NB
   ['.amr', '.3ga'], // amr-WB
   ['.pcm', '.aiff'], // pcm8

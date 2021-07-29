@@ -18,7 +18,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 
 /*
  *
@@ -44,8 +44,8 @@ class VolumeControl extends StatefulWidget {
 }
 
 class _VolumeControlState extends State<VolumeControl> {
-  final FlutterSoundPlayer _mPlayer1 = FlutterSoundPlayer(logLevel: Level.debug);
-  final FlutterSoundPlayer _mPlayer2 = FlutterSoundPlayer(logLevel: Level.debug);
+  final FlutterSoundPlayer _mPlayer1 = FlutterSoundPlayer();
+  final FlutterSoundPlayer _mPlayer2 = FlutterSoundPlayer();
   bool _mPlayerIsInited1 = false;
   bool _mPlayerIsInited2 = false;
   double _mVolume1 = 100.0;
@@ -92,7 +92,7 @@ class _VolumeControlState extends State<VolumeControl> {
   }
 
   Future<void> stopPlayer(FlutterSoundPlayer player) async {
-      await player.stopPlayer();
+    await player.stopPlayer();
   }
 
   Future<void> setVolume1(double v) async // v is between 0.0 and 100.0

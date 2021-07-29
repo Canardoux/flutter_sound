@@ -18,7 +18,9 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'dart:typed_data';
+import 'package:flutter/services.dart' show rootBundle;
 
 /*
  *
@@ -29,10 +31,7 @@ import 'package:flutter_sound_lite/flutter_sound.dart';
  *
  */
 
-final _exampleAudioFilePathMP3_1 =
-    'https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3';
-final _exampleAudioFilePathMP3_2 =
-    'https://tau.canardoux.xyz/web_example/assets/extract/05.mp3';
+const _boum = 'assets/samples/sample2.aac';
 
 ///
 typedef Fn = void Function();
@@ -44,19 +43,19 @@ class SpeedControl extends StatefulWidget {
 }
 
 class _SpeedControlState extends State<SpeedControl> {
-  final FlutterSoundPlayer _mPlayer = FlutterSoundPlayer(logLevel: Level.debug);
+  final FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
   double _mSpeed = 100.0;
+  Uint8List? _boumData;
 
   @override
   void initState() {
     super.initState();
-    _mPlayer.openAudioSession().then((value) {
+    init().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
     });
-
   }
 
   @override
@@ -69,12 +68,24 @@ class _SpeedControlState extends State<SpeedControl> {
     super.dispose();
   }
 
-  // -------  Here is the code to playback a remote file -----------------------
+  Future<void> init() async {
+    await _mPlayer.openAudioSession();
+    await _mPlayer.setSpeed(
+        1.0); // This dummy instruction is MANDATORY on iOS, before the first `startRecorder()`.
+    _boumData = await getAssetData(_boum);
+  }
 
-  void play(FlutterSoundPlayer? player, String uri) async {
+  Future<Uint8List> getAssetData(String path) async {
+    var asset = await rootBundle.load(path);
+    return asset.buffer.asUint8List();
+  }
+
+  // -------  Here is the code to playback  -----------------------
+
+  void play(FlutterSoundPlayer? player) async {
     await player!.startPlayer(
-        fromURI: uri,
-        codec: Codec.mp3,
+        fromDataBuffer: _boumData,
+        codec: Codec.aacADTS,
         whenFinished: () {
           setState(() {});
         });
@@ -82,12 +93,12 @@ class _SpeedControlState extends State<SpeedControl> {
   }
 
   Future<void> stopPlayer(FlutterSoundPlayer player) async {
-      await player.stopPlayer();
+    await player.stopPlayer();
   }
 
   Future<void> setSpeed(double v) async // v is between 0.0 and 100.0
   {
-    v = v > 100.0 ? 100.0 : v;
+    v = v > 200.0 ? 200.0 : v;
     _mSpeed = v;
     setState(() {});
     await _mPlayer.setSpeed(
@@ -97,13 +108,13 @@ class _SpeedControlState extends State<SpeedControl> {
 
   // --------------------- UI -------------------
 
-  Fn? getPlaybackFn(FlutterSoundPlayer? player, String uri) {
-    if (!_mPlayerIsInited ) {
+  Fn? getPlaybackFn(FlutterSoundPlayer? player) {
+    if (!_mPlayerIsInited) {
       return null;
     }
     return player!.isStopped
         ? () {
-            play(player, uri);
+            play(player);
           }
         : () {
             stopPlayer(player).then((value) => setState(() {}));
@@ -131,7 +142,7 @@ class _SpeedControlState extends State<SpeedControl> {
         child: Column(children: [
           Row(children: [
             ElevatedButton(
-              onPressed: getPlaybackFn(_mPlayer, _exampleAudioFilePathMP3_1),
+              onPressed: getPlaybackFn(_mPlayer),
               //color: Colors.white,
               //disabledColor: Colors.grey,
               child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
@@ -145,11 +156,12 @@ class _SpeedControlState extends State<SpeedControl> {
           ]),
           Text('Speed:'),
           Slider(
-              value: _mSpeed,
-              min: 0.0,
-              max: 200.0,
-              onChanged: setSpeed,
-              divisions: 100),
+            value: _mSpeed,
+            min: 0.0,
+            max: 200.0,
+            onChanged: setSpeed,
+            //divisions: 100
+          ),
         ]),
         //),
         //],

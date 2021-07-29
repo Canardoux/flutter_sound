@@ -19,7 +19,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -49,9 +49,8 @@ class ConvertToMp3 extends StatefulWidget {
 }
 
 class _ConvertToMp3State extends State<ConvertToMp3> {
-  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer(logLevel: Level.debug);
-  FlutterSoundRecorder? _mRecorder =
-      FlutterSoundRecorder(logLevel: Level.debug);
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
+  FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
   bool _mplaybackReady = false;
