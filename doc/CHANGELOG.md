@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 8.3.0
+## 8.3.2
 
 - Check file extension for recording. This Pull Request [#728](https://github.com/Canardoux/tau/pull/728) was provided by [@mhstoller](https://github.com/mhstoller) . Thanks to him/her :-)
 - The dart API gave 404. Now OK. [#640](https://github.com/Canardoux/tau/issues/640)
