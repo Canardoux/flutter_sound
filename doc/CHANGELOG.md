@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 8.3.5
+## 8.3.6
 
 - Update the doc API for the verbs [onProgress()](tau_api_player_on_progress.html) and [onProgress()](tau_api_recorder_on_progress.html), to clearly explain that we must call `setSubscriptionDuration()` to have this callback fired. Too many developers was having problems with this verb.
 - New simple example to show how to use [onProgress()](tau_api_player_on_progress.html) on a Player.
