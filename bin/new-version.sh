@@ -29,6 +29,8 @@ fi
 
 cd ..
 
+rm -rf  flutter_sound_web/js 2>/dev/null
+cp -a -v tau_core/web/js flutter_sound_web
 #cp -a -v flutter_sound_web/js/flutter_sound/* flutter_sound/example/web/js/flutter_sound
 
 #rm flutter_sound/Logotype\ primary.png
@@ -174,7 +176,7 @@ cd flutter_sound
 flutter analyze lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 dartdoc lib
 if [ $? -ne 0 ]; then
@@ -186,7 +188,7 @@ cd example
 flutter analyze lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 dartdoc lib
 if [ $? -ne 0 ]; then
