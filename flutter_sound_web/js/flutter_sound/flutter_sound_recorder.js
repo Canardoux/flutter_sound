@@ -16,7 +16,7 @@
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const RECORDER_VERSION = '8.2.0'
+const RECORDER_VERSION = '8.3.5'
 
 const IS_RECORDER_PAUSED = 1;
 const IS_RECORDER_RECORDING = 2;

@@ -51,8 +51,8 @@ if [ "_$1" = "_REL" ] ; then
 
         gsed -i  "s/^ *pod 'tau_core',\(.*\)$/# pod 'tau_core',\1/"  flutter_sound/example/ios/Podfile
 
-        gsed -i  "s/^\( *<\!-- static\) -->$/\1/" flutter_sound/example/web/index.html
-        gsed -i  "s/^\( *<\!-- dynamic\)$/\1 -->/" flutter_sound/example/web/index.html
+        gsed -i  "s/^\(<\!-- static\) -->$/\1/" flutter_sound/example/web/index.html
+        gsed -i  "s/^\(<\!-- dynamic\)$/\1 -->/" flutter_sound/example/web/index.html
 
 # flutter_sound_web/pubspec.yaml
 #-------------------------------

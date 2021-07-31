@@ -33,13 +33,13 @@ cd ..
 
 #rm flutter_sound/Logotype\ primary.png
 #ln -s ../doc/flutter_sound/Logotype\ primary.png flutter_sound/
-rm -rf flutter_sound_web/js
+#rm -rf flutter_sound_web/js
 #if [  -d tau_core/web/js ]; then
-rm -rf flutter_sound_web/js
-cp -a -v tau_core/web/js flutter_sound_web
+#rm -rf flutter_sound_web/js
+#cp -a -v tau_core/web/js flutter_sound_web
 
-rm -rf flutter_sound/example/web/js
-cp -a -v tau_core/web/js flutter_sound/example/web
+##rm -rf flutter_sound/example/web/js
+#cp -a -v tau_core/web/js flutter_sound/example/web
 rm -rf _*.tgz
     
     #ln -s ../tau_core/web/js flutter_sound_web/js

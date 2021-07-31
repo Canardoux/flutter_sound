@@ -90,7 +90,7 @@ const mime_types =
                         'audio/aiff', // pcm16AIFF,
                         'audio/x-caf', // pcm16CAF,
                         'audio/x-flac', // flac,
-                        'audio/mp4', // aacMP4,
+                        'audio/mpeg',//'audio/mp4', // aacMP4,
                         'audio/AMR', // amrNB,
                         'audio/AMR-WB', // amrWB,
                         'audio/pcm', // pcm8,

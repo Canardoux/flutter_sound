@@ -3,7 +3,7 @@
 entries:
 - title: sidebar
   product: The &tau; Project
-  version: 8.3.4
+  version: 8.3.5
   folders:
 
   - title:
@@ -199,6 +199,10 @@ entries:
 
         - title: setVolume()
           url: /tau_api_player_set_volume.html
+          output: web, pdf
+
+        - title: setSpeed()
+          url: /tau_api_player_set_speed.html
           output: web, pdf
 
         - title: getPlayerState()
@@ -403,6 +407,14 @@ entries:
 
         - title: Simple Playback
           url: /flutter_sound_examples_simple_playback.html
+          output: web, pdf
+
+        - title: onProgress (Player)
+          url: /flutter_sound_examples_player_onprogress.html
+          output: web, pdf
+
+        - title: onProgress (Recorder)
+          url: /flutter_sound_examples_recorder_onprogress.html
           output: web, pdf
 
         - title: Simple Recorder

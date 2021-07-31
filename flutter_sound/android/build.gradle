@@ -1,7 +1,7 @@
 ext.flutterFFmpegPackage = 'audio'
 
 group 'com.dooboolab.fluttersound'
-version '8.3.4'
+version '8.3.5'
 
 buildscript {
     repositories {
@@ -56,7 +56,7 @@ dependencies {
     // CAUTION: The following instruction is for developping and debugging the Flauto Engine
     // DO NOT INCLUDE THE FOLLOWING LINE IN A REAL APP !!!
     //implementation project(':tau_core')
-    implementation 'com.github.Canardoux:tau_core:8.3.4'
+    implementation 'com.github.Canardoux:tau_core:8.3.5'
     // -------------------------------------------------------------------------------------
 
 }

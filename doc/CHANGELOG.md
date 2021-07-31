@@ -7,6 +7,15 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 8.3.5
+
+- Update the doc API for the verbs [onProgress()](tau_api_player_on_progress.html) and [onProgress()](tau_api_recorder_on_progress.html), to clearly explain that we must call `setSubscriptionDuration()` to have this callback fired. Too many developers was having problems with this verb.
+- New simple example to show how to use [onProgress()](tau_api_player_on_progress.html) on a Player.
+- New simple example to show how to use [onProgress()](tau_api_recorder_on_progress.html) on a Recorder.
+- Fix a bug on iOS which can explain why `onProgress()` was not always fired. [#654](https://github.com/Canardoux/tau/issues/654)
+- `setSubscriptionDuration()` can now be called after the `startPlayer()` or `startRecorder()` to dynamically change the frequency of the callback.
+- On Android, the default for the callback frequency is 0. This is homogeneous with iOS, and is consistent with the documentation.
+
 ## 8.3.4
 
 - Check file extension for recording. This Pull Request [#728](https://github.com/Canardoux/tau/pull/728) was provided by [@mhstoller](https://github.com/mhstoller) . Thanks to him/her :-)

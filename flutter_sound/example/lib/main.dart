@@ -33,6 +33,8 @@ import 'convert_to_mp3/convert_to_mp3.dart';
 import 'loglevel/loglevel.dart';
 import 'volume_control/volume_control.dart';
 import 'speed_control/speed_control.dart';
+import 'player_onProgress/player_onProgress.dart';
+import 'recorder_onProgress/recorder_onProgress.dart';
 
 /*
     This APP is just a driver to call the various Flutter Sound examples.
@@ -85,7 +87,7 @@ final List<Example> exampleTable = [
           '''This is a Demo of what it is possible to do with Flutter Sound.
 The code of this Demo app is not so simple and unfortunately not very clean :-( .
 
-Flutter Sound beginners : you probably should look to `[SimplePlayback]`  and `[SimpleRecorder]` 
+Flutter Sound beginners : you probably should look to `[SimplePlayback]`  and `[SimpleRecorder]`
 
 The biggest interest of this Demo is that it shows most of the features of Flutter Sound :
 
@@ -180,6 +182,28 @@ This example is really basic.
   ),
 
   Example(
+    title: 'Player onProgress',
+    subTitle: 'Player onProgress',
+    flags: 0,
+    route: (_) => PlayerOnProgress(),
+    description: '''
+This is a very simple example showing how to  call `setSubscriptionDuration() and use onProgress() on a player.
+
+''',
+  ),
+
+  Example(
+    title: 'Recorder onProgress',
+    subTitle: 'Recorder onProgress',
+    flags: 0,
+    route: (_) => RecorderOnProgress(),
+    description: '''
+This is a very simple example showing how to  call `setSubscriptionDuration() and use onProgress() on a recorder.
+
+''',
+  ),
+
+  Example(
     title: 'Play from Mic',
     subTitle: 'Play from microphone',
     flags: tNotWeb,
@@ -266,7 +290,7 @@ When it want to play a noise, it has just to call the verb ```feed```
     flags: tNotWeb,
     route: (_) => StreamLoop(),
     description: '''
-```streamLoop()``` is a very simple example which connect the FlutterSoundRecorder sink 
+```streamLoop()``` is a very simple example which connect the FlutterSoundRecorder sink
 to the FlutterSoundPlayer Stream.
 
 Of course, we do not play to the loudspeaker to avoid a very unpleasant Larsen effect.
@@ -282,9 +306,9 @@ from flutter_sound_player.dart.
     flags: tNotWeb,
     route: (_) => ConvertToMp3(),
     description: '''
-```convertFile()``` is a very simple example 
+```convertFile()``` is a very simple example
    which record an AAC audio file,
-   convert this AAC file to MP3, 
+   convert this AAC file to MP3,
    and then playback the MP3 file.
 ''',
   ),

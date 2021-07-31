@@ -296,7 +296,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// @nodoc
   @override
   void updatePlaybackState(int state) {
-    _playerState = PlayerState.values[state];
+    if (state >= 0 && state < PlayerState.values.length) {
+      _playerState = PlayerState.values[state];
+    }
   }
 
   /// Callback from the &tau; Core. Must not be called by the App

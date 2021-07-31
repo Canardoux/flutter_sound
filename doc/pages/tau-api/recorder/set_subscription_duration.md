@@ -27,7 +27,7 @@ This verb is used to change the default interval between two post on the "Update
 
 <pre>
         // 0 is default
-        myRecorder.setSubscriptionDuration(0.010);
+        myRecorder.setSubscriptionDuration(Duration: milliseconds:(0.100));
 </pre>
 
 </div>

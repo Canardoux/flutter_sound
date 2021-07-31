@@ -21,6 +21,10 @@ PlaybackDisposition has two fields :
 - Duration duration  (the total playback duration)
 - Duration position  (the current playback position)
 
+{% include important.html content=" Be aware that you must call the verb [setSubscriptionDuration()](tau_api_player_set_subscription_duration.html) to
+specify the frequency of this callback. By default, this frequency is 0 (the callback is never fired)"%}
+
+
 *Example:*
 <ul id="profileTabs" class="nav nav-tabs">
     <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
@@ -31,6 +35,7 @@ PlaybackDisposition has two fields :
 <div role="tabpanel" class="tab-pane active" id="dart">
 
 <pre>
+        myPlayer.setSubscriptionDuration(Duration(milliseconds: 100));
         _playerSubscription = myPlayer.onProgress.listen((e)
         {
                 Duration maxDuration = e.duration;

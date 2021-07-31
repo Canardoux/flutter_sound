@@ -100,7 +100,7 @@ class FlutterSoundPlayer
                                 me.callbackTable[CB_player_log](me.callback, DBG, 'onplay');
                                 me.duration = Math.ceil(howl.duration() * 1000);
                                 me.status = IS_PLAYER_PLAYING;
-                                if (me.pauseResume != IS_PLAYER_PAUSED) // And not IS_PLAYER_PAUSED
+                                if (me.pauseResume != IS_PLAYER_PAUSED) 
                                 {
                                         me.callbackTable[CB_startPlayerCompleted](me.callback, me.getPlayerState(), true, me.duration); // Duration is unknown
 
@@ -213,6 +213,8 @@ class FlutterSoundPlayer
         {
                 this.callbackTable[CB_player_log](this.callback, DBG, 'setSubscriptionDuration');
                 this.subscriptionDuration = duration;
+                if (duration > 0 && this.howl != null)
+                        this.startTimer();
                 return this.getPlayerState();
         }
 
@@ -372,7 +374,7 @@ class FlutterSoundPlayer
                 {
                         this.callbackTable[CB_resumePlayerCompleted](this.callback,  this.getPlayerState(), false);
                 }
-
+                this.startTimer();
 
                 this.callbackTable[CB_player_log](this.callback, DBG, 'JS: <--- resumePlayer');
                 return this.getPlayerState();

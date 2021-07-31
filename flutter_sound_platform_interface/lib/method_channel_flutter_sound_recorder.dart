@@ -52,7 +52,9 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform
 
 Future<dynamic>? channelMethodCallHandler(MethodCall call) {
     FlutterSoundRecorderCallback? aRecorder = getSession(call.arguments['slotNo'] as int);
-    bool? success = call.arguments['success'] as bool?;
+    //bool? success = call.arguments['success'] as bool?;
+    bool success = call.arguments['success'] != null ? call.arguments['success'] as bool : false;
+
 
     switch (call.method) {
       case "updateRecorderProgress":

@@ -58,31 +58,24 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
   {
     FlutterSoundPlayerCallback aPlayer = getSession(call.arguments!['slotNo'] as int);
     Map arg = call.arguments ;
-    if (call.method == "updateProgress")
-      {
-        aPlayer.updateProgress(duration:  arg['duration'], position:  arg['position']);
-        return null;
-      }
 
-    if (call.method == "needSomeFood")
-    {
-      aPlayer.needSomeFood(arg['arg']);
-      return null;
-    }
-
-    aPlayer.log(Level.debug, 'FS:---> channelMethodCallHandler : ${call.method}');
-
-    bool success = call.arguments['success'] as bool;
-    aPlayer.updatePlaybackState(arg['state']);
-
+    bool success = call.arguments['success'] != null ? call.arguments['success'] as bool : false;
+    if (arg['state'] != null)
+      aPlayer.updatePlaybackState(arg['state']);
 
     switch (call.method)
     {
-      //case "updateProgress":
-        //{
-          //aPlayer.updateProgress(duration:  arg['duration'], position:  arg['position']);
-        //}
-        //break;
+      case "updateProgress":
+        {
+          aPlayer.updateProgress(duration:  arg['duration'], position:  arg['position']);
+        }
+        break;
+
+      case "needSomeFood":
+        {
+          aPlayer.needSomeFood(arg['arg']);
+        }
+        break;
 
       case "audioPlayerFinishedPlaying":
         {
@@ -173,7 +166,6 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
       default:
         throw ArgumentError('Unknown method ${call.method}');
     }
-    aPlayer.log(Level.debug, 'FS:<--- channelMethodCallHandler : ${call.method}');
 
     return null;
   }

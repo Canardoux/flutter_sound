@@ -80,7 +80,7 @@
         [self invokeMethod:@"needSomeFood" numberArg: [NSNumber numberWithInt: ln]  success: @YES ];
 }
 
-- (void)updateProgressPositon: (long)position duration: (long)duration
+- (void)updateProgressPosition: (long)position duration: (long)duration
 {
                 NSNumber* p = [NSNumber numberWithLong: position];
                 NSNumber* d = [NSNumber numberWithLong: duration];

@@ -17,6 +17,10 @@ keywords: API Recorder
 The attribut `onProgress` is a stream on which FlutterSound will post the recorder progression.
 You may listen to this Stream to have feedback on the current recording.
 
+{% include important.html content=" Be aware that you must call the verb [setSubscriptionDuration()](tau_api_recorder_set_subscription_duration.html) to
+specify the frequency of this callback. By default, this frequency is 0 (the callback is never fired)"%}
+
+
 *Example:*
 <ul id="profileTabs" class="nav nav-tabs">
     <li class="active"><a href="#dart" data-toggle="tab">Dart</a></li>
@@ -27,6 +31,7 @@ You may listen to this Stream to have feedback on the current recording.
 <div role="tabpanel" class="tab-pane active" id="dart">
 
 <pre>
+        myRecorder.setSubscriptionDuration(Duration(milliseconds: 100));
         _recorderSubscription = myrecorder.onProgress.listen((e)
         {
                 Duration maxDuration = e.duration;
