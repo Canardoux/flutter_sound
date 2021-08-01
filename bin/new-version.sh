@@ -13,7 +13,7 @@ VERSION_CODE=${VERSION_CODE#+/}
 bin/flavor.sh FULL
 bin/reldev.sh REL
 bin/setver.sh $VERSION
-
+bin/web.sh
 
 cd flutter_sound
 dartanalyzer lib
@@ -29,8 +29,6 @@ fi
 
 cd ..
 
-rm -rf  flutter_sound_web/js 2>/dev/null
-cp -a -v tau_core/web/js flutter_sound_web
 #cp -a -v flutter_sound_web/js/flutter_sound/* flutter_sound/example/web/js/flutter_sound
 
 #rm flutter_sound/Logotype\ primary.png
