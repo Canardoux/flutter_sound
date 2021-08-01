@@ -7,11 +7,18 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 8.3.9
+
+- Modify the examples to be able to record on Safari.
+- Now, we can seek the player before starting the playback [#536](https://github.com/Canardoux/tau/issues/536)
+- [New example](flutter_sound_examples_seek.html) showing how to `seek` the player.
+- setSubscriptionDuration() on the Recorder now works fine on Web.
+
 ## 8.3.8
 
 - Update the doc API for the verbs [onProgress()](tau_api_player_on_progress.html) and [onProgress()](tau_api_recorder_on_progress.html), to clearly explain that we must call `setSubscriptionDuration()` to have this callback fired. Too many developers was having problems with this verb.
-- New simple example to show how to use [onProgress()](tau_api_player_on_progress.html) on a Player.
-- New simple example to show how to use [onProgress()](tau_api_recorder_on_progress.html) on a Recorder.
+- New [simple example](flutter_sound_examples_player_onprogress.html) to show how to use [onProgress()](tau_api_player_on_progress.html) on a Player.
+- New [simple example](flutter_sound_examples_recorder_onprogress.html) to show how to use [onProgress()](tau_api_recorder_on_progress.html) on a Recorder.
 - Fix a bug on iOS which can explain why `onProgress()` was not always fired. [#654](https://github.com/Canardoux/tau/issues/654)
 - `setSubscriptionDuration()` can now be called after the `startPlayer()` or `startRecorder()` to dynamically change the frequency of the callback.
 - On Android, the default for the callback frequency is 0. This is homogeneous with iOS, and is consistent with the documentation.
@@ -42,7 +49,7 @@ toc: false
 
 ## 8.1.4
 
-- Fix crash [#642](https://github.com/Canardoux/tau/issues/642) . Pull Request [#686](https://github.com/Canardoux/tau/pull/686) that was provided by [@touficzayed](https://github.com/touficzayed) . Thanks to him :-)
+- Fix crash [#642](https://github.com/Canardoux/tau/issues/642) . Pull Request [#686](https://github.com/Canardoux/tau/pull/686) that was provided by [@touficzayed](https://github.com/touficzayed) . Thanks to him/her :-)
 
 ## 8.1.3
 

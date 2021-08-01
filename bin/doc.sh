@@ -21,6 +21,8 @@ if [ ! -z "$VERSION" ]; then
         gsed -i  "s/^\( *version: \).*/\1$VERSION/"                                             doc/_data/sidebars/mydoc_sidebar.yml
 fi
 
+bin/web.sh
+
 #rm -r doc/_site/pages/flutter-sound/web_example
 #cp -a flutter_sound/example/build/web doc/_site/pages/flutter-sound/web_example
 cp privacy_policy.html doc/_site

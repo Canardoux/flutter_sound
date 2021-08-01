@@ -10,7 +10,7 @@ keywords: Flutter, &tau;
 
 ## The FULL flavor
 
-Flutter Sound FULL is linked with Mobile the FFmpeg library.
+Flutter Sound FULL flavor is linked with Mobile the FFmpeg library.
 This library is huge.
 Thanks to this library, Flutter Sound can support non native Codecs.
 For example, Flutter Sound can record OPUS-OGG on iOS.
@@ -39,4 +39,4 @@ import 'package:flutter_sound/flutter_sound.dart';
 ## Using flutter_ffmpeg
 
 If your app needs to use flutter_ffmpeg, you must use the LITE flavor of Flutter Sound.
-The FULL flavor will give you many duplicates symbols erros during the link-edit
+The FULL flavor will give you many duplicates symbols errors during the link-edit

@@ -113,6 +113,8 @@ class FlutterSoundRecorder
         {
                 this.callbackTable[CB_recorder_log](this.callback, DBG, 'setSubscriptionDuration');
                 this.subscriptionDuration = duration;
+                if (this.mediaRecorder != null)
+                        this.startTimer();
         }
 
 
@@ -407,7 +409,7 @@ class FlutterSoundRecorder
         {
                 this.callbackTable[CB_recorder_log](this.callback, DBG,  'JS:---> stopRecorder');
                 this.stopTimer();
-                 if (this.mediaRecorder != null)
+                if (this.mediaRecorder != null)
                 {
                         this.mediaRecorder.stop();
                 } else
@@ -417,10 +419,10 @@ class FlutterSoundRecorder
                this.mediaRecorder = null;
                 
                 if (this.mediaStream != null) 
-               {
+                {
                     this.mediaStream.getTracks().forEach( track => track.stop());
                     this.mediaStream = null;
-               }
+                }
                 this.callbackTable[CB_recorder_log](this.callback, DBG, "JS:<--- stopRecorder" );
         }
 

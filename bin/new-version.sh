@@ -218,15 +218,16 @@ cd ..
 flutter build ios
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 
 # Bug in flutter tools : if "flutter build --release" we must first "--debug" and then "--profile" before "--release"
 flutter build apk --debug
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
+
 cd ../..
 
 

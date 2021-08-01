@@ -35,6 +35,7 @@ import 'volume_control/volume_control.dart';
 import 'speed_control/speed_control.dart';
 import 'player_onProgress/player_onProgress.dart';
 import 'recorder_onProgress/recorder_onProgress.dart';
+import 'seek/seek.dart';
 
 /*
     This APP is just a driver to call the various Flutter Sound examples.
@@ -174,6 +175,18 @@ This example is really basic.
     subTitle: 'Speed Control',
     flags: 0,
     route: (_) => SpeedControl(),
+    description: '''
+This is a very simple example showing how tune the speed of a playback.
+
+This example is really basic.
+''',
+  ),
+
+  Example(
+    title: 'Seek Player',
+    subTitle: 'Seek Player',
+    flags: 0,
+    route: (_) => Seek(),
     description: '''
 This is a very simple example showing how tune the speed of a playback.
 

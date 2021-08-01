@@ -213,7 +213,7 @@ class _MyAppState extends State<Demo> {
   double sliderCurrentPosition = 0.0;
   double maxDuration = 1.0;
   Media? _media = Media.remoteExampleFile;
-  Codec _codec = (kIsWeb) ? Codec.opusWebM : Codec.aacADTS;
+  Codec _codec = Codec.aacMP4;
 
   bool? _encoderSupported = true; // Optimist
   bool _decoderSupported = true; // Optimist
@@ -240,12 +240,25 @@ class _MyAppState extends State<Demo> {
     await setCodec(_codec);
   }
 
-  Future<void> init() async {
+  Future<void> openTheRecorder() async {
+    if (!kIsWeb) {
+      var status = await Permission.microphone.request();
+      if (status != PermissionStatus.granted) {
+        throw RecordingPermissionException('Microphone permission not granted');
+      }
+    }
     await recorderModule.openAudioSession(
         focus: AudioFocus.requestFocusAndStopOthers,
         category: SessionCategory.playAndRecord,
         mode: SessionMode.modeDefault,
         device: AudioDevice.speaker);
+    if (!await recorderModule.isEncoderSupported(_codec) && kIsWeb) {
+      _codec = Codec.opusWebM;
+    }
+  }
+
+  Future<void> init() async {
+    await openTheRecorder();
     await _initializeExample(false);
 
     if ((!kIsWeb) && Platform.isAndroid) {

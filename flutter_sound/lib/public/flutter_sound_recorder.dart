@@ -525,7 +525,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Recorder is not open');
     }
-
     var result = false;
     // For encoding ogg/opus on ios, we need to support two steps :
     // - encode CAF/OPPUS (with native Apple AVFoundation)

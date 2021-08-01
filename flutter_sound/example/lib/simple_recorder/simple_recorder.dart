@@ -57,12 +57,13 @@ class SimpleRecorder extends StatefulWidget {
 }
 
 class _SimpleRecorderState extends State<SimpleRecorder> {
+  Codec _codec = Codec.aacMP4;
+  String _mPath = 'tau_file.mp4';
   FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
   FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
   bool _mplaybackReady = false;
-  final String _mPath = 'flutter_sound_example.aac';
 
   @override
   void initState() {
@@ -98,6 +99,14 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
       }
     }
     await _mRecorder!.openAudioSession();
+    if (!await _mRecorder!.isEncoderSupported(_codec) && kIsWeb) {
+      _codec = Codec.opusWebM;
+      _mPath = 'tau_file.webm';
+      if (!await _mRecorder!.isEncoderSupported(_codec) && kIsWeb) {
+        _mRecorderIsInited = true;
+        return;
+      }
+    }
     _mRecorderIsInited = true;
   }
 
@@ -107,6 +116,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     _mRecorder!
         .startRecorder(
       toFile: _mPath,
+      codec: _codec,
       audioSource: theSource,
     )
         .then((value) {

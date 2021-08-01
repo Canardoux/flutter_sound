@@ -21,6 +21,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:permission_handler/permission_handler.dart';
 
 /*
  *
@@ -42,6 +44,8 @@ class RecorderOnProgress extends StatefulWidget {
 
 class _RecorderOnProgressState extends State<RecorderOnProgress> {
   final FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
+  Codec _codec = Codec.aacMP4;
+  String _mPath = 'tau_file.mp4';
   bool _mRecorderIsInited = false;
   double _mSubscriptionDuration = 0;
   StreamSubscription? _recorderSubscription;
@@ -76,8 +80,27 @@ class _RecorderOnProgressState extends State<RecorderOnProgress> {
     }
   }
 
-  Future<void> init() async {
+  Future<void> openTheRecorder() async {
+    if (!kIsWeb) {
+      var status = await Permission.microphone.request();
+      if (status != PermissionStatus.granted) {
+        throw RecordingPermissionException('Microphone permission not granted');
+      }
+    }
     await _mRecorder.openAudioSession();
+    if (!await _mRecorder.isEncoderSupported(_codec) && kIsWeb) {
+      _codec = Codec.opusWebM;
+      _mPath = 'tau_file.webm';
+      if (!await _mRecorder.isEncoderSupported(_codec) && kIsWeb) {
+        _mRecorderIsInited = true;
+        return;
+      }
+    }
+    _mRecorderIsInited = true;
+  }
+
+  Future<void> init() async {
+    await openTheRecorder();
     _recorderSubscription = _mRecorder.onProgress!.listen((e) {
       setState(() {
         pos = e.duration.inMilliseconds;
@@ -96,7 +119,7 @@ class _RecorderOnProgressState extends State<RecorderOnProgress> {
   // -------  Here is the code to playback  -----------------------
 
   void record(FlutterSoundRecorder? recorder) async {
-    await recorder!.startRecorder(codec: Codec.aacMP4, toFile: 'foo.mp4');
+    await recorder!.startRecorder(codec: _codec, toFile: _mPath);
     setState(() {});
   }
 

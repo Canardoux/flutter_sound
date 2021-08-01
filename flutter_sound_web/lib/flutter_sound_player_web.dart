@@ -109,7 +109,7 @@ List<Function> callbackTable =
         allowInterop( (FlutterSoundPlayerCallback cb, int state, bool success)                          { cb.stopPlayerCompleted(state, success);} ),
         allowInterop( (FlutterSoundPlayerCallback cb, int state, bool success)                          { cb.openPlayerCompleted(state, success);} ),
         allowInterop( (FlutterSoundPlayerCallback cb, int state, bool success)                          { cb.closePlayerCompleted(state, success);} ),
-        allowInterop( (FlutterSoundPlayerCallback cb,  int level, String msg)                         { cb.log(Level.values[level], msg);} ),
+        allowInterop( (FlutterSoundPlayerCallback cb,  int level, String msg)                           { cb.log(Level.values[level], msg);} ),
 ];
 
 //=========================================================================================================
