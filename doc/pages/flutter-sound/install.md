@@ -42,16 +42,14 @@ Add `flutter_sound` or `flutter_sound_lite` as a dependency in pubspec.yaml.
 
 The actual versions are :
 
-* flutter\_sound\_lite: ^5.0.0  \(the LTS version without FFmpeg\)
-* flutter\_sound: ^5.0.0 \(the LTS version with FFmpeg embedded\)
-* flutter\_sound\_lite: ^6.0.0 \(the current version without FFmpeg\)
-* flutter\_sound: ^6.0.0       \(the current version with FFmpeg\)
+* flutter\_sound\_lite: ^8.3.9  \(the LTS version without FFmpeg\)
+* flutter\_sound: ^8.3.9 \(the LTS version with FFmpeg embedded\)
 
 ```text
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sound: ^6.0.0
+  flutter_sound: ^8.3.9
 ```
 
 or
@@ -60,7 +58,7 @@ or
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sound_lite: ^6.0.0
+  flutter_sound_lite: ^8.3.9
 ```
 
 ### Linking your App with Flutter Sound sources \(optional\)
@@ -69,15 +67,17 @@ The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound)
 
 There is actually two branches :
 
-* V5. This is the Long Term Support \(LTS\) branch which is maintained under the version 5.x.x
-* master. This is the branch currently developed and is released under the version 6.x.x.
+* V7. This is the last release which is not compliant with Dart Null Safety
+* master. This is the branch currently developed and is released under the version 8.x.x.
 
+You probably want to look to [the Dev notice](tau_dev.html)
 If you want to generate your App from the sources with a `FULL` flavor:
 
 ```bash
 cd some/where
 git clone https://github.com/dooboolab/flutter_sound
 cd some/where/flutter_sound
+bin/reldev.sh DEV
 bin/flavor FULL
 ```
 
@@ -97,7 +97,8 @@ If you prefer to link your App with the `LITE` flavor :
 cd some/where
 git clone https://github.com/dooboolab/flutter_sound
 cd some/where/flutter_sound
-bin/flavor LITE
+bin/reldev.sh DEV
+bin/flavor.sh LITE
 ```
 
 and add your dependency in your pubspec.yaml :
@@ -113,17 +114,21 @@ dependencies:
 ### FFmpeg
 
 flutter\_sound FULL flavor makes use of a terrific plugin : `Mobile FFmpeg`.
-In contrary to Flutter Sound Version 3.x.x, in Version 4.0.x your App can be built without any `Flutter-FFmpeg` dependency : `Mobile FFmpeg full-lts` is now automaticaly embedding inside the `FULL` flavor of Flutter Sound and Flutter Sound users do not have anything special to do.
+Your App can be built without any `Flutter-FFmpeg` dependency : `Mobile FFmpeg full-lts` is now automaticaly embedding inside the `FULL` flavor of Flutter Sound and Flutter Sound users do not have anything special to do.
 
-But your App can also use `Flutter-FFmpeg` if you need it. (`Flutter-FFmpeg` is a wrapper around `Mobile FFmpeg`).
+Please refer [to this notice](guides_lite-full.html)
+
+Your App can also use `Flutter-FFmpeg` if you need it. (`Flutter-FFmpeg` is a wrapper around `Mobile FFmpeg`).
 
 To use `Flutter-FFmpeg` :
 
 #### `pubspec.yaml`
 
-Add a dependency inside your `pubspec.yaml`
-```
+Add a dependency inside your `pubspec.yaml` and use the LITE flavor of Flutter Sound
+
+```yaml
   flutter_ffmpeg: ^0.3.1
+  flutter_sound_lite: "8.3.9
 ```
 
 #### iOS `Podfile`
@@ -291,9 +296,9 @@ Add those 4 lines at the end of the `<head>` section of your `index.html` file :
 Add those 4 lines at the end of the `<head>` section of your `index.html` file :
 
 ```text
-  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@7.4.13/js/flutter_sound/flutter_sound.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@7.4.13/js/flutter_sound/flutter_sound_player.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@7.4.13/js/flutter_sound/flutter_sound_recorder.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@8/js/flutter_sound/flutter_sound.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@8/js/flutter_sound/flutter_sound_player.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tau_sound_core@8/js/flutter_sound/flutter_sound_recorder.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/howler@2/dist/howler.min.js"></script>
 ```
 
