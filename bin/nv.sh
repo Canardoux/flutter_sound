@@ -48,16 +48,6 @@ rm -rf _*.tgz
 #fi
 
 
-cd flutter_sound_web
-flutter clean
-flutter pub get
-flutter pub publish
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
-cd ..
-
 
 
 cd flutter_sound
