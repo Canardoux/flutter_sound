@@ -3,7 +3,7 @@
   "packages": [
     {
       "name": "async",
-      "rootUri": "file:///Volumes/Home/larpoux/.pub-cache/hosted/pub.dartlang.org/async-2.7.0",
+      "rootUri": "file:///Volumes/Home/larpoux/.pub-cache/hosted/pub.dartlang.org/async-2.8.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -51,7 +51,7 @@
     },
     {
       "name": "flutter_sound_platform_interface",
-      "rootUri": "file:///Volumes/Home/larpoux/.pub-cache/hosted/pub.dartlang.org/flutter_sound_platform_interface-8.3.9",
+      "rootUri": "file:///Volumes/Home/larpoux/.pub-cache/hosted/pub.dartlang.org/flutter_sound_platform_interface-8.3.10",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -170,7 +170,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-08-01T18:12:37.465628Z",
+  "generated": "2021-08-30T09:52:49.966686Z",
   "generator": "pub",
-  "generatorVersion": "2.14.0-350.0.dev"
+  "generatorVersion": "2.14.0-377.7.beta"
 }

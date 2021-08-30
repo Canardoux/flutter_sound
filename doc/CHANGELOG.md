@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 8.3.10
+
+- Remove a dependency to flutter_spikit which was not used anymore by Flutter Sound. This is a (Pull Request)[https://github.com/Canardoux/tau/pull/755] from (Jack Liu)[https://github.com/aaassseee]. Thanks to him.
+
 ## 8.3.9
 
 - Modify the examples to be able to record on Safari.
