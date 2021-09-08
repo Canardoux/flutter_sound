@@ -9,7 +9,7 @@ toc: false
 ---
 ## 8.3.10
 
-- Remove a dependency to flutter_spikit which was not used anymore by Flutter Sound. This is a (Pull Request)[https://github.com/Canardoux/tau/pull/755] from (Jack Liu)[https://github.com/aaassseee]. Thanks to him.
+- Remove a dependency to flutter_spinkit which was not used anymore by Flutter Sound. This is a [Pull Request](https://github.com/Canardoux/tau/pull/755) from [Jack Liu](https://github.com/aaassseee). Thanks to him.
 
 ## 8.3.9
 
