@@ -60,6 +60,9 @@ enum _RecorderState {
 
   /// Is paused
   isPaused,
+
+  /// Is disabled during playback
+  isDisabled
 }
 
 /// [RecordedAudio] is used to track the audio media
@@ -260,6 +263,20 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
     super.dispose();
   }
 
+  /// Mirroring the code that controls the playback UI, this allows the recorder
+  /// to be disabled during playback
+  void recordingEnabled(bool enabled){
+    // take no action if recording is currently ongoing or paused.
+    assert (_recorder.isRecording != true && _recorder.isPaused != true);
+    setState(() {
+      if (enabled){
+        _state = _RecorderState.isStopped;
+      } else {
+        _state = _RecorderState.isDisabled;
+      }
+    });
+  }
+
   Widget _buildButtons() {
     return Container(
         //height: 70,
@@ -321,8 +338,8 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
                 ),
                 InkWell(
                   onTap: _onTapStartStop,
-                  child: Icon(_isStopped ? Icons.brightness_1 : Icons.stop,
-                      color: _isStopped ? Colors.red : Colors.black),
+                  child: Icon(_isRecording? Icons.stop : Icons.brightness_1,
+                      color: _isDisabled ? Colors.grey : _isStopped ? Colors.red : Colors.black),
                 ),
               ]);
             }));
@@ -337,7 +354,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
             child: Icon(
               !_isPaused ? Icons.pause : Icons.play_arrow,
               //size: 30,
-              color: !_isStopped ? Colors.black : Colors.grey,
+              color: _isDisabled? Colors.grey : !_isStopped ? Colors.black : Colors.grey,
             )));
   }
 
@@ -358,16 +375,19 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   }
 
   void _onTapStartStop() {
-    if (_isRecording || _isPaused) {
-      _stop();
-    } else {
-      _onRecord();
+    if (!_isDisabled) {
+      if (_isRecording || _isPaused) {
+        _stop();
+      } else {
+        _onRecord();
+      }
     }
   }
 
   bool get _isRecording => _state == _RecorderState.isRecording;
   bool get _isPaused => _state == _RecorderState.isPaused;
   bool get _isStopped => _state == _RecorderState.isStopped;
+  bool get _isDisabled => _state == _RecorderState.isDisabled;
 
   /// The `stop` methods stops the recording and calls
   /// the `onStopped` callback.
@@ -428,6 +448,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
       if (widget.onStart != null) {
         widget.onStart!();
       }
+      onRecordingNew(context);
       //controller(context);
     });
   }

@@ -304,6 +304,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   }
 
   void _onStopped() {
+    onPlaybackEnd(context);
     setState(() {
       /// we can get a race condition when we stop the playback
       /// We have disabled the button and called stop.
@@ -431,6 +432,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   /// Call [resume] to resume playing the audio.
   void resume() {
     setState(() {
+      onPlaybackStart(context);
       _transitioning = true;
       _playState = _PlayState.playing;
     });
@@ -450,6 +452,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   void pause() {
     // pause the player
     setState(() {
+      onPlaybackEnd(context);
       _transitioning = true;
       _playState = _PlayState.paused;
     });
@@ -512,10 +515,10 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
           .startPlayerFromTrack(trck, whenFinished: _onStopped)
           .then((_) {
         _playState = _PlayState.playing;
+        onPlaybackStart(context);
       }).catchError((dynamic e) {
         _logger.w('Error calling play() ${e.toString()}');
         _playState = _PlayState.stopped;
-
         return null;
       }).whenComplete(() {
         _loading = false;
@@ -536,6 +539,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   ///
   Future<void> _stop({bool supressState = false}) async {
     if (_player.isPlaying || _player.isPaused) {
+      onPlaybackEnd(context);
       await _player.stopPlayer().then<void>((_) {
         if (_playerSubscription != null) {
           _playerSubscription!.cancel();

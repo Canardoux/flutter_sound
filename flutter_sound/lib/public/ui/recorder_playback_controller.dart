@@ -96,6 +96,16 @@ class _RecordPlaybackControllerState {
     _recorderState?.stop();
   }
 
+  void _onPlayerPlay() {
+    /// Disables the recorder interface during playback.
+    _recorderState!.recordingEnabled(false);
+  }
+
+  void _onPlayerStop() {
+    /// Re-enables the recorder interface.
+    _recorderState!.recordingEnabled(true);
+  }
+
   void _onRecorderStopped(Duration duration) {
     _logger.d('_onRecorderStopped');
     if (_playerState != null) {
@@ -123,6 +133,16 @@ class _RecordPlaybackControllerState {
       // TODO ...
     }
   }
+
+  void _onRecorderNew() {
+    /// For the specific case of there already being something recorded and
+    /// recording again, the play button needs to be removed.
+    if (_playerState != null) {
+      _playerState!.playbackEnabled(enabled: false);
+    }
+  }
+
+  //todo: on adding new recording.
 
   void registerRecorder(SoundRecorderUIState recorderState) {
     _recorderState = recorderState;
@@ -169,4 +189,19 @@ void onRecordingPaused(BuildContext context) {
 ///
 void onRecordingResume(BuildContext context) {
   RecorderPlaybackController.of(context)!._state._onRecorderResume();
+}
+
+///
+void onRecordingNew(BuildContext context) {
+  RecorderPlaybackController.of(context)!._state._onRecorderNew();
+}
+
+///
+void onPlaybackStart(BuildContext context) {
+  RecorderPlaybackController.of(context)?._state._onPlayerPlay();
+}
+
+///
+void onPlaybackEnd(BuildContext context) {
+  RecorderPlaybackController.of(context)?._state._onPlayerStop();
 }
