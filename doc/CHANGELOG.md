@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 8.3.11
+
+- Fix several bugs in the UI Widgets : [#759](https://github.com/Canardoux/tau/issues/759). This is a Pull Request kindly pushed by [@jfkominsky](https://github.com/jfkominsky) : [763](https://github.com/Canardoux/tau/pull/763). Thanks to him/her :-)
+
 ## 8.3.10
 
 - Remove a dependency to flutter_spinkit which was not used anymore by Flutter Sound. This is a [Pull Request](https://github.com/Canardoux/tau/pull/755) from [Jack Liu](https://github.com/aaassseee). Thanks to him.
