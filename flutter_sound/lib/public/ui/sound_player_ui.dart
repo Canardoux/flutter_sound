@@ -511,11 +511,11 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   void _start() async {
     var trck = _track;
     if (trck != null) {
-      onPlaybackStart(context);
       await _player
           .startPlayerFromTrack(trck, whenFinished: _onStopped)
           .then((_) {
         _playState = _PlayState.playing;
+        onPlaybackStart(context);
       }).catchError((dynamic e) {
         _logger.w('Error calling play() ${e.toString()}');
         _playState = _PlayState.stopped;

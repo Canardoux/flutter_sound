@@ -134,6 +134,16 @@ class _RecordPlaybackControllerState {
     }
   }
 
+  void _onRecorderNew() {
+    /// For the specific case of there already being something recorded and
+    /// recording again, the play button needs to be removed.
+    if (_playerState != null) {
+      _playerState!.playbackEnabled(enabled: false);
+    }
+  }
+
+  //todo: on adding new recording.
+
   void registerRecorder(SoundRecorderUIState recorderState) {
     _recorderState = recorderState;
 
@@ -182,11 +192,16 @@ void onRecordingResume(BuildContext context) {
 }
 
 ///
+void onRecordingNew(BuildContext context) {
+  RecorderPlaybackController.of(context)!._state._onRecorderNew();
+}
+
+///
 void onPlaybackStart(BuildContext context) {
-  RecorderPlaybackController.of(context)!._state._onPlayerPlay();
+  RecorderPlaybackController.of(context)?._state._onPlayerPlay();
 }
 
 ///
 void onPlaybackEnd(BuildContext context) {
-  RecorderPlaybackController.of(context)!._state._onPlayerStop();
+  RecorderPlaybackController.of(context)?._state._onPlayerStop();
 }

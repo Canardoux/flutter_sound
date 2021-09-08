@@ -448,6 +448,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
       if (widget.onStart != null) {
         widget.onStart!();
       }
+      onRecordingNew(context);
       //controller(context);
     });
   }
