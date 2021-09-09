@@ -142,8 +142,6 @@ class _RecordPlaybackControllerState {
     }
   }
 
-  //todo: on adding new recording.
-
   void registerRecorder(SoundRecorderUIState recorderState) {
     _recorderState = recorderState;
 

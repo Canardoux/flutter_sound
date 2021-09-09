@@ -216,7 +216,7 @@ class SoundRecorderUI extends StatefulWidget {
 class SoundRecorderUIState extends State<SoundRecorderUI> {
   _RecorderState _state = _RecorderState.isStopped;
 
-  late FlutterSoundRecorder _recorder;
+  late FlutterSoundRecorder? _recorder;
 
   ///
   Color backgroundColor;
@@ -230,7 +230,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   @override
   void initState() {
     _recorder = FlutterSoundRecorder();
-    _recorder
+    _recorder!
         .openAudioSession(
             focus: AudioFocus.requestFocusAndDuckOthers,
             category: SessionCategory.playAndRecord,
@@ -246,7 +246,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   ///
   @override
   void deactivate() {
-    _recorder.stopRecorder();
+    _recorder!.stopRecorder();
     super.deactivate();
   }
 
@@ -259,7 +259,8 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   ///
   @override
   void dispose() {
-    _recorder.closeAudioSession();
+    _recorder!.closeAudioSession();
+    _recorder = null;
     super.dispose();
   }
 
@@ -267,7 +268,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   /// to be disabled during playback
   void recordingEnabled(bool enabled){
     // take no action if recording is currently ongoing or paused.
-    assert (_recorder.isRecording != true && _recorder.isPaused != true);
+    assert (_recorder!.isRecording != true && _recorder!.isPaused != true);
     setState(() {
       if (enabled){
         _state = _RecorderState.isStopped;
@@ -303,7 +304,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
 
   ///
   Stream<RecordingDisposition>? get dispositionStream =>
-      _recorder.dispositionStream();
+      _recorder!.dispositionStream();
 
   static const _minDbCircle = 15;
 
@@ -312,7 +313,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
         height: 50,
         width: 50,
         child: StreamBuilder<RecordingDisposition>(
-            stream: _recorder.dispositionStream(),
+            stream: _recorder!.dispositionStream(),
             initialData: RecordingDisposition.zero(), // was START_DECIBELS
             builder: (_, streamData) {
               var disposition = streamData.data!;
@@ -408,8 +409,8 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
 
   void _onRecord() async {
     if (!_isRecording) {
-      await _recorder.setSubscriptionDuration(Duration(milliseconds: 100));
-      await _recorder.startRecorder(
+      await _recorder!.setSubscriptionDuration(Duration(milliseconds: 100));
+      await _recorder!.startRecorder(
         toFile: widget.audio.track.trackPath,
       );
       _onStarted(wasUser: true);
@@ -418,22 +419,22 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   }
 
   void _stop() async {
-    if (_recorder.isRecording || _recorder.isPaused) {
-      await _recorder.stopRecorder();
+    if (_recorder!.isRecording || _recorder!.isPaused) {
+      await _recorder!.stopRecorder();
       _onStopped(wasUser: true);
     }
   }
 
   void _pause() async {
-    if (_recorder.isRecording) {
-      await _recorder.pauseRecorder();
+    if (_recorder!.isRecording) {
+      await _recorder!.pauseRecorder();
       _onPaused(wasUser: true);
     }
   }
 
   void _resume() async {
-    if (_recorder.isPaused) {
-      await _recorder.resumeRecorder();
+    if (_recorder!.isPaused) {
+      await _recorder!.resumeRecorder();
       _onResume(wasUser: true);
     }
   }
