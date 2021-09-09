@@ -80,7 +80,7 @@ class RecorderPlaybackController extends InheritedWidget {
 }
 
 class _RecordPlaybackControllerState {
-  SoundRecorderUIState? _recorderState;
+  SoundRecorderUIState? _recorderState; // why is this ever null
   SoundPlayerUIState? _playerState;
   final Logger _logger = Logger(level: Level.debug);
 
@@ -98,12 +98,12 @@ class _RecordPlaybackControllerState {
 
   void _onPlayerPlay() {
     /// Disables the recorder interface during playback.
-    _recorderState!.recordingEnabled(false);
+    _recorderState?.recordingEnabled(false);
   }
 
   void _onPlayerStop() {
     /// Re-enables the recorder interface.
-    _recorderState!.recordingEnabled(true);
+    _recorderState?.recordingEnabled(true);
   }
 
   void _onRecorderStopped(Duration duration) {
@@ -140,9 +140,12 @@ class _RecordPlaybackControllerState {
     if (_playerState != null) {
       _playerState!.playbackEnabled(enabled: false);
     }
+    if (_recorderState == null){ // todo it STARTS null? HOW?! Furthermore, it is executing registerrecorder successfully! This has to be something about states.
+      print("It starts off null!");
+    }
   }
 
-  void registerRecorder(SoundRecorderUIState recorderState) {
+  void _registerRecorder(SoundRecorderUIState recorderState) {
     _recorderState = recorderState;
 
     // wire our local stream to take events from the recording.
@@ -171,7 +174,7 @@ void registerPlayer(BuildContext context, SoundPlayerUIState player) {
 
 ///
 void registerRecorder(BuildContext context, SoundRecorderUIState recorder) {
-  RecorderPlaybackController.of(context)?._state.registerRecorder(recorder);
+  RecorderPlaybackController.of(context)?._state._registerRecorder(recorder);
 }
 
 ///
@@ -191,6 +194,7 @@ void onRecordingResume(BuildContext context) {
 
 ///
 void onRecordingNew(BuildContext context) {
+  print(context.toString());
   RecorderPlaybackController.of(context)!._state._onRecorderNew();
 }
 
