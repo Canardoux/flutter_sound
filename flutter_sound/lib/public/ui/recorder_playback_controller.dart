@@ -80,7 +80,7 @@ class RecorderPlaybackController extends InheritedWidget {
 }
 
 class _RecordPlaybackControllerState {
-  SoundRecorderUIState? _recorderState; // why is this ever null
+  SoundRecorderUIState? _recorderUIState;
   SoundPlayerUIState? _playerState;
   final Logger _logger = Logger(level: Level.debug);
 
@@ -93,17 +93,17 @@ class _RecordPlaybackControllerState {
   /// Stops both the player and the recorder.
   void stop() {
     _playerState?.stop();
-    _recorderState?.stop();
+    _recorderUIState?.stop();
   }
 
   void _onPlayerPlay() {
     /// Disables the recorder interface during playback.
-    _recorderState?.recordingEnabled(false);
+    _recorderUIState?.recordingEnabled(false);
   }
 
   void _onPlayerStop() {
     /// Re-enables the recorder interface.
-    _recorderState?.recordingEnabled(true);
+    _recorderUIState?.recordingEnabled(true);
   }
 
   void _onRecorderStopped(Duration duration) {
@@ -140,16 +140,12 @@ class _RecordPlaybackControllerState {
     if (_playerState != null) {
       _playerState!.playbackEnabled(enabled: false);
     }
-    if (_recorderState == null){ // todo it STARTS null? HOW?! Furthermore, it is executing registerrecorder successfully! This has to be something about states.
-      print("It starts off null!");
-    }
   }
 
-  void _registerRecorder(SoundRecorderUIState recorderState) {
-    _recorderState = recorderState;
+  void _registerRecorder(SoundRecorderUIState recorderUIState) {
 
     // wire our local stream to take events from the recording.
-    _recorderState!.dispositionStream!.listen(
+    _recorderUIState!.dispositionStream!.listen(
         (recorderDisposition) => _localController.add(PlaybackDisposition(
             // TODO ? PlaybackDispositionState.recording,
             position: Duration.zero,
@@ -174,28 +170,31 @@ void registerPlayer(BuildContext context, SoundPlayerUIState player) {
 
 ///
 void registerRecorder(BuildContext context, SoundRecorderUIState recorder) {
-  RecorderPlaybackController.of(context)?._state._registerRecorder(recorder);
+  var controller = RecorderPlaybackController.of(context)?._state;
+  if (controller != null) {
+    controller._recorderUIState = recorder;
+    controller._registerRecorder(recorder); // registers stream
+  }
 }
 
 ///
 void onRecordingStopped(BuildContext context, Duration duration) {
-  RecorderPlaybackController.of(context)!._state._onRecorderStopped(duration);
+  RecorderPlaybackController.of(context)?._state._onRecorderStopped(duration);
 }
 
 ///
 void onRecordingPaused(BuildContext context) {
-  RecorderPlaybackController.of(context)!._state._onRecorderPaused();
+  RecorderPlaybackController.of(context)?._state._onRecorderPaused();
 }
 
 ///
 void onRecordingResume(BuildContext context) {
-  RecorderPlaybackController.of(context)!._state._onRecorderResume();
+  RecorderPlaybackController.of(context)?._state._onRecorderResume();
 }
 
 ///
 void onRecordingNew(BuildContext context) {
-  print(context.toString());
-  RecorderPlaybackController.of(context)!._state._onRecorderNew();
+  RecorderPlaybackController.of(context)?._state._onRecorderNew();
 }
 
 ///
