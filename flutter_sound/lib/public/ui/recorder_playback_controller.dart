@@ -143,7 +143,6 @@ class _RecordPlaybackControllerState {
   }
 
   void _registerRecorder(SoundRecorderUIState recorderUIState) {
-
     // wire our local stream to take events from the recording.
     _recorderUIState!.dispositionStream!.listen(
         (recorderDisposition) => _localController.add(PlaybackDisposition(
@@ -194,7 +193,7 @@ void onRecordingResume(BuildContext context) {
 
 ///
 void onRecordingNew(BuildContext context, SoundRecorderUIState recorder) {
-  if (RecorderPlaybackController.of(context)?._state._recorderUIState == null){
+  if (RecorderPlaybackController.of(context)?._state._recorderUIState == null) {
     // fix for a bug where for some reason the recorder alone would not be
     // registered correctly. Only on this function because this is the first
     // function that should be engaged from the recorder or playback widgets.

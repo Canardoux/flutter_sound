@@ -1,4 +1,4 @@
-## 8.3.11
+## 8.3.12
 
 - ## The [CHANGELOG file is here](https://tau.canardoux.xyz/changelog.html)
 

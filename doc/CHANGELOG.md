@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 8.3.12
+
+- Fix a bad Exception in the Widget UI : [764](https://github.com/Canardoux/tau/issues/764). This is a Pull Request kindly pushed by [@jfkominsky](https://github.com/jfkominsky) : [765](https://github.com/Canardoux/tau/pull/765). Thanks to him/her :-)
+
 ## 8.3.11
 
 - Fix several bugs in the UI Widgets : [#759](https://github.com/Canardoux/tau/issues/759). This is a Pull Request kindly pushed by [@jfkominsky](https://github.com/jfkominsky) : [763](https://github.com/Canardoux/tau/pull/763). Thanks to him/her :-)

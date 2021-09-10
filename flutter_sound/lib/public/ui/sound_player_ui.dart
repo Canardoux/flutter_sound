@@ -390,14 +390,13 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   /// Controls whether the Play button is enabled or not.
   /// Can not toggle this whilst the player is playing or paused.
   void playbackEnabled({required bool enabled}) {
-    if (
-        __playState != _PlayState.playing && __playState != _PlayState.paused){
-    setState(() {
-      if (enabled == true) {
-        __playState = _PlayState.stopped;
-      } else if (enabled == false) {
-        __playState = _PlayState.disabled;
-      }
+    if (__playState != _PlayState.playing && __playState != _PlayState.paused) {
+      setState(() {
+        if (enabled == true) {
+          __playState = _PlayState.stopped;
+        } else if (enabled == false) {
+          __playState = _PlayState.disabled;
+        }
       });
     } else {
       // if for whatever reason the player is active, we simply stop and reset here, then try again.

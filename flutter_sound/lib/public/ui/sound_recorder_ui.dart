@@ -266,11 +266,11 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
 
   /// Mirroring the code that controls the playback UI, this allows the recorder
   /// to be disabled during playback
-  void recordingEnabled(bool enabled){
+  void recordingEnabled(bool enabled) {
     // take no action if recording is currently ongoing or paused.
-    assert (_recorder!.isRecording != true && _recorder!.isPaused != true);
+    assert(_recorder!.isRecording != true && _recorder!.isPaused != true);
     setState(() {
-      if (enabled){
+      if (enabled) {
         _recordingState = _RecorderState.isStopped;
       } else {
         _recordingState = _RecorderState.isDisabled;
@@ -339,8 +339,12 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
                 ),
                 InkWell(
                   onTap: _onTapStartStop,
-                  child: Icon(_isRecording? Icons.stop : Icons.brightness_1,
-                      color: _isDisabled ? Colors.grey : _isStopped ? Colors.red : Colors.black),
+                  child: Icon(_isRecording ? Icons.stop : Icons.brightness_1,
+                      color: _isDisabled
+                          ? Colors.grey
+                          : _isStopped
+                              ? Colors.red
+                              : Colors.black),
                 ),
               ]);
             }));
@@ -355,7 +359,11 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
             child: Icon(
               !_isPaused ? Icons.pause : Icons.play_arrow,
               //size: 30,
-              color: _isDisabled? Colors.grey : !_isStopped ? Colors.black : Colors.grey,
+              color: _isDisabled
+                  ? Colors.grey
+                  : !_isStopped
+                      ? Colors.black
+                      : Colors.grey,
             )));
   }
 
