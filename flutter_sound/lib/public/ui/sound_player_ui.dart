@@ -179,7 +179,7 @@ class SoundPlayerUI extends StatefulWidget {
 class SoundPlayerUIState extends State<SoundPlayerUI> {
   final Logger _logger = Logger(level: Level.debug);
 
-  final FlutterSoundPlayer _player;
+  late FlutterSoundPlayer? _player;
 
   final _sliderPosition = _SliderPosition();
 
@@ -248,7 +248,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     if (!_enabled!) {
       __playState = _PlayState.disabled;
     }
-    _player
+    _player!
         .openAudioSession(
             focus: AudioFocus.requestFocusAndDuckOthers,
             category: SessionCategory.playAndRecord,
@@ -258,7 +258,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
             withUI: true)
         .then((_) {
       _setCallbacks();
-      _player.setSubscriptionDuration(Duration(milliseconds: 100));
+      _player!.setSubscriptionDuration(Duration(milliseconds: 100));
     });
   }
 
@@ -300,7 +300,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
     //_player.onStopped = ({wasUser}) => _onStopped();
 
     /// pipe the new sound players stream to our local controller.
-    _player.dispositionStream()!.listen(_localController.add);
+    _player!.dispositionStream()!.listen(_localController.add);
   }
 
   void _onStopped() {
@@ -331,7 +331,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       recorderStream.listen(_localController.add);
     } else {
       /// revert to piping the player
-      _player.dispositionStream()!.listen(_localController.add);
+      _player!.dispositionStream()!.listen(_localController.add);
     }
   }
 
@@ -339,7 +339,8 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   @override
   void dispose() {
     _stop(supressState: true);
-    _player.closeAudioSession();
+    _player!.closeAudioSession();
+    _player = null;
     super.dispose();
   }
 
@@ -362,14 +363,14 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
             height: 50,
             width: 30,
             child: InkWell(
-              onTap: _player.isPaused
+              onTap: _player!.isPaused
                   ? resume
-                  : _player.isPlaying
+                  : _player!.isPlaying
                       ? pause
                       : null,
               child: Icon(
-                _player.isPaused ? Icons.play_arrow : Icons.pause,
-                color: _player.isStopped ? _disabledIconColor : _iconColor,
+                _player!.isPaused ? Icons.play_arrow : Icons.pause,
+                color: _player!.isStopped ? _disabledIconColor : _iconColor,
               ),
             ),
           ),
@@ -389,15 +390,27 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   /// Controls whether the Play button is enabled or not.
   /// Can not toggle this whilst the player is playing or paused.
   void playbackEnabled({required bool enabled}) {
-    assert(
-        __playState != _PlayState.playing && __playState != _PlayState.paused);
+    if (
+        __playState != _PlayState.playing && __playState != _PlayState.paused){
     setState(() {
       if (enabled == true) {
         __playState = _PlayState.stopped;
       } else if (enabled == false) {
         __playState = _PlayState.disabled;
       }
-    });
+      });
+    } else {
+      // if for whatever reason the player is active, we simply stop and reset here, then try again.
+      stop().then((x) {
+        setState(() {
+          if (enabled == true) {
+            __playState = _PlayState.stopped;
+          } else if (enabled == false) {
+            __playState = _PlayState.disabled;
+          }
+        });
+      });
+    }
   }
 
   /// Called when the user clicks  the Play/Pause button.
@@ -437,13 +450,13 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       _playState = _PlayState.playing;
     });
 
-    _player
+    _player!
         .resumePlayer()
         .then((_) => _transitioning = false)
         .catchError((dynamic e) {
       _logger.w('Error calling resume ${e.toString()}');
       _playState = _PlayState.stopped;
-      _player.stopPlayer();
+      _player!.stopPlayer();
       return false;
     }).whenComplete(() => _transitioning = false);
   }
@@ -457,14 +470,14 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       _playState = _PlayState.paused;
     });
 
-    _player
+    _player!
         .pausePlayer()
         .then((_) => _transitioning = false)
         .catchError((dynamic e) {
       _logger.w('Error calling pause ${e.toString()}');
       _playState = _PlayState.playing;
       _playState = _PlayState.stopped;
-      _player.stopPlayer();
+      _player!.stopPlayer();
       return false;
     }).whenComplete(() => _transitioning = false);
   }
@@ -477,7 +490,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
 
     _logger.d('Calling play');
 
-    if (_track != null && _player.isPlaying) {
+    if (_track != null && _player!.isPlaying) {
       _logger.d('play called whilst player running. Stopping Player first.');
       await _stop();
     }
@@ -511,7 +524,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   void _start() async {
     var trck = _track;
     if (trck != null) {
-      await _player
+      await _player!
           .startPlayerFromTrack(trck, whenFinished: _onStopped)
           .then((_) {
         _playState = _PlayState.playing;
@@ -538,9 +551,9 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
   /// interal stop method.
   ///
   Future<void> _stop({bool supressState = false}) async {
-    if (_player.isPlaying || _player.isPaused) {
+    if (_player!.isPlaying || _player!.isPaused) {
       onPlaybackEnd(context);
-      await _player.stopPlayer().then<void>((_) {
+      await _player!.stopPlayer().then<void>((_) {
         if (_playerSubscription != null) {
           _playerSubscription!.cancel();
           _playerSubscription = null;
@@ -651,7 +664,7 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
             if (asyncData.connectionState == ConnectionState.done) {
               canPlay = asyncData.data;
             }
-            return Icon(_player.isStopped ? Icons.play_arrow : Icons.stop,
+            return Icon(_player!.isStopped ? Icons.play_arrow : Icons.stop,
                 color: canPlay! ? _iconColor : _disabledIconColor);
           });
     }
@@ -702,8 +715,8 @@ class SoundPlayerUIState extends State<SoundPlayerUI> {
       _localController.stream,
       (position) {
         _sliderPosition.position = position;
-        if (_player.isPlaying || _player.isPaused) {
-          _player.seekToPlayer(position);
+        if (_player!.isPlaying || _player!.isPaused) {
+          _player!.seekToPlayer(position);
         }
       },
       _sliderThemeData,

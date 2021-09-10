@@ -214,9 +214,9 @@ class SoundRecorderUI extends StatefulWidget {
 
 ///
 class SoundRecorderUIState extends State<SoundRecorderUI> {
-  _RecorderState _state = _RecorderState.isStopped;
+  _RecorderState _recordingState = _RecorderState.isStopped;
 
-  late FlutterSoundRecorder _recorder;
+  late FlutterSoundRecorder? _recorder;
 
   ///
   Color backgroundColor;
@@ -230,7 +230,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   @override
   void initState() {
     _recorder = FlutterSoundRecorder();
-    _recorder
+    _recorder!
         .openAudioSession(
             focus: AudioFocus.requestFocusAndDuckOthers,
             category: SessionCategory.playAndRecord,
@@ -246,7 +246,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   ///
   @override
   void deactivate() {
-    _recorder.stopRecorder();
+    _recorder!.stopRecorder();
     super.deactivate();
   }
 
@@ -259,20 +259,21 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   ///
   @override
   void dispose() {
-    _recorder.closeAudioSession();
+    _recorder!.closeAudioSession();
+    _recorder = null;
     super.dispose();
   }
 
   /// Mirroring the code that controls the playback UI, this allows the recorder
   /// to be disabled during playback
-  void recordingEnabled(bool enabled) {
+  void recordingEnabled(bool enabled){
     // take no action if recording is currently ongoing or paused.
-    assert(_recorder.isRecording != true && _recorder.isPaused != true);
+    assert (_recorder!.isRecording != true && _recorder!.isPaused != true);
     setState(() {
-      if (enabled) {
-        _state = _RecorderState.isStopped;
+      if (enabled){
+        _recordingState = _RecorderState.isStopped;
       } else {
-        _state = _RecorderState.isDisabled;
+        _recordingState = _RecorderState.isDisabled;
       }
     });
   }
@@ -303,7 +304,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
 
   ///
   Stream<RecordingDisposition>? get dispositionStream =>
-      _recorder.dispositionStream();
+      _recorder!.dispositionStream();
 
   static const _minDbCircle = 15;
 
@@ -312,7 +313,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
         height: 50,
         width: 50,
         child: StreamBuilder<RecordingDisposition>(
-            stream: _recorder.dispositionStream(),
+            stream: _recorder!.dispositionStream(),
             initialData: RecordingDisposition.zero(), // was START_DECIBELS
             builder: (_, streamData) {
               var disposition = streamData.data!;
@@ -338,12 +339,8 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
                 ),
                 InkWell(
                   onTap: _onTapStartStop,
-                  child: Icon(_isRecording ? Icons.stop : Icons.brightness_1,
-                      color: _isDisabled
-                          ? Colors.grey
-                          : _isStopped
-                              ? Colors.red
-                              : Colors.black),
+                  child: Icon(_isRecording? Icons.stop : Icons.brightness_1,
+                      color: _isDisabled ? Colors.grey : _isStopped ? Colors.red : Colors.black),
                 ),
               ]);
             }));
@@ -358,11 +355,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
             child: Icon(
               !_isPaused ? Icons.pause : Icons.play_arrow,
               //size: 30,
-              color: _isDisabled
-                  ? Colors.grey
-                  : !_isStopped
-                      ? Colors.black
-                      : Colors.grey,
+              color: _isDisabled? Colors.grey : !_isStopped ? Colors.black : Colors.grey,
             )));
   }
 
@@ -392,10 +385,10 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
     }
   }
 
-  bool get _isRecording => _state == _RecorderState.isRecording;
-  bool get _isPaused => _state == _RecorderState.isPaused;
-  bool get _isStopped => _state == _RecorderState.isStopped;
-  bool get _isDisabled => _state == _RecorderState.isDisabled;
+  bool get _isRecording => _recordingState == _RecorderState.isRecording;
+  bool get _isPaused => _recordingState == _RecorderState.isPaused;
+  bool get _isStopped => _recordingState == _RecorderState.isStopped;
+  bool get _isDisabled => _recordingState == _RecorderState.isDisabled;
 
   /// The `stop` methods stops the recording and calls
   /// the `onStopped` callback.
@@ -416,8 +409,8 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
 
   void _onRecord() async {
     if (!_isRecording) {
-      await _recorder.setSubscriptionDuration(Duration(milliseconds: 100));
-      await _recorder.startRecorder(
+      await _recorder!.setSubscriptionDuration(Duration(milliseconds: 100));
+      await _recorder!.startRecorder(
         toFile: widget.audio.track.trackPath,
       );
       _onStarted(wasUser: true);
@@ -426,22 +419,22 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   }
 
   void _stop() async {
-    if (_recorder.isRecording || _recorder.isPaused) {
-      await _recorder.stopRecorder();
+    if (_recorder!.isRecording || _recorder!.isPaused) {
+      await _recorder!.stopRecorder();
       _onStopped(wasUser: true);
     }
   }
 
   void _pause() async {
-    if (_recorder.isRecording) {
-      await _recorder.pauseRecorder();
+    if (_recorder!.isRecording) {
+      await _recorder!.pauseRecorder();
       _onPaused(wasUser: true);
     }
   }
 
   void _resume() async {
-    if (_recorder.isPaused) {
-      await _recorder.resumeRecorder();
+    if (_recorder!.isPaused) {
+      await _recorder!.resumeRecorder();
       _onResume(wasUser: true);
     }
   }
@@ -449,14 +442,13 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   void _onStarted({bool? wasUser}) async {
     //Log.d(green('started Recording to: '
     //'${await (await widget.audio).track.identity})'));
-
+    onRecordingNew(context, this);
     setState(() {
-      _state = _RecorderState.isRecording;
+      _recordingState = _RecorderState.isRecording;
 
       if (widget.onStart != null) {
         widget.onStart!();
       }
-      onRecordingNew(context);
       //controller(context);
     });
   }
@@ -464,7 +456,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   void _onStopped({bool? wasUser}) {
     setState(() {
       // TODO _updateDuration(_recorder.duration);
-      _state = _RecorderState.isStopped;
+      _recordingState = _RecorderState.isStopped;
 
       if (widget.onStopped != null) {
         widget.onStopped!(widget.audio);
@@ -479,7 +471,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
     //'${await (await widget.audio).track.identity})'));
 
     setState(() {
-      _state = _RecorderState.isPaused;
+      _recordingState = _RecorderState.isPaused;
 
       if (widget.onPaused != null) {
         widget.onPaused!(widget.audio, true);
@@ -494,7 +486,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
     //'${await (await widget.audio).track.identity})'));
 
     setState(() {
-      _state = _RecorderState.isRecording;
+      _recordingState = _RecorderState.isRecording;
 
       if (widget.onPaused != null) {
         widget.onPaused!(widget.audio, false);
