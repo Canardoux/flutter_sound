@@ -442,7 +442,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
   void _onStarted({bool? wasUser}) async {
     //Log.d(green('started Recording to: '
     //'${await (await widget.audio).track.identity})'));
-    onRecordingNew(context);
+    onRecordingNew(context, this);
     setState(() {
       _recordingState = _RecorderState.isRecording;
 

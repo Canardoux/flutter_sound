@@ -193,7 +193,13 @@ void onRecordingResume(BuildContext context) {
 }
 
 ///
-void onRecordingNew(BuildContext context) {
+void onRecordingNew(BuildContext context, SoundRecorderUIState recorder) {
+  if (RecorderPlaybackController.of(context)?._state._recorderUIState == null){
+    // fix for a bug where for some reason the recorder alone would not be
+    // registered correctly. Only on this function because this is the first
+    // function that should be engaged from the recorder or playback widgets.
+    RecorderPlaybackController.of(context)?._state._recorderUIState = recorder;
+  }
   RecorderPlaybackController.of(context)?._state._onRecorderNew();
 }
 
