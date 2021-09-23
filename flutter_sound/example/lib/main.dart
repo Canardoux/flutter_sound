@@ -36,6 +36,7 @@ import 'speed_control/speed_control.dart';
 import 'player_onProgress/player_onProgress.dart';
 import 'recorder_onProgress/recorder_onProgress.dart';
 import 'seek/seek.dart';
+import 'streamLoop_justAudio/stream_loop_just_audio.dart';
 
 /*
     This APP is just a driver to call the various Flutter Sound examples.
@@ -336,6 +337,18 @@ from flutter_sound_player.dart.
 Shows how to change the loglevel during an audio session.
 ''',
   ),
+
+  Example(
+    title: 'StreamLoopJustAudio()',
+    subTitle: 'JustAudio cohabitation',
+    flags: 0,
+    route: (_) => StreamLoopJustAudio(),
+    description: '''
+    ```
+    Test the StreamLoop with JustAudio cohabitation.
+    ''',
+    ),
+
 ];
 
 ///
