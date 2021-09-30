@@ -1,48 +1,62 @@
 ---
-title: The &tau; (tau) Project
-description: The d&tau; Project README
+title: Flutter Sound
+description: The Flutter Sound Project README
 keywords: home homepage readme
-tags: [tau]
+tags: [FlutterSound]
 permalink: readme.html
-summary: The &tau; Project documentation.
+summary: The Flutter Sound documentation.
 ---
 
-{% include image.html file="banner5.png"  caption="The &tau; (tau) Project" %}
+{% include image.html file="banner.png"  caption="The Flutter Sound Project" %}
 
-The τ (tau) Project is a set of libraries which deal with audio :
+![pub version](https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square)
+
+
+Flutter Sound is a set of libraries which deal with audio :
 
 * A player for audio playback
 * A recorder for recording audio
 * Several utilities to handle audio files
 
-{% include note.html content="τ is a big project. The goal is to share a maximum of the developments between various Platforms/Frameworks and various target OS." %}
+![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
 
 ## Overview
 
-τ is a library package allowing you to play and record audio for
+Flutter Sound is a library package allowing you to play and record audio for :
 
 * iOS
 * Android
 * Web
 
-τ provides both a high level API and widgets for:
+Flutter Sound provides both a high level API and widgets for:
 
 * play audio
 * record audio
 
-τ can be used to play a beep from an asset all the way up to implementing a complete media player.
+Flutter Sound can be used to play a beep from an asset all the way up to implementing a complete media player.
 
 The API is designed so you can use the supplied widgets or roll your own.
 
-The τ package supports playback from:
+The Flutter Sound package supports playback from:
 
 * Assets
 * Files
 * URL
 
+## SDK requirements
+
+* Flutter Sound requires an iOS 10.0 SDK \(or later\)
+* Flutter Sound requires an Android 21 \(or later\)
+
+## Examples \(Demo Apps\)
+
+Flutter Sound comes with several Demo/Examples :
+
+[The `examples App`](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/main.dart) is a driver which can call all the various examples.
+
 ## Features
 
-The τ package includes the following features :
+The Flutter Sound package includes the following features :
 
 * Play and Record τ or music with various codecs. \(See [the supported codecs here](guides_codec.html)\)
 * Play local or remote files specified by their URL.
@@ -61,59 +75,35 @@ The τ package includes the following features :
 
 ## Supported platforms
 
-τ is actually supported by the following frameworks:
+Flutter Sound is actually supported by the Flutter Framework.
 
-* Flutter \(Flutter Sound\)
+If you are interested with other platforms (React Native, Cordova, JS, ...) maybe you can have a look to the GPL project [`Tau Sound Project 9.0`](https://tau10.canardoux.xyz/readme.html) : we actually have several plans to port the τ project to other frameworks.
 
-In the future, it will be \(perhaps\) supported by
+## License
 
-* React Native \(Tau React\).  \(Not yet. Later\).
-* Cordova \(Tau Cordova\).  \(Not yet. Later\).
-* Others \(Native Script, Solar 2D, ...\)
+Flutter Sound 8.3 was published under the LGPL License.
+A Flutter Sound developer noticed recently that this license was incorrect :
+the LGPL license does not allow static links to the library. The library must be linked dynamically.
+The problem was that Flutter links-edit the plugins statically. This means that many Flutter Sound users who
+use our library in private/close sources App was in a copyright infringement.
 
-## Supported targets
+To solve this issue, we forked Flutter Sound 8.3 to two different branches.
 
-τ is actually supported by the following OS :
+* Flutter Sound 8.4 (this fork) is published under the Mozilla Public License 2.0.
+*[The τ Sound Project 9.0](https://pub.dev/packages/tau_sound) is published under a pure GPL License.
 
-* iOS
-* Android
-* Web
+Flutter Sound is copyrighted by Dooboolab (2018, 2019, 2020, 2021).
 
-In the future, it will be \(perhaps\) supported by
-
-* Linux
-* others \(Windows, MacOS\)
-
-## What about Flutter Sound ?
-
-{% include note.html content="Flutter Sound is not dead, of course. This is exactly the opposite. Flutter Sound is a really alive project."%}
-
-We just changed the name of the project, because we want to encompass others frameworks than Flutter.
-
-
-## Licenses
-
-- Flutter Sound is copyrighted by Dooboolab (2018, 2019, 2020, 2021).
-- Flutter Sound is released under a license with a *copyleft* clause: the LGPL-V3 license. This means that if you modify some of Flutter Sound code you must publish your modifications under the LGPL license too.
-
-- &tau; React is copyrighted by Canardoux (2021).
-- &tau; React is released under a license with a **strong** *copyleft* clause : the GPL-V3 license. This means that if you use part or all of &tau; React in your App, this App must be published under the GPL-V3 license, too.
-
+* Flutter Sound is now released under the permissive Mozilla license which has a **weak** *copyleft* clause: if you modify some of Flutter Sound code you must publish your modifications under the MPL license too. But you may publish your App with any license you want. Even a Proprietary/Close Sources License (shame on you!).
+* If your App is covered by the GPL license, you probably want to consider using the GPL [Tau Sound Project 9.0](https://tau10.canardoux.xyz/readme.html) : indeed Tau Sound 9.0 offers several enhancement compared to Flutter Sound 8.3.
 
 ## We need help
 
-τ is a fundamental building block needed by almost every mobile project.
-
-We are looking to make τ the go to project for mobile Audio with support for various platforms and various OS.
-
-τ is a large and complex project which requires to maintain multiple hardware platforms and test environments.
-
 {% include important.html content="We greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation."%}
 
+Actually, my main project is the GPL [Tau Sound Project 9.0](https://tau10.canardoux.xyz/readme.html) and not anymore Flutter Sound. To be frank, I must say that there is no other main developers on Flutter Sound. This is bad, because Flutter Sound deserves to be maintained.
 
 ## Thanks
-
-Too many projects to manage. I am burning out slowly. If you could help me cheer up, buy me a cup of coffee will make my life really happy and get much energy out of it. As a side effect, we will know that Flutter Sound is important for you, that you appreciate our job and that you can show it with a little money.
 
 <a href="https://www.buymeacoffee.com/larpoux"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=💛&slug=larpoux&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00"></a>
 [![Paypal](https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png)](https://paypal.me/thetauproject?locale.x=fr_FR)

@@ -2,7 +2,7 @@
 
 entries:
 - title: sidebar
-  product: The &tau; Project
+  product: Flutter Sound
   version: 8.3.12
   folders:
 
@@ -24,7 +24,7 @@ entries:
 
 
 
-  - title: The &tau; Project
+  - title: The Flutter Sound Project
     output: web, pdf
     folderitems:
 
@@ -35,14 +35,6 @@ entries:
 
     - title: Changelog
       url: /changelog.html
-      output: web, pdf
-
-  - title: Maintenance & Dev
-    output: web, pdf
-    folderitems:
-
-    - title: the &tau; Architecture
-      url: /architecture.html
       output: web, pdf
 
     - title: Development Setup
@@ -60,6 +52,10 @@ entries:
 
     - title: Getting Started
       url: /guides_getting_started.html
+      output: web, pdf
+
+    - title: Installation
+      url: /flutter_sound_install.html
       output: web, pdf
 
     - title: Supported Codecs
@@ -102,12 +98,8 @@ entries:
       url: /guides_lock_screen.html
       output: web, pdf
 
-    - title: Running &tau; on Web
+    - title: Flutter Sound on Web
       url: /guides_web.html
-      output: web, pdf
-
-    - title: Graphs
-      url: /guides_graph.html
       output: web, pdf
 
 
@@ -120,7 +112,7 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: The &tau; API - Overview
+    - title: The API - Overview
       url: /tau_api_main.html
       output: web
 
@@ -372,17 +364,9 @@ entries:
 # -------------------------------------------------------------
 
 
-  - title: Flutter Sound
+  - title: Live Demo
     output: web, pdf
-
     folderitems:
-    - title: "&tau; under Flutter"
-      url: /flutter_sound.html
-      output: web, pdf
-
-    - title: Installation
-      url: /flutter_sound_install.html
-      output: web, pdf
 
     - title: Live demo
       external_url: https://tau.canardoux.xyz/web_example/
@@ -392,118 +376,105 @@ entries:
 # ---------------------------------------------------------------
 
 
-      subfolders:
-      - title: Examples
-        output: web
-        subfolderitems:
+  - title: Examples
+    output: web, pdf
+    folderitems:
 
-        - title: demo
-          url: /flutter_sound_examples_demo.html
-          output: web, pdf
 
-        - title: Widget UI
-          url: /flutter_sound_examples_widget_ui.html
-          output: web, pdf
+    - title: demo
+      url: /flutter_sound_examples_demo.html
+      output: web, pdf
 
-        - title: Simple Playback
-          url: /flutter_sound_examples_simple_playback.html
-          output: web, pdf
+    - title: Widget UI
+      url: /flutter_sound_examples_widget_ui.html
+      output: web, pdf
 
-        - title: onProgress (Player)
-          url: /flutter_sound_examples_player_onprogress.html
-          output: web, pdf
+    - title: Simple Playback
+      url: /flutter_sound_examples_simple_playback.html
+      output: web, pdf
 
-        - title: onProgress (Recorder)
-          url: /flutter_sound_examples_recorder_onprogress.html
-          output: web, pdf
+    - title: onProgress (Player)
+      url: /flutter_sound_examples_player_onprogress.html
+      output: web, pdf
 
-        - title: Simple Recorder
-          url: /flutter_sound_examples_simple_recorder.html
-          output: web, pdf
+    - title: onProgress (Recorder)
+      url: /flutter_sound_examples_recorder_onprogress.html
+      output: web, pdf
 
-        - title: Play from Mic
-          url: /flutter_sound_examples_play_from_mic.html
-          output: web, pdf
+    - title: Simple Recorder
+      url: /flutter_sound_examples_simple_recorder.html
+      output: web, pdf
 
-        - title: Multi Playbacks
-          url: /flutter_sound_examples_multi_playbacks.html
-          output: web, pdf
+    - title: Play from Mic
+      url: /flutter_sound_examples_play_from_mic.html
+      output: web, pdf
 
-        - title: Set Volumes
-          url: /flutter_sound_examples_setVolume.html
-          output: web, pdf
+    - title: Multi Playbacks
+      url: /flutter_sound_examples_multi_playbacks.html
+      output: web, pdf
 
-        - title: Set Speed
-          url: /flutter_sound_examples_setSpeed.html
-          output: web, pdf
+    - title: Set Volumes
+      url: /flutter_sound_examples_setVolume.html
+      output: web, pdf
 
-        - title: Seek
-          url: /flutter_sound_examples_seek.html
-          output: web, pdf
+    - title: Set Speed
+      url: /flutter_sound_examples_setSpeed.html
+      output: web, pdf
 
-        - title: Record to Stream
-          url: /flutter_sound_examples_record_to_stream.html
-          output: web, pdf
+    - title: Seek
+      url: /flutter_sound_examples_seek.html
+      output: web, pdf
 
-        - title: Playback from Stream (1)
-          url: /flutter_sound_examples_playback_from_stream_1.html
-          output: web, pdf
+    - title: Record to Stream
+      url: /flutter_sound_examples_record_to_stream.html
+      output: web, pdf
 
-        - title: Playback from Stream (2)
-          url: /flutter_sound_examples_playback_from_stream_2.html
-          output: web, pdf
+    - title: Playback from Stream (1)
+      url: /flutter_sound_examples_playback_from_stream_1.html
+      output: web, pdf
 
-        - title: Sound Effects
-          url: /flutter_sound_examples_sound_effects.html
-          output: web, pdf
+    - title: Playback from Stream (2)
+      url: /flutter_sound_examples_playback_from_stream_2.html
+      output: web, pdf
 
-        - title: Stream Loop
-          url: /flutter_sound_examples_stream_loop.html
-          output: web, pdf
+    - title: Sound Effects
+      url: /flutter_sound_examples_sound_effects.html
+      output: web, pdf
 
-        - title: Convert
-          url: /flutter_sound_examples_convert.html
-          output: web, pdf
+    - title: Stream Loop
+      url: /flutter_sound_examples_stream_loop.html
+      output: web, pdf
 
-        - title: Set Log Level
-          url: /flutter_sound_examples_setLogLevel.html
-          output: web, pdf
+    - title: Convert
+      url: /flutter_sound_examples_convert.html
+      output: web, pdf
+
+    - title: Set Log Level
+      url: /flutter_sound_examples_setLogLevel.html
+      output: web, pdf
 
 
 # --------------------------------------------------------------------
 
 
-      - title: API reference (dartdoc)
-        output: web, pdf
-        subfolderitems:
-
-        - title: Player Class
-          url: /pages\/flutter-sound\/api\/player\/FlutterSoundPlayer-class.html
-          output: web, pdf
-
-        - title: Recorder Class
-          url: /pages\/flutter-sound\/api\/recorder\/FlutterSoundRecorder-class.html
-          output: web, pdf
-
-        - title: Utilities
-          url: /pages\/flutter-sound\/api\/topics\/Utilities-topic.html
-          output: web, pdf
-
-        - title: Widgets UI
-          url: /pages\/flutter-sound\/api\/topics\/UI_Widgets-topic.html
-          output: web, pdf
-
-# ----------------------------------------
-
-
-  - title: "&tau; React"
+  - title: API reference (dartdoc)
     output: web, pdf
-
     folderitems:
-    - title: "&tau; under React Native"
+
+    - title: Player Class
+      url: /pages\/flutter-sound\/api\/player\/FlutterSoundPlayer-class.html
       output: web, pdf
 
-    - title: "API reference"
+    - title: Recorder Class
+      url: /pages\/flutter-sound\/api\/recorder\/FlutterSoundRecorder-class.html
+      output: web, pdf
+
+    - title: Utilities
+      url: /pages\/flutter-sound\/api\/topics\/Utilities-topic.html
+      output: web, pdf
+
+    - title: Widgets UI
+      url: /pages\/flutter-sound\/api\/topics\/UI_Widgets-topic.html
       output: web, pdf
 
 # ---------------------------------------------------

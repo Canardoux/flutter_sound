@@ -1,21 +1,22 @@
 /*
- * Copyright (c) 2019-2020 Taner Sener
+ * Copyright 2018, 2019, 2020, 2021 Dooboolab.
  *
- * This file is part of FlutterFFmpeg.
+ * This file is part of Flutter-Sound.
  *
- * FlutterFFmpeg is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Flutter-Sound is free software: you can redistribute it and/or modify
+ * it under the terms of the Mozilla Public License version 2 (MPL2.0),
+ * as published by the Mozilla organization.
  *
- * FlutterFFmpeg is distributed in the hope that it will be useful,
+ * Flutter-Sound is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MPL General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with FlutterFFmpeg.  If not, see <http://www.gnu.org/licenses/>.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
+
 
 
 #import "FlutterSound.h"

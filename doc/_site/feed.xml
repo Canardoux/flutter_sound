@@ -3,10 +3,10 @@
     <channel>
         <title>documentation-theme-jekyll</title>
         <description>This is the documentation of the &amp;tau; Project.</description>
-        <link>/</link>
-        <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-        <pubDate>Mon, 26 Jul 2021 17:40:29 +0200</pubDate>
-        <lastBuildDate>Mon, 26 Jul 2021 17:40:29 +0200</lastBuildDate>
+        <link>http://localhost:4000/</link>
+        <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+        <pubDate>Thu, 30 Sep 2021 18:18:13 +0200</pubDate>
+        <lastBuildDate>Thu, 30 Sep 2021 18:18:13 +0200</lastBuildDate>
         <generator>Jekyll v3.9.0</generator>
         
         <item>
@@ -148,8 +148,8 @@ This is a political choice, and the reason I develop Free Software is a politica
 &lt;h2 id=&quot;happy-new-year-τ&quot;&gt;Happy New Year, τ&lt;/h2&gt;
 </description>
             <pubDate>Sun, 10 Jan 2021 00:00:00 +0100</pubDate>
-            <link>/commento-post.html</link>
-            <guid isPermaLink="true">/commento-post.html</guid>
+            <link>http://localhost:4000/commento-post.html</link>
+            <guid isPermaLink="true">http://localhost:4000/commento-post.html</guid>
             
             <category>news</category>
             
@@ -186,8 +186,8 @@ As I already told you, I never wanted to be the Flutter Sound project leader. In
 &lt;a href=&quot;https://github.com/dooboolab/flutter_sound/discussions/563&quot;&gt;Here&lt;/a&gt; are the identified tasks. You can vote for these tasks with 👍  or 👎  .&lt;/p&gt;
 </description>
             <pubDate>Wed, 30 Dec 2020 00:00:00 +0100</pubDate>
-            <link>/roadmap-post.html</link>
-            <guid isPermaLink="true">/roadmap-post.html</guid>
+            <link>http://localhost:4000/roadmap-post.html</link>
+            <guid isPermaLink="true">http://localhost:4000/roadmap-post.html</guid>
             
             <category>news</category>
             
@@ -200,8 +200,8 @@ As I already told you, I never wanted to be the Flutter Sound project leader. In
 It is now OK.&lt;/p&gt;
 </description>
             <pubDate>Wed, 30 Dec 2020 00:00:00 +0100</pubDate>
-            <link>/docunavailable-post.html</link>
-            <guid isPermaLink="true">/docunavailable-post.html</guid>
+            <link>http://localhost:4000/docunavailable-post.html</link>
+            <guid isPermaLink="true">http://localhost:4000/docunavailable-post.html</guid>
             
             <category>news</category>
             
@@ -223,8 +223,8 @@ so that a first draft will exist before the end of the week (before I start work
 
 </description>
             <pubDate>Wed, 30 Dec 2020 00:00:00 +0100</pubDate>
-            <link>/better_api-post.html</link>
-            <guid isPermaLink="true">/better_api-post.html</guid>
+            <link>http://localhost:4000/better_api-post.html</link>
+            <guid isPermaLink="true">http://localhost:4000/better_api-post.html</guid>
             
             <category>news</category>
             
@@ -312,8 +312,8 @@ If necessary, we can setup a real forum like PhpBB, MyBB, or Discourse. But prob
 
 </description>
             <pubDate>Fri, 18 Dec 2020 00:00:00 +0100</pubDate>
-            <link>/newdoc-post.html</link>
-            <guid isPermaLink="true">/newdoc-post.html</guid>
+            <link>http://localhost:4000/newdoc-post.html</link>
+            <guid isPermaLink="true">http://localhost:4000/newdoc-post.html</guid>
             
             <category>jekyll</category>
             

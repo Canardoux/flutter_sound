@@ -1,5 +1,5 @@
 ---
-title: "The &tau; CHANGELOG"
+title: "Flutter Sound CHANGELOG"
 keywords: changelog
 tags: [changelog]
 sidebar: mydoc_sidebar
@@ -7,6 +7,11 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 8.4.0
+
+- Flutter Sound is now published under the MPL2 License. [#696](https://github.com/Canardoux/tau/issues/696)
+- If your App is protected by the GPL License, you probably want to consider using this [GPL fork](https://pub.dev/packages/tau_sound) : Tau Sound 9.0 offers several enhancement compared to this branch.
+
 ## 8.3.12
 
 - Fix a bad Exception in the Widget UI : [764](https://github.com/Canardoux/tau/issues/764). This is a Pull Request kindly pushed by [@jfkominsky](https://github.com/jfkominsky) : [765](https://github.com/Canardoux/tau/pull/765). Thanks to him/her :-)

@@ -16,22 +16,7 @@ cd
 
 
 
-echo "patch css for Jekyll compatigility"
-
-sed -i  "0,/^  overflow: hidden;$/s//overflow: auto;/"  /tmp/toto_doc/_site/pages/flutter-sound/api/static-assets/styles.css
-sed -i  "s/^  background-color: inherit;$/  background-color: #2196F3;/" /tmp/toto_doc/_site/pages/flutter-sound/api/static-assets/styles.css
-
-echo "Add Front matter on top of dartdoc pages"
-for f in $(find /tmp/toto_doc/_site/pages/flutter-sound/api -name '*.html' )
-do
-        sed -i  "1i ---" $f
-        #gsed -i  "1i toc: false" $f
-
-        sed -i  "1i ---" $f
-        sed -i  "/^<script src=\"https:\/\/ajax\.googleapis\.com\/ajax\/libs\/jquery\/3\.2\.1\/jquery\.min\.js\"><\/script>$/d" $f
-done
-
-
+cp -a /tmp/toto_doc/api /tmp/toto_doc/_site/pages/flutter-sound/api
 
 
 echo "Building Jekyll doc"
@@ -46,6 +31,24 @@ if [ $? -ne 0 ]; then
 fi
 
 cp -a /tmp/toto_doc/api /tmp/toto_doc/_site/pages/flutter-sound/api
+
+cd
+echo "patch css for Jekyll compatigility"
+
+sed -i  "0,/^  overflow: hidden;$/s//overflow: auto;/"  /tmp/toto_doc/_site/pages/flutter-sound/api/static-assets/styles.css
+sed -i  "s/^  background-color: inherit;$/  background-color: #2196F3;/" /tmp/toto_doc/_site/pages/flutter-sound/api/static-assets/styles.css
+
+echo "Add Front matter on top of dartdoc pages"
+for f in $(find /tmp/toto_doc/_site/pages/flutter-sound/api -name '*.html' )
+do
+        sed -i  "1i ---" $f
+        #gsed -i  "1i toc: false" $f
+
+        sed -i  "1i ---" $f
+        sed -i  "/^<script src=\"https:\/\/ajax\.googleapis\.com\/ajax\/libs\/jquery\/3\.2\.1\/jquery\.min\.js\"><\/script>$/d" $f
+done
+cd
+
 
 
 echo "Symbolic links"
