@@ -54,75 +54,117 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="40fa92f8-6475-41cf-aae7-5ca39400a0cb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../bin/doc2.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../bin/doc2.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/_data/sidebars/mydoc_sidebar.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_data/sidebars/mydoc_sidebar.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/Logotype primary.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/convert.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/demo.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/multi_playback.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/play_from_mic.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/playback_from_stream_1.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/playback_from_stream_2.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/player_onProgress.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/record_to_stream.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/recorder_onProgress.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/seek.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/setLogLevel.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/set_volume.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/simple_playback.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/simple_recorder.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/sound_effect.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/speed_control.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/stream_loop.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/examples/widget_ui.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/flutter_sound.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/flutter-sound/install.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/android/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/android/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/ios/Podfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/speed_control/speed_control.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/speed_control/speed_control.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/streamLoop/stream_loop.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/streamLoop/stream_loop.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/streamLoop_justAudio/stream_loop_just_audio.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/streamLoop_justAudio/stream_loop_just_audio.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/volume_control/volume_control.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/volume_control/volume_control.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo3_body.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo3_body.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo_active_codec.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo_active_codec.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo_asset_player.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo_asset_player.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo_audio_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo_audio_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo_common.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo_common.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo_drop_downs.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo_drop_downs.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo_media_path.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo_media_path.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo_player_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/demo_player_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/drop_downs.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/drop_downs.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/recorder_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/recorder_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/recording_player.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/recording_player.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/remote_player.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/remote_player.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/temp_file.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/temp_file.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/track_switched.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/demo_util/track_switched.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/widget_ui_demo.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/widgetUI/widget_ui_demo.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/web/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/web/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config_subset" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config_subset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.dart_tool/version" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/version" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/404.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/404.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/architecture.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/architecture.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/better_api-post.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/better_api-post.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/changelog.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/changelog.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/commento-post.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/commento-post.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/docunavailable-post.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/docunavailable-post.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/feed.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/feed.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/flutter_sound.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/flutter_sound.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_demo.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_demo.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_multi_playbacks.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_multi_playbacks.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_play_from_mic.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_play_from_mic.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_playback_from_stream_1.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_playback_from_stream_1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_playback_from_stream_2.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_playback_from_stream_2.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_record_to_stream.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_record_to_stream.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_simple_playback.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_simple_playback.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_simple_recorder.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_simple_recorder.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_sound_effects.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_sound_effects.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_stream_loop.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_stream_loop.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_widget_ui.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/flutter_sound_examples_widget_ui.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/flutter_sound_install.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/flutter_sound_install.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/guides_codec.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/guides_codec.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/guides_getting_started.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/guides_getting_started.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/guides_graph.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/guides_graph.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/guides_guides.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/guides_guides.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/guides_lock_screen.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/guides_lock_screen.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/guides_pcm_wave.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/guides_pcm_wave.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/guides_play_stream.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/guides_play_stream.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/guides_record_stream.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/guides_record_stream.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/guides_recording_pcm.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/guides_recording_pcm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/guides_ui.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/guides_ui.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/guides_web.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/guides_web.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/images/favicon-16x16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/images/favicon-32x32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/images/favicon-sav.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/images/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/links_contribution.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/links_contribution.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/links_license.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/links_license.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/links_migration.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/links_migration.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/newdoc-post.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/newdoc-post.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/news.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/news.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/news_archive.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/news_archive.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/pages/cordova/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/pages/cordova/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/pages/react-native/react-native.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/pages/react-native/react-native.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/pages/react-native/t-under-react-native.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/pages/react-native/t-under-react-native.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/pages/solar2D/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/pages/solar2D/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/readme.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/readme.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/roadmap-post.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/roadmap-post.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_main.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_constructor.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_constructor.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_feed_from_stream.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_feed_from_stream.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_food.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_food.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_food_sink.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_food_sink.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_get_player_state.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_get_player_state.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_get_progress.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_get_progress.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_is_decoder_supported.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_is_decoder_supported.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_now_playing.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_now_playing.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_on_progress.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_on_progress.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_open_audio_session.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_open_audio_session.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_pause_player.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_pause_player.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_resume_player.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_resume_player.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_seek_player.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_seek_player.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_set_audio_focus.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_set_audio_focus.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_set_subscription_duration.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_set_subscription_duration.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_set_ui_progress_bar.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_set_ui_progress_bar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_set_volume.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_set_volume.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_startPlayer.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_startPlayer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_start_player_from_mic.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_start_player_from_mic.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_start_player_from_stream.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_start_player_from_stream.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_start_player_from_track.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_start_player_from_track.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_player_stop_player.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_player_stop_player.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_constructor.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_constructor.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_delete_record.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_delete_record.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_is_encoder_supported.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_is_encoder_supported.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_on_progress.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_on_progress.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_open_audio_session.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_open_audio_session.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_pause_recorder.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_pause_recorder.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_recorder_state.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_recorder_state.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_resume_recorder.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_resume_recorder.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_set_audio_focus.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_set_audio_focus.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_set_subscription_duration.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_set_subscription_duration.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_start_recorder.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_start_recorder.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_stop_recorder.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_recorder_stop_recorder.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_utilities.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_utilities.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_constructor.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_constructor.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_convert_file.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_convert_file.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_duration.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_duration.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_execute_ffmpeg_with_arguments.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_execute_ffmpeg_with_arguments.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_ffmpeg_get_media_information.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_ffmpeg_get_media_information.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_get_last_ffmpeg_command_output.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_get_last_ffmpeg_command_output.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_get_last_ffmpeg_return_code.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_get_last_ffmpeg_return_code.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_is_ffmpeg_available.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_is_ffmpeg_available.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_pcm_to_wave.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_pcm_to_wave.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_pcm_to_wave_buffer.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_pcm_to_wave_buffer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_wave_to_pcm.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_wave_to_pcm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_wave_to_pcm_buffer.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_utilities_wave_to_pcm_buffer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_widgets.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_widgets.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_widgets_ui_controller.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_widgets_ui_controller.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_widgets_ui_player.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_widgets_ui_player.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_api_widgets_ui_recorder.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_api_widgets_ui_recorder.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tau_dev.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tau_dev.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/temporary_files.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/temporary_files.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/titlepage.html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/titlepage.html/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/_site/tocpage.html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_site/tocpage.html/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/images/favicon-16x16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/images/favicon-32x32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/images/favicon-sav.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/images/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../flutter_sound/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.packages" beforeDir="false" afterPath="$PROJECT_DIR$/.packages" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/flutter_sound_platform_interface.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_sound_platform_interface.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/flutter_sound_player_platform_interface.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_sound_player_platform_interface.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/flutter_sound_recorder_platform_interface.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_sound_recorder_platform_interface.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/method_channel_flutter_sound_player.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/method_channel_flutter_sound_player.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/method_channel_flutter_sound_recorder.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/method_channel_flutter_sound_recorder.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/js/flutter_sound/flutter_sound.js" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/js/flutter_sound/flutter_sound.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/js/flutter_sound/flutter_sound_player.js" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/js/flutter_sound/flutter_sound_player.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/js/flutter_sound/flutter_sound_recorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/js/flutter_sound/flutter_sound_recorder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/pubspec.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../tau_core" beforeDir="false" afterPath="$PROJECT_DIR$/../tau_core" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

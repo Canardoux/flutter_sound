@@ -10,13 +10,23 @@ summary: The Flutter Sound documentation.
 {% include image.html file="banner.png"  caption="The Flutter Sound Project" %}
 
 ![pub version](https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square)
+{% include tip.html content="
+This is the MPL branch of Flutter Sound. If you are developing a GPL App, you probably want to consider using
+the [GPL τ Sound 9.0](https://tau10.canardoux.xyz/readme.html) fork, because it has (or will have) several great enhancements :
 
+- A new cleaner API
+- Better Web Support
+- A port to React Native (later)
+- A port to Microsoft Blazor (later)
+- A new class which will implement Audio Graphs (later)
+- Better PCM support
+- ... and soon perhaps other fantastic things 😉" %}
 
 Flutter Sound is a set of libraries which deal with audio :
 
-* A player for audio playback
-* A recorder for recording audio
-* Several utilities to handle audio files
+- A player for audio playback
+- A recorder for recording audio
+- Several utilities to handle audio files
 
 ![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
 
@@ -42,6 +52,7 @@ The Flutter Sound package supports playback from:
 * Assets
 * Files
 * URL
+* Streams
 
 ## SDK requirements
 
@@ -82,7 +93,7 @@ If you are interested with other platforms (React Native, Cordova, JS, ...) mayb
 ## License
 
 Flutter Sound 8.3 was published under the LGPL License.
-A Flutter Sound developer noticed recently that this license was incorrect :
+A Flutter Sound developer noticed recently that this [license was incorrect](https://github.com/Canardoux/tau/issues/696) :
 the LGPL license does not allow static links to the library. The library must be linked dynamically.
 The problem was that Flutter links-edit the plugins statically. This means that many Flutter Sound users who
 use our library in private/close sources App was in a copyright infringement.

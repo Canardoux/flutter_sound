@@ -1,7 +1,18 @@
+{% include tip.html content="This is the MPL branch of Flutter Sound. If you are developing a GPL App, you probably want to consider using
+the `GPL τ Sound 9.0` fork, because it has (or will have) several great enhancements :
+
+- A new cleaner API
+- Better Web Support
+- A port to React Native (later)
+- A port to Microsoft Blazor (later)
+- A new class which will implement Audio Graphs (later)
+- Better PCM support
+- ... and soon perhaps other fantastic things 😉 :" %}
+# [`GPL τ Sound 9.0` fork](https://pub.dev/packages/tau_sound)
+
+---------------------------------------------------------------------------------------------------------------------------------
 
 ![Banner](https://tau.canardoux.xyz/images/banner.png)
-
--------------------------------------------------------------------------------------
 
 - ## Flutter Sound user: your [documentation is there](https://tau.canardoux.xyz/readme.html)
 - ## The [CHANGELOG file is here](https://tau.canardoux.xyz/changelog.html)
@@ -24,7 +35,7 @@ Flutter Sound provides both a high level API and widgets for:
 
 Flutter Sound can be used to play a beep from an asset all the way up to implementing a complete media player.
 
-This project is one of the two forks of the famous LGPL Flutter Sound Project 8.3. (The other being the GPL [Tau Sound Project 9.0](https://pub.dev/packages/tau_sound)).
+This project is one of the two forks of the famous LGPL Flutter Sound Project 8.3. (The other being the GPL [Tau Sound Project 9.0](https://pub.dev/packages/tau_sound).
 
 This fork is published under the Mozilla Public License MPL2.0. 
 
