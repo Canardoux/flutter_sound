@@ -1164,7 +1164,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// The Speaker is directely linked to the Microphone.
   /// There is no processing between the Microphone and the Speaker.
   /// If you want to process the data before playing them, actually you must define a loop between a [FlutterSoundPlayer] and a [FlutterSoundRecorder].
-  /// (Please, look to [this example](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/flutter_sound_examples_stream_loop.html)).
+  /// (Please, look to [this example](http://www.canardoux.xyz/flutter_sound/doc/pages/flutter-sound/api/topics/flutter_sound_examples_stream_loop.html)).
   ///
   /// Later, we will implement the _Tau Audio Graph_ concept, which will be a more general object.
   ///

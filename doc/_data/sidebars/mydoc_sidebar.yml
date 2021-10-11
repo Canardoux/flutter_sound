@@ -369,7 +369,7 @@ entries:
     folderitems:
 
     - title: Live demo
-      external_url: https://tau.canardoux.xyz/web_example/
+      external_url: https://flutter-sound.canardoux.xyz/web_example/
       output: web, pdf
 
 
@@ -490,12 +490,12 @@ entries:
     - title: Problem Report
       output: web, pdf
       hint: Issues on Github
-      external_url: https://github.com/Canardoux/tau/issues
+      external_url: https://github.com/canardoux/tau/issues
 
 
 
     - title: Roadmap
-      external_url: https://github.com/Canardoux/tau/projects/3
+      external_url: https://github.com/canardoux/tau/projects/3
       output: web, pdf
 
     - title: Contributions

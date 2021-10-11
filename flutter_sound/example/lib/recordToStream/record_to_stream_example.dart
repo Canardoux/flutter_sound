@@ -17,7 +17,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';

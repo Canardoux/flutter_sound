@@ -7,10 +7,10 @@ if [ ! -f flutter_sound/example/ios/Podfile ]; then
     cp flutter_sound/example/ios/Podfile.keep flutter_sound/example/ios/Podfile
 fi
 
-grep "pod 'tau_core'," flutter_sound/example/ios/Podfile > /dev/null
+grep "pod 'flutter_sound_core'," flutter_sound/example/ios/Podfile > /dev/null
 #if [ $? -ne 0 ]; then
 
-#    grep "pod 'tau_core'," flutter_sound/example/ios/Podfile > /dev/null
+#    grep "pod 'flutter_sound_core'," flutter_sound/example/ios/Podfile > /dev/null
     if [ $? -ne 0 ]; then
 
             echo "Podfile is not patched"
@@ -18,7 +18,7 @@ grep "pod 'tau_core'," flutter_sound/example/ios/Podfile > /dev/null
             echo "# =====================================================" >> flutter_sound/example/ios/Podfile
             echo "# The following instruction is only for Tau debugging." >> flutter_sound/example/ios/Podfile
             echo "# Do not insert such a line in a real App." >> flutter_sound/example/ios/Podfile
-            echo "# pod 'tau_core', :path => '../../../tau_core'"  >> flutter_sound/example/ios/Podfile
+            echo "# pod 'flutter_sound_core', :path => '../../../flutter_sound_core'"  >> flutter_sound/example/ios/Podfile
             echo "# =====================================================" >> flutter_sound/example/ios/Podfile
     fi
 #fi
@@ -31,25 +31,25 @@ if [ "_$1" = "_REL" ] ; then
         echo '--------'
 
 
-        gsed -i  "s/^ *implementation project(':tau_core')$/    \/\/ implementation project(':tau_core')/" flutter_sound/example/android/app/build.gradle
+        gsed -i  "s/^ *implementation project(':flutter_sound_core')$/    \/\/ implementation project(':flutter_sound_core')/" flutter_sound/example/android/app/build.gradle
 
 
-        gsed -i  "s/^ *project(':tau_core').projectDir\(.*\)$/\/\/ project(':tau_core').projectDir\1/" flutter_sound/example/android/settings.gradle
+        gsed -i  "s/^ *project(':flutter_sound_core').projectDir\(.*\)$/\/\/ project(':flutter_sound_core').projectDir\1/" flutter_sound/example/android/settings.gradle
 
-        gsed -i  "s/^ *include 'tau_core'$/\/\/ include 'tau_core'/" flutter_sound/example/android/settings.gradle
+        gsed -i  "s/^ *include 'flutter_sound_core'$/\/\/ include 'flutter_sound_core'/" flutter_sound/example/android/settings.gradle
 
-        gsed -i  "s/^ *project(':tau_core').projectDir = /\/\/project(':tau_core').projectDir = /" flutter_sound/android/settings.gradle
+        gsed -i  "s/^ *project(':flutter_sound_core').projectDir = /\/\/project(':flutter_sound_core').projectDir = /" flutter_sound/android/settings.gradle
 
-        gsed -i  "s/^ *\(implementation project(':tau_core'\)/    \/\/\1/" flutter_sound/android/build.gradle
+        gsed -i  "s/^ *\(implementation project(':flutter_sound_core'\)/    \/\/\1/" flutter_sound/android/build.gradle
 
-         gsed -i  "s/^ *\/\/ *implementation 'com.github.Canardoux:tau_core:/    implementation 'com.github.Canardoux:tau_core:/"  flutter_sound/android/build.gradle
-
-
-
+         gsed -i  "s/^ *\/\/ *implementation 'com.github.canardoux:flutter_sound_core:/    implementation 'com.github.canardoux:flutter_sound_core:/"  flutter_sound/android/build.gradle
 
 
 
-        gsed -i  "s/^ *pod 'tau_core',\(.*\)$/# pod 'tau_core',\1/"  flutter_sound/example/ios/Podfile
+
+
+
+        gsed -i  "s/^ *pod 'flutter_sound_core',\(.*\)$/# pod 'flutter_sound_core',\1/"  flutter_sound/example/ios/Podfile
 
         gsed -i  "s/^\(<\!-- static\) -->$/\1/" flutter_sound/example/web/index.html
         gsed -i  "s/^\(<\!-- dynamic\)$/\1 -->/" flutter_sound/example/web/index.html
@@ -120,31 +120,31 @@ elif [ "_$1" = "_DEV" ]; then
 
 
 
-        gsed -i  "s/^ *\/\/ implementation project(':tau_core')$/    implementation project(':tau_core')/" flutter_sound/example/android/app/build.gradle
+        gsed -i  "s/^ *\/\/ implementation project(':flutter_sound_core')$/    implementation project(':flutter_sound_core')/" flutter_sound/example/android/app/build.gradle
 
 
-        gsed -i  "s/^ *\/\/ *project(':tau_core').projectDir\(.*\)$/   project(':tau_core').projectDir\1/" flutter_sound/example/android/settings.gradle
+        gsed -i  "s/^ *\/\/ *project(':flutter_sound_core').projectDir\(.*\)$/   project(':flutter_sound_core').projectDir\1/" flutter_sound/example/android/settings.gradle
 
-        gsed -i  "s/^ *\/\/ *include 'tau_core'$/   include 'tau_core'/" flutter_sound/example/android/settings.gradle
+        gsed -i  "s/^ *\/\/ *include 'flutter_sound_core'$/   include 'flutter_sound_core'/" flutter_sound/example/android/settings.gradle
 
-        gsed -i  "s/^ *\/\/ *project(':tau_core').projectDir = /    project(':tau_core').projectDir = /" flutter_sound/android/settings.gradle
+        gsed -i  "s/^ *\/\/ *project(':flutter_sound_core').projectDir = /    project(':flutter_sound_core').projectDir = /" flutter_sound/android/settings.gradle
 
 
         gsed -i  "s/^\( *implementation [^\/]*\/\/ Tau Core\)$/\/\/\1/"  flutter_sound/android/build.gradle
 
 
 
-        gsed -i  "s/^ *\/\/ *\(implementation project(':tau_core'\)/    \1/" flutter_sound/android/build.gradle
+        gsed -i  "s/^ *\/\/ *\(implementation project(':flutter_sound_core'\)/    \1/" flutter_sound/android/build.gradle
 
 
 
-         gsed -i  "s/^ *implementation 'xyz.canardoux:tau_core:/    \/\/implementation 'xyz.canardoux:tau_core:/"  flutter_sound/android/build.gradle
+         gsed -i  "s/^ *implementation 'xyz.canardoux:flutter_sound_core:/    \/\/implementation 'xyz.canardoux:flutter_sound_core:/"  flutter_sound/android/build.gradle
 
 
 
 
 
-        gsed -i  "s/^ *# pod 'tau_core',\(.*\)$/pod 'tau_core',\1/" flutter_sound/example/ios/Podfile
+        gsed -i  "s/^ *# pod 'flutter_sound_core',\(.*\)$/pod 'flutter_sound_core',\1/" flutter_sound/example/ios/Podfile
 
         gsed -i  "s/^\( *<\!-- dynamic\) -->$/\1/" flutter_sound/example/web/index.html
         gsed -i  "s/^\( *<\!-- static\)$/\1 -->/" flutter_sound/example/web/index.html

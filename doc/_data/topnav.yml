@@ -17,11 +17,11 @@ topnav:
       hint: "The &tau; Project news"
 
     - title: PR
-      external_url: https://github.com/Canardoux/tau/issues
+      external_url: https://github.com/canardoux/flutter_sound/issues
 
     - title: Repo
       folderitems:
-      external_url: https://github.com/Canardoux/tau
+      external_url: https://github.com/canardoux/tau
       hint: The sources on Github. Close Source Software :-(
 
  

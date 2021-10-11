@@ -34,15 +34,15 @@ cd ..
 #rm flutter_sound/Logotype\ primary.png
 #ln -s ../doc/flutter_sound/Logotype\ primary.png flutter_sound/
 #rm -rf flutter_sound_web/js
-#if [  -d tau_core/web/js ]; then
+#if [  -d flutter_sound_core/web/js ]; then
 #rm -rf flutter_sound_web/js
-#cp -a -v tau_core/web/js flutter_sound_web
+#cp -a -v flutter_sound_core/web/js flutter_sound_web
 
 ##rm -rf flutter_sound/example/web/js
-#cp -a -v tau_core/web/js flutter_sound/example/web
+#cp -a -v flutter_sound_core/web/js flutter_sound/example/web
 rm -rf _*.tgz
     
-    #ln -s ../tau_core/web/js flutter_sound_web/js
+    #ln -s ../flutter_sound_core/web/js flutter_sound_web/js
 #else
 #   ln -s ../tau_sound_core/web/js flutter_sound_web/js
 #fi
@@ -91,7 +91,7 @@ if [ ! -z "$VERSION" ]; then
     git push  -f origin $VERSION
 fi
 
-cd tau_core
+cd flutter_sound_core
 git add .
 git commit -m "TAU : Version $VERSION"
 git pull origin
@@ -102,15 +102,15 @@ if [ ! -z "$VERSION" ]; then
 fi
 cd ..
 
-cd tau_core
-pod trunk push tau_core.podspec
+cd flutter_sound_core
+pod trunk push flutter_sound_core.podspec
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
 fi
 cd ..
 
-#cd tau_core/android
+#cd flutter_sound_core/android
 #./gradlew clean build bintrayUpload
 #if [ $? -ne 0 ]; then
 #    echo "Error"
@@ -128,7 +128,7 @@ if [ ! -z "$VERSION" ]; then
         git push  -f origin $VERSION
 fi
 
-cd tau_core
+cd flutter_sound_core
 git add .
 git commit -m "TAU : Version $VERSION"
 git pull origin
@@ -139,7 +139,7 @@ if [ ! -z "$VERSION" ]; then
 fi
 cd ..
 
-cd tau_core/web
+cd flutter_sound_core/web
 npm publish .
 
 cd ../..
@@ -240,7 +240,7 @@ if [ ! -z "$VERSION" ]; then
         git push  -f origin $VERSION
 fi
 
-cd tau_core
+cd flutter_sound_core
 git add .
 git commit -m "TAU : Version $VERSION"
 git pull origin

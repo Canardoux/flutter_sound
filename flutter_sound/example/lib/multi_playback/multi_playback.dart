@@ -17,7 +17,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:intl/date_symbol_data_local.dart';

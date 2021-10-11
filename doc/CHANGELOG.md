@@ -9,25 +9,27 @@ toc: false
 ---
 ## 8.4.0
 
-- Flutter Sound is now published under the MPL2 License. [#696](https://github.com/canardoux/tau/issues/696).
+- Flutter Sound is now published under the MPL2 License. [#696](https://github.com/canardoux/flutter_sound/issues/696).
 - If your App is protected by the GPL License, you probably want to consider using this [GPL fork](https://pub.dev/packages/tau_sound) : Tau Sound 9.0 offers several enhancement compared to this branch. See [here](https://tau10.canardoux.xyz/tau_sound_birth-post.html)
+- The github project are renamed `flutter_sound` and `flutter_sound_core`
+- The documentation is moved [here](https://flutter-sound.canardoux.xyz)
 
 ## 8.3.12
 
-- Fix a bad Exception in the Widget UI : [764](https://github.com/Canardoux/tau/issues/764). This is a Pull Request kindly pushed by [@jfkominsky](https://github.com/jfkominsky) : [765](https://github.com/Canardoux/tau/pull/765). Thanks to him/her :-)
+- Fix a bad Exception in the Widget UI : [764](https://github.com/canardoux/flutter_sound/issues/764). This is a Pull Request kindly pushed by [@jfkominsky](https://github.com/jfkominsky) : [765](https://github.com/canardoux/flutter_sound/pull/765). Thanks to him/her :-)
 
 ## 8.3.11
 
-- Fix several bugs in the UI Widgets : [#759](https://github.com/Canardoux/tau/issues/759). This is a Pull Request kindly pushed by [@jfkominsky](https://github.com/jfkominsky) : [763](https://github.com/Canardoux/tau/pull/763). Thanks to him/her :-)
+- Fix several bugs in the UI Widgets : [#759](https://github.com/canardoux/flutter_sound/issues/759). This is a Pull Request kindly pushed by [@jfkominsky](https://github.com/jfkominsky) : [763](https://github.com/canardoux/flutter_sound/pull/763). Thanks to him/her :-)
 
 ## 8.3.10
 
-- Remove a dependency to flutter_spinkit which was not used anymore by Flutter Sound. This is a [Pull Request](https://github.com/Canardoux/tau/pull/755) from [Jack Liu](https://github.com/aaassseee). Thanks to him.
+- Remove a dependency to flutter_spinkit which was not used anymore by Flutter Sound. This is a [Pull Request](https://github.com/canardoux/flutter_sound/pull/755) from [Jack Liu](https://github.com/aaassseee). Thanks to him.
 
 ## 8.3.9
 
 - Modify the examples to be able to record on Safari.
-- Now, we can seek the player before starting the playback [#536](https://github.com/Canardoux/tau/issues/536)
+- Now, we can seek the player before starting the playback [#536](https://github.com/canardoux/flutter_sound/issues/536)
 - [New example](flutter_sound_examples_seek.html) showing how to `seek` the player.
 - setSubscriptionDuration() on the Recorder now works fine on Web.
 
@@ -36,57 +38,57 @@ toc: false
 - Update the doc API for the verbs [onProgress()](tau_api_player_on_progress.html) and [onProgress()](tau_api_recorder_on_progress.html), to clearly explain that we must call `setSubscriptionDuration()` to have this callback fired. Too many developers was having problems with this verb.
 - New [simple example](flutter_sound_examples_player_onprogress.html) to show how to use [onProgress()](tau_api_player_on_progress.html) on a Player.
 - New [simple example](flutter_sound_examples_recorder_onprogress.html) to show how to use [onProgress()](tau_api_recorder_on_progress.html) on a Recorder.
-- Fix a bug on iOS which can explain why `onProgress()` was not always fired. [#654](https://github.com/Canardoux/tau/issues/654)
+- Fix a bug on iOS which can explain why `onProgress()` was not always fired. [#654](https://github.com/canardoux/flutter_sound/issues/654)
 - `setSubscriptionDuration()` can now be called after the `startPlayer()` or `startRecorder()` to dynamically change the frequency of the callback.
 - On Android, the default for the callback frequency is 0. This is homogeneous with iOS, and is consistent with the documentation.
 
 ## 8.3.4
 
-- Check file extension for recording. This Pull Request [#728](https://github.com/Canardoux/tau/pull/728) was provided by [@mhstoller](https://github.com/mhstoller) . Thanks to him/her :-)
-- The dart API gave 404. Now OK. [#640](https://github.com/Canardoux/tau/issues/640)
+- Check file extension for recording. This Pull Request [#728](https://github.com/canardoux/flutter_sound/pull/728) was provided by [@mhstoller](https://github.com/mhstoller) . Thanks to him/her :-)
+- The dart API gave 404. Now OK. [#640](https://github.com/canardoux/flutter_sound/issues/640)
 - New verb [FlutterSoundPlayer.setSpeed](tau_api_player_set_speed.html) to change the playback speed.
-- New [simple example](flutter_sound_examples_setSpeed.html) showing how to set the playback speed. [#382](https://github.com/Canardoux/tau/issues/382)
-- Fix a color problem with the UI icons. This is a Pull Request from @cedvdb. [#735](https://github.com/Canardoux/tau/pull/735). Thanks to him/her :-)
-- The export of Level & Logger by flutter sound caused conflicts with App using other Loggers. [#734](https://github.com/Canardoux/tau/issues/734)
+- New [simple example](flutter_sound_examples_setSpeed.html) showing how to set the playback speed. [#382](https://github.com/canardoux/flutter_sound/issues/382)
+- Fix a color problem with the UI icons. This is a Pull Request from @cedvdb. [#735](https://github.com/canardoux/flutter_sound/pull/735). Thanks to him/her :-)
+- The export of Level & Logger by flutter sound caused conflicts with App using other Loggers. [#734](https://github.com/canardoux/flutter_sound/issues/734)
 
 ## 8.2.5
 
 - New [simple example](flutter_sound_examples_setVolume.html) showing how to set the volume
-- Fix a bug on iOS : the volume must be between 0.0 and 1.0 [#733](https://github.com/Canardoux/tau/issues/733)
-- The verb `setVolume()` can be used on a non playing Player. Android, iOS and Web. The parameter will be kept delayed and set during the next call of `startPlayer()`. [#733](https://github.com/Canardoux/tau/issues/733)
+- Fix a bug on iOS : the volume must be between 0.0 and 1.0 [#733](https://github.com/canardoux/flutter_sound/issues/733)
+- The verb `setVolume()` can be used on a non playing Player. Android, iOS and Web. The parameter will be kept delayed and set during the next call of `startPlayer()`. [#733](https://github.com/canardoux/flutter_sound/issues/733)
 
 ## 8.2.0
 
-- &tau; uses a Logger to show the logs. Please see [this page](logger.html) . [#528](https://github.com/Canardoux/tau/issues/528)
+- &tau; uses a Logger to show the logs. Please see [this page](logger.html) . [#528](https://github.com/canardoux/flutter_sound/issues/528)
 
 ## 8.1.9
 
-- Simple example that converts an AAC file to MP3 [#710](https://github.com/Canardoux/tau/issues/710)
-- Remove Jcenter and use instead MavenCentral : [#710](https://github.com/Canardoux/tau/issues/710)
+- Simple example that converts an AAC file to MP3 [#710](https://github.com/canardoux/flutter_sound/issues/710)
+- Remove Jcenter and use instead MavenCentral : [#710](https://github.com/canardoux/flutter_sound/issues/710)
 
 ## 8.1.4
 
-- Fix crash [#642](https://github.com/Canardoux/tau/issues/642) . Pull Request [#686](https://github.com/Canardoux/tau/pull/686) that was provided by [@touficzayed](https://github.com/touficzayed) . Thanks to him/her :-)
+- Fix crash [#642](https://github.com/canardoux/flutter_sound/issues/642) . Pull Request [#686](https://github.com/canardoux/flutter_sound/pull/686) that was provided by [@touficzayed](https://github.com/touficzayed) . Thanks to him/her :-)
 
 ## 8.1.3
 
-- Temporary fix on [#665](https://github.com/Canardoux/tau/issues/665) .  Pull Request [#677](https://github.com/Canardoux/tau/pull/677) that was provided by @aaassseee . Thanks to him :-)
+- Temporary fix on [#665](https://github.com/canardoux/flutter_sound/issues/665) .  Pull Request [#677](https://github.com/canardoux/flutter_sound/pull/677) that was provided by @aaassseee . Thanks to him :-)
 
 ## 8.1.1
 
-- tau_core is now published on `JitPack` and not anymore on `jfrog/bintray`.  [#658](https://github.com/Canardoux/tau/issues/658)
+- tau_core is now published on `JitPack` and not anymore on `jfrog/bintray`.  [#658](https://github.com/canardoux/flutter_sound/issues/658)
 
 ## 8.0.2
 
-- SetAudioFocus must return an int. Not a boolean. [#631](https://github.com/Canardoux/tau/issues/631)
+- SetAudioFocus must return an int. Not a boolean. [#631](https://github.com/canardoux/flutter_sound/issues/631)
 
 ## 8.0.1
 
-- Flutter Sound on Web : Stop mediaStream tracks after recording ends. [#656](https://github.com/Canardoux/tau/pull/656), [#655](https://github.com/Canardoux/tau/issues/655). Contribution from @osaxma. Thanks to him.
+- Flutter Sound on Web : Stop mediaStream tracks after recording ends. [#656](https://github.com/canardoux/flutter_sound/pull/656), [#655](https://github.com/canardoux/flutter_sound/issues/655). Contribution from @osaxma. Thanks to him.
 
 ## 8.0.0
 
-- Null Safety. [#584](https://github.com/Canardoux/tau/issues/584)
+- Null Safety. [#584](https://github.com/canardoux/flutter_sound/issues/584)
 
 ## 7.8.4
 
@@ -94,8 +96,8 @@ toc: false
 
 ## 7.7.0
 
-- Flutter Sound on web : now we can record AAC-MP4 on webkit (iOS web browsers and Safari). [#559](https://github.com/Canardoux/tau/issues/559)
-- Flutter Sound LITE did not compile on iOS : [#613](https://github.com/Canardoux/tau/issues/613)
+- Flutter Sound on web : now we can record AAC-MP4 on webkit (iOS web browsers and Safari). [#559](https://github.com/canardoux/flutter_sound/issues/559)
+- Flutter Sound LITE did not compile on iOS : [#613](https://github.com/canardoux/flutter_sound/issues/613)
 
 ## 7.6.7
 
@@ -111,13 +113,13 @@ toc: false
 
 ## 7.6.4
 
-- Fixes a problem with `FlutterSoundHelper.duration()`. (Still does not work with temporary files). [#613](https://github.com/Canardoux/tau/issues/613)
+- Fixes a problem with `FlutterSoundHelper.duration()`. (Still does not work with temporary files). [#613](https://github.com/canardoux/flutter_sound/issues/613)
 
 ## 7.6.3
 
-- No dependency to `synchronized: ^3.0.0-nullsafety`. [#624](https://github.com/Canardoux/tau/issues/624)
-- Compatibility with `flutter_ffmpeg`. [#613](https://github.com/Canardoux/tau/issues/613) and [#585](https://github.com/Canardoux/tau/issues/585)
-- No crash after a Hot Restart. [#543](https://github.com/Canardoux/tau/issues/543), [#387](https://github.com/Canardoux/tau/issues/387) and [#304](https://github.com/Canardoux/tau/issues/304)
+- No dependency to `synchronized: ^3.0.0-nullsafety`. [#624](https://github.com/canardoux/flutter_sound/issues/624)
+- Compatibility with `flutter_ffmpeg`. [#613](https://github.com/canardoux/flutter_sound/issues/613) and [#585](https://github.com/canardoux/flutter_sound/issues/585)
+- No crash after a Hot Restart. [#543](https://github.com/canardoux/flutter_sound/issues/543), [#387](https://github.com/canardoux/flutter_sound/issues/387) and [#304](https://github.com/canardoux/flutter_sound/issues/304)
 
 ## 7.6.2
 
@@ -147,7 +149,7 @@ toc: false
 
 ## 7.5.1
 
-- The &tau; documentation is moved to https://tau.canardoux.xyz . Yes, HTTPS, and not anymore HTTP. [#553](https://github.com/dooboolab/flutter_sound/issues/553)
+- The &tau; documentation is moved to https://flutter-sound.canardoux.xyz . Yes, HTTPS, and not anymore HTTP. [#553](https://github.com/dooboolab/flutter_sound/issues/553)
 - Jekyll : patched to allow the dartdoc support without being based on symbolic links (that produced many 404). [#553](https://github.com/dooboolab/flutter_sound/issues/553)
 
 ## 7.5.0
@@ -227,7 +229,7 @@ The two simple examples doing recording did not ask for recording permission. [#
 
 ## 6.4.0
 
-- Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://www.canardoux.space/tau/flutter_sound_example) (still cannot record with Safari or any web browser on iOS : thank you Apple). You can [read this](flutter_sound/doc/codec.md#flutter-sound-on-flutter-web). Issues : [#494](https://github.com/dooboolab/flutter_sound/issues/494), [#468](https://github.com/dooboolab/flutter_sound/issues/468) and [#297](https://github.com/dooboolab/flutter_sound/issues/297)
+- Flutter Sound is supported by Flutter Web. You can play with [this live demo on the web](https://www.canardoux.space/flutter_sound/flutter_sound_example) (still cannot record with Safari or any web browser on iOS : thank you Apple). You can [read this](flutter_sound/doc/codec.md#flutter-sound-on-flutter-web). Issues : [#494](https://github.com/dooboolab/flutter_sound/issues/494), [#468](https://github.com/dooboolab/flutter_sound/issues/468) and [#297](https://github.com/dooboolab/flutter_sound/issues/297)
 
 ## 6.3.1
 

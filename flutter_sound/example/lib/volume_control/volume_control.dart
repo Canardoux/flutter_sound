@@ -17,7 +17,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -34,7 +33,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 final _exampleAudioFilePathMP3_1 =
     'https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3';
 final _exampleAudioFilePathMP3_2 =
-    'https://tau.canardoux.xyz/web_example/assets/extract/05.mp3';
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/05.mp3';
 
 ///
 typedef Fn = void Function();

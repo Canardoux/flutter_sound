@@ -93,7 +93,7 @@ If you are interested with other platforms (React Native, Cordova, JS, ...) mayb
 ## License
 
 Flutter Sound 8.3 was published under the LGPL License.
-A Flutter Sound developer noticed recently that this [license was incorrect](https://github.com/Canardoux/tau/issues/696) :
+A Flutter Sound developer noticed recently that this [license was incorrect](https://github.com/canardoux/tau/issues/696) :
 the LGPL license does not allow static links to the library. The library must be linked dynamically.
 The problem was that Flutter links-edit the plugins statically. This means that many Flutter Sound users who
 use our library in private/close sources App was in a copyright infringement.

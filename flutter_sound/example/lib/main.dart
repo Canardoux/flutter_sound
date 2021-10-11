@@ -17,7 +17,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'demo/demo.dart';
@@ -349,8 +348,7 @@ Shows how to change the loglevel during an audio session.
     ```
     Test the StreamLoop with JustAudio cohabitation.
     ''',
-    ),
-
+  ),
 ];
 
 ///

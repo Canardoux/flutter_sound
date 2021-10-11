@@ -12,10 +12,10 @@ the `GPL τ Sound 9.0` fork, because it has (or will have) several great enhance
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
-![Banner](https://tau.canardoux.xyz/images/banner.png)
+![Banner](https://flutter-sound.canardoux.xyz/images/banner.png)
 
-- ## Flutter Sound user: your [documentation is there](https://tau.canardoux.xyz/readme.html)
-- ## The [CHANGELOG file is here](https://tau.canardoux.xyz/changelog.html)
+- ## Flutter Sound user: your [documentation is there](https://flutter-sound.canardoux.xyz/readme.html)
+- ## The [CHANGELOG file is here](https://flutter-sound.canardoux.xyz/changelog.html)
 
 -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -65,12 +65,12 @@ The Flutter Sound package includes the following features
 
 ## Changelog
 
-You can find the [changes here](https://tau.canardoux.xyz/changelog.html)
+You can find the [changes here](https://flutter-sound.canardoux.xyz/changelog.html)
 
 
 ## Documentation
 
-The [documentation is here](https://tau.canardoux.xyz/readme.html)
+The [documentation is here](https://flutter-sound.canardoux.xyz/readme.html)
 
 
 ## License

@@ -17,7 +17,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-
 import 'package:flutter_sound/flutter_sound.dart';
 
 /// Factory used to track what codec is currently selected.

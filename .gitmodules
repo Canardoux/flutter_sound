@@ -1,0 +1,3 @@
+[submodule "flutter_sound_core"]
+	path = flutter_sound_core
+	url = https://github.com/Canardoux/flutter_sound_core

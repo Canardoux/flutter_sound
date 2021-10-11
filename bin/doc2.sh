@@ -4,7 +4,7 @@ mkdir -v /tmp/toto_doc 2>/tmp/null
 tar xzf _toto.tgz -C /tmp/toto_doc
 tar xzf _toto3.tgz  -C /tmp/toto_doc
 rm -rf /tmp/toto_doc/_site /tmp/toto_doc/flutter_sound/example/ios 2>/dev/null
-#####cp -a /tmp/toto_doc/_site/* /var/www/vhosts/canardoux.xyz/tau.canardoux.xyz/
+#####cp -a /tmp/toto_doc/_site/* /var/www/vhosts/canardoux.xyz/flutter-sound.canardoux.xyz/
 
 cd /tmp/toto_doc/flutter_sound/
 export PATH="$PATH:/opt/flutter/bin"
@@ -73,8 +73,8 @@ do
 done
 ln -s readme.html index.html
 
-rm -rf /var/www/vhosts/canardoux.xyz/tau.canardoux.xyz/*
-cp -a /tmp/toto_doc/_site/* /var/www/vhosts/canardoux.xyz/tau.canardoux.xyz/
+rm -rf /var/www/vhosts/canardoux.xyz/flutter-sound.canardoux.xyz/*
+cp -a /tmp/toto_doc/_site/* /var/www/vhosts/canardoux.xyz/flutter-sound.canardoux.xyz/
 
 cd
 rm _toto.tgz _toto3.tgz
@@ -90,6 +90,6 @@ if [ $? -ne 0 ]; then
 fi
 cd 
 
-rm -rf /var/www/vhosts/canardoux.xyz/tau.canardoux.xyz/web_example/
+rm -rf /var/www/vhosts/canardoux.xyz/flutter-sound.canardoux.xyz/web_example/
 cp -a /tmp/toto_doc/flutter_sound/example/assets/samples/ /tmp/toto_doc/flutter_sound/example/assets/extract /tmp/toto_doc/flutter_sound/example/build/web/assets
-cp -a /tmp/toto_doc/flutter_sound/example/build/web /var/www/vhosts/canardoux.xyz/tau.canardoux.xyz/web_example
+cp -a /tmp/toto_doc/flutter_sound/example/build/web /var/www/vhosts/canardoux.xyz/flutter-sound.canardoux.xyz/web_example

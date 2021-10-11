@@ -17,7 +17,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
@@ -123,7 +122,7 @@ final albumArtPath =
     'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
 */
 final albumArtPathRemote =
-    'https://tau.canardoux.xyz/web_example/assets/extract/3iob.png';
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/3iob.png';
 final albumArtPath =
     'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
 
@@ -180,25 +179,25 @@ class _MyAppState extends State<Demo> {
   ];
 
   List<String> remoteSample = [
-    'https://tau.canardoux.xyz/web_example/assets/extract/01.aac', // 'assets/samples/sample.aac',
-    'https://tau.canardoux.xyz/web_example/assets/extract/01.aac', // 'assets/samples/sample.aac',
-    'https://tau.canardoux.xyz/web_example/assets/extract/08.opus', // 'assets/samples/sample.opus',
-    'https://tau.canardoux.xyz/web_example/assets/extract/04-opus.caf', // 'assets/samples/sample_opus.caf',
-    'https://tau.canardoux.xyz/web_example/assets/extract/05.mp3', // 'assets/samples/sample.mp3',
-    'https://tau.canardoux.xyz/web_example/assets/extract/07.ogg', // 'assets/samples/sample.ogg',
-    'https://tau.canardoux.xyz/web_example/assets/extract/10-pcm16.raw', // 'assets/samples/sample.pcm',
-    'https://tau.canardoux.xyz/web_example/assets/extract/13.wav', // 'assets/samples/sample.wav',
-    'https://tau.canardoux.xyz/web_example/assets/extract/02.aiff', // 'assets/samples/sample.aiff',
-    'https://tau.canardoux.xyz/web_example/assets/extract/01-pcm.caf', // 'assets/samples/sample_pcm.caf',
-    'https://tau.canardoux.xyz/web_example/assets/extract/04.flac', // 'assets/samples/sample.flac',
-    'https://tau.canardoux.xyz/web_example/assets/extract/06.mp4', // 'assets/samples/sample.mp4',
-    'https://tau.canardoux.xyz/web_example/assets/extract/03.amr', // 'assets/samples/sample.amr', // amrNB
-    'https://tau.canardoux.xyz/web_example/assets/extract/03.amr', // 'assets/samples/sample_xxx.amr', // amrWB
-    'https://tau.canardoux.xyz/web_example/assets/extract/09-pcm8.raw', // 'assets/samples/sample_xxx.pcm', // pcm8
-    'https://tau.canardoux.xyz/web_example/assets/extract/12-pcmfloat.raw', // 'assets/samples/sample_xxx.pcm', // pcmFloat32
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/01.aac', // 'assets/samples/sample.aac',
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/01.aac', // 'assets/samples/sample.aac',
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/08.opus', // 'assets/samples/sample.opus',
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/04-opus.caf', // 'assets/samples/sample_opus.caf',
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/05.mp3', // 'assets/samples/sample.mp3',
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/07.ogg', // 'assets/samples/sample.ogg',
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/10-pcm16.raw', // 'assets/samples/sample.pcm',
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/13.wav', // 'assets/samples/sample.wav',
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/02.aiff', // 'assets/samples/sample.aiff',
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/01-pcm.caf', // 'assets/samples/sample_pcm.caf',
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/04.flac', // 'assets/samples/sample.flac',
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/06.mp4', // 'assets/samples/sample.mp4',
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/03.amr', // 'assets/samples/sample.amr', // amrNB
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/03.amr', // 'assets/samples/sample_xxx.amr', // amrWB
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/09-pcm8.raw', // 'assets/samples/sample_xxx.pcm', // pcm8
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/12-pcmfloat.raw', // 'assets/samples/sample_xxx.pcm', // pcmFloat32
     '', // 'assets/samples/sample_xxx.pcm', // pcmWebM
-    'https://tau.canardoux.xyz/web_example/assets/extract/02-opus.webm', // 'assets/samples/sample_opus.webm', // opusWebM
-    'https://tau.canardoux.xyz/web_example/assets/extract/03-vorbis.webm', // 'assets/samples/sample_vorbis.webm', // vorbisWebM
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/02-opus.webm', // 'assets/samples/sample_opus.webm', // opusWebM
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/03-vorbis.webm', // 'assets/samples/sample_vorbis.webm', // vorbisWebM
   ];
 
   StreamSubscription? _recorderSubscription;

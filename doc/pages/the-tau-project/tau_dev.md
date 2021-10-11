@@ -25,7 +25,7 @@ Pull Requests are welcome and will be considered very carefully.
 
 ```sh
 cd some_where
-git clone --recursive https://github.com/Canardoux/tau.git
+git clone --recursive https://github.com/canardoux/tau.git
 ```
 
 ### setup a development environment

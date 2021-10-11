@@ -9,7 +9,7 @@ description: Driver for the various Flutter Sound examples
 # Read more about versioning at semver.org.
 version: 8.4.0
 
-homepage: https://github.com/canardoux/tau/blob/master/flutter_sound/
+homepage: https://github.com/canardoux/flutter_sound/blob/master/flutter_sound/
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
