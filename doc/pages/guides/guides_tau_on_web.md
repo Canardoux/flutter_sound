@@ -35,9 +35,9 @@ Either add those 4 lines at the end of the `<head>` section of your `index.html`
 or add those 4 lines at the end of the `<head>` section of your `index.html` file :
 
 ```xml
-  <script src="https://cdn.jsdelivr.net/npm/tau_core@8/js/flutter_sound/flutter_sound.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tau_core@8/js/flutter_sound/flutter_sound_player.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tau_core@8/js/flutter_sound/flutter_sound_recorder.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flutter_sound_core@8/js/flutter_sound/flutter_sound.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flutter_sound_core@8/js/flutter_sound/flutter_sound_player.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flutter_sound_core@8/js/flutter_sound/flutter_sound_recorder.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/howler@2/dist/howler.min.js"></script>
 ```
 

@@ -161,7 +161,7 @@ class FlutterSound {
   set logger(aLogger) {
     _logger = aLogger;
     // TODO
-    // Here we must call tau_core if necessary
+    // Here we must call flutter_sound_core if necessary
   }
 
   AudioFocus _mFocus = AudioFocus.requestFocusAndKeepOthers;

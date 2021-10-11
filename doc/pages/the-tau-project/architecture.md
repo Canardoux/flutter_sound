@@ -59,6 +59,6 @@ Its purpose is just for doing an interface. No real processing mus be done in th
 - Flutter Sound is published on `pub.dev` under the project `flutter_sound`  (or `flauto`) and `flutter_sound_lite` (or `flauto_lite`).
 - The Flutter Sound Platform Interface is published on `pub.dev` under the project `flutter_sound_platform_interface` (or `flauto_platform_interface` ).
 - The Flutter Web plugin is published on `pub.dev` under the project `flutter_sound_web` (or `flauto_web`).
-- The &tau; Core for Android is published on `Bintray` (`jcenter()`) under the project `tau_sound_core` (or `tau_core`).
-- The &tau; Core for iOS is published on `Cocoapods` under the project `tau_sound_core` (or `tau_core`).
-- The &tau; Core for Web is published on `npm` under the project `tau_sound_core` (or `tau_core`).
+- The &tau; Core for Android is published on `Bintray` (`jcenter()`) under the project `tau_sound_core` (or `flutter_sound_core`).
+- The &tau; Core for iOS is published on `Cocoapods` under the project `tau_sound_core` (or `flutter_sound_core`).
+- The &tau; Core for Web is published on `npm` under the project `tau_sound_core` (or `flutter_sound_core`).

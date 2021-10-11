@@ -30,7 +30,7 @@
 #import <Foundation/Foundation.h>
 
 #import "FlutterSoundRecorder.h"
-#import <tau_core/FlautoRecorder.h>
+#import <flutter_sound_core/FlautoRecorder.h>
 
 
 @implementation FlutterSoundRecorder
@@ -106,7 +106,7 @@
 - (void)openRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
 {
         [self setAudioFocus: call result: result];
-        [self openRecorderCompleted:  [NSNumber numberWithBool: YES]]; // It should not be here, but in tau_core !!!
+        [self openRecorderCompleted:  [NSNumber numberWithBool: YES]]; // It should not be here, but in flutter_sound_core !!!
         result([NSNumber numberWithInt: [self getRecorderStatus]]);
 }
 
@@ -123,7 +123,7 @@
         [self log: DBG msg: @"iOS ---> closeRecorder"];
         [flautoRecorder releaseFlautoRecorder];
         [super releaseSession];
-        //[self closeRecorderCompleted:  [NSNumber numberWithBool: YES]]; // It should not be here, but in tau_core !!!
+        //[self closeRecorderCompleted:  [NSNumber numberWithBool: YES]]; // It should not be here, but in flutter_sound_core !!!
         result([NSNumber numberWithInt: [self getRecorderStatus]]);
         [self log: DBG msg: @"iOS <--- closeRecorder"];
 

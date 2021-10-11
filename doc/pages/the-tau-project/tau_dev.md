@@ -21,7 +21,7 @@ Pull Requests are welcome and will be considered very carefully.
 
 ## Setup a development environment
 
-### Clone the Flutter Sound project and the tau_core module
+### Clone the Flutter Sound project and the flutter_sound_core module
 
 ```sh
 cd some_where

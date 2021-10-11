@@ -29,7 +29,7 @@
 
 #import <Flutter/Flutter.h>
 #import <AVFoundation/AVFoundation.h>
-#import <tau_core/Flauto.h>
+#import <flutter_sound_core/Flauto.h>
 
 #define FULL_FLAVOR
 

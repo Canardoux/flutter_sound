@@ -76,7 +76,7 @@ toc: false
 
 ## 8.1.1
 
-- tau_core is now published on `JitPack` and not anymore on `jfrog/bintray`.  [#658](https://github.com/canardoux/flutter_sound/issues/658)
+- flutter_sound_core is now published on `JitPack` and not anymore on `jfrog/bintray`.  [#658](https://github.com/canardoux/flutter_sound/issues/658)
 
 ## 8.0.2
 
@@ -92,7 +92,7 @@ toc: false
 
 ## 7.8.4
 
-- tau_core is now published on JitPack instead of Jfrog/Bintray
+- flutter_sound_core is now published on JitPack instead of Jfrog/Bintray
 
 ## 7.7.0
 
@@ -127,7 +127,7 @@ toc: false
 
 ## 7.6.1
 
-- On iOS : the audio flags was not transmitted correctely to tau_core
+- On iOS : the audio flags was not transmitted correctely to flutter_sound_core
 
 ## 7.6.0
 
