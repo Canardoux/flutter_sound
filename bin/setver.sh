@@ -44,7 +44,7 @@ gsed -i  "s/^\( *version: *\).*$/\1$VERSION/"                                   
 gsed -i  "s/^\( *flutter_sound: *#* *\^*\).*$/\1$VERSION/"                              flutter_sound/example/pubspec.yaml
 gsed -i  "s/^\( *#* *flutter_sound_platform_interface: *#* *\^*\).*$/\1$VERSION/"       flutter_sound/example/pubspec.yaml
 gsed -i  "s/^\( *#* *flutter_sound_web: *#* *\^*\).*$/\1$VERSION/"                      flutter_sound/example/pubspec.yaml
-gsed -i  "s/^\( *\/* *implementation 'com.github.canardoux:flutter_sound_core:\).*$/\1$VERSION/"       flutter_sound/example/android/app/build.gradle
+gsed -i  "s/^\( *\/* *implementation 'com.github.canardoux:flutter_sound_core:\).*$/\1$VERSION'/"       flutter_sound/example/android/app/build.gradle
 
 gsed -i  "s/^\( *flauto: *#* *\^*\).*$/\1$VERSION/"                                     flutter_sound/example/pubspec.yaml
 gsed -i  "s/^\( *#* *flauto_platform_interface2: *#* *\^*\).*$/\1$VERSION/"              flutter_sound/example/pubspec.yaml
