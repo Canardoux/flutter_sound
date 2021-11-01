@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 8.4.2
+
+Fix Bug `FlautoBackgroundAudioService requires explicit value for android:exported` [#789](https://github.com/Canardoux/flutter_sound/issues/789). Thanks to [@marcoberetta96](https://github.com/marcoberetta96)
+
 ## 8.4.1
 
 - Flutter Sound is now published under the MPL2 License. [#696](https://github.com/canardoux/flutter_sound/issues/696).

@@ -1,5 +1,5 @@
-{% include tip.html content="This is the MPL branch of Flutter Sound. If you are developing a GPL App, you probably want to consider using
-the `GPL τ Sound 9.0` fork, because it has (or will have) several great enhancements :
+This is the MPL branch of Flutter Sound. If you are developing a GPL App, you probably want to consider using
+the [`GPL τ Sound 9.0` fork](https://pub.dev/packages/tau_sound), because it has (or will have) several great enhancements :
 
 - A new cleaner API
 - Better Web Support
@@ -7,8 +7,7 @@ the `GPL τ Sound 9.0` fork, because it has (or will have) several great enhance
 - A port to Microsoft Blazor (later)
 - A new class which will implement Audio Graphs (later)
 - Better PCM support
-- ... and soon perhaps other fantastic things 😉 :" %}
-# [`GPL τ Sound 9.0` fork](https://pub.dev/packages/tau_sound)
+- ... and soon perhaps other fantastic things 😉 
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
