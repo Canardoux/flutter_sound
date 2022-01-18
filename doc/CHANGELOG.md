@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 8.5.0
+
+- Added read decibel from recorder on Flutter Sound on Web. [#821](https://github.com/Canardoux/flutter_sound/pull/821). Thanks to [George Amgad](https://github.com/GeorgeAmgad) for his contribution.
+
 ## 8.4.2
 
 Fix Bug `FlautoBackgroundAudioService requires explicit value for android:exported` [#789](https://github.com/Canardoux/flutter_sound/issues/789). Thanks to [@marcoberetta96](https://github.com/marcoberetta96)
