@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# This script is obsolete
+echo "This script is obsolete. Ignored"
+exit 0
+
 # ------------------------------------------------------------------------------------------------------
 
 # This script is used to switch from the Flutter Sound FULL flavor to the Flutter Sound LITE flavor
@@ -71,7 +75,6 @@ FULL)
 # ---
 
 		gsed -i  "s/^ *#define *[A-Z]*_FLAVOR/#define FULL_FLAVOR/"   ios/Classes/FlutterSound.h
-                gsed -i  "s/^ *#define *[A-Z]*_FLAVOR/#define FULL_FLAVOR/"   ios/Classes/FlutterSoundFFmpeg.h
 
                 for f in $(find . -name '*.dart' ); do process_dart_file $f FULL $f; done
 

@@ -24,12 +24,12 @@ dependencies:
 # ============================================================================
 # The following instructions are just for developing/debugging Flutter Sound
 # Do not put them in a real App
-#  flutter_sound_platform_interface: 8.5.0
-#    path: ../../flutter_sound_platform_interface # flutter_sound_platform_interface Dir
-#  flutter_sound_web: 8.5.0
-#    path: ../../flutter_sound_web # flutter_sound_web Dir
-  flutter_sound: ^8.5.0
-#    path: ../ # Flutter Sound Dir
+  flutter_sound_platform_interface: # 8.5.0
+    path: ../../flutter_sound_platform_interface # flutter_sound_platform_interface Dir
+  flutter_sound_web: # 8.5.0
+    path: ../../flutter_sound_web # flutter_sound_web Dir
+  flutter_sound: # ^8.5.0
+    path: ../ # Flutter Sound Dir
 # ============================================================================
 
 
@@ -90,7 +90,7 @@ flutter:
   - res/icons/3.0x/ic_volume_up.png
 
   - assets/
-  - assets/samples/
+  #- assets/samples/
   - assets/noises/
   - assets/extract/
 

@@ -73,7 +73,6 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                 {
                         case "openPlayer":
                         {
-                                //int withUI = call.argument("withUI");
                                 aPlayer = new FlutterSoundPlayer (call );
                                 initSession( call, aPlayer);
                                 aPlayer.openPlayer ( call, result );
@@ -113,18 +112,7 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         break;
 
 
-                        case "setUIProgressBar":
-                        {
-                                aPlayer.setUIProgressBar( call, result );
-                        }
-                        break;
-
-                        case "nowPlaying":
-                        {
-                                aPlayer.nowPlaying( call, result );
-                        }
-                        break;
-
+ 
                         case "getProgress":
                         {
                                 aPlayer.getProgress ( call, result );
@@ -140,12 +128,6 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         case "startPlayerFromMic":
                         {
                                 aPlayer.startPlayerFromMic ( call, result );
-                        }
-                        break;
-
-                        case "startPlayerFromTrack":
-                        {
-                                aPlayer.startPlayerFromTrack ( call, result );
                         }
                         break;
 

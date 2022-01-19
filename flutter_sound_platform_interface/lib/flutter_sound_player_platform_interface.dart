@@ -36,10 +36,6 @@ abstract class FlutterSoundPlayerCallback
 {
 
   void updateProgress({int duration, int position,}) ;
-  void pause(int state);
-  void resume(int state);
-  void skipBackward(int state);
-  void skipForward(int state);
   void updatePlaybackState(int state);
   void needSomeFood(int ln);
   void audioPlayerFinished(int state);
@@ -188,16 +184,6 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
   Future<int> feed(FlutterSoundPlayerCallback callback, {Uint8List? data, })
   {
     throw UnimplementedError('feed() has not been implemented.');
-  }
-
-  Future<int> startPlayerFromTrack(FlutterSoundPlayerCallback callback, {Duration? progress, Duration? duration, Map<String, dynamic>? track, bool? canPause, bool? canSkipForward, bool? canSkipBackward, bool? defaultPauseResume, bool? removeUIWhenStopped })
-  {
-    throw UnimplementedError('startPlayerFromTrack() has not been implemented.');
-  }
-
-  Future<int> nowPlaying(FlutterSoundPlayerCallback callback, {Duration? progress, Duration? duration, Map<String, dynamic>? track, bool? canPause, bool? canSkipForward, bool? canSkipBackward, bool? defaultPauseResume,})
-  {
-    throw UnimplementedError('invokeMethod() has not been implemented.');
   }
 
   Future<int> stopPlayer(FlutterSoundPlayerCallback callback,  )

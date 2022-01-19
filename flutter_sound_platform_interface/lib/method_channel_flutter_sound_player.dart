@@ -83,30 +83,6 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
         }
         break;
 
-      case 'pause': // Pause/Resume
-        {
-          aPlayer.pause(arg['arg']);
-        }
-        break;
-
-        case 'resume': // Pause/Resume
-        {
-          aPlayer.resume(arg['arg']);
-        }
-        break;
-
-
-      case 'skipForward':
-        {
-          aPlayer.skipForward(arg['arg']);
-        }
-        break;
-
-      case 'skipBackward':
-        {
-          aPlayer.skipBackward(arg['arg']);
-        }
-        break;
 
       case 'updatePlaybackState':
         {
@@ -275,13 +251,6 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
   }
 
   @override
-  Future<int> startPlayerFromTrack(FlutterSoundPlayerCallback callback, {Duration? progress, Duration? duration, Map<String, dynamic>? track, bool? canPause, bool? canSkipForward, bool? canSkipBackward, bool? defaultPauseResume, bool? removeUIWhenStopped })
-  {
-    return invokeMethod( callback, 'startPlayerFromTrack', {'progress': progress, 'duration': duration, 'track': track, 'canPause': canPause, 'canSkipForward': canSkipForward, 'canSkipBackward': canSkipBackward,
-           'defaultPauseResume': defaultPauseResume, 'removeUIWhenStopped': removeUIWhenStopped,},);
-  }
-
-  @override
   Future<int> nowPlaying(FlutterSoundPlayerCallback callback,  {Duration? progress, Duration? duration, Map<String, dynamic>? track, bool? canPause, bool? canSkipForward, bool? canSkipBackward, bool? defaultPauseResume, }) async
   {
     return invokeMethod( callback, 'nowPlaying', {'progress': progress!.inMilliseconds, 'duration': duration!.inMilliseconds, 'track': track, 'canPause': canPause, 'canSkipForward': canSkipForward, 'canSkipBackward': canSkipBackward,
@@ -324,12 +293,6 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
     return invokeMethod( callback, 'setSpeed', {'speed': speed,}) ;
   }
 
-  @override
-  Future<int> setUIProgressBar(FlutterSoundPlayerCallback callback, {Duration? duration, Duration? progress,})
-  {
-    return invokeMethod( callback, 'setUIProgressBar', {'duration': duration!.inMilliseconds, 'progress': progress!.inMilliseconds,}) ;
-
-  }
 
   Future<String> getResourcePath(FlutterSoundPlayerCallback callback, )
   {

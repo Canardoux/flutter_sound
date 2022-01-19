@@ -98,14 +98,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   static bool _reStarted = true;
 
   Initialized _isInited = Initialized.notInitialized;
-  bool _isOggOpus =
-      false; // Set by startRecorder when the user wants to record an ogg/opus
-
-  String?
-      _savedUri; // Used by startRecorder/stopRecorder to keep the caller wanted uri
-
-  String?
-      _tmpUri; // Used by startRecorder/stopRecorder to keep the temporary uri to record CAF
 
   RecorderState _recorderState = RecorderState.isStopped;
   StreamController<RecordingDisposition>? _recorderController;
@@ -706,22 +698,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     Completer<void>? completer;
     // Maybe we should stop any recording already running... (stopRecorder does that)
     _userStreamSink = toStream;
-    // If we want to record OGG/OPUS on iOS, we record with CAF/OPUS and we remux the CAF file format to a regular OGG/OPUS.
-    // We use FFmpeg for that task.
-    if ((!kIsWeb) &&
-        (Platform.isIOS) &&
-        ((codec == Codec.opusOGG) ||
-            (toFile != null && _fileExtension(toFile) == '.opus'))) {
-      _savedUri = toFile;
-      _isOggOpus = true;
-      codec = Codec.opusCAF;
-      var tempDir = await getTemporaryDirectory();
-      var fout = File('${tempDir.path}/flutter_sound-tmp.caf');
-      toFile = fout.path;
-      _tmpUri = toFile;
-    } else {
-      _isOggOpus = false;
-    }
     if (_startRecorderCompleter != null) {
       _startRecorderCompleter!
           .completeError('Killed by another startRecorder()');
@@ -808,32 +784,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     try {
       r = await _stop();
 
-      if (_isOggOpus) {
-        // delete the target if it exists
-        // (ffmpeg gives an error if the output file already exists)
-        var f = File(_savedUri!);
-        if (f.existsSync()) {
-          await f.delete();
-        }
-        // The following ffmpeg instruction re-encode the Apple CAF to OPUS.
-        // Unfortunately we cannot just remix the OPUS data,
-        // because Apple does not set the "extradata" in its private OPUS format.
-        // It will be good if we can improve this...
-        var rc = await flutterSoundHelper.executeFFmpegWithArguments([
-          '-loglevel',
-          'error',
-          '-y',
-          '-i',
-          _tmpUri,
-          '-c:a',
-          'libopus',
-          _savedUri,
-        ]); // remux CAF to OGG
-        if (rc != 0) {
-          return null;
-        }
-        r = _savedUri;
-      }
+
     } on Exception catch (e) {
       _logger.e(e);
     }

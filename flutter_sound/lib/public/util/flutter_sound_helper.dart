@@ -46,12 +46,6 @@ class FlutterSoundHelper {
   /// The FlutterSoundHelper Logger
   Logger logger = Logger(level: Level.debug);
 
-  /// The Flutter FFmpeg module
-  FlutterSoundFFmpeg? flutterFFmpeg;
-
-  bool _ffmpegAvailable = false;
-  FlutterSoundFFmpegConfig? _flutterFFmpegConfig;
-  FlutterSoundFFprobe? _flutterFFprobe;
 
 // -------------------------------------------------------------------------------------------------------------
 
@@ -69,93 +63,6 @@ class FlutterSoundHelper {
     logger = Logger(level: theNewLogLevel);
   }
 
-  /// To know during runtime if FFmpeg is linked with the App.
-  ///
-  /// returns true if FFmpeg is available (probably the FULL version of Flutter Sound)
-  Future<bool> isFFmpegAvailable() async {
-    if (kIsWeb) return false;
-    if (_flutterFFmpegConfig == null) {
-      _flutterFFmpegConfig = FlutterSoundFFmpegConfig(logger);
-      //await _flutterFFmpegConfig!.disableLogs(); // TODO
-      //await _flutterFFmpegConfig!.disableRedirection(); // TODO
-      var version = await _flutterFFmpegConfig!.getFFmpegVersion();
-      var platform = await _flutterFFmpegConfig!.getPlatform();
-      _ffmpegAvailable = (version != null && platform != null);
-    }
-    return _ffmpegAvailable;
-  }
-
-  /// A wrapper for the great FFmpeg application.
-  ///
-  /// The command `man ffmpeg` (if you have installed ffmpeg on your computer) will give you many informations.
-  /// If you do not have `ffmpeg` on your computer you will find easyly on internet many documentation on this great program.
-  ///
-  /// We use here our own ffmpeg "execute" procedure instead of the one provided by the flutter_ffmpeg plugin,
-  /// so that the developers not interested by ffmpeg can use Flutter Sound without the flutter_ffmpeg plugin
-  /// and without any complain from the link-editor.
-  ///
-  /// Executes FFmpeg with `commandArguments` provided.
-  Future<int?> executeFFmpegWithArguments(List<String?> arguments) {
-    flutterFFmpeg ??= FlutterSoundFFmpeg();
-    return flutterFFmpeg!.executeWithArguments(arguments);
-  }
-
-  /// Get the error code returned by [executeFFmpegWithArguments()].
-  ///
-  /// We use here our own ffmpeg "getLastReturnCode" procedure instead of the one provided by the flutter_ffmpeg plugin,
-  /// so that the developers not interested by ffmpeg can use Flutter Sound without the flutter_ffmpeg plugin
-  /// and without any complain from the link-editor.
-  ///
-  /// This simple verb is used to get the result of the last FFmpeg command.
-  Future<int?> getLastFFmpegReturnCode() async {
-    await isFFmpegAvailable();
-    return _flutterFFmpegConfig!.getLastReturnCode();
-  }
-
-  /// Get the log code output by [executeFFmpegWithArguments()].
-  ///
-  /// We use here our own ffmpeg "getLastCommandOutput" procedure instead of the one provided by the flutter_ffmpeg plugin,
-  /// so that the developers not interested by ffmpeg can use Flutter Sound without the flutter_ffmpeg plugin
-  /// and without any complain from the link-editor.
-  ///
-  /// Returns log output of last executed command. Please note that disabling redirection using
-  /// This method does not support executing multiple concurrent commands. If you execute multiple commands at the same time, this method will return output from all executions.
-  /// `disableRedirection()` method also disables this functionality.
-  Future<String?> getLastFFmpegCommandOutput() async {
-    await isFFmpegAvailable();
-    return _flutterFFmpegConfig!.getLastCommandOutput();
-  }
-
-  /// Various informations about the Audio specified by the `uri` parameter.
-  ///
-  /// The informations Map got with FFmpegGetMediaInformation() are [documented here](https://pub.dev/packages/flutter_ffmpeg).
-  Future<Map<dynamic, dynamic>?> ffMpegGetMediaInformation(String uri) async {
-    _flutterFFprobe ??= FlutterSoundFFprobe();
-    try {
-      return (await _flutterFFprobe!.getMediaInformation(uri))
-          .getAllProperties();
-    } on Exception {
-      return null;
-    }
-  }
-
-  /// Get the duration of a sound file.
-  ///
-  /// This verb is used to get an estimation of the duration of a sound file.
-  /// Be aware that it is just an estimation, based on the Codec used and the sample rate.
-  Future<Duration?> duration(String uri) async {
-    if (!await (flutterSoundHelper.isFFmpegAvailable())) return null;
-    var info = await ffMpegGetMediaInformation(uri);
-    if (info == null) {
-      return null;
-    }
-    var format = info['format'];
-    if (format == null) return null;
-    var duration = format['duration'];
-    if (duration == null) return null;
-    var d = (double.parse(duration) * 1000.0).round();
-    return (duration == null) ? null : Duration(milliseconds: d);
-  }
 
   /// Convert a WAVE file to a Raw PCM file.
   ///
@@ -273,46 +180,5 @@ class FlutterSoundHelper {
     var tempDir = await getTemporaryDirectory();
     var tempPath = tempDir.path;
     return tempPath + '/' + path;
-  }
-
-  /// Convert a sound file to a new format.
-  ///
-  /// - `inputFile` is the file path of the file you want to convert
-  /// - `inputCodec` is the actual file format
-  /// - `outputFile` is the path of the file you want to create
-  /// - `outputCodec` is the new file format
-  ///
-  /// Be careful : `outfile` and `outputCodec` must be compatible. The output file extension must be a correct file extension for the new format.
-  ///
-  /// Note : this verb uses FFmpeg and is not available int the LITE flavor of Flutter Sound.
-  Future<bool> convertFile(String? inputFile, Codec? inputCodec,
-      String outputFile, Codec outputCodec) async {
-    int? rc = 0;
-    inputFile = await _getPath(inputFile);
-    outputFile = await _getPath(outputFile);
-    if (inputCodec == Codec.opusOGG &&
-        outputCodec == Codec.opusCAF) // Do not need to re-encode. Just remux
-    {
-      rc = await flutterSoundHelper.executeFFmpegWithArguments([
-        '-loglevel',
-        'error',
-        '-y',
-        '-i',
-        inputFile,
-        '-c:a',
-        'copy',
-        outputFile,
-      ]); // remux OGG to CAF
-    } else {
-      rc = await flutterSoundHelper.executeFFmpegWithArguments([
-        '-loglevel',
-        'error',
-        '-y',
-        '-i',
-        inputFile,
-        outputFile,
-      ]);
-    }
-    return (rc == 0);
   }
 }

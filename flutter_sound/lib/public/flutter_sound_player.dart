@@ -55,16 +55,6 @@ enum PlayerState {
 /// Note : this type must include a parameter with a reference to the FlutterSoundPlayer object involved.
 typedef TWhenFinished = void Function();
 
-/// Playback function type for [FlutterSoundPlayer.startPlayerFromTrack()].
-///
-/// Note : this type must include a parameter with a reference to the FlutterSoundPlayer object involved.
-typedef TonPaused = void Function(bool paused);
-
-/// Playback function type for [FlutterSoundPlayer.startPlayerFromTrack()].
-///
-/// Note : this type must include a parameter with a reference to the FlutterSoundPlayer object involved.
-typedef TonSkip = void Function();
-
 ///
 const List<Codec> _tabAndroidConvert = [
   Codec.defaultCodec, // defaultCodec
@@ -182,9 +172,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     });
   }
 
-  TonSkip? _onSkipForward; // User callback "onPaused:"
-  TonSkip? _onSkipBackward; // User callback "onPaused:"
-  TonPaused? _onPaused; // user callback "whenPause:"
   final _lock = Lock();
   static bool _reStarted = true;
 
@@ -231,65 +218,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         duration: Duration(milliseconds: duration),
       ),
     );
-  }
-
-  /// Callback from the &tau; Core. Must not be called by the App
-  /// @nodoc
-  @override
-  void pause(int state) async {
-    _logger.d('FS:---> pause ');
-    await _lock.synchronized(() async {
-      _playerState = PlayerState.values[state];
-      if (_onPaused != null) // Probably always true
-      {
-        _onPaused!(true);
-      }
-    });
-    _logger.d('FS:<--- pause ');
-  }
-
-  /// Callback from the &tau; Core. Must not be called by the App
-  /// @nodoc
-  @override
-  void resume(int state) async {
-    _logger.d('FS:---> resume');
-    await _lock.synchronized(() async {
-      _playerState = PlayerState.values[state];
-      if (_onPaused != null) // Probably always true
-      {
-        _onPaused!(false);
-      }
-    });
-    _logger.d('FS:<--- resume');
-  }
-
-  /// Callback from the &tau; Core. Must not be called by the App
-  /// @nodoc
-  @override
-  void skipBackward(int state) async {
-    _logger.d('FS:---> skipBackward ');
-    await _lock.synchronized(() async {
-      _playerState = PlayerState.values[state];
-
-      if (_onSkipBackward != null) {
-        _onSkipBackward!();
-      }
-    });
-    _logger.d('FS:<--- skipBackward ');
-  }
-
-  /// Callback from the &tau; Core. Must not be called by the App
-  /// @nodoc
-  @override
-  void skipForward(int state) async {
-    _logger.d('FS:---> skipForward ');
-    await _lock.synchronized(() async {
-      _playerState = PlayerState.values[state];
-      if (_onSkipForward != null) {
-        _onSkipForward!();
-      }
-    });
-    _logger.d('FS:<--- skipForward ');
   }
 
   /// Callback from the &tau; Core. Must not be called by the App
@@ -906,24 +834,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
 
-    if (_needToConvert(codec)) {
-      if (!await (flutterSoundHelper.isFFmpegAvailable())) return false;
-      var convert = kIsWeb
-          ? _tabWebConvert[codec.index]
-          : (Platform.isIOS)
-              ? _tabIosConvert[codec.index]
-              : (Platform.isAndroid)
-                  ? _tabAndroidConvert[codec.index]
-                  : null;
-      assert(convert != null);
-      if (convert != null) {
-        result = await FlutterSoundPlayerPlatform.instance
-            .isDecoderSupported(this, codec: convert);
-      }
-    } else {
       result = await FlutterSoundPlayerPlatform.instance
           .isDecoderSupported(this, codec: codec);
-    }
     _logger.d('FS:<--- isDecoderSupported ');
     return result;
   }
@@ -960,57 +872,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _playerController = null;
   }
 
-  ///
-  Future<void> _convertAudio(Codec codec, Map<String, dynamic> what) async {
-    // If we want to play OGG/OPUS on iOS, we remux the OGG file format to a specific Apple CAF envelope before starting the player.
-    // We use FFmpeg for that task.
-    _logger.d('FS:---> _convertAudio ');
-    var tempDir = await getTemporaryDirectory();
-    //var codec = what['codec'] as Codec?;
-
-    var convert = kIsWeb
-        ? _tabWebConvert[codec.index]
-        : (Platform.isIOS)
-            ? _tabIosConvert[codec.index]
-            : (Platform.isAndroid)
-                ? _tabAndroidConvert[codec.index]
-                : null;
-    assert(convert != null);
-    if (convert != null) {
-      var fout = '${tempDir.path}/flutter_sound-tmp2${ext[convert.index]}';
-      var path = what['path'] as String?;
-      await flutterSoundHelper.convertFile(path, codec, fout, convert);
-
-      // Now we can play Apple CAF/OPUS
-
-      what['path'] = fout;
-      what['codec'] = convert;
-    }
-    _logger.d('FS:<--- _convertAudio ');
-  }
-
-  Future<void> _convert(Codec codec, Map<String, dynamic> what) async {
-    _logger.d('FS:---> _convert ');
-    //var codec = what['codec'] as Codec?;
-    if (_needToConvert(codec)) {
-      var fromDataBuffer = what['fromDataBuffer'] as Uint8List?;
-
-      if (fromDataBuffer != null) {
-        var tempDir = await getTemporaryDirectory();
-        var inputFile = File('${tempDir.path}/flutter_sound-tmp');
-
-        if (inputFile.existsSync()) {
-          await inputFile.delete();
-        }
-        inputFile.writeAsBytesSync(
-            fromDataBuffer); // Write the user buffer into the temporary file
-        what['fromDataBuffer'] = null;
-        what['path'] = inputFile.path;
-      }
-      await _convertAudio(codec, what);
-    }
-    _logger.d('FS:<--- _convert ');
-  }
 
   /// Used to play a sound.
   //
@@ -1122,16 +983,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
     await _stop(); // Just in case
 
-    //playerState = PlayerState.isPlaying;
-    var what = <String, dynamic>{
-      'codec': codec,
-      'path': fromURI,
-      'fromDataBuffer': fromDataBuffer,
-    };
-    await _convert(codec, what);
-    codec = what['codec'] as Codec;
-    fromURI = what['path'] as String?;
-    fromDataBuffer = what['fromDataBuffer'] as Uint8List?;
     if (_playerState != PlayerState.isStopped) {
       throw Exception('Player is not stopped');
     }
@@ -1383,220 +1234,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return 0;
   }
 
-  /// Play data from a track specification and display controls on the lock screen or an Apple Watch.
-  ///
-  /// The Audio Session must have been open with the parameter `withUI`.
-  ///
-  /// - `track` parameter is a simple structure which describe the sound to play.
-  ///
-  ///   - `whenFinished:()` : A function for specifying what to do when the playback will be finished.
-  ///
-  ///  - `onPaused:()` : this parameter can be :
-  ///  - a call back function to call when the user hit the Skip Pause button on the lock screen
-  ///  - `null` : The pause button will be handled by Flutter Sound internal
-  ///
-  ///   - `onSkipForward:()` : this parameter can be :
-  ///   - a call back function to call when the user hit the Skip Forward button on the lock screen
-  ///   - `null` : The Skip Forward button will be disabled
-  ///
-  ///  - `onSkipBackward:()` : this parameter can be :
-  ///   - a call back function to call when the user hit the Skip Backward button on the lock screen
-  ///   - <null> : The Skip Backward button will be disabled
-  ///
-  ///   - `removeUIWhenStopped` : is a boolean to specify if the UI on the lock screen must be removed when the sound is finished or when the App does a `stopPlayer()`.
-  ///   Most of the time this parameter must be true. It is used only for the rare cases where the App wants to control the lock screen between two playbacks.
-  ///   Be aware that if the UI is not removed, the button Pause/Resume, Skip Backward and Skip Forward remain active between two playbacks.
-  ///   If you want to disable those button, use the API verb ```nowPlaying()```.
-  ///   Remark: actually this parameter is implemented only on iOS.
-  ///
-  ///   - `defaultPauseResume` : is a boolean value to specify if Flutter Sound must pause/resume the playback by itself when the user hit the pause/resume button. Set this parameter to *FALSE* if the App wants to manage itself the pause/resume button. If you do not specify this parameter and the `onPaused` parameter is specified then Flutter Sound will assume `FALSE`. If you do not specify this parameter and the `onPaused` parameter is not specified then Flutter Sound will assume `TRUE`.
-  ///   Remark: actually this parameter is implemented only on iOS.
-  ///
-  ///
-  ///  `startPlayerFromTrack()` returns a Duration Future, which is the record duration.
-  ///
-  ///
-  ///   *Example:*
-  ///   ```dart
-  ///   final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
-  ///   Track track = Track( codec: Codec.opusOGG, trackPath: fileUri, trackAuthor: '3 Inches of Blood', trackTitle: 'Axes of Evil', albumArtAsset: albumArt )
-  ///   Duration d = await myPlayer.startPlayerFromTrack
-  ///   (
-  ///   track,
-  ///   whenFinished: ()
-  ///   {
-  ///     logger.d( 'I hope you enjoyed listening to this song' );
-  ///   },
-  ///   );
-  ///   ```
-  Future<Duration?> startPlayerFromTrack(
-    Track track, {
-    TonSkip? onSkipForward,
-    TonSkip? onSkipBackward,
-    TonPaused? onPaused,
-    TWhenFinished? whenFinished,
-    Duration? progress,
-    Duration? duration,
-    bool? defaultPauseResume,
-    bool removeUIWhenStopped = true,
-  }) async {
-    var r = Duration.zero;
-    await _lock.synchronized(() async {
-      r = await _startPlayerFromTrack(
-        track,
-        onSkipForward: onSkipForward,
-        onSkipBackward: onSkipBackward,
-        onPaused: onPaused,
-        whenFinished: whenFinished,
-        progress: progress,
-        duration: duration,
-        defaultPauseResume: defaultPauseResume,
-        removeUIWhenStopped: removeUIWhenStopped,
-      );
-    });
-    return r;
-  }
-
-  Future<Duration> _startPlayerFromTrack(
-    Track track, {
-    TonSkip? onSkipForward,
-    TonSkip? onSkipBackward,
-    TonPaused? onPaused,
-    TWhenFinished? whenFinished,
-    Duration? progress,
-    Duration? duration,
-    bool? defaultPauseResume,
-    bool removeUIWhenStopped = true,
-  }) async {
-    _logger.d('FS:---> startPlayerFromTrack ');
-    await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized) {
-      throw Exception('Player is not open');
-    }
-    Completer<Duration>? completer;
-    //Map retMap;
-    try {
-      await _stop(); // Just in case
-      _audioPlayerFinishedPlaying = whenFinished;
-      _onSkipForward = onSkipForward;
-      _onSkipBackward = onSkipBackward;
-      _onPaused = onPaused;
-      var trackDico = track.toMap();
-      var what = <String, dynamic>{
-        'codec': track.codec,
-        'path': track.trackPath,
-        'fromDataBuffer': track.dataBuffer,
-      };
-      var codec = what['codec'] as Codec;
-      await _convert(codec, what);
-      trackDico['bufferCodecIndex'] = codec.index;
-      trackDico['path'] = what['path'];
-      trackDico['dataBuffer'] = what['fromDataBuffer'];
-      trackDico['codec'] = codec.index;
-
-      defaultPauseResume ??= (onPaused == null);
-      if (_playerState != PlayerState.isStopped) {
-        throw Exception('Player is not stopped');
-      }
-
-      if (_startPlayerCompleter != null) {
-        _logger.w('Killing another startPlayer()');
-        _startPlayerCompleter!.completeError('Killed by another startPlayer()');
-      }
-      _startPlayerCompleter = Completer<Duration>();
-      completer = _startPlayerCompleter;
-
-      var state =
-          await FlutterSoundPlayerPlatform.instance.startPlayerFromTrack(
-        this,
-        progress: progress,
-        duration: duration,
-        track: trackDico,
-        canPause: (onPaused != null || defaultPauseResume),
-        canSkipForward: (onSkipForward != null),
-        canSkipBackward: (onSkipBackward != null),
-        defaultPauseResume: defaultPauseResume,
-        removeUIWhenStopped: removeUIWhenStopped,
-      );
-      _playerState = PlayerState.values[state];
-    } on Exception {
-      _startPlayerCompleter = null;
-      rethrow;
-    }
-    //Duration d = Duration(milliseconds: retMap['duration'] as int);
-    //int state = retMap['state'] as int;
-    //playerState = PlayerState.values[state];
-    _logger.d('FS:<--- startPlayerFromTrack ');
-    return completer!.future;
-  }
-
-  /// Set the Lock screen fields without starting a new playback.
-  ///
-  /// The fields 'dataBuffer' and 'trackPath' of the Track parameter are not used.
-  /// Please refer to 'startPlayerFromTrack' for the meaning of the others parameters.
-  /// Remark `setUIProgressBar()` is implemented only on iOS.
-  ///
-  ///  *Example:*
-  ///  ```dart
-  ///  Track track = Track( codec: Codec.opusOGG, trackPath: fileUri, trackAuthor: '3 Inches of Blood', trackTitle: 'Axes of Evil', albumArtAsset: albumArt );
-  ///  await nowPlaying(Track);
-  ///  ```
-  Future<void> nowPlaying(
-    Track track, {
-    Duration? duration,
-    Duration? progress,
-    TonSkip? onSkipForward,
-    TonSkip? onSkipBackward,
-    TonPaused? onPaused,
-    bool? defaultPauseResume,
-  }) async {
-    await _lock.synchronized(() async {
-      await _nowPlaying(
-        track,
-        duration: duration,
-        progress: progress,
-        onSkipBackward: _onSkipBackward,
-        onSkipForward: _onSkipForward,
-        onPaused: onPaused,
-        defaultPauseResume: defaultPauseResume,
-      );
-    });
-  }
-
-  Future<void> _nowPlaying(
-    Track track, {
-    Duration? duration,
-    Duration? progress,
-    TonSkip? onSkipForward,
-    TonSkip? onSkipBackward,
-    TonPaused? onPaused,
-    bool? defaultPauseResume,
-  }) async {
-    _logger.d('FS:---> nowPlaying ');
-    await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized) {
-      throw Exception('Player is not open');
-    }
-
-    _onSkipForward = onSkipForward;
-    _onSkipBackward = onSkipBackward;
-    _onPaused = onPaused;
-
-    var trackDico = track.toMap();
-    defaultPauseResume ??= (onPaused == null);
-    var state = await FlutterSoundPlayerPlatform.instance.nowPlaying(
-      this,
-      track: trackDico,
-      duration: duration,
-      progress: progress,
-      canPause: (onPaused != null || defaultPauseResume),
-      canSkipForward: (onSkipForward != null),
-      canSkipBackward: (onSkipBackward != null),
-      defaultPauseResume: defaultPauseResume,
-    );
-    _playerState = PlayerState.values[state];
-    _logger.d('FS:<--- nowPlaying ');
-  }
 
   /// Stop a playback.
   ///
@@ -1938,68 +1575,5 @@ class PlaybackDisposition {
   String toString() {
     return 'duration: $duration, '
         'position: $position';
-  }
-}
-
-/// The track to play by [FlutterSoundPlayer.startPlayerFromTrack()].
-class Track {
-  /// The title of this track
-  String? trackTitle;
-
-  /// The buffer containing the audio file to play
-  Uint8List? dataBuffer;
-
-  /// The name of the author of this track
-  String? trackAuthor;
-
-  /// The path that points to the track audio file
-  String? trackPath;
-
-  /// The URL that points to the album art of the track
-  String? albumArtUrl;
-
-  /// The asset that points to the album art of the track
-  String? albumArtAsset;
-
-  /// The file that points to the album art of the track
-  String? albumArtFile;
-
-  /// The image that points to the album art of the track
-  //final String albumArtImage;
-
-  /// The codec of the audio file to play. If this parameter's value is null
-  /// it will be set to `t_CODEC.DEFAULT`.
-  Codec codec;
-
-  /// The constructor
-  Track({
-    this.trackPath,
-    this.dataBuffer,
-    this.trackTitle,
-    this.trackAuthor,
-    this.albumArtUrl,
-    this.albumArtAsset,
-    this.albumArtFile,
-    this.codec = Codec.defaultCodec,
-  }) {
-    assert((!(trackPath != null && dataBuffer != null)),
-        'You cannot provide both a path and a buffer.');
-  }
-
-  /// Convert this object to a [Map] containing the properties of this object
-  /// as values.
-  Map<String, dynamic> toMap() {
-    final map = {
-      'path': trackPath,
-      'dataBuffer': dataBuffer,
-      'title': trackTitle,
-      'author': trackAuthor,
-      'albumArtUrl': albumArtUrl,
-      'albumArtAsset': albumArtAsset,
-      'albumArtFile': albumArtFile,
-      'bufferCodecIndex': codec.index,
-    };
-
-    return map;
   }
 }

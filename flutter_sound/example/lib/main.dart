@@ -29,8 +29,6 @@ import 'simple_playback/simple_playback.dart';
 import 'simple_recorder/simple_recorder.dart';
 import 'soundEffect/sound_effect.dart';
 import 'streamLoop/stream_loop.dart';
-import 'widgetUI/widget_ui_demo.dart';
-import 'convert_to_mp3/convert_to_mp3.dart';
 import 'loglevel/loglevel.dart';
 import 'volume_control/volume_control.dart';
 import 'speed_control/speed_control.dart';
@@ -107,22 +105,6 @@ This Demo does not make use of the Flutter Sound UI Widgets.
 
 It would be really great if someone rewrite this demo soon'''),
 
-  Example(
-    title: 'WidgetUIDemo',
-    subTitle: 'Demonstration of the UI Widget',
-    flags: 0,
-    route: (_) => WidgetUIDemo(),
-    description:
-// If you update the following test, please update also the Examples/README.md file and the comment inside the dart file.
-        '''
-This is a Demo of an App which uses the Flutter Sound UI Widgets.
-
-My own feeling is that this Demo is really too much complicated for doing something very simple.
-There is too many dependencies and too many sources.
-
-I really hope that someone will write soon another simpler Demo App.
-''',
-  ),
 
   Example(
     title: 'simplePlayback',
@@ -315,18 +297,6 @@ from flutter_sound_player.dart.
 ''',
   ),
 
-  Example(
-    title: 'convertFile',
-    subTitle: 'Convert AAC to MP3',
-    flags: tNotWeb,
-    route: (_) => ConvertToMp3(),
-    description: '''
-```convertFile()``` is a very simple example
-   which record an AAC audio file,
-   convert this AAC file to MP3,
-   and then playback the MP3 file.
-''',
-  ),
 
   Example(
     title: 'setLogLevel()',

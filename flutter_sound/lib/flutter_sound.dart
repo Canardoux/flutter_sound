@@ -49,13 +49,7 @@ export 'public/flutter_sound_player.dart';
 export 'public/flutter_sound_recorder.dart';
 export 'public/tau.dart';
 
-///
-///library UI;
-export 'public/ui/recorder_playback_controller.dart';
-export 'public/ui/sound_player_ui.dart';
-export 'public/ui/sound_recorder_ui.dart';
 
 ///
 ///library util;
-export 'public/util/flutter_sound_ffmpeg.dart';
 export 'public/util/flutter_sound_helper.dart';

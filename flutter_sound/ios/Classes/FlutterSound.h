@@ -31,7 +31,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import <flutter_sound_core/Flauto.h>
 
-#define FULL_FLAVOR
 
 @interface FlutterSound : NSObject <FlutterPlugin, AVAudioPlayerDelegate>
 {

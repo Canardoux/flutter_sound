@@ -408,32 +408,12 @@ class _MyAppState extends State<Demo> {
     }
   }
 
-  Future<void> getDuration() async {
-    switch (_media) {
-      case Media.file:
-      case Media.buffer:
-        var path = _path[_codec.index];
-        var d = path != null ? await flutterSoundHelper.duration(path) : null;
-        _duration = d != null ? d.inMilliseconds / 1000.0 : null;
-        break;
-      case Media.asset:
-      case Media.stream:
-      case Media.remoteExampleFile:
-        _duration = null;
-        break;
-      default:
-        _duration = null;
-    }
-    setState(() {});
-  }
-
   void stopRecorder() async {
     try {
       await recorderModule.stopRecorder();
       recorderModule.logger.d('stopRecorder');
       cancelRecorderSubscriptions();
       cancelRecordingDataSubscription();
-      await getDuration();
     } on Exception catch (err) {
       recorderModule.logger.d('stopRecorder error: $err');
     }
@@ -547,50 +527,7 @@ class _MyAppState extends State<Demo> {
         audioFilePath = remoteSample[_codec.index];
       }
 
-      // Check whether the user wants to use the audio player features
-      if (_isAudioPlayer) {
-        String? albumArtUrl;
-        String? albumArtAsset;
-        String? albumArtFile;
-        if (_media == Media.remoteExampleFile) {
-          albumArtUrl = albumArtPathRemote;
-        } else if (!kIsWeb) {
-          albumArtFile =
-              '${await playerModule.getResourcePath()}/assets/canardo.png';
-          playerModule.logger.d(albumArtFile);
-        } else {}
-
-        final track = Track(
-          trackPath: audioFilePath,
-          codec: _codec,
-          dataBuffer: dataBuffer,
-          trackTitle: 'This is a record',
-          trackAuthor: 'from flutter_sound',
-          albumArtUrl: albumArtUrl,
-          albumArtAsset: albumArtAsset,
-          albumArtFile: albumArtFile,
-        );
-        await playerModule.startPlayerFromTrack(track,
-            defaultPauseResume: false,
-            removeUIWhenStopped: true, whenFinished: () {
-          playerModule.logger.d('I hope you enjoyed listening to this song');
-          setState(() {});
-        }, onSkipBackward: () {
-          playerModule.logger.d('Skip backward');
-          stopPlayer();
-          startPlayer();
-        }, onSkipForward: () {
-          playerModule.logger.d('Skip forward');
-          stopPlayer();
-          startPlayer();
-        }, onPaused: (b) {
-          if (b) {
-            playerModule.pausePlayer();
-          } else {
-            playerModule.resumePlayer();
-          }
-        });
-      } else if (_media == Media.stream) {
+      if (_media == Media.stream) {
         await playerModule.startPlayerFromStream(
           codec: Codec.pcm16, //_codec,
           numChannels: 1,
@@ -709,7 +646,6 @@ class _MyAppState extends State<Demo> {
           value: _media,
           onChanged: (newMedia) {
             _media = newMedia;
-            getDuration();
             setState(() {});
           },
           items: <DropdownMenuItem<Media>>[
@@ -751,7 +687,6 @@ class _MyAppState extends State<Demo> {
           onChanged: (newCodec) {
             setCodec(newCodec!);
             _codec = newCodec;
-            getDuration();
             setState(() {});
           },
           items: <DropdownMenuItem<Codec>>[
@@ -883,9 +818,6 @@ class _MyAppState extends State<Demo> {
       return null;
     }
 
-    if (_media == Media.stream && _isAudioPlayer) {
-      return null;
-    }
 
     // Disable the button if the selected codec is not supported
     if (!(_decoderSupported || _codec == Codec.pcm16)) {
@@ -943,22 +875,6 @@ class _MyAppState extends State<Demo> {
   @override
   Widget build(BuildContext context) {
     final dropdowns = makeDropdowns(context);
-    final trackSwitch = Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(right: 4),
-          child: Text('Track Player:'),
-        ),
-        Switch(
-          value: _isAudioPlayer,
-          onChanged: audioPlayerSwitchChanged(),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(right: 4.0),
-        )
-      ]),
-    );
 
     Widget recorderSection = Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -1101,10 +1017,6 @@ class _MyAppState extends State<Demo> {
                   await seekToPlayer(value.toInt());
                 },
                 divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt())),
-        Container(
-          height: 30.0,
-          child: Text(_duration != null ? 'Duration: $_duration sec.' : ''),
-        ),
       ],
     );
 
@@ -1117,7 +1029,6 @@ class _MyAppState extends State<Demo> {
           recorderSection,
           playerSection,
           dropdowns,
-          trackSwitch,
         ],
       ),
     );

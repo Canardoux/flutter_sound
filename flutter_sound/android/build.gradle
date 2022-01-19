@@ -1,4 +1,3 @@
-ext.flutterFFmpegPackage = 'audio'
 
 group 'com.dooboolab.fluttersound'
 version '8.5.0'
@@ -44,10 +43,8 @@ String safeExtGet(String prop, String fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
-//ext.flutterFFmpegPackage = 'full-lts'
 
 dependencies {
-    implementation 'com.arthenica:mobile-ffmpeg-full:4.4.LTS'
     implementation 'androidx.core:core:1.3.2'
     implementation 'androidx.media:media:1.2.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -55,7 +52,7 @@ dependencies {
     // -------------------------------------------------------------------------------------
     // CAUTION: The following instruction is for developping and debugging the Flauto Engine
     // DO NOT INCLUDE THE FOLLOWING LINE IN A REAL APP !!!
-    //implementation project(':flutter_sound_core')
+    implementation project(':flutter_sound_core')
     implementation 'com.github.canardoux:flutter_sound_core:8.5.0'
     // -------------------------------------------------------------------------------------
 

@@ -31,9 +31,6 @@
 #import "FlutterSound.h"
 #import "FlutterSoundPlayerManager.h"
 #import "FlutterSoundRecorderManager.h"
-#ifdef FULL_FLAVOR
-        #import "FlutterSoundFFmpeg.h"
-#endif
 
 @implementation FlutterSound
 {
@@ -44,9 +41,6 @@
 {
         FlutterSoundPlayerReg(registrar);
         FlutterSoundRecorderReg(registrar);
-        #ifdef FULL_FLAVOR
-                FlutterSoundFFmpegReg(registrar);
-        #endif
 }
 
 @end

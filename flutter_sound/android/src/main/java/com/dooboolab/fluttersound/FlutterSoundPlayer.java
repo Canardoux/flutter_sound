@@ -27,8 +27,6 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.Result;
 
 import com.dooboolab.TauEngine.FlautoPlayer;
-import com.dooboolab.TauEngine.FlautoTrack;
-import com.dooboolab.TauEngine.FlautoTrackPlayer;
 import com.dooboolab.TauEngine.FlautoPlayerCallback;
 import com.dooboolab.TauEngine.Flauto.*;
 
@@ -131,14 +129,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 
 	/* ctor */ FlutterSoundPlayer (final MethodCall call)
 	{
-		int withUI  = call.argument("withUI");
-		if (withUI != 0)
-		{
-			m_flautoPlayer = new FlautoTrackPlayer(this);
-		} else
-		{
 			m_flautoPlayer = new FlautoPlayer(this);
-		}
 	}
 
 	FlutterSoundManager getPlugin ()
@@ -274,36 +265,6 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 			log(t_LOG_LEVEL.ERROR,  "feed() exception" );
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 		}
-	}
-
-
-	public void startPlayerFromTrack ( final MethodCall call, final Result result )
-	{
-		final HashMap<String, Object> trackMap = call.argument( "track" );
-		final FlautoTrack track = new FlautoTrack( trackMap );
-		boolean canSkipForward = call.argument( "canSkipForward" );
-		boolean canSkipBackward = call.argument( "canSkipBackward" );
-		boolean canPause = call.argument( "canPause" );
-		int progress = (call.argument( "progress" ) == null) ? -1 : call.argument( "progress" );
-		int duration = (call.argument( "duration" ) == null) ? -1 : call.argument( "duration" );
-		boolean removeUIWhenStopped = call.argument( "removeUIWhenStopped" );
-		boolean defaultPauseResume = call.argument( "defaultPauseResume" );
-
-		boolean r = m_flautoPlayer.startPlayerFromTrack
-		(
-			track,
-			canPause,
-			canSkipForward,
-			canSkipBackward,
-			progress,
-			duration,
-			removeUIWhenStopped,
-			defaultPauseResume
-		);
-		if (r)
-			result.success(getPlayerState());
-		else
-			result.error(ERR_UNKNOWN, ERR_UNKNOWN, "startPlayerFromTrack() error");
 	}
 
 
