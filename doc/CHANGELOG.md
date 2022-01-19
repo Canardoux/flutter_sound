@@ -13,6 +13,9 @@ toc: false
 - Remove the Track Player : startPlayerFromTrack(), nowPlaying(), setUIProgressBar().
 - Remove the concept of LITE and FULL flavor : now we build just one flavor without any link with FlutterFFMPEG.
 - Remove the utilities which use FFmpeg : isFFmpegAvailable(), executeFFmpegWithArguments(), getLastFFmpegReturnCode(), getLastFFmpegCommandOutput(), ffMpegGetMediaInformation(), duration(), convertFile()
+- Remove the WidgetUI example
+- Remove the old WidgetUI
+
 ## 8.5.0
 
 - Added read decibel from recorder on Flutter Sound on Web. [#821](https://github.com/Canardoux/flutter_sound/pull/821). Thanks to [George Amgad](https://github.com/GeorgeAmgad) for his contribution.

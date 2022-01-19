@@ -10,8 +10,6 @@ VERSION=$1
 VERSION_CODE=${VERSION#./}
 VERSION_CODE=${VERSION_CODE#+/}
 
-bin/flavor.sh FULL
-bin/reldev.sh REL
 bin/setver.sh $VERSION
 bin/web.sh
 
@@ -153,20 +151,6 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 cd ..
-
-bin/flavor.sh LITE
-
-cd flutter_sound
-#flutter clean
-#flutter pub get
-flutter pub publish
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
-cd ..
-
-bin/flavor.sh FULL
 
 
 
