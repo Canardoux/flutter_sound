@@ -1,9 +1,12 @@
 #!/bin/bash
+echo "doc2.sh on canardoux"
+echo "--------------------"
 rm -rf /tmp/toto_doc 2>/dev/null
 mkdir -v /tmp/toto_doc 2>/tmp/null
-tar xzf _toto.tgz -C /tmp/toto_doc
-tar xzf _toto3.tgz  -C /tmp/toto_doc
+tar xvzf _toto.tgz -C /tmp/toto_doc
+tar xvzf _toto3.tgz  -C /tmp/toto_doc
 rm -rf /tmp/toto_doc/_site /tmp/toto_doc/flutter_sound/example/ios 2>/dev/null
+cp -a -v /tmp/toto_doc/flutter_sound/example/samples /tmp/toto_doc/flutter_sound/example/assets
 #####cp -a /tmp/toto_doc/_site/* /var/www/vhosts/canardoux.xyz/flutter_sound.canardoux.xyz/
 
 cd /tmp/toto_doc/flutter_sound/
@@ -15,8 +18,6 @@ flutter pub get
 cd
 
 
-
-cp -a /tmp/toto_doc/api /tmp/toto_doc/_site/pages/flutter-sound/api
 
 
 echo "Building Jekyll doc"
@@ -30,10 +31,11 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 
-cp -a /tmp/toto_doc/api /tmp/toto_doc/_site/pages/flutter-sound/api
+mkdir -p -v /tmp/toto_doc/_site/pages/flutter-sound/api
+cp -a -v /tmp/toto_doc/api/* /tmp/toto_doc/_site/pages/flutter-sound/api
 
 cd
-echo "patch css for Jekyll compatigility"
+echo "patch css for Jekyll compatibility"
 
 sed -i  "0,/^  overflow: hidden;$/s//overflow: auto;/"  /tmp/toto_doc/_site/pages/flutter-sound/api/static-assets/styles.css
 sed -i  "s/^  background-color: inherit;$/  background-color: #2196F3;/" /tmp/toto_doc/_site/pages/flutter-sound/api/static-assets/styles.css
@@ -48,7 +50,6 @@ do
         sed -i  "/^<script src=\"https:\/\/ajax\.googleapis\.com\/ajax\/libs\/jquery\/3\.2\.1\/jquery\.min\.js\"><\/script>$/d" $f
 done
 cd
-
 
 
 echo "Symbolic links"
