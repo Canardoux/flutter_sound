@@ -52,11 +52,7 @@ class _PlayFromMicState extends State<PlayFromMic> {
 
     // Be careful : openAudioSession returns a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    await _mPlayer!.openAudioSession(
-      device: AudioDevice.blueToothA2DP,
-      audioFlags: allowHeadset | allowEarPiece | allowBlueToothA2DP,
-      category: SessionCategory.playAndRecord,
-    );
+    await _mPlayer!.openAudioSession();
     setState(() {
       _mPlayerIsInited = true;
     });

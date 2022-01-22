@@ -164,14 +164,6 @@ class FlutterSound {
     // Here we must call flutter_sound_core if necessary
   }
 
-  AudioFocus _mFocus = AudioFocus.requestFocusAndKeepOthers;
-  SessionMode _mSessionMode = SessionMode.modeDefault;
-  SessionCategory _mSessionCategory = SessionCategory.playback;
-  final _mAudioDevice = AudioDevice.speaker;
-  final _mAudioFlags =
-      outputToSpeaker | allowBlueTooth | allowBlueToothA2DP | allowEarPiece;
-  final _mWithUI = false;
-
   // ---------------------------------------------------------------------------------------------------------------------
 
   /// the static Singleton
@@ -196,80 +188,4 @@ class FlutterSound {
 
   // ----------------------------------------------------------------------------------------------------------------------
 
-  /// setAudioFocus() is now a global function.
-  /// (Before 6.5.0, the Focus was an attribute of the players and the recorders).
-  /// It did not work very well, because iOS can have just one Session per App.
-  ///
-  /// The use of this verb is optional. If the App does not call `setAudioFocus()`
-  /// The focus will be automatically aquired when calling `startPlayer()` and released when
-  /// the player is Stopped. So very often, the APP will not use this verb.
-  ///
-  /// `setAudioFocus()` is a noop on Flutter Web
-  Future<void> setAudioFocus(
-    /// What to do if another App has the focus
-    AudioFocus focus,
-  ) async {
-    _logger.i('FS:---> setAudioFocus ');
-    _mFocus = focus;
-
-    // For legacy reason, we need to have an open player to set the Audio Focus
-    // This is not very clean, and should be improved...
-    if (!thePlayer.isOpen()) {
-      await thePlayer.openAudioSession(
-          focus: _mFocus,
-          category: _mSessionCategory,
-          device: _mAudioDevice,
-          audioFlags: _mAudioFlags,
-          mode: _mSessionMode,
-          withUI: _mWithUI);
-      await thePlayer.closeAudioSession();
-    } else {
-      await thePlayer.setAudioFocus(
-          focus: _mFocus,
-          category: _mSessionCategory,
-          device: _mAudioDevice,
-          audioFlags: _mAudioFlags,
-          mode: _mSessionMode);
-    }
-    _logger.i('FS:<--- setAudioFocus ');
   }
-
-  /// setIOSSessionParameters() is for specifying the Audio session on iOS.
-  /// The use of this verb is completely optional and most of the cases will
-  /// not be called by the App. If not called, Flutter Sound will use
-  /// default parameters for the Audio Session.
-  ///
-  /// `setIOSSessionParameters()` is a noop on Flutter Web and android
-  Future<void> setIOSSessionParameters({
-    /// The category is used by iOS and ignored on Android and Flutter Web
-    SessionCategory category = SessionCategory.playback,
-
-    /// The mode is used by iOS and ignored on Android and Flutter Web
-    SessionMode mode = SessionMode.modeDefault,
-  }) async {
-    _logger.i('FS:---> setIOSSessionParameters ');
-    _mSessionCategory = category;
-    _mSessionMode = mode;
-    // For legacy reason, we need to have an open player to set the Audio Focus
-    // This is not very clean, and should be improved...
-    if (!thePlayer.isOpen()) {
-      await thePlayer.openAudioSession(
-          focus: AudioFocus.doNotRequestFocus,
-          category: _mSessionCategory,
-          device: _mAudioDevice,
-          audioFlags: _mAudioFlags,
-          mode: _mSessionMode,
-          withUI: _mWithUI);
-      await thePlayer.closeAudioSession();
-    } else {
-      await thePlayer.setAudioFocus(
-        focus: _mFocus,
-        category: _mSessionCategory,
-        device: _mAudioDevice,
-        audioFlags: _mAudioFlags,
-        mode: _mSessionMode,
-      );
-    }
-    _logger.i('FS:<--- setIOSSessionParameters ');
-  }
-}

@@ -136,14 +136,9 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
     throw UnimplementedError('resetPlugin() has not been implemented.');
   }
 
-  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device, bool? withUI,})
+  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, })
   {
     throw UnimplementedError('openPlayer() has not been implemented.');
-  }
-
-  Future<int> setAudioFocus(FlutterSoundPlayerCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device,} )
-  {
-    throw UnimplementedError('setAudioFocus() has not been implemented.');
   }
 
   Future<int> closePlayer(FlutterSoundPlayerCallback callback, )
@@ -216,10 +211,6 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
     throw UnimplementedError('invokeMethod() has not been implemented.');
   }
 
-  Future<int> setUIProgressBar(FlutterSoundPlayerCallback callback, {Duration? duration, Duration? progress,})
-  {
-    throw UnimplementedError('invokeMethod() has not been implemented.');
-  }
 
   Future<String> getResourcePath(FlutterSoundPlayerCallback callback, )
   {

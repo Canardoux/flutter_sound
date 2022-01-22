@@ -36,7 +36,6 @@
 @interface Session : NSObject
 {
       int slotNo;
-      BOOL hasFocus;
 }
 
 - (void)reset: (FlutterMethodCall*)call result: (FlutterResult)result;
@@ -47,7 +46,6 @@
 - (void)invokeMethod: (NSString*)methodName stringArg: (NSString*)stringArg success: (bool)success;
 - (void)invokeMethod: (NSString*)methodName boolArg: (Boolean)boolArg success: (bool)success;
 - (void)invokeMethod: (NSString*)methodName numberArg: (NSNumber*)arg success: (bool)success;
-- (BOOL)setAudioFocus: (FlutterMethodCall*)call ;
 - (int)getSlotNo;
 - (void)freeSlot: (int)slotNo;
 - (void)invokeMethod: (NSString*)methodName arguments: (NSDictionary*)call ;

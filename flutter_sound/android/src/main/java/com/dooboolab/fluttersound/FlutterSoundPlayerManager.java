@@ -92,12 +92,6 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         }
                         break;
 
-                        case "setAudioFocus":
-                        {
-                                aPlayer.setAudioFocus( call, result );
-                        }
-                        break;
-
 
                         case "getPlayerState":
                         {
@@ -112,7 +106,7 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         break;
 
 
- 
+
                         case "getProgress":
                         {
                                 aPlayer.getProgress ( call, result );
@@ -175,17 +169,6 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         }
                         break;
 
-                        case "androidAudioFocusRequest":
-                        {
-                                aPlayer.androidAudioFocusRequest ( call, result );
-                        }
-                        break;
-
-                        case "setActive":
-                        {
-                                aPlayer.setActive ( call, result );
-                        }
-                        break;
 
                         case "feed":
                         {

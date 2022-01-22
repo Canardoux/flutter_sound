@@ -219,22 +219,14 @@ class _MyAppState extends State<Demo> {
   bool? _encoderSupported = true; // Optimist
   bool _decoderSupported = true; // Optimist
 
-  // Whether the user wants to use the audio player features
-  bool _isAudioPlayer = false;
 
   double? _duration;
   StreamController<Food>? recordingDataController;
   IOSink? sink;
 
-  Future<void> _initializeExample(bool withUI) async {
+  Future<void> _initializeExample() async {
     await playerModule.closeAudioSession();
-    _isAudioPlayer = withUI;
-    await playerModule.openAudioSession(
-        withUI: withUI,
-        focus: AudioFocus.requestFocusAndStopOthers,
-        category: SessionCategory.playAndRecord,
-        mode: SessionMode.modeDefault,
-        device: AudioDevice.speaker);
+    await playerModule.openAudioSession();
     await playerModule.setSubscriptionDuration(Duration(milliseconds: 10));
     await recorderModule.setSubscriptionDuration(Duration(milliseconds: 10));
     await initializeDateFormatting();
@@ -248,11 +240,7 @@ class _MyAppState extends State<Demo> {
         throw RecordingPermissionException('Microphone permission not granted');
       }
     }
-    await recorderModule.openAudioSession(
-        focus: AudioFocus.requestFocusAndStopOthers,
-        category: SessionCategory.playAndRecord,
-        mode: SessionMode.modeDefault,
-        device: AudioDevice.speaker);
+    await recorderModule.openAudioSession();
     if (!await recorderModule.isEncoderSupported(_codec) && kIsWeb) {
       _codec = Codec.opusWebM;
     }
@@ -260,7 +248,7 @@ class _MyAppState extends State<Demo> {
 
   Future<void> init() async {
     await openTheRecorder();
-    await _initializeExample(false);
+    await _initializeExample();
 
     if ((!kIsWeb) && Platform.isAndroid) {
       await copyAssets();
@@ -860,17 +848,6 @@ class _MyAppState extends State<Demo> {
     });
   }
 
-  void Function(bool)? audioPlayerSwitchChanged() {
-    if ((!playerModule.isStopped) || (!recorderModule.isStopped)) return null;
-    return ((newVal) async {
-      try {
-        await _initializeExample(newVal);
-        setState(() {});
-      } on Exception catch (err) {
-        playerModule.logger.e(err);
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

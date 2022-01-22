@@ -88,12 +88,7 @@ FlutterSoundRecorderManager* flutterSoundRecorderManager = nil; // Singleton
                 [aFlautoRecorder openRecorder: call result: result];
         } else
         
-        if ([@"setAudioFocus" isEqualToString: call.method])
-        {
-                [aFlautoRecorder setAudioFocus: call result:result];
-        } else
 
-        
          
         if ([@"closeRecorder" isEqualToString: call.method])
         {

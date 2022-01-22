@@ -49,16 +49,8 @@ class _StreamLoopJustAudioState extends State<StreamLoopJustAudio> {
   bool _isInited = false;
 
   Future<void> init() async {
-    await _mRecorder!.openAudioSession(
-      device: AudioDevice.blueToothA2DP,
-      audioFlags: allowHeadset | allowEarPiece | allowBlueToothA2DP,
-      category: SessionCategory.playAndRecord,
-    );
-    await _mPlayer!.openAudioSession(
-      device: AudioDevice.blueToothA2DP,
-      audioFlags: allowHeadset | allowEarPiece | allowBlueToothA2DP,
-      category: SessionCategory.playAndRecord,
-    );
+    await _mRecorder!.openAudioSession();
+    await _mPlayer!.openAudioSession();
   }
 
   @override

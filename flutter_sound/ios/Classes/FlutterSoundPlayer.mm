@@ -151,41 +151,9 @@
 - (void)openPlayer: (FlutterMethodCall*)call result: (FlutterResult)result
 {
         [self log: DBG msg: @"IOS:--> initializeFlautoPlayer"];
-        t_AUDIO_FOCUS focus = (t_AUDIO_FOCUS)( [(NSNumber*)call.arguments[@"focus"] intValue]);
-        t_SESSION_CATEGORY category = (t_SESSION_CATEGORY)( [(NSNumber*)call.arguments[@"category"] intValue]);
-        t_SESSION_MODE mode = (t_SESSION_MODE)( [(NSNumber*)call.arguments[@"mode"] intValue]);
-        int flags =  [(NSNumber*)call.arguments[@"audioFlags"] intValue];
-        t_AUDIO_DEVICE device = (t_AUDIO_DEVICE)( [(NSNumber*)call.arguments[@"device"] intValue]);
-        BOOL r = [flautoPlayer initializeFlautoPlayerFocus: focus category: category mode: mode audioFlags: flags audioDevice:device];
-        if (r)
-                result( [self getPlayerStatus]);
-        else
-                result([FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"Open session failure"
-                                details:nil]);
+        [self openPlayerCompleted: YES];
+        result( [self getPlayerStatus]);
         [self log: DBG msg: @"IOS:<-- initializeFlautoPlayer"];
-}
-
-
-- (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result
-{
-        [self log: DBG msg: @"IOS:--> setAudioFocus"];
-        t_AUDIO_FOCUS focus = (t_AUDIO_FOCUS)( [(NSNumber*)call.arguments[@"focus"] intValue]);
-        t_SESSION_CATEGORY category = (t_SESSION_CATEGORY)( [(NSNumber*)call.arguments[@"category"] intValue]);
-        t_SESSION_MODE mode = (t_SESSION_MODE)( [(NSNumber*)call.arguments[@"mode"] intValue]);
-        int flags =  [(NSNumber*)call.arguments[@"audioFlags"] intValue];
-        t_AUDIO_DEVICE device = (t_AUDIO_DEVICE)( [(NSNumber*)call.arguments[@"device"] intValue]);
-        BOOL r = [flautoPlayer setAudioFocus: focus category: category mode: mode audioFlags: flags audioDevice:device];
-        if (r)
-                result( [self getPlayerStatus]);
-        else
-                result([FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"Open session failure"
-                                details:nil]);
-        [self log: DBG msg: @"IOS:<-- setAudioFocus"];
-
 }
 
 
@@ -206,39 +174,6 @@
         [self log: DBG msg: @"IOS:<-- releaseFlautoPlayer"];
 
 }
-
-- (void)setCategory: (FlutterMethodCall*)call result:(FlutterResult)result
-{
-        NSString* categ = (NSString*)call.arguments[@"category"];
-        NSString* mode = (NSString*)call.arguments[@"mode"];
-        int options = [(NSNumber*)call.arguments[@"options"] intValue];
-        bool r = [flautoPlayer setCategory: categ mode: mode options:options ];
-        if (r)
-                result( [self getPlayerStatus]);
-        else
-                result([FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"Open session failure"
-                                details:nil]);
-}
-
-- (void)setActive: (FlutterMethodCall*)call result:(FlutterResult)result
-{
-        [self log: DBG msg: @"IOS:--> setActive"];
-        BOOL enabled = [call.arguments[@"enabled"] boolValue];
-        bool r = [flautoPlayer setActive: enabled];
-        hasFocus = enabled;
-
-        if (r)
-                result([self getPlayerStatus]);
-        else
-                result([FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"setActive failure"
-                                details:nil]);
-        [self log: DBG msg: @"IOS:<-- setActive"];
-}
-
 
 
 - (void)stopPlayer:(FlutterMethodCall*)call  result:(FlutterResult)result

@@ -105,7 +105,6 @@
 
 - (void)openRecorder : (FlutterMethodCall*)call result:(FlutterResult)result
 {
-        [self setAudioFocus: call result: result];
         [self openRecorderCompleted:  [NSNumber numberWithBool: YES]]; // It should not be here, but in flutter_sound_core !!!
         result([NSNumber numberWithInt: [self getRecorderStatus]]);
 }
@@ -123,7 +122,6 @@
         [self log: DBG msg: @"iOS ---> closeRecorder"];
         [flautoRecorder releaseFlautoRecorder];
         [super releaseSession];
-        //[self closeRecorderCompleted:  [NSNumber numberWithBool: YES]]; // It should not be here, but in flutter_sound_core !!!
         result([NSNumber numberWithInt: [self getRecorderStatus]]);
         [self log: DBG msg: @"iOS <--- closeRecorder"];
 
@@ -136,26 +134,6 @@
 }
 
 
-- (void)setAudioFocus: (FlutterMethodCall*)call result: (FlutterResult)result
-{
-        [self log: DBG msg: @"IOS:--> setAudioFocus"];
-
-        t_AUDIO_FOCUS focus = (t_AUDIO_FOCUS)( [(NSNumber*)call.arguments[@"focus"] intValue]);
-        t_SESSION_CATEGORY category = (t_SESSION_CATEGORY)( [(NSNumber*)call.arguments[@"category"] intValue]);
-        t_SESSION_MODE mode = (t_SESSION_MODE)( [(NSNumber*)call.arguments[@"mode"] intValue]);
-        int flags =  [(NSNumber*)call.arguments[@"flags"] intValue];
-        t_AUDIO_DEVICE device = (t_AUDIO_DEVICE)( [(NSNumber*)call.arguments[@"device"] intValue]);
-        BOOL r = [flautoRecorder setAudioFocus: focus category: category mode: mode audioFlags: flags audioDevice:device];
-        if (r)
-                result([NSNumber numberWithInt: [self getRecorderStatus]]);
-        else
-                [FlutterError
-                                errorWithCode:@"Audio Player"
-                                message:@"Open session failure"
-                                details:nil];
-        [self log: DBG msg: @"IOS:<-- setAudioFocus"];
-}
-
 
 - (void)startRecorder: (FlutterMethodCall*)call result:(FlutterResult)result
 {
@@ -164,9 +142,6 @@
         NSNumber* numChannelsArgs = (NSNumber*)call.arguments[@"numChannels"];
         NSNumber* bitRateArgs = (NSNumber*)call.arguments[@"bitRate"];
         NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
-        NSNumber* audioSourceArgs = (NSNumber*)call.arguments[@"audioSource"] ;
-
-        t_AUDIO_SOURCE audioSource = ([audioSourceArgs isKindOfClass:[NSNull class]]) ? defaultSource : (t_AUDIO_SOURCE)[audioSourceArgs intValue];
 
         t_CODEC coder = aacADTS;
         if (![codec isKindOfClass:[NSNull class]])
@@ -199,7 +174,6 @@
                 channels: numChannels
                 sampleRate: sampleRate
                 bitRate: bitRate
-                audioSource: audioSource
         ];
         if (b)
         {

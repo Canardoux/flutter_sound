@@ -95,11 +95,6 @@ class FlutterSoundRecorderManager extends FlutterSoundManager
                         }
                         break;
 
-                        case "setAudioFocus":
-                        {
-                                aRecorder.setAudioFocus( call, result );
-                        }
-                        break;
 
                         case "startRecorder":
                         {

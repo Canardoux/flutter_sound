@@ -188,16 +188,11 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
 
 
   @override
-  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device, bool? withUI})
+  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, })
   {
-    return  invokeMethod( callback, 'openPlayer', {'logLevel': logLevel.index, 'focus': focus!.index, 'category': category!.index, 'mode': mode!.index, 'audioFlags': audioFlags, 'device': device!.index, 'withUI': withUI! ? 1 : 0 ,},) ;
+    return  invokeMethod( callback, 'openPlayer', {'logLevel': logLevel.index ,},) ;
   }
 
-  @override
-  Future<int> setAudioFocus(FlutterSoundPlayerCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device,} )
-  {
-    return invokeMethod( callback, 'setAudioFocus', {'focus': focus!.index, 'category': category!.index, 'mode': mode!.index, 'audioFlags': audioFlags, 'device': device!.index ,},);
-  }
 
   @override
   Future<int> closePlayer(FlutterSoundPlayerCallback callback, )
@@ -248,13 +243,6 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
   Future<int> feed(FlutterSoundPlayerCallback callback, {Uint8List? data, })
   {
     return invokeMethod( callback, 'feed', {'data': data, },) ;
-  }
-
-  @override
-  Future<int> nowPlaying(FlutterSoundPlayerCallback callback,  {Duration? progress, Duration? duration, Map<String, dynamic>? track, bool? canPause, bool? canSkipForward, bool? canSkipBackward, bool? defaultPauseResume, }) async
-  {
-    return invokeMethod( callback, 'nowPlaying', {'progress': progress!.inMilliseconds, 'duration': duration!.inMilliseconds, 'track': track, 'canPause': canPause, 'canSkipForward': canSkipForward, 'canSkipBackward': canSkipBackward,
-      'defaultPauseResume': defaultPauseResume,},);
   }
 
   @override

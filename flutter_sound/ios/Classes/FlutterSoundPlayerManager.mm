@@ -97,11 +97,6 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [aFlautoPlayer getPlayerState: call result: result];
         } else
 
-        if ([@"setAudioFocus" isEqualToString:call.method])
-        {
-                [aFlautoPlayer setAudioFocus: call result: result];
-        } else
-
 
         if ([@"isDecoderSupported" isEqualToString:call.method])
         {
@@ -119,10 +114,6 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [aFlautoPlayer startPlayerFromMic: call result: result];
         } else
 
-        if ([@"startPlayerFromTrack" isEqualToString: call.method])
-        {
-                 [aFlautoPlayer startPlayerFromTrack: call result: result];
-        } else
 
         if ([@"stopPlayer" isEqualToString: call.method])
         {
@@ -164,31 +155,13 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [aFlautoPlayer setSpeed: [speed doubleValue] result: result];
         } else
 
-        if ([@"iosSetCategory" isEqualToString:call.method])
-        {
-                [aFlautoPlayer setCategory: call result: result];
-        } else
-
-        if ([@"setActive" isEqualToString:call.method])
-        {
-                [aFlautoPlayer setActive: call result: result];
-        } else
 
         if ( [@"getResourcePath" isEqualToString:call.method] )
         {
                 result( [[NSBundle mainBundle] resourcePath]);
         } else
 
-        if ([@"setUIProgressBar" isEqualToString:call.method])
-        {
-                 [aFlautoPlayer setUIProgressBar: call result: result];
-        } else
-
-        if ([@"nowPlaying" isEqualToString:call.method])
-        {
-                 [aFlautoPlayer nowPlaying: call result: result];
-        } else
-
+ 
         if ([@"getProgress" isEqualToString:call.method])
         {
                  [aFlautoPlayer getProgress: call result: result];

@@ -32,9 +32,6 @@ public class FlutterSound
 	implements FlutterPlugin,
 	           ActivityAware
 {
-	//static Context ctx;
-	//static Registrar reg;
-	//static Activity androidActivity;
 	FlutterPlugin.FlutterPluginBinding pluginBinding;
 
 	@Override

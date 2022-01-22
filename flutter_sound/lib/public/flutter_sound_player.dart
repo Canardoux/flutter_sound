@@ -55,75 +55,6 @@ enum PlayerState {
 /// Note : this type must include a parameter with a reference to the FlutterSoundPlayer object involved.
 typedef TWhenFinished = void Function();
 
-///
-const List<Codec> _tabAndroidConvert = [
-  Codec.defaultCodec, // defaultCodec
-  Codec.defaultCodec, // aacADTS
-  Codec.defaultCodec, // opusOGG
-  Codec.opusOGG, // opusCAF
-  Codec.defaultCodec, // mp3
-  Codec.defaultCodec, // vorbisOGG
-  Codec.defaultCodec, // pcm16
-  Codec.defaultCodec, // pcm16WAV
-  Codec.pcm16WAV, // pcm16AIFF
-  Codec.pcm16WAV, // pcm16CAF
-  Codec.defaultCodec, // flac
-  Codec.defaultCodec, // aacMP4
-  Codec.defaultCodec, // amrNB
-  Codec.defaultCodec, // amrWB
-  Codec.defaultCodec, // pcm8
-  Codec.defaultCodec, // pcmFloat32
-  Codec.defaultCodec, // pcmWebM
-  Codec.defaultCodec, // opusWebM
-  Codec.defaultCodec, // vorbisWebM
-];
-
-///
-const List<Codec> _tabIosConvert = [
-  Codec.defaultCodec, // defaultCodec
-  Codec.defaultCodec, // aacADTS
-  Codec.opusCAF, // opusOGG
-  Codec.defaultCodec, // opusCAF
-  Codec.defaultCodec, // mp3
-  Codec.defaultCodec, // vorbisOGG
-  Codec.defaultCodec, // pcm16
-  Codec.defaultCodec, // pcm16WAV
-  Codec.defaultCodec, // pcm16AIFF
-  Codec.defaultCodec, // pcm16CAF
-  Codec.defaultCodec, // flac
-  Codec.defaultCodec, // aacMP4
-  Codec.defaultCodec, // amrNB
-  Codec.defaultCodec, // amrWB
-  Codec.defaultCodec, // pcm8
-  Codec.defaultCodec, // pcmFloat32
-  Codec.defaultCodec, // pcmWebM
-  Codec.defaultCodec, // opusWebM
-  Codec.defaultCodec, // vorbisWebM
-];
-
-///
-const List<Codec> _tabWebConvert = [
-  Codec.defaultCodec, // defaultCodec
-  Codec.defaultCodec, // aacADTS
-  Codec.defaultCodec, // opusOGG
-  Codec.defaultCodec, // opusCAF
-  Codec.defaultCodec, // mp3
-  Codec.defaultCodec, // vorbisOGG
-  Codec.defaultCodec, // pcm16
-  Codec.defaultCodec, // pcm16WAV
-  Codec.defaultCodec, // pcm16AIFF
-  Codec.defaultCodec, // pcm16CAF
-  Codec.defaultCodec, // flac
-  Codec.defaultCodec, // aacMP4
-  Codec.defaultCodec, // amrNB
-  Codec.defaultCodec, // amrWB
-  Codec.defaultCodec, // pcm8
-  Codec.defaultCodec, // pcmFloat32
-  Codec.defaultCodec, // pcmWebM
-  Codec.defaultCodec, // opusWebM
-  Codec.defaultCodec, // vorbisWebM
-];
-
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
 /// A Player is an object that can playback from various sources.
@@ -545,16 +476,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// Returns a Future, but the App does not need to wait the completion of this future before doing a [startPlayer()].
   /// The Future will be automaticaly waited by [startPlayer()]
   ///
-  /// - [focus] : What to do with others App if they have already the Focus
-  /// - [category] : An optional parameter for iOS. See [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosessioncategory?language=objc).
-  /// - [mode] : an optional parameter for iOS. See [iOS documentation](https://developer.apple.com/documentation/avfoundation/avaudiosessionmode?language=objc) to understand the meaning of this parameter.
-  /// - [audioFlags] : an optional parameter for iOS
-  /// - [withUI] : true if the App plan to use [closeAudioSession] later.
-  ///
-  ///
   /// *Example:*
   /// ```dart
-  ///     myPlayer = await FlutterSoundPlayer().closeAudioSession(focus: Focus.requestFocusAndDuckOthers, outputToSpeaker | allowBlueTooth);
+  ///     myPlayer = await FlutterSoundPlayer().openAudioSession();
   ///
   ///     ...
   ///     (do something with myPlayer)
@@ -563,39 +487,19 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///     await myPlayer.closeAudioSession();
   ///     myPlayer = null;
   /// ```
-  Future<FlutterSoundPlayer?> openAudioSession({
-    AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
-    SessionCategory category = SessionCategory.playAndRecord,
-    SessionMode mode = SessionMode.modeDefault,
-    AudioDevice device = AudioDevice.speaker,
-    int audioFlags = outputToSpeaker | allowBlueToothA2DP | allowAirPlay,
-    bool withUI = false,
-  }) async {
+  Future<FlutterSoundPlayer?> openAudioSession() async {
     if (_isInited != Initialized.notInitialized) {
       return this;
     }
     FlutterSoundPlayer? r;
     await _lock.synchronized(() async {
       r = await _openAudioSession(
-        focus: focus,
-        category: category,
-        mode: mode,
-        device: device,
-        audioFlags: audioFlags,
-        withUI: withUI,
       );
     });
     return r;
   }
 
-  Future<FlutterSoundPlayer> _openAudioSession({
-    AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
-    SessionCategory category = SessionCategory.playAndRecord,
-    SessionMode mode = SessionMode.modeDefault,
-    AudioDevice device = AudioDevice.speaker,
-    int audioFlags = outputToSpeaker | allowBlueToothA2DP | allowAirPlay,
-    bool withUI = false,
-  }) async {
+  Future<FlutterSoundPlayer> _openAudioSession() async {
     _logger.d('FS:---> openAudioSession');
     while (_openPlayerCompleter != null) {
       _logger.w('Another openPlayer() in progress');
@@ -603,8 +507,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
 
     Completer<FlutterSoundPlayer>? completer;
-    //if (_isInited != Initialized.notInitialized)
-    //await closeAudioSession(); // to be in a clean state
     if (_isInited != Initialized.notInitialized) {
       throw Exception('Player is already initialized');
     }
@@ -623,12 +525,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     try {
       var state = await FlutterSoundPlayerPlatform.instance.openPlayer(this,
           logLevel: _logLevel,
-          focus: focus,
-          category: category,
-          mode: mode,
-          audioFlags: audioFlags,
-          device: device,
-          withUI: withUI);
+      );
       _playerState = PlayerState.values[state];
       //isInited = success ?  Initialized.fullyInitialized : Initialized.notInitialized;
     } on Exception {
@@ -639,72 +536,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return completer!.future;
   }
 
-  /// @nodoc
-  @deprecated
-  Future<FlutterSoundPlayer?> openAudioSessionWithUI(
-      {AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
-      SessionCategory category = SessionCategory.playAndRecord,
-      SessionMode mode = SessionMode.modeDefault,
-      AudioDevice device = AudioDevice.speaker,
-      int audioFlags = outputToSpeaker | allowBlueToothA2DP | allowAirPlay}) {
-    return openAudioSession(
-        focus: focus,
-        category: category,
-        mode: mode,
-        device: device,
-        withUI: true);
-  }
 
-  /// Set or unset the Audio Focus.
-  ///
-  /// This verb is very similar to [openAudioSession] and allow to change the parameters during an open Session
-  /// *Example:*
-  /// ```dart
-  ///         myPlayer.setAudioFocus(focus: AudioFocus.requestFocusAndDuckOthers);
-  /// ```
-  Future<void> setAudioFocus({
-    AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
-    SessionCategory category = SessionCategory.playback,
-    SessionMode mode = SessionMode.modeDefault,
-    AudioDevice device = AudioDevice.speaker,
-    int audioFlags =
-        outputToSpeaker | allowBlueTooth | allowBlueToothA2DP | allowEarPiece,
-  }) async {
-    await _lock.synchronized(() async {
-      await _setAudioFocus(
-        focus: focus,
-        category: category,
-        mode: mode,
-        device: device,
-        audioFlags: audioFlags,
-      );
-    });
-  }
-
-  Future<void> _setAudioFocus({
-    AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
-    SessionCategory category = SessionCategory.playback,
-    SessionMode mode = SessionMode.modeDefault,
-    AudioDevice device = AudioDevice.speaker,
-    int audioFlags =
-        outputToSpeaker | allowBlueTooth | allowBlueToothA2DP | allowEarPiece,
-  }) async {
-    _logger.d('FS:---> setAudioFocus ');
-    await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized) {
-      throw Exception('Player is not open');
-    }
-    var state = await FlutterSoundPlayerPlatform.instance.setAudioFocus(
-      this,
-      focus: focus,
-      category: category,
-      mode: mode,
-      audioFlags: audioFlags,
-      device: device,
-    );
-    _playerState = PlayerState.values[state];
-    _logger.d('FS:<--- setAudioFocus ');
-  }
 
   /// Close an open session.
   ///
@@ -801,20 +633,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
 
     return FlutterSoundPlayerPlatform.instance.getProgress(this);
-  }
-
-  ///
-  bool _needToConvert(Codec codec) {
-    _logger.d('FS:---> needToConvert ');
-    var convert = (kIsWeb)
-        ? _tabWebConvert[codec.index]
-        : (Platform.isIOS)
-            ? _tabIosConvert[codec.index]
-            : (Platform.isAndroid)
-                ? _tabAndroidConvert[codec.index]
-                : null;
-    _logger.d('FS:<--- needToConvert ');
-    return (convert != Codec.defaultCodec);
   }
 
   /// Returns true if the specified decoder is supported by flutter_sound on this platform
@@ -1491,42 +1309,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _logger.d('FS:<--- _setSpeed ');
   }
 
-  /// Used if the App wants to control itself the Progress Bar on the lock screen.
-  ///
-  /// By default, this progress bar is handled automaticaly by Flutter Sound.
-  /// Remark `setUIProgressBar()` is implemented only on iOS.
-  ///
-  /// *Example:*
-  /// ```dart
-  ///
-  ///         Duration progress = (await getProgress())['progress'];
-  ///         Duration duration = (await getProgress())['duration'];
-  ///         setUIProgressBar(progress: Duration(milliseconds: progress.milliseconds - 500), duration: duration)
-  /// ````
-  Future<void> setUIProgressBar({
-    Duration? duration,
-    Duration? progress,
-  }) async {
-    await _lock.synchronized(() async {
-      await _setUIProgressBar(progress: progress, duration: duration);
-    });
-  }
-
-  Future<void> _setUIProgressBar({
-    Duration? duration,
-    Duration? progress,
-  }) async {
-    _logger
-        .d('FS:---> setUIProgressBar : duration=$duration  progress=$progress');
-    await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized) {
-      throw Exception('Player is not open');
-    }
-    var state = await FlutterSoundPlayerPlatform.instance
-        .setUIProgressBar(this, duration: duration, progress: progress);
-    _playerState = PlayerState.values[state];
-    _logger.d('FS:<--- setUIProgressBar ');
-  }
 
   /// Get the resource path.
   ///

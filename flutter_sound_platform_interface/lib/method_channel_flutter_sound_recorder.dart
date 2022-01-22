@@ -166,9 +166,9 @@ Future<dynamic>? channelMethodCallHandler(MethodCall call) {
 
 
 @override
-  Future<void> openRecorder( FlutterSoundRecorderCallback callback, {required Level logLevel, AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device})
+  Future<void> openRecorder( FlutterSoundRecorderCallback callback, {required Level logLevel,  })
   {
-    return invokeMethodVoid( callback, 'openRecorder', {'logLevel': logLevel.index, 'focus': focus!.index, 'category': category!.index, 'mode': mode!.index, 'audioFlags': audioFlags, 'device': device!.index ,},) ;
+    return invokeMethodVoid( callback, 'openRecorder', {'logLevel': logLevel.index,  },) ;
   }
 
 
@@ -178,11 +178,6 @@ Future<dynamic>? channelMethodCallHandler(MethodCall call) {
     return invokeMethodVoid( callback, 'closeRecorder',  Map<String, dynamic>(),);
   }
 
-  @override
-  Future<void> setAudioFocus(FlutterSoundRecorderCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device,} )
-  {
-    return invokeMethodVoid( callback, 'setAudioFocus', {'focus': focus!.index, 'category': category!.index, 'mode': mode!.index, 'audioFlags': audioFlags, 'device': device!.index ,},);
-  }
 
   @override
   Future<bool> isEncoderSupported(FlutterSoundRecorderCallback callback, {Codec codec = Codec.defaultCodec,})

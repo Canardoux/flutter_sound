@@ -129,7 +129,6 @@
 - (Session*) init: (FlutterMethodCall*)call
 {
         slotNo = [[self getPlugin] initPlugin: self call: call];
-        hasFocus = FALSE;
         return [super init];
 }
 
@@ -141,9 +140,6 @@
 - (void) releaseSession
 {
         [self log: DBG msg: @"iOS: ---> releaseSession"];
-        if (hasFocus)
-                [[AVAudioSession sharedInstance]  setActive: FALSE error:nil] ;
-        hasFocus = false;
  
         [[self getPlugin]freeSlot: slotNo];
         [self log: DBG msg: @"iOS: <--- releaseSession"];
@@ -203,97 +199,6 @@
         [self log: DBG msg: s];
 
         [[self getPlugin] invokeMethod: methodName arguments: dic ];
-}
-
-
-- (BOOL)setAudioFocus: (FlutterMethodCall*)call
-{
-
-
-        NSString* tabCategory[] =
-        {
-                AVAudioSessionCategoryAmbient,
-                AVAudioSessionCategoryMultiRoute,
-                AVAudioSessionCategoryPlayAndRecord,
-                AVAudioSessionCategoryPlayback,
-                AVAudioSessionCategoryRecord,
-                AVAudioSessionCategorySoloAmbient,
-                // DEPRECATED // AVAudioSessionCategoryAudioProcessing
-        };
-        
-        
-        NSString*  tabSessionMode[] =
-        {
-                AVAudioSessionModeDefault,
-                AVAudioSessionModeGameChat,
-                AVAudioSessionModeMeasurement,
-                AVAudioSessionModeMoviePlayback,
-                AVAudioSessionModeSpokenAudio,
-                AVAudioSessionModeVideoChat,
-                AVAudioSessionModeVideoRecording,
-                AVAudioSessionModeVoiceChat,
-                // ONLY iOS 12.0 // AVAudioSessionModeVoicePrompt,
-        };
-
-
-
-        BOOL r = TRUE;
-        t_AUDIO_FOCUS audioFocus = (t_AUDIO_FOCUS) [call.arguments[@"focus"] intValue];
-        t_SESSION_CATEGORY category = (t_SESSION_CATEGORY)[call.arguments[@"category"] intValue];
-        t_SESSION_MODE mode = (t_SESSION_MODE)[call.arguments[@"mode"] intValue];
-        int flags = [call.arguments[@"audioFlags"] intValue];
-        int sessionCategoryOption = 0;
-        if ( audioFocus != abandonFocus && audioFocus != doNotRequestFocus && audioFocus != requestFocus)
-        {
-                //NSUInteger sessionCategoryOption = 0;
-                switch (audioFocus)
-                {
-                        case requestFocusAndDuckOthers: sessionCategoryOption |= AVAudioSessionCategoryOptionDuckOthers; break;
-                        case requestFocusAndKeepOthers: sessionCategoryOption |= AVAudioSessionCategoryOptionMixWithOthers; break;
-                        case requestFocusAndInterruptSpokenAudioAndMixWithOthers: sessionCategoryOption |= AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers; break;
-                        case requestFocusTransient:
-                        case requestFocusTransientExclusive:
-                        case requestFocus:
-                        case abandonFocus:
-                        case doNotRequestFocus:
-                        case requestFocusAndStopOthers: sessionCategoryOption |= 0; break; // NOOP
-                }
-                
-                if (flags & outputToSpeaker)
-                        sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker;
-                if (flags & allowAirPlay)
-                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay;
-                 if (flags & allowBlueTooth)
-                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetooth;
-                if (flags & allowBlueToothA2DP)
-                        sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
-
-                
-                t_AUDIO_DEVICE device = (t_AUDIO_DEVICE)[call.arguments[@"device"] intValue];
-                switch (device)
-                {
-                        case speaker: sessionCategoryOption |= AVAudioSessionCategoryOptionDefaultToSpeaker; break;
-                        case airPlay: sessionCategoryOption |= AVAudioSessionCategoryOptionAllowAirPlay; break;
-                        case blueTooth: sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetooth; break;
-                        case blueToothA2DP: sessionCategoryOption |= AVAudioSessionCategoryOptionAllowBluetoothA2DP; break;
-                        case earPiece:
-                        case headset: sessionCategoryOption |= 0; break;
-                }
-                
-                r = [[AVAudioSession sharedInstance]
-                        setCategory:  tabCategory[category] // AVAudioSessionCategoryPlayback
-                        mode: tabSessionMode[mode]
-                        options: sessionCategoryOption
-                        error: nil
-                ];
-        }
-        
-        if (audioFocus != doNotRequestFocus)
-        {
-                hasFocus = (audioFocus != abandonFocus);
-                r = [[AVAudioSession sharedInstance]  setActive: hasFocus error:nil] ;
-        }
-        return r;
 }
 
 

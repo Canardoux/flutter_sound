@@ -37,7 +37,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 	static final String ERR_UNKNOWN           = "ERR_UNKNOWN";
 	static final String ERR_PLAYER_IS_NULL    = "ERR_PLAYER_IS_NULL";
 	static final String ERR_PLAYER_IS_PLAYING = "ERR_PLAYER_IS_PLAYING";
-	final static  String           TAG         = "FlutterSoundPlugin";
+	final static String           TAG         = "FlutterSoundPlugin";
 
 
 	FlautoPlayer m_flautoPlayer;
@@ -95,30 +95,6 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		invokeMethodWithInteger("audioPlayerFinishedPlaying", true, getPlayerState() );
 	}
 
-	public void pause()
-	{
-		invokeMethodWithInteger( "pause", true, getPlayerState() );
-
-	}
-
-	public void resume()
-	{
-		invokeMethodWithInteger( "resume", true, getPlayerState() );
-
-	}
-
-	public void skipForward()
-	{
-		invokeMethodWithInteger( "skipForward", true, getPlayerState() );
-
-	}
-
-	public void skipBackward()
-	{
-		invokeMethodWithInteger( "skipBackward", true, getPlayerState() );
-
-	}
-
 	public void updatePlaybackState(t_PLAYER_STATE newState)
 	{
 		invokeMethodWithInteger( "updatePlaybackState", true, newState.ordinal() );
@@ -145,24 +121,8 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 
 	void openPlayer ( final MethodCall call, final Result result )
 	{
-		int x1 = call.argument("focus");
-		t_AUDIO_FOCUS focus = t_AUDIO_FOCUS.values()[x1];
-		int x2 = call.argument("category");
-		t_SESSION_CATEGORY category = t_SESSION_CATEGORY.values()[x2];
-		int x3 = call.argument("mode");
-		t_SESSION_MODE mode = t_SESSION_MODE.values()[x3];
-		int x4 = call.argument("device");
-		t_AUDIO_DEVICE audioDevice = t_AUDIO_DEVICE.values()[x4];
-		int audioFlags = call.argument("audioFlags");
 
-		boolean r = m_flautoPlayer.openPlayer
-		(
-			focus,
-			category,
-			mode,
-			audioFlags,
-			audioDevice
-		);
+		boolean r = m_flautoPlayer.openPlayer();
 
 		if (r)
 		{
@@ -364,20 +324,6 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		result.success ( getPlayerState());
 	}
 
-	void androidAudioFocusRequest ( final MethodCall call, final Result result )
-	{
-		Integer focusGain = call.argument ( "focusGain" );
-		m_flautoPlayer.androidAudioFocusRequest(focusGain);
-
-		result.success (getPlayerState() );
-	}
-
-	void setActive ( final MethodCall call, final Result result )
-	{
-		Boolean enabled = call.argument ( "enabled" );
-		m_flautoPlayer.setActive(enabled);
-		result.success (getPlayerState() );
-	}
 
 	void getProgress ( final MethodCall call, final Result result )
 	{
@@ -386,19 +332,6 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		result.success(dic);
 	}
 
-	void nowPlaying ( final MethodCall call, final Result result )
-	{
-		// TODO
-		result.success (getPlayerState() );
-	}
-
-
-	void setUIProgressBar ( final MethodCall call, final Result result )
-	{
-		// TODO
-		result.success (getPlayerState() );
-
-	}
 
 	void getResourcePath ( final MethodCall call, final Result result )
 	{
@@ -410,24 +343,6 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 	void getPlayerState ( final MethodCall call, final Result result )
 	{
 		result.success (getPlayerState());
-	}
-
-	void setAudioFocus(final MethodCall call, final MethodChannel.Result result )
-	{
-		int x1 = call.argument("focus");
-		t_AUDIO_FOCUS focus = t_AUDIO_FOCUS.values()[x1];
-		int x2 = call.argument("category");
-		t_SESSION_CATEGORY category = t_SESSION_CATEGORY.values()[x2];
-		int x3 = call.argument("mode");
-		t_SESSION_MODE mode = t_SESSION_MODE.values()[x3];
-		int x4 = call.argument("device");
-		t_AUDIO_DEVICE audioDevice = t_AUDIO_DEVICE.values()[x4];
-		int audioFlags = call.argument("audioFlags");
-		boolean r = m_flautoPlayer.setAudioFocus(focus, category, mode, audioFlags, audioDevice);
-		if (r)
-			result.success ( getPlayerState());
-		else
-			result.error ( "setFocus", "setFocus", "Failure to prepare focus");
 	}
 
 

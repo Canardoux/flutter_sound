@@ -371,12 +371,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   ///     myRecorder.closeAudioSession();
   ///     myRecorder = null;
   /// ```
-  Future<FlutterSoundRecorder?> openAudioSession(
-      {AudioFocus focus = AudioFocus.requestFocusTransient,
-      SessionCategory category = SessionCategory.playAndRecord,
-      SessionMode mode = SessionMode.modeDefault,
-      int audioFlags = outputToSpeaker,
-      AudioDevice device = AudioDevice.speaker}) async {
+  Future<FlutterSoundRecorder?> openAudioSession() async {
     if (_isInited != Initialized.notInitialized) {
       return this;
     }
@@ -384,24 +379,13 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     FlutterSoundRecorder? r;
     _logger.d('FS:---> openAudioSession ');
     await _lock.synchronized(() async {
-      r = await _openAudioSession(
-        focus: focus,
-        category: category,
-        mode: mode,
-        audioFlags: audioFlags,
-        device: device,
-      );
+      r = await _openAudioSession();
     });
     _logger.d('FS:<--- openAudioSession ');
     return r;
   }
 
-  Future<FlutterSoundRecorder> _openAudioSession(
-      {AudioFocus focus = AudioFocus.requestFocusTransient,
-      SessionCategory category = SessionCategory.playAndRecord,
-      SessionMode mode = SessionMode.modeDefault,
-      int audioFlags = outputToSpeaker,
-      AudioDevice device = AudioDevice.speaker}) async {
+  Future<FlutterSoundRecorder> _openAudioSession() async {
     _logger.d('---> openAudioSession');
 
     Completer<FlutterSoundRecorder>? completer;
@@ -426,11 +410,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       await FlutterSoundRecorderPlatform.instance.openRecorder(
         this,
         logLevel: _logLevel,
-        focus: focus,
-        category: category,
-        mode: mode,
-        audioFlags: audioFlags,
-        device: device,
       );
 
       //_isInited = Initialized.fullyInitialized;
@@ -522,16 +501,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     // - encode CAF/OPPUS (with native Apple AVFoundation)
     // - remux CAF file format to OPUS file format (with ffmpeg)
 
-    if ((codec == Codec.opusOGG) && (!kIsWeb) && (Platform.isIOS)) {
-      //if (!await isFFmpegSupported( ))
-      //result = false;
-      //else
-      result = await FlutterSoundRecorderPlatform.instance
-          .isEncoderSupported(this, codec: Codec.opusCAF);
-    } else {
-      result = await FlutterSoundRecorderPlatform.instance
+       result = await FlutterSoundRecorderPlatform.instance
           .isEncoderSupported(this, codec: codec);
-    }
     return result;
   }
 
@@ -790,66 +761,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     }
     _logger.d('FS:<--- _stopRecorder : $r');
     return r;
-  }
-
-  /// Changes the audio focus in an open Recorder
-  ///
-  /// ### `focus:` parameter possible values are
-  /// - AudioFocus.requestFocus (request focus, but do not do anything special with others App)
-  /// - AudioFocus.requestFocusAndStopOthers (your app will have **exclusive use** of the output audio)
-  /// - AudioFocus.requestFocusAndDuckOthers (if another App like Spotify use the output audio, its volume will be **lowered**)
-  /// - AudioFocus.requestFocusAndKeepOthers (your App will play sound **above** others App)
-  /// - AudioFocus.requestFocusAndInterruptSpokenAudioAndMixWithOthers
-  /// - AudioFocus.requestFocusTransient (for Android)
-  /// - AudioFocus.requestFocusTransientExclusive (for Android)
-  /// - AudioFocus.abandonFocus (Your App will not have anymore the audio focus)
-  ///
-  /// ### Other parameters :
-  ///
-  /// Please look to [openAudioSession()](Recorder.md#openaudiosession-and-closeaudiosession) to understand the meaning of the other parameters
-  ///
-  ///
-  /// *Example:*
-  /// ```dart
-  ///         myRecorder.setAudioFocus(focus: AudioFocus.requestFocusAndDuckOthers);
-  /// ```
-  Future<void> setAudioFocus(
-      {AudioFocus focus = AudioFocus.requestFocusTransient,
-      SessionCategory category = SessionCategory.playAndRecord,
-      SessionMode mode = SessionMode.modeDefault,
-      AudioDevice device = AudioDevice.speaker}) async {
-    _logger.d('FS:---> setAudioFocus ');
-    await _lock.synchronized(() async {
-      await _setAudioFocus(
-        focus: focus,
-        category: category,
-        mode: mode,
-        device: device,
-      );
-    });
-    _logger.d('FS:<--- setAudioFocus ');
-  }
-
-  Future<void> _setAudioFocus(
-      {AudioFocus focus = AudioFocus.requestFocusTransient,
-      SessionCategory category = SessionCategory.playAndRecord,
-      SessionMode mode = SessionMode.modeDefault,
-      AudioDevice device = AudioDevice.speaker}) async {
-    _logger.d('FS:---> setAudioFocus ');
-    await _waitOpen();
-    if (_isInited != Initialized.fullyInitialized) {
-      throw Exception('Recorder is not open');
-    }
-
-    await FlutterSoundRecorderPlatform.instance.setAudioFocus(
-      this,
-      focus: focus,
-      category: category,
-      mode: mode,
-      device: device,
-    );
-    //_recorderState = recorderState.values[state];
-    _logger.d('FS:<--- setAudioFocus ');
   }
 
   /// Pause the recorder

@@ -159,7 +159,7 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
   }
 
 
-  Future<void> openRecorder(FlutterSoundRecorderCallback callback, {required Level logLevel, AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device})
+  Future<void> openRecorder(FlutterSoundRecorderCallback callback, {required Level logLevel, })
   {
     throw UnimplementedError('openRecorder() has not been implemented.');
   }
@@ -167,11 +167,6 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
   Future<void> closeRecorder(FlutterSoundRecorderCallback callback, )
   {
     throw UnimplementedError('closeRecorder() has not been implemented.');
-  }
-
-  Future<void> setAudioFocus(FlutterSoundRecorderCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device,} )
-  {
-    throw UnimplementedError('setAudioFocus() has not been implemented.');
   }
 
   Future<bool> isEncoderSupported(FlutterSoundRecorderCallback callback, {required Codec codec ,})
