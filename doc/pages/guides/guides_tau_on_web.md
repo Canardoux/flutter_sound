@@ -35,20 +35,20 @@ Either add those 4 lines at the end of the `<head>` section of your `index.html`
 or add those 4 lines at the end of the `<head>` section of your `index.html` file :
 
 ```xml
-  <script src="https://cdn.jsdelivr.net/npm/flutter_sound_core@8/js/flutter_sound/flutter_sound.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flutter_sound_core@8/js/flutter_sound/flutter_sound_player.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flutter_sound_core@8/js/flutter_sound/flutter_sound_recorder.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flutter_sound_core@9/js/flutter_sound/flutter_sound.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flutter_sound_core@9/js/flutter_sound/flutter_sound_player.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flutter_sound_core@9/js/flutter_sound/flutter_sound_recorder.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/howler@2/dist/howler.min.js"></script>
 ```
 
-Please [read this](https://www.jsdelivr.com/features) : replace `@8` by `@7` if you are linking with Flutter Sound v7.x.
+Please [read this](https://www.jsdelivr.com/features) : replace `@9` by `@8` if you are linking with Flutter Sound v8.x.
 
 ```dart
 NoSuchMethodError: tried to call a non-function, such as null: 'dart.global.newRecorderInstance'
 ```
 
 {% include tip.html content=
-"If you get this error above, it probably means that the required javascript sources are not corretely loaded by your index.html file.
+"If you get this error above, it probably means that the required javascript sources are not correctly loaded by your index.html file.
 Double check if your javascript source files are correct.
 " %}
 

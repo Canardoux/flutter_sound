@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 9.0.0-2
+## 9.0.0-5
 
 - Remove the Service declaration in the Android code (problem with compatibility with other libraries like `AudioService`). [#340](https://github.com/Canardoux/flutter_sound/issues/340)
 - Remove the Track Player : startPlayerFromTrack(), nowPlaying(), setUIProgressBar().
