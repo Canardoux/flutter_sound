@@ -18,7 +18,7 @@ fi
 
 echo "Upload"
 rm -rf flutter_sound/example/build flutter_sound/build
-tar czf _toto3.tgz flutter_sound flutter_sound_web flutter_sound_platform_interface
+tar czf _toto3.tgz flutter_sound flutter_sound_web flutter_sound_platform_interface extract
 cd doc
 tar czf ../_toto.tgz *
 cd ..

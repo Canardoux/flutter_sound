@@ -6,8 +6,6 @@ mkdir -v /tmp/toto_doc 2>/tmp/null
 tar xvzf _toto.tgz -C /tmp/toto_doc
 tar xvzf _toto3.tgz  -C /tmp/toto_doc
 rm -rf /tmp/toto_doc/_site /tmp/toto_doc/flutter_sound/example/ios 2>/dev/null
-cp -a -v /tmp/toto_doc/flutter_sound/example/samples /tmp/toto_doc/flutter_sound/example/assets
-#####cp -a /tmp/toto_doc/_site/* /var/www/vhosts/canardoux.xyz/flutter_sound.canardoux.xyz/
 
 cd /tmp/toto_doc/flutter_sound/
 export PATH="$PATH:/opt/flutter/bin"
@@ -92,5 +90,5 @@ fi
 cd 
 
 rm -rf /var/www/vhosts/canardoux.xyz/flutter_sound.canardoux.xyz/web_example/
-cp -a /tmp/toto_doc/flutter_sound/example/assets/samples/ /tmp/toto_doc/flutter_sound/example/assets/extract /tmp/toto_doc/flutter_sound/example/build/web/assets
-cp -a /tmp/toto_doc/flutter_sound/example/build/web /var/www/vhosts/canardoux.xyz/flutter_sound.canardoux.xyz/web_example
+cp -a -v /tmp/toto_doc/flutter_sound/example/assets/samples/ /tmp/toto_doc/extract /tmp/toto_doc/flutter_sound/example/build/web/assets
+cp -a -v /tmp/toto_doc/flutter_sound/example/build/web /var/www/vhosts/canardoux.xyz/flutter_sound.canardoux.xyz/web_example

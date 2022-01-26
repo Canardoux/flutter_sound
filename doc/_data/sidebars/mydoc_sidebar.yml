@@ -402,7 +402,7 @@ entries:
       url: /flutter_sound_examples_stream_loop.html
       output: web, pdf
 
-     - title: Set Log Level
+    - title: Set Log Level
       url: /flutter_sound_examples_setLogLevel.html
       output: web, pdf
 
