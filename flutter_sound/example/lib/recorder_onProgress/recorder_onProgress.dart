@@ -18,6 +18,7 @@
  */
 
 import 'dart:async';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'dart:typed_data';
@@ -69,7 +70,7 @@ class _RecorderOnProgressState extends State<RecorderOnProgress> {
     cancelRecorderSubscriptions();
 
     // Be careful : you must `close` the audio session when you have finished with it.
-    _mRecorder.closeAudioSession();
+    _mRecorder.closeRecorder();
 
     super.dispose();
   }
@@ -88,7 +89,7 @@ class _RecorderOnProgressState extends State<RecorderOnProgress> {
         throw RecordingPermissionException('Microphone permission not granted');
       }
     }
-    await _mRecorder.openAudioSession();
+    await _mRecorder.openRecorder();
     if (!await _mRecorder.isEncoderSupported(_codec) && kIsWeb) {
       _codec = Codec.opusWebM;
       _mPath = 'tau_file.webm';
@@ -97,6 +98,24 @@ class _RecorderOnProgressState extends State<RecorderOnProgress> {
         return;
       }
     }
+
+    final session = await AudioSession.instance;
+    await session.configure(AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.allowBluetooth | AVAudioSessionCategoryOptions.defaultToSpeaker,
+      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
+      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+      androidAudioAttributes: const AndroidAudioAttributes(
+        contentType: AndroidAudioContentType.speech,
+        flags: AndroidAudioFlags.none,
+        usage: AndroidAudioUsage.voiceCommunication,
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+      androidWillPauseWhenDucked: true,
+    ));
+
+
     _mRecorderIsInited = true;
   }
 

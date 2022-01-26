@@ -72,7 +72,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
     super.initState();
     initializeDateFormatting();
     _getAssetData(
-      'assets/samples/sample.opus',
+      'assets/samples/sample.aac',
     ).then((value) => setState(() {
           buffer2 = value;
         }));
@@ -81,17 +81,17 @@ class _MultiPlaybackState extends State<MultiPlayback> {
     ).then((value) => setState(() {
           buffer3 = value;
         }));
-    _mPlayer1!.openAudioSession().then((value) {
+    _mPlayer1!.openPlayer().then((value) {
       setState(() {
         _mPlayer1IsInited = true;
       });
     });
-    _mPlayer2!.openAudioSession().then((value) {
+    _mPlayer2!.openPlayer().then((value) {
       setState(() {
         _mPlayer2IsInited = true;
       });
     });
-    _mPlayer3!.openAudioSession().then((value) {
+    _mPlayer3!.openPlayer().then((value) {
       setState(() {
         _mPlayer3IsInited = true;
       });
@@ -102,13 +102,13 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   void dispose() {
     // Be careful : you must `close` the audio session when you have finished with it.
     cancelPlayerSubscriptions1();
-    _mPlayer1!.closeAudioSession();
+    _mPlayer1!.closePlayer();
     _mPlayer1 = null;
     cancelPlayerSubscriptions2();
-    _mPlayer2!.closeAudioSession();
+    _mPlayer2!.closePlayer();
     _mPlayer2 = null;
     cancelPlayerSubscriptions3();
-    _mPlayer3!.closeAudioSession();
+    _mPlayer3!.closePlayer();
     _mPlayer3 = null;
 
     super.dispose();
@@ -164,7 +164,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
     _addListener2();
     await _mPlayer2!.startPlayer(
         fromDataBuffer: buffer2,
-        codec: Codec.opusOGG,
+        codec: Codec.aacADTS,
         whenFinished: () {
           setState(() {});
         });

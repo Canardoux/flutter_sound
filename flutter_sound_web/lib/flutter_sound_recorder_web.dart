@@ -43,7 +43,7 @@ class FlutterSoundRecorder
         external static FlutterSoundRecorder newInstance(FlutterSoundRecorderCallback callBack, List<Function> callbackTable);
 
         @JS('initializeFlautoRecorder')
-        external void initializeFlautoRecorder( int focus, int category, int mode, int? audioFlags, int device);
+        external void initializeFlautoRecorder();
 
         @JS('releaseFlautoRecorder')
         external void releaseFlautoRecorder();
@@ -133,7 +133,7 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
         }
 
         @override
-        Future<void> openRecorder(FlutterSoundRecorderCallback callback, {required Level logLevel, AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device}) async
+        Future<void> openRecorder(FlutterSoundRecorderCallback callback, {required Level logLevel,}) async
         {
                 int slotno = findSession(callback);
                 if (slotno < _slots.length)
@@ -145,7 +145,7 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
                         assert(slotno == _slots.length);
                         _slots.add( newRecorderInstance(callback, callbackTable));
                 }
-                getWebSession(callback)!.initializeFlautoRecorder(focus!.index, category!.index, mode!.index, audioFlags, device!.index);
+                getWebSession(callback)!.initializeFlautoRecorder();
         }
 
 
@@ -155,12 +155,6 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
                 int slotno = findSession(callback);
                 _slots[slotno]!.releaseFlautoRecorder();
                 _slots[slotno] = null;
-        }
-
-        @override
-        Future<void> setAudioFocus(FlutterSoundRecorderCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device,} ) async
-        {
-                getWebSession(callback)!.setAudioFocus(focus!.index, category!.index, mode!.index, audioFlags, device!.index);
         }
 
         @override

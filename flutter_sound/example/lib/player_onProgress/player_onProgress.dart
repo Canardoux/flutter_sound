@@ -67,7 +67,7 @@ class _PlayerOnProgressState extends State<PlayerOnProgress> {
     cancelPlayerSubscriptions();
 
     // Be careful : you must `close` the audio session when you have finished with it.
-    _mPlayer.closeAudioSession();
+    _mPlayer.closePlayer();
 
     super.dispose();
   }
@@ -80,7 +80,7 @@ class _PlayerOnProgressState extends State<PlayerOnProgress> {
   }
 
   Future<void> init() async {
-    await _mPlayer.openAudioSession();
+    await _mPlayer.openPlayer();
     _boumData = await getAssetData(_boum);
     _mPlayerSubscription = _mPlayer.onProgress!.listen((e) {
       setState(() {

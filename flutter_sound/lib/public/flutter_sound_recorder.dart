@@ -331,9 +331,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
   /// Open a Recorder
   ///
-  /// A recorder must be opened before used. A recorder correspond to an Audio Session. With other words, you must *open* the Audio Session before using it.
-  /// When you have finished with a Recorder, you must close it. With other words, you must close your Audio Session.
-  /// Opening a recorder takes resources inside the OS. Those resources are freed with the verb `closeAudioSession()`.
+  /// A recorder must be opened before used.
+  /// Opening a recorder takes resources inside the OS. Those resources are freed with the verb `closeRecorder()`.
   ///
   /// You MUST ensure that the recorder has been closed when your widget is detached from the UI.
   /// Overload your widget's `dispose()` method to close the recorder when your widget is disposed.
@@ -345,7 +344,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// {
   ///         if (myRecorder != null)
   ///         {
-  ///             myRecorder.closeAudioSession();
+  ///             myRecorder.closeRecorder();
   ///             myRecorder = null;
   ///         }
   ///         super.dispose();
@@ -354,24 +353,24 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   ///
   /// You may not openAudioSession many recorders without releasing them.
   ///
-  /// `openAudioSession()` and `closeAudioSession()` return Futures.
+  /// `openRecorder()` and `closeRecorder()` return Futures.
   /// You do not need to wait the end of the initialization before [startRecorder()].
-  /// [startRecorder] will automaticaly wait the end of `openAudioSession()` before starting the recorder.
+  /// [startRecorder] will automaticaly wait the end of `openRecorder()` before starting the recorder.
   ///
   /// The four optional parameters are used if you want to control the Audio Focus. Please look to [FlutterSoundRecorder openAudioSession()](Recorder.md#openaudiosession-and-closeaudiosession) to understand the meaning of those parameters
   ///
   /// *Example:*
   /// ```dart
-  ///     myRecorder = await FlutterSoundRecorder().openAudioSession();
+  ///     myRecorder = await FlutterSoundRecorder().openRecorder();
   ///
   ///     ...
   ///     (do something with myRecorder)
   ///     ...
   ///
-  ///     myRecorder.closeAudioSession();
+  ///     myRecorder.closeRecorder();
   ///     myRecorder = null;
   /// ```
-  Future<FlutterSoundRecorder?> openAudioSession() async {
+  Future<FlutterSoundRecorder?> openRecorder() async {
     if (_isInited != Initialized.notInitialized) {
       return this;
     }
@@ -426,7 +425,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// You must close your recorder when you have finished with it, for releasing the resources.
   /// Delete all the temporary files created with `startRecorder()`
 
-  Future<void> closeAudioSession() async {
+  Future<void> closeRecorder() async {
     _logger.d('FS:---> closeAudioSession ');
     await _lock.synchronized(() async {
       await _closeAudioSession();

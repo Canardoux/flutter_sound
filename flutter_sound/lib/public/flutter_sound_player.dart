@@ -470,24 +470,23 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   /// Open the Player.
   ///
-  /// A player must be opened before used. A player correspond to an Audio Session. With other words, you must *open* the Audio Session before using it.
-  /// When you have finished with a Player, you must close it. With other words, you must close your Audio Session.
-  /// Opening a player takes resources inside the OS. Those resources are freed with the verb `closeAudioSession()`.
+  /// A player must be opened before used.
+  /// Opening a player takes resources inside the OS. Those resources are freed with the verb `closePlayer()`.
   /// Returns a Future, but the App does not need to wait the completion of this future before doing a [startPlayer()].
   /// The Future will be automaticaly waited by [startPlayer()]
   ///
   /// *Example:*
   /// ```dart
-  ///     myPlayer = await FlutterSoundPlayer().openAudioSession();
+  ///     myPlayer = await FlutterSoundPlayer().openPlayer();
   ///
   ///     ...
   ///     (do something with myPlayer)
   ///     ...
   ///
-  ///     await myPlayer.closeAudioSession();
+  ///     await myPlayer.closePlayer();
   ///     myPlayer = null;
   /// ```
-  Future<FlutterSoundPlayer?> openAudioSession() async {
+  Future<FlutterSoundPlayer?> openPlayer() async {
     if (_isInited != Initialized.notInitialized) {
       return this;
     }
@@ -558,7 +557,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///         super.dispose();
   /// }
   /// ```
-  Future<void> closeAudioSession() async {
+  Future<void> closePlayer() async {
     await _lock.synchronized(() async {
       await _closeAudioSession();
     });

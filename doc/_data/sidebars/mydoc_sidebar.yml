@@ -133,20 +133,12 @@ entries:
           url: /tau_api_player_setLogLevel.html
           output: web, pdf
 
-        - title: openAudioSession()
+        - title: openPlayer()
           url: /tau_api_player_open_audio_session.html
-          output: web, pdf
-
-        - title: setAudioFocus()
-          url: /tau_api_player_set_audio_focus.html
           output: web, pdf
 
         - title: startPlayer()
           url: /tau_api_player_startPlayer.html
-          output: web, pdf
-
-        - title: startPlayerFromTrack()
-          url: /tau_api_player_start_player_from_track.html
           output: web, pdf
 
         - title: startPlayerFromMic()
@@ -209,14 +201,6 @@ entries:
           url: /tau_api_player_get_progress.html
           output: web, pdf
 
-        - title: setUIProgressBar()
-          url: /tau_api_player_set_ui_progress_bar.html
-          output: web, pdf
-
-        - title: nowPlaying()
-          url: /tau_api_player_now_playing.html
-          output: web, pdf
-
         - title: setSubscriptionDuration()
           url: /tau_api_player_set_subscription_duration.html
           output: web, pdf
@@ -236,12 +220,8 @@ entries:
           url: /tau_api_recorder_setLogLevel.html
           output: web, pdf
 
-        - title: openAudioSession()
+        - title: openRecorder()
           url: /tau_api_recorder_open_audio_session.html
-          output: web, pdf
-
-        - title: setAudioFocus()
-          url: /tau_api_recorder_set_audio_focus.html
           output: web, pdf
 
         - title: startRecorder()
@@ -296,10 +276,6 @@ entries:
           url: /tau_api_utilities_setLogLevel.html
           output: web, pdf
 
-        - title: convertFile()
-          url: /tau_api_utilities_convert_file.html
-          output: web, pdf
-
         - title: pcmToWave()
           url: /tau_api_utilities_pcm_to_wave.html
           output: web, pdf
@@ -320,25 +296,6 @@ entries:
           url: /tau_api_utilities_duration.html
           output: web, pdf
 
-        - title: isFFmpegAvailable()
-          url: /tau_api_utilities_is_ffmpeg_available.html
-          output: web, pdf
-
-        - title: executeFFmpegWithArguments()
-          url: /tau_api_utilities_execute_ffmpeg_with_arguments.html
-          output: web, pdf
-
-        - title: getLastFFmpegReturnCode()
-          url: /tau_api_utilities_get_last_ffmpeg_return_code.html
-          output: web, pdf
-
-        - title: getLastFFmpegCommandOutput()
-          url: /tau_api_utilities_get_last_ffmpeg_command_output.html
-          output: web, pdf
-
-        - title: FFmpegGetMediaInformation()
-          url: /tau_api_utilities_ffmpeg_get_media_information.html
-          output: web, pdf
 
 
 # -----------
@@ -445,11 +402,7 @@ entries:
       url: /flutter_sound_examples_stream_loop.html
       output: web, pdf
 
-    - title: Convert
-      url: /flutter_sound_examples_convert.html
-      output: web, pdf
-
-    - title: Set Log Level
+     - title: Set Log Level
       url: /flutter_sound_examples_setLogLevel.html
       output: web, pdf
 

@@ -26,20 +26,16 @@ const IS_PLAYER_PLAYING = 1;
 const IS_PLAYER_PAUSED = 2;
 
 const CB_updateProgress = 0;
-const CB_pause = 1;
-const CB_resume = 2;
-const CB_skipBackward = 3;
-const CB_skipForward = 4;
-const CB_updatePlaybackState = 5;
-const CB_needSomeFood = 6;
-const CB_audioPlayerFinished = 7;
-const CB_startPlayerCompleted = 8;
-const CB_pausePlayerCompleted = 9;
-const CB_resumePlayerCompleted = 10;
-const CB_stopPlayerCompleted = 11;
-const CB_openPlayerCompleted = 12;
-const CB_closePlayerCompleted = 13;
-const CB_player_log = 14;
+const CB_updatePlaybackState = 1;
+const CB_needSomeFood = 2;
+const CB_audioPlayerFinished = 3;
+const CB_startPlayerCompleted = 4;
+const CB_pausePlayerCompleted = 5;
+const CB_resumePlayerCompleted = 6;
+const CB_stopPlayerCompleted = 7;
+const CB_openPlayerCompleted = 8;
+const CB_closePlayerCompleted = 9;
+const CB_player_log = 10;
 
 var instanceNumber = 1;
 
@@ -87,6 +83,7 @@ class FlutterSoundPlayer {
 
                                 onload: function () {
                                         me.callbackTable[CB_player_log](me.callback, DBG, 'onload');
+					me.howl.play();
                                 },
 
                                 onplay: function () {
@@ -148,9 +145,7 @@ class FlutterSoundPlayer {
                 if (this.latentSeek != null && this.latentSeek >= 0)
                         this.seekToPlayer(this.latentSeek);
                 this.pauseResume = IS_PLAYER_PLAYING;
-                howl.play();
-                //this.callback.startPlayerCompleted(howl.duration());
-                //this.status = IS_PLAYER_PLAYING; // Not very good : in fact the player is not really yet playing
+                // howl.play(); // This now done in 'onload'
                 this.callbackTable[CB_player_log](this.callback, DBG, 'JS: <--- playAudioFromURL');
                 return this.getPlayerState();
         }

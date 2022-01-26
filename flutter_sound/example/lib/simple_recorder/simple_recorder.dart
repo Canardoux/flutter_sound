@@ -18,6 +18,7 @@
  */
 
 import 'dart:async';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -68,7 +69,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
 
   @override
   void initState() {
-    _mPlayer!.openAudioSession().then((value) {
+    _mPlayer!.openPlayer().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
@@ -84,10 +85,10 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
 
   @override
   void dispose() {
-    _mPlayer!.closeAudioSession();
+    _mPlayer!.closePlayer();
     _mPlayer = null;
 
-    _mRecorder!.closeAudioSession();
+    _mRecorder!.closeRecorder();
     _mRecorder = null;
     super.dispose();
   }
@@ -99,7 +100,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
         throw RecordingPermissionException('Microphone permission not granted');
       }
     }
-    await _mRecorder!.openAudioSession();
+    await _mRecorder!.openRecorder();
     if (!await _mRecorder!.isEncoderSupported(_codec) && kIsWeb) {
       _codec = Codec.opusWebM;
       _mPath = 'tau_file.webm';
@@ -108,6 +109,23 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
         return;
       }
     }
+    final session = await AudioSession.instance;
+    await session.configure(AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.allowBluetooth | AVAudioSessionCategoryOptions.defaultToSpeaker,
+      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
+      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+      androidAudioAttributes: const AndroidAudioAttributes(
+        contentType: AndroidAudioContentType.speech,
+        flags: AndroidAudioFlags.none,
+        usage: AndroidAudioUsage.voiceCommunication,
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+      androidWillPauseWhenDucked: true,
+    ));
+
+
     _mRecorderIsInited = true;
   }
 

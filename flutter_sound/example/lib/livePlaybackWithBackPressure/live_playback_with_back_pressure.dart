@@ -65,7 +65,7 @@ class _LivePlaybackWithBackPressureState
     super.initState();
     // Be careful : openAudioSession return a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    _mPlayer!.openAudioSession().then((value) {
+    _mPlayer!.openPlayer().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
@@ -75,7 +75,7 @@ class _LivePlaybackWithBackPressureState
   @override
   void dispose() {
     stopPlayer();
-    _mPlayer!.closeAudioSession();
+    _mPlayer!.closePlayer();
     _mPlayer = null;
 
     super.dispose();

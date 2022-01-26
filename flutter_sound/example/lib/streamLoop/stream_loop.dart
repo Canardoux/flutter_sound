@@ -18,6 +18,7 @@
  */
 
 import 'dart:async';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
@@ -49,8 +50,25 @@ class _StreamLoopState extends State<StreamLoop> {
   bool _isInited = false;
 
   Future<void> init() async {
-    await _mRecorder!.openAudioSession();
-    await _mPlayer!.openAudioSession();
+    await _mRecorder!.openRecorder();
+    await _mPlayer!.openPlayer();
+    final session = await AudioSession.instance;
+    await session.configure(AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.allowBluetooth | AVAudioSessionCategoryOptions.defaultToSpeaker,
+      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
+      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+      androidAudioAttributes: const AndroidAudioAttributes(
+        contentType: AndroidAudioContentType.speech,
+        flags: AndroidAudioFlags.none,
+        usage: AndroidAudioUsage.voiceCommunication,
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+      androidWillPauseWhenDucked: true,
+    ));
+
+
   }
 
   @override
@@ -67,11 +85,11 @@ class _StreamLoopState extends State<StreamLoop> {
 
   Future<void> release() async {
     await stopPlayer();
-    await _mPlayer!.closeAudioSession();
+    await _mPlayer!.closePlayer();
     _mPlayer = null;
 
     await stopRecorder();
-    await _mRecorder!.closeAudioSession();
+    await _mRecorder!.closeRecorder();
     _mRecorder = null;
   }
 

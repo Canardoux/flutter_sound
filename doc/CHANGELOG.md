@@ -9,12 +9,12 @@ toc: false
 ---
 ## 9.0.0
 
-- Remove the Service declaration in the Android code
+- Remove the Service declaration in the Android code (problem with compatibility with other libraries like `AudioService`). [#340](https://github.com/Canardoux/flutter_sound/issues/340)
 - Remove the Track Player : startPlayerFromTrack(), nowPlaying(), setUIProgressBar().
 - Remove the concept of LITE and FULL flavor : now we build just one flavor without any link with FlutterFFMPEG.
 - Remove the utilities which use FFmpeg : isFFmpegAvailable(), executeFFmpegWithArguments(), getLastFFmpegReturnCode(), getLastFFmpegCommandOutput(), ffMpegGetMediaInformation(), duration(), convertFile()
-- Remove the WidgetUI example
 - Remove the old WidgetUI
+- Remove the Audio Sessions Management inside Flutter Sound (problem with compatibility with other libraries like `AudioSessions`). [#825](https://github.com/Canardoux/flutter_sound/issues/825)
 
 ## 8.5.0
 

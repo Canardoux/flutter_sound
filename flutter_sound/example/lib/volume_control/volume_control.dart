@@ -55,13 +55,13 @@ class _VolumeControlState extends State<VolumeControl> {
   @override
   void initState() {
     super.initState();
-    _mPlayer1.openAudioSession().then((value) {
+    _mPlayer1.openPlayer().then((value) {
       setState(() {
         _mPlayerIsInited1 = true;
       });
     });
 
-    _mPlayer2.openAudioSession().then((value) {
+    _mPlayer2.openPlayer().then((value) {
       setState(() {
         _mPlayerIsInited2 = true;
       });
@@ -74,8 +74,8 @@ class _VolumeControlState extends State<VolumeControl> {
     stopPlayer(_mPlayer2);
 
     // Be careful : you must `close` the audio session when you have finished with it.
-    _mPlayer1.closeAudioSession();
-    _mPlayer2.closeAudioSession();
+    _mPlayer1.closePlayer();
+    _mPlayer2.closePlayer();
 
     super.dispose();
   }

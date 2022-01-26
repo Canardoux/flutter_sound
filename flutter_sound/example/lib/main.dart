@@ -312,7 +312,7 @@ Shows how to change the loglevel during an audio session.
   Example(
     title: 'StreamLoopJustAudio()',
     subTitle: 'JustAudio cohabitation',
-    flags: 0,
+    flags: tNotWeb,
     route: (_) => StreamLoopJustAudio(),
     description: '''
     ```

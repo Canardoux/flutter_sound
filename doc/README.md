@@ -10,9 +10,6 @@ summary: The Flutter Sound documentation.
 {% include image.html file="banner.png"  caption="The Flutter Sound Project" %}
 
 ![pub version](https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square)
-{% include tip.html content="
-This is the MPL branch of Flutter Sound. If you are developing a GPL App, you probably want to consider using
-the [GPL τ Sound 9.0](https://tau.canardoux.xyz/readme.html) fork, because it has (or will have) several great enhancements."%}
 
 Flutter Sound is a set of libraries which deal with audio :
 
@@ -98,7 +95,6 @@ To solve this issue, we forked Flutter Sound 8.3 to two different branches.
 Flutter Sound is copyrighted by Dooboolab (2018, 2019, 2020, 2021).
 
 * Flutter Sound is now released under the permissive Mozilla license which has a **weak** *copyleft* clause: if you modify some of Flutter Sound code you must publish your modifications under the MPL license too. But you may publish your App with any license you want. Even a Proprietary/Close Sources License (shame on you!).
-* If your App is covered by the GPL license, you probably want to consider using the GPL [Tau Sound Project 9.0](https://tau.canardoux.xyz/readme.html) : indeed Tau Sound 9.0 offers several enhancement compared to Flutter Sound 8.3.
 
 ## We need help
 

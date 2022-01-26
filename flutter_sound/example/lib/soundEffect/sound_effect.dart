@@ -57,7 +57,7 @@ class _SoundEffectState extends State<SoundEffect> {
   }
 
   Future<void> init() async {
-    await _mPlayer!.openAudioSession();
+    await _mPlayer!.openPlayer();
     bimData = FlutterSoundHelper().waveToPCMBuffer(
       inputBuffer: await getAssetData(_bim),
     );
@@ -85,7 +85,7 @@ class _SoundEffectState extends State<SoundEffect> {
   @override
   void dispose() {
     _mPlayer!.stopPlayer();
-    _mPlayer!.closeAudioSession();
+    _mPlayer!.closePlayer();
     _mPlayer = null;
 
     super.dispose();

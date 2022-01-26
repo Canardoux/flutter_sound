@@ -40,6 +40,7 @@ dependencies:
   #flutter_ffmpeg: ^0.3.1
   intl: ^0.17.0
   just_audio: ^0.9.11
+  audio_session: ^0.1.6
 
 
 
@@ -90,9 +91,9 @@ flutter:
   - res/icons/3.0x/ic_volume_up.png
 
   - assets/
-  #- assets/samples/
+  - assets/samples/
   - assets/noises/
-  - assets/extract/
+  #- assets/extract/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

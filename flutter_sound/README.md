@@ -1,16 +1,3 @@
-This is the MPL branch of Flutter Sound. If you are developing a GPL App, you probably want to consider using
-the [`GPL τ Sound 9.0` fork](https://pub.dev/packages/tau_sound), because it has (or will have) several great enhancements :
-
-- A new cleaner API
-- Better Web Support
-- A port to React Native (later)
-- A port to Microsoft Blazor (later)
-- A new class which will implement Audio Graphs (later)
-- Better PCM support
-- ... and soon perhaps other fantastic things 😉 
-
----------------------------------------------------------------------------------------------------------------------------------
-
 ![Banner](https://flutter-sound.canardoux.xyz/images/banner.png)
 
 - ## Flutter Sound user: your [documentation is there](https://flutter-sound.canardoux.xyz/readme.html)
@@ -34,9 +21,7 @@ Flutter Sound provides both a high level API and widgets for:
 
 Flutter Sound can be used to play a beep from an asset all the way up to implementing a complete media player.
 
-This project is one of the two forks of the famous LGPL Flutter Sound Project 8.3. (The other being the GPL [Tau Sound Project 9.0](https://pub.dev/packages/tau_sound).
-
-This fork is published under the Mozilla Public License MPL2.0. 
+This library is published under the Mozilla Public License MPL2.0. 
 
 If your App will be covered by the GPL License,
 you probably want to consider using the GPL [Tau Sound Project 9.0](https://pub.dev/packages/tau_sound) : Tau Sound 9.0 offers several enhancement compared to Flutter Sound 8.3.
@@ -76,7 +61,6 @@ The [documentation is here](https://flutter-sound.canardoux.xyz/readme.html)
 
 - Flutter Sound is copyrighted by Dooboolab (2018, 2019, 2020, 2021).
 - Flutter Sound is released under the permissive Mozilla license which has a **weak** *copyleft* clause: if you modify some of Flutter Sound code you must publish your modifications under the MPL license too. But you may publish your App with any license you want. Even a Proprietary/Close Sources License (shame on you!).
-- If your App is covered by the GPL license, you probably want to consider using the GPL [Tau Sound Project 9.0](https://pub.dev/packages/tau_sound) : indeed Tau Sound 9.0 offers several enhancement compared to Flutter Sound 8.3.
 
 ## Help
 

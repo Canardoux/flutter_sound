@@ -18,6 +18,7 @@
  */
 
 import 'dart:async';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -52,7 +53,25 @@ class _PlayFromMicState extends State<PlayFromMic> {
 
     // Be careful : openAudioSession returns a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    await _mPlayer!.openAudioSession();
+    await _mPlayer!.openPlayer();
+
+    final session = await AudioSession.instance;
+    await session.configure(AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.allowBluetooth | AVAudioSessionCategoryOptions.defaultToSpeaker,
+      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
+      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+      androidAudioAttributes: const AndroidAudioAttributes(
+        contentType: AndroidAudioContentType.speech,
+        flags: AndroidAudioFlags.none,
+        usage: AndroidAudioUsage.voiceCommunication,
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+      androidWillPauseWhenDucked: true,
+    ));
+
+
     setState(() {
       _mPlayerIsInited = true;
     });
@@ -68,7 +87,7 @@ class _PlayFromMicState extends State<PlayFromMic> {
   void dispose() {
     stopPlayer();
     // Be careful : you must `close` the audio session when you have finished with it.
-    _mPlayer!.closeAudioSession();
+    _mPlayer!.closePlayer();
     _mPlayer = null;
 
     super.dispose();

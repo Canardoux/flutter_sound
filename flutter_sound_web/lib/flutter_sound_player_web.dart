@@ -45,7 +45,7 @@ class FlutterSoundPlayer
         external int releaseMediaPlayer();
 
         @JS('initializeMediaPlayer')
-        external int initializeMediaPlayer( int focus, int category, int mode, int? audioFlags, int device, bool? withUI);
+        external int initializeMediaPlayer( );
 
         @JS('setAudioFocus')
         external int setAudioFocus(int focus, int category, int mode, int? audioFlags, int device,);
@@ -96,10 +96,6 @@ class FlutterSoundPlayer
 List<Function> callbackTable =
 [
         allowInterop( (FlutterSoundPlayerCallback cb, int position, int duration)                       { cb.updateProgress(duration: duration, position: position,);} ),
-        allowInterop( (FlutterSoundPlayerCallback cb, int state)                                        { cb.pause(state,);} ),
-        allowInterop( (FlutterSoundPlayerCallback cb, int state)                                        { cb.resume(state,);} ),
-        allowInterop( (FlutterSoundPlayerCallback cb, int state)                                        { cb.skipBackward(state,);} ),
-        allowInterop( (FlutterSoundPlayerCallback cb, int state)                                        { cb.skipForward(state,);} ),
         allowInterop( (FlutterSoundPlayerCallback cb, int state)                                        { cb.updatePlaybackState(state,);} ),
         allowInterop( (FlutterSoundPlayerCallback cb, int ln)                                           { cb.needSomeFood(ln,);} ),
         allowInterop( (FlutterSoundPlayerCallback cb, int state)                                        { cb.audioPlayerFinished(state,);} ),
@@ -187,7 +183,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
 
 
         @override
-        Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device, bool? withUI}) async
+        Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, }) async
         {
                 // openAudioSessionCompleter = new Completer<bool>();
                 // await invokeMethod( callback, 'initializeMediaPlayer', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index, 'withUI': withUI ? 1 : 0 ,},) ;
@@ -202,7 +198,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                         assert(slotno == _slots.length);
                         _slots.add( newPlayerInstance(callback, callbackTable));
                 }
-                return _slots[slotno]!.initializeMediaPlayer( focus!.index,  category!.index, mode!.index, audioFlags, device!.index, withUI);
+                return _slots[slotno]!.initializeMediaPlayer( );
         }
 
 
@@ -215,13 +211,6 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                 return r;
         }
 
-
-
-        @override
-        Future<int> setAudioFocus(FlutterSoundPlayerCallback callback, {AudioFocus? focus, SessionCategory? category, SessionMode? mode, int? audioFlags, AudioDevice? device,} ) async
-        {
-                return getWebSession(callback)!.setAudioFocus(focus!.index, category!.index, mode!.index, audioFlags, device!.index);
-        }
 
 
         @override
@@ -297,23 +286,6 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
                 return getWebSession(callback)!.feed(data);
         }
 
-        @override
-        Future<int> startPlayerFromTrack(FlutterSoundPlayerCallback callback, {Duration? progress, Duration? duration, Map<String, dynamic>? track, bool? canPause, bool? canSkipForward, bool? canSkipBackward, bool? defaultPauseResume, bool? removeUIWhenStopped }) async
-        {
-                // startPlayerCompleter = new Completer<Map>();
-                // await invokeMethod( callback, 'startPlayerFromTrack', {'progress': progress, 'duration': duration, 'track': track, 'canPause': canPause, 'canSkipForward': canSkipForward, 'canSkipBackward': canSkipBackward,
-                //   'defaultPauseResume': defaultPauseResume, 'removeUIWhenStopped': removeUIWhenStopped,},);
-                // return  startPlayerCompleter.future ;
-                //
-                //return getWebSession(callback).startPlayerFromTrack( progress.inMilliseconds,  duration.inMilliseconds, track, canPause, canSkipForward, canSkipBackward, defaultPauseResume, removeUIWhenStopped);
-                return getWebSession(callback)!.startPlayer(track!['codec'],  track['dataBuffer'], track['path'], track['numChannels'], track['sampleRate']);
-          }
-
-        @override
-        Future<int> nowPlaying(FlutterSoundPlayerCallback callback,  {Duration? progress, Duration? duration, Map<String, dynamic>? track, bool? canPause, bool? canSkipForward, bool? canSkipBackward, bool? defaultPauseResume, }) async
-        {
-                return getWebSession(callback)!.nowPlaying(progress!.inMilliseconds, duration!.inMilliseconds, track, canPause, canSkipForward, canSkipBackward, defaultPauseResume);
-        }
 
         @override
         Future<int> stopPlayer(FlutterSoundPlayerCallback callback,  ) async
@@ -347,12 +319,6 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
         Future<int> setSpeed(FlutterSoundPlayerCallback callback,  {required double speed}) async
         {
                 return getWebSession(callback)!.setSpeed(speed);
-        }
-
-        @override
-        Future<int> setUIProgressBar(FlutterSoundPlayerCallback callback, {Duration? duration, Duration? progress,}) async
-        {
-                return getWebSession(callback)!.setUIProgressBar(duration!.inMilliseconds, progress!.inMilliseconds);
         }
 
         Future<String> getResourcePath(FlutterSoundPlayerCallback callback, ) async

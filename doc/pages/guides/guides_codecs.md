@@ -16,14 +16,14 @@ Actually, the following codecs are supported by flutter\_sound:
 |  | iOS encoder | iOS decoder | Android encoder | Android decoder |
 | :--- | :---: | :---: | :---: | :---: |
 | AAC ADTS | ✅ | ✅ | ✅ \(1\) | ✅ |
-| Opus OGG | ✅ \(\*\) | ✅ \(\*\) | ❌ | ✅ \(1\) |
-| Opus CAF | ✅ | ✅ | ❌ | ✅ \(\*\) \(1\) |
+| Opus OGG | ❌ | ❌ | ❌ | ✅ \(1\) |
+| Opus CAF | ✅ | ✅ | ❌ | ❌ |
 | MP3 | ❌ | ✅ | ❌ | ✅ |
 | Vorbis OGG | ❌ | ❌ | ❌ | ✅ |
 | PCM16 | ✅ | ✅ | ✅ \(1\) | ✅ |
 | PCM Wave | ✅ | ✅ | ✅ \(1\) | ✅ |
-| PCM AIFF | ❌ | ✅ | ❌ | ✅ \(\*\) |
-| PCM CAF | ✅ | ✅ | ❌ | ✅ \(\*\) |
+| PCM AIFF | ❌ | ✅ | ❌ | ❌ |
+| PCM CAF | ✅ | ✅ | ❌ | ❌ |
 | FLAC | ✅ | ✅ | ❌ | ✅ |
 | AAC MP4 | ✅ | ✅ | ✅ \(1\) | ✅ |
 | AMR NB | ❌ | ❌ | ✅ \(1\) | ✅ |
@@ -31,14 +31,11 @@ Actually, the following codecs are supported by flutter\_sound:
 | PCM8 | ❌ | ❌ | ❌ | ❌ |
 | PCM F32 | ❌ | ❌ | ❌ | ❌ |
 | PCM WEBM | ❌ | ❌ | ❌ | ❌ |
-| Opus WEBM | ❌ | ❌ | ✅ | ✅ |
+| Opus WEBM | ❌ | ❌ | ❌ | ✅ |
 | Vorbis WEBM | ❌ | ❌ | ❌ | ✅ |
 
 This table will eventually be upgraded when more codecs will be added.
 
-* ✅ \(\*\) : The codec is supported by Flutter Sound, but with a File Format Conversion. This has several drawbacks :
-  * Needs FFmpeg. FFmpeg is not included in the LITE flavor of Flutter Sound
-  * Can add some delay before Playing Back the file, or after stopping the recording. This delay can be substancial for very large records.
 * ✅ \(1\) : needs MinSDK &gt;=23
 
 ### On Web browsers
@@ -64,7 +61,7 @@ This table will eventually be upgraded when more codecs will be added.
 | Opus WEBM | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |  |
 | Vorbis WEBM | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |  |
 
-* On Webkit (Safari and all browsers on iOS can only record MP4.
-* Opus WEBM is a great Codec. It works on everything \(mobile and Web Browsers\), except Apple
+* On Webkit (Safari and all browsers on iOS) we can only record MP4.
+* Opus WEBM is a great Codec. It works on everything \(mobile and Web Browsers\), except Apple :-(
 * Edge is same as Chrome
 

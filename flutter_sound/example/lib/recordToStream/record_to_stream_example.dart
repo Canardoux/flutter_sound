@@ -19,6 +19,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
@@ -58,7 +59,25 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     if (status != PermissionStatus.granted) {
       throw RecordingPermissionException('Microphone permission not granted');
     }
-    await _mRecorder!.openAudioSession();
+    await _mRecorder!.openRecorder();
+
+    final session = await AudioSession.instance;
+    await session.configure(AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.allowBluetooth | AVAudioSessionCategoryOptions.defaultToSpeaker,
+      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
+      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+      androidAudioAttributes: const AndroidAudioAttributes(
+        contentType: AndroidAudioContentType.speech,
+        flags: AndroidAudioFlags.none,
+        usage: AndroidAudioUsage.voiceCommunication,
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+      androidWillPauseWhenDucked: true,
+    ));
+
+
     setState(() {
       _mRecorderIsInited = true;
     });
@@ -69,7 +88,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     super.initState();
     // Be careful : openAudioSession return a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    _mPlayer!.openAudioSession().then((value) {
+    _mPlayer!.openPlayer().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
@@ -80,11 +99,11 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   @override
   void dispose() {
     stopPlayer();
-    _mPlayer!.closeAudioSession();
+    _mPlayer!.closePlayer();
     _mPlayer = null;
 
     stopRecorder();
-    _mRecorder!.closeAudioSession();
+    _mRecorder!.closeRecorder();
     _mRecorder = null;
     super.dispose();
   }

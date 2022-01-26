@@ -19,13 +19,25 @@ It has also 7 optional parameters to specify :
 - codec: The codec to be used. Please refer to the [Codec compatibility Table](guides_codec) to know which codecs are currently supported.
 - toFile: a path to the file being recorded or the name of a temporary file (without slash '/').
 - toStream: if you want to record to a Dart Stream. Please look to [the following notice](guides_record_stream). **This new functionnality needs, at least, Android SDK >= 21 (23 is better)**
-- sampleRate: The sample rate in Hertz
 - numChannels: The number of channels (1=monophony, 2=stereophony)
+- sampleRate: The sample rate in Hertz (for PCM)
 - bitRate: The bit rate in Hertz
-- audioSource : possible value is :
+- audioSource : (only on Android, ignored on iOS and web. Possible values are :
    - defaultSource
    - microphone
-   - voiceDownlink *(if someone can explain me what it is, I will be grateful ;-) )*
+   - voiceDownlink
+   - camCorder
+   - remote_submix
+   - unprocessed
+   - voice_call
+   - voice_communication
+   - voice_performance
+   - voice_recognition
+   - voiceUpLink
+   - bluetoothHFP
+   - headsetMic
+   - lineIn
+
 
 [path_provider](https://pub.dev/packages/path_provider) can be useful if you want to get access to some directories on your device.
 To record a temporary file, the App can specify the name of this temporary file (without slash) instead of a real path.

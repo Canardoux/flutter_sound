@@ -22,6 +22,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data' show Uint8List;
 
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -225,8 +226,8 @@ class _MyAppState extends State<Demo> {
   IOSink? sink;
 
   Future<void> _initializeExample() async {
-    await playerModule.closeAudioSession();
-    await playerModule.openAudioSession();
+    await playerModule.closePlayer();
+    await playerModule.openPlayer();
     await playerModule.setSubscriptionDuration(Duration(milliseconds: 10));
     await recorderModule.setSubscriptionDuration(Duration(milliseconds: 10));
     await initializeDateFormatting();
@@ -240,7 +241,8 @@ class _MyAppState extends State<Demo> {
         throw RecordingPermissionException('Microphone permission not granted');
       }
     }
-    await recorderModule.openAudioSession();
+    await recorderModule.openRecorder();
+
     if (!await recorderModule.isEncoderSupported(_codec) && kIsWeb) {
       _codec = Codec.opusWebM;
     }
@@ -253,6 +255,22 @@ class _MyAppState extends State<Demo> {
     if ((!kIsWeb) && Platform.isAndroid) {
       await copyAssets();
     }
+
+    final session = await AudioSession.instance;
+    await session.configure(AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.allowBluetooth | AVAudioSessionCategoryOptions.defaultToSpeaker,
+      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
+      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+      androidAudioAttributes: const AndroidAudioAttributes(
+        contentType: AndroidAudioContentType.speech,
+        flags: AndroidAudioFlags.none,
+        usage: AndroidAudioUsage.voiceCommunication,
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+      androidWillPauseWhenDucked: true,
+    ));
   }
 
   Future<void> copyAssets() async {
@@ -308,8 +326,8 @@ class _MyAppState extends State<Demo> {
 
   Future<void> releaseFlauto() async {
     try {
-      await playerModule.closeAudioSession();
-      await recorderModule.closeAudioSession();
+      await playerModule.closePlayer();
+      await recorderModule.closeRecorder();
     } on Exception {
       playerModule.logger.e('Released unsuccessful');
     }
