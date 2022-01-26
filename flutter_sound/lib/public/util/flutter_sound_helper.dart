@@ -29,12 +29,9 @@ library helper;
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart' show Level, Logger;
 
-import '../../flutter_sound.dart';
 import 'wave_header.dart';
-import 'package:path_provider/path_provider.dart';
 
 /// The FlutterSoundHelper singleton for accessing the helpers functions
 FlutterSoundHelper flutterSoundHelper =
@@ -45,7 +42,6 @@ FlutterSoundHelper flutterSoundHelper =
 class FlutterSoundHelper {
   /// The FlutterSoundHelper Logger
   Logger logger = Logger(level: Level.debug);
-
 
 // -------------------------------------------------------------------------------------------------------------
 
@@ -62,7 +58,6 @@ class FlutterSoundHelper {
   void setLogLevel(Level theNewLogLevel) {
     logger = Logger(level: theNewLogLevel);
   }
-
 
   /// Convert a WAVE file to a Raw PCM file.
   ///
@@ -167,18 +162,5 @@ class FlutterSoundHelper {
     await sink.close();
     await controller.close();
     return Uint8List.fromList(buffer);
-  }
-
-  Future<String> _getPath(String? path) async {
-    if (path == null) {
-      return '';
-    }
-    final index = path.indexOf('/');
-    if (index >= 0) {
-      return path;
-    }
-    var tempDir = await getTemporaryDirectory();
-    var tempPath = tempDir.path;
-    return tempPath + '/' + path;
   }
 }

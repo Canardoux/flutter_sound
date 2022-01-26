@@ -492,8 +492,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
     FlutterSoundPlayer? r;
     await _lock.synchronized(() async {
-      r = await _openAudioSession(
-      );
+      r = await _openAudioSession();
     });
     return r;
   }
@@ -522,8 +521,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _openPlayerCompleter = Completer<FlutterSoundPlayer>();
     completer = _openPlayerCompleter;
     try {
-      var state = await FlutterSoundPlayerPlatform.instance.openPlayer(this,
-          logLevel: _logLevel,
+      var state = await FlutterSoundPlayerPlatform.instance.openPlayer(
+        this,
+        logLevel: _logLevel,
       );
       _playerState = PlayerState.values[state];
       //isInited = success ?  Initialized.fullyInitialized : Initialized.notInitialized;
@@ -534,8 +534,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _logger.d('FS:<--- openAudioSession');
     return completer!.future;
   }
-
-
 
   /// Close an open session.
   ///
@@ -651,8 +649,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
 
-      result = await FlutterSoundPlayerPlatform.instance
-          .isDecoderSupported(this, codec: codec);
+    result = await FlutterSoundPlayerPlatform.instance
+        .isDecoderSupported(this, codec: codec);
     _logger.d('FS:<--- isDecoderSupported ');
     return result;
   }
@@ -688,7 +686,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _playerController?.close();
     _playerController = null;
   }
-
 
   /// Used to play a sound.
   //
@@ -1051,7 +1048,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return 0;
   }
 
-
   /// Stop a playback.
   ///
   /// This verb never throw any exception. It is safe to call it everywhere,
@@ -1307,7 +1303,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _playerState = PlayerState.values[state];
     _logger.d('FS:<--- _setSpeed ');
   }
-
 
   /// Get the resource path.
   ///

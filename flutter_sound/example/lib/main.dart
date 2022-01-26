@@ -105,7 +105,6 @@ This Demo does not make use of the Flutter Sound UI Widgets.
 
 It would be really great if someone rewrite this demo soon'''),
 
-
   Example(
     title: 'simplePlayback',
     subTitle: 'A very simple example',
@@ -296,7 +295,6 @@ This example does not use a new StreamController, but use directly `foodStreamCo
 from flutter_sound_player.dart.
 ''',
   ),
-
 
   Example(
     title: 'setLogLevel()',

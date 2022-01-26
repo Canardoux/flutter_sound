@@ -22,21 +22,15 @@ library recorder;
 
 import 'dart:async';
 import 'dart:core';
-import 'dart:io';
-import 'dart:io' show Platform;
 import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:logger/logger.dart' show Level, Logger;
 import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
-import 'package:path_provider/path_provider.dart';
 import 'package:synchronized/synchronized.dart';
 
 import '../flutter_sound.dart';
-import 'util/flutter_sound_helper.dart';
 
 /// A Recorder is an object that can playback from various sources.
 ///
@@ -500,8 +494,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     // - encode CAF/OPPUS (with native Apple AVFoundation)
     // - remux CAF file format to OPUS file format (with ffmpeg)
 
-       result = await FlutterSoundRecorderPlatform.instance
-          .isEncoderSupported(this, codec: codec);
+    result = await FlutterSoundRecorderPlatform.instance
+        .isEncoderSupported(this, codec: codec);
     return result;
   }
 
@@ -753,8 +747,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
     try {
       r = await _stop();
-
-
     } on Exception catch (e) {
       _logger.e(e);
     }

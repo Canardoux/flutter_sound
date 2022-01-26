@@ -51,7 +51,7 @@
     },
     {
       "name": "flutter_sound_platform_interface",
-      "rootUri": "file:///Volumes/mac-J/larpoux/.pub-cache/hosted/pub.dartlang.org/flutter_sound_platform_interface-8.5.0",
+      "rootUri": "file:///Volumes/mac-J/larpoux/.pub-cache/hosted/pub.dartlang.org/flutter_sound_platform_interface-9.0.0-beta-2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -84,12 +84,6 @@
       "rootUri": "file:///Volumes/mac-J/larpoux/.pub-cache/hosted/pub.dartlang.org/matcher-0.12.11",
       "packageUri": "lib/",
       "languageVersion": "2.12"
-    },
-    {
-      "name": "material_color_utilities",
-      "rootUri": "file:///Volumes/mac-J/larpoux/.pub-cache/hosted/pub.dartlang.org/material_color_utilities-0.1.3",
-      "packageUri": "lib/",
-      "languageVersion": "2.13"
     },
     {
       "name": "meta",
@@ -153,7 +147,7 @@
     },
     {
       "name": "test_api",
-      "rootUri": "file:///Volumes/mac-J/larpoux/.pub-cache/hosted/pub.dartlang.org/test_api-0.4.8",
+      "rootUri": "file:///Volumes/mac-J/larpoux/.pub-cache/hosted/pub.dartlang.org/test_api-0.4.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -176,7 +170,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2022-01-18T09:49:25.737413Z",
+  "generated": "2022-01-26T17:57:08.854967Z",
   "generator": "pub",
-  "generatorVersion": "2.16.0-134.1.beta"
+  "generatorVersion": "2.15.1"
 }

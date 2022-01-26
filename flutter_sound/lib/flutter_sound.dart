@@ -49,7 +49,6 @@ export 'public/flutter_sound_player.dart';
 export 'public/flutter_sound_recorder.dart';
 export 'public/tau.dart';
 
-
 ///
 ///library util;
 export 'public/util/flutter_sound_helper.dart';

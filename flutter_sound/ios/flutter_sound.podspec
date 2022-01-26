@@ -3,7 +3,7 @@
 #
 Pod::Spec.new do |s|
 s.name = 'flutter_sound'
-  s.version          = '8.5.0'
+  s.version          = '9.0.0-beta-2'
   s.summary          = 'Flutter plugin that relates to sound like audio and recorder.'
   s.description      = <<-DESC
 Flutter plugin that relates to sound like audio and recorder.
@@ -18,5 +18,5 @@ Flutter plugin that relates to sound like audio and recorder.
 
   s.ios.deployment_target = '10.0'
   s.static_framework = true
-  s.dependency 'flutter_sound_core', '8.5.0'
+  s.dependency 'flutter_sound_core', '9.0.0-beta-2'
 end

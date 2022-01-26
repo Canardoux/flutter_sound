@@ -11,6 +11,7 @@ VERSION_CODE=${VERSION#./}
 VERSION_CODE=${VERSION_CODE#+/}
 
 bin/setver.sh $VERSION
+bin/reldev.sh REL
 bin/web.sh
 
 cd flutter_sound

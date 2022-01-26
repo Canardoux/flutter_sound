@@ -220,7 +220,6 @@ class _MyAppState extends State<Demo> {
   bool? _encoderSupported = true; // Optimist
   bool _decoderSupported = true; // Optimist
 
-
   double? _duration;
   StreamController<Food>? recordingDataController;
   IOSink? sink;
@@ -259,9 +258,12 @@ class _MyAppState extends State<Demo> {
     final session = await AudioSession.instance;
     await session.configure(AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.allowBluetooth | AVAudioSessionCategoryOptions.defaultToSpeaker,
+      avAudioSessionCategoryOptions:
+          AVAudioSessionCategoryOptions.allowBluetooth |
+              AVAudioSessionCategoryOptions.defaultToSpeaker,
       avAudioSessionMode: AVAudioSessionMode.spokenAudio,
-      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionRouteSharingPolicy:
+          AVAudioSessionRouteSharingPolicy.defaultPolicy,
       avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
       androidAudioAttributes: const AndroidAudioAttributes(
         contentType: AndroidAudioContentType.speech,
@@ -824,7 +826,6 @@ class _MyAppState extends State<Demo> {
       return null;
     }
 
-
     // Disable the button if the selected codec is not supported
     if (!(_decoderSupported || _codec == Codec.pcm16)) {
       return null;
@@ -865,7 +866,6 @@ class _MyAppState extends State<Demo> {
       _codec = codec;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
