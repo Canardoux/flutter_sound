@@ -24,7 +24,6 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:typed_data';
 
-import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:logger/logger.dart' show Level, Logger;
 import 'package:path/path.dart' as p;

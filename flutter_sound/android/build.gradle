@@ -1,6 +1,6 @@
 
 group 'com.dooboolab.fluttersound'
-version '9.0.0-2'
+version '9.0.0-3'
 
 buildscript {
     repositories {
@@ -53,7 +53,7 @@ dependencies {
     // CAUTION: The following instruction is for developping and debugging the Flauto Engine
     // DO NOT INCLUDE THE FOLLOWING LINE IN A REAL APP !!!
     //implementation project(':flutter_sound_core')
-    implementation 'com.github.canardoux:flutter_sound_core:9.0.0-2'
+    implementation 'com.github.canardoux:flutter_sound_core:9.0.0-3'
     // -------------------------------------------------------------------------------------
 
 }
