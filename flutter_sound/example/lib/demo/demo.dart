@@ -220,7 +220,6 @@ class _MyAppState extends State<Demo> {
   bool? _encoderSupported = true; // Optimist
   bool _decoderSupported = true; // Optimist
 
-  double? _duration;
   StreamController<Food>? recordingDataController;
   IOSink? sink;
 
