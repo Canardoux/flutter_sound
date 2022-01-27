@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 9.1.0
+## 9.1.1
 
 - Flutter Sound on web : it is not necessary anymore to include the Flutter Sound library in the index.html file
 

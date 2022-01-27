@@ -3,7 +3,7 @@
 entries:
 - title: sidebar
   product: Flutter Sound
-  version: 9.1.0
+  version: 9.1.1
   folders:
 
   - title:
@@ -40,6 +40,10 @@ entries:
     - title: Development Setup
       url: /tau_dev.html
       output: web, pdf
+
+    - title: Taudio RFC
+      url: /taudio_rfc.html
+      output: web,pdf
 
 
 
