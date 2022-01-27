@@ -7,7 +7,11 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 9.0.0-5
+## 9.1.0
+
+- Flutter Sound on web : it is not necessary anymore to include the Flutter Sound library in the index.html file
+
+## 9.0.0
 
 - Remove the Service declaration in the Android code (problem with compatibility with other libraries like `AudioService`). [#340](https://github.com/Canardoux/flutter_sound/issues/340)
 - Remove the Track Player : startPlayerFromTrack(), nowPlaying(), setUIProgressBar().

@@ -12,37 +12,6 @@ Flutter Sound is now supported by Flutter Web \(with some limitations\). Please 
 
 You can play with [this live demo on the web](pages/flutter-sound/web_example/index.html).
 
-
-## Installation
-
-To use Flutter Sound in a web application, you can either :
-
-### Static reference
-
-Either add those 4 lines at the end of the `<head>` section of your `index.html` file :
-
-```xml
-  <script src="js/flutter_sound/flutter_sound.js"></script>
-  <script src="js/flutter_sound/flutter_sound_player.js"></script>
-  <script src="js/flutter_sound/flutter_sound_recorder.js"></script>
-  <script src="howler/howler.js"></script>
-```
-
-(of course the .js files must be put in the correct directory : i.e. js/flutter_sound and js/howler)
-
-### Dynamic reference
-
-or add those 4 lines at the end of the `<head>` section of your `index.html` file :
-
-```xml
-  <script src="https://cdn.jsdelivr.net/npm/flutter_sound_core@9/js/flutter_sound/flutter_sound.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flutter_sound_core@9/js/flutter_sound/flutter_sound_player.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flutter_sound_core@9/js/flutter_sound/flutter_sound_recorder.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/howler@2/dist/howler.min.js"></script>
-```
-
-Please [read this](https://www.jsdelivr.com/features) : replace `@9` by `@8` if you are linking with Flutter Sound v8.x.
-
 ```dart
 NoSuchMethodError: tried to call a non-function, such as null: 'dart.global.newRecorderInstance'
 ```
