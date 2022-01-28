@@ -161,7 +161,7 @@ if [ $? -ne 0 ]; then
     echo "Error"
     #exit -1
 fi
-dartdoc lib
+#dartdoc lib
 if [ $? -ne 0 ]; then
     echo "Error"
     #exit -1
@@ -173,7 +173,7 @@ if [ $? -ne 0 ]; then
     echo "Error"
     #exit -1
 fi
-dartdoc lib
+#dartdoc lib
 if [ $? -ne 0 ]; then
     echo "Error"
     #exit -1
