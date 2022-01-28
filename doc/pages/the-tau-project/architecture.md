@@ -54,7 +54,7 @@ The middle layer is the interface between the two other layers. This middle laye
 Its purpose is just for doing an interface. No real processing mus be done in this layer
 
 
-## Where are published all those blocs ?
+## Where to find information 
 
 - Flutter Sound is published on `pub.dev` under the project `flutter_sound`  (or `flauto`) and `flutter_sound_lite` (or `flauto_lite`).
 - The Flutter Sound Platform Interface is published on `pub.dev` under the project `flutter_sound_platform_interface` (or `flauto_platform_interface` ).
