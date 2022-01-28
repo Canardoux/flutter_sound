@@ -20,11 +20,11 @@ _Taudio Streams_ will implent this API under various frameworks :
 - React Native
 - ...
 
-## Motivations
+## Motivation for TAudio
 
 ### Flutter Sound is just a draft
 
-Flutter Sound has several API verbs to handle Audio Streams but very roughly:
+Flutter Sound has several API verbs to handle Audio Streams but comes with some limitations:
 
 - It does not support Flutter Web
 - It does not support GNU/Linux
@@ -41,17 +41,17 @@ Flutter Sound has several API verbs to handle Audio Streams but very roughly:
 During many months, we had the project to implement [Audio Graphs](/guides_graph.html) inside Flutter Sound.
 This project was called _TauSound_.
 
-TauSound was killed a few weeks ago because:
+TauSound was killed off a few weeks ago because:
 
-- The API was very difficult to specify, and we were sure that we will have to modify it very often.
-- It added complexity inside an already complecate library.
-- We was realizing that we tried to define something that was already defined by the W3C. If you look to the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API), you will see that we were trying to do something already done. And done really perfectely.
+- The API was overly complex and hard to maintain
+- It added complexity inside an already complicated library.
+- It dawned on us that we wre re-inventing the wheel ; W3C already had functionality in place that we were trying to implement. If you look to the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API), you will see that we were trying to do something that had already been perfected.
 
 ### W3C - Web Audio API
 
 W3C did a fantastic job with the specification of this API.
 
-More, this API is already completely implemented inside the main Web Browser :
+Furthermore, this API is already completely implemented inside a host of mainstream WEB Browsers:
 
 - Microsoft Edge
 - Google Chrome
@@ -60,7 +60,7 @@ More, this API is already completely implemented inside the main Web Browser :
 
 It means that we do not have to develop anything new for Web support.
 
-Flutter Sound on Web was second-class citizen. Taudio on Web will be first-class citizen:
+Flutter Sound on Web was really a second-class citizen. Taudio on Web will be first-class citizen:
 The problems will not be on Web but on the native side (iOS, Android, GNU/Linux, ...)
 
 W3C specified many great things like :
@@ -77,8 +77,8 @@ It would be fantastic for our users to be able to code custom nodes in Dart.
 The Taudio architecture is actually not yet fully designed.
 For information you can look to [The Flutter Sound Architecture](/architecture.html).
 
-Flutter Sound Architecture is complicate. It has been designed so that a port to other frameworks will be easy.
-Unfortunatly this complexity was not useful because Flutter Sound has never been ported elsewhere than:
+Flutter Sound Architecture is ridiculously complicated. It was designed so that a port to other frameworks would be easy.
+Unfortunatly this complexity was not useful because Flutter Sound has never been ported anywhere other than:
 
 - Flutter iOS
 - Flutter Android
@@ -88,7 +88,7 @@ Actually it is not clear if we can have a simpler design for Taudio, without com
 
 ## Roadmap
 
-Taudio can be a very large project, which will busy us during several years.
+Taudio can be a very large project, which will keep us busy for several years.
 
 It is important to define several milestones to be able to understand where we will be during those years.
 
@@ -101,7 +101,7 @@ We will :
 - Setup a Git repo
 - Choose a documentation tool
 - Setup the documentation. It can be:
-  - jekyll (same as Flutter Sound and compatible with dartdoc)
+  - Jekyll (same as Flutter Sound and compatible with dartdoc)
   - Notion.so (which is close source)
   - Hugo
   - Gatsby
@@ -268,4 +268,4 @@ And of course :
 - Objective C
 - C++
 
-We probably will have to kill some of the 8 milestones. But not actually sure which ones.
+We probably will have to kill some of the 8 milestones, however - we are yet to decide which ones.
