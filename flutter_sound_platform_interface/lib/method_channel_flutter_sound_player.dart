@@ -172,8 +172,16 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
   }
 
 
+Future<Map> invokeMethodMap (FlutterSoundPlayerCallback callback, String methodName, Map<String, dynamic> call) async
+{
+  call['slotNo'] = findSession(callback);
+  var r = await _channel.invokeMethod(methodName, call);
+  return r ;
+}
 
-  @override
+
+
+@override
   Future<void>?   setLogLevel(FlutterSoundPlayerCallback callback, Level logLevel)
   {
     invokeMethod( callback, 'setLogLevel', {'logLevel': logLevel.index,});
@@ -208,8 +216,8 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
   @override
   Future<Map<String, Duration>> getProgress(FlutterSoundPlayerCallback callback, ) async
   {
-    Map<String, int> m = (await invokeMethod( callback, 'getPlayerState', Map<String, dynamic>(),) as Map) as Map<String, int>;
-    Map<String, Duration> r = {'duration': Duration(milliseconds: m['duration']!), 'progress': Duration(milliseconds: m['progress']!),};
+    var m2 = await invokeMethodMap( callback, 'getProgress', Map<String, dynamic>(),) ;
+    Map<String, Duration> r = {'duration': Duration(milliseconds: m2['duration']! ), 'progress': Duration(milliseconds: m2['position']! ),};
     return r;
   }
 
