@@ -9,6 +9,9 @@ fi
 VERSION=$1
 VERSION_CODE=${VERSION#./}
 VERSION_CODE=${VERSION_CODE#+/}
+
+
+ 
 cd flutter_sound
 #flutter clean
 #flutter pub get
