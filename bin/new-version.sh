@@ -20,7 +20,7 @@ if [ $? -ne 0 ]; then
     echo "Error"
     #exit -1
 fi
-dartfmt -w lib
+dart format lib
 if [ $? -ne 0 ]; then
     echo "Error"
     #exit -1
@@ -70,8 +70,8 @@ cd ..
 
 
 cd flutter_sound
-dartfmt -w lib
-dartfmt -w example/lib
+dart format  lib
+dart format  example/lib
 dartanalyzer lib
 if [ $? -ne 0 ]; then
     echo "Error"

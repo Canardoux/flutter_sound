@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 9.1.3
+
+- Fix a regression with [#821](https://github.com/Canardoux/flutter_sound/pull/821). Sorry [George Amgad](https://github.com/GeorgeAmgad) for my mistake.
+
 ## 9.1.2
 
 - Fix two bugs in verb getProgress(). #835[https://github.com/Canardoux/flutter_sound/issues/835]
