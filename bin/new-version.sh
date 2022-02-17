@@ -15,7 +15,7 @@ bin/reldev.sh REL
 bin/web.sh
 
 cd flutter_sound
-dartanalyzer lib
+dart analyze lib
 if [ $? -ne 0 ]; then
     echo "Error"
     #exit -1
@@ -53,7 +53,7 @@ cd flutter_sound_platform_interface/
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    //!!exit -1
 fi
 cd ..
 
@@ -63,7 +63,7 @@ flutter pub get
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    //!!exit -1
 fi
 cd ..
 
@@ -72,7 +72,7 @@ cd ..
 cd flutter_sound
 dart format  lib
 dart format  example/lib
-dartanalyzer lib
+dart analyze lib
 if [ $? -ne 0 ]; then
     echo "Error"
     #exit -1
@@ -105,7 +105,7 @@ cd flutter_sound_core
 pod trunk push flutter_sound_core.podspec
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    //!!exit -1
 fi
 cd ..
 
