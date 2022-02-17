@@ -434,6 +434,7 @@
 					"$(inherited)",
 					"-framework",
 					Flutter,
+					"-lc++",
 					"-lstdc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dooboolab.FlutterSoundDemo;
@@ -480,6 +481,7 @@
 					"$(inherited)",
 					"-framework",
 					Flutter,
+					"-lc++",
 					"-lstdc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dooboolab.FlutterSoundDemo;

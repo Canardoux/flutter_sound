@@ -86,6 +86,12 @@ Unfortunatly this complexity was not useful because Flutter Sound has never been
 
 Actually it is not clear if we can have a simpler design for Taudio, without compromising portability.
 
+Here is a possible design, using a portable language as Rust or C++
+
+{% include image.html file="taudio-architecture.svg"  caption="The Taudio architecture" %}
+
+
+
 ## Roadmap
 
 Taudio can be a very large project, which will keep us busy for several years.
