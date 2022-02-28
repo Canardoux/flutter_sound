@@ -23,7 +23,7 @@ fi
 dart format lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    #exit -1
+    exit -1
 fi
 
 cd ..
@@ -53,7 +53,7 @@ cd flutter_sound_platform_interface/
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 cd ..
 
@@ -63,7 +63,7 @@ flutter pub get
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 cd ..
 
