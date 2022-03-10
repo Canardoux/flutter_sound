@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 9.1.4
+## 9.1.5
 
 - Fix a leak with temporary files when playing buffers on Android. [#847](https://github.com/Canardoux/flutter_sound/issues/847)
 
