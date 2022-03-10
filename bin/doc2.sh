@@ -90,5 +90,5 @@ fi
 cd 
 
 rm -rf /var/www/vhosts/canardoux.xyz/flutter_sound.canardoux.xyz/web_example/
-cp -a -v /tmp/toto_doc/flutter_sound/example/assets/samples/ /tmp/toto_doc/extract /tmp/toto_doc/flutter_sound/example/build/web/assets
-cp -a -v /tmp/toto_doc/flutter_sound/example/build/web /var/www/vhosts/canardoux.xyz/flutter_sound.canardoux.xyz/web_example
+cp -a  /tmp/toto_doc/flutter_sound/example/assets/samples/ /tmp/toto_doc/extract /tmp/toto_doc/flutter_sound/example/build/web/assets
+cp -a  /tmp/toto_doc/flutter_sound/example/build/web /var/www/vhosts/canardoux.xyz/flutter_sound.canardoux.xyz/web_example
