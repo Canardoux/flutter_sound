@@ -3,7 +3,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'flutter_sound_web'
-  s.version          = '9.1.6'
+  s.version          = '9.1.7'
   s.summary          = 'No-op implementation of flutter_sound_web web plugin to avoid build issues on iOS'
   s.description      = <<-DESC
 temp fake flutter_sound_web plugin

@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 9.1.7
+
+- Update the dep androidx.media:media to 1.4.1. [#822](https://github.com/Canardoux/flutter_sound/issues/822). Thanks [andrea689](https://github.com/andrea689) for the fix :)
+
 ## 9.1.6
 
 - 9.1.5 release was bad. Retry.
