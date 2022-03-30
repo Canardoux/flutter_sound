@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 9.1.8
+
+- Fix the bug where we had many clicks when playing from a stream. [PR #3 on flutter_sound_core](https://github.com/Canardoux/flutter_sound_core/pull/3). Thank you [Antonio](https://github.com/acalatrava) for this fix. For me, this bug was the main Flutter Sound issue, by far. I really appreciate your PR.
+
 ## 9.1.7
 
 - Update the dep androidx.media:media to 1.4.1. [#822](https://github.com/Canardoux/flutter_sound/issues/822). Thanks [andrea689](https://github.com/andrea689) for the fix :)

@@ -3,8 +3,8 @@ echo "doc2.sh on canardoux"
 echo "--------------------"
 rm -rf /tmp/toto_doc 2>/dev/null
 mkdir -v /tmp/toto_doc 2>/tmp/null
-tar xvzf _toto.tgz -C /tmp/toto_doc
-tar xvzf _toto3.tgz  -C /tmp/toto_doc
+tar xzf _toto.tgz -C /tmp/toto_doc
+tar xzf _toto3.tgz  -C /tmp/toto_doc
 rm -rf /tmp/toto_doc/_site /tmp/toto_doc/flutter_sound/example/ios 2>/dev/null
 
 cd /tmp/toto_doc/flutter_sound/
