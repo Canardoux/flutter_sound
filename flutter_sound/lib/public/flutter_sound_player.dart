@@ -83,7 +83,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// The FlutterSoundPlayerLogger
   Logger _logger = Logger(level: Level.debug);
   Level _logLevel = Level.debug;
-  bool _enableVoiceProcessing = false;
 
   /// The FlutterSoundPlayerLogger Logger getter
   Logger get logger => _logger;
@@ -101,15 +100,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         );
       }
     });
-  }
-
-  /// Used to activate VoiceProcessingIO. This will improve sound for speech enabling AGC and AEC.
-  /// Note that this is only available on iOS (sure? need to check on this).
-  Future<void> enableVoiceProcessing(bool enabled) async {
-    _enableVoiceProcessing = enabled;
-    if (_isInited != Initialized.notInitialized) {
-      throw("WARNING! You need to enable VoiceProcessing before starting the player!");
-    }
   }
 
   final _lock = Lock();
@@ -135,7 +125,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   /// Instanciate a new Flutter Sound player.
   /// The optional paramater `Level logLevel` specify the Logger Level you are interested by.
-  /* ctor */ FlutterSoundPlayer({Level logLevel = Level.debug}) {
+  /// The optional parameter `bool voiceProcessing` is used to activate the VoiceProcessingIO AudioUnit (only for iOS)
+  /* ctor */ FlutterSoundPlayer({Level logLevel = Level.debug, bool voiceProcessing = false}) {
     _logger = Logger(level: logLevel);
     _logger.d('ctor: FlutterSoundPlayer()');
   }
@@ -483,6 +474,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// Opening a player takes resources inside the OS. Those resources are freed with the verb `closePlayer()`.
   /// Returns a Future, but the App does not need to wait the completion of this future before doing a [startPlayer()].
   /// The Future will be automaticaly waited by [startPlayer()]
+  /// 
+  /// On iOS you can pass the `enableVoiceProcessing` parameter to `true` to enable the VoiceProcessingIO AudioUnit, this
+  /// is useful to improving speech audio or VoIP applications.
   ///
   /// *Example:*
   /// ```dart
@@ -496,18 +490,22 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///     myPlayer = null;
   /// ```
   Future<FlutterSoundPlayer?> openPlayer({bool enableVoiceProcessing = false}) async {
-    _enableVoiceProcessing = enableVoiceProcessing;
+
+    if (!Platform.isIOS && enableVoiceProcessing) {
+      throw('VoiceProcessing is only available on iOS');
+    }
+
     if (_isInited != Initialized.notInitialized) {
       return this;
     }
     FlutterSoundPlayer? r;
     await _lock.synchronized(() async {
-      r = await _openAudioSession();
+      r = await _openAudioSession(enableVoiceProcessing: enableVoiceProcessing);
     });
     return r;
   }
 
-  Future<FlutterSoundPlayer> _openAudioSession() async {
+  Future<FlutterSoundPlayer> _openAudioSession({bool enableVoiceProcessing = false}) async {
     _logger.d('FS:---> openAudioSession');
     while (_openPlayerCompleter != null) {
       _logger.w('Another openPlayer() in progress');
@@ -534,7 +532,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       var state = await FlutterSoundPlayerPlatform.instance.openPlayer(
         this,
         logLevel: _logLevel,
-        voiceProcessing: _enableVoiceProcessing
+        voiceProcessing: enableVoiceProcessing
       );
       _playerState = PlayerState.values[state];
       //isInited = success ?  Initialized.fullyInitialized : Initialized.notInitialized;
