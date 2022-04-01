@@ -83,6 +83,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// The FlutterSoundPlayerLogger
   Logger _logger = Logger(level: Level.debug);
   Level _logLevel = Level.debug;
+  bool _enableVoiceProcessing = false;
 
   /// The FlutterSoundPlayerLogger Logger getter
   Logger get logger => _logger;
@@ -100,6 +101,15 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         );
       }
     });
+  }
+
+  /// Used to activate VoiceProcessingIO. This will improve sound for speech enabling AGC and AEC.
+  /// Note that this is only available on iOS (sure? need to check on this).
+  Future<void> enableVoiceProcessing(bool enabled) async {
+    _enableVoiceProcessing = enabled;
+    if (_isInited != Initialized.notInitialized) {
+      throw("WARNING! You need to enable VoiceProcessing before starting the player!");
+    }
   }
 
   final _lock = Lock();
@@ -485,7 +495,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///     await myPlayer.closePlayer();
   ///     myPlayer = null;
   /// ```
-  Future<FlutterSoundPlayer?> openPlayer() async {
+  Future<FlutterSoundPlayer?> openPlayer({bool enableVoiceProcessing = false}) async {
+    _enableVoiceProcessing = enableVoiceProcessing;
     if (_isInited != Initialized.notInitialized) {
       return this;
     }
@@ -523,6 +534,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       var state = await FlutterSoundPlayerPlatform.instance.openPlayer(
         this,
         logLevel: _logLevel,
+        voiceProcessing: _enableVoiceProcessing
       );
       _playerState = PlayerState.values[state];
       //isInited = success ?  Initialized.fullyInitialized : Initialized.notInitialized;

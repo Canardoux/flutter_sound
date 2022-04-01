@@ -136,7 +136,7 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
     throw UnimplementedError('resetPlugin() has not been implemented.');
   }
 
-  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, })
+  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, bool voiceProcessing=false })
   {
     throw UnimplementedError('openPlayer() has not been implemented.');
   }
