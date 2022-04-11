@@ -123,6 +123,8 @@
 - (FlutterSoundPlayer*)init: (FlutterMethodCall*)call
 {
         flautoPlayer = [ [FlautoPlayer alloc] init: self];
+        bool voiceProcessing = (bool)call.arguments[@"voiceProcessing"];
+        [flautoPlayer setVoiceProcessing: voiceProcessing];
         return [super init: call]; // Init Session
 }
 

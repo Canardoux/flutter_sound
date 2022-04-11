@@ -196,9 +196,9 @@ Future<Map> invokeMethodMap (FlutterSoundPlayerCallback callback, String methodN
 
 
   @override
-  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, })
+  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, bool voiceProcessing=false})
   {
-    return  invokeMethod( callback, 'openPlayer', {'logLevel': logLevel.index ,},) ;
+    return  invokeMethod( callback, 'openPlayer', {'logLevel': logLevel.index, 'voiceProcessing': voiceProcessing},) ;
   }
 
 
