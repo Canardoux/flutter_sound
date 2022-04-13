@@ -7,6 +7,11 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 9.2.0
+
+- Stand Up For Ukraine
+- Voice Porcessing Feature [VoiceProcessing feature for iOS #870](https://github.com/Canardoux/flutter_sound/pull/870). Thank you [Antonio](https://github.com/acalatrava) for the Pull Request.
+
 ## 9.1.9
 
 - Fix the bug where we had many clicks when playing from a stream. [PR #3 on flutter_sound_core](https://github.com/Canardoux/flutter_sound_core/pull/3). Thank you [Antonio](https://github.com/acalatrava) for this fix. For me, this bug was the main Flutter Sound issue, by far. I really appreciate your PR.
