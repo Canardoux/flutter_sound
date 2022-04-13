@@ -54,5 +54,7 @@
 	<false/>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>This example need Text to Speech recognition</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 </dict>
 </plist>
