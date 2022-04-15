@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 9.2.2
+
+- Fix a regression on Flutter Sound on Web, introduced in 9.2.1
+
 ## 9.2.1
 
 - Stand Up For Ukraine

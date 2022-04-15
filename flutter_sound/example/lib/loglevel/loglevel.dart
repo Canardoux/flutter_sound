@@ -32,7 +32,7 @@ import 'package:logger/logger.dart' show Level;
  */
 
 final _exampleAudioFilePathMP3 =
-    'https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3';
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/05.mp3';
 
 ///
 typedef Fn = void Function();

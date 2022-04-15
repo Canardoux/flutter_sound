@@ -31,9 +31,9 @@ import 'package:flutter_sound/flutter_sound.dart';
  */
 
 final _exampleAudioFilePathMP3_1 =
-    'https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3';
-final _exampleAudioFilePathMP3_2 =
     'https://flutter-sound.canardoux.xyz/web_example/assets/extract/05.mp3';
+final _exampleAudioFilePathMP3_2 =
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/13.wav';
 
 ///
 typedef Fn = void Function();

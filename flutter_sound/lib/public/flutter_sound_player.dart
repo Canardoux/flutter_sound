@@ -492,9 +492,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// ```
   Future<FlutterSoundPlayer?> openPlayer(
       {bool enableVoiceProcessing = false}) async {
-    if (!Platform.isIOS && enableVoiceProcessing) {
-      throw ('VoiceProcessing is only available on iOS');
-    }
+    //if (!Platform.isIOS && enableVoiceProcessing) {
+    //throw ('VoiceProcessing is only available on iOS');
+    //}
 
     if (_isInited != Initialized.notInitialized) {
       return this;

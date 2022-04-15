@@ -2,9 +2,6 @@
 
 VERSION=$1
 
-echo "doc.sh"
-echo "------"
-
 rm -r doc/pages/flutter-sound/api 2>/dev/null
 if [ ! -z "$VERSION" ]; then
         echo "Setting the tau version"
@@ -12,11 +9,6 @@ if [ ! -z "$VERSION" ]; then
         gsed -i  "s/^\( *version: \).*/\1$VERSION/"                                             doc/_data/sidebars/mydoc_sidebar.yml
 fi
 
-###bin/web.sh
-
-#cp privacy_policy.html doc/_site
-
-echo "Upload"
 rm -rf flutter_sound/example/build flutter_sound/build
 tar czf _toto3.tgz flutter_sound flutter_sound_web flutter_sound_platform_interface extract
 cd doc
