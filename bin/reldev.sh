@@ -22,7 +22,7 @@ grep "pod 'flutter_sound_core'," flutter_sound/example/ios/Podfile > /dev/null
             echo "# =====================================================" >> flutter_sound/example/ios/Podfile
     fi
 #fi
-gsed -i  "s/^#* *platform :ios,.*$/platform :ios, '10.0'/" flutter_sound/example/ios/Podfile
+gsed -i  "s/^#* *platform :ios,.*$/platform :ios, '14.2'/" flutter_sound/example/ios/Podfile
 
 
 if [ "_$1" = "_REL" ] ; then
