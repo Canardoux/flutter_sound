@@ -105,7 +105,7 @@ cd flutter_sound_core
 pod trunk push flutter_sound_core.podspec
 if [ $? -ne 0 ]; then
     echo "Error"
-    exit -1
+    #exit -1
 fi
 cd ..
 
