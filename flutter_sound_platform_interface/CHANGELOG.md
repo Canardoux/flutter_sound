@@ -1,4 +1,4 @@
-## 9.2.7
+## 9.2.8
 
 - Please [look to this](https://dooboolab.github.io/flutter_sound/book/CHANGELOG.html)
 
