@@ -47,8 +47,3 @@ end
 # pod 'flutter_sound_core', :path => '../../../flutter_sound_core'
 # =====================================================
 
-# =====================================================
-# The following instruction is only for Tau debugging.
-# Do not insert such a line in a real App.
-# pod 'flutter_sound_core', :path => '../../../flutter_sound_core'
-# =====================================================

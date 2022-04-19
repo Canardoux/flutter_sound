@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 9.2.6
+## 9.2.7
 
 - Fix a bug when we try to logError(NULL) : [#880](https://github.com/Canardoux/flutter_sound/issues/880)
 
