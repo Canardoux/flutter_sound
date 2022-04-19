@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 9.2.3
+
+- Fix a bug when we try to logError(NULL) : [#880](https://github.com/Canardoux/flutter_sound/issues/880)
+
 ## 9.2.2
 
 - Fix a regression on Flutter Sound on Web, introduced in 9.2.1
