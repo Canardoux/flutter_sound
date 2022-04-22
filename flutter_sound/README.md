@@ -1,5 +1,7 @@
-{% include image.html file="banner.png"  caption="Stand up For Ukraine : Street Art" %}
+![Banner](https://flutter-sound.canardoux.xyz/images/close-the-sky.jpeg)
+Close the Sky over Ukraine
 ![Banner](https://flutter-sound.canardoux.xyz/images/banner.png)
+Stand up for Ukraine
 - ## Flutter Sound user: your [documentation is there](https://flutter-sound.canardoux.xyz/readme.html)
 - ## The [CHANGELOG file is here](https://flutter-sound.canardoux.xyz/changelog.html)
 
