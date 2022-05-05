@@ -7,9 +7,14 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 9.2.11
+
+- [Peace For Ukraine](2-year-old-irish-girl-ukrainian.jpg)
+- [Europe Stand With Ukraine](StandWithUkraine.png)
+
 ## 9.2.10
 
-- Close the sky over Ukraine
+- [Close the sky over Ukraine](https://flutter-sound.canardoux.xyz/images/close-the-sky.jpeg)
 
 ## 9.2.9
 
@@ -21,7 +26,7 @@ toc: false
 
 ## 9.2.1
 
-- Stand Up For Ukraine
+- [Pray For Ukraine](https://flutter-sound.canardoux.xyz/images/PrayForUkraine.png)
 - Voice Porcessing Feature [VoiceProcessing feature for iOS #870](https://github.com/Canardoux/flutter_sound/pull/870). Thank you [Antonio](https://github.com/acalatrava) for the Pull Request.
 
 ## 9.1.9
