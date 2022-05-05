@@ -11,6 +11,7 @@ toc: false
 
 - [Peace For Ukraine](2-year-old-irish-girl-ukrainian.jpg)
 - [Europe Stand With Ukraine](StandWithUkraine.png)
+- Fix audio recording issue with 16Khz recording devices [#885](https://github.com/Canardoux/flutter_sound/issues/885). Pull Request [#5](https://github.com/Canardoux/flutter_sound_core/pull/5). Thanks to [Allen](https://github.com/fallenpanda1) for his contribution.
 
 ## 9.2.10
 
