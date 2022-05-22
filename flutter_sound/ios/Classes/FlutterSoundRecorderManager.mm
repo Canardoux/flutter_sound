@@ -48,26 +48,26 @@ extern void FlutterSoundRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
 {
 }
 
-FlutterSoundRecorderManager* flutterSoundRecorderManager = nil; // Singleton
+//FlutterSoundRecorderManager* flutterSoundRecorderManager = nil; // Singleton
 
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
 {
         FlutterMethodChannel* aChannel = [FlutterMethodChannel methodChannelWithName:@"com.dooboolab.flutter_sound_recorder"
                                         binaryMessenger:[registrar messenger]];
-        if (flutterSoundRecorderManager != nil)
-                NSLog(@"ERROR during registerWithRegistrar: flutterSoundRecorderManager != nil");
-        flutterSoundRecorderManager = [[FlutterSoundRecorderManager alloc] init];
-        flutterSoundRecorderManager ->channel = aChannel;
-        [registrar addMethodCallDelegate: flutterSoundRecorderManager channel:aChannel];
+        //if (flutterSoundRecorderManager != nil)
+                //NSLog(@"ERROR during registerWithRegistrar: flutterSoundRecorderManager != nil");
+        FlutterSoundRecorderManager* rm = [[FlutterSoundRecorderManager alloc] init];
+        rm ->channel = aChannel;
+        [registrar addMethodCallDelegate: rm channel:aChannel];
 }
 
 
-- (FlutterSoundRecorderManager*)init
-{
-        self = [super init];
-        return self;
-}
+//- (FlutterSoundRecorderManager*)init
+//{
+        //self = [super init];
+        //return self;
+//}
 
 
 
@@ -84,7 +84,7 @@ FlutterSoundRecorderManager* flutterSoundRecorderManager = nil; // Singleton
  
         if ([@"openRecorder" isEqualToString: call.method])
         {
-                aFlautoRecorder = [[FlutterSoundRecorder alloc] init: call];
+                aFlautoRecorder = [[FlutterSoundRecorder alloc] init: call playerManager: self];
                 [aFlautoRecorder openRecorder: call result: result];
         } else
         

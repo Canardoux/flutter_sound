@@ -29,7 +29,7 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar);
 @interface FlutterSoundPlayerManager : FlutterSoundManager 
 {
 }
-extern FlutterSoundPlayerManager* flutterSoundPlayerManager; // Singleton
+//extern FlutterSoundPlayerManager* flutterSoundPlayerManager; // Singleton
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar;
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result;

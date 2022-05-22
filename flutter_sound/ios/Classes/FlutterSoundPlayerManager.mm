@@ -34,23 +34,29 @@
 
 @implementation FlutterSoundPlayerManager
 {
+        FlutterSoundPlayerManager* flutterSoundPlayerManager;
 }
 
-FlutterSoundPlayerManager* flutterSoundPlayerManager = nil; // Singleton
+//FlutterSoundPlayerManager* flutterSoundPlayerManager = nil; // Singleton
 
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
 {
         FlutterMethodChannel* aChannel = [FlutterMethodChannel methodChannelWithName:@"com.dooboolab.flutter_sound_player"
                                         binaryMessenger:[registrar messenger]];
-        if (flutterSoundPlayerManager != nil)
+        //if (flutterSoundPlayerManager != nil)
         {
-                NSLog(@"ERROR during registerWithRegistrar: flutterSoundPlayerManager != nil");
-                return;
+                //NSLog(@"ERROR during registerWithRegistrar: flutterSoundPlayerManager != nil");
+                //assert(flutterSoundPlayerManager ->channel == aChannel);
+                //return;
         }
-        flutterSoundPlayerManager = [[FlutterSoundPlayerManager alloc] init];
-        flutterSoundPlayerManager ->channel = aChannel;
-        [registrar addMethodCallDelegate: flutterSoundPlayerManager channel: aChannel];
+        //if (flutterSoundPlayerManager ->channel != aChannel)
+        {
+                //NSLog(@"ERROR during registerWithRegistrar: flutterSoundPlayerManager ->channel != aChannel");
+        }
+        FlutterSoundPlayerManager* pm = [[FlutterSoundPlayerManager alloc] init];
+        pm ->channel = aChannel;
+        [registrar addMethodCallDelegate: pm channel: aChannel];
 }
 
 
@@ -79,11 +85,13 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 return;
         }
 
-         FlutterSoundPlayer* aFlautoPlayer = (FlutterSoundPlayer*)[ self getSession: call];
+        FlutterSoundPlayer* aFlautoPlayer = (FlutterSoundPlayer*)[ self getSession: call];
 
         if ([@"openPlayer" isEqualToString:call.method])
         {
-                aFlautoPlayer = [[FlutterSoundPlayer alloc] init: call];
+                aFlautoPlayer = [[FlutterSoundPlayer alloc] init: call playerManager: self];
+                //[aFlautoPlayer setPlayerManager: self];
+
                 [aFlautoPlayer openPlayer: call result: result];
         } else
 

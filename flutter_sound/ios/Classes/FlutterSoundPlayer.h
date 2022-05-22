@@ -35,13 +35,16 @@
 @interface FlutterSoundPlayer : Session<FlautoPlayerCallback>
 {
         FlautoPlayer* flautoPlayer;
+        FlutterSoundPlayerManager* flutterSoundPlayerManager;
+
 }
 
 
 - (void)reset: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (int)getStatus;
 - (FlutterSoundPlayerManager*) getPlugin;
-- (Session*) init: (FlutterMethodCall*)call;
+//- (void)setPlayerManager: (FlutterSoundPlayerManager*)pm;
+- (Session*) init: (FlutterMethodCall*)call playerManager: (FlutterSoundPlayerManager*)pm;
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result;
 - (void)pausePlayer:(FlutterResult)result;
 - (void)resumePlayer:(FlutterResult)result;

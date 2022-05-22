@@ -46,6 +46,6 @@ extern void FlutterSoundRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result;
 @end
 
-extern FlutterSoundRecorderManager* flutterSoundRecorderManager; // Singleton
+//extern FlutterSoundRecorderManager* flutterSoundRecorderManager; // Singleton
 
 #endif /* FlutterSoundRecorderManager_h */

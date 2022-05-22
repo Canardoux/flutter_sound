@@ -92,9 +92,11 @@
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 
-- (FlutterSoundRecorder*)init: (FlutterMethodCall*)call
+- (FlutterSoundRecorder*)init: (FlutterMethodCall*)call  playerManager: (FlutterSoundRecorderManager*)rm
 {
         flautoRecorder = [ [FlautoRecorder alloc] init: self];
+        flutterSoundRecorderManager = rm;
+
         return [super init: call]; // Init Session
 }
 

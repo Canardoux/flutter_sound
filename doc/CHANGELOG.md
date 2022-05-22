@@ -7,10 +7,15 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 9.2.13
+
+- Remove static variables `flutterSoundPlayermanager*` and `flutterSoundRecorderManager*` [#895](https://github.com/Canardoux/flutter_sound/issues/895). Static variables are total evil!.
+- [Korean girls stands with Ukraine](https://flutter-sound.canardoux.xyz/images/KoreaStandsWithUkraine.jpg). [Festival Cannes stands with Ukraine](https://flutter-sound.canardoux.xyz/images/CannesUkraine.png)
+
 ## 9.2.12
 
-- [Peace For Ukraine](2-year-old-irish-girl-ukrainian.jpg)
-- [Europe Stand With Ukraine](stand-with-ukraine.png)
+- [Peace For Ukraine](https://flutter-sound.canardoux.xyz/images/2-year-old-irish-girl-ukrainian.jpg)
+- [Europe Stand With Ukraine](https://flutter-sound.canardoux.xyz/images/stand-with-ukraine.png)
 - Fix audio recording issue with 16Khz recording devices [#885](https://github.com/Canardoux/flutter_sound/issues/885). Pull Request [#5](https://github.com/Canardoux/flutter_sound_core/pull/5). Thanks to [Allen](https://github.com/fallenpanda1) for his contribution.
 
 ## 9.2.10

@@ -120,18 +120,25 @@
 // --------------------------------------------------------------------------------------------------------------------------
 
 // BE CAREFUL : TrackPlayer must instance FlautoTrackPlayer !!!!!
-- (FlutterSoundPlayer*)init: (FlutterMethodCall*)call
+- (FlutterSoundPlayer*)init: (FlutterMethodCall*)call  playerManager: (FlutterSoundPlayerManager*)pm
 {
         flautoPlayer = [ [FlautoPlayer alloc] init: self];
+        flutterSoundPlayerManager = pm;
         bool voiceProcessing = (bool)call.arguments[@"voiceProcessing"];
         [flautoPlayer setVoiceProcessing: voiceProcessing];
         return [super init: call]; // Init Session
 }
 
-- (FlutterSoundPlayer*) init
+- (void)setPlayerManager: (FlutterSoundPlayerManager*)pm
 {
-        return [super init];
+        flutterSoundPlayerManager = pm;
 }
+
+
+//- (FlutterSoundPlayer*) init
+//{
+//        return [super init];
+//}
 
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result
 {

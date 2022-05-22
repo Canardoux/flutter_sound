@@ -39,6 +39,7 @@
 @interface FlutterSoundRecorder  : Session<FlautoRecorderCallback>
 {
         FlautoRecorder* flautoRecorder;
+        FlutterSoundRecorderManager* flutterSoundRecorderManager;
 }
 // Callback
 - (void)updateRecorderProgressDbPeakLevel: normalizedPeakLevel duration: duration;
@@ -46,7 +47,7 @@
 
 // Interface
 - (FlutterSoundRecorderManager*) getPlugin;
-- (Session*) init: (FlutterMethodCall*)call;
+- (Session*) init: (FlutterMethodCall*)call playerManager: (FlutterSoundRecorderManager*)pm;
 - (int)getStatus;
 
 - (void)reset: (FlutterMethodCall*)call result: (FlutterResult)result;
