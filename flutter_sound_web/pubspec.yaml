@@ -28,7 +28,10 @@ flutter:
 
 
 dependencies:
-  flutter_sound_platform_interface: 9.2.13
+  flutter_sound_platform_interface: #9.2.13
+    git:
+      url: git@github.com:ebraraktas/flutter_sound.git
+      path: flutter_sound_platform_interface
 #    path: ../flutter_sound_platform_interface # Flutter Sound Dir
   flutter:
     sdk: flutter
