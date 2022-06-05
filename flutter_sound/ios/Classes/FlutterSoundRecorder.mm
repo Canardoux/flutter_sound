@@ -144,6 +144,7 @@
         NSNumber* numChannelsArgs = (NSNumber*)call.arguments[@"numChannels"];
         NSNumber* bitRateArgs = (NSNumber*)call.arguments[@"bitRate"];
         NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
+        NSNumber* bufferSizeMsArgs = (NSNumber*)call.arguments[@"bufferSizeMs"];
 
         t_CODEC coder = aacADTS;
         if (![codec isKindOfClass:[NSNull class]])
@@ -169,6 +170,12 @@
                 numChannels = (int)[numChannelsArgs integerValue];
         }
 
+        int bufferSizeMs = 300;
+        if (![bufferSizeMsArgs isKindOfClass:[NSNull class]])
+        {
+                bufferSizeMs = (int)[bufferSizeMsArgs integerValue];
+        }
+
         bool b =
         [
                 flautoRecorder startRecorderCodec: coder
@@ -176,6 +183,7 @@
                 channels: numChannels
                 sampleRate: sampleRate
                 bitRate: bitRate
+                bufferSizeMs: bufferSizeMs
         ];
         if (b)
         {

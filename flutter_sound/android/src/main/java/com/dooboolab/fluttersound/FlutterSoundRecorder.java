@@ -194,6 +194,7 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 			Integer                         sampleRate          = call.argument ( "sampleRate" );
 			Integer                         numChannels         = call.argument ( "numChannels" );
 			Integer                         bitRate             = call.argument ( "bitRate" );
+			Integer 						bufferSizeMs	    = call.argument ( "bufferSizeMs");
 			int                             _codec              = call.argument ( "codec" );
 			t_CODEC               			codec               = t_CODEC.values()[ _codec ];
 			final String                     path               = call.argument ( "path" );
@@ -201,7 +202,7 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 			t_AUDIO_SOURCE                  audioSource         = t_AUDIO_SOURCE.values()[_audioSource];
 			int 							toStream	    	= call.argument ( "toStream");
 
-			boolean r = m_recorder.startRecorder(codec, sampleRate, numChannels, bitRate, path, audioSource, toStream != 0);
+			boolean r = m_recorder.startRecorder(codec, sampleRate, numChannels, bitRate, bufferSizeMs, path, audioSource, toStream != 0);
 			if (r)
 				result.success ( "Media Recorder is started" );
 			else

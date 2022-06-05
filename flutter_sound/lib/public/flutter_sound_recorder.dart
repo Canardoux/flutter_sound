@@ -585,6 +585,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
+    int bufferSizeMs = 300,
     AudioSource audioSource = AudioSource.defaultSource,
   }) async {
     _logger.d('FS:---> startRecorder ');
@@ -596,6 +597,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
         sampleRate: sampleRate,
         numChannels: numChannels,
         bitRate: bitRate,
+        bufferSizeMs: bufferSizeMs,
         audioSource: audioSource,
       );
     });
@@ -609,6 +611,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
+    int bufferSizeMs = 300,
     AudioSource audioSource = AudioSource.defaultSource,
   }) async {
     _logger.d('FS:---> _startRecorder.');
@@ -673,6 +676,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
           sampleRate: sampleRate,
           numChannels: numChannels,
           bitRate: bitRate,
+          bufferSizeMs: bufferSizeMs,
           codec: codec,
           toStream: toStream != null,
           audioSource: audioSource);

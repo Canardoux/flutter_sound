@@ -185,6 +185,7 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
   int? sampleRate,
   int? numChannels,
   int? bitRate,
+  int? bufferSizeMs,
   Codec? codec,
   bool? toStream,
   AudioSource? audioSource,
