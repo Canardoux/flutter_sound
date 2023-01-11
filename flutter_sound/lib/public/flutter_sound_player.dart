@@ -532,7 +532,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     completer = _openPlayerCompleter;
     try {
       var state = await FlutterSoundPlayerPlatform.instance.openPlayer(this,
-          logLevel: _logLevel, voiceProcessing: enableVoiceProcessing);
+          logLevel: _logLevel, voiceProcessing: enableVoiceProcessing ? 1 : 0);
       _playerState = PlayerState.values[state];
       //isInited = success ?  Initialized.fullyInitialized : Initialized.notInitialized;
     } on Exception {
