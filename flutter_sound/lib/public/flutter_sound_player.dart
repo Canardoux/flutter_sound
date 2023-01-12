@@ -35,7 +35,7 @@ import 'package:synchronized/synchronized.dart';
 import '../flutter_sound.dart';
 
 /// The default blocksize used when playing from Stream.
-const _blockSize = 4096;
+const _blockSize = 8192;
 
 /// The possible states of the Player.
 enum PlayerState {

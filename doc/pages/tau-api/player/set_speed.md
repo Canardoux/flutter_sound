@@ -17,8 +17,8 @@ The parameter is a floating point number greater than 0. It must be 0 to 1.0 to 
 The speed can be changed when player is running or before starting.
 If used before `startPlayer()`, the required speed is kept/delayed and set during the following call to `startPlayer()`.
 
-This verb is actually only for `startRecorder()` or `startPlayerFromBuffer()`.
-It does not work with `startPlayerFromMic()` nor `startPlayerFromStream()`.
+This verb is actually only for `startRecorder()`,  `startPlayerFromBuffer()` or `startPlayerFromStream()`.
+It does not work with `startPlayerFromMic()`.
 
 This verb works fine on
 - iOS

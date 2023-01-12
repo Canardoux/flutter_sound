@@ -182,7 +182,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		Integer _codec = call.argument("codec");
 		t_CODEC codec = t_CODEC.values()[(_codec != null) ? _codec : 0];
 		byte[] dataBuffer = call.argument("fromDataBuffer");
-		Integer _blockSize = 4096;
+		Integer _blockSize = 8192;
 		if (call.argument("blockSize") != null) {
 			_blockSize = call.argument("blockSize");
 		}
