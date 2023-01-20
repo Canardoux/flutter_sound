@@ -80,6 +80,16 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         }
                         break;
 
+                        case "getAudioSessionId":
+                        {
+                                try {
+                                        aPlayer.getAudioSessionId ( call, result );
+                                } catch (Exception e) {
+                                        e.printStackTrace();
+                                }
+                        }
+                        break;
+
                         case "closePlayer":
                         {
                                 aPlayer.closePlayer ( call, result );

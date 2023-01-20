@@ -621,6 +621,19 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return _playerState;
   }
 
+  /// Get the current audio session ID.
+  Future<int?> getAudioSessionId() async {
+    _logger.d('FS:---> getAudioSessionId ');
+    await _waitOpen();
+    if (_isInited != Initialized.fullyInitialized) {
+      throw Exception('Player is not open');
+    }
+
+    var sessionId = await FlutterSoundPlayerPlatform.instance.getAudioSessionId(this);
+    _logger.d('FS:---> getAudioSessionId $sessionId');
+    return sessionId;
+  }
+
   /// Get the current progress of a playback.
   ///
   /// It returns a `Map` with two Duration entries : `'progress'` and `'duration'`.

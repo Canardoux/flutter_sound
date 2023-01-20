@@ -203,6 +203,13 @@ Future<Map> invokeMethodMap (FlutterSoundPlayerCallback callback, String methodN
 
 
   @override
+  Future<int> getAudioSessionId(FlutterSoundPlayerCallback callback)
+  {
+    return invokeMethod(callback, 'getAudioSessionId', Map<String, dynamic>(), );
+  }
+
+
+  @override
   Future<int> closePlayer(FlutterSoundPlayerCallback callback, )
   {
     return invokeMethod( callback, 'closePlayer',  Map<String, dynamic>(),);

@@ -340,6 +340,11 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 
 	}
 
+	void getAudioSessionId(final MethodCall call, final Result result) throws Exception {
+		int sessionId = m_flautoPlayer.getAudioSessionId();
+		result.success ( sessionId);
+	}
+
 	void getPlayerState ( final MethodCall call, final Result result )
 	{
 		result.success (getPlayerState());

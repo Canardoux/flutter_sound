@@ -145,8 +145,13 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
   {
     throw UnimplementedError('closePlayer() has not been implemented.');
   }
+  
+  Future<int> getAudioSessionId(FlutterSoundPlayerCallback callback) 
+  {
+    throw UnimplementedError('getAudioSessionId() has not been implemented.');
+  }
 
-  Future<int> getPlayerState(FlutterSoundPlayerCallback callback, )
+  Future<int> getPlayerState(FlutterSoundPlayerCallback callback, ) 
   {
     throw UnimplementedError('getPlayerState() has not been implemented.');
   }
