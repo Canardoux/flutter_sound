@@ -5,5 +5,7 @@ rootProject.name = 'flutter_sound'
 // CAUTION: The following instruction is for developping and debugging the Flauto Engine
 // DO NOT INCLUDE THE FOLLOWING LINES IN A REAL APP !!!
 //project(':flutter_sound_core').projectDir = file('../../flutter_sound_core/android')
+include(':flutter_sound_core')
+project(':flutter_sound_core').projectDir = file('../../flutter_sound_core/android')
 // -------------------------------------------------------------------------------------
 
