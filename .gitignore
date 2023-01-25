@@ -2,3 +2,9 @@
 doc/_site/
 *.tgz
 extract/
+flutter_sound/example/macos/Flutter/GeneratedPluginRegistrant.swift
+flutter_sound_platform_interface/.dart_tool/package_config.json
+flutter_sound_platform_interface/.dart_tool/package_config_subset
+flutter_sound_web/.dart_tool/package_config.json
+flutter_sound_web/.dart_tool/package_config_subset
+
