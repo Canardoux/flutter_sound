@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_sound_platform_interface/equalizer/platform_interface.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'equalizer.dart';
-import 'platform_interface.dart';
 
 class DarwinEqualizerBand {
   final _platform = _DarwinPlatform();

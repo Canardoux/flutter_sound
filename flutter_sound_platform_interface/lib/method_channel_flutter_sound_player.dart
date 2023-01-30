@@ -28,6 +28,7 @@ import 'dart:core';
 import 'dart:io';
 import 'dart:typed_data' show Uint8List;
 
+import 'equalizer/platform_interface.dart';
 import 'flutter_sound_player_platform_interface.dart';
 import 'flutter_sound_platform_interface.dart';
 
@@ -196,9 +197,9 @@ Future<Map> invokeMethodMap (FlutterSoundPlayerCallback callback, String methodN
 
 
   @override
-  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, bool voiceProcessing=false})
+  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, bool voiceProcessing=false, InitDarwinEqualizerRequest? equalizerParams})
   {
-    return  invokeMethod( callback, 'openPlayer', {'logLevel': logLevel.index, 'voiceProcessing': voiceProcessing},) ;
+    return  invokeMethod( callback, 'openPlayer', {'logLevel': logLevel.index, 'voiceProcessing': voiceProcessing, 'equalizerParams':equalizerParams?.toMap().cast<String, dynamic>()},) ;
   }
 
 
@@ -206,6 +207,12 @@ Future<Map> invokeMethodMap (FlutterSoundPlayerCallback callback, String methodN
   Future<int> getAudioSessionId(FlutterSoundPlayerCallback callback)
   {
     return invokeMethod(callback, 'getAudioSessionId', Map<String, dynamic>(), );
+  }
+
+  @override
+  Future<int> initDarwin(FlutterSoundPlayerCallback callback, InitDarwinEqualizerRequest request)
+  {
+    return invokeMethod(callback, 'initDarwin', request.toMap().cast<String, dynamic>(), );
   }
 
 

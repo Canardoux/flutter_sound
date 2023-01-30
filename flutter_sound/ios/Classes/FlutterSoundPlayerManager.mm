@@ -86,12 +86,18 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         }
 
         FlutterSoundPlayer* aFlautoPlayer = (FlutterSoundPlayer*)[ self getSession: call];
-
+    
+        if ([@"initEqualizer" isEqualToString: call.method])
+        {
+//            aFlautoPlayer = [[FlutterSoundPlayer alloc] init: call playerManager: self];
+            
+            // Init equalizer
+//            [aFlautoPlayer initEqualizer: call result: result];
+        } else
+            
         if ([@"openPlayer" isEqualToString:call.method])
         {
                 aFlautoPlayer = [[FlutterSoundPlayer alloc] init: call playerManager: self];
-                //[aFlautoPlayer setPlayerManager: self];
-
                 [aFlautoPlayer openPlayer: call result: result];
         } else
 
@@ -184,7 +190,6 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
         {
                  [aFlautoPlayer setLogLevel: call result: result];
         } else
-
 
         {
                 result(FlutterMethodNotImplemented);

@@ -61,6 +61,7 @@
 - (void)stopPlayer:(FlutterMethodCall*)call  result:(FlutterResult)result;
 - (void)feed:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)setLogLevel: (FlutterMethodCall*)call result: (FlutterResult)result;
+- (bool)initEqualizer: (FlutterMethodCall*)call result: (FlutterResult)result;
 
 @end
 

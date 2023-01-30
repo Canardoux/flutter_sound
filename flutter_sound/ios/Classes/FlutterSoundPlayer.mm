@@ -122,11 +122,34 @@
 // BE CAREFUL : TrackPlayer must instance FlautoTrackPlayer !!!!!
 - (FlutterSoundPlayer*)init: (FlutterMethodCall*)call  playerManager: (FlutterSoundPlayerManager*)pm
 {
-        flautoPlayer = [ [FlautoPlayer alloc] init: self];
-        flutterSoundPlayerManager = pm;
-        bool voiceProcessing = (bool)call.arguments[@"voiceProcessing"];
-        [flautoPlayer setVoiceProcessing: voiceProcessing];
-        return [super init: call]; // Init Session
+    flautoPlayer = [ [FlautoPlayer alloc] init: self];
+    flutterSoundPlayerManager = pm;
+    
+    NSLog(@"%@", call.arguments);
+    
+    bool voiceProcessing = (bool)call.arguments[@"voiceProcessing"];
+    [flautoPlayer setVoiceProcessing: voiceProcessing];
+    
+    
+    // Init EQ
+    NSLog(@"Initialize EQ!");
+    NSDictionary *arguments = call.arguments[@"equalizerParams"];
+    [flautoPlayer initEqualizer: arguments];
+    
+    
+    return [super init: call]; // Init Session
+}
+
+- (bool)initEqualizer: (FlutterMethodCall*)call result: (FlutterResult)result
+{
+    NSLog(@"Initialize darwin EQ!");
+    NSDictionary *arguments = call.arguments;
+    if (![arguments isKindOfClass:[NSDictionary class]]) {
+        result([FlutterError errorWithCode:@"ABNORMAL_PARAMETER" message:@"no parameters" details:nil]);
+        return false;
+    }
+    return [flautoPlayer initEqualizer: arguments];
+
 }
 
 - (void)setPlayerManager: (FlutterSoundPlayerManager*)pm

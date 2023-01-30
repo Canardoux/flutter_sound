@@ -27,6 +27,7 @@ import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_sound_platform_interface/equalizer/platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
 import 'package:logger/logger.dart' show Level, Logger;
 import 'package:path_provider/path_provider.dart';
@@ -86,6 +87,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   /// The FlutterSoundPlayerLogger Logger getter
   Logger get logger => _logger;
+  InitDarwinEqualizerRequest? darwinEqualizerParams;
 
   /// Used if the App wants to dynamically change the Log Level.
   /// Seldom used. Most of the time the Log Level is specified during the constructor.
@@ -106,8 +108,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   static bool _reStarted = true;
 
   ///
-  StreamSubscription<Food>?
-      _foodStreamSubscription; // ignore: cancel_subscriptions
+  StreamSubscription<Food>? _foodStreamSubscription; // ignore: cancel_subscriptions
 
   ///
   StreamController<Food>? _foodStreamController; //ignore: close_sinks
@@ -126,8 +127,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// Instanciate a new Flutter Sound player.
   /// The optional paramater `Level logLevel` specify the Logger Level you are interested by.
   /// The optional parameter `bool voiceProcessing` is used to activate the VoiceProcessingIO AudioUnit (only for iOS)
-  /* ctor */ FlutterSoundPlayer(
-      {Level logLevel = Level.debug, bool voiceProcessing = false}) {
+  /* ctor */ FlutterSoundPlayer({Level logLevel = Level.debug, bool voiceProcessing = false}) {
     _logger = Logger(level: logLevel);
     _logger.d('ctor: FlutterSoundPlayer()');
   }
@@ -194,8 +194,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _logger.d('---> openPlayerCompleted: $success');
 
     _playerState = PlayerState.values[state];
-    _isInited =
-        success ? Initialized.fullyInitialized : Initialized.notInitialized;
+    _isInited = success ? Initialized.fullyInitialized : Initialized.notInitialized;
     if (_openPlayerCompleter == null) {
       _logger.e('Error : cannot process _openPlayerCompleter');
       return;
@@ -393,8 +392,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// myPlayer.foodSink.add(FoodData(myOtherBuffer));
   /// myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
   /// ```
-  StreamSink<Food>? get foodSink =>
-      _foodStreamController != null ? _foodStreamController!.sink : null;
+  StreamSink<Food>? get foodSink => _foodStreamController != null ? _foodStreamController!.sink : null;
 
   /// The stream side of the Food Controller
   ///
@@ -414,8 +412,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///                 ...
   ///         }
   /// ```
-  Stream<PlaybackDisposition>? get onProgress =>
-      _playerController != null ? _playerController!.stream : null;
+  Stream<PlaybackDisposition>? get onProgress => _playerController != null ? _playerController!.stream : null;
 
   /// Return true if the Player has been open
   bool isOpen() {
@@ -469,6 +466,10 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
   }
 
+  Future<void> setDarwinEqParams(InitDarwinEqualizerRequest equalizerParams) async {
+    darwinEqualizerParams = equalizerParams;
+  }
+
   /// Open the Player.
   ///
   /// A player must be opened before used.
@@ -490,8 +491,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///     await myPlayer.closePlayer();
   ///     myPlayer = null;
   /// ```
-  Future<FlutterSoundPlayer?> openPlayer(
-      {bool enableVoiceProcessing = false}) async {
+  Future<FlutterSoundPlayer?> openPlayer({bool enableVoiceProcessing = false}) async {
     //if (!Platform.isIOS && enableVoiceProcessing) {
     //throw ('VoiceProcessing is only available on iOS');
     //}
@@ -506,8 +506,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return r;
   }
 
-  Future<FlutterSoundPlayer> _openAudioSession(
-      {bool enableVoiceProcessing = false}) async {
+  Future<FlutterSoundPlayer> _openAudioSession({bool enableVoiceProcessing = false}) async {
     _logger.d('FS:---> openAudioSession');
     while (_openPlayerCompleter != null) {
       _logger.w('Another openPlayer() in progress');
@@ -531,8 +530,12 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _openPlayerCompleter = Completer<FlutterSoundPlayer>();
     completer = _openPlayerCompleter;
     try {
-      var state = await FlutterSoundPlayerPlatform.instance.openPlayer(this,
-          logLevel: _logLevel, voiceProcessing: enableVoiceProcessing);
+      var state = await FlutterSoundPlayerPlatform.instance.openPlayer(
+        this,
+        logLevel: _logLevel,
+        voiceProcessing: enableVoiceProcessing,
+        equalizerParams: darwinEqualizerParams!,
+      );
       _playerState = PlayerState.values[state];
       //isInited = success ?  Initialized.fullyInitialized : Initialized.notInitialized;
     } on Exception {
@@ -670,8 +673,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     // - remux OGG file format to CAF file format (with ffmpeg)
     // - decode CAF/OPPUS (with native Apple AVFoundation)
 
-    result = await FlutterSoundPlayerPlatform.instance
-        .isDecoderSupported(this, codec: codec);
+    result = await FlutterSoundPlayerPlatform.instance.isDecoderSupported(this, codec: codec);
     _logger.d('FS:<--- isDecoderSupported ');
     return result;
   }
@@ -692,8 +694,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
     }
-    var state = await FlutterSoundPlayerPlatform.instance
-        .setSubscriptionDuration(this, duration: duration);
+    var state = await FlutterSoundPlayerPlatform.instance.setSubscriptionDuration(this, duration: duration);
     _playerState = PlayerState.values[state];
     _logger.d('FS:<---- setSubscriptionDuration ');
   }
@@ -809,9 +810,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       codec = Codec.pcm16WAV;
     } else if (codec == Codec.pcm16 && fromDataBuffer != null) {
       fromDataBuffer = await flutterSoundHelper.pcmToWaveBuffer(
-          inputBuffer: fromDataBuffer,
-          sampleRate: sampleRate,
-          numChannels: numChannels);
+          inputBuffer: fromDataBuffer, sampleRate: sampleRate, numChannels: numChannels);
       codec = Codec.pcm16WAV;
     }
     Completer<Duration>? completer;
@@ -868,8 +867,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// ```
   Future<void> startPlayerFromMic({
     int sampleRate = 44000, // The default value is probably a good choice.
-    int numChannels =
-        1, // 1 for monophony, 2 for stereophony (actually only monophony is supported).
+    int numChannels = 1, // 1 for monophony, 2 for stereophony (actually only monophony is supported).
   }) async {
     await _lock.synchronized(() async {
       await _startPlayerFromMic(
@@ -881,8 +879,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   Future<Duration> _startPlayerFromMic({
     int sampleRate = 44000, // The default value is probably a good choice.
-    int numChannels =
-        1, // 1 for monophony, 2 for stereophony (actually only monophony is supported).
+    int numChannels = 1, // 1 for monophony, 2 for stereophony (actually only monophony is supported).
   }) async {
     _logger.d('FS:---> startPlayerFromMic ');
     await _waitOpen();
@@ -898,10 +895,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       }
       _startPlayerCompleter = Completer<Duration>();
       completer = _startPlayerCompleter;
-      var state = await FlutterSoundPlayerPlatform.instance.startPlayerFromMic(
-          this,
-          numChannels: numChannels,
-          sampleRate: sampleRate);
+      var state = await FlutterSoundPlayerPlatform.instance
+          .startPlayerFromMic(this, numChannels: numChannels, sampleRate: sampleRate);
       _playerState = PlayerState.values[state];
     } on Exception {
       _startPlayerCompleter = null;
@@ -987,11 +982,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       _startPlayerCompleter = Completer<Duration>();
       completer = _startPlayerCompleter;
       var state = await FlutterSoundPlayerPlatform.instance.startPlayer(this,
-          codec: codec,
-          fromDataBuffer: null,
-          fromURI: null,
-          numChannels: numChannels,
-          sampleRate: sampleRate);
+          codec: codec, fromDataBuffer: null, fromURI: null, numChannels: numChannels, sampleRate: sampleRate);
       _playerState = PlayerState.values[state];
     } on Exception {
       _startPlayerCompleter = null;
@@ -1170,8 +1161,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     try {
       _pausePlayerCompleter = Completer<void>();
       completer = _pausePlayerCompleter;
-      _playerState = PlayerState
-          .values[await FlutterSoundPlayerPlatform.instance.pausePlayer(this)];
+      _playerState = PlayerState.values[await FlutterSoundPlayerPlatform.instance.pausePlayer(this)];
       //if (_playerState != PlayerState.isPaused) {
       //throw _PlayerRunningException(
       //'Player is not paused.'); // I am not sure that it is good to throw an exception here

@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_sound_platform_interface/equalizer/platform_interface.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'equalizer.dart';
-import 'platform_interface.dart';
 
-/// A frequency band within an [AndroidEqualizer].
+/// A frequency band within an [AndroidEqualizer2].
 class AndroidEqualizerBand {
   final _platform = _AndroidPlatform();
 
-  /// A zero-based index of the position of this band within its [AndroidEqualizer].
+  /// A zero-based index of the position of this band within its [AndroidEqualizer2].
   final int index;
 
   /// The lower frequency of this band in hertz.
@@ -65,7 +65,7 @@ class AndroidEqualizerBand {
 }
 
 // The parameter values of an [AndroidEqualizer].
-class AndroidEqualizerParameters {
+class AndroidEqualizerParameters2 {
   /// The minimum gain value supported by the equalizer.
   final double minDecibels;
 
@@ -75,7 +75,7 @@ class AndroidEqualizerParameters {
   /// The frequency bands of the equalizer.
   final List<AndroidEqualizerBand> bands;
 
-  AndroidEqualizerParameters({
+  AndroidEqualizerParameters2({
     required this.minDecibels,
     required this.maxDecibels,
     required this.bands,
@@ -93,8 +93,8 @@ class AndroidEqualizerParameters {
     }
   }
 
-  static AndroidEqualizerParameters _fromMessage(AndroidEqualizerParametersMessage message) =>
-      AndroidEqualizerParameters(
+  static AndroidEqualizerParameters2 _fromMessage(AndroidEqualizerParametersMessage message) =>
+      AndroidEqualizerParameters2(
         minDecibels: message.minDecibels,
         maxDecibels: message.maxDecibels,
         bands: message.bands.map((bandMessage) => AndroidEqualizerBand._fromMessage(bandMessage)).toList(),
@@ -147,7 +147,7 @@ abstract class AudioEffect {
 
   /// A stream of the current [enabled] value.
   Stream<bool> get enabledStream => _enabledSubject.stream;
-  AndroidEqualizerParameters? _parameters;
+  AndroidEqualizerParameters2? _parameters;
 
   String get _type;
 
@@ -158,14 +158,14 @@ abstract class AudioEffect {
   }
 }
 
-class AndroidEqualizer extends AudioEffect {
-  final Completer<AndroidEqualizerParameters> _parametersCompleter = Completer<AndroidEqualizerParameters>();
+class AndroidEqualizer2 extends AudioEffect {
+  final Completer<AndroidEqualizerParameters2> _parametersCompleter = Completer<AndroidEqualizerParameters2>();
 
   @override
   String get _type => 'AndroidEqualizer';
 
   /// The parameter values of this equalizer.
-  Future<AndroidEqualizerParameters> get parameters => _parametersCompleter.future;
+  Future<AndroidEqualizerParameters2> get parameters => _parametersCompleter.future;
 
   @override
   Future<void> activate() async {
@@ -176,7 +176,7 @@ class AndroidEqualizer extends AudioEffect {
     }
 
     final response = await _platform.androidEqualizerGetParameters(AndroidEqualizerGetParametersRequest());
-    _parameters = AndroidEqualizerParameters._fromMessage(response.parameters);
+    _parameters = AndroidEqualizerParameters2._fromMessage(response.parameters);
     debugPrint(_parameters.toString());
     _parametersCompleter.complete(_parameters);
   }

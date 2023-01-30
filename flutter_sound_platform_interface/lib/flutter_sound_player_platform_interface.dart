@@ -29,6 +29,7 @@ import 'dart:core';
 import 'dart:io';
 import 'dart:typed_data' show Uint8List;
 
+import 'equalizer/platform_interface.dart';
 import 'method_channel_flutter_sound_player.dart';
 import 'flutter_sound_platform_interface.dart';
 
@@ -135,8 +136,7 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
   {
     throw UnimplementedError('resetPlugin() has not been implemented.');
   }
-
-  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, bool voiceProcessing=false})
+  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, bool voiceProcessing=false, InitDarwinEqualizerRequest? equalizerParams})
   {
     throw UnimplementedError('openPlayer() has not been implemented.');
   }
@@ -149,6 +149,11 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
   Future<int> getAudioSessionId(FlutterSoundPlayerCallback callback) 
   {
     throw UnimplementedError('getAudioSessionId() has not been implemented.');
+  }
+
+  Future<int> initDarwin(FlutterSoundPlayerCallback callback, InitDarwinEqualizerRequest request)
+  {
+    throw UnimplementedError('initDarwinEqualizer() has not been implemented.');
   }
 
   Future<int> getPlayerState(FlutterSoundPlayerCallback callback, ) 

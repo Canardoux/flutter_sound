@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-
-import 'platform_interface.dart';
+import 'package:flutter_sound_platform_interface/equalizer/platform_interface.dart';
 
 /// The main class of the plugin(singleton)
 /// This class is for the communication with the native code

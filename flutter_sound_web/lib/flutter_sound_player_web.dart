@@ -23,6 +23,7 @@ import 'dart:async';
 import 'dart:html' as html;
 import 'dart:typed_data' show Uint8List;
 
+import 'package:flutter_sound_platform_interface/equalizer/platform_interface.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
@@ -183,7 +184,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
 
 
         @override
-        Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, bool voiceProcessing = false}) async
+        Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, bool voiceProcessing = false,InitDarwinEqualizerRequest? equalizerParams}) async
         {
                 // openAudioSessionCompleter = new Completer<bool>();
                 // await invokeMethod( callback, 'initializeMediaPlayer', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index, 'withUI': withUI ? 1 : 0 ,},) ;
