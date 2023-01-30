@@ -26,6 +26,7 @@ dependencies:
    path: ../flutter_sound_platform_interface # Flutter Sound Dir
   flutter_sound_web: # 9.2.13
    path: ../flutter_sound_web # Flutter Sound Dir
+  rxdart: ^0.27.7
 # ============================================================================
 
 dev_dependencies:
