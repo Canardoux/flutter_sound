@@ -177,7 +177,6 @@ class AndroidEqualizer2 extends AudioEffect {
 
     final response = await _platform.androidEqualizerGetParameters(AndroidEqualizerGetParametersRequest());
     _parameters = AndroidEqualizerParameters2._fromMessage(response.parameters);
-    debugPrint(_parameters.toString());
     _parametersCompleter.complete(_parameters);
   }
 }

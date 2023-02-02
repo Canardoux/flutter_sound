@@ -37,7 +37,6 @@ class DarwinEqualizerBand {
 
   /// Sets the gain for this band in decibels.
   Future<void> setGain(double gain) async {
-    debugPrint('Set band: $index, $gain');
     _gainSubject.add(gain);
     await _platform.darwinEqualizerBandSetGain(DarwinEqualizerBandSetGainRequest(bandIndex: index, gain: gain));
   }
@@ -79,14 +78,10 @@ class DarwinEqualizerParameters {
 
   /// Restore platform state after reactivating.
   Future<void> _restore() async {
-    var bandsLength = bands.length;
-    debugPrint('Restore bands: $bands\n lenght: $bandsLength');
-    // for (var band in bands) {
-    for (var i = 0; i < bandsLength; i++) {
-      await bands[i]._restore();
+    debugPrint('Restore bands: $bands\n');
+    for (var band in bands) {
+      await band._restore();
     }
-
-    debugPrint('Täällä');
   }
 
   static DarwinEqualizerParameters _fromMessage(DarwinEqualizerParametersMessage message) => DarwinEqualizerParameters(
@@ -105,14 +100,14 @@ class _DarwinPlatform extends DarwinPlatform {
   // Set Darwin Equalizer Band Gain
   @override
   Future<int> darwinEqualizerBandSetGain(DarwinEqualizerBandSetGainRequest request) async {
-    debugPrint('darwinEqualizerBandSetGain: ${request.toMap()}');
+    // debugPrint('darwinEqualizerBandSetGain: ${request.toMap()}');
     return await _channel.invokeMethod('darwinEqualizerBandSetGain', request.toMap());
   }
 
   /// Set Darwin Equalizer Enabled
   @override
   Future<int> enableEqualizer(AudioEffectSetEnabledRequest request) async {
-    debugPrint('enableEqualizer: ${request.toMap()}');
+    // debugPrint('enableEqualizer: ${request.toMap()}');
     return await _channel.invokeMethod('enableEqualizer', request.toMap());
   }
 
