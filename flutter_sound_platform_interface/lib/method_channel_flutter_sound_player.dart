@@ -17,11 +17,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:logger/logger.dart' show Level , Logger;
+import 'package:logger/logger.dart' show Level, Logger;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
@@ -35,40 +34,29 @@ import 'flutter_sound_platform_interface.dart';
 const MethodChannel _channel = MethodChannel('com.dooboolab.flutter_sound_player');
 
 /// An implementation of [FlutterSoundPlayerPlatform] that uses method channels.
-class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
-{
-
-
-
-  /* ctor */ MethodChannelFlutterSoundPlayer()
-  {
+class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
+  /* ctor */ MethodChannelFlutterSoundPlayer() {
     setCallback();
   }
 
-  void setCallback()
-  {
+  void setCallback() {
     //_channel = const MethodChannel('com.dooboolab.flutter_sound_player');
-    _channel.setMethodCallHandler((MethodCall call)
-    {
+    _channel.setMethodCallHandler((MethodCall call) {
       return channelMethodCallHandler(call)!;
     });
   }
 
-
-  Future<dynamic>? channelMethodCallHandler(MethodCall call)
-  {
+  Future<dynamic>? channelMethodCallHandler(MethodCall call) {
     FlutterSoundPlayerCallback aPlayer = getSession(call.arguments!['slotNo'] as int);
-    Map arg = call.arguments ;
+    Map arg = call.arguments;
 
     bool success = call.arguments['success'] != null ? call.arguments['success'] as bool : false;
-    if (arg['state'] != null)
-      aPlayer.updatePlaybackState(arg['state']);
+    if (arg['state'] != null) aPlayer.updatePlaybackState(arg['state']);
 
-    switch (call.method)
-    {
+    switch (call.method) {
       case "updateProgress":
         {
-          aPlayer.updateProgress(duration:  arg['duration'], position:  arg['position']);
+          aPlayer.updateProgress(duration: arg['duration'], position: arg['position']);
         }
         break;
 
@@ -84,22 +72,17 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
         }
         break;
 
-
       case 'updatePlaybackState':
         {
           aPlayer.updatePlaybackState(arg['arg']);
         }
         break;
 
-
       case 'openPlayerCompleted':
         {
-          aPlayer.openPlayerCompleted(call.arguments['state'] , success);
+          aPlayer.openPlayerCompleted(call.arguments['state'], success);
         }
         break;
-
-
-
 
       case 'startPlayerCompleted':
         {
@@ -108,28 +91,27 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
         }
         break;
 
-
       case "stopPlayerCompleted":
         {
-          aPlayer.stopPlayerCompleted(call.arguments['state'] , success);
+          aPlayer.stopPlayerCompleted(call.arguments['state'], success);
         }
         break;
 
       case "pausePlayerCompleted":
         {
-          aPlayer.pausePlayerCompleted(call.arguments['state'] , success);
+          aPlayer.pausePlayerCompleted(call.arguments['state'], success);
         }
         break;
 
       case "resumePlayerCompleted":
         {
-          aPlayer.resumePlayerCompleted(call.arguments['state'] , success);
+          aPlayer.resumePlayerCompleted(call.arguments['state'], success);
         }
         break;
 
       case "closePlayerCompleted":
         {
-          aPlayer.closePlayerCompleted(call.arguments['state'], success );
+          aPlayer.closePlayerCompleted(call.arguments['state'], success);
         }
         break;
 
@@ -139,7 +121,6 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
         }
         break;
 
-
       default:
         throw ArgumentError('Unknown method ${call.method}');
     }
@@ -147,166 +128,263 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform
     return null;
   }
 
-
 //===============================================================================================================================
 
-
-
-  Future<int> invokeMethod (FlutterSoundPlayerCallback callback,  String methodName, Map<String, dynamic> call) async
-  {
+  Future<int> invokeMethod(FlutterSoundPlayerCallback callback, String methodName, Map<String, dynamic> call) async {
     call['slotNo'] = findSession(callback);
     return await _channel.invokeMethod(methodName, call) as int;
   }
 
-
-  Future<String> invokeMethodString (FlutterSoundPlayerCallback callback, String methodName, Map<String, dynamic> call) async
-  {
+  Future<String> invokeMethodString(
+      FlutterSoundPlayerCallback callback, String methodName, Map<String, dynamic> call) async {
     call['slotNo'] = findSession(callback);
     return await _channel.invokeMethod(methodName, call) as String;
   }
 
-
-  Future<bool> invokeMethodBool (FlutterSoundPlayerCallback callback, String methodName, Map<String, dynamic> call) async
-  {
+  Future<bool> invokeMethodBool(
+      FlutterSoundPlayerCallback callback, String methodName, Map<String, dynamic> call) async {
     call['slotNo'] = findSession(callback);
     return await _channel.invokeMethod(methodName, call) as bool;
   }
 
-
-Future<Map> invokeMethodMap (FlutterSoundPlayerCallback callback, String methodName, Map<String, dynamic> call) async
-{
-  call['slotNo'] = findSession(callback);
-  var r = await _channel.invokeMethod(methodName, call);
-  return r ;
-}
-
-
-
-@override
-  Future<void>?   setLogLevel(FlutterSoundPlayerCallback callback, Level logLevel)
-  {
-    invokeMethod( callback, 'setLogLevel', {'logLevel': logLevel.index,});
-  }
-
-
-  @override
-  Future<void>?   resetPlugin(FlutterSoundPlayerCallback callback,)
-  {
-    return _channel.invokeMethod('resetPlugin', );
-  }
-
-
-  @override
-  Future<int> openPlayer(FlutterSoundPlayerCallback callback, {required Level logLevel, bool voiceProcessing=false, InitDarwinEqualizerRequest? equalizerParams})
-  {
-    return  invokeMethod( callback, 'openPlayer', {'logLevel': logLevel.index, 'voiceProcessing': voiceProcessing, 'equalizerParams':equalizerParams?.toMap().cast<String, dynamic>()},) ;
-  }
-
-
-  @override
-  Future<int> getAudioSessionId(FlutterSoundPlayerCallback callback)
-  {
-    return invokeMethod(callback, 'getAudioSessionId', Map<String, dynamic>(), );
-  }
-
-  @override
-  Future<int> initDarwin(FlutterSoundPlayerCallback callback, InitDarwinEqualizerRequest request)
-  {
-    return invokeMethod(callback, 'initDarwin', request.toMap().cast<String, dynamic>(), );
-  }
-
-
-  @override
-  Future<int> closePlayer(FlutterSoundPlayerCallback callback, )
-  {
-    return invokeMethod( callback, 'closePlayer',  Map<String, dynamic>(),);
-  }
-
-  @override
-  Future<int> getPlayerState(FlutterSoundPlayerCallback callback, )
-  {
-    return invokeMethod( callback, 'getPlayerState',  Map<String, dynamic>(),);
-  }
-  @override
-  Future<Map<String, Duration>> getProgress(FlutterSoundPlayerCallback callback, ) async
-  {
-    var m2 = await invokeMethodMap( callback, 'getProgress', Map<String, dynamic>(),) ;
-    Map<String, Duration> r = {'duration': Duration(milliseconds: m2['duration']! ), 'progress': Duration(milliseconds: m2['position']! ),};
+  Future<Map> invokeMethodMap(FlutterSoundPlayerCallback callback, String methodName, Map<String, dynamic> call) async {
+    call['slotNo'] = findSession(callback);
+    var r = await _channel.invokeMethod(methodName, call);
     return r;
   }
 
   @override
-  Future<bool> isDecoderSupported(FlutterSoundPlayerCallback callback, { Codec codec = Codec.defaultCodec,})
-  {
-    return invokeMethodBool( callback, 'isDecoderSupported', {'codec': codec.index,},) as Future<bool>;
-  }
-
-
-  @override
-  Future<int> setSubscriptionDuration(FlutterSoundPlayerCallback callback, { Duration? duration,})
-  {
-    return invokeMethod( callback, 'setSubscriptionDuration', {'duration': duration!.inMilliseconds},);
+  Future<void>? setLogLevel(FlutterSoundPlayerCallback callback, Level logLevel) {
+    invokeMethod(callback, 'setLogLevel', {
+      'logLevel': logLevel.index,
+    });
   }
 
   @override
-  Future<int> startPlayer(FlutterSoundPlayerCallback callback,  {Codec? codec, Uint8List? fromDataBuffer, String?  fromURI, int? numChannels, int? sampleRate})
-  {
-     return  invokeMethod( callback, 'startPlayer', {'codec': codec!.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI, 'numChannels': numChannels, 'sampleRate': sampleRate},) ;
+  Future<void>? resetPlugin(
+    FlutterSoundPlayerCallback callback,
+  ) {
+    return _channel.invokeMethod(
+      'resetPlugin',
+    );
   }
 
   @override
-  Future<int> startPlayerFromMic(FlutterSoundPlayerCallback callback, {int? numChannels, int? sampleRate})
-  {
-    return  invokeMethod( callback, 'startPlayerFromMic', { 'numChannels': numChannels, 'sampleRate': sampleRate, },) ;
+  Future<int> openPlayer(FlutterSoundPlayerCallback callback,
+      {required Level logLevel, bool voiceProcessing = false, InitDarwinEqualizerRequest? equalizerParams}) {
+    return invokeMethod(
+      callback,
+      'openPlayer',
+      {
+        'logLevel': logLevel.index,
+        'voiceProcessing': voiceProcessing,
+        'equalizerParams': equalizerParams?.toMap().cast<String, dynamic>()
+      },
+    );
   }
 
-
+  /// Set gain for a band of the Darwin Equalizer
   @override
-  Future<int> feed(FlutterSoundPlayerCallback callback, {Uint8List? data, })
-  {
-    return invokeMethod( callback, 'feed', {'data': data, },) ;
+  Future<int> darwinEqualizerBandSetGain(
+      FlutterSoundPlayerCallback callback, DarwinEqualizerBandSetGainRequest request) async {
+    return await invokeMethod(callback, 'darwinEqualizerBandSetGain', request.toMap().cast());
   }
 
+  /// Set Darwin Equalizer Enabled
   @override
-  Future<int> stopPlayer(FlutterSoundPlayerCallback callback,  )
-  {
-    return invokeMethod( callback, 'stopPlayer',  Map<String, dynamic>(),) ;
-  }
-
-  @override
-  Future<int> pausePlayer(FlutterSoundPlayerCallback callback,  )
-  {
-    return invokeMethod( callback, 'pausePlayer',  Map<String, dynamic>(),) ;
-  }
-
-  @override
-  Future<int> resumePlayer(FlutterSoundPlayerCallback callback,  )
-  {
-    return invokeMethod( callback, 'resumePlayer',  Map<String, dynamic>(),) ;
+  Future<int> enableEqualizer(FlutterSoundPlayerCallback callback, AudioEffectSetEnabledRequest request) async {
+    return await invokeMethod(callback, 'audioEffectSetEnabled', request.toMap().cast());
   }
 
   @override
-  Future<int> seekToPlayer(FlutterSoundPlayerCallback callback,  {Duration? duration})
-  {
-    return invokeMethod( callback, 'seekToPlayer', {'duration': duration!.inMilliseconds,},) ;
+  Future<int> getAudioSessionId(FlutterSoundPlayerCallback callback) {
+    return invokeMethod(
+      callback,
+      'getAudioSessionId',
+      Map<String, dynamic>(),
+    );
+  }
+
+  // @override
+  // Future<int> initDarwin(FlutterSoundPlayerCallback callback, InitDarwinEqualizerRequest request) {
+  //   return invokeMethod(
+  //     callback,
+  //     'initDarwin',
+  //     request.toMap().cast<String, dynamic>(),
+  //   );
+  // }
+
+  @override
+  Future<int> closePlayer(
+    FlutterSoundPlayerCallback callback,
+  ) {
+    return invokeMethod(
+      callback,
+      'closePlayer',
+      Map<String, dynamic>(),
+    );
   }
 
   @override
-  Future<int> setVolume(FlutterSoundPlayerCallback callback,  {double? volume})
-  {
-    return invokeMethod( callback, 'setVolume', {'volume': volume,}) ;
+  Future<int> getPlayerState(
+    FlutterSoundPlayerCallback callback,
+  ) {
+    return invokeMethod(
+      callback,
+      'getPlayerState',
+      Map<String, dynamic>(),
+    );
   }
 
   @override
-  Future<int> setSpeed(FlutterSoundPlayerCallback callback,  {required double speed})
-  {
-    return invokeMethod( callback, 'setSpeed', {'speed': speed,}) ;
+  Future<Map<String, Duration>> getProgress(
+    FlutterSoundPlayerCallback callback,
+  ) async {
+    var m2 = await invokeMethodMap(
+      callback,
+      'getProgress',
+      Map<String, dynamic>(),
+    );
+    Map<String, Duration> r = {
+      'duration': Duration(milliseconds: m2['duration']!),
+      'progress': Duration(milliseconds: m2['position']!),
+    };
+    return r;
   }
 
-
-  Future<String> getResourcePath(FlutterSoundPlayerCallback callback, )
-  {
-    return invokeMethodString( callback, 'getResourcePath',  Map<String, dynamic>(),) ;
+  @override
+  Future<bool> isDecoderSupported(
+    FlutterSoundPlayerCallback callback, {
+    Codec codec = Codec.defaultCodec,
+  }) {
+    return invokeMethodBool(
+      callback,
+      'isDecoderSupported',
+      {
+        'codec': codec.index,
+      },
+    ) as Future<bool>;
   }
 
+  @override
+  Future<int> setSubscriptionDuration(
+    FlutterSoundPlayerCallback callback, {
+    Duration? duration,
+  }) {
+    return invokeMethod(
+      callback,
+      'setSubscriptionDuration',
+      {'duration': duration!.inMilliseconds},
+    );
+  }
+
+  @override
+  Future<int> startPlayer(FlutterSoundPlayerCallback callback,
+      {Codec? codec, Uint8List? fromDataBuffer, String? fromURI, int? numChannels, int? sampleRate}) {
+    return invokeMethod(
+      callback,
+      'startPlayer',
+      {
+        'codec': codec!.index,
+        'fromDataBuffer': fromDataBuffer,
+        'fromURI': fromURI,
+        'numChannels': numChannels,
+        'sampleRate': sampleRate
+      },
+    );
+  }
+
+  @override
+  Future<int> startPlayerFromMic(FlutterSoundPlayerCallback callback, {int? numChannels, int? sampleRate}) {
+    return invokeMethod(
+      callback,
+      'startPlayerFromMic',
+      {
+        'numChannels': numChannels,
+        'sampleRate': sampleRate,
+      },
+    );
+  }
+
+  @override
+  Future<int> feed(
+    FlutterSoundPlayerCallback callback, {
+    Uint8List? data,
+  }) {
+    return invokeMethod(
+      callback,
+      'feed',
+      {
+        'data': data,
+      },
+    );
+  }
+
+  @override
+  Future<int> stopPlayer(
+    FlutterSoundPlayerCallback callback,
+  ) {
+    return invokeMethod(
+      callback,
+      'stopPlayer',
+      Map<String, dynamic>(),
+    );
+  }
+
+  @override
+  Future<int> pausePlayer(
+    FlutterSoundPlayerCallback callback,
+  ) {
+    return invokeMethod(
+      callback,
+      'pausePlayer',
+      Map<String, dynamic>(),
+    );
+  }
+
+  @override
+  Future<int> resumePlayer(
+    FlutterSoundPlayerCallback callback,
+  ) {
+    return invokeMethod(
+      callback,
+      'resumePlayer',
+      Map<String, dynamic>(),
+    );
+  }
+
+  @override
+  Future<int> seekToPlayer(FlutterSoundPlayerCallback callback, {Duration? duration}) {
+    return invokeMethod(
+      callback,
+      'seekToPlayer',
+      {
+        'duration': duration!.inMilliseconds,
+      },
+    );
+  }
+
+  @override
+  Future<int> setVolume(FlutterSoundPlayerCallback callback, {double? volume}) {
+    return invokeMethod(callback, 'setVolume', {
+      'volume': volume,
+    });
+  }
+
+  @override
+  Future<int> setSpeed(FlutterSoundPlayerCallback callback, {required double speed}) {
+    return invokeMethod(callback, 'setSpeed', {
+      'speed': speed,
+    });
+  }
+
+  Future<String> getResourcePath(
+    FlutterSoundPlayerCallback callback,
+  ) {
+    return invokeMethodString(
+      callback,
+      'getResourcePath',
+      Map<String, dynamic>(),
+    );
+  }
 }

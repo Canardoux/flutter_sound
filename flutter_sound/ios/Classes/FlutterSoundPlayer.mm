@@ -125,14 +125,11 @@
     flautoPlayer = [ [FlautoPlayer alloc] init: self];
     flutterSoundPlayerManager = pm;
     
-    NSLog(@"%@", call.arguments);
-    
     bool voiceProcessing = (bool)call.arguments[@"voiceProcessing"];
     [flautoPlayer setVoiceProcessing: voiceProcessing];
     
     
     // Init EQ
-    NSLog(@"Initialize EQ!");
     NSDictionary *arguments = call.arguments[@"equalizerParams"];
     [flautoPlayer initEqualizer: arguments];
     
@@ -140,28 +137,32 @@
     return [super init: call]; // Init Session
 }
 
-- (bool)initEqualizer: (FlutterMethodCall*)call result: (FlutterResult)result
-{
-    NSLog(@"Initialize darwin EQ!");
-    NSDictionary *arguments = call.arguments;
-    if (![arguments isKindOfClass:[NSDictionary class]]) {
-        result([FlutterError errorWithCode:@"ABNORMAL_PARAMETER" message:@"no parameters" details:nil]);
-        return false;
-    }
-    return [flautoPlayer initEqualizer: arguments];
-
-}
-
 - (void)setPlayerManager: (FlutterSoundPlayerManager*)pm
 {
         flutterSoundPlayerManager = pm;
 }
 
+- (void)enableEqualizer: (FlutterMethodCall*)call result: (FlutterResult)result
+{
+    [self log: DBG msg: @"IOS:--> enableEqualizer"];
+    BOOL enabled = [[call.arguments objectForKey:@"enabled"] boolValue];
+    [flautoPlayer enableEqualizer: enabled];
+    NSNumber* status = [self getPlayerStatus];
+    result(status);
+    [self log: DBG msg: @"IOS:<-- enableEqualizer"];
+}
 
-//- (FlutterSoundPlayer*) init
-//{
-//        return [super init];
-//}
+- (void)darwinEqualizerBandSetGain: (FlutterMethodCall*)call result: (FlutterResult)result
+{
+    [self log: DBG msg: @"IOS:--> darwinEqualizerBandSetGain"];
+    int index = [[call.arguments objectForKey:@"bandIndex"] intValue];
+    float gain = [[call.arguments objectForKey:@"gain"] floatValue];
+    [flautoPlayer setEqualizerBandGain: index gain: gain];
+    NSNumber* status = [self getPlayerStatus];
+    result(status);
+    [self log: DBG msg: @"IOS:<-- darwinEqualizerBandSetGain"];
+}
+
 
 - (void)isDecoderSupported:(t_CODEC)codec result: (FlutterResult)result
 {

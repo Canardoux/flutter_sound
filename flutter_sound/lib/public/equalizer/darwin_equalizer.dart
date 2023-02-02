@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_sound_platform_interface/equalizer/platform_interface.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_platform_interface/method_channel_flutter_sound_player.dart';
 import 'package:rxdart/rxdart.dart';
-
-import 'equalizer.dart';
 
 class DarwinEqualizerBand {
   final _platform = _DarwinPlatform();
@@ -37,12 +37,14 @@ class DarwinEqualizerBand {
 
   /// Sets the gain for this band in decibels.
   Future<void> setGain(double gain) async {
+    debugPrint('Set band: $index, $gain');
     _gainSubject.add(gain);
     await _platform.darwinEqualizerBandSetGain(DarwinEqualizerBandSetGainRequest(bandIndex: index, gain: gain));
   }
 
   /// Restores the gain after reactivating.
   Future<void> _restore() async {
+    debugPrint('Restore bands: $index, $gain');
     await _platform.darwinEqualizerBandSetGain(DarwinEqualizerBandSetGainRequest(bandIndex: index, gain: gain));
   }
 
@@ -77,9 +79,14 @@ class DarwinEqualizerParameters {
 
   /// Restore platform state after reactivating.
   Future<void> _restore() async {
-    for (var band in bands) {
-      await band._restore();
+    var bandsLength = bands.length;
+    debugPrint('Restore bands: $bands\n lenght: $bandsLength');
+    // for (var band in bands) {
+    for (var i = 0; i < bandsLength; i++) {
+      await bands[i]._restore();
     }
+
+    debugPrint('Täällä');
   }
 
   static DarwinEqualizerParameters _fromMessage(DarwinEqualizerParametersMessage message) => DarwinEqualizerParameters(
@@ -91,20 +98,22 @@ class DarwinEqualizerParameters {
 
 class _DarwinPlatform extends DarwinPlatform {
   _DarwinPlatform();
+  MethodChannelFlutterSoundPlayer get channel => MethodChannelFlutterSoundPlayer();
 
-  /// Set Darwin Equalizer Band Gain
+  static const MethodChannel _channel = MethodChannel('com.dooboolab.flutter_sound_player');
+
+  // Set Darwin Equalizer Band Gain
   @override
-  Future<DarwinEqualizerBandSetGainResponse> darwinEqualizerBandSetGain(
-      DarwinEqualizerBandSetGainRequest request) async {
-    return DarwinEqualizerBandSetGainResponse.fromMap((await Equalizer.methodChannel
-        .invokeMethod<Map<dynamic, dynamic>>('darwinEqualizerBandSetGain', request.toMap()))!);
+  Future<int> darwinEqualizerBandSetGain(DarwinEqualizerBandSetGainRequest request) async {
+    debugPrint('darwinEqualizerBandSetGain: ${request.toMap()}');
+    return await _channel.invokeMethod('darwinEqualizerBandSetGain', request.toMap());
   }
 
   /// Set Darwin Equalizer Enabled
   @override
-  Future<AudioEffectSetEnabledResponse> audioEffectSetEnabled(AudioEffectSetEnabledRequest request) async {
-    return AudioEffectSetEnabledResponse.fromMap(
-        (await Equalizer.methodChannel.invokeMethod<Map<dynamic, dynamic>>('audioEffectSetEnabled', request.toMap()))!);
+  Future<int> enableEqualizer(AudioEffectSetEnabledRequest request) async {
+    debugPrint('enableEqualizer: ${request.toMap()}');
+    return await _channel.invokeMethod('enableEqualizer', request.toMap());
   }
 
   // /// Init Darwin Equalizer
@@ -117,6 +126,7 @@ class _DarwinPlatform extends DarwinPlatform {
 
 abstract class DarwinAudioEffect {
   final _enabledSubject = BehaviorSubject.seeded(false);
+  // FlutterSoundPlayer? _player;
   DarwinAudioEffect();
 
   Future<void> activate() async {}
@@ -133,7 +143,7 @@ abstract class DarwinAudioEffect {
   /// Set the [enabled] status of this audio effect.
   Future<void> setEnabled(bool enabled) async {
     _enabledSubject.add(enabled);
-    _platform.audioEffectSetEnabled(AudioEffectSetEnabledRequest(type: _type, enabled: enabled));
+    await _platform.enableEqualizer(AudioEffectSetEnabledRequest(type: _type, enabled: enabled));
   }
 }
 
@@ -159,7 +169,7 @@ class DarwinEqualizer extends DarwinAudioEffect {
     }
 
     _parameters = DarwinEqualizerParameters._fromMessage(_darwinMessageParameters);
-    debugPrint(_parameters.toString());
+    debugPrint('Paramaters: ${_parameters.toString()}');
     _parametersCompleter.complete(_parameters);
   }
 }

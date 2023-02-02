@@ -61,7 +61,8 @@
 - (void)stopPlayer:(FlutterMethodCall*)call  result:(FlutterResult)result;
 - (void)feed:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)setLogLevel: (FlutterMethodCall*)call result: (FlutterResult)result;
-- (bool)initEqualizer: (FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)enableEqualizer: (FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)darwinEqualizerBandSetGain: (FlutterMethodCall*)call result: (FlutterResult)result;
 
 @end
 

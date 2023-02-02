@@ -288,11 +288,11 @@ abstract class DarwinPlatform {
   DarwinPlatform();
 
   /// Changes the enabled status of an audio effect.
-  Future<AudioEffectSetEnabledResponse> audioEffectSetEnabled(AudioEffectSetEnabledRequest request) {
+  Future<int> enableEqualizer(AudioEffectSetEnabledRequest request) {
     throw UnimplementedError("audioEffectSetEnabled() has not been implemented.");
   }
 
-  Future<DarwinEqualizerBandSetGainResponse> darwinEqualizerBandSetGain(DarwinEqualizerBandSetGainRequest request) {
+  Future<int> darwinEqualizerBandSetGain(DarwinEqualizerBandSetGainRequest request) {
     throw UnimplementedError("darwinEqualizerBandSetGain() has not been implemented.");
   }
 }

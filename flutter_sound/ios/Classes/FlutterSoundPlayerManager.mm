@@ -87,12 +87,14 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
 
         FlutterSoundPlayer* aFlautoPlayer = (FlutterSoundPlayer*)[ self getSession: call];
     
-        if ([@"initEqualizer" isEqualToString: call.method])
+        if ([@"enableEqualizer" isEqualToString: call.method])
         {
-//            aFlautoPlayer = [[FlutterSoundPlayer alloc] init: call playerManager: self];
-            
-            // Init equalizer
-//            [aFlautoPlayer initEqualizer: call result: result];
+            [aFlautoPlayer enableEqualizer: call result: result];
+        } else
+        
+        if ([@"darwinEqualizerBandSetGain" isEqualToString: call.method])
+        {
+            [aFlautoPlayer darwinEqualizerBandSetGain: call result: result];
         } else
             
         if ([@"openPlayer" isEqualToString:call.method])

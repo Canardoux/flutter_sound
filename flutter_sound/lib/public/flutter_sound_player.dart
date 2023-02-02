@@ -470,6 +470,14 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     darwinEqualizerParams = equalizerParams;
   }
 
+  Future<void> audioEffectSetEnabled(AudioEffectSetEnabledRequest request) async {
+    await FlutterSoundPlayerPlatform.instance.enableEqualizer(this, request);
+  }
+
+  Future<void> setEqualizerGain(DarwinEqualizerBandSetGainRequest request) async {
+    await FlutterSoundPlayerPlatform.instance.darwinEqualizerBandSetGain(this, request);
+  }
+
   /// Open the Player.
   ///
   /// A player must be opened before used.

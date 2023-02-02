@@ -87,7 +87,6 @@
         {
                 if ( flautoPlayerSlots[i] != [NSNull null] )
                 {
-                        NSLog (@"iOS: resetPlugin");
                         Session* session =  flautoPlayerSlots[i];
                         [ session reset: call result: result];
                 }
