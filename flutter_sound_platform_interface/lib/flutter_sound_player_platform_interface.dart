@@ -139,6 +139,10 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
     throw UnimplementedError('getAudioSessionId() has not been implemented.');
   }
 
+  Future<void> initAndroidEqualizer(FlutterSoundPlayerCallback callback, int? sessionId) {
+    throw UnimplementedError('initAndroidEqualizer() has not been implemented.');
+  }
+
   Future<int> initDarwin(FlutterSoundPlayerCallback callback, InitDarwinEqualizerRequest request) {
     throw UnimplementedError('initDarwinEqualizer() has not been implemented.');
   }

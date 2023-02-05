@@ -205,14 +205,12 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
     );
   }
 
-  // @override
-  // Future<int> initDarwin(FlutterSoundPlayerCallback callback, InitDarwinEqualizerRequest request) {
-  //   return invokeMethod(
-  //     callback,
-  //     'initDarwin',
-  //     request.toMap().cast<String, dynamic>(),
-  //   );
-  // }
+  @override
+  Future<void> initAndroidEqualizer(FlutterSoundPlayerCallback callback, int? sessionId) {
+    return invokeMethod(callback, 'initAndroidEqualizer', {
+      'sessionId': sessionId,
+    });
+  }
 
   @override
   Future<int> closePlayer(

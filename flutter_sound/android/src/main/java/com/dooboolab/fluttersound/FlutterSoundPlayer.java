@@ -340,16 +340,45 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 
 	}
 
+	//--------------------------- EQ related ------------------------------//
+
 	void getAudioSessionId(final MethodCall call, final Result result) throws Exception {
-		int sessionId = m_flautoPlayer.getAudioSessionId();
-		result.success ( sessionId);
+		result.success (m_flautoPlayer.getAudioSessionId());
 	}
+
+	void initEqualizer(final MethodCall call, final Result result) throws Exception {
+ 		m_flautoPlayer.initEqualizer(call.argument("sessionId"));
+		result.success ( getPlayerState());
+	}
+
+	void setAudioSessionId(final MethodCall call, final Result result) {
+		m_flautoPlayer.setAudioSessionId(call.argument("sessionId"));
+		result.success ( getPlayerState());
+	}
+
+	void equalizerBandSetGain(final MethodCall call, final Result result) {
+		m_flautoPlayer.equalizerBandSetGain(call.argument("bandIndex"),
+				call.argument("gain"));
+		result.success ( getPlayerState());
+	}
+
+	void audioEffectSetEnabled(final MethodCall call, final Result result) {
+		m_flautoPlayer.audioEffectSetEnabled(call.argument("type"),
+				call.argument("enabled"));
+		result.success ( getPlayerState());
+	}
+
+	void equalizerAudioEffectGetParameters(final MethodCall call, final Result result) {
+		result.success ( m_flautoPlayer.equalizerAudioEffectGetParameters());
+	}
+
+
+
 
 	void getPlayerState ( final MethodCall call, final Result result )
 	{
 		result.success (getPlayerState());
 	}
-
 
 	public void setLogLevel (final MethodCall call, final MethodChannel.Result result )
 	{

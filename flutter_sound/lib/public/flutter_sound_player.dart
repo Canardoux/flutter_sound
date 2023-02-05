@@ -542,7 +542,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         this,
         logLevel: _logLevel,
         voiceProcessing: enableVoiceProcessing,
-        equalizerParams: darwinEqualizerParams!,
+        equalizerParams: Platform.isIOS ? darwinEqualizerParams! : null,
       );
       _playerState = PlayerState.values[state];
       //isInited = success ?  Initialized.fullyInitialized : Initialized.notInitialized;
@@ -643,6 +643,18 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     var sessionId = await FlutterSoundPlayerPlatform.instance.getAudioSessionId(this);
     _logger.d('FS:---> getAudioSessionId $sessionId');
     return sessionId;
+  }
+
+  Future<void> initAndroidEqualizer(int? sessionId) async {
+    _logger.d('FS:---> initAndroidEqualizer ');
+    await _waitOpen();
+    if (_isInited != Initialized.fullyInitialized) {
+      throw Exception('Player is not open');
+    }
+
+    if (Platform.isAndroid) {
+      await FlutterSoundPlayerPlatform.instance.initAndroidEqualizer(this, sessionId);
+    }
   }
 
   /// Get the current progress of a playback.

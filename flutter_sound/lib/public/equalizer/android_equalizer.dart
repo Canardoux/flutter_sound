@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_sound_platform_interface/equalizer/platform_interface.dart';
 import 'package:rxdart/rxdart.dart';
-
-import 'equalizer.dart';
 
 /// A frequency band within an [AndroidEqualizer2].
 class AndroidEqualizerBand {
@@ -104,35 +102,37 @@ class AndroidEqualizerParameters2 {
 class _AndroidPlatform extends AndroidPlatform {
   _AndroidPlatform();
 
+  static const MethodChannel _channel = MethodChannel('com.dooboolab.flutter_sound_player');
+
   /// Get Andorid Equalizer Parameters
   @override
   Future<AndroidEqualizerGetParametersResponse> androidEqualizerGetParameters(
       AndroidEqualizerGetParametersRequest request) async {
-    return AndroidEqualizerGetParametersResponse.fromMap((await Equalizer.methodChannel
-        .invokeMethod<Map<dynamic, dynamic>>('androidEqualizerGetParameters', request.toMap()))!);
+    return AndroidEqualizerGetParametersResponse.fromMap(
+        (await _channel.invokeMethod<Map<dynamic, dynamic>>('androidEqualizerGetParameters', request.toMap()))!);
   }
 
   /// Set Andorid Equalizer Band Gain
   @override
   Future<AndroidEqualizerBandSetGainResponse> androidEqualizerBandSetGain(
       AndroidEqualizerBandSetGainRequest request) async {
-    return AndroidEqualizerBandSetGainResponse.fromMap((await Equalizer.methodChannel
-        .invokeMethod<Map<dynamic, dynamic>>('androidEqualizerBandSetGain', request.toMap()))!);
+    return AndroidEqualizerBandSetGainResponse.fromMap(
+        (await _channel.invokeMethod<Map<dynamic, dynamic>>('androidEqualizerBandSetGain', request.toMap()))!);
   }
 
   /// Set Andorid Equalizer Enabled
   @override
   Future<AudioEffectSetEnabledResponse> audioEffectSetEnabled(AudioEffectSetEnabledRequest request) async {
     return AudioEffectSetEnabledResponse.fromMap(
-        (await Equalizer.methodChannel.invokeMethod<Map<dynamic, dynamic>>('audioEffectSetEnabled', request.toMap()))!);
+        (await _channel.invokeMethod<Map<dynamic, dynamic>>('audioEffectSetEnabled', request.toMap()))!);
   }
 
   /// Set Android Loudness Enhancer Target Gain
   @override
   Future<AndroidLoudnessEnhancerSetTargetGainResponse> androidLoudnessEnhancerSetTargetGain(
       AndroidLoudnessEnhancerSetTargetGainRequest request) async {
-    return AndroidLoudnessEnhancerSetTargetGainResponse.fromMap((await Equalizer.methodChannel
-        .invokeMethod<Map<dynamic, dynamic>>('androidLoudnessEnhancerSetTargetGain', request.toMap()))!);
+    return AndroidLoudnessEnhancerSetTargetGainResponse.fromMap(
+        (await _channel.invokeMethod<Map<dynamic, dynamic>>('androidLoudnessEnhancerSetTargetGain', request.toMap()))!);
   }
 }
 
@@ -154,7 +154,7 @@ abstract class AudioEffect {
   /// Set the [enabled] status of this audio effect.
   Future<void> setEnabled(bool enabled) async {
     _enabledSubject.add(enabled);
-    _platform.audioEffectSetEnabled(AudioEffectSetEnabledRequest(type: _type, enabled: enabled));
+    await _platform.audioEffectSetEnabled(AudioEffectSetEnabledRequest(type: _type, enabled: enabled));
   }
 }
 

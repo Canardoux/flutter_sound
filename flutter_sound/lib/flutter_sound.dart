@@ -56,6 +56,6 @@ export 'public/util/flutter_sound_helper.dart';
 
 /// Equalizer
 export 'public/equalizer/android_equalizer.dart';
-export 'public/equalizer/equalizer.dart';
+// export 'public/equalizer/equalizer.dart';
 // export 'public/equalizer/platform_interface.dart';
 export 'public/equalizer/darwin_equalizer.dart';

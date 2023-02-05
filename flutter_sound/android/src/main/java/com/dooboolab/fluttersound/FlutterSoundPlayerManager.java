@@ -116,7 +116,6 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         break;
 
 
-
                         case "getProgress":
                         {
                                 aPlayer.getProgress ( call, result );
@@ -176,6 +175,56 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         case "setSubscriptionDuration":
                         {
                                 aPlayer.setSubscriptionDuration ( call, result );
+                        }
+                        break;
+
+                        case "initAndroidEqualizer":
+                        {
+                                try{
+                                        aPlayer.initEqualizer(call, result);
+                                } catch (Exception e) {
+                                        e.printStackTrace();
+                                }
+                        }
+                        break;
+
+                        case "setAudioSessionId":
+                        {
+                                try{
+                                        aPlayer.setAudioSessionId(call, result);
+                                } catch (Exception e) {
+                                        e.printStackTrace();
+                                }
+                        }
+                        break;
+
+                        case "equalizerBandSetGain":
+                        {
+                                try{
+                                        aPlayer.equalizerBandSetGain(call, result);
+                                } catch (Exception e) {
+                                        e.printStackTrace();
+                                }
+                        }
+                        break;
+
+                        case "audioEffectSetEnabled":
+                        {
+                                try{
+                                        aPlayer.audioEffectSetEnabled(call, result);
+                                } catch (Exception e) {
+                                        e.printStackTrace();
+                                }
+                        }
+                        break;
+
+                        case "equalizerAudioEffectGetParameters":
+                        {
+                                try{
+                                        aPlayer.equalizerAudioEffectGetParameters(call, result);
+                                } catch (Exception e) {
+                                        e.printStackTrace();
+                                }
                         }
                         break;
 
