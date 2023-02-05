@@ -131,7 +131,10 @@
     
     // Init EQ
     NSDictionary *arguments = call.arguments[@"equalizerParams"];
-    [flautoPlayer initEqualizer: arguments];
+    if (arguments != nil)
+    {
+        [flautoPlayer initEqualizer: arguments];
+    }
     
     
     return [super init: call]; // Init Session
