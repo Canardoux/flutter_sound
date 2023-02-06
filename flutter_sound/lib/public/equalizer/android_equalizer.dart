@@ -108,32 +108,42 @@ class _AndroidPlatform extends AndroidPlatform {
   @override
   Future<AndroidEqualizerGetParametersResponse> androidEqualizerGetParameters(
       AndroidEqualizerGetParametersRequest request) async {
+    var _requestMap = request.toMap();
+    _requestMap['slotNo'] = 0; //HACK for now
+
     return AndroidEqualizerGetParametersResponse.fromMap(
-        (await _channel.invokeMethod<Map<dynamic, dynamic>>('androidEqualizerGetParameters', request.toMap()))!);
+        (await _channel.invokeMethod<Map<dynamic, dynamic>>('androidEqualizerGetParameters', _requestMap))!);
   }
 
   /// Set Andorid Equalizer Band Gain
   @override
   Future<AndroidEqualizerBandSetGainResponse> androidEqualizerBandSetGain(
       AndroidEqualizerBandSetGainRequest request) async {
+    var _requestMap = request.toMap();
+    _requestMap['slotNo'] = 0; //HACK for now
     return AndroidEqualizerBandSetGainResponse.fromMap(
-        (await _channel.invokeMethod<Map<dynamic, dynamic>>('androidEqualizerBandSetGain', request.toMap()))!);
+        (await _channel.invokeMethod<Map<dynamic, dynamic>>('androidEqualizerBandSetGain', _requestMap))!);
   }
 
   /// Set Andorid Equalizer Enabled
   @override
   Future<AudioEffectSetEnabledResponse> audioEffectSetEnabled(AudioEffectSetEnabledRequest request) async {
+    var _requestMap = request.toMap();
+    _requestMap['slotNo'] = 0; //HACK for now
     return AudioEffectSetEnabledResponse.fromMap(
-        (await _channel.invokeMethod<Map<dynamic, dynamic>>('audioEffectSetEnabled', request.toMap()))!);
+        (await _channel.invokeMethod<Map<dynamic, dynamic>>('audioEffectSetEnabled', _requestMap))!);
   }
 
-  /// Set Android Loudness Enhancer Target Gain
-  @override
-  Future<AndroidLoudnessEnhancerSetTargetGainResponse> androidLoudnessEnhancerSetTargetGain(
-      AndroidLoudnessEnhancerSetTargetGainRequest request) async {
-    return AndroidLoudnessEnhancerSetTargetGainResponse.fromMap(
-        (await _channel.invokeMethod<Map<dynamic, dynamic>>('androidLoudnessEnhancerSetTargetGain', request.toMap()))!);
-  }
+  // /// Set Android Loudness Enhancer Target Gain
+  // @override
+  // Future<AndroidLoudnessEnhancerSetTargetGainResponse> androidLoudnessEnhancerSetTargetGain(
+  //     AndroidLoudnessEnhancerSetTargetGainRequest request) async {
+  //   var _requestMap = request.toMap();
+  //   _requestMap['slotNo'] = 0; //HACK for now
+  //   debugPrint('androidLoudnessEnhancerSetTargetGain: $_requestMap');
+  //   return AndroidLoudnessEnhancerSetTargetGainResponse.fromMap(
+  //       (await _channel.invokeMethod<Map<dynamic, dynamic>>('androidLoudnessEnhancerSetTargetGain', _requestMap))!);
+  // }
 }
 
 abstract class AudioEffect {

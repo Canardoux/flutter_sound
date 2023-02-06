@@ -19,6 +19,7 @@
 
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart' show Level, Logger;
 import 'dart:async';
@@ -207,9 +208,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
 
   @override
   Future<void> initAndroidEqualizer(FlutterSoundPlayerCallback callback, int? sessionId) {
-    return invokeMethod(callback, 'initAndroidEqualizer', {
-      'sessionId': sessionId,
-    });
+    return invokeMethod(callback, 'initAndroidEqualizer', <String, dynamic>{'sessionId': sessionId});
   }
 
   @override

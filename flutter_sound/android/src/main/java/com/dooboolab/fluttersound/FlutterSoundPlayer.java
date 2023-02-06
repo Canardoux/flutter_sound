@@ -359,13 +359,13 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 	void equalizerBandSetGain(final MethodCall call, final Result result) {
 		m_flautoPlayer.equalizerBandSetGain(call.argument("bandIndex"),
 				call.argument("gain"));
-		result.success ( getPlayerState());
+		result.success (new HashMap<String, Object>());
 	}
 
 	void audioEffectSetEnabled(final MethodCall call, final Result result) {
 		m_flautoPlayer.audioEffectSetEnabled(call.argument("type"),
 				call.argument("enabled"));
-		result.success ( getPlayerState());
+		result.success (new HashMap<String, Object>());
 	}
 
 	void equalizerAudioEffectGetParameters(final MethodCall call, final Result result) {

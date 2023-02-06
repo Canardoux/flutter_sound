@@ -198,7 +198,7 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         }
                         break;
 
-                        case "equalizerBandSetGain":
+                        case "androidEqualizerBandSetGain":
                         {
                                 try{
                                         aPlayer.equalizerBandSetGain(call, result);
@@ -218,7 +218,7 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         }
                         break;
 
-                        case "equalizerAudioEffectGetParameters":
+                        case "androidEqualizerGetParameters":
                         {
                                 try{
                                         aPlayer.equalizerAudioEffectGetParameters(call, result);
