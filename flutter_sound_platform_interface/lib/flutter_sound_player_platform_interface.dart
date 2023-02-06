@@ -17,15 +17,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import 'dart:async';
-
-import 'package:logger/logger.dart' show Level, Logger;
+import 'package:logger/logger.dart' show Level;
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
-import 'dart:io';
 import 'dart:typed_data' show Uint8List;
 
 import 'equalizer/platform_interface.dart';

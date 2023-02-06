@@ -17,16 +17,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:logger/logger.dart' show Level, Logger;
-import 'dart:async';
-import 'dart:convert';
+import 'package:logger/logger.dart' show Level;
 import 'dart:core';
-import 'dart:io';
-import 'dart:typed_data' show Uint8List;
 
 import 'equalizer/platform_interface.dart';
 import 'flutter_sound_player_platform_interface.dart';
@@ -159,6 +152,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
     invokeMethod(callback, 'setLogLevel', {
       'logLevel': logLevel.index,
     });
+    return null;
   }
 
   @override
@@ -260,7 +254,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
       {
         'codec': codec.index,
       },
-    ) as Future<bool>;
+    );
   }
 
   @override

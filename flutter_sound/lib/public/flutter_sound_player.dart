@@ -27,7 +27,6 @@ import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_sound_platform_interface/equalizer/platform_interface.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
 import 'package:logger/logger.dart' show Level, Logger;
 import 'package:path_provider/path_provider.dart';
