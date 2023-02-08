@@ -87,7 +87,7 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  List<FlutterSoundRecorderCallback?> _slots = [];
+  final List<FlutterSoundRecorderCallback?> _slots = [];
 
   int findSession(FlutterSoundRecorderCallback aSession) {
     for (var i = 0; i < _slots.length; ++i) {

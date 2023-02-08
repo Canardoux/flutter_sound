@@ -196,7 +196,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
     return invokeMethod(
       callback,
       'getAudioSessionId',
-      Map<String, dynamic>(),
+      <String, dynamic>{},
     );
   }
 
@@ -212,7 +212,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
     return invokeMethod(
       callback,
       'closePlayer',
-      Map<String, dynamic>(),
+      <String, dynamic>{},
     );
   }
 
@@ -223,7 +223,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
     return invokeMethod(
       callback,
       'getPlayerState',
-      Map<String, dynamic>(),
+      <String, dynamic>{},
     );
   }
 
@@ -234,7 +234,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
     var m2 = await invokeMethodMap(
       callback,
       'getProgress',
-      Map<String, dynamic>(),
+      <String, dynamic>{},
     );
     Map<String, Duration> r = {
       'duration': Duration(milliseconds: m2['duration']!),
@@ -318,7 +318,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
     return invokeMethod(
       callback,
       'stopPlayer',
-      Map<String, dynamic>(),
+      <String, dynamic>{},
     );
   }
 
@@ -329,7 +329,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
     return invokeMethod(
       callback,
       'pausePlayer',
-      Map<String, dynamic>(),
+      <String, dynamic>{},
     );
   }
 
@@ -340,7 +340,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
     return invokeMethod(
       callback,
       'resumePlayer',
-      Map<String, dynamic>(),
+      <String, dynamic>{},
     );
   }
 
@@ -369,13 +369,14 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
     });
   }
 
+  @override
   Future<String> getResourcePath(
     FlutterSoundPlayerCallback callback,
   ) {
     return invokeMethodString(
       callback,
       'getResourcePath',
-      Map<String, dynamic>(),
+      <String, dynamic>{},
     );
   }
 }

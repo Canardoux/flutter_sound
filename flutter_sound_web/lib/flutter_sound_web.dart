@@ -47,13 +47,13 @@ class ImportJsLibraryWeb {
     final List<Future<void>> loading = <Future<void>>[];
     final head = html.querySelector('head')!;
 
-    libraries.forEach((String library) {
+    for (var library in libraries) {
       if (!isImported(library)) {
         final scriptTag = _createScriptTag(library);
         head.children.add(scriptTag);
         loading.add(scriptTag.onLoad.first);
       }
-    });
+    }
 
     return Future.wait(loading);
   }
@@ -80,10 +80,11 @@ class ImportJsLibraryWeb {
 
 class ImportJsLibrary {
   static Future<void> import(String url) {
-    if (kIsWeb)
+    if (kIsWeb) {
       return ImportJsLibraryWeb.import(url);
-    else
+    } else {
       return Future.value(null);
+    }
   }
 
   static bool isImported(String url) {

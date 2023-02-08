@@ -72,7 +72,7 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  List<FlutterSoundPlayerCallback?> _slots = [];
+  final List<FlutterSoundPlayerCallback?> _slots = [];
 
   int findSession(FlutterSoundPlayerCallback aSession) {
     for (var i = 0; i < _slots.length; ++i) {
@@ -103,10 +103,11 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
 
   FlutterSoundPlayerCallback getSession(int slotno) {
     FlutterSoundPlayerCallback? cb = _slots[slotno];
-    if (cb == null)
+    if (cb == null) {
       throw Exception('Cannot find session');
-    else
+    } else {
       return cb;
+    }
   }
 
   //===================================================================================================================================================

@@ -138,7 +138,7 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
     }
     _slots = [];
     callback.log(Level.debug, '<--- resetPlugin');
-    return null;
+    return;
   }
 
   @override
@@ -209,10 +209,11 @@ class FlutterSoundRecorderWeb extends FlutterSoundRecorderPlatform //implements 
     FlutterSoundRecorderCallback callback,
   ) async {
     FlutterSoundRecorder? session = getWebSession(callback);
-    if (session != null)
+    if (session != null) {
       session.stopRecorder();
-    else
+    } else {
       callback.log(Level.debug, 'Recorder already stopped');
+    }
   }
 
   @override

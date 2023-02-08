@@ -291,7 +291,7 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
     // await invokeMethod( callback, 'startPlayer', {'codec': codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI, 'numChannels': numChannels, 'sampleRate': sampleRate},) ;
     // return  startPlayerCompleter.future ;
     // String s = "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3";
-    if (codec == null) codec = Codec.defaultCodec;
+    codec ??= Codec.defaultCodec;
     if (fromDataBuffer != null) {
       if (fromURI != null) {
         throw Exception("You may not specify both 'fromURI' and 'fromDataBuffer' parameters");
@@ -353,14 +353,17 @@ class FlutterSoundPlayerWeb extends FlutterSoundPlayerPlatform //implements Flut
     return getWebSession(callback)!.seekToPlayer(duration!.inMilliseconds);
   }
 
+  @override
   Future<int> setVolume(FlutterSoundPlayerCallback callback, {double? volume}) async {
     return getWebSession(callback)!.setVolume(volume);
   }
 
+  @override
   Future<int> setSpeed(FlutterSoundPlayerCallback callback, {required double speed}) async {
     return getWebSession(callback)!.setSpeed(speed);
   }
 
+  @override
   Future<String> getResourcePath(
     FlutterSoundPlayerCallback callback,
   ) async {

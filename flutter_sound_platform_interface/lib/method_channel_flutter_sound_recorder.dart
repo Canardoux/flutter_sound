@@ -146,7 +146,7 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
     return invokeMethodVoid(
       callback,
       'resetPlugin',
-      Map<String, dynamic>(),
+      <String, dynamic>{},
     );
   }
 
@@ -171,7 +171,7 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
     return invokeMethodVoid(
       callback,
       'closeRecorder',
-      Map<String, dynamic>(),
+      <String, dynamic>{},
     );
   }
 
@@ -234,7 +234,7 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
     return invokeMethodVoid(
       callback,
       'stopRecorder',
-      Map<String, dynamic>(),
+      <String, dynamic>{},
     );
   }
 
@@ -245,7 +245,7 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
     return invokeMethodVoid(
       callback,
       'pauseRecorder',
-      Map<String, dynamic>(),
+      <String, dynamic>{},
     );
   }
 
@@ -256,7 +256,7 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
     return invokeMethodVoid(
       callback,
       'resumeRecorder',
-      Map<String, dynamic>(),
+      <String, dynamic>{},
     );
   }
 
