@@ -3,7 +3,7 @@
 #
 Pod::Spec.new do |s|
 s.name = 'flutter_sound'
-  s.version          = '9.2.13'
+  s.version          = '9.2.14'
   s.summary          = 'Flutter plugin that relates to sound like audio and recorder.'
   s.description      = <<-DESC
 Flutter plugin that relates to sound like audio and recorder.
