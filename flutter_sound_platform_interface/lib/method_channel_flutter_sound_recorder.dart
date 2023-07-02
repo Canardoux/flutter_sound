@@ -107,7 +107,7 @@ Future<dynamic>? channelMethodCallHandler(MethodCall call) {
 
         case "log":
         {
-          aRecorder!.log(Level.values[call.arguments['logLevel']], call.arguments['msg']);
+          aRecorder!.log(Level.values[call.arguments['level']], call.arguments['msg']);
         }
         break;
 
