@@ -25,10 +25,10 @@
 
 
 
-#import <Flutter/Flutter.h>
+#import <FlutterMacOS/FlutterMacOS.h>
 #import <AVFoundation/AVFoundation.h>
-#import <flutter_sound_core/FlautoPlayer.h>
-#import <flutter_sound_core/Flauto.h>
+#import "FlautoPlayer.h"
+#import "Flauto.h"
 #include "FlutterSoundManager.h"
 #include "FlutterSoundPlayerManager.h"
 

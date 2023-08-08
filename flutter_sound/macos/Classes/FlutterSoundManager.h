@@ -29,9 +29,9 @@
 #ifndef FlutterSoundManager_h
 #define FlutterSoundManager_h
 
-#import <Flutter/Flutter.h>
+#import <FlutterMacOS/FlutterMacOS.h>
 #import <AVFoundation/AVFoundation.h>
-#import <flutter_sound_core/Flauto.h>
+#import "Flauto.h"
 
 @interface Session : NSObject
 {

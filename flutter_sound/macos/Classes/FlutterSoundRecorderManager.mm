@@ -27,9 +27,9 @@
 
 
 
-#import <flutter_sound_core/FlautoRecorder.h>
+#import "FlautoRecorder.h"
 #import <AVFoundation/AVFoundation.h>
-#import <Flutter/Flutter.h>
+#import <FlutterMacOS/FlutterMacOS.h>
 #import "FlutterSoundRecorder.h"
 #import "FlutterSoundRecorderManager.h"
 

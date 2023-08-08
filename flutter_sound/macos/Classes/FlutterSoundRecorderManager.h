@@ -30,7 +30,7 @@
 #define FlutterSoundRecorderManager_h
 
 
-#import <Flutter/Flutter.h>
+#import <FlutterMacOS/FlutterMacOS.h>
 #import <AVFoundation/AVFoundation.h>
 //#import "Flauto.h"
 #import "FlutterSoundManager.h"

@@ -29,12 +29,11 @@
 #define FlutterSoundRecorder_h
 
 
-#import <Flutter/Flutter.h>
+#import <FlutterMacOS/FlutterMacOS.h>
 #import <AVFoundation/AVFoundation.h>
 #import "FlutterSoundRecorderManager.h"
-#import <flutter_sound_core/Flauto.h>
-#import <flutter_sound_core/FlautoRecorder.h>
-
+#import "Flauto.h"
+#import "FlautoRecorder.h"
 
 @interface FlutterSoundRecorder  : Session<FlautoRecorderCallback>
 {
