@@ -22,10 +22,18 @@ dependencies:
 # ============================================================================
   # flutter_sound_platform_interface: 9.2.13
   flutter_sound_platform_interface: 
-    path: ../flutter_sound_platform_interface # Flutter Sound Dir
+    git:
+      url: https://github.com/opunAI/flutter_sound.git
+      ref: master
+      path: flutter_sound_platform_interface
+    # path: ../flutter_sound_platform_interface # Flutter Sound Dir
   # flutter_sound_web: 9.2.13
   flutter_sound_web: 
-    path: ../flutter_sound_web # Flutter Sound Dir
+    git:
+      url: https://github.com/opunAI/flutter_sound.git
+      ref: master
+      path: flutter_sound_web
+    # path: ../flutter_sound_web # Flutter Sound Dir
 # ============================================================================
 
 dev_dependencies:
