@@ -37,10 +37,10 @@ dependencies:
     # path: ../flutter_sound_platform_interface # Flutter Sound Dir
   flutter:
     sdk: flutter
-  logger: 2.0.1
+  logger: 2.0.2+1
   flutter_web_plugins:
     sdk: flutter
-  meta: 1.9.1
+  meta: 1.10.0
   js: 0.6.7
 
 dev_dependencies:
