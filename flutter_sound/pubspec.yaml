@@ -10,13 +10,13 @@ environment:
   flutter: ">=2.0.0"
 
 dependencies:
-  path_provider: ^2.1.1
+  path_provider: 2.1.1
   recase: 4.1.0
-  uuid: ^4.2.1
-  provider: ^6.1.1
+  uuid: 4.2.1
+  provider: 6.1.1
   path: 1.8.3
   synchronized: 3.1.0
-  logger: ^2.0.2+1
+  logger: 2.0.2+1
   flutter:
     sdk: flutter
 # ============================================================================
