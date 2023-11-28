@@ -20,7 +20,11 @@ dependencies:
   flutter:
     sdk: flutter
   # ============================================================================
-  flutter_sound_platform_interface: 9.2.13
+  flutter_sound_platform_interface:
+    git:
+      url: https://github.com/enricostrijks/flutter_sound.git
+      path: flutter_sound_platform_interface
+      ref: master
   #    path: ../flutter_sound_platform_interface # Flutter Sound Dir
   flutter_sound_web:
     git:
