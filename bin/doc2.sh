@@ -47,8 +47,8 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 
-rm -rf /var/www/vhosts/canardoux.xyz/flutter_sound.canardoux.xyz/*
-cp -a /tmp/toto_doc/_site/* /var/www/vhosts/canardoux.xyz/flutter_sound.canardoux.xyz/
+rm -rf /var/www/canardoux.xyz/flutter_sound.canardoux.xyz/*
+cp -a /tmp/toto_doc/_site/* /var/www/canardoux.xyz/flutter_sound.canardoux.xyz/
 
 cd ~/flutter_sound.canardoux.xyz/
 echo "Symbolic links of the API"
@@ -90,6 +90,6 @@ if [ $? -ne 0 ]; then
 fi
 cd 
 
-rm -rf /var/www/vhosts/canardoux.xyz/flutter_sound.canardoux.xyz/web_example/
+rm -rf /var/www/canardoux.xyz/flutter_sound.canardoux.xyz/web_example/
 cp -a /tmp/toto_doc/flutter_sound/example/assets/samples/ /tmp/toto_doc/flutter_sound/example/assets/extract /tmp/toto_doc/flutter_sound/example/build/web/assets
-cp -a /tmp/toto_doc/flutter_sound/example/build/web /var/www/vhosts/canardoux.xyz/flutter_sound.canardoux.xyz/web_example
+cp -a /tmp/toto_doc/flutter_sound/example/build/web /var/www/canardoux.xyz/flutter_sound.canardoux.xyz/web_example

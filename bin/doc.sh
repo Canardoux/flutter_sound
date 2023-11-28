@@ -14,10 +14,10 @@ tar czf _toto3.tgz flutter_sound flutter_sound_web flutter_sound_platform_interf
 cd doc
 tar czf ../_toto.tgz *
 cd ..
-scp bin/doc2.sh canardoux@canardoux.xyz:/var/www/vhosts/canardoux.xyz/bin
-scp _toto.tgz canardoux@canardoux.xyz:/var/www/vhosts/canardoux.xyz/
-scp _toto3.tgz canardoux@canardoux.xyz:/var/www/vhosts/canardoux.xyz/
-ssh -p7822 canardoux@canardoux.xyz "bash /var/www/vhosts/canardoux.xyz/bin/doc2.sh"
+..scp bin/doc2.sh canardoux@canardoux.xyz:/var/www/canardoux.xyz/bin
+scp _toto.tgz canardoux@canardoux.xyz:/var/www/canardoux.xyz/
+scp _toto3.tgz canardoux@canardoux.xyz:/var/www/canardoux.xyz/
+ssh -p7822 canardoux@canardoux.xyz "bash /var/www/canardoux.xyz/bin/doc2.sh"
 rm _toto.tgz _toto2.tgz _toto3.tgz 2>/dev/null
 
 echo 'E.O.J'
