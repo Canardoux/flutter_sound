@@ -63,9 +63,9 @@
     },
     {
       "name": "js",
-      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/js-0.7.1",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/js-0.6.7",
       "packageUri": "lib/",
-      "languageVersion": "3.1"
+      "languageVersion": "2.19"
     },
     {
       "name": "leak_tracker",
@@ -188,7 +188,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2024-02-20T02:43:09.184084Z",
+  "generated": "2024-02-20T02:46:38.560262Z",
   "generator": "pub",
   "generatorVersion": "3.3.0"
 }

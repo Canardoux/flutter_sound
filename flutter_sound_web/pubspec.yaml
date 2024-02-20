@@ -40,7 +40,7 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
   meta: ^1.11.0
-  js: ^0.7.1
+  js: ^0.6.4
 
 dependency_overrides:
   flutter_sound_platform_interface: 
