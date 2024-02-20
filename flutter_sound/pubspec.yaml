@@ -6,7 +6,7 @@ homepage: https://flutter-sound.canardoux.xyz/readme.html
 repository: https://github.com/canardoux/flutter_sound
 
 environment:
-  sdk: 3.0.0
+  sdk: ^3.0.0
   flutter: ">=3.10.0"
 
 dependencies:
