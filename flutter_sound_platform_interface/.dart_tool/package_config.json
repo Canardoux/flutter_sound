@@ -3,13 +3,13 @@
   "packages": [
     {
       "name": "_fe_analyzer_shared",
-      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/_fe_analyzer_shared-64.0.0",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/_fe_analyzer_shared-67.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "analyzer",
-      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/analyzer-6.2.0",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/analyzer-6.4.1",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -45,9 +45,9 @@
     },
     {
       "name": "built_value",
-      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/built_value-8.7.0",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/built_value-8.9.1",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "3.0"
     },
     {
       "name": "characters",
@@ -63,7 +63,7 @@
     },
     {
       "name": "code_builder",
-      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/code_builder-4.8.0",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/code_builder-4.10.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -87,7 +87,7 @@
     },
     {
       "name": "dart_style",
-      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/dart_style-2.3.3",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/dart_style-2.3.4",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -128,6 +128,24 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "leak_tracker",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/leak_tracker-10.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
+      "name": "leak_tracker_flutter_testing",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/leak_tracker_flutter_testing-2.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
+      "name": "leak_tracker_testing",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/leak_tracker_testing-2.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
       "name": "logger",
       "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/logger-2.0.2+1",
       "packageUri": "lib/",
@@ -141,25 +159,25 @@
     },
     {
       "name": "matcher",
-      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/matcher-0.12.16",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/matcher-0.12.16+1",
       "packageUri": "lib/",
-      "languageVersion": "2.18"
+      "languageVersion": "3.0"
     },
     {
       "name": "material_color_utilities",
-      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/material_color_utilities-0.5.0",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/material_color_utilities-0.8.0",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
     {
       "name": "meta",
-      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/meta-1.10.0",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/meta-1.11.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "mockito",
-      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/mockito-5.4.3",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/mockito-5.4.4",
       "packageUri": "lib/",
       "languageVersion": "3.1"
     },
@@ -171,9 +189,9 @@
     },
     {
       "name": "path",
-      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/path-1.8.3",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/path-1.9.0",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "3.0"
     },
     {
       "name": "pedantic",
@@ -183,7 +201,7 @@
     },
     {
       "name": "plugin_platform_interface",
-      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/plugin_platform_interface-2.1.7",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/plugin_platform_interface-2.1.8",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -201,7 +219,7 @@
     },
     {
       "name": "source_gen",
-      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/source_gen-1.4.0",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/source_gen-1.5.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -254,16 +272,16 @@
       "languageVersion": "2.14"
     },
     {
-      "name": "watcher",
-      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/watcher-1.1.0",
+      "name": "vm_service",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/vm_service-13.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
-      "name": "web",
-      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/web-0.3.0",
+      "name": "watcher",
+      "rootUri": "file:///Users/matrixuser/.pub-cache/hosted/pub.dev/watcher-1.1.0",
       "packageUri": "lib/",
-      "languageVersion": "3.2"
+      "languageVersion": "3.0"
     },
     {
       "name": "yaml",
@@ -278,7 +296,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2023-11-20T23:35:55.707801Z",
+  "generated": "2024-02-20T02:32:39.293205Z",
   "generator": "pub",
-  "generatorVersion": "3.2.0"
+  "generatorVersion": "3.3.0"
 }

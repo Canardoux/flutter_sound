@@ -13,14 +13,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  meta: 1.10.0
-  plugin_platform_interface: 2.1.7
+  meta: ^1.11.0
+  plugin_platform_interface: ^2.1.8
   logger: 2.0.2+1
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mockito: 5.4.3
+  mockito: ^5.4.4
   pedantic: 1.11.1
 
