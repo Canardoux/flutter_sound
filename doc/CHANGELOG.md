@@ -7,6 +7,11 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 9.3.0
+
+- Link with "logger: ^2.0.2"
+- Link with "uuid: ^4.3.3"
+
 ## 9.2.13
 
 - Remove static variables `flutterSoundPlayermanager*` and `flutterSoundRecorderManager*` [#895](https://github.com/Canardoux/flutter_sound/issues/895). Static variables are total evil!.

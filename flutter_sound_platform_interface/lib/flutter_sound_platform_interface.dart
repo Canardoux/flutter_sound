@@ -17,13 +17,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-
-import 'dart:async';
-
-import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-
-
-
 enum Codec {
   // this enum MUST be synchronized with fluttersound/AudioInterface.java
   // and ios/Classes/FlutterSoundPlugin.h
@@ -91,4 +84,3 @@ enum Codec {
   /// Vorbis with a WebM format
   vorbisWebM,
 }
-

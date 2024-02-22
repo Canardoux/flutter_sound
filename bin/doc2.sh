@@ -1,4 +1,16 @@
 #!/bin/bash
+
+export PATH=~/android-studio/bin:$PATH
+export PATH=$PATH:~/flutter/bin
+export ANDROID_HOME=~/Android/Sdk
+export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/android-ndk-r21e # 23.1.7779620
+export PATH=~/bin:$PATH
+export PATH=~/gradle-7.4/bin:$PATH
+export PATH="$PATH:/opt/flutter/bin"
+
+export GEM_HOME="$HOME/gems"
+export PATH="$HOME/gems/bin:$PATH"
+
 rm -rf /tmp/toto_doc 2>/dev/null
 mkdir -v /tmp/toto_doc 2>/tmp/null
 tar xzf _toto.tgz -C /tmp/toto_doc 2>/dev/null
@@ -11,7 +23,7 @@ export PATH="$PATH:/opt/flutter/bin"
 export FLUTTER_ROOT=/opt/flutter
 flutter clean
 flutter pub get
-/usr/lib/dart/bin/dart doc   lib 2>/dev/null
+dart doc   lib 2>/dev/null
 mv -v doc/api .
 
 
@@ -22,11 +34,12 @@ sed -i  "s/^  background-color: inherit;$/  background-color: #2196F3;/" api/sta
 sed -i  "0,/^  overflow: hidden;$/s//overflow: auto;/"  /tmp/toto_doc/_site/pages/flutter-sound/api/static-assets/styles.css
 sed -i  "s/^  background-color: inherit;$/  background-color: #2196F3;/" /tmp/toto_doc/_site/pages/flutter-sound/api/static-assets/styles.css
 
-cd
+cd ~
 echo "patch css for Jekyll compatibility"
 
+
 echo "Add Front matter on top of dartdoc pages"
-for f in $(find /tmp/toto_doc/api -name '*.html' )
+for f in $(find /tmp/toto_doc/flutter-sound/api -name '*.html' )
 do
         sed -i  "1i ---" $f
         #gsed -i  "1i toc: false" $f
@@ -42,15 +55,16 @@ rm -rf /tmp/toto_doc/flutter_sound/example/ios/Pods
 bundle config set --local path '~/vendor/bundle'
 bundle install
 bundle exec jekyll build
+
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
 fi
 
-rm -rf /var/www/canardoux.xyz/flutter_sound.canardoux.xyz/*
-cp -a /tmp/toto_doc/_site/* /var/www/canardoux.xyz/flutter_sound.canardoux.xyz/
+rm -rf /var/www/canardoux.xyz/flutter-sound/*
+cp -a /tmp/toto_doc/_site/* /var/www/canardoux.xyz/flutter-sound/
 
-cd ~/flutter_sound.canardoux.xyz/
+cd /var/www/canardoux.xyz/flutter-sound
 echo "Symbolic links of the API"
 echo "--------------------------"
 for dir in $(find api -type d)
@@ -70,7 +84,7 @@ done
 
 
 
-cd ~/flutter_sound.canardoux.xyz/
+cd /var/www/canardoux.xyz/flutter-sound
 ln -s -v readme.html index.html
 #cd api/topics
 #rm favico*
@@ -90,6 +104,6 @@ if [ $? -ne 0 ]; then
 fi
 cd 
 
-rm -rf /var/www/canardoux.xyz/flutter_sound.canardoux.xyz/web_example/
+rm -rf /var/www/canardoux.xyz/flutter-sound/web_example/
 cp -a /tmp/toto_doc/flutter_sound/example/assets/samples/ /tmp/toto_doc/flutter_sound/example/assets/extract /tmp/toto_doc/flutter_sound/example/build/web/assets
-cp -a /tmp/toto_doc/flutter_sound/example/build/web /var/www/canardoux.xyz/flutter_sound.canardoux.xyz/web_example
+cp -a /tmp/toto_doc/flutter_sound/example/build/web /var/www/canardoux.xyz/flutter-sound/web_example

@@ -18,7 +18,7 @@ cd flutter_sound
 dart analyze lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    #exit -1
+    exit -1
 fi
 dart format lib
 if [ $? -ne 0 ]; then
@@ -50,33 +50,61 @@ rm -rf _*.tgz
 cd flutter_sound_platform_interface/    
 #flutter clean
 #flutter pub get
-flutter pub publish
+
+dart analyze lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    #exit -1
+    exit -1
+fi
+dart format lib
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+
+#!!!!!!!!!flutter pub publish
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
 fi
 cd ..
 
 cd flutter_sound_web
 flutter clean
 flutter pub get
+
+dart analyze lib
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+dart format lib
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
-    #exit -1
+    exit -1
 fi
 cd ..
 
 
 
 cd flutter_sound
-dart format  lib
-dart format  example/lib
 dart analyze lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    #exit -1
+    exit -1
 fi
+dart format lib
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+dart format  example/lib
 cd ..
 
 
@@ -105,7 +133,7 @@ cd flutter_sound_core
 pod trunk push flutter_sound_core.podspec
 if [ $? -ne 0 ]; then
     echo "Error"
-    #exit -1
+    exit -1
 fi
 cd ..
 
@@ -146,6 +174,17 @@ cd ../..
 cd flutter_sound
 #flutter clean
 #flutter pub get
+dart analyze lib
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+dart format lib
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error"
@@ -156,27 +195,22 @@ cd ..
 
 
 cd flutter_sound
-flutter analyze lib
+dartdoc lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    #exit -1
-fi
-#dartdoc lib
-if [ $? -ne 0 ]; then
-    echo "Error"
-    #exit -1
+    exit -1
 fi
 rm -rf doc
 cd example
 flutter analyze lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    #exit -1
+    exit -1
 fi
-#dartdoc lib
+dartdoc lib
 if [ $? -ne 0 ]; then
     echo "Error"
-    #exit -1
+    exit -1
 fi
 rm -rf doc
 cd ../..
@@ -201,14 +235,14 @@ cd ..
 flutter build ios
 if [ $? -ne 0 ]; then
     echo "Error"
-    #exit -1
+    exit -1
 fi
 
 # Bug in flutter tools : if "flutter build --release" we must first "--debug" and then "--profile" before "--release"
 flutter build apk --debug
 if [ $? -ne 0 ]; then
     echo "Error"
-    #exit -1
+    exit -1
 fi
 
 cd ../..

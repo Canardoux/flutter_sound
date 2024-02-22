@@ -110,7 +110,6 @@ abstract class Food {
 
   /// use internally by Flutter Sound
   void dummy(FlutterSoundPlayer player) {} // Just to satisfy `dartanalyzer`
-
 }
 
 /// FoodData are the regular objects received from a recorder when recording to a Dart Stream
@@ -186,5 +185,4 @@ class FlutterSound {
   }
 
   // ----------------------------------------------------------------------------------------------------------------------
-
 }
