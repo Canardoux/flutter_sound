@@ -287,10 +287,10 @@
       "name": "flutter_sound_platform_interface",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-02-22T17:05:56.178546Z",
+  "generated": "2024-02-22T21:44:53.456039Z",
   "generator": "pub",
   "generatorVersion": "3.4.0-163.0.dev"
 }

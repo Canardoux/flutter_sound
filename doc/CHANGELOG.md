@@ -7,10 +7,12 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 9.3.0
+## 9.3.0+2
 
 - Link with "logger: ^2.0.2"
 - Link with "uuid: ^4.3.3"
+- environment sdk version is now : sdk: ^3.3.0
+- Fixes all warnings during build
 
 ## 9.2.13
 

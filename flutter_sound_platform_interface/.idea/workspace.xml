@@ -54,20 +54,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="40fa92f8-6475-41cf-aae7-5ca39400a0cb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/images/StandWithUkraine.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/android/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/android/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/ios/Podfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/ios/Classes/FlutterSoundPlayerManager.mm" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/ios/Classes/FlutterSoundPlayerManager.mm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/new-version.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../bin/new-version.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/Gemfile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../flutter_sound/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.packages" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/.dart_tool/package_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/pubspec.lock" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../flutter_sound_web/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -84,16 +81,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
-    <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
-    <property name="cidr.known.project.marker" value="true" />
-    <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
-    <property name="show.migrate.to.gradle.popup" value="false" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "AnalyzeApkAction.lastApkPath": "/Volumes/mac-J/larpoux/projmac/flutter_sound/flutter_sound_platform_interface/lib",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "last_opened_file_path": "/Volumes/mac-J/larpoux/projmac/flutter_sound/flutter_sound_platform_interface",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "show.migrate.to.gradle.popup": "false"
+  }
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -115,6 +113,5 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

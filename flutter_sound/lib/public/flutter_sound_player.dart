@@ -1230,7 +1230,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   }
 
   Future<void> _seekToPlayer(Duration duration) async {
-    _logger.v('FS:---> seekToPlayer ');
+    _logger.t('FS:---> seekToPlayer ');
     await _waitOpen();
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
@@ -1240,7 +1240,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       duration: duration,
     );
     _playerState = PlayerState.values[state];
-    _logger.v('FS:<--- seekToPlayer ');
+    _logger.t('FS:<--- seekToPlayer ');
   }
 
   /// Change the output volume
