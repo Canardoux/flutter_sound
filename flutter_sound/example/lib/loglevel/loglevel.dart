@@ -117,7 +117,7 @@ class _LogLevelState extends State<LogLevel> {
           child: Row(
             children: [
               Radio(
-                value: Level.verbose,
+                value: Level.trace,
                 groupValue: theLogLevel,
                 onChanged: setMode,
                 activeColor: Colors.blue,
@@ -228,7 +228,7 @@ class _LogLevelState extends State<LogLevel> {
           child: Row(
             children: [
               Radio(
-                value: Level.wtf,
+                value: Level.fatal,
                 groupValue: theLogLevel,
                 onChanged: setMode,
                 activeColor: Colors.blue,
@@ -250,7 +250,7 @@ class _LogLevelState extends State<LogLevel> {
           child: Row(
             children: [
               Radio(
-                value: Level.nothing,
+                value: Level.off,
                 groupValue: theLogLevel,
                 onChanged: setMode,
                 activeColor: Colors.blue,
