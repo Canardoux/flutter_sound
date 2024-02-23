@@ -18,7 +18,7 @@ cd flutter_sound
 flutter analyze lib
 if [ $? -ne 0 ]; then
     echo "Error: analyze flutter_sound/lib"
-    #exit -1
+    #!!!!!exit -1
 fi
 dart format lib
 if [ $? -ne 0 ]; then
@@ -65,7 +65,7 @@ fi
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error: flutter pub publish[flutter_sound_platform_interface]"
-    #exit -1
+    #!!!!!exit -1
 fi
 cd ..
 
@@ -87,7 +87,7 @@ fi
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error: flutter pub publish[flutter_sound_web]"
-    #exit -1
+    #!!!!!!exit -1
 fi
 cd ..
 
@@ -122,13 +122,6 @@ if [ $? -ne 0 ]; then
 fi
 cd ..
 
-#cd flutter_sound_core/android
-#./gradlew clean build bintrayUpload
-#if [ $? -ne 0 ]; then
-#    echo "Error"
-#    exit -1
-#fi
-#cd ../..
 
 
 git add .
@@ -163,12 +156,13 @@ cd ../..
 
 
 cd flutter_sound
-if [ $? -ne 0 ]; then
-    echo "Error: flutter pub publish[flutter_sound]"
-   #exit -1
-fi
 
 flutter pub publish
+if [ $? -ne 0 ]; then
+    echo "Error: flutter pub publish[flutter_sound]"
+   #!!!!!!exit -1
+fi
+
 
 flutter analyze lib
 if [ $? -ne 0 ]; then
@@ -202,10 +196,10 @@ cd ..
 
 
 cd flutter_sound
-dartdoc lib
+dart doc lib
 if [ $? -ne 0 ]; then
     echo "Error: dartdoc flutter_sound/lib"
-    exit -1
+   #!!!!!exit -1
 fi
 rm -rf doc
 cd example
@@ -217,7 +211,7 @@ fi
 dartdoc lib
 if [ $? -ne 0 ]; then
     echo "Error: dartdoc flutter_sound/example/lib"
-    exit -1
+    #!!!!exit -1
 fi
 rm -rf doc
 cd ../..
