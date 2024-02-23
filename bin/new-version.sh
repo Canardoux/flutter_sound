@@ -130,7 +130,7 @@ cd flutter_sound_core/web
 npm publish .
 if [ $? -ne 0 ]; then
     echo "Error: npm publish"
-    exit -1
+    #!!!!!exit -1
 fi
 
 cd ../..
