@@ -93,21 +93,6 @@ cd ..
 
 
 
-cd flutter_sound
-flutter analyze lib
-if [ $? -ne 0 ]; then
-    echo "Error: analyze flutter_sound/lib"
-    exit -1
-fi
-dart format lib
-if [ $? -ne 0 ]; then
-    echo "Error: format flutter_sound/lib"
-    exit -1
-fi
-dart format  example/lib
-cd ..
-
-
 
 git add .
 git commit -m "TAU : Version $VERSION"
@@ -175,6 +160,30 @@ fi
 
 cd ../..
  
+
+
+cd flutter_sound
+if [ $? -ne 0 ]; then
+    echo "Error: flutter pub publish[flutter_sound]"
+   #exit -1
+fi
+
+flutter pub publish
+
+flutter analyze lib
+if [ $? -ne 0 ]; then
+    echo "Error: analyze flutter_sound/lib"
+    exit -1
+fi
+dart format lib
+if [ $? -ne 0 ]; then
+    echo "Error: format flutter_sound/lib"
+    exit -1
+fi
+dart format  example/lib
+cd ..
+
+
 cd flutter_sound
 #flutter clean
 #flutter pub get
@@ -187,12 +196,6 @@ dart format lib
 if [ $? -ne 0 ]; then
     echo "Error: format flutter_sound/lib"
     exit -1
-fi
-
-flutter pub publish
-if [ $? -ne 0 ]; then
-    echo "Error: flutter pub publish[flutter_sound]"
-   #exit -1
 fi
 cd ..
 

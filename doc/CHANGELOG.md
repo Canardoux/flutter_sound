@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 9.3.0+3
+## 9.3.0+4
 
 - Link with "logger: ^2.0.2"
 - Link with "uuid: ^4.3.3"
