@@ -27,26 +27,8 @@ if [ $? -ne 0 ]; then
 fi
 
 cd ..
-
-#cp -a -v flutter_sound_web/js/flutter_sound/* flutter_sound/example/web/js/flutter_sound
-
-#rm flutter_sound/Logotype\ primary.png
-#ln -s ../doc/flutter_sound/Logotype\ primary.png flutter_sound/
-#rm -rf flutter_sound_web/js
-#if [  -d flutter_sound_core/web/js ]; then
-#rm -rf flutter_sound_web/js
-#cp -a -v flutter_sound_core/web/js flutter_sound_web
-
-##rm -rf flutter_sound/example/web/js
-#cp -a -v flutter_sound_core/web/js flutter_sound/example/web
 rm -rf _*.tgz
-    
-    #ln -s ../flutter_sound_core/web/js flutter_sound_web/js
-#else
-#   ln -s ../tau_sound_core/web/js flutter_sound_web/js
-#fi
-
-
+ 
 cd flutter_sound_platform_interface/    
 #flutter clean
 #flutter pub get
@@ -118,7 +100,7 @@ cd flutter_sound_core
 pod trunk push flutter_sound_core.podspec
 if [ $? -ne 0 ]; then
     echo "Error: trunk push flutter_sound_core.podspec[flutter_sound_core]"
-    exit -1
+    #!!!!!exit -1
 fi
 cd ..
 
