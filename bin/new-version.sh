@@ -180,7 +180,7 @@ cd ..
 cd flutter_sound
 dart doc lib
 if [ $? -ne 0 ]; then
-    echo "Error: dartdoc flutter_sound/lib"
+    echo "Error: dart doc flutter_sound/lib"
    #!!!!!exit -1
 fi
 rm -rf doc
@@ -190,9 +190,9 @@ if [ $? -ne 0 ]; then
     echo "Error: analyze flutter_sound/example/lib"
     exit -1
 fi
-dartdoc lib
+dart doc lib
 if [ $? -ne 0 ]; then
-    echo "Error: dartdoc flutter_sound/example/lib"
+    echo "Error: dart doc flutter_sound/example/lib"
     #!!!!exit -1
 fi
 rm -rf doc
