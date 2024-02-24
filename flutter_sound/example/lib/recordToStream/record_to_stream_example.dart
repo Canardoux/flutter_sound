@@ -41,8 +41,10 @@ typedef _Fn = void Function();
 
 /// Example app.
 class RecordToStreamExample extends StatefulWidget {
+  const RecordToStreamExample({super.key});
+
   @override
-  _RecordToStreamExampleState createState() => _RecordToStreamExampleState();
+  State<RecordToStreamExample> createState() => _RecordToStreamExampleState();
 }
 
 class _RecordToStreamExampleState extends State<RecordToStreamExample> {
@@ -207,7 +209,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
+              color: const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.indigo,
                 width: 3,
@@ -220,7 +222,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
                 //disabledColor: Colors.grey,
                 child: Text(_mRecorder!.isRecording ? 'Stop' : 'Record'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Text(_mRecorder!.isRecording
@@ -235,7 +237,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
+              color: const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.indigo,
                 width: 3,
@@ -248,7 +250,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
                 //disabledColor: Colors.grey,
                 child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Text(_mPlayer!.isPlaying

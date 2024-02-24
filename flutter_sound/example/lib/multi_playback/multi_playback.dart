@@ -34,7 +34,7 @@ import 'package:flutter/services.dart' show rootBundle;
  *
  */
 
-final _exampleAudioFilePathMP3 =
+const _exampleAudioFilePathMP3 =
     'https://flutter-sound.canardoux.xyz/extract/05.mp3';
 
 ///
@@ -42,8 +42,10 @@ typedef Fn = void Function();
 
 /// Example app.
 class MultiPlayback extends StatefulWidget {
+  const MultiPlayback({super.key});
+
   @override
-  _MultiPlaybackState createState() => _MultiPlaybackState();
+  State<MultiPlayback> createState() => _MultiPlaybackState();
 }
 
 class _MultiPlaybackState extends State<MultiPlayback> {
@@ -117,7 +119,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   // -------  Player1 play a remote file -----------------------
 
   void play1() async {
-    await _mPlayer1!.setSubscriptionDuration(Duration(milliseconds: 10));
+    await _mPlayer1!.setSubscriptionDuration(const Duration(milliseconds: 10));
     _addListener1();
     await _mPlayer1!.startPlayer(
         fromURI: _exampleAudioFilePathMP3,
@@ -160,7 +162,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   // -------  Player2 play a OPUS file -----------------------
 
   void play2() async {
-    await _mPlayer2!.setSubscriptionDuration(Duration(milliseconds: 10));
+    await _mPlayer2!.setSubscriptionDuration(const Duration(milliseconds: 10));
     _addListener2();
     await _mPlayer2!.startPlayer(
         fromDataBuffer: buffer2,
@@ -203,7 +205,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   // -------  Player3 play a MP4 file -----------------------
 
   void play3() async {
-    await _mPlayer3!.setSubscriptionDuration(Duration(milliseconds: 10));
+    await _mPlayer3!.setSubscriptionDuration(const Duration(milliseconds: 10));
     _addListener3();
     await _mPlayer3!.startPlayer(
         fromDataBuffer: buffer3,
@@ -347,7 +349,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
+              color: const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.indigo,
                 width: 3,
@@ -360,7 +362,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
                 //disabledColor: Colors.grey,
                 child: Text(_mPlayer1!.isStopped ? 'Play' : 'Stop'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               ElevatedButton(
@@ -369,12 +371,12 @@ class _MultiPlaybackState extends State<MultiPlayback> {
                 //disabledColor: Colors.grey,
                 child: Text(_mPlayer1!.isPaused ? 'Resume' : 'Pause'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Text(
                 _playerTxt1,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                 ),
               ),
@@ -387,7 +389,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
+              color: const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.indigo,
                 width: 3,
@@ -400,7 +402,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
                 //disabledColor: Colors.grey,
                 child: Text(_mPlayer2!.isStopped ? 'Play' : 'Stop'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               ElevatedButton(
@@ -409,12 +411,12 @@ class _MultiPlaybackState extends State<MultiPlayback> {
                 //disabledColor: Colors.grey,
                 child: Text(_mPlayer2!.isPaused ? 'Resume' : 'Pause'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Text(
                 _playerTxt2,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                 ),
               ),
@@ -427,7 +429,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
+              color: const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.indigo,
                 width: 3,
@@ -440,7 +442,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
                 //disabledColor: Colors.grey,
                 child: Text(_mPlayer3!.isStopped ? 'Play' : 'Stop'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               ElevatedButton(
@@ -449,12 +451,12 @@ class _MultiPlaybackState extends State<MultiPlayback> {
                 //disabledColor: Colors.grey,
                 child: Text(_mPlayer3!.isPaused ? 'Resume' : 'Pause'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Text(
                 _playerTxt3,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                 ),
               ),

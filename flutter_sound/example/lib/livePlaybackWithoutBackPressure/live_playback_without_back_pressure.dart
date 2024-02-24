@@ -54,8 +54,10 @@ typedef Fn = void Function();
 
 /// Example app.
 class LivePlaybackWithoutBackPressure extends StatefulWidget {
+  const LivePlaybackWithoutBackPressure({super.key});
+
   @override
-  _LivePlaybackWithoutBackPressureState createState() =>
+  State<LivePlaybackWithoutBackPressure> createState() =>
       _LivePlaybackWithoutBackPressureState();
 }
 
@@ -155,7 +157,7 @@ class _LivePlaybackWithoutBackPressureState
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
+              color: const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.indigo,
                 width: 3,
@@ -168,7 +170,7 @@ class _LivePlaybackWithoutBackPressureState
                 //disabledColor: Colors.grey,
                 child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Text(_mPlayer!.isPlaying

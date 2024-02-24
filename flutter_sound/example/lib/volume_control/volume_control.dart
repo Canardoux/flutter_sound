@@ -30,9 +30,9 @@ import 'package:flutter_sound/flutter_sound.dart';
  *
  */
 
-final _exampleAudioFilePathMP3_1 =
+const _exampleAudioFilePathMP3_1 =
     'https://flutter-sound.canardoux.xyz/web_example/assets/extract/05.mp3';
-final _exampleAudioFilePathMP3_2 =
+const _exampleAudioFilePathMP3_2 =
     'https://flutter-sound.canardoux.xyz/web_example/assets/extract/13.wav';
 
 ///
@@ -40,8 +40,10 @@ typedef Fn = void Function();
 
 /// Example app.
 class VolumeControl extends StatefulWidget {
+  const VolumeControl({super.key});
+
   @override
-  _VolumeControlState createState() => _VolumeControlState();
+  State<VolumeControl> createState() => _VolumeControlState();
 }
 
 class _VolumeControlState extends State<VolumeControl> {
@@ -145,7 +147,7 @@ class _VolumeControlState extends State<VolumeControl> {
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Color(0xFFFAF0E6),
+          color: const Color(0xFFFAF0E6),
           border: Border.all(
             color: Colors.indigo,
             width: 3,
@@ -159,14 +161,14 @@ class _VolumeControlState extends State<VolumeControl> {
               //disabledColor: Colors.grey,
               child: Text(_mPlayer1.isPlaying ? 'Stop' : 'Play'),
             ),
-            SizedBox(
+            const SizedBox(
               width: 20,
             ),
             Text(_mPlayer1.isPlaying
                 ? 'Playback #1 in progress'
                 : 'Player #1 is stopped'),
           ]),
-          Text('Volume:'),
+          const Text('Volume:'),
           Slider(
               value: _mVolume1,
               min: 0.0,
@@ -180,14 +182,14 @@ class _VolumeControlState extends State<VolumeControl> {
               //disabledColor: Colors.grey,
               child: Text(_mPlayer2.isPlaying ? 'Stop' : 'Play'),
             ),
-            SizedBox(
+            const SizedBox(
               width: 20,
             ),
             Text(_mPlayer2.isPlaying
                 ? 'Playback #2 in progress'
                 : 'Player #2 is stopped'),
           ]),
-          Text('Volume:'),
+          const Text('Volume:'),
           Slider(
               value: _mVolume2,
               min: 0.0,

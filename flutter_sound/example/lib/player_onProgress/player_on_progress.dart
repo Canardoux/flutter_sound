@@ -39,8 +39,10 @@ typedef Fn = void Function();
 
 /// Example app.
 class PlayerOnProgress extends StatefulWidget {
+  const PlayerOnProgress({super.key});
+
   @override
-  _PlayerOnProgressState createState() => _PlayerOnProgressState();
+  State<PlayerOnProgress> createState() => _PlayerOnProgressState();
 }
 
 class _PlayerOnProgressState extends State<PlayerOnProgress> {
@@ -147,7 +149,7 @@ class _PlayerOnProgressState extends State<PlayerOnProgress> {
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Color(0xFFFAF0E6),
+          color: const Color(0xFFFAF0E6),
           border: Border.all(
             color: Colors.indigo,
             width: 3,
@@ -159,18 +161,18 @@ class _PlayerOnProgressState extends State<PlayerOnProgress> {
               onPressed: getPlaybackFn(_mPlayer),
               child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
             ),
-            SizedBox(
+            const SizedBox(
               width: 20,
             ),
             Text(_mPlayer.isPlaying
                 ? 'Playback in progress'
                 : 'Player is stopped'),
-            SizedBox(
+            const SizedBox(
               width: 20,
             ),
             Text('Pos: $pos'),
           ]),
-          Text('Subscription Duration:'),
+          const Text('Subscription Duration:'),
           Slider(
             value: _mSubscriptionDuration,
             min: 0.0,

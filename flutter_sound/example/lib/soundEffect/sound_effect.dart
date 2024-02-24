@@ -39,8 +39,10 @@ const _boum = 'assets/noises/boum.wav';
 
 /// Example app.
 class SoundEffect extends StatefulWidget {
+  const SoundEffect({super.key});
+
   @override
-  _SoundEffectState createState() => _SoundEffectState();
+  State<SoundEffect> createState() => _SoundEffectState();
 }
 
 class _SoundEffectState extends State<SoundEffect> {
@@ -112,7 +114,7 @@ class _SoundEffectState extends State<SoundEffect> {
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
+              color: const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.indigo,
                 width: 3,
@@ -124,23 +126,23 @@ class _SoundEffectState extends State<SoundEffect> {
                   play(bimData);
                 },
                 //color: Colors.white,
-                child: Text('Bim!'),
+                child: const Text('Bim!'),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
                   play(bamData);
                 },
                 //color: Colors.white,
-                child: Text('Bam!'),
+                child: const Text('Bam!'),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
                   play(boumData);
                 },
                 //color: Colors.white,
-                child: Text('Boum!'),
+                child: const Text('Boum!'),
               ),
             ]),
           ),

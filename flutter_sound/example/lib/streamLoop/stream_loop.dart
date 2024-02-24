@@ -40,8 +40,10 @@ typedef Fn = void Function();
 
 /// Example app.
 class StreamLoop extends StatefulWidget {
+  const StreamLoop({super.key});
+
   @override
-  _StreamLoopState createState() => _StreamLoopState();
+  State<StreamLoop> createState() => _StreamLoopState();
 }
 
 class _StreamLoopState extends State<StreamLoop> {
@@ -161,7 +163,7 @@ class _StreamLoopState extends State<StreamLoop> {
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
+              color: const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.indigo,
                 width: 3,
@@ -174,7 +176,7 @@ class _StreamLoopState extends State<StreamLoop> {
                 //disabledColor: Colors.grey,
                 child: Text(_mRecorder!.isRecording ? 'Stop' : 'Record'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Text(_mRecorder!.isRecording

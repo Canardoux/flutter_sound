@@ -32,8 +32,8 @@ import 'streamLoop/stream_loop.dart';
 import 'loglevel/loglevel.dart';
 import 'volume_control/volume_control.dart';
 import 'speed_control/speed_control.dart';
-import 'player_onProgress/player_onProgress.dart';
-import 'recorder_onProgress/recorder_onProgress.dart';
+import 'player_onProgress/player_on_progress.dart';
+import 'recorder_onProgress/recorder_on_progress.dart';
 import 'seek/seek.dart';
 import 'streamLoop_justAudio/stream_loop_just_audio.dart';
 
@@ -43,7 +43,7 @@ import 'streamLoop_justAudio/stream_loop_just_audio.dart';
 */
 
 void main() {
-  runApp(ExamplesApp());
+  runApp(const ExamplesApp());
 }
 
 ///
@@ -83,7 +83,7 @@ final List<Example> exampleTable = [
       title: 'Demo',
       subTitle: 'Flutter Sound capabilities',
       flags: 0,
-      route: (_) => Demo(),
+      route: (_) => const Demo(),
       description:
           '''This is a Demo of what it is possible to do with Flutter Sound.
 The code of this Demo app is not so simple and unfortunately not very clean :-( .
@@ -109,7 +109,7 @@ It would be really great if someone rewrite this demo soon'''),
     title: 'simplePlayback',
     subTitle: 'A very simple example',
     flags: 0,
-    route: (_) => SimplePlayback(),
+    route: (_) => const SimplePlayback(),
     description: '''
 This is a very simple example for Flutter Sound beginners,
 that shows how to play a remote file.
@@ -122,7 +122,7 @@ This example is really basic.
     title: 'simpleRecorder',
     subTitle: 'A very simple example',
     flags: 0,
-    route: (_) => SimpleRecorder(),
+    route: (_) => const SimpleRecorder(),
     description: '''
 This is a very simple example for Flutter Sound beginners,
 that shows how to record, and then playback a file.
@@ -135,7 +135,7 @@ This example is really basic.
     title: 'multiPlayback',
     subTitle: 'Playing several sound at the same time',
     flags: 0,
-    route: (_) => MultiPlayback(),
+    route: (_) => const MultiPlayback(),
     description: '''
 This is a simple example that plays several sound at the same time.
 ''',
@@ -145,7 +145,7 @@ This is a simple example that plays several sound at the same time.
     title: 'Volume Control',
     subTitle: 'Volume Control',
     flags: 0,
-    route: (_) => VolumeControl(),
+    route: (_) => const VolumeControl(),
     description: '''
 This is a very simple example showing how to set the Volume during a playback.
 
@@ -157,7 +157,7 @@ This example is really basic.
     title: 'Speed Control',
     subTitle: 'Speed Control',
     flags: 0,
-    route: (_) => SpeedControl(),
+    route: (_) => const SpeedControl(),
     description: '''
 This is a very simple example showing how tune the speed of a playback.
 
@@ -169,7 +169,7 @@ This example is really basic.
     title: 'Seek Player',
     subTitle: 'Seek Player',
     flags: 0,
-    route: (_) => Seek(),
+    route: (_) => const Seek(),
     description: '''
 This is a very simple example showing how tune the speed of a playback.
 
@@ -181,7 +181,7 @@ This example is really basic.
     title: 'Player onProgress',
     subTitle: 'Player onProgress',
     flags: 0,
-    route: (_) => PlayerOnProgress(),
+    route: (_) => const PlayerOnProgress(),
     description: '''
 This is a very simple example showing how to  call `setSubscriptionDuration() and use onProgress() on a player.
 
@@ -192,7 +192,7 @@ This is a very simple example showing how to  call `setSubscriptionDuration() an
     title: 'Recorder onProgress',
     subTitle: 'Recorder onProgress',
     flags: 0,
-    route: (_) => RecorderOnProgress(),
+    route: (_) => const RecorderOnProgress(),
     description: '''
 This is a very simple example showing how to  call `setSubscriptionDuration() and use onProgress() on a recorder.
 
@@ -203,7 +203,7 @@ This is a very simple example showing how to  call `setSubscriptionDuration() an
     title: 'Play from Mic',
     subTitle: 'Play from microphone',
     flags: tNotWeb,
-    route: (_) => PlayFromMic(),
+    route: (_) => const PlayFromMic(),
     description: '''
 Play on the bluetooth headset what is recorded by the microphone.
 This example is very simple.
@@ -216,7 +216,7 @@ This example is very simple.
     title: 'recordToStream',
     subTitle: 'Example of recording to Stream',
     flags: tNotWeb,
-    route: (_) => RecordToStreamExample(),
+    route: (_) => const RecordToStreamExample(),
     description: '''
 This is an example showing how to record to a Dart Stream.
 It writes all the recorded data from a Stream to a File, which is completely stupid:
@@ -230,7 +230,7 @@ The real interest of recording to a Stream is for example to feed a Speech-to-Te
     title: 'livePlaybackWithoutBackPressure',
     subTitle: 'Live Playback without BackPressure',
     flags: tNotWeb,
-    route: (_) => LivePlaybackWithoutBackPressure(),
+    route: (_) => const LivePlaybackWithoutBackPressure(),
     description:
         '''A very simple example showing how to play Live Data without back pressure.
 A very simple example showing how to play Live Data without back pressure.
@@ -254,7 +254,7 @@ This example uses the ```foodEvent``` object to resynchronize the output stream 
     title: 'livePlaybackWithBackPressure',
     subTitle: 'Live Playback with BackPressure',
     flags: tNotWeb,
-    route: (_) => LivePlaybackWithBackPressure(),
+    route: (_) => const LivePlaybackWithBackPressure(),
     description: '''
 A very simple example showing how to play Live Data with back pressure.
 It feeds a live stream, waiting that the Futures are completed for each block.
@@ -272,7 +272,7 @@ playing another one.
     title: 'soundEffect',
     subTitle: 'Sound Effect',
     flags: tNotWeb,
-    route: (_) => SoundEffect(),
+    route: (_) => const SoundEffect(),
     description: '''
 ```startPlayerFromStream()``` can be very efficient to play sound effects. For example in a game App.
 The App open the Audio Session and call ```startPlayerFromStream()``` during initialization.
@@ -284,7 +284,7 @@ When it want to play a noise, it has just to call the verb ```feed```
     title: 'streamLoop',
     subTitle: 'Loop from recorder to player',
     flags: tNotWeb,
-    route: (_) => StreamLoop(),
+    route: (_) => const StreamLoop(),
     description: '''
 ```streamLoop()``` is a very simple example which connect the FlutterSoundRecorder sink
 to the FlutterSoundPlayer Stream.
@@ -300,7 +300,7 @@ from flutter_sound_player.dart.
     title: 'setLogLevel()',
     subTitle: 'Dynamically change the log level',
     flags: 0,
-    route: (_) => LogLevel(),
+    route: (_) => const LogLevel(),
     description: '''
 ```
 Shows how to change the loglevel during an audio session.
@@ -311,7 +311,7 @@ Shows how to change the loglevel during an audio session.
     title: 'StreamLoopJustAudio()',
     subTitle: 'JustAudio cohabitation',
     flags: tNotWeb,
-    route: (_) => StreamLoopJustAudio(),
+    route: (_) => const StreamLoopJustAudio(),
     description: '''
     ```
     Test the StreamLoop with JustAudio cohabitation.
@@ -321,6 +321,8 @@ Shows how to change the loglevel during an audio session.
 
 ///
 class ExamplesApp extends StatelessWidget {
+  const ExamplesApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -342,7 +344,7 @@ class ExamplesApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: ExamplesAppHomePage(title: 'Flutter Sound Examples'),
+      home: const ExamplesAppHomePage(title: 'Flutter Sound Examples'),
     );
   }
 }
@@ -350,7 +352,7 @@ class ExamplesApp extends StatelessWidget {
 ///
 class ExamplesAppHomePage extends StatefulWidget {
   ///
-  ExamplesAppHomePage({Key? key, this.title}) : super(key: key);
+  const ExamplesAppHomePage({super.key, this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -365,7 +367,7 @@ class ExamplesAppHomePage extends StatefulWidget {
   final String? title;
 
   @override
-  _ExamplesHomePageState createState() => _ExamplesHomePageState();
+  State<ExamplesAppHomePage> createState() => _ExamplesHomePageState();
 }
 
 class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
@@ -387,7 +389,7 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
           selectedExample = exampleTable[index];
         }),
         child: Card(
-          shape: RoundedRectangleBorder(),
+          shape: const RoundedRectangleBorder(),
           borderOnForeground: false,
           elevation: 3.0,
           child: Container(
@@ -395,7 +397,7 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
             margin: const EdgeInsets.all(3),
             padding: const EdgeInsets.all(3),
             decoration: BoxDecoration(
-              color: isSelected ? Colors.indigo : Color(0xFFFAF0E6),
+              color: isSelected ? Colors.indigo : const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.white,
                 width: 3,
@@ -426,7 +428,7 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
               margin: const EdgeInsets.all(3),
               padding: const EdgeInsets.all(3),
               decoration: BoxDecoration(
-                color: Color(0xFFFAF0E6),
+                color: const Color(0xFFFAF0E6),
                 border: Border.all(
                   color: Colors.indigo,
                   width: 3,
@@ -441,7 +443,7 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
               margin: const EdgeInsets.all(3),
               padding: const EdgeInsets.all(3),
               decoration: BoxDecoration(
-                color: Color(0xFFFAF0E6),
+                color: const Color(0xFFFAF0E6),
                 border: Border.all(
                   color: Colors.indigo,
                   width: 3,
@@ -469,7 +471,7 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
             padding: const EdgeInsets.all(3),
             height: 40,
             decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
+              color: const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.indigo,
                 width: 3,
@@ -487,7 +489,7 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
                           ? null
                           : () => selectedExample!.go(context),
                   //color: Colors.indigo,
-                  child: Text(
+                  child: const Text(
                     'GO',
                     style: TextStyle(color: Colors.white),
                   ),

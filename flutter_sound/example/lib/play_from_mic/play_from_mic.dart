@@ -37,8 +37,10 @@ typedef Fn = void Function();
 
 /// Example app.
 class PlayFromMic extends StatefulWidget {
+  const PlayFromMic({super.key});
+
   @override
-  _PlayFromMicState createState() => _PlayFromMicState();
+  State<PlayFromMic> createState() => _PlayFromMicState();
 }
 
 class _PlayFromMicState extends State<PlayFromMic> {
@@ -133,7 +135,7 @@ class _PlayFromMicState extends State<PlayFromMic> {
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
+              color: const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.indigo,
                 width: 3,
@@ -146,7 +148,7 @@ class _PlayFromMicState extends State<PlayFromMic> {
                 //disabledColor: Colors.grey,
                 child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Text(_mPlayer!.isPlaying

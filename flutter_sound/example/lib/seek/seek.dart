@@ -40,8 +40,10 @@ typedef Fn = void Function();
 
 /// Example app.
 class Seek extends StatefulWidget {
+  const Seek({super.key});
+
   @override
-  _SeekState createState() => _SeekState();
+  State<Seek> createState() => _SeekState();
 }
 
 class _SeekState extends State<Seek> {
@@ -81,7 +83,7 @@ class _SeekState extends State<Seek> {
 
   Future<void> init() async {
     await _mPlayer.openPlayer();
-    await _mPlayer.setSubscriptionDuration(Duration(milliseconds: 50));
+    await _mPlayer.setSubscriptionDuration(const Duration(milliseconds: 50));
     _boumData = await getAssetData(_boum);
     _mPlayerSubscription = _mPlayer.onProgress!.listen((e) {
       setPos(e.position.inMilliseconds);
@@ -149,7 +151,7 @@ class _SeekState extends State<Seek> {
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Color(0xFFFAF0E6),
+          color: const Color(0xFFFAF0E6),
           border: Border.all(
             color: Colors.indigo,
             width: 3,
@@ -161,18 +163,18 @@ class _SeekState extends State<Seek> {
               onPressed: getPlaybackFn(_mPlayer),
               child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
             ),
-            SizedBox(
+            const SizedBox(
               width: 20,
             ),
             Text(_mPlayer.isPlaying
                 ? 'Playback in progress'
                 : 'Player is stopped'),
-            SizedBox(
+            const SizedBox(
               width: 20,
             ),
             Text('Pos: $pos'),
           ]),
-          Text('Position:'),
+          const Text('Position:'),
           Slider(
             value: pos + 0.0,
             min: 0.0,

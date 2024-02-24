@@ -40,8 +40,10 @@ typedef Fn = void Function();
 
 /// Example app.
 class RecorderOnProgress extends StatefulWidget {
+  const RecorderOnProgress({super.key});
+
   @override
-  _RecorderOnProgressState createState() => _RecorderOnProgressState();
+  State<RecorderOnProgress> createState() => _RecorderOnProgressState();
 }
 
 class _RecorderOnProgressState extends State<RecorderOnProgress> {
@@ -186,7 +188,7 @@ class _RecorderOnProgressState extends State<RecorderOnProgress> {
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Color(0xFFFAF0E6),
+          color: const Color(0xFFFAF0E6),
           border: Border.all(
             color: Colors.indigo,
             width: 3,
@@ -198,16 +200,16 @@ class _RecorderOnProgressState extends State<RecorderOnProgress> {
               onPressed: getPlaybackFn(_mRecorder),
               child: Text(_mRecorder.isRecording ? 'Stop' : 'Record'),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Text(_mRecorder.isRecording ? '' : 'Stopped'),
-            SizedBox(
+            const SizedBox(
               width: 20,
             ),
             Text('Pos: $pos  dbLevel: ${((dbLevel * 100.0).floor()) / 100}'),
           ]),
-          Text('Subscription Duration:'),
+          const Text('Subscription Duration:'),
           Slider(
             value: _mSubscriptionDuration,
             min: 0.0,

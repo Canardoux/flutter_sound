@@ -30,7 +30,7 @@ import 'package:flutter_sound/flutter_sound.dart';
  *
  */
 
-final _exampleAudioFilePathMP3 =
+const _exampleAudioFilePathMP3 =
     'https://flutter-sound.canardoux.xyz/extract/05.mp3';
 
 ///
@@ -38,8 +38,10 @@ typedef Fn = void Function();
 
 /// Example app.
 class SimplePlayback extends StatefulWidget {
+  const SimplePlayback({super.key});
+
   @override
-  _SimplePlaybackState createState() => _SimplePlaybackState();
+  State<SimplePlayback> createState() => _SimplePlaybackState();
 }
 
 class _SimplePlaybackState extends State<SimplePlayback> {
@@ -109,7 +111,7 @@ class _SimplePlaybackState extends State<SimplePlayback> {
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
+              color: const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.indigo,
                 width: 3,
@@ -122,7 +124,7 @@ class _SimplePlaybackState extends State<SimplePlayback> {
                 //disabledColor: Colors.grey,
                 child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Text(_mPlayer!.isPlaying

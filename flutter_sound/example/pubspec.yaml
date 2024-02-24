@@ -43,6 +43,7 @@ dependencies:
 #    path: ../ # Flutter Sound Dir
 # ============================================================================
 
+#  flutter_sound_platform_interface: ^9.3.1
 
   path_provider: ^2.0.2
   permission_handler: ^11.3.0
@@ -50,6 +51,7 @@ dependencies:
   intl: ^0.19.0
   just_audio: ^0.9.11
   audio_session: ^0.1.6
+  logger: ^2.0.2
 
 
 

@@ -31,7 +31,7 @@ import 'package:logger/logger.dart' show Level;
  *
  */
 
-final _exampleAudioFilePathMP3 =
+const _exampleAudioFilePathMP3 =
     'https://flutter-sound.canardoux.xyz/web_example/assets/extract/05.mp3';
 
 ///
@@ -39,8 +39,10 @@ typedef Fn = void Function();
 
 /// Example app.
 class LogLevel extends StatefulWidget {
+  const LogLevel({super.key});
+
   @override
-  _LogLevelState createState() => _LogLevelState();
+  State<LogLevel> createState() => _LogLevelState();
 }
 
 class _LogLevelState extends State<LogLevel> {
@@ -112,7 +114,7 @@ class _LogLevelState extends State<LogLevel> {
       r = [];
 
       r.add(
-        Container(
+        SizedBox(
           height: 30,
           child: Row(
             children: [
@@ -124,7 +126,7 @@ class _LogLevelState extends State<LogLevel> {
                 focusColor: Colors.blue,
                 hoverColor: Colors.blue,
               ),
-              Text(
+              const Text(
                 'Verbose',
                 style: TextStyle(color: Colors.black),
               ),
@@ -134,7 +136,7 @@ class _LogLevelState extends State<LogLevel> {
       );
 
       r.add(
-        Container(
+        SizedBox(
           height: 30,
           child: Row(
             children: [
@@ -147,7 +149,7 @@ class _LogLevelState extends State<LogLevel> {
                 focusColor: Colors.blue,
                 hoverColor: Colors.blue,
               ),
-              Text(
+              const Text(
                 'Debug',
                 style: TextStyle(color: Colors.black),
               ),
@@ -157,7 +159,7 @@ class _LogLevelState extends State<LogLevel> {
       );
 
       r.add(
-        Container(
+        SizedBox(
           height: 30,
           child: Row(
             children: [
@@ -169,7 +171,7 @@ class _LogLevelState extends State<LogLevel> {
                 focusColor: Colors.blue,
                 hoverColor: Colors.blue,
               ),
-              Text(
+              const Text(
                 'Info',
                 style: TextStyle(color: Colors.black),
               ),
@@ -179,7 +181,7 @@ class _LogLevelState extends State<LogLevel> {
       );
 
       r.add(
-        Container(
+        SizedBox(
           height: 30,
           child: Row(
             children: [
@@ -191,7 +193,7 @@ class _LogLevelState extends State<LogLevel> {
                 focusColor: Colors.blue,
                 hoverColor: Colors.blue,
               ),
-              Text(
+              const Text(
                 'Warning',
                 style: TextStyle(color: Colors.black),
               ),
@@ -201,7 +203,7 @@ class _LogLevelState extends State<LogLevel> {
       );
 
       r.add(
-        Container(
+        SizedBox(
           height: 30,
           child: Row(
             children: [
@@ -213,7 +215,7 @@ class _LogLevelState extends State<LogLevel> {
                 focusColor: Colors.blue,
                 hoverColor: Colors.blue,
               ),
-              Text(
+              const Text(
                 'Error',
                 style: TextStyle(color: Colors.black),
               ),
@@ -223,7 +225,7 @@ class _LogLevelState extends State<LogLevel> {
       );
 
       r.add(
-        Container(
+        SizedBox(
           height: 30,
           child: Row(
             children: [
@@ -235,7 +237,7 @@ class _LogLevelState extends State<LogLevel> {
                 focusColor: Colors.blue,
                 hoverColor: Colors.blue,
               ),
-              Text(
+              const Text(
                 'Wtf',
                 style: TextStyle(color: Colors.black),
               ),
@@ -245,7 +247,7 @@ class _LogLevelState extends State<LogLevel> {
       );
 
       r.add(
-        Container(
+        SizedBox(
           height: 30,
           child: Row(
             children: [
@@ -257,7 +259,7 @@ class _LogLevelState extends State<LogLevel> {
                 focusColor: Colors.blue,
                 hoverColor: Colors.blue,
               ),
-              Text(
+              const Text(
                 'Nothing',
                 style: TextStyle(color: Colors.black),
               ),
@@ -279,7 +281,7 @@ class _LogLevelState extends State<LogLevel> {
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
+              color: const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.indigo,
                 width: 3,
@@ -292,7 +294,7 @@ class _LogLevelState extends State<LogLevel> {
                 //disabledColor: Colors.grey,
                 child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Text(_mPlayer!.isPlaying
@@ -300,7 +302,7 @@ class _LogLevelState extends State<LogLevel> {
                   : 'Player is stopped'),
             ]),
           ),
-          Text(
+          const Text(
             'Log Level',
           ),
           Expanded(
@@ -309,7 +311,7 @@ class _LogLevelState extends State<LogLevel> {
               margin: const EdgeInsets.all(3.0),
               padding: const EdgeInsets.all(0.0),
               decoration: BoxDecoration(
-                color: Color(0xFFFAF0E6),
+                color: const Color(0xFFFAF0E6),
                 border: Border.all(
                   color: Colors.indigo,
                   width: 3,

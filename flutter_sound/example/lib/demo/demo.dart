@@ -122,15 +122,16 @@ final exampleAudioFilePathOPUS =
 final albumArtPath =
     'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
 */
-final albumArtPathRemote =
+const albumArtPathRemote =
     'https://flutter-sound.canardoux.xyz/web_example/assets/extract/3iob.png';
-final albumArtPath =
+const albumArtPath =
     'https://file-examples-com.github.io/uploads/2017/10/file_example_PNG_500kB.png';
 
 ///
 class Demo extends StatefulWidget {
+  const Demo({super.key});
   @override
-  _MyAppState createState() => _MyAppState();
+  State<Demo> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<Demo> {
@@ -226,8 +227,8 @@ class _MyAppState extends State<Demo> {
   Future<void> _initializeExample() async {
     await playerModule.closePlayer();
     await playerModule.openPlayer();
-    await playerModule.setSubscriptionDuration(Duration(milliseconds: 10));
-    await recorderModule.setSubscriptionDuration(Duration(milliseconds: 10));
+    await playerModule.setSubscriptionDuration(const Duration(milliseconds: 10));
+    await recorderModule.setSubscriptionDuration(const Duration(milliseconds: 10));
     await initializeDateFormatting();
     await setCodec(_codec);
   }
@@ -645,8 +646,8 @@ class _MyAppState extends State<Demo> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(right: 16.0),
+        const Padding(
+          padding: EdgeInsets.only(right: 16.0),
           child: Text('Media:'),
         ),
         DropdownButton<Media>(
@@ -655,7 +656,7 @@ class _MyAppState extends State<Demo> {
             _media = newMedia;
             setState(() {});
           },
-          items: <DropdownMenuItem<Media>>[
+          items: const <DropdownMenuItem<Media>> [
             DropdownMenuItem<Media>(
               value: Media.file,
               child: Text('File'),
@@ -685,8 +686,8 @@ class _MyAppState extends State<Demo> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(right: 16.0),
+        const Padding(
+          padding: EdgeInsets.only(right: 16.0),
           child: Text('Codec:'),
         ),
         DropdownButton<Codec>(
@@ -696,7 +697,7 @@ class _MyAppState extends State<Demo> {
             _codec = newCodec;
             setState(() {});
           },
-          items: <DropdownMenuItem<Codec>>[
+          items: const <DropdownMenuItem<Codec>>[
             DropdownMenuItem<Codec>(
               value: Codec.aacADTS,
               child: Text('AAC/ADTS'),
@@ -850,11 +851,11 @@ class _MyAppState extends State<Demo> {
 
   AssetImage recorderAssetImage() {
     if (onStartRecorderPressed() == null) {
-      return AssetImage('res/icons/ic_mic_disabled.png');
+      return const AssetImage('res/icons/ic_mic_disabled.png');
     }
     return (recorderModule.isStopped)
-        ? AssetImage('res/icons/ic_mic.png')
-        : AssetImage('res/icons/ic_stop.png');
+        ? const AssetImage('res/icons/ic_mic.png')
+        : const AssetImage('res/icons/ic_stop.png');
   }
 
   Future<void> setCodec(Codec codec) async {
@@ -875,10 +876,10 @@ class _MyAppState extends State<Demo> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(top: 12.0, bottom: 16.0),
+            margin: const EdgeInsets.only(top: 12.0, bottom: 16.0),
             child: Text(
               _recorderTxt,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 35.0,
                 color: Colors.black,
               ),
@@ -887,14 +888,14 @@ class _MyAppState extends State<Demo> {
           _isRecording
               ? LinearProgressIndicator(
                   value: 100.0 / 160.0 * (_dbLevel ?? 1) / 100,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
                   backgroundColor: Colors.red)
               : Container(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Container(
+              SizedBox(
                 width: 56.0,
                 height: 50.0,
                 child: ClipOval(
@@ -907,7 +908,7 @@ class _MyAppState extends State<Demo> {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: 56.0,
                 height: 50.0,
                 child: ClipOval(
@@ -934,10 +935,10 @@ class _MyAppState extends State<Demo> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: 12.0, bottom: 16.0),
+          margin: const EdgeInsets.only(top: 12.0, bottom: 16.0),
           child: Text(
             _playerTxt,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 35.0,
               color: Colors.black,
             ),
@@ -947,7 +948,7 @@ class _MyAppState extends State<Demo> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
+            SizedBox(
               width: 56.0,
               height: 50.0,
               child: ClipOval(
@@ -963,7 +964,7 @@ class _MyAppState extends State<Demo> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: 56.0,
               height: 50.0,
               child: ClipOval(
@@ -981,7 +982,7 @@ class _MyAppState extends State<Demo> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: 56.0,
               height: 50.0,
               child: ClipOval(
@@ -1001,7 +1002,7 @@ class _MyAppState extends State<Demo> {
             ),
           ],
         ),
-        Container(
+        SizedBox(
             height: 30.0,
             child: Slider(
                 value: min(sliderCurrentPosition, maxDuration),

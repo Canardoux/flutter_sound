@@ -40,8 +40,10 @@ typedef Fn = void Function();
 
 /// Example app.
 class StreamLoopJustAudio extends StatefulWidget {
+  const StreamLoopJustAudio({super.key});
+
   @override
-  _StreamLoopJustAudioState createState() => _StreamLoopJustAudioState();
+  State<StreamLoopJustAudio> createState() => _StreamLoopJustAudioState();
 }
 
 class _StreamLoopJustAudioState extends State<StreamLoopJustAudio> {
@@ -161,7 +163,7 @@ class _StreamLoopJustAudioState extends State<StreamLoopJustAudio> {
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0xFFFAF0E6),
+              color: const Color(0xFFFAF0E6),
               border: Border.all(
                 color: Colors.indigo,
                 width: 3,
@@ -174,7 +176,7 @@ class _StreamLoopJustAudioState extends State<StreamLoopJustAudio> {
                 //disabledColor: Colors.grey,
                 child: Text(_mRecorder!.isRecording ? 'Stop' : 'Record'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Text(_mRecorder!.isRecording

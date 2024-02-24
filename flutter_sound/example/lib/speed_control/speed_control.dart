@@ -39,8 +39,10 @@ typedef Fn = void Function();
 
 /// Example app.
 class SpeedControl extends StatefulWidget {
+  const SpeedControl({super.key});
+
   @override
-  _SpeedControlState createState() => _SpeedControlState();
+  State<SpeedControl> createState() => _SpeedControlState();
 }
 
 class _SpeedControlState extends State<SpeedControl> {
@@ -134,7 +136,7 @@ class _SpeedControlState extends State<SpeedControl> {
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Color(0xFFFAF0E6),
+          color: const Color(0xFFFAF0E6),
           border: Border.all(
             color: Colors.indigo,
             width: 3,
@@ -148,14 +150,14 @@ class _SpeedControlState extends State<SpeedControl> {
               //disabledColor: Colors.grey,
               child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
             ),
-            SizedBox(
+            const SizedBox(
               width: 20,
             ),
             Text(_mPlayer.isPlaying
                 ? 'Playback #1 in progress'
                 : 'Player #1 is stopped'),
           ]),
-          Text('Speed:'),
+          const Text('Speed:'),
           Slider(
             value: _mSpeed,
             min: 0.0,
