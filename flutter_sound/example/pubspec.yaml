@@ -7,37 +7,46 @@ description: Driver for the various Flutter Sound examples
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 9.3.0+4
+version: 9.3.1
 
 homepage: https://github.com/canardoux/flutter_sound/blob/master/flutter_sound/
+
 
 environment:
   sdk: ^3.3.0
   flutter: ">=1.12.0"
 
-
-
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
 
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.6
+
+
 # ============================================================================
 # The following instructions are just for developing/debugging Flutter Sound
 # Do not put them in a real App
-#  flutter_sound_platform_interface: 9.3.0+4
+#  flutter_sound_platform_interface: 9.3.1
 #    path: ../../flutter_sound_platform_interface # flutter_sound_platform_interface Dir
-#  flutter_sound_web: 9.3.0+4
+#  flutter_sound_web: 9.3.1
 #    path: ../../flutter_sound_web # flutter_sound_web Dir
-  flutter_sound: ^9.3.0+4
+  flutter_sound: ^9.3.1
 #    path: ../ # Flutter Sound Dir
 # ============================================================================
 
 
-  cupertino_icons: ^1.0.2
   path_provider: ^2.0.2
   permission_handler: ^11.3.0
   path: ^1.6.4
-  #flutter_ffmpeg: ^0.3.1
   intl: ^0.19.0
   just_audio: ^0.9.11
   audio_session: ^0.1.6
@@ -45,18 +54,27 @@ dependencies:
 
 
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
 
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
-# following page: https://www.dartlang.org/tools/pub/pubspec
+# following page: https://dart.dev/tools/pub/pubspec
 
-# The following section is specific to Flutter.
+# The following section is specific to Flutter packages.
 flutter:
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
 
   # To add assets to your application, add an assets section, like this:
   assets:
@@ -89,11 +107,18 @@ flutter:
   #- assets/extract/
 
 
+
+
+  # To add assets to your application, add an assets section, like this:
+  # assets:
+  #   - images/a_dot_burr.jpeg
+  #   - images/a_dot_ham.jpeg
+
   # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.io/assets-and-images/#resolution-aware.
+  # https://flutter.dev/assets-and-images/#resolution-aware
 
   # For details regarding adding assets from package dependencies, see
-  # https://flutter.io/assets-and-images/#from-packages
+  # https://flutter.dev/assets-and-images/#from-packages
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
@@ -113,4 +138,4 @@ flutter:
   #         weight: 700
   #
   # For details regarding fonts from package dependencies,
-  # see https://flutter.io/custom-fonts/#from-packages
+  # see https://flutter.dev/custom-fonts/#from-packages

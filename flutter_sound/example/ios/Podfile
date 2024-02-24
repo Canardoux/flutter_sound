@@ -27,12 +27,11 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 
 flutter_ios_podfile_setup
 
-
 target 'Runner' do
-  #use_frameworks! // Does not work with Flutter FFmpeg
-  #use_modular_headers! // Does not work with Flutter FFmpeg
-
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  target 'RunnerTests' do
+    inherit! :search_paths
+  end
 end
 
 post_install do |installer|
@@ -46,4 +45,3 @@ end
 # Do not insert such a line in a real App.
 # pod 'flutter_sound_core', :path => '../../../flutter_sound_core'
 # =====================================================
-
