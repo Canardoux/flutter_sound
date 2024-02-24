@@ -185,17 +185,11 @@ if [ $? -ne 0 ]; then
 fi
 rm -rf doc
 cd example
-flutter analyze example/lib
+flutter analyze lib
 if [ $? -ne 0 ]; then
     echo "Error: analyze flutter_sound/example/lib"
     exit -1
 fi
-dart doc lib
-if [ $? -ne 0 ]; then
-    echo "Error: dart doc flutter_sound/example/lib"
-    #!!!!exit -1
-fi
-rm -rf doc
 cd ../..
 
 
