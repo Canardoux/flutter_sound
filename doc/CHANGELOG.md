@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 9.3.1
+## 9.3.2
 
 - Link with "logger: ^2.0.2" : [#1006](https://github.com/Canardoux/flutter_sound/pull/1006, [#998](https://github.com/Canardoux/flutter_sound/pull/998
 - Link with "uuid: ^4.3.3"
