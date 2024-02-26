@@ -393,7 +393,7 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
           borderOnForeground: false,
           elevation: 3.0,
           child: Container(
-            height: 50,
+            height: 55,
             margin: const EdgeInsets.all(3),
             padding: const EdgeInsets.all(3),
             decoration: BoxDecoration(
@@ -491,7 +491,7 @@ class _ExamplesHomePageState extends State<ExamplesAppHomePage> {
                   //color: Colors.indigo,
                   child: const Text(
                     'GO',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.black),
                   ),
                 )
               ],
