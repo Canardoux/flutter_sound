@@ -7,12 +7,13 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 9.3.3
+## 9.3.4
 
 - Link with "logger: ^2.0.2" : [#1006](https://github.com/Canardoux/flutter_sound/pull/1006, [#998](https://github.com/Canardoux/flutter_sound/pull/998
 - Link with "uuid: ^4.3.3" : [#1006](https://github.com/Canardoux/flutter_sound/pull/1006, [#998](https://github.com/Canardoux/flutter_sound/pull/998
 - environment sdk version is now : sdk: ^3.3.0
 - Fixes many warnings during build
+- Fixes a bug in openPlayer and openRecorder : The functionn awaited on the completion instead of returning a Future of the Player/Recorder
 
 ## 9.2.13
 

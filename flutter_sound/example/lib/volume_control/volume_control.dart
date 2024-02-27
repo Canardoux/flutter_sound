@@ -31,9 +31,10 @@ import 'package:flutter_sound/flutter_sound.dart';
  */
 
 const _exampleAudioFilePathMP3_1 =
-    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/05.mp3';
-const _exampleAudioFilePathMP3_2 =
-    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/13.wav';
+    'https://flutter-sound.canardoux.xyz/extract/05.mp3';
+
+const _exampleAudioFilePathWAV_2 =
+    'https://flutter-sound.canardoux.xyz/extract/13.wav';
 
 ///
 typedef Fn = void Function();
@@ -143,7 +144,7 @@ class _VolumeControlState extends State<VolumeControl> {
       return Container(
         margin: const EdgeInsets.all(3),
         padding: const EdgeInsets.all(3),
-        height: 240,
+        height: 250,
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -177,7 +178,7 @@ class _VolumeControlState extends State<VolumeControl> {
               divisions: 100),
           Row(children: [
             ElevatedButton(
-              onPressed: getPlaybackFn(_mPlayer2, _exampleAudioFilePathMP3_2),
+              onPressed: getPlaybackFn(_mPlayer2, _exampleAudioFilePathWAV_2),
               //color: Colors.white,
               //disabledColor: Colors.grey,
               child: Text(_mPlayer2.isPlaying ? 'Stop' : 'Play'),

@@ -368,10 +368,10 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       return this;
     }
 
-    FlutterSoundRecorder? r;
+    Future<FlutterSoundRecorder?>? r;
     _logger.d('FS:---> openAudioSession ');
     await _lock.synchronized(() async {
-      r = await _openAudioSession();
+      r = _openAudioSession();
     });
     _logger.d('FS:<--- openAudioSession ');
     return r;

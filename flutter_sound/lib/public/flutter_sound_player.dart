@@ -499,9 +499,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (_isInited != Initialized.notInitialized) {
       return this;
     }
-    FlutterSoundPlayer? r;
+    Future<FlutterSoundPlayer?>? r;
     await _lock.synchronized(() async {
-      r = await _openAudioSession(enableVoiceProcessing: enableVoiceProcessing);
+      r = _openAudioSession(enableVoiceProcessing: enableVoiceProcessing);
     });
     return r;
   }

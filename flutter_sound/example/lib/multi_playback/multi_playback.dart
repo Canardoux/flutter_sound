@@ -345,7 +345,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
           Container(
             margin: const EdgeInsets.all(3),
             padding: const EdgeInsets.all(3),
-            height: 80,
+            height: 100,
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(

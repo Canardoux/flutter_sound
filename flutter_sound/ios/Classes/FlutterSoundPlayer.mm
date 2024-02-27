@@ -76,7 +76,7 @@
 
 - (void)needSomeFood: (int) ln
 {
-        [self invokeMethod:@"needSomeFood" numberArg: [NSNumber numberWithInt: ln]  success: @YES ];
+        [self invokeMethod:@"needSomeFood" numberArg: [NSNumber numberWithInt: ln]  success: true ];
 }
 
 - (void)updateProgressPosition: (long)position duration: (long)duration
@@ -96,23 +96,23 @@
 
 - (void)pause
 {
-        [self invokeMethod:@"pause" numberArg: [self getPlayerStatus] success: @YES ];
+        [self invokeMethod:@"pause" numberArg: [self getPlayerStatus] success:true ];
 }
 
 - (void)resume
 {
-        [self invokeMethod:@"resume" numberArg: [self getPlayerStatus]  success: @YES ];
+        [self invokeMethod:@"resume" numberArg: [self getPlayerStatus]  success: true ];
 }
 
 - (void)skipForward
 {
-        [self invokeMethod:@"skipForward" numberArg: [self getPlayerStatus]  success: @YES ];
+        [self invokeMethod:@"skipForward" numberArg: [self getPlayerStatus]  success: true ];
 
 }
 
 - (void)skipBackward
 {
-        [self invokeMethod:@"skipBackward" numberArg: [self getPlayerStatus]  success: @YES ];
+        [self invokeMethod:@"skipBackward" numberArg: [self getPlayerStatus]  success: true ];
 
 }
 
