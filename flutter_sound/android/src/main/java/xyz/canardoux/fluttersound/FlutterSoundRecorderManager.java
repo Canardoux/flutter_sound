@@ -46,7 +46,7 @@ class FlutterSoundRecorderManager extends FlutterSoundManager
                 if (flutterSoundRecorderPlugin == null) {
                         flutterSoundRecorderPlugin = new FlutterSoundRecorderManager();
                 }
-                MethodChannel channel = new MethodChannel ( messenger, "xyz.caanardoux.flutter_sound_recorder" );
+                MethodChannel channel = new MethodChannel ( messenger, "xyz.canardoux.flutter_sound_recorder" );
                 flutterSoundRecorderPlugin.init( channel);
                 channel.setMethodCallHandler ( flutterSoundRecorderPlugin );
                 androidContext = ctx;
