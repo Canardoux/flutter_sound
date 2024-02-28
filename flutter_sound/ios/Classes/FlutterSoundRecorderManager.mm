@@ -5,7 +5,7 @@
 //  Created by larpoux on 24/03/2020.
 //
 /*
- * Copyright 2018, 2019, 2020, 2021 Dooboolab.
+ * Copyright 2018, 2019, 2020, 2021 Canardoux.
  *
  * This file is part of Flutter-Sound.
  *
@@ -53,7 +53,7 @@ extern void FlutterSoundRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
 {
-        FlutterMethodChannel* aChannel = [FlutterMethodChannel methodChannelWithName:@"com.dooboolab.flutter_sound_recorder"
+        FlutterMethodChannel* aChannel = [FlutterMethodChannel methodChannelWithName:@"xyz.canardoux.flutter_sound_recorder"
                                         binaryMessenger:[registrar messenger]];
         //if (flutterSoundRecorderManager != nil)
                 //NSLog(@"ERROR during registerWithRegistrar: flutterSoundRecorderManager != nil");

@@ -1,4 +1,4 @@
-package com.dooboolab.fluttersound;
+package xyz.canardoux.fluttersound;
 /*
  * Copyright 2018, 2019, 2020, 2021 Dooboolab.
  *
@@ -26,9 +26,9 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.Result;
 
-import com.dooboolab.TauEngine.FlautoPlayer;
-import com.dooboolab.TauEngine.FlautoPlayerCallback;
-import com.dooboolab.TauEngine.Flauto.*;
+import xyz.canardoux.TauEngine.FlautoPlayer;
+import xyz.canardoux.TauEngine.FlautoPlayerCallback;
+import xyz.canardoux.TauEngine.Flauto.*;
 
 
 public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPlayerCallback

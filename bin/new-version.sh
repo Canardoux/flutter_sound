@@ -216,7 +216,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Bug in flutter tools : if "flutter build --release" we must first "--debug" and then "--profile" before "--release"
-flutter build apk --debug
+flutter build apk --release
 if [ $? -ne 0 ]; then
     echo "Error: flutter build flutter_sound/example/apk"
     exit -1

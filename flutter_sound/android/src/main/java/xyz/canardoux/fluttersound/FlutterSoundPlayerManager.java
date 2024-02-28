@@ -1,6 +1,6 @@
-package com.dooboolab.fluttersound;
+package xyz.canardoux.fluttersound;
 /*
- * Copyright 2018, 2019, 2020, 2021 Dooboolab.
+ * Copyright 2018, 2019, 2020, 2021 Canardoux.
  *
  * This file is part of Flutter-Sound.
  *
@@ -28,6 +28,8 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
+import xyz.canardoux.fluttersound.FlutterSoundManager;
+
 class FlutterSoundPlayerManager extends FlutterSoundManager
         implements MethodCallHandler
 {
@@ -43,7 +45,7 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                 if (flutterSoundPlayerPlugin == null) {
                         flutterSoundPlayerPlugin = new FlutterSoundPlayerManager();
                 }
-                MethodChannel channel = new MethodChannel ( messenger, "com.dooboolab.flutter_sound_player" );
+                MethodChannel channel = new MethodChannel ( messenger, "xyz.canardoux.flutter_sound_player" );
                 flutterSoundPlayerPlugin.init(channel);
                 channel.setMethodCallHandler ( flutterSoundPlayerPlugin );
                 androidContext = ctx;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018, 2019, 2020, 2021 Dooboolab.
+ * Copyright 2018, 2019, 2020, 2021 Canardoux.
  *
  * This file is part of Flutter-Sound.
  *
@@ -17,7 +17,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.dooboolab.fluttersound;
+package xyz.canardoux.fluttersound;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothProfile;
@@ -25,7 +25,7 @@ import android.content.Context;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.os.Build;
-import com.dooboolab.TauEngine.Flauto.*;
+import xyz.canardoux.TauEngine.Flauto.*;
 
 
 import java.util.HashMap;

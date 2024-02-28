@@ -5,7 +5,7 @@
 //  Created by larpoux on 02/05/2020.
 //
 /*
- * Copyright 2018, 2019, 2020, 2021 Dooboolab.
+ * Copyright 2018, 2019, 2020, 2021 Canardoux.
  *
  * This file is part of Flutter-Sound.
  *

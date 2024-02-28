@@ -1,5 +1,5 @@
 /*
- * Copyright 2018, 2019, 2020, 2021 Dooboolab.
+ * Copyright 2018, 2019, 2020, 2021 Canardoux.
  *
  * This file is part of Flutter-Sound.
  *
@@ -26,7 +26,7 @@ import 'flutter_sound_platform_interface.dart';
 import 'flutter_sound_recorder_platform_interface.dart';
 
 const MethodChannel _channel =
-    MethodChannel('com.dooboolab.flutter_sound_recorder');
+    MethodChannel('xyz.canardoux.flutter_sound_recorder');
 
 /// An implementation of [UrlLauncherPlatform] that uses method channels.
 class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
@@ -35,7 +35,7 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
   }
 
   void _setCallback() {
-    //channel = const MethodChannel('com.dooboolab.flutter_sound_recorder');
+    //channel = const MethodChannel('xyz.canardoux.flutter_sound_recorder');
     _channel.setMethodCallHandler((MethodCall call) {
       return channelMethodCallHandler(call)!;
     });

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018, 2019, 2020, 2021 Dooboolab.
+ * Copyright 2018, 2019, 2020, 2021 DooboCanardouxolab.
  *
  * This file is part of Flutter-Sound.
  *
@@ -17,7 +17,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.dooboolab.fluttersound;
+package xyz.canardoux.fluttersound;
 
 import java.util.ArrayList;
 import java.util.List;

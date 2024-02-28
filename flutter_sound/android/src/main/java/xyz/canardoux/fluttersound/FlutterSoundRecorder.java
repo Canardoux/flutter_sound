@@ -1,6 +1,6 @@
-package com.dooboolab.fluttersound;
+package xyz.canardoux.fluttersound;
 /*
- * Copyright 2018, 2019, 2020, 2021 Dooboolab.
+ * Copyright 2018, 2019, 2020, 2021 canardoux.
  *
  * This file is part of Flutter-Sound.
  *
@@ -29,10 +29,10 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.Result;
 
-import com.dooboolab.TauEngine.FlautoRecorderCallback;
-import com.dooboolab.TauEngine.FlautoRecorder;
-import com.dooboolab.TauEngine.Flauto;
-import com.dooboolab.TauEngine.Flauto.*;
+import xyz.canardoux.TauEngine.FlautoRecorderCallback;
+import xyz.canardoux.TauEngine.FlautoRecorder;
+import xyz.canardoux.TauEngine.Flauto;
+import xyz.canardoux.TauEngine.Flauto.*;
 
 
 public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoRecorderCallback

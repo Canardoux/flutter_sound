@@ -42,7 +42,7 @@
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
 {
-        FlutterMethodChannel* aChannel = [FlutterMethodChannel methodChannelWithName:@"com.dooboolab.flutter_sound_player"
+        FlutterMethodChannel* aChannel = [FlutterMethodChannel methodChannelWithName:@"xyz.canardoux.flutter_sound_player"
                                         binaryMessenger:[registrar messenger]];
         //if (flutterSoundPlayerManager != nil)
         {

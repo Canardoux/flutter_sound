@@ -1,5 +1,5 @@
 /*
- * Copyright 2018, 2019, 2020, 2021 Dooboolab.
+ * Copyright 2018, 2019, 2020, 2021 canardoux.
  *
  * This file is part of Flutter-Sound.
  *
@@ -31,7 +31,7 @@ import 'flutter_sound_player_platform_interface.dart';
 import 'flutter_sound_platform_interface.dart';
 
 const MethodChannel _channel =
-    MethodChannel('com.dooboolab.flutter_sound_player');
+    MethodChannel('xyz.canardoux.flutter_sound_player');
 
 /// An implementation of [FlutterSoundPlayerPlatform] that uses method channels.
 class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
@@ -40,7 +40,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
   }
 
   void setCallback() {
-    //_channel = const MethodChannel('com.dooboolab.flutter_sound_player');
+    //_channel = const MethodChannel('xyz.canardoux.flutter_sound_player');
     _channel.setMethodCallHandler((MethodCall call) {
       return channelMethodCallHandler(call)!;
     });

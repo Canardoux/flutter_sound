@@ -1,6 +1,6 @@
-package com.dooboolab.fluttersound;
+package xyz.canardoux.fluttersound;
 /*
- * Copyright 2018, 2019, 2020, 2021 Dooboolab.
+ * Copyright 2018, 2019, 2020, 2021 Canardoux.
  *
  * This file is part of Flutter-Sound.
  *
@@ -26,7 +26,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 
-import com.dooboolab.TauEngine.Flauto;
+import xyz.canardoux.TauEngine.Flauto;
 
 public class FlutterSound
 	implements FlutterPlugin,

@@ -222,7 +222,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
 
     if (success) {
-      _closePlayerCompleter!.complete(this);
+      _closePlayerCompleter!.complete();
     } else {
       _closePlayerCompleter!.completeError('closePlayer failed');
     }
