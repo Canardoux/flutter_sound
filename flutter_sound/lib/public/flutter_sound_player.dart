@@ -89,17 +89,15 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   /// Used if the App wants to dynamically change the Log Level.
   /// Seldom used. Most of the time the Log Level is specified during the constructor.
-  Future<void> setLogLevel(Level aLevel) async {
+  void setLogLevel(Level aLevel) async {
     _logLevel = aLevel;
     _logger = Logger(level: aLevel);
-    await _lock.synchronized(() async {
-      if (_isInited != Initialized.notInitialized) {
-        await FlutterSoundPlayerPlatform.instance.setLogLevel(
-          this,
-          aLevel,
-        );
-      }
-    });
+    if (_isInited != Initialized.notInitialized) {
+      FlutterSoundPlayerPlatform.instance.setLogLevel(
+        this,
+        aLevel,
+      );
+    }
   }
 
   final _lock = Lock();

@@ -139,6 +139,11 @@ extern void FlutterSoundRecorderReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [aFlautoRecorder deleteRecord: call result:result];
         } else
         
+        if ([@"setLogLevel" isEqualToString: call.method])
+        {
+                 [aFlautoRecorder setLogLevel: call result: result];
+        } else
+
         {
                 result(FlutterMethodNotImplemented);
         }

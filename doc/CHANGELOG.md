@@ -7,6 +7,11 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 9.3.7
+
+- SetLevel is not async : [#1006](https://github.com/Canardoux/flutter_sound/pull/1006), [#1012](https://github.com/Canardoux/flutter_sound/pull/1012)
+- The various Assets inside Example/Demo was declared with a bad path to Canardoux : [#1006](https://github.com/Canardoux/flutter_sound/pull/1011), [#998](https://github.com/Canardoux/flutter_sound/pull/1011)
+
 ## 9.3.6
 
 - Link with "logger: ^2.0.2" : [#1006](https://github.com/Canardoux/flutter_sound/pull/1006), [#998](https://github.com/Canardoux/flutter_sound/pull/998)
