@@ -52,6 +52,8 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
+  bool _mEnableVoiceProcessing = false;
+
   bool _mplaybackReady = false;
   String? _mPath;
   StreamSubscription? _mRecordingDataSubscription;
@@ -92,7 +94,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     super.initState();
     // Be careful : openAudioSession return a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    _mPlayer!.openPlayer().then((value) {
+    _mPlayer!.openPlayer(enableVoiceProcessing: _mEnableVoiceProcessing).then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
@@ -233,7 +235,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
           Container(
             margin: const EdgeInsets.all(3),
             padding: const EdgeInsets.all(3),
-            height: 80,
+            height: 120,
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
@@ -243,7 +245,9 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
                 width: 3,
               ),
             ),
-            child: Row(children: [
+            child:
+
+            Column(children: [Row(children: [
               ElevatedButton(
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
@@ -257,8 +261,33 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
                   ? 'Playback in progress'
                   : 'Player is stopped'),
             ]),
-          ),
+
+      Row(children: [
+      Checkbox(
+      checkColor: Colors.white,
+      //fillColor: Colors.white,
+      value: _mEnableVoiceProcessing,
+      onChanged: (bool? value) {
+      _mPlayer!.closePlayer().then((v) {
+      _mPlayerIsInited = false;
+      _mEnableVoiceProcessing = value!;
+      _mPlayer!.openPlayer(enableVoiceProcessing: _mEnableVoiceProcessing);}).then((value) {
+      setState(() {
+      _mPlayerIsInited = true;
+      });
+      }
+
+      );
+      }
+      ),
+      const Text("EnableVoiceProcessing")
+
+      ])
+
         ],
+      )
+      )
+      ]
       );
     }
 

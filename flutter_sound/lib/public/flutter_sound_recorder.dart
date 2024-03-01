@@ -417,11 +417,9 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// Delete all the temporary files created with `startRecorder()`
 
   Future<void> closeRecorder() async {
-    _logger.d('FS:---> closeAudioSession ');
-    await _lock.synchronized(() async {
-      await _closeAudioSession();
+    await _lock.synchronized(() {
+      return _closeAudioSession();
     });
-    _logger.d('FS:<--- closeAudioSession ');
   }
 
   Future<void> _closeAudioSession() async {

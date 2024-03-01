@@ -124,7 +124,8 @@
 {
         flautoPlayer = [ [FlautoPlayer alloc] init: self];
         flutterSoundPlayerManager = pm;
-        bool voiceProcessing = (bool)call.arguments[@"voiceProcessing"];
+        //bool voiceProcessing = (bool)call.arguments[@"voiceProcessing"];
+        bool voiceProcessing = ((NSNumber *)call.arguments[@"voiceProcessing"]).boolValue;
         [flautoPlayer setVoiceProcessing: voiceProcessing];
         return [super init: call]; // Init Session
 }

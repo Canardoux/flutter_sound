@@ -7,6 +7,12 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 9.3.8
+
+- closePlayer() and closeRecorder was awaiting instead of returning a Future<void>
+- Merge PR [#1000](https://github.com/Canardoux/flutter_sound/pull/1000) : Enable Voice Processing on iOS
+- Fix the Demo Example "Play remote file With Codec=FLAC" [#1017](https://github.com/Canardoux/flutter_sound/issues/1017)
+
 ## 9.3.7
 
 - SetLevel is not async : [#1006](https://github.com/Canardoux/flutter_sound/pull/1006), [#1012](https://github.com/Canardoux/flutter_sound/pull/1012)

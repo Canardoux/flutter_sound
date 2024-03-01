@@ -562,8 +562,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// }
   /// ```
   Future<void> closePlayer() async {
-    await _lock.synchronized(() async {
-      await _closeAudioSession();
+    await _lock.synchronized(() {
+      return _closeAudioSession();
     });
   }
 
