@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 9.4.4
+## 9.4.5
 
 - Debug traces from iOS FlutterSoundRecorder had an incorrect parameter. Merge PR [980](https://github.com/Canardoux/flutter_sound/pull/980)
 - Fixes a memory leak on Android PR [#949](https://github.com/Canardoux/flutter_sound/pull/949)
