@@ -22,10 +22,11 @@ There is no processing between the Microphone and the Speaker.
 {% include tip.html content="If you want to process the data before playing them, actually you must define a loop between a FlutterSoundPlayer and a FlutterSoundRecorder.
 (Please, look to [this example](pages/flutter-sound/api/topics/flutter_sound_examples_play_from_mic.html))." %}
 
+startPlayerFromMic() has three optional parameters :
 
-startPlayerFromMic() has two optional parameters :
 - `sampleRate:` the Sample Rate used. Optional. Only used on Android. The default value is probably a good choice and the App can ommit this optional parameter.
 - `numChannels:` 1 for monophony, 2 for stereophony. Optional. Actually only monophony is implemented.
+- `bufferSize:` the size of the working buffer. This parameter is used on Android and iOS. The default value is 8192.
 
 startPlayerFromMic() returns a Future, which is completed when the Player is really started.
 

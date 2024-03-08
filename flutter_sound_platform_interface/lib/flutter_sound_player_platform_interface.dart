@@ -124,7 +124,7 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
   }
 
   Future<int> openPlayer(FlutterSoundPlayerCallback callback,
-      {required Level logLevel, bool voiceProcessing = false}) {
+      {required Level logLevel}) {
     throw UnimplementedError('openPlayer() has not been implemented.');
   }
 
@@ -157,17 +157,23 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
         'setSubscriptionDuration() has not been implemented.');
   }
 
-  Future<int> startPlayer(FlutterSoundPlayerCallback callback,
-      {Codec? codec,
-      Uint8List? fromDataBuffer,
-      String? fromURI,
-      int? numChannels,
-      int? sampleRate}) {
+  Future<int> startPlayer(
+    FlutterSoundPlayerCallback callback, {
+    Codec? codec,
+    Uint8List? fromDataBuffer,
+    String? fromURI,
+    int? numChannels,
+    int? sampleRate,
+    int bufferSize = 8189,
+  }) {
     throw UnimplementedError('startPlayer() has not been implemented.');
   }
 
   Future<int> startPlayerFromMic(FlutterSoundPlayerCallback callback,
-      {int? numChannels, int? sampleRate}) {
+      {int? numChannels,
+      int? sampleRate,
+      int bufferSize = 8192,
+      bool enableVoiceProcessing = false}) {
     throw UnimplementedError('startPlayerFromMic() has not been implemented.');
   }
 

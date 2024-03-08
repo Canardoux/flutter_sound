@@ -60,8 +60,16 @@ class FlutterSoundRecorder {
   external void setSubscriptionDuration(int duration);
 
   @JS('startRecorder')
-  external void startRecorder(String? path, int? sampleRate, int? numChannels,
-      int? bitRate, int codec, bool? toStream, int audioSource);
+  external void startRecorder(
+      String? path,
+      int? sampleRate,
+      int? numChannels,
+      int? bitRate,
+      int? bufferSize,
+      bool? enableVoiceProcessing,
+      int codec,
+      bool? toStream,
+      int audioSource);
 
   @JS('stopRecorder')
   external void stopRecorder();
@@ -197,6 +205,8 @@ class FlutterSoundRecorderWeb
     int? sampleRate,
     int? numChannels,
     int? bitRate,
+    int bufferSize = 8192,
+    bool enableVoiceProcessing = false,
     Codec? codec,
     bool? toStream,
     AudioSource? audioSource,
@@ -206,6 +216,8 @@ class FlutterSoundRecorderWeb
       sampleRate,
       numChannels,
       bitRate,
+      bufferSize,
+      enableVoiceProcessing,
       codec!.index,
       toStream,
       audioSource!.index,

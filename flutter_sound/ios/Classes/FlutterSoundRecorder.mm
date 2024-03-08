@@ -143,12 +143,20 @@
         NSNumber* sampleRateArgs = (NSNumber*)call.arguments[@"sampleRate"];
         NSNumber* numChannelsArgs = (NSNumber*)call.arguments[@"numChannels"];
         NSNumber* bitRateArgs = (NSNumber*)call.arguments[@"bitRate"];
+        NSNumber* bufferSizeArgs = (NSNumber*)call.arguments[@"bufferSize"];
         NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
+        NSNumber*  enableVoiceProcessing = (NSNumber*)call.arguments[@"enableVoiceProcessing"];
 
         t_CODEC coder = aacADTS;
         if (![codec isKindOfClass:[NSNull class]])
         {
                 coder = (t_CODEC)([codec intValue]);
+        }
+        
+        int bufferSize = 8192;
+        if (![bufferSizeArgs isKindOfClass:[NSNull class]])
+        {
+                 bufferSize = (int)[bufferSizeArgs integerValue];
         }
 
         long sampleRate = 44100;
@@ -168,6 +176,8 @@
         {
                 numChannels = (int)[numChannelsArgs integerValue];
         }
+        
+        //bool _voiceProcessing = enableVoiceProcessing != 0;
 
         bool b =
         [
@@ -176,6 +186,8 @@
                 channels: numChannels
                 sampleRate: sampleRate
                 bitRate: bitRate
+                bufferSize: bufferSize
+                enableVoiceProcessing: (enableVoiceProcessing.boolValue) != 0
         ];
         if (b)
         {

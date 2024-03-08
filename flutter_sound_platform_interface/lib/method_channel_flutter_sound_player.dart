@@ -180,11 +180,11 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
 
   @override
   Future<int> openPlayer(FlutterSoundPlayerCallback callback,
-      {required Level logLevel, bool voiceProcessing = false}) {
+      {required Level logLevel}) {
     return invokeMethod(
       callback,
       'openPlayer',
-      {'logLevel': logLevel.index, 'voiceProcessing': voiceProcessing},
+      {'logLevel': logLevel.index},
     );
   }
 
@@ -253,12 +253,15 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
   }
 
   @override
-  Future<int> startPlayer(FlutterSoundPlayerCallback callback,
-      {Codec? codec,
-      Uint8List? fromDataBuffer,
-      String? fromURI,
-      int? numChannels,
-      int? sampleRate}) {
+  Future<int> startPlayer(
+    FlutterSoundPlayerCallback callback, {
+    Codec? codec,
+    Uint8List? fromDataBuffer,
+    String? fromURI,
+    int? numChannels,
+    int? sampleRate,
+    int bufferSize = 8192,
+  }) {
     return invokeMethod(
       callback,
       'startPlayer',
@@ -267,20 +270,26 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
         'fromDataBuffer': fromDataBuffer,
         'fromURI': fromURI,
         'numChannels': numChannels,
-        'sampleRate': sampleRate
+        'sampleRate': sampleRate,
+        'bufferSize': bufferSize,
       },
     );
   }
 
   @override
   Future<int> startPlayerFromMic(FlutterSoundPlayerCallback callback,
-      {int? numChannels, int? sampleRate}) {
+      {int? numChannels,
+      int? sampleRate,
+      int bufferSize = 8192,
+      bool enableVoiceProcessing = false}) {
     return invokeMethod(
       callback,
       'startPlayerFromMic',
       {
         'numChannels': numChannels,
         'sampleRate': sampleRate,
+        'bufferSize': bufferSize,
+        'enableVoiceProcessing': enableVoiceProcessing ? 1 : 0,
       },
     );
   }

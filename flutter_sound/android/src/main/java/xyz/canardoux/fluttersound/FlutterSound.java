@@ -66,6 +66,7 @@ public class FlutterSound
 	@Override
 	public void onDetachedFromActivity ()
 	{
+		Flauto.androidActivity = null;		
 	}
 
 	@Override
@@ -74,13 +75,13 @@ public class FlutterSound
 			ActivityPluginBinding binding
 	                                                   )
 	{
-
+		Flauto.androidActivity = binding.getActivity ();
 	}
 
 	@Override
 	public void onDetachedFromActivityForConfigChanges ()
 	{
-
+		Flauto.androidActivity = null;
 	}
 
 	@Override

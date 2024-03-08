@@ -16,10 +16,12 @@ keywords: API Player
 
 You can use `startPlayer` to play a sound.
 
-- `startPlayer()` has three optional parameters, depending on your sound source :
-   - `fromUri:`  (if you want to play a file or a remote URI)
-   - `fromDataBuffer:` (if you want to play from a data buffer)
-   - `sampleRate` is mandatory if `codec` == `Codec.pcm16`. Not used for other codecs.
+`startPlayer()` has four optional parameters, depending on your sound source :
+
+- `fromUri:`  (if you want to play a file or a remote URI)
+- `fromDataBuffer:` (if you want to play from a data buffer)
+- `sampleRate` is mandatory if `codec` == `Codec.pcm16`. Not used for other codecs.
+- `bufferSize` for specyfying the size of the working buffer. This parameter is used on Android when playing Raw PCM. The default value is 8192.
 
 You must specify one or the three parameters : `fromUri`, `fromDataBuffer`, `fromStream`.
 

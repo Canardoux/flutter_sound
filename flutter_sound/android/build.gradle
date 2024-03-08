@@ -1,6 +1,6 @@
 
 group 'xyz.canardoux.fluttersound'
-version '9.3.8'
+version '9.4.4'
 
 buildscript {
     repositories {
@@ -24,6 +24,11 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
+// Conditional for compatibility with AGP <4.2.
+    if (project.android.hasProperty("namespace")) {
+      namespace 'xyz.canardoux.fluttersound'
+    }    
+    
     compileSdkVersion 30
 
     defaultConfig {
@@ -53,7 +58,7 @@ dependencies {
     // CAUTION: The following instruction is for developping and debugging the Flauto Engine
     // DO NOT INCLUDE THE FOLLOWING LINE IN A REAL APP !!!
     //implementation project(':flutter_sound_core')
-    implementation 'com.github.canardoux:flutter_sound_core:9.3.8'
+    implementation 'com.github.canardoux:flutter_sound_core:9.4.4'
     // -------------------------------------------------------------------------------------
 
 }

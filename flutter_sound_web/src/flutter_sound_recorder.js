@@ -186,7 +186,7 @@ class FlutterSoundRecorder {
         }
 
 
-        async startRecorder(path, sampleRate, numChannels, bitRate, codec, toStream, audioSource) {
+        async startRecorder(path, sampleRate, numChannels, bitRate, bufferSize, enableVoiceProcessing, codec, toStream, audioSource) {
                 this.callbackTable[CB_recorder_log](this.callback, DBG, 'startRecorder');
                 //var constraints = { audio: true};
                 //var chunks ;//= [];
@@ -310,15 +310,15 @@ class FlutterSoundRecorder {
                                                                 var fileReader = new FileReader();
                                                                 xhr.open("GET", url, true);
                                                                 xhr.responseType = "arraybuffer";
-                        
-                        
+
+
                                                                 xhr.addEventListener("load", function ()
                                                                 {
                                                                         if (xhr.status === 200)
                                                                         {
                                                                                 // Create a blob from the response
                                                                                 blob = new Blob([xhr.response], {type: "audio/webm\;codecs=opus"});
-                        
+
                                                                                 // onload needed since Google Chrome doesn't support addEventListener for FileReader
                                                                                 fileReader.onload = function (evt)
                                                                                 {

@@ -16,9 +16,12 @@ keywords: API Player
 
 **This functionnality needs, at least, and Android SDK >= 21**
 
-- The only codec supported is actually `Codec.pcm16`.
-- The only value possible for `numChannels` is actually 1.
-- SampleRate is the sample rate of the data you want to play.
+StartPlayerFromStream has 4 optional parameters
+
+- `Codec codec = Codec.pcm16`. The only codec supported is actually `Codec.pcm16`.
+- `numChannels = 1`. The only value possible for `numChannels:` is actually 1.
+- `sampleRate: = 16000`. Is the sample rate of the data you want to play.
+- `bufferSize = 8192`, is the size of the working buffer. This parameter is used on Android and iOS. The default value is 8192.
 
 Please look to [the following notice](guides_play_stream)
 

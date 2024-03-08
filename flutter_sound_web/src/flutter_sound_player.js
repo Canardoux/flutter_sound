@@ -154,7 +154,7 @@ class FlutterSoundPlayer {
         /* ACTUALLY NOT USED
                 playAudioFromBuffer(dataBuffer) // Actually not used
                 {
-        
+
                         var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                         var source = audioCtx.createBufferSource();
                         me.callbackTable[CB_player_log](me.callback, DBG, dataBuffer.constructor.name)
@@ -164,7 +164,7 @@ class FlutterSoundPlayer {
                                 function(buffer)
                                 {
                                         source.buffer = buffer;
-        
+
                                         source.connect(audioCtx.destination);
                                         source.loop = false;
                                            // start the source playing
@@ -218,7 +218,7 @@ class FlutterSoundPlayer {
 
         }
 
-        startPlayer(codec, fromDataBuffer, fromURI, numChannels, sampleRate) {
+        startPlayer(codec, fromDataBuffer, fromURI, numChannels, sampleRate, bufferSize) {
                 this.callbackTable[CB_player_log](this.callback, DBG, 'JS: ---> startPlayer');
                 this.stop();
                 if (this.temporaryBlob != null) {

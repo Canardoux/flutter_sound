@@ -46,6 +46,7 @@ class PlayFromMic extends StatefulWidget {
 class _PlayFromMicState extends State<PlayFromMic> {
   FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
+  bool _mEnableVoiceProcessing = false;
 
   Future<void> open() async {
     var status = await Permission.microphone.request();
@@ -100,7 +101,7 @@ class _PlayFromMicState extends State<PlayFromMic> {
   // -------  Here is the code to play from the microphone -----------------------
 
   void play() async {
-    await _mPlayer!.startPlayerFromMic();
+    await _mPlayer!.startPlayerFromMic(enableVoiceProcessing: _mEnableVoiceProcessing);
     setState(() {});
   }
 
@@ -131,7 +132,7 @@ class _PlayFromMicState extends State<PlayFromMic> {
           Container(
             margin: const EdgeInsets.all(3),
             padding: const EdgeInsets.all(3),
-            height: 80,
+            height: 120,
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
@@ -141,7 +142,7 @@ class _PlayFromMicState extends State<PlayFromMic> {
                 width: 3,
               ),
             ),
-            child: Row(children: [
+            child: Column( children: [Row(children: [
               ElevatedButton(
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
@@ -155,8 +156,30 @@ class _PlayFromMicState extends State<PlayFromMic> {
                   ? 'Playing microphone to headset'
                   : 'Recorder is stopped'),
             ]),
-          ),
-        ],
+      Row(children: [
+      Checkbox(
+      checkColor: Colors.white,
+      //fillColor: Colors.white,
+      value: _mEnableVoiceProcessing,
+      onChanged: (bool? value) {
+      _mPlayer!.closePlayer().then((v) {
+      _mPlayerIsInited = false;
+      _mEnableVoiceProcessing = value!;
+      _mPlayer!.openPlayer();}).then((value) {
+      setState(() {
+      _mPlayerIsInited = true;
+      });
+      }
+
+      );
+      }
+      ),
+      const Text("EnableVoiceProcessing")
+
+      ]),
+],
+      ),
+          )],
       );
     }
 

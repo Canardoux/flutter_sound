@@ -152,9 +152,9 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 	}
 
 	public void startPlayerFromMic ( final MethodCall call, final Result result ) {
-		Integer _blockSize = 4096;
-		if (call.argument("blockSize") != null) {
-			_blockSize = call.argument("blockSize");
+		Integer _bufferSize = 8192;
+		if (call.argument("bufferSize") != null) {
+			_bufferSize = call.argument("bufferSize");
 		}
 
 		Integer _sampleRate = 48000;
@@ -165,8 +165,15 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		if (call.argument("numChannels") != null) {
 			_numChannels = call.argument("numChannels");
 		}
+
+		boolean enableVoiceProcessing = false; // not used on Android
+		if (call.argument("enableVoiceProcessing") != null) {
+			int voiceProcessing = call.argument("enableVoiceProcessing");
+			enableVoiceProcessing = voiceProcessing != 0;
+		}
+
 		try {
-			boolean b = m_flautoPlayer.startPlayerFromMic( _numChannels, _sampleRate, _blockSize);
+			boolean b = m_flautoPlayer.startPlayerFromMic( _numChannels, _sampleRate, _bufferSize, enableVoiceProcessing);
 			if (b)
 				result.success(getPlayerState());
 			else
@@ -180,11 +187,12 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 
 	public void startPlayer ( final MethodCall call, final Result result ) {
 		Integer _codec = call.argument("codec");
+		Integer _bufferSize = 8192;
 		t_CODEC codec = t_CODEC.values()[(_codec != null) ? _codec : 0];
 		byte[] dataBuffer = call.argument("fromDataBuffer");
-		Integer _blockSize = 4096;
-		if (call.argument("blockSize") != null) {
-			_blockSize = call.argument("blockSize");
+		//Integer _blockSize = 8192;
+		if (call.argument("bufferSize") != null) {
+			_bufferSize = call.argument("bufferSize");
 		}
 		String _path = call.argument("fromURI");
 
@@ -198,7 +206,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		}
 
 		try {
-			boolean b = m_flautoPlayer.startPlayer(codec, _path, dataBuffer, _numChannels, _sampleRate, _blockSize);
+			boolean b = m_flautoPlayer.startPlayer(codec, _path, dataBuffer, _numChannels, _sampleRate, _bufferSize);
 			if (b)
 			{
 				result.success(getPlayerState());

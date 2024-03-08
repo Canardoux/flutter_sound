@@ -186,7 +186,7 @@ class FlutterSoundRecorder {
         }
 
 
-        async startRecorder(path, sampleRate, numChannels, bitRate, codec, toStream, audioSource) {
+        async startRecorder(path, sampleRate, numChannels, bitRate, bufferSize, enableVoiceProcessing ,codec, toStream, audioSource) {
                 this.callbackTable[CB_recorder_log](this.callback, DBG, 'startRecorder');
                 //var constraints = { audio: true};
                 //var chunks ;//= [];

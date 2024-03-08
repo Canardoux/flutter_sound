@@ -63,16 +63,16 @@ class LivePlaybackWithoutBackPressure extends StatefulWidget {
 
 class _LivePlaybackWithoutBackPressureState
     extends State<LivePlaybackWithoutBackPressure> {
-  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
+  FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
-  bool _mEnableVoiceProcessing = false;
+  double _mSpeed = 100.0;
 
   @override
   void initState() {
     super.initState();
     // Be careful : openAudioSession return a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    _mPlayer!.openPlayer(enableVoiceProcessing: _mEnableVoiceProcessing).then((value) {
+    _mPlayer!.openPlayer().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
@@ -83,8 +83,6 @@ class _LivePlaybackWithoutBackPressureState
   void dispose() {
     stopPlayer();
     _mPlayer!.closePlayer();
-    _mPlayer = null;
-
     super.dispose();
   }
 
@@ -93,9 +91,9 @@ class _LivePlaybackWithoutBackPressureState
   void feedHim(Uint8List data) {
     var start = 0;
     var totalLength = data.length;
-    while (totalLength > 0 && _mPlayer != null && !_mPlayer!.isStopped) {
+    while (totalLength > 0 && !_mPlayer.isStopped) {
       var ln = totalLength > tBlockSize ? tBlockSize : totalLength;
-      _mPlayer!.foodSink!.add(FoodData(data.sublist(start, start + ln)));
+      _mPlayer.foodSink!.add(FoodData(data.sublist(start, start + ln)));
       totalLength -= ln;
       start += ln;
     }
@@ -107,6 +105,7 @@ class _LivePlaybackWithoutBackPressureState
       codec: Codec.pcm16,
       numChannels: 1,
       sampleRate: tSampleRate,
+      bufferSize: 100000,
     );
     setState(() {});
     var data = await getAssetData('assets/samples/sample.pcm');
@@ -133,6 +132,18 @@ class _LivePlaybackWithoutBackPressureState
     }
   }
 
+
+  Future<void> setSpeed(double v) async // v is between 0.0 and 100.0
+      {
+    v = v > 200.0 ? 200.0 : v;
+    _mSpeed = v;
+    setState(() {});
+    await _mPlayer.setSpeed(
+      v / 100,
+    );
+  }
+
+
   Fn? getPlaybackFn() {
     if (!_mPlayerIsInited) {
       return null;
@@ -154,7 +165,7 @@ class _LivePlaybackWithoutBackPressureState
           Container(
             margin: const EdgeInsets.all(3),
             padding: const EdgeInsets.all(3),
-            height: 120,
+            height: 180,
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
@@ -178,28 +189,16 @@ class _LivePlaybackWithoutBackPressureState
                   ? 'Playback in progress'
                   : 'Player is stopped'),
             ]),
-           Row(children: [
-             Checkbox(
-                checkColor: Colors.white,
-                //fillColor: Colors.white,
-                value: _mEnableVoiceProcessing,
-                onChanged: (bool? value) {
-                    _mPlayer!.closePlayer().then((v) {
-                      _mPlayerIsInited = false;
-                      _mEnableVoiceProcessing = value!;
-                      _mPlayer!.openPlayer(enableVoiceProcessing: _mEnableVoiceProcessing);}).then((value) {
-                        setState(() {
-                        _mPlayerIsInited = true;
-                      });
-                    }
+               const Text('Speed:'),
+              Slider(
+                value: _mSpeed,
+                min: 0.0,
+                max: 200.0,
+                onChanged: setSpeed,
+                //divisions: 100
+              ),
 
-                    );
-      }
-                  ),
-             const Text("EnableVoiceProcessing")
-
-           ])
-    ]
+            ]
              ),
 
 

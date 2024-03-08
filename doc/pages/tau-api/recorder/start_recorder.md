@@ -15,28 +15,30 @@ keywords: API Recorder
 - Dart API: [startRecorder](pages/flutter-sound/api/recorder/FlutterSoundRecorder/startRecorder.html)
 
 You use `startRecorder()` to start recording in an open session. `startRecorder()` has the destination file path as parameter.
-It has also 7 optional parameters to specify :
+It has also 8 optional parameters to specify :
+
 - codec: The codec to be used. Please refer to the [Codec compatibility Table](guides_codec) to know which codecs are currently supported.
 - toFile: a path to the file being recorded or the name of a temporary file (without slash '/').
 - toStream: if you want to record to a Dart Stream. Please look to [the following notice](guides_record_stream). **This new functionnality needs, at least, Android SDK >= 21 (23 is better)**
 - numChannels: The number of channels (1=monophony, 2=stereophony)
 - sampleRate: The sample rate in Hertz (for PCM)
 - bitRate: The bit rate in Hertz
+- bufferSize: the size of the working folder when recording to strea (on iOS and Android)
 - audioSource : (only on Android, ignored on iOS and web. Possible values are :
-   - defaultSource
-   - microphone
-   - voiceDownlink
-   - camCorder
-   - remote_submix
-   - unprocessed
-   - voice_call
-   - voice_communication
-   - voice_performance
-   - voice_recognition
-   - voiceUpLink
-   - bluetoothHFP
-   - headsetMic
-   - lineIn
+  - defaultSource
+  - microphone
+  - voiceDownlink
+  - camCorder
+  - remote_submix
+  - unprocessed
+  - voice_call
+  - voice_communication
+  - voice_performance
+  - voice_recognition
+  - voiceUpLink
+  - bluetoothHFP
+  - headsetMic
+  - lineIn
 
 
 [path_provider](https://pub.dev/packages/path_provider) can be useful if you want to get access to some directories on your device.

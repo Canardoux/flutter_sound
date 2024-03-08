@@ -67,7 +67,7 @@ class FlutterSoundPlayer {
 
   @JS('startPlayer')
   external int startPlayer(int? codec, Uint8List? fromDataBuffer,
-      String? fromURI, int? numChannels, int? sampleRate);
+      String? fromURI, int? numChannels, int? sampleRate, int? bufferSize);
 
   @JS('feed')
   external int feed(
@@ -230,7 +230,7 @@ class FlutterSoundPlayerWeb
 
   @override
   Future<int> openPlayer(FlutterSoundPlayerCallback callback,
-      {required Level logLevel, bool voiceProcessing = false}) async {
+      {required Level logLevel}) async {
     // openAudioSessionCompleter = new Completer<bool>();
     // await invokeMethod( callback, 'initializeMediaPlayer', {'focus': focus.index, 'category': category.index, 'mode': mode.index, 'audioFlags': audioFlags, 'device': device.index, 'withUI': withUI ? 1 : 0 ,},) ;
     // return  openAudioSessionCompleter.future ;
@@ -297,7 +297,8 @@ class FlutterSoundPlayerWeb
       Uint8List? fromDataBuffer,
       String? fromURI,
       int? numChannels,
-      int? sampleRate}) async {
+      int? sampleRate,
+      int bufferSize = 8192}) async {
     // startPlayerCompleter = new Completer<Map>();
     // await invokeMethod( callback, 'startPlayer', {'codec': codec.index, 'fromDataBuffer': fromDataBuffer, 'fromURI': fromURI, 'numChannels': numChannels, 'sampleRate': sampleRate},) ;
     // return  startPlayerCompleter.future ;
@@ -323,13 +324,18 @@ class FlutterSoundPlayerWeb
     }
     //js.context.callMethod('playAudioFromURL', [fromURI]);
     callback.log(Level.debug, 'startPlayer FromURI : $fromURI');
-    return getWebSession(callback)!.startPlayer(
-        codec.index, fromDataBuffer, fromURI, numChannels, sampleRate);
+    return getWebSession(callback)!.startPlayer(codec.index, fromDataBuffer,
+        fromURI, numChannels, sampleRate, bufferSize);
   }
 
   @override
-  Future<int> startPlayerFromMic(FlutterSoundPlayerCallback callback,
-      {int? numChannels, int? sampleRate}) {
+  Future<int> startPlayerFromMic(
+    FlutterSoundPlayerCallback callback, {
+    int? numChannels,
+    int? sampleRate,
+    int bufferSize = 8192,
+    bool enableVoiceProcessing = false,
+  }) {
     throw Exception('StartPlayerFromMic() is not implemented on Flutter Web');
   }
 

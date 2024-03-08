@@ -45,6 +45,7 @@ public class FlutterSoundManager
 
 	void invokeMethod ( String methodName, Map dic )
 	{
+
 		channel.invokeMethod ( methodName, dic );
 	}
 
