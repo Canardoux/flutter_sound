@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 9.4.6
+
+- Fixes some warning inside the example 'LivePlaybackWithoutBackPressure'
+
 ## 9.4.5
 
 - Debug traces from iOS FlutterSoundRecorder had an incorrect parameter. Merge PR [980](https://github.com/Canardoux/flutter_sound/pull/980)
@@ -23,7 +27,6 @@ toc: false
 - Removes the parameter "enableVoiceParameter" from startPlayer()
 - Add the parameter "enableVoiceParameter" to the verb "StartPlayerFromMic()"
 - Add the parameter "enableVoiceParameter" to the verb "StartRecorderFromStream"
-
 
 ## 9.3.8
 

@@ -63,7 +63,7 @@ class LivePlaybackWithoutBackPressure extends StatefulWidget {
 
 class _LivePlaybackWithoutBackPressureState
     extends State<LivePlaybackWithoutBackPressure> {
-  FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
+  final FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
   double _mSpeed = 100.0;
 
@@ -72,7 +72,7 @@ class _LivePlaybackWithoutBackPressureState
     super.initState();
     // Be careful : openAudioSession return a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    _mPlayer!.openPlayer().then((value) {
+    _mPlayer.openPlayer().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
@@ -82,7 +82,7 @@ class _LivePlaybackWithoutBackPressureState
   @override
   void dispose() {
     stopPlayer();
-    _mPlayer!.closePlayer();
+    _mPlayer.closePlayer();
     super.dispose();
   }
 
@@ -100,8 +100,8 @@ class _LivePlaybackWithoutBackPressureState
   }
 
   void play() async {
-    assert(_mPlayerIsInited && _mPlayer!.isStopped);
-    await _mPlayer!.startPlayerFromStream(
+    assert(_mPlayerIsInited && _mPlayer.isStopped);
+    await _mPlayer.startPlayerFromStream(
       codec: Codec.pcm16,
       numChannels: 1,
       sampleRate: tSampleRate,
@@ -110,13 +110,13 @@ class _LivePlaybackWithoutBackPressureState
     setState(() {});
     var data = await getAssetData('assets/samples/sample.pcm');
     feedHim(data);
-    if (_mPlayer != null) {
+    //if (_mPlayer != null) {
       // We must not do stopPlayer() directely //await stopPlayer();
-      _mPlayer!.foodSink!.add(FoodEvent(() async {
-        await _mPlayer!.stopPlayer();
+      _mPlayer.foodSink!.add(FoodEvent(() async {
+        await _mPlayer.stopPlayer();
         setState(() {});
       }));
-    }
+    //}
   }
 
   // --------------------- (it was very simple, wasn't it ?) -------------------
@@ -127,9 +127,9 @@ class _LivePlaybackWithoutBackPressureState
   }
 
   Future<void> stopPlayer() async {
-    if (_mPlayer != null) {
-      await _mPlayer!.stopPlayer();
-    }
+    //if (_mPlayer != null) {
+      await _mPlayer.stopPlayer();
+    //}
   }
 
 
@@ -148,7 +148,7 @@ class _LivePlaybackWithoutBackPressureState
     if (!_mPlayerIsInited) {
       return null;
     }
-    return _mPlayer!.isStopped
+    return _mPlayer.isStopped
         ? play
         : () {
             stopPlayer().then((value) => setState(() {}));
@@ -180,12 +180,12 @@ class _LivePlaybackWithoutBackPressureState
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
+                child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
               ),
               const SizedBox(
                 width: 20,
               ),
-              Text(_mPlayer!.isPlaying
+              Text(_mPlayer.isPlaying
                   ? 'Playback in progress'
                   : 'Player is stopped'),
             ]),
