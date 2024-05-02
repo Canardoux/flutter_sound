@@ -227,8 +227,10 @@ class _MyAppState extends State<Demo> {
   Future<void> _initializeExample() async {
     await playerModule.closePlayer();
     await playerModule.openPlayer();
-    await playerModule.setSubscriptionDuration(const Duration(milliseconds: 10));
-    await recorderModule.setSubscriptionDuration(const Duration(milliseconds: 10));
+    await playerModule
+        .setSubscriptionDuration(const Duration(milliseconds: 10));
+    await recorderModule
+        .setSubscriptionDuration(const Duration(milliseconds: 10));
     await initializeDateFormatting();
     await setCodec(_codec);
   }
@@ -656,7 +658,7 @@ class _MyAppState extends State<Demo> {
             _media = newMedia;
             setState(() {});
           },
-          items: const <DropdownMenuItem<Media>> [
+          items: const <DropdownMenuItem<Media>>[
             DropdownMenuItem<Media>(
               value: Media.file,
               child: Text('File'),

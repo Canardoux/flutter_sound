@@ -101,7 +101,8 @@ class _PlayFromMicState extends State<PlayFromMic> {
   // -------  Here is the code to play from the microphone -----------------------
 
   void play() async {
-    await _mPlayer!.startPlayerFromMic(enableVoiceProcessing: _mEnableVoiceProcessing, bufferSize: 20480);
+    await _mPlayer!.startPlayerFromMic(
+        enableVoiceProcessing: _mEnableVoiceProcessing, bufferSize: 20480);
     setState(() {});
   }
 
@@ -142,44 +143,44 @@ class _PlayFromMicState extends State<PlayFromMic> {
                 width: 3,
               ),
             ),
-            child: Column( children: [Row(children: [
-              ElevatedButton(
-                onPressed: getPlaybackFn(),
-                //color: Colors.white,
-                //disabledColor: Colors.grey,
-                child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              Text(_mPlayer!.isPlaying
-                  ? 'Playing microphone to headset'
-                  : 'Recorder is stopped'),
-            ]),
-      Row(children: [
-      Checkbox(
-      checkColor: Colors.white,
-      //fillColor: Colors.white,
-      value: _mEnableVoiceProcessing,
-      onChanged: (bool? value) {
-      _mPlayer!.closePlayer().then((v) {
-      _mPlayerIsInited = false;
-      _mEnableVoiceProcessing = value!;
-      _mPlayer!.openPlayer();}).then((value) {
-      setState(() {
-      _mPlayerIsInited = true;
-      });
-      }
-
-      );
-      }
-      ),
-      const Text("EnableVoiceProcessing")
-
-      ]),
-],
-      ),
-          )],
+            child: Column(
+              children: [
+                Row(children: [
+                  ElevatedButton(
+                    onPressed: getPlaybackFn(),
+                    //color: Colors.white,
+                    //disabledColor: Colors.grey,
+                    child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Text(_mPlayer!.isPlaying
+                      ? 'Playing microphone to headset'
+                      : 'Recorder is stopped'),
+                ]),
+                Row(children: [
+                  Checkbox(
+                      checkColor: Colors.white,
+                      //fillColor: Colors.white,
+                      value: _mEnableVoiceProcessing,
+                      onChanged: (bool? value) {
+                        _mPlayer!.closePlayer().then((v) {
+                          _mPlayerIsInited = false;
+                          _mEnableVoiceProcessing = value!;
+                          _mPlayer!.openPlayer();
+                        }).then((value) {
+                          setState(() {
+                            _mPlayerIsInited = true;
+                          });
+                        });
+                      }),
+                  const Text("EnableVoiceProcessing")
+                ]),
+              ],
+            ),
+          )
+        ],
       );
     }
 

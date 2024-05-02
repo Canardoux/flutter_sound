@@ -111,11 +111,11 @@ class _LivePlaybackWithoutBackPressureState
     var data = await getAssetData('assets/samples/sample.pcm');
     feedHim(data);
     //if (_mPlayer != null) {
-      // We must not do stopPlayer() directely //await stopPlayer();
-      _mPlayer.foodSink!.add(FoodEvent(() async {
-        await _mPlayer.stopPlayer();
-        setState(() {});
-      }));
+    // We must not do stopPlayer() directely //await stopPlayer();
+    _mPlayer.foodSink!.add(FoodEvent(() async {
+      await _mPlayer.stopPlayer();
+      setState(() {});
+    }));
     //}
   }
 
@@ -128,13 +128,12 @@ class _LivePlaybackWithoutBackPressureState
 
   Future<void> stopPlayer() async {
     //if (_mPlayer != null) {
-      await _mPlayer.stopPlayer();
+    await _mPlayer.stopPlayer();
     //}
   }
 
-
   Future<void> setSpeed(double v) async // v is between 0.0 and 100.0
-      {
+  {
     v = v > 200.0 ? 200.0 : v;
     _mSpeed = v;
     setState(() {});
@@ -142,7 +141,6 @@ class _LivePlaybackWithoutBackPressureState
       v / 100,
     );
   }
-
 
   Fn? getPlaybackFn() {
     if (!_mPlayerIsInited) {
@@ -160,22 +158,22 @@ class _LivePlaybackWithoutBackPressureState
   @override
   Widget build(BuildContext context) {
     Widget makeBody() {
-      return Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(3),
-            padding: const EdgeInsets.all(3),
-            height: 180,
-            width: double.infinity,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFAF0E6),
-              border: Border.all(
-                color: Colors.indigo,
-                width: 3,
-              ),
+      return Column(children: [
+        Container(
+          margin: const EdgeInsets.all(3),
+          padding: const EdgeInsets.all(3),
+          height: 180,
+          width: double.infinity,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: const Color(0xFFFAF0E6),
+            border: Border.all(
+              color: Colors.indigo,
+              width: 3,
             ),
-            child: Column(children: [Row(children: [
+          ),
+          child: Column(children: [
+            Row(children: [
               ElevatedButton(
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
@@ -189,24 +187,17 @@ class _LivePlaybackWithoutBackPressureState
                   ? 'Playback in progress'
                   : 'Player is stopped'),
             ]),
-               const Text('Speed:'),
-              Slider(
-                value: _mSpeed,
-                min: 0.0,
-                max: 200.0,
-                onChanged: setSpeed,
-                //divisions: 100
-              ),
-
-            ]
-             ),
-
-
-
-         ),
-        ]
-
-      );
+            const Text('Speed:'),
+            Slider(
+              value: _mSpeed,
+              min: 0.0,
+              max: 200.0,
+              onChanged: setSpeed,
+              //divisions: 100
+            ),
+          ]),
+        ),
+      ]);
     }
 
     return Scaffold(

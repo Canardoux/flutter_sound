@@ -204,22 +204,22 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   @override
   Widget build(BuildContext context) {
     Widget makeBody() {
-      return Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(3),
-            padding: const EdgeInsets.all(3),
-            height: 120,
-            width: double.infinity,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFAF0E6),
-              border: Border.all(
-                color: Colors.indigo,
-                width: 3,
-              ),
+      return Column(children: [
+        Container(
+          margin: const EdgeInsets.all(3),
+          padding: const EdgeInsets.all(3),
+          height: 120,
+          width: double.infinity,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: const Color(0xFFFAF0E6),
+            border: Border.all(
+              color: Colors.indigo,
+              width: 3,
             ),
-            child: Column(children: [ Row(children: [
+          ),
+          child: Column(children: [
+            Row(children: [
               ElevatedButton(
                 onPressed: getRecorderFn(),
                 //color: Colors.white,
@@ -233,33 +233,27 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
                   ? 'Recording in progress'
                   : 'Recorder is stopped'),
             ]),
-      Row(children: [
-      Checkbox(
-      checkColor: Colors.white,
-      //fillColor: Colors.white,
-      value: _mEnableVoiceProcessing,
-      onChanged: (bool? value) {
-      _mPlayer!.closePlayer().then((v) {
-      _mPlayerIsInited = false;
-      _mEnableVoiceProcessing = value!;
-      _mPlayer!.openPlayer();}).then((value) {
-      setState(() {
-      _mPlayerIsInited = true;
-      });
-      }
-
-      );
-      }
-      ),
-      const Text("EnableVoiceProcessing")
-
-      ]
-      ),
-      ]
-      ),
-          ),
-
-          Container(
+            Row(children: [
+              Checkbox(
+                  checkColor: Colors.white,
+                  //fillColor: Colors.white,
+                  value: _mEnableVoiceProcessing,
+                  onChanged: (bool? value) {
+                    _mPlayer!.closePlayer().then((v) {
+                      _mPlayerIsInited = false;
+                      _mEnableVoiceProcessing = value!;
+                      _mPlayer!.openPlayer();
+                    }).then((value) {
+                      setState(() {
+                        _mPlayerIsInited = true;
+                      });
+                    });
+                  }),
+              const Text("EnableVoiceProcessing")
+            ]),
+          ]),
+        ),
+        Container(
             margin: const EdgeInsets.all(3),
             padding: const EdgeInsets.all(3),
             height: 120,
@@ -272,9 +266,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
                 width: 3,
               ),
             ),
-            child:
-
-             Row(children: [
+            child: Row(children: [
               ElevatedButton(
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
@@ -287,12 +279,8 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
               Text(_mPlayer!.isPlaying
                   ? 'Playback in progress'
                   : 'Player is stopped'),
-            ])
-          ),
-
-              ]
-
-      );
+            ])),
+      ]);
     }
 
     return Scaffold(
