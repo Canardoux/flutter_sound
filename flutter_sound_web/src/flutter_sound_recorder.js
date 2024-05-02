@@ -186,7 +186,7 @@ class FlutterSoundRecorder {
         }
 
 
-        async startRecorder(path, sampleRate, numChannels, bitRate, bufferSize, enableVoiceProcessing, codec, toStream, audioSource) {
+        async startRecorder(path, sampleRate, numChannels, bitRate, bufferSize, enableVoiceProcessing ,codec, toStream, audioSource) {
                 this.callbackTable[CB_recorder_log](this.callback, DBG, 'startRecorder');
                 //var constraints = { audio: true};
                 //var chunks ;//= [];
@@ -196,6 +196,25 @@ class FlutterSoundRecorder {
                 var mediaStream;
                 mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
                 me.mediaStream = mediaStream;
+
+                const audioContext = new AudioContext();
+                const _audioSource = audioContext.createMediaStreamSource(mediaStream);
+                const analyser = audioContext.createAnalyser();
+                // todo: review if this values are right (set to mimic a behaviour closest to that of Android)
+                analyser.fftSize = 512;
+                analyser.minDecibels = -110;
+                analyser.maxDecibels = 0;
+                analyser.smoothingTimeConstant = 0.4;
+                _audioSource.connect(analyser);
+                const volumes = new Uint8Array(analyser.frequencyBinCount);
+
+                this.getVolumeLevel = () => {
+                        analyser.getByteFrequencyData(volumes);
+                        let volumeSum = 0;
+                        for (const volume of volumes)
+                                volumeSum += volume;
+                        return volumeSum / volumes.length;
+                }
 
 
                 //navigator.mediaDevices.getUserMedia(constraints).then
@@ -310,15 +329,15 @@ class FlutterSoundRecorder {
                                                                 var fileReader = new FileReader();
                                                                 xhr.open("GET", url, true);
                                                                 xhr.responseType = "arraybuffer";
-
-
+                        
+                        
                                                                 xhr.addEventListener("load", function ()
                                                                 {
                                                                         if (xhr.status === 200)
                                                                         {
                                                                                 // Create a blob from the response
                                                                                 blob = new Blob([xhr.response], {type: "audio/webm\;codecs=opus"});
-
+                        
                                                                                 // onload needed since Google Chrome doesn't support addEventListener for FileReader
                                                                                 fileReader.onload = function (evt)
                                                                                 {
@@ -411,9 +430,10 @@ class FlutterSoundRecorder {
                         this.timerId = setInterval
                                 (
                                         function () {
+                                                var volumeLevel = me.getVolumeLevel();
                                                 var now = new Date().getTime();
                                                 var distance = now - me.countDownDate;
-                                                me.callbackTable[CB_updateRecorderProgress](me.callback, me.deltaTime + distance, 0);
+                                                me.callbackTable[CB_updateRecorderProgress](me.callback, me.deltaTime + distance, volumeLevel);
 
                                         },
                                         this.subscriptionDuration
