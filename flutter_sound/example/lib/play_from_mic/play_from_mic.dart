@@ -101,7 +101,7 @@ class _PlayFromMicState extends State<PlayFromMic> {
   // -------  Here is the code to play from the microphone -----------------------
 
   void play() async {
-    await _mPlayer!.startPlayerFromMic(enableVoiceProcessing: _mEnableVoiceProcessing);
+    await _mPlayer!.startPlayerFromMic(enableVoiceProcessing: _mEnableVoiceProcessing, bufferSize: 20480);
     setState(() {});
   }
 

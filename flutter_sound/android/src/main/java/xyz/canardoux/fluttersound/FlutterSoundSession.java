@@ -109,11 +109,21 @@ public abstract class FlutterSoundSession
 
 	public void log(t_LOG_LEVEL level, String msg)
 	{
+		int[] levelToEnum =
+				{
+						999, //VERBOSE,
+						2000, //DBG,
+						3000, //INFO,
+						4000, //WARNING,
+						5000, //ERROR,
+						5999, //WTF,
+						9999, //NOTHING,
+				};
 		Map<String, Object> dic = new HashMap<String, Object> ();
 		dic.put ( "slotNo", slotNo );
 		dic.put ( "state", getStatus() );
-		dic.put ( "level", level.ordinal() );
-		dic.put ("msg", msg);
+		dic.put ( "level", levelToEnum[level.ordinal()] );
+		dic.put ("msg", "[android]: " + msg);
 		dic.put ( "success", true );
 		getPlugin ().invokeMethod ( "log", dic );
 

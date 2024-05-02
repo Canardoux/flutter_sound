@@ -141,7 +141,8 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
       codec: Codec.pcm16,
       numChannels: 1,
       sampleRate: tSampleRate,
-      enableVoiceProcessing: _mEnableVoiceProcessing
+      enableVoiceProcessing: _mEnableVoiceProcessing,
+      bufferSize: 20480,
     );
     setState(() {});
   }

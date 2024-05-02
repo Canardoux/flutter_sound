@@ -218,7 +218,7 @@ class FlutterSoundPlayer {
 
         }
 
-        startPlayer(codec, fromDataBuffer, fromURI, numChannels, sampleRate) {
+        startPlayer(codec, fromDataBuffer, fromURI, numChannels, sampleRate, bufferSize) {
                 this.callbackTable[CB_player_log](this.callback, DBG, 'JS: ---> startPlayer');
                 this.stop();
                 if (this.temporaryBlob != null) {

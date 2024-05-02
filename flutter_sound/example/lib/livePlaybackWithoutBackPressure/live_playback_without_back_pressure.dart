@@ -105,7 +105,7 @@ class _LivePlaybackWithoutBackPressureState
       codec: Codec.pcm16,
       numChannels: 1,
       sampleRate: tSampleRate,
-      bufferSize: 100000,
+      bufferSize: 20480,
     );
     setState(() {});
     var data = await getAssetData('assets/samples/sample.pcm');

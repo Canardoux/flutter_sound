@@ -7,6 +7,12 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 9.4.7
+
+- Fixes a bug when Logs from iOS or Android : Logger renumbered the Enum Levels so it was necessary to report those enums inside the pluggin.
+- The 'meta:' dependency in flutter_sound_web was incompatible with the 'meta:' version in flutter_sound
+- This fixes the volume level callback on Web. The file was correctly fixed and merged in the web folder in the js folder, but not in the src folder. Thanks to [bloemy7](https://github.com/bloemy7) for his [Pull Request](https://github.com/Canardoux/flutter_sound/pull/1031). This fixes [#838](https://github.com/Canardoux/flutter_sound/issues/838) and [#862](https://github.com/Canardoux/flutter_sound/issues/862)
+
 ## 9.4.6
 
 - Fixes some warning inside the example 'LivePlaybackWithoutBackPressure'
@@ -47,7 +53,7 @@ toc: false
 - Link with "uuid: ^4.3.3" : [#1006](https://github.com/Canardoux/flutter_sound/pull/1006), [#998](https://github.com/Canardoux/flutter_sound/pull/998)
 - environment sdk version is now : sdk: ^3.3.0
 - Fixes many warnings during build
-- Fixes a bug in openPlayer and openRecorder : The functionn awaited on the completion instead of returning a Future of the Player/Recorder
+- Fixes a bug in openPlayer and openRecorder : The function awaited on the completion instead of returning a Future of the Player/Recorder
 
 ## 9.2.13
 

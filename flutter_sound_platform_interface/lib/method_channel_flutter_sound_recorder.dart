@@ -103,8 +103,9 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
 
       case "log":
         {
-          aRecorder!.log(
-              Level.values[call.arguments['level']], call.arguments['msg']);
+          int i = call.arguments['level'];
+          Level l = Level.values.firstWhere((x) => x.value == i);
+          aRecorder!.log(l, call.arguments['msg']);
         }
         break;
 
@@ -217,7 +218,7 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
     int? sampleRate,
     int? numChannels,
     int? bitRate,
-    int bufferSize = 8192,
+    int bufferSize = 20480,
     bool enableVoiceProcessing = false,
     Codec? codec,
     bool? toStream,

@@ -122,8 +122,9 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
 
       case "log":
         {
-          aPlayer.log(
-              Level.values[call.arguments['level']], call.arguments['msg']);
+          int i = call.arguments['level'];
+          Level l = Level.values.firstWhere((x) => x.value == i);
+          aPlayer.log(l, call.arguments['msg']);
         }
         break;
 
@@ -260,7 +261,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
     String? fromURI,
     int? numChannels,
     int? sampleRate,
-    int bufferSize = 8192,
+    int bufferSize = 20480,
   }) {
     return invokeMethod(
       callback,
@@ -280,7 +281,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
   Future<int> startPlayerFromMic(FlutterSoundPlayerCallback callback,
       {int? numChannels,
       int? sampleRate,
-      int bufferSize = 8192,
+      int bufferSize = 20480,
       bool enableVoiceProcessing = false}) {
     return invokeMethod(
       callback,

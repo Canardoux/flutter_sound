@@ -40,7 +40,7 @@ import 'package:flutter/services.dart' show rootBundle;
  */
 
 ///
-const blockSize = 4096;
+const blockSize = 20480;
 
 ///
 const int tSampleRate = 44100;
@@ -91,6 +91,7 @@ class _LivePlaybackWithBackPressureState
       codec: Codec.pcm16,
       numChannels: 1,
       sampleRate: tSampleRate,
+      bufferSize: 20480,
     );
     setState(() {});
     var data = await getAssetData('assets/samples/sample.pcm');
