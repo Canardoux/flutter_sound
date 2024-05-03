@@ -12,7 +12,7 @@ VERSION_CODE=${VERSION_CODE#+/}
 
 bin/setver.sh $VERSION
 bin/reldev.sh REL
-bin/web.sh
+#bin/web.sh
 
 cd flutter_sound
 flutter analyze lib
@@ -96,7 +96,7 @@ if [ ! -z "$VERSION" ]; then
 fi
 cd ..
 
-cd flutter_sound_web
+cd flutter_sound_core
 pod trunk push flutter_sound_core.podspec 
 if [ $? -ne 0 ]; then
     echo "Error: trunk push flutter_sound_core.podspec[flutter_sound_core]"
@@ -115,7 +115,7 @@ if [ ! -z "$VERSION" ]; then
         git push  -f origin $VERSION
 fi
 
-cd flutter_sound_core
+cd flutter_sound_web
 git add .
 git commit -m "TAU : Version $VERSION"
 git pull origin

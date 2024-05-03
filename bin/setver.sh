@@ -10,9 +10,9 @@ VERSION=$1
 VERSION_CODE=${VERSION//./}
 VERSION_CODE=${VERSION_CODE//+/}
 
-#gsed -i  "s/const VERSION = .*$/const VERSION = '$VERSION'/"    flutter_sound_web/js/flutter_sound/flutter_sound.js;
-#gsed -i  "s/const PLAYER_VERSION = .*$/const PLAYER_VERSION = '$VERSION'/"    flutter_sound_web/js/flutter_sound/flutter_sound_player.js;
-#gsed -i  "s/const RECORDER_VERSION = .*$/const RECORDER_VERSION = '$VERSION'/"    flutter_sound_web/js/flutter_sound/flutter_sound_recorder.js;
+gsed -i  "s/const VERSION = .*$/const VERSION = '$VERSION'/"                  flutter_sound_web/src/flutter_sound.js;
+gsed -i  "s/const PLAYER_VERSION = .*$/const PLAYER_VERSION = '$VERSION'/"    flutter_sound_web/src/flutter_sound_player.js;
+gsed -i  "s/const RECORDER_VERSION = .*$/const RECORDER_VERSION = '$VERSION'/"    flutter_sound_web/src/flutter_sound_recorder.js;
 
 
 
@@ -59,12 +59,12 @@ gsed -i  "s/^\( *version: *\).*$/\1$VERSION/"                                   
 gsed -i  "s/^\( *version *= *\).*$/\1'$VERSION'/"                                       flutter_sound_core/android/bintray.gradle 2>/dev/null
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/"                                           flutter_sound_web/pubspec.yaml
 gsed -i  "s/^\( *flutter_sound_platform_interface: *#* *\).*$/\1$VERSION/"              flutter_sound_web/pubspec.yaml
-gsed -i  "s/^\( *flauto_platform_interface2: *#* *\).*$/\1$VERSION/"                     flutter_sound_web/pubspec.yaml
+#gsed -i  "s/^\( *flauto_platform_interface2: *#* *\).*$/\1$VERSION/"                     flutter_sound_web/pubspec.yaml
 gsed -i  "s/^\( *## \).*$/\1$VERSION/"                                                  flutter_sound_web/CHANGELOG.md
-gsed -i  "s/^\( *\"version\": *\).*$/\1\"$VERSION\",/"                                  flutter_sound_core/web/package.json
+###gsed -i  "s/^\( *\"version\": *\).*$/\1\"$VERSION\",/"                                  flutter_sound_core/web/package.json
 ###gsed -i  "s/^\( *<script src=\"https:\/\/cdn.jsdelivr.net\/npm\/flutter_sound_core@\)[^\/]*/\1$VERSION/g" flutter_sound/example/web/index.html
 ###gsed -i  "s/^\( *<script src=\"https:\/\/cdn.jsdelivr.net\/npm\/flutter_sound_core@[^+/]*\)[^/]*/\1/g" flutter_sound/example/web/index.html
-gsed -i  "s/^\( *s\.version *= *\).*$/\1'$VERSION'/"                                    flutter_sound_web/ios/flutter_sound_web.podspec
+gsed -i  "s/^\( *s\.version *= *\).*$/\1'$VERSION'/"                                    flutter_sound_core/flutter_sound_core.podspec
 
 gsed -i  "s/^tau_version:.*/tau_version: $VERSION/"                                     doc/_config.yml
 gsed -i  "s/^\( *version: \).*/\1$VERSION/"                                             doc/_data/sidebars/mydoc_sidebar.yml

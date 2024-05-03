@@ -1,5 +1,5 @@
 #!/bin/bash
-
+exit -1 #!!!!!!!!!!!!!!!!
 echo "web.sh"
 echo "------"
 rm -rf  flutter_sound_core/web/js 2>/dev/null
