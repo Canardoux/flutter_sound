@@ -7,6 +7,11 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+## 9.4.8
+
+- The JS scripts are not duplicated anymore
+- The Live Example was not installed correctly on canardoux.xyz
+
 ## 9.4.7
 
 - Fixes a bug when Logs from iOS or Android : Logger renumbered the Enum Levels so it was necessary to report those enums inside the pluggin.

@@ -96,7 +96,7 @@ if [ ! -z "$VERSION" ]; then
 fi
 cd ..
 
-cd flutter_sound_core
+cd flutter_sound_web
 pod trunk push flutter_sound_core.podspec 
 if [ $? -ne 0 ]; then
     echo "Error: trunk push flutter_sound_core.podspec[flutter_sound_core]"
@@ -126,14 +126,14 @@ if [ ! -z "$VERSION" ]; then
 fi
 cd ..
 
-cd flutter_sound_core/web
+cd flutter_sound_web
 npm publish .
 if [ $? -ne 0 ]; then
     echo "Error: npm publish"
     #!!!!!exit -1
 fi
 
-cd ../..
+cd ..
  
 
 
@@ -194,7 +194,6 @@ cd ../..
 
 
 
-
 cd flutter_sound/example/ios
 pod cache clean --all
 rm Podfile.lock
@@ -222,10 +221,18 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 
+flutter build web
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
 cd ../..
 
 
 bin/doc.sh $VERSION
+
+scp -r flutter_sound/example/build/web canardoux@danku:/var/www/canardoux.xyz/flutter-sound/web_example
+scp -r flutter_sound/example/assets/extract canardoux@danku:/var/www/canardoux.xyz/flutter-sound
 
 git add .
 git commit -m "TAU : Version $VERSION"

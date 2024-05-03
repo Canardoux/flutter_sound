@@ -94,16 +94,16 @@ cd
 ######rm _toto.tgz _toto3.tgz
 
 
-echo "Live web example"
-cd /tmp/toto_doc/flutter_sound/example
+#echo "Live web example"
+#cd /tmp/toto_doc/flutter_sound/example
 
-flutter build web
-if [ $? -ne 0 ]; then
-    echo "Error"
-    exit -1
-fi
-cd 
+#flutter build web
+#if [ $? -ne 0 ]; then
+#    echo "Error"
+#    exit -1
+#fi
+#cd 
 
-rm -rf /var/www/canardoux.xyz/flutter-sound/web_example/
-cp -a /tmp/toto_doc/flutter_sound/example/assets/samples/ /tmp/toto_doc/flutter_sound/example/assets/extract /tmp/toto_doc/flutter_sound/example/build/web/assets
-cp -a /tmp/toto_doc/flutter_sound/example/build/web /var/www/canardoux.xyz/flutter-sound/web_example
+#rm -rf /var/www/canardoux.xyz/flutter-sound/web_example/
+#cp -a /tmp/toto_doc/flutter_sound/example/assets/samples/ /tmp/toto_doc/flutter_sound/example/assets/extract /tmp/toto_doc/flutter_sound/example/build/web/assets
+#cp -a /tmp/toto_doc/flutter_sound/example/build/web /var/www/canardoux.xyz/flutter-sound/web_example

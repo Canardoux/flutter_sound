@@ -149,6 +149,8 @@ elif [ "_$1" = "_DEV" ]; then
 
         gsed -i  "s/^\( *<\!-- dynamic\) -->$/\1/" flutter_sound/example/web/index.html
         gsed -i  "s/^\( *<\!-- static\)$/\1 -->/" flutter_sound/example/web/index.html
+        gsed -i  "s/^\( *<\!-- static\) -->$/\1/" flutter_sound/example/web/index.html
+        gsed -i  "s/^\( *<\!-- dynamic\)$/\1 -->/" flutter_sound/example/web/index.html
 
 # flutter_sound_web/pubspec.yaml
 #-------------------------------
