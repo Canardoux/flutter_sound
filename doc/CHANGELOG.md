@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-## 9.4.8
+## 9.4.9
 
 - The JS scripts are not duplicated anymore
 - The Live Example was not installed correctly on canardoux.xyz

@@ -61,7 +61,7 @@ gsed -i  "s/^\( *version: *\).*$/\1$VERSION/"                                   
 gsed -i  "s/^\( *flutter_sound_platform_interface: *#* *\).*$/\1$VERSION/"              flutter_sound_web/pubspec.yaml
 #gsed -i  "s/^\( *flauto_platform_interface2: *#* *\).*$/\1$VERSION/"                     flutter_sound_web/pubspec.yaml
 gsed -i  "s/^\( *## \).*$/\1$VERSION/"                                                  flutter_sound_web/CHANGELOG.md
-###gsed -i  "s/^\( *\"version\": *\).*$/\1\"$VERSION\",/"                                  flutter_sound_core/web/package.json
+gsed -i  "s/^\( *\"version\": *\).*$/\1\"$VERSION\",/"                                  flutter_sound_core/web/package.json
 ###gsed -i  "s/^\( *<script src=\"https:\/\/cdn.jsdelivr.net\/npm\/flutter_sound_core@\)[^\/]*/\1$VERSION/g" flutter_sound/example/web/index.html
 ###gsed -i  "s/^\( *<script src=\"https:\/\/cdn.jsdelivr.net\/npm\/flutter_sound_core@[^+/]*\)[^/]*/\1/g" flutter_sound/example/web/index.html
 gsed -i  "s/^\( *s\.version *= *\).*$/\1'$VERSION'/"                                    flutter_sound_core/flutter_sound_core.podspec
