@@ -9,15 +9,16 @@ if [ ! -z "$VERSION" ]; then
         gsed -i  "s/^\( *version: \).*/\1$VERSION/"                                             doc/_data/sidebars/mydoc_sidebar.yml
 fi
 
-rm -rf flutter_sound/example/build flutter_sound/build
-tar czf _toto3.tgz flutter_sound flutter_sound_web flutter_sound_platform_interface extract
+cd flutter_sound
+dart doc   lib 2>/dev/null
+cd ..
+
 cd doc
 tar czf ../_toto.tgz *
 cd ..
 scp bin/doc2.sh canardoux@danku:/home/canardoux/bin
 scp _toto.tgz canardoux@danku:/home/canardoux
-scp _toto3.tgz canardoux@danku:/home/canardoux
 ssh canardoux@danku "bash /home/canardoux/bin/doc2.sh"
-rm _toto.tgz _toto2.tgz _toto3.tgz 2>/dev/null
+rm _toto.tgz  2>/dev/null
 
 echo 'E.O.J'

@@ -15,9 +15,9 @@
     },
     {
       "name": "args",
-      "rootUri": "file:///Volumes/mac-J/larpoux/.pub-cache/hosted/pub.dev/args-2.4.2",
+      "rootUri": "file:///Volumes/mac-J/larpoux/.pub-cache/hosted/pub.dev/args-2.5.0",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.0"
     },
     {
       "name": "async",
@@ -45,7 +45,7 @@
     },
     {
       "name": "built_value",
-      "rootUri": "file:///Volumes/mac-J/larpoux/.pub-cache/hosted/pub.dev/built_value-8.9.1",
+      "rootUri": "file:///Volumes/mac-J/larpoux/.pub-cache/hosted/pub.dev/built_value-8.9.2",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -87,7 +87,7 @@
     },
     {
       "name": "dart_style",
-      "rootUri": "file:///Volumes/mac-J/larpoux/.pub-cache/hosted/pub.dev/dart_style-2.3.4",
+      "rootUri": "file:///Volumes/mac-J/larpoux/.pub-cache/hosted/pub.dev/dart_style-2.3.6",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -147,7 +147,7 @@
     },
     {
       "name": "logger",
-      "rootUri": "file:///Volumes/mac-J/larpoux/.pub-cache/hosted/pub.dev/logger-2.0.2+1",
+      "rootUri": "file:///Volumes/mac-J/larpoux/.pub-cache/hosted/pub.dev/logger-2.3.0",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
@@ -290,7 +290,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-05-03T18:30:26.504723Z",
+  "generated": "2024-05-15T13:36:26.133336Z",
   "generator": "pub",
   "generatorVersion": "3.4.0-282.3.beta",
   "flutterRoot": "file:///Volumes/mac-J/larpoux/flutter",

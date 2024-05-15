@@ -75,16 +75,6 @@ cd ..
 
 
 
-
-git add .
-git commit -m "TAU : Version $VERSION"
-git pull origin
-git push origin
-if [ ! -z "$VERSION" ]; then
-    git tag -f $VERSION
-    git push  -f origin $VERSION
-fi
-
 cd flutter_sound_core
 git add .
 git commit -m "TAU : Version $VERSION"
@@ -95,25 +85,6 @@ if [ ! -z "$VERSION" ]; then
     git push  -f origin $VERSION
 fi
 cd ..
-
-cd flutter_sound_core
-pod trunk push flutter_sound_core.podspec 
-if [ $? -ne 0 ]; then
-    echo "Error: trunk push flutter_sound_core.podspec[flutter_sound_core]"
-    #!!!!!exit -1
-fi
-cd ..
-
-
-
-git add .
-git commit -m "TAU : Version $VERSION"
-git pull origin
-git push origin
-if [ ! -z "$VERSION" ]; then
-        git tag -f $VERSION
-        git push  -f origin $VERSION
-fi
 
 cd flutter_sound_web
 git add .
@@ -125,6 +96,28 @@ if [ ! -z "$VERSION" ]; then
     git push  -f origin $VERSION
 fi
 cd ..
+
+
+
+git add .
+git commit -m "TAU : Version $VERSION"
+git pull origin
+git push origin
+if [ ! -z "$VERSION" ]; then
+    git tag -f $VERSION
+    git push  -f origin $VERSION
+fi
+
+
+
+cd flutter_sound_core
+pod trunk push flutter_sound_core.podspec 
+if [ $? -ne 0 ]; then
+    echo "Error: trunk push flutter_sound_core.podspec[flutter_sound_core]"
+    #!!!!!exit -1
+fi
+cd ..
+
 
 cd flutter_sound_web
 npm publish .
@@ -231,8 +224,8 @@ cd ../..
 
 bin/doc.sh $VERSION
 
-scp -r flutter_sound/example/build/web canardoux@danku:/var/www/canardoux.xyz/flutter-sound/web_example
-scp -r flutter_sound/example/assets/extract canardoux@danku:/var/www/canardoux.xyz/flutter-sound
+scp -r flutter_sound/example/build/web danku@danku:/var/www/canardoux.xyz/flutter-sound/web_example
+scp -r flutter_sound/example/assets/extract danku@danku:/var/www/canardoux.xyz/flutter-sound
 
 git add .
 git commit -m "TAU : Version $VERSION"

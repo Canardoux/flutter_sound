@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.4.10
+
+- Pinning the "meta:" version in pubspec.yaml was a very bad idea.
+
 ## 9.4.9
 
 - The JS scripts are not duplicated anymore

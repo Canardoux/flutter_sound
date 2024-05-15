@@ -1,40 +1,20 @@
 #!/bin/bash
 
-export PATH=~/android-studio/bin:$PATH
-export PATH=$PATH:~/flutter/bin
-export ANDROID_HOME=~/Android/Sdk
-export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/android-ndk-r21e # 23.1.7779620
-export PATH=~/bin:$PATH
-export PATH=~/gradle-7.4/bin:$PATH
-export PATH="$PATH:/opt/flutter/bin"
-
 export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
 
 rm -rf /tmp/toto_doc 2>/dev/null
 mkdir -v /tmp/toto_doc 2>/tmp/null
 tar xzf _toto.tgz -C /tmp/toto_doc 2>/dev/null
-tar xzf _toto3.tgz  -C /tmp/toto_doc 2>/dev/null
-rm -rf /tmp/toto_doc/_site /tmp/toto_doc/flutter_sound/example/ios 2>/dev/null
-#####mv -v  /tmp/toto_doc/flutter_sound/example/samples  /tmp/toto_doc/flutter_sound/example/assets/
+rm -rf /tmp/toto_doc/_site 2>/dev/null
 
-cd /tmp/toto_doc/flutter_sound/
-export PATH="$PATH:/opt/flutter/bin"
-export FLUTTER_ROOT=/opt/flutter
-flutter clean
-flutter pub get
-dart doc   lib 2>/dev/null
-mv -v doc/api .
-
-
-
-sed -i  "0,/^  overflow: hidden;$/s//overflow: auto;/"  api/static-assets/styles.css
-sed -i  "s/^  background-color: inherit;$/  background-color: #2196F3;/" api/static-assets/styles.css
-
-sed -i  "0,/^  overflow: hidden;$/s//overflow: auto;/"  /tmp/toto_doc/_site/pages/flutter-sound/api/static-assets/styles.css
-sed -i  "s/^  background-color: inherit;$/  background-color: #2196F3;/" /tmp/toto_doc/_site/pages/flutter-sound/api/static-assets/styles.css
-
+#cd /tmp/toto_doc/flutter_sound/
+#sed -i  "0,/^  overflow: hidden;$/s//overflow: auto;/"  api/static-assets/styles.css
+#sed -i  "s/^  background-color: inherit;$/  background-color: #2196F3;/" api/static-assets/styles.css
+#sed -i  "0,/^  overflow: hidden;$/s//overflow: auto;/"  /tmp/toto_doc/_site/pages/flutter-sound/api/static-assets/styles.css
+#sed -i  "s/^  background-color: inherit;$/  background-color: #2196F3;/" /tmp/toto_doc/_site/pages/flutter-sound/api/static-assets/styles.css
 cd ~
+
 echo "patch css for Jekyll compatibility"
 
 
@@ -61,8 +41,8 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 
-rm -rf /var/www/canardoux.xyz/flutter-sound/*
-cp -a /tmp/toto_doc/_site/* /var/www/canardoux.xyz/flutter-sound/
+#rm -rf /var/www/canardoux.xyz/flutter-sound/*
+#cp -a /tmp/toto_doc/_site/* /var/www/canardoux.xyz/flutter-sound/
 
 cd /var/www/canardoux.xyz/flutter-sound
 echo "Symbolic links of the API"
