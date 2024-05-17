@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.4.11
+
+- Do not set result for each audio session when doing a reset (hot reload/restart). [#938](https://github.com/Canardoux/flutter_sound/issues/938) : Thanks to [netsesame2](https://github.com/netsesame2) for his/her contribution.
+
 ### 9.4.10
 
 - Pinning the "meta:" version in pubspec.yaml was a very bad idea.

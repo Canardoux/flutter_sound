@@ -129,7 +129,9 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 	void reset(final MethodCall call, final MethodChannel.Result result)
 	{
 		m_recorder.closeRecorder();
-		result.success ( 0 );
+		// don't set the result here, because this function is called recursively for several player/recorder
+		// and this result is set by the caller (in FlutterSoundManager.java)
+		//result.success ( 0 );
 
 	}
 
