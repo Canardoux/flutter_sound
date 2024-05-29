@@ -31,7 +31,7 @@ import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_i
 import 'package:logger/logger.dart' show Level, Logger;
 import 'package:path_provider/path_provider.dart';
 import 'package:synchronized/synchronized.dart';
-
+import 'package:flutter/foundation.dart' as Foundation;
 import '../flutter_sound.dart';
 
 /// The possible states of the Player.
@@ -515,7 +515,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       throw Exception('Player is already initialized');
     }
 
-    if (_reStarted) {
+    if (_reStarted && Foundation.kDebugMode) {
       // Perhaps a Hot Restart ?  We must reset the plugin
       _logger.d('Resetting flutter_sound Player Plugin');
       _reStarted = false;

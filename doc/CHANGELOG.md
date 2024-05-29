@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.4.12
+
+- Do not call resetPlugin() when not in dev. [#1039](https://github.com/Canardoux/flutter_sound/issues/1039)
+
 ### 9.4.11
 
 - Do not set result for each audio session when doing a reset (hot reload/restart). [#938](https://github.com/Canardoux/flutter_sound/issues/938) : Thanks to [netsesame2](https://github.com/netsesame2) for his/her contribution.

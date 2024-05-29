@@ -28,7 +28,7 @@ import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform
 import 'package:logger/logger.dart' show Level, Logger;
 import 'package:path/path.dart' as p;
 import 'package:synchronized/synchronized.dart';
-
+import 'package:flutter/foundation.dart' as Foundation;
 import '../flutter_sound.dart';
 
 /// A Recorder is an object that can playback from various sources.
@@ -389,7 +389,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     _openRecorderCompleter = Completer<FlutterSoundRecorder>();
     completer = _openRecorderCompleter;
     try {
-      if (_reStarted) {
+      if (_reStarted && Foundation.kDebugMode) {
         // Perhaps a Hot Restart ?  We must reset the plugin
         _logger.d('Resetting flutter_sound Recorder Plugin');
         _reStarted = false;

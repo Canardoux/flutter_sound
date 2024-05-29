@@ -57,56 +57,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="40fa92f8-6475-41cf-aae7-5ca39400a0cb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../flutter_sound_web/.idea/flutter_sound_web.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/_data/sidebars/mydoc_sidebar.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/_data/sidebars/mydoc_sidebar.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/tau-api/player/set_speed.md" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/pages/tau-api/player/set_speed.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/tau-api/player/startPlayer.md" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/pages/tau-api/player/startPlayer.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/tau-api/player/start_player_from_mic.md" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/pages/tau-api/player/start_player_from_mic.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/tau-api/player/start_player_from_stream.md" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/pages/tau-api/player/start_player_from_stream.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../doc/pages/tau-api/recorder/start_recorder.md" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/pages/tau-api/recorder/start_recorder.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../doc/images/the-t-architecture.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/images/the-t-architecture.drawio" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../flutter_sound/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/android/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../flutter_sound/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/android/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/android/src/main/java/xyz/canardoux/fluttersound/FlutterSound.java" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/android/src/main/java/xyz/canardoux/fluttersound/FlutterSound.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/android/src/main/java/xyz/canardoux/fluttersound/FlutterSoundManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/android/src/main/java/xyz/canardoux/fluttersound/FlutterSoundManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/android/src/main/java/xyz/canardoux/fluttersound/FlutterSoundPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/android/src/main/java/xyz/canardoux/fluttersound/FlutterSoundPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/android/src/main/java/xyz/canardoux/fluttersound/FlutterSoundRecorder.java" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/android/src/main/java/xyz/canardoux/fluttersound/FlutterSoundRecorder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../flutter_sound/example/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/android/settings.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../flutter_sound/example/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/ios/Podfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/play_from_mic/play_from_mic.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/play_from_mic/play_from_mic.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/lib/recordToStream/record_to_stream_example.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/lib/recordToStream/record_to_stream_example.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../flutter_sound/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/web/js/flutter_sound/flutter_sound_recorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/web/js/flutter_sound/flutter_sound_recorder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/ios/Classes/FlutterSoundPlayer.mm" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/ios/Classes/FlutterSoundPlayer.mm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/ios/Classes/FlutterSoundRecorder.mm" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/ios/Classes/FlutterSoundRecorder.mm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/ios/flutter_sound.podspec" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/ios/flutter_sound.podspec" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../flutter_sound/lib/public/flutter_sound_player.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/lib/public/flutter_sound_player.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound/lib/public/flutter_sound_recorder.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/lib/public/flutter_sound_recorder.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../flutter_sound/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_core" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_core" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/flutter_sound_player_platform_interface.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_sound_player_platform_interface.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/flutter_sound_recorder_platform_interface.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_sound_recorder_platform_interface.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/method_channel_flutter_sound_player.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/method_channel_flutter_sound_player.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/method_channel_flutter_sound_recorder.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/method_channel_flutter_sound_recorder.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/.dart_tool/package_config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/.dart_tool/package_config_subset" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/.dart_tool/package_config_subset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/ios/flutter_sound_web.podspec" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/ios/flutter_sound_web.podspec" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/js/flutter_sound/flutter_sound_recorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/js/flutter_sound/flutter_sound_recorder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/lib/flutter_sound_player_web.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/lib/flutter_sound_player_web.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/lib/flutter_sound_recorder_web.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/lib/flutter_sound_recorder_web.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/src/flutter_sound_player.js" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/src/flutter_sound_player.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_sound_web/src/flutter_sound_recorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web/src/flutter_sound_recorder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../flutter_sound_web" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,6 +83,10 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 6
+}]]></component>
   <component name="ProjectId" id="1pRFyBkMRpNkSwuz8Sfh411noJS" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
