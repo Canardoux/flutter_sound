@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.4.13
+
+- Merge the Pull request proposed by [Rajko Vukovic](https://github.com/rajkovukovic). [#965 : ]Its about Howler exports on Flutter Sound Web. Thank you for your contribution Rajko
+
 ### 9.4.12
 
 - Do not call resetPlugin() when not in dev. [#1039](https://github.com/Canardoux/flutter_sound/issues/1039)
