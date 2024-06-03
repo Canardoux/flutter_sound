@@ -29,6 +29,7 @@ import 'dart:core';
 
 import 'flutter_sound_player_platform_interface.dart';
 import 'flutter_sound_platform_interface.dart';
+//import 'dart:async';
 
 const MethodChannel _channel =
     MethodChannel('xyz.canardoux.flutter_sound_player');
@@ -42,97 +43,98 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
   void setCallback() {
     //_channel = const MethodChannel('xyz.canardoux.flutter_sound_player');
     _channel.setMethodCallHandler((MethodCall call) {
-      return channelMethodCallHandler(call)!;
+      return channelMethodCallHandler(call);
     });
   }
 
-  Future<dynamic>? channelMethodCallHandler(MethodCall call) {
-    FlutterSoundPlayerCallback aPlayer =
-        getSession(call.arguments!['slotNo'] as int);
-    Map arg = call.arguments;
+  Future<bool> channelMethodCallHandler(MethodCall call) {
+    return Future<bool>(() {
+      FlutterSoundPlayerCallback aPlayer =
+          getSession(call.arguments!['slotNo'] as int);
+      Map arg = call.arguments;
 
-    bool success = call.arguments['success'] != null
-        ? call.arguments['success'] as bool
-        : false;
-    if (arg['state'] != null) aPlayer.updatePlaybackState(arg['state']);
+      bool success = call.arguments['success'] != null
+          ? call.arguments['success'] as bool
+          : false;
+      if (arg['state'] != null) aPlayer.updatePlaybackState(arg['state']);
 
-    switch (call.method) {
-      case "updateProgress":
-        {
-          aPlayer.updateProgress(
-              duration: arg['duration'], position: arg['position']);
-        }
-        break;
+      switch (call.method) {
+        case "updateProgress":
+          {
+            aPlayer.updateProgress(
+                duration: arg['duration'], position: arg['position']);
+          }
+          break;
 
-      case "needSomeFood":
-        {
-          aPlayer.needSomeFood(arg['arg']);
-        }
-        break;
+        case "needSomeFood":
+          {
+            aPlayer.needSomeFood(arg['arg']);
+          }
+          break;
 
-      case "audioPlayerFinishedPlaying":
-        {
-          aPlayer.audioPlayerFinished(arg['arg']);
-        }
-        break;
+        case "audioPlayerFinishedPlaying":
+          {
+            aPlayer.audioPlayerFinished(arg['arg']);
+          }
+          break;
 
-      case 'updatePlaybackState':
-        {
-          aPlayer.updatePlaybackState(arg['arg']);
-        }
-        break;
+        case 'updatePlaybackState':
+          {
+            aPlayer.updatePlaybackState(arg['arg']);
+          }
+          break;
 
-      case 'openPlayerCompleted':
-        {
-          aPlayer.openPlayerCompleted(call.arguments['state'], success);
-        }
-        break;
+        case 'openPlayerCompleted':
+          {
+            aPlayer.openPlayerCompleted(call.arguments['state'], success);
+          }
+          break;
 
-      case 'startPlayerCompleted':
-        {
-          int duration = arg['duration'] as int;
-          aPlayer.startPlayerCompleted(
-              call.arguments['state'], success, duration);
-        }
-        break;
+        case 'startPlayerCompleted':
+          {
+            int duration = arg['duration'] as int;
+            aPlayer.startPlayerCompleted(
+                call.arguments['state'], success, duration);
+          }
+          break;
 
-      case "stopPlayerCompleted":
-        {
-          aPlayer.stopPlayerCompleted(call.arguments['state'], success);
-        }
-        break;
+        case "stopPlayerCompleted":
+          {
+            aPlayer.stopPlayerCompleted(call.arguments['state'], success);
+          }
+          break;
 
-      case "pausePlayerCompleted":
-        {
-          aPlayer.pausePlayerCompleted(call.arguments['state'], success);
-        }
-        break;
+        case "pausePlayerCompleted":
+          {
+            aPlayer.pausePlayerCompleted(call.arguments['state'], success);
+          }
+          break;
 
-      case "resumePlayerCompleted":
-        {
-          aPlayer.resumePlayerCompleted(call.arguments['state'], success);
-        }
-        break;
+        case "resumePlayerCompleted":
+          {
+            aPlayer.resumePlayerCompleted(call.arguments['state'], success);
+          }
+          break;
 
-      case "closePlayerCompleted":
-        {
-          aPlayer.closePlayerCompleted(call.arguments['state'], success);
-        }
-        break;
+        case "closePlayerCompleted":
+          {
+            aPlayer.closePlayerCompleted(call.arguments['state'], success);
+          }
+          break;
 
-      case "log":
-        {
-          int i = call.arguments['level'];
-          Level l = Level.values.firstWhere((x) => x.value == i);
-          aPlayer.log(l, call.arguments['msg']);
-        }
-        break;
+        case "log":
+          {
+            int i = call.arguments['level'];
+            Level l = Level.values.firstWhere((x) => x.value == i);
+            aPlayer.log(l, call.arguments['msg']);
+          }
+          break;
 
-      default:
-        throw ArgumentError('Unknown method ${call.method}');
-    }
-
-    return null;
+        default:
+          throw ArgumentError('Unknown method ${call.method}');
+      }
+      return success;
+    });
   }
 
 //===============================================================================================================================

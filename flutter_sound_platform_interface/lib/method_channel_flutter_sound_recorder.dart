@@ -37,83 +37,86 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
   void _setCallback() {
     //channel = const MethodChannel('xyz.canardoux.flutter_sound_recorder');
     _channel.setMethodCallHandler((MethodCall call) {
-      return channelMethodCallHandler(call)!;
+      return channelMethodCallHandler(call);
     });
   }
 
-  Future<dynamic>? channelMethodCallHandler(MethodCall call) {
-    FlutterSoundRecorderCallback? aRecorder =
-        getSession(call.arguments['slotNo'] as int);
-    //bool? success = call.arguments['success'] as bool?;
-    bool success = call.arguments['success'] != null
-        ? call.arguments['success'] as bool
-        : false;
+  Future<bool> channelMethodCallHandler(MethodCall call) {
+    return Future<bool>(() {
+      FlutterSoundRecorderCallback? aRecorder =
+          getSession(call.arguments['slotNo'] as int);
+      //bool? success = call.arguments['success'] as bool?;
+      bool success = call.arguments['success'] != null
+          ? call.arguments['success'] as bool
+          : false;
 
-    switch (call.method) {
-      case "updateRecorderProgress":
-        {
-          aRecorder!.updateRecorderProgress(
-              duration: call.arguments['duration'],
-              dbPeakLevel: call.arguments['dbPeakLevel']);
-        }
-        break;
+      switch (call.method) {
+        case "updateRecorderProgress":
+          {
+            aRecorder!.updateRecorderProgress(
+                duration: call.arguments['duration'],
+                dbPeakLevel: call.arguments['dbPeakLevel']);
+          }
+          break;
 
-      case "recordingData":
-        {
-          aRecorder!.recordingData(data: call.arguments['recordingData']);
-        }
-        break;
+        case "recordingData":
+          {
+            aRecorder!.recordingData(data: call.arguments['recordingData']);
+          }
+          break;
 
-      case "startRecorderCompleted":
-        {
-          aRecorder!.startRecorderCompleted(call.arguments['state'], success);
-        }
-        break;
+        case "startRecorderCompleted":
+          {
+            aRecorder!.startRecorderCompleted(call.arguments['state'], success);
+          }
+          break;
 
-      case "stopRecorderCompleted":
-        {
-          aRecorder!.stopRecorderCompleted(
-              call.arguments['state'], success, call.arguments['arg']);
-        }
-        break;
+        case "stopRecorderCompleted":
+          {
+            aRecorder!.stopRecorderCompleted(
+                call.arguments['state'], success, call.arguments['arg']);
+          }
+          break;
 
-      case "pauseRecorderCompleted":
-        {
-          aRecorder!.pauseRecorderCompleted(call.arguments['state'], success);
-        }
-        break;
+        case "pauseRecorderCompleted":
+          {
+            aRecorder!.pauseRecorderCompleted(call.arguments['state'], success);
+          }
+          break;
 
-      case "resumeRecorderCompleted":
-        {
-          aRecorder!.resumeRecorderCompleted(call.arguments['state'], success);
-        }
-        break;
+        case "resumeRecorderCompleted":
+          {
+            aRecorder!
+                .resumeRecorderCompleted(call.arguments['state'], success);
+          }
+          break;
 
-      case "openRecorderCompleted":
-        {
-          aRecorder!.openRecorderCompleted(call.arguments['state'], success);
-        }
-        break;
+        case "openRecorderCompleted":
+          {
+            aRecorder!.openRecorderCompleted(call.arguments['state'], success);
+          }
+          break;
 
-      case "closeRecorderCompleted":
-        {
-          aRecorder!.closeRecorderCompleted(call.arguments['state'], success);
-        }
-        break;
+        case "closeRecorderCompleted":
+          {
+            aRecorder!.closeRecorderCompleted(call.arguments['state'], success);
+          }
+          break;
 
-      case "log":
-        {
-          int i = call.arguments['level'];
-          Level l = Level.values.firstWhere((x) => x.value == i);
-          aRecorder!.log(l, call.arguments['msg']);
-        }
-        break;
+        case "log":
+          {
+            int i = call.arguments['level'];
+            Level l = Level.values.firstWhere((x) => x.value == i);
+            aRecorder!.log(l, call.arguments['msg']);
+          }
+          break;
 
-      default:
-        throw ArgumentError('Unknown method ${call.method}');
-    }
+        default:
+          throw ArgumentError('Unknown method ${call.method}');
+      }
 
-    return null;
+      return success;
+    });
   }
 
   Future<void> invokeMethodVoid(FlutterSoundRecorderCallback callback,

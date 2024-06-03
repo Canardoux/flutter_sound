@@ -57,7 +57,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="40fa92f8-6475-41cf-aae7-5ca39400a0cb" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../doc/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/../doc/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../flutter_sound/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../flutter_sound/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/android/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/android/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/ios/Podfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../flutter_sound/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/example/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../flutter_sound/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound/pubspec.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/method_channel_flutter_sound_player.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/method_channel_flutter_sound_player.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/method_channel_flutter_sound_recorder.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/method_channel_flutter_sound_recorder.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../flutter_sound_web" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_sound_web" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,10 +83,10 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 6
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="1pRFyBkMRpNkSwuz8Sfh411noJS" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">

@@ -7,9 +7,13 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.4.14
+
+- Rewrite method_channel_flutter_sound to return futures instead of null. [#1041](https://github.com/Canardoux/flutter_sound/issues/1041)
+
 ### 9.4.13
 
-- Merge the Pull request proposed by [Rajko Vukovic](https://github.com/rajkovukovic). [#965 : ]Its about Howler exports on Flutter Sound Web. Thank you for your contribution Rajko
+- Merge the Pull request proposed by [Rajko Vukovic](https://github.com/rajkovukovic). [#965](https://github.com/Canardoux/flutter_sound/issues/965) : Its about Howler exports on Flutter Sound Web. Thank you for your contribution Rajko
 
 ### 9.4.12
 
