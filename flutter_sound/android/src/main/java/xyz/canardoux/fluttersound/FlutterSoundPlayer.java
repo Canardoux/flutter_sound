@@ -26,6 +26,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.Result;
 
+import xyz.canardoux.TauEngine.Flauto;
 import xyz.canardoux.TauEngine.FlautoPlayer;
 import xyz.canardoux.TauEngine.FlautoPlayerCallback;
 import xyz.canardoux.TauEngine.Flauto.*;
@@ -79,8 +80,18 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		invokeMethodWithInteger("needSomeFood", true, ln);
 	}
 
+	long _toto_position = 0;
 	public void updateProgress(long position, long duration)
 	{
+		//assert(_toto_position <= position);
+		if (_toto_position > position)
+		{
+			//throw(new Exception("_toto_position > position"));
+			//System.out.println("_toto_position > position");
+			log(t_LOG_LEVEL.DBG, "position decreasing on FlutterSoundPlay::updateProgress!");
+			position = _toto_position;
+		}
+		_toto_position = position;
 		Map<String, Object> dic = new HashMap<String, Object>();
 		dic.put("position", position);
 		dic.put("duration", duration);
@@ -188,6 +199,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 
 
 	public void startPlayer ( final MethodCall call, final Result result ) {
+		_toto_position = 0;
 		Integer _codec = call.argument("codec");
 		Integer _bufferSize = 8192;
 		t_CODEC codec = t_CODEC.values()[(_codec != null) ? _codec : 0];
