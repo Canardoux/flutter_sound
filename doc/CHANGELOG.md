@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.4.17
+
+- The patch ### 9.4.15 was very bad. We have crash during the callback. Revert this 9.4.15 patch.
+
 ### 9.4.16
 
 - Downgrade the js dependency in flutter_sound_web pubspec.yaml to ```js: ^0.6.2``` instead of ```js: ^0.7.1```. Not sure this is good. We did that because of [#1040](https://github.com/Canardoux/flutter_sound/issues/1040)
