@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.4.15
+
+- Change the timer function on Android to run it in the current thread : [#1040](https://github.com/Canardoux/flutter_sound/issues/1040)
+
 ### 9.4.14
 
 - Rewrite method_channel_flutter_sound to return futures instead of null. [#1041](https://github.com/Canardoux/flutter_sound/issues/1041)
