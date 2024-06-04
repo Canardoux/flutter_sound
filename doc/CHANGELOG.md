@@ -13,7 +13,7 @@ toc: false
 
 ### 9.4.17
 
-- The patch ### 9.4.15 was very bad. We have crash during the callback. Revert this 9.4.15 patch.
+- The patch ### 9.4.15 was very bad. We have crash during the callback. Reverts this 9.4.15 patch.
 
 ### 9.4.16
 

@@ -80,6 +80,7 @@ class _PlayerOnProgressState extends State<PlayerOnProgress> {
       _mPlayerSubscription = null;
     }
   }
+
   int _totoPosition = 0;
   Future<void> init() async {
     await _mPlayer.openPlayer();
