@@ -7,9 +7,13 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.4.19
+
+-Protect feed() against a stop() during the loop. [#1041](https://github.com/Canardoux/flutter_sound/issues/1041)
+
 ### 9.4.18
 
-- Patch long _getCurrentPosition() on Android because Android MediaPlayer is buggy. [#1040](https://github.com/Canardoux/flutter_sound/issues/1040)
+- Patch _getCurrentPosition() on Android because Android MediaPlayer is buggy. [#1040](https://github.com/Canardoux/flutter_sound/issues/1040)
 
 ### 9.4.17
 
