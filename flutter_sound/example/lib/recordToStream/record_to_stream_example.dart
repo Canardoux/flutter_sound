@@ -158,7 +158,8 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     _mplaybackReady = true;
     sink = null;
   }
-   _Fn? getRecorderFn() {
+
+  _Fn? getRecorderFn() {
     if (!_mRecorderIsInited || !_mPlayer!.isStopped) {
       return null;
     }
