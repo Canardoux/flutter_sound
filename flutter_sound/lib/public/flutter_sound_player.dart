@@ -131,7 +131,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   }
 
   //===================================  Callbacks ================================================================
-  int toto_position = 0;
+  int oldPosition = 0;
 
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
@@ -140,8 +140,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     int duration = 0,
     int position = 0,
   }) {
-    assert(position >= toto_position);
-    toto_position = position;
+    assert(position >= oldPosition);
+    oldPosition = position;
     if (duration < position) {
       _logger.d(' Duration = $duration,   Position = $position');
     }
@@ -780,7 +780,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
     }
-    toto_position = 0;
+    oldPosition = 0;
 
     if (codec == Codec.pcm16 && fromURI != null) {
       var tempDir = await getTemporaryDirectory();
@@ -880,7 +880,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
     }
-    toto_position = 0;
+    oldPosition = 0;
 
     Completer<Duration>? completer;
     await _stop(); // Just in case

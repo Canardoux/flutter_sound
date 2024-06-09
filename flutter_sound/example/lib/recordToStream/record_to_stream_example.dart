@@ -125,11 +125,10 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   }
 
   // ----------------------  Here is the code to record to a Stream ------------
-  var sink;
 
   Future<void> record() async {
     assert(_mRecorderIsInited && _mPlayer!.isStopped);
-    sink = await createFile();
+    var sink = await createFile();
     var recordingDataController = StreamController<Food>();
     _mRecordingDataSubscription =
         recordingDataController.stream.listen((buffer) {
@@ -156,7 +155,6 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
       _mRecordingDataSubscription = null;
     }
     _mplaybackReady = true;
-    sink = null;
   }
 
   _Fn? getRecorderFn() {
