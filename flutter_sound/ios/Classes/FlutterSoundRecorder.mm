@@ -146,6 +146,8 @@
         NSNumber* bufferSizeArgs = (NSNumber*)call.arguments[@"bufferSize"];
         NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
         NSNumber*  enableVoiceProcessing = (NSNumber*)call.arguments[@"enableVoiceProcessing"];
+        NSNumber*  audioSource = (NSNumber*)call.arguments[@"audioSource"]; // actually not used
+        NSNumber* toStream = (NSNumber*)call.arguments[@"toStream"]; // actually not used
 
         t_CODEC coder = aacADTS;
         if (![codec isKindOfClass:[NSNull class]])

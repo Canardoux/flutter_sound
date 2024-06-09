@@ -36,7 +36,7 @@ import 'package:permission_handler/permission_handler.dart';
  */
 
 ///
-const int tSampleRate = 44000;
+const int tSampleRate = 44100;
 typedef _Fn = void Function();
 
 /// Example app.
@@ -125,10 +125,11 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   }
 
   // ----------------------  Here is the code to record to a Stream ------------
+  var sink;
 
   Future<void> record() async {
     assert(_mRecorderIsInited && _mPlayer!.isStopped);
-    var sink = await createFile();
+    sink = await createFile();
     var recordingDataController = StreamController<Food>();
     _mRecordingDataSubscription =
         recordingDataController.stream.listen((buffer) {
@@ -155,9 +156,9 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
       _mRecordingDataSubscription = null;
     }
     _mplaybackReady = true;
+    sink = null;
   }
-
-  _Fn? getRecorderFn() {
+   _Fn? getRecorderFn() {
     if (!_mRecorderIsInited || !_mPlayer!.isStopped) {
       return null;
     }

@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.4.20
+
+- Several bugs fixed in Recorder To Stream and Player From Stream on iOS. Probably working, now.
+
 ### 9.4.19
 
 -Protect feed() against a stop() during the loop. [#1041](https://github.com/Canardoux/flutter_sound/issues/1041)

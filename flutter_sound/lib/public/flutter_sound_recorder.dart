@@ -30,6 +30,7 @@ import 'package:path/path.dart' as p;
 import 'package:synchronized/synchronized.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import '../flutter_sound.dart';
+import 'dart:io' show Platform;
 
 /// A Recorder is an object that can playback from various sources.
 ///
@@ -586,6 +587,22 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     AudioSource audioSource = AudioSource.defaultSource,
   }) async {
     _logger.d('FS:---> startRecorder ');
+    if (toStream != null &&
+        Platform
+            .isIOS) // This hack is just to have recorder to stream working correctly.
+    {
+      FlutterSoundPlayer player = FlutterSoundPlayer();
+      await player.openPlayer();
+      Uint8List buf = Uint8List(0);
+      //buf.fillRange(0, 1000, 0);
+      try {
+        await player.startPlayer(
+            fromDataBuffer: buf, codec: Codec.pcm16, whenFinished: () {});
+      } catch (e) {}
+      //await player.stopPlayer();
+      /* await */ player.closePlayer();
+    }
+
     await _lock.synchronized(() async {
       await _startRecorder(
         codec: codec,
