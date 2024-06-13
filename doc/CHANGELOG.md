@@ -9,7 +9,7 @@ toc: false
 ---
 ### 9.5.0
 
-- Flutter Sound does not stop automaticaly the player when finished and when the App specify a callBack "WhenFinished". This way, the App can decide to stop the player itself, or it can do other things like a seekToPlayer(0) to restart the playback from beginning. Exemple :
+- Flutter Sound does not stop automaticaly the player when finished and when the App specifies a callBack "WhenFinished". [#675](https://github.com/Canardoux/flutter_sound/issues/675). This way, the App can decide to stop the player itself, or it can do other things like a seekToPlayer(0) to restart the playback from the beginning. Exemple :
 ```dart
 startPlayer( ... whenFinished: async (){await player.seekToPlayer(0); await player.resumePlayer(); setState(() {});});
 ```
