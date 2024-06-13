@@ -180,10 +180,14 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     //int state = call['arg'] as int;
     _playerState = PlayerState.values[state];
     //await _stop(); // ??? Maybe ??? perhaps ??? //
-    await stopPlayer(); // ??? Maybe ??? perhaps ??? //
+    if (_audioPlayerFinishedPlaying != null) {
+      // We don't stop the player if the user has a callback
+      _audioPlayerFinishedPlaying?.call();
+    } else {
+      await stopPlayer(); // ??? Maybe ??? perhaps ??? //
+    }
     _cleanCompleters(); // We have problem when the record is finished and a resume is pending
 
-    _audioPlayerFinishedPlaying?.call();
     //});
     _logger.d('FS:<--- audioPlayerFinished');
   }
@@ -1254,6 +1258,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       this,
       duration: duration,
     );
+    oldPosition = 0;
     _playerState = PlayerState.values[state];
     _logger.t('FS:<--- seekToPlayer ');
   }

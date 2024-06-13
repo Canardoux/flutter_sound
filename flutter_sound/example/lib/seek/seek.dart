@@ -100,7 +100,10 @@ class _SeekState extends State<Seek> {
     await player!.startPlayer(
         fromDataBuffer: _boumData,
         codec: Codec.aacADTS,
-        whenFinished: () {
+        whenFinished: () async {
+          await player.seekToPlayer(Duration.zero);
+          await player.resumePlayer();
+
           setState(() {});
         });
     setState(() {});
