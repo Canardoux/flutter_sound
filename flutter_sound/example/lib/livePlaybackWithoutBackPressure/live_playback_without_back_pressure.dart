@@ -22,6 +22,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:logger/logger.dart';
 
 /*
  *
@@ -86,7 +87,7 @@ class _LivePlaybackWithoutBackPressureState
     super.dispose();
   }
 
-  // -------  Here is the code to play Live data with back-pressure ------------
+  // -------  Here is the code to play Live data without back-pressure ------------
 
   void feedHim(Uint8List data) {
     var start = 0;
@@ -102,18 +103,22 @@ class _LivePlaybackWithoutBackPressureState
   void play() async {
     assert(_mPlayerIsInited && _mPlayer.isStopped);
     await _mPlayer.startPlayerFromStream(
-      codec: Codec.pcm16,
-      numChannels: 1,
-      sampleRate: tSampleRate,
-      bufferSize: 20480,
-    );
+        codec: Codec.pcm16,
+        numChannels: 1,
+        sampleRate: tSampleRate,
+        bufferSize: 20480,
+        whenFinished: () {
+          FlutterSoundPlayer().logger.i("FINISHED!");
+        });
     setState(() {});
     var data = await getAssetData('assets/samples/sample.pcm');
     feedHim(data);
     //if (_mPlayer != null) {
     // We must not do stopPlayer() directely //await stopPlayer();
     _mPlayer.foodSink!.add(FoodEvent(() async {
-      await _mPlayer.stopPlayer();
+      //await _mPlayer.stopPlayer();
+      FlutterSoundPlayer().logger.i("MARKER!");
+
       setState(() {});
     }));
     //}

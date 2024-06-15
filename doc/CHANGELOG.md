@@ -7,13 +7,16 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.6.0
+
+-- New parameter `whenFinished` for StartPlayerFromStream()```
+
 ### 9.5.0
 
 - Flutter Sound does not stop automaticaly the player when finished and when the App specifies a callBack "WhenFinished". [#675](https://github.com/Canardoux/flutter_sound/issues/675). This way, the App can decide to stop the player itself, or it can do other things like a seekToPlayer(0) to restart the playback from the beginning. Exemple :
 ```dart
 startPlayer( ... whenFinished: async (){await player.seekToPlayer(0); await player.resumePlayer(); setState(() {});});
 ```
-
 - Fix a bug in the stream of "current position" after a seekToPlayer()
 
 ### 9.4.20

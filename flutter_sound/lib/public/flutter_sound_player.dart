@@ -87,6 +87,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// The FlutterSoundPlayerLogger Logger getter
   Logger get logger => _logger;
 
+  /// Are we waiting for needsForFood completer ?
+  bool _waitForFood = false;
+
   /// Used if the App wants to dynamically change the Log Level.
   /// Seldom used. Most of the time the Log Level is specified during the constructor.
   void setLogLevel(Level aLevel) async {
@@ -167,7 +170,16 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   @override
   void needSomeFood(int ln) {
     assert(ln >= 0);
-    _needSomeFoodCompleter?.complete(ln);
+    // On iOS, we manage several buffers (5?).
+    // FlutterSound core sends itself a "audioPlayerFinished" when those buffer are exhausted.
+    // This is better than doing it here.
+    // On Android we can't manage the buffers used by the OS.
+    // We throw the event "audioPlayerFinished" when the driver needs some food, and nobody is waiting for this future.
+    //if (Platform.isAndroid && !_waitForFood) {
+    //audioPlayerFinished(PlayerState.isPaused.index);
+    //}
+    _needSomeFoodCompleter?.complete(
+        ln); //The completer is completed when the device accept new data
   }
 
   /// Callback from the &tau; Core. Must not be called by the App
@@ -179,12 +191,12 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     //playerState = PlayerState.isStopped;
     //int state = call['arg'] as int;
     _playerState = PlayerState.values[state];
-    //await _stop(); // ??? Maybe ??? perhaps ??? //
+    //await _stop(); // ??? Maybe
     if (_audioPlayerFinishedPlaying != null) {
       // We don't stop the player if the user has a callback
       _audioPlayerFinishedPlaying?.call();
     } else {
-      await stopPlayer(); // ??? Maybe ??? perhaps ??? //
+      await stopPlayer(); // ??? Maybe
     }
     _cleanCompleters(); // We have problem when the record is finished and a resume is pending
 
@@ -953,6 +965,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     int numChannels = 1,
     int sampleRate = 16000,
     int bufferSize = 8192,
+    TWhenFinished? whenFinished,
   }) async {
     await _lock.synchronized(() async {
       await _startPlayerFromStream(
@@ -960,6 +973,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         sampleRate: sampleRate,
         numChannels: numChannels,
         bufferSize: bufferSize,
+        whenFinished: whenFinished,
       );
     });
   }
@@ -969,6 +983,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     int numChannels = 1,
     int sampleRate = 16000,
     int bufferSize = 8192,
+    TWhenFinished? whenFinished,
   }) async {
     _logger.d('FS:---> startPlayerFromStream ');
     await _waitOpen();
@@ -981,11 +996,16 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _foodStreamController = StreamController();
     _foodStreamSubscription = _foodStreamController!.stream.listen((food) {
       _foodStreamSubscription!.pause(food.exec(this));
+      if (Platform.isAndroid && !_waitForFood) {
+        audioPlayerFinished(PlayerState.isPaused.index);
+      }
     });
     if (_startPlayerCompleter != null) {
       _logger.w('Killing another startPlayer()');
       _startPlayerCompleter!.completeError('Killed by another startPlayer()');
     }
+    _audioPlayerFinishedPlaying = whenFinished;
+
     try {
       _startPlayerCompleter = Completer<Duration>();
       completer = _startPlayerCompleter;
@@ -1034,7 +1054,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     var totalLength = buffer.length;
     while (totalLength > 0 && !isStopped) {
       var bsize = totalLength > _bufferSize ? _bufferSize : totalLength;
+      _waitForFood = true;
       var ln = await _feed(buffer.sublist(lnData, lnData + bsize));
+      _waitForFood = false;
       assert(ln >= 0);
       lnData += ln;
       totalLength -= ln;
@@ -1050,7 +1072,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (isStopped) {
       return 0;
     }
-    _needSomeFoodCompleter = Completer<int>();
+    _needSomeFoodCompleter =
+        Completer<int>(); // Not completed until the device accept new data
     try {
       var ln = await (FlutterSoundPlayerPlatform.instance.feed(
         this,
@@ -1058,8 +1081,12 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       ));
       assert(ln >= 0); // feedFromStream() is not happy if < 0
       if (ln != 0) {
+        // If the device accepted some data, then no need to wait
+        // It is the tau_core responsability to send a "needSomeFood" then it is again available for new data
         _needSomeFoodCompleter = null;
         return (ln);
+      } else {
+        //logger.i("The device has enough data");
       }
     } on Exception {
       _needSomeFoodCompleter = null;
