@@ -9,7 +9,7 @@ toc: false
 ---
 ### 9.6.0
 
--- New parameter `whenFinished` for StartPlayerFromStream()```
+- New parameter `whenFinished` for StartPlayerFromStream()```
 
 ### 9.5.0
 
