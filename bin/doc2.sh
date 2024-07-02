@@ -41,8 +41,8 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 
-#rm -rf /var/www/canardoux.xyz/flutter-sound/*
-#cp -a /tmp/toto_doc/_site/* /var/www/canardoux.xyz/flutter-sound/
+rm -rf /var/www/canardoux.xyz/flutter-sound/*
+cp -a /tmp/toto_doc/_site/* /var/www/canardoux.xyz/flutter-sound/
 
 cd /var/www/canardoux.xyz/flutter-sound
 echo "Symbolic links of the API"

@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.7.0
+
+- Flutter Sound Web depends on `js 0.7` instead of `0.6`. [#1054](https://github.com/Canardoux/flutter_sound/issues/1054)
+
 ### 9.6.0
 
 - New parameter `whenFinished` for StartPlayerFromStream()```
