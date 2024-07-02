@@ -96,9 +96,9 @@ When you have finished with it, **you must** close the session. A god place to p
 @override
   void initState() {
     super.initState();
-    // Be careful : openAudioSession return a Future.
+    // Be careful : openRecorder return a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    _myRecorder.openAudioSession().then((value) {
+    _myRecorder.openRecorder().then((value) {
       setState(() {
         _mRecorderIsInited = true;
       });
@@ -110,7 +110,7 @@ When you have finished with it, **you must** close the session. A god place to p
   @override
   void dispose() {
     // Be careful : you must `close` the audio session when you have finished with it.
-    _myRecorder.closeAudioSession();
+    _myRecorder.closeRecorder();
     _myRecorder = null;
     super.dispose();
   }
@@ -133,4 +133,3 @@ To record something you call `startRecorder()`. To stop the recorder you call `s
     await _myRecorder.stopRecorder();
   }
 ```
-
