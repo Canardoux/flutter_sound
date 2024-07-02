@@ -73,17 +73,18 @@ class _LivePlaybackWithoutBackPressureState
     super.initState();
     // Be careful : openAudioSession return a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-    _mPlayer.openPlayer().then((value) {
-      setState(() {
-        _mPlayerIsInited = true;
-      });
-    });
+//    _mPlayer.openPlayer().then((value) {
+//      setState(() {
+//        _mPlayerIsInited = true;
+//      });
+//    });
+    _mPlayerIsInited = true;
   }
 
   @override
   void dispose() {
-    stopPlayer();
-    _mPlayer.closePlayer();
+//    stopPlayer();
+//    _mPlayer.closePlayer();
     super.dispose();
   }
 
@@ -101,6 +102,7 @@ class _LivePlaybackWithoutBackPressureState
   }
 
   void play() async {
+    await _mPlayer.openPlayer();
     assert(_mPlayerIsInited && _mPlayer.isStopped);
     await _mPlayer.startPlayerFromStream(
         codec: Codec.pcm16,
@@ -133,8 +135,8 @@ class _LivePlaybackWithoutBackPressureState
 
   Future<void> stopPlayer() async {
     //if (_mPlayer != null) {
-    await _mPlayer.stopPlayer();
-    //}
+    await _mPlayer.closePlayer();
+    setState(() {});
   }
 
   Future<void> setSpeed(double v) async // v is between 0.0 and 100.0
