@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.7.1
+
+- Don't test the platform if kIsWeb : [#1055]
+
 ### 9.7.0
 
 - Flutter Sound Web depends on `js 0.7` instead of `0.6`. [#1054](https://github.com/Canardoux/flutter_sound/issues/1054)
