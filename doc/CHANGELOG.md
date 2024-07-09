@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-### 9.7.1
+### 9.7.2
 
 - Don't test the platform if kIsWeb : [#1055]
 
