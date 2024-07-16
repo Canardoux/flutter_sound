@@ -20,14 +20,12 @@ dependencies:
   flutter:
     sdk: flutter
 # ============================================================================
-  flutter_sound_platform_interface: 9.7.2
-#    path: ../flutter_sound_platform_interface # Flutter Sound Dir
-  flutter_sound_web: 9.7.2
-#    path: ../flutter_sound_web # Flutter Sound Dir
+  flutter_sound_platform_interface: # 9.7.2
+    path: ../flutter_sound_platform_interface # Flutter Sound Dir
+  flutter_sound_web: # 9.7.2
+    path: ../flutter_sound_web # Flutter Sound Dir
 # ============================================================================
 
-dev_dependencies:
-#  pedantic: ^1.11.0
 
 
 # For information on the generic Dart part of this file, see the

@@ -19,7 +19,9 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:audio_session/audio_session.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
@@ -55,8 +57,9 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   bool _mEnableVoiceProcessing = false;
 
   bool _mplaybackReady = false;
-  String? _mPath;
+  //String? _mPath;
   StreamSubscription? _mRecordingDataSubscription;
+List<int>  buffer = [];
 
   Future<void> _openRecorder() async {
     var status = await Permission.microphone.request();
@@ -114,6 +117,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     super.dispose();
   }
 
+  /*
   Future<IOSink> createFile() async {
     var tempDir = await getTemporaryDirectory();
     _mPath = '${tempDir.path}/flutter_sound_example.pcm';
@@ -123,18 +127,21 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     }
     return outputFile.openWrite();
   }
-
+*/
   // ----------------------  Here is the code to record to a Stream ------------
 
   Future<void> record() async {
     assert(_mRecorderIsInited && _mPlayer!.isStopped);
-    var sink = await createFile();
-    var recordingDataController = StreamController<Food>();
+
+    //var sink = await createFile();
+    //controller = StreamController<Uint8List>()
+    buffer = [];
+    var recordingDataController = StreamController<Uint8List>();
     _mRecordingDataSubscription =
-        recordingDataController.stream.listen((buffer) {
-      if (buffer is FoodData) {
-        sink.add(buffer.data!);
-      }
+        recordingDataController.stream.listen((buf) {
+          //if (buf is FoodData) {
+            buffer.addAll(buf!);
+          //}
     });
     await _mRecorder!.startRecorder(
       toStream: recordingDataController.sink,
@@ -142,7 +149,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
       numChannels: 1,
       sampleRate: tSampleRate,
       enableVoiceProcessing: _mEnableVoiceProcessing,
-      bufferSize: 20480,
+      bufferSize: 4096,
     );
     setState(() {});
   }
@@ -173,8 +180,9 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
         _mplaybackReady &&
         _mRecorder!.isStopped &&
         _mPlayer!.isStopped);
+    Uint8List buf = Uint8List.fromList(buffer);
     await _mPlayer!.startPlayer(
-        fromURI: _mPath,
+        fromDataBuffer: buf,
         sampleRate: tSampleRate,
         codec: Codec.pcm16,
         numChannels: 1,

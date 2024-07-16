@@ -125,7 +125,7 @@ class _StreamLoopJustAudioState extends State<StreamLoopJustAudio> {
 
     await _mRecorder!.startRecorder(
       codec: Codec.pcm16,
-      toStream: _mPlayer!.foodSink, // ***** THIS IS THE LOOP !!! *****
+      // TODO !!! toStream: _mPlayer!.foodSink, // ***** THIS IS THE LOOP !!! *****
       sampleRate: _sampleRateRecorder,
       numChannels: 1,
     );

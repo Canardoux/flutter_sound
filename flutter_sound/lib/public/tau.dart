@@ -126,7 +126,7 @@ class FoodData extends Food {
   Future<void> exec(FlutterSoundPlayer player) => player.feedFromStream(data!);
 }
 
-/// foodEvent is a special kin of food which allows to re-synchronize a stream
+/// foodEvent is a special kind of food which allows to re-synchronize a stream
 /// with a player that play from a Dart Stream
 class FoodEvent extends Food {
   /// The callback to fire when this food is synchronized with the player

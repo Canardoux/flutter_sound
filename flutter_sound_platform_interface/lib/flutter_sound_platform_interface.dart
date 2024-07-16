@@ -84,3 +84,4 @@ enum Codec {
   /// Vorbis with a WebM format
   vorbisWebM,
 }
+

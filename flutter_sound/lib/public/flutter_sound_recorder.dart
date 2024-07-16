@@ -96,7 +96,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   StreamController<RecordingDisposition>? _recorderController;
 
   /// A reference to the User Sink during `StartRecorder(toStream:...)`
-  StreamSink<Food>? _userStreamSink;
+  StreamSink<dynamic>? _userStreamSink;
 
   /// The current state of the Recorder
   RecorderState get recorderState => _recorderState;
@@ -579,11 +579,13 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   Future<void> startRecorder({
     Codec codec = Codec.defaultCodec,
     String? toFile,
-    StreamSink<Food>? toStream,
+    StreamSink<Float32List>? toStreamFloat32,
+    StreamSink<Int16List>? toStreamInt16,
+    StreamSink<Uint8List>? toStream,
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
-    int bufferSize = 8192,
+    int bufferSize = 4096,
     bool enableVoiceProcessing = false,
     AudioSource audioSource = AudioSource.defaultSource,
   }) async {
@@ -610,6 +612,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
         codec: codec,
         toFile: toFile,
         toStream: toStream,
+        toStreamFloat32: toStreamFloat32,
+        toStreamInt16: toStreamInt16,
         sampleRate: sampleRate,
         numChannels: numChannels,
         bitRate: bitRate,
@@ -624,11 +628,13 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   Future<void> _startRecorder({
     Codec codec = Codec.defaultCodec,
     String? toFile,
-    StreamSink<Food>? toStream,
+    StreamSink<Uint8List>? toStream,
+    StreamSink<Float32List>? toStreamFloat32,
+    StreamSink<Int16List>? toStreamInt16,
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
-    int bufferSize = 8192,
+    int bufferSize = 4096,
     bool enableVoiceProcessing = false,
     AudioSource audioSource = AudioSource.defaultSource,
   }) async {
@@ -676,8 +682,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
           'One, and only one parameter "toFile"/"toStream" must be provided');
     }
 
-    if (toStream != null && codec != Codec.pcm16) {
-      throw Exception('toStream can only be used with codec == Codec.pcm16');
+    if (toStream != null && codec != Codec.pcm16 && codec != Codec.pcmFloat32) {
+      throw Exception('toStream can only be used with codec == Codec.pcm16 or Codec.pcmFloat32');
     }
     Completer<void>? completer;
     // Maybe we should stop any recording already running... (stopRecorder does that)
@@ -697,7 +703,9 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
           bufferSize: bufferSize,
           enableVoiceProcessing: enableVoiceProcessing,
           codec: codec,
-          toStream: toStream != null,
+          toStream: toStream,
+          toStreamFloat32: toStreamFloat32,
+          toStreamInt16: toStreamInt16,
           audioSource: audioSource);
 
       _recorderState = RecorderState.isRecording;

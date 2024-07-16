@@ -215,7 +215,7 @@ This example is very simple.
   Example(
     title: 'recordToStream',
     subTitle: 'Example of recording to Stream',
-    flags: tNotWeb,
+    flags: 0, //tNotWeb,
     route: (_) => const RecordToStreamExample(),
     description: '''
 This is an example showing how to record to a Dart Stream.
@@ -229,7 +229,7 @@ The real interest of recording to a Stream is for example to feed a Speech-to-Te
   Example(
     title: 'livePlaybackWithoutBackPressure',
     subTitle: 'Live Playback without BackPressure',
-    flags: tNotWeb,
+    flags: 0, //tNotWeb,
     route: (_) => const LivePlaybackWithoutBackPressure(),
     description:
         '''A very simple example showing how to play Live Data without back pressure.
@@ -253,7 +253,7 @@ This example uses the ```foodEvent``` object to resynchronize the output stream 
   Example(
     title: 'livePlaybackWithBackPressure',
     subTitle: 'Live Playback with BackPressure',
-    flags: tNotWeb,
+    flags: 0, //tNotWeb,
     route: (_) => const LivePlaybackWithBackPressure(),
     description: '''
 A very simple example showing how to play Live Data with back pressure.

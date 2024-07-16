@@ -28,7 +28,8 @@ import 'flutter_sound_platform_interface.dart';
 import 'dart:core';
 //import 'dart:io';
 //import 'dart:io' show Platform;
-import 'dart:typed_data' show Uint8List;
+import 'dart:typed_data';
+import 'dart:async';
 
 enum RecorderState {
   isStopped,
@@ -172,10 +173,12 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
     int? sampleRate,
     int? numChannels,
     int? bitRate,
-    int bufferSize = 20480,
+    int bufferSize = 4096,
     bool enableVoiceProcessing = false,
     Codec? codec,
-    bool? toStream,
+    StreamSink<Uint8List>? toStream,
+    StreamSink<Float32List>? toStreamFloat32,
+    StreamSink<Int16List>? toStreamInt16,
     AudioSource? audioSource,
   }) {
     throw UnimplementedError('startRecorder() has not been implemented.');
