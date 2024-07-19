@@ -579,10 +579,10 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   Future<void> startRecorder({
     Codec codec = Codec.defaultCodec,
     String? toFile,
-    StreamSink<Float32List>? toStreamFloat32,
-    StreamSink<Int16List>? toStreamInt16,
-    StreamSink<Uint8List>? toStream,
-    int sampleRate = 16000,
+    StreamSink<List<Float32List>>? toStreamFloat32,
+    StreamSink<List<Int16List>>? toStreamInt16,
+    @deprecated StreamSink<Uint8List>? toStream,
+    @deprecated int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
     int bufferSize = 4096,
@@ -629,8 +629,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     Codec codec = Codec.defaultCodec,
     String? toFile,
     StreamSink<Uint8List>? toStream,
-    StreamSink<Float32List>? toStreamFloat32,
-    StreamSink<Int16List>? toStreamInt16,
+    StreamSink<List<Float32List>>? toStreamFloat32,
+    StreamSink<List<Int16List>>? toStreamInt16,
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
@@ -676,14 +676,9 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       throw _CodecNotSupportedException('Codec not supported.');
     }
 
-    if ((toFile == null && toStream == null) ||
-        (toFile != null && toStream != null)) {
-      throw Exception(
-          'One, and only one parameter "toFile"/"toStream" must be provided');
-    }
-
     if (toStream != null && codec != Codec.pcm16 && codec != Codec.pcmFloat32) {
-      throw Exception('toStream can only be used with codec == Codec.pcm16 or Codec.pcmFloat32');
+      throw Exception(
+          'toStream can only be used with codec == Codec.pcm16 or Codec.pcmFloat32');
     }
     Completer<void>? completer;
     // Maybe we should stop any recording already running... (stopRecorder does that)
@@ -782,6 +777,27 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     }
     _logger.d('FS:<--- _stopRecorder : $r');
     return r;
+  }
+
+  /// Get the sampleRate used by startRecorder()
+  Future<int> getSampleRate() async {
+    _logger.d('FS:---> getSampleRate');
+    Future<int>? r = null;
+    await _lock.synchronized(() async {
+      r = _getSampleRate();
+    });
+    _logger.d('FS:<--- getSampleRate ');
+    return r!; // A Future!
+  }
+
+  Future<int> _getSampleRate() async {
+    _logger.d('FS:---> pauseRecorder');
+    await _waitOpen();
+    if (_isInited != Initialized.fullyInitialized) {
+      throw Exception('Recorder is not open');
+    }
+    int r = FlutterSoundRecorderPlatform.instance.getSampleRate(this);
+    return r; // A Future!
   }
 
   /// Pause the recorder

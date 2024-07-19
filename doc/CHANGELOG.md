@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.8.0-beta-1
+
+- Recorder To Stream on Web. [#1056](https://github.com/Canardoux/flutter_sound/issues/1056)
+
 ### 9.7.2
 
 - Don't test the platform if kIsWeb : [#1055]

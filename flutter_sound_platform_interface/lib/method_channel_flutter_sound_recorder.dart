@@ -25,7 +25,6 @@ import 'package:flutter/services.dart';
 import 'flutter_sound_platform_interface.dart';
 import 'flutter_sound_recorder_platform_interface.dart';
 import 'dart:typed_data';
-import 'dart:async';
 
 const MethodChannel _channel =
     MethodChannel('xyz.canardoux.flutter_sound_recorder');
@@ -41,6 +40,13 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
     _channel.setMethodCallHandler((MethodCall call) {
       return channelMethodCallHandler(call);
     });
+  }
+
+  @override
+  int getSampleRate(
+    FlutterSoundRecorderCallback callback,
+  ) {
+    return 0;
   }
 
   Future<bool> channelMethodCallHandler(MethodCall call) {
@@ -225,10 +231,10 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
     int? bitRate,
     int bufferSize = 20480,
     bool enableVoiceProcessing = false,
-    StreamSink<Float32List>? toStreamFloat32,
-    StreamSink<Int16List>? toStreamInt16,
+    StreamSink<List<Float32List>>? toStreamFloat32,
+    StreamSink<List<Int16List>>? toStreamInt16,
     Codec? codec,
-    StreamSink<Uint8List>?  toStream,
+    StreamSink<Uint8List>? toStream,
     AudioSource? audioSource,
   }) {
     return invokeMethodVoid(

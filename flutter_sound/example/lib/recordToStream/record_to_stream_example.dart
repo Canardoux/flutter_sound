@@ -38,7 +38,6 @@ import 'package:permission_handler/permission_handler.dart';
  */
 
 ///
-const int tSampleRate = 44100;
 typedef _Fn = void Function();
 
 /// Example app.
@@ -60,6 +59,8 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   //String? _mPath;
   StreamSubscription? _mRecordingDataSubscription;
 List<int>  buffer = [];
+int sampleRate = 0;
+
 
   Future<void> _openRecorder() async {
     var status = await Permission.microphone.request();
@@ -86,8 +87,9 @@ List<int>  buffer = [];
       androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
       androidWillPauseWhenDucked: true,
     ));
+    sampleRate = await _mRecorder!.getSampleRate();
 
-    setState(() {
+        setState(() {
       _mRecorderIsInited = true;
     });
   }
@@ -146,8 +148,7 @@ List<int>  buffer = [];
     await _mRecorder!.startRecorder(
       toStream: recordingDataController.sink,
       codec: Codec.pcm16,
-      numChannels: 1,
-      sampleRate: tSampleRate,
+      numChannels: 2,
       enableVoiceProcessing: _mEnableVoiceProcessing,
       bufferSize: 4096,
     );
@@ -183,7 +184,7 @@ List<int>  buffer = [];
     Uint8List buf = Uint8List.fromList(buffer);
     await _mPlayer!.startPlayer(
         fromDataBuffer: buf,
-        sampleRate: tSampleRate,
+        sampleRate: sampleRate,
         codec: Codec.pcm16,
         numChannels: 1,
         whenFinished: () {

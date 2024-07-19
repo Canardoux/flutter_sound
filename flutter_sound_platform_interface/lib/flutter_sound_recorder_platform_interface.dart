@@ -171,14 +171,14 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
     FlutterSoundRecorderCallback callback, {
     String? path,
     int? sampleRate,
-    int? numChannels,
+    int numChannels = 1,
     int? bitRate,
-    int bufferSize = 4096,
+    int bufferSize = 8192,
     bool enableVoiceProcessing = false,
     Codec? codec,
     StreamSink<Uint8List>? toStream,
-    StreamSink<Float32List>? toStreamFloat32,
-    StreamSink<Int16List>? toStreamInt16,
+    StreamSink<List<Float32List>>? toStreamFloat32,
+    StreamSink<List<Int16List>>? toStreamInt16,
     AudioSource? audioSource,
   }) {
     throw UnimplementedError('startRecorder() has not been implemented.');
@@ -189,6 +189,10 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
   ) {
     throw UnimplementedError('stopRecorder() has not been implemented.');
   }
+
+  int getSampleRate(
+    FlutterSoundRecorderCallback callback,
+  );
 
   Future<void> pauseRecorder(
     FlutterSoundRecorderCallback callback,
