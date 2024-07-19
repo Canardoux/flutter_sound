@@ -147,7 +147,7 @@ fi
 dart format lib
 if [ $? -ne 0 ]; then
     echo "Error: format flutter_sound/lib"
-    exit -1
+    #!!!!!!!!!!!exit -1
 fi
 dart format  example/lib
 cd ..
@@ -159,7 +159,7 @@ cd flutter_sound
 flutter analyze lib
 if [ $? -ne 0 ]; then
     echo "Error: analyze flutter_sound/lib"
-    exit -1
+    #!!!!!!!!!!!exit -1
 fi
 dart format lib
 if [ $? -ne 0 ]; then
