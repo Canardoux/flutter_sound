@@ -371,10 +371,10 @@ class _MyAppState extends State<Demo> {
         recordingDataController = StreamController<Uint8List>();
         _recordingDataSubscription =
             recordingDataController!.stream.listen((buffer) {
-              if (buffer is FoodData) {
-                sink!.add(buffer!);
-              }
-            });
+          if (buffer is FoodData) {
+            sink!.add(buffer!);
+          }
+        });
         await recorderModule.startRecorder(
           toStream: recordingDataController!.sink,
 

@@ -58,9 +58,8 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   bool _mplaybackReady = false;
   //String? _mPath;
   StreamSubscription? _mRecordingDataSubscription;
-List<int>  buffer = [];
-int sampleRate = 0;
-
+  List<int> buffer = [];
+  int sampleRate = 0;
 
   Future<void> _openRecorder() async {
     var status = await Permission.microphone.request();
@@ -89,7 +88,7 @@ int sampleRate = 0;
     ));
     sampleRate = await _mRecorder!.getSampleRate();
 
-        setState(() {
+    setState(() {
       _mRecorderIsInited = true;
     });
   }
@@ -139,11 +138,10 @@ int sampleRate = 0;
     //controller = StreamController<Uint8List>()
     buffer = [];
     var recordingDataController = StreamController<Uint8List>();
-    _mRecordingDataSubscription =
-        recordingDataController.stream.listen((buf) {
-          //if (buf is FoodData) {
-            buffer.addAll(buf!);
-          //}
+    _mRecordingDataSubscription = recordingDataController.stream.listen((buf) {
+      //if (buf is FoodData) {
+      buffer.addAll(buf!);
+      //}
     });
     await _mRecorder!.startRecorder(
       toStream: recordingDataController.sink,
