@@ -148,7 +148,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   void recordingData({Uint8List? data}) {
     if (_userStreamSink != null) {
       //Uint8List data = call['recordingData'] as Uint8List;
-      _userStreamSink!.add(FoodData(data));
+      _userStreamSink!.add(data);
     }
   }
 
@@ -311,6 +311,31 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   }
 
 // ----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+  var mime_types =
+  [
+    'audio/webm\;codecs=opus', // defaultCodec,
+    'audio/aac', // aacADTS, //*
+    'audio/opus\;codecs=opus', // opusOGG, // 'audio/ogg' 'audio/opus'
+    'audio/x-caf', // opusCAF,
+    'audio/mpeg', // mp3, //*
+    'audio/ogg\;codecs=vorbis', // vorbisOGG,// 'audio/ogg' // 'audio/vorbis'
+    'audio/pcm', // pcm16,
+    'audio/wav\;codecs=1', // pcm16WAV,
+    'audio/aiff', // pcm16AIFF,
+    'audio/x-caf', // pcm16CAF,
+    'audio/x-flac', // flac, // 'audio/flac'
+    'audio/mp4', // aacMP4, //*
+    'audio/AMR', // amrNB, //*
+    'audio/AMR-WB', // amrWB, //*
+    'audio/pcm', // pcm8,
+    'audio/pcm', // pcmFloat32,
+    'audio/webm\;codecs=pcm', // pcmWebM,
+    'audio/webm\;codecs=opus', // opusWebM,
+    'audio/webm\;codecs=vorbis', // vorbisWebM
+  ];
 
   Future<void> _waitOpen() async {
     while (_openRecorderCompleter != null) {
@@ -581,8 +606,9 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     String? toFile,
     StreamSink<List<Float32List>>? toStreamFloat32,
     StreamSink<List<Int16List>>? toStreamInt16,
-    @deprecated StreamSink<Uint8List>? toStream,
-    @deprecated int sampleRate = 16000,
+    StreamSink<Uint8List>? toStream,
+    Duration timeSlice = Duration.zero,
+    int sampleRate = 44100,
     int numChannels = 1,
     int bitRate = 16000,
     int bufferSize = 4096,
@@ -590,7 +616,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     AudioSource audioSource = AudioSource.defaultSource,
   }) async {
     _logger.d('FS:---> startRecorder ');
-    if (toStream != null &&
+    if ((toStream != null || toStreamFloat32 != null || toStreamInt16 != null) &&
         (!kIsWeb) &&
         Platform
             .isIOS) // This hack is just to have recorder to stream working correctly.
@@ -614,6 +640,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
         toStream: toStream,
         toStreamFloat32: toStreamFloat32,
         toStreamInt16: toStreamInt16,
+        timeSlice: timeSlice,
         sampleRate: sampleRate,
         numChannels: numChannels,
         bitRate: bitRate,
@@ -631,10 +658,11 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     StreamSink<Uint8List>? toStream,
     StreamSink<List<Float32List>>? toStreamFloat32,
     StreamSink<List<Int16List>>? toStreamInt16,
+    Duration timeSlice = Duration.zero,
     int sampleRate = 16000,
     int numChannels = 1,
     int bitRate = 16000,
-    int bufferSize = 4096,
+    int bufferSize = 8192,
     bool enableVoiceProcessing = false,
     AudioSource audioSource = AudioSource.defaultSource,
   }) async {
@@ -701,6 +729,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
           toStream: toStream,
           toStreamFloat32: toStreamFloat32,
           toStreamInt16: toStreamInt16,
+          timeSlice: timeSlice,
           audioSource: audioSource);
 
       _recorderState = RecorderState.isRecording;
@@ -779,6 +808,9 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     return r;
   }
 
+  void requestData() {
+    FlutterSoundRecorderPlatform.instance.requestData(this);
+  }
   /// Get the sampleRate used by startRecorder()
   Future<int> getSampleRate() async {
     _logger.d('FS:---> getSampleRate');

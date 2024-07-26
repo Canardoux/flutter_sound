@@ -23,6 +23,7 @@ import 'dart:typed_data';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -53,13 +54,13 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
-  bool _mEnableVoiceProcessing = false;
+  String? _mPath;
 
   bool _mplaybackReady = false;
   //String? _mPath;
   StreamSubscription? _mRecordingDataSubscription;
-  List<int> buffer = [];
-  int sampleRate = 0;
+  //Uint8List buffer = [];
+  int sampleRate = 44100;
 
   Future<void> _openRecorder() async {
     var status = await Permission.microphone.request();
@@ -86,7 +87,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
       androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
       androidWillPauseWhenDucked: true,
     ));
-    sampleRate = await _mRecorder!.getSampleRate();
+    //sampleRate = await _mRecorder!.getSampleRate();
 
     setState(() {
       _mRecorderIsInited = true;
@@ -118,7 +119,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     super.dispose();
   }
 
-  /*
+
   Future<IOSink> createFile() async {
     var tempDir = await getTemporaryDirectory();
     _mPath = '${tempDir.path}/flutter_sound_example.pcm';
@@ -128,27 +129,23 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     }
     return outputFile.openWrite();
   }
-*/
+
   // ----------------------  Here is the code to record to a Stream ------------
 
   Future<void> record() async {
     assert(_mRecorderIsInited && _mPlayer!.isStopped);
-
-    //var sink = await createFile();
-    //controller = StreamController<Uint8List>()
-    buffer = [];
+    var sink = await createFile();
     var recordingDataController = StreamController<Uint8List>();
-    _mRecordingDataSubscription = recordingDataController.stream.listen((buf) {
-      //if (buf is FoodData) {
-      buffer.addAll(buf!);
-      //}
-    });
-    await _mRecorder!.startRecorder(
-      toStream: recordingDataController.sink,
+    _mRecordingDataSubscription =
+        recordingDataController.stream.listen((buffer) {
+            sink.add(buffer!);
+        });
+   await _mRecorder!.startRecorder(
+     toStream: recordingDataController.sink,
       codec: Codec.pcm16,
-      numChannels: 2,
-      enableVoiceProcessing: _mEnableVoiceProcessing,
-      bufferSize: 4096,
+      numChannels: 1,
+      sampleRate: 44100,
+      bufferSize: 8192,
     );
     setState(() {});
   }
@@ -174,14 +171,14 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
           };
   }
 
+
   void play() async {
     assert(_mPlayerIsInited &&
         _mplaybackReady &&
         _mRecorder!.isStopped &&
         _mPlayer!.isStopped);
-    Uint8List buf = Uint8List.fromList(buffer);
     await _mPlayer!.startPlayer(
-        fromDataBuffer: buf,
+        fromURI: _mPath,
         sampleRate: sampleRate,
         codec: Codec.pcm16,
         numChannels: 1,
@@ -240,25 +237,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
                   ? 'Recording in progress'
                   : 'Recorder is stopped'),
             ]),
-            Row(children: [
-              Checkbox(
-                  checkColor: Colors.white,
-                  //fillColor: Colors.white,
-                  value: _mEnableVoiceProcessing,
-                  onChanged: (bool? value) {
-                    _mPlayer!.closePlayer().then((v) {
-                      _mPlayerIsInited = false;
-                      _mEnableVoiceProcessing = value!;
-                      _mPlayer!.openPlayer();
-                    }).then((value) {
-                      setState(() {
-                        _mPlayerIsInited = true;
-                      });
-                    });
-                  }),
-              const Text("EnableVoiceProcessing")
-            ]),
-          ]),
+           ]),
         ),
         Container(
             margin: const EdgeInsets.all(3),

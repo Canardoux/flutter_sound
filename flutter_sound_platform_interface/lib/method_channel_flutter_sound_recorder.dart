@@ -49,6 +49,14 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
     return 0;
   }
 
+  @override
+  void requestData(
+      FlutterSoundRecorderCallback callback,
+  ) {
+  }
+
+
+
   Future<bool> channelMethodCallHandler(MethodCall call) {
     return Future<bool>(() {
       FlutterSoundRecorderCallback? aRecorder =
@@ -227,9 +235,10 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
     FlutterSoundRecorderCallback callback, {
     String? path,
     int? sampleRate,
-    int? numChannels,
+    int numChannels = 2,
     int? bitRate,
-    int bufferSize = 20480,
+    int bufferSize = 8192,
+    Duration timeSlice = Duration.zero,
     bool enableVoiceProcessing = false,
     StreamSink<List<Float32List>>? toStreamFloat32,
     StreamSink<List<Int16List>>? toStreamInt16,

@@ -155,7 +155,7 @@
                 coder = (t_CODEC)([codec intValue]);
         }
         
-        int bufferSize = 20480;
+        int bufferSize = 8192;
         if (![bufferSizeArgs isKindOfClass:[NSNull class]])
         {
                  bufferSize = (int)[bufferSizeArgs integerValue];

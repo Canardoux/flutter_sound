@@ -32,7 +32,6 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:typed_data';
-import 'dart:async';
 
 // If someone update the following comment, please update also the Examples/README.md file and the code inside Examples/lib/demo/main.dart
 /*
@@ -372,7 +371,7 @@ class _MyAppState extends State<Demo> {
         _recordingDataSubscription =
             recordingDataController!.stream.listen((buffer) {
           if (buffer is FoodData) {
-            sink!.add(buffer!);
+            sink!.add(buffer);
           }
         });
         await recorderModule.startRecorder(

@@ -25,6 +25,7 @@ import 'livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart
 import 'multi_playback/multi_playback.dart';
 import 'play_from_mic/play_from_mic.dart';
 import 'recordToStream/record_to_stream_example.dart';
+import 'mediaRecorder/media_recorder.dart';
 import 'simple_playback/simple_playback.dart';
 import 'simple_recorder/simple_recorder.dart';
 import 'soundEffect/sound_effect.dart';
@@ -215,7 +216,7 @@ This example is very simple.
   Example(
     title: 'recordToStream',
     subTitle: 'Example of recording to Stream',
-    flags: 0, //tNotWeb,
+    flags: tNotWeb,
     route: (_) => const RecordToStreamExample(),
     description: '''
 This is an example showing how to record to a Dart Stream.
@@ -223,8 +224,24 @@ It writes all the recorded data from a Stream to a File, which is completely stu
 if an App wants to record something to a File, it must not use Streams.
 
 The real interest of recording to a Stream is for example to feed a Speech-to-Text engine, or for processing the Live data in Dart in real time.
+Note : actually this example does not work on Flutter Web. 
+For Web, you can look to the example `media_recorder` which is another example doing `RecordToStream()`.
 ''',
   ),
+
+  Example(
+    title: 'mediaRecorder',
+    subTitle: 'Example of recording to Stream on Web',
+    flags: 0,
+    route: (_) => const MediaRecorderExample(),
+    description: '''
+This is an example showing how to record to a Dart Stream on Flutter Web.
+The stream can be PCM (PCM-Int16 or PCM_Float32) or a compressed stream like OPUS-Webm or AAC-MP4.
+
+This example works only on Flutter Web. For Android or iOS, you can look to the example `recordToStream`.
+''',
+  ),
+
 
   Example(
     title: 'livePlaybackWithoutBackPressure',

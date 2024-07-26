@@ -170,10 +170,11 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
   Future<void> startRecorder(
     FlutterSoundRecorderCallback callback, {
     String? path,
-    int? sampleRate,
+    int sampleRate = 44100,
     int numChannels = 1,
-    int? bitRate,
+    int bitRate = 16000,
     int bufferSize = 8192,
+    Duration timeSlice = Duration.zero,
     bool enableVoiceProcessing = false,
     Codec? codec,
     StreamSink<Uint8List>? toStream,
@@ -193,6 +194,10 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
   int getSampleRate(
     FlutterSoundRecorderCallback callback,
   );
+
+  void requestData(
+      FlutterSoundRecorderCallback callback,
+      );
 
   Future<void> pauseRecorder(
     FlutterSoundRecorderCallback callback,
