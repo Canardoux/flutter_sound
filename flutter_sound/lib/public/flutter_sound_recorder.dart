@@ -99,6 +99,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   StreamSink<dynamic>? _userStreamSink;
 
   /// The current state of the Recorder
+  @override
   RecorderState get recorderState => _recorderState;
 
   /// Used by the UI Widget.
@@ -125,13 +126,13 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       (_recorderController != null) ? _recorderController!.stream : null;
 
   /// True if `recorderState.isRecording`
-  bool get isRecording => (_recorderState == RecorderState.isRecording);
+  bool get isRecording => (recorderState == RecorderState.isRecording);
 
   /// True if `recorderState.isStopped`
-  bool get isStopped => (_recorderState == RecorderState.isStopped);
+  bool get isStopped => (recorderState == RecorderState.isStopped);
 
   /// True if `recorderState.isPaused`
-  bool get isPaused => (_recorderState == RecorderState.isPaused);
+  bool get isPaused => (recorderState == RecorderState.isPaused);
 
   /// Instanciate a new Flutter Sound Recorder.
   /// The optional paramater `Level logLevel` specify the Logger Level you are interested by.
@@ -313,29 +314,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 // ----------------------------------------------------------------------------------------------------------------------------------------------
 
 
-
-  var mime_types =
-  [
-    'audio/webm\;codecs=opus', // defaultCodec,
-    'audio/aac', // aacADTS, //*
-    'audio/opus\;codecs=opus', // opusOGG, // 'audio/ogg' 'audio/opus'
-    'audio/x-caf', // opusCAF,
-    'audio/mpeg', // mp3, //*
-    'audio/ogg\;codecs=vorbis', // vorbisOGG,// 'audio/ogg' // 'audio/vorbis'
-    'audio/pcm', // pcm16,
-    'audio/wav\;codecs=1', // pcm16WAV,
-    'audio/aiff', // pcm16AIFF,
-    'audio/x-caf', // pcm16CAF,
-    'audio/x-flac', // flac, // 'audio/flac'
-    'audio/mp4', // aacMP4, //*
-    'audio/AMR', // amrNB, //*
-    'audio/AMR-WB', // amrWB, //*
-    'audio/pcm', // pcm8,
-    'audio/pcm', // pcmFloat32,
-    'audio/webm\;codecs=pcm', // pcmWebM,
-    'audio/webm\;codecs=opus', // opusWebM,
-    'audio/webm\;codecs=vorbis', // vorbisWebM
-  ];
 
   Future<void> _waitOpen() async {
     while (_openRecorderCompleter != null) {
@@ -606,7 +584,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     String? toFile,
     StreamSink<List<Float32List>>? toStreamFloat32,
     StreamSink<List<Int16List>>? toStreamInt16,
-    StreamSink<Uint8List>? toStream,
+     StreamSink<Uint8List>? toStream,
     Duration timeSlice = Duration.zero,
     int sampleRate = 44100,
     int numChannels = 1,
@@ -704,10 +682,10 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       throw _CodecNotSupportedException('Codec not supported.');
     }
 
-    if (toStream != null && codec != Codec.pcm16 && codec != Codec.pcmFloat32) {
-      throw Exception(
-          'toStream can only be used with codec == Codec.pcm16 or Codec.pcmFloat32');
-    }
+    //if (toStream != null && codec != Codec.pcm16 && codec != Codec.pcmFloat32) {
+    //  throw Exception(
+    //      'toStream can only be used with codec == Codec.pcm16 or Codec.pcmFloat32');
+    //}
     Completer<void>? completer;
     // Maybe we should stop any recording already running... (stopRecorder does that)
     _userStreamSink = toStream;

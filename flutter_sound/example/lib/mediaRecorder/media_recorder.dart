@@ -20,12 +20,12 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:audio_session/audio_session.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_sound_web/flutter_sound_recorder_web.dart' show mime_types;
+//import 'package:flutter_sound_web/flutter_sound_recorder_web.dart' show mime_types;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_sound_web/flutter_sound_web.dart' show mime_types;
 
 /*
  * This is an example showing how to record to a Dart Stream.
@@ -57,12 +57,12 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
   bool _mplaybackReady = false;
   //String? _mPath;
   StreamSubscription? _mRecordingDataSubscription;
-  Float32List bufferF32 = Float32List(0);
+  List<double> bufferF32 = [];
   List<int> bufferI16 = [];
-  Uint8List bufferU8 = Uint8List(0);
+  List<int> bufferU8 = [];
   int sampleRate = 0;
   Codec codecSelected = Codec.pcmFloat32;
-  List<bool> encoderSupported = List.filled(mime_types.length, true);
+  List<bool> encoderSupported = List.filled(mime_types.length, false);
   Future<void> _openRecorder() async {
     var status = await Permission.microphone.request();
     if (status != PermissionStatus.granted) {
@@ -141,7 +141,7 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
 
     //var sink = await createFile();
     //controller = StreamController<Uint8List>()
-    bufferF32 = Float32List(0);
+    bufferF32 = [];
     var recordingDataController = StreamController<List<Float32List>>();
     _mRecordingDataSubscription = recordingDataController.stream.listen((buf) {
       bufferF32.addAll(buf[0]);
@@ -172,7 +172,18 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
 
   Future<void>recordCodec() async
   {
-
+      bufferU8 = [];
+      var recordingDataController = StreamController<Uint8List>();
+      _mRecordingDataSubscription = recordingDataController.stream.listen((buf) {
+        bufferU8.addAll(buf);
+      });
+      await _mRecorder!.startRecorder(
+        toStream: recordingDataController.sink,
+        codec: codecSelected,
+        timeSlice: const Duration(milliseconds: 1000),
+        numChannels: 1,
+        bufferSize: 8192,
+      );
   }
 
   Future<void> record() async
@@ -196,7 +207,13 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
 
   Future<void> playFloat32() async
   {
-    Uint8List buf = Uint8List.fromList([]);
+    Uint8List buf = Uint8List(2 * bufferF32.length);
+    for (int i = 1; i < bufferF32.length; ++i)
+    {
+      int v = (bufferF32[i] * 32768).floor();
+      buf[2*i+1] = v>>8;
+      buf[2*i] = v & 0xFF;
+    }
     await _mPlayer!.startPlayer(
         fromDataBuffer: buf,
         sampleRate: sampleRate,
@@ -229,6 +246,19 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
 
   Future<void> playCodec() async
   {
+    Uint8List buf = Uint8List( bufferU8.length);
+    for (int i = 0; i < bufferU8.length; ++i)
+    {
+      buf[i] = bufferU8[i];
+    }
+    await _mPlayer!.startPlayer(
+        fromDataBuffer: buf,
+        //sampleRate: sampleRate,
+        codec: codecSelected,
+        numChannels: 1,
+        whenFinished: () {
+          setState(() {});
+        });
 
   }
 

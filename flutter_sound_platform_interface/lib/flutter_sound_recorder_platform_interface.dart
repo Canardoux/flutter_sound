@@ -220,4 +220,9 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
       FlutterSoundRecorderCallback callback, String path) {
     throw UnimplementedError('getRecordURL() has not been implemented.');
   }
+
+  RecorderState get recorderState {
+    throw UnimplementedError('getRecordURL() has not been implemented.');
+  }
+
 }
