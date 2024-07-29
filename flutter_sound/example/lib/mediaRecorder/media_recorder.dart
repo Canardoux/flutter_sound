@@ -286,10 +286,10 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
 
   Future<void> stopRecorder() async {
     await _mRecorder!.stopRecorder();
-    if (_mRecordingDataSubscription != null) {
-      await _mRecordingDataSubscription!.cancel();
-      _mRecordingDataSubscription = null;
-    }
+    //if (_mRecordingDataSubscription != null) {
+      //await _mRecordingDataSubscription!.cancel();
+      //_mRecordingDataSubscription = null;
+    //}
     _mplaybackReady = true;
   }
 
@@ -338,6 +338,11 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
       codecSelected = codec!;
     });
   }
+
+  void requestData()
+  {
+    _mRecorder!.requestData();
+  }
   // ----------------------------------------------------------------------------------------------------------------------
 
   @override
@@ -371,6 +376,16 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
               Text(_mRecorder!.isRecording
                   ? 'Recording in progress'
                   : 'Recorder is stopped'),
+              const SizedBox(
+                width: 20,
+              ),
+              ElevatedButton(
+                onPressed: _mRecorder!.isRecording && codecSelected != Codec.pcmFloat32 && codecSelected != Codec.pcm16 ? requestData : null,
+                //color: Colors.white,
+                //disabledColor: Colors.grey,
+                child: Text('Request Data'),
+              ),
+
             ]),
            ]),
         ),
@@ -522,17 +537,6 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
                 value: Codec.opusWebM,
                 groupValue: codecSelected,
                 onChanged: !encoderSupported[Codec.opusWebM.index] ? null :setCodec,
-              ),
-            ),
-            ListTile(
-              tileColor: const Color(0xFFFAF0E6),
-              dense: true,
-              textColor: encoderSupported[Codec.pcmWebM.index] ? Colors.green : Colors.grey,
-              title: Text('PCM-WEBM (${mime_types[Codec.pcmWebM.index]})'),
-              leading: Radio<Codec>(
-                value: Codec.pcmWebM,
-                groupValue: codecSelected,
-                onChanged: !encoderSupported[Codec.pcmWebM.index] ? null :setCodec,
               ),
             ),
             ListTile(

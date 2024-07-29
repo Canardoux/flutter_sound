@@ -196,8 +196,8 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
   );
 
   void requestData(
-      FlutterSoundRecorderCallback callback,
-      );
+    FlutterSoundRecorderCallback callback,
+  );
 
   Future<void> pauseRecorder(
     FlutterSoundRecorderCallback callback,
@@ -224,5 +224,4 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
   RecorderState get recorderState {
     throw UnimplementedError('getRecordURL() has not been implemented.');
   }
-
 }

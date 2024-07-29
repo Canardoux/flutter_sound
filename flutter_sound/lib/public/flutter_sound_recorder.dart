@@ -99,7 +99,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   StreamSink<dynamic>? _userStreamSink;
 
   /// The current state of the Recorder
-  @override
   RecorderState get recorderState => _recorderState;
 
   /// Used by the UI Widget.
@@ -312,8 +311,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   }
 
 // ----------------------------------------------------------------------------------------------------------------------------------------------
-
-
 
   Future<void> _waitOpen() async {
     while (_openRecorderCompleter != null) {
@@ -584,17 +581,19 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     String? toFile,
     StreamSink<List<Float32List>>? toStreamFloat32,
     StreamSink<List<Int16List>>? toStreamInt16,
-     StreamSink<Uint8List>? toStream,
+    StreamSink<Uint8List>? toStream,
     Duration timeSlice = Duration.zero,
-    int sampleRate = 44100,
+    int? sampleRate,
     int numChannels = 1,
     int bitRate = 16000,
-    int bufferSize = 4096,
+    int bufferSize = 8192,
     bool enableVoiceProcessing = false,
     AudioSource audioSource = AudioSource.defaultSource,
   }) async {
     _logger.d('FS:---> startRecorder ');
-    if ((toStream != null || toStreamFloat32 != null || toStreamInt16 != null) &&
+    if ((toStream != null ||
+            toStreamFloat32 != null ||
+            toStreamInt16 != null) &&
         (!kIsWeb) &&
         Platform
             .isIOS) // This hack is just to have recorder to stream working correctly.
@@ -611,6 +610,13 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       /* await */ player.closePlayer();
     }
 
+    if (sampleRate == null) {
+      sampleRate = await getSampleRate();
+      if (sampleRate == 0) {
+        sampleRate = 16000;
+      }
+    }
+
     await _lock.synchronized(() async {
       await _startRecorder(
         codec: codec,
@@ -619,7 +625,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
         toStreamFloat32: toStreamFloat32,
         toStreamInt16: toStreamInt16,
         timeSlice: timeSlice,
-        sampleRate: sampleRate,
+        sampleRate: sampleRate!,
         numChannels: numChannels,
         bitRate: bitRate,
         bufferSize: bufferSize,
@@ -637,7 +643,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     StreamSink<List<Float32List>>? toStreamFloat32,
     StreamSink<List<Int16List>>? toStreamInt16,
     Duration timeSlice = Duration.zero,
-    int sampleRate = 16000,
+    int sampleRate = 44100,
     int numChannels = 1,
     int bitRate = 16000,
     int bufferSize = 8192,
@@ -789,6 +795,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   void requestData() {
     FlutterSoundRecorderPlatform.instance.requestData(this);
   }
+
   /// Get the sampleRate used by startRecorder()
   Future<int> getSampleRate() async {
     _logger.d('FS:---> getSampleRate');

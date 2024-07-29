@@ -25,7 +25,7 @@ import 'livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart
 import 'multi_playback/multi_playback.dart';
 import 'play_from_mic/play_from_mic.dart';
 import 'recordToStream/record_to_stream_example.dart';
-import 'mediaRecorder/media_recorder.dart';
+import 'dummy_mobile.dart' if (dart.library.js_interop) 'mediaRecorder/media_recorder.dart'; // package:web implementation
 import 'simple_playback/simple_playback.dart';
 import 'simple_recorder/simple_recorder.dart';
 import 'soundEffect/sound_effect.dart';
@@ -224,7 +224,7 @@ It writes all the recorded data from a Stream to a File, which is completely stu
 if an App wants to record something to a File, it must not use Streams.
 
 The real interest of recording to a Stream is for example to feed a Speech-to-Text engine, or for processing the Live data in Dart in real time.
-Note : actually this example does not work on Flutter Web. 
+Note : actually this example does not work on Flutter Web.
 For Web, you can look to the example `media_recorder` which is another example doing `RecordToStream()`.
 ''',
   ),

@@ -51,11 +51,8 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
 
   @override
   void requestData(
-      FlutterSoundRecorderCallback callback,
-  ) {
-  }
-
-
+    FlutterSoundRecorderCallback callback,
+  ) {}
 
   Future<bool> channelMethodCallHandler(MethodCall call) {
     return Future<bool>(() {

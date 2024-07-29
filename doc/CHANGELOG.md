@@ -7,9 +7,37 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.9.0 beta-3
+
+- Fixes a regression introduced in v9.8.1 when recording to stream on iOS and Android [#1056](https://github.com/Canardoux/flutter_sound/issues/1056) and [#1060](https://github.com/Canardoux/flutter_sound/issues/1060)
+- Recorder To Stream on Web with `Codec.opusWebM` and `Codec.aacMP4`. [#1056](https://github.com/Canardoux/flutter_sound/issues/1056)
+- - New example `MediaRecorderExaple` to show how to record to stream on Web.
+- The documentation has not yet been updated
+- The iOS and Android platforms has not yet been updated, and are not fully compatible with Flutter Web.
+- The `codec:` parameter can be specified. Its value can be either :
+  - `Codec.pcm16`
+  - `Codec.pcmFloat32`
+  - `Codec.opusWebM`
+  - `Codec.aacMP4`
+- The legacy `toStream:` parameter must be specified. You receive a Stream of `UInt8List` packets on your `StreamSink`.
+- The function `requestData()` can be called to update the `StreamSink` with the current `Uint8List`
+- The parameter `timeSlice:` can be specified. This is the Duration beetween every automatic `requestData()`. If `Duration.zero` the automatic `requestData()` is desactivated. Its default value is `Duration.zero`.
+
 ### 9.8.1 beta-2
 
 - Recorder To Stream on Web. [#1056](https://github.com/Canardoux/flutter_sound/issues/1056)
+- The documentation has not yet been updated
+- The iOS and Android platforms has not yet been updated, and are not fully compatible with Flutter Web.
+- The parameter `numChannels:` can be specified. If you do not specify this parameter, the default is `1`.
+- The `codec:` parameter can be specified. Its value can be either `Codec.pcm16` or `Codec.pcmFloat32`
+- The parameter `sampleRate` is deprecated. Flutter Web always uses the sampleRate supported by the hardware. We cannot change it, because we would have to redo a sampling for that and that would be bad for the sound quality..
+- There is a new `myRecorder.getSampleRate()` to get the sample rate used by the platform.
+- When you call `startRecorder()` you can choose one of three parameters:
+  - The legacy `toStream:` which is compatible with the old `toStream:` parameter. You receive a Stream of `UInt8List` packets. This parameter is not supported for `numChannels: != 1`. This parameter is more or less deprecated, and is kept for compatibility with previous versions.
+  - The parameter `toStreamFloat32:` can specify a `StreamSink<List<Float32List>>`. Each packet received by this stream sink is composed of several `Float32List`. There is 1 `Float32List` for each channel. This parameter is the most efficient. Specially on Web and on iOS. This is probably the parameter that the App must use.
+  - The parameter `toStreamInt16:` can specify a `StreamSink<List<Int16List>>`.  Each packet received by this stream sink is composed of several `Int16List`. There is 1 `Int16List` for each channel. This parameter is slightly less efficient than `toStreamFloat32:`
+- The parameter `bufferSize:` must be a power of 2. Its default is 8192
+- The callback `whenFinished` can be specified when playing from Stream.
 
 ### 9.7.2
 
