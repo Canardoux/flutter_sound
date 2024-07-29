@@ -89,9 +89,9 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
       androidWillPauseWhenDucked: true,
     ));
     sampleRate = await _mRecorder!.getSampleRate();
-    for (int i = 0; i < encoderSupported.length; ++i)
-    {
-      encoderSupported[i] = await _mRecorder!.isEncoderSupported( Codec.values[i]);
+    for (int i = 0; i < encoderSupported.length; ++i) {
+      encoderSupported[i] =
+          await _mRecorder!.isEncoderSupported(Codec.values[i]);
     }
 
     setState(() {
@@ -138,7 +138,6 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
   // ----------------------  Here is the code to record to a Stream ------------
 
   Future<void> recordFloat32() async {
-
     //var sink = await createFile();
     //controller = StreamController<Uint8List>()
     bufferF32 = [];
@@ -154,8 +153,7 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
     );
   }
 
-  Future<void> recordInt16() async
-  {
+  Future<void> recordInt16() async {
     bufferI16 = [];
     var recordingDataController = StreamController<List<Int16List>>();
     _mRecordingDataSubscription = recordingDataController.stream.listen((buf) {
@@ -167,52 +165,41 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
       numChannels: 2,
       bufferSize: 8192,
     );
-
   }
 
-  Future<void>recordCodec() async
-  {
-      bufferU8 = [];
-      var recordingDataController = StreamController<Uint8List>();
-      _mRecordingDataSubscription = recordingDataController.stream.listen((buf) {
-        bufferU8.addAll(buf);
-      });
-      await _mRecorder!.startRecorder(
-        toStream: recordingDataController.sink,
-        codec: codecSelected,
-        timeSlice: const Duration(milliseconds: 1000),
-        numChannels: 1,
-        bufferSize: 8192,
-      );
+  Future<void> recordCodec() async {
+    bufferU8 = [];
+    var recordingDataController = StreamController<Uint8List>();
+    _mRecordingDataSubscription = recordingDataController.stream.listen((buf) {
+      bufferU8.addAll(buf);
+    });
+    await _mRecorder!.startRecorder(
+      toStream: recordingDataController.sink,
+      codec: codecSelected,
+      timeSlice: const Duration(milliseconds: 1000),
+      numChannels: 1,
+      bufferSize: 8192,
+    );
   }
 
-  Future<void> record() async
-  {
-      assert(_mRecorderIsInited && _mPlayer!.isStopped);
-      if (codecSelected == Codec.pcmFloat32)
-        {
-          await recordFloat32();
-        } else
-      if (codecSelected == Codec.pcm16)
-        {
-          await recordInt16();
-        } else
-        {
-          await recordCodec();
-        }
-      setState(() {});
-
+  Future<void> record() async {
+    assert(_mRecorderIsInited && _mPlayer!.isStopped);
+    if (codecSelected == Codec.pcmFloat32) {
+      await recordFloat32();
+    } else if (codecSelected == Codec.pcm16) {
+      await recordInt16();
+    } else {
+      await recordCodec();
+    }
+    setState(() {});
   }
 
-
-  Future<void> playFloat32() async
-  {
+  Future<void> playFloat32() async {
     Uint8List buf = Uint8List(2 * bufferF32.length);
-    for (int i = 1; i < bufferF32.length; ++i)
-    {
+    for (int i = 1; i < bufferF32.length; ++i) {
       int v = (bufferF32[i] * 32768).floor();
-      buf[2*i+1] = v>>8;
-      buf[2*i] = v & 0xFF;
+      buf[2 * i + 1] = v >> 8;
+      buf[2 * i] = v & 0xFF;
     }
     await _mPlayer!.startPlayer(
         fromDataBuffer: buf,
@@ -222,17 +209,14 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
         whenFinished: () {
           setState(() {});
         });
-
   }
 
-  Future<void> playInt16() async
-  {
+  Future<void> playInt16() async {
     Uint8List buf = Uint8List(2 * bufferI16.length);
-    for (int i = 1; i < bufferI16.length; ++i)
-      {
-        buf[2*i+1] = bufferI16[i]>>8;
-        buf[2*i] = bufferI16[i] & 0xFF;
-      }
+    for (int i = 1; i < bufferI16.length; ++i) {
+      buf[2 * i + 1] = bufferI16[i] >> 8;
+      buf[2 * i] = bufferI16[i] & 0xFF;
+    }
     await _mPlayer!.startPlayer(
         fromDataBuffer: buf,
         sampleRate: sampleRate,
@@ -241,14 +225,11 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
         whenFinished: () {
           setState(() {});
         });
-
   }
 
-  Future<void> playCodec() async
-  {
-    Uint8List buf = Uint8List( bufferU8.length);
-    for (int i = 0; i < bufferU8.length; ++i)
-    {
+  Future<void> playCodec() async {
+    Uint8List buf = Uint8List(bufferU8.length);
+    for (int i = 0; i < bufferU8.length; ++i) {
       buf[i] = bufferU8[i];
     }
     await _mPlayer!.startPlayer(
@@ -259,7 +240,6 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
         whenFinished: () {
           setState(() {});
         });
-
   }
 
   void play() async {
@@ -267,15 +247,11 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
         _mplaybackReady &&
         _mRecorder!.isStopped &&
         _mPlayer!.isStopped);
-    if (codecSelected == Codec.pcmFloat32)
-    {
+    if (codecSelected == Codec.pcmFloat32) {
       await playFloat32();
-    } else
-    if (codecSelected == Codec.pcm16)
-    {
+    } else if (codecSelected == Codec.pcm16) {
       await playInt16();
-    } else
-    {
+    } else {
       await playCodec();
     }
 
@@ -287,8 +263,8 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
   Future<void> stopRecorder() async {
     await _mRecorder!.stopRecorder();
     //if (_mRecordingDataSubscription != null) {
-      //await _mRecordingDataSubscription!.cancel();
-      //_mRecordingDataSubscription = null;
+    //await _mRecordingDataSubscription!.cancel();
+    //_mRecordingDataSubscription = null;
     //}
     _mplaybackReady = true;
   }
@@ -297,10 +273,9 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
     if (!_mRecorderIsInited || !_mPlayer!.isStopped) {
       return null;
     }
-     if (!encoderSupported[codecSelected.index])
-      {
-        return null;
-      }
+    if (!encoderSupported[codecSelected.index]) {
+      return null;
+    }
     return _mRecorder!.isStopped
         ? record
         : () {
@@ -323,24 +298,19 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
           };
   }
 
-  void selectCodec(Codec codec) async
-  {
+  void selectCodec(Codec codec) async {
     codecSelected = codec;
-    setState(() {
-    });
+    setState(() {});
   }
 
-  void setCodec(Codec? codec)
-  {
+  void setCodec(Codec? codec) {
     _mplaybackReady = false;
-      setState(()
-    {
+    setState(() {
       codecSelected = codec!;
     });
   }
 
-  void requestData()
-  {
+  void requestData() {
     _mRecorder!.requestData();
   }
   // ----------------------------------------------------------------------------------------------------------------------
@@ -380,14 +350,17 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
                 width: 20,
               ),
               ElevatedButton(
-                onPressed: _mRecorder!.isRecording && codecSelected != Codec.pcmFloat32 && codecSelected != Codec.pcm16 ? requestData : null,
+                onPressed: _mRecorder!.isRecording &&
+                        codecSelected != Codec.pcmFloat32 &&
+                        codecSelected != Codec.pcm16
+                    ? requestData
+                    : null,
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
                 child: Text('Request Data'),
               ),
-
             ]),
-           ]),
+          ]),
         ),
         Container(
             margin: const EdgeInsets.all(3),
@@ -418,144 +391,175 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
             ])),
 
         //Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //children:
+        //children:
         //[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-              children:
-          [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             ListTile(
-
               tileColor: const Color(0xFFFAF0E6),
               title: const Text('PCM-Float32'),
               dense: true,
-              textColor: encoderSupported[Codec.pcmFloat32.index] ? Colors.green : Colors.grey,
+              textColor: encoderSupported[Codec.pcmFloat32.index]
+                  ? Colors.green
+                  : Colors.grey,
               leading: Radio<Codec>(
                 value: Codec.pcmFloat32,
                 groupValue: codecSelected,
-                onChanged: !encoderSupported[Codec.pcmFloat32.index] ? null :setCodec,
+                onChanged:
+                    !encoderSupported[Codec.pcmFloat32.index] ? null : setCodec,
               ),
             ),
             ListTile(
               tileColor: const Color(0xFFFAF0E6),
               title: const Text('PCM-Int16'),
               dense: true,
-              textColor: encoderSupported[Codec.pcm16.index] ? Colors.green : Colors.grey,
+              textColor: encoderSupported[Codec.pcm16.index]
+                  ? Colors.green
+                  : Colors.grey,
               leading: Radio<Codec>(
                 value: Codec.pcm16,
                 groupValue: codecSelected,
-                onChanged: !encoderSupported[Codec.pcm16.index] ? null :setCodec,
+                onChanged:
+                    !encoderSupported[Codec.pcm16.index] ? null : setCodec,
               ),
             ),
 
-          //]),
-          //Column (children:
-          //[
+            //]),
+            //Column (children:
+            //[
             ListTile(
               tileColor: const Color(0xFFFAF0E6),
               title: Text('AAC-ADTS (${mime_types[Codec.aacADTS.index]})'),
-              textColor: encoderSupported[Codec.aacADTS.index] ? Colors.green : Colors.grey,
+              textColor: encoderSupported[Codec.aacADTS.index]
+                  ? Colors.green
+                  : Colors.grey,
               dense: true,
               leading: Radio<Codec>(
                 value: Codec.aacADTS,
                 groupValue: codecSelected,
-                onChanged: !encoderSupported[Codec.aacADTS.index] ? null :setCodec,
-              ),
-            ),
-             ListTile(
-              tileColor: const Color(0xFFFAF0E6),
-               textColor: encoderSupported[Codec.opusOGG.index] ? Colors.green : Colors.grey,
-              title: Text('OPUS-OGG (${mime_types[Codec.opusOGG.index]})'),
-               dense: true,
-              leading: Radio<Codec>(
-                value: Codec.opusOGG,
-                groupValue: codecSelected,
-                onChanged: !encoderSupported[Codec.opusOGG.index] ? null :setCodec,
+                onChanged:
+                    !encoderSupported[Codec.aacADTS.index] ? null : setCodec,
               ),
             ),
             ListTile(
               tileColor: const Color(0xFFFAF0E6),
-              textColor: encoderSupported[Codec.mp3.index] ? Colors.green : Colors.grey,
+              textColor: encoderSupported[Codec.opusOGG.index]
+                  ? Colors.green
+                  : Colors.grey,
+              title: Text('OPUS-OGG (${mime_types[Codec.opusOGG.index]})'),
+              dense: true,
+              leading: Radio<Codec>(
+                value: Codec.opusOGG,
+                groupValue: codecSelected,
+                onChanged:
+                    !encoderSupported[Codec.opusOGG.index] ? null : setCodec,
+              ),
+            ),
+            ListTile(
+              tileColor: const Color(0xFFFAF0E6),
+              textColor: encoderSupported[Codec.mp3.index]
+                  ? Colors.green
+                  : Colors.grey,
               title: Text('MPEG-MP3 (${mime_types[Codec.mp3.index]})'),
               dense: true,
               leading: Radio<Codec>(
                 value: Codec.mp3,
                 groupValue: codecSelected,
-                onChanged: !encoderSupported[Codec.mp3.index] ? null :setCodec,
+                onChanged: !encoderSupported[Codec.mp3.index] ? null : setCodec,
               ),
             ),
             ListTile(
               tileColor: const Color(0xFFFAF0E6),
-              textColor: encoderSupported[Codec.vorbisOGG.index] ? Colors.green : Colors.grey,
+              textColor: encoderSupported[Codec.vorbisOGG.index]
+                  ? Colors.green
+                  : Colors.grey,
               dense: true,
               title: Text('VORBIS-OGG (${mime_types[Codec.vorbisOGG.index]})'),
               leading: Radio<Codec>(
                 value: Codec.vorbisOGG,
                 groupValue: codecSelected,
-                onChanged: !encoderSupported[Codec.vorbisOGG.index] ? null :setCodec,
+                onChanged:
+                    !encoderSupported[Codec.vorbisOGG.index] ? null : setCodec,
               ),
             ),
             ListTile(
               tileColor: const Color(0xFFFAF0E6),
-              textColor: encoderSupported[Codec.pcm16WAV.index] ? Colors.green : Colors.grey,
+              textColor: encoderSupported[Codec.pcm16WAV.index]
+                  ? Colors.green
+                  : Colors.grey,
               dense: true,
               title: Text('PCM16-WAV (${mime_types[Codec.pcm16WAV.index]})'),
               leading: Radio<Codec>(
                 value: Codec.pcm16WAV,
                 groupValue: codecSelected,
-                onChanged: !encoderSupported[Codec.pcm16WAV.index] ? null :setCodec,
+                onChanged:
+                    !encoderSupported[Codec.pcm16WAV.index] ? null : setCodec,
               ),
             ),
             ListTile(
               tileColor: const Color(0xFFFAF0E6),
               dense: true,
-              textColor: encoderSupported[Codec.flac.index] ? Colors.green : Colors.grey,
+              textColor: encoderSupported[Codec.flac.index]
+                  ? Colors.green
+                  : Colors.grey,
               title: Text('FLAC (${mime_types[Codec.flac.index]})'),
               leading: Radio<Codec>(
                 value: Codec.flac,
                 groupValue: codecSelected,
-                onChanged: !encoderSupported[Codec.flac.index] ? null :setCodec,
+                onChanged:
+                    !encoderSupported[Codec.flac.index] ? null : setCodec,
               ),
             ),
             ListTile(
               tileColor: const Color(0xFFFAF0E6),
               dense: true,
-              textColor: encoderSupported[Codec.aacMP4.index] ? Colors.green : Colors.grey,
+              textColor: encoderSupported[Codec.aacMP4.index]
+                  ? Colors.green
+                  : Colors.grey,
               title: Text('AAC-MP4 (${mime_types[Codec.aacMP4.index]})'),
               leading: Radio<Codec>(
                 value: Codec.aacMP4,
                 groupValue: codecSelected,
-                onChanged: !encoderSupported[Codec.aacMP4.index] ? null :setCodec,
+                onChanged:
+                    !encoderSupported[Codec.aacMP4.index] ? null : setCodec,
               ),
             ),
             ListTile(
               tileColor: const Color(0xFFFAF0E6),
               dense: true,
-              textColor: encoderSupported[Codec.opusWebM.index] ? Colors.green : Colors.grey,
+              textColor: encoderSupported[Codec.opusWebM.index]
+                  ? Colors.green
+                  : Colors.grey,
               title: Text('OPUS-WEBM (${mime_types[Codec.opusWebM.index]})'),
               leading: Radio<Codec>(
                 value: Codec.opusWebM,
                 groupValue: codecSelected,
-                onChanged: !encoderSupported[Codec.opusWebM.index] ? null :setCodec,
+                onChanged:
+                    !encoderSupported[Codec.opusWebM.index] ? null : setCodec,
               ),
             ),
             ListTile(
               tileColor: const Color(0xFFFAF0E6),
               dense: true,
-              textColor: encoderSupported[Codec.vorbisWebM.index] ? Colors.green : Colors.grey,
-              title:  Text('VORBIS-WEBM(${mime_types[Codec.vorbisWebM.index]})'),
+              textColor: encoderSupported[Codec.vorbisWebM.index]
+                  ? Colors.green
+                  : Colors.grey,
+              title: Text('VORBIS-WEBM(${mime_types[Codec.vorbisWebM.index]})'),
               leading: Radio<Codec>(
                 value: Codec.vorbisWebM,
                 groupValue: codecSelected,
-                onChanged: !encoderSupported[Codec.vorbisWebM.index] ? null : setCodec,
-
+                onChanged:
+                    !encoderSupported[Codec.vorbisWebM.index] ? null : setCodec,
               ),
             ),
-
-          ],)]);
-        //]),
+          ],
+        )
+      ]);
+      //]),
       //]);
     }
+
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(

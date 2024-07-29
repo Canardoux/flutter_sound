@@ -119,7 +119,6 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     super.dispose();
   }
 
-
   Future<IOSink> createFile() async {
     var tempDir = await getTemporaryDirectory();
     _mPath = '${tempDir.path}/flutter_sound_example.pcm';
@@ -138,10 +137,10 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     var recordingDataController = StreamController<Uint8List>();
     _mRecordingDataSubscription =
         recordingDataController.stream.listen((buffer) {
-            sink.add(buffer!);
-        });
-   await _mRecorder!.startRecorder(
-     toStream: recordingDataController.sink,
+      sink.add(buffer!);
+    });
+    await _mRecorder!.startRecorder(
+      toStream: recordingDataController.sink,
       codec: Codec.pcm16,
       numChannels: 1,
       sampleRate: 44100,
@@ -170,7 +169,6 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
             stopRecorder().then((value) => setState(() {}));
           };
   }
-
 
   void play() async {
     assert(_mPlayerIsInited &&
@@ -237,7 +235,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
                   ? 'Recording in progress'
                   : 'Recorder is stopped'),
             ]),
-           ]),
+          ]),
         ),
         Container(
             margin: const EdgeInsets.all(3),

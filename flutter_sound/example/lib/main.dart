@@ -25,7 +25,8 @@ import 'livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart
 import 'multi_playback/multi_playback.dart';
 import 'play_from_mic/play_from_mic.dart';
 import 'recordToStream/record_to_stream_example.dart';
-import 'dummy_mobile.dart' if (dart.library.js_interop) 'mediaRecorder/media_recorder.dart'; // package:web implementation
+import 'dummy_mobile.dart'
+    if (dart.library.js_interop) 'mediaRecorder/media_recorder.dart'; // package:web implementation
 import 'simple_playback/simple_playback.dart';
 import 'simple_recorder/simple_recorder.dart';
 import 'soundEffect/sound_effect.dart';
@@ -241,7 +242,6 @@ The stream can be PCM (PCM-Int16 or PCM_Float32) or a compressed stream like OPU
 This example works only on Flutter Web. For Android or iOS, you can look to the example `recordToStream`.
 ''',
   ),
-
 
   Example(
     title: 'livePlaybackWithoutBackPressure',
