@@ -37,7 +37,7 @@ dependencies:
 # Do not put them in a real App
   flutter_sound_platform_interface: 9.9.2
 #    path: ../../flutter_sound_platform_interface
-#  flutter_sound_web: 9.9.2
+  flutter_sound_web: 9.9.2
 #    path: ../../flutter_sound_web # flutter_sound_web Dir
   flutter_sound: ^9.9.2
 #    path: ../ # Flutter Sound Dir
