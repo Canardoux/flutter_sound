@@ -19,8 +19,6 @@
 
 import 'package:flutter/material.dart';
 
-
-
 /// Example app.
 class MediaRecorderExample extends StatefulWidget {
   const MediaRecorderExample({super.key});
@@ -30,13 +28,12 @@ class MediaRecorderExample extends StatefulWidget {
 }
 
 class _MediaRecorderExampleState extends State<MediaRecorderExample> {
-
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     Widget makeBody() {
       return const Text('Supported only on Web');
     }
+
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(
