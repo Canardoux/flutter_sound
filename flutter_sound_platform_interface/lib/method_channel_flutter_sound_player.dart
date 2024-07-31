@@ -116,12 +116,6 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
           }
           break;
 
-        case "closePlayerCompleted":
-          {
-            aPlayer.closePlayerCompleted(call.arguments['state'], success);
-          }
-          break;
-
         case "log":
           {
             int i = call.arguments['level'];

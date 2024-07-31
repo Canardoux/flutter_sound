@@ -83,12 +83,6 @@
  }
  
  
-- (void)closeRecorderCompleted: (bool)success
- {
-       [self invokeMethod: @"closeRecorderCompleted" boolArg: success success: success];
- 
- }
-
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 

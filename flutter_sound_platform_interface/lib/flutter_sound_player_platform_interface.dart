@@ -42,7 +42,6 @@ abstract class FlutterSoundPlayerCallback {
   void resumePlayerCompleted(int state, bool success);
   void stopPlayerCompleted(int state, bool success);
   void openPlayerCompleted(int state, bool success);
-  void closePlayerCompleted(int state, bool success);
   void log(Level logLevel, String msg);
 }
 

@@ -17,13 +17,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import 'dart:async';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-///
-typedef _Fn = void Function();
+
 
 /// Example app.
 class MediaRecorderExample extends StatefulWidget {
@@ -34,12 +30,13 @@ class MediaRecorderExample extends StatefulWidget {
 }
 
 class _MediaRecorderExampleState extends State<MediaRecorderExample> {
-  @override
-  Widget build(BuildContext context) {
-    Widget makeBody() {
-      return Text('Supported only on Web');
-    }
 
+  @override
+  Widget build(BuildContext context)
+  {
+    Widget makeBody() {
+      return const Text('Supported only on Web');
+    }
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(

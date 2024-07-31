@@ -62,7 +62,6 @@ abstract class FlutterSoundRecorderCallback {
   void resumeRecorderCompleted(int? state, bool? success);
   void stopRecorderCompleted(int? state, bool? success, String? url);
   void openRecorderCompleted(int? state, bool? success);
-  void closeRecorderCompleted(int? state, bool? success);
   void log(Level logLevel, String msg);
 }
 

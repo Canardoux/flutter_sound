@@ -84,7 +84,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   Completer<void>? _pauseRecorderCompleter;
   Completer<void>? _resumeRecorderCompleter;
   Completer<String>? _stopRecorderCompleter;
-  Completer<void>? _closeRecorderCompleter;
   Completer<FlutterSoundRecorder>? _openRecorderCompleter;
 
   final _lock = Lock();
@@ -180,19 +179,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     }
     _openRecorderCompleter = null;
     _logger.d('<--- openRecorderCompleted: $success');
-  }
-
-  /// Callback from the &tau; Core. Must not be called by the App
-  /// @nodoc
-  @override
-  void closeRecorderCompleted(int? state, bool? success) {
-    _logger.d('---> closeRecorderCompleted');
-    _recorderState = RecorderState.values[state!];
-    _isInited = Initialized.notInitialized;
-    _closeRecorderCompleter!.complete();
-    _closeRecorderCompleter = null;
-    _cleanCompleters();
-    _logger.d('<--- closeRecorderCompleted');
   }
 
   /// Callback from the &tau; Core. Must not be called by the App
@@ -294,13 +280,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       _logger.w('Kill openRecorder()');
       Completer<void> completer = _openRecorderCompleter!;
       _openRecorderCompleter = null;
-      completer.completeError('killed by cleanCompleters');
-    }
-
-    if (_closeRecorderCompleter != null) {
-      _logger.w('Kill _closeRecorder()');
-      var completer = _closeRecorderCompleter!;
-      _closeRecorderCompleter = null;
       completer.completeError('killed by cleanCompleters');
     }
   }
@@ -427,19 +406,11 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   Future<void> _closeAudioSession() async {
     _logger.d('FS:---> closeAudioSession ');
     // If another closeRecorder() is already in progress, wait until finished
-    while (_closeRecorderCompleter != null) {
-      try {
-        _logger.w('Another closeRecorder() in progress');
-        await _closeRecorderCompleter!.future;
-      } catch (_) {}
-    }
     if (_isInited == Initialized.notInitialized) {
       // Already close
       _logger.i('Recorder already close');
       return;
     }
-
-    Completer<void>? completer;
 
     try {
       await _stop(); // Stop the recorder if running
@@ -452,20 +423,11 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       await _userStreamSink!.close();
       _userStreamSink = null;
     }
-    assert(_closeRecorderCompleter == null);
-    _closeRecorderCompleter = Completer<void>();
-    try {
-      completer = _closeRecorderCompleter;
 
-      await FlutterSoundRecorderPlatform.instance.closeRecorder(this);
-      FlutterSoundRecorderPlatform.instance.closeSession(this);
-      //_isInited = Initialized.notInitialized;
-    } on Exception {
-      _closeRecorderCompleter = null;
-      rethrow;
-    }
+    await FlutterSoundRecorderPlatform.instance.closeRecorder(this);
+    FlutterSoundRecorderPlatform.instance.closeSession(this);
+    //_isInited = Initialized.notInitialized;
     _logger.d('FS:<--- closeAudioSession ');
-    return completer!.future;
   }
 
   /// Returns true if the specified encoder is supported by flutter_sound on this platform.
@@ -605,7 +567,9 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       try {
         await player.startPlayer(
             fromDataBuffer: buf, codec: Codec.pcm16, whenFinished: () {});
-      } catch (e) {}
+      } catch (e) {
+        _logger.d('Hacking the bug we have on iOS when recording to stream');
+      }
       //await player.stopPlayer();
       /* await */ player.closePlayer();
     }

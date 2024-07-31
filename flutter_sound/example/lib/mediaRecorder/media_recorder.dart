@@ -56,7 +56,6 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
 
   bool _mplaybackReady = false;
   //String? _mPath;
-  StreamSubscription? _mRecordingDataSubscription;
   List<double> bufferF32 = [];
   List<int> bufferI16 = [];
   List<int> bufferU8 = [];
@@ -142,7 +141,7 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
     //controller = StreamController<Uint8List>()
     bufferF32 = [];
     var recordingDataController = StreamController<List<Float32List>>();
-    _mRecordingDataSubscription = recordingDataController.stream.listen((buf) {
+    recordingDataController.stream.listen((buf) {
       bufferF32.addAll(buf[0]);
     });
     await _mRecorder!.startRecorder(
@@ -156,7 +155,7 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
   Future<void> recordInt16() async {
     bufferI16 = [];
     var recordingDataController = StreamController<List<Int16List>>();
-    _mRecordingDataSubscription = recordingDataController.stream.listen((buf) {
+    recordingDataController.stream.listen((buf) {
       bufferI16.addAll(buf[0]);
     });
     await _mRecorder!.startRecorder(
@@ -170,7 +169,7 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
   Future<void> recordCodec() async {
     bufferU8 = [];
     var recordingDataController = StreamController<Uint8List>();
-    _mRecordingDataSubscription = recordingDataController.stream.listen((buf) {
+    recordingDataController.stream.listen((buf) {
       bufferU8.addAll(buf);
     });
     await _mRecorder!.startRecorder(
@@ -357,7 +356,7 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
                     : null,
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text('Request Data'),
+                child: const Text('Request Data'),
               ),
             ]),
           ]),

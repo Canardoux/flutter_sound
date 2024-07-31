@@ -121,7 +121,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   Completer<void>? _pausePlayerCompleter;
   Completer<void>? _resumePlayerCompleter;
   Completer<void>? _stopPlayerCompleter;
-  Completer<void>? _closePlayerCompleter;
   Completer<FlutterSoundPlayer>? _openPlayerCompleter;
 
   /// Instanciate a new Flutter Sound player.
@@ -224,29 +223,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
     _openPlayerCompleter = null;
     _logger.d('<--- openPlayerCompleted: $success');
-  }
-
-  /// Callback from the &tau; Core. Must not be called by the App
-  /// @nodoc
-  @override
-  void closePlayerCompleted(int state, bool success) {
-    _logger.d('---> closePlayerCompleted');
-    _playerState = PlayerState.values[state];
-    _isInited = Initialized.notInitialized;
-    if (_closePlayerCompleter == null) {
-      _logger.e('Error : cannot process _closePlayerCompleter');
-      return;
-    }
-
-    if (success) {
-      _closePlayerCompleter!.complete();
-    } else {
-      _closePlayerCompleter!.completeError('closePlayer failed');
-    }
-    _closePlayerCompleter = null;
-
-    _cleanCompleters();
-    _logger.d('<--- closePlayerCompleted');
   }
 
   /// Callback from the &tau; Core. Must not be called by the App
@@ -361,13 +337,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       var completer = _openPlayerCompleter;
       _logger.w('Kill openPlayer()');
       _openPlayerCompleter = null;
-      completer!.completeError('killed by cleanCompleters');
-    }
-
-    if (_closePlayerCompleter != null) {
-      var completer = _closePlayerCompleter;
-      _logger.w('Kill _closePlayer()');
-      _closePlayerCompleter = null;
       completer!.completeError('killed by cleanCompleters');
     }
   }
@@ -587,37 +556,21 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   Future<void> _closeAudioSession() async {
     _logger.d('FS:---> closeAudioSession ');
 
-    // If another closePlayer() is already in progress, wait until finished
-    while (_closePlayerCompleter != null) {
-      _logger.w('Another closePlayer() in progress');
-      await _closePlayerCompleter!.future;
-    }
-
     if (_isInited == Initialized.notInitialized) {
       // Already closed
       _logger.d('Player already close');
       return;
     }
 
-    Completer<void>? completer;
-    try {
-      await _stop(); // Stop the player if running
-      //_isInited = Initialized.initializationInProgress; // BOF
+    await _stop(); // Stop the player if running
+    //_isInited = Initialized.initializationInProgress; // BOF
 
-      _removePlayerCallback();
-      assert(_closePlayerCompleter == null);
-      _closePlayerCompleter = Completer<void>();
-      completer = _closePlayerCompleter;
-      await FlutterSoundPlayerPlatform.instance.closePlayer(this);
+    _removePlayerCallback();
+    await FlutterSoundPlayerPlatform.instance.closePlayer(this);
 
-      FlutterSoundPlayerPlatform.instance.closeSession(this);
-      //_isInited = Initialized.notInitialized;
-    } on Exception {
-      _closePlayerCompleter = null;
-      rethrow;
-    }
+    FlutterSoundPlayerPlatform.instance.closeSession(this);
+    //_isInited = Initialized.notInitialized;
     _logger.d('FS:<--- closeAudioSession ');
-    return completer!.future;
   }
 
   /// Query the current state to the Tau Core layer.

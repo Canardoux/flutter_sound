@@ -41,11 +41,6 @@
 }
 
 
-- (void)closePlayerCompleted: (bool)success
-{
-       [self invokeMethod: @"closePlayerCompleted" boolArg: success success: success];
-}
-
 
 - (void)startPlayerCompleted: (bool)success duration: (long)duration
 {

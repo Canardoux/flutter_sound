@@ -7,11 +7,15 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.9.1
+
+- We had some problems with `closeRecorderCompleted` (and probably also with `closePlayerCompleted`) [#1045](https://github.com/Canardoux/flutter_sound/issues/1045). Remove everything about this completer that was not useful.
+
 ### 9.9.0 beta-3
 
-- Fixes a regression introduced in v9.8.1 when recording to stream on iOS and Android [#1056](https://github.com/Canardoux/flutter_sound/issues/1056) and [#1060](https://github.com/Canardoux/flutter_sound/issues/1060)
-- Recorder To Stream on Web with `Codec.opusWebM` and `Codec.aacMP4`. [#1056](https://github.com/Canardoux/flutter_sound/issues/1056)
-- - New example `MediaRecorderExaple` to show how to record to stream on Web.
+- Fixes a regression introduced in v9.8.1 when recording to stream on iOS and Android ([#1056](https://github.com/Canardoux/flutter_sound/issues/1056) and [#1060](https://github.com/Canardoux/flutter_sound/issues/1060))
+- Recorder To Stream on Web with `Codec.opusWebM` and `Codec.aacMP4`. ([#1056](https://github.com/Canardoux/flutter_sound/issues/1056)).
+- New example `MediaRecorderExample` to show how to record to stream on Web.
 - The documentation has not yet been updated
 - The iOS and Android platforms has not yet been updated, and are not fully compatible with Flutter Web.
 - The `codec:` parameter can be specified. Its value can be either :

@@ -110,12 +110,6 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
           }
           break;
 
-        case "closeRecorderCompleted":
-          {
-            aRecorder!.closeRecorderCompleted(call.arguments['state'], success);
-          }
-          break;
-
         case "log":
           {
             int i = call.arguments['level'];
