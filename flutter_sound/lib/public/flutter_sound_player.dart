@@ -564,7 +564,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
     await _stop(); // Stop the player if running
     //_isInited = Initialized.initializationInProgress; // BOF
-
+    _cleanCompleters();
     _removePlayerCallback();
     await FlutterSoundPlayerPlatform.instance.closePlayer(this);
 

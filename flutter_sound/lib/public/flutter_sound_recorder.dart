@@ -417,6 +417,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     } catch (e) {
       _logger.e(e.toString());
     }
+    _cleanCompleters();
     //_isInited = Initialized.initializationInProgress; // BOF
     _removeRecorderCallback(); // _recorderController will be closed by this function
     if (_userStreamSink != null) {
