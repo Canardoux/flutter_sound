@@ -38,6 +38,10 @@ public class FlutterSound
 	public void onAttachedToEngine ( FlutterPlugin.FlutterPluginBinding binding )
 	{
 		this.pluginBinding = binding;
+
+		Flauto.androidContext = pluginBinding.getApplicationContext ();
+		FlutterSoundPlayerManager.attachFlautoPlayer ( Flauto.androidContext, pluginBinding.getBinaryMessenger () );
+		FlutterSoundRecorderManager.attachFlautoRecorder ( Flauto.androidContext, pluginBinding.getBinaryMessenger () );
 	}
 
 
@@ -49,7 +53,6 @@ public class FlutterSound
 		if (registrar.activity() == null) {
 			return;
 		}
-		//reg = registrar;
 		Flauto.androidContext = registrar.context ();
 		Flauto.androidActivity = registrar.activity ();
 
@@ -92,10 +95,6 @@ public class FlutterSound
 	{
 		Flauto.androidActivity = binding.getActivity ();
 
-		// Only register if activity exists (the application is not running in background)
-		Flauto.androidContext = pluginBinding.getApplicationContext ();
-		FlutterSoundPlayerManager.attachFlautoPlayer ( Flauto.androidContext, pluginBinding.getBinaryMessenger () );
-		FlutterSoundRecorderManager.attachFlautoRecorder ( Flauto.androidContext, pluginBinding.getBinaryMessenger () );
 	}
 
 
