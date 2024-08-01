@@ -427,7 +427,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
     await FlutterSoundRecorderPlatform.instance.closeRecorder(this);
     FlutterSoundRecorderPlatform.instance.closeSession(this);
-    //_isInited = Initialized.notInitialized;
+    _isInited = Initialized.notInitialized;
     _logger.d('FS:<--- closeAudioSession ');
   }
 

@@ -569,7 +569,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     await FlutterSoundPlayerPlatform.instance.closePlayer(this);
 
     FlutterSoundPlayerPlatform.instance.closeSession(this);
-    //_isInited = Initialized.notInitialized;
+    _isInited = Initialized.notInitialized;
     _logger.d('FS:<--- closeAudioSession ');
   }
 

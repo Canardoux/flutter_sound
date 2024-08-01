@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-### 9.9.2
+### 9.9.3
 
 - We had some problems with `closeRecorderCompleted` (and probably also with `closePlayerCompleted`) [#1045](https://github.com/Canardoux/flutter_sound/issues/1045). Remove everything about this completer that was not useful.
 
