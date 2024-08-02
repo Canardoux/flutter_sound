@@ -32,6 +32,7 @@ import 'package:logger/logger.dart' show Level, Logger;
 import 'package:path_provider/path_provider.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:flutter/foundation.dart' as Foundation;
+import 'package:flutter/src/services/platform_channel.dart';
 import '../flutter_sound.dart';
 
 /// The possible states of the Player.
@@ -476,7 +477,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///     await myPlayer.closePlayer();
   ///     myPlayer = null;
   /// ```
-  Future<FlutterSoundPlayer?> openPlayer() async {
+  Future<FlutterSoundPlayer?> openPlayer({isBGService = false}) async {
     //if (!Platform.isIOS && enableVoiceProcessing) {
     //throw ('VoiceProcessing is only available on iOS');
     //}
@@ -484,6 +485,12 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (_isInited != Initialized.notInitialized) {
       return this;
     }
+
+    if (isBGService) {
+      await MethodChannel("xyz.canardoux.flutter_sound_bgservice")
+          .invokeMethod("setBGService");
+    }
+
     Future<FlutterSoundPlayer?>? r;
     await _lock.synchronized(() async {
       r = _openAudioSession();

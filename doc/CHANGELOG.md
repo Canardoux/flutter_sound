@@ -7,6 +7,11 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+
+### 9.9.5
+
+- On Android: background service support. [#1061](https://github.com/Canardoux/flutter_sound/issues/1061). Thanks to [@together87](https://github.com/together87) for its contribution.
+
 ### 9.9.4
 
 - On Android, moves `attachFlautoPlayer` and `attachFlautoRecorder` from `onAttachedToActivity` to `onAttachedToEngine`. [#1061](https://github.com/Canardoux/flutter_sound/issues/1061)

@@ -25,6 +25,10 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.plugin.common.MethodCall;
+import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
+import io.flutter.plugin.common.MethodChannel.Result;
 
 import xyz.canardoux.TauEngine.Flauto;
 
@@ -39,9 +43,16 @@ public class FlutterSound
 	{
 		this.pluginBinding = binding;
 
-		Flauto.androidContext = pluginBinding.getApplicationContext ();
-		FlutterSoundPlayerManager.attachFlautoPlayer ( Flauto.androidContext, pluginBinding.getBinaryMessenger () );
-		FlutterSoundRecorderManager.attachFlautoRecorder ( Flauto.androidContext, pluginBinding.getBinaryMessenger () );
+		new MethodChannel(binding.getBinaryMessenger(), "xyz.canardoux.flutter_sound_bgservice").setMethodCallHandler(new MethodCallHandler() {
+			@Override
+			public void onMethodCall ( final MethodCall call, final Result result )
+			{
+				if (call.method.equals("setBGService")) {
+					attachFlauto();
+				}
+				result.success(0);
+			}
+		});
 	}
 
 
@@ -89,12 +100,18 @@ public class FlutterSound
 
 	@Override
 	public void onAttachedToActivity (
-		@NonNull
+			@NonNull
 			ActivityPluginBinding binding
-	                                 )
+	)
 	{
 		Flauto.androidActivity = binding.getActivity ();
+		attachFlauto();
+	}
 
+	public void attachFlauto() {
+		Flauto.androidContext = pluginBinding.getApplicationContext ();
+		FlutterSoundPlayerManager.attachFlautoPlayer ( Flauto.androidContext, pluginBinding.getBinaryMessenger () );
+		FlutterSoundRecorderManager.attachFlautoRecorder ( Flauto.androidContext, pluginBinding.getBinaryMessenger () );
 	}
 
 
