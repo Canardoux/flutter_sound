@@ -10,15 +10,15 @@ toc: false
 
 ### 9.9.5
 
-- On Android: background service support. [#1061](https://github.com/Canardoux/flutter_sound/issues/1061). Thanks to [@together87](https://github.com/together87) for its contribution.
+- On Android: `Background Service` support. [[#1061](https://github.com/Canardoux/flutter_sound/issues/1061)]. Thanks to [@together87](https://github.com/together87) for its contribution.
 
 ### 9.9.4
 
-- On Android, moves `attachFlautoPlayer` and `attachFlautoRecorder` from `onAttachedToActivity` to `onAttachedToEngine`. [#1061](https://github.com/Canardoux/flutter_sound/issues/1061)
+- On Android, moves `attachFlautoPlayer` and `attachFlautoRecorder` from `onAttachedToActivity` to `onAttachedToEngine`. [[#1061](https://github.com/Canardoux/flutter_sound/issues/1061)].
 
 ### 9.9.3
 
-- We had some problems with `closeRecorderCompleted` (and probably also with `closePlayerCompleted`) [#1045](https://github.com/Canardoux/flutter_sound/issues/1045). Remove everything about this completer that was not useful.
+- We had some problems with `closeRecorderCompleted` (and probably also with `closePlayerCompleted`) [[#1045](https://github.com/Canardoux/flutter_sound/issues/1045)]. Remove everything about this completer that was not useful.
 
 ### 9.9.0 beta-3
 
@@ -38,7 +38,7 @@ toc: false
 
 ### 9.8.1 beta-2
 
-- Recorder To Stream on Web. [#1056](https://github.com/Canardoux/flutter_sound/issues/1056)
+- Recorder To Stream on Web. ([#1056](https://github.com/Canardoux/flutter_sound/issues/1056)).
 - The documentation has not yet been updated
 - The iOS and Android platforms has not yet been updated, and are not fully compatible with Flutter Web.
 - The parameter `numChannels:` can be specified. If you do not specify this parameter, the default is `1`.
@@ -54,11 +54,11 @@ toc: false
 
 ### 9.7.2
 
-- Don't test the platform if kIsWeb : [#1055]
+- Don't test the platform if kIsWeb : ([#1055](https://github.com/Canardoux/flutter_sound/issues/1055)).
 
 ### 9.7.0
 
-- Flutter Sound Web depends on `js 0.7` instead of `0.6`. [#1054](https://github.com/Canardoux/flutter_sound/issues/1054)
+- Flutter Sound Web depends on `js 0.7` instead of `0.6`. ([#1054](https://github.com/Canardoux/flutter_sound/issues/1054)).
 
 ### 9.6.0
 
@@ -66,7 +66,7 @@ toc: false
 
 ### 9.5.0
 
-- Flutter Sound does not stop automaticaly the player when finished and when the App specifies a callBack "WhenFinished". [#675](https://github.com/Canardoux/flutter_sound/issues/675). This way, the App can decide to stop the player itself, or it can do other things like a seekToPlayer(0) to restart the playback from the beginning. Exemple :
+- Flutter Sound does not stop automaticaly the player when finished and when the App specifies a callBack "WhenFinished". [[#675](https://github.com/Canardoux/flutter_sound/issues/675)]. This way, the App can decide to stop the player itself, or it can do other things like a seekToPlayer(0) to restart the playback from the beginning. Exemple :
 ```dart
 startPlayer( ... whenFinished: async (){await player.seekToPlayer(0); await player.resumePlayer(); setState(() {});});
 ```
