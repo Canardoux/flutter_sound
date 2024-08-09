@@ -31,6 +31,7 @@ import 'package:synchronized/synchronized.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import '../flutter_sound.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/src/services/platform_channel.dart';
 import 'dart:io' show Platform;
 
 /// A Recorder is an object that can playback from various sources.
@@ -342,9 +343,14 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   ///     myRecorder.closeRecorder();
   ///     myRecorder = null;
   /// ```
-  Future<FlutterSoundRecorder?> openRecorder() async {
+  Future<FlutterSoundRecorder?> openRecorder({isBGService = false}) async {
     if (_isInited != Initialized.notInitialized) {
       return this;
+    }
+
+    if (isBGService) {
+      await MethodChannel("xyz.canardoux.flutter_sound_bgservice")
+          .invokeMethod("setBGService");
     }
 
     Future<FlutterSoundRecorder?>? r;
