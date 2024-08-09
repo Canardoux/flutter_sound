@@ -342,9 +342,14 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   ///     myRecorder.closeRecorder();
   ///     myRecorder = null;
   /// ```
-  Future<FlutterSoundRecorder?> openRecorder() async {
+  Future<FlutterSoundRecorder?> openRecorder({isBGService = false}) async {
     if (_isInited != Initialized.notInitialized) {
       return this;
+    }
+
+    if (isBGService) {
+      await MethodChannel("xyz.canardoux.flutter_sound_bgservice")
+          .invokeMethod("setBGService");
     }
 
     Future<FlutterSoundRecorder?>? r;
