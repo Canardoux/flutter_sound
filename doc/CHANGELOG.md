@@ -7,10 +7,13 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.9.6
+
+Add two safeguards in iOS low level to protect us against asynchronous failures ([#1062](https://github.com/Canardoux/flutter_sound/issues/1062)) and ([#1063](https://github.com/Canardoux/flutter_sound/issues/1063)).
 
 ### 9.9.5
 
-- On Android: `Background Service` support. [[#1061](https://github.com/Canardoux/flutter_sound/issues/1061)]. Thanks to [@together87](https://github.com/together87) for its contribution.
+- On Android: `Background Service` support. [[#1061](https://github.com/Canardoux/flutter_sound/issues/1061)]. Thanks to [@together87](https://github.com/together87) for his/her contribution.
 
 ### 9.9.4
 
