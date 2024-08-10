@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.10.1
+
+- Fixes a stupid bug in Flutter Sound Web : the calling table of js did not match the one of dart
+
 ### 9.10.0
 
 - Add `isBGService` to openRecorder. ([PR #1066](https://github.com/Canardoux/flutter_sound/pull/1066)). Thanks to [Mohsin](https://github.com/mdmohsin7) for his//her contribution.

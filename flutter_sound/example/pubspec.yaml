@@ -7,7 +7,7 @@ description: Driver for the various Flutter Sound examples
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 9.10.0
+version: 9.10.1
 
 homepage: https://github.com/canardoux/flutter_sound/blob/master/flutter_sound/
 
@@ -35,15 +35,15 @@ dependencies:
 # ============================================================================
 # The following instructions are just for developing/debugging Flutter Sound
 # Do not put them in a real App
-  flutter_sound_platform_interface: 9.10.0
+  flutter_sound_platform_interface: 9.10.1
 #    path: ../../flutter_sound_platform_interface
-  flutter_sound_web: 9.10.0
+  flutter_sound_web: 9.10.1
 #    path: ../../flutter_sound_web # flutter_sound_web Dir
-  flutter_sound: ^9.10.0
+  flutter_sound: ^9.10.1
 #    path: ../ # Flutter Sound Dir
 # ============================================================================
 
-#  flutter_sound_platform_interface: ^9.10.0
+#  flutter_sound_platform_interface: ^9.10.1
 
   path_provider: ^2.0.2
   permission_handler: ^11.3.0
