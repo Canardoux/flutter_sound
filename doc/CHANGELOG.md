@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-### 9.10.1
+### 9.10.2
 
 - Fixes a stupid bug in Flutter Sound Web : the calling table of js did not match the one of dart
 
