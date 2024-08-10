@@ -35,7 +35,7 @@ import 'package:flutter/services.dart' show rootBundle;
  */
 
 const _exampleAudioFilePathMP3 =
-    'https://tau.canardoux.xyz/taudoc/danku/extract/05.mp3';
+    'https://tau.canardoux.xyz/danku/extract/05.mp3';
 
 ///
 typedef Fn = void Function();
