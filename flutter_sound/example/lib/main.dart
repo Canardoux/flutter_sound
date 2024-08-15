@@ -23,21 +23,18 @@ import 'demo/demo.dart';
 import 'livePlaybackWithBackPressure/live_playback_with_back_pressure.dart';
 import 'livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart';
 import 'multi_playback/multi_playback.dart';
-import 'play_from_mic/play_from_mic.dart';
 import 'recordToStream/record_to_stream_example.dart';
 import 'dummy_mobile.dart'
     if (dart.library.js_interop) 'mediaRecorder/media_recorder.dart'; // package:web implementation
 import 'simple_playback/simple_playback.dart';
 import 'simple_recorder/simple_recorder.dart';
 import 'soundEffect/sound_effect.dart';
-import 'streamLoop/stream_loop.dart';
 import 'loglevel/loglevel.dart';
 import 'volume_control/volume_control.dart';
 import 'speed_control/speed_control.dart';
 import 'player_onProgress/player_on_progress.dart';
 import 'recorder_onProgress/recorder_on_progress.dart';
 import 'seek/seek.dart';
-import 'streamLoop_justAudio/stream_loop_just_audio.dart';
 
 /*
     This APP is just a driver to call the various Flutter Sound examples.
@@ -202,19 +199,6 @@ This is a very simple example showing how to  call `setSubscriptionDuration() an
   ),
 
   Example(
-    title: 'Play from Mic',
-    subTitle: 'Play from microphone',
-    flags: tNotWeb,
-    route: (_) => const PlayFromMic(),
-    description: '''
-Play on the bluetooth headset what is recorded by the microphone.
-This example is very simple.
-
->>> Please ensure that your headset is correctly connected via bluetooth
-''',
-  ),
-
-  Example(
     title: 'recordToStream',
     subTitle: 'Example of recording to Stream',
     flags: tNotWeb,
@@ -297,21 +281,6 @@ When it want to play a noise, it has just to call the verb ```feed```
 ''',
   ),
 
-  Example(
-    title: 'streamLoop',
-    subTitle: 'Loop from recorder to player',
-    flags: tNotWeb,
-    route: (_) => const StreamLoop(),
-    description: '''
-```streamLoop()``` is a very simple example which connect the FlutterSoundRecorder sink
-to the FlutterSoundPlayer Stream.
-
-Of course, we do not play to the loudspeaker to avoid a very unpleasant Larsen effect.
-
-This example does not use a new StreamController, but use directly `foodStreamController`
-from flutter_sound_player.dart.
-''',
-  ),
 
   Example(
     title: 'setLogLevel()',
@@ -324,16 +293,7 @@ Shows how to change the loglevel during an audio session.
 ''',
   ),
 
-  Example(
-    title: 'StreamLoopJustAudio()',
-    subTitle: 'JustAudio cohabitation',
-    flags: tNotWeb,
-    route: (_) => const StreamLoopJustAudio(),
-    description: '''
-    ```
-    Test the StreamLoop with JustAudio cohabitation.
-    ''',
-  ),
+
 ];
 
 ///

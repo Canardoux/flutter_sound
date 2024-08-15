@@ -10,7 +10,7 @@ if [ ! -z "$VERSION" ]; then
 fi
 
 cd flutter_sound
-dart doc   lib 2>/dev/null
+dart doc .
 cd ..
 
 cd doc

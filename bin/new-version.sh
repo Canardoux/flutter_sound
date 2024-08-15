@@ -171,7 +171,7 @@ cd ..
 
 
 cd flutter_sound
-dart doc lib
+dart doc .
 if [ $? -ne 0 ]; then
     echo "Error: dart doc flutter_sound/lib"
    #!!!!!exit -1

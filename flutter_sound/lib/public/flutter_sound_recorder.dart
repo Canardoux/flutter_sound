@@ -581,6 +581,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       /* await */ player.closePlayer();
     }
 
+    await stopRecorder(); // No two recorder at the same time
     if (sampleRate == null) {
       sampleRate = await getSampleRate();
       if (sampleRate == 0) {

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the write method from the WaveHeader class, for the Dart programming language.">
+  <title>write method - WaveHeader class - wave_header library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">flutter_sound</a></li>
+    <li><a href="../../wave_header/wave_header-library.html">public&#47;util&#47;wave_header.dart</a></li>
+    <li><a href="../../wave_header/WaveHeader-class.html">WaveHeader</a></li>
+    <li class="self-crumb">write method</li>
+  </ol>
+  <div class="self-name">write</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="wave_header&#47;WaveHeader-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">write</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+<span class="name ">write</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="write-param-out"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-async/EventSink-class.html">EventSink</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>&gt;</span></span> <span class="parameter-name">out</span></span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Write a WAVE file header.</p>
+<p>@param out {@link java.io.OutputStream} to receive the header.
+@return number of bytes written.
+@throws IOException</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">int write(EventSink&lt;List&lt;int&gt;&gt; out) {
+  &#47;* RIFF header *&#47;
+  writeId(out, &#39;RIFF&#39;);
+  writeInt(out, 36 + mNumBytes);
+  writeId(out, &#39;WAVE&#39;);
+  &#47;* fmt chunk *&#47;
+  writeId(out, &#39;fmt &#39;);
+  writeInt(out, 16);
+  writeint(out, mFormat);
+  writeint(out, mNumChannels);
+  writeInt(out, mSampleRate);
+  writeInt(out, (mNumChannels * mSampleRate * mBitsPerSample &#47; 8).floor());
+  writeint(out, (mNumChannels * mBitsPerSample &#47; 8).floor());
+  writeint(out, mBitsPerSample);
+  &#47;* data chunk *&#47;
+  writeId(out, &#39;data&#39;);
+  writeInt(out, mNumBytes);
+
+  return headerLength;
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">flutter_sound</a></li>
+    <li><a href="../../wave_header/wave_header-library.html">wave_header</a></li>
+    <li><a href="../../wave_header/WaveHeader-class.html">WaveHeader</a></li>
+    <li class="self-crumb">write method</li>
+</ol>
+
+
+    <h5>WaveHeader class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    flutter_sound
+      9.10.4
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

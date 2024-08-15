@@ -83,8 +83,8 @@ class _LivePlaybackWithoutBackPressureState
 
   @override
   void dispose() {
-//    stopPlayer();
-//    _mPlayer.closePlayer();
+    //stopPlayer();
+    _mPlayer.closePlayer();
     super.dispose();
   }
 

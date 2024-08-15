@@ -125,6 +125,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
         fromURI: _exampleAudioFilePathMP3,
         codec: Codec.mp3,
         whenFinished: () {
+          stopPlayer1();
           setState(() {});
         });
     setState(() {});
@@ -168,6 +169,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
         fromDataBuffer: buffer2,
         codec: Codec.aacADTS,
         whenFinished: () {
+          stopPlayer2();
           setState(() {});
         });
     setState(() {});
@@ -211,6 +213,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
         fromDataBuffer: buffer3,
         codec: Codec.aacMP4,
         whenFinished: () {
+          stopPlayer3();
           setState(() {});
         });
     setState(() {});

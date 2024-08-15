@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the isEncoderSupported method from the FlutterSoundRecorder class, for the Dart programming language.">
+  <title>isEncoderSupported method - FlutterSoundRecorder class - recorder library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">flutter_sound</a></li>
+    <li><a href="../../recorder/recorder-library.html">public&#47;flutter_sound_recorder.dart</a></li>
+    <li><a href="../../recorder/FlutterSoundRecorder-class.html">FlutterSoundRecorder</a></li>
+    <li class="self-crumb">isEncoderSupported method</li>
+  </ol>
+  <div class="self-name">isEncoderSupported</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="recorder&#47;FlutterSoundRecorder-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">isEncoderSupported</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
+<span class="name ">isEncoderSupported</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="isEncoderSupported-param-codec"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.10.4/flutter_sound_platform_interface/Codec.html">Codec</a></span> <span class="parameter-name">codec</span></span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Returns true if the specified encoder is supported by flutter_sound on this platform.</p>
+<p>This verb is useful to know if a particular codec is supported on the current platform;
+Returns a Future<bool>.</bool></p>
+<p><em>Example:</em></p>
+<pre class="language-dart"><code class="language-dart">        if ( await myRecorder.isEncoderSupported(Codec.opusOGG) ) doSomething;
+</code></pre>
+<p><code>isEncoderSupported</code> is a method for legacy reason, but should be a static function.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; isEncoderSupported(Codec codec) async {
+  &#47;&#47; For encoding ogg&#47;opus on ios, we need to support two steps :
+  &#47;&#47; - encode CAF&#47;OPPUS (with native Apple AVFoundation)
+  &#47;&#47; - remux CAF file format to OPUS file format (with ffmpeg)
+  await _waitOpen();
+  if (_isInited != Initialized.fullyInitialized) {
+    throw Exception(&#39;Recorder is not open&#39;);
+  }
+  var result = false;
+  &#47;&#47; For encoding ogg&#47;opus on ios, we need to support two steps :
+  &#47;&#47; - encode CAF&#47;OPPUS (with native Apple AVFoundation)
+  &#47;&#47; - remux CAF file format to OPUS file format (with ffmpeg)
+
+  result = await FlutterSoundRecorderPlatform.instance
+      .isEncoderSupported(this, codec: codec);
+  return result;
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">flutter_sound</a></li>
+    <li><a href="../../recorder/recorder-library.html">recorder</a></li>
+    <li><a href="../../recorder/FlutterSoundRecorder-class.html">FlutterSoundRecorder</a></li>
+    <li class="self-crumb">isEncoderSupported method</li>
+</ol>
+
+
+    <h5>FlutterSoundRecorder class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    flutter_sound
+      9.10.4
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

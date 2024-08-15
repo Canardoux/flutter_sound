@@ -198,7 +198,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     } else {
       await stopPlayer(); // ??? Maybe
     }
-    _cleanCompleters(); // We have problem when the record is finished and a resume is pending
+    //_cleanCompleters(); // We have problem when the record is finished and a resume is pending
 
     //});
     _logger.d('FS:<--- audioPlayerFinished');

@@ -7,6 +7,12 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+
+### 9.10.5
+
+- Fix a bug when the playback is finished. We must not call `_cleanCompleters()`
+- Fixes several minor issues in the examples
+
 ### 9.10.4
 
 - Fixes a stupid bug in Flutter Sound Web : the calling table of js did not match the one of dart

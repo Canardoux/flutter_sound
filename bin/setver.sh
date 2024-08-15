@@ -10,6 +10,8 @@ VERSION=$1
 VERSION_CODE=${VERSION//./}
 VERSION_CODE=${VERSION_CODE//+/}
 
+gsed -i "s/^FLUTTER_SOUND_VERSION=.*/FLUTTER_SOUND_VERSION='$VERSION'/"   flutter_sound/doc/FLUTTER_SOUND_VERSION
+
 gsed -i  "s/const VERSION = .*$/const VERSION = '$VERSION'/"                  flutter_sound_web/src/flutter_sound.js;
 gsed -i  "s/const PLAYER_VERSION = .*$/const PLAYER_VERSION = '$VERSION'/"    flutter_sound_web/src/flutter_sound_player.js;
 gsed -i  "s/const RECORDER_VERSION = .*$/const RECORDER_VERSION = '$VERSION'/"    flutter_sound_web/src/flutter_sound_recorder.js;
