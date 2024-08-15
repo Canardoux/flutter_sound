@@ -73,7 +73,7 @@ class _SoundEffectState extends State<SoundEffect> {
       codec: Codec.pcm16,
       numChannels: _tNumChannels,
       sampleRate: _tSampleRate,
-      whenFinished:  (){}, // Do not close the player
+      whenFinished: () {}, // Do not close the player
     );
   }
 

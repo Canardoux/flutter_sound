@@ -370,7 +370,7 @@ class _MyAppState extends State<Demo> {
         recordingDataController = StreamController<Uint8List>();
         _recordingDataSubscription =
             recordingDataController!.stream.listen((buffer) {
-            sink!.add(buffer);
+          sink!.add(buffer);
         });
         await recorderModule.startRecorder(
           toStream: recordingDataController!.sink,

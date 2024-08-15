@@ -281,7 +281,6 @@ When it want to play a noise, it has just to call the verb ```feed```
 ''',
   ),
 
-
   Example(
     title: 'setLogLevel()',
     subTitle: 'Dynamically change the log level',
@@ -292,8 +291,6 @@ When it want to play a noise, it has just to call the verb ```feed```
 Shows how to change the loglevel during an audio session.
 ''',
   ),
-
-
 ];
 
 ///
