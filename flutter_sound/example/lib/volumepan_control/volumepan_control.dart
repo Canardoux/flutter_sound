@@ -171,7 +171,7 @@ class _VolumePanControlState extends State<VolumePanControl> {
                 ? 'Playback #1 in progress'
                 : 'Player #1 is stopped'),
           ]),
-          const Text('Volume:'),
+          const Text('Volume and Pan:'),
           Slider(
               value: _mVolume1,
               min: 0.0,
@@ -193,7 +193,7 @@ class _VolumePanControlState extends State<VolumePanControl> {
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(
-        title: const Text('Volume Control'),
+        title: const Text('Volume Pan Control'),
       ),
       body: makeBody(),
     );
