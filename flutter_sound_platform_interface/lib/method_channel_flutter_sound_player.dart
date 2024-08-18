@@ -358,6 +358,14 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
   }
 
   @override
+  Future<int> setVolumePan(FlutterSoundPlayerCallback callback, {double? volume, double? pan}) {
+    return invokeMethod(callback, 'setVolumePan', {
+      'volume': volume,
+      'pan': pan,
+    });
+  }
+
+  @override
   Future<int> setSpeed(FlutterSoundPlayerCallback callback,
       {required double speed}) {
     return invokeMethod(callback, 'setSpeed', {

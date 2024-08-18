@@ -31,6 +31,7 @@ import 'simple_recorder/simple_recorder.dart';
 import 'soundEffect/sound_effect.dart';
 import 'loglevel/loglevel.dart';
 import 'volume_control/volume_control.dart';
+import 'volumepan_control/volumepan_control.dart';
 import 'speed_control/speed_control.dart';
 import 'player_onProgress/player_on_progress.dart';
 import 'recorder_onProgress/recorder_on_progress.dart';
@@ -147,6 +148,18 @@ This is a simple example that plays several sound at the same time.
     route: (_) => const VolumeControl(),
     description: '''
 This is a very simple example showing how to set the Volume during a playback.
+
+This example is really basic.
+''',
+  ),
+
+  Example(
+    title: 'Volume Pan Control',
+    subTitle: 'Volume Pan Control',
+    flags: 0,
+    route: (_) => const VolumePanControl(),
+    description: '''
+This is a very simple example showing how to set the Volume and Pan during a playback.
 
 This example is really basic.
 ''',
