@@ -189,6 +189,10 @@ entries:
           url: /tau_api_player_set_volume.html
           output: web, pdf
 
+        - title: setVolumePan()
+          url: /tau_api_player_set_volumepan.html
+          output: web, pdf
+
         - title: setSpeed()
           url: /tau_api_player_set_speed.html
           output: web, pdf
