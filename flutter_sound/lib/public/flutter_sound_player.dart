@@ -1284,6 +1284,35 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _logger.d('FS:<--- setVolume ');
   }
 
+  Future<void> setVolumePan(double volume,double pan) async {
+    await _lock.synchronized(() async {
+      await _setVolumePan(volume,pan);
+    });
+  }
+
+  Future<void> _setVolumePan(double volume,double pan) async {
+    _logger.d('FS:---> setVolumePan ');
+    await _waitOpen();
+    if (_isInited != Initialized.fullyInitialized) {
+      throw Exception('Player is not open');
+    }
+    //var indexedVolume = (!kIsWeb) && Platform.isIOS ? volume * 100 : volume;
+    if (volume < 0.0 || volume > 1.0) {
+      throw RangeError('Value of volume should be between 0.0 and 1.0.');
+    }
+    if (pan < -1.0 || pan > 1.0) {
+      throw RangeError('Value of pan should be between -1.0 and 1.0.');
+    }
+    var state = await FlutterSoundPlayerPlatform.instance.setVolumePan(
+      this,
+      volume: volume,
+      pan: pan,
+    );
+    _playerState = PlayerState.values[state];
+    _logger.d('FS:<--- setVolumePan ');
+  }
+
+
   /// Change the playback speed
   ///
   /// The parameter is a floating point number between 0 and 1.0 to slow the speed,
