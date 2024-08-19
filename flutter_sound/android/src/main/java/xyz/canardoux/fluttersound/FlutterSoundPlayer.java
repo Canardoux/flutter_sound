@@ -320,6 +320,20 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		}
 	}
 
+	public void setVolumePan ( final MethodCall call, final Result result )
+	{
+		try
+		{
+			double volume = call.argument("volume");
+			double pan = call.argument("pan");
+			m_flautoPlayer.setVolumePan(volume,pan);
+			result.success(getPlayerState());
+		} catch(Exception e)
+		{
+			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
+		}
+	}
+
 
 	public void setSpeed ( final MethodCall call, final Result result )
 	{

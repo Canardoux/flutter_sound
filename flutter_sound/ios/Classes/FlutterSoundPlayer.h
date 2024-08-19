@@ -54,6 +54,7 @@
 - (void)seekToPlayer:(FlutterMethodCall*) time result: (FlutterResult)result;
 - (void)setSubscriptionDuration:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)setVolume:(double) volume fadeDuration:(NSTimeInterval)duration result: (FlutterResult)result;
+- (void)setVolumePan:(double) volume pan:(double)pan fadeDuration:(NSTimeInterval)duration result: (FlutterResult)result;
 - (void)setSpeed:(double) speed  result: (FlutterResult)result;
 - (void)openPlayer: (FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)closePlayer: (FlutterMethodCall*)call result: (FlutterResult)result;

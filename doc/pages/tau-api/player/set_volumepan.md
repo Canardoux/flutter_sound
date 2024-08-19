@@ -9,7 +9,7 @@ keywords: API Player
 # The &tau; Player API
 ----------------------------------------------------------------------------------------------------------------------------------
 
-## `setVolume()`
+## `setVolumePan()`
 
 - Dart API: [setVolumePan()](pages/flutter-sound/api/player/FlutterSoundPlayer/setVolumePan.html).
 

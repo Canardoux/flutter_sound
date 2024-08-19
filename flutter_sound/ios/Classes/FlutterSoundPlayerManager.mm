@@ -157,6 +157,14 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                 [aFlautoPlayer setVolume: [volume doubleValue] fadeDuration: [fadeDuration  doubleValue]/1000.0 result: result];
         } else
 
+        if ([@"setVolumePan" isEqualToString:call.method])
+        {
+                NSNumber* volume = (NSNumber*)call.arguments[@"volume"]; // Between 0.0 and 1.0
+                NSNumber* pan = (NSNumber*)call.arguments[@"pan"]; // Between -1.0 and 1.0
+                NSNumber* fadeDuration = (NSNumber*)call.arguments[@"fadeDuration"]; // in milliseconds
+                [aFlautoPlayer setVolumePan: [volume doubleValue] pan: [pan doubleValue] fadeDuration: [fadeDuration  doubleValue]/1000.0 result: result];
+        } else
+
         if ([@"setSpeed" isEqualToString:call.method])
         {
                 NSNumber* speed = (NSNumber*)call.arguments[@"speed"]; // Between 0.0 and 1.0

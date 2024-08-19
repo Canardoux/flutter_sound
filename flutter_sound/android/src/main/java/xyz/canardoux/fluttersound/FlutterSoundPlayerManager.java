@@ -159,6 +159,12 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         }
                         break;
 
+                        case "setVolumePan":
+                        {
+                                aPlayer.setVolumePan ( call, result );
+                        }                        
+                        break;
+
                         case "setSpeed":
                         {
                                 aPlayer.setSpeed ( call, result );
