@@ -8,7 +8,7 @@ summary: The Changelog of The &tau; Project.
 toc: false
 ---
 
-### 9.11.1
+### 9.11.2
 
 - Android build.gradle: compileSdk = 35
 
