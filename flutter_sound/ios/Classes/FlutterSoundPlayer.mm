@@ -356,6 +356,16 @@
                 [self log: DBG msg: @"IOS:<-- setVolume"];
 }
 
+- (void)setVolumePan:(double) volume pan:(double) pan fadeDuration: (double)fadeDuration result: (FlutterResult)result // Volume is between 0.0 and 1.0
+{
+                [self log: DBG msg: @"IOS:--> setVolumePan"];
+                [flautoPlayer setVolume: volume fadeDuration: fadeDuration];
+                [flautoPlayer setPan: pan];
+                result([self getPlayerStatus]);
+                [self log: DBG msg: @"IOS:<-- setVolumePan"];
+}
+
+
 - (void)setSpeed:(double) speed  result: (FlutterResult)result // speed is 0.0 to 1.0 to slow and 1.0 to n to speed
 {
         [self log: DBG msg: @"IOS:--> setSpeed"];
