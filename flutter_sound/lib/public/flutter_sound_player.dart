@@ -1284,13 +1284,13 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _logger.d('FS:<--- setVolume ');
   }
 
-  Future<void> setVolumePan(double volume,double pan) async {
+  Future<void> setVolumePan(double volume, double pan) async {
     await _lock.synchronized(() async {
-      await _setVolumePan(volume,pan);
+      await _setVolumePan(volume, pan);
     });
   }
 
-  Future<void> _setVolumePan(double volume,double pan) async {
+  Future<void> _setVolumePan(double volume, double pan) async {
     _logger.d('FS:---> setVolumePan ');
     await _waitOpen();
     if (_isInited != Initialized.fullyInitialized) {
@@ -1311,7 +1311,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _playerState = PlayerState.values[state];
     _logger.d('FS:<--- setVolumePan ');
   }
-
 
   /// Change the playback speed
   ///
