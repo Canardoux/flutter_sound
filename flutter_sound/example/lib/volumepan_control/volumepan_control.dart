@@ -102,7 +102,7 @@ class _VolumePanControlState extends State<VolumePanControl> {
   Future<void> setVolume1(double v) async // v is between 0.0 and 100.0
   {
     v = v > 100.0 ? 100.0 : v;
-    _mVolume1 = v;    
+    _mVolume1 = v;
     setState(() {});
     //await _mPlayer!.setVolume(v / 100, fadeDuration: Duration(milliseconds: 5000));
     await _mPlayer1.setVolumePan(
@@ -110,6 +110,7 @@ class _VolumePanControlState extends State<VolumePanControl> {
       _mPan1 / 100,
     );
   }
+
   Future<void> setPan1(double p) async // v is between 0.0 and 100.0
   {
     p = p > 100.0 ? 100.0 : p;
@@ -183,7 +184,7 @@ class _VolumePanControlState extends State<VolumePanControl> {
               min: -100.0,
               max: 100.0,
               onChanged: setPan1,
-              divisions: 200),             
+              divisions: 200),
         ]),
         //),
         //],
