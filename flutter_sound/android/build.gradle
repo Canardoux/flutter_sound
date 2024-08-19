@@ -1,6 +1,6 @@
 
 group 'xyz.canardoux.fluttersound'
-version '9.11.0'
+version '9.11.2'
 
 buildscript {
     repositories {
@@ -29,7 +29,7 @@ android {
       namespace 'xyz.canardoux.fluttersound'
     }    
     
-    compileSdkVersion 30
+    compileSdkVersion 34
 
     defaultConfig {
         minSdkVersion 18 // 18 works fine for the player, but the recorder needs at least 24
@@ -58,7 +58,7 @@ dependencies {
     // CAUTION: The following instruction is for developping and debugging the Flauto Engine
     // DO NOT INCLUDE THE FOLLOWING LINE IN A REAL APP !!!
     //implementation project(':flutter_sound_core')
-    implementation 'com.github.canardoux:flutter_sound_core:9.11.0'
+    implementation 'com.github.canardoux:flutter_sound_core:9.11.2'
     // -------------------------------------------------------------------------------------
 
 }

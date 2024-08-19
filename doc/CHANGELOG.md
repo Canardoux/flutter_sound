@@ -8,10 +8,14 @@ summary: The Changelog of The &tau; Project.
 toc: false
 ---
 
+### 9.11.1
+
+- Android build.gradle: compileSdk = 35
+
 ### 9.11.0
 
 - Ad a new verb for the player API : `setVolumePan`. [(#77)](https://github.com/Canardoux/flutter_sound/issues/77). Many thanks to [Chang Cheng Wei](https://github.com/changcw83) for his contribution.
-  
+
 ### 9.10.5
 
 - Fix a bug when the playback is finished. We must not call `_cleanCompleters()`
