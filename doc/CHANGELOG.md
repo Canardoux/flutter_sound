@@ -11,6 +11,7 @@ toc: false
 ### 9.11.3
 
 - Flutter Sound depends now on `web: ^1.0.0`. [(#1077)](https://github.com/Canardoux/flutter_sound/issues/1077) .
+- Remove Record to Stream on Web because the code was incompatible with `web: ^1.0.0`. Streams on Web need some work (Player and Recorder).
 
 ### 9.11.2
 

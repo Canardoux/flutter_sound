@@ -33,8 +33,6 @@ import 'package:flutter_sound/flutter_sound.dart';
 const _exampleAudioFilePathMP3_1 =
     'https://tau.canardoux.xyz/danku/extract/leftright.mp3';
 
-const _exampleAudioFilePathMP3_2 =
-    'https://tau.canardoux.xyz/danku/extract/05.mp3';
 
 ///
 typedef Fn = void Function();
