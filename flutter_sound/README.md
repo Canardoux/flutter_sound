@@ -25,10 +25,7 @@ Flutter Sound provides both a high level API and widgets for:
 
 Flutter Sound can be used to play a beep from an asset all the way up to implementing a complete media player.
 
-This library is published under the Mozilla Public License MPL2.0. 
-
-If your App will be covered by the GPL License,
-you probably want to consider using the GPL [Tau Sound Project 9.0](https://pub.dev/packages/tau_sound) : Tau Sound 9.0 offers several enhancement compared to Flutter Sound 8.3.
+This library is published under the Mozilla Public License MPL2.0.
 
 ## Requirements
 
