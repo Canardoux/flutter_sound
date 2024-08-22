@@ -8,9 +8,13 @@ summary: The Changelog of The &tau; Project.
 toc: false
 ---
 
+### 9.11.3
+
+- Flutter Sound depends now on `web: ^1.0.0`. [(#1077)](https://github.com/Canardoux/flutter_sound/issues/1077) .
+
 ### 9.11.2
 
-- Android build.gradle: compileSdk = 35
+- Android build.gradle: compileSdk = 34
 
 ### 9.11.0
 
