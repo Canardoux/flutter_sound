@@ -764,7 +764,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       await flutterSoundHelper.pcmToWave(
         inputFile: fromURI,
         outputFile: path,
-        numChannels: 1,
+        numChannels: numChannels,
         //bitsPerSample: 16,
         sampleRate: sampleRate,
       );

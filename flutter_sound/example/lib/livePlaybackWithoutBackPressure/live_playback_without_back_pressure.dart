@@ -67,7 +67,27 @@ class _LivePlaybackWithoutBackPressureState
   final FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
   double _mSpeed = 100.0;
+  late Uint8List data;
 
+  Future<void> initPlayer() async
+  {
+    await _mPlayer.openPlayer();
+    _mPlayerIsInited = true;
+    assert(_mPlayerIsInited && _mPlayer.isStopped);
+    await _mPlayer.startPlayerFromStream(
+        codec: Codec.pcm16,
+        numChannels: 1,
+        sampleRate: tSampleRate,
+        bufferSize: 20480,
+        whenFinished: () {
+          FlutterSoundPlayer().logger.i("FINISHED!");
+        });
+    data = await getAssetData('assets/samples/sample.pcm');
+
+    setState(() { _mPlayerIsInited = true;});
+
+
+  }
   @override
   void initState() {
     super.initState();
@@ -78,7 +98,7 @@ class _LivePlaybackWithoutBackPressureState
 //        _mPlayerIsInited = true;
 //      });
 //    });
-    _mPlayerIsInited = true;
+  initPlayer();
   }
 
   @override
@@ -102,18 +122,6 @@ class _LivePlaybackWithoutBackPressureState
   }
 
   void play() async {
-    await _mPlayer.openPlayer();
-    assert(_mPlayerIsInited && _mPlayer.isStopped);
-    await _mPlayer.startPlayerFromStream(
-        codec: Codec.pcm16,
-        numChannels: 1,
-        sampleRate: tSampleRate,
-        bufferSize: 20480,
-        whenFinished: () {
-          FlutterSoundPlayer().logger.i("FINISHED!");
-        });
-    setState(() {});
-    var data = await getAssetData('assets/samples/sample.pcm');
     feedHim(data);
     //if (_mPlayer != null) {
     // We must not do stopPlayer() directely //await stopPlayer();
@@ -182,10 +190,10 @@ class _LivePlaybackWithoutBackPressureState
           child: Column(children: [
             Row(children: [
               ElevatedButton(
-                onPressed: getPlaybackFn(),
+                onPressed: play,
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
+                child: Text(_mPlayer.isPlaying ? 'Play' : 'Play'),
               ),
               const SizedBox(
                 width: 20,

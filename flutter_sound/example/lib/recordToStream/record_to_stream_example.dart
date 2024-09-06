@@ -140,7 +140,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     await _mRecorder!.startRecorder(
       toStream: recordingDataController.sink,
       codec: Codec.pcm16,
-      numChannels: 1,
+      numChannels: 2,
       sampleRate: 44100,
       bufferSize: 8192,
     );
@@ -177,10 +177,10 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
         fromURI: _mPath,
         sampleRate: sampleRate,
         codec: Codec.pcm16,
-        numChannels: 1,
+        numChannels: 2,
         whenFinished: () {
           setState(() {});
-        }); // The readability of Dart is very special :-(
+        });
     setState(() {});
   }
 
