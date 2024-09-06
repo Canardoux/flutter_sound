@@ -3,6 +3,19 @@ allprojects {
         google()
         mavenCentral()
     }
+        // This code is where all the magic happens and fixes the error.
+    subprojects {
+        afterEvaluate { project ->
+            if (project.hasProperty('android')) {
+                project.android {
+                    if (namespace == null) {
+                        namespace project.group
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 rootProject.buildDir = "../build"

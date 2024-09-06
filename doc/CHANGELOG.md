@@ -8,9 +8,13 @@ summary: The Changelog of The &tau; Project.
 toc: false
 ---
 
+### 9.12.1
+
+- Fixes a stupid bug on android after seek : the curent position was stucked in a wrong position [(#1087)](https://github.com/Canardoux/flutter_sound/issues/1087)
+
 ### 9.12.0
 
-- Stereo recording on Android with Ceodec PCM16 [(#1086)](https://github.com/Canardoux/flutter_sound/issues/1086)
+- Stereo recording on Android with Codec PCM16 [(#1086)](https://github.com/Canardoux/flutter_sound/issues/1086)
   - Stereo with Wav codec not implemented. (Simple to do if requested)
   - Number of channels > 2 is not supported
 - Stereo playback on Android with codec PCM16

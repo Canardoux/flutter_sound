@@ -304,6 +304,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		int millis = call.argument ( "duration" ) ;
 
 		m_flautoPlayer.seekToPlayer(millis);
+		_toto_position = 0;
 		result.success (getPlayerState() );
 	}
 
