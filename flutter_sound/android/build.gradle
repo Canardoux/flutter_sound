@@ -1,6 +1,6 @@
 
 group 'xyz.canardoux.fluttersound'
-version '9.12.7'
+version '9.12.8'
 
 buildscript {
     repositories {
@@ -9,7 +9,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.6.0'
+        classpath 'com.android.tools.build:gradle:8.10.0'
     }
 }
 
@@ -58,7 +58,7 @@ dependencies {
     // CAUTION: The following instruction is for developping and debugging the Flauto Engine
     // DO NOT INCLUDE THE FOLLOWING LINE IN A REAL APP !!!
     //implementation project(':flutter_sound_core')
-    implementation 'com.github.canardoux:flutter_sound_core:9.12.7'
+    implementation 'com.github.canardoux:flutter_sound_core:9.12.8'
     // -------------------------------------------------------------------------------------
 
 }
