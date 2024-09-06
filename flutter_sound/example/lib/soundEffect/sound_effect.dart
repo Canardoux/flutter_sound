@@ -33,7 +33,7 @@ import 'package:flutter/services.dart' show rootBundle;
 
 const int _tSampleRate = 44100;
 const int _tNumChannels = 1;
-const _bim = 'assets/noises/bim.wav';
+//const _bim = 'assets/noises/bim.wav';
 const _bam = 'assets/noises/bam.wav';
 const _boum = 'assets/noises/boum.wav';
 
