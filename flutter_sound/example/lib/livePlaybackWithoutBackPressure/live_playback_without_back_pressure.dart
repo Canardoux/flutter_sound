@@ -69,8 +69,7 @@ class _LivePlaybackWithoutBackPressureState
   double _mSpeed = 100.0;
   late Uint8List data;
 
-  Future<void> initPlayer() async
-  {
+  Future<void> initPlayer() async {
     await _mPlayer.openPlayer();
     _mPlayerIsInited = true;
     assert(_mPlayerIsInited && _mPlayer.isStopped);
@@ -84,10 +83,11 @@ class _LivePlaybackWithoutBackPressureState
         });
     data = await getAssetData('assets/samples/sample.pcm');
 
-    setState(() { _mPlayerIsInited = true;});
-
-
+    setState(() {
+      _mPlayerIsInited = true;
+    });
   }
+
   @override
   void initState() {
     super.initState();
@@ -98,7 +98,7 @@ class _LivePlaybackWithoutBackPressureState
 //        _mPlayerIsInited = true;
 //      });
 //    });
-  initPlayer();
+    initPlayer();
   }
 
   @override
