@@ -111,13 +111,12 @@ fi
 
 
 cd flutter_sound_core
-pod trunk push flutter_sound_core.podspec 
+###############pod trunk push flutter_sound_core.podspec 
 if [ $? -ne 0 ]; then
     echo "Error: trunk push flutter_sound_core.podspec[flutter_sound_core]"
     #!!!!!exit -1
 fi
 cd ..
-exit 0 ##################
 
 
 cd flutter_sound_web
@@ -129,6 +128,7 @@ fi
 
 cd ..
  
+exit 0 ##################
 
 cd flutter_sound
 
