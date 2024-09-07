@@ -77,7 +77,7 @@ cd ..
 
 cd flutter_sound_core
 git add .
-git commit -m "TAU : Version $VERSION"
+git commit -m "TAU_core : Version $VERSION"
 git pull origin
 git push origin
 if [ ! -z "$VERSION" ]; then
@@ -88,7 +88,7 @@ cd ..
 
 cd flutter_sound_web
 git add .
-git commit -m "TAU : Version $VERSION"
+git commit -m "TAU_web : Version $VERSION"
 git pull origin
 git push origin
 if [ ! -z "$VERSION" ]; then
@@ -100,7 +100,7 @@ cd ..
 
 
 git add .
-git commit -m "TAU : Version $VERSION"
+git commit -m "TAU_tau : Version $VERSION"
 git pull origin
 git push origin
 if [ ! -z "$VERSION" ]; then
