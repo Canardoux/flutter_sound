@@ -44,7 +44,7 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 
-flutter pub publish
+###################flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error: flutter pub publish[flutter_sound_platform_interface]"
     #!!!!!exit -1
@@ -66,7 +66,7 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 
-flutter pub publish
+################flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error: flutter pub publish[flutter_sound_web]"
     #!!!!!!exit -1
@@ -128,7 +128,7 @@ fi
 
 cd ..
  
-
+exit 0 ##################
 
 cd flutter_sound
 
