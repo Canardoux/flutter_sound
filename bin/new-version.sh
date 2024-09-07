@@ -44,7 +44,7 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 
-###################flutter pub publish
+flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error: flutter pub publish[flutter_sound_platform_interface]"
     #!!!!!exit -1
@@ -66,7 +66,7 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 
-################flutter pub publish
+flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error: flutter pub publish[flutter_sound_web]"
     #!!!!!!exit -1
@@ -77,7 +77,7 @@ cd ..
 
 cd flutter_sound_core
 git add .
-git commit -m "TAU_core : Version $VERSION"
+git commit -m "TAU : Version $VERSION"
 git pull origin
 git push origin
 if [ ! -z "$VERSION" ]; then
@@ -88,7 +88,7 @@ cd ..
 
 cd flutter_sound_web
 git add .
-git commit -m "TAU_web : Version $VERSION"
+git commit -m "TAU : Version $VERSION"
 git pull origin
 git push origin
 if [ ! -z "$VERSION" ]; then
@@ -100,7 +100,7 @@ cd ..
 
 
 git add .
-git commit -m "TAU_tau : Version $VERSION"
+git commit -m "TAU : Version $VERSION"
 git pull origin
 git push origin
 if [ ! -z "$VERSION" ]; then
@@ -108,7 +108,6 @@ if [ ! -z "$VERSION" ]; then
     git push  -f origin $VERSION
 fi
 
-exit 0 ##################
 
 
 cd flutter_sound_core
@@ -129,6 +128,7 @@ fi
 
 cd ..
  
+
 
 cd flutter_sound
 
