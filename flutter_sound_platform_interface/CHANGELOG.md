@@ -1,4 +1,4 @@
-## 9.12.21
+## 9.12.22
 
 - Please [look to this](https://flutter-sound.canardoux.xyz/changelog.html)
 

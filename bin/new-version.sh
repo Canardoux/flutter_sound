@@ -108,6 +108,7 @@ if [ ! -z "$VERSION" ]; then
     git push  -f origin $VERSION
 fi
 
+exit 0 ##################
 
 
 cd flutter_sound_core
@@ -117,7 +118,6 @@ if [ $? -ne 0 ]; then
     #!!!!!exit -1
 fi
 cd ..
-exit 0 ##################
 
 
 cd flutter_sound_web
