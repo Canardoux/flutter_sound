@@ -29,10 +29,10 @@ android {
     //ndkVersion = flutter.ndkVersion
     ndkVersion = "27.1.12297006"
     compileSdk = 34
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_21
-        targetCompatibility JavaVersion.VERSION_21
-    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_22
+//        targetCompatibility JavaVersion.VERSION_22
+//    }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
