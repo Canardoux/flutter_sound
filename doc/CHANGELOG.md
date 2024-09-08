@@ -8,7 +8,7 @@ summary: The Changelog of The &tau; Project.
 toc: false
 ---
 
-### 9.12.37
+### 9.12.38
 
 - Fixes a stupid bug on android after seek : the curent position was stucked in a wrong position [(#1087)](https://github.com/Canardoux/flutter_sound/issues/1087)
 - Update gradle (8.6) and Java (22.0.1) to recent versions.
