@@ -7,11 +7,12 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-
-### 9.12.43
-
+### ???
 - Fixes a stupid bug on android after seek : the curent position was stucked in a wrong position [(#1087)](https://github.com/Canardoux/flutter_sound/issues/1087)
-- Update gradle (8.10) and Java (22.0) to recent versions.
+
+### 9.12.44
+
+- Trying to update gradle (8.10) and Java (22.0) to recent versions. No Succes : keep temporarly the 9.12.0 flutter_sound_core for Android
 
 ### 9.12.0
 
