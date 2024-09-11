@@ -29,7 +29,7 @@ gsed -i  "s/^\( *s.dependency *'flutter_sound_core', *\).*$/\1'$VERSION'/"      
 gsed -i  "s/^\( *versionName *\).*$/\1'$VERSION'/"                                      flutter_sound_core/android/build.gradle
 gsed -i  "s/^\( *versionCode *\).*$/\11$VERSION_CODE/"                                  flutter_sound_core/android/build.gradle
 
-#####gsed -i  "s/^\( *\/* *implementation 'com.github.canardoux:flutter_sound_core:\).*$/\1$VERSION'/"             flutter_sound/android/build.gradle
+gsed -i  "s/^\( *\/* *implementation 'com.github.canardoux:flutter_sound_core:\).*$/\1$VERSION'/"             flutter_sound/android/build.gradle
 
 
 gsed -i  "s/^\( *version *\).*$/\1'$VERSION'/"                                          flutter_sound/android/build.gradle
