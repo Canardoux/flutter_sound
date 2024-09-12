@@ -7,9 +7,9 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-### 9.15.55
+### 9.15.61
 
-- Downgrade Java to 17 and gradle to 7.3. Too many probles with Flutter Sound 9.15.54
+- Downgrade Java to 17 and gradle to 8.7. Too many problems with Flutter Sound 9.15.54
 
 ### 9.15.54
 
