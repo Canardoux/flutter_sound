@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="Manifest.permission.CAPTURE_AUDIO_OUTPUT" />
-    <application android:label="example" android:icon="@mipmap/ic_launcher" >
+    <application >
         <activity
             android:name=".MainActivity"
             android:exported="true">
