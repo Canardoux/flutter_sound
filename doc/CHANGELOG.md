@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.15.55
+
+- Downgrade Java to 17 and gradle to 7.3. Too many probles with Flutter Sound 9.15.54
+
 ### 9.15.54
 
 - Fixes a stupid bug on android after seek : the curent position was stucked in a wrong position [(#1087)](https://github.com/Canardoux/flutter_sound/issues/1087)
