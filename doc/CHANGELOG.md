@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.16.0
+
+- Create a static completer in flutter_sound_web (`FlutterSoundPlugin::ScriptLoaded`) that is completed when the 4 scripts are fully loaded. [(#921)](https://github.com/Canardoux/flutter_sound/issues/921).
+
 ### 9.15.61
 
 - Downgrade Java to 17 and gradle to 8.7. Too many problems with Flutter Sound 9.15.54

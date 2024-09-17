@@ -224,8 +224,8 @@ cd ../..
 
 bin/doc.sh $VERSION
 
-scp -r flutter_sound/example/build/web danku@danku:/var/www/canardoux.xyz/flutter-sound/web_example
-scp -r flutter_sound/example/assets/extract danku@danku:/var/www/canardoux.xyz/flutter-sound
+scp -r flutter_sound/example/build/web      danku@danku:/var/www/canardoux.xyz/danku/web_example
+scp -r flutter_sound/example/assets/extract danku@danku:/var/www/canardoux.xyz/danku
 
 git add .
 git commit -m "TAU : Version $VERSION"
