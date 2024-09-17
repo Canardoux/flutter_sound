@@ -33,7 +33,7 @@ myRecorder.stopRecorder();
 
 await myPlayer.startPlayer
 (
-        fromURI: = outputFile,
+        fromURI: outputFile,
         codec: Codec.pcm16,
         numChannels: 1,
         sampleRate: 16000, // Used only with codec == Codec.pcm16
