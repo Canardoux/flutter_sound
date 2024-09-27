@@ -9,7 +9,7 @@ toc: false
 ---
 ### 9.16.1
 
-- Fix a bug on Android. The recorded file path was incorrect during StopRecorder(). [(973)](https://github.com/Canardoux/flutter_sound/issues/973).
+- Fix a bug on Android. The recorded file path was incorrect during StopRecorder() with codec=WAV-PCM16. [(973)](https://github.com/Canardoux/flutter_sound/issues/973).
 
 ### 9.16.0
 
