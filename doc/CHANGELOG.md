@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.16.1
+
+- Fix a bug on Android. The recorded file path was incorrect during StopRecorder(). [(973)](https://github.com/Canardoux/flutter_sound/issues/973).
+
 ### 9.16.0
 
 - Create a static completer in flutter_sound_web (`FlutterSoundPlugin::ScriptLoaded`) that is completed when the 4 scripts are fully loaded. [(#921)](https://github.com/Canardoux/flutter_sound/issues/921).
