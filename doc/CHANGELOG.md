@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.16.2
+
+- Remove the patch  #9.4.18 that tried to fix [#1040](https://github.com/Canardoux/flutter_sound/issues/1040). This patch did not work correctly ([(#1087)](https://github.com/Canardoux/flutter_sound/issues/1087)) and was worst than the issue itself. 
+
 ### 9.16.1
 
 - Fix a bug on Android. The recorded file path was incorrect during StopRecorder() with codec=WAV-PCM16. [(973)](https://github.com/Canardoux/flutter_sound/issues/973).
