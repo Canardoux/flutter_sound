@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.16.3
+
+- Flutter Sound Web : the AudioContext open during startRecorder() was never closed. [(#3)](https://github.com/Larpoux/flutter_sound_web/pull/3). Many thanks to [Joana Mesquita](https://github.com/Trash-Bud) for his/her contribution.
+
 ### 9.16.2
 
 - Remove the patch  #9.4.18 that tried to fix [#1040](https://github.com/Canardoux/flutter_sound/issues/1040). This patch did not work correctly ([(#1087)](https://github.com/Canardoux/flutter_sound/issues/1087)) and was worst than the issue itself. 
