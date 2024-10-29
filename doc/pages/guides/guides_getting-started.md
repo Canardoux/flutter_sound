@@ -19,6 +19,7 @@ To play back something you must instanciate a player. Most of the time, you will
 
 ```dart
   import 'package:flauto/flutter_sound.dart';
+  import 'package:audio_session/audio_session.dart';
 ...
   FlutterSoundPlayer _myPlayer = FlutterSoundPlayer();
 ```
@@ -116,7 +117,52 @@ When you have finished with it, **you must** close the session. A god place to p
   }
 ```
 
-### 3. Record something
+### 3. Additional Setup for iOS Audio Recording
+
+When recording audio on iOS devices, extra configuration is required to properly set up the audio session.
+
+After calling `openRecorder()`, configure the audio session as shown below:
+
+```dart
+@override
+void initState() {
+  super.initState();
+  // Be careful : openRecorder return a Future.
+  // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
+  _myRecorder.openRecorder().then((value) async {
+    await initializeAudioSession();
+    setState(() {
+      _mRecorderIsInited = true;
+    });
+  });
+}
+
+Future<void> initializeAudioSession() async {
+  final session = await AudioSession.instance;
+  await session.configure(
+    AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.allowBluetooth |
+          AVAudioSessionCategoryOptions.defaultToSpeaker,
+      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
+      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+      androidAudioAttributes: const AndroidAudioAttributes(
+        contentType: AndroidAudioContentType.speech,
+        flags: AndroidAudioFlags.none,
+        usage: AndroidAudioUsage.voiceCommunication,
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+      androidWillPauseWhenDucked: true,
+    ),
+  );
+}
+```
+
+This configuration will enable Bluetooth support, route audio to the device speaker, and ensure that your app is properly set up for voice recording on iOS.
+
+
+### 4. Record something
 
 To record something you call `startRecorder()`. To stop the recorder you call `stopRecorder()`
 
