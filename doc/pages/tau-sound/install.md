@@ -48,6 +48,16 @@ dependencies:
   flutter_sound_lite: ^8.3.9
 ```
 
+**Additional iOS Setup for Recording**
+
+If your app requires recording functionality on iOS, you will need to configure the audio session using the `audio_session` package. Add it to your dependencies in `pubspec.yaml`:
+```text
+dependencies:
+  flutter:
+    sdk: flutter
+  audio_session: ^0.1.21
+```
+
 ### Linking your App with Flutter Sound sources \(optional\)
 
 The Flutter-Sound sources [are here](https://github.com/dooboolab/flutter_sound).
