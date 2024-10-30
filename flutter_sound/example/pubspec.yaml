@@ -35,12 +35,12 @@ dependencies:
 # ============================================================================
 # The following instructions are just for developing/debugging Flutter Sound
 # Do not put them in a real App
-  flutter_sound_platform_interface: 9.16.3
-#    path: ../../flutter_sound_platform_interface
-  flutter_sound_web: 9.16.3
-#    path: ../../flutter_sound_web # flutter_sound_web Dir
-  flutter_sound: ^9.16.3
-#    path: ../ # Flutter Sound Dir
+  flutter_sound_platform_interface: # 9.16.3
+    path: ../../flutter_sound_platform_interface
+  flutter_sound_web: # 9.16.3
+    path: ../../flutter_sound_web # flutter_sound_web Dir
+  flutter_sound: # ^9.16.3
+    path: ../ # Flutter Sound Dir
 # ============================================================================
 
 #  flutter_sound_platform_interface: ^9.16.3

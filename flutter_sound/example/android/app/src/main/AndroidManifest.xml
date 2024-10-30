@@ -13,6 +13,8 @@
     <application >
         <activity
             android:name=".MainActivity"
+            android:label="My App Name"
+            android:icon="@mipmap/ic_launcher"
             android:exported="true">
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
