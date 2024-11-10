@@ -7,6 +7,11 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.17.0
+
+- Remove the dependency on 'com.github.jitpack:android-example:1.0.1' in flutter_sound_core/android/build.gradle. ([#1107](https://github.com/Canardoux/flutter_sound/issues/1107))
+- merge PR [#1116](https://github.com/Canardoux/flutter_sound/pull/1116) : Removes v1 Flutter Android embedding references
+
 ### 9.16.3
 
 - Flutter Sound Web : the AudioContext open during startRecorder() was never closed. [(#3)](https://github.com/Larpoux/flutter_sound_web/pull/3). Many thanks to [Joana Mesquita](https://github.com/Trash-Bud) for his/her contribution.

@@ -1,5 +1,5 @@
 name: flutter_sound_platform_interface
-version: 9.16.3
+version: 9.17.0
 description: The Dart interface to Flutter Sound.
 #author: canardoux<larpoux@gmail.com>
 # NOTE: We strongly prefer non-breaking changes, even at the expense of a

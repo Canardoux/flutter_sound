@@ -22,7 +22,7 @@ import android.app.Activity;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
+//import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.plugin.common.MethodCall;
@@ -59,6 +59,7 @@ public class FlutterSound
 	/**
 	 * Plugin registration.
 	 */
+	/*
 	public static void registerWith ( Registrar registrar )
 	{
 		if (registrar.activity() == null) {
@@ -71,6 +72,8 @@ public class FlutterSound
 		FlutterSoundRecorderManager.attachFlautoRecorder ( Flauto.androidContext, registrar.messenger ()  );
 	}
 
+	 */
+
 
 	@Override
 	public void onDetachedFromEngine ( FlutterPlugin.FlutterPluginBinding binding )
@@ -80,7 +83,7 @@ public class FlutterSound
 	@Override
 	public void onDetachedFromActivity ()
 	{
-		Flauto.androidActivity = null;		
+		//Flauto.androidActivity = null;
 	}
 
 	@Override
@@ -89,13 +92,13 @@ public class FlutterSound
 			ActivityPluginBinding binding
 	                                                   )
 	{
-		Flauto.androidActivity = binding.getActivity ();
+		//Flauto.androidActivity = binding.getActivity ();
 	}
 
 	@Override
 	public void onDetachedFromActivityForConfigChanges ()
 	{
-		Flauto.androidActivity = null;
+		//Flauto.androidActivity = null;
 	}
 
 	@Override
@@ -104,7 +107,7 @@ public class FlutterSound
 			ActivityPluginBinding binding
 	)
 	{
-		Flauto.androidActivity = binding.getActivity ();
+		//Flauto.androidActivity = binding.getActivity ();
 		attachFlauto();
 	}
 
