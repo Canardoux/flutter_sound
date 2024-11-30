@@ -26,9 +26,9 @@ if (flutterVersionName == null) {
 android {
     namespace = "xyz.canardoux.fluttersound.example"
     //compileSdk = flutter.compileSdkVersion
-    //ndkVersion = flutter.ndkVersion
-    ndkVersion = "27.1.12297006"
-    compileSdk = 35
+    ndkVersion = flutter.ndkVersion
+    //ndkVersion = "27.1.12297006"
+    compileSdk = 34
 //    compileOptions {
 //        sourceCompatibility JavaVersion.VERSION_22
 //        targetCompatibility JavaVersion.VERSION_22

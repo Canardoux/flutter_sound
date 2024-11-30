@@ -36,7 +36,6 @@ android {
         minSdkVersion 28 // 18 works fine for the player, but the recorder needs at least 24
         targetSdkVersion flutter.targetSdkVersion
         version'9.17.1'
-        version'9.17.1'
 
     }
     lintOptions {
