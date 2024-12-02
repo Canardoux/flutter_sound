@@ -201,7 +201,7 @@ pod install --repo-update
 pod update
 pod install
 cd ..
-flutter build ios
+flutter build ios --release
 if [ $? -ne 0 ]; then
     echo "Error: flutter build flutter_sound/example/ios"
     exit -1
@@ -214,7 +214,7 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 
-flutter build web
+flutter build web --release
 if [ $? -ne 0 ]; then
     echo "Error"
     exit -1

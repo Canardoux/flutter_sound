@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.17.5
+
+- Try to downgrade the Android minSdkVersion to 24 ([#1132](https://github.com/Canardoux/flutter_sound/discussions/1132)) (we must check with @izmeera2000 and @joshua1996 that's it is OK with #1129 )
+
 ### 9.17.4
 
 - Android : minSdkVersion 28 // 18 works fine for the player, but the recorder needs at least 24 (was 18) ([#1129](https://github.com/Canardoux/flutter_sound/issues/1129))
