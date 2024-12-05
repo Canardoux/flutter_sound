@@ -927,6 +927,24 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     int bufferSize = 8192,
     TWhenFinished? whenFinished,
   }) async {
+    if ((!kIsWeb) &&
+        Platform
+            .isIOS) // This hack is just to have player to stream working correctly.
+    {
+      FlutterSoundPlayer player = FlutterSoundPlayer();
+      await player.openPlayer();
+      Uint8List buf = Uint8List(0);
+      //buf.fillRange(0, 1000, 0);
+      try {
+        await player.startPlayer(
+            fromDataBuffer: buf, codec: Codec.pcm16, whenFinished: () {});
+      } catch (e) {
+        _logger.d('Hacking the bug we have on iOS when playing from stream');
+      }
+      //await player.stopPlayer();
+      /* await */ player.closePlayer();
+    }
+
     await _lock.synchronized(() async {
       await _startPlayerFromStream(
         codec: codec,

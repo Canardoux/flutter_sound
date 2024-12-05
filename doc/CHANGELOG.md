@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.17.6
+
+- on iOS : in playFromStream() add the same hack than with the recorder ([#900](https://github.com/Canardoux/flutter_sound/issues/900))
+
 ### 9.17.5
 
 - Try to downgrade the Android minSdkVersion to 24 ([#1132](https://github.com/Canardoux/flutter_sound/discussions/1132)) (we must check with @izmeera2000 and @joshua1996 that's it is OK with ([#1129](https://github.com/Canardoux/flutter_sound/issues/1129)) )
