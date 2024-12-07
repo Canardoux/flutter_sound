@@ -58,7 +58,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   //String? _mPath;
   StreamSubscription? _mRecordingDataSubscription;
   //Uint8List buffer = [];
-  int sampleRate = 44100;
+  int sampleRate = 16000;
 
   Future<void> _openRecorder() async {
     var status = await Permission.microphone.request();
@@ -140,8 +140,8 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     await _mRecorder!.startRecorder(
       toStream: recordingDataController.sink,
       codec: Codec.pcm16,
-      numChannels: 2,
-      sampleRate: 44100,
+      numChannels: 1,
+      sampleRate: sampleRate,
       bufferSize: 8192,
     );
     setState(() {});
@@ -177,7 +177,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
         fromURI: _mPath,
         sampleRate: sampleRate,
         codec: Codec.pcm16,
-        numChannels: 2,
+        numChannels: 1,
         whenFinished: () {
           setState(() {});
         });

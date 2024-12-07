@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.17.7
+
+- On iOS : force output sampleRate to 48000 ([#900](https://github.com/Canardoux/flutter_sound/issues/900))
+
 ### 9.17.6
 
 - on iOS : in playFromStream() add the same hack than with the recorder ([#900](https://github.com/Canardoux/flutter_sound/issues/900))

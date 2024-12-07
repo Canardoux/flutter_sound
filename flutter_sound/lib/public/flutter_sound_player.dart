@@ -927,6 +927,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     int bufferSize = 8192,
     TWhenFinished? whenFinished,
   }) async {
+    /* NO HACK
     if ((!kIsWeb) &&
         Platform
             .isIOS) // This hack is just to have player to stream working correctly.
@@ -944,6 +945,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       //await player.stopPlayer();
       /* await */ player.closePlayer();
     }
+    
+     */
 
     await _lock.synchronized(() async {
       await _startPlayerFromStream(
