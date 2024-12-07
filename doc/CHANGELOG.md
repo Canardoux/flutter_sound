@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-### 9.17.7
+### 9.17.8
 
 - On iOS : force output sampleRate to 48000 ([#900](https://github.com/Canardoux/flutter_sound/issues/900))
 
