@@ -136,6 +136,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// Instanciate a new Flutter Sound Recorder.
   /// The optional paramater `Level logLevel` specify the Logger Level you are interested by.
   /* ctor */ FlutterSoundRecorder({Level logLevel = Level.debug}) {
+    _logLevel = logLevel
     _logger = Logger(level: logLevel);
     _logger.d('ctor: FlutterSoundRecorder()');
   }
@@ -567,7 +568,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
         Platform
             .isIOS) // This hack is just to have recorder to stream working correctly.
     {
-      FlutterSoundPlayer player = FlutterSoundPlayer();
+      FlutterSoundPlayer player = FlutterSoundPlayer(logLevel: _logLevel);
       await player.openPlayer();
       Uint8List buf = Uint8List(0);
       //buf.fillRange(0, 1000, 0);
