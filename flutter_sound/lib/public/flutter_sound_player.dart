@@ -1,19 +1,21 @@
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
+ * Copyright 2021, 2022, 2023, 2024 Canardoux.
  *
  * This file is part of Flutter-Sound.
  *
  * Flutter-Sound is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
- * the Free Software Foundation.
+ * it under the terms of the Mozilla Public License version 2 (MPL-2.0),
+ * as published by the Mozilla organization.
  *
  * Flutter-Sound is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MPL General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 /// **THE** Flutter Sound Player
@@ -34,6 +36,7 @@ import 'package:synchronized/synchronized.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:flutter/src/services/platform_channel.dart';
 import '../flutter_sound.dart';
+import 'package:audio_session/audio_session.dart';
 
 /// The possible states of the Player.
 enum PlayerState {
@@ -757,6 +760,29 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       throw Exception('Player is not open');
     }
     oldPosition = 0;
+
+    final session = await AudioSession.instance;
+    final categ = session.configuration?.avAudioSessionCategory;
+    switch (categ) {
+      case AVAudioSessionCategory.record:
+        {
+          _logger.d('FS: calling AudioSession.session.configure()');
+          await session.configure(AudioSessionConfiguration(
+            avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+            //avAudioSessionCategoryOptions:
+            //AVAudioSessionCategoryOptions.allowBluetooth |
+            //AVAudioSessionCategoryOptions.defaultToSpeaker,
+          ));
+        }
+        break;
+      case null:
+      case AVAudioSessionCategory.ambient:
+      case AVAudioSessionCategory.playAndRecord:
+      case AVAudioSessionCategory.soloAmbient:
+      case AVAudioSessionCategory.playback:
+      case AVAudioSessionCategory.multiRoute:
+        break;
+    }
 
     if (codec == Codec.pcm16 && fromURI != null) {
       var tempDir = await getTemporaryDirectory();

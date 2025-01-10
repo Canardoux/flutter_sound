@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.18.0
+
+- startRecorder() calls `AudioSession::configure()` if the app forgot to do it itself
+
 ### 9.17.8
 
 - On iOS : force output sampleRate to 48000 ([#900](https://github.com/Canardoux/flutter_sound/issues/900))
@@ -332,7 +336,6 @@ Fix Bug `FlautoBackgroundAudioService requires explicit value for android:export
 ## 8.4.1
 
 - Flutter Sound is now published under the MPL2 License. [#696](https://github.com/canardoux/flutter_sound/issues/696).
-- If your App is protected by the GPL License, you probably want to consider using this [GPL fork](https://pub.dev/packages/tau_sound) : Tau Sound 9.0 offers several enhancement compared to this branch. See [here](https://tau.canardoux.xyz/tau_sound_birth-post.html)
 - The github project are renamed `flutter_sound` and `flutter_sound_core`
 - The documentation is moved [here](https://flutter-sound.canardoux.xyz)
 
@@ -639,7 +642,7 @@ Error returns from iOS in FlutterSoundPlayer.m was wrong : [#350](https://github
 
 ## 5.0.1
 
-- Flutter Sound V5 is published under the LGPL license.
+- Flutter Sound is published under the MPL license.
 
 ## 5.0.0
 
@@ -754,7 +757,7 @@ Error returns from iOS in FlutterSoundPlayer.m was wrong : [#350](https://github
 - API to set the `audio-category` (i.e. duck-others) [#219](https://github.com/dooboolab/flutter_sound/issues/219)
 - AndroidX and Android embbeded-V2 support [#203](https://github.com/dooboolab/flutter_sound/issues/203)
 - Add a parameter to `startPlayer` to specify a callback when the song is finished [#215](https://github.com/dooboolab/flutter_sound/issues/215)
-- License is now LGPL 3.0 instead of MIT
+- License is now MPL 2.0 instead of MIT
 
 ## 3.0.0+1
 

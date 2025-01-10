@@ -314,6 +314,8 @@ a {
 }
 
 section {
+  /* Note that the generated HTML for pub packages may have `section` tags
+     transformed into `div` tags. */
   margin-bottom: 36px;
 }
 
@@ -462,7 +464,9 @@ dt.constant + dd p {
 }
 
 /* indents wrapped lines */
-section.summary dt {
+/* Note that the generated HTML for pub packages may have `section` tags
+   transformed into `div` tags, so we have two selectors here. */
+section.summary dt, div.summary dt {
   margin-left: 24px;
   text-indent: -24px;
 }
@@ -591,6 +595,22 @@ h1 .category {
   vertical-align: middle;
 }
 
+/* Do not display "provided by X extension" text on extension pages. */
+.main-content.extension-page .from-extension {
+  display: none;
+}
+
+sup.muted {
+  color: var(--main-sidebar-color);
+  font-size: 0.6em;
+}
+
+.from-extension > span {
+  background-color: var(--alert-warning);
+  font-style: italic;
+  padding: 2px;
+}
+
 /* The badge under a declaration for things like "const", "read-only", etc. and for the badges inline like sealed or interface */
 /* See https://github.com/dart-lang/dartdoc/blob/main/lib/src/model/feature.dart */
 .feature {
@@ -661,6 +681,7 @@ footer a, footer a:hover {
 }
 
 .markdown.desc {
+  margin-bottom: 1em;
   max-width: 700px;
 }
 
@@ -819,7 +840,10 @@ ol.breadcrumbs li a {
   font-style: italic;
 }
 
-section.multi-line-signature div.parameters {
+/* Note that the generated HTML for pub packages may have `section` tags
+   transformed into `div` tags, so we have two selectors here. */
+section.multi-line-signature div.parameters,
+div.multi-line-signature div.parameters {
   margin-left: 24px;
 }
 
@@ -1212,7 +1236,9 @@ a.tt-container {
   box-shadow: 3px 3px 5px rgba(0,0,0,0.1);
 }
 
-section#setter {
+/* Note that the generated HTML for pub packages may have `section` tags
+   transformed into `div` tags, so we have two selectors here. */
+section#setter, div#setter {
   border-top: 1px solid #ddd;
   padding-top: 36px;
 }

@@ -11,7 +11,7 @@ tags: [jekyll,news]
 The previous tool for the &tau; documentation was [Gitbook](https://www.gitbook.com/).
 It was a bad choice :
 - Gitbook used to be Free and Open Source (Apache license). But the free project is now deprecated. It has not been maintened for three years.
-- Gitbook is now developed by a little french company but is not Open Source anymore. This happens with Free software not protected with a strong Free and Open Source license (GPL). This is what happens with license like MIT or Apache which are bad licenses.
+- Gitbook is now developed by a little french company but is not Open Source anymore.
 - My thinking is that Flutter Sound must **NOT USE PROPRIETARY SOFTWARE**. This is a political choice.
 - Gitbook is buggy. When we include an HTML page in the documentation, the page hyperlinks point to Github instead of the documentation.
 - Impossible to include the pages produced by Dartdoc inside our documentation.

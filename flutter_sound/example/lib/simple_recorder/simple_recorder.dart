@@ -111,6 +111,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
         return;
       }
     }
+    /*
     final session = await AudioSession.instance;
     await session.configure(AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
@@ -129,6 +130,8 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
       androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
       androidWillPauseWhenDucked: true,
     ));
+
+     */
 
     _mRecorderIsInited = true;
   }

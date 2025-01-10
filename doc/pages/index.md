@@ -74,34 +74,16 @@ The Flutter Sound package includes the following features :
 * Playback from a Dart Stream
 * The App playback can be controlled from the device lock screen or from an Apple watch
 
-## Supported platforms
-
-Flutter Sound is actually supported by the Flutter Framework.
-
-If you are interested with other platforms (React Native, Cordova, JS, ...) maybe you can have a look to the GPL project [`Tau Sound Project 9.0`](https://tau.canardoux.xyz/readme.html) : we actually have several plans to port the τ project to other frameworks.
-
 ## License
 
-Flutter Sound 8.3 was published under the LGPL License.
-A Flutter Sound developer noticed recently that this [license was incorrect](https://github.com/canardoux/tau/issues/696) :
-the LGPL license does not allow static links to the library. The library must be linked dynamically.
-The problem was that Flutter links-edit the plugins statically. This means that many Flutter Sound users who
-use our library in private/close sources App was in a copyright infringement.
+- Flutter Sound is published under the MPL-2.0 License.
+- Flutter Sound is copyrighted by Dooboolab and Canardoux.
 
-To solve this issue, we forked Flutter Sound 8.3 to two different branches.
-
-* Flutter Sound 8.4 (this fork) is published under the Mozilla Public License 2.0.
-* [The τ Sound Project 9.0](https://pub.dev/packages/tau_sound) is published under a pure GPL License.
-
-Flutter Sound is copyrighted by Dooboolab (2018, 2019, 2020, 2021).
-
-* Flutter Sound is now released under the permissive Mozilla license which has a **weak** *copyleft* clause: if you modify some of Flutter Sound code you must publish your modifications under the MPL license too. But you may publish your App with any license you want. Even a Proprietary/Close Sources License (shame on you!).
+* Flutter Sound is now released under the permissive Mozilla license which has a **weak** *copyleft* clause: if you modify some of Flutter Sound code you must publish your modifications under the MPL license too. But you may publish your App with any license you want. Even a Proprietary/Closed Sources License (shame on you!).
 
 ## We need help
 
 {% include important.html content="We greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation."%}
-
-Actually, my main project is the GPL [Tau Sound Project 9.0](https://tau.canardoux.xyz/readme.html) and not anymore Flutter Sound. To be frank, I must say that there is no other main developers on Flutter Sound. This is bad, because Flutter Sound deserves to be maintained.
 
 ## Thanks
 
