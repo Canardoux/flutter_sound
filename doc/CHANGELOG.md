@@ -7,6 +7,10 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.19.0
+
+- flutter_sound_web depends on etau and tau_web
+
 ### 9.18.0
 
 - startRecorder() calls `AudioSession::configure()` if the app forgot to do it itself

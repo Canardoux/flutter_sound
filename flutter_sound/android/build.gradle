@@ -1,6 +1,6 @@
 
 group 'xyz.canardoux.fluttersound'
-version '9.18.0'
+version '9.19.0'
 
 buildscript {
     repositories {
@@ -60,7 +60,7 @@ dependencies {
     // CAUTION: The following instruction is for developping and debugging the Flauto Engine
     // DO NOT INCLUDE THE FOLLOWING LINE IN A REAL APP !!!
     //implementation project(':flutter_sound_core')
-    implementation 'com.github.canardoux:flutter_sound_core:9.18.0'
+    implementation 'com.github.canardoux:flutter_sound_core:9.19.0'
     // -------------------------------------------------------------------------------------
 
 }

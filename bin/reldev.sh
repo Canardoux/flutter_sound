@@ -57,7 +57,7 @@ if [ "_$1" = "_REL" ] ; then
 # flutter_sound_web/pubspec.yaml
 #-------------------------------
         gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: \1/"                                                          flutter_sound_web/pubspec.yaml
-        gsed -i  "s/^ *path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir$/#    path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir/"            flutter_sound_web/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir$/#    path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir/"        flutter_sound_web/pubspec.yaml
 
 # ---
 
@@ -70,8 +70,15 @@ if [ "_$1" = "_REL" ] ; then
 #---------------------------
         gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: \1/"                                                          flutter_sound/pubspec.yaml
         gsed -i  "s/^ *path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir$/#    path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir/"        flutter_sound/pubspec.yaml
+
         gsed -i  "s/^ *flutter_sound_web: *#* *\(.*\)$/  flutter_sound_web: \1/"                                                                                        flutter_sound/pubspec.yaml
-        gsed -i  "s/^ *path: \.\.\/flutter_sound_web # Flutter Sound Dir$/#    path: \.\.\/flutter_sound_web # Flutter Sound Dir/"                                       flutter_sound/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/flutter_sound_web # Flutter Sound Dir$/#    path: \.\.\/flutter_sound_web # Flutter Sound Dir/"                                      flutter_sound/pubspec.yaml
+
+        gsed -i  "s/^ *etau: *#* *\(.*\)$/  etau: \1/"                                                                                        flutter_sound/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/\.\.\/tau\/etau # etau Dir$/#    path: \.\.\/\.\.\/tau\/etau # etau Dir/"                                      flutter_sound/pubspec.yaml
+
+        gsed -i  "s/^ *tau_web: *#* *\(.*\)$/  tau_web: \1/"                                                                                        flutter_sound/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/\.\.\/tau\/tau_web # tau_web Dir$/#    path: \.\.\/\.\.\/tau\/tau_web # tau_web Dir/"                                      flutter_sound/pubspec.yaml
 
 
 # ---
@@ -97,6 +104,12 @@ if [ "_$1" = "_REL" ] ; then
         gsed -i  "s/^ *flutter_sound_web: *#* *\(.*\)$/  flutter_sound_web: \1/"                                                                                   flutter_sound/example/pubspec.yaml
         gsed -i  "s/^ *path: \.\.\/\.\.\/flutter_sound_web # flutter_sound_web Dir$/#    path: \.\.\/\.\.\/flutter_sound_web # flutter_sound_web Dir/"                  flutter_sound/example/pubspec.yaml
 
+        gsed -i  "s/^ *etau: *#* *\(.*\)$/  etau: \1/"                                                                                        flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/\.\.\/\.\.\/tau\/etau # etau Dir$/#    path: \.\.\/\.\.\/\.\.\/tau\/etau # etau Dir/"                                      flutter_sound/example/pubspec.yaml
+
+        gsed -i  "s/^ *tau_web: *#* *\(.*\)$/  tau_web: \1/"                                                                                        flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^ *path: \.\.\/\.\.\/\.\.\/tau\/tau_web # tau_web Dir$/#    path: \.\.\/\.\.\/\.\.\/tau\/tau_web # tau_web Dir/"                                      flutter_sound/example/pubspec.yaml
+
 # ---
 
         gsed -i  "s/^ *flauto: *#* *\(.*\)$/  flauto: \1/"                                                                                                flutter_sound/example/pubspec.yaml
@@ -109,7 +122,6 @@ if [ "_$1" = "_REL" ] ; then
         gsed -i  "s/^ *path: \.\.\/\.\.\/flauto_web # flutter_sound_web Dir$/#    path: \.\.\/\.\.\/flauto_web # flutter_sound_web Dir/"                  flutter_sound/example/pubspec.yaml
 
 
-        exit 0
 
 #========================================================================================================================================================================================================
 
@@ -167,8 +179,16 @@ elif [ "_$1" = "_DEV" ]; then
 #---------------------------
         gsed -i  "s/^ *flutter_sound_platform_interface: *#* *\(.*\)$/  flutter_sound_platform_interface: # \1/"                                                        flutter_sound/pubspec.yaml
         gsed -i  "s/^# *path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir$/    path: \.\.\/flutter_sound_platform_interface # Flutter Sound Dir/"        flutter_sound/pubspec.yaml
+
         gsed -i  "s/^ *flutter_sound_web: *#* *\(.*\)$/  flutter_sound_web: # \1/"                                                                                      flutter_sound/pubspec.yaml
         gsed -i  "s/^# *path: \.\.\/flutter_sound_web # Flutter Sound Dir$/    path: \.\.\/flutter_sound_web # Flutter Sound Dir/"                                      flutter_sound/pubspec.yaml
+
+        gsed -i  "s/^ *etau: *#* *\(.*\)$/  etau: # \1/"                                                                                      flutter_sound/pubspec.yaml
+        gsed -i  "s/^# *path: \.\.\/\.\.\/tau\/etau # etau Dir$/    path: \.\.\/\.\.\/tau\/etau # etau Dir/"                                      flutter_sound/pubspec.yaml
+
+        gsed -i  "s/^ *tau_web: *#* *\(.*\)$/  tau_web: # \1/"                                                                                      flutter_sound/pubspec.yaml
+        gsed -i  "s/^# *path: \.\.\/\.\.\/tau\/tau_web # tau_web Dir$/    path: \.\.\/\.\.\/tau\/tau_web # tau_web Dir/"                                      flutter_sound/pubspec.yaml
+
 
 # ---
 
@@ -191,6 +211,11 @@ elif [ "_$1" = "_DEV" ]; then
         gsed -i  "s/^ *#* *flutter_sound_web: *#* *\(.*\)$/  flutter_sound_web: # \1/"                                                                                  flutter_sound/example/pubspec.yaml
         gsed -i  "s/^# *path: \.\.\/\.\.\/flutter_sound_web # flutter_sound_web Dir$/    path: \.\.\/\.\.\/flutter_sound_web # flutter_sound_web Dir/"                  flutter_sound/example/pubspec.yaml
 
+        gsed -i  "s/^ *etau: *#* *\(.*\)$/  etau: # \1/"                                                                                      flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^# *path: \.\.\/\.\.\/\.\.\/tau\/etau # etau Dir$/    path: \.\.\/\.\.\/\.\.\/tau\/etau # etau Dir/"                                      flutter_sound/example/pubspec.yaml
+
+        gsed -i  "s/^ *tau_web: *#* *\(.*\)$/  tau_web: # \1/"                                                                                      flutter_sound/example/pubspec.yaml
+        gsed -i  "s/^# *path: \.\.\/\.\.\/\.\.\/tau\/tau_web # tau_web Dir$/    path: \.\.\/\.\.\/\.\.\/tau\/tau_web # tau_web Dir/"                                      flutter_sound/example/pubspec.yaml
 # ---
 
         gsed -i  "s/^ *flauto: *#* *\(.*\)$/  flauto: # \1/"                                                                                              flutter_sound/example/pubspec.yaml
@@ -203,10 +228,13 @@ elif [ "_$1" = "_DEV" ]; then
         gsed -i  "s/^# *path: \.\.\/\.\.\/flauto_web # flutter_sound_web Dir$/    path: \.\.\/\.\.\/flauto_web # flutter_sound_web Dir/"                  flutter_sound/example/pubspec.yaml
 
 
-        exit 0
 
 else
         echo "Correct syntax is $0 [REL | DEV]"
         exit -1
 fi
+
+cd ../tau
+bin/reldev.sh $1
+
 echo "Done"
