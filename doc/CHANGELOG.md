@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-### 9.19.0
+### 9.19.1
 
 - flutter_sound_web depends on etau and tau_web
 
