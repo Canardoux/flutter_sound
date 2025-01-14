@@ -21,17 +21,17 @@ dependencies:
   flutter:
     sdk: flutter
 # ============================================================================
-  flutter_sound_platform_interface: 9.19.1
-#    path: ../flutter_sound_platform_interface # Flutter Sound Dir
+  flutter_sound_platform_interface: # 9.19.1
+    path: ../flutter_sound_platform_interface # Flutter Sound Dir
 
-  flutter_sound_web: 9.19.1
-#    path: ../flutter_sound_web # Flutter Sound Dir
+  flutter_sound_web: # 9.19.1
+    path: ../flutter_sound_web # Flutter Sound Dir
 
-  etau: ^0.0.14-alpha.4
-#    path: ../../tau/etau # etau Dir
+  etau: # ^0.0.14-alpha.4
+    path: ../../tau/etau # etau Dir
 
-  tau_web: ^0.0.14-alpha.4
-#    path: ../../tau/tau_web # tau_web Dir
+  tau_web: # ^0.0.14-alpha.4
+    path: ../../tau/tau_web # tau_web Dir
 
 # ============================================================================
 

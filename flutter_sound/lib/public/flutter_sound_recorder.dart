@@ -100,6 +100,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
   /// A reference to the User Sink during `StartRecorder(toStream:...)`
   StreamSink<dynamic>? _userStreamSink;
+  StreamSink<List<Uint8List>>? _userStreamSinkFloat32;
 
   /// The current state of the Recorder
   RecorderState get recorderState => _recorderState;
@@ -154,6 +155,16 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       _userStreamSink!.add(data);
     }
   }
+
+  @override
+  void recordingDataFloat32({required List<Uint8List>? data}) {
+    if (_userStreamSinkFloat32 != null) {
+      //Uint8List data = call['recordingData'] as Uint8List;
+      _userStreamSinkFloat32!.add(data!);
+    }
+
+  }
+
 
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
@@ -375,6 +386,11 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       await _userStreamSink!.close();
       _userStreamSink = null;
     }
+
+    if (_userStreamSinkFloat32 != null) {
+      await _userStreamSinkFloat32!.close();
+      _userStreamSinkFloat32 = null;
+    }
     assert(_openRecorderCompleter == null);
     _openRecorderCompleter = Completer<FlutterSoundRecorder>();
     completer = _openRecorderCompleter;
@@ -432,6 +448,10 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     if (_userStreamSink != null) {
       await _userStreamSink!.close();
       _userStreamSink = null;
+    }
+    if (_userStreamSinkFloat32 != null) {
+      await _userStreamSinkFloat32!.close();
+      _userStreamSinkFloat32 = null;
     }
 
     await FlutterSoundRecorderPlatform.instance.closeRecorder(this);
@@ -551,7 +571,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   Future<void> startRecorder({
     Codec codec = Codec.defaultCodec,
     String? toFile,
-    StreamSink<List<Float32List>>? toStreamFloat32,
+    StreamSink<List<Uint8List>>? toStreamFloat32,
     StreamSink<List<Int16List>>? toStreamInt16,
     StreamSink<Uint8List>? toStream,
     Duration timeSlice = Duration.zero,
@@ -615,7 +635,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     Codec codec = Codec.defaultCodec,
     String? toFile,
     StreamSink<Uint8List>? toStream,
-    StreamSink<List<Float32List>>? toStreamFloat32,
+    StreamSink<List<Uint8List>>? toStreamFloat32,
     StreamSink<List<Int16List>>? toStreamInt16,
     Duration timeSlice = Duration.zero,
     int sampleRate = 44100,
@@ -695,6 +715,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     Completer<void>? completer;
     // Maybe we should stop any recording already running... (stopRecorder does that)
     _userStreamSink = toStream;
+    _userStreamSinkFloat32 = toStreamFloat32;
     if (_startRecorderCompleter != null) {
       _startRecorderCompleter!
           .completeError('Killed by another startRecorder()');
@@ -736,6 +757,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     try {
       await FlutterSoundRecorderPlatform.instance.stopRecorder(this);
       _userStreamSink = null;
+      _userStreamSinkFloat32 = null;
 
       _recorderState = RecorderState.isStopped;
     } on Exception {

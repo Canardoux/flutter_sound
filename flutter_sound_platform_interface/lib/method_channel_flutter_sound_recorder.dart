@@ -72,6 +72,18 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
           }
           break;
 
+        case "recordingDataFloat32":
+          {
+            List<Object?> d =  call.arguments['data'];
+            List<Uint8List>? dd = [];
+            for (Object? x in d)
+              {
+                dd.add(x as Uint8List);
+              }
+            aRecorder!.recordingDataFloat32(data: dd);
+          }
+          break;
+
         case "recordingData":
           {
             aRecorder!.recordingData(data: call.arguments['recordingData']);
@@ -231,7 +243,7 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
     int bufferSize = 8192,
     Duration timeSlice = Duration.zero,
     bool enableVoiceProcessing = false,
-    StreamSink<List<Float32List>>? toStreamFloat32,
+    StreamSink<List<Uint8List>>? toStreamFloat32,
     StreamSink<List<Int16List>>? toStreamInt16,
     Codec? codec,
     StreamSink<Uint8List>? toStream,

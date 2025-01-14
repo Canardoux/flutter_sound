@@ -57,6 +57,7 @@ enum AudioSource {
 abstract class FlutterSoundRecorderCallback {
   void updateRecorderProgress({int? duration, double? dbPeakLevel});
   void recordingData({Uint8List? data});
+  void recordingDataFloat32({required List<Uint8List>? data});
   void startRecorderCompleted(int? state, bool? success);
   void pauseRecorderCompleted(int? state, bool? success);
   void resumeRecorderCompleted(int? state, bool? success);
@@ -177,7 +178,7 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
     bool enableVoiceProcessing = false,
     Codec? codec,
     StreamSink<Uint8List>? toStream,
-    StreamSink<List<Float32List>>? toStreamFloat32,
+    StreamSink<List<Uint8List>>? toStreamFloat32,
     StreamSink<List<Int16List>>? toStreamInt16,
     AudioSource? audioSource,
   }) {

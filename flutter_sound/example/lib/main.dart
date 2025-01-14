@@ -24,8 +24,9 @@ import 'livePlaybackWithBackPressure/live_playback_with_back_pressure.dart';
 import 'livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart';
 import 'multi_playback/multi_playback.dart';
 import 'recordToStream/record_to_stream_example.dart';
-import 'dummy_mobile.dart'
-    if (dart.library.js_interop) 'mediaRecorder/media_recorder.dart'; // package:web implementation
+//import 'dummy_mobile.dart'
+    //if (dart.library.js_interop) 'mediaRecorder/media_recorder.dart'; // package:web implementation
+import 'mediaRecorder/media_recorder.dart';
 import 'simple_playback/simple_playback.dart';
 import 'simple_recorder/simple_recorder.dart';
 import 'soundEffect/sound_effect.dart';
@@ -227,23 +228,23 @@ For Web, you can look to the example `media_recorder` which is another example d
 ''',
   ),
 
+
+//This example works only on Flutter Web. For Android or iOS, you can look to the example `recordToStream`.
   Example(
     title: 'mediaRecorder',
     subTitle: 'Example of recording to Stream on Web',
     flags: 0,
     route: (_) => const MediaRecorderExample(),
     description: '''
-This is an example showing how to record to a Dart Stream on Flutter Web.
+This is an example showing how to record to a Dart Stream.
 The stream can be PCM (PCM-Int16 or PCM_Float32) or a compressed stream like OPUS-Webm or AAC-MP4.
-
-This example works only on Flutter Web. For Android or iOS, you can look to the example `recordToStream`.
 ''',
   ),
 
   Example(
     title: 'livePlaybackWithoutBackPressure',
     subTitle: 'Live Playback without BackPressure',
-    flags: 0, //tNotWeb,
+    flags: tNotWeb,
     route: (_) => const LivePlaybackWithoutBackPressure(),
     description:
         '''A very simple example showing how to play Live Data without back pressure.
@@ -267,7 +268,7 @@ This example uses the ```foodEvent``` object to resynchronize the output stream 
   Example(
     title: 'livePlaybackWithBackPressure',
     subTitle: 'Live Playback with BackPressure',
-    flags: 0, //tNotWeb,
+    flags: tNotWeb,
     route: (_) => const LivePlaybackWithBackPressure(),
     description: '''
 A very simple example showing how to play Live Data with back pressure.

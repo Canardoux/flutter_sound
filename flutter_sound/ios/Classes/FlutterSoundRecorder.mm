@@ -53,6 +53,13 @@
   
 }
 
+- (void)recordingDataFloat32: (NSMutableArray*)data
+{
+    NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo],  @"status": [NSNumber numberWithInt: -1], @"data": data };
+    [self invokeMethod:@"recordingDataFloat32" dico: dico ];
+}
+
+
 - (void)startRecorderCompleted: (bool)success
 {
         [self invokeMethod: @"startRecorderCompleted" boolArg: success success: success];

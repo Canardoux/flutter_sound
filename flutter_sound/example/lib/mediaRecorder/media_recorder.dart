@@ -24,7 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter_sound_web/flutter_sound_web.dart' show mime_types;
+//import 'package:flutter_sound_web/flutter_sound_web.dart' show mime_types;
 
 /*
  * This is an example showing how to record to a Dart Stream.
@@ -35,6 +35,29 @@ import 'package:flutter_sound_web/flutter_sound_web.dart' show mime_types;
  * Speech-to-Text engine, or for processing the Live data in Dart in real time.
  *
  */
+
+
+var mime_types = [
+  'audio/webm\;codecs=opus', // defaultCodec,
+  'audio/aac', // aacADTS, //*
+  'audio/opus\;codecs=opus', // opusOGG, // 'audio/ogg' 'audio/opus'
+  'audio/x-caf', // opusCAF,
+  'audio/mpeg', // mp3, //*
+  'audio/ogg\;codecs=vorbis', // vorbisOGG,// 'audio/ogg' // 'audio/vorbis'
+  'audio/pcm', // pcm16,
+  'audio/wav\;codecs=1', // pcm16WAV,
+  'audio/aiff', // pcm16AIFF,
+  'audio/x-caf', // pcm16CAF,
+  'audio/x-flac', // flac, // 'audio/flac'
+  'audio/mp4', // aacMP4, //*
+  'audio/AMR', // amrNB, //*
+  'audio/AMR-WB', // amrWB, //*
+  'audio/pcm', // pcm8,
+  'audio/pcm', // pcmFloat32,
+  'audio/webm\;codecs=pcm', // pcmWebM,
+  'audio/webm\;codecs=opus', // opusWebM,
+  'audio/webm\;codecs=vorbis', // vorbisWebM
+];
 
 ///
 typedef _Fn = void Function();
@@ -139,9 +162,9 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
     //var sink = await createFile();
     //controller = StreamController<Uint8List>()
     bufferF32 = [];
-    var recordingDataController = StreamController<List<Float32List>>();
+    var recordingDataController = StreamController<List<Uint8List>>();
     recordingDataController.stream.listen((buf) {
-      bufferF32.addAll(buf[0]);
+      // TODO  bufferF32.addAll(buf[0]);
     });
     await _mRecorder!.startRecorder(
       toStreamFloat32: recordingDataController.sink,

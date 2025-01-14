@@ -44,7 +44,7 @@
 // Callback
 - (void)updateRecorderProgressDbPeakLevel: normalizedPeakLevel duration: duration;
 - (void)recordingData: (NSData*)data;
-
+- (void)recordingDataFloat32: (NSMutableArray*)data;
 // Interface
 - (FlutterSoundRecorderManager*) getPlugin;
 - (Session*) init: (FlutterMethodCall*)call playerManager: (FlutterSoundRecorderManager*)pm;
