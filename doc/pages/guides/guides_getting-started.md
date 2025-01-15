@@ -81,7 +81,7 @@ The complete running example [is there](flutter_sound_examples_simple_recorder.h
 
 ### 1. FlutterSoundRecorder instanciation
 
-To play back something you must instanciate a recorder. Most of the time, you will need just one recorder, and you can place this instanciation in the variables initialisation of your class :
+To record something you must instanciate a recorder. Most of the time, you will need just one recorder, and you can place this instanciation in the variables initialisation of your class :
 
 ```dart
   FlutterSoundRecorder _myRecorder = FlutterSoundRecorder();
