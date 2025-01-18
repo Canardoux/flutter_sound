@@ -74,6 +74,7 @@ const List<String> ext = [
   '.pcm', //codec.pcmWebM,
   '.webm', // codec.opusWebM,
   '.webm', // codec.vorbisWebM,
+  '.wav', // pcmFloat32WAV
 ];
 
 /// The valid file extensions for each codecs
@@ -97,6 +98,7 @@ const List<List<String>> validExt = [
   ['.pcm', '.webm'], //codec.pcmWebM,
   ['.opus', '.webm'], // codec.opusWebM,
   ['.webm'], // codec.vorbisWebM,
+  ['.wav'], // pcmFloat32WAV
 ];
 
 /// Food is an abstract class which represents objects that can be sent

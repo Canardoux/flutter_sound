@@ -583,9 +583,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     AudioSource audioSource = AudioSource.defaultSource,
   }) async {
     _logger.d('FS:---> startRecorder ');
-    if ((toStream != null ||
-            toStreamFloat32 != null ||
-            toStreamInt16 != null) &&
+    if ((codec == Codec.pcm16 || codec == Codec.pcmFloat32) &&
         (!kIsWeb) &&
         Platform
             .isIOS) // This hack is just to have recorder to stream working correctly.

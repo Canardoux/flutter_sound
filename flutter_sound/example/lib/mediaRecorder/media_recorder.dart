@@ -78,9 +78,7 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
 
   bool _mplaybackReady = false;
   //String? _mPath;
-  List<double> bufferF32 = [];
-  List<int> bufferI16 = [];
-  List<int> bufferU8 = [];
+  List<Float32List> bufferF32 = [];
   int sampleRate = 0;
   Codec codecSelected = Codec.pcmFloat32;
   List<bool> encoderSupported = List.filled(mime_types.length, false);
@@ -109,7 +107,7 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
       androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
       androidWillPauseWhenDucked: true,
     ));
-    sampleRate = await _mRecorder!.getSampleRate();
+    sampleRate = 48000; //await _mRecorder!.getSampleRate();
     for (int i = 0; i < encoderSupported.length; ++i) {
       encoderSupported[i] =
           await _mRecorder!.isEncoderSupported(Codec.values[i]);
@@ -164,7 +162,66 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
     bufferF32 = [];
     var recordingDataController = StreamController<List<Uint8List>>();
     recordingDataController.stream.listen((buf) {
-      // TODO  bufferF32.addAll(buf[0]);
+
+
+
+      // It is not necessary to convert the UInt8List to a Float32List.
+      // We do that, here, just as an example
+      List<Float32List> r = FlutterSoundHelper().uint8ListToFloat32List(buf);
+      bufferF32.add(r[0]); // In this example we keep only the left channel
+      List<Uint8List> b = []; // We re-convert to List<Uint8List>> (this is dummy, we get back the original buffer);
+
+      /*
+      List<Float32List> r = [];
+      for (Uint8List channelData in buf) {
+        int ln = ((channelData.length)/4).floor();
+        final bd = ByteData.sublistView(channelData);
+        Float32List f32List = Float32List(ln);
+        //int ix = 0;
+        for (int offset = 0, ix = 0; offset < ln; offset += 4, ++ix) {
+          f32List[ix] = bd.getFloat32(offset, Endian.little);
+        }
+        r.add(f32List);
+      }
+      Uint8List b0 = buf[0];
+      Uint8List b1 = buf[1];
+      var uint8ListExample0 = b0.buffer.asFloat32List();
+      var uint8ListExample1= b1.buffer.asFloat32List();
+
+      ByteData byteData = b0.buffer.asByteData();
+      var f0 = byteData.getFloat32(0, Endian.big);
+      var f1 = byteData.getFloat32(4, Endian.big);
+      var f2 = byteData.getFloat32(0, Endian.little);
+      var f3 = byteData.getFloat32(4, Endian.little);
+
+      final bd = ByteData.sublistView(b0);
+      var ff0 = bd.getFloat32(0, Endian.big);
+      var ff1 = bd.getFloat32(4, Endian.big);
+      var ff2 = bd.getFloat32(0, Endian.little);
+      var ff3 = bd.getFloat32(4, Endian.little);
+
+      final bbd  = ByteData.view(b0.buffer);
+      var ffx0 = bbd.getFloat32(0, Endian.big);
+      var ffx1 = bbd.getFloat32(4, Endian.big);
+      var ffx2 = bbd.getFloat32(0, Endian.little);
+      var fff3 = bbd.getFloat32(4, Endian.little);
+
+      var buf0 = b0.buffer;
+      var buf1 = b1.buffer;
+      var floatListExample0 = b0.buffer.asFloat32List();
+      var floatListExample1 = b1.buffer.asFloat32List();
+      var uintListExample0 = b0.buffer.asInt8List();
+      var uintListExample1 = b1.buffer.asInt8List();
+      var lnb0 = b0.buffer.lengthInBytes;
+      var lnb1 = b1.buffer.lengthInBytes;
+      var lnf0 = buf[0].length;
+      var lnf1 = buf[1].length;
+
+
+       */
+
+
+
     });
     await _mRecorder!.startRecorder(
       toStreamFloat32: recordingDataController.sink,
@@ -172,8 +229,11 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
       numChannels: 2,
       bufferSize: 8192,
     );
+    setState(() {});
+
   }
 
+  /*
   Future<void> recordInt16() async {
     bufferI16 = [];
     var recordingDataController = StreamController<List<Int16List>>();
@@ -215,51 +275,27 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
     setState(() {});
   }
 
+
+   */
   Future<void> playFloat32() async {
-    Uint8List buf = Uint8List(2 * bufferF32.length);
-    for (int i = 1; i < bufferF32.length; ++i) {
-      int v = (bufferF32[i] * 32768).floor();
-      buf[2 * i + 1] = v >> 8;
-      buf[2 * i] = v & 0xFF;
+    List<int> buf = [];
+    for (Float32List b in bufferF32) {
+      for (int i = 0; i < b.length; ++i) {
+        int v = (b[i] * 32768).toInt();
+        buf.add( (v >> 8 ) & 0xFF );
+        buf.add( v & 0xFF );
+      }
     }
+
+    Uint8List b =  Uint8List.fromList(buf);
     await _mPlayer!.startPlayer(
-        fromDataBuffer: buf,
+        fromDataBuffer: b,
         sampleRate: sampleRate,
         codec: Codec.pcm16,
         numChannels: 1,
         whenFinished: () {
-          setState(() {});
-        });
-  }
+           _mPlayer!.stopPlayer().then( (_){setState(() {});});
 
-  Future<void> playInt16() async {
-    Uint8List buf = Uint8List(2 * bufferI16.length);
-    for (int i = 1; i < bufferI16.length; ++i) {
-      buf[2 * i + 1] = bufferI16[i] >> 8;
-      buf[2 * i] = bufferI16[i] & 0xFF;
-    }
-    await _mPlayer!.startPlayer(
-        fromDataBuffer: buf,
-        sampleRate: sampleRate,
-        codec: Codec.pcm16,
-        numChannels: 1,
-        whenFinished: () {
-          setState(() {});
-        });
-  }
-
-  Future<void> playCodec() async {
-    Uint8List buf = Uint8List(bufferU8.length);
-    for (int i = 0; i < bufferU8.length; ++i) {
-      buf[i] = bufferU8[i];
-    }
-    await _mPlayer!.startPlayer(
-        fromDataBuffer: buf,
-        //sampleRate: sampleRate,
-        codec: codecSelected,
-        numChannels: 1,
-        whenFinished: () {
-          setState(() {});
         });
   }
 
@@ -268,13 +304,7 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
         _mplaybackReady &&
         _mRecorder!.isStopped &&
         _mPlayer!.isStopped);
-    if (codecSelected == Codec.pcmFloat32) {
       await playFloat32();
-    } else if (codecSelected == Codec.pcm16) {
-      await playInt16();
-    } else {
-      await playCodec();
-    }
 
     setState(() {});
   }
@@ -298,7 +328,7 @@ class _MediaRecorderExampleState extends State<MediaRecorderExample> {
       return null;
     }
     return _mRecorder!.isStopped
-        ? record
+        ? recordFloat32
         : () {
             stopRecorder().then((value) => setState(() {}));
           };

@@ -31,7 +31,9 @@ library helper;
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui';
 import 'package:logger/logger.dart' show Level, Logger;
+import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart'  as FSCodec show Codec;
 
 import 'wave_header.dart';
 
@@ -65,7 +67,7 @@ class FlutterSoundHelper {
   ///
   /// Remove the WAVE header in front of the Wave file
   ///
-  /// This verb is usefull to convert a Wave file to a Raw PCM file.
+  /// This verb is useful to convert a Wave file to a Raw PCM file.
   ///
   /// Note that this verb is not asynchronous and does not return a Future.
   Future<void> waveToPCM({
@@ -105,10 +107,13 @@ class FlutterSoundHelper {
     required String inputFile,
     required String outputFile,
 
-    /// Stereophony is not yet implemented
     int numChannels = 1,
     int sampleRate = 16000,
+    FSCodec.Codec codec = FSCodec.Codec.pcm16,
   }) async {
+    if (codec != FSCodec.Codec.pcm16 && codec != FSCodec.Codec.pcmFloat32 ) {
+      throw(Exception('Bad codec'));
+    }
     var filIn = File(inputFile);
     var filOut = File(outputFile);
     var size = filIn.lengthSync();
@@ -117,10 +122,10 @@ class FlutterSoundHelper {
     var sink = filOut.openWrite();
 
     var header = WaveHeader(
-      WaveHeader.formatPCM,
+      codec == FSCodec.Codec.pcm16 ? WaveHeader.formatInt : WaveHeader.formatFloat,
       numChannels = numChannels, //
       sampleRate = sampleRate,
-      16, // 16 bits per byte
+      codec == FSCodec.Codec.pcm16 ? 16 : 32, // 16 bits per byte
       size, // total number of bytes
     );
     header.write(sink);
@@ -140,14 +145,18 @@ class FlutterSoundHelper {
     required Uint8List inputBuffer,
     int numChannels = 1,
     int sampleRate = 16000,
+    FSCodec.Codec codec = FSCodec.Codec.pcm16,
     //int bitsPerSample,
   }) async {
+    if (codec != FSCodec.Codec.pcm16 && codec != FSCodec.Codec.pcmFloat32 ) {
+      throw(Exception('Bad codec'));
+    }
     var size = inputBuffer.length;
     var header = WaveHeader(
-      WaveHeader.formatPCM,
+      codec == FSCodec.Codec.pcm16 ? WaveHeader.formatInt : WaveHeader.formatFloat,
       numChannels,
       sampleRate,
-      16,
+      codec == FSCodec.Codec.pcm16 ? 16 : 32, // 16 bits per sample for int16. 32 bits per sample for float32
       size, // total number of bytes
     );
 
@@ -165,4 +174,20 @@ class FlutterSoundHelper {
     await controller.close();
     return Uint8List.fromList(buffer);
   }
+
+  uint8ListToFloat32List(List<Uint8List> buf, {Endian endian = Endian.little}) {
+    List<Float32List> r = [];
+    for (Uint8List channelData in buf) {
+      int ln = ((channelData.length) / 4).floor();
+      final bd = ByteData.sublistView(channelData);
+      Float32List f32List = Float32List(ln);
+      //int ix = 0;
+      for (int offset = 0, ix = 0; offset < ln; offset += 4, ++ix) {
+        f32List[ix] = bd.getFloat32(offset, endian);
+      }
+      r.add(f32List);
+    }
+    return r;
+  }
+
 }

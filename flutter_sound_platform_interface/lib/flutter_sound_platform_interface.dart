@@ -83,4 +83,8 @@ enum Codec {
 
   /// Vorbis with a WebM format
   vorbisWebM,
+
+  /// Linear Float32 PCM, which is a Wave file.
+  pcmFloat32WAV,
+
 }

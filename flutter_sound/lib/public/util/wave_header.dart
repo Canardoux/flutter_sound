@@ -49,7 +49,10 @@ class WaveHeader {
   static final int headerLength = 44;
 
   /// Indicates PCM format.
-  static final int formatPCM = 1;
+  static final int formatInt = 1;
+
+  /// Indicates PCM format.
+  static final int formatFloat = 3;
 
   /// Indicates ALAW format.
   static final int formatALAW = 6;
@@ -147,17 +150,17 @@ class WaveHeader {
   /// @throws IOException
   int write(EventSink<List<int>> out) {
     /* RIFF header */
-    writeId(out, 'RIFF');
-    writeInt(out, 36 + mNumBytes);
-    writeId(out, 'WAVE');
+    writeId(out, 'RIFF'); // Chunk ID
+    writeInt(out, 36 + mNumBytes); // Chunk Body Size
+    writeId(out, 'WAVE'); // RIFF Form Type
     /* fmt chunk */
     writeId(out, 'fmt ');
-    writeInt(out, 16);
+    writeInt(out, 16); // Size of the rest of the Subchunk which follows this number.
     writeint(out, mFormat);
     writeint(out, mNumChannels);
     writeInt(out, mSampleRate);
-    writeInt(out, (mNumChannels * mSampleRate * mBitsPerSample / 8).floor());
-    writeint(out, (mNumChannels * mBitsPerSample / 8).floor());
+    writeInt(out, (mNumChannels * mSampleRate * mBitsPerSample / 8).floor()); // Average Bytes per second
+    writeint(out, (mNumChannels * mBitsPerSample / 8).floor()); // BlocK Align in bytes
     writeint(out, mBitsPerSample);
     /* data chunk */
     writeId(out, 'data');

@@ -58,13 +58,13 @@ import 'dart:typed_data';
  */
 
 ///
-const int tSAMPLERATE = 8000;
+const int cstSAMPLERATE = 8000;
+const int cstCHANNELNB = 1;
+const int cstBITRATE = 16000;
 
-/// Sample rate used for Streams
-const int tSTREAMSAMPLERATE = 44000; // 44100 does not work for recorder on iOS
 
 ///
-const int tBLOCKSIZE = 4096;
+const int cstBLOCKSIZE = 4096;
 
 ///
 enum Media {
@@ -157,6 +157,7 @@ class _MyAppState extends State<Demo> {
     null,
     null,
     null,
+    null,
   ];
 
   List<String> assetSample = [
@@ -179,6 +180,7 @@ class _MyAppState extends State<Demo> {
     '', // 'assets/samples/sample_xxx.pcm', // pcmWebM
     'assets/samples/sample_opus.webm', // opusWebM
     'assets/samples/sample_vorbis.webm', // vorbisWebM
+    'assets/samples/sample.wav',
   ];
 
   List<String> remoteSample = [
@@ -201,6 +203,7 @@ class _MyAppState extends State<Demo> {
     '', // pcmWebM
     'https://tau.canardoux.xyz/danku/extract/02-opus.webm', // 'assets/samples/sample_opus.webm', // opusWebM
     'https://tau.canardoux.xyz/danku/extract/03-vorbis.webm', // 'assets/samples/sample_vorbis.webm', // vorbisWebM
+    'https://flutter-sound.canardoux.xyz/extract/10-pcm16.raw', // 'assets/samples/sample.pcm',
   ];
 
   StreamSubscription? _recorderSubscription;
@@ -376,16 +379,16 @@ class _MyAppState extends State<Demo> {
           toStream: recordingDataController!.sink,
 
           codec: _codec,
-          numChannels: 1,
-          sampleRate: tSTREAMSAMPLERATE, //tSAMPLERATE,
+          numChannels: cstCHANNELNB,
+          sampleRate: cstSAMPLERATE, // tSTREAMSAMPLERATE, //tSAMPLERATE,
         );
       } else {
         await recorderModule.startRecorder(
           toFile: path,
           codec: _codec,
-          bitRate: 8000,
-          numChannels: 1,
-          sampleRate: (_codec == Codec.pcm16) ? tSTREAMSAMPLERATE : tSAMPLERATE,
+          bitRate: cstBITRATE,
+          numChannels: cstCHANNELNB,
+          sampleRate: cstSAMPLERATE, // (_codec == Codec.pcm16) ? tSTREAMSAMPLERATE : tSAMPLERATE,
         );
       }
       recorderModule.logger.d('startRecorder');
@@ -539,8 +542,8 @@ class _MyAppState extends State<Demo> {
       if (_media == Media.stream) {
         await playerModule.startPlayerFromStream(
           codec: Codec.pcm16, //_codec,
-          numChannels: 1,
-          sampleRate: tSTREAMSAMPLERATE, //tSAMPLERATE,
+          numChannels: cstCHANNELNB,
+          sampleRate: cstSAMPLERATE, // tSTREAMSAMPLERATE, //tSAMPLERATE,
         );
         _addListeners();
         setState(() {});
@@ -553,7 +556,8 @@ class _MyAppState extends State<Demo> {
           await playerModule.startPlayer(
               fromURI: audioFilePath,
               codec: codec,
-              sampleRate: tSTREAMSAMPLERATE,
+              numChannels: cstCHANNELNB,
+              sampleRate: cstSAMPLERATE, // tSTREAMSAMPLERATE,
               whenFinished: () {
                 playerModule.logger.d('Play finished');
                 setState(() {});
@@ -562,16 +566,14 @@ class _MyAppState extends State<Demo> {
           if (codec == Codec.pcm16) {
             dataBuffer = await flutterSoundHelper.pcmToWaveBuffer(
               inputBuffer: dataBuffer,
-              numChannels: 1,
-              sampleRate: (_codec == Codec.pcm16 && _media == Media.asset)
-                  ? 48000
-                  : tSAMPLERATE,
+              numChannels: cstCHANNELNB,
+              sampleRate: cstSAMPLERATE, //(_codec == Codec.pcm16 && _media == Media.asset) ? 48000 : cstSAMPLERATE,
             );
             codec = Codec.pcm16WAV;
           }
           await playerModule.startPlayer(
               fromDataBuffer: dataBuffer,
-              sampleRate: tSAMPLERATE,
+              sampleRate: cstSAMPLERATE,
               codec: codec,
               whenFinished: () {
                 playerModule.logger.d('Play finished');
@@ -771,6 +773,11 @@ class _MyAppState extends State<Demo> {
               value: Codec.vorbisWebM,
               child: Text('Vorbis/WebM '),
             ),
+            DropdownMenuItem<Codec>(
+              value: Codec.pcmFloat32WAV,
+              child: Text('PCM Float32/WAV'),
+            ),
+
           ],
         ),
       ],
@@ -828,7 +835,7 @@ class _MyAppState extends State<Demo> {
     }
 
     // Disable the button if the selected codec is not supported
-    if (!(_decoderSupported || _codec == Codec.pcm16)) {
+    if (!(_decoderSupported || _codec == Codec.pcm16 || _codec == Codec.pcmFloat32)) {
       return null;
     }
 
@@ -889,8 +896,8 @@ class _MyAppState extends State<Demo> {
           _isRecording
               ? LinearProgressIndicator(
                   value: 100.0 / 160.0 * (_dbLevel ?? 1) / 100,
-                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
-                  backgroundColor: Colors.red)
+                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.indigo),
+                  backgroundColor: Colors.limeAccent)
               : Container(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

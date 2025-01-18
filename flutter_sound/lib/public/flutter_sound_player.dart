@@ -728,7 +728,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     String? fromURI,
     Uint8List? fromDataBuffer,
     Codec codec = Codec.aacADTS,
-    int sampleRate = 16000, // Used only with codec == Codec.pcm16
+    int sampleRate = 16000, // Used only with PCM codec
     int numChannels = 1, // Used only with codec == Codec.pcm16
     TWhenFinished? whenFinished,
   }) async {
@@ -784,24 +784,27 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         break;
     }
 
-    if (codec == Codec.pcm16 && fromURI != null) {
-      var tempDir = await getTemporaryDirectory();
-      var path = '${tempDir.path}/flutter_sound_tmp.wav';
-      await flutterSoundHelper.pcmToWave(
-        inputFile: fromURI,
-        outputFile: path,
-        numChannels: numChannels,
-        //bitsPerSample: 16,
-        sampleRate: sampleRate,
-      );
-      fromURI = path;
-      codec = Codec.pcm16WAV;
-    } else if (codec == Codec.pcm16 && fromDataBuffer != null) {
-      fromDataBuffer = await flutterSoundHelper.pcmToWaveBuffer(
-          inputBuffer: fromDataBuffer,
-          sampleRate: sampleRate,
-          numChannels: numChannels);
-      codec = Codec.pcm16WAV;
+    if (codec == Codec.pcm16 || codec == Codec.pcmFloat32) {
+      if (fromURI != null) {
+        var tempDir = await getTemporaryDirectory();
+        var path = '${tempDir.path}/flutter_sound_tmp.wav';
+        await flutterSoundHelper.pcmToWave(
+            inputFile: fromURI,
+            outputFile: path,
+            numChannels: numChannels,
+            sampleRate: sampleRate,
+            codec: codec
+        );
+        fromURI = path;
+        codec = Codec.pcm16WAV;
+      } else if (fromDataBuffer != null) {
+        fromDataBuffer = await flutterSoundHelper.pcmToWaveBuffer(
+            inputBuffer: fromDataBuffer,
+            sampleRate: sampleRate,
+            numChannels: numChannels,
+            codec: codec);
+        codec = Codec.pcm16WAV;
+      }
     }
     Completer<Duration>? completer;
 
@@ -823,6 +826,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         codec: codec,
         fromDataBuffer: fromDataBuffer,
         fromURI: fromURI,
+        numChannels: numChannels,
+        sampleRate: sampleRate,
       );
       _playerState = PlayerState.values[state];
     } on Exception {

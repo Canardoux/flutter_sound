@@ -57,6 +57,9 @@
 {
     NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo],  @"status": [NSNumber numberWithInt: -1], @"data": data };
     [self invokeMethod:@"recordingDataFloat32" dico: dico ];
+    
+    //NSDictionary* dico2 = @{ @"slotNo": [NSNumber numberWithInt: slotNo],  @"status": [NSNumber numberWithInt: -1], @"recordingData": data[0]}; // JUST FOR DEBUG
+    //[self invokeMethod:@"recordingData" dico: dico2 ];
 }
 
 
