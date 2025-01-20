@@ -9,17 +9,25 @@ toc: false
 ---
 ### 9.20.0
 
-- On iOS : codec==Codec.pcm16 and codec==Codec.pcm16WAV  --  startRecorder()  --   Parameter `numChannels` is correctely handled (if >1 then the audio samples are interleaved)
-- On iOS : codec==Codec.pcm16 and codec==Codec.pcm16WAV  --  startPlayer()    --   Parameter `numChannels` is correctely handled (if >1 then the audio samples are interleaved)
-- On iOS : codec==Codec.pcm16 and codec==Codec.pcm16WAV  --  startRecorder()  --   Parameter `sampleRate`  is correctely handled
-- On iOS : codec==Codec.pcm16 and codec==Codec.pcm16WAV  --  startPlayer()    --   Parameter `sampleRate`  is correctely handled
+- On IOS : Support of numChannels and sampleRate parameters for PCM codecs
+  - On iOS : codec==Codec.pcm16 and codec==Codec.pcm16WAV  --  startRecorder()  --   Parameter `numChannels` is correctely handled (if >1 then the audio samples are interleaved)
+  - On iOS : codec==Codec.pcm16 and codec==Codec.pcm16WAV  --  startPlayer()    --   Parameter `numChannels` is correctely handled (if >1 then the audio samples are interleaved)
+  - On iOS : codec==Codec.pcm16 and codec==Codec.pcm16WAV  --  startRecorder()  --   Parameter `sampleRate`  is correctely handled
+  - On iOS : codec==Codec.pcm16 and codec==Codec.pcm16WAV  --  startPlayer()    --   Parameter `sampleRate`  is correctely handled
+
+- On iOS : implementation of Codec pcmFloat32 and pcmFloat32WAV
+   - On iOS : codec==Codec.pcmFloat32 and codec==Codec.pcmFloat32WAV  --  startRecorder()    --  Float32 is implemented 
+   - On iOS : codec==Codec.pcmFloat32 and codec==Codec.pcmFloat32WAV  --  startPlayer()    --   Float32 is implemented
+   - FlutterSoundHelper::pcmToWaveBuffer() : Add parameter Codec and implement codec==Codec.pcmFloat32
 
 - On iOS : The peak level during recording pcm16 was unstable.
-- On iOS : codec==Codec.pcm16WAV  --  startRecorder()  --  The frames are correctely coded with int16 and not float32.
-- FlutterSoundHelper::pcmToWaveBuffer() : Add parameter Codec and implement codec==Codec.pcmFloat32
 
-- On iOS : codec==Codec.pcmFloat32 and codec==Codec.pcmFloat32WAV  --  startRecorder()    --  Float32 is implemented 
-- On iOS : codec==Codec.pcmFloat32 and codec==Codec.pcmFloat32WAV  --  startPlayer()    --   Float32 is implemented
+- TODO
+  - On iOS : codec==Codec.pcm16WAV  --  startRecorder()  --  The frames are not correctely coded with int16 but float32.
+  - On iOS : codec==Codec.pcm32WAV  --  The peak level is not computed correctly
+  - Implement Float32 on Web
+  - Implement Float32 on Android
+  - Implement Streams on Web
 
 ### 9.19.1
 

@@ -19,6 +19,7 @@ cd ..
 scp bin/doc2.sh canardoux@danku:/home/canardoux/bin
 scp _toto.tgz canardoux@danku:/home/canardoux
 ssh canardoux@danku "bash /home/canardoux/bin/doc2.sh"
+scp -r flutter_sound/example/assets/extract canardoux@danku:/var/www/canardoux.xyz/flutter-sound
 rm _toto.tgz  2>/dev/null
 
 echo 'E.O.J'

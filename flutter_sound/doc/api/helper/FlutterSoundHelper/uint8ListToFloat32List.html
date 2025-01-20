@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the waveToPCM method from the FlutterSoundHelper class, for the Dart programming language.">
-  <title>waveToPCM method - FlutterSoundHelper class - helper library - Dart API</title>
+  <meta name="description" content="API docs for the uint8ListToFloat32List method from the FlutterSoundHelper class, for the Dart programming language.">
+  <title>uint8ListToFloat32List method - FlutterSoundHelper class - helper library - Dart API</title>
 
 
   
@@ -27,9 +27,9 @@
     <li><a href="../../index.html">flutter_sound</a></li>
     <li><a href="../../helper/helper-library.html">public&#47;util&#47;flutter_sound_helper.dart</a></li>
     <li><a href="../../helper/FlutterSoundHelper-class.html">FlutterSoundHelper</a></li>
-    <li class="self-crumb">waveToPCM method</li>
+    <li class="self-crumb">uint8ListToFloat32List method</li>
   </ol>
-  <div class="self-name">waveToPCM</div>
+  <div class="self-name">uint8ListToFloat32List</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -52,42 +52,38 @@
     data-above-sidebar="helper&#47;FlutterSoundHelper-class-sidebar.html"
     data-below-sidebar="">
     <div>
-<h1><span class="kind-method">waveToPCM</span> method 
+<h1><span class="kind-method">uint8ListToFloat32List</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
       
-<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
-<span class="name ">waveToPCM</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="waveToPCM-param-inputFile"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">inputFile</span>, </span></li>
-<li><span class="parameter" id="waveToPCM-param-outputFile"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">outputFile</span>, </span></li>
+<span class="returntype">dynamic</span>
+<span class="name ">uint8ListToFloat32List</span>(<wbr><ol class="parameter-list"> <li><span class="parameter" id="uint8ListToFloat32List-param-buf"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-typed_data/Uint8List-class.html">Uint8List</a></span>&gt;</span></span> <span class="parameter-name">buf</span>, {</span></li>
+<li><span class="parameter" id="uint8ListToFloat32List-param-endian"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-typed_data/Endian-class.html">Endian</a></span> <span class="parameter-name">endian</span> = <span class="default-value">Endian.little</span>, </span></li>
 </ol>})
 
       
 
     </section>
     
-<section class="desc markdown">
-  <p>Convert a WAVE file to a Raw PCM file.</p>
-<p>Remove the WAVE header in front of the Wave file</p>
-<p>This verb is useful to convert a Wave file to a Raw PCM file.</p>
-<p>Note that this verb is not asynchronous and does not return a Future.</p>
-</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; waveToPCM({
-  required String inputFile,
-  required String outputFile,
-}) async {
-  var filIn = File(inputFile);
-  var filOut = File(outputFile);
-  var sink = filOut.openWrite();
-  await filIn.open();
-  var buffer = filIn.readAsBytesSync();
-  sink.add(buffer.sublist(WaveHeader.headerLength));
-  await sink.close();
+  <pre class="language-dart"><code class="language-dart">uint8ListToFloat32List(List&lt;Uint8List&gt; buf, {Endian endian = Endian.little}) {
+  List&lt;Float32List&gt; r = [];
+  for (Uint8List channelData in buf) {
+    int ln = ((channelData.length) &#47; 4).floor();
+    final bd = ByteData.sublistView(channelData);
+    Float32List f32List = Float32List(ln);
+    &#47;&#47;int ix = 0;
+    for (int offset = 0, ix = 0; offset &lt; ln; offset += 4, ++ix) {
+      f32List[ix] = bd.getFloat32(offset, endian);
+    }
+    r.add(f32List);
+  }
+  return r;
 }</code></pre>
 </section>
 
@@ -104,7 +100,7 @@
     <li><a href="../../index.html">flutter_sound</a></li>
     <li><a href="../../helper/helper-library.html">helper</a></li>
     <li><a href="../../helper/FlutterSoundHelper-class.html">FlutterSoundHelper</a></li>
-    <li class="self-crumb">waveToPCM method</li>
+    <li class="self-crumb">uint8ListToFloat32List method</li>
 </ol>
 
     <h5>FlutterSoundHelper class</h5>

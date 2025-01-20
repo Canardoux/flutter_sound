@@ -45,10 +45,13 @@ import 'package:flutter/services.dart' show rootBundle;
  */
 
 ///
-const int tSampleRate = 44100;
+const int cstSAMPLERATE = 16000;
+const int cstCHANNELNB = 2;
+const Codec cstCODEC = Codec.pcmFloat32;
+const String cstASSET = 'assets/samples/sample_f32_2ch.raw';
 
 ///
-const int tBlockSize = 4096;
+const int cstBLOCKSIZE = 4096;
 
 ///
 typedef Fn = void Function();
@@ -74,14 +77,14 @@ class _LivePlaybackWithoutBackPressureState
     _mPlayerIsInited = true;
     assert(_mPlayerIsInited && _mPlayer.isStopped);
     await _mPlayer.startPlayerFromStream(
-        codec: Codec.pcm16,
-        numChannels: 1,
-        sampleRate: tSampleRate,
+        codec: cstCODEC,
+        numChannels: cstCHANNELNB,
+        sampleRate: cstSAMPLERATE,
         bufferSize: 20480,
         whenFinished: () {
           FlutterSoundPlayer().logger.i("FINISHED!");
         });
-    data = await getAssetData('assets/samples/sample.pcm');
+    data = await getAssetData(cstASSET);
 
     setState(() {
       _mPlayerIsInited = true;
@@ -114,7 +117,7 @@ class _LivePlaybackWithoutBackPressureState
     var start = 0;
     var totalLength = data.length;
     while (totalLength > 0 && !_mPlayer.isStopped) {
-      var ln = totalLength > tBlockSize ? tBlockSize : totalLength;
+      var ln = totalLength > cstBLOCKSIZE ? cstBLOCKSIZE : totalLength;
       _mPlayer.foodSink!.add(FoodData(data.sublist(start, start + ln)));
       totalLength -= ln;
       start += ln;

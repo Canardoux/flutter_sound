@@ -58,8 +58,8 @@ import 'dart:typed_data';
  */
 
 ///
-const int cstSAMPLERATE = 8000;
-const int cstCHANNELNB = 1;
+const int cstSAMPLERATE = 16000;
+const int cstCHANNELNB = 2;
 const int cstBITRATE = 16000;
 
 
@@ -167,8 +167,8 @@ class _MyAppState extends State<Demo> {
     'assets/samples/sample_opus.caf',
     'assets/samples/sample.mp3',
     'assets/samples/sample.ogg',
-    'assets/samples/sample.pcm',
-    'assets/samples/sample.wav',
+    'assets/samples/sample_s16_2ch.raw', // Raw PCM int16
+    'assets/samples/sample_2ch.wav', // int16 wav stereo
     'assets/samples/sample.aiff',
     'assets/samples/sample_pcm.caf',
     'assets/samples/sample.flac',
@@ -176,11 +176,11 @@ class _MyAppState extends State<Demo> {
     'assets/samples/sample.amr', // amrNB
     'assets/samples/sample_xxx.amr', // amrWB
     'assets/samples/sample_xxx.pcm', // pcm8
-    'assets/samples/sample_xxx.pcm', // pcmFloat32
+    'assets/samples/sample_f32_2ch.raw', // Raw pcmFloat32
     '', // 'assets/samples/sample_xxx.pcm', // pcmWebM
     'assets/samples/sample_opus.webm', // opusWebM
     'assets/samples/sample_vorbis.webm', // vorbisWebM
-    'assets/samples/sample.wav',
+    'assets/samples/sample_f32_2ch.wav', // wav Float32 stereo
   ];
 
   List<String> remoteSample = [
@@ -190,8 +190,8 @@ class _MyAppState extends State<Demo> {
     'https://flutter-sound.canardoux.xyz/extract/04-opus.caf', // 'assets/samples/sample_opus.caf',
     'https://flutter-sound.canardoux.xyz/extract/05.mp3', // 'assets/samples/sample.mp3',
     'https://flutter-sound.canardoux.xyz/extract/07.ogg', // 'assets/samples/sample.ogg',
-    'https://flutter-sound.canardoux.xyz/extract/10-pcm16.raw', // 'assets/samples/sample.pcm',
-    'https://flutter-sound.canardoux.xyz/extract/13.wav', // 'assets/samples/sample.wav',
+    'https://flutter-sound.canardoux.xyz/extract/sample_s16_2ch.raw', // Raw PCM int16
+    'https://flutter-sound.canardoux.xyz/extract/sample_2ch.wav', // int16 wav stereo
     'https://flutter-sound.canardoux.xyz/extract/02.aiff', // 'assets/samples/sample.aiff',
     'https://flutter-sound.canardoux.xyz/extract/01-pcm.caf', // 'assets/samples/sample_pcm.caf',
     'https://flutter-sound.canardoux.xyz/extract/04.flac', // 'assets/samples/sample.flac',
@@ -199,11 +199,11 @@ class _MyAppState extends State<Demo> {
     'https://flutter-sound.canardoux.xyz/extract/03.amr', // 'assets/samples/sample.amr', // amrNB
     'https://flutter-sound.canardoux.xyz/extract/03.amr', // 'assets/samples/sample_xxx.amr', // amrWB
     'https://flutter-sound.canardoux.xyz/extract/09-pcm8.raw', // 'assets/samples/sample_xxx.pcm', // pcm8
-    'https://flutter-sound.canardoux.xyz/extract/12-pcmfloat.raw', // 'assets/samples/sample_xxx.pcm', // pcmFloat32
+    'https://flutter-sound.canardoux.xyz/extract/sample_f32_2ch.raw', // Raw pcmFloat32
     '', // pcmWebM
     'https://tau.canardoux.xyz/danku/extract/02-opus.webm', // 'assets/samples/sample_opus.webm', // opusWebM
     'https://tau.canardoux.xyz/danku/extract/03-vorbis.webm', // 'assets/samples/sample_vorbis.webm', // vorbisWebM
-    'https://flutter-sound.canardoux.xyz/extract/10-pcm16.raw', // 'assets/samples/sample.pcm',
+    'https://flutter-sound.canardoux.xyz/extract/sample_f32_2ch.wav', // wav Float32 stereo
   ];
 
   StreamSubscription? _recorderSubscription;
@@ -574,6 +574,7 @@ class _MyAppState extends State<Demo> {
           await playerModule.startPlayer(
               fromDataBuffer: dataBuffer,
               sampleRate: cstSAMPLERATE,
+              numChannels: cstCHANNELNB,
               codec: codec,
               whenFinished: () {
                 playerModule.logger.d('Play finished');

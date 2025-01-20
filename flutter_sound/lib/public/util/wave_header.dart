@@ -155,7 +155,7 @@ class WaveHeader {
     writeId(out, 'WAVE'); // RIFF Form Type
     /* fmt chunk */
     writeId(out, 'fmt ');
-    writeInt(out, 16); // Size of the rest of the Subchunk which follows this number.
+    writeInt(out, 16); // Size of the rest of the Subchunk which follows this number. // 18???
     writeint(out, mFormat);
     writeint(out, mNumChannels);
     writeInt(out, mSampleRate);

@@ -61,6 +61,7 @@
 <span class="name ">pcmToWaveBuffer</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="pcmToWaveBuffer-param-inputBuffer"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-typed_data/Uint8List-class.html">Uint8List</a></span> <span class="parameter-name">inputBuffer</span>, </span></li>
 <li><span class="parameter" id="pcmToWaveBuffer-param-numChannels"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">numChannels</span> = <span class="default-value">1</span>, </span></li>
 <li><span class="parameter" id="pcmToWaveBuffer-param-sampleRate"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">sampleRate</span> = <span class="default-value">16000</span>, </span></li>
+<li><span class="parameter" id="pcmToWaveBuffer-param-codec"><span class="type-annotation">Codec</span> <span class="parameter-name">codec</span> = <span class="default-value">FSCodec.Codec.pcm16</span>, </span></li>
 </ol>})
 
       
@@ -82,14 +83,18 @@ It adds a <code>Wave</code> envelop in front of the PCM buffer, so that the file
   required Uint8List inputBuffer,
   int numChannels = 1,
   int sampleRate = 16000,
+  FSCodec.Codec codec = FSCodec.Codec.pcm16,
   &#47;&#47;int bitsPerSample,
 }) async {
+  if (codec != FSCodec.Codec.pcm16 &amp;&amp; codec != FSCodec.Codec.pcmFloat32 ) {
+    throw(Exception(&#39;Bad codec&#39;));
+  }
   var size = inputBuffer.length;
   var header = WaveHeader(
-    WaveHeader.formatPCM,
+    codec == FSCodec.Codec.pcm16 ? WaveHeader.formatInt : WaveHeader.formatFloat,
     numChannels,
     sampleRate,
-    16,
+    codec == FSCodec.Codec.pcm16 ? 16 : 32, &#47;&#47; 16 bits per sample for int16. 32 bits per sample for float32
     size, &#47;&#47; total number of bytes
   );
 

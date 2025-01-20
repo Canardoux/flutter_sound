@@ -39,6 +39,10 @@ import 'package:permission_handler/permission_handler.dart';
 ///
 typedef _Fn = void Function();
 
+const int cstSAMPLERATE = 16000;
+const int cstCHANNELNB = 2;
+const Codec cstCODEC = Codec.pcmFloat32;
+
 /// Example app.
 class RecordToStreamExample extends StatefulWidget {
   const RecordToStreamExample({super.key});
@@ -58,7 +62,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   //String? _mPath;
   StreamSubscription? _mRecordingDataSubscription;
   //Uint8List buffer = [];
-  int sampleRate = 16000;
+  ///int sampleRate = 16000;
 
   Future<void> _openRecorder() async {
     var status = await Permission.microphone.request();
@@ -139,9 +143,9 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     });
     await _mRecorder!.startRecorder(
       toStream: recordingDataController.sink,
-      codec: Codec.pcm16,
-      numChannels: 1,
-      sampleRate: sampleRate,
+      codec: cstCODEC,
+      numChannels: cstCHANNELNB,
+      sampleRate: cstSAMPLERATE,
       bufferSize: 8192,
     );
     setState(() {});
@@ -175,9 +179,9 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
         _mPlayer!.isStopped);
     await _mPlayer!.startPlayer(
         fromURI: _mPath,
-        sampleRate: sampleRate,
-        codec: Codec.pcm16,
-        numChannels: 1,
+        sampleRate: cstSAMPLERATE,
+        codec: cstCODEC,
+        numChannels: cstCHANNELNB,
         whenFinished: () {
           setState(() {});
         });
