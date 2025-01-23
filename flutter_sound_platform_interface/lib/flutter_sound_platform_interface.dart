@@ -88,3 +88,21 @@ enum Codec {
   pcmFloat32WAV,
 
 }
+
+
+enum AudioSource {
+  defaultSource,
+  microphone,
+  voiceDownlink, // (it does not work, at least on Android. Probably problems with the authorization )
+  camCorder,
+  remote_submix,
+  unprocessed,
+  voice_call,
+  voice_communication,
+  voice_performance,
+  voice_recognition,
+  voiceUpLink, // (it does not work, at least on Android. Probably problems with the authorization )
+  bluetoothHFP,
+  headsetMic,
+  lineIn,
+}

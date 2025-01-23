@@ -953,35 +953,18 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///   ```
   Future<void> startPlayerFromStream({
     Codec codec = Codec.pcm16,
+    bool interleaved = true,
     int numChannels = 1,
     int sampleRate = 16000,
     int bufferSize = 8192,
     TWhenFinished? whenFinished,
   }) async {
-    /* NO HACK
-    if ((!kIsWeb) &&
-        Platform
-            .isIOS) // This hack is just to have player to stream working correctly.
-    {
-      FlutterSoundPlayer player = FlutterSoundPlayer();
-      await player.openPlayer();
-      Uint8List buf = Uint8List(0);
-      //buf.fillRange(0, 1000, 0);
-      try {
-        await player.startPlayer(
-            fromDataBuffer: buf, codec: Codec.pcm16, whenFinished: () {});
-      } catch (e) {
-        _logger.d('Hacking the bug we have on iOS when playing from stream');
-      }
-      //await player.stopPlayer();
-      /* await */ player.closePlayer();
-    }
-    
-     */
+
 
     await _lock.synchronized(() async {
       await _startPlayerFromStream(
         codec: codec,
+        interleaved: interleaved,
         sampleRate: sampleRate,
         numChannels: numChannels,
         bufferSize: bufferSize,
@@ -992,6 +975,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   Future<Duration> _startPlayerFromStream({
     Codec codec = Codec.pcm16,
+    bool interleaved = true,
     int numChannels = 1,
     int sampleRate = 16000,
     int bufferSize = 8192,
@@ -1024,6 +1008,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       var state = await FlutterSoundPlayerPlatform.instance.startPlayer(
         this,
         codec: codec,
+        interleaved: interleaved,
         fromDataBuffer: null,
         fromURI: null,
         numChannels: numChannels,

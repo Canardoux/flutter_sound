@@ -158,6 +158,7 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
 
   Future<int> startPlayer(
     FlutterSoundPlayerCallback callback, {
+    bool interleaved = true,
     Codec? codec,
     Uint8List? fromDataBuffer,
     String? fromURI,

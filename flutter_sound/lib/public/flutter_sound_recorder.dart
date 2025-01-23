@@ -100,7 +100,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
   /// A reference to the User Sink during `StartRecorder(toStream:...)`
   StreamSink<dynamic>? _userStreamSink;
-  StreamSink<List<Uint8List>>? _userStreamSinkFloat32;
+  StreamSink<List<Float32List>>? _userStreamSinkFloat32;
+  StreamSink<List<Int16List>>? _userStreamSinkInt16;
 
   /// The current state of the Recorder
   RecorderState get recorderState => _recorderState;
@@ -151,16 +152,23 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   @override
   void recordingData({Uint8List? data}) {
     if (_userStreamSink != null) {
-      //Uint8List data = call['recordingData'] as Uint8List;
       _userStreamSink!.add(data);
     }
   }
 
   @override
-  void recordingDataFloat32({required List<Uint8List>? data}) {
+  void recordingDataFloat32({required List<Float32List>? data}) {
     if (_userStreamSinkFloat32 != null) {
-      //Uint8List data = call['recordingData'] as Uint8List;
       _userStreamSinkFloat32!.add(data!);
+    }
+
+  }
+
+
+  @override
+  void recordingDataInt16({required List<Int16List>? data}) {
+    if (_userStreamSinkFloat32 != null) {
+      _userStreamSinkInt16!.add(data!);
     }
 
   }
@@ -391,6 +399,12 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       await _userStreamSinkFloat32!.close();
       _userStreamSinkFloat32 = null;
     }
+
+
+    if (_userStreamSinkInt16 != null) {
+      await _userStreamSinkInt16!.close();
+      _userStreamSinkInt16 = null;
+    }
     assert(_openRecorderCompleter == null);
     _openRecorderCompleter = Completer<FlutterSoundRecorder>();
     completer = _openRecorderCompleter;
@@ -449,9 +463,16 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       await _userStreamSink!.close();
       _userStreamSink = null;
     }
+
+
     if (_userStreamSinkFloat32 != null) {
       await _userStreamSinkFloat32!.close();
       _userStreamSinkFloat32 = null;
+    }
+
+    if (_userStreamSinkInt16 != null) {
+      await _userStreamSinkInt16!.close();
+      _userStreamSinkInt16 = null;
     }
 
     await FlutterSoundRecorderPlatform.instance.closeRecorder(this);
@@ -571,7 +592,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   Future<void> startRecorder({
     Codec codec = Codec.defaultCodec,
     String? toFile,
-    StreamSink<List<Uint8List>>? toStreamFloat32,
+    StreamSink<List<Float32List>>? toStreamFloat32,
     StreamSink<List<Int16List>>? toStreamInt16,
     StreamSink<Uint8List>? toStream,
     Duration timeSlice = Duration.zero,
@@ -633,7 +654,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     Codec codec = Codec.defaultCodec,
     String? toFile,
     StreamSink<Uint8List>? toStream,
-    StreamSink<List<Uint8List>>? toStreamFloat32,
+    StreamSink<List<Float32List>>? toStreamFloat32,
     StreamSink<List<Int16List>>? toStreamInt16,
     Duration timeSlice = Duration.zero,
     int sampleRate = 44100,
@@ -714,6 +735,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     // Maybe we should stop any recording already running... (stopRecorder does that)
     _userStreamSink = toStream;
     _userStreamSinkFloat32 = toStreamFloat32;
+    _userStreamSinkInt16 = toStreamInt16;
     if (_startRecorderCompleter != null) {
       _startRecorderCompleter!
           .completeError('Killed by another startRecorder()');
@@ -756,6 +778,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       await FlutterSoundRecorderPlatform.instance.stopRecorder(this);
       _userStreamSink = null;
       _userStreamSinkFloat32 = null;
+      _userStreamSinkInt16 = null;
 
       _recorderState = RecorderState.isStopped;
     } on Exception {

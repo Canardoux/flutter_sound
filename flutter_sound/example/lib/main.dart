@@ -26,7 +26,7 @@ import 'multi_playback/multi_playback.dart';
 import 'recordToStream/record_to_stream_example.dart';
 //import 'dummy_mobile.dart'
     //if (dart.library.js_interop) 'mediaRecorder/media_recorder.dart'; // package:web implementation
-import 'mediaRecorder/media_recorder.dart';
+import 'streams/streams.dart';
 import 'simple_playback/simple_playback.dart';
 import 'simple_recorder/simple_recorder.dart';
 import 'soundEffect/sound_effect.dart';
@@ -231,13 +231,18 @@ For Web, you can look to the example `media_recorder` which is another example d
 
 //This example works only on Flutter Web. For Android or iOS, you can look to the example `recordToStream`.
   Example(
-    title: 'mediaRecorder',
-    subTitle: 'Example of recording to Stream on Web',
+    title: 'Streams',
+    subTitle: 'Records and playback to/from a Float32 stream',
     flags: 0,
-    route: (_) => const MediaRecorderExample(),
+    route: (_) => const StreamsExample(),
     description: '''
-This is an example showing how to record to a Dart Stream.
-The stream can be PCM (PCM-Int16 or PCM_Float32) or a compressed stream like OPUS-Webm or AAC-MP4.
+This is an example showing how to record to a Dart Float32List Stream and play from a Float32List Stream.
+The streams are Float32List for pcmFloat32 codec.
+
+You can also refer to the following examples that uses UInt8List:
+
+- recordToStream
+- livePlaybackWithoutBackPressure
 ''',
   ),
 
@@ -249,8 +254,11 @@ The stream can be PCM (PCM-Int16 or PCM_Float32) or a compressed stream like OPU
     description:
         '''A very simple example showing how to play Live Data without back pressure.
 A very simple example showing how to play Live Data without back pressure.
+
+[You can also refer to the following examples that uses Float32List: Streams Example]
+
 It feeds a live stream, without waiting that the Futures are completed for each block.
-This is simpler because the App does not need to await the playback for each block before playing another one.
+This is simple because the App does not need to await the playback for each block before playing another one.
 
 
 This example get the data from an asset file, which is completely stupid :

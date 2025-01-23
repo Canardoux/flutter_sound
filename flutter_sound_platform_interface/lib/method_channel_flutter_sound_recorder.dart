@@ -75,12 +75,25 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
         case "recordingDataFloat32":
           {
             List<Object?> d =  call.arguments['data'];
-            List<Uint8List>? dd = [];
+            List<Float32List>? dd = [];
             for (Object? x in d)
               {
-                dd.add(x as Uint8List);
+                dd.add(x as Float32List);
               }
             aRecorder!.recordingDataFloat32(data: dd);
+          }
+          break;
+
+
+        case "recordingDataInt16":
+          {
+            List<Object?> d =  call.arguments['data'];
+            List<Int16List>? dd = [];
+            for (Object? x in d)
+            {
+              dd.add(x as Int16List);
+            }
+            aRecorder!.recordingDataInt16(data: dd);
           }
           break;
 
@@ -243,7 +256,7 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
     int bufferSize = 8192,
     Duration timeSlice = Duration.zero,
     bool enableVoiceProcessing = false,
-    StreamSink<List<Uint8List>>? toStreamFloat32,
+    StreamSink<List<Float32List>>? toStreamFloat32,
     StreamSink<List<Int16List>>? toStreamInt16,
     Codec? codec,
     StreamSink<Uint8List>? toStream,
@@ -258,9 +271,10 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
         'numChannels': numChannels,
         'bitRate': bitRate,
         'bufferSize': bufferSize,
-        'enableVoiceProcessing': enableVoiceProcessing ? 1 : 0,
+        'enableVoiceProcessing': enableVoiceProcessing, // ? 1 : 0,
         'codec': codec!.index,
-        'toStream': toStream != null ? 1 : 0,
+        'toStream': toStream != null || toStreamInt16 != null ||  toStreamFloat32 != null,// ? 1 : 0,
+        'interleaved': toStreamFloat32 == null && toStreamInt16 == null, // ? 1 : 0,
         'audioSource': audioSource!.index,
       },
     );

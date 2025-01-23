@@ -37,27 +37,11 @@ enum RecorderState {
   isRecording,
 }
 
-enum AudioSource {
-  defaultSource,
-  microphone,
-  voiceDownlink, // (it does not work, at least on Android. Probably problems with the authorization )
-  camCorder,
-  remote_submix,
-  unprocessed,
-  voice_call,
-  voice_communication,
-  voice_performance,
-  voice_recognition,
-  voiceUpLink, // (it does not work, at least on Android. Probably problems with the authorization )
-  bluetoothHFP,
-  headsetMic,
-  lineIn,
-}
-
 abstract class FlutterSoundRecorderCallback {
   void updateRecorderProgress({int? duration, double? dbPeakLevel});
   void recordingData({Uint8List? data});
-  void recordingDataFloat32({required List<Uint8List>? data});
+  void recordingDataFloat32({required List<Float32List>? data});
+  void recordingDataInt16({required List<Int16List>? data});
   void startRecorderCompleted(int? state, bool? success);
   void pauseRecorderCompleted(int? state, bool? success);
   void resumeRecorderCompleted(int? state, bool? success);
@@ -178,7 +162,7 @@ abstract class FlutterSoundRecorderPlatform extends PlatformInterface {
     bool enableVoiceProcessing = false,
     Codec? codec,
     StreamSink<Uint8List>? toStream,
-    StreamSink<List<Uint8List>>? toStreamFloat32,
+    StreamSink<List<Float32List>>? toStreamFloat32,
     StreamSink<List<Int16List>>? toStreamInt16,
     AudioSource? audioSource,
   }) {

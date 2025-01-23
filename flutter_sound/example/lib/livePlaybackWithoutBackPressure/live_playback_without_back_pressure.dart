@@ -45,10 +45,10 @@ import 'package:flutter/services.dart' show rootBundle;
  */
 
 ///
-const int cstSAMPLERATE = 16000;
-const int cstCHANNELNB = 2;
-const Codec cstCODEC = Codec.pcmFloat32;
-const String cstASSET = 'assets/samples/sample_f32_2ch.raw';
+const int cstSAMPLERATE = 8000; // 8000; // 48000
+const int cstCHANNELNB = 2; // 2 // 1;
+const Codec cstCODEC =  Codec.pcmFloat32; // Codec.pcm16 /// Codec.pcmFloat32;
+const String cstASSET = 'assets/samples/sample_f32_2ch.raw'; // 'assets/samples/sample_f32_2ch.raw' // 'assets/samples/sample_f32.raw'
 
 ///
 const int cstBLOCKSIZE = 4096;
@@ -74,11 +74,11 @@ class _LivePlaybackWithoutBackPressureState
 
   Future<void> initPlayer() async {
     await _mPlayer.openPlayer();
-    _mPlayerIsInited = true;
-    assert(_mPlayerIsInited && _mPlayer.isStopped);
+    _mPlayerIsInited = false;
     await _mPlayer.startPlayerFromStream(
         codec: cstCODEC,
         numChannels: cstCHANNELNB,
+        interleaved: true,
         sampleRate: cstSAMPLERATE,
         bufferSize: 20480,
         whenFinished: () {

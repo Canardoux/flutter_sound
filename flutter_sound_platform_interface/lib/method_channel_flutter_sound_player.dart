@@ -253,6 +253,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
   Future<int> startPlayer(
     FlutterSoundPlayerCallback callback, {
     Codec? codec,
+    bool interleaved = true,
     Uint8List? fromDataBuffer,
     String? fromURI,
     int? numChannels,
@@ -264,6 +265,7 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
       'startPlayer',
       {
         'codec': codec!.index,
+        'interleaved': interleaved,
         'fromDataBuffer': fromDataBuffer,
         'fromURI': fromURI,
         'numChannels': numChannels,

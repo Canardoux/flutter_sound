@@ -205,6 +205,7 @@
         NSNumber* numChannels = (NSNumber*)call.arguments[@"numChannels"];
         NSNumber* sampleRate = (NSNumber*)call.arguments[@"sampleRate"];
         NSNumber* bufferSize = (NSNumber*)call.arguments[@"bufferSize"];
+        NSNumber* interleaved =  (NSNumber*)call.arguments[@"interleaved"];
         t_CODEC codec = (t_CODEC)([(NSNumber*)call.arguments[@"codec"] intValue]);
         FlutterStandardTypedData* dataBuffer = (FlutterStandardTypedData*)call.arguments[@"fromDataBuffer"];
         NSData* data = nil;
@@ -220,6 +221,7 @@
                 fromURI: path
                 fromDataBuffer: data
                 channels: channels
+                interleaved: [interleaved boolValue] == YES
                 sampleRate: samplerateLong
                 bufferSize: bufferSizeLong
         ];

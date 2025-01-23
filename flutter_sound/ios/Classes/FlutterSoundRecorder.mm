@@ -149,9 +149,10 @@
         NSNumber* bitRateArgs = (NSNumber*)call.arguments[@"bitRate"];
         NSNumber* bufferSizeArgs = (NSNumber*)call.arguments[@"bufferSize"];
         NSNumber* codec = (NSNumber*)call.arguments[@"codec"];
-        NSNumber*  enableVoiceProcessing = (NSNumber*)call.arguments[@"enableVoiceProcessing"];
-        NSNumber*  audioSource = (NSNumber*)call.arguments[@"audioSource"]; // actually not used
+        NSNumber* enableVoiceProcessing = (NSNumber*)call.arguments[@"enableVoiceProcessing"];
+        NSNumber* audioSource = (NSNumber*)call.arguments[@"audioSource"]; // actually not used
         NSNumber* toStream = (NSNumber*)call.arguments[@"toStream"]; // actually not used
+        NSNumber* interleaved = (NSNumber*)call.arguments[@"interleaved"];
 
         t_CODEC coder = aacADTS;
         if (![codec isKindOfClass:[NSNull class]])
@@ -190,11 +191,12 @@
                 flautoRecorder startRecorderCodec: coder
                 toPath: path
                 channels: numChannels
+                interleaved: interleaved.boolValue
                 sampleRate: sampleRate
                 bitRate: bitRate
                 bufferSize: bufferSize
-                enableVoiceProcessing: (enableVoiceProcessing.boolValue) != 0
-        ];
+                enableVoiceProcessing: enableVoiceProcessing.boolValue
+         ];
         if (b)
         {
                 result([NSNumber numberWithInt: [self getRecorderStatus]]);
