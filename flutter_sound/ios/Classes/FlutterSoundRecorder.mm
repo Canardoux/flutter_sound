@@ -55,8 +55,21 @@
 
 - (void)recordingDataFloat32: (NSMutableArray*)data
 {
-    NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo],  @"status": [NSNumber numberWithInt: -1], @"data": data };
-    [self invokeMethod:@"recordingDataFloat32" dico: dico ];
+    NSMutableDictionary* dico = [[NSMutableDictionary alloc] init];
+    int nbChannels = (int)[data count] ;
+    [dico addEntriesFromDictionary: @{ @"slotNo": [NSNumber numberWithInt: slotNo],  @"status": [NSNumber numberWithInt: -1], /* @"data": data,*/ @"channelCount": [NSNumber numberWithInt: nbChannels]}];
+    NSMutableArray* ddd =  [NSMutableArray arrayWithCapacity: nbChannels] ;
+    for (int i = 0; i < nbChannels; ++i)
+    {
+        NSString *baseString = @"Data";
+        NSString *string2 = [baseString stringByAppendingFormat: @"Channel%@", [NSNumber numberWithInt: i]];
+        NSData* d = data[i];
+        FlutterStandardTypedData* dd = [FlutterStandardTypedData typedDataWithFloat32: d];
+        [dico setValue: dd forKey: string2];
+        [ddd addObject: dd];
+    }
+    [dico setValue: ddd forKey: @"data"];
+    [self invokeMethod: @"recordingDataFloat32" dico: dico ];
     
     //NSDictionary* dico2 = @{ @"slotNo": [NSNumber numberWithInt: slotNo],  @"status": [NSNumber numberWithInt: -1], @"recordingData": data[0]}; // JUST FOR DEBUG
     //[self invokeMethod:@"recordingData" dico: dico2 ];

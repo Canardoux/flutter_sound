@@ -74,12 +74,48 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
 
         case "recordingDataFloat32":
           {
+            List<Float32List>? data = [];
+            
+            int channelCount = call.arguments['channelCount'] as int;
+            for (int i = 0; i < channelCount; ++i)
+            {
+              var x = call.arguments['DataChannel$i'] as Float32List;
+              /*
+              var buf = x.buffer;
+                Float32List bb = buf.asFloat32List();
+                var bbln = bb.length;
+              var blob = ByteData.sublistView(x);
+              var ln = (x.length/4).floor();
+              var zzz = Float32List(ln);
+              for (int j = 0; j < ln; ++j)
+                {
+                  var z = blob.getFloat32(4*j);
+                  zzz[j] = z;
+                }
+                
+               */
+              data.add(x);
+            }
+            //List<Object?> dd = call.arguments['data'] as List<Float32List>;
             List<Object?> d =  call.arguments['data'];
             List<Float32List>? dd = [];
-            for (Object? x in d)
-              {
-                dd.add(x as Float32List);
+            
+            for (Object? x in d) {
+              var xx = x as Float32List;
+              /*
+              var buf = xx.buffer;
+              var bb = buf.asFloat32List();
+              var blob = ByteData.sublistView(xx);
+              var ln = (xx.length / 4).floor();
+              var zz = Float32List(ln);
+              for (int j = 0; j < ln; ++j) {
+                //var z = blob.getFloat32(4 * j);
+                zz[j] = blob.getFloat32(4 * j);//z;
               }
+              */
+              dd.add(xx);
+            }
+            
             aRecorder!.recordingDataFloat32(data: dd);
           }
           break;
