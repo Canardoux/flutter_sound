@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-### 9.20.2
+### 9.20.3
 
 Work on iOS to support Float32 and non interleaved Streams. See [this guide](https://flutter-sound.canardoux.xyz/guides_streams.html) and [this guide](https://flutter-sound.canardoux.xyz/guides_pcm_wave.html).
 
