@@ -117,11 +117,11 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   ///
   StreamSubscription<List<Float32List>>?
-  _f32StreamSubscription; // ignore: cancel_subscriptions
+      _f32StreamSubscription; // ignore: cancel_subscriptions
 
   ///
   StreamSubscription<List<Int16List>>?
-  _int16StreamSubscription; // ignore: cancel_subscriptions
+      _int16StreamSubscription; // ignore: cancel_subscriptions
 
   ///
   StreamController<Food>? _foodStreamController; //ignore: close_sinks
@@ -815,8 +815,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
             outputFile: path,
             numChannels: numChannels,
             sampleRate: sampleRate,
-            codec: codec
-        );
+            codec: codec);
         fromURI = path;
         codec = Codec.pcm16WAV;
       } else if (fromDataBuffer != null) {
@@ -981,8 +980,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     int bufferSize = 8192,
     TWhenFinished? whenFinished,
   }) async {
-
-
     await _lock.synchronized(() async {
       await _startPlayerFromStream(
         codec: codec,
@@ -1093,7 +1090,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
   }
 
-
   Future<void> feedF32FromStream(List<Float32List> buffer) async {
     var ln = await (FlutterSoundPlayerPlatform.instance.feedFloat32(
       this,
@@ -1101,15 +1097,12 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     ));
   }
 
-
-
   Future<void> feedInt16FromStream(List<Int16List> buffer) async {
     var ln = await (FlutterSoundPlayerPlatform.instance.feedInt16(
       this,
       data: buffer,
     ));
   }
-
 
   ///
   Future<int> _feed(Uint8List data) async {

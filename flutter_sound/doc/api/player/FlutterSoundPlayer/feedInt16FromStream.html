@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the recordingDataFloat32 method from the FlutterSoundRecorder class, for the Dart programming language.">
-  <title>recordingDataFloat32 method - FlutterSoundRecorder class - recorder library - Dart API</title>
+  <meta name="description" content="API docs for the feedInt16FromStream method from the FlutterSoundPlayer class, for the Dart programming language.">
+  <title>feedInt16FromStream method - FlutterSoundPlayer class - player library - Dart API</title>
 
 
   
@@ -25,11 +25,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">flutter_sound</a></li>
-    <li><a href="../../recorder/recorder-library.html">public&#47;flutter_sound_recorder.dart</a></li>
-    <li><a href="../../recorder/FlutterSoundRecorder-class.html">FlutterSoundRecorder</a></li>
-    <li class="self-crumb">recordingDataFloat32 method</li>
+    <li><a href="../../player/player-library.html">public&#47;flutter_sound_player.dart</a></li>
+    <li><a href="../../player/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
+    <li class="self-crumb">feedInt16FromStream method</li>
   </ol>
-  <div class="self-name">recordingDataFloat32</div>
+  <div class="self-name">feedInt16FromStream</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -49,24 +49,19 @@
 <div
     id="dartdoc-main-content"
     class="main-content"
-    data-above-sidebar="recorder&#47;FlutterSoundRecorder-class-sidebar.html"
+    data-above-sidebar="player&#47;FlutterSoundPlayer-class-sidebar.html"
     data-below-sidebar="">
     <div>
-<h1><span class="kind-method">recordingDataFloat32</span> method 
+<h1><span class="kind-method">feedInt16FromStream</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
       
-  <div>
-    <ol class="annotation-list">
-        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
-    </ol>
-  </div>
-<span class="returntype">void</span>
-<span class="name ">recordingDataFloat32</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="recordingDataFloat32-param-data"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-typed_data/Float32List-class.html">Float32List</a></span>&gt;</span>?</span> <span class="parameter-name">data</span>, </span></li>
-</ol>})
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+<span class="name ">feedInt16FromStream</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="feedInt16FromStream-param-buffer"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-typed_data/Int16List-class.html">Int16List</a></span>&gt;</span></span> <span class="parameter-name">buffer</span></span></li>
+</ol>)
 
-      <div class="features"><span class="feature">override</span></div>
+      
 
     </section>
     
@@ -75,12 +70,11 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">@override
-void recordingDataFloat32({required List&lt;Float32List&gt;? data}) {
-  if (_userStreamSinkFloat32 != null) {
-    _userStreamSinkFloat32!.add(data!);
-  }
-
+  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; feedInt16FromStream(List&lt;Int16List&gt; buffer) async {
+  var ln = await (FlutterSoundPlayerPlatform.instance.feedInt16(
+    this,
+    data: buffer,
+  ));
 }</code></pre>
 </section>
 
@@ -95,12 +89,12 @@ void recordingDataFloat32({required List&lt;Float32List&gt;? data}) {
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">flutter_sound</a></li>
-    <li><a href="../../recorder/recorder-library.html">recorder</a></li>
-    <li><a href="../../recorder/FlutterSoundRecorder-class.html">FlutterSoundRecorder</a></li>
-    <li class="self-crumb">recordingDataFloat32 method</li>
+    <li><a href="../../player/player-library.html">player</a></li>
+    <li><a href="../../player/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
+    <li class="self-crumb">feedInt16FromStream method</li>
 </ol>
 
-    <h5>FlutterSoundRecorder class</h5>
+    <h5>FlutterSoundPlayer class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">

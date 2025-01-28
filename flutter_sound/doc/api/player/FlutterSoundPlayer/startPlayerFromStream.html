@@ -59,6 +59,7 @@
       
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
 <span class="name ">startPlayerFromStream</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="startPlayerFromStream-param-codec"><span class="type-annotation">Codec</span> <span class="parameter-name">codec</span> = <span class="default-value">Codec.pcm16</span>, </span></li>
+<li><span class="parameter" id="startPlayerFromStream-param-interleaved"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">interleaved</span> = <span class="default-value">true</span>, </span></li>
 <li><span class="parameter" id="startPlayerFromStream-param-numChannels"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">numChannels</span> = <span class="default-value">1</span>, </span></li>
 <li><span class="parameter" id="startPlayerFromStream-param-sampleRate"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">sampleRate</span> = <span class="default-value">16000</span>, </span></li>
 <li><span class="parameter" id="startPlayerFromStream-param-bufferSize"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">bufferSize</span> = <span class="default-value">8192</span>, </span></li>
@@ -111,35 +112,18 @@ myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; startPlayerFromStream({
   Codec codec = Codec.pcm16,
+  bool interleaved = true,
   int numChannels = 1,
   int sampleRate = 16000,
   int bufferSize = 8192,
   TWhenFinished? whenFinished,
 }) async {
-  &#47;* NO HACK
-  if ((!kIsWeb) &amp;&amp;
-      Platform
-          .isIOS) &#47;&#47; This hack is just to have player to stream working correctly.
-  {
-    FlutterSoundPlayer player = FlutterSoundPlayer();
-    await player.openPlayer();
-    Uint8List buf = Uint8List(0);
-    &#47;&#47;buf.fillRange(0, 1000, 0);
-    try {
-      await player.startPlayer(
-          fromDataBuffer: buf, codec: Codec.pcm16, whenFinished: () {});
-    } catch (e) {
-      _logger.d(&#39;Hacking the bug we have on iOS when playing from stream&#39;);
-    }
-    &#47;&#47;await player.stopPlayer();
-    &#47;* await *&#47; player.closePlayer();
-  }
 
-   *&#47;
 
   await _lock.synchronized(() async {
     await _startPlayerFromStream(
       codec: codec,
+      interleaved: interleaved,
       sampleRate: sampleRate,
       numChannels: numChannels,
       bufferSize: bufferSize,

@@ -290,10 +290,10 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2025-01-11T17:59:12.027153Z",
+  "generated": "2025-01-28T14:59:41.932790Z",
   "generator": "pub",
   "generatorVersion": "3.6.0",
   "flutterRoot": "file:///Volumes/mac-H/larpoux/flutter",
-  "flutterVersion": "3.27.0",
+  "flutterVersion": "3.27.1",
   "pubCache": "file:///Volumes/mac-H/larpoux/.pub-cache"
 }

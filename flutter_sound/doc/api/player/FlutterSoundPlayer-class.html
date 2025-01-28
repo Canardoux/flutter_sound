@@ -111,6 +111,30 @@ The optional parameter <code>bool voiceProcessing</code> is used to activate the
       id="instance-properties">
     <h2>Properties</h2>
     <dl class="properties">
+        <dt id="f32Sink" class="property">
+  <span class="name"><a href="../player/FlutterSoundPlayer/f32Sink.html">f32Sink</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/StreamSink-class.html">StreamSink</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-typed_data/Float32List-class.html">Float32List</a></span>&gt;</span></span>&gt;</span>?</span>
+  
+
+</dt>
+<dd>
+  The Stream sink used by Play From Stream
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="float32Sink" class="property">
+  <span class="name"><a href="../player/FlutterSoundPlayer/float32Sink.html">float32Sink</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/StreamSink-class.html">StreamSink</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-typed_data/Float32List-class.html">Float32List</a></span>&gt;</span></span>&gt;</span>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
         <dt id="foodSink" class="property">
   <span class="name"><a href="../player/FlutterSoundPlayer/foodSink.html">foodSink</a></span>
   <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/StreamSink-class.html">StreamSink</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../tau/Food-class.html">Food</a></span>&gt;</span>?</span>
@@ -132,6 +156,18 @@ The optional parameter <code>bool voiceProcessing</code> is used to activate the
 <dd class="inherited">
   The hash code for this object.
   <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="int16Sink" class="property">
+  <span class="name"><a href="../player/FlutterSoundPlayer/int16Sink.html">int16Sink</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/StreamSink-class.html">StreamSink</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-typed_data/Int16List-class.html">Int16List</a></span>&gt;</span></span>&gt;</span>?</span>
+  
+
+</dt>
+<dd>
+  The Stream sink used by Play From Stream
+  <div class="features"><span class="feature">no setter</span></div>
 
 </dd>
 
@@ -268,6 +304,19 @@ as the audio is played.
 
 </dd>
 
+        <dt id="feedF32FromStream" class="callable">
+  <span class="name"><a href="../player/FlutterSoundPlayer/feedF32FromStream.html">feedF32FromStream</a></span><span class="signature">(<wbr><span class="parameter" id="feedF32FromStream-param-buffer"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-typed_data/Float32List-class.html">Float32List</a></span>&gt;</span></span> <span class="parameter-name">buffer</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
         <dt id="feedFromStream" class="callable">
   <span class="name"><a href="../player/FlutterSoundPlayer/feedFromStream.html">feedFromStream</a></span><span class="signature">(<wbr><span class="parameter" id="feedFromStream-param-buffer"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-typed_data/Uint8List-class.html">Uint8List</a></span> <span class="parameter-name">buffer</span></span>)
     <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
@@ -277,6 +326,19 @@ as the audio is played.
 </dt>
 <dd>
   Used when you want to play live PCM data synchronously.
+  
+
+</dd>
+
+        <dt id="feedInt16FromStream" class="callable">
+  <span class="name"><a href="../player/FlutterSoundPlayer/feedInt16FromStream.html">feedInt16FromStream</a></span><span class="signature">(<wbr><span class="parameter" id="feedInt16FromStream-param-buffer"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-typed_data/Int16List-class.html">Int16List</a></span>&gt;</span></span> <span class="parameter-name">buffer</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  
   
 
 </dd>
@@ -517,7 +579,7 @@ Seldom used. Most of the time the Log Level is specified during the constructor.
 </dd>
 
         <dt id="startPlayerFromStream" class="callable">
-  <span class="name"><a href="../player/FlutterSoundPlayer/startPlayerFromStream.html">startPlayerFromStream</a></span><span class="signature">(<wbr>{<span class="parameter" id="startPlayerFromStream-param-codec"><span class="type-annotation">Codec</span> <span class="parameter-name">codec</span> = <span class="default-value">Codec.pcm16</span>, </span><span class="parameter" id="startPlayerFromStream-param-numChannels"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">numChannels</span> = <span class="default-value">1</span>, </span><span class="parameter" id="startPlayerFromStream-param-sampleRate"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">sampleRate</span> = <span class="default-value">16000</span>, </span><span class="parameter" id="startPlayerFromStream-param-bufferSize"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">bufferSize</span> = <span class="default-value">8192</span>, </span><span class="parameter" id="startPlayerFromStream-param-whenFinished"><span class="type-annotation"><a href="../player/TWhenFinished.html">TWhenFinished</a>?</span> <span class="parameter-name">whenFinished</span></span>})
+  <span class="name"><a href="../player/FlutterSoundPlayer/startPlayerFromStream.html">startPlayerFromStream</a></span><span class="signature">(<wbr>{<span class="parameter" id="startPlayerFromStream-param-codec"><span class="type-annotation">Codec</span> <span class="parameter-name">codec</span> = <span class="default-value">Codec.pcm16</span>, </span><span class="parameter" id="startPlayerFromStream-param-interleaved"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">interleaved</span> = <span class="default-value">true</span>, </span><span class="parameter" id="startPlayerFromStream-param-numChannels"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">numChannels</span> = <span class="default-value">1</span>, </span><span class="parameter" id="startPlayerFromStream-param-sampleRate"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">sampleRate</span> = <span class="default-value">16000</span>, </span><span class="parameter" id="startPlayerFromStream-param-bufferSize"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">bufferSize</span> = <span class="default-value">8192</span>, </span><span class="parameter" id="startPlayerFromStream-param-whenFinished"><span class="type-annotation"><a href="../player/TWhenFinished.html">TWhenFinished</a>?</span> <span class="parameter-name">whenFinished</span></span>})
     <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
   </span>
   

@@ -183,16 +183,16 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
   }
 
   Future<int> feedFloat32(
-      FlutterSoundPlayerCallback callback, {
-        required List<Float32List> data,
-      }) {
+    FlutterSoundPlayerCallback callback, {
+    required List<Float32List> data,
+  }) {
     throw UnimplementedError('feedFloat32() has not been implemented.');
   }
 
   Future<int> feedInt16(
-      FlutterSoundPlayerCallback callback, {
-        required List<Int16List> data,
-      }) {
+    FlutterSoundPlayerCallback callback, {
+    required List<Int16List> data,
+  }) {
     throw UnimplementedError('feed() has not been implemented.');
   }
 

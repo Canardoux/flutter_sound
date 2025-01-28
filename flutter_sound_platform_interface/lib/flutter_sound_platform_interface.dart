@@ -86,9 +86,7 @@ enum Codec {
 
   /// Linear Float32 PCM, which is a Wave file.
   pcmFloat32WAV,
-
 }
-
 
 enum AudioSource {
   defaultSource,

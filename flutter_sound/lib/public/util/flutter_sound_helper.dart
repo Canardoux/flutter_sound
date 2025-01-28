@@ -33,7 +33,8 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:logger/logger.dart' show Level, Logger;
-import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart'  as FSCodec show Codec;
+import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart'
+    as FSCodec show Codec;
 
 import 'wave_header.dart';
 
@@ -106,13 +107,12 @@ class FlutterSoundHelper {
   Future<void> pcmToWave({
     required String inputFile,
     required String outputFile,
-
     int numChannels = 1,
     int sampleRate = 16000,
     FSCodec.Codec codec = FSCodec.Codec.pcm16,
   }) async {
-    if (codec != FSCodec.Codec.pcm16 && codec != FSCodec.Codec.pcmFloat32 ) {
-      throw(Exception('Bad codec'));
+    if (codec != FSCodec.Codec.pcm16 && codec != FSCodec.Codec.pcmFloat32) {
+      throw (Exception('Bad codec'));
     }
     var filIn = File(inputFile);
     var filOut = File(outputFile);
@@ -122,7 +122,9 @@ class FlutterSoundHelper {
     var sink = filOut.openWrite();
 
     var header = WaveHeader(
-      codec == FSCodec.Codec.pcm16 ? WaveHeader.formatInt : WaveHeader.formatFloat,
+      codec == FSCodec.Codec.pcm16
+          ? WaveHeader.formatInt
+          : WaveHeader.formatFloat,
       numChannels = numChannels, //
       sampleRate = sampleRate,
       codec == FSCodec.Codec.pcm16 ? 16 : 32, // 16 bits per byte
@@ -148,15 +150,19 @@ class FlutterSoundHelper {
     FSCodec.Codec codec = FSCodec.Codec.pcm16,
     //int bitsPerSample,
   }) async {
-    if (codec != FSCodec.Codec.pcm16 && codec != FSCodec.Codec.pcmFloat32 ) {
-      throw(Exception('Bad codec'));
+    if (codec != FSCodec.Codec.pcm16 && codec != FSCodec.Codec.pcmFloat32) {
+      throw (Exception('Bad codec'));
     }
     var size = inputBuffer.length;
     var header = WaveHeader(
-      codec == FSCodec.Codec.pcm16 ? WaveHeader.formatInt : WaveHeader.formatFloat,
+      codec == FSCodec.Codec.pcm16
+          ? WaveHeader.formatInt
+          : WaveHeader.formatFloat,
       numChannels,
       sampleRate,
-      codec == FSCodec.Codec.pcm16 ? 16 : 32, // 16 bits per sample for int16. 32 bits per sample for float32
+      codec == FSCodec.Codec.pcm16
+          ? 16
+          : 32, // 16 bits per sample for int16. 32 bits per sample for float32
       size, // total number of bytes
     );
 
@@ -189,5 +195,4 @@ class FlutterSoundHelper {
     }
     return r;
   }
-
 }

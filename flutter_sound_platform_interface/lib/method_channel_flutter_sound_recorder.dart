@@ -75,10 +75,9 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
         case "recordingDataFloat32":
           {
             List<Float32List>? data = [];
-            
+
             int channelCount = call.arguments['channelCount'] as int;
-            for (int i = 0; i < channelCount; ++i)
-            {
+            for (int i = 0; i < channelCount; ++i) {
               var x = call.arguments['DataChannel$i'] as Float32List;
               /*
               var buf = x.buffer;
@@ -97,50 +96,27 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
               data.add(x);
             }
             //List<Object?> dd = call.arguments['data'] as List<Float32List>;
-            List<Object?> d =  call.arguments['data'];
+            List<Object?> d = call.arguments['data'];
             List<Float32List>? dd = [];
-            
+
             for (Object? x in d) {
               var xx = x as Float32List;
-              /*
-              var buf = xx.buffer;
-              var bb = buf.asFloat32List();
-              var blob = ByteData.sublistView(xx);
-              var ln = (xx.length / 4).floor();
-              var zz = Float32List(ln);
-              for (int j = 0; j < ln; ++j) {
-                //var z = blob.getFloat32(4 * j);
-                zz[j] = blob.getFloat32(4 * j);//z;
-              }
-              */
               dd.add(xx);
             }
-            
+
             aRecorder!.recordingDataFloat32(data: dd);
           }
           break;
 
-
         case "recordingDataInt16":
           {
-            List<Object?> d =  call.arguments['data'];
+            List<Object?> d = call.arguments['data'];
             List<Int16List>? dd = [];
-            for (Object? x in d)
-            {
+            for (Object? x in d) {
               if (x is Int16List) {
-                dd.add(x as Int16List);
-              } else
-              if (x is Uint8List) // On iOS i am not able to return Int16List
-              {
-                int tata = x.length;
-                var toto = x.buffer.asInt16List();
-                var papa = x.buffer;
-                int zaza = toto.length;
-                var momo = Int16List.sublistView(toto);
-                var mimi = Int16List.view(papa);
-                var mimiln = mimi.length;
-                var mama = toto;
-              }
+                dd.add(x);
+              } else if (x is Uint8List) // On iOS i am not able to handle that
+              {}
             }
             aRecorder!.recordingDataInt16(data: dd);
           }
@@ -322,8 +298,11 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
         'bufferSize': bufferSize,
         'enableVoiceProcessing': enableVoiceProcessing, // ? 1 : 0,
         'codec': codec!.index,
-        'toStream': toStream != null || toStreamInt16 != null ||  toStreamFloat32 != null,// ? 1 : 0,
-        'interleaved': toStreamFloat32 == null && toStreamInt16 == null, // ? 1 : 0,
+        'toStream': toStream != null ||
+            toStreamInt16 != null ||
+            toStreamFloat32 != null, // ? 1 : 0,
+        'interleaved':
+            toStreamFloat32 == null && toStreamInt16 == null, // ? 1 : 0,
         'audioSource': audioSource!.index,
       },
     );

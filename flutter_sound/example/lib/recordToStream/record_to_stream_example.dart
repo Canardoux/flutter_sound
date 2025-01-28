@@ -41,7 +41,7 @@ typedef _Fn = void Function();
 
 const int cstSAMPLERATE = 16000;
 const int cstCHANNELNB = 2;
-const Codec cstCODEC = Codec.pcmFloat32;
+const Codec cstCODEC = Codec.pcm16;
 
 /// Example app.
 class RecordToStreamExample extends StatefulWidget {

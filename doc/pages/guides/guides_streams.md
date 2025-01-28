@@ -13,19 +13,23 @@ Record to Stream and Play from Stream are two very important Flutter Sound featu
 
 # Record to Stream
 
-To record a Live PCM file, when calling the verb `startRecorder()`, you specify the parameter `toStream:`, `toStreamFloat32` or `toStreamInt16` with you Stream sink, instead of the parameter `toFile:`. This parameter is a Dart StreamSink that you can listen to, for processing the audio data. 
+To record to live PCM data, when calling the verb `startRecorder()`, you specify the parameter `toStream:`, `toStreamFloat32` or `toStreamInt16` with your Stream sink, instead of the parameter `toFile:`. This parameter is a Dart StreamSink that you can listen to, for processing the audio data. 
 
 - The parameter `toStream:` is used when you want to record interleaved data to a `<Uint8List>` Stream Sink
 - The parameter `toStreamFloat32:` is used when you want to record non interleaved data to a `<List<Float32List>>` Stream Sink
 - The parameter `toStreamInt16:` is used when you want to record non interleaved data to a `<List<Int16List>>` Stream Sink
 
+{% include note.html content="`toStreamFloat32:` and `toStreamInt16:` are only supported on iOS. It will be supported later on Web and Android." %}
+
 ## Interleaved
 
-Interleaved data are given as `<Uint8List>`. This are the Raw Data where each sample are coded with 2 unsigned integers for each sample. This is convenient when you want to handle globally the data like a buffer. For example when you want send the raw data to a remote server. You can also specify `toStream:` when you have just one channel. 
+Interleaved data are given as `<Uint8List>`. This are the Raw Data where each sample are coded with 2 or 4 unsigned bytes for each sample. This is convenient when you want to handle globally the data as a raw buffer. For example when you want send the raw data to a remote server.
 
 ## Non interleaved
 
-Non interleaved data are coded as `<List<Float32List>>` or `<List<Int16List>>` depending of the codec selected. The number of the element of the List is equal to the number of channels (1 for monophony, 2 for stereophony). This is convenient when you want to access the real audio data as Float32 or Int16. You can specify `toStreamFloat32` or `toStreamInt16:` even when you have just one channel. In this case the length of the list is always 1
+Non interleaved data are coded as `<List<Float32List>>` or `<List<Int16List>>` depending of the codec selected. The number of the element of the List is equal to the number of channels (1 for monophony, 2 for stereophony). This is convenient when you want to access the real audio data as Float32 or Int16. 
+
+{% include tip.html content="You can specify `toStreamFloat32` or `toStreamInt16:` even when you have just one channel. In this case the length of the list is 1." %}
 
 ## startRecorder()
 
@@ -96,15 +100,13 @@ You can look to the [simple example](https://github.com/canardoux/flutter_sound/
 
 ## Notes :
 
-{% include note.html content="Note: Floating Point PCM data is not yet supported on Android and Web. It is actually only implemented on iOS." %}
+{% include note.html content="Floating Point PCM data is not yet supported on Android and Web. It is actually only implemented on iOS." %}
 
-{% include note.html content="Note: Non interleaved PCM data is not yet supported on Android and Web. It is actually only implemented on iOS." %}
+{% include note.html content="Non interleaved PCM data is not yet supported on Android and Web. It is actually only implemented on iOS." %}
 
-{% include note.html content="Note: Non interleaved Int16 PCM data is not yet supported on iOS. It is only implemented with codec.pcmFloat32." %}
+{% include note.html content="Non interleaved Int16 PCM data is not yet supported on iOS. It is only implemented with codec.pcmFloat32." %}
 
-{% include note.html content="Note: This new functionnality needs, at least, an Android SDK &gt;= 21" %}
-
-{% include note.html content="Note: This new functionnality works better with Android minSdk &gt;= 23, because previous SDK was not able to do UNBLOCKING `write`." %}
+{% include note.html content="Note: This functionnality needs, at least, an Android SDK &gt;= 21. This new functionnality works better with Android minSdk &gt;= 23, because previous SDK was not able to do UNBLOCKING `write`." %}
 
 ---------------
 
@@ -114,7 +116,7 @@ To play live stream, you start playing with the verb `startPlayerFromStream()` i
 
 -----------------------
 
-## `startPlayerFromStream()`
+## startPlayerFromStream()
 
 The main parameters for the verb `startPlayerFromStream()` are : 
 
@@ -137,11 +139,29 @@ await myPlayer.startPlayerFromStream
 
 ## interleaved:
 
-This parameter specifies if the data to be played are interleaved or not. When the data are interleaved, you will use the `_mPlayer.foodSink` to play data. When the data are not interleaved, you will use `_mPlayer.float32Sink` or `_mPlayer.int16Sink` depending on the codec used. When the data are interleaved, the data provided by the app are coded as UINt8List. This is convenient when you have raw data to be played from a remote server. When the data are not interleaved, they are provided as `List<List>`, with an array of length equal to the number of channels. It is possible to use non interleaved data, even with `numChannels` equal 1, if you have Integer data to be played and not a raw buffer.
+This parameter specifies if the data to be played are interleaved or not. When the data are interleaved, you will use the `_mPlayer.foodSink` to play data. When the data are not interleaved, you will use `_mPlayer.float32Sink` or `_mPlayer.int16Sink` depending on the codec used. When the data are interleaved, the data provided by the app are coded as UINt8List. This is convenient when you have raw data to be played from a remote server. When the data are not interleaved, they are provided as `List<List>`, with an array of length equal to the number of channels. 
+
+{% include tip.html content="It is possible to use non interleaved data, even with `numChannels` equal 1 when you have int16 Integers or float32 data to be played and not a raw buffer." %}
+
+{% include note.html content="Non interleaved PCM data is not yet supported on Android and Web. It is actually only implemented on iOS." %}
 
 -----
 
-## _mPlayer.foodSink, _mPlayer.float32Sink and _mPlayer.int16Sink
+## whenFinished:
+
+This is a call back called when Flutter Sound runs low on audio data to be played. By default, the player is stopped when no more data. The implementation of this feature is not bullet proof. To desactivate this feature you can specify a dummy callback :
+```dart
+startPlayerFromStream
+(
+  ...
+  whenFinished: (){},
+  ...
+);
+```
+
+--------------------
+
+## Interleaved playback without back pressure (without flow control),
 
 - `_mPlayer.foodSink` is a Stream Sink used when the data are interleaved and when you have UInt8List buffers to be played
 - `_mPlayer.float32Sink` is a Stream Sink used when the data are not interleaved and when you have Float32 data to be played
@@ -166,22 +186,10 @@ List<Int16List>; // A List of `numChannels` Int16List
 _mPlayer.int16Sink(d);
 ```
 
-## whenFinished:
 
-This is a call back called when Flutter Sound runs low on audio data to be played. By default, the player is stopped when no more data. The implementation of this feature is not bullet proof. To desactivate this feature you can specify a dummy callback :
-```dart
-startPlayerFromStream
-(
-  ...
-  whenFinished: (){},
-  ...
-);
+{% include note.html content="`float32Sink` and `int16Sink` are not yet supported on Android and Web. It is actually only implemented on iOS." %}
 
---------------------
-
-## Interleaved playback without back pressure,
-
-The App does just `myPlayer.foodSink.add( FoodData(aBuffer) )` each time it wants to play some data. No need to await, no need to verify if the previous buffers have finished to be played. All the buffers added to `foodSink` are buffered, and are played sequentially. The App continues to work without knowing when the buffers are really played.
+The App does `myPlayer.foodSink.add( FoodData(d) )` or `_mPlayer.float32Sink(d)` or `mPlayer.int16Sink(d);` each time it wants to play some data. No need to await, no need to verify if the previous buffers have finished to be played. All the data added to the Stream Sink are buffered, and are played sequentially. The App continues to work without knowing when the buffers are really played.
 
 This means two things :
 
@@ -190,7 +198,7 @@ This means two things :
 
   If it does a `stopPlayer()`, all the waiting buffers will be flushed which is probably not what it wants.
 
-But there is a mechanism if the App wants to resynchronize with the output Stream. To resynchronize with the current playback, the App does `myPlayer.foodSink.add( FoodEvent(aCallback) );`
+But there is a mechanism on Interleaved Streams if the App wants to resynchronize with the output Stream. To resynchronize with the current playback, the App does `myPlayer.foodSink.add( FoodEvent(aCallback) );`
 
 ```text
 myPlayer.foodSink.add
@@ -221,7 +229,7 @@ myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
 
 -----------------------
 
-## Interleaved playback with back pressure
+## Interleaved playback with back pressure (with flow control)
 
 If the App wants to keep synchronization with what is played, it uses the verb `feedFromStream()` to play data. It is really very important not to call another `feedFromStream()` before the completion of the previous future. When each Future is completed, the App can be sure that the provided data are correctely either played, or at least put in low level internal buffers, and it knows that it is safe to do another one.
 
@@ -261,7 +269,5 @@ You can look to the provided examples :
 
 {% include note.html content="Note: Non interleaved Int16 PCM data is not yet supported on iOS. It is only implemented with codec.pcmFloat32." %}
 
-{% include note.html content="Note: This new functionnality needs, at least, an Android SDK &gt;= 21" %}
-
-{% include note.html content="Note: This new functionnality works better with Android minSdk &gt;= 23, because previous SDK was not able to do UNBLOCKING `write`." %}
+{% include note.html content="Note: This functionnality needs, at least, an Android SDK &gt;= 21. This new functionnality works better with Android minSdk &gt;= 23, because previous SDK was not able to do UNBLOCKING `write`." %}
 

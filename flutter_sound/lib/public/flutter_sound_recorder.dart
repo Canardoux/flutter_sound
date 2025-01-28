@@ -161,18 +161,14 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     if (_userStreamSinkFloat32 != null) {
       _userStreamSinkFloat32!.add(data!);
     }
-
   }
-
 
   @override
   void recordingDataInt16({required List<Int16List>? data}) {
     if (_userStreamSinkFloat32 != null) {
       _userStreamSinkInt16!.add(data!);
     }
-
   }
-
 
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
@@ -400,7 +396,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       _userStreamSinkFloat32 = null;
     }
 
-
     if (_userStreamSinkInt16 != null) {
       await _userStreamSinkInt16!.close();
       _userStreamSinkInt16 = null;
@@ -463,7 +458,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       await _userStreamSink!.close();
       _userStreamSink = null;
     }
-
 
     if (_userStreamSinkFloat32 != null) {
       await _userStreamSinkFloat32!.close();

@@ -9,6 +9,8 @@ toc: false
 ---
 ### 9.20.0
 
+Work on iOS to support Float32 and non interleaved Streams. See [this guide](https://flutter-sound.canardoux.xyz/guides_streams.html) and [this guide](https://flutter-sound.canardoux.xyz/guides_pcm_wave.html).
+
 - On IOS : Support of numChannels and sampleRate parameters for PCM codecs
   - On iOS : codec==Codec.pcm16 and codec==Codec.pcm16WAV  --  startRecorder()  --   Parameter `numChannels` is correctely handled (if >1 then the audio samples are interleaved)
   - On iOS : codec==Codec.pcm16 and codec==Codec.pcm16WAV  --  startPlayer()    --   Parameter `numChannels` is correctely handled (if >1 then the audio samples are interleaved)

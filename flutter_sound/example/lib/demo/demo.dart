@@ -58,7 +58,7 @@ import 'dart:typed_data';
  */
 
 ///
-const int cstSAMPLERATE = 16000;
+const int cstSAMPLERATE = 8000;
 const int cstCHANNELNB = 2;
 const int cstBITRATE = 16000;
 
@@ -190,7 +190,7 @@ class _MyAppState extends State<Demo> {
     'https://flutter-sound.canardoux.xyz/extract/04-opus.caf', // 'assets/samples/sample_opus.caf',
     'https://flutter-sound.canardoux.xyz/extract/05.mp3', // 'assets/samples/sample.mp3',
     'https://flutter-sound.canardoux.xyz/extract/07.ogg', // 'assets/samples/sample.ogg',
-    'https://flutter-sound.canardoux.xyz/extract/sample_s16_2ch.raw', // Raw PCM int16
+    'https://flutter-sound.canardoux.xyz/extract/sample_s16_2ch.pcm', // Raw PCM int16
     'https://flutter-sound.canardoux.xyz/extract/sample_2ch.wav', // int16 wav stereo
     'https://flutter-sound.canardoux.xyz/extract/02.aiff', // 'assets/samples/sample.aiff',
     'https://flutter-sound.canardoux.xyz/extract/01-pcm.caf', // 'assets/samples/sample_pcm.caf',

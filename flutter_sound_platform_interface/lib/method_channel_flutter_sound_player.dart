@@ -26,7 +26,6 @@ import 'flutter_sound_player_platform_interface.dart';
 import 'flutter_sound_platform_interface.dart';
 import 'dart:typed_data' show Uint8List, Float32List, Int16List;
 
-
 const MethodChannel _channel =
     MethodChannel('xyz.canardoux.flutter_sound_player');
 
@@ -304,9 +303,9 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
   }
 
   Future<int> feedFloat32(
-      FlutterSoundPlayerCallback callback, {
-        required List<Float32List> data,
-      }) {
+    FlutterSoundPlayerCallback callback, {
+    required List<Float32List> data,
+  }) {
     return invokeMethod(
       callback,
       'feedFloat32',
@@ -316,12 +315,10 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
     );
   }
 
-
-
   Future<int> feedInt16(
-      FlutterSoundPlayerCallback callback, {
-        required List<Int16List> data,
-      }) {
+    FlutterSoundPlayerCallback callback, {
+    required List<Int16List> data,
+  }) {
     return invokeMethod(
       callback,
       'feedInt16',
@@ -330,7 +327,6 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
       },
     );
   }
-
 
   @override
   Future<int> stopPlayer(
