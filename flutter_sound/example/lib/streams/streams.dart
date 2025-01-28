@@ -38,7 +38,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 ///
 typedef _Fn = void Function();
-const int  cstSampleRate = 16000;
+const int cstSampleRate = 16000;
 const int cstNUMBEROFCHANNELS = 2;
 
 /// Example app.
@@ -50,7 +50,6 @@ class StreamsExample extends StatefulWidget {
 }
 
 class _StreamsExampleState extends State<StreamsExample> {
-
   FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
   FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
   bool _mPlayerIsInited = false;
@@ -60,7 +59,7 @@ class _StreamsExampleState extends State<StreamsExample> {
   List<List<Float32List>> bufferF32 = [];
   List<List<Int16List>> bufferInt16 = [];
   List<Uint8List> bufferUint8 = [];
-  var recordingDataControllerF32 =   StreamController<List<Float32List>>();
+  var recordingDataControllerF32 = StreamController<List<Float32List>>();
   var recordingDataControllerInt16 = StreamController<List<Int16List>>();
   var recordingDataControllerUint8 = StreamController<Uint8List>();
 
@@ -127,67 +126,50 @@ class _StreamsExampleState extends State<StreamsExample> {
   // ----------------------  Here is the code to record to a Stream -----------------
 
   Future<void> recordBtn() async {
-
-    if (interleaved)
-    {
+    if (interleaved) {
       bufferUint8 = [];
       recordingDataControllerUint8.close();
       recordingDataControllerUint8 = StreamController<Uint8List>();
-      recordingDataControllerUint8.stream.listen((Uint8List buf)
-      {
+      recordingDataControllerUint8.stream.listen((Uint8List buf) {
         bufferUint8.add(buf);
       });
-      await _mRecorder.startRecorder
-      (
+      await _mRecorder.startRecorder(
         codec: codecSelected,
         sampleRate: cstSampleRate,
         numChannels: cstNUMBEROFCHANNELS,
         audioSource: AudioSource.defaultSource,
         toStream: recordingDataControllerUint8.sink,
       );
-
-    } else
-    if (codecSelected == Codec.pcmFloat32)
-    {
-          bufferF32 = [];
-          recordingDataControllerF32.close();
-          recordingDataControllerF32 = StreamController<List<Float32List>>();
-          recordingDataControllerF32.stream.listen((buf) {
-            bufferF32.add(buf);
-          });
-          await _mRecorder.startRecorder
-          (
-            codec: codecSelected,
-            sampleRate: cstSampleRate,
-            numChannels: cstNUMBEROFCHANNELS,
-            audioSource: AudioSource.defaultSource,
-            toStreamFloat32: recordingDataControllerF32.sink
-          );
-    } else
-    if (codecSelected == Codec.pcm16)
-    {
-          bufferInt16 = [];
-          recordingDataControllerInt16.close();
-          recordingDataControllerInt16 = StreamController<List<Int16List>>();
-          recordingDataControllerInt16.stream.listen((buf)
-          {
-            bufferInt16.add(buf);
-          });
-          await _mRecorder.startRecorder
-            (
-              codec: codecSelected,
-              sampleRate: cstSampleRate,
-              numChannels: cstNUMBEROFCHANNELS,
-              audioSource: AudioSource.defaultSource,
-              toStreamInt16: recordingDataControllerInt16.sink
-          );
-
+    } else if (codecSelected == Codec.pcmFloat32) {
+      bufferF32 = [];
+      recordingDataControllerF32.close();
+      recordingDataControllerF32 = StreamController<List<Float32List>>();
+      recordingDataControllerF32.stream.listen((buf) {
+        bufferF32.add(buf);
+      });
+      await _mRecorder.startRecorder(
+          codec: codecSelected,
+          sampleRate: cstSampleRate,
+          numChannels: cstNUMBEROFCHANNELS,
+          audioSource: AudioSource.defaultSource,
+          toStreamFloat32: recordingDataControllerF32.sink);
+    } else if (codecSelected == Codec.pcm16) {
+      bufferInt16 = [];
+      recordingDataControllerInt16.close();
+      recordingDataControllerInt16 = StreamController<List<Int16List>>();
+      recordingDataControllerInt16.stream.listen((buf) {
+        bufferInt16.add(buf);
+      });
+      await _mRecorder.startRecorder(
+          codec: codecSelected,
+          sampleRate: cstSampleRate,
+          numChannels: cstNUMBEROFCHANNELS,
+          audioSource: AudioSource.defaultSource,
+          toStreamInt16: recordingDataControllerInt16.sink);
     }
-
 
     setState(() {});
   }
-
 
   Future<void> stopRecorder() async {
     await _mRecorder.stopRecorder();
@@ -196,22 +178,20 @@ class _StreamsExampleState extends State<StreamsExample> {
 
   _Fn? getRecorderFn() {
     if (!_mRecorderIsInited || !_mPlayer.isStopped) {
-        return null;
+      return null;
     }
 
     return _mRecorder.isStopped
         ? recordBtn
         : () {
             stopRecorder().then((value) => setState(() {}));
-        };
+          };
   }
 
   // ----------------------  Here is the code to play from a Stream -----------------------
 
-
   Future<void> playBtn() async {
-    await _mPlayer.startPlayerFromStream
-      (
+    await _mPlayer.startPlayerFromStream(
       codec: codecSelected,
       sampleRate: cstSampleRate,
       numChannels: cstNUMBEROFCHANNELS,
@@ -220,27 +200,22 @@ class _StreamsExampleState extends State<StreamsExample> {
     );
 
     if (interleaved) {
-      for (var d in bufferUint8)
-        {
-          //await _mPlayer.feedFromStream(d);
-          _mPlayer.foodSink!.add(FoodData(d));
-        }
-
+      for (var d in bufferUint8) {
+        //await _mPlayer.feedFromStream(d);
+        _mPlayer.foodSink!.add(FoodData(d));
+      }
     } else if (codecSelected == Codec.pcmFloat32) {
-      for (var d in bufferF32)
-      {
+      for (var d in bufferF32) {
         //await _mPlayer.feedFromStream(d);
         _mPlayer.float32Sink!.add(d);
       }
     } else if (codecSelected == Codec.pcm16) {
-      for (var d in bufferInt16)
-      {
+      for (var d in bufferInt16) {
         //await _mPlayer.feedFromStream(d);
         _mPlayer.int16Sink!.add(d);
       }
     }
   }
-
 
   Future<void> stopPlayer() async {
     await _mPlayer.stopPlayer();
@@ -253,14 +228,13 @@ class _StreamsExampleState extends State<StreamsExample> {
     return _mPlayer.isStopped
         ? playBtn
         : () {
-      stopPlayer().then((value) => setState(() {}));
-    };
+            stopPlayer().then((value) => setState(() {}));
+          };
   }
 
   // ----------------------------------------------------------------------------------------------------------------------
 
-  Future<void> reinit() async
-  {
+  Future<void> reinit() async {
     await _mPlayer.stopPlayer();
     await _mRecorder.stopRecorder();
     bufferF32 = [];
@@ -269,7 +243,6 @@ class _StreamsExampleState extends State<StreamsExample> {
     setState(() {
       _mplaybackReady = false;
     });
-
   }
 
   void setCodec(Codec? codec) {
@@ -278,6 +251,7 @@ class _StreamsExampleState extends State<StreamsExample> {
       codecSelected = codec!;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     Widget makeBody() {
@@ -312,7 +286,6 @@ class _StreamsExampleState extends State<StreamsExample> {
               const SizedBox(
                 width: 20,
               ),
-
             ]),
           ]),
         ),
@@ -355,8 +328,8 @@ class _StreamsExampleState extends State<StreamsExample> {
               title: const Text('PCM-Float32'),
               dense: true,
               //textColor: encoderSupported[Codec.pcmFloat32.index]
-                  //? Colors.green
-                  //: Colors.grey,
+              //? Colors.green
+              //: Colors.grey,
               leading: Radio<Codec>(
                 value: Codec.pcmFloat32,
                 groupValue: codecSelected,
@@ -367,18 +340,16 @@ class _StreamsExampleState extends State<StreamsExample> {
               tileColor: const Color(0xFFFAF0E6),
               title: const Text('PCM-Int16'),
               dense: true,
+
               ///textColor: encoderSupported[Codec.pcm16.index]
-                  ///? Colors.green
-                  //: Colors.grey,
+              ///? Colors.green
+              //: Colors.grey,
               leading: Radio<Codec>(
                 value: Codec.pcm16,
                 groupValue: codecSelected,
                 onChanged: setCodec,
               ),
             ),
-
-
-
             CheckboxListTile(
               tileColor: const Color(0xFFFAF0E6),
               title: Text("Interleaved"),
@@ -386,9 +357,10 @@ class _StreamsExampleState extends State<StreamsExample> {
               onChanged: (newValue) {
                 reinit();
                 setState(() {
-                    interleaved = newValue!;
-                  });
-              },)
+                  interleaved = newValue!;
+                });
+              },
+            )
           ],
         ),
       ]);

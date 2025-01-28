@@ -62,7 +62,6 @@ const int cstSAMPLERATE = 8000;
 const int cstCHANNELNB = 2;
 const int cstBITRATE = 16000;
 
-
 ///
 const int cstBLOCKSIZE = 4096;
 
@@ -388,7 +387,8 @@ class _MyAppState extends State<Demo> {
           codec: _codec,
           bitRate: cstBITRATE,
           numChannels: cstCHANNELNB,
-          sampleRate: cstSAMPLERATE, // (_codec == Codec.pcm16) ? tSTREAMSAMPLERATE : tSAMPLERATE,
+          sampleRate:
+              cstSAMPLERATE, // (_codec == Codec.pcm16) ? tSTREAMSAMPLERATE : tSAMPLERATE,
         );
       }
       recorderModule.logger.d('startRecorder');
@@ -567,7 +567,8 @@ class _MyAppState extends State<Demo> {
             dataBuffer = await flutterSoundHelper.pcmToWaveBuffer(
               inputBuffer: dataBuffer,
               numChannels: cstCHANNELNB,
-              sampleRate: cstSAMPLERATE, //(_codec == Codec.pcm16 && _media == Media.asset) ? 48000 : cstSAMPLERATE,
+              sampleRate:
+                  cstSAMPLERATE, //(_codec == Codec.pcm16 && _media == Media.asset) ? 48000 : cstSAMPLERATE,
             );
             codec = Codec.pcm16WAV;
           }
@@ -778,7 +779,6 @@ class _MyAppState extends State<Demo> {
               value: Codec.pcmFloat32WAV,
               child: Text('PCM Float32/WAV'),
             ),
-
           ],
         ),
       ],
@@ -836,7 +836,9 @@ class _MyAppState extends State<Demo> {
     }
 
     // Disable the button if the selected codec is not supported
-    if (!(_decoderSupported || _codec == Codec.pcm16 || _codec == Codec.pcmFloat32)) {
+    if (!(_decoderSupported ||
+        _codec == Codec.pcm16 ||
+        _codec == Codec.pcmFloat32)) {
       return null;
     }
 
@@ -897,7 +899,8 @@ class _MyAppState extends State<Demo> {
           _isRecording
               ? LinearProgressIndicator(
                   value: 100.0 / 160.0 * (_dbLevel ?? 1) / 100,
-                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.indigo),
+                  valueColor:
+                      const AlwaysStoppedAnimation<Color>(Colors.indigo),
                   backgroundColor: Colors.limeAccent)
               : Container(),
           Row(

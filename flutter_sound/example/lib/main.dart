@@ -25,7 +25,7 @@ import 'livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart
 import 'multi_playback/multi_playback.dart';
 import 'recordToStream/record_to_stream_example.dart';
 //import 'dummy_mobile.dart'
-    //if (dart.library.js_interop) 'mediaRecorder/media_recorder.dart'; // package:web implementation
+//if (dart.library.js_interop) 'mediaRecorder/media_recorder.dart'; // package:web implementation
 import 'streams/streams.dart';
 import 'simple_playback/simple_playback.dart';
 import 'simple_recorder/simple_recorder.dart';
@@ -227,7 +227,6 @@ Note : actually this example does not work on Flutter Web.
 For Web, you can look to the example `media_recorder` which is another example doing `RecordToStream()`.
 ''',
   ),
-
 
 //This example works only on Flutter Web. For Android or iOS, you can look to the example `recordToStream`.
   Example(

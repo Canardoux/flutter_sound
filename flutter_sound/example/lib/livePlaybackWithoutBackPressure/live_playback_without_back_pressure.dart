@@ -47,8 +47,9 @@ import 'package:flutter/services.dart' show rootBundle;
 ///
 const int cstSAMPLERATE = 8000; // 8000; // 48000
 const int cstCHANNELNB = 2; // 2 // 1;
-const Codec cstCODEC =  Codec.pcm16; // Codec.pcm16 /// Codec.pcmFloat32;
-const String cstASSET = 'assets/samples/sample_s16_2ch.raw'; // 'assets/samples/sample_f32_2ch.raw'; // 'assets/samples/sample_f32_2ch.raw' // 'assets/samples/sample_f32.raw'
+const Codec cstCODEC = Codec.pcm16; // Codec.pcm16 /// Codec.pcmFloat32;
+const String cstASSET =
+    'assets/samples/sample_s16_2ch.raw'; // 'assets/samples/sample_f32_2ch.raw'; // 'assets/samples/sample_f32_2ch.raw' // 'assets/samples/sample_f32.raw'
 
 ///
 const int cstBLOCKSIZE = 4096;
