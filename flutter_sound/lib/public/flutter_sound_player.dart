@@ -116,12 +116,12 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       _foodStreamSubscription; // ignore: cancel_subscriptions
 
   ///
-  StreamSubscription<List<Float32List>>?
-      _f32StreamSubscription; // ignore: cancel_subscriptions
+  //StreamSubscription<List<Float32List>>?
+      //_f32StreamSubscription; // ignore: cancel_subscriptions
 
   ///
-  StreamSubscription<List<Int16List>>?
-      _int16StreamSubscription; // ignore: cancel_subscriptions
+  //StreamSubscription<List<Int16List>>?
+      //_int16StreamSubscription; // ignore: cancel_subscriptions
 
   ///
   StreamController<Food>? _foodStreamController; //ignore: close_sinks
@@ -1016,14 +1016,14 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       }
     });
     _pcmF32Controller = StreamController();
-    _f32StreamSubscription = _pcmF32Controller!.stream.listen((food) {
+    /*_f32StreamSubscription = */ _pcmF32Controller!.stream.listen((food) {
       //_f32StreamSubscription!.pause();
-      feedF32FromStream(food!);
+      feedF32FromStream(food);
     });
     _pcmInt16Controller = StreamController();
-    _int16StreamSubscription = _pcmInt16Controller!.stream.listen((food) {
+    /* _int16StreamSubscription = */ _pcmInt16Controller!.stream.listen((food) {
       // TODO feedI16FromStream(food!);
-      feedInt16FromStream(food!);
+      feedInt16FromStream(food);
     });
 
     if (_startPlayerCompleter != null) {
@@ -1091,14 +1091,14 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   }
 
   Future<void> feedF32FromStream(List<Float32List> buffer) async {
-    var ln = await (FlutterSoundPlayerPlatform.instance.feedFloat32(
+    /*var ln = */ await (FlutterSoundPlayerPlatform.instance.feedFloat32(
       this,
       data: buffer,
     ));
   }
 
   Future<void> feedInt16FromStream(List<Int16List> buffer) async {
-    var ln = await (FlutterSoundPlayerPlatform.instance.feedInt16(
+    /*var ln = */ await (FlutterSoundPlayerPlatform.instance.feedInt16(
       this,
       data: buffer,
     ));

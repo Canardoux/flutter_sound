@@ -708,7 +708,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       case AVAudioSessionCategory.playback:
       case AVAudioSessionCategory.multiRoute:
       case null:
-      default:
+      //default:
         {
           _logger.d('FS: calling AudioSession.session.configure()');
           await session.configure(AudioSessionConfiguration(

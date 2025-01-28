@@ -28,8 +28,7 @@ Work on iOS to support Float32 and non interleaved Streams. See [this guide](htt
   - On iOS : codec==Codec.pcm16WAV  --  startRecorder()  --  The frames are not correctely coded with int16 but float32.
   - On iOS : codec==Codec.pcm32WAV  --  The peak level is not computed correctly
   - On iOS : Codec.pcmINT16 not interleaved
-  - Implement Float32 on Web
-  - Implement Float32 on Android
+  - Implement Float32 on Web and Android
   - Implement Streams on Web
 
 ### 9.19.1
