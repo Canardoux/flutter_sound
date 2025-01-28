@@ -320,22 +320,75 @@
                 int r = -1;
                 FlutterStandardTypedData* x = call.arguments[ @"data" ] ;
                 assert ([x elementSize] == 1);
-                NSData* data = [x data];
-                assert ([data length] == [x elementCount]);
-                r = [flautoPlayer feed: data];
+                NSData* d = [x data];
+                assert ([d length] == [x elementCount]);
+                NSArray* data = @[d];
+                r = [flautoPlayer feed: data interleaved: true];
                 if (r >= 0)
                 {
-			result([NSNumber numberWithInt: r]);
+                        result([NSNumber numberWithInt: r]);
                 } else
                 {
                         result([FlutterError
                                 errorWithCode:@"feed"
                                 message:@"error"
                                 details:nil]);
-                
                 }
-
 }
+
+
+
+- (void)feedFloat32:(FlutterMethodCall*)call result: (FlutterResult)result
+{
+                int r = -1;
+                //FlutterStandardTypedData* x = call.arguments[ @"data" ] ;// NOT COOL
+                //assert ([x elementSize] == 1);
+                //NSData* data = [x data];
+                //assert ([data length] == [x elementCount]);
+                NSArray* data = call.arguments[ @"data" ];
+                int nbChannels = [data count];
+                NSMutableArray* d = [NSMutableArray arrayWithCapacity: nbChannels ];
+                for (int i = 0; i < nbChannels; ++i)
+                {
+                    FlutterStandardTypedData* dd = data[i];
+                    [d addObject: [dd data]];
+                }
+                r = [flautoPlayer feed: d interleaved: false];
+                if (r >= 0)
+                {
+                        result([NSNumber numberWithInt: r]);
+                } else
+                {
+                        result([FlutterError
+                                errorWithCode:@"feedFloat32"
+                                message:@"error"
+                                details:nil]);
+                }
+}
+
+
+- (void)feedInt16:(FlutterMethodCall*)call result: (FlutterResult)result
+{
+                int r = -1;
+                FlutterStandardTypedData* x = call.arguments[ @"data" ] ;// NOT COOL
+                //assert ([x elementSize] == 1);
+                //NSData* data = [x data];
+                //assert ([data length] == [x elementCount]);
+                NSArray* data = call.arguments[ @"data" ];
+                r = [flautoPlayer feed: data interleaved: false];
+                            if (r >= 0)
+                {
+                        result([NSNumber numberWithInt: r]);
+                } else
+                {
+                        result([FlutterError
+                                errorWithCode:@"feedInt16"
+                                message:@"error"
+                                details:nil]);
+                }
+}
+
+
 
 - (void)seekToPlayer:(FlutterMethodCall*)call result: (FlutterResult)result
 {

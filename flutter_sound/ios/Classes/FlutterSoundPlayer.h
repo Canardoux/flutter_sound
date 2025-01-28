@@ -61,6 +61,9 @@
 - (void)getPlayerState:(FlutterMethodCall*)call result: (FlutterResult)result;
 - (void)stopPlayer:(FlutterMethodCall*)call  result:(FlutterResult)result;
 - (void)feed:(FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)feedFloat32:(FlutterMethodCall*)call result: (FlutterResult)result;
+- (void)feedInt16:(FlutterMethodCall*)call result: (FlutterResult)result;
+
 - (void)setLogLevel: (FlutterMethodCall*)call result: (FlutterResult)result;
 
 @end

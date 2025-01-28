@@ -152,7 +152,9 @@ class _StreamsExampleState extends State<StreamsExample> {
           bufferF32 = [];
           recordingDataControllerF32.close();
           recordingDataControllerF32 = StreamController<List<Float32List>>();
-          recordingDataControllerF32.stream.listen((buf) {});
+          recordingDataControllerF32.stream.listen((buf) {
+            bufferF32.add(buf);
+          });
           await _mRecorder.startRecorder
           (
             codec: codecSelected,
@@ -225,9 +227,17 @@ class _StreamsExampleState extends State<StreamsExample> {
         }
 
     } else if (codecSelected == Codec.pcmFloat32) {
-
+      for (var d in bufferF32)
+      {
+        //await _mPlayer.feedFromStream(d);
+        _mPlayer.float32Sink!.add(d);
+      }
     } else if (codecSelected == Codec.pcm16) {
-
+      for (var d in bufferInt16)
+      {
+        //await _mPlayer.feedFromStream(d);
+        _mPlayer.int16Sink!.add(d);
+      }
     }
   }
 
@@ -249,10 +259,10 @@ class _StreamsExampleState extends State<StreamsExample> {
 
   // ----------------------------------------------------------------------------------------------------------------------
 
-  void reinit()
+  Future<void> reinit() async
   {
-    _mPlayer.stopPlayer();
-    _mRecorder.stopRecorder();
+    await _mPlayer.stopPlayer();
+    await _mRecorder.stopRecorder();
     bufferF32 = [];
     bufferInt16 = [];
     bufferUint8 = [];

@@ -55,6 +55,11 @@
 
 - (void)recordingDataFloat32: (NSMutableArray*)data
 {
+    [self recordingDataNotInterleaved: data codec: pcmFloat32];
+}
+ 
+- (void)recordingDataNotInterleaved: (NSMutableArray*)data  codec: (t_CODEC)codec
+{
     NSMutableDictionary* dico = [[NSMutableDictionary alloc] init];
     int nbChannels = (int)[data count] ;
     [dico addEntriesFromDictionary: @{ @"slotNo": [NSNumber numberWithInt: slotNo],  @"status": [NSNumber numberWithInt: -1], /* @"data": data,*/ @"channelCount": [NSNumber numberWithInt: nbChannels]}];
@@ -64,15 +69,30 @@
         NSString *baseString = @"Data";
         NSString *string2 = [baseString stringByAppendingFormat: @"Channel%@", [NSNumber numberWithInt: i]];
         NSData* d = data[i];
-        FlutterStandardTypedData* dd = [FlutterStandardTypedData typedDataWithFloat32: d];
+        FlutterStandardTypedData* dd;
+        if (codec == pcm16)
+        {
+            dd = [FlutterStandardTypedData typedDataWithBytes: d]; // No FlutterStandardTypedData exists with Int16 !
+        } else if (codec == pcmFloat32)
+        {
+            dd = [FlutterStandardTypedData typedDataWithFloat32: d];
+        }
         [dico setValue: dd forKey: string2];
         [ddd addObject: dd];
     }
     [dico setValue: ddd forKey: @"data"];
-    [self invokeMethod: @"recordingDataFloat32" dico: dico ];
-    
-    //NSDictionary* dico2 = @{ @"slotNo": [NSNumber numberWithInt: slotNo],  @"status": [NSNumber numberWithInt: -1], @"recordingData": data[0]}; // JUST FOR DEBUG
-    //[self invokeMethod:@"recordingData" dico: dico2 ];
+    if (codec == pcm16)
+    {
+        [self invokeMethod: @"recordingDataInt16" dico: dico ];
+    } else if (codec == pcmFloat32)
+    {
+        [self invokeMethod: @"recordingDataFloat32" dico: dico ];
+    }
+}
+
+- (void)recordingDataInt16: (NSMutableArray*)data
+{
+    [self recordingDataNotInterleaved: data codec: pcm16];
 }
 
 

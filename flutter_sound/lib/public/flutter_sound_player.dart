@@ -26,7 +26,8 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:io';
 import 'dart:io' show Platform;
-import 'dart:typed_data' show Uint8List;
+//import 'dart:nativewrappers/_internal/vm/lib/typed_data_patch.dart';
+import 'dart:typed_data' show Uint8List, Float32List, Int16List;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
@@ -115,7 +116,17 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       _foodStreamSubscription; // ignore: cancel_subscriptions
 
   ///
+  StreamSubscription<List<Float32List>>?
+  _f32StreamSubscription; // ignore: cancel_subscriptions
+
+  ///
+  StreamSubscription<List<Int16List>>?
+  _int16StreamSubscription; // ignore: cancel_subscriptions
+
+  ///
   StreamController<Food>? _foodStreamController; //ignore: close_sinks
+  StreamController<List<Float32List>>? _pcmF32Controller; //ignore: close_sinks
+  StreamController<List<Int16List>>? _pcmInt16Controller; //ignore: close_sinks
 
   ///
   Completer<int>? _needSomeFoodCompleter;
@@ -385,6 +396,17 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// ```
   StreamSink<Food>? get foodSink =>
       _foodStreamController != null ? _foodStreamController!.sink : null;
+
+  /// The Stream sink used by Play From Stream
+  StreamSink<List<Float32List>>? get f32Sink =>
+      _pcmF32Controller != null ? _pcmF32Controller!.sink : null;
+
+  StreamSink<List<Float32List>>? get float32Sink =>
+      _pcmF32Controller != null ? _pcmF32Controller!.sink : null;
+
+  /// The Stream sink used by Play From Stream
+  StreamSink<List<Int16List>>? get int16Sink =>
+      _pcmInt16Controller != null ? _pcmInt16Controller!.sink : null;
 
   /// The stream side of the Food Controller
   ///
@@ -996,6 +1018,17 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         audioPlayerFinished(PlayerState.isPaused.index);
       }
     });
+    _pcmF32Controller = StreamController();
+    _f32StreamSubscription = _pcmF32Controller!.stream.listen((food) {
+      //_f32StreamSubscription!.pause();
+      feedF32FromStream(food!);
+    });
+    _pcmInt16Controller = StreamController();
+    _int16StreamSubscription = _pcmInt16Controller!.stream.listen((food) {
+      // TODO feedI16FromStream(food!);
+      feedInt16FromStream(food!);
+    });
+
     if (_startPlayerCompleter != null) {
       _logger.w('Killing another startPlayer()');
       _startPlayerCompleter!.completeError('Killed by another startPlayer()');
@@ -1059,6 +1092,24 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       totalLength -= ln;
     }
   }
+
+
+  Future<void> feedF32FromStream(List<Float32List> buffer) async {
+    var ln = await (FlutterSoundPlayerPlatform.instance.feedFloat32(
+      this,
+      data: buffer,
+    ));
+  }
+
+
+
+  Future<void> feedInt16FromStream(List<Int16List> buffer) async {
+    var ln = await (FlutterSoundPlayerPlatform.instance.feedInt16(
+      this,
+      data: buffer,
+    ));
+  }
+
 
   ///
   Future<int> _feed(Uint8List data) async {
@@ -1151,6 +1202,19 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       await _foodStreamController!.close();
       _foodStreamController = null;
     }
+    if (_pcmF32Controller != null) {
+      await _pcmF32Controller!.sink.close();
+      //await foodStreamController.stream.drain<bool>();
+      await _pcmF32Controller!.close();
+      _pcmF32Controller = null;
+    }
+    if (_pcmInt16Controller != null) {
+      await _pcmInt16Controller!.sink.close();
+      //await foodStreamController.stream.drain<bool>();
+      await _pcmInt16Controller!.close();
+      _pcmInt16Controller = null;
+    }
+
     Completer<void>? completer;
     _stopPlayerCompleter = Completer<void>();
     try {

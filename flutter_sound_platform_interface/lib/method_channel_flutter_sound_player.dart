@@ -21,15 +21,11 @@
 
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart' show Level;
-//import 'dart:async';
-//import 'dart:convert';
 import 'dart:core';
-//import 'dart:io';
-//import 'dart:typed_data' show Uint8List;
-
 import 'flutter_sound_player_platform_interface.dart';
 import 'flutter_sound_platform_interface.dart';
-//import 'dart:async';
+import 'dart:typed_data' show Uint8List, Float32List, Int16List;
+
 
 const MethodChannel _channel =
     MethodChannel('xyz.canardoux.flutter_sound_player');
@@ -306,6 +302,35 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
       },
     );
   }
+
+  Future<int> feedFloat32(
+      FlutterSoundPlayerCallback callback, {
+        required List<Float32List> data,
+      }) {
+    return invokeMethod(
+      callback,
+      'feedFloat32',
+      {
+        'data': data,
+      },
+    );
+  }
+
+
+
+  Future<int> feedInt16(
+      FlutterSoundPlayerCallback callback, {
+        required List<Int16List> data,
+      }) {
+    return invokeMethod(
+      callback,
+      'feedInt16',
+      {
+        'data': data,
+      },
+    );
+  }
+
 
   @override
   Future<int> stopPlayer(

@@ -25,6 +25,7 @@ toc: false
 - TODO
   - On iOS : codec==Codec.pcm16WAV  --  startRecorder()  --  The frames are not correctely coded with int16 but float32.
   - On iOS : codec==Codec.pcm32WAV  --  The peak level is not computed correctly
+  - On iOS : Codec.pcmINT16 not interleaved
   - Implement Float32 on Web
   - Implement Float32 on Android
   - Implement Streams on Web

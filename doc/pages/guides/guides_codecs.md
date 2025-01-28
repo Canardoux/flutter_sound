@@ -29,10 +29,12 @@ Actually, the following codecs are supported by flutter\_sound:
 | AMR NB | ❌ | ❌ | ✅ \(1\) | ✅ |
 | AMR WB | ❌ | ❌ | ✅ \(1\) | ✅ |
 | PCM8 | ❌ | ❌ | ❌ | ❌ |
-| PCM F32 | ❌ | ❌ | ❌ | ❌ |
+| PCM F32 | ✅ | ✅ | ✅ | ✅ |
 | PCM WEBM | ❌ | ❌ | ❌ | ❌ |
 | Opus WEBM | ❌ | ❌ | ❌ | ✅ |
 | Vorbis WEBM | ❌ | ❌ | ❌ | ✅ |
+| PCM F32 Wave | ✅ | ✅ | ✅ | ✅ |
+
 
 This table will eventually be upgraded when more codecs will be added.
 

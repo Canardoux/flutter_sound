@@ -188,6 +188,16 @@ extern void FlutterSoundPlayerReg(NSObject<FlutterPluginRegistrar>* registrar)
                  [aFlautoPlayer feed: call result: result];
         } else
 
+        if ([@"feedFloat32" isEqualToString: call.method])
+        {
+                 [aFlautoPlayer feedFloat32: call result: result];
+        } else
+
+        if ([@"feedInt16" isEqualToString: call.method])
+        {
+                 [aFlautoPlayer feedInt16: call result: result];
+        } else
+
         if ([@"setLogLevel" isEqualToString: call.method])
         {
                  [aFlautoPlayer setLogLevel: call result: result];

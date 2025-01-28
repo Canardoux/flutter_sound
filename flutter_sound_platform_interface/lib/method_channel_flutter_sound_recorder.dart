@@ -127,7 +127,20 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
             List<Int16List>? dd = [];
             for (Object? x in d)
             {
-              dd.add(x as Int16List);
+              if (x is Int16List) {
+                dd.add(x as Int16List);
+              } else
+              if (x is Uint8List) // On iOS i am not able to return Int16List
+              {
+                int tata = x.length;
+                var toto = x.buffer.asInt16List();
+                var papa = x.buffer;
+                int zaza = toto.length;
+                var momo = Int16List.sublistView(toto);
+                var mimi = Int16List.view(papa);
+                var mimiln = mimi.length;
+                var mama = toto;
+              }
             }
             aRecorder!.recordingDataInt16(data: dd);
           }

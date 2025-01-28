@@ -41,10 +41,6 @@ entries:
       url: /tau_dev.html
       output: web, pdf
 
-    - title: Taudio RFC
-      url: /taudio_rfc.html
-      output: web,pdf
-
 
 
 # ----------------------------------------------------------
@@ -70,10 +66,6 @@ entries:
       url: /logger.html
       output: web, pdf
 
-    - title: Lite vs Full
-      url: /guides_lite-full.html
-      output: web, pdf
-
     - title: Temporary files
       url: /temporary_files.html
       output: web, pdf
@@ -82,20 +74,8 @@ entries:
       url: /guides_pcm_wave.html
       output: web, pdf
 
-    - title: Recording or playing Raw PCM
-      url: /guides_recording_pcm.html
-      output: web, pdf
-
-    - title: Recording to a Dart Stream
-      url: /guides_record_stream.html
-      output: web, pdf
-
-    - title: Playback from a Dart Stream
-      url: /guides_play_stream.html
-      output: web, pdf
-
-    - title: Widgets
-      url: /guides_ui.html
+    - title: PCM Dart Streams
+      url: /guides_streams.html
       output: web, pdf
 
     - title: Notification on the lock screen

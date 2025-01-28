@@ -23,11 +23,9 @@ import 'package:logger/logger.dart' show Level;
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'dart:core';
-//import 'dart:io';
-import 'dart:typed_data' show Uint8List;
-
 import 'method_channel_flutter_sound_player.dart';
 import 'flutter_sound_platform_interface.dart';
+import 'dart:typed_data' show Uint8List, Float32List, Int16List;
 
 abstract class FlutterSoundPlayerCallback {
   void updateProgress({
@@ -181,6 +179,20 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
     FlutterSoundPlayerCallback callback, {
     Uint8List? data,
   }) {
+    throw UnimplementedError('feed() has not been implemented.');
+  }
+
+  Future<int> feedFloat32(
+      FlutterSoundPlayerCallback callback, {
+        required List<Float32List> data,
+      }) {
+    throw UnimplementedError('feedFloat32() has not been implemented.');
+  }
+
+  Future<int> feedInt16(
+      FlutterSoundPlayerCallback callback, {
+        required List<Int16List> data,
+      }) {
     throw UnimplementedError('feed() has not been implemented.');
   }
 
