@@ -258,6 +258,7 @@
         [
                 flautoPlayer startPlayerFromMicSampleRate: samplerateLong
                 nbChannels: channels
+                interleaved: true
                 bufferSize: bufferSizeLong
                 enableVoiceProcessing: (enableVoiceProcessing.boolValue) != 0
         ];

@@ -117,11 +117,11 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   ///
   //StreamSubscription<List<Float32List>>?
-      //_f32StreamSubscription; // ignore: cancel_subscriptions
+  //_f32StreamSubscription; // ignore: cancel_subscriptions
 
   ///
   //StreamSubscription<List<Int16List>>?
-      //_int16StreamSubscription; // ignore: cancel_subscriptions
+  //_int16StreamSubscription; // ignore: cancel_subscriptions
 
   ///
   StreamController<Food>? _foodStreamController; //ignore: close_sinks

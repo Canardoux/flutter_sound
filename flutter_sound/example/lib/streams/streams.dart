@@ -50,8 +50,8 @@ class StreamsExample extends StatefulWidget {
 }
 
 class _StreamsExampleState extends State<StreamsExample> {
-  FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
-  FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
+  final FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
+  final FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
   Codec codecSelected = Codec.pcmFloat32;
@@ -352,7 +352,7 @@ class _StreamsExampleState extends State<StreamsExample> {
             ),
             CheckboxListTile(
               tileColor: const Color(0xFFFAF0E6),
-              title: Text("Interleaved"),
+              title: const Text("Interleaved"),
               value: interleaved,
               onChanged: (newValue) {
                 reinit();

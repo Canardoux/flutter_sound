@@ -24,10 +24,7 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'method_channel_flutter_sound_recorder.dart';
 import 'flutter_sound_platform_interface.dart';
-//import 'dart:convert';
 import 'dart:core';
-//import 'dart:io';
-//import 'dart:io' show Platform;
 import 'dart:typed_data';
 import 'dart:async';
 
