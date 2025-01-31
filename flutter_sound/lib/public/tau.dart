@@ -108,6 +108,7 @@ const List<List<String>> validExt = [
 /// This class is extended by
 /// - [FoodData] and
 /// - [FoodEvent].
+@deprecated
 abstract class Food {
   /// use internally by Flutter Sound
   Future<void> exec(FlutterSoundPlayer player);
@@ -118,6 +119,7 @@ abstract class Food {
 
 /// FoodData are the regular objects received from a recorder when recording to a Dart Stream
 /// or sent to a player when playing from a Dart Stream
+@deprecated
 class FoodData extends Food {
   /// the data to be sent (or received)
   Uint8List? data;
@@ -132,6 +134,7 @@ class FoodData extends Food {
 
 /// foodEvent is a special kind of food which allows to re-synchronize a stream
 /// with a player that play from a Dart Stream
+@deprecated
 class FoodEvent extends Food {
   /// The callback to fire when this food is synchronized with the player
   Function on;

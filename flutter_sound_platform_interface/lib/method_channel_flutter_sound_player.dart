@@ -270,7 +270,30 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
     );
   }
 
+
   @override
+  Future<int> startPlayerFromStream(
+  FlutterSoundPlayerCallback callback, 
+  {
+    Codec codec = Codec.pcm16,
+    bool interleaved = true,
+    int numChannels = 1,
+    int sampleRate = 16000,
+    int bufferSize = 8192,
+    //TWhenFinished? whenFinished,
+  }) {
+    return startPlayer(callback,
+        codec: codec, 
+        interleaved: interleaved, 
+        numChannels: numChannels, 
+        sampleRate: sampleRate,
+        bufferSize: bufferSize
+    );
+  }
+
+
+  @override
+  @deprecated
   Future<int> startPlayerFromMic(FlutterSoundPlayerCallback callback,
       {int? numChannels,
       int? sampleRate,

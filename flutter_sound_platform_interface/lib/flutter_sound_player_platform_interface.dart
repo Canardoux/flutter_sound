@@ -167,6 +167,17 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
     throw UnimplementedError('startPlayer() has not been implemented.');
   }
 
+  Future<int> startPlayerFromStream(
+    FlutterSoundPlayerCallback callback, {
+    Codec codec = Codec.pcm16,
+    bool interleaved = true,
+    int numChannels = 1,
+    int sampleRate = 16000,
+    int bufferSize = 8192,
+    //TWhenFinished? whenFinished,
+  });
+
+  @deprecated
   Future<int> startPlayerFromMic(FlutterSoundPlayerCallback callback,
       {int? numChannels,
       int? sampleRate,

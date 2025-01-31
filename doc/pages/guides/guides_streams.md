@@ -189,7 +189,7 @@ _mPlayer.int16Sink(d);
 
 {% include note.html content="`float32Sink` and `int16Sink` are not yet supported on Android and Web. It is actually only implemented on iOS." %}
 
-The App does `myPlayer.foodSink.add( FoodData(d) )` or `_mPlayer.float32Sink(d)` or `mPlayer.int16Sink(d);` each time it wants to play some data. No need to await, no need to verify if the previous buffers have finished to be played. All the data added to the Stream Sink are buffered, and are played sequentially. The App continues to work without knowing when the buffers are really played.
+The App does `myPlayer.uint8ListSink.add(d)` or `_mPlayer.float32Sink(d)` or `mPlayer.int16Sink(d);` each time it wants to play some data. No need to await, no need to verify if the previous buffers have finished to be played. All the data added to the Stream Sink are buffered, and are played sequentially. The App continues to work without knowing when the buffers are really played.
 
 This means two things :
 
@@ -198,56 +198,12 @@ This means two things :
 
   If it does a `stopPlayer()`, all the waiting buffers will be flushed which is probably not what it wants.
 
-But there is a mechanism on Interleaved Streams if the App wants to resynchronize with the output Stream. To resynchronize with the current playback, the App does `myPlayer.foodSink.add( FoodEvent(aCallback) );`
+## feedUint8FromStream(), feedInt16FromStream() and feedF32FromStream()
 
-```text
-myPlayer.foodSink.add
-( FoodEvent
-  (
-     () async
-     {
-          await myPlayer.stopPlayer();
-          setState((){});
-     }
-  )
-);
-```
-
-_Example:_
-
-You can look to this simple [example](https://github.com/canardoux/flutter_sound/blob/master/flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart) provided with Flutter Sound.
-
-```dart
-await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
-
-myPlayer.foodSink.add(FoodData(aBuffer));
-myPlayer.foodSink.add(FoodData(anotherBuffer));
-myPlayer.foodSink.add(FoodData(myOtherBuffer));
-
-myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
-```
-
------------------------
-
-## Interleaved playback with back pressure (with flow control)
-
-If the App wants to keep synchronization with what is played, it uses the verb `feedFromStream()` to play data. It is really very important not to call another `feedFromStream()` before the completion of the previous future. When each Future is completed, the App can be sure that the provided data are correctely either played, or at least put in low level internal buffers, and it knows that it is safe to do another one.
-
-_Example:_
-
-You can look to this [example](https://github.com/canardoux/flutter_sound/blob/master/flutter_sound/example/lib/livePlaybackWithBackPressure/live_playback_with_back_pressure.dart) and [this example](https://github.com/canardoux/flutter_sound/blob/master/flutter_sound/example/lib/soundEffect/sound_effect.dart)
-
-```text
-await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
-
-await myPlayer.feedFromStream(aBuffer);
-await myPlayer.feedFromStream(anotherBuffer);
-await myPlayer.feedFromStream(myOtherBuffer);
-
-await myPlayer.stopPlayer();
-```
-
-You probably will `await` or use `then()` for each call to `feedFromStream()`.
+Instead of using the three getters uint8ListSink, float32Sink and int16Sink, you can also call directely the functions : 
+- feedUint8FromStream()
+- feedInt16FromStream()
+- feedF32FromStream()
 
 --------------
 
@@ -255,7 +211,7 @@ You probably will `await` or use `then()` for each call to `feedFromStream()`.
 
 You can look to the provided examples :
 
-* [This example](https://github.com/canardoux/flutter_sound/blob/master/flutter_sound/example/lib/livePlaybackWithBackPressure/live_playback_with_back_pressure.dart) shows how to play Live data, with Back Pressure from Flutter Sound
+* [This example](https://github.com/canardoux/flutter_sound/blob/master/flutter_sound/example/lib/streams/streams.dart)
 * [This example](hhttps://github.com/Canardoux/flutter_sound/blob/master/flutter_sound/example/lib/livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart) shows how to play Live data, without Back Pressure from Flutter Sound
 * [This example](https://github.com/Canardoux/flutter_sound/blob/master/flutter_sound/example/lib/soundEffect/sound_effect.dart) shows how to play some real time sound effects.
 

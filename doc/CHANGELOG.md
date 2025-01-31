@@ -7,6 +7,14 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.21.0
+
+- playFromMic is deprecated
+- feedFromStream() is deprecated
+- foodSink getter is deprecated
+- add functions feedUint8FromStream(), feedInt16FromStream() and feedF32FromStream()
+- add getters uint8ListSink, float32Sink and int16Sink
+
 ### 9.20.5
 
 Work on iOS to support Float32 and non interleaved Streams. See [this guide](https://flutter-sound.canardoux.xyz/guides_streams.html) and [this guide](https://flutter-sound.canardoux.xyz/guides_pcm_wave.html).
