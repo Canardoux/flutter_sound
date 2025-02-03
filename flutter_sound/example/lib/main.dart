@@ -246,8 +246,8 @@ You can also refer to the following examples that uses UInt8List:
   ),
 
   Example(
-    title: 'livePlaybackWithoutBackPressure',
-    subTitle: 'Live Playback without BackPressure',
+    title: 'Live Playback from stream',
+    subTitle: 'Live Playback from stream',
     flags: tNotWeb,
     route: (_) => const LivePlaybackWithoutBackPressure(),
     description:

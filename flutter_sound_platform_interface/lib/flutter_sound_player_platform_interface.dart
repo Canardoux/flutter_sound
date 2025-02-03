@@ -188,7 +188,7 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
 
   Future<int> feed(
     FlutterSoundPlayerCallback callback, {
-    Uint8List? data,
+    required Uint8List data,
   }) {
     throw UnimplementedError('feed() has not been implemented.');
   }
@@ -230,7 +230,8 @@ abstract class FlutterSoundPlayerPlatform extends PlatformInterface {
     throw UnimplementedError('invokeMethod() has not been implemented.');
   }
 
-  Future<int> setVolume(FlutterSoundPlayerCallback callback, {double? volume}) {
+  Future<int> setVolume(FlutterSoundPlayerCallback callback,
+      {required double volume}) {
     throw UnimplementedError('invokeMethod() has not been implemented.');
   }
 

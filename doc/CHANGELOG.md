@@ -9,11 +9,18 @@ toc: false
 ---
 ### 9.21.0
 
-- playFromMic is deprecated
-- feedFromStream() is deprecated
-- foodSink getter is deprecated
-- add functions feedUint8FromStream(), feedInt16FromStream() and feedF32FromStream()
-- add getters uint8ListSink, float32Sink and int16Sink
+- `playFromMic()` is deprecated
+- `feedFromStream()` is deprecated
+- `foodSink` getter is deprecated
+- `startPlayerFromStream()` with back pressure is deprecated
+- `startPlayerFromStream()` : no more `whenFinished` parameter
+- add functions `feedUint8FromStream()`, `feedInt16FromStream()` and `feedF32FromStream()`
+- add getters `uint8ListSink`, `float32Sink` and `int16Sink`
+- On web : `startPlayerFromStream()` is implemented for codec.pcmFloat32 and not interleaved
+
+- TODO
+   - On Web : Implement Streams Int16 
+   - On Web : Implement Stream interleaved.
 
 ### 9.20.5
 
@@ -33,11 +40,11 @@ Work on iOS to support Float32 and non interleaved Streams. See [this guide](htt
 - On iOS : The peak level during recording pcm16 was unstable.
 
 - TODO
-  - On iOS : codec==Codec.pcm16WAV  --  startRecorder()  --  The frames are not correctely coded with int16 but float32.
-  - On iOS : codec==Codec.pcm32WAV  --  The peak level is not computed correctly
+  - On iOS : codec==Codec.pcm16WAV  --  startRecorder()  --  The frames are not correctely coded with int16 but float32. This must be fixed.
+  - On iOS : codec==Codec.pcm32WAV  --  The peak level is not computed correctly. This must be fixed.
   - On iOS : Codec.pcmINT16 not interleaved
-  - Implement Float32 on Web and Android
-  - Implement Streams on Web
+  - Implement Float32 on Android
+  - Implement stream not interleaved on Android
 
 ### 9.19.1
 

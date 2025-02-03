@@ -191,31 +191,37 @@ class _StreamsExampleState extends State<StreamsExample> {
   // ----------------------  Here is the code to play from a Stream -----------------------
 
   Future<void> playBtn() async {
-    await _mPlayer.startPlayerFromStream(
-      codec: codecSelected,
-      sampleRate: cstSampleRate,
-      numChannels: cstNUMBEROFCHANNELS,
-      whenFinished: () {},
-      interleaved: interleaved,
-    );
+    if (_mPlayer.isStopped) {
+        await _mPlayer.startPlayerFromStream(
+        codec: codecSelected,
+        sampleRate: cstSampleRate,
+        numChannels: cstNUMBEROFCHANNELS,
+        //whenFinished: () { stopPlayer().then((v){ setState(() {
+        //});});},
+        interleaved: interleaved,
+        );
 
-    if (interleaved) {
-      for (var d in bufferUint8) {
-        //await _mPlayer.feedFromStream(d);
-        _mPlayer.foodSink!.add(FoodData(d));
+      if (interleaved) {
+        for (var d in bufferUint8) {
+          await _mPlayer.feedUint8FromStream(d);
+          //_mPlayer.uint8ListSink!.add(d);
+        }
+      } else if (codecSelected == Codec.pcmFloat32) {
+        for (var d in bufferF32) {
+          await _mPlayer.feedF32FromStream(d);
+          ///_mPlayer.float32Sink!.add(d);
+        }
+      } else if (codecSelected == Codec.pcm16) {
+        for (var d in bufferInt16) {
+          await _mPlayer.feedInt16FromStream(d);
+          //_mPlayer.int16Sink!.add(d);
+        }
       }
-    } else if (codecSelected == Codec.pcmFloat32) {
-      for (var d in bufferF32) {
-        //await _mPlayer.feedFromStream(d);
-        _mPlayer.float32Sink!.add(d);
-      }
-    } else if (codecSelected == Codec.pcm16) {
-      for (var d in bufferInt16) {
-        //await _mPlayer.feedFromStream(d);
-        _mPlayer.int16Sink!.add(d);
-      }
+    } else {
+      await stopPlayer();
     }
-  }
+    setState(() {});
+    }
 
   Future<void> stopPlayer() async {
     await _mPlayer.stopPlayer();
@@ -225,11 +231,7 @@ class _StreamsExampleState extends State<StreamsExample> {
     if (!_mPlayerIsInited || !_mplaybackReady || !_mRecorder.isStopped) {
       return null;
     }
-    return _mPlayer.isStopped
-        ? playBtn
-        : () {
-            stopPlayer().then((value) => setState(() {}));
-          };
+    return playBtn;
   }
 
   // ----------------------------------------------------------------------------------------------------------------------

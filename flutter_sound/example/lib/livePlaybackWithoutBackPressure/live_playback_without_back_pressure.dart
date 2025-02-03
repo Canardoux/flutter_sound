@@ -76,15 +76,6 @@ class _LivePlaybackWithoutBackPressureState
   Future<void> initPlayer() async {
     await _mPlayer.openPlayer();
     _mPlayerIsInited = false;
-    await _mPlayer.startPlayerFromStream(
-        codec: cstCODEC,
-        numChannels: cstCHANNELNB,
-        interleaved: true,
-        sampleRate: cstSAMPLERATE,
-        bufferSize: 20480,
-        whenFinished: () {
-          FlutterSoundPlayer().logger.i("FINISHED!");
-        });
     data = await getAssetData(cstASSET);
 
     setState(() {
@@ -126,15 +117,26 @@ class _LivePlaybackWithoutBackPressureState
   }
 
   void play() async {
+    await _mPlayer.startPlayerFromStream(
+      codec: cstCODEC,
+      numChannels: cstCHANNELNB,
+      interleaved: true,
+      sampleRate: cstSAMPLERATE,
+      bufferSize: 20480,
+      //whenFinished: () {
+      // FlutterSoundPlayer().logger.i("FINISHED!");
+      //}
+    );
+
     feedHim(data);
     //if (_mPlayer != null) {
     // We must not do stopPlayer() directely //await stopPlayer();
-    _mPlayer.foodSink!.add(FoodEvent(() async {
+    //_mPlayer.foodSink!.add(FoodEvent(() async {
       //await _mPlayer.stopPlayer();
-      FlutterSoundPlayer().logger.i("MARKER!");
+      //FlutterSoundPlayer().logger.i("MARKER!");
 
       setState(() {});
-    }));
+    //}));
     //}
   }
 
@@ -147,7 +149,7 @@ class _LivePlaybackWithoutBackPressureState
 
   Future<void> stopPlayer() async {
     //if (_mPlayer != null) {
-    await _mPlayer.closePlayer();
+    await _mPlayer.stopPlayer();
     setState(() {});
   }
 
@@ -165,11 +167,11 @@ class _LivePlaybackWithoutBackPressureState
     if (!_mPlayerIsInited) {
       return null;
     }
-    return _mPlayer.isStopped
-        ? play
-        : () {
-            stopPlayer().then((value) => setState(() {}));
-          };
+    return _mPlayer.isPlaying
+        ? () {
+      stopPlayer().then((value) => setState(() {}));
+    } :
+    play;
   }
 
   // ----------------------------------------------------------------------------------------------------------------------
@@ -194,10 +196,10 @@ class _LivePlaybackWithoutBackPressureState
           child: Column(children: [
             Row(children: [
               ElevatedButton(
-                onPressed: play,
+                onPressed: getPlaybackFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer.isPlaying ? 'Play' : 'Play'),
+                child: Text(_mPlayer.isPlaying ? 'stop' : 'Play'),
               ),
               const SizedBox(
                 width: 20,
@@ -222,7 +224,7 @@ class _LivePlaybackWithoutBackPressureState
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(
-        title: const Text('Live playback without back pressure'),
+        title: const Text('Live playback from stream'),
       ),
       body: makeBody(),
     );

@@ -270,11 +270,9 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
     );
   }
 
-
   @override
   Future<int> startPlayerFromStream(
-  FlutterSoundPlayerCallback callback, 
-  {
+    FlutterSoundPlayerCallback callback, {
     Codec codec = Codec.pcm16,
     bool interleaved = true,
     int numChannels = 1,
@@ -283,14 +281,12 @@ class MethodChannelFlutterSoundPlayer extends FlutterSoundPlayerPlatform {
     //TWhenFinished? whenFinished,
   }) {
     return startPlayer(callback,
-        codec: codec, 
-        interleaved: interleaved, 
-        numChannels: numChannels, 
+        codec: codec,
+        interleaved: interleaved,
+        numChannels: numChannels,
         sampleRate: sampleRate,
-        bufferSize: bufferSize
-    );
+        bufferSize: bufferSize);
   }
-
 
   @override
   @deprecated

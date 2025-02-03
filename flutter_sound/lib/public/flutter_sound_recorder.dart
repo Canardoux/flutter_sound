@@ -477,8 +477,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
   /// Returns true if the specified encoder is supported by flutter_sound on this platform.
   ///
-  /// This verb is useful to know if a particular codec is supported on the current platform;
-  /// Returns a Future<bool>.
+  /// This verb is useful to know if a particular codec is supported on the current platform;.
   ///
   /// *Example:*
   /// ```dart

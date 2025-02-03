@@ -95,6 +95,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// Are we waiting for needsForFood completer ?
   bool _waitForFood = false;
 
+  ///
+  bool _fromStream = false;
+
   /// Used if the App wants to dynamically change the Log Level.
   /// Seldom used. Most of the time the Log Level is specified during the constructor.
   void setLogLevel(Level aLevel) async {
@@ -123,11 +126,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   StreamSubscription<List<Int16List>>?
       _int16StreamSubscription; // ignore: cancel_subscriptions
 
-
   ///
   StreamSubscription<Uint8List>?
-  _uint8StreamSubscription; // ignore: cancel_subscriptions
-
+      _uint8StreamSubscription; // ignore: cancel_subscriptions
 
   ///
   StreamController<Food>? _foodStreamController; //ignore: close_sinks
@@ -213,11 +214,14 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     //int state = call['arg'] as int;
     _playerState = PlayerState.values[state];
     //await _stop(); // ??? Maybe
-    if (_audioPlayerFinishedPlaying != null) {
-      // We don't stop the player if the user has a callback
-      _audioPlayerFinishedPlaying?.call();
-    } else {
-      await stopPlayer(); // ??? Maybe
+
+    if (!_fromStream) {
+      if (_audioPlayerFinishedPlaying != null) {
+        // We don't stop the player if the user has a callback
+        _audioPlayerFinishedPlaying?.call();
+      } else {
+        await stopPlayer(); // ??? Maybe !!!!!!!!!!!
+      }
     }
     //_cleanCompleters(); // We have problem when the record is finished and a resume is pending
 
@@ -405,10 +409,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   StreamSink<Food>? get foodSink =>
       _foodStreamController != null ? _foodStreamController!.sink : null;
 
-
   StreamSink<Uint8List>? get uint8ListSink =>
       _pcmUint8Controller != null ? _pcmUint8Controller!.sink : null;
-
 
   StreamSink<List<Float32List>>? get float32Sink =>
       _pcmF32Controller != null ? _pcmF32Controller!.sink : null;
@@ -791,7 +793,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       throw Exception('Player is not open');
     }
     oldPosition = 0;
-
     final session = await AudioSession.instance;
     final categ = session.configuration?.avAudioSessionCategory;
     switch (categ) {
@@ -844,6 +845,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       throw Exception('Player is not stopped');
     }
     _audioPlayerFinishedPlaying = whenFinished;
+    _fromStream = false;
+
     if (_startPlayerCompleter != null) {
       _logger.w('Killing another startPlayer()');
       _startPlayerCompleter!.completeError('Killed by another startPlayer()');
@@ -988,7 +991,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     int numChannels = 1,
     int sampleRate = 16000,
     int bufferSize = 8192,
-    TWhenFinished? whenFinished,
+    //TWhenFinished? whenFinished,
   }) async {
     await _lock.synchronized(() async {
       await _startPlayerFromStream(
@@ -997,7 +1000,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         sampleRate: sampleRate,
         numChannels: numChannels,
         bufferSize: bufferSize,
-        whenFinished: whenFinished,
+        //whenFinished: whenFinished,
       );
     });
   }
@@ -1008,7 +1011,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     int numChannels = 1,
     int sampleRate = 16000,
     int bufferSize = 8192,
-    TWhenFinished? whenFinished,
+    //TWhenFinished? whenFinished,
   }) async {
     _logger.d('FS:---> startPlayerFromStream ');
     await _waitOpen();
@@ -1048,7 +1051,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       _logger.w('Killing another startPlayer()');
       _startPlayerCompleter!.completeError('Killed by another startPlayer()');
     }
-    _audioPlayerFinishedPlaying = whenFinished;
+    //_audioPlayerFinishedPlaying = whenFinished;
+    _fromStream = true;
 
     try {
       _startPlayerCompleter = Completer<Duration>();
@@ -1066,13 +1070,13 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       );
 
        */
-      var state = await FlutterSoundPlayerPlatform.instance.startPlayerFromStream(this,
-          codec: codec,
-          interleaved: interleaved,
-          numChannels: numChannels,
-          sampleRate: sampleRate,
-          bufferSize: bufferSize
-      );
+      var state = await FlutterSoundPlayerPlatform.instance
+          .startPlayerFromStream(this,
+              codec: codec,
+              interleaved: interleaved,
+              numChannels: numChannels,
+              sampleRate: sampleRate,
+              bufferSize: bufferSize);
       _playerState = PlayerState.values[state];
     } on Exception {
       _startPlayerCompleter = null;
@@ -1102,10 +1106,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///  ```
   @deprecated
   Future<void> feedFromStream(Uint8List buffer) async {
-    await _feedFromStream(buffer);
-  }
-
-  Future<void> _feedFromStream(Uint8List buffer) async {
     var lnData = 0;
     var totalLength = buffer.length;
     while (totalLength > 0 && !isStopped) {
@@ -1117,24 +1117,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       lnData += ln;
       totalLength -= ln;
     }
-  }
-
-  Future<void> feedF32FromStream(List<Float32List> buffer) async {
-    /*var ln = */ await (FlutterSoundPlayerPlatform.instance.feedFloat32(
-      this,
-      data: buffer,
-    ));
-  }
-
-  Future<void> feedInt16FromStream(List<Int16List> buffer) async {
-    /*var ln = */ await (FlutterSoundPlayerPlatform.instance.feedInt16(
-      this,
-      data: buffer,
-    ));
-  }
-
-  Future<void> feedUint8FromStream(Uint8List  buffer) async {
-    /*var ln = */ await (FlutterSoundPlayerPlatform.instance.feed(this, data: buffer));
   }
 
   ///
@@ -1174,6 +1156,25 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       return _needSomeFoodCompleter!.future;
     }
     return 0;
+  }
+
+  Future<void> feedF32FromStream(List<Float32List> buffer) async {
+    /*var ln = */ await (FlutterSoundPlayerPlatform.instance.feedFloat32(
+      this,
+      data: buffer,
+    ));
+  }
+
+  Future<void> feedInt16FromStream(List<Int16List> buffer) async {
+    /*var ln = */ await (FlutterSoundPlayerPlatform.instance.feedInt16(
+      this,
+      data: buffer,
+    ));
+  }
+
+  Future<void> feedUint8FromStream(Uint8List buffer) async {
+    /*var ln = */ await (FlutterSoundPlayerPlatform.instance
+        .feed(this, data: buffer));
   }
 
   /// Stop a playback.
