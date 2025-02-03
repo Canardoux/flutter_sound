@@ -7,7 +7,7 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-### 9.21.0
+### 9.21.1
 
 - `playFromMic()` is deprecated
 - `feedFromStream()` is deprecated

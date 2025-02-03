@@ -1222,6 +1222,22 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       await _foodStreamSubscription!.cancel();
       _foodStreamSubscription = null;
     }
+
+    if (_f32StreamSubscription != null) {
+      await _f32StreamSubscription!.cancel();
+      _f32StreamSubscription = null;
+    }
+
+    if (_int16StreamSubscription != null) {
+      await _int16StreamSubscription!.cancel();
+      _int16StreamSubscription = null;
+    }
+
+    if (_uint8StreamSubscription != null) {
+      await _uint8StreamSubscription!.cancel();
+      _uint8StreamSubscription = null;
+    }
+
     _needSomeFoodCompleter = null;
 
     if (_foodStreamController != null) {
