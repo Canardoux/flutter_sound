@@ -86,6 +86,8 @@ if [ ! -z "$VERSION" ]; then
 fi
 cd ..
 
+echo '--------------------------------------------------------------------------------'
+
 cd flutter_sound_web
 git add .
 git commit -m "TAU : Version $VERSION"
@@ -96,6 +98,8 @@ if [ ! -z "$VERSION" ]; then
     git push  -f origin $VERSION
 fi
 cd ..
+echo '--------------------------------------------------------------------------------'
+
 
 
 
@@ -140,6 +144,7 @@ if [ $? -ne 0 ]; then
    #!!!!!!exit -1
 fi
 
+echo '--------------------------------------------------------------------------------'
 
 flutter analyze lib
 if [ $? -ne 0 ]; then
