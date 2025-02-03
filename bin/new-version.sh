@@ -109,7 +109,7 @@ if [ ! -z "$VERSION" ]; then
 fi
 
 
-
+echo '--------------------------------------------------------------------------------'
 cd flutter_sound_core
 pod trunk push flutter_sound_core.podspec 
 if [ $? -ne 0 ]; then
@@ -118,6 +118,7 @@ if [ $? -ne 0 ]; then
 fi
 cd ..
 
+echo '--------------------------------------------------------------------------------'
 
 cd flutter_sound_web
 npm publish .
@@ -128,6 +129,7 @@ fi
 
 cd ..
  
+echo '--------------------------------------------------------------------------------'
 
 
 cd flutter_sound
