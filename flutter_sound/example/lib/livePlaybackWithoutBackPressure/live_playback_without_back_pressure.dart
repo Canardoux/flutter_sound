@@ -132,10 +132,10 @@ class _LivePlaybackWithoutBackPressureState
     //if (_mPlayer != null) {
     // We must not do stopPlayer() directely //await stopPlayer();
     //_mPlayer.foodSink!.add(FoodEvent(() async {
-      //await _mPlayer.stopPlayer();
-      //FlutterSoundPlayer().logger.i("MARKER!");
+    //await _mPlayer.stopPlayer();
+    //FlutterSoundPlayer().logger.i("MARKER!");
 
-      setState(() {});
+    setState(() {});
     //}));
     //}
   }
@@ -169,9 +169,9 @@ class _LivePlaybackWithoutBackPressureState
     }
     return _mPlayer.isPlaying
         ? () {
-      stopPlayer().then((value) => setState(() {}));
-    } :
-    play;
+            stopPlayer().then((value) => setState(() {}));
+          }
+        : play;
   }
 
   // ----------------------------------------------------------------------------------------------------------------------

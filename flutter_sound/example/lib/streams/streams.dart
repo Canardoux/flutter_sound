@@ -192,14 +192,14 @@ class _StreamsExampleState extends State<StreamsExample> {
 
   Future<void> playBtn() async {
     if (_mPlayer.isStopped) {
-        await _mPlayer.startPlayerFromStream(
+      await _mPlayer.startPlayerFromStream(
         codec: codecSelected,
         sampleRate: cstSampleRate,
         numChannels: cstNUMBEROFCHANNELS,
         //whenFinished: () { stopPlayer().then((v){ setState(() {
         //});});},
         interleaved: interleaved,
-        );
+      );
 
       if (interleaved) {
         for (var d in bufferUint8) {
@@ -209,6 +209,7 @@ class _StreamsExampleState extends State<StreamsExample> {
       } else if (codecSelected == Codec.pcmFloat32) {
         for (var d in bufferF32) {
           await _mPlayer.feedF32FromStream(d);
+
           ///_mPlayer.float32Sink!.add(d);
         }
       } else if (codecSelected == Codec.pcm16) {
@@ -221,7 +222,7 @@ class _StreamsExampleState extends State<StreamsExample> {
       await stopPlayer();
     }
     setState(() {});
-    }
+  }
 
   Future<void> stopPlayer() async {
     await _mPlayer.stopPlayer();
