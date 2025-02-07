@@ -115,6 +115,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   static bool _reStarted = true;
 
   ///
+  @deprecated
   StreamSubscription<Food>?
       _foodStreamSubscription; // ignore: cancel_subscriptions
 
@@ -131,7 +132,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       _uint8StreamSubscription; // ignore: cancel_subscriptions
 
   ///
+  @deprecated
   StreamController<Food>? _foodStreamController; //ignore: close_sinks
+
   StreamController<List<Float32List>>? _pcmF32Controller; //ignore: close_sinks
   StreamController<List<Int16List>>? _pcmInt16Controller; //ignore: close_sinks
   StreamController<Uint8List>? _pcmUint8Controller; //ignore: close_sinks
@@ -766,16 +769,25 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     TWhenFinished? whenFinished,
   }) async {
     Duration? r;
-    await _lock.synchronized(() async {
-      r = await _startPlayer(
-        fromURI: fromURI,
-        fromDataBuffer: fromDataBuffer,
-        codec: codec,
-        sampleRate: sampleRate,
-        numChannels: numChannels,
-        whenFinished: whenFinished,
-      );
-    });
+    await _lock.synchronized(
+      () async {
+        //!!!  try {
+        r = await _startPlayer(
+          fromURI: fromURI,
+          fromDataBuffer: fromDataBuffer,
+          codec: codec,
+          sampleRate: sampleRate,
+          numChannels: numChannels,
+          whenFinished: whenFinished,
+        );
+        //!!!}
+        //!!!  on Exception {
+        //r = Duration.zero;
+        //!!!    await _stop();
+        //!!!    rethrow;
+        //!!!  };
+      },
+    ); // timeout: Duration(seconds: 10));
     return r;
   }
 
@@ -853,7 +865,14 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
     try {
       _startPlayerCompleter = Completer<Duration>();
+      //_startPlayerCompleter!.future.catchError(AssertionError('future not consumed'));
+      //_startPlayerCompleter!.future.onError((error, stackTrace) {
+      //_startPlayerCompleter = null;
+      //throw Exception('Cannot start the player');
+      //return Duration.zero;
+      //});
       completer = _startPlayerCompleter;
+
       var state = await FlutterSoundPlayerPlatform.instance.startPlayer(
         this,
         codec: codec,
@@ -862,7 +881,14 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         numChannels: numChannels,
         sampleRate: sampleRate,
       );
+
+      //var state = 0; startPlayerCompleted( state, false, -1); // !!!!!!!!!!!!
       _playerState = PlayerState.values[state];
+      //if (_playerState == PlayerState.isStopped) // Player not Started
+      {
+        //_startPlayerCompleter = null;
+        //throw Exception('Cannot start the player');
+      }
     } on Exception {
       _startPlayerCompleter = null;
       rethrow;
@@ -1158,23 +1184,116 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return 0;
   }
 
-  Future<void> feedF32FromStream(List<Float32List> buffer) async {
-    /*var ln = */ await (FlutterSoundPlayerPlatform.instance.feedFloat32(
-      this,
-      data: buffer,
-    ));
+  Future<int> feedF32FromStream(List<Float32List> buffer) async {
+    await _waitOpen();
+    if (_isInited != Initialized.fullyInitialized) {
+      throw Exception('Player is not open');
+    }
+    if (isStopped) {
+      return 0;
+    }
+    _needSomeFoodCompleter =
+        Completer<int>(); // Not completed until the device accept new data
+    try {
+      var ln = await (FlutterSoundPlayerPlatform.instance.feedFloat32(
+        this,
+        data: buffer,
+      ));
+      assert(ln >= 0); // feedFromStream() is not happy if < 0
+      if (ln != 0) {
+        // If the device accepted some data, then no need to wait
+        // It is the tau_core responsability to send a "needSomeFood" then it is again available for new data
+        _needSomeFoodCompleter = null;
+        return (ln);
+      } else {
+        //logger.i("The device has enough data");
+      }
+    } on Exception {
+      _needSomeFoodCompleter = null;
+      if (isStopped) {
+        return 0;
+      }
+      rethrow;
+    }
+
+    if (_needSomeFoodCompleter != null) {
+      return _needSomeFoodCompleter!.future;
+    }
+    return 0;
   }
 
-  Future<void> feedInt16FromStream(List<Int16List> buffer) async {
-    /*var ln = */ await (FlutterSoundPlayerPlatform.instance.feedInt16(
-      this,
-      data: buffer,
-    ));
+  Future<int> feedInt16FromStream(List<Int16List> buffer) async {
+    await _waitOpen();
+    if (_isInited != Initialized.fullyInitialized) {
+      throw Exception('Player is not open');
+    }
+    if (isStopped) {
+      return 0;
+    }
+    _needSomeFoodCompleter =
+        Completer<int>(); // Not completed until the device accept new data
+    try {
+      var ln = await (FlutterSoundPlayerPlatform.instance.feedInt16(
+        this,
+        data: buffer,
+      ));
+      assert(ln >= 0); // feedFromStream() is not happy if < 0
+      if (ln != 0) {
+        // If the device accepted some data, then no need to wait
+        // It is the tau_core responsability to send a "needSomeFood" then it is again available for new data
+        _needSomeFoodCompleter = null;
+        return (ln);
+      } else {
+        //logger.i("The device has enough data");
+      }
+    } on Exception {
+      _needSomeFoodCompleter = null;
+      if (isStopped) {
+        return 0;
+      }
+      rethrow;
+    }
+
+    if (_needSomeFoodCompleter != null) {
+      return _needSomeFoodCompleter!.future;
+    }
+    return 0;
   }
 
-  Future<void> feedUint8FromStream(Uint8List buffer) async {
-    /*var ln = */ await (FlutterSoundPlayerPlatform.instance
-        .feed(this, data: buffer));
+  Future<int> feedUint8FromStream(Uint8List buffer) async {
+    await _waitOpen();
+    if (_isInited != Initialized.fullyInitialized) {
+      throw Exception('Player is not open');
+    }
+    if (isStopped) {
+      return 0;
+    }
+    _needSomeFoodCompleter =
+        Completer<int>(); // Not completed until the device accept new data
+    try {
+      var ln =
+          await (FlutterSoundPlayerPlatform.instance.feed(this, data: buffer));
+      assert(ln >= 0); // feedFromStream() is not happy if < 0
+      if (ln != 0) {
+        // If the device accepted some data, then no need to wait
+        // It is the tau_core responsability to send a "needSomeFood" then it is again available for new data
+        _needSomeFoodCompleter = null;
+        return (ln);
+      } else {
+        //logger.i("The device has enough data");
+      }
+    } on Exception {
+      _needSomeFoodCompleter = null;
+      if (isStopped) {
+        return 0;
+      }
+      rethrow;
+    }
+
+    if (_needSomeFoodCompleter != null) {
+      return _needSomeFoodCompleter!.future;
+    }
+    return 0;
   }
 
   /// Stop a playback.

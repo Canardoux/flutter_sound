@@ -76,7 +76,8 @@ class MethodChannelFlutterSoundRecorder extends FlutterSoundRecorderPlatform {
           {
             List<Float32List>? data = [];
 
-            int channelCount = call.arguments['channelCount'] as int;
+            int channelCount =
+                data.length; //call.arguments['channelCount'] as int;
             for (int i = 0; i < channelCount; ++i) {
               var x = call.arguments['DataChannel$i'] as Float32List;
               /*

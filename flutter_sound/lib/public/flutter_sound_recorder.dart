@@ -720,10 +720,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
         break;
     }
 
-    //if (toStream != null && codec != Codec.pcm16 && codec != Codec.pcmFloat32) {
-    //  throw Exception(
-    //      'toStream can only be used with codec == Codec.pcm16 or Codec.pcmFloat32');
-    //}
     Completer<void>? completer;
     // Maybe we should stop any recording already running... (stopRecorder does that)
     _userStreamSink = toStream;
@@ -751,10 +747,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
           audioSource: audioSource);
 
       _recorderState = RecorderState.isRecording;
-      // if the caller wants OGG/OPUS we must remux the temporary file
-      //if (_isOggOpus) {
-      //return _savedUri;
-      //}
     } on Exception {
       _startRecorderCompleter = null;
       rethrow;

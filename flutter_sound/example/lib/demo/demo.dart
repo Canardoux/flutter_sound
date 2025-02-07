@@ -233,7 +233,7 @@ class _MyAppState extends State<Demo> {
     await playerModule
         .setSubscriptionDuration(const Duration(milliseconds: 10));
     await recorderModule
-        .setSubscriptionDuration(const Duration(milliseconds: 10));
+        .setSubscriptionDuration(const Duration(milliseconds: 100));
     await initializeDateFormatting();
     await setCodec(_codec);
   }
@@ -376,7 +376,7 @@ class _MyAppState extends State<Demo> {
         });
         await recorderModule.startRecorder(
           toStream: recordingDataController!.sink,
-
+          bufferSize: 128,
           codec: _codec,
           numChannels: cstCHANNELNB,
           sampleRate: cstSAMPLERATE, // tSTREAMSAMPLERATE, //tSAMPLERATE,
@@ -588,6 +588,7 @@ class _MyAppState extends State<Demo> {
       playerModule.logger.d('<--- startPlayer');
     } on Exception catch (err) {
       playerModule.logger.e('error: $err');
+      await stopPlayer();
     }
   }
 

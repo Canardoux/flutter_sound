@@ -7,6 +7,40 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
+### 9.22.0
+
+- iOS : DB Peak level for codec == Codec.pcm16 and codec == Codec.pcmFloat32
+- android : DB Peak level for codec == Codec.pcm16 and codec == Codec.pcmFloat32
+- Fix a bug when recording pcmWAV on android and channels > 1
+- On Web : The error "OnLoad error" was not correctely diagnosed
+
+- TODO 
+   - pcmFloat32 and pcmFloat32WAV on Android
+   - Playback OpusWEBM and VorbisWEBM with remote files on Android
+   - Volume Control for pcm codecs (all platforms)
+   - Example Pan control
+   - Pause/Rresume for PCM codecs
+   - On iOS, the peak level is more than 100 db
+   - On iOS : Streams Int16 non interleaved
+   - On Android : Record/Playback PCMFloat32
+   - On Web : isEncoderSupported() and isDecoderSupported() are not implemented
+   - On Web : playback OpusOGG does nnot work
+   - On Web : PCM16 Dart Stream not OK
+   - On Wev : Record/playback AAC/MP4 and OpusWEB to buffer
+   - On Web : Record PCMFloat32 : DartError: Assertion failed: file:///Volumes/mac-H/larpoux/proj/flutter_sound/flutter_sound_web/lib/flutter_sound_recorder_web.dart:279:14
+   - https://tau.canardoux.xyz/danku/extract/02-opus.webm Not found
+   - https://tau.canardoux.xyz/danku/extract/03-vorbis.webm Not found
+   - Playback Asset PCM Float32 : onloaderror
+   - On Web : Record/Playback PcmFloat32 not interleaved : NeedSomeFood : DartError: Bad state: Future already completed
+   - On Web : startPlayer FromURI : _flutter_sound.wav : No file extension was found. Consider using the "format" property or specify an extension.
+   - On Web : Implement Streams Int16 
+   - On Web : Implement Stream interleaved.
+   - On iOS : codec==Codec.pcm16WAV  --  startRecorder()  --  The frames are not correctely coded with int16 but float32. This must be fixed.
+   - On iOS : codec==Codec.pcm32WAV  --  The peak level is not computed correctly. This must be fixed.
+   - On iOS : Codec.pcmINT16 not interleaved
+   - Implement Float32 on Android
+   - Implement stream not interleaved on Android
+
 ### 9.21.1
 
 - `playFromMic()` is deprecated
@@ -17,10 +51,6 @@ toc: false
 - add functions `feedUint8FromStream()`, `feedInt16FromStream()` and `feedF32FromStream()`
 - add getters `uint8ListSink`, `float32Sink` and `int16Sink`
 - On web : `startPlayerFromStream()` is implemented for codec.pcmFloat32 and not interleaved
-
-- TODO
-   - On Web : Implement Streams Int16 
-   - On Web : Implement Stream interleaved.
 
 ### 9.20.5
 
@@ -38,13 +68,6 @@ Work on iOS to support Float32 and non interleaved Streams. See [this guide](htt
    - FlutterSoundHelper::pcmToWaveBuffer() : Add parameter Codec and implement codec==Codec.pcmFloat32
 
 - On iOS : The peak level during recording pcm16 was unstable.
-
-- TODO
-  - On iOS : codec==Codec.pcm16WAV  --  startRecorder()  --  The frames are not correctely coded with int16 but float32. This must be fixed.
-  - On iOS : codec==Codec.pcm32WAV  --  The peak level is not computed correctly. This must be fixed.
-  - On iOS : Codec.pcmINT16 not interleaved
-  - Implement Float32 on Android
-  - Implement stream not interleaved on Android
 
 ### 9.19.1
 

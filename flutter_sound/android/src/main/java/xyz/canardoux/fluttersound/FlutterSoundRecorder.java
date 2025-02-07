@@ -21,6 +21,8 @@ package xyz.canardoux.fluttersound;
 
 import android.media.MediaRecorder;
 
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -87,9 +89,15 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 	      Map<String, Object> dic = new HashMap<String, Object>();
 	      dic.put("recordingData", data);
 	      invokeMethodWithMap("recordingData", true, dic);
-
       }
 
+
+	public void recordingDataFloat32(ArrayList<float[]> data)
+	{
+		Map<String, Object> dic = new HashMap<String, Object>();
+		dic.put("recordingData", data);
+		invokeMethodWithMap("recordingDataFloat32", true, dic);
+	}
 
 
 
@@ -195,15 +203,16 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 			Integer                         sampleRate          = call.argument ( "sampleRate" );
 			Integer                         numChannels         = call.argument ( "numChannels" );
 			Integer                         bitRate             = call.argument ( "bitRate" );
-			Integer 			bufferSize 	    = call.argument ( "bufferSize");
+			Integer 						bufferSize 	    	= call.argument ( "bufferSize");
 			int                             _codec              = call.argument ( "codec" );
-			t_CODEC               		codec               = t_CODEC.values()[ _codec ];
+			t_CODEC               			codec               = t_CODEC.values()[ _codec ];
 			final String                     path               = call.argument ( "path" );
 			int                             _audioSource        = call.argument ( "audioSource" );
 			t_AUDIO_SOURCE                  audioSource         = t_AUDIO_SOURCE.values()[_audioSource];
-			boolean 			toStream	    = call.argument ( "toStream");
+			boolean 						toStream	    	= call.argument ( "toStream");
+			boolean							interleaved			= call.argument ( "interleaved");
 
-			boolean r = m_recorder.startRecorder(codec, sampleRate, numChannels, bitRate, bufferSize, path, audioSource, toStream);
+			boolean r = m_recorder.startRecorder(codec, sampleRate, numChannels, interleaved, bitRate, bufferSize, path, audioSource, toStream);
 			if (r)
 				result.success ( "Media Recorder is started" );
 			else
