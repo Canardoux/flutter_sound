@@ -41,6 +41,8 @@ toc: false
    - Implement Float32 on Android
    - Implement stream not interleaved on Android
    - Flutter Sound should not depend on Audio_Session
+   - Flutter Sound should not depend on JS
+   - MacOS support
 
 ### 9.21.1
 
