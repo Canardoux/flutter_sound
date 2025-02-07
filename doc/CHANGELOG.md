@@ -40,6 +40,7 @@ toc: false
    - On iOS : Codec.pcmINT16 not interleaved
    - Implement Float32 on Android
    - Implement stream not interleaved on Android
+   - Flutter Sound should not depend on Audio_Session
 
 ### 9.21.1
 
