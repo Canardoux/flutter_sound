@@ -64,6 +64,12 @@ class _StreamsExampleState extends State<StreamsExample> {
   var recordingDataControllerUint8 = StreamController<Uint8List>();
 
   bool _mplaybackReady = false;
+  double _dbLevel = 0.0;
+  double _mVolume = 100.0;
+  double _mPan = 100.0;
+
+  StreamSubscription? _recorderSubscription;
+
 
   Future<void> _openRecorder() async {
     var status = await Permission.microphone.request();
@@ -107,6 +113,15 @@ class _StreamsExampleState extends State<StreamsExample> {
       });
     });
     _openRecorder().then((value) {
+      _recorderSubscription = _mRecorder.onProgress!.listen((e) {
+        setState(() {
+          //pos = e.duration.inMilliseconds;
+          if (e.decibels != null) {
+            _dbLevel = e.decibels as double;
+          }
+        });
+      });
+
       setState(() {
         _mRecorderIsInited = true;
       });
@@ -121,11 +136,23 @@ class _StreamsExampleState extends State<StreamsExample> {
     stopRecorder();
     _mRecorder.closeRecorder();
     super.dispose();
+    cancelRecorderSubscriptions();
+
   }
 
   // ----------------------  Here is the code to record to a Stream -----------------
 
+
+  void cancelRecorderSubscriptions() {
+    if (_recorderSubscription != null) {
+      _recorderSubscription!.cancel();
+      _recorderSubscription = null;
+    }
+  }
+
   Future<void> recordBtn() async {
+    await _mRecorder.setSubscriptionDuration(Duration(milliseconds: 100));
+    _dbLevel = 0.0;
     if (interleaved) {
       bufferUint8 = [];
       recordingDataControllerUint8.close();
@@ -188,6 +215,11 @@ class _StreamsExampleState extends State<StreamsExample> {
           };
   }
 
+
+  void pauseResumeRecorder() {
+  }
+
+
   // ----------------------  Here is the code to play from a Stream -----------------------
 
   Future<void> playBtn() async {
@@ -235,6 +267,29 @@ class _StreamsExampleState extends State<StreamsExample> {
     return playBtn;
   }
 
+  void pauseResumePlayer() {
+
+  }
+
+
+  Future<void> setVolume(double v) async // v is between 0.0 and 100.0
+  {
+    v = v > 100.0 ? 100.0 : v;
+    _mVolume = v;
+    setState(() {});
+    //await _mPlayer!.setVolume(v / 100, fadeDuration: Duration(milliseconds: 5000));
+    await _mPlayer.setVolume(v / 100,);
+  }
+
+  Future<void> setPan(double v) async // v is between 0.0 and 100.0
+      {
+    v = v > 100.0 ? 100.0 : v;
+    _mPan = v;
+    setState(() {});
+    //await _mPlayer!.setVolume(v / 100, fadeDuration: Duration(milliseconds: 5000));
+    await _mPlayer.setVolumePan(v / 100, 0);
+  }
+
   // ----------------------------------------------------------------------------------------------------------------------
 
   Future<void> reinit() async {
@@ -262,7 +317,7 @@ class _StreamsExampleState extends State<StreamsExample> {
         Container(
           margin: const EdgeInsets.all(3),
           padding: const EdgeInsets.all(3),
-          height: 60,
+          height: 100,
           width: double.infinity,
           alignment: Alignment.center,
           decoration: BoxDecoration(
@@ -283,6 +338,15 @@ class _StreamsExampleState extends State<StreamsExample> {
               const SizedBox(
                 width: 20,
               ),
+              ElevatedButton(
+                onPressed: _mRecorder.isStopped ? null : pauseResumeRecorder,
+                //color: Colors.white,
+                //disabledColor: Colors.grey,
+                child: Text(_mRecorder.isPaused ? 'Resume' : 'Pause'),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
               Text(_mRecorder.isRecording
                   ? 'Recording in progress'
                   : 'Recorder is stopped'),
@@ -290,12 +354,23 @@ class _StreamsExampleState extends State<StreamsExample> {
                 width: 20,
               ),
             ]),
+            const SizedBox(
+              height: 20,
+            ),
+            _mRecorder.isRecording
+                ? LinearProgressIndicator(
+                value: _dbLevel  / 100,
+                valueColor:
+                const AlwaysStoppedAnimation<Color>(Colors.indigo),
+                backgroundColor: Colors.limeAccent)
+                : Container(),
+
           ]),
         ),
         Container(
             margin: const EdgeInsets.all(3),
             padding: const EdgeInsets.all(3),
-            height: 60,
+            height: 220,
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
@@ -305,7 +380,10 @@ class _StreamsExampleState extends State<StreamsExample> {
                 width: 3,
               ),
             ),
-            child: Row(children: [
+            child:
+            Column(
+                children: [
+      Row(children: [
               ElevatedButton(
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
@@ -315,21 +393,67 @@ class _StreamsExampleState extends State<StreamsExample> {
               const SizedBox(
                 width: 20,
               ),
+              ElevatedButton(
+                onPressed: _mPlayer.isStopped ? null : pauseResumePlayer,
+                //color: Colors.white,
+                //disabledColor: Colors.grey,
+                child: Text(_mPlayer.isPaused ? 'Resume' : 'Pause'),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
               Text(_mPlayer.isPlaying
                   ? 'Playback in progress'
                   : 'Player is stopped'),
-            ])),
+            ]),
+        const Text('Volume:'),
+        Slider(
+            value: _mVolume,
+            min: 0.0,
+            max: 100.0,
+            onChanged: setVolume,
+            divisions: 100),
 
-        //Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //children:
-        //[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
+                  const Text('Pan:'),
+                  Slider(
+                      value: _mPan,
+                      min: 0.0,
+                      max: 100.0,
+                      onChanged: setPan,
+                      divisions: 100),
+
+                ]),
+        ),
+
+      Container(
+      margin: const EdgeInsets.all(3),
+      padding: const EdgeInsets.all(3),
+      height: 180,
+      width: double.infinity,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+      color: const Color(0xFFFAF0E6),
+      border: Border.all(
+      color: Colors.indigo,
+      width: 3,
+      ),
+      ),
+      child:
+      Column(
+      children: [
+
+
+
+
+      ListTile(
               tileColor: const Color(0xFFFAF0E6),
               title: const Text('PCM-Float32'),
               dense: true,
+
+
+
+
+
               //textColor: encoderSupported[Codec.pcmFloat32.index]
               //? Colors.green
               //: Colors.grey,
@@ -366,6 +490,7 @@ class _StreamsExampleState extends State<StreamsExample> {
             )
           ],
         ),
+      ),
       ]);
       //]),
       //]);

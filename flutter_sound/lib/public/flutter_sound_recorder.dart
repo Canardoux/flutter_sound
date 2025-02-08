@@ -35,7 +35,7 @@ import '../flutter_sound.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/src/services/platform_channel.dart';
 import 'dart:io' show Platform;
-import 'package:audio_session/audio_session.dart';
+//import 'package:audio_session/audio_session.dart';
 
 /// A Recorder is an object that can playback from various sources.
 ///
@@ -695,6 +695,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       throw _CodecNotSupportedException('Codec not supported.');
     }
 
+    /*
     final session = await AudioSession.instance;
     final categ = session.configuration?.avAudioSessionCategory;
     switch (categ) {
@@ -719,7 +720,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
         }
         break;
     }
-
+*/
     Completer<void>? completer;
     // Maybe we should stop any recording already running... (stopRecorder does that)
     _userStreamSink = toStream;

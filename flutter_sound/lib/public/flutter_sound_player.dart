@@ -115,7 +115,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   static bool _reStarted = true;
 
   ///
-  @deprecated
+  ///@deprecated
   StreamSubscription<Food>?
       _foodStreamSubscription; // ignore: cancel_subscriptions
 
@@ -132,7 +132,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       _uint8StreamSubscription; // ignore: cancel_subscriptions
 
   ///
-  @deprecated
+  ///@deprecated
   StreamController<Food>? _foodStreamController; //ignore: close_sinks
 
   StreamController<List<Float32List>>? _pcmF32Controller; //ignore: close_sinks

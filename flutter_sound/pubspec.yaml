@@ -11,7 +11,6 @@ environment:
 
 dependencies:
   path_provider: ^2.1.2
-  audio_session: ^0.1.6
   recase: ^4.1.0
   uuid: ^4.3.3
   provider: ^6.1.1
@@ -21,18 +20,17 @@ dependencies:
   flutter:
     sdk: flutter
 # ============================================================================
-  flutter_sound_platform_interface: 9.22.0
-#    path: ../flutter_sound_platform_interface # Flutter Sound Dir
+  flutter_sound_platform_interface: # 9.22.0
+    path: ../flutter_sound_platform_interface # Flutter Sound Dir
 
-  flutter_sound_web: 9.22.0
-#    path: ../flutter_sound_web # Flutter Sound Dir
+  flutter_sound_web: # 9.22.0
+    path: ../flutter_sound_web # Flutter Sound Dir
 
-  etau: ^0.0.14-alpha.5
-#    path: ../../tau/etau # etau Dir
+  etau: # ^0.0.14-alpha.5
+    path: ../../tau/etau # etau Dir
 
-  tau_web: ^0.0.14-alpha.5
-#    path: ../../tau/tau_web # tau_web Dir
-
+  tau_web: # ^0.0.14-alpha.5
+    path: ../../tau/tau_web # tau_web Dir
 # ============================================================================
 
 
