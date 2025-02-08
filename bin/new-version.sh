@@ -221,21 +221,8 @@ if [ $? -ne 0 ]; then
 fi
 cd ..
 
-exit 0
-
 bin/doc.sh $VERSION
 
-scp -r flutter_sound/example/build/web      danku@danku:/var/www/canardoux.xyz/danku/web_example
-scp -r flutter_sound/example/assets/extract danku@danku:/var/www/canardoux.xyz/danku
-
-git add .
-git commit -m "TAU : Version $VERSION"
-git pull origin
-git push origin
-if [ ! -z "$VERSION" ]; then
-        git tag -f $VERSION
-        git push  -f origin $VERSION
-fi
 
 cd flutter_sound_core
 git add .
@@ -246,8 +233,40 @@ if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
     git push  -f origin $VERSION
 fi
+
+cd ../flutter_sound_web
+
+
+git add .
+git commit -m "TAU : Version $VERSION"
+git pull origin
+git push origin
+if [ ! -z "$VERSION" ]; then
+        git tag -f $VERSION
+        git push  -f origin $VERSION
+fi
+
+cd ../flutter_sound_platform_interface
+
+
+git add .
+git commit -m "TAU : Version $VERSION"
+git pull origin
+git push origin
+if [ ! -z "$VERSION" ]; then
+        git tag -f $VERSION
+        git push  -f origin $VERSION
+fi
 cd ..
 
 
+git add .
+git commit -m "TAU : Version $VERSION"
+git pull origin
+git push origin
+if [ ! -z "$VERSION" ]; then
+        git tag -f $VERSION
+        git push  -f origin $VERSION
+fi
 
 echo 'E.O.J'

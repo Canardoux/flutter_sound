@@ -70,7 +70,6 @@ class _StreamsExampleState extends State<StreamsExample> {
 
   StreamSubscription? _recorderSubscription;
 
-
   Future<void> _openRecorder() async {
     var status = await Permission.microphone.request();
     if (status != PermissionStatus.granted) {
@@ -137,11 +136,9 @@ class _StreamsExampleState extends State<StreamsExample> {
     _mRecorder.closeRecorder();
     super.dispose();
     cancelRecorderSubscriptions();
-
   }
 
   // ----------------------  Here is the code to record to a Stream -----------------
-
 
   void cancelRecorderSubscriptions() {
     if (_recorderSubscription != null) {
@@ -215,10 +212,7 @@ class _StreamsExampleState extends State<StreamsExample> {
           };
   }
 
-
-  void pauseResumeRecorder() {
-  }
-
+  void pauseResumeRecorder() {}
 
   // ----------------------  Here is the code to play from a Stream -----------------------
 
@@ -267,10 +261,7 @@ class _StreamsExampleState extends State<StreamsExample> {
     return playBtn;
   }
 
-  void pauseResumePlayer() {
-
-  }
-
+  void pauseResumePlayer() {}
 
   Future<void> setVolume(double v) async // v is between 0.0 and 100.0
   {
@@ -278,11 +269,13 @@ class _StreamsExampleState extends State<StreamsExample> {
     _mVolume = v;
     setState(() {});
     //await _mPlayer!.setVolume(v / 100, fadeDuration: Duration(milliseconds: 5000));
-    await _mPlayer.setVolume(v / 100,);
+    await _mPlayer.setVolume(
+      v / 100,
+    );
   }
 
   Future<void> setPan(double v) async // v is between 0.0 and 100.0
-      {
+  {
     v = v > 100.0 ? 100.0 : v;
     _mPan = v;
     setState(() {});
@@ -359,31 +352,28 @@ class _StreamsExampleState extends State<StreamsExample> {
             ),
             _mRecorder.isRecording
                 ? LinearProgressIndicator(
-                value: _dbLevel  / 100,
-                valueColor:
-                const AlwaysStoppedAnimation<Color>(Colors.indigo),
-                backgroundColor: Colors.limeAccent)
+                    value: _dbLevel / 100,
+                    valueColor:
+                        const AlwaysStoppedAnimation<Color>(Colors.indigo),
+                    backgroundColor: Colors.limeAccent)
                 : Container(),
-
           ]),
         ),
         Container(
-            margin: const EdgeInsets.all(3),
-            padding: const EdgeInsets.all(3),
-            height: 220,
-            width: double.infinity,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFAF0E6),
-              border: Border.all(
-                color: Colors.indigo,
-                width: 3,
-              ),
+          margin: const EdgeInsets.all(3),
+          padding: const EdgeInsets.all(3),
+          height: 220,
+          width: double.infinity,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: const Color(0xFFFAF0E6),
+            border: Border.all(
+              color: Colors.indigo,
+              width: 3,
             ),
-            child:
-            Column(
-                children: [
-      Row(children: [
+          ),
+          child: Column(children: [
+            Row(children: [
               ElevatedButton(
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
@@ -406,91 +396,79 @@ class _StreamsExampleState extends State<StreamsExample> {
                   ? 'Playback in progress'
                   : 'Player is stopped'),
             ]),
-        const Text('Volume:'),
-        Slider(
-            value: _mVolume,
-            min: 0.0,
-            max: 100.0,
-            onChanged: setVolume,
-            divisions: 100),
-
-                  const Text('Pan:'),
-                  Slider(
-                      value: _mPan,
-                      min: 0.0,
-                      max: 100.0,
-                      onChanged: setPan,
-                      divisions: 100),
-
-                ]),
+            const Text('Volume:'),
+            Slider(
+                value: _mVolume,
+                min: 0.0,
+                max: 100.0,
+                onChanged: setVolume,
+                divisions: 100),
+            const Text('Pan:'),
+            Slider(
+                value: _mPan,
+                min: 0.0,
+                max: 100.0,
+                onChanged: setPan,
+                divisions: 100),
+          ]),
         ),
-
-      Container(
-      margin: const EdgeInsets.all(3),
-      padding: const EdgeInsets.all(3),
-      height: 180,
-      width: double.infinity,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-      color: const Color(0xFFFAF0E6),
-      border: Border.all(
-      color: Colors.indigo,
-      width: 3,
-      ),
-      ),
-      child:
-      Column(
-      children: [
-
-
-
-
-      ListTile(
-              tileColor: const Color(0xFFFAF0E6),
-              title: const Text('PCM-Float32'),
-              dense: true,
-
-
-
-
-
-              //textColor: encoderSupported[Codec.pcmFloat32.index]
-              //? Colors.green
-              //: Colors.grey,
-              leading: Radio<Codec>(
-                value: Codec.pcmFloat32,
-                groupValue: codecSelected,
-                onChanged: setCodec,
-              ),
+        Container(
+          margin: const EdgeInsets.all(3),
+          padding: const EdgeInsets.all(3),
+          height: 180,
+          width: double.infinity,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: const Color(0xFFFAF0E6),
+            border: Border.all(
+              color: Colors.indigo,
+              width: 3,
             ),
-            ListTile(
-              tileColor: const Color(0xFFFAF0E6),
-              title: const Text('PCM-Int16'),
-              dense: true,
+          ),
+          child: Column(
+            children: [
+              ListTile(
+                tileColor: const Color(0xFFFAF0E6),
+                title: const Text('PCM-Float32'),
+                dense: true,
 
-              ///textColor: encoderSupported[Codec.pcm16.index]
-              ///? Colors.green
-              //: Colors.grey,
-              leading: Radio<Codec>(
-                value: Codec.pcm16,
-                groupValue: codecSelected,
-                onChanged: setCodec,
+                //textColor: encoderSupported[Codec.pcmFloat32.index]
+                //? Colors.green
+                //: Colors.grey,
+                leading: Radio<Codec>(
+                  value: Codec.pcmFloat32,
+                  groupValue: codecSelected,
+                  onChanged: setCodec,
+                ),
               ),
-            ),
-            CheckboxListTile(
-              tileColor: const Color(0xFFFAF0E6),
-              title: const Text("Interleaved"),
-              value: interleaved,
-              onChanged: (newValue) {
-                reinit();
-                setState(() {
-                  interleaved = newValue!;
-                });
-              },
-            )
-          ],
+              ListTile(
+                tileColor: const Color(0xFFFAF0E6),
+                title: const Text('PCM-Int16'),
+                dense: true,
+
+                ///textColor: encoderSupported[Codec.pcm16.index]
+                ///? Colors.green
+                //: Colors.grey,
+                leading: Radio<Codec>(
+                  value: Codec.pcm16,
+                  groupValue: codecSelected,
+                  onChanged: setCodec,
+                ),
+              ),
+              CheckboxListTile(
+                tileColor: const Color(0xFFFAF0E6),
+                title: const Text("Interleaved"),
+                value: interleaved,
+                onChanged: (newValue) {
+                  reinit();
+                  setState(() {
+                    interleaved = newValue!;
+                  });
+                },
+              )
+            ],
+          ),
         ),
-      ),
       ]);
       //]),
       //]);
