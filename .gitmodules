@@ -1,6 +1,1 @@
-[submodule "flutter_sound_core"]
-	path = flutter_sound_core
-	url = https://github.com/Canardoux/flutter_sound_core
-[submodule "flutter_sound_web"]
-	path = flutter_sound_web
-	url = https://github.com/Larpoux/flutter_sound_web.git
+
