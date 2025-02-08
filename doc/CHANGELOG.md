@@ -7,10 +7,11 @@ permalink: changelog.html
 summary: The Changelog of The &tau; Project.
 toc: false
 ---
-### 9.23.0 - 2025/02/07
+### 9.23.0 - 2025/02/08
 
 - Flutter Sound does not depend anymore on JS
 - Flutter Sound does not depend anymore on Audio_Session
+- Flutter Sound is a submodule of the τ Project
 
 - TODO 
     - On iOS : Streams Int16 not interleaved - On iOS : Codec.pcmINT16 not interleaved
@@ -18,6 +19,7 @@ toc: false
     - Pause/Resume for PCM codecs
     - Set Volume for PCM codecs
     - Set Pan for PCM codecs
+    - Doc
 
     - pcmFloat32 and pcmFloat32WAV on Android - Implement Float32 on Android - On Android : Record/Playback PCMFloat32
     - Implement stream not interleaved on Android
@@ -39,7 +41,6 @@ toc: false
     - On Web : Implement Stream interleaved.
     - On iOS : codec==Codec.pcm16WAV  --  startRecorder()  --  The frames are not correctely coded with int16 but float32. This must be fixed.
     - MacOS support
-    - Doc
     - Taudio
     - DB Peak when Channel Count > 1
     - Flutter Sound 10.0-Alpha

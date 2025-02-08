@@ -14,7 +14,6 @@ bin/setver.sh $VERSION
 bin/reldev.sh REL
 #bin/web.sh
 
-cd flutter_sound
 flutter analyze lib
 if [ $? -ne 0 ]; then
     echo "Error: analyze flutter_sound/lib"
@@ -26,10 +25,9 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 
-cd ..
 rm -rf _*.tgz
  
-cd flutter_sound_platform_interface/    
+cd ../flutter_sound_platform_interface/    
 #flutter clean
 #flutter pub get
 
@@ -49,10 +47,11 @@ if [ $? -ne 0 ]; then
     echo "Error: flutter pub publish[flutter_sound_platform_interface]"
     #!!!!!exit -1
 fi
-cd ..
+cd ../flutter_sound
+
 echo '--------------------------------------------------------------------------------'
 
-cd flutter_sound_web
+cd ../flutter_sound_web
 flutter clean
 flutter pub get
 
@@ -72,12 +71,12 @@ if [ $? -ne 0 ]; then
     echo "Error: flutter pub publish[flutter_sound_web]"
     #!!!!!!exit -1
 fi
-cd ..
+cd ../flutter_sound
 
 
 echo '--------------------------------------------------------------------------------'
 
-cd flutter_sound_core
+cd ../flutter_sound_core
 git add .
 git commit -m "TAU : Version $VERSION"
 git pull origin
@@ -86,9 +85,9 @@ if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
     git push  -f origin $VERSION
 fi
-cd ..
+cd ../flutter_sound
 
-cd flutter_sound_web
+cd ../flutter_sound_web
 git add .
 git commit -m "TAU : Version $VERSION"
 git pull origin
@@ -97,7 +96,7 @@ if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
     git push  -f origin $VERSION
 fi
-cd ..
+cd ../flutter_sound
 
 
 git add .
@@ -111,29 +110,27 @@ fi
 
 
 echo '--------------------------------------------------------------------------------'
-cd flutter_sound_core
+cd ../flutter_sound_core
 pod trunk push flutter_sound_core.podspec 
 if [ $? -ne 0 ]; then
     echo "Error: trunk push flutter_sound_core.podspec[flutter_sound_core]"
     #!!!!!exit -1
 fi
-cd ..
+cd ../flutter_sound
 
 echo '--------------------------------------------------------------------------------'
 
-cd flutter_sound_web
+cd ../flutter_sound_web
 npm publish .
 if [ $? -ne 0 ]; then
     echo "Error: npm publish"
     #!!!!!exit -1
 fi
 
-cd ..
+cd ../flutter_sound
  
 echo '--------------------------------------------------------------------------------'
 
-
-cd flutter_sound
 
 flutter pub publish
 if [ $? -ne 0 ]; then
@@ -154,10 +151,8 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 dart format  example/lib
-cd ..
 
 
-cd flutter_sound
 #flutter clean
 #flutter pub get
 flutter analyze lib
@@ -170,28 +165,27 @@ if [ $? -ne 0 ]; then
     echo "Error: format flutter_sound/lib"
     exit -1
 fi
-cd ..
 
 
 
-cd flutter_sound
 dart doc .
 if [ $? -ne 0 ]; then
     echo "Error: dart doc flutter_sound/lib"
    #!!!!!exit -1
 fi
 rm -rf doc
+
 cd example
 flutter analyze lib
 if [ $? -ne 0 ]; then
     echo "Error: analyze flutter_sound/example/lib"
     #!!!!!exit -1
 fi
-cd ../..
+cd ..
 
 
 
-cd flutter_sound/example/ios
+cd example/ios
 pod cache clean --all
 rm Podfile.lock
 rm -rf .symlinks/
@@ -205,6 +199,8 @@ pod install --repo-update
 pod update
 pod install
 cd ..
+
+cd example
 flutter build ios --release
 if [ $? -ne 0 ]; then
     echo "Error: flutter build flutter_sound/example/ios"
@@ -223,8 +219,9 @@ if [ $? -ne 0 ]; then
     echo "Error"
     exit -1
 fi
-cd ../..
+cd ..
 
+exit 0
 
 bin/doc.sh $VERSION
 
@@ -250,23 +247,6 @@ if [ ! -z "$VERSION" ]; then
     git push  -f origin $VERSION
 fi
 cd ..
-
-
-#git add .
-#git commit -m "Release Version: $VERSION"
-#if [ ! -z "$VERSION" ]; then
-#        git tag -f $VERSION
-#        git push --tag -f
-#fi
-#git checkout gh-pages
-#git merge master
-#git push
-#if [ ! -z "$VERSION" ]; then
-#        git tag -f $VERSION
- #       git push --tag -f
-#fi
-#git checkout master
-
 
 
 
