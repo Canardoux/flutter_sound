@@ -167,13 +167,13 @@ if [ $? -ne 0 ]; then
 fi
 
 
-
+rm -rf doc/api
 dart doc .
 if [ $? -ne 0 ]; then
     echo "Error: dart doc flutter_sound/lib"
    #!!!!!exit -1
 fi
-rm -rf doc
+
 
 cd example
 flutter analyze lib
