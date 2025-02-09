@@ -9,34 +9,37 @@ toc: false
 ---
 ### 9.23.0 - 2025/02/07
 
-- Flutter Sound does not depend anymore on JS
+- Flutter Sound Web does not depend anymore on JS
 - Flutter Sound does not depend anymore on Audio_Session
 
-- On iOS : Streams Int16 not interleaved - On iOS : Codec.pcmINT16 not interleaved
-- Flutter Sound v 9.x should not depend on Tau
-- Pause/Resume for PCM codecs
-- Set Volume for PCM codecs
-- Set Pan for PCM codecs
+- TODO
+    - Flutter Sound should not depend on etau/tau_web
+    - pcmFloat32 and pcmFloat32WAV on Android - Implement Float32 on Android - On Android : Record/Playback PCMFloat32
+    - On Web : Record/Playback PcmFloat32 not interleaved : NeedSomeFood : DartError: Bad state: Future already completed
+    - On Web : Implement Stream interleaved.   - Implement stream not interleaved on Android
+    - On Web : Record PCMFloat32 : DartError: Assertion failed: file:///Volumes/mac-H/larpoux/proj/flutter_sound/flutter_sound_web/lib/
+    - On Web : PCM16 Dart Stream not OK
+    - On Web : Implement Streams Int16 
+    - On web : Streams for codec.pcmFloat32 and not interleaved
 
-- TODO 
-   - pcmFloat32 and pcmFloat32WAV on Android - Implement Float32 on Android - On Android : Record/Playback PCMFloat32
-   - Implement stream not interleaved on Android
+    - On iOS : Streams Int16 not interleaved - On iOS : Codec.pcmINT16 not interleaved
+    - Flutter Sound v 9.x should not depend on Tau
+    - Pause/Resume for PCM codecs
+    - Set Volume for PCM codecs
+    - Set Pan for PCM codecs
+
    - Playback OpusWEBM and VorbisWEBM with remote files on Android
    - Volume Control for pcm codecs (all platforms)
    - Example Pan control
    - On iOS, the peak level is more than 100 db
    - On Web : isEncoderSupported() and isDecoderSupported() are not implemented
-   - On Web : playback OpusOGG does nnot work
-   - On Web : PCM16 Dart Stream not OK
+   - On Web : playback OpusOGG does not work
    - On Wev : Record/playback AAC/MP4 and OpusWEB to buffer
-   - On Web : Record PCMFloat32 : DartError: Assertion failed: file:///Volumes/mac-H/larpoux/proj/flutter_sound/flutter_sound_web/lib/flutter_sound_recorder_web.dart:279:14
+ flutter_sound_recorder_web.dart:279:14
    - https://tau.canardoux.xyz/danku/extract/02-opus.webm Not found
    - https://tau.canardoux.xyz/danku/extract/03-vorbis.webm Not found
    - Playback Asset PCM Float32 : onloaderror
-   - On Web : Record/Playback PcmFloat32 not interleaved : NeedSomeFood : DartError: Bad state: Future already completed
    - On Web : startPlayer FromURI : _flutter_sound.wav : No file extension was found. Consider using the "format" property or specify an extension.
-   - On Web : Implement Streams Int16 
-   - On Web : Implement Stream interleaved.
    - On iOS : codec==Codec.pcm16WAV  --  startRecorder()  --  The frames are not correctely coded with int16 but float32. This must be fixed.
    - MacOS support
    - Doc

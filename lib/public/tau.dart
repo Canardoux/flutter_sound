@@ -108,7 +108,7 @@ const List<List<String>> validExt = [
 /// This class is extended by
 /// - [FoodData] and
 /// - [FoodEvent].
-@deprecated
+///@deprecated
 abstract class Food {
   /// use internally by Flutter Sound
   Future<void> exec(FlutterSoundPlayer player);
