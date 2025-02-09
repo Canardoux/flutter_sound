@@ -14,7 +14,6 @@ toc: false
 - Flutter Sound is a submodule of the τ Project
 
 - TODO 
-    - On Web : Record/Playback PcmFloat32 not interleaved : NeedSomeFood : DartError: Bad state: Future already completed
     - On iOS : Streams Int16 not interleaved - On iOS : Codec.pcmINT16 not interleaved
     - Flutter Sound v 9.x should not depend on Tau
     - Pause/Resume for PCM codecs
@@ -22,10 +21,7 @@ toc: false
     - Set Pan for PCM codecs
 
     - pcmFloat32 and pcmFloat32WAV on Android - Implement Float32 on Android - On Android : Record/Playback PCMFloat32
-    - On Web : Record PCMFloat32 : DartError: Assertion failed: file:///Volumes/mac-H/larpoux/proj/flutter_sound/
-    - On web : streams for codec.pcmFloat32 and not interleaved
-
-    - flutter_sound_web/    - Implement stream not interleaved on Android
+    - Implement stream not interleaved on Android
     - Playback OpusWEBM and VorbisWEBM with remote files on Android
     - Volume Control for pcm codecs (all platforms)
     - Example Pan control
@@ -34,10 +30,11 @@ toc: false
     - On Web : playback OpusOGG does nnot work
     - On Web : PCM16 Dart Stream not OK
     - On Wev : Record/playback AAC/MP4 and OpusWEB to buffer
-lib/flutter_sound_recorder_web.dart:279:14
+    - On Web : Record PCMFloat32 : DartError: Assertion failed: file:///Volumes/mac-H/larpoux/proj/flutter_sound/flutter_sound_web/lib/flutter_sound_recorder_web.dart:279:14
     - https://tau.canardoux.xyz/danku/extract/02-opus.webm Not found
     - https://tau.canardoux.xyz/danku/extract/03-vorbis.webm Not found
     - Playback Asset PCM Float32 : onloaderror
+    - On Web : Record/Playback PcmFloat32 not interleaved : NeedSomeFood : DartError: Bad state: Future already completed
     - On Web : startPlayer FromURI : _flutter_sound.wav : No file extension was found. Consider using the "format" property or specify an extension.
     - On Web : Implement Streams Int16 
     - On Web : Implement Stream interleaved.
