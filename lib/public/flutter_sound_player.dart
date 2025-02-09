@@ -804,28 +804,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       throw Exception('Player is not open');
     }
     oldPosition = 0;
-    final session = await AudioSession.instance;
-    final categ = session.configuration?.avAudioSessionCategory;
-    switch (categ) {
-      case AVAudioSessionCategory.record:
-        {
-          _logger.d('FS: calling AudioSession.session.configure()');
-          await session.configure(AudioSessionConfiguration(
-            avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-            //avAudioSessionCategoryOptions:
-            //AVAudioSessionCategoryOptions.allowBluetooth |
-            //AVAudioSessionCategoryOptions.defaultToSpeaker,
-          ));
-        }
-        break;
-      case null:
-      case AVAudioSessionCategory.ambient:
-      case AVAudioSessionCategory.playAndRecord:
-      case AVAudioSessionCategory.soloAmbient:
-      case AVAudioSessionCategory.playback:
-      case AVAudioSessionCategory.multiRoute:
-        break;
-    }
 
     if (codec == Codec.pcm16 || codec == Codec.pcmFloat32) {
       if (fromURI != null) {
