@@ -105,9 +105,6 @@ const List<List<String>> validExt = [
 /// to a player when playing data from astream or received by a recorder
 /// when recording to a Dart Stream.
 ///
-/// This class is extended by
-/// - [FoodData] and
-/// - [FoodEvent].
 ///@deprecated
 abstract class Food {
   /// use internally by Flutter Sound
