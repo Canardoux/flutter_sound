@@ -37,7 +37,6 @@ import 'package:synchronized/synchronized.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:flutter/src/services/platform_channel.dart';
 import '../flutter_sound.dart';
-import 'package:audio_session/audio_session.dart';
 
 /// The possible states of the Player.
 enum PlayerState {
