@@ -25,14 +25,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.6"
-  etau:
-    dependency: "direct main"
-    description:
-      name: etau
-      sha256: "5859ee8438770e2887426dccf05bb55f2c78f20fe6db84043675155c2ebb9a7e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.14-alpha.5"
   ffi:
     dependency: transitive
     description:
@@ -57,18 +49,16 @@ packages:
   flutter_sound_platform_interface:
     dependency: "direct main"
     description:
-      name: flutter_sound_platform_interface
-      sha256: "0ebd302180ddc91c993d4bb061f08d71a047ebb0f04b05befd2ee8de59ea947d"
-      url: "https://pub.dev"
-    source: hosted
+      path: "../flutter_sound_platform_interface"
+      relative: true
+    source: path
     version: "9.23.1"
   flutter_sound_web:
     dependency: "direct main"
     description:
-      name: flutter_sound_web
-      sha256: "0891d977674be94d8c3f4759c6cd11e7f29a1ed29dc287b874a1393666ac831f"
-      url: "https://pub.dev"
-    source: hosted
+      path: "../flutter_sound_web"
+      relative: true
+    source: path
     version: "9.23.1"
   flutter_web_plugins:
     dependency: transitive
@@ -216,14 +206,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.0+3"
-  tau_web:
-    dependency: "direct main"
-    description:
-      name: tau_web
-      sha256: "81c8a0dc264f87db84678e5957dd1e4ccc015047fdea0f2cdd86d91c3c8a838e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.14-alpha.5"
   typed_data:
     dependency: transitive
     description:
@@ -265,5 +247,5 @@ packages:
     source: hosted
     version: "1.1.0"
 sdks:
-  dart: ">=3.5.3 <4.0.0"
+  dart: ">=3.5.0 <4.0.0"
   flutter: ">=3.24.0"

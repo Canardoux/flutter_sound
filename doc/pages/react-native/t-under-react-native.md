@@ -1,2 +1,0 @@
-# τ under React Native
-

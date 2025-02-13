@@ -24,6 +24,5 @@ rm _toto.tgz  2>/dev/null
 
 
 scp -r flutter_sound/example/build/web      danku@danku:/var/www/canardoux.xyz/danku/web_example
-scp -r flutter_sound/example/assets/extract danku@danku:/var/www/canardoux.xyz/danku
 
 echo 'E.O.J'

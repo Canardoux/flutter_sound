@@ -34,9 +34,6 @@ import 'package:flutter/services.dart' show rootBundle;
  *
  */
 
-const _exampleAudioFilePathMP3 =
-    'https://flutter-sound.canardoux.xyz/extract/05.mp3';
-
 ///
 typedef Fn = void Function();
 
@@ -49,18 +46,14 @@ class MultiPlayback extends StatefulWidget {
 }
 
 class _MultiPlaybackState extends State<MultiPlayback> {
-  FlutterSoundPlayer? _mPlayer1 = FlutterSoundPlayer();
   FlutterSoundPlayer? _mPlayer2 = FlutterSoundPlayer();
   FlutterSoundPlayer? _mPlayer3 = FlutterSoundPlayer();
-  bool _mPlayer1IsInited = false;
   bool _mPlayer2IsInited = false;
   bool _mPlayer3IsInited = false;
   Uint8List? buffer2;
   Uint8List? buffer3;
-  String _playerTxt1 = '';
   String _playerTxt2 = '';
   String _playerTxt3 = '';
-  StreamSubscription? _playerSubscription1;
   StreamSubscription? _playerSubscription2;
   StreamSubscription? _playerSubscription3;
 
@@ -83,11 +76,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
     ).then((value) => setState(() {
           buffer3 = value;
         }));
-    _mPlayer1!.openPlayer().then((value) {
-      setState(() {
-        _mPlayer1IsInited = true;
-      });
-    });
+
     _mPlayer2!.openPlayer().then((value) {
       setState(() {
         _mPlayer2IsInited = true;
@@ -103,9 +92,6 @@ class _MultiPlaybackState extends State<MultiPlayback> {
   @override
   void dispose() {
     // Be careful : you must `close` the audio session when you have finished with it.
-    cancelPlayerSubscriptions1();
-    _mPlayer1!.closePlayer();
-    _mPlayer1 = null;
     cancelPlayerSubscriptions2();
     _mPlayer2!.closePlayer();
     _mPlayer2 = null;
@@ -115,52 +101,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
 
     super.dispose();
   }
-
-  // -------  Player1 play a remote file -----------------------
-
-  void play1() async {
-    await _mPlayer1!.setSubscriptionDuration(const Duration(milliseconds: 10));
-    _addListener1();
-    await _mPlayer1!.startPlayer(
-        fromURI: _exampleAudioFilePathMP3,
-        codec: Codec.mp3,
-        whenFinished: () {
-          stopPlayer1();
-          setState(() {});
-        });
-    setState(() {});
-  }
-
-  void cancelPlayerSubscriptions1() {
-    if (_playerSubscription1 != null) {
-      _playerSubscription1!.cancel();
-      _playerSubscription1 = null;
-    }
-  }
-
-  Future<void> stopPlayer1() async {
-    cancelPlayerSubscriptions1();
-    if (_mPlayer1 != null) {
-      await _mPlayer1!.stopPlayer();
-    }
-    setState(() {});
-  }
-
-  Future<void> pause1() async {
-    if (_mPlayer1 != null) {
-      await _mPlayer1!.pausePlayer();
-    }
-    setState(() {});
-  }
-
-  Future<void> resume1() async {
-    if (_mPlayer1 != null) {
-      await _mPlayer1!.resumePlayer();
-    }
-    setState(() {});
-  }
-
-  // -------  Player2 play a OPUS file -----------------------
+// -------  Player2 play a OPUS file -----------------------
 
   void play2() async {
     await _mPlayer2!.setSubscriptionDuration(const Duration(milliseconds: 10));
@@ -250,35 +191,6 @@ class _MultiPlaybackState extends State<MultiPlayback> {
 
   // ------------------------------------------------------------------------------------
 
-  void _addListener1() {
-    cancelPlayerSubscriptions1();
-    _playerSubscription1 = _mPlayer1!.onProgress!.listen((e) {
-      var date = DateTime.fromMillisecondsSinceEpoch(e.position.inMilliseconds,
-          isUtc: true);
-      var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
-      setState(() {
-        _playerTxt1 = txt.substring(0, 8);
-      });
-    });
-  }
-
-  Fn? getPlaybackFn1() {
-    if (!_mPlayer1IsInited) {
-      return null;
-    }
-    return _mPlayer1!.isStopped
-        ? play1
-        : () {
-            stopPlayer1().then((value) => setState(() {}));
-          };
-  }
-
-  Fn? getPauseResumeFn1() {
-    if (!_mPlayer1IsInited || _mPlayer1!.isStopped) {
-      return null;
-    }
-    return _mPlayer1!.isPaused ? resume1 : pause1;
-  }
 
   void _addListener2() {
     cancelPlayerSubscriptions2();
@@ -345,46 +257,7 @@ class _MultiPlaybackState extends State<MultiPlayback> {
     Widget makeBody() {
       return Column(
         children: [
-          Container(
-            margin: const EdgeInsets.all(3),
-            padding: const EdgeInsets.all(3),
-            height: 100,
-            width: double.infinity,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFAF0E6),
-              border: Border.all(
-                color: Colors.indigo,
-                width: 3,
-              ),
-            ),
-            child: Row(children: [
-              ElevatedButton(
-                onPressed: getPlaybackFn1(),
-                //color: Colors.white,
-                //disabledColor: Colors.grey,
-                child: Text(_mPlayer1!.isStopped ? 'Play' : 'Stop'),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              ElevatedButton(
-                onPressed: getPauseResumeFn1(),
-                //color: Colors.white,
-                //disabledColor: Colors.grey,
-                child: Text(_mPlayer1!.isPaused ? 'Resume' : 'Pause'),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              Text(
-                _playerTxt1,
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-            ]),
-          ),
+
           Container(
             margin: const EdgeInsets.all(3),
             padding: const EdgeInsets.all(3),

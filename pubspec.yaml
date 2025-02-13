@@ -1,8 +1,8 @@
 name: flutter_sound
-version: 9.23.1
-description: 'Europe Stand With Ukraine. Pray for Ukraine. A complete api for audio playback and recording. Audio player, audio recorder.'
+version: 9.23.0
+description: 'A complete api for audio playback and recording. Member of the `Tau` Family. Audio player, audio recorder. Pray for Ukraine.'
 #author: canardoux<larpoux@gmail.com>
-homepage: https://flutter-sound.canardoux.xyz/readme.html
+homepage: https://tau.canardoux.xyz/fs-README.html
 repository: https://github.com/canardoux/flutter_sound
 
 environment:
@@ -20,10 +20,10 @@ dependencies:
   flutter:
     sdk: flutter
 # ============================================================================
-  flutter_sound_platform_interface: # 9.23.1
+  flutter_sound_platform_interface: # 9.23.0
     path: ../flutter_sound_platform_interface # Flutter Sound Dir
 
-  flutter_sound_web: # 9.23.1
+  flutter_sound_web: # 9.23.0
     path: ../flutter_sound_web # Flutter Sound Dir
 
 ##  etau: ^0.0.14-alpha.5
@@ -82,3 +82,38 @@ flutter:
   #
   # For details regarding fonts in packages, see
   # https://flutter.io/custom-fonts/#from-packages
+
+  # To add assets to your package, add an assets section, like this:
+  # assets:
+  #   - images/a_dot_burr.jpeg
+  #   - images/a_dot_ham.jpeg
+  #
+  # For details regarding assets in packages, see
+  # https://flutter.dev/to/asset-from-package
+  #
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/to/resolution-aware-images
+
+  # To add custom fonts to your package, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts in packages, see
+  # https://flutter.dev/to/font-from-package
+
+  assets:
+  #- js/
+  - assets/js/

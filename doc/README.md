@@ -53,7 +53,7 @@ The Flutter Sound package supports playback from:
 
 Flutter Sound comes with several Demo/Examples :
 
-[The `examples App`](https://github.com/dooboolab/flutter_sound/blob/master/flutter_sound/example/lib/main.dart) is a driver which can call all the various examples.
+The directory with all [the examples](https://github.com/Canardoux/flutter_sound/tree/master/example/lib)
 
 ## Features
 

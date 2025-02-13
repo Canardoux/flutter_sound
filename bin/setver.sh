@@ -53,8 +53,11 @@ gsed -i  "s/^\( *#* *flauto_platform_interface2: *#* *\^*\).*$/\1$VERSION/"     
 gsed -i  "s/^\( *#* *flauto_web: *#* *\^*\).*$/\1$VERSION/"                             example/pubspec.yaml
 
 gsed -i  "s/^\( *libraryVersion = \).*$/\1$VERSION/"                                    ../flutter_sound_core/android/gradle.properties
-gsed -i  "s/^\( *flutter_sound_lite: *#* *\^*\).*$/\1$VERSION/"                         example/pubspec.yaml
+#gsed -i  "s/^\( *flutter_sound_lite: *#* *\^*\).*$/\1$VERSION/"                         example/pubspec.yaml
 gsed -i  "s/^\( *## \).*$/\1$VERSION/"                                                  CHANGELOG.md
+
+# Probably better in pub
+
 gsed -i  "s/^\( *## \).*$/\1$VERSION/"                                                  ../flutter_sound_core/CHANGELOG.md 2>/dev/null
 gsed -i  "s/^\( *## \).*$/\1$VERSION/"                                                  ../flutter_sound_platform_interface/CHANGELOG.md
 gsed -i  "s/^\( *version: *\).*$/\1$VERSION/"                                           ../flutter_sound_platform_interface/pubspec.yaml
@@ -68,5 +71,9 @@ gsed -i  "s/^\( *\"version\": *\).*$/\1\"$VERSION\",/"                          
 ###gsed -i  "s/^\( *<script src=\"https:\/\/cdn.jsdelivr.net\/npm\/flutter_sound_core@[^+/]*\)[^/]*/\1/g" example/web/index.html
 gsed -i  "s/^\( *s\.version *= *\).*$/\1'$VERSION'/"                                    ../flutter_sound_core/flutter_sound_core.podspec
 
-gsed -i  "s/^tau_version:.*/tau_version: $VERSION/"                                     doc/_config.yml
-gsed -i  "s/^\( *version: \).*/\1$VERSION/"                                             doc/_data/sidebars/mydoc_sidebar.yml
+#gsed -i  "s/^tau_version:.*/tau_version: $VERSION/"                                     doc/_config.yml
+#gsed -i  "s/^FS_VERSION:.*/FS_VERSION: $VERSION/"                                       doc/_config.yml
+#gsed -i  "s/^\( *version: \).*/\1$VERSION/"                                             doc/_data/sidebars/fs_sidebar.yml
+
+#gsed -i  "s/^FS_VERSION:.*/FS_VERSION: $VERSION/"                                      ../tau_doc/_config.yml
+

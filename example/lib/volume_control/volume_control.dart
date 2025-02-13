@@ -31,10 +31,10 @@ import 'package:flutter_sound/flutter_sound.dart';
  */
 
 const _exampleAudioFilePathMP3_1 =
-    'https://flutter-sound.canardoux.xyz/extract/05.mp3';
+    'https://tau.canardoux.xyz/live/extract/05.mp3';
 
 const _exampleAudioFilePathWAV_2 =
-    'https://flutter-sound.canardoux.xyz/extract/13.wav';
+    'https://tau.canardoux.xyz/live/extract/13.wav';
 
 ///
 typedef Fn = void Function();

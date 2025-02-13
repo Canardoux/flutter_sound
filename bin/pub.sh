@@ -12,7 +12,12 @@ VERSION_CODE=${VERSION_CODE#+/}
 
 bin/setver.sh $VERSION
 bin/reldev.sh REL
-#bin/web.sh
+
+cp -v ../tau_doc/pages/fs/README.md README.md
+gsed -i '1,6d' README.md
+gsed -i "/^\"\%}$/d" README.md
+gsed -i "/^{\% include/d" README.md
+
 
 flutter analyze lib
 if [ $? -ne 0 ]; then
@@ -221,8 +226,16 @@ if [ $? -ne 0 ]; then
 fi
 cd ..
 
+# Perhaps could be done in `pub.sh` instead of here
+gsed -i  "s/^\( *version: \).*/\1$VERSION/"                                            ../tau_doc/_data/sidebars/fs_sidebar.yml
 
-bin/doc.sh $VERSION
+#bin/doc.sh $VERSION
+
+
+dart doc .
+cd ../tau_doc
+bin/pub.sh
+cd ../etau
 
 
 cd flutter_sound_core
