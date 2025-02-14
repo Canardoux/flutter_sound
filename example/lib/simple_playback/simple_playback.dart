@@ -61,7 +61,7 @@ class _SimplePlaybackState extends State<SimplePlayback> {
   @override
   void dispose() {
     stopPlayer();
-    // Be careful : you must `close` the audio session when you have finished with it.
+    // Be careful : you must `close` the recorder when you have finished with it.
     _mPlayer!.closePlayer();
     _mPlayer = null;
 
