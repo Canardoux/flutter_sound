@@ -27,10 +27,12 @@ import 'package:flutter/services.dart' show rootBundle;
 
 /*
  *
- * This is a very simple example for Flutter Sound beginners,
- * that show how to record, and then playback a file.
- *
- * This example is really basic.
+This is a simple example doing several playbacks at the same time.
+It launch two players which play each an asset. The User can adjust the volume of them independently.
+
+This example shows also :
+- The Pause/Resume feature.
+- The Display of the elapsed time
  *
  */
 

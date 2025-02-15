@@ -24,13 +24,13 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle;
 
 /*
- *
- * This is a very simple example for Flutter Sound beginners,
- * that show how to record, and then playback a file.
- *
- * This example is really basic.
- *
- */
+
+This is a very simple example showing how to  call `setSubscriptionDuration() and use onProgress() on a player.
+There is a slider to show are the playback frequency can be adjust.
+
+This example is really basic.
+
+*/
 
 const _boum = 'assets/samples/sample2.aac';
 

@@ -86,25 +86,23 @@ final List<Example> exampleTable = [
       flags: 0,
       route: (_) => const Demo(),
       description:
-          '''This is a Demo of what it is possible to do with Flutter Sound.
-The code of this Demo app is not so simple and unfortunately not very clean :-( .
+          '''
+A demonstration of the Flutter Sound features.
+This is a Demo of what it is possible to do with Flutter Sound. The code of this Demo app is not so simple.
 
-Flutter Sound beginners : you probably should look to `[SimplePlayback]`  and `[SimpleRecorder]`
+Flutter Sound beginners : you probably should look to [SimplePlayback](fs-ex_simple_playback.html) and [SimpleRecorder](fs-ex_simple_recorder.html)
 
 The biggest interest of this Demo is that it shows most of the features of Flutter Sound :
 
-- Plays from various media with various codecs
-- Records to various media with various codecs
-- Pause and Resume control from recording or playback
-- Shows how to use a Stream for getting the playback (or recoding) events
-- Shows how to specify a callback function when a playback is terminated,
-- Shows how to record to a Stream or playback from a stream
-- Can show controls on the iOS or Android lock-screen
-- ...
-
-This Demo does not make use of the Flutter Sound UI Widgets.
-
-It would be really great if someone rewrite this demo soon'''),
+* Plays from various media with various codecs
+* Records to various media with various codecs
+* Pause and Resume control from recording or playback
+* Shows how to use a Stream for getting the playback \(or recoding\) events
+* Shows how to specify a callback function when a playback is terminated,
+* Shows how to record to a Stream or playback from a stream
+* Can show controls on the iOS or Android lock-screen
+* ...
+'''),
 
   Example(
     title: 'simplePlayback',
@@ -138,7 +136,12 @@ This example is really basic.
     flags: 0,
     route: (_) => const MultiPlayback(),
     description: '''
-This is a simple example that plays several sound at the same time.
+This is a simple example doing several playbacks at the same time.
+It launch two players which play each an asset. The User can adjust the volume of them independently.
+
+This example shows also :
+- The Pause/Resume feature.
+- The Display of the elapsed time
 ''',
   ),
 
@@ -148,9 +151,8 @@ This is a simple example that plays several sound at the same time.
     flags: 0,
     route: (_) => const VolumeControl(),
     description: '''
-This is a very simple example showing how to set the Volume during a playback.
-
-This example is really basic.
+This is a very simple basic example which allows the user to adjust the sound volume.
+It launch two players which play each an asset. The User can adjust the volume of them independently.
 ''',
   ),
 
@@ -197,7 +199,9 @@ This example is really basic.
     route: (_) => const PlayerOnProgress(),
     description: '''
 This is a very simple example showing how to  call `setSubscriptionDuration() and use onProgress() on a player.
+There is a slider to show are the playback frequency can be adjust.
 
+This example is really basic.
 ''',
   ),
 
@@ -208,7 +212,9 @@ This is a very simple example showing how to  call `setSubscriptionDuration() an
     route: (_) => const RecorderOnProgress(),
     description: '''
 This is a very simple example showing how to  call `setSubscriptionDuration() and use onProgress() on a recorder.
+There is a slider to show are the playback frequency can be adjust.
 
+This example is really basic.
 ''',
   ),
 

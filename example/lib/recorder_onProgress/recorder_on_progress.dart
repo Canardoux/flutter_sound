@@ -27,12 +27,12 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:permission_handler/permission_handler.dart';
 
 /*
- *
- * This is a very simple example for Flutter Sound beginners,
- * that show how to record, and then playback a file.
- *
- * This example is really basic.
- *
+
+This is a very simple example showing how to  call `setSubscriptionDuration() and use onProgress() on a recorder.
+There is a slider to show are the playback frequency can be adjust.
+
+This example is really basic.
+
  */
 
 ///

@@ -23,18 +23,17 @@ import 'package:flutter_sound/flutter_sound.dart';
 
 /*
  *
- * This is a very simple example for Flutter Sound beginners,
- * that show how to record, and then playback a file.
- *
+This is a very simple basic example which allows the user to adjust the sound volume.
+It launch two players which play each an asset. The User can adjust the volume of them independently.
  * This example is really basic.
  *
  */
 
 const _exampleAudioFilePathMP3_1 =
-    'https://tau.canardoux.xyz/live/extract/05.mp3';
+    'https://tau-ver.canardoux.xyz/tau/extract/05.mp3';
 
 const _exampleAudioFilePathWAV_2 =
-    'https://tau.canardoux.xyz/live/extract/13.wav';
+    'https://tau-ver.canardoux.xyz/tau/extract/13.wav';
 
 ///
 typedef Fn = void Function();

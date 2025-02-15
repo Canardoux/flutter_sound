@@ -2,7 +2,7 @@ name: flutter_sound
 version: 9.23.0
 description: 'A complete api for audio playback and recording. Member of the `Tau` Family. Audio player, audio recorder. Pray for Ukraine.'
 #author: canardoux<larpoux@gmail.com>
-homepage: https://tau.canardoux.xyz/fs-README.html
+homepage: https://tau-ver.canardoux.xyz/fs-README.html
 repository: https://github.com/canardoux/flutter_sound
 
 environment:
