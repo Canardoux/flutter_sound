@@ -5,7 +5,6 @@
 
 # Sample workflow for building and deploying a Jekyll site to GitHub Pages
 name: Deploy Jekyll site to Pages
-    uses: actions/upload-pages-artifact@v3
     with:
       path: docs/_site/
 
