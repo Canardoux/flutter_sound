@@ -25,8 +25,11 @@ import 'package:flutter/services.dart' show rootBundle;
 
 /*
 
-This is a very simple example showing how to  call `setSubscriptionDuration() and use onProgress() on a player.
-There is a slider to show are the playback frequency can be adjust.
+The example source [is there](https://github.com/canardoux/flutter_sound/blob/master/example/lib/player_onProgress/player_on_progress.dart). You can have a live run of the examples [here](/tau/fs/live/index.html).
+
+This example shows how to use the verb `setSubscriptionDuration()` on a player
+for having an `onProgress()` callback.
+There is a slider to show how the playback frequency can be adjust.
 
 This example is really basic.
 

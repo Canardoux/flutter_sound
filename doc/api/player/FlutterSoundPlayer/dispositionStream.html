@@ -27,7 +27,7 @@
     <li><a href="../../index.html">flutter_sound</a></li>
     <li><a href="../../player/player-library.html">public&#47;flutter_sound_player.dart</a></li>
     <li><a href="../../player/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
-    <li class="self-crumb">dispositionStream method</li>
+    <li class="self-crumb"><span class="deprecated">dispositionStream</span> method</li>
   </ol>
   <div class="self-name">dispositionStream</div>
   <form class="search navbar-right" role="search">
@@ -57,8 +57,13 @@
 
     <section class="multi-line-signature">
       
+  <div>
+    <ol class="annotation-list">
+        <li>@<a href="https://api.flutter.dev/flutter/dart-core/deprecated-constant.html">deprecated</a></li>
+    </ol>
+  </div>
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../player/PlaybackDisposition-class.html">PlaybackDisposition</a></span>&gt;</span>?</span>
-<span class="name ">dispositionStream</span>(<wbr>)
+<span class="name deprecated">dispositionStream</span>(<wbr>)
 
       
 
@@ -76,7 +81,7 @@ being sent to the stream.</p>
 <p>Note: the underlying stream has a minimum frequency of 100ms
 so multiples of 100ms will give you the most consistent timing
 source.</p>
-<p>Note: all calls to <a href="../../player/FlutterSoundPlayer/dispositionStream.html">dispositionStream</a> against this player will
+<p>Note: all calls to <a class="deprecated" href="../../player/FlutterSoundPlayer/dispositionStream.html">dispositionStream</a> against this player will
 share a single interval which will controlled by the last
 call to this method.</p>
 <p>If you pause the audio then no updates will be sent to the
@@ -87,7 +92,8 @@ stream.</p>
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Stream&lt;PlaybackDisposition&gt;? dispositionStream() {
+  <pre class="language-dart"><code class="language-dart">@deprecated
+Stream&lt;PlaybackDisposition&gt;? dispositionStream() {
   return _playerController != null ? _playerController!.stream : null;
 }</code></pre>
 </section>
@@ -105,7 +111,7 @@ stream.</p>
     <li><a href="../../index.html">flutter_sound</a></li>
     <li><a href="../../player/player-library.html">player</a></li>
     <li><a href="../../player/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
-    <li class="self-crumb">dispositionStream method</li>
+    <li class="self-crumb"><span class="deprecated">dispositionStream</span> method</li>
 </ol>
 
     <h5>FlutterSoundPlayer class</h5>
@@ -117,7 +123,7 @@ stream.</p>
 <footer>
   <span class="no-break">
     flutter_sound
-      9.23.1
+      9.23.0
   </span>
   
 </footer>

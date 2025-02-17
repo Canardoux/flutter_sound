@@ -52,14 +52,14 @@ packages:
       path: "../flutter_sound_platform_interface"
       relative: true
     source: path
-    version: "9.23.1"
+    version: "9.23.0"
   flutter_sound_web:
     dependency: "direct main"
     description:
       path: "../flutter_sound_web"
       relative: true
     source: path
-    version: "9.23.1"
+    version: "9.23.0"
   flutter_web_plugins:
     dependency: transitive
     description: flutter

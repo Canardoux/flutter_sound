@@ -27,13 +27,18 @@ import 'package:permission_handler/permission_handler.dart';
 //import 'package:flutter_sound_web/flutter_sound_web.dart' show mime_types;
 
 /*
- * This is an example showing how to record to a Dart Stream.
- * It writes all the recorded data from a Stream to a File, which is completely stupid:
- * if an App wants to record something to a File, it must not use Streams.
- *
- * The real interest of recording to a Stream is for example to feed a
- * Speech-to-Text engine, or for processing the Live data in Dart in real time.
- *
+
+The real interest of recording to a Stream is for example to feed a Speech-to-Text engine,
+or for processing the Live data in Dart in real time.
+
+This example can record something to a Stream. It handle the stream to store the data in memory.
+
+Then, the user can play a Stream that read the data store in memory.
+
+The example is just a little bit complicated because there are inside both a player stream and a recorder stream,
+because the user can select if he/she wants to use streams interleaved or planed,
+and because he/she can select to use Float32 PCM or Int16 PCM
+
  */
 
 ///

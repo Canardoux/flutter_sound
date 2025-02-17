@@ -24,11 +24,12 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 /*
- *
- * ```startPlayerFromStream()``` can be very efficient to play sound effects. For example in a game App.
- * The App open the Audio Session and call ```startPlayerFromStream()``` during initialization.
- * When it want to play a noise, we just call the verb ```feed```
- *
+
+Play from stream can be very efficient to play sound effects in real time.
+For example in a game App. In this example, the App open the Audio Session
+and call `startPlayerFromStream()` during initialization.
+When it want to play a noise, it has just to call the synchronous verb `feed`. Very fast.
+
  */
 
 const int _tSampleRate = 44100;

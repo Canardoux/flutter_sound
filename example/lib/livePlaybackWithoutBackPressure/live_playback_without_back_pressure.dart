@@ -25,23 +25,21 @@ import 'package:flutter/services.dart' show rootBundle;
 //import 'package:logger/logger.dart';
 
 /*
- *
- * A very simple example showing how to play Live Data without back pressure.
- * A very simple example showing how to play Live Data without back pressure.
- * It feeds a live stream, without waiting that the Futures are completed for each block.
- * This is simpler because the App does not need to await the playback for each block before playing another one.
- *
- *
- * This example get the data from an asset file, which is completely stupid :
- * if an App wants to play an asset file he must use "StartPlayerFromBuffer().
- *
- * Feeding Flutter Sound without back pressure is very simple but you can have two problems :
- * - If your App is too fast feeding the audio channel, it can have problems with the Stream memory used.
- * - The App does not have any knowledge of when the provided block is really played.
- * If he does a "stopPlayer()" it will loose all the buffered data.
- *
- * This example uses the ```foodEvent``` object to resynchronize the output stream before doing a ```stop()```
- *
+
+An example showing how to play Live Data without back pressure. It feeds a live stream,
+without waiting that the futures are completed for each block.
+This is simpler than playing buffers synchronously because the App does not need to await
+that the playback for each block is completed before playing another one.
+
+This example get the data from an asset file, which is completely stupid :
+if an App wants to play a long asset file he must use `startPlayer(fromBuffer:)`.
+
+Feeding Flutter Sound without back pressure is very simple but you can have two problems :
+
+* If your App is too fast feeding the audio channel, it can have problems with the Stream memory used.
+* The App does not have any knowledge of when the block given to Flutter Sound is really played.
+For example, if it does a `stopPlayer()` it will loose all the buffered data not yet played.
+
  */
 
 ///

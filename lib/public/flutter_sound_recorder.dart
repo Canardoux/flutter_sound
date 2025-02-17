@@ -19,7 +19,6 @@
  */
 
 /// **THE** Flutter Sound Recorder
-/// {@category Main}
 library recorder;
 
 import 'dart:async';
@@ -45,7 +44,7 @@ import 'dart:io' show Platform;
 ///
 /// 1. Create a new `FlutterSoundRecorder`
 ///
-/// 2. Open it with [openAudioSession()]
+/// 2. Open it with [openRecorder()]
 ///
 /// 3. Start your recording with [startRecorder()].
 ///
@@ -56,7 +55,7 @@ import 'dart:io' show Platform;
 ///
 /// 5. Stop your recorder : [stopRecorder()]
 ///
-/// 6. Release your recorder when you have finished with it : [closeAudioSession()].
+/// 6. Release your recorder when you have finished with it : [closeRecorder()].
 /// This verb will call [stopRecorder()] if necessary.
 ///
 /// ----------------------------------------------------------------------------------------------------
@@ -348,7 +347,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// You do not need to wait the end of the initialization before [startRecorder()].
   /// [startRecorder] will automaticaly wait the end of `openRecorder()` before starting the recorder.
   ///
-  /// The four optional parameters are used if you want to control the Audio Focus. Please look to [FlutterSoundRecorder openAudioSession()](Recorder.md#openaudiosession-and-closeaudiosession) to understand the meaning of those parameters
+  /// The four optional parameters are used if you want to control the Audio Focus. Please look to [FlutterSoundRecorder openAudioSession()](Recorder.md#openaudiosession-and-closeRecorder) to understand the meaning of those parameters
   ///
   /// *Example:*
   /// ```dart
@@ -433,12 +432,12 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
   Future<void> closeRecorder() async {
     await _lock.synchronized(() {
-      return _closeAudioSession();
+      return _closeRecorder();
     });
   }
 
-  Future<void> _closeAudioSession() async {
-    _logger.d('FS:---> closeAudioSession ');
+  Future<void> _closeRecorder() async {
+    _logger.d('FS:---> closeRecorder ');
     // If another closeRecorder() is already in progress, wait until finished
     if (_isInited == Initialized.notInitialized) {
       // Already close
@@ -472,7 +471,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     await FlutterSoundRecorderPlatform.instance.closeRecorder(this);
     FlutterSoundRecorderPlatform.instance.closeSession(this);
     _isInited = Initialized.notInitialized;
-    _logger.d('FS:<--- closeAudioSession ');
+    _logger.d('FS:<--- closeRecorder ');
   }
 
   /// Returns true if the specified encoder is supported by flutter_sound on this platform.
@@ -553,7 +552,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
   /// `startRecorder()` starts recording with an open session.
   ///
-  /// If an [openAudioSession()] is in progress, `startRecorder()` will automatically wait the end of the opening.
+  /// If an [openRecorder()] is in progress, `startRecorder()` will automatically wait the end of the opening.
   /// `startRecorder()` has the destination file path as parameter.
   /// It has also 7 optional parameters to specify :
   /// - codec: The codec to be used. Please refer to the [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
@@ -897,7 +896,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// await myRecorder.resumeRecorder();
   /// ```
   Future<void> resumeRecorder() async {
-    _logger.d('FS:---> pausePlayer ');
+    _logger.d('FS:---> resumeRecorder ');
     await _lock.synchronized(() async {
       await _resumeRecorder();
     });
@@ -932,7 +931,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   ///
   /// Delete a temporary file created during [startRecorder()].
   /// the argument must be a file name without any path.
-  /// This function is seldom used, because [closeAudioSession()] delete automaticaly
+  /// This function is seldom used, because [closeRecorder()] delete automaticaly
   /// all the temporary files created.
   ///
   /// *Example:*

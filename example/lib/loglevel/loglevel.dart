@@ -23,12 +23,9 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:logger/logger.dart' show Level;
 
 /*
- *
- * This is a very simple example for Flutter Sound beginners,
- * that show how to record, and then playback a file.
- *
- * This example is really basic.
- *
+
+This is a very simple basic example which allows the user to select the Log Level he/she is interested by.
+
  */
 
 const _exampleAudioFilePathMP3 =

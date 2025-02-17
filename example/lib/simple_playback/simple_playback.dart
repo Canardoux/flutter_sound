@@ -22,12 +22,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
 /*
- *
- * This is a very simple example for Flutter Sound beginners,
- * that show how to record, and then playback a file.
- *
- * This example is really basic.
- *
+
+This is a very simple example for Flutter Sound beginners, that shows how to play a remote file.
+
+This example is really basic.
+
  */
 
 const _exampleAudioFilePathMP3 =

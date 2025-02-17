@@ -22,11 +22,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
 /*
- *
+
 This is a very simple basic example which allows the user to adjust the sound volume.
 It launch two players which play each an asset. The User can adjust the volume of them independently.
- * This example is really basic.
- *
+
+This example is very basic.
+
  */
 
 const _exampleAudioFilePathMP3_1 =

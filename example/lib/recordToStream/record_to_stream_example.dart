@@ -27,13 +27,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 /*
- * This is an example showing how to record to a Dart Stream.
- * It writes all the recorded data from a Stream to a File, which is completely stupid:
- * if an App wants to record something to a File, it must not use Streams.
- *
- * The real interest of recording to a Stream is for example to feed a
- * Speech-to-Text engine, or for processing the Live data in Dart in real time.
- *
+
+This is an example showing how to record to a Dart Stream.
+It writes all the recorded data from a Stream to a File, which is completely stupid:
+if an App wants to record something to a File, it must not use streams.
+
+The real interest of recording to a Stream is for example to feed a
+Speech-to-Text engine, or for processing the Live data in Dart in real time.
+
  */
 
 ///

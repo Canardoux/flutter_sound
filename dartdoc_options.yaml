@@ -1,14 +1,16 @@
 
-dartdoc:
-  categories:
-    "Main":
-      markdown: main.md
-      name: Great
-
-    "Utilities":
-      markdown: utilities.md
-      name: util
-
-  categoryOrder: [ "Main", "Utilities"]
-  linkTo:
-    url: "https://my.dartdocumentationsite.org/dev/%v%"
+#dartdoc:
+#  categories:
+#    "Main":
+#      markdown: main.md
+#      name: Great
+#
+#
+#    "Utilities":
+#      markdown: utilities.md
+#      name: util
+#
+#  categoryOrder: [ "Main", "Utilities"]
+#
+#  linkTo:
+#    url: "https://my.dartdocumentationsite.org/dev/%v%"

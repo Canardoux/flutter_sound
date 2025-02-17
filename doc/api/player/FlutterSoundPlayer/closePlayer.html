@@ -78,7 +78,7 @@ void dispose()
 {
         if (myPlayer != null)
         {
-            myPlayer.closeAudioSession();
+            myPlayer.closePlayer();
             myPlayer = null;
         }
         super.dispose();
@@ -92,7 +92,7 @@ void dispose()
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; closePlayer() async {
   await _lock.synchronized(() {
-    return _closeAudioSession();
+    return _closePlayer();
   });
 }</code></pre>
 </section>
@@ -122,7 +122,7 @@ void dispose()
 <footer>
   <span class="no-break">
     flutter_sound
-      9.23.1
+      9.23.0
   </span>
   
 </footer>

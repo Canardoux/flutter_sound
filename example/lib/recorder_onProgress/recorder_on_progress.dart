@@ -28,8 +28,9 @@ import 'package:permission_handler/permission_handler.dart';
 
 /*
 
-This is a very simple example showing how to  call `setSubscriptionDuration() and use onProgress() on a recorder.
-There is a slider to show are the playback frequency can be adjust.
+This example shows how to use the verb `setSubscriptionDuration()` on a recorder
+for having an `onProgress()` callback.
+There is a slider to show are the playback frequency can be adjusted.
 
 This example is really basic.
 

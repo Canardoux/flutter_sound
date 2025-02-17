@@ -49,8 +49,8 @@ export 'package:flutter_sound_platform_interface/flutter_sound_platform_interfac
 ///library tau;
 export 'public/flutter_sound_player.dart';
 export 'public/flutter_sound_recorder.dart';
-export 'public/tau.dart';
+export 'src/tau.dart';
 
 ///
 ///library util;
-export 'public/util/flutter_sound_helper.dart';
+export 'public/flutter_sound_helper.dart';

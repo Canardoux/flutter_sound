@@ -176,7 +176,7 @@ rm -rf doc/api
 dart doc .
 if [ $? -ne 0 ]; then
     echo "Error: dart doc flutter_sound/lib"
-   #!!!!!exit -1
+    exit -1
 fi
 
 
@@ -232,13 +232,13 @@ gsed -i  "s/^\( *version: \).*/\1$VERSION/"                                     
 #bin/doc.sh $VERSION
 
 
-dart doc .
-cd ../tau_doc
-bin/pub.sh
-cd ../etau
+#dart doc .
+#cd ../tau_doc
+#bin/pub.sh
+#cd ../etau
 
 
-cd flutter_sound_core
+cd ../flutter_sound_core
 git add .
 git commit -m "TAU : Version $VERSION"
 git pull origin
@@ -271,16 +271,7 @@ if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push  -f origin $VERSION
 fi
-cd ..
-
-
-git add .
-git commit -m "TAU : Version $VERSION"
-git pull origin
-git push origin
-if [ ! -z "$VERSION" ]; then
-        git tag -f $VERSION
-        git push  -f origin $VERSION
-fi
+cd ../flutter_soundd
 
 echo 'E.O.J'
+exit 0

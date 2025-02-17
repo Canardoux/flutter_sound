@@ -67,6 +67,7 @@
     
 <section class="desc markdown">
   <p>Open the Player.</p>
+<hr>
 <p>A player must be opened before used.
 Opening a player takes resources inside the OS. Those resources are freed with the verb <code>closePlayer()</code>.
 Returns a Future, but the App does not need to wait the completion of this future before doing a <a href="../../player/FlutterSoundPlayer/startPlayer.html">startPlayer()</a>.
@@ -83,6 +84,7 @@ is useful to improving speech audio or VoIP applications.</p>
     await myPlayer.closePlayer();
     myPlayer = null;
 </code></pre>
+<hr>
 </section>
 
 
@@ -105,7 +107,7 @@ is useful to improving speech audio or VoIP applications.</p>
 
   Future&lt;FlutterSoundPlayer?&gt;? r;
   await _lock.synchronized(() async {
-    r = _openAudioSession();
+    r = _openPlayer();
   });
   return r;
 }</code></pre>
@@ -136,7 +138,7 @@ is useful to improving speech audio or VoIP applications.</p>
 <footer>
   <span class="no-break">
     flutter_sound
-      9.23.1
+      9.23.0
   </span>
   
 </footer>
