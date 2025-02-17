@@ -3,7 +3,6 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: flutter_sound
 
 build:
   runs-on: ubuntu-latest
