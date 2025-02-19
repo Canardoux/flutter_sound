@@ -30,7 +30,7 @@ This example is really basic.
  */
 
 const _exampleAudioFilePathMP3 =
-    'https://tau-ver.canardoux.xyz/tau/extract/05.mp3';
+    'https://canardoux.github.io/tau-fsdoc/extract/05.mp3';
 
 ///
 typedef Fn = void Function();

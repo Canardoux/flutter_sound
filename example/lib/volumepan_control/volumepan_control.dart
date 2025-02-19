@@ -31,7 +31,7 @@ import 'package:flutter_sound/flutter_sound.dart';
  */
 
 const _exampleAudioFilePathMP3_1 =
-    'https://tau-ver.canardoux.xyz/tau/extract/05.mp3';
+    'https://canardoux.github.io/tau-fsdoc/extract/05.mp3';
 
 ///
 typedef Fn = void Function();

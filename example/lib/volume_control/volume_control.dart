@@ -31,10 +31,10 @@ This example is very basic.
  */
 
 const _exampleAudioFilePathMP3_1 =
-    'https://tau-ver.canardoux.xyz/tau/extract/05.mp3';
+    'https://canardoux.github.io/tau-fsdoc/extract/05.mp3';
 
 const _exampleAudioFilePathWAV_2 =
-    'https://tau-ver.canardoux.xyz/tau/extract/13.wav';
+    'https://canardoux.github.io/tau-fsdoc/extract/13.wav';
 
 ///
 typedef Fn = void Function();
