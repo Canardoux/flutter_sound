@@ -205,7 +205,7 @@ pod repo update
 pod install --repo-update
 pod update
 pod install
-cd ..
+cd ../..
 
 cd example
 flutter build ios --release
