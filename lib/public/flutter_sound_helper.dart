@@ -33,7 +33,6 @@ import 'package:logger/logger.dart' show Level, Logger;
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart'
     as FSCodec show Codec;
 
-
 /// The FlutterSoundHelper singleton for accessing the helpers functions
 FlutterSoundHelper flutterSoundHelper =
     FlutterSoundHelper._internal(); // Singleton
@@ -191,9 +190,6 @@ class FlutterSoundHelper {
     return r;
   }
 }
-
-
-
 
 /// A Wave header.
 ///
@@ -360,4 +356,3 @@ class WaveHeader {
     return 'WaveHeader format=$mFormat numChannels=$mNumChannels sampleRate=$mSampleRate bitsPerSample=$mBitsPerSample numBytes=$mNumBytes';
   }
 }
-

@@ -57,9 +57,8 @@ enum PlayerState {
 /// Playback function type for [FlutterSoundPlayer.startPlayer()].
 typedef TWhenFinished = void Function();
 
-
 /// A Player is an object that can playback from various sources.
-/// 
+///
 /// ----------------------------------------------------------------------------------------------------
 /// The Player class can have multiple instances at the same time. Each instance is used to control the sound of its source.
 ///

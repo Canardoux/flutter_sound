@@ -13,10 +13,10 @@ VERSION_CODE=${VERSION_CODE#+/}
 bin/setver.sh $VERSION
 bin/reldev.sh REL
 
-cp -v ../tau_doc/pages/fs/README.md README.md
-gsed -i '1,5d' README.md
-gsed -i "/^\"\%}$/d" README.md
-gsed -i "/^{\% include/d" README.md
+#cp -v ../tau_doc/pages/fs/README.md README.md
+#gsed -i '1,5d' README.md
+#gsed -i "/^\"\%}$/d" README.md
+#gsed -i "/^{\% include/d" README.md
 
 
 flutter analyze lib
@@ -227,7 +227,7 @@ fi
 cd ..
 
 # Perhaps could be done in `pub.sh` instead of here
-gsed -i  "s/^\( *version: \).*/\1$VERSION/"                                            ../tau_doc/_data/sidebars/fs_sidebar.yml
+#gsed -i  "s/^\( *version: \).*/\1$VERSION/"                                            ../tau_doc/_data/sidebars/fs_sidebar.yml
 
 #bin/doc.sh $VERSION
 
@@ -236,6 +236,14 @@ gsed -i  "s/^\( *version: \).*/\1$VERSION/"                                     
 #cd ../tau_doc
 #bin/pub.sh
 #cd ../etau
+
+cd ../fs-doc
+bin/pub.sh $VERSION
+if [ $? -ne 0 ]; then
+    echo "Error"
+    exit -1
+fi
+cd ../flutter_sound
 
 
 cd ../flutter_sound_core
