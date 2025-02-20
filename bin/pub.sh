@@ -52,6 +52,7 @@ if [ $? -ne 0 ]; then
     echo "Error: flutter pub publish[flutter_sound_platform_interface]"
     #!!!!!exit -1
 fi
+read -p "Press enter to continue"
 cd ../flutter_sound
 
 echo '--------------------------------------------------------------------------------'
@@ -76,6 +77,7 @@ if [ $? -ne 0 ]; then
     echo "Error: flutter pub publish[flutter_sound_web]"
     #!!!!!!exit -1
 fi
+read -p "Press enter to continue"
 cd ../flutter_sound
 
 
