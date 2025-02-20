@@ -155,7 +155,5 @@ This is too much on my shoulders. We desesperatly need at least one other develo
 
 ## Thanks
 
-{% include note.html content="
 ### If you like my work, you can click on the `Thumb up` button of the top of the [pub.dev page](https://pub.dev/packages/flutter_sound).
 This is free and this will reassure me that **I do not spend most of my life for nobody**.
-"%}

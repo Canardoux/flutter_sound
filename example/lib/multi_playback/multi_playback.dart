@@ -192,7 +192,6 @@ class _MultiPlaybackState extends State<MultiPlayback> {
 
   // ------------------------------------------------------------------------------------
 
-
   void _addListener2() {
     cancelPlayerSubscriptions2();
     _playerSubscription2 = _mPlayer2!.onProgress!.listen((e) {
@@ -258,7 +257,6 @@ class _MultiPlaybackState extends State<MultiPlayback> {
     Widget makeBody() {
       return Column(
         children: [
-
           Container(
             margin: const EdgeInsets.all(3),
             padding: const EdgeInsets.all(3),

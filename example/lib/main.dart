@@ -85,8 +85,7 @@ final List<Example> exampleTable = [
       subTitle: 'A demonstration of the Flutter Sound features',
       flags: 0,
       route: (_) => const Demo(),
-      description:
-          '''
+      description: '''
 The example source [is there](https://github.com/canardoux/flutter_sound/blob/master/example/lib/demo/demo.dart). You can have a live run of the examples [here](/tau/fs/live/index.html).
 
 This is a demo of what it is possible to do with Flutter Sound. The code of this demo app is not so simple.
@@ -171,8 +170,7 @@ You can also refer to the following example:
     subTitle: 'Live Playback from stream',
     flags: tNotWeb,
     route: (_) => const LivePlaybackWithoutBackPressure(),
-    description:
-    '''
+    description: '''
 An example showing how to play Live Data without back pressure.
 It feeds a live stream, without waiting that the futures are completed for each block. 
 This is simpler than playing buffers synchronously because the App does not need to await that the playback for each block is completed before playing another one.
@@ -323,8 +321,7 @@ Shows how to change the `loglevel` during an audio session.
       subTitle: 'A demonstration of the Flutter Sound features',
       flags: 0,
       route: (_) => const Demo(),
-      description:
-      '''
+      description: '''
 The example source [is there](https://github.com/canardoux/flutter_sound/blob/master/example/lib/demo/demo.dart). You can have a live run of the examples [here](/tau/fs/live/index.html).
 
 This is a demo of what it is possible to do with Flutter Sound. The code of this demo app is not so simple.
@@ -341,7 +338,6 @@ The biggest interest of this Demo is that it shows most of the features of Flutt
 * Shows how to record to a Stream or playback from a stream
 * ...
 '''),
-
 ];
 
 ///
