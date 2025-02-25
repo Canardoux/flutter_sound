@@ -1,0 +1,2 @@
+/Volumes/mac-H/larpoux/proj/tau/flutter_sound/example/android/app/.cxx/RelWithDebInfo/4m2zr262/x86/CMakeFiles/edit_cache.dir
+/Volumes/mac-H/larpoux/proj/tau/flutter_sound/example/android/app/.cxx/RelWithDebInfo/4m2zr262/x86/CMakeFiles/rebuild_cache.dir

@@ -25,16 +25,15 @@ import 'package:flutter/services.dart' show rootBundle;
 
 /*
 
-Play from stream can be very efficient to play sound effects in real time.
-For example in a game App. In this example, the App open the Audio Session
-and call `startPlayerFromStream()` during initialization.
-When it want to play a noise, it has just to call the synchronous verb `feed`. Very fast.
+Play from stream can be very efficient to play sound effects in real time. For example in a game App.
+In this example, the App open three [players](/api/player/FlutterSoundPlayer-class.html)
+and call [startPlayerFromStream()](/api/player/FlutterSoundPlayer/startPlayerFromStream.html) during initialization.
+When it want to play a noise, it has just to call the synchronous verb [feed](/api/player/FlutterSoundPlayer/feedInt16FromStream.html). Very fast.
 
  */
 
 const int _tSampleRate = 44100;
 const int _tNumChannels = 1;
-//const _bim = 'assets/noises/bim.wav';
 const _bam = 'assets/noises/bam.wav';
 const _boum = 'assets/noises/boum.wav';
 
@@ -59,11 +58,24 @@ class _SoundEffectState extends State<SoundEffect> {
     return asset.buffer.asUint8List();
   }
 
-  Future<void> init() async {
+
+  @override
+  void initState() {
+    super.initState();
+    initPlayer().then((value) => setState(() {
+      _mPlayerIsInited = true;
+    }));
+  }
+
+  @override
+  void dispose() {
+    disposePlayer();
+    super.dispose();
+  }
+    // ------------------------------  The real code ----------------------------------
+
+  Future<void> initPlayer() async {
     await _mPlayer!.openPlayer();
-    //bimData = FlutterSoundHelper().waveToPCMBuffer(
-    //inputBuffer: await getAssetData(_bim),
-    //);
     bimData = await getAssetData('assets/samples/sample.pcm');
     bamData = FlutterSoundHelper().waveToPCMBuffer(
       inputBuffer: await getAssetData(_bam),
@@ -75,31 +87,18 @@ class _SoundEffectState extends State<SoundEffect> {
       codec: Codec.pcm16,
       numChannels: _tNumChannels,
       sampleRate: _tSampleRate,
-      //whenFinished: () {}, // Do not close the player
     );
   }
-
-  @override
-  void initState() {
-    super.initState();
-    init().then((value) => setState(() {
-          _mPlayerIsInited = true;
-        }));
-  }
-
-  @override
-  void dispose() {
+  void disposePlayer() {
     _mPlayer!.stopPlayer();
     _mPlayer!.closePlayer();
     _mPlayer = null;
-
-    super.dispose();
   }
 
   void play(Uint8List? data) async {
     if (!busy && _mPlayerIsInited) {
       busy = true;
-      await _mPlayer!.feedFromStream(data!).then((value) => busy = false);
+      await _mPlayer!.feedUint8FromStream(data!).then((value) => busy = false);
     }
   }
 

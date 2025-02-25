@@ -24,17 +24,18 @@ import 'package:flutter_sound/flutter_sound.dart';
 /*
 
 This is a very simple basic example which allows the user to adjust the sound volume.
-It launch two players which play each an asset. The User can adjust the volume of them independently.
+It launches two [Players] which play each a remote file.
+The User can [adjust the volume] of them independently.
 
 This example is very basic.
 
  */
 
 const _exampleAudioFilePathMP3_1 =
-    'https://canardoux.github.io/tau-fsdoc/extract/05.mp3';
+    'https://fs-doc.vercel.app/extract/05.mp3';
 
 const _exampleAudioFilePathWAV_2 =
-    'https://canardoux.github.io/tau-fsdoc/extract/13.wav';
+    'https://fs-doc.vercel.app/extract/13.wav';
 
 ///
 typedef Fn = void Function();
@@ -99,17 +100,18 @@ class _VolumeControlState extends State<VolumeControl> {
     await player.stopPlayer();
   }
 
+  // Here we adjust the volume of the first player, with the slider value given
   Future<void> setVolume1(double v) async // v is between 0.0 and 100.0
   {
     v = v > 100.0 ? 100.0 : v;
     _mVolume1 = v;
     setState(() {});
-    //await _mPlayer!.setVolume(v / 100, fadeDuration: Duration(milliseconds: 5000));
     await _mPlayer1.setVolume(
       v / 100,
     );
   }
 
+  // Here we adjust the volume of the second player, with the slider value given
   Future<void> setVolume2(double v) async // v is between 0.0 and 100.0
   {
     v = v > 100.0 ? 100.0 : v;
@@ -121,7 +123,7 @@ class _VolumeControlState extends State<VolumeControl> {
     );
   }
 
-  // --------------------- UI -------------------
+  // -------------------------------- UI ------------------------------------------
 
   Fn? getPlaybackFn(FlutterSoundPlayer? player, String uri) {
     if (!(_mPlayerIsInited1 && _mPlayerIsInited2)) {

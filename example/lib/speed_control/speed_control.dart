@@ -25,7 +25,10 @@ import 'package:flutter/services.dart' show rootBundle;
 
 /*
 
-This is a very simple basic example which allows the user to ajust the speed of a playback.
+It launches a [Player](/api/player/FlutterSoundPlayer-class.html) which play an asset.
+The User can [adjust the playback speed](/api/player/FlutterSoundPlayer/setSpeed.html) of it.
+
+This is a very simple example showing how to tune the speed of a playback.
 
  */
 
@@ -61,8 +64,6 @@ class _SpeedControlState extends State<SpeedControl> {
   @override
   void dispose() {
     stopPlayer(_mPlayer);
-
-    // Be careful : you must `close` the audio session when you have finished with it.
     _mPlayer.closePlayer();
 
     super.dispose();
@@ -80,7 +81,7 @@ class _SpeedControlState extends State<SpeedControl> {
     return asset.buffer.asUint8List();
   }
 
-  // -------  Here is the code to playback  -----------------------
+  // -----------------------------  Here is the code to playback  -----------------------------------
 
   void play(FlutterSoundPlayer? player) async {
     await player!.startPlayer(
@@ -96,6 +97,7 @@ class _SpeedControlState extends State<SpeedControl> {
     await player.stopPlayer();
   }
 
+  /// We adjust the speed with the slider value
   Future<void> setSpeed(double v) async // v is between 0.0 and 100.0
   {
     v = v > 200.0 ? 200.0 : v;
@@ -106,7 +108,7 @@ class _SpeedControlState extends State<SpeedControl> {
     );
   }
 
-  // --------------------- UI -------------------
+  // --------------------------------- UI -------------------------------------------
 
   Fn? getPlaybackFn(FlutterSoundPlayer? player) {
     if (!_mPlayerIsInited) {

@@ -84,13 +84,10 @@ class _PlayerOnProgressState extends State<PlayerOnProgress> {
     }
   }
 
-  int _totoPosition = 0;
   Future<void> init() async {
     await _mPlayer.openPlayer();
     _boumData = await getAssetData(_boum);
     _mPlayerSubscription = _mPlayer.onProgress!.listen((e) {
-      assert(_totoPosition <= e.position.inMilliseconds);
-      _totoPosition = e.position.inMilliseconds;
       setState(() {
         pos = e.position.inMilliseconds;
       });
@@ -102,10 +99,9 @@ class _PlayerOnProgressState extends State<PlayerOnProgress> {
     return asset.buffer.asUint8List();
   }
 
-  // -------  Here is the code to playback  -----------------------
+  // ----------------------  Here is the code to playback  -----------------------
 
   void play(FlutterSoundPlayer? player) async {
-    _totoPosition = 0;
     await player!.startPlayer(
         fromDataBuffer: _boumData,
         codec: Codec.aacADTS,
@@ -119,6 +115,7 @@ class _PlayerOnProgressState extends State<PlayerOnProgress> {
     await player.stopPlayer();
   }
 
+  /// We change the Duration for the _mPlayer callback
   Future<void> setSubscriptionDuration(
       double d) async // v is between 0.0 and 2000 (milliseconds)
   {

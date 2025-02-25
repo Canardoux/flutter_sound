@@ -40,11 +40,16 @@ Feeding Flutter Sound without back pressure is very simple but you can have two 
 * The App does not have any knowledge of when the block given to Flutter Sound is really played.
 For example, if it does a `stopPlayer()` it will loose all the buffered data not yet played.
 
+## You can see also those examples:
+- [Streams](ex_streams)
+- [Record To Stream](ex_record_to_stream)
+- [Live Playback With Backpressure](fs-ex_playback_from_stream_2)
+
  */
 
 ///
-const int cstSAMPLERATE = 8000; // 8000; // 48000
-const int cstCHANNELNB = 2; // 2 // 1;
+const int cstSAMPLERATE = 8000;
+const int cstCHANNELNB = 2;
 const Codec cstCODEC = Codec.pcm16; // Codec.pcm16 /// Codec.pcmFloat32;
 const String cstASSET =
     'assets/samples/sample_s16_2ch.raw'; // 'assets/samples/sample_f32_2ch.raw'; // 'assets/samples/sample_f32_2ch.raw' // 'assets/samples/sample_f32.raw'
@@ -71,6 +76,23 @@ class _LivePlaybackWithoutBackPressureState
   double _mSpeed = 100.0;
   late Uint8List data;
 
+
+  @override
+  void initState() {
+    super.initState();
+    initPlayer();
+  }
+
+
+  @override
+  void dispose() {
+    //stopPlayer();
+    _mPlayer.closePlayer();
+    super.dispose();
+  }
+
+  // --------------------------------  The Player stuff  ---------------------------
+
   Future<void> initPlayer() async {
     await _mPlayer.openPlayer();
     _mPlayerIsInited = false;
@@ -81,64 +103,6 @@ class _LivePlaybackWithoutBackPressureState
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    // Be careful : openAudioSession return a Future.
-    // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
-//    _mPlayer.openPlayer().then((value) {
-//      setState(() {
-//        _mPlayerIsInited = true;
-//      });
-//    });
-    initPlayer();
-  }
-
-  @override
-  void dispose() {
-    //stopPlayer();
-    _mPlayer.closePlayer();
-    super.dispose();
-  }
-
-  // -------  Here is the code to play Live data without back-pressure ------------
-
-  void feedHim(Uint8List data) {
-    var start = 0;
-    var totalLength = data.length;
-    while (totalLength > 0 && !_mPlayer.isStopped) {
-      var ln = totalLength > cstBLOCKSIZE ? cstBLOCKSIZE : totalLength;
-      _mPlayer.foodSink!.add(FoodData(data.sublist(start, start + ln)));
-      totalLength -= ln;
-      start += ln;
-    }
-  }
-
-  void play() async {
-    await _mPlayer.startPlayerFromStream(
-      codec: cstCODEC,
-      numChannels: cstCHANNELNB,
-      interleaved: true,
-      sampleRate: cstSAMPLERATE,
-      bufferSize: 20480,
-      //whenFinished: () {
-      // FlutterSoundPlayer().logger.i("FINISHED!");
-      //}
-    );
-
-    feedHim(data);
-    //if (_mPlayer != null) {
-    // We must not do stopPlayer() directely //await stopPlayer();
-    //_mPlayer.foodSink!.add(FoodEvent(() async {
-    //await _mPlayer.stopPlayer();
-    //FlutterSoundPlayer().logger.i("MARKER!");
-
-    setState(() {});
-    //}));
-    //}
-  }
-
-  // --------------------- (it was very simple, wasn't it ?) -------------------
 
   Future<Uint8List> getAssetData(String path) async {
     var asset = await rootBundle.load(path);
@@ -152,7 +116,7 @@ class _LivePlaybackWithoutBackPressureState
   }
 
   Future<void> setSpeed(double v) async // v is between 0.0 and 100.0
-  {
+      {
     v = v > 200.0 ? 200.0 : v;
     _mSpeed = v;
     setState(() {});
@@ -161,18 +125,38 @@ class _LivePlaybackWithoutBackPressureState
     );
   }
 
-  Fn? getPlaybackFn() {
-    if (!_mPlayerIsInited) {
-      return null;
+
+  // --------------------------  Here is the code to play Live data without back-pressure ----------------------
+
+  /// In this example we give the data to Flutter Sound chunk by chunk. We feed the sink without waiting,
+  void feedHim(Uint8List data) {
+    var start = 0;
+    var totalLength = data.length;
+    while (totalLength > 0 && !_mPlayer.isStopped) {
+      var ln = totalLength > cstBLOCKSIZE ? cstBLOCKSIZE : totalLength;
+      _mPlayer.uint8ListSink!.add(data.sublist(start, start + ln));
+      //_mPlayer.foodSink!.add(FoodData(data.sublist(start, start + ln)));
+      totalLength -= ln;
+      start += ln;
     }
-    return _mPlayer.isPlaying
-        ? () {
-            stopPlayer().then((value) => setState(() {}));
-          }
-        : play;
   }
 
-  // ----------------------------------------------------------------------------------------------------------------------
+  /// Start the player from a Codec.pcm16 Stream, Stereo
+  void play() async {
+    await _mPlayer.startPlayerFromStream(
+      codec: cstCODEC, // Codec.pcm16
+      numChannels: cstCHANNELNB, // Stereo
+      interleaved: true, // This is the default
+      sampleRate: cstSAMPLERATE, // Sample rate is 8000
+      //bufferSize: cstBLOCKSIZE,
+    );
+    feedHim(data);
+    _mPlayer?.logger.d('Finished');
+
+    setState(() {});
+  }
+
+  // --------------------- (it was very simple, wasn't it ?) -------------------
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +178,9 @@ class _LivePlaybackWithoutBackPressureState
           child: Column(children: [
             Row(children: [
               ElevatedButton(
-                onPressed: getPlaybackFn(),
+                onPressed:_mPlayerIsInited ? (){
+                  _mPlayer.isPlaying ? stopPlayer() : play();
+                } : null,
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
                 child: Text(_mPlayer.isPlaying ? 'stop' : 'Play'),

@@ -32,7 +32,6 @@ This example is really basic.
 
  */
 
-///
 typedef _Fn = void Function();
 
 /* This does not work. on Android we must have the Manifest.permission.CAPTURE_AUDIO_OUTPUT permission.
@@ -49,7 +48,7 @@ typedef _Fn = void Function();
 
 const theSource = AudioSource.microphone;
 
-/// Example app.
+// Example app.
 class SimpleRecorder extends StatefulWidget {
   const SimpleRecorder({super.key});
 
@@ -58,13 +57,6 @@ class SimpleRecorder extends StatefulWidget {
 }
 
 class _SimpleRecorderState extends State<SimpleRecorder> {
-  Codec _codec = Codec.aacMP4;
-  String _mPath = 'tau_file.mp4';
-  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
-  FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
-  bool _mPlayerIsInited = false;
-  bool _mRecorderIsInited = false;
-  bool _mplaybackReady = false;
 
   @override
   void initState() {
@@ -92,6 +84,19 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     super.dispose();
   }
 
+  // ------------------------------ This is the recorder stuff -----------------------------
+
+  Codec _codec = Codec.aacMP4;
+  String _mPath = 'tau_file.mp4';
+  bool _mRecorderIsInited = false;
+
+  /// Our player
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
+
+  /// Our recorder
+  FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
+
+  /// Request permission to record something and open the recorder
   Future<void> openTheRecorder() async {
     if (!kIsWeb) {
       var status = await Permission.microphone.request();
@@ -108,33 +113,12 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
         return;
       }
     }
-    /*
-    final session = await AudioSession.instance;
-    await session.configure(AudioSessionConfiguration(
-      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-      avAudioSessionCategoryOptions:
-          AVAudioSessionCategoryOptions.allowBluetooth |
-              AVAudioSessionCategoryOptions.defaultToSpeaker,
-      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
-      avAudioSessionRouteSharingPolicy:
-          AVAudioSessionRouteSharingPolicy.defaultPolicy,
-      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-      androidAudioAttributes: const AndroidAudioAttributes(
-        contentType: AndroidAudioContentType.speech,
-        flags: AndroidAudioFlags.none,
-        usage: AndroidAudioUsage.voiceCommunication,
-      ),
-      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
-      androidWillPauseWhenDucked: true,
-    ));
-
-     */
-
     _mRecorderIsInited = true;
   }
 
-  // ----------------------  Here is the code for recording and playback -------
-
+  /// Begin to record.
+  /// This is our main function.
+  /// We ask Flutter Sound to record to a File.
   void record() {
     _mRecorder!
         .startRecorder(
@@ -147,6 +131,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     });
   }
 
+  /// Stop the recorder
   void stopRecorder() async {
     await _mRecorder!.stopRecorder().then((value) {
       setState(() {
@@ -156,6 +141,12 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     });
   }
 
+// ----------------------------- This is the player stuff ---------------------------------
+
+  bool _mplaybackReady = false;
+  bool _mPlayerIsInited = false;
+
+  /// Begin to play the recorded sound
   void play() {
     assert(_mPlayerIsInited &&
         _mplaybackReady &&
@@ -164,7 +155,6 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     _mPlayer!
         .startPlayer(
             fromURI: _mPath,
-            //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
             whenFinished: () {
               setState(() {});
             })
@@ -173,6 +163,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     });
   }
 
+  /// Stop the player
   void stopPlayer() {
     _mPlayer!.stopPlayer().then((value) {
       setState(() {});

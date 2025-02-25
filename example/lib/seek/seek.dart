@@ -64,37 +64,32 @@ class _SeekState extends State<Seek> {
 
   @override
   void dispose() {
-    stopPlayer(_mPlayer);
-    cancelPlayerSubscriptions();
-
-    // Be careful : you must `close` the audio session when you have finished with it.
-    _mPlayer.closePlayer();
-
+    disposePlayer();
     super.dispose();
   }
 
-  void cancelPlayerSubscriptions() {
-    if (_mPlayerSubscription != null) {
-      _mPlayerSubscription!.cancel();
-      _mPlayerSubscription = null;
-    }
-  }
 
   Future<void> init() async {
-    await _mPlayer.openPlayer();
-    await _mPlayer.setSubscriptionDuration(const Duration(milliseconds: 50));
     _boumData = await getAssetData(_boum);
-    _mPlayerSubscription = _mPlayer.onProgress!.listen((e) {
-      setPos(e.position.inMilliseconds);
-      setState(() {});
-    });
-  }
+    await initPlayer();
+ }
 
   Future<Uint8List> getAssetData(String path) async {
     var asset = await rootBundle.load(path);
     return asset.buffer.asUint8List();
   }
 
+// ------------------------------------ The Player code ----------------------------------------
+
+  Future<void> initPlayer() async {
+    await _mPlayer.openPlayer();
+    await _mPlayer.setSubscriptionDuration(const Duration(milliseconds: 50)); // DON'T FORGET THIS CALL !!!!
+    _mPlayerSubscription = _mPlayer.onProgress!.listen((e) {
+      setPos(e.position.inMilliseconds);
+      setState(() {});
+    });
+
+  }
   void play(FlutterSoundPlayer? player) async {
     await player!.startPlayer(
         fromDataBuffer: _boumData,
@@ -126,7 +121,17 @@ class _SeekState extends State<Seek> {
     await setPos(d.floor());
   }
 
-  // --------------------- UI -------------------
+
+  void disposePlayer() {
+    stopPlayer(_mPlayer);
+    if (_mPlayerSubscription != null) {
+      _mPlayerSubscription!.cancel();
+      _mPlayerSubscription = null;
+    }
+    _mPlayer.closePlayer();
+  }
+
+  // ------------------------------------------- UI ---------------------------------------------
 
   Fn? getPlaybackFn(FlutterSoundPlayer? player) {
     if (!_mPlayerIsInited) {

@@ -24,7 +24,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
-//import 'package:flutter_sound_web/flutter_sound_web.dart' show mime_types;
 
 /*
 
@@ -41,9 +40,13 @@ and because he/she can select to use Float32 PCM or Int16 PCM
 
  */
 
-///
+
 typedef _Fn = void Function();
+
+/// The sample rate
 const int cstSampleRate = 16000;
+
+/// Stereo
 const int cstNUMBEROFCHANNELS = 2;
 
 /// Example app.
@@ -56,7 +59,6 @@ class StreamsExample extends StatefulWidget {
 
 class _StreamsExampleState extends State<StreamsExample> {
   final FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
-  final FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
   Codec codecSelected = Codec.pcmFloat32;
@@ -73,63 +75,18 @@ class _StreamsExampleState extends State<StreamsExample> {
   double _mVolume = 100.0;
   double _mPan = 100.0;
 
-  StreamSubscription? _recorderSubscription;
-
-  Future<void> _openRecorder() async {
-    var status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      throw RecordingPermissionException('Microphone permission not granted');
-    }
-    await _mRecorder.openRecorder();
-
-    final session = await AudioSession.instance;
-    await session.configure(AudioSessionConfiguration(
-      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-      avAudioSessionCategoryOptions:
-          AVAudioSessionCategoryOptions.allowBluetooth |
-              AVAudioSessionCategoryOptions.defaultToSpeaker,
-      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
-      avAudioSessionRouteSharingPolicy:
-          AVAudioSessionRouteSharingPolicy.defaultPolicy,
-      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-      androidAudioAttributes: const AndroidAudioAttributes(
-        contentType: AndroidAudioContentType.speech,
-        flags: AndroidAudioFlags.none,
-        usage: AndroidAudioUsage.voiceCommunication,
-      ),
-      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
-      androidWillPauseWhenDucked: true,
-    ));
-
-    setState(() {
-      _mRecorderIsInited = true;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    // Be careful : openAudioSession return a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
     _mPlayer.openPlayer().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
-    });
-    _openRecorder().then((value) {
-      _recorderSubscription = _mRecorder.onProgress!.listen((e) {
-        setState(() {
-          //pos = e.duration.inMilliseconds;
-          if (e.decibels != null) {
-            _dbLevel = e.decibels as double;
-          }
-        });
-      });
+      _openRecorder();
 
-      setState(() {
-        _mRecorderIsInited = true;
-      });
     });
+
   }
 
   @override
@@ -143,8 +100,39 @@ class _StreamsExampleState extends State<StreamsExample> {
     cancelRecorderSubscriptions();
   }
 
-  // ----------------------  Here is the code to record to a Stream -----------------
+  // ----------------------------------- The recorder stuff ---------------------------------
 
+  /// The recorder
+  final FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
+
+  /// A subscription
+  StreamSubscription? _recorderSubscription;
+
+  /// Request the permission to record something and open the recorder
+  Future<void> _openRecorder() async {
+    var status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      throw RecordingPermissionException('Microphone permission not granted');
+    }
+    await _mRecorder.openRecorder();
+    _recorderSubscription = _mRecorder.onProgress!.listen((e) {
+      // pos = e.duration.inMilliseconds; // We do not need this information in this example.
+      setState(() {
+        _dbLevel = e.decibels as double;
+      });
+
+    });
+    await _mRecorder.setSubscriptionDuration(Duration(milliseconds: 100)); // DO NOT FORGET THIS CALL !!!
+
+
+    setState(() {
+      _mRecorderIsInited = true;
+    });
+
+  }
+
+
+  /// We have finished with the recorder. Release the subscription
   void cancelRecorderSubscriptions() {
     if (_recorderSubscription != null) {
       _recorderSubscription!.cancel();
@@ -152,9 +140,11 @@ class _StreamsExampleState extends State<StreamsExample> {
     }
   }
 
+  /// This is our main function where we begin to record to a dart stream
   Future<void> recordBtn() async {
-    await _mRecorder.setSubscriptionDuration(Duration(milliseconds: 100));
     _dbLevel = 0.0;
+
+    // When interleaved, the Recorder gives the audio data as a Uint8List
     if (interleaved) {
       bufferUint8 = [];
       recordingDataControllerUint8.close();
@@ -168,8 +158,12 @@ class _StreamsExampleState extends State<StreamsExample> {
         numChannels: cstNUMBEROFCHANNELS,
         audioSource: AudioSource.defaultSource,
         toStream: recordingDataControllerUint8.sink,
-      );
-    } else if (codecSelected == Codec.pcmFloat32) {
+        bufferSize: 8192,      );
+    } else
+
+    // When not interleaved, the Recorder gives the audio data
+    // as pcmFloat32 or Int16List, depending of the codec
+    if (codecSelected == Codec.pcmFloat32) {
       bufferF32 = [];
       recordingDataControllerF32.close();
       recordingDataControllerF32 = StreamController<List<Float32List>>();
@@ -182,7 +176,10 @@ class _StreamsExampleState extends State<StreamsExample> {
           numChannels: cstNUMBEROFCHANNELS,
           audioSource: AudioSource.defaultSource,
           toStreamFloat32: recordingDataControllerF32.sink);
-    } else if (codecSelected == Codec.pcm16) {
+    } else
+
+    if (codecSelected == Codec.pcm16) {
+      // The recorder gives the data as Int16List
       bufferInt16 = [];
       recordingDataControllerInt16.close();
       recordingDataControllerInt16 = StreamController<List<Int16List>>();
@@ -217,36 +214,45 @@ class _StreamsExampleState extends State<StreamsExample> {
           };
   }
 
-  void pauseResumeRecorder() {}
-
   // ----------------------  Here is the code to play from a Stream -----------------------
 
+  /// This is our main function where we begin to play
+  /// the audio data stored in our buffer
   Future<void> playBtn() async {
     if (_mPlayer.isStopped) {
       await _mPlayer.startPlayerFromStream(
         codec: codecSelected,
         sampleRate: cstSampleRate,
         numChannels: cstNUMBEROFCHANNELS,
-        //whenFinished: () { stopPlayer().then((v){ setState(() {
-        //});});},
         interleaved: interleaved,
       );
+      setState(() {
+      });
 
+      // When interleaved, we feed the stream with the Uint8List audio data
+      // which has been buffered by the recorder in bufferUint8
       if (interleaved) {
         for (var d in bufferUint8) {
           await _mPlayer.feedUint8FromStream(d);
-          //_mPlayer.uint8ListSink!.add(d);
+          //_mPlayer.uint8ListSink!.add(d); // Another way to feed the stream
         }
-      } else if (codecSelected == Codec.pcmFloat32) {
+      } else
+
+      // When the codec selected is Codec.pcmFloat32, we feed the stream
+      // with the audio data buffered in bufferF32
+      if (codecSelected == Codec.pcmFloat32) {
         for (var d in bufferF32) {
           await _mPlayer.feedF32FromStream(d);
-
-          ///_mPlayer.float32Sink!.add(d);
+          //_mPlayer.float32Sink!.add(d); // Another way to feed the stream
         }
-      } else if (codecSelected == Codec.pcm16) {
+      } else
+
+      // When the codec selected is Codec.pcm16, we feed the stream
+      // with the audio data buffered in bufferInt16
+      if (codecSelected == Codec.pcm16) {
         for (var d in bufferInt16) {
           await _mPlayer.feedInt16FromStream(d);
-          //_mPlayer.int16Sink!.add(d);
+          //_mPlayer.int16Sink!.add(d); // Another way to feed the stream
         }
       }
     } else {
@@ -266,8 +272,7 @@ class _StreamsExampleState extends State<StreamsExample> {
     return playBtn;
   }
 
-  void pauseResumePlayer() {}
-
+  // Does not handle when > 100db
   Future<void> setVolume(double v) async // v is between 0.0 and 100.0
   {
     v = v > 100.0 ? 100.0 : v;
@@ -279,6 +284,7 @@ class _StreamsExampleState extends State<StreamsExample> {
     );
   }
 
+  // We are in stereo mode
   Future<void> setPan(double v) async // v is between 0.0 and 100.0
   {
     v = v > 100.0 ? 100.0 : v;
@@ -290,6 +296,7 @@ class _StreamsExampleState extends State<StreamsExample> {
 
   // ----------------------------------------------------------------------------------------------------------------------
 
+  // The user changed its selection. Reset the 3 buffers
   Future<void> reinit() async {
     await _mPlayer.stopPlayer();
     await _mRecorder.stopRecorder();
@@ -336,15 +343,6 @@ class _StreamsExampleState extends State<StreamsExample> {
               const SizedBox(
                 width: 20,
               ),
-              ElevatedButton(
-                onPressed: _mRecorder.isStopped ? null : pauseResumeRecorder,
-                //color: Colors.white,
-                //disabledColor: Colors.grey,
-                child: Text(_mRecorder.isPaused ? 'Resume' : 'Pause'),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
               Text(_mRecorder.isRecording
                   ? 'Recording in progress'
                   : 'Recorder is stopped'),
@@ -384,15 +382,6 @@ class _StreamsExampleState extends State<StreamsExample> {
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
                 child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              ElevatedButton(
-                onPressed: _mPlayer.isStopped ? null : pauseResumePlayer,
-                //color: Colors.white,
-                //disabledColor: Colors.grey,
-                child: Text(_mPlayer.isPaused ? 'Resume' : 'Pause'),
               ),
               const SizedBox(
                 width: 20,
