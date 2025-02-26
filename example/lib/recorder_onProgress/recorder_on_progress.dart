@@ -102,25 +102,6 @@ class _RecorderOnProgressState extends State<RecorderOnProgress> {
       }
     }
 
-    final session = await AudioSession.instance;
-    await session.configure(AudioSessionConfiguration(
-      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-      avAudioSessionCategoryOptions:
-          AVAudioSessionCategoryOptions.allowBluetooth |
-              AVAudioSessionCategoryOptions.defaultToSpeaker,
-      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
-      avAudioSessionRouteSharingPolicy:
-          AVAudioSessionRouteSharingPolicy.defaultPolicy,
-      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-      androidAudioAttributes: const AndroidAudioAttributes(
-        contentType: AndroidAudioContentType.speech,
-        flags: AndroidAudioFlags.none,
-        usage: AndroidAudioUsage.voiceCommunication,
-      ),
-      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
-      androidWillPauseWhenDucked: true,
-    ));
-
     _mRecorderIsInited = true;
   }
 
@@ -141,7 +122,7 @@ class _RecorderOnProgressState extends State<RecorderOnProgress> {
     return asset.buffer.asUint8List();
   }
 
-  // -------  Here is the code to playback  -----------------------
+  // ----------------------  Here is the code to playback  -------------------------------------
 
   void record(FlutterSoundRecorder? recorder) async {
     await recorder!.startRecorder(codec: _codec, toFile: _mPath);
@@ -152,6 +133,7 @@ class _RecorderOnProgressState extends State<RecorderOnProgress> {
     await recorder.stopRecorder();
   }
 
+  /// We change the Duration for the _mRecorder callback
   Future<void> setSubscriptionDuration(
       double d) async // v is between 0.0 and 2000 (milliseconds)
   {
@@ -162,7 +144,7 @@ class _RecorderOnProgressState extends State<RecorderOnProgress> {
     );
   }
 
-  // --------------------- UI -------------------
+  // --------------------------------------- UI -----------------------------------------
 
   Fn? getPlaybackFn(FlutterSoundRecorder? recorder) {
     if (!_mRecorderIsInited) {
@@ -180,8 +162,6 @@ class _RecorderOnProgressState extends State<RecorderOnProgress> {
   @override
   Widget build(BuildContext context) {
     Widget makeBody() {
-      //return Column(
-      //children: [
       return Container(
         margin: const EdgeInsets.all(3),
         padding: const EdgeInsets.all(3),
@@ -219,8 +199,6 @@ class _RecorderOnProgressState extends State<RecorderOnProgress> {
             //divisions: 100
           ),
         ]),
-        //),
-        //],
       );
     }
 

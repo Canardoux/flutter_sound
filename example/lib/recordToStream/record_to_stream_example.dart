@@ -19,7 +19,6 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -28,21 +27,19 @@ import 'package:permission_handler/permission_handler.dart';
 
 /*
 
-This is an example showing how to record to a Dart Stream.
-It writes all the recorded data from a Stream to a File, which is completely stupid:
-if an App wants to record something to a File, it must not use streams.
+This is an example showing how to record to a Dart Stream. It writes all the recorded data from a Stream to a File using It calls [startRecorder(toStream:)](/api/recorder/FlutterSoundRecorder/startRecorder.html) to fill a buffer from a stream, which is completely stupid: if an App wants to record something to a File, it must not use streams.
+Then it can playback the file recorded.
 
 The real interest of recording to a Stream is for example to feed a
 Speech-to-Text engine, or for processing the Live data in Dart in real time.
+
+ You can also refer to the following guide:
+ - [Dart Streams](/tau/guides/guides_live_streams.html):
 
  */
 
 ///
 typedef _Fn = void Function();
-
-const int cstSAMPLERATE = 16000;
-const int cstCHANNELNB = 2;
-const Codec cstCODEC = Codec.pcm16;
 
 /// Example app.
 class RecordToStreamExample extends StatefulWidget {
@@ -65,42 +62,9 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   //Uint8List buffer = [];
   ///int sampleRate = 16000;
 
-  Future<void> _openRecorder() async {
-    var status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      throw RecordingPermissionException('Microphone permission not granted');
-    }
-    await _mRecorder!.openRecorder();
-
-    final session = await AudioSession.instance;
-    await session.configure(AudioSessionConfiguration(
-      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-      avAudioSessionCategoryOptions:
-          AVAudioSessionCategoryOptions.allowBluetooth |
-              AVAudioSessionCategoryOptions.defaultToSpeaker,
-      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
-      avAudioSessionRouteSharingPolicy:
-          AVAudioSessionRouteSharingPolicy.defaultPolicy,
-      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-      androidAudioAttributes: const AndroidAudioAttributes(
-        contentType: AndroidAudioContentType.speech,
-        flags: AndroidAudioFlags.none,
-        usage: AndroidAudioUsage.voiceCommunication,
-      ),
-      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
-      androidWillPauseWhenDucked: true,
-    ));
-    //sampleRate = await _mRecorder!.getSampleRate();
-
-    setState(() {
-      _mRecorderIsInited = true;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    // Be careful : openAudioSession return a Future.
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
     _mPlayer!.openPlayer().then((value) {
       setState(() {
@@ -134,6 +98,21 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
 
   // ----------------------  Here is the code to record to a Stream ------------
 
+  static const int cstSAMPLERATE = 16000;
+  static const int cstCHANNELNB = 2;
+  static const Codec cstCODEC = Codec.pcm16;
+
+  Future<void> _openRecorder() async {
+    var status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      throw RecordingPermissionException('Microphone permission not granted');
+    }
+    await _mRecorder!.openRecorder();
+    setState(() {
+      _mRecorderIsInited = true;
+    });
+  }
+
   Future<void> record() async {
     assert(_mRecorderIsInited && _mPlayer!.isStopped);
     var sink = await createFile();
@@ -148,10 +127,10 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
       numChannels: cstCHANNELNB,
       sampleRate: cstSAMPLERATE,
       bufferSize: 8192,
+      audioSource: AudioSource.defaultSource,
     );
     setState(() {});
   }
-  // --------------------- (it was very simple, wasn't it ?) -------------------
 
   Future<void> stopRecorder() async {
     await _mRecorder!.stopRecorder();
@@ -161,6 +140,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     }
     _mplaybackReady = true;
   }
+  // --------------------- (it was very simple, wasn't it ?) -------------------
 
   _Fn? getRecorderFn() {
     if (!_mRecorderIsInited || !_mPlayer!.isStopped) {

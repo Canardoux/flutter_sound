@@ -24,13 +24,11 @@ import 'package:flutter_sound/flutter_sound.dart';
 /*
 
 This is a very simple example for Flutter Sound beginners, that shows how to play a remote file.
+It create a [Player object] and use the verb [startPlayer()].
 
 This example is really basic.
 
  */
-
-const _exampleAudioFilePathMP3 =
-    'https://canardoux.github.io/tau-fsdoc/extract/05.mp3';
 
 ///
 typedef Fn = void Function();
@@ -44,7 +42,6 @@ class SimplePlayback extends StatefulWidget {
 }
 
 class _SimplePlaybackState extends State<SimplePlayback> {
-  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
 
   @override
@@ -67,8 +64,18 @@ class _SimplePlaybackState extends State<SimplePlayback> {
     super.dispose();
   }
 
-  // -------  Here is the code to playback a remote file -----------------------
+  // -----------------------  Here is the code to playback a remote file -----------------------
 
+  /// The remote sound
+  static const _exampleAudioFilePathMP3 =
+      'https://fs-doc.vercel.app/extract/05.mp3';
+
+  /// Our player
+  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
+
+  /// Begin playing.
+  /// This is our main function.
+  /// We ask Flutter Sound to Play a remote URL
   void play() async {
     await _mPlayer!.startPlayer(
         fromURI: _exampleAudioFilePathMP3,
@@ -79,6 +86,7 @@ class _SimplePlaybackState extends State<SimplePlayback> {
     setState(() {});
   }
 
+  /// Stop playing
   Future<void> stopPlayer() async {
     if (_mPlayer != null) {
       await _mPlayer!.stopPlayer();

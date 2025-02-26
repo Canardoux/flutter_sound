@@ -36,13 +36,18 @@ If you do not need any back pressure, you can see another simple example :
 This other example is a little bit simpler because the App does not need to await
 the playback for each block before playing another one.
 
+## You can see also those examples:
+- [Streams](ex_streams)
+- [Record To Stream](ex_record_to_stream)
+- [Live Playback Without Backpressure](fs-ex_playback_from_stream_1)
+
  */
 
 ///
 const blockSize = 20480;
 
 ///
-const int tSampleRate = 44100;
+const int tSampleRate = 48000;
 
 ///
 typedef Fn = void Function();
@@ -82,15 +87,15 @@ class _LivePlaybackWithBackPressureState
     super.dispose();
   }
 
-  // -------  Here is the code to play Live data with back-pressure ------------
+  // -----------------------  Here is the code to play Live data with back-pressure -----------------------
 
+  /// Start the player from a Codec.pcm16 Stream, stereo
   void play() async {
     assert(_mPlayerIsInited && _mPlayer!.isStopped);
     await _mPlayer!.startPlayerFromStream(
       codec: Codec.pcm16,
       numChannels: 1,
       sampleRate: tSampleRate,
-      bufferSize: 20480,
     );
     setState(() {});
     var data = await getAssetData('assets/samples/sample.pcm');
@@ -103,13 +108,11 @@ class _LivePlaybackWithBackPressureState
 
   // Here we call the verb "await feedFromStream()" (with await!!!) for each block of BLOCK_SIZE size.
   // This is just for demonstration of calling sequentially several "await feedFromStream()" (with await!!!!).
-  // Of course this is just for demo. The following code is exactly what there is in the procedure ```feedForStream()```
-  // so in a real app, you will call simply ```await feedForStream()``` (with await !!!!)
   // Be very careful not calling a second `feedFromStream()` when the previous one has not completed his future.
   //
-  // **You may not have two calls two calls to `feedFromStream()` simultaneously.**
-  // ******************************************************************************
-  // And, of course, you may not mix those verbs with the real output food Stream.
+  // **You may not have two calls to `feedFromStream()` simultaneously.**
+  // ********************************************************************
+  // And, of course, you may not mix those verbs with the real output food Stream Sink.
 
   Future<void> feedHim(Uint8List buffer) async {
     var lnData = 0;
@@ -117,10 +120,11 @@ class _LivePlaybackWithBackPressureState
     while (totalLength > 0 && !_mPlayer!.isStopped) {
       var bsize = totalLength > blockSize ? blockSize : totalLength;
       await _mPlayer!
-          .feedFromStream(buffer.sublist(lnData, lnData + bsize)); // await !!!!
+          .feedUint8FromStream(buffer.sublist(lnData, lnData + bsize)); // with await !!!!
       lnData += bsize;
       totalLength -= bsize;
     }
+    _mPlayer?.logger.d('Finished');
   }
 
   // --------------------- (it was very simple, wasn't it ?) -------------------

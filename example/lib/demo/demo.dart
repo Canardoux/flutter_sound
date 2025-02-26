@@ -177,26 +177,26 @@ class _MyAppState extends State<Demo> {
   ];
 
   List<String> remoteSample = [
-    'https://canardoux.github.io/tau-fsdoc/extract/01.aac', // 'assets/samples/sample.aac',
-    'https://canardoux.github.io/tau-fsdoc/extract/01.aac', // 'assets/samples/sample.aac',
-    'https://canardoux.github.io/tau-fsdoc/extract/08.opus', // 'assets/samples/sample.opus',
-    'https://canardoux.github.io/tau-fsdoc/extract/04-opus.caf', // 'assets/samples/sample_opus.caf',
-    'https://canardoux.github.io/tau-fsdoc/extract/05.mp3', // 'assets/samples/sample.mp3',
-    'https://canardoux.github.io/tau-fsdoc/extract/07.ogg', // 'assets/samples/sample.ogg',
-    'https://canardoux.github.io/tau-fsdoc/extract/sample_s16_2ch.pcm', // Raw PCM int16
-    'https://canardoux.github.io/tau-fsdoc/extract/sample_2ch.wav', // int16 wav stereo
-    'https://canardoux.github.io/tau-fsdoc/extract/02.aiff', // 'assets/samples/sample.aiff',
-    'https://canardoux.github.io/tau-fsdoc/extract/01-pcm.caf', // 'assets/samples/sample_pcm.caf',
-    'https://canardoux.github.io/tau-fsdoc/extract/04.flac', // 'assets/samples/sample.flac',
-    'https://canardoux.github.io/tau-fsdoc/extract/06.mp4', // 'assets/samples/sample.mp4',
-    'https://canardoux.github.io/tau-fsdoc/extract/03.amr', // 'assets/samples/sample.amr', // amrNB
-    'https://canardoux.github.io/tau-fsdoc/extract/03.amr', // 'assets/samples/sample_xxx.amr', // amrWB
-    'https://canardoux.github.io/tau-fsdoc/extract/09-pcm8.raw', // 'assets/samples/sample_xxx.pcm', // pcm8
-    'https://canardoux.github.io/tau-fsdoc/extract/sample_f32_2ch.raw', // Raw pcmFloat32
+    'https://fs-doc.vercel.app/extract/01.aac', // 'assets/samples/sample.aac',
+    'https://fs-doc.vercel.app/extract/01.aac', // 'assets/samples/sample.aac',
+    'https://fs-doc.vercel.app/extract/08.opus', // 'assets/samples/sample.opus',
+    'https://fs-doc.vercel.app/extract/04-opus.caf', // 'assets/samples/sample_opus.caf',
+    'https://fs-doc.vercel.app/extract/05.mp3', // 'assets/samples/sample.mp3',
+    'https://fs-doc.vercel.app/extract/07.ogg', // 'assets/samples/sample.ogg',
+    'https://fs-doc.vercel.app/extract/sample_s16_2ch.pcm', // Raw PCM int16
+    'https://fs-doc.vercel.app/extract/sample_2ch.wav', // int16 wav stereo
+    'https://fs-doc.vercel.app/extract/02.aiff', // 'assets/samples/sample.aiff',
+    'https://fs-doc.vercel.app/extract/01-pcm.caf', // 'assets/samples/sample_pcm.caf',
+    'https://fs-doc.vercel.app/extract/04.flac', // 'assets/samples/sample.flac',
+    'https://fs-doc.vercel.app/extract/06.mp4', // 'assets/samples/sample.mp4',
+    'https://fs-doc.vercel.app/extract/03.amr', // 'assets/samples/sample.amr', // amrNB
+    'https://fs-doc.vercel.app/extract/03.amr', // 'assets/samples/sample_xxx.amr', // amrWB
+    'https://fs-doc.vercel.app/extract/09-pcm8.raw', // 'assets/samples/sample_xxx.pcm', // pcm8
+    'https://fs-doc.vercel.app/extract/sample_f32_2ch.raw', // Raw pcmFloat32
     '', // pcmWebM
-    'https://canardoux.github.io/tau-fsdoc/extract/02-opus.webm', // 'assets/samples/sample_opus.webm', // opusWebM
-    'https://canardoux.github.io/tau-fsdoc/extract/03-vorbis.webm', // 'assets/samples/sample_vorbis.webm', // vorbisWebM
-    'https://canardoux.github.io/tau-fsdoc/extract/sample_f32_2ch.wav', // wav Float32 stereo
+    'https://fs-doc.vercel.app/extract/02-opus.webm', // 'assets/samples/sample_opus.webm', // opusWebM
+    'https://fs-doc.vercel.app/extract/03-vorbis.webm', // 'assets/samples/sample_vorbis.webm', // vorbisWebM
+    'https://fs-doc.vercel.app/extract/sample_f32_2ch.wav', // wav Float32 stereo
   ];
 
   StreamSubscription? _recorderSubscription;
