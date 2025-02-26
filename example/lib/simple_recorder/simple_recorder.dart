@@ -57,6 +57,7 @@ class SimpleRecorder extends StatefulWidget {
 }
 
 class _SimpleRecorderState extends State<SimpleRecorder> {
+
   @override
   void initState() {
     _mPlayer!.openPlayer().then((value) {

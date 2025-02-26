@@ -40,6 +40,7 @@ and because he/she can select to use Float32 PCM or Int16 PCM
 
  */
 
+
 typedef _Fn = void Function();
 
 /// The sample rate
@@ -83,6 +84,7 @@ class _StreamsExampleState extends State<StreamsExample> {
         _mPlayerIsInited = true;
       });
       _openRecorder();
+
     });
 
   }
@@ -121,12 +123,13 @@ class _StreamsExampleState extends State<StreamsExample> {
 
     });
     await _mRecorder.setSubscriptionDuration(Duration(milliseconds: 100)); // DO NOT FORGET THIS CALL !!!
+
+
     setState(() {
       _mRecorderIsInited = true;
     });
 
   }
-
 
 
   /// We have finished with the recorder. Release the subscription
