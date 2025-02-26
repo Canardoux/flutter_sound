@@ -104,29 +104,29 @@ Pray for Ukraine</p>
 </li>
 </ul>
 <h2 id="examples-demo-apps">Examples (Demo Apps)</h2>
-<p>Flutter Sound comes with several <a href="https://canardoux.github.io/fs-doc/tau/examples.html">Demo/Examples</a>.</p>
-<p>You can run a live view of these examples <a href="https://canardoux.github.io/fs-doc/live/">here</a>.</p>
+<p>Flutter Sound comes with several <a href="https://fs-doc.vercel.app/tau/examples.html">Demo/Examples</a>.</p>
+<p>You can run a live view of these examples <a href="https://fs-doc.vercel.app/live/">here</a>.</p>
 <h2 id="features">Features</h2>
 <p>The Flutter Sound package includes the following features :</p>
 <ul>
-<li>Play and Record sound or music with various codecs. (See <a href="https://canardoux.github.io/fs-doc/tau/tau/guides/guides_codecs.html">the supported codecs here</a>)</li>
+<li>Play and Record sound or music with various codecs. (See <a href="https://fs-doc.vercel.app/tau/guides/guides_codecs.html">the supported codecs here</a>)</li>
 <li>Play local or remote files specified by their URL.</li>
 <li>Play assets.</li>
-<li>Record to a live dart Stream</li>
+<li>Play from a dart stream</li>
 <li>Playback from a live dart Stream</li>
 <li>Support for releasing/resuming resources when the app pauses/resumes.</li>
 </ul>
 <h2 id="flutter-sound-and-streams">Flutter Sound and Streams</h2>
-<p>Streams support are a main Flutter Sound feature that is very exciting.</p>
+<p>Streams support is a main Flutter Sound feature that is very exciting.</p>
 <ul>
 <li>Flutter Sound can record to a dart stream of audio data (PCM Float32 or PCM Int16). This let you process live audio data in dart, or send these data to a remote host.</li>
 <li>Flutter Sound can playback from a dart stream of audio data (PCM Float32 or PCM Int16). This let play live audio data generated from dart
 (sequencer, sound generator, ...) or from a remote host.</li>
 </ul>
-<p>You can look to the <a href="https://canardoux.github.io/fs-doc/tau/guides/guides_live_streams.html">FS Streams guide</a>.</p>
+<p>You can look to the <a href="https://fs-doc.vercel.app/tau/guides/guides_live_streams.html">FS Streams guide</a>.</p>
 <h2 id="license">License</h2>
 <ul>
-<li>Flutter Sound is published under the <a href="hhttps://canardoux.github.io/fs-doc/tau/LICENSE.html">MPL-2.0 License</a>.</li>
+<li>Flutter Sound is published under the <a href="hhttps://fs-doc.vercel.app/tau/LICENSE.html">MPL-2.0 License</a>.</li>
 <li>Flutter Sound is copyrighted by Dooboolab and Canardoux.</li>
 <li>Flutter Sound is now released under the permissive Mozilla license which has a <strong>weak</strong> <em>copyleft</em> clause: if you modify some of Flutter Sound code you must publish your modifications under the MPL license too. But you may publish your App with any license you want. Even a Proprietary/Closed-Sources License (shame on you!).</li>
 <li>The Tau documentation is published under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">Creative Commons CC BY-NC-SA 4.0</a> license.</li>
@@ -136,8 +136,8 @@ Pray for Ukraine</p>
 <ul>
 <li><code>Flutter Sound 9.x</code> (this legacy plugin developed for many years)</li>
 <li><a href="https://pub.dev/packages/etau">Etau</a> (which is a port on Flutter Web of the W3C Web Audio API)</li>
-<li><a href="https://pub.dev/packages/tauweb">Tauweb</a> (which is the <code>Etau</code> implementation for Flutter Web)</li>
-<li><a href="https://pub.dev/packages/tauwar">Tauwar</a> (which is the <code>Etau</code> implementation for Flutter on mobiles)</li>
+<li><a href="https://pub.dev/packages/tau_web">Tauweb</a> (which is the <code>Etau</code> implementation for Flutter Web)</li>
+<li><a href="https://pub.dev/packages/tau_war">Tauwar</a> (which is the <code>Etau</code> implementation for Flutter on mobiles)</li>
 <li><a href="https://pub.dev/packages/taudio">Taudio</a> (which is (will be) something like Flutter Sound 10.0)</li>
 </ul>
 <h3 id="etauhttpspubdevpackagesetau"><a href="https://pub.dev/packages/etau">Etau</a></h3>
@@ -177,7 +177,7 @@ The W3C recommandation is powerful but simple to use. There are probably no many
 </ul>
 </li>
 </ul>
-<p><code>Taudio</code> is (will be) released under the Gnu Public Licence v3 (GPL v3). This mean that if you don't want, cannot or maynot release your App under a GPL License, you must stuck with Flutter Sound 9.x. This is not a big deal: Flutter Sound v 9.x will be maintain for a forseable future.</p>
+<p><code>Taudio</code> is (will be) released under the Gnu Public Licence v3 (GPL v3). This mean that if you don't want, cannot or maynot release your App under a GPL License, you must stuck with Flutter Sound 9.x. This is not a big deal: Flutter Sound v 9.x will be maintained for a forseable future.</p>
 <p><code>Taudio</code> is a complete rewritten of Flutter Sound 9.x. It keeps compatibility with the Flutter Sound 9.x API but adds a new wrapper above <a href="https://pub.dev/packages/etau">Etau</a>.</p>
 <h2 id="we-need-help">We need help</h2>
 <p>{% include important.html content="
@@ -200,21 +200,21 @@ We greatly appreciate any contributions to the project which can be as simple as
           <h2>Libraries</h2>
         <dl>
           <dt id="helper">
-  <span class="name"><a href="helper/helper-library.html">public/flutter_sound_helper</a></span> 
+  <span class="name"><a href="helper">public/flutter_sound_helper</a></span> 
 
 </dt>
 <dd>
 </dd>
 
           <dt id="player">
-  <span class="name"><a href="player/player-library.html">public/flutter_sound_player</a></span> 
+  <span class="name"><a href="player">public/flutter_sound_player</a></span> 
 
 </dt>
 <dd>Flutter Sound Player
 </dd>
 
           <dt id="recorder">
-  <span class="name"><a href="recorder/recorder-library.html">public/flutter_sound_recorder</a></span> 
+  <span class="name"><a href="recorder">public/flutter_sound_recorder</a></span> 
 
 </dt>
 <dd><strong>THE</strong> Flutter Sound Recorder
@@ -237,9 +237,9 @@ We greatly appreciate any contributions to the project which can be as simple as
     <h5 class="hidden-xs"><span class="package-name">flutter_sound</span> <span class="package-kind">package</span></h5>
     <ol>
       <li class="section-title">Libraries</li>
-      <li><a href="helper/helper-library.html">public/flutter_sound_helper</a></li>
-      <li><a href="player/player-library.html">public/flutter_sound_player</a></li>
-      <li><a href="recorder/recorder-library.html">public/flutter_sound_recorder</a></li>
+      <li><a href="helper">public/flutter_sound_helper</a></li>
+      <li><a href="player">public/flutter_sound_player</a></li>
+      <li><a href="recorder">public/flutter_sound_recorder</a></li>
 </ol>
 
   </div>
@@ -249,7 +249,7 @@ We greatly appreciate any contributions to the project which can be as simple as
 <footer>
   <span class="no-break">
     flutter_sound
-      9.24.0
+      9.24.1
   </span>
   
 </footer>

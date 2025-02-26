@@ -88,8 +88,8 @@ class _SeekState extends State<Seek> {
       setPos(e.position.inMilliseconds);
       setState(() {});
     });
-
   }
+
   void play(FlutterSoundPlayer? player) async {
     await player!.startPlayer(
         fromDataBuffer: _boumData,
@@ -120,7 +120,6 @@ class _SeekState extends State<Seek> {
     await _mPlayer.seekToPlayer(Duration(milliseconds: d.floor()));
     await setPos(d.floor());
   }
-
 
   void disposePlayer() {
     stopPlayer(_mPlayer);

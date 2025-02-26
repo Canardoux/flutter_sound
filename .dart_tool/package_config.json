@@ -3,13 +3,13 @@
   "packages": [
     {
       "name": "characters",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/characters-1.3.0",
+      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/characters-1.4.0",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "3.4"
     },
     {
       "name": "collection",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/collection-1.19.0",
+      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/collection-1.19.1",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
@@ -35,25 +35,25 @@
       "name": "flutter",
       "rootUri": "file:///Volumes/mac-H/larpoux/flutter/packages/flutter",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "3.7"
     },
     {
       "name": "flutter_sound_platform_interface",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_platform_interface-9.24.0",
+      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_platform_interface-9.24.1",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "flutter_sound_web",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_web-9.24.0",
+      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_web-9.24.1",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "3.6"
     },
     {
       "name": "flutter_web_plugins",
       "rootUri": "file:///Volumes/mac-H/larpoux/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
-      "languageVersion": "3.2"
+      "languageVersion": "3.7"
     },
     {
       "name": "logger",
@@ -69,7 +69,7 @@
     },
     {
       "name": "meta",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/meta-1.15.0",
+      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/meta-1.16.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -149,7 +149,7 @@
       "name": "sky_engine",
       "rootUri": "file:///Volumes/mac-H/larpoux/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
-      "languageVersion": "3.2"
+      "languageVersion": "3.7"
     },
     {
       "name": "sprintf",
@@ -200,10 +200,10 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2025-02-20T01:07:40.376520Z",
+  "generated": "2025-02-25T23:02:59.794413Z",
   "generator": "pub",
-  "generatorVersion": "3.6.2",
+  "generatorVersion": "3.7.0",
   "flutterRoot": "file:///Volumes/mac-H/larpoux/flutter",
-  "flutterVersion": "3.27.4",
+  "flutterVersion": "3.29.0",
   "pubCache": "file:///Volumes/mac-H/larpoux/.pub-cache"
 }

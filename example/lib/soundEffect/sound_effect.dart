@@ -58,7 +58,6 @@ class _SoundEffectState extends State<SoundEffect> {
     return asset.buffer.asUint8List();
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -72,7 +71,7 @@ class _SoundEffectState extends State<SoundEffect> {
     disposePlayer();
     super.dispose();
   }
-    // ------------------------------  The real code ----------------------------------
+  // ------------------------------  The real code ----------------------------------
 
   Future<void> initPlayer() async {
     await _mPlayer!.openPlayer();

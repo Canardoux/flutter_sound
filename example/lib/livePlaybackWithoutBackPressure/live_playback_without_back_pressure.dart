@@ -76,13 +76,11 @@ class _LivePlaybackWithoutBackPressureState
   double _mSpeed = 100.0;
   late Uint8List data;
 
-
   @override
   void initState() {
     super.initState();
     initPlayer();
   }
-
 
   @override
   void dispose() {
@@ -102,7 +100,6 @@ class _LivePlaybackWithoutBackPressureState
       _mPlayerIsInited = true;
     });
   }
-
 
   Future<Uint8List> getAssetData(String path) async {
     var asset = await rootBundle.load(path);
@@ -124,7 +121,6 @@ class _LivePlaybackWithoutBackPressureState
       v / 100,
     );
   }
-
 
   // --------------------------  Here is the code to play Live data without back-pressure ----------------------
 
