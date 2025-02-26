@@ -76,13 +76,11 @@ class _LivePlaybackWithoutBackPressureState
   double _mSpeed = 100.0;
   late Uint8List data;
 
-
   @override
   void initState() {
     super.initState();
     initPlayer();
   }
-
 
   @override
   void dispose() {
@@ -103,7 +101,6 @@ class _LivePlaybackWithoutBackPressureState
     });
   }
 
-
   Future<Uint8List> getAssetData(String path) async {
     var asset = await rootBundle.load(path);
     return asset.buffer.asUint8List();
@@ -116,7 +113,7 @@ class _LivePlaybackWithoutBackPressureState
   }
 
   Future<void> setSpeed(double v) async // v is between 0.0 and 100.0
-      {
+  {
     v = v > 200.0 ? 200.0 : v;
     _mSpeed = v;
     setState(() {});
@@ -124,7 +121,6 @@ class _LivePlaybackWithoutBackPressureState
       v / 100,
     );
   }
-
 
   // --------------------------  Here is the code to play Live data without back-pressure ----------------------
 
@@ -178,9 +174,11 @@ class _LivePlaybackWithoutBackPressureState
           child: Column(children: [
             Row(children: [
               ElevatedButton(
-                onPressed:_mPlayerIsInited ? (){
-                  _mPlayer.isPlaying ? stopPlayer() : play();
-                } : null,
+                onPressed: _mPlayerIsInited
+                    ? () {
+                        _mPlayer.isPlaying ? stopPlayer() : play();
+                      }
+                    : null,
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
                 child: Text(_mPlayer.isPlaying ? 'stop' : 'Play'),

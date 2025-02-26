@@ -40,7 +40,6 @@ and because he/she can select to use Float32 PCM or Int16 PCM
 
  */
 
-
 typedef _Fn = void Function();
 
 /// The sample rate
@@ -84,9 +83,7 @@ class _StreamsExampleState extends State<StreamsExample> {
         _mPlayerIsInited = true;
       });
       _openRecorder();
-
     });
-
   }
 
   @override
@@ -120,17 +117,14 @@ class _StreamsExampleState extends State<StreamsExample> {
       setState(() {
         _dbLevel = e.decibels as double;
       });
-
     });
-    await _mRecorder.setSubscriptionDuration(Duration(milliseconds: 100)); // DO NOT FORGET THIS CALL !!!
-
+    await _mRecorder.setSubscriptionDuration(
+        Duration(milliseconds: 100)); // DO NOT FORGET THIS CALL !!!
 
     setState(() {
       _mRecorderIsInited = true;
     });
-
   }
-
 
   /// We have finished with the recorder. Release the subscription
   void cancelRecorderSubscriptions() {
@@ -158,7 +152,8 @@ class _StreamsExampleState extends State<StreamsExample> {
         numChannels: cstNUMBEROFCHANNELS,
         audioSource: AudioSource.defaultSource,
         toStream: recordingDataControllerUint8.sink,
-        bufferSize: 8192,      );
+        bufferSize: 8192,
+      );
     } else
 
     // When not interleaved, the Recorder gives the audio data
@@ -176,9 +171,7 @@ class _StreamsExampleState extends State<StreamsExample> {
           numChannels: cstNUMBEROFCHANNELS,
           audioSource: AudioSource.defaultSource,
           toStreamFloat32: recordingDataControllerF32.sink);
-    } else
-
-    if (codecSelected == Codec.pcm16) {
+    } else if (codecSelected == Codec.pcm16) {
       // The recorder gives the data as Int16List
       bufferInt16 = [];
       recordingDataControllerInt16.close();
@@ -226,8 +219,7 @@ class _StreamsExampleState extends State<StreamsExample> {
         numChannels: cstNUMBEROFCHANNELS,
         interleaved: interleaved,
       );
-      setState(() {
-      });
+      setState(() {});
 
       // When interleaved, we feed the stream with the Uint8List audio data
       // which has been buffered by the recorder in bufferUint8

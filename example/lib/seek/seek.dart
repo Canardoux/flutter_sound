@@ -68,11 +68,10 @@ class _SeekState extends State<Seek> {
     super.dispose();
   }
 
-
   Future<void> init() async {
     _boumData = await getAssetData(_boum);
     await initPlayer();
- }
+  }
 
   Future<Uint8List> getAssetData(String path) async {
     var asset = await rootBundle.load(path);
@@ -83,13 +82,14 @@ class _SeekState extends State<Seek> {
 
   Future<void> initPlayer() async {
     await _mPlayer.openPlayer();
-    await _mPlayer.setSubscriptionDuration(const Duration(milliseconds: 50)); // DON'T FORGET THIS CALL !!!!
+    await _mPlayer.setSubscriptionDuration(
+        const Duration(milliseconds: 50)); // DON'T FORGET THIS CALL !!!!
     _mPlayerSubscription = _mPlayer.onProgress!.listen((e) {
       setPos(e.position.inMilliseconds);
       setState(() {});
     });
-
   }
+
   void play(FlutterSoundPlayer? player) async {
     await player!.startPlayer(
         fromDataBuffer: _boumData,
@@ -120,7 +120,6 @@ class _SeekState extends State<Seek> {
     await _mPlayer.seekToPlayer(Duration(milliseconds: d.floor()));
     await setPos(d.floor());
   }
-
 
   void disposePlayer() {
     stopPlayer(_mPlayer);

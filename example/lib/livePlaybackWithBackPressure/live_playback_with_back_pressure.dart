@@ -119,8 +119,8 @@ class _LivePlaybackWithBackPressureState
     var totalLength = buffer.length;
     while (totalLength > 0 && !_mPlayer!.isStopped) {
       var bsize = totalLength > blockSize ? blockSize : totalLength;
-      await _mPlayer!
-          .feedUint8FromStream(buffer.sublist(lnData, lnData + bsize)); // with await !!!!
+      await _mPlayer!.feedUint8FromStream(
+          buffer.sublist(lnData, lnData + bsize)); // with await !!!!
       lnData += bsize;
       totalLength -= bsize;
     }
