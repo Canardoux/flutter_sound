@@ -30,8 +30,7 @@ import 'package:flutter_sound/flutter_sound.dart';
  *
  */
 
-const _exampleAudioFilePathMP3_1 =
-    'https://fs-doc.vercel.app/extract/05.mp3';
+const _exampleAudioFilePathMP3_1 = 'https://fs-doc.vercel.app/extract/05.mp3';
 
 ///
 typedef Fn = void Function();

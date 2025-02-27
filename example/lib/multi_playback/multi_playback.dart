@@ -201,7 +201,8 @@ class _MultiPlaybackState extends State<MultiPlayback> {
         _playerTxt1 = txt.substring(0, 8);
       });
     });
-    await _mPlayer1!.setSubscriptionDuration(const Duration(milliseconds: 10)); // DON'T FORGET THIS CALL
+    await _mPlayer1!.setSubscriptionDuration(
+        const Duration(milliseconds: 10)); // DON'T FORGET THIS CALL
   }
 
   Fn? getPlaybackFn1() {
@@ -232,7 +233,8 @@ class _MultiPlaybackState extends State<MultiPlayback> {
         _playerTxt2 = txt.substring(0, 8);
       });
     });
-    await _mPlayer2!.setSubscriptionDuration(const Duration(milliseconds: 10)); // DON'T FORGET THIS CALL
+    await _mPlayer2!.setSubscriptionDuration(
+        const Duration(milliseconds: 10)); // DON'T FORGET THIS CALL
   }
 
   Fn? getPlaybackFn2() {

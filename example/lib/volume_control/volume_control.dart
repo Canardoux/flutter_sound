@@ -31,11 +31,9 @@ This example is very basic.
 
  */
 
-const _exampleAudioFilePathMP3_1 =
-    'https://fs-doc.vercel.app/extract/05.mp3';
+const _exampleAudioFilePathMP3_1 = 'https://fs-doc.vercel.app/extract/05.mp3';
 
-const _exampleAudioFilePathWAV_2 =
-    'https://fs-doc.vercel.app/extract/13.wav';
+const _exampleAudioFilePathWAV_2 = 'https://fs-doc.vercel.app/extract/13.wav';
 
 ///
 typedef Fn = void Function();

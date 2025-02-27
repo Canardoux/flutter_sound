@@ -28,8 +28,7 @@ This is a very simple basic example which allows the user to select the Log Leve
 
  */
 
-const _exampleAudioFilePathMP3 =
-    'https://fs-doc.vercel.app/extract/05.mp3';
+const _exampleAudioFilePathMP3 = 'https://fs-doc.vercel.app/extract/05.mp3';
 
 ///
 typedef Fn = void Function();

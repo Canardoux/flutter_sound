@@ -48,7 +48,7 @@
  
 - (void)recordingData: (NSData*)data
 {
-        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo],  @"status": [NSNumber numberWithInt: -1], @"recordingData": data};
+        NSDictionary* dico = @{ @"slotNo": [NSNumber numberWithInt: slotNo],  @"status": [NSNumber numberWithInt: -1], @"data": data};
         [self invokeMethod:@"recordingData" dico: dico ];
   
 }
@@ -62,7 +62,7 @@
 {
     NSMutableDictionary* dico = [[NSMutableDictionary alloc] init];
     int nbChannels = (int)[data count] ;
-    [dico addEntriesFromDictionary: @{ @"slotNo": [NSNumber numberWithInt: slotNo],  @"status": [NSNumber numberWithInt: -1], /* @"data": data,*/ @"channelCount": [NSNumber numberWithInt: nbChannels]}];
+    [dico addEntriesFromDictionary: @{ @"slotNo": [NSNumber numberWithInt: slotNo],  @"status": [NSNumber numberWithInt: -1],  @"data": data, @"channelCount": [NSNumber numberWithInt: nbChannels]}];
     NSMutableArray* ddd =  [NSMutableArray arrayWithCapacity: nbChannels] ;
     for (int i = 0; i < nbChannels; ++i)
     {

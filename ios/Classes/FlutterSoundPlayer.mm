@@ -368,6 +368,7 @@
 }
 
 
+
 - (void)feedInt16:(FlutterMethodCall*)call result: (FlutterResult)result
 {
                 int r = -1;
@@ -375,9 +376,17 @@
                 //assert ([x elementSize] == 1);
                 //NSData* data = [x data];
                 //assert ([data length] == [x elementCount]);
-                NSArray* data = call.arguments[ @"data" ];
+                NSArray* audioData = call.arguments[ @"data" ];
+    
+                NSMutableArray* data = [[NSMutableArray alloc] init];
+                for (int i = 0; i < audioData.count; ++i)
+                {
+                    [data addObject: [audioData[i] data] ];
+                }
+
+    
                 r = [flautoPlayer feed: data interleaved: false];
-                            if (r >= 0)
+                if (r >= 0)
                 {
                         result([NSNumber numberWithInt: r]);
                 } else
