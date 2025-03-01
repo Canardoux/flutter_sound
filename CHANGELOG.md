@@ -1,4 +1,4 @@
-### 9.24.3 - 2025/02/25
+### 9.24.4 - 2025/02/25
 
 - Flutter Sound does not depend any more on etau/tau_web.
 - Modify the hack on iOS when recording to stream because it din't work well with the new Streams! (no idea of the reason)!
