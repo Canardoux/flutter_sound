@@ -673,7 +673,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     //Duration timeSlice = Duration.zero,
     int sampleRate = 44100,
     int numChannels = 1,
-    bool interleaved = true,
+    //bool interleaved = true,
     int bitRate = 16000,
     int bufferSize = 8192,
     bool enableVoiceProcessing = false,
