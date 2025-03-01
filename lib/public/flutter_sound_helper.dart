@@ -325,18 +325,18 @@ class WaveHeader {
       out,
       16,
     ); // Size of the rest of the Subchunk which follows this number. // 18???
-    writeint(out, mFormat);
-    writeint(out, mNumChannels);
+    writeInt(out, mFormat);
+    writeInt(out, mNumChannels);
     writeInt(out, mSampleRate);
     writeInt(
       out,
       (mNumChannels * mSampleRate * mBitsPerSample / 8).floor(),
     ); // Average Bytes per second
-    writeint(
+    writeInt(
       out,
       (mNumChannels * mBitsPerSample / 8).floor(),
     ); // BlocK Align in bytes
-    writeint(out, mBitsPerSample);
+    writeInt(out, mBitsPerSample);
     /* data chunk */
     writeId(out, 'data');
     writeInt(out, mNumBytes);
@@ -355,7 +355,7 @@ class WaveHeader {
   }
 
   /// Push an Int16 in the header
-  static void writeint(EventSink<List<int>> out, int val) async {
+  static void writeInt(EventSink<List<int>> out, int val) async {
     out.add([val >> 0, val >> 8]);
   }
 
