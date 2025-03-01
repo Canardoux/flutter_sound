@@ -87,7 +87,7 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
       public void recordingData ( byte[] data)
       {
 	      Map<String, Object> dic = new HashMap<String, Object>();
-	      dic.put("recordingData", data);
+	      dic.put("data", data);
 	      invokeMethodWithMap("recordingData", true, dic);
       }
 
@@ -95,7 +95,7 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 	public void recordingDataFloat32(ArrayList<float[]> data)
 	{
 		Map<String, Object> dic = new HashMap<String, Object>();
-		dic.put("recordingData", data);
+		dic.put("data", data);
 		invokeMethodWithMap("recordingDataFloat32", true, dic);
 	}
 

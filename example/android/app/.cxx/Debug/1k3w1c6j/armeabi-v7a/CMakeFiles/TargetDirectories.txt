@@ -1,0 +1,2 @@
+/Volumes/mac-H/larpoux/proj/tau-4.sav/flutter_sound/example/android/app/.cxx/Debug/1k3w1c6j/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Volumes/mac-H/larpoux/proj/tau-4.sav/flutter_sound/example/android/app/.cxx/Debug/1k3w1c6j/armeabi-v7a/CMakeFiles/rebuild_cache.dir

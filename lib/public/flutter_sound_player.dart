@@ -204,7 +204,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   @override
   void needSomeFood(int ln) {
     assert(ln >= 0);
-    // On iOS, we manage several buffers (5?).
+    // On iOS, we manage several buffers (4+1?).
     // FlutterSound core sends itself a "audioPlayerFinished" when those buffer are exhausted.
     // This is better than doing it here.
     // On Android we can't manage the buffers used by the OS.
@@ -1050,29 +1050,29 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _bufferSize = bufferSize;
     await _stop(); // Just in case
     _foodStreamController = StreamController();
-    _foodStreamSubscription = _foodStreamController!.stream.listen((food) {
+    _foodStreamSubscription = _foodStreamController!.stream.listen((food) async {
       _foodStreamSubscription!.pause(food.exec(this));
       if (Platform.isAndroid && !_waitForFood) {
-        audioPlayerFinished(PlayerState.isPaused.index);
+         audioPlayerFinished(PlayerState.isPaused.index);
       }
     });
 
     _pcmUint8Controller = StreamController();
     _uint8StreamSubscription = _pcmUint8Controller!.stream.listen((food) async {
-      //_f32StreamSubscription!.pause();
-      await _feed(food); // await?
+      _uint8StreamSubscription!.pause(_feed(food));
+      //await _feed(food); // await?
     });
 
     _pcmF32Controller = StreamController();
     _f32StreamSubscription = _pcmF32Controller!.stream.listen((food) async {
-      //_f32StreamSubscription!.pause();
-      await feedF32FromStream(food); // await?
+      _f32StreamSubscription!.pause(feedF32FromStream(food));
+      //await feedF32FromStream(food); // await?
     });
 
     _pcmInt16Controller = StreamController();
     _int16StreamSubscription = _pcmInt16Controller!.stream.listen((food) async {
-      // TODO feedI16FromStream(food!);
-      await feedInt16FromStream(food); // await?
+      _int16StreamSubscription!.pause(feedInt16FromStream(food));
+      //await feedInt16FromStream(food); // await?
     });
 
     if (_startPlayerCompleter != null) {
@@ -1270,6 +1270,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (isStopped) {
       return 0;
     }
+    /*
     _needSomeFoodCompleter =
         Completer<int>(); // Not completed until the device accept new data
     try {
@@ -1296,6 +1297,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       return _needSomeFoodCompleter!.future;
     }
     return 0;
+     */
+    return _feed(buffer);
   }
 
   /// Stop a playback.

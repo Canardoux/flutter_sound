@@ -53,8 +53,7 @@ gsed -i  "s/^\( *#* *flauto_platform_interface2: *#* *\^*\).*$/\1$VERSION/"     
 gsed -i  "s/^\( *#* *flauto_web: *#* *\^*\).*$/\1$VERSION/"                             example/pubspec.yaml
 
 gsed -i  "s/^\( *libraryVersion = \).*$/\1$VERSION/"                                    ../flutter_sound_core/android/gradle.properties
-#gsed -i  "s/^\( *flutter_sound_lite: *#* *\^*\).*$/\1$VERSION/"                         example/pubspec.yaml
-gsed -i  "s/^\( *## \).*$/\1$VERSION/"                                                  CHANGELOG.md
+####gsed -i  "s/^\( *## \).*$/\1$VERSION/"                                                  CHANGELOG.md
 
 # Probably better in pub
 

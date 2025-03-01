@@ -55,16 +55,17 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
   String? _mPath;
+  StreamSubscription? _recorderSubscription;
+  Codec codecSelected = Codec.pcmFloat32;
 
   bool _mplaybackReady = false;
-  //String? _mPath;
+  double _dbLevel = 0.0;
   StreamSubscription? _mRecordingDataSubscription;
-  //Uint8List buffer = [];
-  ///int sampleRate = 16000;
 
   @override
   void initState() {
     super.initState();
+    setCodec(Codec.pcmFloat32);
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
     _mPlayer!.openPlayer().then((value) {
       setState(() {
@@ -100,7 +101,21 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
 
   static const int cstSAMPLERATE = 16000;
   static const int cstCHANNELNB = 2;
-  static const Codec cstCODEC = Codec.pcm16;
+
+  /// We have finished with the recorder. Release the subscription
+  Future<void> cancelRecorderSubscriptions() async {
+    if (_recorderSubscription != null) {
+      await _recorderSubscription!.cancel();
+      _recorderSubscription = null;
+    }
+
+    if (_mRecordingDataSubscription != null) {
+      await _mRecordingDataSubscription!.cancel();
+    _mRecordingDataSubscription = null;
+    }
+
+  }
+
 
   Future<void> _openRecorder() async {
     var status = await Permission.microphone.request();
@@ -108,6 +123,21 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
       throw RecordingPermissionException('Microphone permission not granted');
     }
     await _mRecorder!.openRecorder();
+
+    _recorderSubscription = _mRecorder!.onProgress!.listen((e) {
+      // pos = e.duration.inMilliseconds; // We do not need this information in this example.
+      setState(() {
+        _dbLevel = e.decibels as double;
+      });
+    });
+    await _mRecorder!.setSubscriptionDuration(
+        const Duration(milliseconds: 100)); // DO NOT FORGET THIS CALL !!!
+
+    setState(() {
+      _mRecorderIsInited = true;
+    });
+
+
     setState(() {
       _mRecorderIsInited = true;
     });
@@ -123,21 +153,28 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     });
     await _mRecorder!.startRecorder(
       toStream: recordingDataController.sink,
-      codec: cstCODEC,
+      codec: codecSelected,
       numChannels: cstCHANNELNB,
       sampleRate: cstSAMPLERATE,
       bufferSize: 8192,
       audioSource: AudioSource.defaultSource,
     );
-    setState(() {});
+    setState(() {
+      _dbLevel = 0.0;
+    });
   }
 
   Future<void> stopRecorder() async {
     await _mRecorder!.stopRecorder();
+
+
     if (_mRecordingDataSubscription != null) {
       await _mRecordingDataSubscription!.cancel();
       _mRecordingDataSubscription = null;
     }
+
+
+
     _mplaybackReady = true;
   }
   // --------------------- (it was very simple, wasn't it ?) -------------------
@@ -161,7 +198,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     await _mPlayer!.startPlayer(
         fromURI: _mPath,
         sampleRate: cstSAMPLERATE,
-        codec: cstCODEC,
+        codec: codecSelected,
         numChannels: cstCHANNELNB,
         whenFinished: () {
           setState(() {});
@@ -185,6 +222,13 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   }
 
   // ----------------------------------------------------------------------------------------------------------------------
+
+
+  void setCodec(Codec? codec) {
+    setState(() {
+      codecSelected = codec!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -218,6 +262,19 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
                   ? 'Recording in progress'
                   : 'Recorder is stopped'),
             ]),
+
+            const SizedBox(
+              height: 20,
+            ),
+            _mRecorder!.isRecording
+                ? LinearProgressIndicator(
+                value: _dbLevel / 100,
+                valueColor:
+                const AlwaysStoppedAnimation<Color>(Colors.indigo),
+                backgroundColor: Colors.limeAccent)
+                : Container(),
+
+
           ]),
         ),
         Container(
@@ -247,6 +304,55 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
                   ? 'Playback in progress'
                   : 'Player is stopped'),
             ])),
+
+        Container(
+          margin: const EdgeInsets.all(3),
+          padding: const EdgeInsets.all(3),
+          height: 110,
+          width: double.infinity,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: const Color(0xFFFAF0E6),
+            border: Border.all(
+              color: Colors.indigo,
+              width: 3,
+            ),
+          ),
+          child: Column(
+            children: [
+              ListTile(
+                tileColor: const Color(0xFFFAF0E6),
+                title: const Text('PCM-Float32'),
+                dense: true,
+
+                //textColor: encoderSupported[Codec.pcmFloat32.index]
+                //? Colors.green
+                //: Colors.grey,
+                leading: Radio<Codec>(
+                  value: Codec.pcmFloat32,
+                  groupValue: codecSelected,
+                  onChanged: setCodec,
+                ),
+              ),
+              ListTile(
+                tileColor: const Color(0xFFFAF0E6),
+                title: const Text('PCM-Int16'),
+                dense: true,
+
+                ///textColor: encoderSupported[Codec.pcm16.index]
+                ///? Colors.green
+                //: Colors.grey,
+                leading: Radio<Codec>(
+                  value: Codec.pcm16,
+                  groupValue: codecSelected,
+                  onChanged: setCodec,
+                ),
+              ),
+             ],
+          ),
+        ),
+
+
       ]);
     }
 

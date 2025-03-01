@@ -181,6 +181,11 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         case "feed":
                         {
                                 aPlayer.feed ( call, result );
+                        } break;
+
+                        case "feedFloat32":
+                        {
+                                aPlayer.feed32 ( call, result );
                         }
                         break;
 

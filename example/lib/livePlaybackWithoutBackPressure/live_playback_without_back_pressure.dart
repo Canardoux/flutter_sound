@@ -48,11 +48,10 @@ For example, if it does a `stopPlayer()` it will loose all the buffered data not
  */
 
 ///
-const int cstSAMPLERATE = 8000;
-const int cstCHANNELNB = 2;
-const Codec cstCODEC = Codec.pcm16; // Codec.pcm16 /// Codec.pcmFloat32;
-const String cstASSET =
+const String kASSET16 =
     'assets/samples/sample_s16_2ch.raw'; // 'assets/samples/sample_f32_2ch.raw'; // 'assets/samples/sample_f32_2ch.raw' // 'assets/samples/sample_f32.raw'
+const String kASSET32 =
+    'assets/samples/sample_f32.raw'; // 'assets/samples/sample_f32_2ch.raw'; // 'assets/samples/sample_f32_2ch.raw' // 'assets/samples/sample_f32.raw'
 
 ///
 const int cstBLOCKSIZE = 4096;
@@ -73,13 +72,22 @@ class _LivePlaybackWithoutBackPressureState
     extends State<LivePlaybackWithoutBackPressure> {
   final FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
+  Codec codecSelected = Codec.pcmFloat32;
   double _mSpeed = 100.0;
+  late Uint8List data16;
+  late Uint8List data32;
   late Uint8List data;
+  late int sampleRate;
+  late bool stereo;
 
   @override
   void initState() {
     super.initState();
-    initPlayer();
+    initPlayer().then ((void _) {
+      setState(() {
+        _mPlayerIsInited = true;
+      });
+    });
   }
 
   @override
@@ -94,11 +102,9 @@ class _LivePlaybackWithoutBackPressureState
   Future<void> initPlayer() async {
     await _mPlayer.openPlayer();
     _mPlayerIsInited = false;
-    data = await getAssetData(cstASSET);
-
-    setState(() {
-      _mPlayerIsInited = true;
-    });
+    data16 = await getAssetData(kASSET16);
+    data32 = await getAssetData(kASSET32);
+    setCodec(Codec.pcmFloat32);
   }
 
   Future<Uint8List> getAssetData(String path) async {
@@ -140,10 +146,10 @@ class _LivePlaybackWithoutBackPressureState
   /// Start the player from a Codec.pcm16 Stream, Stereo
   void play() async {
     await _mPlayer.startPlayerFromStream(
-      codec: cstCODEC, // Codec.pcm16
-      numChannels: cstCHANNELNB, // Stereo
+      codec: codecSelected, // Codec.pcm16
+      numChannels:  stereo ? 2 : 1,
       interleaved: true, // This is the default
-      sampleRate: cstSAMPLERATE, // Sample rate is 8000
+      sampleRate: sampleRate, // Sample rate is 8000
       //bufferSize: cstBLOCKSIZE,
     );
     feedHim(data);
@@ -153,6 +159,22 @@ class _LivePlaybackWithoutBackPressureState
   }
 
   // --------------------- (it was very simple, wasn't it ?) -------------------
+
+
+  void setCodec(Codec? codec) {
+    if (codec == Codec.pcm16) {
+      data = data16;
+      sampleRate = 8000;
+      stereo = true;
+    } else {
+      data = data32;
+      sampleRate = 8000;
+      stereo = false;
+    }
+    setState(() {
+      codecSelected = codec!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -200,6 +222,37 @@ class _LivePlaybackWithoutBackPressureState
             ),
           ]),
         ),
+
+        ListTile(
+          tileColor: const Color(0xFFFAF0E6),
+          title: const Text('PCM-Float32'),
+          dense: true,
+
+          //textColor: encoderSupported[Codec.pcmFloat32.index]
+          //? Colors.green
+          //: Colors.grey,
+          leading: Radio<Codec>(
+            value: Codec.pcmFloat32,
+            groupValue: codecSelected,
+            onChanged: setCodec,
+          ),
+        ),
+        ListTile(
+          tileColor: const Color(0xFFFAF0E6),
+          title: const Text('PCM-Int16'),
+          dense: true,
+
+          ///textColor: encoderSupported[Codec.pcm16.index]
+          ///? Colors.green
+          //: Colors.grey,
+          leading: Radio<Codec>(
+            value: Codec.pcm16,
+            groupValue: codecSelected,
+            onChanged: setCodec,
+          ),
+        ),
+
+
       ]);
     }
 

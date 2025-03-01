@@ -21,7 +21,7 @@ package xyz.canardoux.fluttersound;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.ArrayList;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.Result;
@@ -176,7 +176,7 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		}
 
 		try {
-			boolean b = m_flautoPlayer.startPlayerFromMic( _numChannels, _sampleRate, _bufferSize, enableVoiceProcessing);
+			boolean b = m_flautoPlayer.startPlayerFromMic( t_CODEC.pcm16, _numChannels, true,  _sampleRate, _bufferSize, enableVoiceProcessing);
 			if (b)
 				result.success(getPlayerState());
 			else
@@ -204,12 +204,17 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 			_sampleRate = call.argument("sampleRate");
 		}
 		Integer _numChannels = 1;
+		Boolean interleaved = true;
+		if (call.argument("interleaved") != null) {
+			interleaved = call.argument("interleaved");
+		}
+
 		if (call.argument("numChannels") != null) {
 			_numChannels = call.argument("numChannels");
 		}
 
 		try {
-			boolean b = m_flautoPlayer.startPlayer(codec, _path, dataBuffer, _numChannels, _sampleRate, _bufferSize);
+			boolean b = m_flautoPlayer.startPlayer(codec, _path, dataBuffer, _numChannels, interleaved, _sampleRate, _bufferSize);
 			if (b)
 			{
 				result.success(getPlayerState());
@@ -237,6 +242,23 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 		}
 	}
+
+	public void feed32 ( final MethodCall call, final Result result )
+	{
+		try
+		{
+			ArrayList<float[]> data = call.argument ( "data" );
+
+			int ln = m_flautoPlayer.feed32(data);
+			assert(ln >= 0);
+			result.success (ln);
+		} catch (Exception e)
+		{
+			log(t_LOG_LEVEL.ERROR,  "feed() exception" );
+			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
+		}
+	}
+
 
 
 	public void stopPlayer ( final MethodCall call, final Result result )

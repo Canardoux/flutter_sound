@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Volumes/mac-H/larpoux/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Volumes/mac-H/larpoux/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Volumes/mac-H/larpoux/proj/tau-4.sav/flutter_sound/example/android/app/.cxx/Debug/1k3w1c6j/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Volumes/mac-H/larpoux/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Volumes/mac-H/larpoux/proj/tau-4.sav/flutter_sound/example/android/app/.cxx/Debug/1k3w1c6j/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

@@ -77,6 +77,7 @@ class _StreamsExampleState extends State<StreamsExample> {
   @override
   void initState() {
     super.initState();
+    setCodec(Codec.pcmFloat32);
     // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
     _mPlayer.openPlayer().then((value) {
       setState(() {
@@ -119,7 +120,7 @@ class _StreamsExampleState extends State<StreamsExample> {
       });
     });
     await _mRecorder.setSubscriptionDuration(
-        Duration(milliseconds: 100)); // DO NOT FORGET THIS CALL !!!
+        const Duration(milliseconds: 100)); // DO NOT FORGET THIS CALL !!!
 
     setState(() {
       _mRecorderIsInited = true;
