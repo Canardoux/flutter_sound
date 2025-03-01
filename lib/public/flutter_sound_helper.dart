@@ -317,29 +317,29 @@ class WaveHeader {
   int write(EventSink<List<int>> out) {
     /* RIFF header */
     writeId(out, 'RIFF'); // Chunk ID
-    writeInt(out, 36 + mNumBytes); // Chunk Body Size
+    writeInt32(out, 36 + mNumBytes); // Chunk Body Size
     writeId(out, 'WAVE'); // RIFF Form Type
     /* fmt chunk */
     writeId(out, 'fmt ');
-    writeInt(
+    writeInt32(
       out,
       16,
     ); // Size of the rest of the Subchunk which follows this number. // 18???
-    writeInt(out, mFormat);
-    writeInt(out, mNumChannels);
-    writeInt(out, mSampleRate);
-    writeInt(
+    writeInt16(out, mFormat);
+    writeInt16(out, mNumChannels);
+    writeInt32(out, mSampleRate);
+    writeInt32(
       out,
       (mNumChannels * mSampleRate * mBitsPerSample / 8).floor(),
     ); // Average Bytes per second
-    writeInt(
+    writeInt16(
       out,
       (mNumChannels * mBitsPerSample / 8).floor(),
     ); // BlocK Align in bytes
-    writeInt(out, mBitsPerSample);
+    writeInt16(out, mBitsPerSample);
     /* data chunk */
     writeId(out, 'data');
-    writeInt(out, mNumBytes);
+    writeInt32(out, mNumBytes);
 
     return headerLength;
   }
@@ -350,12 +350,12 @@ class WaveHeader {
   }
 
   /// Push an int32 in the header
-  static void writeInt(EventSink<List<int>> out, int val) {
+  static void writeInt32(EventSink<List<int>> out, int val) {
     out.add([val >> 0, val >> 8, val >> 16, val >> 24]);
   }
 
   /// Push an Int16 in the header
-  static void writeInt(EventSink<List<int>> out, int val) async {
+  static void writeInt16(EventSink<List<int>> out, int val) async {
     out.add([val >> 0, val >> 8]);
   }
 
