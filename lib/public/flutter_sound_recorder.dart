@@ -74,10 +74,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     _logLevel = aLevel;
     _logger = Logger(level: aLevel);
     if (_isInited != Initialized.notInitialized) {
-      FlutterSoundRecorderPlatform.instance.setLogLevel(
-        this,
-        aLevel,
-      );
+      FlutterSoundRecorderPlatform.instance.setLogLevel(this, aLevel);
     }
   }
 
@@ -141,7 +138,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
   /// Instanciate a new Flutter Sound Recorder.
   /// The optional paramater `Level logLevel` specify the Logger Level you are interested by.
-  /* ctor */ FlutterSoundRecorder({Level logLevel = Level.debug}) {
+  /* ctor */
+  FlutterSoundRecorder({Level logLevel = Level.debug}) {
     _logger = Logger(level: logLevel);
     _logger.d('ctor: FlutterSoundRecorder()');
   }
@@ -178,10 +176,9 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   void updateRecorderProgress({int? duration, double? dbPeakLevel}) {
     //int duration = call['duration'] as int;
     //double dbPeakLevel = call['dbPeakLevel'] as double;
-    _recorderController!.add(RecordingDisposition(
-      Duration(milliseconds: duration!),
-      dbPeakLevel,
-    ));
+    _recorderController!.add(
+      RecordingDisposition(Duration(milliseconds: duration!), dbPeakLevel),
+    );
   }
 
   /// Callback from the &tau; Core. Must not be called by the App
@@ -310,7 +307,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     _logger.log(logLevel, msg);
   }
 
-// ----------------------------------------------------------------------------------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------------------------------------------------------------------
 
   Future<void> _waitOpen() async {
     while (_openRecorderCompleter != null) {
@@ -369,8 +366,9 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     }
 
     if (isBGService) {
-      await MethodChannel("xyz.canardoux.flutter_sound_bgservice")
-          .invokeMethod("setBGService");
+      await MethodChannel(
+        "xyz.canardoux.flutter_sound_bgservice",
+      ).invokeMethod("setBGService");
     }
 
     Future<FlutterSoundRecorder?>? r;
@@ -498,8 +496,10 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     // - encode CAF/OPPUS (with native Apple AVFoundation)
     // - remux CAF file format to OPUS file format (with ffmpeg)
 
-    result = await FlutterSoundRecorderPlatform.instance
-        .isEncoderSupported(this, codec: codec);
+    result = await FlutterSoundRecorderPlatform.instance.isEncoderSupported(
+      this,
+      codec: codec,
+    );
     return result;
   }
 
@@ -523,8 +523,10 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Recorder is not open');
     }
-    await FlutterSoundRecorderPlatform.instance
-        .setSubscriptionDuration(this, duration: duration);
+    await FlutterSoundRecorderPlatform.instance.setSubscriptionDuration(
+      this,
+      duration: duration,
+    );
     _logger.d('FS:<--- setSubscriptionDuration ');
   }
 
@@ -598,9 +600,10 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   }) async {
     _logger.d('FS:---> startRecorder ');
 
-
-    if ((codec == Codec.pcm16 || codec == Codec.pcmFloat32) && 
-        (toStream != null || toStreamFloat32 != null || toStreamInt16 != null) &&
+    if ((codec == Codec.pcm16 || codec == Codec.pcmFloat32) &&
+        (toStream != null ||
+            toStreamFloat32 != null ||
+            toStreamInt16 != null) &&
         (!kIsWeb) &&
         Platform
             .isIOS) // This hack is just to have recorder to stream working correctly.
@@ -622,17 +625,16 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       FlutterSoundRecorder recorder = FlutterSoundRecorder();
       await recorder.openRecorder();
       try {
-      await recorder.startRecorder(
-        codec: Codec.aacMP4,
-        toFile: "FlutterSound.mp4",
-        audioSource: audioSource,
-      );
+        await recorder.startRecorder(
+          codec: Codec.aacMP4,
+          toFile: "FlutterSound.mp4",
+          audioSource: audioSource,
+        );
       } catch (e) {
         _logger.d('Hacking the bug we have on iOS when recording to stream');
       }
       await recorder.stopRecorder();
       await recorder.closeRecorder();
-
     }
 
     await stopRecorder(); // No two recorders at the same time
@@ -701,13 +703,15 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
         var codecExt = _getCodecFromExtension(extension);
         if (codecExt == null) {
           throw _CodecNotSupportedException(
-              "File extension '$extension' not recognized.");
+            "File extension '$extension' not recognized.",
+          );
         }
         codec = codecExt;
       }
       if (!_isValidFileExtension(codec, extension)) {
         throw _CodecNotSupportedException(
-            "File extension '$extension' is incorrect for the audio codec '$codec'");
+          "File extension '$extension' is incorrect for the audio codec '$codec'",
+        );
       }
     }
 
@@ -747,24 +751,30 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     _userStreamSinkFloat32 = toStreamFloat32;
     _userStreamSinkInt16 = toStreamInt16;
     if (_startRecorderCompleter != null) {
-      _startRecorderCompleter!
-          .completeError('Killed by another startRecorder()');
+      _startRecorderCompleter!.completeError(
+        'Killed by another startRecorder()',
+      );
     }
     _startRecorderCompleter = Completer<void>();
     completer = _startRecorderCompleter;
     try {
-      await FlutterSoundRecorderPlatform.instance.startRecorder(this,
-          path: toFile,
-          sampleRate: sampleRate,
-          numChannels: numChannels,
-          interleaved: (toStreamFloat32 == null && toStreamInt16 == null),
-          toStream: (toStream != null ||  toStreamFloat32 != null || toStreamInt16 != null),
-          bitRate: bitRate,
-          bufferSize: bufferSize,
-          enableVoiceProcessing: enableVoiceProcessing,
-          codec: codec,
-          timeSlice: Duration.zero, // Not used anymore
-          audioSource: audioSource);
+      await FlutterSoundRecorderPlatform.instance.startRecorder(
+        this,
+        path: toFile,
+        sampleRate: sampleRate,
+        numChannels: numChannels,
+        interleaved: (toStreamFloat32 == null && toStreamInt16 == null),
+        toStream:
+            (toStream != null ||
+                toStreamFloat32 != null ||
+                toStreamInt16 != null),
+        bitRate: bitRate,
+        bufferSize: bufferSize,
+        enableVoiceProcessing: enableVoiceProcessing,
+        codec: codec,
+        timeSlice: Duration.zero, // Not used anymore
+        audioSource: audioSource,
+      );
       _recorderState = RecorderState.isRecording;
     } on Exception {
       _startRecorderCompleter = null;
@@ -890,8 +900,9 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     Completer<void>? completer;
     try {
       if (_pauseRecorderCompleter != null) {
-        _pauseRecorderCompleter!
-            .completeError('Killed by another pauseRecorder()');
+        _pauseRecorderCompleter!.completeError(
+          'Killed by another pauseRecorder()',
+        );
       }
       _pauseRecorderCompleter = Completer<void>();
       completer = _pauseRecorderCompleter;
@@ -931,8 +942,9 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     Completer<void>? completer;
     try {
       if (_resumeRecorderCompleter != null) {
-        _resumeRecorderCompleter!
-            .completeError('Killed by another resumeRecorder()');
+        _resumeRecorderCompleter!.completeError(
+          'Killed by another resumeRecorder()',
+        );
       }
       _resumeRecorderCompleter = Completer<void>();
       completer = _resumeRecorderCompleter;
@@ -965,8 +977,10 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Recorder is not open');
     }
-    var b = await FlutterSoundRecorderPlatform.instance
-        .deleteRecord(this, fileName);
+    var b = await FlutterSoundRecorderPlatform.instance.deleteRecord(
+      this,
+      fileName,
+    );
     _logger.d('FS:<--- deleteRecord');
     return b;
   }
@@ -983,8 +997,10 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Recorder is not open');
     }
-    var url =
-        await FlutterSoundRecorderPlatform.instance.getRecordURL(this, path);
+    var url = await FlutterSoundRecorderPlatform.instance.getRecordURL(
+      this,
+      path,
+    );
     return url;
   }
 }
@@ -1008,9 +1024,7 @@ class RecordingDisposition {
 
   /// use this ctor to as the initial value when building
   /// a `StreamBuilder`
-  RecordingDisposition.zero()
-      : duration = Duration(seconds: 0),
-        decibels = 0;
+  RecordingDisposition.zero() : duration = Duration(seconds: 0), decibels = 0;
 
   /// Return a String representation of the Disposition
   @override

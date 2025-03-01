@@ -1,18 +1,20 @@
-### 9.24.1 - 2025/02/25
+### 9.24.3 - 2025/02/25
 
 - Flutter Sound does not depend any more on etau/tau_web.
-- Fix a bug in the new Streams management : when we play with back pressure, we must pause() on the stream
 - Modify the hack on iOS when recording to stream because it din't work well with the new Streams! (no idea of the reason)!
 - The live examples works again.
 - The new doc uses Jekyll with `Just the Docs` theme (`dart doc` is now integrated inside our documentation).
 - Doc : no more 404 errors. (I hope!).
-- Rewrite the `PCM Dart Streams` guide
-- `Etau` version Alpha ... (only on Web).
-- Clean the examples so that the Flutter Sound API usage is better shown
-- On iOS : Record Streams Int16 not interleaved is now OK
-- On iOS : Playback with flow control works also when not interleaved
-- On iOS : work on Flutter Sound Streams is completely finished and tested. See [this guide](https://fs-doc.vercel.app/tau/guides/guides_live_streams.html)
-- On Android : Record to Stream interleaved OK
+- Rewrite the `PCM Dart Streams` guide.
+- Improve the examples for Stream support by Flutter Sound
+- Record to Stream (see [the Stream support guide](https://fs-doc.vercel.app/tau/guides/guides_live_streams.html))
+    - OK on iOS
+    - OK on Android
+    - Not finished on web
+- Play from Stream (again, see [the Stream support guide](https://fs-doc.vercel.app/tau/guides/guides_live_streams.html))
+    - OK on iOS
+    - OK on Android
+    - Not finished on web
 
 #### TODO
 
@@ -23,16 +25,16 @@
 - On Web : Implement Streams Int16 
 - On web : Streams for codec.pcmFloat32 and not interleaved
 
+- FFlutter Sound web depends on dart:html
 - On iOS : When a playback falls in error, the Completer stays un-completed instead of doing an assertion.
 - On Android : When a playback falls in error, it tries during a very long time before aborting.
 - Little endian vs Big endian
 - Schema of the player/recorder states
-- Clean PlayFromStream code
+- THE API Ref. DOC !
 
 - Pause/Resume for PCM codecs
 - Set Volume for PCM codecs
 - Set Pan for PCM codecs
-- pcmFloat32 and pcmFloat32WAV on Android - Implement Float32 on Android - On Android : Record/Playback PCMFloat32
 - Playback OpusWEBM and VorbisWEBM with remote files on Android
 - Volume Control for pcm codecs (all platforms)
 - Example Pan control

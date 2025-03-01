@@ -31,7 +31,8 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:logger/logger.dart' show Level, Logger;
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart'
-    as FSCodec show Codec;
+    as FSCodec
+    show Codec;
 
 /// The FlutterSoundHelper singleton for accessing the helpers functions
 FlutterSoundHelper flutterSoundHelper =
@@ -42,7 +43,7 @@ class FlutterSoundHelper {
   /// The FlutterSoundHelper Logger
   Logger logger = Logger(level: Level.debug);
 
-// -------------------------------------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------------------------------------
 
   /// The factory which returns the Singleton
   factory FlutterSoundHelper() {
@@ -50,9 +51,10 @@ class FlutterSoundHelper {
   }
 
   /// Private constructor of the Singleton
-  /* ctor */ FlutterSoundHelper._internal();
+  /* ctor */
+  FlutterSoundHelper._internal();
 
-//-------------------------------------------------------------------------------------------------------------
+  //-------------------------------------------------------------------------------------------------------------
 
   void setLogLevel(Level theNewLogLevel) {
     logger = Logger(level: theNewLogLevel);
@@ -83,9 +85,7 @@ class FlutterSoundHelper {
   /// Remove WAVE header in front of the Wave buffer.
   ///
   /// Note that this verb is not asynchronous and does not return a Future.
-  Uint8List waveToPCMBuffer({
-    required Uint8List inputBuffer,
-  }) {
+  Uint8List waveToPCMBuffer({required Uint8List inputBuffer}) {
     return inputBuffer.sublist(WaveHeader.headerLength);
   }
 
@@ -112,7 +112,8 @@ class FlutterSoundHelper {
     var filOut = File(outputFile);
     var size = filIn.lengthSync();
     logger.i(
-        'pcmToWave() : input = $inputFile,  output = $outputFile,  size = $size');
+      'pcmToWave() : input = $inputFile,  output = $outputFile,  size = $size',
+    );
     var sink = filOut.openWrite();
 
     var header = WaveHeader(
@@ -245,8 +246,13 @@ class WaveHeader {
   /// @param bitsPerSample usually 16 for PCM, 8 for ULAW or 8 for ALAW.
   /// @param numBytes size of audio data after this header, in bytes.
   ///
-  WaveHeader(this.mFormat, this.mNumChannels, this.mSampleRate,
-      this.mBitsPerSample, this.mNumBytes);
+  WaveHeader(
+    this.mFormat,
+    this.mNumChannels,
+    this.mSampleRate,
+    this.mBitsPerSample,
+    this.mNumBytes,
+  );
 
   /*
          * Read and initialize a WaveHeader.
@@ -316,17 +322,21 @@ class WaveHeader {
     writeId(out, 'WAVE'); // RIFF Form Type
     /* fmt chunk */
     writeId(out, 'fmt ');
-    writeInt(out,
-        16); // Size of the rest of the Subchunk which follows this number. // 18???
+    writeInt(
+      out,
+      16,
+    ); // Size of the rest of the Subchunk which follows this number. // 18???
     writeint(out, mFormat);
     writeint(out, mNumChannels);
     writeInt(out, mSampleRate);
     writeInt(
-        out,
-        (mNumChannels * mSampleRate * mBitsPerSample / 8)
-            .floor()); // Average Bytes per second
-    writeint(out,
-        (mNumChannels * mBitsPerSample / 8).floor()); // BlocK Align in bytes
+      out,
+      (mNumChannels * mSampleRate * mBitsPerSample / 8).floor(),
+    ); // Average Bytes per second
+    writeint(
+      out,
+      (mNumChannels * mBitsPerSample / 8).floor(),
+    ); // BlocK Align in bytes
     writeint(out, mBitsPerSample);
     /* data chunk */
     writeId(out, 'data');
