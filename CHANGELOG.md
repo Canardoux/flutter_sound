@@ -1,4 +1,4 @@
-### 9.24.4 - 2025/02/25
+### 9.24.4
 
 - Flutter Sound does not depend any more on etau/tau_web.
 - Modify the hack on iOS when recording to stream because it din't work well with the new Streams! (no idea of the reason)!
@@ -48,12 +48,12 @@
 - On iOS : codec==Codec.pcm16WAV  --  startRecorder()  --  The frames are not correctely coded with int16 but float32. This must be fixed.
 - MacOS support
 
-### 9.23.0 - 2025/02/08
+### 9.23.0
 
 - Flutter Sound Web does not depend anymore on JS
 - Flutter Sound does not depend anymore on Audio_Session
 
-### 9.22.0 - 2025/02/07
+### 9.22.0
 
 - iOS : DB Peak level for codec == Codec.pcm16 and codec == Codec.pcmFloat32
 - android : DB Peak level for codec == Codec.pcm16 and codec == Codec.pcmFloat32 - [#1151](https://github.com/Canardoux/flutter_sound/issues/1151)
