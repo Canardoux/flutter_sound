@@ -99,8 +99,9 @@ The Future will be automaticaly waited by <a href="../../player/FlutterSoundPlay
   }
 
   if (isBGService) {
-    await MethodChannel(&quot;xyz.canardoux.flutter_sound_bgservice&quot;)
-        .invokeMethod(&quot;setBGService&quot;);
+    await MethodChannel(
+      &quot;xyz.canardoux.flutter_sound_bgservice&quot;,
+    ).invokeMethod(&quot;setBGService&quot;);
   }
 
   Future&lt;FlutterSoundPlayer?&gt;? r;
@@ -136,7 +137,7 @@ The Future will be automaticaly waited by <a href="../../player/FlutterSoundPlay
 <footer>
   <span class="no-break">
     flutter_sound
-      9.24.1
+      9.24.3
   </span>
   
 </footer>

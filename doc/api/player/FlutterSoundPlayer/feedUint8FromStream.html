@@ -78,6 +78,7 @@
   if (isStopped) {
     return 0;
   }
+  &#47;*
   _needSomeFoodCompleter =
       Completer&lt;int&gt;(); &#47;&#47; Not completed until the device accept new data
   try {
@@ -104,6 +105,8 @@
     return _needSomeFoodCompleter!.future;
   }
   return 0;
+   *&#47;
+  return _feed(buffer);
 }</code></pre>
 </section>
 
@@ -132,7 +135,7 @@
 <footer>
   <span class="no-break">
     flutter_sound
-      9.24.1
+      9.24.3
   </span>
   
 </footer>

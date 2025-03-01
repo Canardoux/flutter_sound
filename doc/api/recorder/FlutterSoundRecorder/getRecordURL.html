@@ -83,8 +83,10 @@ of <a href="../../recorder/FlutterSoundRecorder/stopRecorder.html">stopRecorder(
   if (_isInited != Initialized.fullyInitialized) {
     throw Exception(&#39;Recorder is not open&#39;);
   }
-  var url =
-      await FlutterSoundRecorderPlatform.instance.getRecordURL(this, path);
+  var url = await FlutterSoundRecorderPlatform.instance.getRecordURL(
+    this,
+    path,
+  );
   return url;
 }</code></pre>
 </section>
@@ -114,7 +116,7 @@ of <a href="../../recorder/FlutterSoundRecorder/stopRecorder.html">stopRecorder(
 <footer>
   <span class="no-break">
     flutter_sound
-      9.24.1
+      9.24.3
   </span>
   
 </footer>

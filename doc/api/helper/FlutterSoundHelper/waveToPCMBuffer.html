@@ -75,9 +75,7 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Uint8List waveToPCMBuffer({
-  required Uint8List inputBuffer,
-}) {
+  <pre class="language-dart"><code class="language-dart">Uint8List waveToPCMBuffer({required Uint8List inputBuffer}) {
   return inputBuffer.sublist(WaveHeader.headerLength);
 }</code></pre>
 </section>
@@ -107,7 +105,7 @@
 <footer>
   <span class="no-break">
     flutter_sound
-      9.24.1
+      9.24.3
   </span>
   
 </footer>

@@ -82,8 +82,10 @@ The default is zero.</p>
   if (_isInited != Initialized.fullyInitialized) {
     throw Exception(&#39;Recorder is not open&#39;);
   }
-  await FlutterSoundRecorderPlatform.instance
-      .setSubscriptionDuration(this, duration: duration);
+  await FlutterSoundRecorderPlatform.instance.setSubscriptionDuration(
+    this,
+    duration: duration,
+  );
   _logger.d(&#39;FS:&lt;--- setSubscriptionDuration &#39;);
 }</code></pre>
 </section>
@@ -113,7 +115,7 @@ The default is zero.</p>
 <footer>
   <span class="no-break">
     flutter_sound
-      9.24.1
+      9.24.3
   </span>
   
 </footer>

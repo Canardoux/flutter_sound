@@ -63,10 +63,10 @@
     </ol>
   </div>
 <span class="returntype">void</span>
-<span class="name ">recordingDataInt16</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="recordingDataInt16-param-data"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-typed_data/Int16List-class.html">Int16List</a></span>&gt;</span>?</span> <span class="parameter-name">data</span>, </span></li>
+<span class="name ">recordingDataInt16</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="recordingDataInt16-param-data"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-typed_data/Int16List-class.html">Int16List</a></span>&gt;</span></span> <span class="parameter-name">data</span>, </span></li>
 </ol>})
 
-      <div class="features"><span class="feature">override</span></div>
+      
 
     </section>
     
@@ -76,9 +76,9 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
-void recordingDataInt16({required List&lt;Int16List&gt;? data}) {
-  if (_userStreamSinkFloat32 != null) {
-    _userStreamSinkInt16!.add(data!);
+void recordingDataInt16({required List&lt;Int16List&gt; data}) {
+  if (_userStreamSinkInt16 != null) {
+    _userStreamSinkInt16!.add(data);
   }
 }</code></pre>
 </section>
@@ -108,7 +108,7 @@ void recordingDataInt16({required List&lt;Int16List&gt;? data}) {
 <footer>
   <span class="no-break">
     flutter_sound
-      9.24.1
+      9.24.3
   </span>
   
 </footer>

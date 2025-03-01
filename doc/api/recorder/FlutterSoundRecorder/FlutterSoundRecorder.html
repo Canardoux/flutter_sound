@@ -57,7 +57,7 @@
 
     <section class="multi-line-signature">
       
-      <span class="name ">FlutterSoundRecorder</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="-param-logLevel"><span class="type-annotation"><a href="https://pub.dev/documentation/logger/2.5.0/logger/Level.html">Level</a></span> <span class="parameter-name">logLevel</span> = <span class="default-value">Level.debug</span>, </span></li>
+      <span class="name ">FlutterSoundRecorder</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="-param-logLevel"><span class="type-annotation">dynamic</span> <span class="parameter-name">logLevel</span> = <span class="default-value">Level.debug</span>, </span></li>
 </ol>})
     </section>
     
@@ -70,7 +70,8 @@ The optional paramater <code>Level logLevel</code> specify the Logger Level you 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">&#47;* ctor *&#47; FlutterSoundRecorder({Level logLevel = Level.debug}) {
+  <pre class="language-dart"><code class="language-dart">&#47;* ctor *&#47;
+FlutterSoundRecorder({Level logLevel = Level.debug}) {
   _logger = Logger(level: logLevel);
   _logger.d(&#39;ctor: FlutterSoundRecorder()&#39;);
 }</code></pre>
@@ -101,7 +102,7 @@ The optional paramater <code>Level logLevel</code> specify the Logger Level you 
 <footer>
   <span class="no-break">
     flutter_sound
-      9.24.1
+      9.24.3
   </span>
   
 </footer>

@@ -83,7 +83,7 @@ class _LivePlaybackWithoutBackPressureState
   @override
   void initState() {
     super.initState();
-    initPlayer().then ((void _) {
+    initPlayer().then((void _) {
       setState(() {
         _mPlayerIsInited = true;
       });
@@ -147,7 +147,7 @@ class _LivePlaybackWithoutBackPressureState
   void play() async {
     await _mPlayer.startPlayerFromStream(
       codec: codecSelected, // Codec.pcm16
-      numChannels:  stereo ? 2 : 1,
+      numChannels: stereo ? 2 : 1,
       interleaved: true, // This is the default
       sampleRate: sampleRate, // Sample rate is 8000
       //bufferSize: cstBLOCKSIZE,
@@ -159,7 +159,6 @@ class _LivePlaybackWithoutBackPressureState
   }
 
   // --------------------- (it was very simple, wasn't it ?) -------------------
-
 
   void setCodec(Codec? codec) {
     if (codec == Codec.pcm16) {
@@ -222,7 +221,6 @@ class _LivePlaybackWithoutBackPressureState
             ),
           ]),
         ),
-
         ListTile(
           tileColor: const Color(0xFFFAF0E6),
           title: const Text('PCM-Float32'),
@@ -251,8 +249,6 @@ class _LivePlaybackWithoutBackPressureState
             onChanged: setCodec,
           ),
         ),
-
-
       ]);
     }
 

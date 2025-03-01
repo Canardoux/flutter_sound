@@ -75,7 +75,6 @@ class _LivePlaybackWithBackPressureState
   late bool stereo;
   bool flowControl = true;
 
-
   Future<void> initPlayer() async {
     await _mPlayer.openPlayer();
     _mPlayerIsInited = false;
@@ -122,8 +121,8 @@ class _LivePlaybackWithBackPressureState
 
     await feedHim(data);
     //if (_mPlayer != null) {
-      //await stopPlayer();
-      //setState(() {});
+    //await stopPlayer();
+    //setState(() {});
     //}
   }
 
@@ -160,7 +159,7 @@ class _LivePlaybackWithBackPressureState
   }
 
   Future<void> stopPlayer() async {
-      await _mPlayer.stopPlayer();
+    await _mPlayer.stopPlayer();
   }
 
   Fn? getPlaybackFn() {
@@ -224,7 +223,6 @@ class _LivePlaybackWithBackPressureState
                   : 'Player is stopped'),
             ]),
           ),
-
           ListTile(
             tileColor: const Color(0xFFFAF0E6),
             title: const Text('PCM-Float32'),
@@ -253,8 +251,9 @@ class _LivePlaybackWithBackPressureState
               onChanged: setCodec,
             ),
           ),
-
-          SizedBox( height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           ListTile(
             tileColor: const Color(0xFFFAF0E6),
             title: const Text('With Flow Control'),
@@ -264,11 +263,15 @@ class _LivePlaybackWithBackPressureState
             //? Colors.green
             //: Colors.grey,
             leading: Radio<bool>(
-              value: true,
-              groupValue: flowControl,
-              onChanged: (v){ _mPlayer.stopPlayer().then ( (v) {setState(() { flowControl = true;
-              });} );}
-            ),
+                value: true,
+                groupValue: flowControl,
+                onChanged: (v) {
+                  _mPlayer.stopPlayer().then((v) {
+                    setState(() {
+                      flowControl = true;
+                    });
+                  });
+                }),
           ),
           ListTile(
             tileColor: const Color(0xFFFAF0E6),
@@ -279,15 +282,16 @@ class _LivePlaybackWithBackPressureState
             ///? Colors.green
             //: Colors.grey,
             leading: Radio<bool>(
-              value: false,
-              groupValue: flowControl,
-              onChanged: (v){ _mPlayer.stopPlayer().then ( (v) {setState(() { flowControl = false;
-              });} );}
-
-            ),
+                value: false,
+                groupValue: flowControl,
+                onChanged: (v) {
+                  _mPlayer.stopPlayer().then((v) {
+                    setState(() {
+                      flowControl = false;
+                    });
+                  });
+                }),
           ),
-
-
         ],
       );
     }

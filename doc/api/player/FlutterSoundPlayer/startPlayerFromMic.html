@@ -101,12 +101,13 @@ If you want to process the data before playing them, actually you must define a 
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@deprecated
-Future&lt;void&gt; startPlayerFromMic(
-    {int sampleRate = 44000, &#47;&#47; The default value is probably a good choice.
-    int numChannels =
-        1, &#47;&#47; 1 for monophony, 2 for stereophony (actually only monophony is supported).
-    int bufferSize = 8192,
-    enableVoiceProcessing = false}) async {
+Future&lt;void&gt; startPlayerFromMic({
+  int sampleRate = 44000, &#47;&#47; The default value is probably a good choice.
+  int numChannels =
+      1, &#47;&#47; 1 for monophony, 2 for stereophony (actually only monophony is supported).
+  int bufferSize = 8192,
+  enableVoiceProcessing = false,
+}) async {
   await _lock.synchronized(() async {
     await _startPlayerFromMic(
       sampleRate: sampleRate,
@@ -143,7 +144,7 @@ Future&lt;void&gt; startPlayerFromMic(
 <footer>
   <span class="no-break">
     flutter_sound
-      9.24.1
+      9.24.3
   </span>
   
 </footer>

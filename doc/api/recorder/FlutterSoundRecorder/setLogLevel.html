@@ -58,7 +58,7 @@
     <section class="multi-line-signature">
       
 <span class="returntype">void</span>
-<span class="name ">setLogLevel</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="setLogLevel-param-aLevel"><span class="type-annotation"><a href="https://pub.dev/documentation/logger/2.5.0/logger/Level.html">Level</a></span> <span class="parameter-name">aLevel</span></span></li>
+<span class="name ">setLogLevel</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="setLogLevel-param-aLevel"><span class="type-annotation">dynamic</span> <span class="parameter-name">aLevel</span></span></li>
 </ol>)
 
       
@@ -78,10 +78,7 @@ Seldom used. Most of the time the Log Level is specified during the constructor.
   _logLevel = aLevel;
   _logger = Logger(level: aLevel);
   if (_isInited != Initialized.notInitialized) {
-    FlutterSoundRecorderPlatform.instance.setLogLevel(
-      this,
-      aLevel,
-    );
+    FlutterSoundRecorderPlatform.instance.setLogLevel(this, aLevel);
   }
 }</code></pre>
 </section>
@@ -111,7 +108,7 @@ Seldom used. Most of the time the Log Level is specified during the constructor.
 <footer>
   <span class="no-break">
     flutter_sound
-      9.24.1
+      9.24.3
   </span>
   
 </footer>

@@ -69,7 +69,7 @@
   <p>Delete a temporary file</p>
 <p>Delete a temporary file created during <a href="../../recorder/FlutterSoundRecorder/startRecorder.html">startRecorder()</a>.
 the argument must be a file name without any path.
-This function is seldom used, because <a href="../../recorder/FlutterSoundRecorder/closeRecorder.html">closeRecorder()</a> delete automaticaly
+This function is seldom used, because <code>closeAudioSession()</code> delete automaticaly
 all the temporary files created.</p>
 <p><em>Example:</em></p>
 <pre class="language-dart"><code class="language-dart">     await myRecorder.startRecorder(toFile: 'foo'); // This is a temporary file, because no slash '/' in the argument
@@ -88,8 +88,10 @@ all the temporary files created.</p>
   if (_isInited != Initialized.fullyInitialized) {
     throw Exception(&#39;Recorder is not open&#39;);
   }
-  var b = await FlutterSoundRecorderPlatform.instance
-      .deleteRecord(this, fileName);
+  var b = await FlutterSoundRecorderPlatform.instance.deleteRecord(
+    this,
+    fileName,
+  );
   _logger.d(&#39;FS:&lt;--- deleteRecord&#39;);
   return b;
 }</code></pre>
@@ -120,7 +122,7 @@ all the temporary files created.</p>
 <footer>
   <span class="no-break">
     flutter_sound
-      9.24.1
+      9.24.3
   </span>
   
 </footer>

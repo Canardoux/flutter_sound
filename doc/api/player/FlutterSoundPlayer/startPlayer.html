@@ -58,7 +58,7 @@
     <section class="multi-line-signature">
       
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a>?</span>&gt;</span></span>
-<span class="name ">startPlayer</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="startPlayer-param-codec"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.24.1/flutter_sound_platform_interface/Codec.html">Codec</a></span> <span class="parameter-name">codec</span> = <span class="default-value">Codec.aacADTS</span>, </span></li>
+<span class="name ">startPlayer</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="startPlayer-param-codec"><span class="type-annotation">dynamic</span> <span class="parameter-name">codec</span> = <span class="default-value">Codec.aacADTS</span>, </span></li>
 <li><span class="parameter" id="startPlayer-param-sampleRate"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">sampleRate</span> = <span class="default-value">16000</span>, </span></li>
 <li><span class="parameter" id="startPlayer-param-numChannels"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">numChannels</span> = <span class="default-value">1</span>, </span></li>
 <li><span class="parameter" id="startPlayer-param-fromURI"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">fromURI</span>, </span></li>
@@ -141,25 +141,23 @@ But this parameter is necessary when Flutter Sound must do format conversion (fo
   TWhenFinished? whenFinished,
 }) async {
   Duration? r;
-  await _lock.synchronized(
-    () async {
-      &#47;&#47;!!!  try {
-      r = await _startPlayer(
-        fromURI: fromURI,
-        fromDataBuffer: fromDataBuffer,
-        codec: codec,
-        sampleRate: sampleRate,
-        numChannels: numChannels,
-        whenFinished: whenFinished,
-      );
-      &#47;&#47;!!!}
-      &#47;&#47;!!!  on Exception {
-      &#47;&#47;r = Duration.zero;
-      &#47;&#47;!!!    await _stop();
-      &#47;&#47;!!!    rethrow;
-      &#47;&#47;!!!  };
-    },
-  ); &#47;&#47; timeout: Duration(seconds: 10));
+  await _lock.synchronized(() async {
+    &#47;&#47;!!!  try {
+    r = await _startPlayer(
+      fromURI: fromURI,
+      fromDataBuffer: fromDataBuffer,
+      codec: codec,
+      sampleRate: sampleRate,
+      numChannels: numChannels,
+      whenFinished: whenFinished,
+    );
+    &#47;&#47;!!!}
+    &#47;&#47;!!!  on Exception {
+    &#47;&#47;r = Duration.zero;
+    &#47;&#47;!!!    await _stop();
+    &#47;&#47;!!!    rethrow;
+    &#47;&#47;!!!  };
+  }); &#47;&#47; timeout: Duration(seconds: 10));
   return r;
 }</code></pre>
 </section>
@@ -189,7 +187,7 @@ But this parameter is necessary when Flutter Sound must do format conversion (fo
 <footer>
   <span class="no-break">
     flutter_sound
-      9.24.1
+      9.24.3
   </span>
   
 </footer>

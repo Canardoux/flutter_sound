@@ -83,17 +83,21 @@
   writeId(out, &#39;WAVE&#39;); &#47;&#47; RIFF Form Type
   &#47;* fmt chunk *&#47;
   writeId(out, &#39;fmt &#39;);
-  writeInt(out,
-      16); &#47;&#47; Size of the rest of the Subchunk which follows this number. &#47;&#47; 18???
+  writeInt(
+    out,
+    16,
+  ); &#47;&#47; Size of the rest of the Subchunk which follows this number. &#47;&#47; 18???
   writeint(out, mFormat);
   writeint(out, mNumChannels);
   writeInt(out, mSampleRate);
   writeInt(
-      out,
-      (mNumChannels * mSampleRate * mBitsPerSample &#47; 8)
-          .floor()); &#47;&#47; Average Bytes per second
-  writeint(out,
-      (mNumChannels * mBitsPerSample &#47; 8).floor()); &#47;&#47; BlocK Align in bytes
+    out,
+    (mNumChannels * mSampleRate * mBitsPerSample &#47; 8).floor(),
+  ); &#47;&#47; Average Bytes per second
+  writeint(
+    out,
+    (mNumChannels * mBitsPerSample &#47; 8).floor(),
+  ); &#47;&#47; BlocK Align in bytes
   writeint(out, mBitsPerSample);
   &#47;* data chunk *&#47;
   writeId(out, &#39;data&#39;);
@@ -128,7 +132,7 @@
 <footer>
   <span class="no-break">
     flutter_sound
-      9.24.1
+      9.24.3
   </span>
   
 </footer>

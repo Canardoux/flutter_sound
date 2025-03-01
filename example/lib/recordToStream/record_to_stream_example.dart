@@ -111,11 +111,9 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
 
     if (_mRecordingDataSubscription != null) {
       await _mRecordingDataSubscription!.cancel();
-    _mRecordingDataSubscription = null;
+      _mRecordingDataSubscription = null;
     }
-
   }
-
 
   Future<void> _openRecorder() async {
     var status = await Permission.microphone.request();
@@ -136,7 +134,6 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
     setState(() {
       _mRecorderIsInited = true;
     });
-
 
     setState(() {
       _mRecorderIsInited = true;
@@ -167,13 +164,10 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   Future<void> stopRecorder() async {
     await _mRecorder!.stopRecorder();
 
-
     if (_mRecordingDataSubscription != null) {
       await _mRecordingDataSubscription!.cancel();
       _mRecordingDataSubscription = null;
     }
-
-
 
     _mplaybackReady = true;
   }
@@ -223,7 +217,6 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
 
   // ----------------------------------------------------------------------------------------------------------------------
 
-
   void setCodec(Codec? codec) {
     setState(() {
       codecSelected = codec!;
@@ -262,19 +255,16 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
                   ? 'Recording in progress'
                   : 'Recorder is stopped'),
             ]),
-
             const SizedBox(
               height: 20,
             ),
             _mRecorder!.isRecording
                 ? LinearProgressIndicator(
-                value: _dbLevel / 100,
-                valueColor:
-                const AlwaysStoppedAnimation<Color>(Colors.indigo),
-                backgroundColor: Colors.limeAccent)
+                    value: _dbLevel / 100,
+                    valueColor:
+                        const AlwaysStoppedAnimation<Color>(Colors.indigo),
+                    backgroundColor: Colors.limeAccent)
                 : Container(),
-
-
           ]),
         ),
         Container(
@@ -304,7 +294,6 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
                   ? 'Playback in progress'
                   : 'Player is stopped'),
             ])),
-
         Container(
           margin: const EdgeInsets.all(3),
           padding: const EdgeInsets.all(3),
@@ -348,11 +337,9 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
                   onChanged: setCodec,
                 ),
               ),
-             ],
+            ],
           ),
         ),
-
-
       ]);
     }
 

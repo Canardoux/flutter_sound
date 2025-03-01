@@ -764,10 +764,9 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
         sampleRate: sampleRate,
         numChannels: numChannels,
         interleaved: (toStreamFloat32 == null && toStreamInt16 == null),
-        toStream:
-            (toStream != null ||
-                toStreamFloat32 != null ||
-                toStreamInt16 != null),
+        toStream: (toStream != null ||
+            toStreamFloat32 != null ||
+            toStreamInt16 != null),
         bitRate: bitRate,
         bufferSize: bufferSize,
         enableVoiceProcessing: enableVoiceProcessing,
@@ -1024,7 +1023,9 @@ class RecordingDisposition {
 
   /// use this ctor to as the initial value when building
   /// a `StreamBuilder`
-  RecordingDisposition.zero() : duration = Duration(seconds: 0), decibels = 0;
+  RecordingDisposition.zero()
+      : duration = Duration(seconds: 0),
+        decibels = 0;
 
   /// Return a String representation of the Disposition
   @override

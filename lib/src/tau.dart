@@ -118,6 +118,7 @@ abstract class Food {
 /// FoodData are the regular objects received from a recorder when recording to a Dart Stream
 /// or sent to a player when playing from a Dart Stream
 @deprecated
+
 /// @nodoc
 class FoodData extends Food {
   /// the data to be sent (or received)

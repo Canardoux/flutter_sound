@@ -76,7 +76,7 @@ Delete all the temporary files created with <code>startRecorder()</code></p>
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; closeRecorder() async {
   await _lock.synchronized(() {
-    return _closeRecorder();
+    return _closeAudioSession();
   });
 }</code></pre>
 </section>
@@ -106,7 +106,7 @@ Delete all the temporary files created with <code>startRecorder()</code></p>
 <footer>
   <span class="no-break">
     flutter_sound
-      9.24.1
+      9.24.3
   </span>
   
 </footer>

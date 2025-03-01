@@ -78,7 +78,7 @@ An exception is thrown if the Recorder is not currently paused.</p>
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; resumeRecorder() async {
-  _logger.d(&#39;FS:---&gt; resumeRecorder &#39;);
+  _logger.d(&#39;FS:---&gt; pausePlayer &#39;);
   await _lock.synchronized(() async {
     await _resumeRecorder();
   });
@@ -111,7 +111,7 @@ An exception is thrown if the Recorder is not currently paused.</p>
 <footer>
   <span class="no-break">
     flutter_sound
-      9.24.1
+      9.24.3
   </span>
   
 </footer>
