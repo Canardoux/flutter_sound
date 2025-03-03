@@ -111,7 +111,7 @@ class _LivePlaybackWithBackPressureState
 
   /// Start the player from a Codec.pcm16 Stream, stereo
   void play() async {
-    assert(_mPlayerIsInited && _mPlayer!.isStopped);
+    assert(_mPlayerIsInited && _mPlayer.isStopped);
     await _mPlayer.startPlayerFromStream(
       codec: codecSelected,
       numChannels: stereo ? 2 : 1,
@@ -213,12 +213,12 @@ class _LivePlaybackWithBackPressureState
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
+                child: Text(_mPlayer.isPlaying ? 'Stop' : 'Play'),
               ),
               const SizedBox(
                 width: 20,
               ),
-              Text(_mPlayer!.isPlaying
+              Text(_mPlayer.isPlaying
                   ? 'Playback in progress'
                   : 'Player is stopped'),
             ]),
@@ -251,7 +251,7 @@ class _LivePlaybackWithBackPressureState
               onChanged: setCodec,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           ListTile(

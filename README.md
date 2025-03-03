@@ -142,9 +142,8 @@ The current Flutter Sound version is 9.x. [Taudio](https://pub.dev/packages/taud
 
 ## We need help
 
-{% include important.html content="
+{: .important }
 We greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation.
-"%}
 
 Actually, I am almost alone to maintain and develop three important projects :
 - Etau
@@ -155,5 +154,6 @@ This is too much on my shoulders. We desesperatly need at least one other develo
 
 ## Thanks
 
+{: .note }
 ### If you like my work, you can click on the `Thumb up` button of the top of the [pub.dev page](https://pub.dev/packages/flutter_sound).
 This is free and this will reassure me that **I do not spend most of my life for nobody**.

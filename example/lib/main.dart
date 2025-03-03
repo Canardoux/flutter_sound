@@ -310,7 +310,7 @@ The biggest interest of this Demo is that it shows most of the features of Flutt
 * Plays from various media with various codecs
 * Records to various media with various codecs
 * Pause and Resume control from recording or playback
-* Shows how to use a stream for getting the playback \(or recoding\) events
+* Shows how to use a stream for getting the playback (or recoding) events
 * Shows how to specify a callback function when a playback is terminated,
 * Shows how to record to a Stream or playback from a stream
 * ...

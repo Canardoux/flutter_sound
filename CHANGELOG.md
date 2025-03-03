@@ -1,3 +1,10 @@
+### 9.24.5
+
+- On Android : Record to Stream Float32 was incorect
+- On Android : Record to Stream Not Interleaved mode was incorrect
+- On Android : Play from Stream Float32 was incorect
+- On Android : Play from Stream Not interleaved mode was incorect
+
 ### 9.24.4
 
 - Flutter Sound does not depend any more on etau/tau_web.

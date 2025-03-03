@@ -1,5 +1,5 @@
 name: flutter_sound
-version: 9.24.4
+version: 9.24.5
 description: 'A complete api for audio playback and recording. Member of the `Tau` Family. Audio player, audio recorder. Pray for Ukraine.'
 #author: canardoux<larpoux@gmail.com>
 homepage: https://flutter-sound.canardoux.xyz/
@@ -20,10 +20,10 @@ dependencies:
   flutter:
     sdk: flutter
 # ============================================================================
-  flutter_sound_platform_interface: 9.24.4
+  flutter_sound_platform_interface: 9.24.5
 #    path: ../flutter_sound_platform_interface # Flutter Sound Dir
 
-  flutter_sound_web: 9.24.4
+  flutter_sound_web: 9.24.5
 #    path: ../flutter_sound_web # Flutter Sound Dir
 
 ##  etau: ^0.0.14-alpha.5

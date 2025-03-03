@@ -100,6 +100,14 @@ public class FlutterSoundRecorder extends FlutterSoundSession implements FlautoR
 	}
 
 
+	public void recordingDataInt16(ArrayList<byte[]> data)
+	{
+		Map<String, Object> dic = new HashMap<String, Object>();
+		dic.put("data", data);
+		invokeMethodWithMap("recordingDataInt16", true, dic);
+	}
+
+
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------
 

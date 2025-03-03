@@ -243,13 +243,13 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		}
 	}
 
-	public void feed32 ( final MethodCall call, final Result result )
+	public void feedInt16 ( final MethodCall call, final Result result )
 	{
 		try
 		{
-			ArrayList<float[]> data = call.argument ( "data" );
+			ArrayList<byte[]> data = call.argument ( "data" );
 
-			int ln = m_flautoPlayer.feed32(data);
+			int ln = m_flautoPlayer.feedInt16(data); // TODO
 			assert(ln >= 0);
 			result.success (ln);
 		} catch (Exception e)
@@ -258,6 +258,23 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
 		}
 	}
+
+	public void feedFloat32 ( final MethodCall call, final Result result )
+	{
+		try
+		{
+			ArrayList<float[]> data = call.argument ( "data" );
+
+			int ln = m_flautoPlayer.feedFloat32(data);
+			assert(ln >= 0);
+			result.success (ln);
+		} catch (Exception e)
+		{
+			log(t_LOG_LEVEL.ERROR,  "feed() exception" );
+			result.error ( ERR_UNKNOWN, ERR_UNKNOWN, e.getMessage () );
+		}
+	}
+
 
 
 

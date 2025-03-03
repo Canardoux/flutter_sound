@@ -153,7 +153,7 @@ class _LivePlaybackWithoutBackPressureState
       //bufferSize: cstBLOCKSIZE,
     );
     feedHim(data);
-    _mPlayer?.logger.d('Finished');
+    _mPlayer.logger.d('Finished');
 
     setState(() {});
   }

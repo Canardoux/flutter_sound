@@ -178,6 +178,11 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
                         break;
 
 
+                        case "feedInt16":
+                        {
+                                aPlayer.feedInt16 ( call, result );
+                        } break;
+
                         case "feed":
                         {
                                 aPlayer.feed ( call, result );
@@ -185,9 +190,10 @@ class FlutterSoundPlayerManager extends FlutterSoundManager
 
                         case "feedFloat32":
                         {
-                                aPlayer.feed32 ( call, result );
+                                aPlayer.feedFloat32 ( call, result );
                         }
                         break;
+
 
                         case "setLogLevel":
                         {

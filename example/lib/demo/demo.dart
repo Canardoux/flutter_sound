@@ -500,7 +500,7 @@ class _MyAppState extends State<Demo> {
     while (totalLength > 0 && !playerModule.isStopped) {
       var bsize = totalLength > blockSize ? blockSize : totalLength;
       await playerModule
-          .feedFromStream(buffer.sublist(lnData, lnData + bsize)); // await !!!!
+          .feedUint8FromStream(buffer.sublist(lnData, lnData + bsize)); // await !!!!
       lnData += bsize;
       totalLength -= bsize;
     }
