@@ -1,9 +1,9 @@
 ### 9.24.5
 
-- On Android : Record to Stream Float32 was incorect
+- On Android : Record to Stream Float32 was incorrect
 - On Android : Record to Stream Not Interleaved mode was incorrect
-- On Android : Play from Stream Float32 was incorect
-- On Android : Play from Stream Not interleaved mode was incorect
+- On Android : Play from Stream Float32 was incorrect
+- On Android : Play from Stream Not interleaved mode was incorrect
 
 ### 9.24.4
 
