@@ -39,13 +39,13 @@
     },
     {
       "name": "flutter_sound_platform_interface",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_platform_interface-9.24.4",
+      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_platform_interface-9.24.5",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "flutter_sound_web",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_web-9.24.4",
+      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_web-9.24.5",
       "packageUri": "lib/",
       "languageVersion": "3.6"
     },
@@ -200,7 +200,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2025-03-01T06:56:12.682743Z",
+  "generated": "2025-03-03T13:52:05.164515Z",
   "generator": "pub",
   "generatorVersion": "3.7.0",
   "flutterRoot": "file:///Volumes/mac-H/larpoux/flutter",
