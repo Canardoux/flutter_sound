@@ -1,3 +1,7 @@
+### 9.25.0
+
+Implementation of setVolume() during play to Stream on iOS.
+
 ### 9.24.5
 
 - On Android : Record to Stream Float32 was incorrect

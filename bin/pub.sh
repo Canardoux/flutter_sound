@@ -281,7 +281,7 @@ if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push  -f origin $VERSION
 fi
-cd ../flutter_soundd
+cd ../flutter_sound
 
 echo 'E.O.J'
 exit 0
