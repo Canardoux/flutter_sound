@@ -2,3 +2,4 @@
 linter:
   rules:
     lines_longer_than_80_chars: false
+include: package:lints/recommended.yaml

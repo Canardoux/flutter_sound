@@ -34,7 +34,7 @@
 /// - [SoundRecorderUI]
 /// ------------------------------------------------------------------
 /// @nodoc
-library Flutter_Sound;
+library;
 
 import 'dart:typed_data' show Uint8List;
 import 'package:logger/logger.dart' show Level, Logger;
@@ -105,7 +105,8 @@ const List<List<String>> validExt = [
 /// to a player when playing data from astream or received by a recorder
 /// when recording to a Dart Stream.
 ///
-/// @deprecated
+@Deprecated('Don\'t use anymore Food, but directely your buffers')
+
 /// @nodoc
 abstract class Food {
   /// use internally by Flutter Sound
@@ -117,7 +118,7 @@ abstract class Food {
 
 /// FoodData are the regular objects received from a recorder when recording to a Dart Stream
 /// or sent to a player when playing from a Dart Stream
-@deprecated
+@Deprecated('Don\'t use anymore Food, but directely your buffers')
 
 /// @nodoc
 class FoodData extends Food {
@@ -136,7 +137,7 @@ class FoodData extends Food {
 /// foodEvent is a special kind of food which allows to re-synchronize a stream
 /// with a player that play from a Dart Stream
 /// @nodoc
-@deprecated
+@Deprecated('Don\'t use anymore Food, but directely your buffers')
 class FoodEvent extends Food {
   /// The callback to fire when this food is synchronized with the player
   Function on;

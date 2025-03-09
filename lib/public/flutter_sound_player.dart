@@ -25,7 +25,7 @@
 /// The [FlutterSoundPlayer] class can have multiple instances at the same time. Each instance is used to control the sound of its source.
 ///
 /// ------------------------
-library player;
+library;
 
 import 'dart:async';
 import 'dart:core';
@@ -38,8 +38,8 @@ import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_i
 import 'package:logger/logger.dart' show Level, Logger;
 import 'package:path_provider/path_provider.dart';
 import 'package:synchronized/synchronized.dart';
-import 'package:flutter/foundation.dart' as Foundation;
-import 'package:flutter/src/services/platform_channel.dart';
+import 'package:flutter/foundation.dart' as foundation;
+import 'package:flutter/services.dart';
 import '../flutter_sound.dart';
 
 /// The possible states of the Player.
@@ -137,7 +137,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   static bool _reStarted = true;
 
   ///
-  ///@deprecated
   StreamSubscription<Food>?
       _foodStreamSubscription; // ignore: cancel_subscriptions
 
@@ -153,7 +152,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   StreamSubscription<Uint8List>?
       _uint8StreamSubscription; // ignore: cancel_subscriptions
 
-  //
   StreamController<Food>? _foodStreamController; //ignore: close_sinks
 
   StreamController<List<Float32List>>? _pcmF32Controller; //ignore: close_sinks
@@ -467,9 +465,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// myPlayer.foodSink.add(FoodData(myOtherBuffer));
   /// myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
   /// ```
-  @deprecated
-  StreamSink<Food>? get foodSink =>
-      _foodStreamController != null ? _foodStreamController!.sink : null;
+  @Deprecated('Use [uint8ListSink]')
+  StreamSink<Food>? get foodSink => _foodStreamController?.sink;
 
   /// Getter of one of the three StreamSink that you may use to feed a player from Stream.
   ///
@@ -506,8 +503,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// - You can also look to this [small guide](/tau/guides/guides_live_streams.html) if you need precisions.
   ///
   /// ----------------------------------------------------------------------------------------------
-  StreamSink<Uint8List>? get uint8ListSink =>
-      _pcmUint8Controller != null ? _pcmUint8Controller!.sink : null;
+  StreamSink<Uint8List>? get uint8ListSink => _pcmUint8Controller?.sink;
 
   /// Getter of one of the three StreamSink that you may use to feed a player from Stream.
   ///
@@ -544,8 +540,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// - You can also look to this [small guide](/tau/guides/guides_live_streams.html) if you need precisions.
   ///
   /// ----------------------------------------------------------------------------------------------
-  StreamSink<List<Float32List>>? get float32Sink =>
-      _pcmF32Controller != null ? _pcmF32Controller!.sink : null;
+  StreamSink<List<Float32List>>? get float32Sink => _pcmF32Controller?.sink;
 
   /// Getter of one of the three StreamSink that you may use to feed a player from Stream.
   ///
@@ -581,8 +576,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// - You can also look to this [small guide](/tau/guides/guides_live_streams.html) if you need precisions.
   ///
   /// ----------------------------------------------------------------------------------------------
-  StreamSink<List<Int16List>>? get int16Sink =>
-      _pcmInt16Controller != null ? _pcmInt16Controller!.sink : null;
+  StreamSink<List<Int16List>>? get int16Sink => _pcmInt16Controller?.sink;
 
   /// The stream side of the [onProgress] Controller
   ///
@@ -619,38 +613,11 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///
   /// -----------------------------------------------------------------------------------------------
   ///
-  Stream<PlaybackDisposition>? get onProgress =>
-      _playerController != null ? _playerController!.stream : null;
+  Stream<PlaybackDisposition>? get onProgress => _playerController?.stream;
 
   /// Return true if the Player has been open.
   bool isOpen() {
     return (_isInited == Initialized.fullyInitialized);
-  }
-
-  /// Provides a stream of dispositions which
-  /// provide updated position and duration
-  /// as the audio is played.
-  ///
-  /// The duration may start out as zero until the
-  /// media becomes available.
-  /// The `interval` dictates the minimum interval between events
-  /// being sent to the stream.
-  ///
-  /// The minimum interval supported is 100ms.
-  ///
-  /// Note: the underlying stream has a minimum frequency of 100ms
-  /// so multiples of 100ms will give you the most consistent timing
-  /// source.
-  ///
-  /// Note: all calls to [dispositionStream] against this player will
-  /// share a single interval which will controlled by the last
-  /// call to this method.
-  ///
-  /// If you pause the audio then no updates will be sent to the
-  /// stream.
-  @deprecated
-  Stream<PlaybackDisposition>? dispositionStream() {
-    return _playerController != null ? _playerController!.stream : null;
   }
 
   // User callback "whenFinished:"
@@ -761,7 +728,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       throw Exception('Player is already initialized');
     }
 
-    if (_reStarted && Foundation.kDebugMode) {
+    if (_reStarted && foundation.kDebugMode) {
       // Perhaps a Hot Restart ?  We must reset the plugin
       _logger.d('Resetting flutter_sound Player Plugin');
       _reStarted = false;
@@ -882,7 +849,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///
   /// ---------------------------------------------------------------------------
   ///
-  @deprecated
+  @Deprecated('This function is not useful')
   Future<Map<String, Duration>> getProgress() async {
     await _waitOpen();
     if (_isInited != Initialized.fullyInitialized) {
@@ -1161,7 +1128,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///     ...
   ///     myPlayer.stopPlayer();
   /// ```
-  @deprecated
+  @Deprecated(
+      'This function can very easily be emulated with a RecordToStream + a PlayFromStream')
   Future<void> startPlayerFromMic({
     int sampleRate = 44000, // The default value is probably a good choice.
     int numChannels =
@@ -1392,7 +1360,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///
   ///  await myPlayer.stopPlayer();
   ///  ```
-  @deprecated
+  @Deprecated('Use [feedUint8FromStream()]')
   Future<void> feedFromStream(Uint8List buffer) async {
     var lnData = 0;
     var totalLength = buffer.length;

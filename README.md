@@ -82,7 +82,7 @@ You can look to the [FS Streams guide](https://fs-doc.vercel.app/tau/guides/guid
 
 ## License
 
-- Flutter Sound is published under the [MPL-2.0 License](hhttps://fs-doc.vercel.app/tau/LICENSE.html).
+- Flutter Sound is published under the [MPL-2.0 License](https://fs-doc.vercel.app/tau/LICENSE.html).
 - Flutter Sound is copyrighted by Dooboolab and Canardoux.
 - Flutter Sound is now released under the permissive Mozilla license which has a **weak** *copyleft* clause: if you modify some of Flutter Sound code you must publish your modifications under the MPL license too. But you may publish your App with any license you want. Even a Proprietary/Closed-Sources License (shame on you!).
 - The Tau documentation is published under the [Creative Commons CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en) license.

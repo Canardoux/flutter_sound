@@ -41,7 +41,7 @@
 
 /// everything : no documentation
 /// @nodoc
-library everything;
+library;
 
 export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
 

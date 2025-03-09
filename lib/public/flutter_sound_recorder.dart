@@ -20,7 +20,7 @@
 
 /// **THE** Flutter Sound Recorder
 /// {@category Main}
-library recorder;
+library;
 
 import 'dart:async';
 import 'dart:core';
@@ -30,10 +30,10 @@ import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform
 import 'package:logger/logger.dart' show Level, Logger;
 import 'package:path/path.dart' as p;
 import 'package:synchronized/synchronized.dart';
-import 'package:flutter/foundation.dart' as Foundation;
+import 'package:flutter/foundation.dart' as foundation;
 import '../flutter_sound.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/src/services/platform_channel.dart';
+import 'package:flutter/services.dart';
 import 'dart:io' show Platform;
 
 /// A Recorder is an object that can record to various destinations.
@@ -504,7 +504,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     _openRecorderCompleter = Completer<FlutterSoundRecorder>();
     completer = _openRecorderCompleter;
     try {
-      if (_reStarted && Foundation.kDebugMode) {
+      if (_reStarted && foundation.kDebugMode) {
         // Perhaps a Hot Restart ?  We must reset the plugin
         _logger.d('Resetting flutter_sound Recorder Plugin');
         _reStarted = false;
@@ -968,7 +968,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// @nodoc
   Future<int> getSampleRate() async {
     _logger.d('FS:---> getSampleRate');
-    Future<int>? r = null;
+    Future<int>? r;
     await _lock.synchronized(() async {
       r = _getSampleRate();
     });
@@ -1190,16 +1190,16 @@ class _RecorderException implements Exception {
 }
 
 class _RecorderRunningException extends _RecorderException {
-  _RecorderRunningException(String message) : super(message);
+  _RecorderRunningException(super.message);
 }
 
 class _CodecNotSupportedException extends _RecorderException {
-  _CodecNotSupportedException(String message) : super(message);
+  _CodecNotSupportedException(super.message);
 }
 
 /// Permission to record was not granted
 /// @nodoc
 class RecordingPermissionException extends _RecorderException {
   ///  Permission to record was not granted
-  RecordingPermissionException(String message) : super(message);
+  RecordingPermissionException(super.message);
 }
