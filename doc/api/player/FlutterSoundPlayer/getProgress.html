@@ -27,7 +27,7 @@
     <li><a href="../../index.html">flutter_sound</a></li>
     <li><a href="../../player">public&#47;flutter_sound_player.dart</a></li>
     <li><a href="../../player/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
-    <li class="self-crumb">getProgress method</li>
+    <li class="self-crumb"><span class="deprecated">getProgress</span> method</li>
   </ol>
   <div class="self-name">getProgress</div>
   <form class="search navbar-right" role="search">
@@ -57,8 +57,13 @@
 
     <section class="multi-line-signature">
       
+  <div>
+    <ol class="annotation-list">
+        <li>@<a href="https://api.flutter.dev/flutter/dart-core/deprecated-constant.html">deprecated</a></li>
+    </ol>
+  </div>
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a></span>&gt;</span></span>&gt;</span></span>
-<span class="name ">getProgress</span>(<wbr>)
+<span class="name deprecated">getProgress</span>(<wbr>)
 
       
 
@@ -80,7 +85,8 @@ Remark : actually only implemented on iOS.</p>
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;Map&lt;String, Duration&gt;&gt; getProgress() async {
+  <pre class="language-dart"><code class="language-dart">@deprecated
+Future&lt;Map&lt;String, Duration&gt;&gt; getProgress() async {
   await _waitOpen();
   if (_isInited != Initialized.fullyInitialized) {
     throw Exception(&#39;Player is not open&#39;);
@@ -103,7 +109,7 @@ Remark : actually only implemented on iOS.</p>
     <li><a href="../../index.html">flutter_sound</a></li>
     <li><a href="../../player">player</a></li>
     <li><a href="../../player/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
-    <li class="self-crumb">getProgress method</li>
+    <li class="self-crumb"><span class="deprecated">getProgress</span> method</li>
 </ol>
 
     <h5>FlutterSoundPlayer class</h5>

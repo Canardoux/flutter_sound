@@ -67,11 +67,24 @@
     
 <section class="desc markdown">
   <p>Change the output volume</p>
-<p>The parameter is a floating point number between 0 and 1.
-Volume can be changed when player is running or before <a href="../../player/FlutterSoundPlayer/startPlayer.html">startPlayer</a>.</p>
-<p><em>Example:</em></p>
+<hr>
+<p>The volume can be changed when player is running or before <a href="../../player/FlutterSoundPlayer/startPlayer.html">startPlayer()</a>.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li>**<em>volume:</em>**The parameter is a floating point number between 0 and 1.</li>
+</ul>
+<h2 id="return">Return</h2>
+<ul>
+<li>Return a Future which is completed when the function is done.</li>
+</ul>
+<h2 id="example">Example</h2>
 <pre class="language-dart"><code class="language-dart">await myPlayer.setVolume(0.1);
 </code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../../player/FlutterSoundPlayer/setVolumePan.html">setVolumePan()</a></li>
+</ul>
+<hr>
 </section>
 
 

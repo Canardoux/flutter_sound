@@ -63,11 +63,19 @@
     </section>
     
 <section class="desc markdown">
-  <p>Instanciate a new Flutter Sound player.</p>
+  <p>Instanciates a new Flutter Sound player.</p>
 <hr>
-<h2 id="instanciate-a-new-flutter-sound-playerthe-optional-paramater-level-loglevel-specify-the-logger-level-you-are-interested-bythe-optional-parameter-bool-voiceprocessing-is-used-to-activate-the-voiceprocessingio-audiounit-only-for-ios">Instanciate a new Flutter Sound player.
-The optional paramater <code>Level logLevel</code> specify the Logger Level you are interested by.
-The optional parameter <code>bool voiceProcessing</code> is used to activate the VoiceProcessingIO AudioUnit (only for iOS)</h2>
+<p>The instanciation of a new player does not do many things. You are safe if you put this instanciation inside a global or instance variable initialization.
+You may instanciate several players at one moment.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><strong><em>logLevel:</em></strong> The optional parameter <strong>logLevel</strong> specifies the Logger Level you are interested by.</li>
+<li><strong><em>voiceProcessing:</em></strong> The optional parameter <strong>voiceProcessing</strong> is used to activate the VoiceProcessingIO AudioUnit (only for iOS)</li>
+</ul>
+<h2 id="example">Example</h2>
+<pre class="language-dart"><code class="language-dart">FlutterSoundPlayer myPlayer = FlutterSoundPlayer(logLevel = Level.warning);
+</code></pre>
+<hr>
 </section>
 
 

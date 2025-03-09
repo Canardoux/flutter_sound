@@ -67,8 +67,14 @@
     
 <section class="desc markdown">
   <p>Convert a WAVE buffer to a Raw PCM buffer.</p>
+<hr>
 <p>Remove WAVE header in front of the Wave buffer.</p>
-<p>Note that this verb is not asynchronous and does not return a Future.</p>
+<p>Note that this verb is not asynchronous and does not return a Future.
+<a href="/tau/guides/guides-pcm-wave.html">See here</a> a discussion about <code>Raw PCM</code> and <code>WAVE</code> file format.</p>
+<h2 id="example">Example</h2>
+<pre class="language-dart"><code>Uint8List myPCMBuffer = waveToPCMBuffer(inputBuffer: myWavBuffer);
+</code></pre>
+<hr>
 </section>
 
 

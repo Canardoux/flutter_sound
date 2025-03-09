@@ -67,10 +67,18 @@
     
 <section class="desc markdown">
   <p>To seek to a new location.</p>
+<hr>
 <p>The player must already be playing or paused. If not, an exception is thrown.</p>
-<p><em>Example:</em></p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><strong><em>duration:</em></strong> is the position that you want to seek into your player</li>
+</ul>
+<h2 id="return">Return</h2>
+<p>Return a Future which is completed when the function is done.</p>
+<h2 id="example">Example</h2>
 <pre class="language-dart"><code class="language-dart">await myPlayer.seekToPlayer(Duration(milliseconds: milliSecs));
 </code></pre>
+<hr>
 </section>
 
 

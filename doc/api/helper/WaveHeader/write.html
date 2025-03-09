@@ -67,9 +67,6 @@
     
 <section class="desc markdown">
   <p>Write a WAVE file header.</p>
-<p>@param out {@link java.io.OutputStream} to receive the header.
-@return number of bytes written.
-@throws IOException</p>
 </section>
 
 
@@ -86,7 +83,7 @@
   writeInt32(
     out,
     16,
-  ); &#47;&#47; Size of the rest of the Subchunk which follows this number. &#47;&#47; 18???
+  ); &#47;&#47; Size of the rest of the Sub-chunk which follows this number. &#47;&#47; 18???
   writeInt16(out, mFormat);
   writeInt16(out, mNumChannels);
   writeInt32(out, mSampleRate);

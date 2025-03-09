@@ -67,15 +67,21 @@
     
 <section class="desc markdown">
   <p>Delete a temporary file</p>
+<hr>
 <p>Delete a temporary file created during <a href="../../recorder/FlutterSoundRecorder/startRecorder.html">startRecorder()</a>.
 the argument must be a file name without any path.
-This function is seldom used, because <code>closeAudioSession()</code> delete automaticaly
+This function is seldom used, because <a href="../../recorder/FlutterSoundRecorder/closeRecorder.html">closeRecorder()</a> delete automaticaly
 all the temporary files created.</p>
-<p><em>Example:</em></p>
+<h2 id="example">Example</h2>
 <pre class="language-dart"><code class="language-dart">     await myRecorder.startRecorder(toFile: 'foo'); // This is a temporary file, because no slash '/' in the argument
      await myPlayer.startPlayer(fromURI: 'foo');
      await myRecorder.deleteRecord('foo');
 </code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../../recorder/FlutterSoundRecorder/closeRecorder.html">closeRecorder()</a></li>
+</ul>
+<hr>
 </section>
 
 

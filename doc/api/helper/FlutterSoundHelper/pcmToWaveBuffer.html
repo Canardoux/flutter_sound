@@ -73,6 +73,25 @@
 <p>Adds a WAVE header in front of the PCM data
 It adds a <code>Wave</code> envelop in front of the PCM buffer, so that the file can be played back with <code>startPlayerFromBuffer()</code>.</p>
 <p>Note: the parameters <code>numChannels</code> and <code>sampleRate</code> <strong>are mandatory, and must match the actual PCM data</strong>. <a href="doc/codec.md#note-on-raw-pcm-and-wave-files">See here</a> a discussion about <code>Raw PCM</code> and <code>WAVE</code> file format.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><strong><em>inputBuffer:</em></strong> is your input buffer</li>
+<li><strong><em>numChannels:</em></strong> is the number of channels of your file</li>
+<li><strong><em>sampleRate</em></strong> is the sample rate of your data</li>
+<li><strong><em>codec</em></strong> is either <a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.25.1/flutter_sound_platform_interface/Codec.html">FSCodec.Codec.pcm16</a> or <a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.25.1/flutter_sound_platform_interface/Codec.html">FSCodec.Codec.pcmFloat32</a></li>
+</ul>
+<h2 id="return">Return</h2>
+<p>The Uint8List containing your wave buffer</p>
+<h2 id="example">Example</h2>
+<pre class="language-dart"><code>FlutterSoundHelper().pcmToWave (
+    inputFile: 'foo.pcm',
+    outputFile: 'foo.wav',
+    numChannels: 2 // stereo
+    samplerate: 48000,
+    codec: FSCodec.Codec.pcm16
+ );
+</code></pre>
+<hr>
 </section>
 
 

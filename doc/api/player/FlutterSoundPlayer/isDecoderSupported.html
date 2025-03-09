@@ -66,10 +66,10 @@
     </section>
     
 <section class="desc markdown">
-  <p>Returns true if the specified decoder is supported by flutter_sound on this platform</p>
+  <p>Returns true if the specified decoder is supported by Flutter Sound on this platform</p>
 <hr>
-<p><em>Example:</em></p>
-<pre class="language-dart"><code class="language-dart">        if ( await myPlayer.isDecoderSupported(Codec.opusOGG) ) doSomething;
+<h2 id="example">Example</h2>
+<pre class="language-dart"><code class="language-dart">        if ( await myPlayer.isDecoderSupported(Codec.aacADTS) ) doSomething;
 </code></pre>
 <hr>
 </section>
@@ -85,10 +85,6 @@
   if (_isInited != Initialized.fullyInitialized) {
     throw Exception(&#39;Player is not open&#39;);
   }
-  &#47;&#47; For decoding ogg&#47;opus on ios, we need to support two steps :
-  &#47;&#47; - remux OGG file format to CAF file format (with ffmpeg)
-  &#47;&#47; - decode CAF&#47;OPPUS (with native Apple AVFoundation)
-
   result = await FlutterSoundPlayerPlatform.instance.isDecoderSupported(
     this,
     codec: codec,

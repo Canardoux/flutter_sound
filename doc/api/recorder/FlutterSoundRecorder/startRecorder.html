@@ -76,18 +76,24 @@
     </section>
     
 <section class="desc markdown">
-  <p><code>startRecorder()</code> starts recording with an open session.</p>
-<p>If an <code>openAudioSession()</code> is in progress, <code>startRecorder()</code> will automatically wait the end of the opening.
-<code>startRecorder()</code> has the destination file path as parameter.
-It has also 7 optional parameters to specify :</p>
+  <p><code>startRecorder()</code> starts recording a recorder.</p>
+<hr>
+<p>If an <a href="../../recorder/FlutterSoundRecorder/openRecorder.html">openRecorder()</a> is in progress, <code>startRecorder()</code> will automatically wait the end of the opening.</p>
+<h2 id="parameters">Parameters</h2>
 <ul>
-<li>codec: The codec to be used. Please refer to the <a href="codec.md#actually-the-following-codecs-are-supported-by-flutter_sound">Codec compatibility Table</a> to know which codecs are currently supported.</li>
-<li>toFile: a path to the file being recorded or the name of a temporary file (without slash '/').</li>
-<li>toStream: if you want to record to a Dart Stream. Please look to <a href="codec.md#recording-pcm-16-to-a-dart-stream">the following notice</a>. <strong>This new functionnality needs, at least, Android SDK &gt;= 21 (23 is better)</strong></li>
-<li>sampleRate: The sample rate in Hertz</li>
-<li>numChannels: The number of channels (1=monophony, 2=stereophony)</li>
-<li>bitRate: The bit rate in Hertz</li>
-<li>audioSource : possible value is :
+<li><strong><em>codec:</em></strong> The codec to be used. Please refer to the <a href="/tau/guides/guides_codecs.html">Codec compatibility Table</a> to know which codecs are currently supported.</li>
+<li>One of the following parameters
+<ul>
+<li><strong><em>toFile:</em></strong> a path to the file being recorded or the name of a temporary file (without slash '/').</li>
+<li><strong><em>toStream:</em></strong> if you want to record to a Dart Stream interleaved. Please look to <a href="/tau/guides/guides_live_streams.html">the following notice</a>.</li>
+<li><strong><em>toStreamFloat32:</em></strong> if you want to record to a Dart Stream <strong>NOT</strong> interleaved with a Float32 coding. Please look to <a href="/tau/guides/guides_live_streams.html">the following notice</a>.</li>
+<li><strong><em>toStreamInt16:</em></strong> if you want to record to a Dart Stream <strong>NOT</strong> interleaved with a Int16 coding. Please look to <a href="/tau/guides/guides_live_streams.html">the following notice</a>.</li>
+</ul>
+</li>
+<li><strong><em>sampleRate:</em></strong> The sample rate in Hertz (used only with PCM codecs)</li>
+<li><strong><em>numChannels:</em></strong> The number of channels (1=monophony, 2=stereophony) (used only with PCM codecs)</li>
+<li><strong><em>bitRate:</em></strong> The bit rate in Hertz. Optional</li>
+<li><strong><em>audioSource</em></strong> : possible value is :
 <ul>
 <li>defaultSource</li>
 <li>microphone</li>
@@ -95,11 +101,11 @@ It has also 7 optional parameters to specify :</p>
 </ul>
 </li>
 </ul>
-<p><a href="https://pub.dev/packages/path_provider">path_provider</a> can be useful if you want to get access to some directories on your device.
+<p>Hint: <a href="https://pub.dev/packages/path_provider">path_provider</a> can be useful if you want to get access to some directories on your device.
 To record a temporary file, the App can specify the name of this temporary file (without slash) instead of a real path.</p>
 <p>Flutter Sound does not take care of the recording permission. It is the App responsability to check or require the Recording permission.
 <a href="https://pub.dev/packages/permission_handler">Permission_handler</a> is probably useful to do that.</p>
-<p><em>Example:</em></p>
+<h2 id="example">Example</h2>
 <pre class="language-dart"><code class="language-dart">    // Request Microphone permission if needed
     PermissionStatus status = await Permission.microphone.request();
     if (status != PermissionStatus.granted)
@@ -107,6 +113,11 @@ To record a temporary file, the App can specify the name of this temporary file 
 
     await myRecorder.startRecorder(toFile: 'foo', codec: t_CODEC.CODEC_AAC,); // A temporary file named 'foo'
 </code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../../recorder/FlutterSoundRecorder/stopRecorder.html">stopRecorder()</a></li>
+</ul>
+<hr>
 </section>
 
 
@@ -136,20 +147,6 @@ To record a temporary file, the App can specify the name of this temporary file 
       Platform
           .isIOS) &#47;&#47; This hack is just to have recorder to stream working correctly.
   {
-    &#47;*
-    FlutterSoundPlayer player = FlutterSoundPlayer();
-    await player.openPlayer();
-    Uint8List buf = Uint8List(0);
-    &#47;&#47;buf.fillRange(0, 1000, 0);
-    try {
-      await player.startPlayer(
-          fromDataBuffer: buf, codec: Codec.pcm16, whenFinished: () {});
-    } catch (e) {
-      _logger.d(&#39;Hacking the bug we have on iOS when recording to stream&#39;);
-    }
-    await player.stopPlayer();
-    await  player.closePlayer();
-     *&#47;
     FlutterSoundRecorder recorder = FlutterSoundRecorder();
     await recorder.openRecorder();
     try {

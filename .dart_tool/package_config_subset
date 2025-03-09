@@ -18,14 +18,6 @@ fixnum
 3.1
 file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/fixnum-1.1.1/
 file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/fixnum-1.1.1/lib/
-flutter_sound_platform_interface
-3.3
-file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_platform_interface-9.25.1/
-file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_platform_interface-9.25.1/lib/
-flutter_sound_web
-3.6
-file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_web-9.25.1/
-file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_web-9.25.1/lib/
 logger
 2.17
 file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/logger-2.5.0/
@@ -130,4 +122,12 @@ flutter_sound
 3.3
 file:///Volumes/mac-H/larpoux/proj/tau/flutter_sound/
 file:///Volumes/mac-H/larpoux/proj/tau/flutter_sound/lib/
+flutter_sound_platform_interface
+3.3
+file:///Volumes/mac-H/larpoux/proj/tau/flutter_sound_platform_interface/
+file:///Volumes/mac-H/larpoux/proj/tau/flutter_sound_platform_interface/lib/
+flutter_sound_web
+3.6
+file:///Volumes/mac-H/larpoux/proj/tau/flutter_sound_web/
+file:///Volumes/mac-H/larpoux/proj/tau/flutter_sound_web/lib/
 2

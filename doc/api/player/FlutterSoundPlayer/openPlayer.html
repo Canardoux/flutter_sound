@@ -69,10 +69,11 @@
   <p>Open the Player.</p>
 <hr>
 <p>A player must be opened before used.
-Opening a player takes resources inside the OS. Those resources are freed with the verb <a href="../../player/FlutterSoundPlayer/closePlayer.html">closePlayer()</a>.
-Returns a Future, but the App does not need to wait the completion of this future before doing a <a href="../../player/FlutterSoundPlayer/startPlayer.html">startPlayer()</a>.
+Opening a player takes resources inside the system. Those resources are freed with the verb <a href="../../player/FlutterSoundPlayer/closePlayer.html">closePlayer()</a>.</p>
+<h2 id="return">Return</h2>
+<p>Returns a Future, but the App does not need to wait the completion of this future before doing a <a href="../../player/FlutterSoundPlayer/startPlayer.html">startPlayer()</a>.
 The Future will be automaticaly waited by <a href="../../player/FlutterSoundPlayer/startPlayer.html">startPlayer()</a>.</p>
-<p><em>Example:</em></p>
+<h2 id="example">Example</h2>
 <pre class="language-dart"><code class="language-dart">    myPlayer = await FlutterSoundPlayer().openPlayer();
 
     ...
@@ -82,6 +83,10 @@ The Future will be automaticaly waited by <a href="../../player/FlutterSoundPlay
     await myPlayer.closePlayer();
     myPlayer = null;
 </code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li>closePlayer()</li>
+</ul>
 <hr>
 </section>
 

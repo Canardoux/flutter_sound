@@ -67,12 +67,21 @@
     
 <section class="desc markdown">
   <p>Construct a WaveHeader, with fields initialized.</p>
-<p>@param format format of audio data,
-one of {@link #FORMAT_PCM}, {@link #FORMAT_ULAW}, or {@link #FORMAT_ALAW}.
-@param numChannels 1 for mono, 2 for stereo.
-@param sampleRate typically 8000, 11025, 16000, 22050, or 44100 hz.
-@param bitsPerSample usually 16 for PCM, 8 for ULAW or 8 for ALAW.
-@param numBytes size of audio data after this header, in bytes.</p>
+<hr>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><strong><em>format:</em></strong> format of audio data. Can be:
+<ul>
+<li>#FORMAT_PCM</li>
+<li>#FORMAT_ULAW</li>
+<li>#FORMAT_ALAW</li>
+</ul>
+</li>
+<li><strong><em>numChannels:</em></strong> 1 for mono, 2 for stereo.</li>
+<li><strong><em>sampleRate:</em></strong> typically 8000, 11025, 16000, 22050, 44100 hz or 48000 hz.</li>
+<li><strong><em>bitsPerSample:</em></strong> usually 16 for PCM, 8 for ULAW or 8 for ALAW.</li>
+<li><strong><em>numBytes:</em></strong> size of audio data after this header, in bytes.</li>
+</ul>
 </section>
 
 

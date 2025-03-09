@@ -67,11 +67,11 @@
     
 <section class="desc markdown">
   <p>Open a Recorder</p>
+<hr>
 <p>A recorder must be opened before used.
-Opening a recorder takes resources inside the OS. Those resources are freed with the verb <code>closeRecorder()</code>.</p>
-<p>You MUST ensure that the recorder has been closed when your widget is detached from the UI.
-Overload your widget's <code>dispose()</code> method to close the recorder when your widget is disposed.
-In this way you will reset the Recorder and clean up the device resources, but the recorder will be no longer usable.</p>
+Opening a recorder takes resources inside the system. Those resources are freed with the verb <code>closeRecorder()</code>.</p>
+<p>Overload your widget's <code>dispose()</code> method to close the recorder when your widget is disposed.
+In this way you will reset the Recorder and clean up the device resources, and the recorder will be no longer usable.</p>
 <pre class="language-dart"><code class="language-dart">@override
 void dispose()
 {
@@ -83,12 +83,15 @@ void dispose()
         super.dispose();
 }
 </code></pre>
-<p>You may not openAudioSession many recorders without releasing them.</p>
-<p><code>openRecorder()</code> and <code>closeRecorder()</code> return Futures.
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li>FIXME : document <code>isBGService</code> parameter</li>
+</ul>
+<h2 id="return">Return</h2>
+<p><a href="../../recorder/FlutterSoundRecorder/openRecorder.html">openRecorder()</a> returns Futures.
 You do not need to wait the end of the initialization before <a href="../../recorder/FlutterSoundRecorder/startRecorder.html">startRecorder()</a>.
-<a href="../../recorder/FlutterSoundRecorder/startRecorder.html">startRecorder</a> will automaticaly wait the end of <code>openRecorder()</code> before starting the recorder.</p>
-<p>The four optional parameters are used if you want to control the Audio Focus. Please look to <a href="Recorder.md#openaudiosession-and-closeaudiosession">FlutterSoundRecorder openAudioSession()</a> to understand the meaning of those parameters</p>
-<p><em>Example:</em></p>
+It will automatically wait the end of <code>openRecorder()</code> before starting the recorder.</p>
+<h2 id="example">Example:</h2>
 <pre class="language-dart"><code class="language-dart">    myRecorder = await FlutterSoundRecorder().openRecorder();
 
     ...
@@ -98,6 +101,11 @@ You do not need to wait the end of the initialization before <a href="../../reco
     myRecorder.closeRecorder();
     myRecorder = null;
 </code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li>closeRecorder()</li>
+</ul>
+<hr>
 </section>
 
 
@@ -116,7 +124,7 @@ You do not need to wait the end of the initialization before <a href="../../reco
   }
 
   Future&lt;FlutterSoundRecorder?&gt;? r;
-  _logger.d(&#39;FS:---&gt; openAudioSession &#39;);
+  _logger.d(&#39;FS:---&gt; openRecorder &#39;);
   await _lock.synchronized(() async {
     r = _openAudioSession();
   });

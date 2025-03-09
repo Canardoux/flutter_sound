@@ -60,6 +60,7 @@ typedef TWhenFinished = void Function();
 /// A Player is an object that can playback from various sources.
 ///
 /// ----------------------------------------------------------------------------------------------------
+///
 /// The Player class can have multiple instances at the same time. Each instance is used to control the sound of its source.
 ///
 /// The sources possible can be:
@@ -70,7 +71,7 @@ typedef TWhenFinished = void Function();
 ///
 /// Using a player is very simple :
 ///
-/// 1. Create a new `FlutterSoundPlayer`
+/// 1. Create a new [FlutterSoundPlayer()]
 ///
 /// 2. Open it with [openPlayer()]
 ///
@@ -79,32 +80,51 @@ typedef TWhenFinished = void Function();
 /// 4. Use the various verbs (optional):
 ///    - [pausePlayer()]
 ///    - [resumePlayer()]
+///    - [setVolume()]
 ///    - ...
 ///
 /// 5. Stop your player : [stopPlayer()]
 ///
 /// 6. Release your player when you have finished with it : [closePlayer()].
 /// This verb will call [stopPlayer()] if necessary.
+///
+/// ![Player States](/images/PlayerStates.png)
+/// _Player States_
+///
+/// If you are new to Flutter Sound, you may have a look to this [little guide](/tau/guides/guides_getting-started.html)
+///
 /// ----------------------------------------------------------------------------------------------------
+///
 class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
-  /// The FlutterSoundPlayerLogger
+  // The FlutterSoundPlayer Logger
   Logger _logger = Logger(level: Level.debug);
   Level _logLevel = Level.debug;
 
-  /// The default blocksize used when playing from Stream.
+  // The default blockSize used when playing from Stream.
   int _bufferSize = 8192;
 
-  /// The FlutterSoundPlayerLogger Logger getter
+  /// The getter of the FlutterSoundPlayer Logger
   Logger get logger => _logger;
 
-  /// Are we waiting for needsForFood completer ?
+  // Are we waiting for needsForFood completer ?
   bool _waitForFood = false;
 
-  ///
+  //
   bool _fromStream = false;
 
   /// Used if the App wants to dynamically change the Log Level.
+  ///
+  /// --------------------------------------------------------------
+  ///
   /// Seldom used. Most of the time the Log Level is specified during the constructor.
+  ///
+  /// ## Parameters
+  /// - **_aLevel:_** is the new logger level that you want.
+  ///
+  /// ## Example
+  /// ```dart
+  /// setLogLevel(Level.warning);
+  /// ```
   void setLogLevel(Level aLevel) async {
     _logLevel = aLevel;
     _logger = Logger(level: aLevel);
@@ -121,20 +141,19 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   StreamSubscription<Food>?
       _foodStreamSubscription; // ignore: cancel_subscriptions
 
-  ///
+  //
   StreamSubscription<List<Float32List>>?
       _f32StreamSubscription; // ignore: cancel_subscriptions
 
-  ///
+  //
   StreamSubscription<List<Int16List>>?
       _int16StreamSubscription; // ignore: cancel_subscriptions
 
-  ///
+  //
   StreamSubscription<Uint8List>?
       _uint8StreamSubscription; // ignore: cancel_subscriptions
 
-  ///
-  ///@deprecated
+  //
   StreamController<Food>? _foodStreamController; //ignore: close_sinks
 
   StreamController<List<Float32List>>? _pcmF32Controller; //ignore: close_sinks
@@ -151,13 +170,24 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   Completer<void>? _stopPlayerCompleter;
   Completer<FlutterSoundPlayer>? _openPlayerCompleter;
 
-  /// Instanciate a new Flutter Sound player.
+  /// Instanciates a new Flutter Sound player.
   ///
   /// ----------------------------------------------------------------------------------------------------
-  /// Instanciate a new Flutter Sound player.
-  /// The optional paramater `Level logLevel` specify the Logger Level you are interested by.
-  /// The optional parameter `bool voiceProcessing` is used to activate the VoiceProcessingIO AudioUnit (only for iOS)
+  ///
+  ///  The instanciation of a new player does not do many things. You are safe if you put this instanciation inside a global or instance variable initialization.
+  /// You may instanciate several players at one moment.
+  ///
+  /// ## Parameters
+  /// - **_logLevel:_** The optional parameter **logLevel** specifies the Logger Level you are interested by.
+  /// - **_voiceProcessing:_** The optional parameter **voiceProcessing** is used to activate the VoiceProcessingIO AudioUnit (only for iOS)
+  ///
+  /// ## Example
+  /// ```dart
+  /// FlutterSoundPlayer myPlayer = FlutterSoundPlayer(logLevel = Level.warning);
+  /// ```
+  ///
   /// ----------------------------------------------------------------------------------------------------
+  ///
   /* ctor */
   FlutterSoundPlayer({
     Level logLevel = Level.debug,
@@ -377,6 +407,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
   }
 
+  /// @nodoc
   @override
   void log(Level logLevel, String msg) {
     _logger.log(logLevel, msg);
@@ -384,20 +415,41 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   //===============================================================================================================
 
-  /// Do not use. Should be a private variable
-  /// @nodoc
+  // Do not use. Private variable
+  // @nodoc
   Initialized _isInited = Initialized.notInitialized;
 
-  ///
+  //
   PlayerState _playerState = PlayerState.isStopped;
 
-  /// The current state of the Player
+  /// Getter of the current state of the Player
+  ///
+  /// -------------------------------------------------------------
+  ///
+  /// ## Return
+  ///
+  /// the current state of the player
+  ///
+  /// ## Example
+  /// ```dart
+  /// if (playerState == PlayerState.isPlaying) {
+  ///   // doSomething
+  /// }
+  /// ```
+  ///
+  /// ## See also
+  /// - [isPlaying]
+  /// - [isPaused]
+  /// - [isStopped]
+  ///
+  /// ------------------------------------------------------------------
+  ///
   PlayerState get playerState => _playerState;
 
-  /// The food Controller
+  // The [onProgress()] controller
   StreamController<PlaybackDisposition>? _playerController;
 
-  /// The sink side of the Food Controller
+  /// The sink side of the Food Controller. Deprecated.
   ///
   /// This the output stream that you use when you want to play asynchronously live data.
   /// This StreamSink accept two kinds of objects :
@@ -419,26 +471,136 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   StreamSink<Food>? get foodSink =>
       _foodStreamController != null ? _foodStreamController!.sink : null;
 
+  /// Getter of one of the three StreamSink that you may use to feed a player from Stream.
+  ///
+  /// ----------------------------------------------------------------------------------------------
+  ///
+  /// This stream is used when you have interleaved audio data and you don't want a flow control.
+  /// You can look to this [small guide](/tau/guides/guides_live_streams.html) if you need precisions.
+  ///
+  /// ## Return
+  ///
+  /// The StreamSink that you may use to feed the player
+  ///
+  /// ## example
+  ///
+  /// ```dart
+  /// await myPlayer.startPlayerFromStream
+  /// (
+  ///     codec: Codec.pcmFloat32
+  ///     numChannels: 2
+  ///     sampleRate: 48100
+  ///     interleaved: true,
+  /// );
+  ///
+  /// myPlayer.uint8ListSink.add(myData);
+  /// ```
+  ///
+  /// ## See also
+  ///
+  /// - [float32Sink]
+  /// - [int16Sink]
+  /// - [feedF32FromStream()]
+  /// - [feedInt16FromStream()]
+  /// - [feedUint8FromStream()]
+  /// - You can also look to this [small guide](/tau/guides/guides_live_streams.html) if you need precisions.
+  ///
+  /// ----------------------------------------------------------------------------------------------
   StreamSink<Uint8List>? get uint8ListSink =>
       _pcmUint8Controller != null ? _pcmUint8Controller!.sink : null;
 
+  /// Getter of one of the three StreamSink that you may use to feed a player from Stream.
+  ///
+  /// ----------------------------------------------------------------------------------------------
+  ///
+  /// This stream is used when you have NOT interleaved audio data and you don't want a flow control.
+  /// You can look to this [small guide](/tau/guides/guides_live_streams.html) if you need precisions.
+  ///
+  /// ## Return
+  ///
+  /// The StreamSink that you may use to feed the player
+  ///
+  /// ## example
+  ///
+  /// ```dart
+  /// await myPlayer.startPlayerFromStream
+  /// (
+  ///     codec: Codec.pcmFloat32
+  ///     numChannels: 2
+  ///     sampleRate: 48100
+  ///     interleaved: false,
+  /// );
+  ///
+  /// myPlayer.float32Sink.add(myData);
+  /// ```
+  ///
+  /// ## See also
+  ///
+  /// - [uint8ListSink]
+  /// - [int16Sink]
+  /// - [feedF32FromStream()]
+  /// - [feedInt16FromStream()]
+  /// - [feedF32FromStream()]
+  /// - You can also look to this [small guide](/tau/guides/guides_live_streams.html) if you need precisions.
+  ///
+  /// ----------------------------------------------------------------------------------------------
   StreamSink<List<Float32List>>? get float32Sink =>
       _pcmF32Controller != null ? _pcmF32Controller!.sink : null;
 
-  /// The Stream sink used by Play From Stream
+  /// Getter of one of the three StreamSink that you may use to feed a player from Stream.
+  ///
+  /// ----------------------------------------------------------------------------------------------
+  ///
+  /// This stream is used when you have NOT interleaved audio data and you don't want a flow control.
+  /// You can look to this [small guide](/tau/guides/guides_live_streams.html) if you need precisions.
+  ///
+  /// ## Return
+  ///
+  /// The StreamSink that you may use to feed the player
+  ///
+  /// ## example
+  ///
+  /// ```dart
+  /// await myPlayer.startPlayerFromStream
+  /// (
+  ///     codec: Codec.pcm16
+  ///     numChannels: 2
+  ///     sampleRate: 48100
+  ///     interleaved: false,
+  /// );
+  ///
+  /// myPlayer.int16Sink.add(myData);
+  /// ```
+  ///
+  /// ## See also
+  /// - [float32Sink]
+  /// - [int16Sink]
+  /// - [feedF32FromStream()]
+  /// - [feedUint8FromStream()]
+  /// - [feedF32FromStream()]
+  /// - You can also look to this [small guide](/tau/guides/guides_live_streams.html) if you need precisions.
+  ///
+  /// ----------------------------------------------------------------------------------------------
   StreamSink<List<Int16List>>? get int16Sink =>
       _pcmInt16Controller != null ? _pcmInt16Controller!.sink : null;
 
-  /// The stream side of the Food Controller
+  /// The stream side of the [onProgress] Controller
+  ///
+  /// ----------------------------------------------------------------------------------------------
   ///
   /// This is a stream on which FlutterSound will post the player progression.
   /// You may listen to this Stream to have feedback on the current playback.
+  ///
+  /// If you want to receive events on this stream, do not forget to
+  /// call also [setSubscriptionDuration()]. If you do not call this verb,
+  /// you will not receive anything because the default value is 0ms which means
+  /// not events!
   ///
   /// PlaybackDisposition has two fields :
   /// - Duration duration  (the total playback duration)
   /// - Duration position  (the current playback position)
   ///
-  /// *Example:*
+  /// ## Example
   /// ```dart
   ///         _playerSubscription = myPlayer.onProgress.listen((e)
   ///         {
@@ -450,10 +612,17 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///              Duration(milliseconds: 100, // an event each 100 ms
   ///         );
   /// ```
+  ///
+  /// ## See also
+  /// - [setSubscriptionDuration()]
+  /// - You may look to this [small guide](/tau/guides/guides_on_progress.html) if you need precisions about this.
+  ///
+  /// -----------------------------------------------------------------------------------------------
+  ///
   Stream<PlaybackDisposition>? get onProgress =>
       _playerController != null ? _playerController!.stream : null;
 
-  /// Return true if the Player has been open
+  /// Return true if the Player has been open.
   bool isOpen() {
     return (_isInited == Initialized.fullyInitialized);
   }
@@ -484,16 +653,41 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return _playerController != null ? _playerController!.stream : null;
   }
 
-  /// User callback "whenFinished:"
+  // User callback "whenFinished:"
   TWhenFinished? _audioPlayerFinishedPlaying;
 
   /// Test the Player State
+  ///
+  /// ------------------------------------------
+  /// ## See also
+  /// - [playerState]
+  /// - [isPaused]
+  /// - [isStopped]
+  ///
+  /// ------------------------------------------
   bool get isPlaying => _playerState == PlayerState.isPlaying;
 
   /// Test the Player State
+  ///
+  /// -----------------------------------------
+  /// ## See also
+  /// - [playerState]
+  /// - [isPlaying]
+  /// - [isStopped]
+  ///
+  /// ------------------------------------------
   bool get isPaused => _playerState == PlayerState.isPaused;
 
   /// Test the Player State
+  ///
+  /// --------------------------------------------------
+  /// ## See also
+  /// - [playerState]
+  /// - [isPaused]
+  /// - [isPlaying]
+  ///
+  /// --------------------------------------------------
+  ///
   bool get isStopped => _playerState == PlayerState.isStopped;
 
   Future<void> _waitOpen() async {
@@ -510,11 +704,14 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///
   /// ----------------------------------------------------------------------------------------------------
   /// A player must be opened before used.
-  /// Opening a player takes resources inside the OS. Those resources are freed with the verb [closePlayer()].
+  /// Opening a player takes resources inside the system. Those resources are freed with the verb [closePlayer()].
+  ///
+  /// ## Return
   /// Returns a Future, but the App does not need to wait the completion of this future before doing a [startPlayer()].
   /// The Future will be automaticaly waited by [startPlayer()].
   ///
-  /// *Example:*
+  /// ## Example
+  ///
   /// ```dart
   ///     myPlayer = await FlutterSoundPlayer().openPlayer();
   ///
@@ -525,6 +722,10 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///     await myPlayer.closePlayer();
   ///     myPlayer = null;
   /// ```
+  ///
+  /// ## See also
+  /// - closePlayer()
+  ///
   /// ------------------------------------------------------------------------------------------------------
   Future<FlutterSoundPlayer?> openPlayer({isBGService = false}) async {
     //if (!Platform.isIOS && enableVoiceProcessing) {
@@ -586,15 +787,21 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return completer!.future;
   }
 
-  /// Close an open session.
+  /// Close an open player.
   ///
   /// ------------------------------------------------------------------------------------
+  ///
   /// Must be called when finished with a Player, to release all the resources.
   /// It is safe to call this procedure at any time.
   /// - If the Player is not open, this verb will do nothing
   /// - If the Player is currently in play or pause mode, it will be stopped before.
   ///
-  /// example:
+  /// ## Return
+  ///
+  /// - Returns a Future which is completed when the function is done.
+  ///
+  /// ## example
+  ///
   /// ```dart
   /// @override
   /// void dispose()
@@ -607,6 +814,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///         super.dispose();
   /// }
   /// ```
+  ///
+  /// ## See also
+  /// - [openPlayer()]
   /// -----------------------------------------------------------------------------------
   Future<void> closePlayer() async {
     await _lock.synchronized(() {
@@ -634,13 +844,18 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _logger.d('FS:<--- closePlayer ');
   }
 
-  /// Query the current state to the Tau Core layer.
+  /// Query the current state of the Flutter Sound Core layer.
   ///
   /// -------------------------------------------------------------------------------
+  ///
   /// Most of the time, the App will not use this verb,
   /// but will use the [playerState] variable.
   /// This is seldom used when the App wants to get
-  /// an updated value the background state.
+  /// an updated value of the background state.
+  ///
+  /// ## See also
+  /// - [playerState]
+  ///
   /// -------------------------------------------------------------------------------
   Future<PlayerState> getPlayerState() async {
     await _waitOpen();
@@ -655,6 +870,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// Get the current progress of a playback.
   ///
   /// ---------------------------------------------------------------------------
+  ///
   /// It returns a `Map` with two Duration entries : `'progress'` and `'duration'`.
   /// Remark : actually only implemented on iOS.
   ///
@@ -663,7 +879,10 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///         Duration progress = (await getProgress())['progress'];
   ///         Duration duration = (await getProgress())['duration'];
   /// ```
+  ///
   /// ---------------------------------------------------------------------------
+  ///
+  @deprecated
   Future<Map<String, Duration>> getProgress() async {
     await _waitOpen();
     if (_isInited != Initialized.fullyInitialized) {
@@ -673,14 +892,17 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return FlutterSoundPlayerPlatform.instance.getProgress(this);
   }
 
-  /// Returns true if the specified decoder is supported by flutter_sound on this platform
+  /// Returns true if the specified decoder is supported by Flutter Sound on this platform
   ///
   /// ---------------------------------------------------------------------------
-  /// *Example:*
+  ///
+  /// ## Example
   /// ```dart
-  ///         if ( await myPlayer.isDecoderSupported(Codec.opusOGG) ) doSomething;
+  ///         if ( await myPlayer.isDecoderSupported(Codec.aacADTS) ) doSomething;
   /// ```
+  ///
   /// ---------------------------------------------------------------------------
+  ///
   Future<bool> isDecoderSupported(Codec codec) async {
     var result = false;
     _logger.d('FS:---> isDecoderSupported ');
@@ -688,10 +910,6 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
     }
-    // For decoding ogg/opus on ios, we need to support two steps :
-    // - remux OGG file format to CAF file format (with ffmpeg)
-    // - decode CAF/OPPUS (with native Apple AVFoundation)
-
     result = await FlutterSoundPlayerPlatform.instance.isDecoderSupported(
       this,
       codec: codec,
@@ -700,16 +918,23 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return result;
   }
 
-  /// Specify the callbacks frenquency, before calling [startPlayer].
+  /// Specify the callbacks frequency of the [onProgress] stream.
   ///
   /// ----------------------------------------------------------------------------
-  /// The default value is 0 (zero) which means that there is no callbacks.
   ///
-  /// *Example:*
+  /// The default value is 0 (zero) which means that there is no callbacks.
+  /// If you really want to receive the events, do not forget to call this verb.
+  ///
+  /// ## Example
   /// ```dart
   /// myPlayer.setSubscriptionDuration(Duration(milliseconds: 100));
   /// ```
+  ///
+  /// ## See also
+  /// - [onProgress]
+  ///
   /// -----------------------------------------------------------------------------
+  ///
   Future<void> setSubscriptionDuration(Duration duration) async {
     _logger.d('FS:---> setSubscriptionDuration ');
     await _waitOpen();
@@ -732,43 +957,55 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _playerController = null;
   }
 
-  /// Used to play a sound.
+  /// Used to play a sound on a player open with [openPlayer()].
   ///
   /// ------------------------------------------------------------------------------------------------------------------
-  /// - `startPlayer()` has four optional parameters, depending on your sound source :
-  ///    - `fromUri:`  (if you want to play a file or a remote URI)
-  ///    - `fromDataBuffer:` (if you want to play from a data buffer)
-  ///    - `sampleRate` is mandatory if `codec` == `Codec.pcm16` or `Codec.pcmFloat32`. Not used for other codecs.
-  ///    - `numChannels` is optional and is only used with raw PCM codecs. Its value is the number of channels,
   ///
-  /// You must specify one or the two parameters : `fromUri`, `fromDataBuffer`.
+  /// If you are new to Flutter Sound, you may look to this [simple guide](/tau/guides/guides_getting-started.html).
+  /// If you want to play from a dart stream, use the verb [startPlayerFromStream] instead of this verb.
   ///
-  /// - You use the optional parameter`codec:` for specifying the audio and file format of the file.
-  /// Please refer to the [Codec compatibility Table](/guides_codec.html) to know which codecs are currently supported.
+  /// When you want to stop the player, you call the verb [stopPlayer()].
+  /// Note : Flutter Sound does not stop automatically the player when finished.
+  /// If you want this, use the **_whenFinished_** parameter.
   ///
-  /// - `whenFinished:()` : A lambda function for specifying what to do when the playback will be finished.
+  /// ## Parameters
   ///
+  /// - **_codec:_** is the audio and file format of the file/buffer.
   /// Very often, the `codec:` parameter is not useful. Flutter Sound will adapt itself depending on the real format of the file provided.
-  /// But this parameter is necessary when Flutter Sound must do format conversion (for example to play opusOGG on iOS).
+  /// But this parameter is necessary when Flutter Sound must do a format conversion.
+  /// Please refer to the [Codec compatibility Table](/tau/guides/guides_codecs.html) to know which codecs are currently supported.
+  /// - One of the two following parameters:
+  ///   - **_fromDataBuffer:_** (if you want to play from a data buffer)
+  ///   - **_fromUri:_**  (if you want to play a file or a remote URI).
+  ///     The `fromUri` parameter, if specified, can be one of three possibilities :
+  ///       - The URL of a remote file.
+  ///       - The path of a local file. Hint: [path_provider](https://pub.dev/packages/path_provider)
+  ///       can be useful if you want to get access to some directories on your device.
+  ///       - The name of a temporary file (without any slash '/').
+  /// - **_sampleRate:_** is mandatory with raw PCM codecs (`codec` == `Codec.pcm16` or `Codec.pcmFloat32`). Not used for other codecs.
+  /// - **_numChannels:_** is only used with raw PCM codecs (`codec` == `Codec.pcm16` or `Codec.pcmFloat32`). Its value is the number of channels,
+  /// - **_whenFinished:()_** : A function for specifying what to do when the playback will be finished.
   ///
-  /// `startPlayer()` returns a Duration Future, which is the record duration.
+  /// Note: You must specify one or the two parameters : `fromUri`, `fromDataBuffer`.
   ///
-  /// The `fromUri` parameter, if specified, can be one of three posibilities :
-  /// - The URL of a remote file
-  /// - The path of a local file
-  /// - The name of a temporary file (without any slash '/')
+  /// ## Return
   ///
-  /// Hint: [path_provider](https://pub.dev/packages/path_provider) can be useful if you want to get access to some directories on your device.
+  /// [startPlayer()] returns a Duration Future, which is the record duration.
   ///
+  /// ## Examples
   ///
   /// *Example:*
   /// ```dart
-  ///         Duration d = await myPlayer.startPlayer(fromURI: 'foo', codec: Codec.aacADTS); // Play a temporary file
+  ///         Duration d = await myPlayer.startPlayer(
+  ///             codec: Codec.aacADTS,
+  ///             fromURI: 'foo'
+  ///         ); // Play a temporary file
   ///
   ///         _playerSubscription = myPlayer.onProgress.listen((e)
   ///         {
   ///                 // ...
   ///         });
+  ///         myPlayer.setSubscriptionDuration(Duration(milliseconds: 100));
   /// }
   /// ```
   ///
@@ -776,42 +1013,42 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// ```dart
   ///     final fileUri = "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
   ///
-  ///     Duration d = await myPlayer.startPlayer
+  ///     Duration d = await myPlayer.startPlayer // Play a remote file
   ///     (
-  ///                 fromURI: fileUri,
   ///                 codec: Codec.mp3,
+  ///                 fromURI: fileUri,
   ///                 whenFinished: ()
   ///                 {
   ///                          logger.d( 'I hope you enjoyed listening to this song' );
+  ///                          myPlayer.stopPlayer().then ( (_) { setState((){}); );
   ///                 },
   ///     );
   /// ```
+  ///
+  /// ## See also
+  /// - [stopPlayer()]
+  /// - [startPlayerFromStream()]
+  ///
   /// ---------------------------------------------------------------------------------------------------------------
+  ///
   Future<Duration?> startPlayer({
     Codec codec = Codec.aacADTS,
-    int sampleRate = 16000, // Used only with PCM codec
-    int numChannels = 1, // Used only with codec == Codec.pcm16
     String? fromURI,
     Uint8List? fromDataBuffer,
+    int sampleRate = 16000, // Used only with PCM codecs
+    int numChannels = 1, // Used only with PCM codecs
     TWhenFinished? whenFinished,
   }) async {
     Duration? r;
     await _lock.synchronized(() async {
-      //!!!  try {
       r = await _startPlayer(
+        codec: codec,
         fromURI: fromURI,
         fromDataBuffer: fromDataBuffer,
-        codec: codec,
         sampleRate: sampleRate,
         numChannels: numChannels,
         whenFinished: whenFinished,
       );
-      //!!!}
-      //!!!  on Exception {
-      //r = Duration.zero;
-      //!!!    await _stop();
-      //!!!    rethrow;
-      //!!!  };
     }); // timeout: Duration(seconds: 10));
     return r;
   }
@@ -981,43 +1218,57 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return completer!.future;
   }
 
-  /// Used to play something from a Dart stream
+  /// Used to play something from a dart stream
   ///
-  /// **This functionnality needs, at least, and Android SDK >= 21**
+  /// You use this verb instead of [startPlayer] when you want to play from a dart stream
+  /// or if you want to use one of the three `feed()` verbs.
+  /// For a complete discussion of the play from stream feature,
+  /// please look to this [small guide](/tau/guides/guides_live_streams.html)
   ///
-  ///   - The only codec supported is actually `Codec.pcm16`.
-  ///   - The only value possible for `numChannels` is actually 1.
-  ///   - SampleRate is the sample rate of the data you want to play.
+  /// ## Parameters
   ///
-  ///   Please look to [the following notice](codec.md#playing-pcm-16-from-a-dart-stream)
+  ///  - **_codec:_** The only codecs supported are [Codec.pcm16] and [Codec.pcmFloat32]. This parameter is mandatory.
+  ///  - **_interleaved:_** is a boolean specifying if the data that you will fee will be in an interleaved or a plan mode.
+  ///  This parameter is mandatory.
+  ///  - **_numChannels:_** is the number of channels of the audio data that you will provide. This parameter is mandatory.
+  ///  - **_sampleRate:_** is the sample rate used by your data. This parameter is mandatory.
+  ///  - **_bufferSize:_** is the size of the internal buffers. Most of the time you don't specify this parameter and use the default value.
   ///
-  ///   *Example*
+  ///   Please look to [the following notice](/tau/guides/guides_live_streams.html)
+  ///
+  ///   ## Return
+  ///
+  ///   Returns a Future which is completed when the function is done.
+  ///
+  ///   ## Example
   ///   You can look to the three provided examples :
   ///
-  ///   - [This example](../flutter_sound/example/example.md#liveplaybackwithbackpressure) shows how to play Live data, with Back Pressure from Flutter Sound
-  ///   - [This example](../flutter_sound/example/example.md#liveplaybackwithoutbackpressure) shows how to play Live data, without Back Pressure from Flutter Sound
-  ///   - [This example](../flutter_sound/example/example.md#soundeffect) shows how to play some real time sound effects.
+  ///   - [This example](/tau/examples/ex_playback_from_stream_1.html) shows how to play live data, without Back Pressure from Flutter Sound
+  ///   - [This example](/tau/examples/ex_playback_from_stream_2.html) shows how to play Live data, with Back Pressure from Flutter Sound
+  ///   - [This example](/tau/examples/ex_streams.html) shows how to record and playback from streams.
   ///
-  ///   *Example 1:*
+  ///   **_Example 1:_**
   ///   ```dart
   ///   await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
   ///
-  ///   await myPlayer.feedFromStream(aBuffer);
-  ///   await myPlayer.feedFromStream(anotherBuffer);
-  ///   await myPlayer.feedFromStream(myOtherBuffer);
+  ///   await myPlayer.feedF32FromStream(aBuffer);
+  ///   await myPlayer.feedF32FromStream(anotherBuffer);
+  ///   await myPlayer.feedF32FromStream(myOtherBuffer);
   ///
   ///   await myPlayer.stopPlayer();
   ///   ```
-  ///   *Example 2:*
+  ///   **_Example 2:_**
   ///   ```dart
   ///   await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
   ///
-  ///   myPlayer.foodSink.add(FoodData(aBuffer));
-  ///  myPlayer.foodSink.add(FoodData(anotherBuffer));
-  ///   myPlayer.foodSink.add(FoodData(myOtherBuffer));
-  ///
-  ///   myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
+  ///   myPlayer.float32Sink.add(aBuffer));
+  ///   myPlayer.float32Sink.add(anotherBuffer);
+  ///   myPlayer.float32Sink.add(myOtherBuffer);
   ///   ```
+  ///
+  /// ## See also
+  /// - [startPlayer()]
+  /// - [stopPlayer()]
   Future<void> startPlayerFromStream({
     Codec codec = Codec.pcm16,
     bool interleaved = true,
@@ -1195,6 +1446,47 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return 0;
   }
 
+  /// Feed a Float32 stream not interleaved when a flow control is wanted
+  ///
+  /// ----------------------------------------------------------------------
+  ///
+  /// Please look to this [small guide](/tau/guides/guides_live_streams.html) if you need help.
+  ///
+  /// ## Parameters
+  ///
+  /// - **_buffer:_** is a List of Float32List containing the audio data that you want to play.
+  /// The List length must be equal to the number of channels.
+  /// All the Float32List length **MUST** be same and contain your data.
+  ///
+  /// ## Return
+  ///
+  /// Returns a Future that you MUST await if you really need a flow control.
+  /// This future is declared _completed_ when the data has been played,
+  /// or at least when they had be given to the lower layer of the software.
+  /// Note: don't use the `int` returned. It is just for legacy reason and must not be used.
+  ///
+  /// ## Example
+  /// ```dart
+  /// await myPlayer.startPlayerFromStream
+  /// (
+  ///     codec: Codec.pcmFloat32
+  ///     numChannels: 2
+  ///     sampleRate: 48100
+  ///     interleaved: false,
+  /// );
+  ///
+  /// await myPlayer.feedF32FromStream(myData);
+  /// ```
+  ///
+  /// ## See also
+  /// - [feedInt16FromStream()]
+  /// - [feedUint8FromStream()]
+  /// - [float32Sink]
+  /// - [int16Sink]
+  /// - [uint8ListSink]
+  /// - Please look to this [small guide](/tau/guides/guides_live_streams.html) if you need help
+  /// ----------------------------------------------------------------------
+  ///
   Future<int> feedF32FromStream(List<Float32List> buffer) async {
     await _waitOpen();
     if (_isInited != Initialized.fullyInitialized) {
@@ -1233,6 +1525,48 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return 0;
   }
 
+  /// Feed a Int16 stream not interleaved when a flow control is wanted
+  ///
+  /// ----------------------------------------------------------------------
+  ///
+  /// Please look to this [small guide](/tau/guides/guides_live_streams.html) if you need help.
+  ///
+  /// ## Parameters
+  ///
+  /// - **_buffer:_** is a List of Int16List containing the audio data that you want to play.
+  /// The List length must be equal to the number of channels.
+  /// All the Int16List length **MUST** be same and contain your data.
+  ///
+  /// ## Return
+  ///
+  /// Returns a Future that you MUST await if you really need a flow control.
+  /// This future is declared _completed_ when the data has been played,
+  /// or at least when they had be given to the lower layer of the software.
+  /// Note: don't use the `int` returned. It is just for legacy reason and must not be used.
+  ///
+  /// ## Example
+  /// ```dart
+  /// await myPlayer.startPlayerFromStream
+  /// (
+  ///     codec: Codec.pcm16
+  ///     numChannels: 2
+  ///     sampleRate: 48100
+  ///     interleaved: false,
+  /// );
+  ///
+  /// await myPlayer.feedInt16FromStream(myData);
+  /// ```
+  ///
+  /// ## See also
+  /// - [feedF32FromStream()]
+  /// - [feedUint8FromStream()]
+  /// - [float32Sink]
+  /// - [int16Sink]
+  /// - [uint8ListSink]
+  /// - Please look to this [small guide](/tau/guides/guides_live_streams.html) if you need help
+  ///
+  /// ----------------------------------------------------------------------
+  ///
   Future<int> feedInt16FromStream(List<Int16List> buffer) async {
     await _waitOpen();
     if (_isInited != Initialized.fullyInitialized) {
@@ -1271,6 +1605,46 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     return 0;
   }
 
+  /// Feed a UInt8 stream interleaved when a flow control is wanted
+  ///
+  /// ----------------------------------------------------------------------
+  ///
+  /// Please look to this [small guide](/tau/guides/guides_live_streams.html) if you need help.
+  ///
+  /// ## Parameters
+  ///
+  /// - **_buffer:_** is a Uint8List containing the audio data that you want to play.
+  ///
+  /// ## Return
+  ///
+  /// Returns a Future that you MUST await if you really need a flow control.
+  /// This future is declared _completed_ when the data has been played,
+  /// or at least when they had be given to the lower layer of the software.
+  /// Note: don't use the `int` returned. It is just for legacy reason and must not be used.
+  ///
+  /// ## Example
+  /// ```dart
+  /// await myPlayer.startPlayerFromStream
+  /// (
+  ///     codec: Codec.pcm16
+  ///     numChannels: 2
+  ///     sampleRate: 48100
+  ///     interleaved: true,
+  /// );
+  ///
+  /// await myPlayer.feedUint8FromStream(myData);
+  /// ```
+  ///
+  /// ## See also
+  /// - [feedInt16FromStream()]
+  /// - [feedF32FromStream()]
+  /// - [float32Sink]
+  /// - [int16Sink]
+  /// - [uint8ListSink]
+  /// - Please look to this [small guide](/tau/guides/guides_live_streams.html) if you need help
+  ///
+  /// ----------------------------------------------------------------------
+  ///
   Future<int> feedUint8FromStream(Uint8List buffer) async {
     await _waitOpen();
     if (_isInited != Initialized.fullyInitialized) {
@@ -1279,43 +1653,22 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (isStopped) {
       return 0;
     }
-    /*
-    _needSomeFoodCompleter =
-        Completer<int>(); // Not completed until the device accept new data
-    try {
-      var ln =
-          await (FlutterSoundPlayerPlatform.instance.feed(this, data: buffer));
-      assert(ln >= 0); // feedFromStream() is not happy if < 0
-      if (ln != 0) {
-        // If the device accepted some data, then no need to wait
-        // It is the tau_core responsability to send a "needSomeFood" then it is again available for new data
-        _needSomeFoodCompleter = null;
-        return (ln);
-      } else {
-        //logger.i("The device has enough data");
-      }
-    } on Exception {
-      _needSomeFoodCompleter = null;
-      if (isStopped) {
-        return 0;
-      }
-      rethrow;
-    }
-
-    if (_needSomeFoodCompleter != null) {
-      return _needSomeFoodCompleter!.future;
-    }
-    return 0;
-     */
     return _feed(buffer);
   }
 
-  /// Stop a playback.
+  /// Stop a player.
   ///
-  /// This verb never throw any exception. It is safe to call it everywhere,
-  /// for example when the App is not sure of the current Audio State and want to recover a clean reset state.
+  /// ------------------------------------------------------------------------
   ///
-  /// *Example:*
+  /// This verb never throws any exception. It is safe to call it everywhere,
+  /// for example when the App is not sure of the current Audio State and wants to recover a clean reset state.
+  ///
+  /// ## Return
+  ///
+  /// A future completed when the stopPlayer function is done
+  ///
+  /// ## Example
+  ///
   /// ```dart
   ///         await myPlayer.stopPlayer();
   ///         if (_playerSubscription != null)
@@ -1324,6 +1677,12 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///                 _playerSubscription = null;
   ///         }
   /// ```
+  ///
+  /// ## See also
+  /// - [startPlayer()]
+  /// - [startPlayerFromStream()]
+  ///
+  /// --------------------------------------------------------------------------
   Future<void> stopPlayer() async {
     await _lock.synchronized(() async {
       await _stopPlayer();
@@ -1420,12 +1779,24 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   /// Pause the current playback.
   ///
+  /// ------------------------------------------------------------------
+  ///
   /// An exception is thrown if the player is not in the "playing" state.
   ///
-  /// *Example:*
+  /// ## Return
+  ///
+  /// Return a Future which is completed when the function is done.
+  ///
+  /// ## Example
   /// ```dart
   /// await myPlayer.pausePlayer();
   /// ```
+  ///
+  /// ## See also
+  /// - [resumePlayer()]
+  ///
+  /// ------------------------------------------------------------------
+  ///
   Future<void> pausePlayer() async {
     _logger.d('FS:---> pausePlayer ');
     await _lock.synchronized(() async {
@@ -1464,12 +1835,24 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   /// Resume the current playback.
   ///
+  /// -------------------------------------------------------------------
+  ///
   /// An exception is thrown if the player is not in the "paused" state.
   ///
-  /// *Example:*
+  /// ## Return
+  ///
+  /// Returns a Future which is completed when the function is done
+  ///
+  /// ## Example
   /// ```dart
   /// await myPlayer.resumePlayer();
   /// ```
+  ///
+  /// ## See also
+  /// - [resumePlayer()]
+  ///
+  /// -------------------------------------------------------------------
+  ///
   Future<void> resumePlayer() async {
     _logger.d('FS:---> resumePlayer');
     await _lock.synchronized(() async {
@@ -1508,12 +1891,24 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   /// To seek to a new location.
   ///
+  /// -------------------------------------------------------------------
+  ///
   /// The player must already be playing or paused. If not, an exception is thrown.
   ///
-  /// *Example:*
+  /// ## Parameters
+  ///
+  /// - **_duration:_** is the position that you want to seek into your player
+  ///
+  /// ## Return
+  ///
+  /// Return a Future which is completed when the function is done.
+  ///
+  /// ## Example
   /// ```dart
   /// await myPlayer.seekToPlayer(Duration(milliseconds: milliSecs));
   /// ```
+  /// --------------------------------------------------------------------
+  ///
   Future<void> seekToPlayer(Duration duration) async {
     await _lock.synchronized(() async {
       await _seekToPlayer(duration);
@@ -1537,13 +1932,28 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   /// Change the output volume
   ///
-  /// The parameter is a floating point number between 0 and 1.
-  /// Volume can be changed when player is running or before [startPlayer].
+  /// -------------------------------------------------------------------------
   ///
-  /// *Example:*
+  /// The volume can be changed when player is running or before [startPlayer()].
+  ///
+  /// ## Parameters
+  /// - **_volume:_**The parameter is a floating point number between 0 and 1.
+  ///
+  /// ## Return
+  ///
+  /// - Return a Future which is completed when the function is done.
+  ///
+  /// ## Example
+  ///
   /// ```dart
   /// await myPlayer.setVolume(0.1);
   /// ```
+  ///
+  /// ## See also
+  /// - [setVolumePan()]
+  ///
+  /// -------------------------------------------------------------------------
+  ///
   Future<void> setVolume(double volume) async {
     await _lock.synchronized(() async {
       await _setVolume(volume);
@@ -1569,6 +1979,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _logger.d('FS:<--- setVolume ');
   }
 
+  /// FIXME : documentation of this verb
   Future<void> setVolumePan(double volume, double pan) async {
     await _lock.synchronized(() async {
       await _setVolumePan(volume, pan);
@@ -1599,15 +2010,24 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   /// Change the playback speed
   ///
-  /// The parameter is a floating point number between 0 and 1.0 to slow the speed,
+  /// ----------------------------------------------------------------------
+  ///
+  /// The speed can be changed when player is running, or before [startPlayer()].
+  ///
+  /// ## Parameters
+  /// - **_speed:_** The parameter is a floating point number between 0 and 1.0 to slow the speed,
   /// or 1.0 to n to accelerate the speed.
   ///
-  /// Speed can be changed when player is running, or before [startPlayer].
+  /// ## Return
   ///
-  /// *Example:*
+  /// - Returns a Future when the function is done.
+  ///
+  /// ## Example
   /// ```dart
   /// await myPlayer.setSpeed(0.8);
   /// ```
+  /// -------------------------------------------------------------------
+  ///
   Future<void> setSpeed(double speed) async {
     await _lock.synchronized(() async {
       await _setSpeed(speed);
@@ -1635,6 +2055,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// Get the resource path.
   ///
   /// This verb should probably not be here...
+  /// @nodoc
   Future<String?> getResourcePath() async {
     await _waitOpen();
     if (_isInited != Initialized.fullyInitialized) {

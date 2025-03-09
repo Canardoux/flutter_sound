@@ -70,7 +70,33 @@
     </section>
     
 <section class="desc markdown">
-  <p>The Stream sink used by Play From Stream</p>
+  <p>Getter of one of the three StreamSink that you may use to feed a player from Stream.</p>
+<hr>
+<p>This stream is used when you have NOT interleaved audio data and you don't want a flow control.
+You can look to this <a href="/tau/guides/guides_live_streams.html">small guide</a> if you need precisions.</p>
+<h2 id="return">Return</h2>
+<p>The StreamSink that you may use to feed the player</p>
+<h2 id="example">example</h2>
+<pre class="language-dart"><code class="language-dart">await myPlayer.startPlayerFromStream
+(
+    codec: Codec.pcm16
+    numChannels: 2
+    sampleRate: 48100
+    interleaved: false,
+);
+
+myPlayer.int16Sink.add(myData);
+</code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../../player/FlutterSoundPlayer/float32Sink.html">float32Sink</a></li>
+<li><a href="../../player/FlutterSoundPlayer/int16Sink.html">int16Sink</a></li>
+<li><a href="../../player/FlutterSoundPlayer/feedF32FromStream.html">feedF32FromStream()</a></li>
+<li><a href="../../player/FlutterSoundPlayer/feedUint8FromStream.html">feedUint8FromStream()</a></li>
+<li><a href="../../player/FlutterSoundPlayer/feedF32FromStream.html">feedF32FromStream()</a></li>
+<li>You can also look to this <a href="/tau/guides/guides_live_streams.html">small guide</a> if you need precisions.</li>
+</ul>
+<hr>
 </section>
 
     

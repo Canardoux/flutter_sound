@@ -35,17 +35,23 @@ import '../flutter_sound.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/src/services/platform_channel.dart';
 import 'dart:io' show Platform;
-//import 'package:audio_session/audio_session.dart';
 
-/// A Recorder is an object that can playback from various sources.
+/// A Recorder is an object that can record to various destinations.
 ///
 /// ----------------------------------------------------------------------------------------------------
+///
+/// The Recorder class can have multiple instances at the same time. Each instance is used to control its own destination.
+///
+/// The destinations possible can be:
+///
+/// - A file
+/// - A dart stream
 ///
 /// Using a recorder is very simple :
 ///
 /// 1. Create a new `FlutterSoundRecorder`
 ///
-/// 2. Open it with [openAudioSession()]
+/// 2. Open it with [openRecorder()]
 ///
 /// 3. Start your recording with [startRecorder()].
 ///
@@ -56,19 +62,36 @@ import 'dart:io' show Platform;
 ///
 /// 5. Stop your recorder : [stopRecorder()]
 ///
-/// 6. Release your recorder when you have finished with it : [closeAudioSession()].
+/// 6. Release your recorder when you have finished with it : [closeRecorder()].
 /// This verb will call [stopRecorder()] if necessary.
 ///
+/// ![Recorder States](/images/RecorderStates.png)
+/// _Recorder States_
+///
+/// If you are new to Flutter Sound, you may have a look to this [little guide](/tau/guides/guides_getting-started.html)
+///
 /// ----------------------------------------------------------------------------------------------------
+///
 class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
-  /// The FlutterSoundRecorder Logger
+  // The FlutterSoundRecorder Logger
   Logger _logger = Logger(level: Level.debug);
   Level _logLevel = Level.debug;
 
-  /// The FlutterSoundRecorder Logger getter
+  /// The getter of the FlutterSoundRecorder Logger
+  ///
+  /// -----------------------------------
+  /// ## Example
+  ///
+  /// ```
+  /// myRecorder.logger.d('Hello');
+  /// ```
+  ///
+  /// ----------------------------------------
+  ///
   Logger get logger => _logger;
 
   /// Used if the App wants to dynamically change the Log Level.
+  ///
   /// Seldom used. Most of the time the Log Level is specified during the constructor.
   void setLogLevel(Level aLevel) {
     _logLevel = aLevel;
@@ -97,11 +120,19 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
   /// A reference to the User Sink during `StartRecorder(toStream:...)`
   StreamSink<Uint8List>? _userStreamSink;
-  //StreamSink<Float32List>? _userStreamSinkInterleaved32;
   StreamSink<List<Float32List>>? _userStreamSinkFloat32;
   StreamSink<List<Int16List>>? _userStreamSinkInt16;
 
   /// The current state of the Recorder
+  ///
+  /// --------------------------------------------------
+  /// ## see also
+  /// - [isRecording]
+  /// - [isStopped]
+  /// - [isPaused]
+  ///
+  /// ---------------------------------------------------
+  ///
   RecorderState get recorderState => _recorderState;
 
   /// Used by the UI Widget.
@@ -113,9 +144,12 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   }
 
   /// A stream on which FlutterSound will post the recorder progression.
-  /// You may listen to this Stream to have feedback on the current recording.
   ///
-  /// *Example:*
+  /// ---------------------------------------------------------
+  /// You may listen to this Stream to have feedback on the current recording.
+  /// Don't forget to call also [setSubscriptionDuration()]!
+  ///
+  /// ## Example
   /// ```dart
   ///         _recorderSubscription = myRecorder.onProgress.listen((e)
   ///         {
@@ -123,21 +157,73 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   ///                 double decibels = e.decibels
   ///                 ...
   ///         }
+  ///         await myRecorder.setSubscriptionDuration(
+  ///             Duration(milliseconds: 100), // 100 ms
+  ///         );
   /// ```
+  ///
+  /// ## See also
+  /// - [setSubscriptionDuration()]
+  ///
+  /// --------------------------------------------------------
+  ///
   Stream<RecordingDisposition>? get onProgress =>
       (_recorderController != null) ? _recorderController!.stream : null;
 
   /// True if `recorderState.isRecording`
+  ///
+  /// -----------------------------
+  ///
+  /// ## see also
+  /// - [recorderState]
+  /// - [isStopped]
+  /// - [isPaused]
+  ///
+  /// -------------------------
+  ///
   bool get isRecording => (recorderState == RecorderState.isRecording);
 
   /// True if `recorderState.isStopped`
+  ///
+  /// ---------------------------
+  /// ## see also
+  /// - [recorderState]
+  /// - [isRecording]
+  /// - [isPaused]
+  ///
+  /// -------------------------
+  ///
   bool get isStopped => (recorderState == RecorderState.isStopped);
 
   /// True if `recorderState.isPaused`
+  ///
+  /// ------------------------------
+  ///
+  /// ## see also
+  /// - [recorderState]
+  /// - [isStopped]
+  /// - [isRecording]
+  ///
+  /// -------------------------
+  ///
   bool get isPaused => (recorderState == RecorderState.isPaused);
 
   /// Instanciate a new Flutter Sound Recorder.
-  /// The optional paramater `Level logLevel` specify the Logger Level you are interested by.
+  ///
+  /// -------------------------------------------------------
+  ///
+  /// ## Parameters
+  ///
+  /// - **_logLevel:_** The optional paramater `Level logLevel` specifies the Logger Level you are interested by.
+  ///
+  /// ## Example
+  ///
+  /// ```
+  /// FlutterSoundRecorder myRecorder = FlutterSoundRecorder(Level.warning);
+  /// ```
+  ///
+  /// -----------------------------------------------
+  ///
   /* ctor */
   FlutterSoundRecorder({Level logLevel = Level.debug}) {
     _logger = Logger(level: logLevel);
@@ -148,7 +234,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
   /// Callback from the &tau; Core. Must not be called by the App
   /// @nodoc
-
   @override
   void interleavedRecording({required Uint8List data}) {
     if (_userStreamSink != null) {
@@ -157,6 +242,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   }
 
   @override
+
+  /// @nodoc
   void recordingDataFloat32({required List<Float32List>? data}) {
     if (_userStreamSinkFloat32 != null) {
       _userStreamSinkFloat32!.add(data!);
@@ -164,6 +251,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   }
 
   @override
+
+  /// @nodoc
   void recordingDataInt16({required List<Int16List> data}) {
     if (_userStreamSinkInt16 != null) {
       _userStreamSinkInt16!.add(data);
@@ -303,6 +392,8 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   }
 
   @override
+
+  /// @nodoc
   void log(Level logLevel, String msg) {
     _logger.log(logLevel, msg);
   }
@@ -321,12 +412,13 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
   /// Open a Recorder
   ///
-  /// A recorder must be opened before used.
-  /// Opening a recorder takes resources inside the OS. Those resources are freed with the verb `closeRecorder()`.
+  /// ----------------------------------------------------------
   ///
-  /// You MUST ensure that the recorder has been closed when your widget is detached from the UI.
+  /// A recorder must be opened before used.
+  /// Opening a recorder takes resources inside the system. Those resources are freed with the verb `closeRecorder()`.
+  ///
   /// Overload your widget's `dispose()` method to close the recorder when your widget is disposed.
-  /// In this way you will reset the Recorder and clean up the device resources, but the recorder will be no longer usable.
+  /// In this way you will reset the Recorder and clean up the device resources, and the recorder will be no longer usable.
   ///
   /// ```dart
   /// @override
@@ -341,15 +433,17 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// }
   /// ```
   ///
-  /// You may not openAudioSession many recorders without releasing them.
+  /// ## Parameters
+  /// - FIXME : document `isBGService` parameter
   ///
-  /// `openRecorder()` and `closeRecorder()` return Futures.
+  /// ## Return
+  ///
+  /// [openRecorder()] returns Futures.
   /// You do not need to wait the end of the initialization before [startRecorder()].
-  /// [startRecorder] will automaticaly wait the end of `openRecorder()` before starting the recorder.
+  /// It will automatically wait the end of `openRecorder()` before starting the recorder.
   ///
-  /// The four optional parameters are used if you want to control the Audio Focus. Please look to [FlutterSoundRecorder openAudioSession()](Recorder.md#openaudiosession-and-closeaudiosession) to understand the meaning of those parameters
+  /// ## Example:
   ///
-  /// *Example:*
   /// ```dart
   ///     myRecorder = await FlutterSoundRecorder().openRecorder();
   ///
@@ -360,6 +454,13 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   ///     myRecorder.closeRecorder();
   ///     myRecorder = null;
   /// ```
+  ///
+  /// ## See also
+  ///
+  /// - closeRecorder()
+  ///
+  /// -----------------------------------------------------------
+  ///
   Future<FlutterSoundRecorder?> openRecorder({isBGService = false}) async {
     if (_isInited != Initialized.notInitialized) {
       return this;
@@ -372,7 +473,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     }
 
     Future<FlutterSoundRecorder?>? r;
-    _logger.d('FS:---> openAudioSession ');
+    _logger.d('FS:---> openRecorder ');
     await _lock.synchronized(() async {
       r = _openAudioSession();
     });
@@ -381,7 +482,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   }
 
   Future<FlutterSoundRecorder> _openAudioSession() async {
-    _logger.d('---> openAudioSession');
+    _logger.d('---> _openAudioSession');
 
     Completer<FlutterSoundRecorder>? completer;
 
@@ -421,15 +522,25 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       _openRecorderCompleter = null;
       rethrow;
     }
-    _logger.d('<--- openAudioSession');
+    _logger.d('<--- _openAudioSession');
     return completer!.future;
   }
 
   /// Close a Recorder
   ///
+  /// -------------------------------------------------
+  ///
   /// You must close your recorder when you have finished with it, for releasing the resources.
-  /// Delete all the temporary files created with `startRecorder()`
-
+  /// It will delete all the temporary files created with [startRecorder()]
+  ///
+  /// ## Return
+  ///
+  /// Returns a Future which is completed when the function is done.
+  ///
+  /// ## See also
+  /// - [openRecorder()]
+  ///
+  /// --------------------------------------------------
   Future<void> closeRecorder() async {
     await _lock.synchronized(() {
       return _closeAudioSession();
@@ -437,7 +548,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   }
 
   Future<void> _closeAudioSession() async {
-    _logger.d('FS:---> closeAudioSession ');
+    _logger.d('FS:---> _closeAudioSession ');
     // If another closeRecorder() is already in progress, wait until finished
     if (_isInited == Initialized.notInitialized) {
       // Already close
@@ -471,22 +582,28 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     await FlutterSoundRecorderPlatform.instance.closeRecorder(this);
     FlutterSoundRecorderPlatform.instance.closeSession(this);
     _isInited = Initialized.notInitialized;
-    _logger.d('FS:<--- closeAudioSession ');
+    _logger.d('FS:<--- _closeAudioSession ');
   }
 
   /// Returns true if the specified encoder is supported by flutter_sound on this platform.
   ///
+  /// --------------------------------------------------------------------------
   /// This verb is useful to know if a particular codec is supported on the current platform;.
+  /// Note: `isEncoderSupported` is a method for internal reason, but should be a static function.
   ///
-  /// *Example:*
+  /// ## Parameter
+  /// - **_codec:_** the codec that you want to test.
+  ///
+  /// ## Return
+  /// - Returns true if the encoder is supported for this codec.
+  ///
+  /// ## Example
   /// ```dart
   ///         if ( await myRecorder.isEncoderSupported(Codec.opusOGG) ) doSomething;
   /// ```
-  /// `isEncoderSupported` is a method for legacy reason, but should be a static function.
+  /// --------------------------------------------------------------------------
+  ///
   Future<bool> isEncoderSupported(Codec codec) async {
-    // For encoding ogg/opus on ios, we need to support two steps :
-    // - encode CAF/OPPUS (with native Apple AVFoundation)
-    // - remux CAF file format to OPUS file format (with ffmpeg)
     await _waitOpen();
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Recorder is not open');
@@ -515,8 +632,20 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// Sets the frequency at which duration updates are sent to
   /// duration listeners.
   ///
-  /// Zero means "no callbacks".
-  /// The default is zero.
+  /// --------------------------------------------
+  ///
+  /// ## Parameter
+  ///
+  /// - duration is the wanted elapse time.Zero means "no callbacks".
+  /// The default is zero. So don't forget to call this verb
+  /// if you really want callbacks!
+  ///
+  /// ## See also
+  ///
+  /// - [onProgress]
+  ///
+  /// ----------------------------------------------------
+  ///
   Future<void> setSubscriptionDuration(Duration duration) async {
     _logger.d('FS:---> setSubscriptionDuration ');
     await _waitOpen();
@@ -554,29 +683,35 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     return false;
   }
 
-  /// `startRecorder()` starts recording with an open session.
+  /// `startRecorder()` starts recording a recorder.
   ///
-  /// If an [openAudioSession()] is in progress, `startRecorder()` will automatically wait the end of the opening.
-  /// `startRecorder()` has the destination file path as parameter.
-  /// It has also 7 optional parameters to specify :
-  /// - codec: The codec to be used. Please refer to the [Codec compatibility Table](codec.md#actually-the-following-codecs-are-supported-by-flutter_sound) to know which codecs are currently supported.
-  /// - toFile: a path to the file being recorded or the name of a temporary file (without slash '/').
-  /// - toStream: if you want to record to a Dart Stream. Please look to [the following notice](codec.md#recording-pcm-16-to-a-dart-stream). **This new functionnality needs, at least, Android SDK >= 21 (23 is better)**
-  /// - sampleRate: The sample rate in Hertz
-  /// - numChannels: The number of channels (1=monophony, 2=stereophony)
-  /// - bitRate: The bit rate in Hertz
-  /// - audioSource : possible value is :
+  /// -------------------------------------------------
+  ///
+  /// If an [openRecorder()] is in progress, `startRecorder()` will automatically wait the end of the opening.
+  ///
+  /// ## Parameters
+  ///
+  /// - **_codec:_** The codec to be used. Please refer to the [Codec compatibility Table](/tau/guides/guides_codecs.html) to know which codecs are currently supported.
+  /// - One of the following parameters
+  ///   - **_toFile:_** a path to the file being recorded or the name of a temporary file (without slash '/').
+  ///   - **_toStream:_** if you want to record to a Dart Stream interleaved. Please look to [the following notice](/tau/guides/guides_live_streams.html).
+  ///   - **_toStreamFloat32:_** if you want to record to a Dart Stream **NOT** interleaved with a Float32 coding. Please look to [the following notice](/tau/guides/guides_live_streams.html).
+  ///   - **_toStreamInt16:_** if you want to record to a Dart Stream **NOT** interleaved with a Int16 coding. Please look to [the following notice](/tau/guides/guides_live_streams.html).
+  /// - **_sampleRate:_** The sample rate in Hertz (used only with PCM codecs)
+  /// - **_numChannels:_** The number of channels (1=monophony, 2=stereophony) (used only with PCM codecs)
+  /// - **_bitRate:_** The bit rate in Hertz. Optional
+  /// - **_audioSource_** : possible value is :
   ///    - defaultSource
   ///    - microphone
   ///    - voiceDownlink *(if someone can explain me what it is, I will be grateful ;-) )*
   ///
-  /// [path_provider](https://pub.dev/packages/path_provider) can be useful if you want to get access to some directories on your device.
+  /// Hint: [path_provider](https://pub.dev/packages/path_provider) can be useful if you want to get access to some directories on your device.
   /// To record a temporary file, the App can specify the name of this temporary file (without slash) instead of a real path.
   ///
   /// Flutter Sound does not take care of the recording permission. It is the App responsability to check or require the Recording permission.
   /// [Permission_handler](https://pub.dev/packages/permission_handler) is probably useful to do that.
   ///
-  /// *Example:*
+  /// ## Example
   /// ```dart
   ///     // Request Microphone permission if needed
   ///     PermissionStatus status = await Permission.microphone.request();
@@ -585,6 +720,12 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   ///
   ///     await myRecorder.startRecorder(toFile: 'foo', codec: t_CODEC.CODEC_AAC,); // A temporary file named 'foo'
   /// ```
+  ///
+  /// ## See also
+  /// - [stopRecorder()]
+  ///
+  /// ---------------------------------------------------------
+  ///
   Future<void> startRecorder({
     Codec codec = Codec.defaultCodec,
     String? toFile,
@@ -608,20 +749,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
         Platform
             .isIOS) // This hack is just to have recorder to stream working correctly.
     {
-      /*
-      FlutterSoundPlayer player = FlutterSoundPlayer();
-      await player.openPlayer();
-      Uint8List buf = Uint8List(0);
-      //buf.fillRange(0, 1000, 0);
-      try {
-        await player.startPlayer(
-            fromDataBuffer: buf, codec: Codec.pcm16, whenFinished: () {});
-      } catch (e) {
-        _logger.d('Hacking the bug we have on iOS when recording to stream');
-      }
-      await player.stopPlayer();
-      await  player.closePlayer();
-       */
       FlutterSoundRecorder recorder = FlutterSoundRecorder();
       await recorder.openRecorder();
       try {
@@ -719,32 +846,6 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       throw _CodecNotSupportedException('Codec not supported.');
     }
 
-    /*
-    final session = await AudioSession.instance;
-    final categ = session.configuration?.avAudioSessionCategory;
-    switch (categ) {
-      case AVAudioSessionCategory.record:
-      case AVAudioSessionCategory.playAndRecord:
-        break;
-
-      case AVAudioSessionCategory.ambient:
-      case AVAudioSessionCategory.soloAmbient:
-      case AVAudioSessionCategory.playback:
-      case AVAudioSessionCategory.multiRoute:
-      case null:
-        //default:
-        {
-          _logger.d('FS: calling AudioSession.session.configure()');
-          await session.configure(AudioSessionConfiguration(
-            avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-            //avAudioSessionCategoryOptions:
-            //AVAudioSessionCategoryOptions.allowBluetooth |
-            //AVAudioSessionCategoryOptions.defaultToSpeaker,
-          ));
-        }
-        break;
-    }
-*/
     Completer<void>? completer;
     // Maybe we should stop any recording already running... (stopRecorder does that)
     _userStreamSink = toStream;
@@ -803,11 +904,16 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     return completer.future;
   }
 
-  /// Stop a record.
+  /// Stop a recorder.
   ///
-  /// Return a Future to an URL of the recorded sound.
+  /// ----------------------------------------------------
   ///
-  /// *Example:*
+  /// ## Return
+  ///
+  /// Returns a Future to an URL of the recorded sound.
+  ///
+  /// ## Example
+  ///
   /// ```dart
   ///         String anURL = await myRecorder.stopRecorder();
   ///         if (_recorderSubscription != null)
@@ -817,6 +923,11 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   ///         }
   /// }
   /// ```
+  ///
+  /// ## See also
+  /// - [startRecorder()]
+  /// ---------------------------------------------------
+  ///
   Future<String?> stopRecorder() async {
     _logger.d('FS:---> stopRecorder ');
     String? r;
@@ -848,11 +959,13 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     return r;
   }
 
+  /// @nodoc
   void requestData() {
     FlutterSoundRecorderPlatform.instance.requestData(this);
   }
 
   /// Get the sampleRate used by startRecorder()
+  /// @nodoc
   Future<int> getSampleRate() async {
     _logger.d('FS:---> getSampleRate');
     Future<int>? r = null;
@@ -875,13 +988,24 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
   /// Pause the recorder
   ///
+  /// -----------------------------------------------
   /// On Android this API verb needs al least SDK-24.
   /// An exception is thrown if the Recorder is not currently recording.
   ///
-  /// *Example:*
+  /// ## Return
+  ///
+  /// Returns a Future which is completed when the function is done.
+  ///
+  /// ## Example:
+  ///
   /// ```dart
   /// await myRecorder.pauseRecorder();
   /// ```
+  ///
+  /// ## See also
+  /// - [resumeRecorder()]
+  ///
+  /// ----------------------------------------------
   Future<void> pauseRecorder() async {
     _logger.d('FS:---> pauseRecorder ');
     await _lock.synchronized(() async {
@@ -917,13 +1041,23 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
   /// Resume a paused Recorder
   ///
+  /// -----------------------------------------------
   /// On Android this API verb needs al least SDK-24.
   /// An exception is thrown if the Recorder is not currently paused.
   ///
-  /// *Example:*
+  /// ## Return
+  ///
+  /// Returns a Future which is completed when the function is done.
+  ///
+  /// ## Example
   /// ```dart
   /// await myRecorder.resumeRecorder();
   /// ```
+  ///
+  /// ## See also
+  /// - [pauseRecorder()]
+  /// ----------------------------------------------
+  ///
   Future<void> resumeRecorder() async {
     _logger.d('FS:---> pausePlayer ');
     await _lock.synchronized(() async {
@@ -959,17 +1093,25 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
   /// Delete a temporary file
   ///
+  /// ------------------------------------------------------------
+  ///
   /// Delete a temporary file created during [startRecorder()].
   /// the argument must be a file name without any path.
-  /// This function is seldom used, because [closeAudioSession()] delete automaticaly
+  /// This function is seldom used, because [closeRecorder()] delete automaticaly
   /// all the temporary files created.
   ///
-  /// *Example:*
+  /// ## Example
   /// ```dart
   ///      await myRecorder.startRecorder(toFile: 'foo'); // This is a temporary file, because no slash '/' in the argument
   ///      await myPlayer.startPlayer(fromURI: 'foo');
   ///      await myRecorder.deleteRecord('foo');
   /// ```
+  ///
+  /// ## See also
+  /// - [closeRecorder()]
+  ///
+  /// ------------------------------------------------------------
+  ///
   Future<bool?> deleteRecord({required String fileName}) async {
     _logger.d('FS:---> deleteRecord');
     await _waitOpen();
@@ -986,11 +1128,16 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
 
   /// Get the URI of a recorded file.
   ///
+  /// -------------------------------------------------------------
+  ///
   /// This is same as the result of [stopRecorder()].
-  /// Be careful : on Flutter Web, this verb cannot be used before stoping
+  /// Be careful : on Flutter Web, this verb cannot be used before stopping
   /// the recorder.
   /// This verb is seldom used. Most of the time, the App will use the result
   /// of [stopRecorder()].
+  ///
+  /// ---------------------------------------------------------------
+  ///
   Future<String?> getRecordURL({required String path}) async {
     await _waitOpen();
     if (_isInited != Initialized.fullyInitialized) {
@@ -1051,6 +1198,7 @@ class _CodecNotSupportedException extends _RecorderException {
 }
 
 /// Permission to record was not granted
+/// @nodoc
 class RecordingPermissionException extends _RecorderException {
   ///  Permission to record was not granted
   RecordingPermissionException(String message) : super(message);

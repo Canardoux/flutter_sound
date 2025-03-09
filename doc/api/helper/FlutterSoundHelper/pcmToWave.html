@@ -71,11 +71,30 @@
     
 <section class="desc markdown">
   <p>Converts a raw PCM file to a WAVE file.</p>
+<hr>
 <p>Add a WAVE header in front of the PCM data
 This verb is usefull to convert a Raw PCM file to a Wave file.
 It adds a <code>Wave</code> envelop to the PCM file, so that the file can be played back with <code>startPlayer()</code>.</p>
 <p>Note: the parameters <code>numChannels</code> and <code>sampleRate</code> <strong>are mandatory, and must match the actual PCM data</strong>.</p>
-<p><a href="doc/codec.md#note-on-raw-pcm-and-wave-files">See here</a> a discussion about <code>Raw PCM</code> and <code>WAVE</code> file format.</p>
+<p><a href="/tau/guides/guides-pcm-wave.html">See here</a> a discussion about <code>Raw PCM</code> and <code>WAVE</code> file format.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><strong><em>inputFile:</em></strong> is a file path to your input file</li>
+<li><strong><em>outputFile:</em></strong> is a path to your output file</li>
+<li><strong><em>numChannels:</em></strong> is the number of channels of your file</li>
+<li><strong><em>sampleRate</em></strong> is the sample rate of your data</li>
+<li><strong><em>codec</em></strong> is either <a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.25.1/flutter_sound_platform_interface/Codec.html">FSCodec.Codec.pcm16</a> or <a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.25.1/flutter_sound_platform_interface/Codec.html">FSCodec.Codec.pcmFloat32</a></li>
+</ul>
+<h2 id="example">Example</h2>
+<pre class="language-dart"><code>FlutterSoundHelper().pcmToWave (
+    inputFile: 'foo.pcm',
+    outputFile: 'foo.wav',
+    numChannels: 2 // stereo
+    samplerate: 48000,
+    codec: FSCodec.Codec.pcm16
+ );
+</code></pre>
+<hr>
 </section>
 
 

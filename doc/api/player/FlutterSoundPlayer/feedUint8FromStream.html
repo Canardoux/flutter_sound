@@ -65,6 +65,41 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>Feed a UInt8 stream interleaved when a flow control is wanted</p>
+<hr>
+<p>Please look to this <a href="/tau/guides/guides_live_streams.html">small guide</a> if you need help.</p>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><strong><em>buffer:</em></strong> is a Uint8List containing the audio data that you want to play.</li>
+</ul>
+<h2 id="return">Return</h2>
+<p>Returns a Future that you MUST await if you really need a flow control.
+This future is declared <em>completed</em> when the data has been played,
+or at least when they had be given to the lower layer of the software.
+Note: don't use the <code>int</code> returned. It is just for legacy reason and must not be used.</p>
+<h2 id="example">Example</h2>
+<pre class="language-dart"><code class="language-dart">await myPlayer.startPlayerFromStream
+(
+    codec: Codec.pcm16
+    numChannels: 2
+    sampleRate: 48100
+    interleaved: true,
+);
+
+await myPlayer.feedUint8FromStream(myData);
+</code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../../player/FlutterSoundPlayer/feedInt16FromStream.html">feedInt16FromStream()</a></li>
+<li><a href="../../player/FlutterSoundPlayer/feedF32FromStream.html">feedF32FromStream()</a></li>
+<li><a href="../../player/FlutterSoundPlayer/float32Sink.html">float32Sink</a></li>
+<li><a href="../../player/FlutterSoundPlayer/int16Sink.html">int16Sink</a></li>
+<li><a href="../../player/FlutterSoundPlayer/uint8ListSink.html">uint8ListSink</a></li>
+<li>Please look to this <a href="/tau/guides/guides_live_streams.html">small guide</a> if you need help</li>
+</ul>
+<hr>
+</section>
 
 
     
@@ -78,34 +113,6 @@
   if (isStopped) {
     return 0;
   }
-  &#47;*
-  _needSomeFoodCompleter =
-      Completer&lt;int&gt;(); &#47;&#47; Not completed until the device accept new data
-  try {
-    var ln =
-        await (FlutterSoundPlayerPlatform.instance.feed(this, data: buffer));
-    assert(ln &gt;= 0); &#47;&#47; feedFromStream() is not happy if &lt; 0
-    if (ln != 0) {
-      &#47;&#47; If the device accepted some data, then no need to wait
-      &#47;&#47; It is the tau_core responsability to send a &quot;needSomeFood&quot; then it is again available for new data
-      _needSomeFoodCompleter = null;
-      return (ln);
-    } else {
-      &#47;&#47;logger.i(&quot;The device has enough data&quot;);
-    }
-  } on Exception {
-    _needSomeFoodCompleter = null;
-    if (isStopped) {
-      return 0;
-    }
-    rethrow;
-  }
-
-  if (_needSomeFoodCompleter != null) {
-    return _needSomeFoodCompleter!.future;
-  }
-  return 0;
-   *&#47;
   return _feed(buffer);
 }</code></pre>
 </section>

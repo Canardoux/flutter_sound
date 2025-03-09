@@ -57,7 +57,7 @@
 
     <section class="multi-line-signature">
       
-<span class="returntype">dynamic</span>
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-typed_data/Float32List-class.html">Float32List</a></span>
 <span class="name ">uint8ListToFloat32List</span>(<wbr><ol class="parameter-list"> <li><span class="parameter" id="uint8ListToFloat32List-param-buf"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-typed_data/Uint8List-class.html">Uint8List</a></span>&gt;</span></span> <span class="parameter-name">buf</span>, {</span></li>
 <li><span class="parameter" id="uint8ListToFloat32List-param-endian"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-typed_data/Endian-class.html">Endian</a></span> <span class="parameter-name">endian</span> = <span class="default-value">Endian.little</span>, </span></li>
 </ol>})
@@ -66,12 +66,29 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>Transform a Uint8List to a Float32List</p>
+<hr>
+<h2 id="parameters">Parameters</h2>
+<ul>
+<li><strong><em>buf:</em></strong> is the buffer you want to convert</li>
+<li><strong><em>endian:</em></strong> is the endianness of your data</li>
+</ul>
+<h2 id="return">Return</h2>
+<ul>
+<li>a <code>Float32List</code> containing the transformed buffer</li>
+</ul>
+<h2 id="example">Example</h2>
+<pre class="language-dart"><code>Float32List myFloat32List = uint8ListToFloat32List(myUint8List);
+</code></pre>
+<hr>
+</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">uint8ListToFloat32List(List&lt;Uint8List&gt; buf, {Endian endian = Endian.little}) {
+  <pre class="language-dart"><code class="language-dart">Float32List uint8ListToFloat32List(List&lt;Uint8List&gt; buf, {Endian endian = Endian.little}) {
   List&lt;Float32List&gt; r = [];
   for (Uint8List channelData in buf) {
     int ln = ((channelData.length) &#47; 4).floor();

@@ -70,39 +70,51 @@
     </section>
     
 <section class="desc markdown">
-  <p>Used to play something from a Dart stream</p>
-<p><strong>This functionnality needs, at least, and Android SDK &gt;= 21</strong></p>
+  <p>Used to play something from a dart stream</p>
+<p>You use this verb instead of <a href="../../player/FlutterSoundPlayer/startPlayer.html">startPlayer</a> when you want to play from a dart stream
+or if you want to use one of the three <code>feed()</code> verbs.
+For a complete discussion of the play from stream feature,
+please look to this <a href="/tau/guides/guides_live_streams.html">small guide</a></p>
+<h2 id="parameters">Parameters</h2>
 <ul>
-<li>The only codec supported is actually <code>Codec.pcm16</code>.</li>
-<li>The only value possible for <code>numChannels</code> is actually 1.</li>
-<li>SampleRate is the sample rate of the data you want to play.</li>
+<li><strong><em>codec:</em></strong> The only codecs supported are <a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.25.1/flutter_sound_platform_interface/Codec.html">Codec.pcm16</a> and <a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.25.1/flutter_sound_platform_interface/Codec.html">Codec.pcmFloat32</a>. This parameter is mandatory.</li>
+<li><strong><em>interleaved:</em></strong> is a boolean specifying if the data that you will fee will be in an interleaved or a plan mode.
+ This parameter is mandatory.</li>
+<li><strong><em>numChannels:</em></strong> is the number of channels of the audio data that you will provide. This parameter is mandatory.</li>
+<li><strong><em>sampleRate:</em></strong> is the sample rate used by your data. This parameter is mandatory.</li>
+<li><strong><em>bufferSize:</em></strong> is the size of the internal buffers. Most of the time you don't specify this parameter and use the default value.</li>
 </ul>
-<p>Please look to <a href="codec.md#playing-pcm-16-from-a-dart-stream">the following notice</a></p>
-<p><em>Example</em>
-  You can look to the three provided examples :</p>
+<p>Please look to <a href="/tau/guides/guides_live_streams.html">the following notice</a></p>
+<h2 id="return">Return</h2>
+<p>Returns a Future which is completed when the function is done.</p>
+<h2 id="example">Example</h2>
+<p>You can look to the three provided examples :</p>
 <ul>
-<li><a href="../flutter_sound/example/example.md#liveplaybackwithbackpressure">This example</a> shows how to play Live data, with Back Pressure from Flutter Sound</li>
-<li><a href="../flutter_sound/example/example.md#liveplaybackwithoutbackpressure">This example</a> shows how to play Live data, without Back Pressure from Flutter Sound</li>
-<li><a href="../flutter_sound/example/example.md#soundeffect">This example</a> shows how to play some real time sound effects.</li>
+<li><a href="/tau/examples/ex_playback_from_stream_1.html">This example</a> shows how to play live data, without Back Pressure from Flutter Sound</li>
+<li><a href="/tau/examples/ex_playback_from_stream_2.html">This example</a> shows how to play Live data, with Back Pressure from Flutter Sound</li>
+<li><a href="/tau/examples/ex_streams.html">This example</a> shows how to record and playback from streams.</li>
 </ul>
-<p><em>Example 1:</em></p>
+<p><strong><em>Example 1:</em></strong></p>
 <pre class="language-dart"><code class="language-dart">await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
 
-await myPlayer.feedFromStream(aBuffer);
-await myPlayer.feedFromStream(anotherBuffer);
-await myPlayer.feedFromStream(myOtherBuffer);
+await myPlayer.feedF32FromStream(aBuffer);
+await myPlayer.feedF32FromStream(anotherBuffer);
+await myPlayer.feedF32FromStream(myOtherBuffer);
 
 await myPlayer.stopPlayer();
 </code></pre>
-<p><em>Example 2:</em></p>
+<p><strong><em>Example 2:</em></strong></p>
 <pre class="language-dart"><code class="language-dart">await myPlayer.startPlayerFromStream(codec: Codec.pcm16, numChannels: 1, sampleRate: 48000);
 
-myPlayer.foodSink.add(FoodData(aBuffer));
-myPlayer.foodSink.add(FoodData(anotherBuffer));
-myPlayer.foodSink.add(FoodData(myOtherBuffer));
-
-myPlayer.foodSink.add(FoodEvent((){_mPlayer.stopPlayer();}));
+myPlayer.float32Sink.add(aBuffer));
+myPlayer.float32Sink.add(anotherBuffer);
+myPlayer.float32Sink.add(myOtherBuffer);
 </code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../../player/FlutterSoundPlayer/startPlayer.html">startPlayer()</a></li>
+<li><a href="../../player/FlutterSoundPlayer/stopPlayer.html">stopPlayer()</a></li>
+</ul>
 </section>
 
 

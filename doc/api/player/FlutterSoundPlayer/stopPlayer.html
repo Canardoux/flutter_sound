@@ -65,10 +65,13 @@
     </section>
     
 <section class="desc markdown">
-  <p>Stop a playback.</p>
-<p>This verb never throw any exception. It is safe to call it everywhere,
-for example when the App is not sure of the current Audio State and want to recover a clean reset state.</p>
-<p><em>Example:</em></p>
+  <p>Stop a player.</p>
+<hr>
+<p>This verb never throws any exception. It is safe to call it everywhere,
+for example when the App is not sure of the current Audio State and wants to recover a clean reset state.</p>
+<h2 id="return">Return</h2>
+<p>A future completed when the stopPlayer function is done</p>
+<h2 id="example">Example</h2>
 <pre class="language-dart"><code class="language-dart">        await myPlayer.stopPlayer();
         if (_playerSubscription != null)
         {
@@ -76,6 +79,12 @@ for example when the App is not sure of the current Audio State and want to reco
                 _playerSubscription = null;
         }
 </code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../../player/FlutterSoundPlayer/startPlayer.html">startPlayer()</a></li>
+<li><a href="../../player/FlutterSoundPlayer/startPlayerFromStream.html">startPlayerFromStream()</a></li>
+</ul>
+<hr>
 </section>
 
 

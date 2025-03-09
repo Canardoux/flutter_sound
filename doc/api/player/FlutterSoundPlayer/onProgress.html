@@ -70,15 +70,20 @@
     </section>
     
 <section class="desc markdown">
-  <p>The stream side of the Food Controller</p>
+  <p>The stream side of the <a href="../../player/FlutterSoundPlayer/onProgress.html">onProgress</a> Controller</p>
+<hr>
 <p>This is a stream on which FlutterSound will post the player progression.
 You may listen to this Stream to have feedback on the current playback.</p>
+<p>If you want to receive events on this stream, do not forget to
+call also <a href="../../player/FlutterSoundPlayer/setSubscriptionDuration.html">setSubscriptionDuration()</a>. If you do not call this verb,
+you will not receive anything because the default value is 0ms which means
+not events!</p>
 <p>PlaybackDisposition has two fields :</p>
 <ul>
 <li>Duration duration  (the total playback duration)</li>
 <li>Duration position  (the current playback position)</li>
 </ul>
-<p><em>Example:</em></p>
+<h2 id="example">Example</h2>
 <pre class="language-dart"><code class="language-dart">        _playerSubscription = myPlayer.onProgress.listen((e)
         {
                 Duration maxDuration = e.duration;
@@ -89,6 +94,12 @@ You may listen to this Stream to have feedback on the current playback.</p>
              Duration(milliseconds: 100, // an event each 100 ms
         );
 </code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../../player/FlutterSoundPlayer/setSubscriptionDuration.html">setSubscriptionDuration()</a></li>
+<li>You may look to this <a href="/tau/guides/guides_on_progress.html">small guide</a> if you need precisions about this.</li>
+</ul>
+<hr>
 </section>
 
     

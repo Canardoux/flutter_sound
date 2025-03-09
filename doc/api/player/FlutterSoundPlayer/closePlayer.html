@@ -65,7 +65,7 @@
     </section>
     
 <section class="desc markdown">
-  <p>Close an open session.</p>
+  <p>Close an open player.</p>
 <hr>
 <p>Must be called when finished with a Player, to release all the resources.
 It is safe to call this procedure at any time.</p>
@@ -73,7 +73,11 @@ It is safe to call this procedure at any time.</p>
 <li>If the Player is not open, this verb will do nothing</li>
 <li>If the Player is currently in play or pause mode, it will be stopped before.</li>
 </ul>
-<p>example:</p>
+<h2 id="return">Return</h2>
+<ul>
+<li>Returns a Future which is completed when the function is done.</li>
+</ul>
+<h2 id="example">example</h2>
 <pre class="language-dart"><code class="language-dart">@override
 void dispose()
 {
@@ -85,6 +89,10 @@ void dispose()
         super.dispose();
 }
 </code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../../player/FlutterSoundPlayer/openPlayer.html">openPlayer()</a></li>
+</ul>
 <hr>
 </section>
 
