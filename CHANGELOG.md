@@ -2,6 +2,7 @@
 
 - Doc
 - Score on pub.dev
+- README on pub.dev
 
 #### TODO
 
