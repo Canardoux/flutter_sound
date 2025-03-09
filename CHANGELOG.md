@@ -1,4 +1,4 @@
-### 9.25.2
+### 9.25.3
 
 - Doc
 - Score on pub.dev

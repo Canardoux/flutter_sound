@@ -1,174 +1,156 @@
-# just-the-docs-template
+![pub version](https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square)
+![Flutter Sound](https://tau-ver.canardoux.xyz/images/fs/Logotype-primary.png)
 
-This is a *bare-minimum* template to create a [Jekyll] site that:
+- ## Flutter Sound user : your doc [is here](https://flutter-sound.canardoux.xyz/)
+- ## The CHANGELOG [is here](https://fs-doc.vercel.app/tau/CHANGELOG.html)
 
-- uses the [Just the Docs] theme;
-- can be built and published on [GitHub Pages];
-- can be built and previewed locally, and published on other platforms.
+## Flutter Sound stands for Ukraine
 
-More specifically, the created site:
+![PeaceForUkraine](https://fs-doc.vercel.app/images/2-year-old-irish-girl-ukrainian.jpg)
+Peace for Ukraine
 
-- uses a gem-based approach, i.e. uses a `Gemfile` and loads the `just-the-docs` gem;
-- uses the [GitHub Pages / Actions workflow] to build and publish the site on GitHub Pages.
+![PrayForUkraine](https://fs-doc.vercel.app/images/banner.png)
+Pray for Ukraine
 
-To get started with creating a site, simply:
+## Flutter Sound as a τ Project
 
-1. click "[use this template]" to create a GitHub repository
-2. go to Settings > Pages > Build and deployment > Source, and select GitHub Actions
+Flutter Sound is a set of libraries which deal with audio :
 
-If you want to maintain your docs in the `docs` directory of an existing project repo, see [Hosting your docs from an existing project repo](#hosting-your-docs-from-an-existing-project-repo).
+- A player for audio playback
+- A recorder for recording audio
+- Several utilities to handle audio files
 
-After completing the creation of your new site on GitHub, update it as needed:
+![Demo](https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif)
 
-## Replace the content of the template pages
+## Overview
 
-Update the following files to your own content:
+Flutter Sound is a library package allowing you to play and record audio for :
 
-- `index.md` (your new home page)
-- `README.md` (information for those who access your site repo on GitHub)
+* iOS
+* Android
+* Web
 
-## Changing the version of the theme and/or Jekyll
+The Flutter Sound package supports playback from:
 
-Simply edit the relevant line(s) in the `Gemfile`.
+* Dart buffers
+* Assets
+* Files
+* Remote URL
+* Dart Streams
 
-## Adding a plugin
+The Flutter Sound package supports recording to:
 
-The Just the Docs theme automatically includes the [`jekyll-seo-tag`] plugin.
+* Dart buffers
+* Files
+* Dart Streams
 
-To add an extra plugin, you need to add it in the `Gemfile` *and* in `_config.yml`. For example, to add [`jekyll-default-layout`]:
+## SDK requirements
 
-- Add the following to your site's `Gemfile`:
+* Flutter Sound requires an iOS 10.0 SDK \(or later\)
+* Flutter Sound requires an Android 21 \(or later\)
+* Flutter Sound is OK with the main Web browsers
+   - Google Chrome
+   - Firefox
+   - Safari
 
-  ```ruby
-  gem "jekyll-default-layout"
-  ```
+## Examples \(Demo Apps\)
 
-- And add the following to your site's `_config.yml`:
+Flutter Sound comes with several [Demo/Examples](https://fs-doc.vercel.app/tau/examples.html).
 
-  ```yaml
-  plugins:
-    - jekyll-default-layout
-  ```
+You can run a live view of these examples [here](https://fs-doc.vercel.app/live/).
 
-Note: If you are using a Jekyll version less than 3.5.0, use the `gems` key instead of `plugins`.
+## Features
 
-## Publishing your site on GitHub Pages
+The Flutter Sound package includes the following features :
 
-1.  If your created site is `YOUR-USERNAME/YOUR-SITE-NAME`, update `_config.yml` to:
+* Play and Record sound or music with various codecs. \(See [the supported codecs here](https://fs-doc.vercel.app/tau/guides/guides_codecs.html)\)
+* Play local or remote files specified by their URL.
+* Play assets.
+* Play from a dart stream
+* Playback from a live dart Stream
+* Support for releasing/resuming resources when the app pauses/resumes.
 
-    ```yaml
-    title: YOUR TITLE
-    description: YOUR DESCRIPTION
-    theme: just-the-docs
+## Flutter Sound and Streams
 
-    url: https://YOUR-USERNAME.github.io/YOUR-SITE-NAME
+Streams support is a main Flutter Sound feature that is very exciting.
 
-    aux_links: # remove if you don't want this link to appear on your pages
-      Template Repository: https://github.com/YOUR-USERNAME/YOUR-SITE-NAME
-    ```
+- Flutter Sound can record to a dart stream of audio data (PCM Float32 or PCM Int16). This let you process live audio data in dart, or send these data to a remote host.
+- Flutter Sound can playback from a dart stream of audio data (PCM Float32 or PCM Int16). This let play live audio data generated from dart
+(sequencer, sound generator, ...) or from a remote host.
 
-2.  Push your updated `_config.yml` to your site on GitHub.
+You can look to the [FS Streams guide](https://fs-doc.vercel.app/tau/guides/guides_live_streams.html).
 
-3.  In your newly created repo on GitHub:
-    - go to the `Settings` tab -> `Pages` -> `Build and deployment`, then select `Source`: `GitHub Actions`.
-    - if there were any failed Actions, go to the `Actions` tab and click on `Re-run jobs`.
+## License
 
-## Building and previewing your site locally
+- Flutter Sound is published under the [MPL-2.0 License](hhttps://fs-doc.vercel.app/tau/LICENSE.html).
+- Flutter Sound is copyrighted by Dooboolab and Canardoux.
+- Flutter Sound is now released under the permissive Mozilla license which has a **weak** *copyleft* clause: if you modify some of Flutter Sound code you must publish your modifications under the MPL license too. But you may publish your App with any license you want. Even a Proprietary/Closed-Sources License (shame on you!).
+- The Tau documentation is published under the [Creative Commons CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en) license.
 
-Assuming [Jekyll] and [Bundler] are installed on your computer:
+## The τ family
 
-1.  Change your working directory to the root directory of your site.
+The `Tau` family begins to be rich :). It is composed by those following Flutter plugins.
 
-2.  Run `bundle install`.
+- `Flutter Sound 9.x` (this legacy plugin developed for many years)
+- [Etau](https://pub.dev/packages/etau) (which is a port on Flutter Web of the W3C Web Audio API)
+- [Tauweb](https://pub.dev/packages/tau_web) (which is the `Etau` implementation for Flutter Web)
+- [Tauwar](https://pub.dev/packages/tau_war) (which is the `Etau` implementation for Flutter on mobiles)
+- [Taudio](https://pub.dev/packages/taudio) (which is (will be) something like Flutter Sound 10.0)
 
-3.  Run `bundle exec jekyll serve` to build your site and preview it at `localhost:4000`.
+### [Etau](https://pub.dev/packages/etau)
 
-    The built site is stored in the directory `_site`.
+This is (will be) an implementation on flutter of the [W3C Web Audio API](https://www.w3.org/TR/webaudio-1.1).
+Etau is actually in a developement state. It is an Alpha version. Even not a Beta version. There are many things to do before you can use it. Specially:
 
-## Publishing your built site on a different platform
+- A documentation (TODO)
+- A support of the three main platforms:
+   - Web
+   - iOS (TODO)
+   - Android (TODO)
 
-Just upload all the files in the directory `_site`.
+The Web Audio API is terrific:
 
-## Customization
+- It is a [W3C recommandation](https://www.w3.org/TR/webaudio-1.1)
+- It has a great [documentation from Moziilla](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
+- It is really powerful
+- It is simple to use
 
-You're free to customize sites that you create with this template, however you like!
+Because the Web Audio API is a W3C recommandation, you can find very good documentations on the Web. Of course, the [Mozilla documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) but also documentation from other sources.
 
-[Browse our documentation][Just the Docs] to learn more about how to use this theme.
+In a few words, the Web Audio API let you assembly nodes as a Node Chain, from a Source Node (perhaps the mic), to a Destination Node (perhaps the speaker), threw several nodes able to process the sound (echo, analyzer, panner, distorder, ...). But you really should look to the Mozilla documentation which is very good.
 
-## Hosting your docs from an existing project repo
+Now, you will have to ask yourself if you must use [Taudio](https://pub.dev/packages/taudio) (which is just a wrapper around `Etau`), or directly [Etau](https://pub.dev/packages/etau).
+The W3C recommandation is powerful but simple to use. There are probably no many reasons to use `Taudio` any longer.
 
-You might want to maintain your docs in an existing project repo. Instead of creating a new repo using the [just-the-docs template](https://github.com/just-the-docs/just-the-docs-template), you can copy the template files into your existing repo and configure the template's Github Actions workflow to build from a `docs` directory. You can clone the template to your local machine or download the `.zip` file to access the files.
+`Etau` is (will be) released under the Gnu Public Licence v3 (GPL v3).
 
-### Copy the template files
+### [Taudio](https://pub.dev/packages/taudio)
 
-1.  Create a `.github/workflows` directory at your project root if your repo doesn't already have one. Copy the `pages.yml` file into this directory. GitHub Actions searches this directory for workflow files.
+The current Flutter Sound version is 9.x. [Taudio](https://pub.dev/packages/taudio) is a new name for Flutter Sound 10.0. `Taudio` is actually in a developement state. It is an Alpha version. Even not a Beta version. There are many things to do before you can use it. Specially:
+- A documentation (TODO)
+- A support of the three main platforms:
+   - Web (TODO)
+   - iOS (TODO)
+   - Android (TODO)
 
-2.  Create a `docs` directory at your project root and copy all remaining template files into this directory.
+`Taudio` is (will be) released under the Gnu Public Licence v3 (GPL v3). This mean that if you don't want, cannot or maynot release your App under a GPL License, you must stuck with Flutter Sound 9.x. This is not a big deal: Flutter Sound v 9.x will be maintained for a forseable future.
 
-### Modify the GitHub Actions workflow
+`Taudio` is a complete rewritten of Flutter Sound 9.x. It keeps compatibility with the Flutter Sound 9.x API but adds a new wrapper above [Etau](https://pub.dev/packages/etau).
 
-The GitHub Actions workflow that builds and deploys your site to Github Pages is defined by the `pages.yml` file. You'll need to edit this file to that so that your build and deploy steps look to your `docs` directory, rather than the project root.
+## We need help
 
-1.  Set the default `working-directory` param for the build job.
+{: .important }
+We greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation.
 
-    ```yaml
-    build:
-      runs-on: ubuntu-latest
-      defaults:
-        run:
-          working-directory: docs
-    ```
+Actually, I am almost alone to maintain and develop three important projects :
+- Etau
+- Flutter Sound 9.x
+- Taudio (flutter Sound 10.0)
 
-2.  Set the `working-directory` param for the Setup Ruby step.
+This is too much on my shoulders. We desesperatly need at least one other developer.
 
-    ```yaml
-    - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.3'
-          bundler-cache: true
-          cache-version: 0
-          working-directory: '${{ github.workspace }}/docs'
-    ```
+## Thanks
 
-3.  Set the path param for the Upload artifact step:
-
-    ```yaml
-    - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs/_site/
-    ```
-
-4.  Modify the trigger so that only changes within the `docs` directory start the workflow. Otherwise, every change to your project (even those that don't affect the docs) would trigger a new site build and deploy.
-
-    ```yaml
-    on:
-      push:
-        branches:
-          - "main"
-        paths:
-          - "docs/**"
-    ```
-
-## Licensing and Attribution
-
-This repository is licensed under the [MIT License]. You are generally free to reuse or extend upon this code as you see fit; just include the original copy of the license (which is preserved when you "make a template"). While it's not necessary, we'd love to hear from you if you do use this template, and how we can improve it for future use!
-
-The deployment GitHub Actions workflow is heavily based on GitHub's mixed-party [starter workflows]. A copy of their MIT License is available in [actions/starter-workflows].
-
-----
-
-[^1]: [It can take up to 10 minutes for changes to your site to publish after you push the changes to GitHub](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/creating-a-github-pages-site-with-jekyll#creating-your-site).
-
-[Jekyll]: https://jekyllrb.com
-[Just the Docs]: https://just-the-docs.github.io/just-the-docs/
-[GitHub Pages]: https://docs.github.com/en/pages
-[GitHub Pages / Actions workflow]: https://github.blog/changelog/2022-07-27-github-pages-custom-github-actions-workflows-beta/
-[Bundler]: https://bundler.io
-[use this template]: https://github.com/just-the-docs/just-the-docs-template/generate
-[`jekyll-default-layout`]: https://github.com/benbalter/jekyll-default-layout
-[`jekyll-seo-tag`]: https://jekyll.github.io/jekyll-seo-tag
-[MIT License]: https://en.wikipedia.org/wiki/MIT_License
-[starter workflows]: https://github.com/actions/starter-workflows/blob/main/pages/jekyll.yml
-[actions/starter-workflows]: https://github.com/actions/starter-workflows/blob/main/LICENSE
+{: .note }
+### If you like my work, you can click on the `Thumb up` button of the top of the [pub.dev page](https://pub.dev/packages/flutter_sound).
+This is free and this will reassure me that **I do not spend most of my life for nobody**.
