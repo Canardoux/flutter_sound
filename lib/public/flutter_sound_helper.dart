@@ -31,7 +31,8 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:logger/logger.dart' show Level, Logger;
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart'
-    as fs_codec show Codec;
+    as fs_codec
+    show Codec;
 
 /// The FlutterSoundHelper singleton for accessing the helpers functions
 FlutterSoundHelper flutterSoundHelper =
@@ -269,8 +270,10 @@ class FlutterSoundHelper {
   /// List<Float32List> myFloat32List = uint8ListToFloat32List(myUint8List);
   /// ```
   /// ------------------------------
-  List<Float32List> uint8ListToFloat32List(List<Uint8List> buf,
-      {Endian endian = Endian.little}) {
+  List<Float32List> uint8ListToFloat32List(
+    List<Uint8List> buf, {
+    Endian endian = Endian.little,
+  }) {
     List<Float32List> r = [];
     for (Uint8List channelData in buf) {
       int ln = ((channelData.length) / 4).floor();

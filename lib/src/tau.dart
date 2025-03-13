@@ -106,7 +106,6 @@ const List<List<String>> validExt = [
 /// when recording to a Dart Stream.
 ///
 @Deprecated('Don\'t use anymore Food, but directely your buffers')
-
 /// @nodoc
 abstract class Food {
   /// use internally by Flutter Sound
@@ -119,7 +118,6 @@ abstract class Food {
 /// FoodData are the regular objects received from a recorder when recording to a Dart Stream
 /// or sent to a player when playing from a Dart Stream
 @Deprecated('Don\'t use anymore Food, but directely your buffers')
-
 /// @nodoc
 class FoodData extends Food {
   /// the data to be sent (or received)

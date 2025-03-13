@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the getProgress method from the FlutterSoundPlayer class, for the Dart programming language.">
-  <title>getProgress method - FlutterSoundPlayer class - flutter_sound_player library - Dart API</title>
+  <meta name="description" content="API docs for the getSubscriptionDuration method from the FlutterSoundRecorder class, for the Dart programming language.">
+  <title>getSubscriptionDuration method - FlutterSoundRecorder class - flutter_sound_recorder library - Dart API</title>
 
 
   
@@ -25,11 +25,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">flutter_sound</a></li>
-    <li><a href="../../public_flutter_sound_player">public&#47;flutter_sound_player.dart</a></li>
-    <li><a href="../../public_flutter_sound_player/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
-    <li class="self-crumb"><span class="deprecated">getProgress</span> method</li>
+    <li><a href="../../public_flutter_sound_recorder">public&#47;flutter_sound_recorder.dart</a></li>
+    <li><a href="../../public_flutter_sound_recorder/FlutterSoundRecorder-class.html">FlutterSoundRecorder</a></li>
+    <li class="self-crumb">getSubscriptionDuration method</li>
   </ol>
-  <div class="self-name">getProgress</div>
+  <div class="self-name">getSubscriptionDuration</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -49,50 +49,42 @@
 <div
     id="dartdoc-main-content"
     class="main-content"
-    data-above-sidebar="public_flutter_sound_player&#47;FlutterSoundPlayer-class-sidebar.html"
+    data-above-sidebar="public_flutter_sound_recorder&#47;FlutterSoundRecorder-class-sidebar.html"
     data-below-sidebar="">
     <div>
-<h1><span class="kind-method">getProgress</span> method 
+<h1><span class="kind-method">getSubscriptionDuration</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
       
   <div>
     <ol class="annotation-list">
-        <li>@<a href="https://api.flutter.dev/flutter/dart-core/Deprecated-class.html">Deprecated</a>(&#39;This function is not useful&#39;)</li>
+        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
     </ol>
   </div>
-<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a></span>&gt;</span></span>&gt;</span></span>
-<span class="name deprecated">getProgress</span>(<wbr>)
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a></span>
+<span class="name ">getSubscriptionDuration</span>(<wbr>)
 
       
 
     </section>
     
 <section class="desc markdown">
-  <p>Get the current progress of a playback.</p>
-<hr>
-<p>It returns a <code>Map</code> with two Duration entries : <code>'progress'</code> and <code>'duration'</code>.
-Remark : actually only implemented on iOS.</p>
-<p><em>Example:</em></p>
-<pre class="language-dart"><code class="language-dart">        Duration progress = (await getProgress())['progress'];
-        Duration duration = (await getProgress())['duration'];
-</code></pre>
-<hr>
+  <p>Returns the current Subscription Duration</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../../public_flutter_sound_recorder/FlutterSoundRecorder/onProgress.html">onProgress</a></li>
+<li><a href="../../public_flutter_sound_recorder/FlutterSoundRecorder/setSubscriptionDuration.html">setSubscriptionDuration()</a></li>
+</ul>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">@Deprecated(&#39;This function is not useful&#39;)
-Future&lt;Map&lt;String, Duration&gt;&gt; getProgress() async {
-  await _waitOpen();
-  if (_isInited != Initialized.fullyInitialized) {
-    throw Exception(&#39;Player is not open&#39;);
-  }
-
-  return FlutterSoundPlayerPlatform.instance.getProgress(this);
+  <pre class="language-dart"><code class="language-dart">@override
+Duration getSubscriptionDuration() {
+  return _subscriptionDuration;
 }</code></pre>
 </section>
 
@@ -107,12 +99,12 @@ Future&lt;Map&lt;String, Duration&gt;&gt; getProgress() async {
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">flutter_sound</a></li>
-    <li><a href="../../public_flutter_sound_player">flutter_sound_player</a></li>
-    <li><a href="../../public_flutter_sound_player/FlutterSoundPlayer-class.html">FlutterSoundPlayer</a></li>
-    <li class="self-crumb"><span class="deprecated">getProgress</span> method</li>
+    <li><a href="../../public_flutter_sound_recorder">flutter_sound_recorder</a></li>
+    <li><a href="../../public_flutter_sound_recorder/FlutterSoundRecorder-class.html">FlutterSoundRecorder</a></li>
+    <li class="self-crumb">getSubscriptionDuration method</li>
 </ol>
 
-    <h5>FlutterSoundPlayer class</h5>
+    <h5>FlutterSoundRecorder class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
