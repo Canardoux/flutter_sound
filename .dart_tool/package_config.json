@@ -14,22 +14,10 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "crypto",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/crypto-3.0.6",
-      "packageUri": "lib/",
-      "languageVersion": "3.4"
-    },
-    {
       "name": "ffi",
       "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/ffi-2.1.4",
       "packageUri": "lib/",
       "languageVersion": "3.7"
-    },
-    {
-      "name": "fixnum",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/fixnum-1.1.1",
-      "packageUri": "lib/",
-      "languageVersion": "3.1"
     },
     {
       "name": "flutter",
@@ -76,12 +64,6 @@
     {
       "name": "meta",
       "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/meta-1.16.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "nested",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/nested-1.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -140,28 +122,10 @@
       "languageVersion": "3.0"
     },
     {
-      "name": "provider",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/provider-6.1.2",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "recase",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/recase-4.1.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
       "name": "sky_engine",
       "rootUri": "file:///Volumes/mac-H/larpoux/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "3.7"
-    },
-    {
-      "name": "sprintf",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/sprintf-7.0.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
     },
     {
       "name": "synchronized",
@@ -170,28 +134,10 @@
       "languageVersion": "3.7"
     },
     {
-      "name": "typed_data",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/typed_data-1.4.0",
-      "packageUri": "lib/",
-      "languageVersion": "3.5"
-    },
-    {
-      "name": "uuid",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/uuid-4.5.1",
-      "packageUri": "lib/",
-      "languageVersion": "3.0"
-    },
-    {
       "name": "vector_math",
       "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/vector_math-2.1.4",
       "packageUri": "lib/",
       "languageVersion": "2.14"
-    },
-    {
-      "name": "web",
-      "rootUri": "file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/web-1.1.1",
-      "packageUri": "lib/",
-      "languageVersion": "3.4"
     },
     {
       "name": "xdg_directories",
@@ -206,7 +152,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2025-03-09T18:17:15.744503Z",
+  "generated": "2025-03-13T08:02:05.677406Z",
   "generator": "pub",
   "generatorVersion": "3.7.0",
   "flutterRoot": "file:///Volumes/mac-H/larpoux/flutter",

@@ -109,6 +109,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   Completer<void>? _resumeRecorderCompleter;
   Completer<String>? _stopRecorderCompleter;
   Completer<FlutterSoundRecorder>? _openRecorderCompleter;
+  Duration _subscriptionDuration = Duration.zero;
 
   final _lock = Lock();
   static bool _reStarted = true;
@@ -643,6 +644,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   /// ## See also
   ///
   /// - [onProgress]
+  /// - [getSubscriptionDuration()]
   ///
   /// ----------------------------------------------------
   ///
@@ -656,7 +658,20 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
       this,
       duration: duration,
     );
+    _subscriptionDuration = duration;
     _logger.d('FS:<--- setSubscriptionDuration ');
+  }
+
+  /// Returns the current Subscription Duration
+  ///
+  /// ## See also
+  ///
+  /// - [onProgress]
+  /// - [setSubscriptionDuration()]
+  ///
+  @override
+  Duration getSubscriptionDuration() {
+    return _subscriptionDuration;
   }
 
   /// Return the file extension for the given path.

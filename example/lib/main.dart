@@ -128,7 +128,7 @@ You can also refer to the following examples that uses UInt8List:
   Example(
     title: 'Record to stream',
     subTitle: 'Record to a dart stream',
-    flags: tNotWeb,
+    flags: 0,
     route: (_) => const RecordToStreamExample(),
     description: '''
 This is an example showing how to record to a Dart Stream.
@@ -145,7 +145,7 @@ You can also refer to the following example:
   Example(
     title: 'Live Playback without flow contol',
     subTitle: 'Live Playback from stream',
-    flags: tNotWeb,
+    flags: 0,
     route: (_) => const LivePlaybackWithoutBackPressure(),
     description: '''
 An example showing how to play Live Data without back pressure.
@@ -168,7 +168,7 @@ For example, if it does a `stopPlayer()` it will loose all the buffered data not
   Example(
     title: 'Live Playback with flow contol',
     subTitle: 'Live Playback with flow contol',
-    flags: tNotWeb,
+    flags: 0,
     route: (_) => const LivePlaybackWithBackPressure(),
     description: '''
 An example showing how to play Live Data with back pressure. It feeds a live stream, waiting that the futures are completed for each block.

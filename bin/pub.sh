@@ -17,7 +17,7 @@ bin/reldev.sh REL
 #gsed -i '1,5d' README.md
 #gsed -i "/^\"\%}$/d" README.md
 #gsed -i "/^{\% include/d" README.md
-
+cp -v README.md .github
 
 flutter analyze lib
 if [ $? -ne 0 ]; then

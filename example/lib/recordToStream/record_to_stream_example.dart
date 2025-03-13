@@ -24,6 +24,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/foundation.dart';
 
 /*
 
@@ -61,6 +62,7 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   bool _mplaybackReady = false;
   double _dbLevel = 0.0;
   StreamSubscription? _mRecordingDataSubscription;
+  StreamController<List<int>> webStreamController = StreamController();
 
   @override
   void initState() {
@@ -141,12 +143,19 @@ class _RecordToStreamExampleState extends State<RecordToStreamExample> {
   }
 
   Future<void> record() async {
+
     assert(_mRecorderIsInited && _mPlayer!.isStopped);
-    var sink = await createFile();
+    StreamSink<List<int>>? sink;
+    if (!kIsWeb) {
+      sink = await createFile();
+    } else {
+      sink = webStreamController.sink;
+    }
+
     var recordingDataController = StreamController<Uint8List>();
     _mRecordingDataSubscription =
         recordingDataController.stream.listen((buffer) {
-      sink.add(buffer);
+      sink!.add(buffer);
     });
     await _mRecorder!.startRecorder(
       toStream: recordingDataController.sink,
