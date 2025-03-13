@@ -1,3 +1,10 @@
+### 9.25.6
+
+- Remove Flutter Sound dependancy on
+  - recase: ^4.1.0
+  - uuid: ^4.3.3
+  - provider: ^6.1.1
+
 ### 9.25.4
 
 - Doc
