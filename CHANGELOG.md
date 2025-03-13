@@ -1,10 +1,10 @@
 ### 9.25.7
 
-- Downgrade the Dart SDK dependency from 3.6.0 to 3.3.0 on Flutter_Sound_Web
+- Downgrade the Dart SDK dependency from 3.6.0 to 3.3.0 on Flutter_Sound_Web [(#1168)](https://github.com/Canardoux/flutter_sound/issues/1168).
 
 ### 9.25.6
 
-- Remove Flutter Sound dependancy on
+- Remove Flutter Sound dependancy [(#1168)](https://github.com/Canardoux/flutter_sound/issues/1168) on
   - recase: ^4.1.0
   - uuid: ^4.3.3
   - provider: ^6.1.1
@@ -28,7 +28,6 @@
 - On iOS : When a playback falls in error, the Completer stays un-completed instead of doing an assertion.
 - On Android : When a playback falls in error, it tries during a very long time before aborting.
 - Little endian vs Big endian
-- THE API Ref. DOC !
 
 - Pause/Resume for PCM codecs
 - Set Pan for PCM codecs
