@@ -1,6 +1,6 @@
-### 9.25.8
+### 9.25.9
 
--  Flutter_Sound_Web : Remove dependancy on flutter_web [(#1168)](https://github.com/Canardoux/flutter_sound/issues/1168).
+-  Flutter Sound Web : change the dependency on web: ^1.0.0 to '>=0.5.0 <2.0.0'. [(#1168)](https://github.com/Canardoux/flutter_sound/issues/1168).
 
 ### 9.25.7
 
