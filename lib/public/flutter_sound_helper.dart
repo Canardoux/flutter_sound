@@ -31,8 +31,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:logger/logger.dart' show Level, Logger;
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart'
-    as fs_codec
-    show Codec;
+    as fs_codec show Codec;
 
 /// The FlutterSoundHelper singleton for accessing the helpers functions
 FlutterSoundHelper flutterSoundHelper =

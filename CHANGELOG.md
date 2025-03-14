@@ -1,6 +1,10 @@
+### 9.25.8
+
+-  Flutter_Sound_Web : Remove dependancy on flutter_web [(#1168)](https://github.com/Canardoux/flutter_sound/issues/1168).
+
 ### 9.25.7
 
-- Downgrade the Dart SDK dependency from 3.6.0 to 3.3.0 on Flutter_Sound_Web [(#1168)](https://github.com/Canardoux/flutter_sound/issues/1168).
+-  Flutter_Sound_Web : Downgrade the Dart SDK dependency from 3.6.0 to 3.3.0 [(#1168)](https://github.com/Canardoux/flutter_sound/issues/1168).
 
 ### 9.25.6
 

@@ -138,19 +138,19 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   ///
   StreamSubscription<Food>?
-  _foodStreamSubscription; // ignore: cancel_subscriptions
+      _foodStreamSubscription; // ignore: cancel_subscriptions
 
   //
   StreamSubscription<List<Float32List>>?
-  _f32StreamSubscription; // ignore: cancel_subscriptions
+      _f32StreamSubscription; // ignore: cancel_subscriptions
 
   //
   StreamSubscription<List<Int16List>>?
-  _int16StreamSubscription; // ignore: cancel_subscriptions
+      _int16StreamSubscription; // ignore: cancel_subscriptions
 
   //
   StreamSubscription<Uint8List>?
-  _uint8StreamSubscription; // ignore: cancel_subscriptions
+      _uint8StreamSubscription; // ignore: cancel_subscriptions
 
   StreamController<Food>? _foodStreamController; //ignore: close_sinks
 
@@ -1325,15 +1325,15 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
       );
 
        */
-      var state = await FlutterSoundPlayerPlatform.instance
-          .startPlayerFromStream(
-            this,
-            codec: codec,
-            interleaved: interleaved,
-            numChannels: numChannels,
-            sampleRate: sampleRate,
-            bufferSize: bufferSize,
-          );
+      var state =
+          await FlutterSoundPlayerPlatform.instance.startPlayerFromStream(
+        this,
+        codec: codec,
+        interleaved: interleaved,
+        numChannels: numChannels,
+        sampleRate: sampleRate,
+        bufferSize: bufferSize,
+      );
       _playerState = PlayerState.values[state];
     } on Exception {
       _startPlayerCompleter = null;
@@ -1788,9 +1788,8 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     try {
       _pausePlayerCompleter = Completer<void>();
       completer = _pausePlayerCompleter;
-      _playerState =
-          PlayerState.values[await FlutterSoundPlayerPlatform.instance
-              .pausePlayer(this)];
+      _playerState = PlayerState
+          .values[await FlutterSoundPlayerPlatform.instance.pausePlayer(this)];
       //if (_playerState != PlayerState.isPaused) {
       //throw _PlayerRunningException(
       //'Player is not paused.'); // I am not sure that it is good to throw an exception here
@@ -2056,8 +2055,8 @@ class PlaybackDisposition {
   /// you can use this to set initialData with both duration
   /// and postion as 0.
   PlaybackDisposition.zero()
-    : position = Duration(seconds: 0),
-      duration = Duration(seconds: 0);
+      : position = Duration(seconds: 0),
+        duration = Duration(seconds: 0);
 
   /// The constructor
   PlaybackDisposition({

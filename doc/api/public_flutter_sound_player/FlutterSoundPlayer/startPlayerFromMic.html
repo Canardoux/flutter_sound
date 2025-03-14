@@ -101,7 +101,8 @@ If you want to process the data before playing them, actually you must define a 
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@Deprecated(
-    &#39;This function can very easily be emulated with a RecordToStream + a PlayFromStream&#39;)
+  &#39;This function can very easily be emulated with a RecordToStream + a PlayFromStream&#39;,
+)
 Future&lt;void&gt; startPlayerFromMic({
   int sampleRate = 44000, &#47;&#47; The default value is probably a good choice.
   int numChannels =
@@ -145,7 +146,7 @@ Future&lt;void&gt; startPlayerFromMic({
 <footer>
   <span class="no-break">
     flutter_sound
-      9.25.6
+      9.25.7
   </span>
   
 </footer>
