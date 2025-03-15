@@ -115,6 +115,31 @@ await myPlayer.feedInt16FromStream(myData);
   if (isStopped) {
     return 0;
   }
+
+
+  if (codec != Codec.pcm16) {
+    logger.e(&#39;Cannot feed with Int16 on a Codec &lt;&gt; pcm16&#39;);
+    throw Exception(&#39;Cannot feed with Int16 on a Codec &lt;&gt; pcm16&#39;);
+  }
+  if (interleaved) {
+    logger.e(&#39;Cannot feed with Int16 with interleaved mode&#39;);
+    throw Exception(&#39;Cannot feed with Int16 with interleaved mode&#39;);
+  }
+  if (buffer.length != numChannels)
+  {
+    logger.e(&#39;feedInt16FromStream() : buffer length (${buffer.length}) != the number of channels ($numChannels)&#39;);
+    throw Exception(&#39;feedInt16FromStream() : buffer length (${buffer.length}) != the number of channels ($numChannels)&#39;);
+  }
+  for (int channel = 1; channel &lt; numChannels; ++channel) {
+    if (buffer[channel].length != buffer[0].length) {
+      logger.e(&#39;feedInt16FromStream() : buffer length[0] (${buffer[0].length}) != the number of channels ($numChannels)&#39;);
+      throw Exception(&#39;feedInt16FromStream() : buffer length[0] (${buffer.length}) != buffer[$channel].length (${buffer[channel].length})&#39;);
+
+    }
+  }
+
+
+
   _needSomeFoodCompleter =
       Completer&lt;int&gt;(); &#47;&#47; Not completed until the device accept new data
   try {
@@ -171,7 +196,7 @@ await myPlayer.feedInt16FromStream(myData);
 <footer>
   <span class="no-break">
     flutter_sound
-      9.25.7
+      9.25.9
   </span>
   
 </footer>

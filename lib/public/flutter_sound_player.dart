@@ -96,6 +96,11 @@ typedef TWhenFinished = void Function();
 /// ----------------------------------------------------------------------------------------------------
 ///
 class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
+
+  Codec codec = Codec.pcmFloat32;
+  bool interleaved = true;
+  int numChannels = 2;
+
   // The FlutterSoundPlayer Logger
   Logger _logger = Logger(level: Level.debug);
   Level _logLevel = Level.debug;
@@ -237,9 +242,11 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     //if (Platform.isAndroid && !_waitForFood) {
     //audioPlayerFinished(PlayerState.isPaused.index);
     //}
-    _needSomeFoodCompleter?.complete(
-      ln,
-    ); //The completer is completed when the device accept new data
+    if (_needSomeFoodCompleter != null && !_needSomeFoodCompleter!.isCompleted) { // On flutter Web we can receive many 'needSomeFood' events
+      _needSomeFoodCompleter?.complete(
+        ln,
+      );
+    }//The completer is completed when the device accept new data
   }
 
   /// Callback from the &tau; Core. Must not be called by the App
@@ -1033,6 +1040,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
     }
+    this.codec = codec;
+    this.interleaved = interleaved;
+    this.numChannels = numChannels;
     _oldPosition = 0;
 
     if (codec == Codec.pcm16 || codec == Codec.pcmFloat32) {
@@ -1271,6 +1281,10 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
     }
+    this.codec = codec;
+    this.interleaved = interleaved;
+    this.numChannels = numChannels;
+
     Completer<Duration>? completer;
     _bufferSize = bufferSize;
     await _stop(); // Just in case
@@ -1363,6 +1377,9 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///  ```
   @Deprecated('Use [feedUint8FromStream()]')
   Future<void> feedFromStream(Uint8List buffer) async {
+
+
+
     var lnData = 0;
     var totalLength = buffer.length;
     while (totalLength > 0 && !isStopped) {
@@ -1464,6 +1481,31 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (isStopped) {
       return 0;
     }
+
+
+    if (codec != Codec.pcmFloat32) {
+      logger.e('Cannot feed with Float32 on a Codec <> pcmFloat32');
+      throw Exception('Cannot feed with Float32 on a Codec <> pcmFloat32');
+    }
+    if (interleaved) {
+      logger.e('Cannot feed with Float32 with interleaved mode');
+      throw Exception('Cannot feed with Float32 with interleaved mode');
+    }
+    if (buffer.length != numChannels)
+    {
+      logger.e('feedF32FromStream() : buffer length (${buffer.length}) != the number of channels ($numChannels)');
+      throw Exception ('feedF32FromStream() : buffer length (${buffer.length}) != the number of channels ($numChannels)');
+    }
+    for (int channel = 1; channel < numChannels; ++channel) {
+      if (buffer[channel].length != buffer[0].length) {
+        logger.e('feedF32FromStream() : buffer length[0] (${buffer[0].length}) != the number of channels ($numChannels)');
+        throw Exception('feedF32FromStream() : buffer length[0] (${buffer.length}) != buffer[$channel].length (${buffer[channel].length})');
+      }
+    }
+
+
+
+
     _needSomeFoodCompleter =
         Completer<int>(); // Not completed until the device accept new data
     try {
@@ -1544,6 +1586,31 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (isStopped) {
       return 0;
     }
+
+
+    if (codec != Codec.pcm16) {
+      logger.e('Cannot feed with Int16 on a Codec <> pcm16');
+      throw Exception('Cannot feed with Int16 on a Codec <> pcm16');
+    }
+    if (interleaved) {
+      logger.e('Cannot feed with Int16 with interleaved mode');
+      throw Exception('Cannot feed with Int16 with interleaved mode');
+    }
+    if (buffer.length != numChannels)
+    {
+      logger.e('feedInt16FromStream() : buffer length (${buffer.length}) != the number of channels ($numChannels)');
+      throw Exception('feedInt16FromStream() : buffer length (${buffer.length}) != the number of channels ($numChannels)');
+    }
+    for (int channel = 1; channel < numChannels; ++channel) {
+      if (buffer[channel].length != buffer[0].length) {
+        logger.e('feedInt16FromStream() : buffer length[0] (${buffer[0].length}) != the number of channels ($numChannels)');
+        throw Exception('feedInt16FromStream() : buffer length[0] (${buffer.length}) != buffer[$channel].length (${buffer[channel].length})');
+
+      }
+    }
+
+
+
     _needSomeFoodCompleter =
         Completer<int>(); // Not completed until the device accept new data
     try {
@@ -1622,7 +1689,30 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     if (isStopped) {
       return 0;
     }
-    return _feed(buffer);
+
+
+    if (codec != Codec.pcmFloat32 && codec != Codec.pcm16) {
+      logger.e('feedUint8FromStream() : Cannot feed on a Codec <> pcmFloat32 or pcm16');
+      throw Exception('feedUint8FromStream() : Cannot feed on a Codec <> pcmFloat32 or pcm16');
+    }
+    if (!interleaved) {
+      logger.e('feedUint8FromStream() : Cannot feed with UInt8 with non interleaved mode');
+      throw Exception('feedUint8FromStream() : Cannot feed with UInt8 with non interleaved mode');
+    }
+    int s = 2;
+    if (codec == Codec.pcmFloat32) {
+      s = 4;
+    }
+    double n1 = (buffer.length as double)/(s*numChannels);
+    double n2 = (buffer.length/(s*numChannels)).round() as double;
+    if ( n1 != n2 )
+    {
+      logger.e('feedUint8FromStream() : buffer length (${buffer.length}) is not a multiple of number of channels * $s ($numChannels)');
+      throw Exception('feedUint8FromStream() : buffer length (${buffer.length}) is not a multiple of number of channels * $s($numChannels)');
+    }
+
+
+      return _feed(buffer);
   }
 
   /// Stop a player.

@@ -113,7 +113,28 @@ await myPlayer.feedUint8FromStream(myData);
   if (isStopped) {
     return 0;
   }
-  return _feed(buffer);
+
+
+  if (codec != Codec.pcmFloat32 &amp;&amp; codec != Codec.pcm16) {
+    logger.e(&#39;feedUint8FromStream() : Cannot feed on a Codec &lt;&gt; pcmFloat32 or pcm16&#39;);
+    throw Exception(&#39;feedUint8FromStream() : Cannot feed on a Codec &lt;&gt; pcmFloat32 or pcm16&#39;);
+  }
+  if (interleaved) {
+    logger.e(&#39;feedUint8FromStream() : Cannot feed with UInt8 with non interleaved mode&#39;);
+    throw Exception(&#39;feedUint8FromStream() : Cannot feed with UInt8 with non interleaved mode&#39;);
+  }
+  int s = 2;
+  if (codec != Codec.pcmFloat32) {
+    s = 4;
+  }
+  if ( buffer.length&#47;(s*numChannels) != buffer.length&#47;(s*numChannels).round() );
+  {
+    logger.e(&#39;feedUint8FromStream() : buffer length (${buffer.length}) is not a multiple of number of channels * $s ($numChannels)&#39;);
+    throw Exception(&#39;feedUint8FromStream() : buffer length (${buffer.length}) is not a multiple of number of channels * $s($numChannels)&#39;);
+  }
+
+
+    return _feed(buffer);
 }</code></pre>
 </section>
 
@@ -142,7 +163,7 @@ await myPlayer.feedUint8FromStream(myData);
 <footer>
   <span class="no-break">
     flutter_sound
-      9.25.7
+      9.25.9
   </span>
   
 </footer>
