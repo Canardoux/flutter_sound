@@ -1395,7 +1395,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
   ///
   Future<int> _feed(Uint8List data) async {
-    await _waitOpen();
+    // await _waitOpen();
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
     }
@@ -1682,7 +1682,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// ----------------------------------------------------------------------
   ///
   Future<int> feedUint8FromStream(Uint8List buffer) async {
-    await _waitOpen();
+    // await _waitOpen();
     if (_isInited != Initialized.fullyInitialized) {
       throw Exception('Player is not open');
     }

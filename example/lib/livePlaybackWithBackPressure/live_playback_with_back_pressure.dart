@@ -49,7 +49,7 @@ const String kASSET32 =
     'assets/samples/sample_f32.raw'; // 'assets/samples/sample_f32_2ch.raw'; // 'assets/samples/sample_f32_2ch.raw' // 'assets/samples/sample_f32.raw'
 
 ///
-const kBLOCKSIZE = 4096;
+const kBLOCKSIZE = 128*5; // 88
 
 ///
 typedef Fn = void Function();
