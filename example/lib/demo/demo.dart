@@ -538,6 +538,8 @@ class _MyAppState extends State<Demo> {
           codec: Codec.pcm16, //_codec,
           numChannels: cstCHANNELNB,
           sampleRate: cstSAMPLERATE, // tSTREAMSAMPLERATE, //tSAMPLERATE,
+          interleaved: true,
+          bufferSize: 1024,
         );
         _addListeners();
         setState(() {});

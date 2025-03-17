@@ -49,7 +49,7 @@ const String kASSET32 =
     'assets/samples/sample_f32.raw'; // 'assets/samples/sample_f32_2ch.raw'; // 'assets/samples/sample_f32_2ch.raw' // 'assets/samples/sample_f32.raw'
 
 ///
-const kBLOCKSIZE = 128*5; // 88
+const kBLOCKSIZE = 1024; //4000; //128*5;
 
 ///
 typedef Fn = void Function();
@@ -116,6 +116,8 @@ class _LivePlaybackWithBackPressureState
       codec: codecSelected,
       numChannels: stereo ? 2 : 1,
       sampleRate: sampleRate,
+      bufferSize: 1024,
+      interleaved: true,
     );
     setState(() {});
 
@@ -151,7 +153,7 @@ class _LivePlaybackWithBackPressureState
     _mPlayer.logger.d('Finished');
   }
 
-  // --------------------- (it was very simple, wasn't it ?) -------------------
+  // ----------------------------------------
 
   Future<Uint8List> getAssetData(String path) async {
     var asset = await rootBundle.load(path);

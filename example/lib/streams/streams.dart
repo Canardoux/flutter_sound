@@ -42,7 +42,10 @@ and because he/she can select to use Float32 PCM or Int16 PCM
 typedef _Fn = void Function();
 
 /// The sample rate
-const int cstSampleRate = 16000;
+const int kSampleRate = 48000; // 16000;
+
+/// The block size of our audio data
+const int kBlockSize = 1024; //1000;
 
 /// Stereo
 const int cstNUMBEROFCHANNELS = 2;
@@ -148,7 +151,7 @@ class _StreamsExampleState extends State<StreamsExample> {
       });
       await _mRecorder.startRecorder(
         codec: codecSelected,
-        sampleRate: cstSampleRate,
+        sampleRate: kSampleRate,
         numChannels: cstNUMBEROFCHANNELS,
         audioSource: AudioSource.defaultSource,
         toStream: recordingDataControllerUint8.sink,
@@ -167,7 +170,7 @@ class _StreamsExampleState extends State<StreamsExample> {
       });
       await _mRecorder.startRecorder(
           codec: codecSelected,
-          sampleRate: cstSampleRate,
+          sampleRate: kSampleRate,
           numChannels: cstNUMBEROFCHANNELS,
           audioSource: AudioSource.defaultSource,
           toStreamFloat32: recordingDataControllerF32.sink);
@@ -181,7 +184,7 @@ class _StreamsExampleState extends State<StreamsExample> {
       });
       await _mRecorder.startRecorder(
           codec: codecSelected,
-          sampleRate: cstSampleRate,
+          sampleRate: kSampleRate,
           numChannels: cstNUMBEROFCHANNELS,
           audioSource: AudioSource.defaultSource,
           toStreamInt16: recordingDataControllerInt16.sink);
@@ -190,8 +193,118 @@ class _StreamsExampleState extends State<StreamsExample> {
     setState(() {});
   }
 
+  static int ixs = 0;
+  static int ps = 0;
+
+
+  List<double>? next32(List<List<Float32List>> source) {
+    while (ixs < source.length)
+    {
+      List<Float32List> curBlk = source[ixs];
+      while (ps >= curBlk[0].length) {
+        ++ixs;
+        ps = 0;
+        if (ixs >= source.length) return null;
+      }
+      List<double> r = [];
+      int nbrChannels = curBlk.length;
+      for (int channel = 0; channel < nbrChannels; ++channel) {
+        r.add(curBlk[channel][ps]);
+      }
+      ++ps;
+      return r;
+    }
+    return null;
+  }
+
+  List<int>? next16(List<List<Int16List>> source) {
+    while (ixs < source.length)
+    {
+      List<Int16List> curBlk = source[ixs];
+      while (ps >= curBlk[0].length) {
+        ++ixs;
+        ps = 0;
+        if (ixs >= source.length) return null;
+      }
+      List<int> r = [];
+      int nbrChannels = curBlk.length;
+      for (int channel = 0; channel < nbrChannels; ++channel) {
+        r.add(curBlk[channel][ps]);
+      }
+      ++ps;
+      return r;
+    }
+    return null;
+  }
+
+
+  // This function repack the audio data received with another blocksize.
+  // This is just to check that everything working correctly.
+  List<List<Float32List>> repackF32(List<List<Float32List>> source) {
+    ixs = 0;
+    ps = 0;
+    int nbrChannels = source[0].length;
+    List<List<Float32List>> dest = [];
+    while (true) {
+      List<Float32List> r = [];
+      for (int channel = 0; channel < nbrChannels; ++channel) {
+        r.add(Float32List(kBlockSize));
+      }
+
+      for (int ixd = 0; ixd < kBlockSize; ++ixd) {
+        List<double>? nextRec = next32(source);
+        if (nextRec == null) {
+          dest.add(r);
+          return dest;
+        }
+        for (int channel = 0; channel < nbrChannels; ++channel)
+          {
+            r[channel][ixd] = nextRec[channel];
+          }
+      }
+      dest.add(r);
+    }
+
+  }
+
+  // This function repack the audio data received with another blocksize.
+  // This is just to check that everything working correctly.
+  List<List<Int16List>> repackI16(List<List<Int16List>> source) {
+    ixs = 0;
+    ps = 0;
+    int nbrChannels = source[0].length;
+    List<List<Int16List>> dest = [];
+    while (true) {
+      List<Int16List> r = [];
+      for (int channel = 0; channel < nbrChannels; ++channel) {
+        r.add(Int16List(kBlockSize));
+      }
+
+      for (int ixd = 0; ixd < kBlockSize; ++ixd) {
+        List<int>? nextRec = next16(source);
+        if (nextRec == null) {
+          dest.add(r);
+          return dest;
+        }
+        for (int channel = 0; channel < nbrChannels; ++channel)
+        {
+          r[channel][ixd] = nextRec[channel];
+        }
+      }
+      dest.add(r);
+    }
+  }
+
+
   Future<void> stopRecorder() async {
     await _mRecorder.stopRecorder();
+    if (!interleaved) {
+      if (codecSelected == Codec.pcmFloat32) {
+        bufferF32 = repackF32(bufferF32);
+      } else {
+        bufferInt16 = repackI16(bufferInt16) ;
+      }
+    }
     _mplaybackReady = true;
   }
 
@@ -215,9 +328,10 @@ class _StreamsExampleState extends State<StreamsExample> {
     if (_mPlayer.isStopped) {
       await _mPlayer.startPlayerFromStream(
         codec: codecSelected,
-        sampleRate: cstSampleRate,
+        sampleRate: kSampleRate,
         numChannels: cstNUMBEROFCHANNELS,
         interleaved: interleaved,
+        bufferSize: 1024,
       );
       setState(() {});
 

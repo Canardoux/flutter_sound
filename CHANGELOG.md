@@ -1,3 +1,13 @@
+### 9.26.0
+
+- On web : Record to Stream Float32 OK
+- On web : Record to Stream Int16 OK
+- On web : Record to Stream channels interleaved/not-interleaved OK
+- On web : Play from Stream Float32 OK
+- On web : Play from Stream Int16 OK
+- On web : Play from Stream channels interleaved/not-interleaved OK
+- New parameter for the `playFromStrea,()` : **_onBufferUndrflow_**
+
 ### 9.25.9
 
 -  Flutter Sound Web : change the dependency on web: ^1.0.0 to '>=0.5.0 <2.0.0'. [(#1168)](https://github.com/Canardoux/flutter_sound/issues/1168).

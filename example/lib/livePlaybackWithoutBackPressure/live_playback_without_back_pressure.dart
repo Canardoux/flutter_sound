@@ -150,6 +150,7 @@ class _LivePlaybackWithoutBackPressureState
       numChannels: stereo ? 2 : 1,
       interleaved: true, // This is the default
       sampleRate: sampleRate, // Sample rate is 8000
+      bufferSize: 1024
       //bufferSize: cstBLOCKSIZE,
     );
     feedHim(data);
