@@ -94,9 +94,6 @@ await myPlayer.stopPlayer();
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@Deprecated(&#39;Use [feedUint8FromStream()]&#39;)
 Future&lt;void&gt; feedFromStream(Uint8List buffer) async {
-
-
-
   var lnData = 0;
   var totalLength = buffer.length;
   while (totalLength &gt; 0 &amp;&amp; !isStopped) {
@@ -136,7 +133,7 @@ Future&lt;void&gt; feedFromStream(Uint8List buffer) async {
 <footer>
   <span class="no-break">
     flutter_sound
-      9.25.9
+      9.26.0
   </span>
   
 </footer>

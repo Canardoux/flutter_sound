@@ -196,10 +196,8 @@ class _StreamsExampleState extends State<StreamsExample> {
   static int ixs = 0;
   static int ps = 0;
 
-
   List<double>? next32(List<List<Float32List>> source) {
-    while (ixs < source.length)
-    {
+    while (ixs < source.length) {
       List<Float32List> curBlk = source[ixs];
       while (ps >= curBlk[0].length) {
         ++ixs;
@@ -218,8 +216,7 @@ class _StreamsExampleState extends State<StreamsExample> {
   }
 
   List<int>? next16(List<List<Int16List>> source) {
-    while (ixs < source.length)
-    {
+    while (ixs < source.length) {
       List<Int16List> curBlk = source[ixs];
       while (ps >= curBlk[0].length) {
         ++ixs;
@@ -236,7 +233,6 @@ class _StreamsExampleState extends State<StreamsExample> {
     }
     return null;
   }
-
 
   // This function repack the audio data received with another blocksize.
   // This is just to check that everything working correctly.
@@ -257,14 +253,12 @@ class _StreamsExampleState extends State<StreamsExample> {
           dest.add(r);
           return dest;
         }
-        for (int channel = 0; channel < nbrChannels; ++channel)
-          {
-            r[channel][ixd] = nextRec[channel];
-          }
+        for (int channel = 0; channel < nbrChannels; ++channel) {
+          r[channel][ixd] = nextRec[channel];
+        }
       }
       dest.add(r);
     }
-
   }
 
   // This function repack the audio data received with another blocksize.
@@ -286,8 +280,7 @@ class _StreamsExampleState extends State<StreamsExample> {
           dest.add(r);
           return dest;
         }
-        for (int channel = 0; channel < nbrChannels; ++channel)
-        {
+        for (int channel = 0; channel < nbrChannels; ++channel) {
           r[channel][ixd] = nextRec[channel];
         }
       }
@@ -295,14 +288,13 @@ class _StreamsExampleState extends State<StreamsExample> {
     }
   }
 
-
   Future<void> stopRecorder() async {
     await _mRecorder.stopRecorder();
     if (!interleaved) {
       if (codecSelected == Codec.pcmFloat32) {
         bufferF32 = repackF32(bufferF32);
       } else {
-        bufferInt16 = repackI16(bufferInt16) ;
+        bufferInt16 = repackI16(bufferInt16);
       }
     }
     _mplaybackReady = true;

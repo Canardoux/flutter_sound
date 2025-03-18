@@ -106,7 +106,7 @@ await myPlayer.feedUint8FromStream(myData);
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;int&gt; feedUint8FromStream(Uint8List buffer) async {
-  await _waitOpen();
+  &#47;&#47; await _waitOpen();
   if (_isInited != Initialized.fullyInitialized) {
     throw Exception(&#39;Player is not open&#39;);
   }
@@ -114,27 +114,33 @@ await myPlayer.feedUint8FromStream(myData);
     return 0;
   }
 
-
   if (codec != Codec.pcmFloat32 &amp;&amp; codec != Codec.pcm16) {
-    logger.e(&#39;feedUint8FromStream() : Cannot feed on a Codec &lt;&gt; pcmFloat32 or pcm16&#39;);
-    throw Exception(&#39;feedUint8FromStream() : Cannot feed on a Codec &lt;&gt; pcmFloat32 or pcm16&#39;);
+    logger.e(
+        &#39;feedUint8FromStream() : Cannot feed on a Codec &lt;&gt; pcmFloat32 or pcm16&#39;);
+    throw Exception(
+        &#39;feedUint8FromStream() : Cannot feed on a Codec &lt;&gt; pcmFloat32 or pcm16&#39;);
   }
-  if (interleaved) {
-    logger.e(&#39;feedUint8FromStream() : Cannot feed with UInt8 with non interleaved mode&#39;);
-    throw Exception(&#39;feedUint8FromStream() : Cannot feed with UInt8 with non interleaved mode&#39;);
+  if (!interleaved) {
+    logger.e(
+        &#39;feedUint8FromStream() : Cannot feed with UInt8 with non interleaved mode&#39;);
+    throw Exception(
+        &#39;feedUint8FromStream() : Cannot feed with UInt8 with non interleaved mode&#39;);
   }
   int s = 2;
-  if (codec != Codec.pcmFloat32) {
+  if (codec == Codec.pcmFloat32) {
     s = 4;
   }
-  if ( buffer.length&#47;(s*numChannels) != buffer.length&#47;(s*numChannels).round() );
-  {
-    logger.e(&#39;feedUint8FromStream() : buffer length (${buffer.length}) is not a multiple of number of channels * $s ($numChannels)&#39;);
-    throw Exception(&#39;feedUint8FromStream() : buffer length (${buffer.length}) is not a multiple of number of channels * $s($numChannels)&#39;);
+  double n1 = (buffer.length.toDouble()) &#47; (s * numChannels.toDouble());
+  double n2 =
+      (buffer.length.toDouble()) &#47; (s * numChannels.toDouble()).round();
+  if (n1 != n2) {
+    logger.e(
+        &#39;feedUint8FromStream() : buffer length (${buffer.length}) is not a multiple of number of channels * $s ($numChannels)&#39;);
+    throw Exception(
+        &#39;feedUint8FromStream() : buffer length (${buffer.length}) is not a multiple of number of channels * $s($numChannels)&#39;);
   }
 
-
-    return _feed(buffer);
+  return _feed(buffer);
 }</code></pre>
 </section>
 
@@ -163,7 +169,7 @@ await myPlayer.feedUint8FromStream(myData);
 <footer>
   <span class="no-break">
     flutter_sound
-      9.25.9
+      9.26.0
   </span>
   
 </footer>

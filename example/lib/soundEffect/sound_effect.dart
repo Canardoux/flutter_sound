@@ -86,7 +86,7 @@ class _SoundEffectState extends State<SoundEffect> {
       codec: Codec.pcm16,
       numChannels: _tNumChannels,
       sampleRate: _tSampleRate,
-      bufferSize:1024,
+      bufferSize: 1024,
       interleaved: true,
     );
   }

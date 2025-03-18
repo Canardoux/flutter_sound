@@ -58,11 +58,12 @@
     <section class="multi-line-signature">
       
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
-<span class="name ">startPlayerFromStream</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="startPlayerFromStream-param-codec"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.25.9/flutter_sound_platform_interface/Codec.html">Codec</a></span> <span class="parameter-name">codec</span> = <span class="default-value">Codec.pcm16</span>, </span></li>
-<li><span class="parameter" id="startPlayerFromStream-param-interleaved"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">interleaved</span> = <span class="default-value">true</span>, </span></li>
-<li><span class="parameter" id="startPlayerFromStream-param-numChannels"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">numChannels</span> = <span class="default-value">1</span>, </span></li>
-<li><span class="parameter" id="startPlayerFromStream-param-sampleRate"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">sampleRate</span> = <span class="default-value">16000</span>, </span></li>
-<li><span class="parameter" id="startPlayerFromStream-param-bufferSize"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">bufferSize</span> = <span class="default-value">8192</span>, </span></li>
+<span class="name ">startPlayerFromStream</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="startPlayerFromStream-param-codec"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.26.0/flutter_sound_platform_interface/Codec.html">Codec</a></span> <span class="parameter-name">codec</span>, </span></li>
+<li><span class="parameter" id="startPlayerFromStream-param-interleaved"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">interleaved</span>, </span></li>
+<li><span class="parameter" id="startPlayerFromStream-param-numChannels"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">numChannels</span>, </span></li>
+<li><span class="parameter" id="startPlayerFromStream-param-sampleRate"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">sampleRate</span>, </span></li>
+<li><span class="parameter" id="startPlayerFromStream-param-bufferSize"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">bufferSize</span>, </span></li>
+<li><span class="parameter" id="startPlayerFromStream-param-onBufferUnderlow"><span class="type-annotation"><a href="../../public_flutter_sound_player/TWhenFinished.html">TWhenFinished</a>?</span> <span class="parameter-name">onBufferUnderlow</span>, </span></li>
 </ol>})
 
       
@@ -77,12 +78,13 @@ For a complete discussion of the play from stream feature,
 please look to this <a href="/tau/guides/guides_live_streams.html">small guide</a></p>
 <h2 id="parameters">Parameters</h2>
 <ul>
-<li><strong><em>codec:</em></strong> The only codecs supported are <a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.25.9/flutter_sound_platform_interface/Codec.html">Codec.pcm16</a> and <a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.25.9/flutter_sound_platform_interface/Codec.html">Codec.pcmFloat32</a>. This parameter is mandatory.</li>
+<li><strong><em>codec:</em></strong> The only codecs supported are <a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.26.0/flutter_sound_platform_interface/Codec.html">Codec.pcm16</a> and <a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.26.0/flutter_sound_platform_interface/Codec.html">Codec.pcmFloat32</a>. This parameter is mandatory.</li>
 <li><strong><em>interleaved:</em></strong> is a boolean specifying if the data that you will fee will be in an interleaved or a plan mode.
  This parameter is mandatory.</li>
 <li><strong><em>numChannels:</em></strong> is the number of channels of the audio data that you will provide. This parameter is mandatory.</li>
 <li><strong><em>sampleRate:</em></strong> is the sample rate used by your data. This parameter is mandatory.</li>
 <li><strong><em>bufferSize:</em></strong> is the size of the internal buffers. Most of the time you don't specify this parameter and use the default value.</li>
+<li><strong><em>onBufferUnderflow</em></strong> is a callback which is fired when we run short on buffers. Perhaps because the playback is finished or because it has not fully started.</li>
 </ul>
 <p>Please look to <a href="/tau/guides/guides_live_streams.html">the following notice</a></p>
 <h2 id="return">Return</h2>
@@ -122,12 +124,12 @@ myPlayer.float32Sink.add(myOtherBuffer);
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; startPlayerFromStream({
-  Codec codec = Codec.pcm16,
-  bool interleaved = true,
-  int numChannels = 1,
-  int sampleRate = 16000,
-  int bufferSize = 8192,
-  &#47;&#47;TWhenFinished? whenFinished,
+  required Codec codec, &#47;&#47; = Codec.pcmFloat32,
+  required bool interleaved, &#47;&#47; = false,
+  required int numChannels, &#47;&#47; = 2,
+  required int sampleRate, &#47;&#47; = 48000,
+  required int bufferSize, &#47;&#47; = 1024,
+  TWhenFinished? onBufferUnderlow,
 }) async {
   await _lock.synchronized(() async {
     await _startPlayerFromStream(
@@ -136,7 +138,7 @@ myPlayer.float32Sink.add(myOtherBuffer);
       sampleRate: sampleRate,
       numChannels: numChannels,
       bufferSize: bufferSize,
-      &#47;&#47;whenFinished: whenFinished,
+      onBufferUnderflow: onBufferUnderlow,
     );
   });
 }</code></pre>
@@ -167,7 +169,7 @@ myPlayer.float32Sink.add(myOtherBuffer);
 <footer>
   <span class="no-break">
     flutter_sound
-      9.25.9
+      9.26.0
   </span>
   
 </footer>
