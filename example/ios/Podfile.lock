@@ -19,13 +19,10 @@ DEPENDENCIES:
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - Flutter (from `Flutter`)
   - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
+  - flutter_sound_core (from `../../../flutter_sound_core`)
   - just_audio (from `.symlinks/plugins/just_audio/darwin`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
-
-SPEC REPOS:
-  trunk:
-    - flutter_sound_core
 
 EXTERNAL SOURCES:
   audio_session:
@@ -34,6 +31,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_sound:
     :path: ".symlinks/plugins/flutter_sound/ios"
+  flutter_sound_core:
+    :path: "../../../flutter_sound_core"
   just_audio:
     :path: ".symlinks/plugins/just_audio/darwin"
   path_provider_foundation:
@@ -50,6 +49,6 @@ SPEC CHECKSUMS:
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
 
-PODFILE CHECKSUM: e852a2755837b77c0e73a3f727e5d2c9e838cd2e
+PODFILE CHECKSUM: e50268711be3f13b760d0092ffdfc7471db328cb
 
 COCOAPODS: 1.16.2
