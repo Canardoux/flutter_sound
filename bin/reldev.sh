@@ -1,6 +1,15 @@
 #!/bin/bash
 
 
+cd ../flutter_sound_web
+git checkout v9
+cd ../flutter_sound_platform_interface
+git checkout v9
+cd ../flutter_sound_core
+git checkout v9
+cd ../flutter_sound
+
+
 # Podfile sometimes disapeers !???!
 if [ ! -f example/ios/Podfile ]; then
     echo "Podfile not found."
@@ -27,8 +36,6 @@ gsed -i  "s/^#* *platform :ios,.*$/platform :ios, '14.2'/" example/ios/Podfile
 
 if [ "_$1" = "_REL" ] ; then
         echo 'REL mode'
-
-        echo '--------'
 
 
         gsed -i  "s/^ *implementation project(':flutter_sound_core')$/    \/\/ implementation project(':flutter_sound_core')/" example/android/app/build.gradle
@@ -134,9 +141,6 @@ if [ "_$1" = "_REL" ] ; then
 
 elif [ "_$1" = "_DEV" ]; then
         echo 'DEV mode'
-        echo '--------'
-
-
 
 
         gsed -i  "s/^ *\/\/ implementation project(':flutter_sound_core')$/    implementation project(':flutter_sound_core')/" example/android/app/build.gradle
@@ -245,7 +249,5 @@ else
         exit -1
 fi
 
-#cd ../
-#bin/reldev.sh $1
 
 echo "Done"

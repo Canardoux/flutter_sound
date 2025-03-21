@@ -10,16 +10,8 @@ VERSION=$1
 VERSION_CODE=${VERSION#./}
 VERSION_CODE=${VERSION_CODE#+/}
 
-cd ../flutter_sound_web
-git checkout v9
-cd ../flutter_sound_platform_interface
-git checkout v9
-cd ../flutter_sound_core
-git checkout v9
-cd ../flutter_sound
-
-bin/setver.sh $VERSION
 bin/reldev.sh REL
+bin/setver.sh $VERSION
 
 #cp -v ../tau_doc/pages/fs/README.md README.md
 #gsed -i '1,5d' README.md
