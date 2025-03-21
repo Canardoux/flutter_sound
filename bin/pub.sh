@@ -10,6 +10,14 @@ VERSION=$1
 VERSION_CODE=${VERSION#./}
 VERSION_CODE=${VERSION_CODE#+/}
 
+cd ../flutter_sound_web
+git checkout v9
+cd ../flutter_sound_platform_interface
+git checkout v9
+cd ../flutter_sound_core
+git checkout v9
+cd ../flutter_sound
+
 bin/setver.sh $VERSION
 bin/reldev.sh REL
 
@@ -85,7 +93,7 @@ echo '--------------------------------------------------------------------------
 cd ../flutter_sound_core
 git add .
 git commit -m "TAU : Version $VERSION"
-git pull origin
+#git pull origin
 git push origin
 if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
@@ -96,7 +104,7 @@ cd ../flutter_sound
 cd ../flutter_sound_web
 git add .
 git commit -m "TAU : Version $VERSION"
-git pull origin
+#git pull origin
 git push origin
 if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
@@ -253,7 +261,7 @@ cd ../flutter_sound
 cd ../flutter_sound_core
 git add .
 git commit -m "TAU : Version $VERSION"
-git pull origin
+#git pull origin
 git push origin
 if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
@@ -261,11 +269,9 @@ if [ ! -z "$VERSION" ]; then
 fi
 
 cd ../flutter_sound_web
-
-
 git add .
 git commit -m "TAU : Version $VERSION"
-git pull origin
+#git pull origin
 git push origin
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
@@ -273,11 +279,9 @@ if [ ! -z "$VERSION" ]; then
 fi
 
 cd ../flutter_sound_platform_interface
-
-
 git add .
 git commit -m "TAU : Version $VERSION"
-git pull origin
+#git pull origin
 git push origin
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION

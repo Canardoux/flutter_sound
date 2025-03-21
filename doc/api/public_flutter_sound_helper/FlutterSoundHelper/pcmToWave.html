@@ -62,7 +62,7 @@
 <li><span class="parameter" id="pcmToWave-param-outputFile"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">outputFile</span>, </span></li>
 <li><span class="parameter" id="pcmToWave-param-numChannels"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">numChannels</span> = <span class="default-value">1</span>, </span></li>
 <li><span class="parameter" id="pcmToWave-param-sampleRate"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">sampleRate</span> = <span class="default-value">16000</span>, </span></li>
-<li><span class="parameter" id="pcmToWave-param-codec"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.26.0/flutter_sound_platform_interface/Codec.html">Codec</a></span> <span class="parameter-name">codec</span> = <span class="default-value">fs_codec.Codec.pcm16</span>, </span></li>
+<li><span class="parameter" id="pcmToWave-param-codec"><span class="type-annotation">Codec</span> <span class="parameter-name">codec</span> = <span class="default-value">fs_codec.Codec.pcm16</span>, </span></li>
 </ol>})
 
       
@@ -83,7 +83,7 @@ It adds a <code>Wave</code> envelop to the PCM file, so that the file can be pla
 <li><strong><em>outputFile:</em></strong> is a path to your output file</li>
 <li><strong><em>numChannels:</em></strong> is the number of channels of your file</li>
 <li><strong><em>sampleRate</em></strong> is the sample rate of your data</li>
-<li><strong><em>codec</em></strong> is either <a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.26.0/flutter_sound_platform_interface/Codec.html">fs_codec.Codec.pcm16</a> or <a href="https://pub.dev/documentation/flutter_sound_platform_interface/9.26.0/flutter_sound_platform_interface/Codec.html">fs_codec.Codec.pcmFloat32</a></li>
+<li><strong><em>codec</em></strong> is either <code>fs_codec.Codec.pcm16</code> or <code>fs_codec.Codec.pcmFloat32</code></li>
 </ul>
 <h2 id="example">Example</h2>
 <pre class="language-dart"><code>FlutterSoundHelper().pcmToWave (

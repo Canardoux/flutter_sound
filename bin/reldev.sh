@@ -42,7 +42,7 @@ if [ "_$1" = "_REL" ] ; then
 
         gsed -i  "s/^ *\(implementation project(':flutter_sound_core'\)/    \/\/\1/" android/build.gradle
 
-         gsed -i  "s/^ *\/\/ *implementation 'com.github.canardoux:flutter_sound_core:/    implementation 'com.github.canardoux:flutter_sound_core:/"  android/build.gradle
+        gsed -i  "s/^ *\/\/ *implementation 'com.github.canardoux:flutter_sound_core:/    implementation 'com.github.canardoux:flutter_sound_core:/"  android/build.gradle
 
 
 

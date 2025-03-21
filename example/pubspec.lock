@@ -105,23 +105,26 @@ packages:
   flutter_sound:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      name: flutter_sound
+      sha256: "8948391be95f0e121a9f781e1edf5f783f8d1f2f4cc3ce363b342374cde6665f"
+      url: "https://pub.dev"
+    source: hosted
     version: "9.26.0"
   flutter_sound_platform_interface:
     dependency: "direct main"
     description:
-      path: "../../flutter_sound_platform_interface"
-      relative: true
-    source: path
+      name: flutter_sound_platform_interface
+      sha256: e4d01beb992dcf37e5cff171053dca81c472dcc662421db4fa55ff43fe94703f
+      url: "https://pub.dev"
+    source: hosted
     version: "9.26.0"
   flutter_sound_web:
     dependency: "direct main"
     description:
-      path: "../../flutter_sound_web"
-      relative: true
-    source: path
+      name: flutter_sound_web
+      sha256: "7d3c98889e911184db72128284b5c6b114ea92f1a4bc2142d3301388ab42ed62"
+      url: "https://pub.dev"
+    source: hosted
     version: "9.26.0"
   flutter_test:
     dependency: "direct dev"

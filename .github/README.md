@@ -4,7 +4,7 @@
 - ## Flutter Sound user : your doc [is here](https://flutter-sound.canardoux.xyz/)
 - ## The CHANGELOG [is here](https://fs-doc.vercel.app/tau/CHANGELOG.html)
 
-## Flutter Sound stands for Ukraine
+## Flutter Sound stands with Ukraine
 
 ![PeaceForUkraine](https://fs-doc.vercel.app/images/2-year-old-irish-girl-ukrainian.jpg)
 Peace for Ukraine
@@ -96,6 +96,8 @@ The `Tau` family begins to be rich :). It is composed by those following Flutter
 - [Tauweb](https://pub.dev/packages/tau_web) (which is the `Etau` implementation for Flutter Web)
 - [Tauwar](https://pub.dev/packages/tau_war) (which is the `Etau` implementation for Flutter on mobiles)
 - [Taudio](https://pub.dev/packages/taudio) (which is (will be) something like Flutter Sound 10.0)
+
+![Architecture](/images/tau_architecture.png)
 
 ### [Etau](https://pub.dev/packages/etau)
 
