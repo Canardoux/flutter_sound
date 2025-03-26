@@ -35,14 +35,14 @@ dependencies:
 # ============================================================================
 # The following instructions are just for developing/debugging Flutter Sound
 # Do not put them in a real App
-  flutter_sound_platform_interface: 9.27.0
-#    path: ../../flutter_sound_platform_interface
+  flutter_sound_platform_interface: # 9.27.0
+    path: ../../flutter_sound_platform_interface
 
-  flutter_sound_web: 9.27.0
-#    path: ../../flutter_sound_web # flutter_sound_web Dir
+  flutter_sound_web: # 9.27.0
+    path: ../../flutter_sound_web # flutter_sound_web Dir
     
-  flutter_sound: ^9.27.0
-#    path: ../ # Flutter Sound Dir
+  flutter_sound: # ^9.27.0
+    path: ../ # Flutter Sound Dir
 
 ##  etau: # ^0.0.14-alpha.5
 ##    path: ../../../tau/etau # etau Dir

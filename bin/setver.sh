@@ -12,7 +12,7 @@ VERSION_CODE=${VERSION_CODE//+/}
 
 #gsed -i "s/^FLUTTER_SOUND_VERSION=.*/FLUTTER_SOUND_VERSION='$VERSION'/"   doc/FLUTTER_SOUND_VERSION
 
-gsed -i  "s/const VERSION = .*$/const VERSION = '$VERSION'/"                  ../flutter_sound_web/src/flutter_sound.js;
+gsed -i  "s/const FLUTTER_SOUND_VERSION = .*$/const FLUTTER_SOUND_VERSION = '$VERSION'/"                  ../flutter_sound_web/src/flutter_sound.js;
 gsed -i  "s/const PLAYER_VERSION = .*$/const PLAYER_VERSION = '$VERSION'/"    ../flutter_sound_web/src/flutter_sound_player.js;
 gsed -i  "s/const RECORDER_VERSION = .*$/const RECORDER_VERSION = '$VERSION'/"    ../flutter_sound_web/src/flutter_sound_recorder.js;
 
@@ -53,7 +53,7 @@ gsed -i  "s/^\( *#* *flauto_platform_interface2: *#* *\^*\).*$/\1$VERSION/"     
 gsed -i  "s/^\( *#* *flauto_web: *#* *\^*\).*$/\1$VERSION/"                             example/pubspec.yaml
 
 gsed -i  "s/^\( *libraryVersion = \).*$/\1$VERSION/"                                    ../flutter_sound_core/android/gradle.properties
-####gsed -i  "s/^\( *## \).*$/\1$VERSION/"                                                  CHANGELOG.md
+gsed -i  "s/^\( *## \).*$/\1$VERSION/"                                                  CHANGELOG.md
 
 # Probably better in pub
 
