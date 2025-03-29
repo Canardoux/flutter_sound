@@ -254,7 +254,7 @@ cd ../flutter_sound_core
 git add .
 git commit -m "TAU : Version $VERSION"
 #git pull origin
-git push origin
+git push --set-upstream origin v9
 if [ ! -z "$VERSION" ]; then
     git tag -f $VERSION
     git push  -f origin $VERSION
@@ -264,7 +264,7 @@ cd ../flutter_sound_web
 git add .
 git commit -m "TAU : Version $VERSION"
 #git pull origin
-git push origin
+git push --set-upstream origin v9
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push  -f origin $VERSION
@@ -274,7 +274,7 @@ cd ../flutter_sound_platform_interface
 git add .
 git commit -m "TAU : Version $VERSION"
 #git pull origin
-git push origin
+git push --set-upstream origin v9
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push  -f origin $VERSION

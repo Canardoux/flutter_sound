@@ -249,5 +249,11 @@ else
         exit -1
 fi
 
+flutter clean
+flutter pub get
+cd example
+flutter clean
+flutter pub get
+cd ..
 
 echo "Done"
