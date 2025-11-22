@@ -177,7 +177,6 @@ read -p "Press enter to continue"
 #fi
 #cd ..
 
-exit 0
 
 cd example/ios
 pod cache clean --all
@@ -225,7 +224,7 @@ cd ..
 #cd ../tau_doc
 #bin/pub.sh
 #cd ../etau
-
+exit 0
 cd ../fs-doc
 bin/pub.sh $VERSION
 if [ $? -ne 0 ]; then
