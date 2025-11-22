@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'flutter_sound'
-  s.version          = '9.29.2'
+  s.version          = '9.29.3'
   s.summary          = 'A complete api for audio playback and recording. Member of the `Tau` Family. Audio player, audio recorder. Pray for Ukraine.'
   s.description      = <<-DESC
 A complete api for audio playback and recording. Member of the `Tau` Family. Audio player, audio recorder. Pray for Ukraine.
@@ -23,7 +23,7 @@ A complete api for audio playback and recording. Member of the `Tau` Family. Aud
   s.swift_version = '5.0'
   s.ios.deployment_target = '12.0'
   s.static_framework = true
-  s.dependency 'flutter_sound_core', '9.29.2'
+  s.dependency 'flutter_sound_core', '9.29.3'
 
   # If your plugin requires a privacy manifest, for example if it uses any
   # required reason APIs, update the PrivacyInfo.xcprivacy file to describe your

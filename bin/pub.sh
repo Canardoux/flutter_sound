@@ -224,7 +224,6 @@ cd ..
 #cd ../tau_doc
 #bin/pub.sh
 #cd ../etau
-exit 0
 cd ../fs-doc
 bin/pub.sh $VERSION
 if [ $? -ne 0 ]; then
@@ -233,16 +232,17 @@ if [ $? -ne 0 ]; then
 fi
 cd ../flutter_sound
 
+#exit 0
 
-cd ../flutter_sound_core
-git add .
-git commit -m "TAU : Version $VERSION"
-git pull origin
-git push origin
-if [ ! -z "$VERSION" ]; then
-    git tag -f $VERSION
-    git push  -f origin $VERSION
-fi
+#cd ../flutter_sound_core
+#git add .
+#git commit -m "TAU : Version $VERSION"
+#git pull origin
+#git push origin
+#if [ ! -z "$VERSION" ]; then
+#    git tag -f $VERSION
+#    git push  -f origin $VERSION
+#fi
 
 echo 'E.O.J'
 exit 0

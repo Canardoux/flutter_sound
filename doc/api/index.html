@@ -43,24 +43,103 @@
   <div id="dartdoc-main-content" class="main-content">
       
 <section class="desc markdown">
-  <p><img src="https://img.shields.io/pub/v/taudio.svg?style=flat-square" alt="pub version">
-<img src="https://taudio.canardoux.xyz/images/Logotype-primary.png" alt="Taudio"></p>
+  <p><img src="https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square" alt="pub version">
+<img src="https://tau-ver.canardoux.xyz/images/fs/Logotype-primary.png" alt="Flutter Sound"></p>
 <ul>
 <li>
-<h2 id="taudio-user--your-doc-is-herehttpstaudiocanardouxxyz"><code>Taudio</code> user : your doc <a href="https://taudio.canardoux.xyz/">is here</a></h2>
+<h2 id="flutter-sound-user--your-doc-is-herehttpsflutter-soundcanardouxxyz">Flutter Sound user : your doc <a href="https://flutter-sound.canardoux.xyz/">is here</a></h2>
 </li>
 <li>
-<h2 id="the-changelog-is-herehttpstaudiocanardouxxyztauchangeloghtml">The CHANGELOG <a href="https://taudio.canardoux.xyz/tau/CHANGELOG.html">is here</a></h2>
+<h2 id="the-changelog-is-herehttpsfs-docvercelapptauchangeloghtml">The CHANGELOG <a href="https://fs-doc.vercel.app/tau/CHANGELOG.html">is here</a></h2>
 </li>
 </ul>
-<h2 id="taudio-as-a--project"><code>Taudio</code> as a τ Project</h2>
-<p><code>Taudio</code> is both :</p>
+<h2 id="flutter-sound-stands-with-ukraine">Flutter Sound stands with Ukraine</h2>
+<p><img src="https://fs-doc.vercel.app/images/2-year-old-irish-girl-ukrainian.jpg" alt="PeaceForUkraine">
+Peace for Ukraine</p>
+<p><img src="https://fs-doc.vercel.app/images/banner.png" alt="PrayForUkraine">
+Pray for Ukraine</p>
+<h2 id="flutter-sound-as-a--project">Flutter Sound as a τ Project</h2>
+<p>Flutter Sound is a set of libraries which deal with audio :</p>
 <ul>
-<li>A wrapper above <a href="https://pub.dev/packages/etau">Etau</a>.</li>
-<li><a href="https://pub.dev/packages/flutter_sound">Flutter Sound v10.0</a>.</li>
+<li>A player for audio playback</li>
+<li>A recorder for recording audio</li>
+<li>Several utilities to handle audio files</li>
 </ul>
-<p><code>Taudio</code> is (will be) a complete rewrite of Flutter Sound 9.x. It keeps compatibility with the Flutter Sound 9.x API but will add a new wrapper above <a href="https://pub.dev/packages/etau">Etau</a>.</p>
-<p>Taudio is actually in a developement state. There are many things to do before you can benefit of it. Specially:</p>
+<p><img src="https://user-images.githubusercontent.com/27461460/77531555-77c9ec00-6ed6-11ea-9813-320f943b08cc.gif" alt="Demo"></p>
+<h2 id="overview">Overview</h2>
+<p>Flutter Sound is a library package allowing you to play and record audio for :</p>
+<ul>
+<li>iOS</li>
+<li>Android</li>
+<li>Web</li>
+</ul>
+<p>The Flutter Sound package supports playback from:</p>
+<ul>
+<li>Dart buffers</li>
+<li>Assets</li>
+<li>Files</li>
+<li>Remote URL</li>
+<li>Dart Streams</li>
+</ul>
+<p>The Flutter Sound package supports recording to:</p>
+<ul>
+<li>Dart buffers</li>
+<li>Files</li>
+<li>Dart Streams</li>
+</ul>
+<h2 id="sdk-requirements">SDK requirements</h2>
+<ul>
+<li>Flutter Sound requires an iOS 10.0 SDK (or later)</li>
+<li>Flutter Sound requires an Android 21 (or later)</li>
+<li>Flutter Sound is OK with the main Web browsers
+<ul>
+<li>Google Chrome</li>
+<li>Firefox</li>
+<li>Safari</li>
+</ul>
+</li>
+</ul>
+<h2 id="examples-demo-apps">Examples (Demo Apps)</h2>
+<p>Flutter Sound comes with several <a href="https://fs-doc.vercel.app/tau/examples.html">Demo/Examples</a>.</p>
+<p>You can run a live view of these examples <a href="https://fs-doc.vercel.app/live/">here</a>.</p>
+<h2 id="features">Features</h2>
+<p>The Flutter Sound package includes the following features :</p>
+<ul>
+<li>Play and Record sound or music with various codecs. (See <a href="https://fs-doc.vercel.app/tau/guides/guides_codecs.html">the supported codecs here</a>)</li>
+<li>Play local or remote files specified by their URL.</li>
+<li>Play assets.</li>
+<li>Play from a dart stream</li>
+<li>Playback from a live dart Stream</li>
+<li>Support for releasing/resuming resources when the app pauses/resumes.</li>
+</ul>
+<h2 id="flutter-sound-and-streams">Flutter Sound and Streams</h2>
+<p>Streams support is a main Flutter Sound feature that is very exciting.</p>
+<ul>
+<li>Flutter Sound can record to a dart stream of audio data (PCM Float32 or PCM Int16). This let you process live audio data in dart, or send these data to a remote host.</li>
+<li>Flutter Sound can playback from a dart stream of audio data (PCM Float32 or PCM Int16). This let play live audio data generated from dart
+(sequencer, sound generator, ...) or from a remote host.</li>
+</ul>
+<p>You can look to the <a href="https://fs-doc.vercel.app/tau/guides/guides_live_streams.html">FS Streams guide</a>.</p>
+<h2 id="license">License</h2>
+<ul>
+<li>Flutter Sound is published under the <a href="https://fs-doc.vercel.app/tau/LICENSE.html">MPL-2.0 License</a>.</li>
+<li>Flutter Sound is copyrighted by Dooboolab and Canardoux.</li>
+<li>Flutter Sound is now released under the permissive Mozilla license which has a <strong>weak</strong> <em>copyleft</em> clause: if you modify some of Flutter Sound code you must publish your modifications under the MPL license too. But you may publish your App with any license you want. Even a Proprietary/Closed-Sources License (shame on you!).</li>
+<li>The Tau documentation is published under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">Creative Commons CC BY-NC-SA 4.0</a> license.</li>
+</ul>
+<h2 id="the--family">The τ family</h2>
+<p>The <code>Tau</code> family begins to be rich :). It is composed by those following Flutter plugins.</p>
+<ul>
+<li><code>Flutter Sound 9.x</code> (this legacy plugin developed for many years)</li>
+<li><a href="https://pub.dev/packages/etau">Etau</a> (which is a port on Flutter Web of the W3C Web Audio API)</li>
+<li><a href="https://pub.dev/packages/tau_web">Tauweb</a> (which is the <code>Etau</code> implementation for Flutter Web)</li>
+<li><a href="https://pub.dev/packages/tau_war">Tauwar</a> (which is the <code>Etau</code> implementation for Flutter on mobiles)</li>
+<li><a href="https://pub.dev/packages/taudio">Taudio</a> (which is (will be) something like Flutter Sound 10.0)</li>
+</ul>
+<p><img src="/images/tau_architecture.png" alt="Architecture"></p>
+<h3 id="etauhttpspubdevpackagesetau"><a href="https://pub.dev/packages/etau">Etau</a></h3>
+<p>This is (will be) an implementation on flutter of the <a href="https://www.w3.org/TR/webaudio-1.1">W3C Web Audio API</a>.
+Etau is actually in a developement state. It is an Alpha version. Even not a Beta version. There are many things to do before you can use it. Specially:</p>
 <ul>
 <li>A documentation (TODO)</li>
 <li>A support of the three main platforms:
@@ -68,42 +147,6 @@
 <li>Web</li>
 <li>iOS (TODO)</li>
 <li>Android (TODO)</li>
-</ul>
-</li>
-</ul>
-<p>Actually, Taudio is essentially a new name for  Flutter Sound 10.0. It is 100% compatible with the Flutter Sound 9.x API. Later, the API wil be improved little by little for a more clean and modern API. It will be based on the Web Audio API as recommandated by the W3C.</p>
-<p>Why <code>Taudio</code> and not `Flutter Sound 10.0.0 ? There are several reasons. Some are good and some are bad.</p>
-<ul>
-<li>Taudio is released under a different license. We wanted to be clear that it is a different product.</li>
-<li>Hopefully, the Flutter Sound legacy will decrease with time.</li>
-<li>Because issues on the Flutter Sound Github repository are a complete mess and I want to start a new clean Github repository.</li>
-<li>There are too many characters to type in Flutter Sound name.</li>
-<li>I am fed up with Flutter Sound and I need to work on something new.</li>
-</ul>
-<p>The code and the doc are both to be done. Actually, you can refer to <a href="https://flutter-sound.canardoux.xyz/">the Flutter Sound doc</a> if you need informations.</p>
-<h2 id="the--family">The τ family</h2>
-<p>The <code>Tau</code> family begins to be rich :). It is composed by those following Flutter plugins.</p>
-<ul>
-<li><a href="https://flutter-sound.canardoux.xyz/">Flutter Sound 9.x</a> (the legacy plugin developed for many years)</li>
-<li><a href="https://pub.dev/packages/etau">Etau</a> (which is a port on Flutter Web of the W3C Web Audio API)</li>
-<li><a href="https://pub.dev/packages/tau_web">Tauweb</a> (which is the <code>Etau</code> implementation for Flutter Web)</li>
-<li><a href="https://pub.dev/packages/tau_war">Tauwar</a> (which is the <code>Etau</code> implementation for Flutter on mobiles)</li>
-<li><a href="https://pub.dev/packages/taudio">Taudio</a> (which is (will be) something like Flutter Sound 10.0)</li>
-</ul>
-<p><img src="https://taudio.canardoux.xyz/images/tau_architecture.png" alt="Architecture"></p>
-<h3 id="flutter-soundhttpspubdevpackagesflutter_sound"><a href="https://pub.dev/packages/flutter_sound">Flutter Sound</a></h3>
-<p>This is the well known legacy 9.x package.</p>
-<h3 id="etauhttpspubdevpackagesetau"><a href="https://pub.dev/packages/etau">Etau</a></h3>
-<p>This is (will be) an implementation on flutter of the <a href="https://www.w3.org/TR/webaudio-1.1">W3C Web Audio API</a>.
-Etau is actually in a developement state. It is an Alpha version. Even not a Beta version. There are many things to do before you can use it. Specially:</p>
-<ul>
-<li>A documentation (TODO)</li>
-<li>A support of the main platforms:
-<ul>
-<li>Web</li>
-<li>iOS (TODO)</li>
-<li>Android (TODO)</li>
-<li>The desktops (TODO)</li>
 </ul>
 </li>
 </ul>
@@ -119,29 +162,20 @@ Etau is actually in a developement state. It is an Alpha version. Even not a Bet
 <p>Now, you will have to ask yourself if you must use <a href="https://pub.dev/packages/taudio">Taudio</a> (which is just a wrapper around <code>Etau</code>), or directly <a href="https://pub.dev/packages/etau">Etau</a>.
 The W3C recommandation is powerful but simple to use. There are probably no many reasons to use <code>Taudio</code> any longer.</p>
 <p><code>Etau</code> is (will be) released under the Gnu Public Licence v3 (GPL v3).</p>
-<h2 id="license">License</h2>
+<h3 id="taudiohttpspubdevpackagestaudio"><a href="https://pub.dev/packages/taudio">Taudio</a></h3>
+<p>The current Flutter Sound version is 9.x. <a href="https://pub.dev/packages/taudio">Taudio</a> is a new name for Flutter Sound 10.0. <code>Taudio</code> is actually in a developement state. It is an Alpha version. Even not a Beta version. There are many things to do before you can use it. Specially:</p>
 <ul>
-<li><code>Taudio</code> is released under the Gnu Public Licence v3 (<a href="https://taudio.canardoux.xyz/tau/LICENSE.html">GPL v3</a>)). The GPL license has a very strong copyleft clause. This mean that if you don't want, cannot or maynot release your App under a GPL License, you must stuck with Flutter Sound 9.x. This is not a big deal: Flutter Sound v 9.x will be maintain for a forseable future.</li>
-<li><code>Taudio</code> is copyrighted by Canardoux.</li>
-<li>The Tau documentation is published under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">Creative Commons CC BY-NC-SA 4.0</a> license.</li>
+<li>A documentation (TODO)</li>
+<li>A support of the three main platforms:
+<ul>
+<li>Web (TODO)</li>
+<li>iOS (TODO)</li>
+<li>Android (TODO)</li>
 </ul>
-<h3 id="but-what-is-this-famous-gpl-license-">But what is this famous GPL License ?</h3>
-<p>You can read all the <a href="http://localhost:4000/tau/LICENSE.html">legally lines</a> if you want. But there are two main things that is important to understand :</p>
-<ul>
-<li>
-<p>If your App is dependant of <code>Taudio</code>, you must publish the sources of your software somewhere. Probably on internet.</p>
-</li>
-<li>
-<p>If your App is dependant of <code>Taudio</code>, your App must be published under the GPL License too.</p>
 </li>
 </ul>
-<h3 id="why-is-this-license-so-good-">Why is this License so good ?</h3>
-<p>Because you are perhaps a professional developer. I am a professional developer. If someone like me works freely for some companies it would not be fair for you. Why will your boss pay you, if other people work for free for them? Companies may use GPL software. But they have to give something in exchange.</p>
-<h2 id="taudio-stands-with-ukraine">Taudio stands with Ukraine</h2>
-<p><img src="https://taudio.canardoux.xyz/images/2-year-old-irish-girl-ukrainian.jpg" alt="PeaceForUkraine">
-Peace for Ukraine</p>
-<p><img src="https://taudio.canardoux.xyz/images/banner.png" alt="PrayForUkraine">
-Pray for Ukraine</p>
+<p><code>Taudio</code> is (will be) released under the Gnu Public Licence v3 (GPL v3). This mean that if you don't want, cannot or maynot release your App under a GPL License, you must stuck with Flutter Sound 9.x. This is not a big deal: Flutter Sound v 9.x will be maintained for a forseable future.</p>
+<p><code>Taudio</code> is a complete rewritten of Flutter Sound 9.x. It keeps compatibility with the Flutter Sound 9.x API but adds a new wrapper above <a href="https://pub.dev/packages/etau">Etau</a>.</p>
 <h2 id="we-need-help">We need help</h2>
 <p>{: .important }
 We greatly appreciate any contributions to the project which can be as simple as providing feedback on the API or documentation.</p>
@@ -230,7 +264,7 @@ We greatly appreciate any contributions to the project which can be as simple as
 <footer>
   <span class="no-break">
     flutter_sound
-      9.29.2
+      9.29.3
   </span>
   
 </footer>
