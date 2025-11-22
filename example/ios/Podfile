@@ -111,3 +111,6 @@ end
 # Do not insert such a line in a real App.
 # pod 'flutter_sound_core', :path => '../../../flutter_sound_core'
 # =====================================================
+
+# The following line was added by LARPOUX because iOS complained. Not good!
+use_modular_headers!

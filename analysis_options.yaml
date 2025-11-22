@@ -1,5 +1,4 @@
-#include: package:effective_dart/analysis_options.yaml
-linter:
-  rules:
-    lines_longer_than_80_chars: false
-include: package:lints/recommended.yaml
+include: package:flutter_lints/flutter.yaml
+
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options

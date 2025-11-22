@@ -175,6 +175,8 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 			enableVoiceProcessing = voiceProcessing != 0;
 		}
 
+
+
 		try {
 			boolean b = m_flautoPlayer.startPlayerFromMic( t_CODEC.pcm16, _numChannels, true,  _sampleRate, _bufferSize, enableVoiceProcessing);
 			if (b)
@@ -203,15 +205,31 @@ public class FlutterSoundPlayer extends FlutterSoundSession implements  FlautoPl
 		if (call.argument("sampleRate") != null) {
 			_sampleRate = call.argument("sampleRate");
 		}
-		Integer _numChannels = 1;
 		Boolean interleaved = true;
 		if (call.argument("interleaved") != null) {
 			interleaved = call.argument("interleaved");
 		}
 
+		Integer _numChannels = 1;
 		if (call.argument("numChannels") != null) {
 			_numChannels = call.argument("numChannels");
 		}
+
+		boolean enableNoiseSuppression = false;
+		if (call.argument("noiseSuppression") != null) {
+			//int noiseSuppression = call.argument("noiseSuppression");
+			//enableNoiseSuppression = noiseSuppression != 0;
+			enableNoiseSuppression = call.argument("noiseSuppression");
+		}
+
+		boolean enableEchoCancellation = false;
+		if (call.argument("echoCancellation") != null) {
+			//int echoCancellation = call.argument("echoCancellation");
+			//enableEchoCancellation = echoCancellation != 0;
+			enableEchoCancellation = call.argument("echoCancellation");
+		}
+
+
 
 		try {
 			boolean b = m_flautoPlayer.startPlayer(codec, _path, dataBuffer, _numChannels, interleaved, _sampleRate, _bufferSize);

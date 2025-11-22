@@ -20,6 +20,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:audio_session/audio_session.dart';
 
 /*
 
@@ -43,15 +44,38 @@ class SimplePlayback extends StatefulWidget {
 
 class _SimplePlaybackState extends State<SimplePlayback> {
   bool _mPlayerIsInited = false;
+  static const isRunningWithWasm = bool.fromEnvironment('dart.tool.dart2wasm');
 
-  @override
-  void initState() {
-    super.initState();
+  Future<void> init() async {
     _mPlayer!.openPlayer().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
     });
+    final session = await AudioSession.instance;
+    await session.configure(AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+      avAudioSessionCategoryOptions:
+          AVAudioSessionCategoryOptions.allowBluetooth |
+              AVAudioSessionCategoryOptions.defaultToSpeaker,
+      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
+      avAudioSessionRouteSharingPolicy:
+          AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+      androidAudioAttributes: const AndroidAudioAttributes(
+        contentType: AndroidAudioContentType.speech,
+        flags: AndroidAudioFlags.none,
+        usage: AndroidAudioUsage.voiceCommunication,
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+      androidWillPauseWhenDucked: true,
+    ));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    init();
   }
 
   @override
@@ -112,33 +136,43 @@ class _SimplePlaybackState extends State<SimplePlayback> {
       return Column(
         children: [
           Container(
-            margin: const EdgeInsets.all(3),
-            padding: const EdgeInsets.all(3),
-            height: 80,
-            width: double.infinity,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFAF0E6),
-              border: Border.all(
-                color: Colors.indigo,
-                width: 3,
+              margin: const EdgeInsets.all(3),
+              padding: const EdgeInsets.all(3),
+              height: 100,
+              width: double.infinity,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: const Color(0xFFFAF0E6),
+                border: Border.all(
+                  color: Colors.indigo,
+                  width: 3,
+                ),
               ),
-            ),
-            child: Row(children: [
-              ElevatedButton(
-                onPressed: getPlaybackFn(),
-                //color: Colors.white,
-                //disabledColor: Colors.grey,
-                child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              Text(_mPlayer!.isPlaying
-                  ? 'Playback in progress'
-                  : 'Player is stopped'),
-            ]),
-          ),
+              child: Column(
+                children: [
+                  Row(children: [
+                    ElevatedButton(
+                      onPressed: getPlaybackFn(),
+                      //color: Colors.white,
+                      //disabledColor: Colors.grey,
+                      child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Text(_mPlayer!.isPlaying
+                        ? 'Playback in progress'
+                        : 'Player is stopped'),
+                  ]),
+                  const Text(
+                    isRunningWithWasm
+                        ? 'Running WASM!'
+                        : 'Not running under WASM :-(',
+                    style: TextStyle(
+                        color: isRunningWithWasm ? Colors.green : Colors.red),
+                  ),
+                ],
+              )),
         ],
       );
     }

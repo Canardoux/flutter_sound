@@ -39,7 +39,7 @@ android {
         applicationId = "xyz.canardoux.fluttersound.example"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion = 28
+        minSdkVersion = 28 // 18 works fine for the player, but the recorder needs at least 24
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName

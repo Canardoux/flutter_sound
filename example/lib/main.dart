@@ -24,6 +24,7 @@ import 'livePlaybackWithBackPressure/live_playback_with_back_pressure.dart';
 import 'livePlaybackWithoutBackPressure/live_playback_without_back_pressure.dart';
 import 'multi_playback/multi_playback.dart';
 import 'recordToStream/record_to_stream_example.dart';
+import 'play_from_mic/play_from_mic.dart';
 //import 'dummy_mobile.dart'
 //if (dart.library.js_interop) 'mediaRecorder/media_recorder.dart'; // package:web implementation
 import 'streams/streams.dart';
@@ -128,7 +129,7 @@ You can also refer to the following examples that uses UInt8List:
   Example(
     title: 'Record to stream',
     subTitle: 'Record to a dart stream',
-    flags: 0,
+    flags: tNotWeb,
     route: (_) => const RecordToStreamExample(),
     description: '''
 This is an example showing how to record to a Dart Stream.
@@ -143,7 +144,7 @@ You can also refer to the following example:
   ),
 
   Example(
-    title: 'Live Playback without flow contol',
+    title: 'Live Playback without flow control',
     subTitle: 'Live Playback from stream',
     flags: 0,
     route: (_) => const LivePlaybackWithoutBackPressure(),
@@ -166,8 +167,8 @@ For example, if it does a `stopPlayer()` it will loose all the buffered data not
   ),
 
   Example(
-    title: 'Live Playback with flow contol',
-    subTitle: 'Live Playback with flow contol',
+    title: 'Live Playback with flow control',
+    subTitle: 'Live Playback with flow control',
     flags: 0,
     route: (_) => const LivePlaybackWithBackPressure(),
     description: '''
@@ -180,6 +181,17 @@ This other example is a little bit simpler because the App does not need to awai
 
 - `Record To Stream`
 - `Live Playback Without Backpressure`
+''',
+  ),
+
+  Example(
+    title: 'Play from mic',
+    subTitle: 'Play from the microphone',
+    flags: 0,
+    route: (_) => const PlayFromMic(),
+    description: '''
+Open and start a recorder. The sound recorded is looped to the speaker.
+
 ''',
   ),
 
