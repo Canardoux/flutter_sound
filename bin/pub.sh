@@ -53,9 +53,40 @@ if [ $? -ne 0 ]; then
     echo "Error: flutter pub publish[flutter_sound_platform_interface]"
     #!!!!!exit -1
 fi
-read -p "Press enter to continue"
+
 cd ../flutter_sound
 echo '--------------------------------------------------------------------------------'
+
+#flutter analyze lib
+#if [ $? -ne 0 ]; then
+#    echo "Error: analyze flutter_sound/lib"
+#    #!!!!!exit -1
+#fi
+dart format lib
+if [ $? -ne 0 ]; then
+    echo "Error: format flutter_sound/lib"
+    exit -1
+fi
+
+dart format  example/lib
+
+rm -rf doc/api
+dart doc .
+if [ $? -ne 0 ]; then
+    echo "Error: dart doc flutter_sound/lib"
+    exit -1
+fi
+
+
+git add .
+git commit -m "TAU : Version $VERSION"
+git pull origin
+git push origin
+if [ ! -z "$VERSION" ]; then
+    git tag -f $VERSION
+    git push  -f origin $VERSION
+fi
+
 
 cd ../flutter_sound_web
 
@@ -88,6 +119,7 @@ if [ $? -ne 0 ]; then
     echo "Error: flutter pub publish[flutter_sound_web]"
     #!!!!!!exit -1
 fi
+
 
 npm publish .
 if [ $? -ne 0 ]; then
@@ -128,37 +160,6 @@ echo '--------------------------------------------------------------------------
 echo '--------------------------------------------------------------------------------'
 
 read -p "Press enter to continue"
-
-
-#flutter analyze lib
-#if [ $? -ne 0 ]; then
-#    echo "Error: analyze flutter_sound/lib"
-#    #!!!!!exit -1
-#fi
-dart format lib
-if [ $? -ne 0 ]; then
-    echo "Error: format flutter_sound/lib"
-    exit -1
-fi
-
-dart format  example/lib
-
-rm -rf doc/api
-dart doc .
-if [ $? -ne 0 ]; then
-    echo "Error: dart doc flutter_sound/lib"
-    exit -1
-fi
-
-
-git add .
-git commit -m "TAU : Version $VERSION"
-git pull origin
-git push origin
-if [ ! -z "$VERSION" ]; then
-    git tag -f $VERSION
-    git push  -f origin $VERSION
-fi
 
 
 flutter pub publish
