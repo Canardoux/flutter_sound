@@ -2,10 +2,10 @@ PODS:
   - audio_session (0.0.1):
     - Flutter
   - Flutter (1.0.0)
-  - flutter_sound (9.29.4):
+  - flutter_sound (9.29.5):
     - Flutter
-    - flutter_sound_core (= 9.29.4)
-  - flutter_sound_core (9.29.4)
+    - flutter_sound_core (= 9.29.5)
+  - flutter_sound_core (9.29.5)
   - just_audio (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -44,8 +44,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   audio_session: 9bb7f6c970f21241b19f5a3658097ae459681ba0
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_sound: 16fb8c631b5f4e129f8b1d9d8331ce566ea8b438
-  flutter_sound_core: 728e6826d269f0e17514b8540d09a4dec130bc77
+  flutter_sound: e208c8ea1003810fa25c9a5a85486b9ae090c72d
+  flutter_sound_core: 30e384e445b5d7abe7985b4d59aa38ba7157d58f
   just_audio: 4e391f57b79cad2b0674030a00453ca5ce817eed
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d

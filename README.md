@@ -1,16 +1,8 @@
 ![pub version](https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square)
-![Flutter Sound](https://tau-ver.canardoux.xyz/images/fs/Logotype-primary.png)
+![Flutter Sound](https://flutter-sound.canardoux.xyz/images/Logotype-primary.png)
 
 - ## Flutter Sound user : your doc [is here](https://flutter-sound.canardoux.xyz/)
 - ## The CHANGELOG [is here](https://flutter-sound.canardoux.xyz/tau/CHANGELOG.html)
-
-## Flutter Sound stands with Ukraine
-
-![PeaceForUkraine](https://fs-doc.vercel.app/images/2-year-old-irish-girl-ukrainian.jpg)
-Peace for Ukraine
-
-![PrayForUkraine](https://fs-doc.vercel.app/images/banner.png)
-Pray for Ukraine
 
 ## Flutter Sound as a τ Project
 
@@ -55,15 +47,15 @@ The Flutter Sound package supports recording to:
 
 ## Examples \(Demo Apps\)
 
-Flutter Sound comes with several [Demo/Examples](https://fs-doc.vercel.app/tau/examples.html).
+Flutter Sound comes with several [Demo/Examples](https://flutter-sound.canardoux.xyz/tau/examples.html).
 
-You can run a live view of these examples [here](https://fs-doc.vercel.app/live/).
+You can run a live view of these examples [here](https://fhttps://flutter-sound.canardoux.xyz/live/).
 
 ## Features
 
 The Flutter Sound package includes the following features :
 
-* Play and Record sound or music with various codecs. \(See [the supported codecs here](https://fs-doc.vercel.app/tau/guides/guides_codecs.html)\)
+* Play and Record sound or music with various codecs. \(See [the supported codecs here](https://flutter-sound.canardoux.xyz/tau/guides/guides_codecs.html)\)
 * Play local or remote files specified by their URL.
 * Play assets.
 * Play from a dart stream
@@ -78,11 +70,11 @@ Streams support is a main Flutter Sound feature that is very exciting.
 - Flutter Sound can playback from a dart stream of audio data (PCM Float32 or PCM Int16). This let play live audio data generated from dart
 (sequencer, sound generator, ...) or from a remote host.
 
-You can look to the [FS Streams guide](https://fs-doc.vercel.app/tau/guides/guides_live_streams.html).
+You can look to the [FS Streams guide](https://flutter-sound.canardoux.xyz/tau/guides/guides_live_streams.html).
 
 ## License
 
-- Flutter Sound is published under the [MPL-2.0 License](https://fs-doc.vercel.app/tau/LICENSE.html).
+- Flutter Sound is published under the [MPL-2.0 License](https://flutter-sound.canardoux.xyz/tau/LICENSE.html).
 - Flutter Sound is copyrighted by Dooboolab and Canardoux.
 - Flutter Sound is now released under the permissive Mozilla license which has a **weak** *copyleft* clause: if you modify some of Flutter Sound code you must publish your modifications under the MPL license too. But you may publish your App with any license you want. Even a Proprietary/Closed-Sources License (shame on you!).
 - The Tau documentation is published under the [Creative Commons CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en) license.
@@ -138,6 +130,13 @@ The current Flutter Sound version is 9.x. [Taudio](https://pub.dev/packages/taud
 `Taudio` is (will be) released under the Gnu Public Licence v3 (GPL v3). This mean that if you don't want, cannot or maynot release your App under a GPL License, you must stuck with Flutter Sound 9.x. This is not a big deal: Flutter Sound v 9.x will be maintained for a forseable future.
 
 `Taudio` is a complete rewritten of Flutter Sound 9.x. It keeps compatibility with the Flutter Sound 9.x API but adds a new wrapper above [Etau](https://pub.dev/packages/etau).
+
+## Flutter Sound stands with Ukraine
+
+![PeaceForUkraine](https://flutter-sound.canardoux.xyz/images/2-year-old-irish-girl-ukrainian.jpg)
+Peace for Ukraine
+
+![PrayForUkraine](https://flutter-sound.canardoux.xyz/images/banner.png
 
 ## We need help
 
