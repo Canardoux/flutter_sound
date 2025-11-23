@@ -2,7 +2,7 @@
 ![Flutter Sound](https://tau-ver.canardoux.xyz/images/fs/Logotype-primary.png)
 
 - ## Flutter Sound user : your doc [is here](https://flutter-sound.canardoux.xyz/)
-- ## The CHANGELOG [is here](https://fs-doc.vercel.app/tau/CHANGELOG.html)
+- ## The CHANGELOG [is here](https://flutter-sound.canardoux.xyz/tau/CHANGELOG.html)
 
 ## Flutter Sound stands with Ukraine
 

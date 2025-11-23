@@ -30,6 +30,14 @@ flutter_lints
 3.5
 file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_lints-5.0.0/
 file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_lints-5.0.0/lib/
+flutter_sound_platform_interface
+3.3
+file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_platform_interface-9.29.4/
+file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_platform_interface-9.29.4/lib/
+flutter_sound_web
+3.3
+file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_web-9.29.4/
+file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/flutter_sound_web-9.29.4/lib/
 leak_tracker
 3.2
 file:///Volumes/mac-H/larpoux/.pub-cache/hosted/pub.dev/leak_tracker-10.0.9/
@@ -162,12 +170,4 @@ flutter_sound
 3.7
 file:///Volumes/mac-H/larpoux/proj/tau/flutter_sound/
 file:///Volumes/mac-H/larpoux/proj/tau/flutter_sound/lib/
-flutter_sound_platform_interface
-3.3
-file:///Volumes/mac-H/larpoux/proj/tau/flutter_sound_platform_interface/
-file:///Volumes/mac-H/larpoux/proj/tau/flutter_sound_platform_interface/lib/
-flutter_sound_web
-3.3
-file:///Volumes/mac-H/larpoux/proj/tau/flutter_sound_web/
-file:///Volumes/mac-H/larpoux/proj/tau/flutter_sound_web/lib/
 2
