@@ -105,7 +105,16 @@ cd ../flutter_sound
 
 
 echo '--------------------------------------------------------------------------------'
+
 cd ../flutter_sound_core
+git add .
+git commit -m "TAU : Version $VERSION"
+#git pull origin
+git push origin
+if [ ! -z "$VERSION" ]; then
+    git tag -f $VERSION
+    git push  -f origin $VERSION
+fi
 pod trunk push flutter_sound_core.podspec 
 if [ $? -ne 0 ]; then
     echo "Error: trunk push flutter_sound_core.podspec[flutter_sound_core]"
