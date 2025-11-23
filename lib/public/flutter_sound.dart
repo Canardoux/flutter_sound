@@ -177,7 +177,7 @@ class FlutterSound {
   Logger get logger => _logger;
 
   /// The FlutterSound Logger setter
-  set logger(aLogger) {
+  set logger(Logger aLogger) {
     _logger = aLogger;
     // TODO
     // Here we must call flutter_sound_core if necessary
