@@ -89,18 +89,6 @@ fi
 
 
 
-cd ../flutter_sound
-echo '--------------------------------------------------------------------------------'
-git add .
-git commit -m "TAU : Version $VERSION"
-git pull origin
-git push origin
-if [ ! -z "$VERSION" ]; then
-    git tag -f $VERSION
-    git push  -f origin $VERSION
-fi
-cd ../flutter_sound
-
 # ----------------------------------------------------------------------------------------
 
 
@@ -199,6 +187,18 @@ if [ $? -ne 0 ]; then
     exit -1
 fi
 cd ..
+
+cd ../flutter_sound
+echo '--------------------------------------------------------------------------------'
+git add .
+git commit -m "TAU : Version $VERSION"
+git pull origin
+git push origin
+if [ ! -z "$VERSION" ]; then
+    git tag -f $VERSION
+    git push  -f origin $VERSION
+fi
+cd ../flutter_sound
 
 
 cd example/ios
