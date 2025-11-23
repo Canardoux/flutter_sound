@@ -1,4 +1,4 @@
-export 'public/fs/flutter_sound.dart';
+export 'public/flutter_sound.dart';
 
 /*
 import 'taudio_platform_interface.dart';
