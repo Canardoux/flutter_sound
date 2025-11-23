@@ -168,15 +168,6 @@ flutter analyze lib
 fi
 
 
-cd example
-flutter analyze lib
-if [ $? -ne 0 ]; then
-    echo "Error: analyze flutter_sound/example/lib"
-#    exit -1
-fi
-cd ..
-
-
 
 
 flutter pub publish
@@ -186,12 +177,6 @@ if [ $? -ne 0 ]; then
 fi
 
 read -p "Press enter to continue"
-
-if [ $? -ne 0 ]; then
-flutter analyze lib
-    echo "Error: analyze flutter_sound/lib"
-    exit -1
-fi
 
 
 cd example
