@@ -127,8 +127,6 @@ echo '--------------------------------------------------------------------------
  
 echo '--------------------------------------------------------------------------------'
 
-read -p "Press enter to continue"
-
 
 cd ../flutter_sound_web
 
@@ -165,6 +163,9 @@ if [ $? -ne 0 ]; then
     echo "Error: npm publish"
     #!!!!!exit -1
 fi
+
+read -p "Press enter to continue"
+
 
 flutter pub publish
 if [ $? -ne 0 ]; then
