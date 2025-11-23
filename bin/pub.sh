@@ -161,15 +161,6 @@ if [ ! -z "$VERSION" ]; then
 fi
 
 
-if [ $? -ne 0 ]; then
-flutter analyze lib
-    echo "Error: analyze flutter_sound/lib"
-    exit -1
-fi
-
-
-
-
 flutter pub publish
 if [ $? -ne 0 ]; then
     echo "Error: flutter pub publish[flutter_sound]"
@@ -178,6 +169,11 @@ fi
 
 read -p "Press enter to continue"
 
+flutter analyze lib
+if [ $? -ne 0 ]; then
+    echo "Error: analyze flutter_sound/lib"
+    exit -1
+fi
 
 cd example
 flutter analyze lib

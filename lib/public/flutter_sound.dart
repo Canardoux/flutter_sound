@@ -171,17 +171,17 @@ class FoodEvent extends Food {
 /// by the App, without having to build such objects themselves.
 /// @nodoc
 class FlutterSound {
-  Logger _logger = Logger(level: Level.debug);
+  Logger logger = Logger(level: Level.debug);
 
   /// The FlutterSound Logger getter
-  Logger get logger => _logger;
+  //Logger get logger => _logger;
 
   /// The FlutterSound Logger setter
-  set logger(Logger aLogger) {
-    _logger = aLogger;
-    // TODO
-    // Here we must call flutter_sound_core if necessary
-  }
+  //set logger(Logger aLogger) {
+  //  _logger = aLogger;
+  //  // TODO
+  // Here we must call flutter_sound_core if necessary
+  //}
 
   // ---------------------------------------------------------------------------------------------------------------------
 
