@@ -89,17 +89,8 @@ fi
 
 
 
-npm publish .
-if [ $? -ne 0 ]; then
-    echo "Error: npm publish"
-    #!!!!!exit -1
-fi
-
-
 cd ../flutter_sound
 echo '--------------------------------------------------------------------------------'
-
-cd ../flutter_sound_core
 git add .
 git commit -m "TAU : Version $VERSION"
 git pull origin
@@ -134,6 +125,8 @@ cd ../flutter_sound_web
 
 
 
+
+
 flutter clean
 flutter pub get
 
@@ -147,6 +140,8 @@ if [ $? -ne 0 ]; then
     echo "Error: format flutter_sound_web/lib"
     exit -1
 fi
+
+
 git add .
 git commit -m "TAU : Version $VERSION"
 git pull origin
@@ -154,6 +149,12 @@ git push origin
 if [ ! -z "$VERSION" ]; then
         git tag -f $VERSION
         git push  -f origin $VERSION
+fi
+
+npm publish .
+if [ $? -ne 0 ]; then
+    echo "Error: npm publish"
+    #!!!!!exit -1
 fi
 
 flutter pub publish
