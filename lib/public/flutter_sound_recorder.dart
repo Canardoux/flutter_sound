@@ -459,7 +459,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
   ///
   /// -----------------------------------------------------------
   ///
-  Future<FlutterSoundRecorder?> openRecorder({isBGService = false}) async {
+  Future<FlutterSoundRecorder?> openRecorder({bool isBGService = false}) async {
     if (_isInited != Initialized.notInitialized) {
       return this;
     }
@@ -678,7 +678,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
     return r;
   }
 
-  Codec? _getCodecFromExtension(extension) {
+  Codec? _getCodecFromExtension(String extension) {
     for (var codec in Codec.values) {
       if (ext[codec.index] == extension) {
         return codec;
