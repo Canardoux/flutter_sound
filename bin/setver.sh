@@ -46,3 +46,5 @@ gsed -i  "s/^\( *s\.version *= *\).*$/\1'$VERSION'/"                            
 
 gsed -i  "s/^title: Flutter Sound - .*$/title: Flutter Sound - $VERSION/"               ../fs-doc/index.md
 gsed -i  "s/^title: Flutter Sound - .*$/title: Flutter Sound - $VERSION/"               ../fs-doc/bin/cp.sh
+
+gsed -i  "s/^const version = .*$/const version = '$VERSION';/"                example/lib/main.dart

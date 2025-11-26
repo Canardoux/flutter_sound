@@ -50,6 +50,7 @@ void main() {
 
 ///
 const int tNotWeb = 1;
+const version = '9.29.14';
 
 ///
 class Example {
@@ -354,7 +355,7 @@ class ExamplesApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const ExamplesAppHomePage(title: 'Flutter Sound Examples'),
+      home: const ExamplesAppHomePage(title: 'Flutter Sound - $version'),
     );
   }
 }
