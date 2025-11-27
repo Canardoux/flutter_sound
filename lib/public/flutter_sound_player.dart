@@ -260,11 +260,11 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     _playerState = PlayerState.values[state];
     //await _stop(); // ??? Maybe
 
-    if (!_fromStream) {
-      if (_audioPlayerFinishedPlaying != null) {
-        // We don't stop the player if the user has a callback
-        _audioPlayerFinishedPlaying?.call();
-      } else {
+    if (_audioPlayerFinishedPlaying != null) {
+      // We don't stop the player if the user has a callback
+      _audioPlayerFinishedPlaying?.call();
+    } else {
+      if (!_fromStream) {
         await stopPlayer(); // ??? Maybe !!!!!!!!!!!
       }
     }
@@ -1295,7 +1295,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     required int numChannels, // = 2,
     required int sampleRate, // = 48000,
     required int bufferSize, // = 1024,
-    TWhenFinished? onBufferUnderlow,
+    TWhenFinished? onBufferUnderflow,
   }) async {
     await _lock.synchronized(() async {
       await _startPlayerFromStream(
@@ -1304,7 +1304,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
         sampleRate: sampleRate,
         numChannels: numChannels,
         bufferSize: bufferSize,
-        onBufferUnderflow: onBufferUnderlow,
+        onBufferUnderflow: onBufferUnderflow,
       );
     });
   }
