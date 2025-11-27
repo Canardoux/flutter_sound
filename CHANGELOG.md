@@ -1,6 +1,6 @@
 ### 9.30.0
 
-- iOS : fixes the "onBufferUnderfow" bug ( [#1205](https://github.com/Canardoux/flutter_sound/issues/1205))
+- iOS : fixes the "onBufferUnderflow" bug ( [#1205](https://github.com/Canardoux/flutter_sound/issues/1205))
 - Android : work on progress
 - Web : must be checked
 
