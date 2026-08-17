@@ -15,6 +15,9 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "FlutterFramework", path: "../FlutterFramework"),
+        // TODO(release): This commit pin is temporary. Once the maintainer
+        // publishes flutter_sound_core 9.30.1 as a Git tag and CocoaPod,
+        // replace `revision` below with `exact: "9.30.1"`.
         .package(
             url: "https://github.com/Canardoux/flutter_sound_core.git",
             revision: "e26e592fa4c40c89a13cf630920df915f9303852"
