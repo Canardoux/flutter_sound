@@ -1,6 +1,6 @@
 #
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint taudio.podspec` to validate before publishing.
+# Run `pod lib lint flutter_sound.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
   s.name             = 'flutter_sound'
@@ -13,8 +13,8 @@ A complete api for audio playback and recording. Member of the `Tau` Family. Aud
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Canardoux' => 'larpoux@gmail.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
-  s.public_header_files = 'Classes/**/*.h'
+  s.source_files = 'flutter_sound/Sources/flutter_sound/**/*.{h,m,mm}'
+  s.public_header_files = 'flutter_sound/Sources/flutter_sound/include/*.h'
   s.dependency 'Flutter'
   s.platform = :ios, '12.0'
 
@@ -29,5 +29,9 @@ A complete api for audio playback and recording. Member of the `Tau` Family. Aud
   # required reason APIs, update the PrivacyInfo.xcprivacy file to describe your
   # plugin's privacy impact, and then uncomment this line. For more information,
   # see https://developer.apple.com/documentation/bundleresources/privacy_manifest_files
-  # s.resource_bundles = {'taudio_privacy' => ['Resources/PrivacyInfo.xcprivacy']}
+  s.resource_bundles = {
+    'flutter_sound_privacy' => [
+      'flutter_sound/Sources/flutter_sound_privacy/PrivacyInfo.xcprivacy'
+    ]
+  }
 end
