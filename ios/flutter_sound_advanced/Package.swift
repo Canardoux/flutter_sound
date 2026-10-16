@@ -34,6 +34,10 @@ let package = Package(
                 .product(name: "FlutterFramework", package: "FlutterFramework"),
                 "flutter_sound_core",
             ],
+            exclude: [
+                // Leftover Swift stub; SPM forbids mixed Swift + Objective-C++ in one target.
+                "TaudioPlugin.swift",
+            ],
             resources: [
                 .process("PrivacyInfo.xcprivacy"),
             ],
