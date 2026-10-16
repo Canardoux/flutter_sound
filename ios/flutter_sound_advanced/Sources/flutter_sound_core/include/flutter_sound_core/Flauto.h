@@ -21,6 +21,12 @@
 #ifndef FLAUTO_H
 #define FLAUTO_H
 
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
+#import <MediaPlayer/MediaPlayer.h>
+#import <AudioToolbox/AudioToolbox.h>
+
 // this enum MUST be synchronized with lib/flutter_sound.dart and fluttersound/AudioInterface.java
 typedef enum
 {

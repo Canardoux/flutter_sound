@@ -25,7 +25,9 @@ let package = Package(
             ],
             linkerSettings: [
                 .linkedFramework("AVFoundation"),
-                .linkedFramework("MediaPlayer")
+                .linkedFramework("MediaPlayer"),
+                .linkedFramework("UIKit"),
+                .linkedFramework("AudioToolbox")
             ]
         ),
         .target(
