@@ -20,8 +20,8 @@
 
 
 
-#import "FlutterSoundPlayer.h"
-#import "FlutterSoundPlayerManager.h"
+#import "./include/flutter_sound_advanced/FlutterSoundPlayer.h"
+#import "./include/flutter_sound_advanced/FlutterSoundPlayerManager.h"
 //#import "FlautoTrackPlayer.h"
 #import <AVFoundation/AVFoundation.h>
 

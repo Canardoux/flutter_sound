@@ -30,8 +30,8 @@
 #import <flutter_sound_core/FlautoRecorder.h>
 #import <AVFoundation/AVFoundation.h>
 #import <Flutter/Flutter.h>
-#import "FlutterSoundRecorder.h"
-#import "FlutterSoundRecorderManager.h"
+#import "./include/flutter_sound_advanced/FlutterSoundRecorder.h"
+#import "./include/flutter_sound_advanced/FlutterSoundRecorderManager.h"
 
 
 

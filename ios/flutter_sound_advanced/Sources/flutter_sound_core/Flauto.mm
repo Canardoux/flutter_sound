@@ -1,9 +1,3 @@
-//
-//  Flauto.m
-//  flauto
-//
-//  Created by larpoux on 24/03/2020.
-//
 /*
  * Copyright 2018, 2019, 2020, 2021 Dooboolab.
  *
@@ -24,23 +18,10 @@
  */
 
 
+#import <Foundation/Foundation.h>
+#import "./include/flutter_sound_core/Flauto.h"
 
-
-
-
-#import "FlutterSound.h"
-#import "FlutterSoundPlayerManager.h"
-#import "FlutterSoundRecorderManager.h"
-
-@implementation FlutterSound
-{
-}
-
-
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar
-{
-        FlutterSoundPlayerReg(registrar);
-        FlutterSoundRecorderReg(registrar);
-}
+Flauto* theFlautoEngine = [[Flauto alloc] init]; // The singleton
+@implementation Flauto
 
 @end

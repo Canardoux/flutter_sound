@@ -3,7 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  flutter_sound
+  flutter_sound_advanced
   permission_handler_windows
 )
 

@@ -1,8 +1,21 @@
-![pub version](https://img.shields.io/pub/v/flutter_sound.svg?style=flat-square)
+# flutter_sound_advanced
+
+[![pub package](https://img.shields.io/pub/v/flutter_sound_advanced.svg?logo=dart)](https://pub.dev/packages/flutter_sound_advanced)
 ![Flutter Sound](https://flutter-sound.canardoux.xyz/images/Logotype-primary.png)
 
+Community-maintained fork of [canardoux/flutter_sound](https://github.com/canardoux/flutter_sound), republished as **`flutter_sound_advanced`** on [pub.dev](https://pub.dev/packages/flutter_sound_advanced). Maintained by [Nafis Kabbo](https://github.com/nafiskabbo). Issues and pull requests are welcome at [nafiskabbo/flutter_sound_advanced](https://github.com/nafiskabbo/flutter_sound_advanced).
+
+## Migrating from `flutter_sound`
+
+Replace the dependency name; Dart APIs stay the same. Update the import URI from `package:flutter_sound/flutter_sound.dart` to `package:flutter_sound_advanced/flutter_sound.dart` (or `package:flutter_sound_advanced/flutter_sound_advanced.dart`).
+
+```yaml
+dependencies:
+  flutter_sound_advanced: ^10.0.0
+```
+
 - ## Flutter Sound user : your doc [is here](https://flutter-sound.canardoux.xyz/)
-- ## The CHANGELOG [is here](https://flutter-sound.canardoux.xyz/tau/CHANGELOG.html)
+- ## The CHANGELOG [is here](https://github.com/nafiskabbo/flutter_sound_advanced/blob/master/CHANGELOG.md)
 
 ## Flutter Sound as a τ Project
 
@@ -153,5 +166,5 @@ This is too much on my shoulders. We desesperatly need at least one other develo
 ## Thanks
 
 {: .note }
-### If you like my work, you can click on the `Thumb up` button of the top of the [pub.dev page](https://pub.dev/packages/flutter_sound).
+### If you like my work, you can click on the `Thumb up` button of the top of the [pub.dev page](https://pub.dev/packages/flutter_sound_advanced).
 This is free and this will reassure me that **I do not spend most of my life for nobody**.

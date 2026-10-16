@@ -1,3 +1,10 @@
+## 10.0.0
+
+- **Package renamed** from `flutter_sound` to [`flutter_sound_advanced`](https://pub.dev/packages/flutter_sound_advanced) for independent publication on pub.dev
+- **Fork lineage:** community-maintained continuation of [canardoux/flutter_sound](https://github.com/canardoux/flutter_sound)
+- **Maintainer:** [Nafis Kabbo](mailto:nafiskabbo30@gmail.com)
+- Adds iOS Swift Package Manager (SPM) support alongside CocoaPods
+
 ### 9.30.0
 
 - iOS : fixes the "onBufferUnderflow" bug ( [#1205](https://github.com/Canardoux/flutter_sound/issues/1205))

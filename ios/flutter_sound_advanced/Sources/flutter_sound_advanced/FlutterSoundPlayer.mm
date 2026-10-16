@@ -21,10 +21,10 @@
 
 
 
-#import "FlutterSoundPlayer.h"
+#import "./include/flutter_sound_advanced/FlutterSoundPlayer.h"
 #import <AVFoundation/AVFoundation.h>
 #import <flutter_sound_core/FlautoPlayer.h>
-#import "FlutterSoundPlayerManager.h"
+#import "./include/flutter_sound_advanced/FlutterSoundPlayerManager.h"
          
  
 //-------------------------------------------------------------------------------------------------------------------------------

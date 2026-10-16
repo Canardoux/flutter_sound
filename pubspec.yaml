@@ -1,8 +1,9 @@
-name: flutter_sound
+name: flutter_sound_advanced
 description: "A complete api for audio playback and recording. Member of the `Tau` Family. Audio player, audio recorder. Pray for Ukraine."
-version: 9.30.0
-homepage: https://flutter-sound.canardoux.xyz/
-repository: https://github.com/canardoux/flutter_sound
+version: 10.0.0
+homepage: https://github.com/nafiskabbo/flutter_sound_advanced
+repository: https://github.com/nafiskabbo/flutter_sound_advanced
+issue_tracker: https://github.com/nafiskabbo/flutter_sound_advanced/issues
 
 environment:
   sdk: ^3.7.2
