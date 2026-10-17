@@ -1,6 +1,6 @@
 name: flutter_sound_advanced
 description: "A complete api for audio playback and recording. Member of the `Tau` Family. Audio player, audio recorder. Pray for Ukraine."
-version: 10.0.0
+version: 10.0.1
 homepage: https://github.com/nafiskabbo/flutter_sound_advanced
 repository: https://github.com/nafiskabbo/flutter_sound_advanced
 issue_tracker: https://github.com/nafiskabbo/flutter_sound_advanced/issues
@@ -24,10 +24,10 @@ dependencies:
   synchronized: ^3.1.0
   logger: ^2.0.2
 # ============================================================================
-  flutter_sound_platform_interface: ^9.30.0
+  flutter_sound_platform_interface: ^10.3.8
 #    path: ../flutter_sound_platform_interface # Flutter Sound Dir
 
-  flutter_sound_web: ^9.30.0
+  flutter_sound_web: ^10.3.8
 #    path: ../flutter_sound_web # Flutter Sound Dir
 
 ##  etau: ^0.0.14-alpha.5
@@ -40,8 +40,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
-  lints: ^5.1.1
+  flutter_lints: ^6.0.0
+  lints: ^6.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

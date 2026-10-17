@@ -11,7 +11,7 @@ Replace the dependency name; Dart APIs stay the same. Update the import URI from
 
 ```yaml
 dependencies:
-  flutter_sound_advanced: ^10.0.0
+  flutter_sound_advanced: ^10.0.1
 ```
 
 - ## Flutter Sound user : your doc [is here](https://flutter-sound.canardoux.xyz/)

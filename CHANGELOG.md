@@ -1,3 +1,7 @@
+## 10.0.1
+
+- Upgrade package dependencies (`flutter_sound_platform_interface` and `flutter_sound_web` ^10.3.8, `flutter_lints` ^6.0.0, `lints` ^6.1.0)
+
 ## 10.0.0
 
 - **Package renamed** from `flutter_sound` to [`flutter_sound_advanced`](https://pub.dev/packages/flutter_sound_advanced) for independent publication on pub.dev
