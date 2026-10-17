@@ -11,7 +11,7 @@ Replace the dependency name; Dart APIs stay the same. Update the import URI from
 
 ```yaml
 dependencies:
-  flutter_sound_advanced: ^10.0.2
+  flutter_sound_advanced: ^10.0.3
 ```
 
 - ## Flutter Sound user : your doc [is here](https://flutter-sound.canardoux.xyz/)
@@ -144,12 +144,7 @@ The current Flutter Sound version is 9.x. [Taudio](https://pub.dev/packages/taud
 
 `Taudio` is a complete rewritten of Flutter Sound 9.x. It keeps compatibility with the Flutter Sound 9.x API but adds a new wrapper above [Etau](https://pub.dev/packages/etau).
 
-## Flutter Sound stands with Ukraine
-
-![PeaceForUkraine](https://flutter-sound.canardoux.xyz/images/2-year-old-irish-girl-ukrainian.jpg)
-Peace for Ukraine
-
-![PrayForUkraine](https://flutter-sound.canardoux.xyz/images/banner.png)
+## Free Palestine
 
 ## We need help
 

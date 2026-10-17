@@ -4,10 +4,10 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'flutter_sound_advanced'
-  s.version          = '10.0.2'
-  s.summary          = 'A complete api for audio playback and recording. Member of the `Tau` Family. Audio player, audio recorder. Pray for Ukraine.'
+  s.version          = '10.0.3'
+  s.summary          = 'A complete api for audio playback and recording. Member of the `Tau` Family. Audio player, audio recorder. Free Palestine.'
   s.description      = <<-DESC
-A complete api for audio playback and recording. Member of the `Tau` Family. Audio player, audio recorder. Pray for Ukraine.
+A complete api for audio playback and recording. Member of the `Tau` Family. Audio player, audio recorder. Free Palestine.
                        DESC
   s.homepage         = 'https://github.com/nafiskabbo/flutter_sound_advanced'
   s.license          = { :file => '../LICENSE' }

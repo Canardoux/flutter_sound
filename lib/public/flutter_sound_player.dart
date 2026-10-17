@@ -33,7 +33,7 @@ import 'dart:core';
 import 'dart:typed_data' show Uint8List, Float32List, Int16List;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
+import 'package:flutter_sound_advanced/src/fs_platform/flutter_sound_player_platform_interface.dart';
 import 'package:synchronized/synchronized.dart';
 import '../src/fs_io_compat.dart';
 import '../src/fs_logger_compat.dart';
