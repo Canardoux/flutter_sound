@@ -49,7 +49,7 @@ export 'flutter_sound_helper.dart';
 //export 'tau.dart';
 
 import 'dart:typed_data' show Uint8List;
-import 'package:logger/logger.dart' show Level, Logger;
+import '../src/fs_logger_compat.dart';
 import 'flutter_sound_player.dart';
 import 'flutter_sound_recorder.dart';
 

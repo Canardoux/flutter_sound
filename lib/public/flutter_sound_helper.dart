@@ -27,12 +27,12 @@
 library;
 
 import 'dart:async';
-import 'dart:io';
 import 'dart:typed_data';
-import 'package:logger/logger.dart' show Level, Logger;
 import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart'
     as fs_codec
     show Codec;
+import '../src/fs_io_compat.dart';
+import '../src/fs_logger_compat.dart';
 
 /// The FlutterSoundHelper singleton for accessing the helpers functions
 FlutterSoundHelper flutterSoundHelper =
@@ -96,13 +96,8 @@ class FlutterSoundHelper {
     required String inputFile,
     required String outputFile,
   }) async {
-    var filIn = File(inputFile);
-    var filOut = File(outputFile);
-    var sink = filOut.openWrite();
-    await filIn.open();
-    var buffer = filIn.readAsBytesSync();
-    sink.add(buffer.sublist(WaveHeader.headerLength));
-    await sink.close();
+    var buffer = fsReadFileBytesSync(inputFile);
+    await fsWriteFileBytes(outputFile, buffer.sublist(WaveHeader.headerLength));
   }
 
   /// Convert a WAVE buffer to a Raw PCM buffer.
@@ -164,13 +159,10 @@ class FlutterSoundHelper {
     if (codec != fs_codec.Codec.pcm16 && codec != fs_codec.Codec.pcmFloat32) {
       throw (Exception('Bad codec'));
     }
-    var filIn = File(inputFile);
-    var filOut = File(outputFile);
-    var size = filIn.lengthSync();
+    var size = fsFileLengthSync(inputFile);
     logger.i(
       'pcmToWave() : input = $inputFile,  output = $outputFile,  size = $size',
     );
-    var sink = filOut.openWrite();
 
     var header = WaveHeader(
       codec == fs_codec.Codec.pcm16
@@ -181,11 +173,11 @@ class FlutterSoundHelper {
       codec == fs_codec.Codec.pcm16 ? 16 : 32, // 16 bits per byte
       size, // total number of bytes
     );
-    header.write(sink);
-    await filIn.open();
-    var buffer = filIn.readAsBytesSync();
-    sink.add(buffer.toList());
-    await sink.close();
+    await fsWriteFileWithHeader(
+      path: outputFile,
+      writeHeader: header.write,
+      body: fsReadFileBytesSync(inputFile).toList(),
+    );
   }
 
   /// Convert a raw PCM buffer to a WAVE buffer.
