@@ -28,7 +28,7 @@ library;
 
 import 'dart:async';
 import 'dart:typed_data';
-import 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart'
+import 'package:flutter_sound_advanced/src/fs_platform/flutter_sound_platform_interface.dart'
     as fs_codec
     show Codec;
 import '../src/fs_io_compat.dart';
