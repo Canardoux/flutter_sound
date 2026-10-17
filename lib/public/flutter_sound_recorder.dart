@@ -26,15 +26,15 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:typed_data';
 
-import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
-import 'package:logger/logger.dart' show Level, Logger;
+import 'package:flutter_sound_advanced/src/fs_platform/flutter_sound_recorder_platform_interface.dart';
 import 'package:path/path.dart' as p;
 import 'package:synchronized/synchronized.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'flutter_sound.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart';
-import 'dart:io' show Platform;
+import '../src/fs_io_compat.dart';
+import '../src/fs_logger_compat.dart';
 
 /// A Recorder is an object that can record to various destinations.
 ///
@@ -764,8 +764,7 @@ class FlutterSoundRecorder implements FlutterSoundRecorderCallback {
             toStreamFloat32 != null ||
             toStreamInt16 != null) &&
         (!kIsWeb) &&
-        Platform
-            .isIOS) // This hack is just to have recorder to stream working correctly.
+        fsIsIOS) // This hack is just to have recorder to stream working correctly.
     {
       FlutterSoundRecorder recorder = FlutterSoundRecorder();
       await recorder.openRecorder();

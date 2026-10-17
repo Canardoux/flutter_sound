@@ -9,7 +9,7 @@ description: Driver for the various Flutter Sound examples
 # Read more about versioning at semver.org.
 version: 9.30.0
 
-homepage: https://github.com/canardoux/flutter_sound/blob/master/flutter_sound/
+homepage: https://github.com/nafiskabbo/flutter_sound_advanced
 
 
 environment:
@@ -29,20 +29,14 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.6
+  cupertino_icons: ^2.0.0
 
 
 # ============================================================================
 # The following instructions are just for developing/debugging Flutter Sound
 # Do not put them in a real App
-  flutter_sound_platform_interface: 9.30.0
-#    path: ../../flutter_sound_platform_interface
-
-  flutter_sound_web: 9.30.0
-#    path: ../../flutter_sound_web # flutter_sound_web Dir
-    
-  flutter_sound: ^9.30.0
-#    path: ../ # Taudio Dir
+  flutter_sound_advanced:
+    path: ../
 
 ##  etau: # ^0.0.14-alpha.5
 ##    path: ../../../tau/etau # etau Dir
@@ -54,11 +48,11 @@ dependencies:
 #  flutter_sound_platform_interface: ^9.30.0
 
   path_provider: ^2.0.2
-  permission_handler: ^11.3.0
+  permission_handler: ^13.0.2
   path: ^1.6.4
-  intl: ^0.19.0
-  just_audio: ^0.9.11
-  audio_session: ^0.1.6
+  intl: ^0.20.3
+  just_audio: ^0.10.6
+  audio_session: ^0.2.4
   logger: ^2.0.2
 
 
@@ -72,7 +66,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

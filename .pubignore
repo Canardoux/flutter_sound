@@ -26,3 +26,6 @@ example/ios/Flutter/.last_build_id
 Podfile.lock
 example/ios/.symlinks
 example/assets/extract
+# Example web JS was symlinked to a sibling flutter_sound_web checkout
+# that is not part of this repo (federated package lives on pub.dev).
+example/web/js

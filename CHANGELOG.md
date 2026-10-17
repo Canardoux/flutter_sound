@@ -1,3 +1,27 @@
+## 10.0.3
+
+- Stop pulling `dart:io` through `flutter_sound_platform_interface`'s `logger` import on web/WASM
+- Vendor a WASM-safe platform interface and web plugin that use `package:logger/web.dart`
+- Replace the package tagline with Free Palestine
+- Note the MPL-2.0 origin of the vendored platform interface and web plugin
+
+## 10.0.2
+
+- Keep web and WASM out of `dart:io` / `path_provider` import graphs with conditional imports
+- Import `package:logger/web.dart` on web so file outputs do not pull in `dart:io`
+- Upgrade `web`, `path_provider`, `path`, `synchronized`, and `logger`
+
+## 10.0.1
+
+- Upgrade package dependencies (`flutter_sound_platform_interface` and `flutter_sound_web` ^10.3.8, `flutter_lints` ^6.0.0, `lints` ^6.1.0)
+
+## 10.0.0
+
+- **Package renamed** from `flutter_sound` to [`flutter_sound_advanced`](https://pub.dev/packages/flutter_sound_advanced) for independent publication on pub.dev
+- **Fork lineage:** community-maintained continuation of [canardoux/flutter_sound](https://github.com/canardoux/flutter_sound)
+- **Maintainer:** [Nafis Kabbo](mailto:nafiskabbo30@gmail.com)
+- Adds iOS Swift Package Manager (SPM) support alongside CocoaPods
+
 ### 9.30.0
 
 - iOS : fixes the "onBufferUnderflow" bug ( [#1205](https://github.com/Canardoux/flutter_sound/issues/1205))

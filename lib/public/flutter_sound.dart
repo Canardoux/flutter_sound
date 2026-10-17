@@ -33,13 +33,13 @@ library;
 
 // The interfaces to the platforms specific implementations
 // --------------------------------------------------------
-//export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
+//export 'package:flutter_sound_advanced/src/fs_platform/flutter_sound_platform_interface.dart';
 
 // everything : no documentation
 // @nodoc
 // library;
 
-export 'package:flutter_sound_platform_interface/flutter_sound_platform_interface.dart';
+export 'package:flutter_sound_advanced/src/fs_platform/flutter_sound_platform_interface.dart';
 
 /// Main
 ///library tau;
@@ -49,7 +49,7 @@ export 'flutter_sound_helper.dart';
 //export 'tau.dart';
 
 import 'dart:typed_data' show Uint8List;
-import 'package:logger/logger.dart' show Level, Logger;
+import '../src/fs_logger_compat.dart';
 import 'flutter_sound_player.dart';
 import 'flutter_sound_recorder.dart';
 

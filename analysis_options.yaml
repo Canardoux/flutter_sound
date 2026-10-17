@@ -1,4 +1,14 @@
 #include: package:flutter_lints/flutter.yaml
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - windows/**
+    - macos/**
+    - linux/**
+    - lib/src/fs_platform/**
+    - lib/src/fs_web/**
 include: package:lints/recommended.yaml
 #include: package:lints/core.yaml
 
