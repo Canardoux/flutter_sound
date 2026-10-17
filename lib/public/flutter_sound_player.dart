@@ -30,15 +30,13 @@ library;
 
 import 'dart:async';
 import 'dart:core';
-import 'dart:io';
-import 'dart:io' show Platform;
 import 'dart:typed_data' show Uint8List, Float32List, Int16List;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_sound_platform_interface/flutter_sound_player_platform_interface.dart';
-import 'package:logger/logger.dart' show Level, Logger;
-import 'package:path_provider/path_provider.dart';
 import 'package:synchronized/synchronized.dart';
+import '../src/fs_io_compat.dart';
+import '../src/fs_logger_compat.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/services.dart';
 import 'flutter_sound.dart';
@@ -1087,8 +1085,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
 
     if (codec == Codec.pcm16 || codec == Codec.pcmFloat32) {
       if (fromURI != null) {
-        var tempDir = await getTemporaryDirectory();
-        var path = '${tempDir.path}/flutter_sound_tmp.wav';
+        var path = '${await fsTemporaryDirectoryPath()}/flutter_sound_tmp.wav';
         await flutterSoundHelper.pcmToWave(
           inputFile: fromURI,
           outputFile: path,
@@ -2173,11 +2170,11 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     }
     if (kIsWeb) {
       return null;
-    } else if (Platform.isIOS) {
+    } else if (fsIsIOS) {
       var s = await FlutterSoundPlayerPlatform.instance.getResourcePath(this);
       return s;
     } else {
-      return (await getApplicationDocumentsDirectory()).path;
+      return await fsApplicationDocumentsDirectoryPath();
     }
   }
 }

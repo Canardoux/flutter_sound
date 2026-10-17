@@ -1,3 +1,9 @@
+## 10.0.2
+
+- Keep web and WASM out of `dart:io` / `path_provider` import graphs with conditional imports
+- Import `package:logger/web.dart` on web so file outputs do not pull in `dart:io`
+- Upgrade `web`, `path_provider`, `path`, `synchronized`, and `logger`
+
 ## 10.0.1
 
 - Upgrade package dependencies (`flutter_sound_platform_interface` and `flutter_sound_web` ^10.3.8, `flutter_lints` ^6.0.0, `lints` ^6.1.0)
